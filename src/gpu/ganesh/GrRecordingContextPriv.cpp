@@ -28,6 +28,10 @@ sk_sp<skgpu::ganesh::Device> GrRecordingContextPriv::createDevice(
         GrSurfaceOrigin origin,
         const SkSurfaceProps& props,
         skgpu::ganesh::Device::InitContents init) {
+
+    SkDebugf("------------ GrRecordingContextPriv::createDevice %d\n",
+             proxy->isProtected() == skgpu::Protected::kYes);
+
     return skgpu::ganesh::Device::Make(this->context(),
                                        colorType,
                                        std::move(proxy),
@@ -272,6 +276,8 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
         GrProtected isProtected,
         GrSurfaceOrigin origin,
         skgpu::Budgeted budgeted) {
+    SkDebugf("----------makeSFCWithFallback %d", isProtected == GrProtected::kYes);
+
     if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
         return skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(this->context(),
                                                                    info.colorType(),

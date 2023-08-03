@@ -57,13 +57,16 @@ void GLWindowContext::destroyContext() {
 sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
     if (nullptr == fSurface) {
         if (fContext) {
+            SkDebugf("------------------- GLWindowContext::getBackbufferSurface %d\n",
+                     fDisplayParams.fCreateProtectedNativeBackend);
             GrGLint buffer;
             GR_GL_CALL(fBackendContext.get(), GetIntegerv(GR_GL_FRAMEBUFFER_BINDING, &buffer));
 
             GrGLFramebufferInfo fbInfo;
             fbInfo.fFBOID = buffer;
             fbInfo.fFormat = GR_GL_RGBA8;
-            fbInfo.fProtected = skgpu::Protected::kNo;
+            fbInfo.fProtected = skgpu::Protected(fDisplayParams.fCreateProtectedNativeBackend);
+                    //skgpu::Protected::kYes; //$$
 
             GrBackendRenderTarget backendRT(fWidth,
                                             fHeight,
@@ -84,6 +87,7 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
 }
 
 void GLWindowContext::resize(int w, int h) {
+    SkDebugf("------ GLWindowContext::resize %d %d\n", w, h);
     this->destroyContext();
     this->initializeContext();
 }

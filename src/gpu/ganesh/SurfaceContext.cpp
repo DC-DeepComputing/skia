@@ -44,6 +44,8 @@ SurfaceContext::SurfaceContext(GrRecordingContext* context,
                                GrSurfaceProxyView readView,
                                const GrColorInfo& info)
         : fContext(context), fReadView(std::move(readView)), fColorInfo(info) {
+    SkDebugf("------- SC read %d\n", fReadView.proxy()->isProtected() == GrProtected::kYes);
+
     SkASSERT(!context->abandoned());
 }
 
@@ -739,6 +741,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         return;
     }
     if (this->asSurfaceProxy()->isProtected() == GrProtected::kYes) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$ asyncRescaleAndReadPixelsYUV420\n");
         callback(callbackContext, nullptr);
         return;
     }
@@ -784,16 +787,25 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         x = y = 0;
     }
 
+    SkDebugf("------------ yuv\n");
     auto yaInfo = SkImageInfo::MakeA8(dstSize);
-    auto yFC = dContext->priv().makeSFCWithFallback(yaInfo, SkBackingFit::kApprox);
+    auto yFC = dContext->priv().makeSFCWithFallback(yaInfo, SkBackingFit::kApprox,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
     std::unique_ptr<SurfaceFillContext> aFC;
     if (readAlpha) {
-        aFC = dContext->priv().makeSFCWithFallback(yaInfo, SkBackingFit::kApprox);
+        aFC = dContext->priv().makeSFCWithFallback(yaInfo, SkBackingFit::kApprox,
+                                                   /* sampleCount= */ 1,
+                                                   skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
     }
 
     auto uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
-    auto uFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
-    auto vFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
+    auto uFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
+    auto vFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
 
     if (!yFC || !uFC || !vFC || (readAlpha && !aFC)) {
         callback(callbackContext, nullptr);
@@ -1065,9 +1077,10 @@ std::unique_ptr<SurfaceFillContext> SurfaceContext::rescale(const GrImageInfo& i
                                                             SkIRect srcRect,
                                                             RescaleGamma rescaleGamma,
                                                             RescaleMode rescaleMode) {
+    SkDebugf("---------- rescale\n");
     auto sfc = fContext->priv().makeSFCWithFallback(info,
                                                     SkBackingFit::kExact,
-                                                    1,
+                                                    /* sampleCount= */ 1,
                                                     GrMipmapped::kNo,
                                                     this->asSurfaceProxy()->isProtected(),
                                                     origin);
@@ -1148,11 +1161,13 @@ bool SurfaceContext::rescaleInto(SurfaceFillContext* dst,
                        dst->colorInfo().alphaType(),
                        std::move(cs),
                        srcRect.size());
+        SkDebugf("---------- SurfaceContext::rescaleInto a %d\n",
+                 texView.proxy()->isProtected() == GrProtected::kYes);
         auto linearRTC = fContext->priv().makeSFCWithFallback(std::move(ii),
                                                               SkBackingFit::kApprox,
-                                                              1,
+                                                              /* sampleCount= */ 1,
                                                               GrMipmapped::kNo,
-                                                              GrProtected::kNo,
+                                                              texView.proxy()->isProtected(),
                                                               dst->origin());
         if (!linearRTC) {
             return false;
@@ -1196,7 +1211,13 @@ bool SurfaceContext::rescaleInto(SurfaceFillContext* dst,
             xform = GrColorSpaceXform::Make(input->colorInfo(), dst->colorInfo());
         } else {
             GrImageInfo nextInfo(input->colorInfo(), nextDims);
-            tempB = fContext->priv().makeSFCWithFallback(nextInfo, SkBackingFit::kApprox);
+            SkDebugf("---------- SurfaceContext::rescaleInto b %d\n",
+                     texView.proxy()->isProtected() == GrProtected::kYes);
+
+            tempB = fContext->priv().makeSFCWithFallback(nextInfo, SkBackingFit::kApprox,
+                                                         /* sampleCount= */ 1,
+                                                         skgpu::Mipmapped::kNo,
+                                                         texView.proxy()->isProtected());
             if (!tempB) {
                 return false;
             }

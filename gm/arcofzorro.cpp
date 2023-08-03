@@ -45,6 +45,7 @@ protected:
 
         p.setStyle(SkPaint::kStroke_Style);
         p.setStrokeWidth(35);
+        p.setAntiAlias(false);
         int xOffset = 0, yOffset = 0;
         int direction = 0;
 

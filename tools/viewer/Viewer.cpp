@@ -186,7 +186,7 @@ static DEFINE_bool(list, false, "List samples?");
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", GL_BACKEND_STR, VK_BACKEND_STR, MTL_BACKEND_STR, D3D_BACKEND_STR, DAWN_BACKEND_STR)
 
-static DEFINE_string2(backend, b, "sw", "Backend to use. Allowed values are " BACKENDS_STR ".");
+static DEFINE_string2(backend, b, "gl", "Backend to use. Allowed values are " BACKENDS_STR ".");
 
 static DEFINE_int(msaa, 1, "Number of subpixel samples. 0 for no HW antialiasing.");
 static DEFINE_bool(dmsaa, false, "Use internal MSAA to render to non-MSAA surfaces?");
@@ -195,7 +195,7 @@ static DEFINE_string(bisect, "", "Path to a .skp or .svg file to bisect.");
 
 static DEFINE_string2(file, f, "", "Open a single file for viewing.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "Protected2",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -231,6 +231,7 @@ static DEFINE_bool(redraw, false, "Toggle continuous redraw.");
 static DEFINE_bool(offscreen, false, "Force rendering to an offscreen surface.");
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
+static DEFINE_bool(createProtected, true, "Create a protected native backend (e.g., in EGL).");
 
 #ifndef SK_GL
 static_assert(false, "viewer requires GL backend for raster.")
@@ -376,6 +377,7 @@ static const char kValue[] = "value";
 static const char kOptions[] = "options";
 static const char kSlideStateName[] = "Slide";
 static const char kBackendStateName[] = "Backend";
+static const char kProtectedStateName[] = "Protected";
 static const char kMSAAStateName[] = "MSAA";
 static const char kPathRendererStateName[] = "Path renderer";
 static const char kSoftkeyStateName[] = "Softkey";
@@ -397,7 +399,8 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fZoomWindowLocation{0.0f, 0.0f}
     , fLastImage(nullptr)
     , fZoomUI(false)
-    , fBackendType(sk_app::Window::kNativeGL_BackendType)
+    , fBackendType1(sk_app::Window::kNativeGL_BackendType)
+    , fProtected(false)
     , fColorMode(ColorMode::kLegacy)
     , fColorSpacePrimaries(gSrgbPrimaries)
     // Our UI can only tweak gamma (currently), so start out gamma-only
@@ -440,7 +443,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     initializeEventTracingForTools();
     static SkTaskGroup::Enabler kTaskGroupEnabler(FLAGS_threads);
 
-    fBackendType = get_backend_type(FLAGS_backend[0]);
+    fBackendType1 = get_backend_type(FLAGS_backend[0]);
     fWindow = Window::CreateNativeWindow(platformData);
 
     DisplayParams displayParams;
@@ -458,6 +461,10 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
                 displayParams.fSurfaceProps.flags() | SkSurfaceProps::kDynamicMSAA_Flag,
                 displayParams.fSurfaceProps.pixelGeometry());
     }
+    displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
+
+    SkDebugf("In Viewer ctor - protected %d\n", FLAGS_createProtected);
+
     fWindow->setRequestedDisplayParams(displayParams);
     fDisplay = fWindow->getRequestedDisplayParams();
     fRefresh = FLAGS_redraw;
@@ -582,13 +589,13 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     });
     fCommands.addCommand('d', "Modes", "Change rendering backend", [this]() {
         sk_app::Window::BackendType newBackend = (sk_app::Window::BackendType)(
-                (fBackendType + 1) % sk_app::Window::kBackendTypeCount);
+                (fBackendType1 + 1) % sk_app::Window::kBackendTypeCount);
         // Switching to and from Vulkan is problematic on Linux so disabled for now
 #if defined(SK_BUILD_FOR_UNIX) && defined(SK_VULKAN)
         if (newBackend == sk_app::Window::kVulkan_BackendType) {
             newBackend = (sk_app::Window::BackendType)((newBackend + 1) %
                                                        sk_app::Window::kBackendTypeCount);
-        } else if (fBackendType == sk_app::Window::kVulkan_BackendType) {
+        } else if (fBackendType1 == sk_app::Window::kVulkan_BackendType) {
             newBackend = sk_app::Window::kVulkan_BackendType;
         }
 #endif
@@ -792,7 +799,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     }
     fImGuiGamutPaint.setColor(SK_ColorWHITE);
 
-    fWindow->attach(backend_type_for_window(fBackendType));
+    fWindow->attach(backend_type_for_window(fBackendType1));
     this->setCurrentSlide(this->startupSlide());
 }
 
@@ -1197,7 +1204,7 @@ void Viewer::updateTitle() {
     }
 
     title.append(" [");
-    title.append(get_backend_string(fBackendType));
+    title.append(get_backend_string(fBackendType1));
     int msaa = fWindow->sampleCount();
     if (msaa > 1) {
         title.appendf(" MSAA: %i", msaa);
@@ -1360,7 +1367,7 @@ SkMatrix Viewer::computeMatrix() {
 void Viewer::setBackend(sk_app::Window::BackendType backendType) {
     fPersistentCache.reset();
     fCachedShaders.clear();
-    fBackendType = backendType;
+    fBackendType1 = backendType;
 
     // The active context is going away in 'detach'
     for(auto& slide : fSlides) {
@@ -1391,7 +1398,7 @@ void Viewer::setBackend(sk_app::Window::BackendType backendType) {
     fWindow->setRequestedDisplayParams(params, false);
 #endif
 
-    fWindow->attach(backend_type_for_window(fBackendType));
+    fWindow->attach(backend_type_for_window(fBackendType1));
 }
 
 void Viewer::setColorMode(ColorMode colorMode) {
@@ -1597,6 +1604,8 @@ void Viewer::drawSlide(SkSurface* surface) {
         return;
     }
 
+    SkDebugf("+++++++++++++++++++  Viewer::drawSlide %p\n", surface->recordingContext());
+
     SkAutoCanvasRestore autorestore(surface->getCanvas(), false);
 
     // By default, we render directly into the window's surface/canvas
@@ -1642,7 +1651,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         slideCanvas->getProps(&props);
 
         SkImageInfo info = SkImageInfo::Make(w, h, colorType, kPremul_SkAlphaType, colorSpace);
-        return Window::kRaster_BackendType == this->fBackendType
+        return Window::kRaster_BackendType == this->fBackendType1
                        ? SkSurfaces::Raster(info, &props)
                        : slideCanvas->makeSurface(info, &props);
     };
@@ -1656,10 +1665,11 @@ void Viewer::drawSlide(SkSurface* surface) {
     if (kPerspective_Fake == fPerspectiveMode ||
         fShowZoomWindow ||
         fShowHistogramWindow ||
-        Window::kRaster_BackendType == fBackendType ||
+        Window::kRaster_BackendType == fBackendType1 ||
         colorSpace != nullptr ||
         FLAGS_offscreen) {
 
+        SkDebugf("----------- offScreen\n");
         offscreenSurface = make_surface(fWindow->width(), fWindow->height());
         slideSurface = offscreenSurface.get();
         slideCanvas = offscreenSurface->getCanvas();
@@ -1762,6 +1772,8 @@ void Viewer::onBackendCreated() {
 }
 
 void Viewer::onPaint(SkSurface* surface) {
+
+    SkDebugf("------------ onPaint\n");
     this->drawSlide(surface);
 
     fCommands.drawHelp(surface->getCanvas());
@@ -2014,7 +2026,7 @@ void Viewer::drawImGui() {
         if (ImGui::Begin("Tools", &fShowImGuiDebugWindow,
                          ImGuiWindowFlags_AlwaysVerticalScrollbar)) {
             if (ImGui::CollapsingHeader("Backend")) {
-                int newBackend = static_cast<int>(fBackendType);
+                int newBackend = static_cast<int>(fBackendType1);
                 ImGui::RadioButton("Raster", &newBackend, sk_app::Window::kRaster_BackendType);
                 ImGui::SameLine();
                 ImGui::RadioButton("OpenGL", &newBackend, sk_app::Window::kNativeGL_BackendType);
@@ -2048,7 +2060,7 @@ void Viewer::drawImGui() {
                 ImGui::SameLine();
                 ImGui::RadioButton("Direct3D", &newBackend, sk_app::Window::kDirect3D_BackendType);
 #endif
-                if (newBackend != fBackendType) {
+                if (newBackend != fBackendType1) {
                     fDeferredActions.push_back([=]() {
                         this->setBackend(static_cast<sk_app::Window::BackendType>(newBackend));
                     });
@@ -2067,7 +2079,7 @@ void Viewer::drawImGui() {
 
                     // Determine the context's max sample count for MSAA radio buttons.
                     int sampleCount = fWindow->sampleCount();
-                    int maxMSAA = (fBackendType != sk_app::Window::kRaster_BackendType) ?
+                    int maxMSAA = (fBackendType1!= sk_app::Window::kRaster_BackendType) ?
                             ctx->maxSurfaceSampleCountForColorType(kRGBA_8888_SkColorType) :
                             1;
 
@@ -2124,6 +2136,19 @@ void Viewer::drawImGui() {
                     SkPixelGeometry pixelGeometry = params.fSurfaceProps.pixelGeometry();
                     params.fSurfaceProps = SkSurfaceProps(flags, pixelGeometry);
                     displayParamsChanged = true;
+                }
+
+                if (ImGui::TreeNode("Protected")) {
+                    bool wasProtected = params.fCreateProtectedNativeBackend;
+                    if (ImGui::RadioButton("Unprotected", !wasProtected)) {
+                        params.fCreateProtectedNativeBackend = false;
+                        displayParamsChanged = true;
+                    }
+                    if (ImGui::RadioButton("Protected", wasProtected)) {
+                        params.fCreateProtectedNativeBackend = true;
+                        displayParamsChanged = true;
+                    }
+                    ImGui::TreePop();
                 }
 
                 if (ImGui::TreeNode("Path Renderers")) {
@@ -2594,7 +2619,7 @@ void Viewer::drawImGui() {
                             GrContextOptions::ShaderCacheStrategy::kSkSL;
 
 #if defined(SK_VULKAN)
-                const bool isVulkan = fBackendType == sk_app::Window::kVulkan_BackendType;
+                const bool isVulkan = fBackendType1 == sk_app::Window::kVulkan_BackendType;
 #else
                 const bool isVulkan = false;
 #endif
@@ -3043,12 +3068,28 @@ void Viewer::updateUIState() {
         });
 
     // Backend state
-    WriteStateObject(writer, kBackendStateName, get_backend_string(fBackendType),
+    WriteStateObject(writer, kBackendStateName, get_backend_string(fBackendType1),
         [](SkJSONWriter& writer) {
             for (int i = 0; i < sk_app::Window::kBackendTypeCount; ++i) {
                 auto backendType = static_cast<sk_app::Window::BackendType>(i);
                 writer.appendCString(get_backend_string(backendType));
             }
+        });
+
+    // Protected state
+    WriteStateObject(writer, kProtectedStateName, "Unprotected",
+        [this](SkJSONWriter& writer) {
+            writer.appendCString("Unprotected");
+#ifdef SK_GL
+            if (sk_app::Window::kNativeGL_BackendType == fBackendType1) {
+                writer.appendCString("Protected");
+            }
+#endif
+#ifdef SK_VULKAN
+            if (sk_app::Window::kVulkan_BackendType == fBackendType1) {
+                writer.appendCString("Protected");
+            }
+#endif
         });
 
     // MSAA state
@@ -3057,7 +3098,7 @@ void Viewer::updateUIState() {
         [this](SkJSONWriter& writer) {
             writer.appendS32(0);
 
-            if (sk_app::Window::kRaster_BackendType == fBackendType) {
+            if (sk_app::Window::kRaster_BackendType == fBackendType1) {
                 return;
             }
 
@@ -3132,17 +3173,30 @@ void Viewer::onUIStateChanged(const SkString& stateName, const SkString& stateVa
         for (int i = 0; i < sk_app::Window::kBackendTypeCount; i++) {
             auto backendType = static_cast<sk_app::Window::BackendType>(i);
             if (stateValue.equals(get_backend_string(backendType))) {
-                if (fBackendType != i) {
-                    fBackendType = backendType;
-                    for(auto& slide : fSlides) {
+                if (fBackendType1 != i) {
+                    fBackendType1 = backendType;
+                    for (auto& slide: fSlides) {
                         slide->gpuTeardown();
                     }
                     fWindow->detach();
-                    fWindow->attach(backend_type_for_window(fBackendType));
+                    fWindow->attach(backend_type_for_window(fBackendType1));
                 }
                 break;
             }
         }
+    } else if (stateName.equals(kProtectedStateName)) {
+        if (stateValue.equals("Unprotected")) {
+            fProtected = false;
+        } else {
+            SkASSERT(stateValue.equals("Protected"));
+            fProtected = true;
+        }
+
+        for (auto& slide: fSlides) {
+            slide->gpuTeardown();
+        }
+        fWindow->detach();
+        fWindow->attach(backend_type_for_window(fBackendType1));
     } else if (stateName.equals(kMSAAStateName)) {
         DisplayParams params = fWindow->getRequestedDisplayParams();
         int sampleCount = atoi(stateValue.c_str());
