@@ -459,6 +459,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "385d5fb3_c8ef6ee8",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-03T12:23:05Z",
+      "side": 1,
+      "message": "Seems right to me.",
+      "parentUuid": "0c8b01aa_fc1188a1",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 31
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a94633d5_f73b692d",
@@ -520,6 +544,30 @@
       "side": 1,
       "message": "IIUC, that\u0027s not available to skottie_bindings.cpp unless we move the function to WasmCommon or some sort of top level util file. If you mean that I can copy the function logic for here, I can change this cast (and others in skottie_bindings), or copy paste the function.",
       "parentUuid": "a94633d5_f73b692d",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 29
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26884894_47a48e25",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-03T12:23:05Z",
+      "side": 1,
+      "message": "You can forward declare the function in WasmCommon, then its fine if the implementation lives in canvaskit_bindings.cpp",
+      "parentUuid": "71201ddc_63b4c94d",
       "range": {
         "startLine": 436,
         "startChar": 19,
