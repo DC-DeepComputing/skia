@@ -51,6 +51,24 @@
       "parentUuid": "e2c8f6d7_b84ed150",
       "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e04b425_6ef92ae6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-03T14:28:26Z",
+      "side": 1,
+      "message": "Yeah that is what I meant by 2) but what I wrote wasn\u0027t clear. Have the stub\u0027s readPixel call call memset.",
+      "parentUuid": "f5e9ded0_f0f97a3c",
+      "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
