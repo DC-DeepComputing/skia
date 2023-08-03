@@ -186,7 +186,7 @@ static DEFINE_bool(list, false, "List samples?");
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", GL_BACKEND_STR, VK_BACKEND_STR, MTL_BACKEND_STR, D3D_BACKEND_STR, DAWN_BACKEND_STR)
 
-static DEFINE_string2(backend, b, "sw", "Backend to use. Allowed values are " BACKENDS_STR ".");
+static DEFINE_string2(backend, b, "gl", "Backend to use. Allowed values are " BACKENDS_STR ".");
 
 static DEFINE_int(msaa, 1, "Number of subpixel samples. 0 for no HW antialiasing.");
 static DEFINE_bool(dmsaa, false, "Use internal MSAA to render to non-MSAA surfaces?");
@@ -195,7 +195,7 @@ static DEFINE_string(bisect, "", "Path to a .skp or .svg file to bisect.");
 
 static DEFINE_string2(file, f, "", "Open a single file for viewing.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "Protected2",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -231,7 +231,7 @@ static DEFINE_bool(redraw, false, "Toggle continuous redraw.");
 static DEFINE_bool(offscreen, false, "Force rendering to an offscreen surface.");
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
-static DEFINE_bool(createProtected, false, "Create a protected native backend (e.g., in EGL).");
+static DEFINE_bool(createProtected, true, "Create a protected native backend (e.g., in EGL).");
 
 #ifndef SK_GL
 static_assert(false, "viewer requires GL backend for raster.")
@@ -460,6 +460,8 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
                 displayParams.fSurfaceProps.pixelGeometry());
     }
     displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
+
+    SkDebugf("In Viewer ctor - protected %d\n", FLAGS_createProtected);
 
     fWindow->setRequestedDisplayParams(displayParams);
     fDisplay = fWindow->getRequestedDisplayParams();
@@ -1600,6 +1602,8 @@ void Viewer::drawSlide(SkSurface* surface) {
         return;
     }
 
+    SkDebugf("+++++++++++++++++++  Viewer::drawSlide %p\n", surface->recordingContext());
+
     SkAutoCanvasRestore autorestore(surface->getCanvas(), false);
 
     // By default, we render directly into the window's surface/canvas
@@ -1663,6 +1667,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         colorSpace != nullptr ||
         FLAGS_offscreen) {
 
+        SkDebugf("----------- offScreen\n");
         offscreenSurface = make_surface(fWindow->width(), fWindow->height());
         slideSurface = offscreenSurface.get();
         slideCanvas = offscreenSurface->getCanvas();
@@ -1765,6 +1770,8 @@ void Viewer::onBackendCreated() {
 }
 
 void Viewer::onPaint(SkSurface* surface) {
+
+    SkDebugf("------------ onPaint\n");
     this->drawSlide(surface);
 
     fCommands.drawHelp(surface->getCanvas());
@@ -2070,7 +2077,7 @@ void Viewer::drawImGui() {
 
                     // Determine the context's max sample count for MSAA radio buttons.
                     int sampleCount = fWindow->sampleCount();
-                    int maxMSAA = (fBackendType != sk_app::Window::kRaster_BackendType) ?
+                    int maxMSAA = (fBackendType!= sk_app::Window::kRaster_BackendType) ?
                             ctx->maxSurfaceSampleCountForColorType(kRGBA_8888_SkColorType) :
                             1;
 
@@ -3137,7 +3144,7 @@ void Viewer::onUIStateChanged(const SkString& stateName, const SkString& stateVa
             if (stateValue.equals(get_backend_string(backendType))) {
                 if (fBackendType != i) {
                     fBackendType = backendType;
-                    for(auto& slide : fSlides) {
+                    for (auto& slide: fSlides) {
                         slide->gpuTeardown();
                     }
                     fWindow->detach();
