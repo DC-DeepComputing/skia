@@ -16,16 +16,17 @@ namespace skwindow {
 
 struct DisplayParams {
     DisplayParams()
-        : fColorType(kN32_SkColorType)
+        : fColorType1(kN32_SkColorType)
         , fColorSpace(nullptr)
         , fMSAASampleCount(1)
         , fSurfaceProps(0, kRGB_H_SkPixelGeometry)
         , fDisableVsync(false)
         , fDelayDrawableAcquisition(false)
         , fEnableBinaryArchive(false)
+        , fCreateProtectedNativeBackend(false)
     {}
 
-    SkColorType         fColorType;
+    SkColorType         fColorType1;
     sk_sp<SkColorSpace> fColorSpace;
     int                 fMSAASampleCount;
     GrContextOptions    fGrContextOptions;
@@ -33,6 +34,7 @@ struct DisplayParams {
     bool                fDisableVsync;
     bool                fDelayDrawableAcquisition;
     bool                fEnableBinaryArchive;
+    bool                fCreateProtectedNativeBackend = false;
 };
 
 }  // namespace skwindow

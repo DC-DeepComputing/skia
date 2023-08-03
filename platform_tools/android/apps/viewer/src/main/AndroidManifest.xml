@@ -6,12 +6,13 @@
           android:versionName="1.0">
 
   <application
+      android:hardwareAccelerated="true"
       android:allowBackup="false"
       android:theme="@android:style/Theme.Holo.Light"
       android:name=".ViewerApplication"
       android:label="Viewer">
 
-    <activity android:name=".ViewerActivity">
+    <activity android:name=".ViewerActivity" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

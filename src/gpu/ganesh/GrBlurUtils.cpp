@@ -275,6 +275,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
     // the same. We should offset our filter within the render target and expand the size as needed
     // to guarantee at least 1px of padding on all sides.
     auto approxSize = GrResourceProvider::MakeApprox(maskRect.size());
+    SkDebugf("$$$$$ create_mask_GPU!!\n");
     auto sdc = skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(rContext,
                                                                    GrColorType::kAlpha_8,
                                                                    nullptr,
@@ -963,6 +964,7 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
     // regardless of the final dst surface.
     SkSurfaceProps defaultSurfaceProps;
 
+    SkDebugf("$$$$$$$ fillin_view_on_gpu!!\n");
     std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> sdc =
             skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(dContext,
                                                                 GrColorType::kAlpha_8,
@@ -2096,7 +2098,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
             dstBounds.size(),
             SkSurfaceProps(),
             /*label=*/"SurfaceDrawContext_ConvolveGaussian2d",
-            1,
+            /* sampleCnt= */ 1,
             GrMipmapped::kNo,
             srcView.proxy()->isProtected(),
             srcView.origin());
@@ -2171,7 +2173,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian(
                                                     dstBounds.size(),
                                                     SkSurfaceProps(),
                                                     /*label=*/"SurfaceDrawContext_ConvolveGaussian",
-                                                    1,
+                                                    /* sampleCnt= */ 1,
                                                     GrMipmapped::kNo,
                                                     srcView.proxy()->isProtected(),
                                                     srcView.origin());
@@ -2346,7 +2348,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> reexpand(
                                                           dstSize,
                                                           SkSurfaceProps(),
                                                           /*label=*/"SurfaceDrawContext_Reexpand",
-                                                          1,
+                                                          /* sampleCnt= */ 1,
                                                           GrMipmapped::kNo,
                                                           srcView.proxy()->isProtected(),
                                                           srcView.origin());
@@ -2576,7 +2578,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
                                                         dstBounds.size(),
                                                         SkSurfaceProps(),
                                                         /*label=*/"SurfaceDrawContext_GaussianBlur",
-                                                        1,
+                                                        /* sampleCnt= */ 1,
                                                         GrMipmapped::kNo,
                                                         srcView.proxy()->isProtected(),
                                                         srcView.origin());
@@ -2683,7 +2685,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
             {rescaledSize.width() + 2 * padX, rescaledSize.height() + 2 * padY},
             SkSurfaceProps(),
             /*label=*/"RescaledSurfaceDrawContext",
-            1,
+            /* sampleCnt= */ 1,
             GrMipmapped::kNo,
             srcCtx->asSurfaceProxy()->isProtected(),
             srcCtx->origin());
@@ -2793,5 +2795,3 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
 }
 
 }  // namespace GrBlurUtils
-
-
