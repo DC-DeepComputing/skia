@@ -33,6 +33,24 @@
       "message": "I don\u0027t think this is the right fix here. This seems more like an issue with the stub interface. I feel like there are two options to do there. 1) have the readPixels call mark the dst pointers memory with __msan_unpoison. Now this is okay but also assumes you\u0027re not actually trying to use the results of the read pixels in the test. 2) just have the readPixels call memset to 0.\n\nI don\u0027t think we want to change the normal case just to handle this MSAN issue. Skia\u0027s view of the world is that SkImages have initialized data in them. So doing the readPixels here should not be filling the dst with uninitialized data (assuming the client didn\u0027t give us unitialized things to begin with). To be honest, I also question whether the zeroing int the flipped case is also the right thing to do.",
       "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5e9ded0_f0f97a3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-03T14:26:38Z",
+      "side": 1,
+      "message": "Is it possible to change the stub interface to initialize the data to 0?",
+      "parentUuid": "e2c8f6d7_b84ed150",
+      "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
