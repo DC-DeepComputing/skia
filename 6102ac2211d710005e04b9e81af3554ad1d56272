@@ -16,6 +16,24 @@
       "message": "WDYT? Might be more idiomatic to just say:\n```return const_cast\u003cuint8_t*\u003e(this-\u003eSkMask::getAddr1(x, y));```",
       "revId": "6102ac2211d710005e04b9e81af3554ad1d56272",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caf30870_ca07ef4e",
+        "filename": "src/core/SkMask.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-03T20:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2827824a_2b3d8152",
+      "revId": "6102ac2211d710005e04b9e81af3554ad1d56272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
