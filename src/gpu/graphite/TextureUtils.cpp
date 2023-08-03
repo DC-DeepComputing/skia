@@ -179,6 +179,27 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
     // make a Surface matching dstInfo to rescale into
     // TODO: use fallback colortype if necessary
     SkSurfaceProps surfaceProps = {};
+    //*** why does this fail?
+    // can't create device
+    //  - can't create textureproxy
+    //     - getDefaultSampledTextureInfo is invalid
+    //        - colortype doesn't have associated native format
+    //     - dimensions are weird
+    //  - alphatype != premul
+    //  - can't create drawcontext
+    //     - only if can't create textureproxy
+    // can't instantiate proxy
+    //     - resourceProvider can't find or create one
+    //        - can't create one
+    //           - dimensions are weird
+    //           - usage is shaderRead and TextureInfo isn't textureable
+    //           - usage is renderTarget and TextureInfo isn't renderable or is depth-stencil
+    //           - usage is shaderWrite and TextureInfo isn't storage
+    //           - device fails to create texture for some reason
+    //
+    // So... need colortype to be associated with valid and renderable TextureInfo
+
+
     sk_sp<SkSurface> dst = SkSurfaces::RenderTarget(recorder,
                                                     dstInfo,
                                                     Mipmapped::kNo,
