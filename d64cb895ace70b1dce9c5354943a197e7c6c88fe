@@ -69,6 +69,24 @@
       "parentUuid": "f5e9ded0_f0f97a3c",
       "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f6b72e1_710607f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-03T14:36:55Z",
+      "side": 1,
+      "message": "No, my bad. I skipped over the first bit of what you wrote and thought you were talking about SurfaceContext::readPixels. In any case I agree that this is not the right fix.",
+      "parentUuid": "0e04b425_6ef92ae6",
+      "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
