@@ -46,6 +46,9 @@ namespace DM {
 class CodecSrc;
 } // namespace DM
 
+// Forward declaration to make PNGCodecGM a friend class of SkCodec.
+class PNGCodecGM;  // IWYU pragma: keep
+
 /**
  *  Abstraction layer directly on top of an image codec.
  */
@@ -1008,6 +1011,7 @@ private:
     virtual SkSampler* getSampler(bool /*createIfNecessary*/) { return nullptr; }
 
     friend class DM::CodecSrc;  // for fillIncompleteImage
+    friend class PNGCodecGM;    // for fillIncompleteImage
     friend class SkSampledCodec;
     friend class SkIcoCodec;
     friend class SkAndroidCodec; // for fEncodedInfo
