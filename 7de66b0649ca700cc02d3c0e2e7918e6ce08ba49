@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d23ef12_21ddd2bc",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2018,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-03T17:27:34Z",
+      "side": 1,
+      "message": "Maybe this could get turned into a helper since it appears in a few places?",
+      "range": {
+        "startLine": 2015,
+        "startChar": 19,
+        "endLine": 2018,
+        "endChar": 42
+      },
+      "revId": "7de66b0649ca700cc02d3c0e2e7918e6ce08ba49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
