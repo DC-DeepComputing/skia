@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b76fce2_5bba8128",
+        "filename": "gm/gm.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-03T16:35:01Z",
+      "side": 1,
+      "message": "I prefer using std::function notation anyway because it is more explicit.",
+      "range": {
+        "startLine": 223,
+        "startChar": 27,
+        "endLine": 223,
+        "endChar": 35
+      },
+      "revId": "c211433cb0f43910aaf8223ebe3ba71d67579fba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
