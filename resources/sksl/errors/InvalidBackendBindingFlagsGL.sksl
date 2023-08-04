@@ -1,13 +1,13 @@
 // Valid declarations:
-layout(gl, binding=0) uniform ubo1 { float a; };   // valid
-layout(gl, binding=0) buffer ssbo { float b; };    // valid
-layout(gl, binding=0) uniform texture2D texture1;  // valid
-layout(gl, binding=0) uniform sampler2D sampler1;  // valid
+layout(binding=0) uniform ubo1 { float a; };   // valid
+layout(binding=0) buffer ssbo { float b; };    // valid
+layout(binding=0) uniform texture2D texture1;  // valid
+layout(binding=0) uniform sampler2D sampler1;  // valid
 
 // Invalid declarations:
-layout(gl, texture=0) uniform texture2D texture2;             // invalid
-layout(gl, texture=0, sampler=0) uniform sampler2D sampler2;  // invalid
-layout(gl, set=0, binding=0) uniform ubo2 { float c; };       // invalid
+layout(texture=0) uniform texture2D texture2;             // invalid
+layout(texture=0, sampler=0) uniform sampler2D sampler2;  // invalid
+layout(set=0, binding=0) uniform ubo2 { float c; };       // invalid
 
 /*%%*
 layout qualifier 'texture' is not permitted here
