@@ -16,6 +16,52 @@
       "message": "I don\u0027t know -- it feels a little odd for the lower-level rescale code to be making decisions depending on whether it\u0027s straight rescale or for mipmaps. What do you think about breaking it up into two local routines? The first would handle the linear gamma. The second would handle the inner loop code that decimates and does the draw. Then in the mipmap code you\u0027d loop over that, and afterwards do the copy to the miplevel.",
       "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "820c7d54_be779d51",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-04T18:47:31Z",
+      "side": 1,
+      "message": "We now have `skgpu::graphite::Flush(surface)` that will do all of this for us.",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 47
+      },
+      "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b8241b6_f7dbe859",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-04T18:47:31Z",
+      "side": 1,
+      "message": "When we pass in kLinear for the rescale gamma, `progressive_rescale` converts from the non-linear input image to a linear full-sized image, and then all the downsampling except the last are rendered from linear-\u003elinear. The final downscale is then linear to non-linear.\n\nI agree with Jim that the mipmaps should be calculated in the linear gamma, but if `texture` is non-linear in its base level, we need to re-convert the linear gamma images to non-linear before issuing the copy tasks. It may be best to keep it as kSrc for now just so the levels are consistent, and is easier than adding the extra logic. The other alternative would be to do 4 NN samples in a shader, convert to linear, bilerp those, and then convert back. This avoids the extra intermediate surfaces but is a new shader we\u0027d have to write.",
+      "range": {
+        "startLine": 347,
+        "startChar": 74,
+        "endLine": 347,
+        "endChar": 81
+      },
+      "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
