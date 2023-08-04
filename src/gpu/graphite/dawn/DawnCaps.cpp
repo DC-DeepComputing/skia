@@ -258,6 +258,8 @@ void DawnCaps::initCaps(const wgpu::Device& device) {
 
     fDrawBufferCanBeMapped = false;
 
+    fComputeSupport = true;
+
     // TODO: support clamp to border.
     fClampToBorderSupport = false;
 
