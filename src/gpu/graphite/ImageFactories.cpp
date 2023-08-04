@@ -19,14 +19,17 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/YUVABackendTextures.h"
 #include "include/private/base/SkMutex.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Image_YUVA_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
@@ -231,6 +234,17 @@ static sk_sp<SkImage> generate_picture_texture(skgpu::graphite::Recorder* record
 
     surface->getCanvas()->clear(SkColors::kTransparent);
     surface->getCanvas()->drawPicture(img->picture(), img->matrix(), img->paint());
+
+    if (requiredProps.fMipmapped) {
+        static_cast<Device*>(SkCanvasPriv::TopDevice(surface->getCanvas()))
+                ->flushPendingWorkToRecorder();
+        sk_sp<TextureProxy> texture =
+                static_cast<Surface*>(surface.get())->readSurfaceView().refProxy();
+        if (!GenerateMipmaps(recorder, std::move(texture), info.colorInfo())) {
+            SKGPU_LOG_W("Failed to create mipmaps for texture from SkPicture");
+        }
+    }
+
     return SkSurfaces::AsImage(surface);
 }
 
@@ -245,11 +259,6 @@ static sk_sp<SkImage> make_texture_image_from_lazy(skgpu::graphite::Recorder* re
                                                    SkImage::RequiredProperties requiredProps) {
     // 1. Ask the generator to natively create one.
     {
-        // Disable mipmaps here bc Graphite doesn't currently support mipmap regeneration
-        // In this case, we would allocate the mipmaps and fill in the base layer but the mipmap
-        // levels would never be filled out - yielding incorrect draws. Please see: b/238754357.
-        requiredProps.fMipmapped = false;
-
         if (img->type() == SkImage_Base::Type::kLazyPicture) {
             sk_sp<SkImage> newImage =
                     generate_picture_texture(recorder,
