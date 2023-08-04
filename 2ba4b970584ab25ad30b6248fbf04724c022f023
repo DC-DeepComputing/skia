@@ -33,6 +33,24 @@
       "message": "Is the choice of RescaleGamma critical here?",
       "revId": "2ba4b970584ab25ad30b6248fbf04724c022f023",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b347bc00_8ddadaf6",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-04T14:19:35Z",
+      "side": 1,
+      "message": "Still need to look at the rest of this, but I think you want linear here.",
+      "parentUuid": "e8fecc07_8700c4c3",
+      "revId": "2ba4b970584ab25ad30b6248fbf04724c022f023",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
