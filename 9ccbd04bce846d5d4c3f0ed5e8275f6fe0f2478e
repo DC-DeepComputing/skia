@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cd222a8_96087fa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-04T21:58:29Z",
+      "side": 1,
+      "message": "I\u0027m not opposed to this but I\u0027m sure how this would look exactly. Are you thinking the second routine would return a list of textures to copy from, and that\u0027s what we\u0027d loop over when copying to mip levels?",
+      "parentUuid": "d2548751_fe227e4d",
+      "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "820c7d54_be779d51",
         "filename": "src/gpu/graphite/ImageFactories.cpp",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2023-08-04T18:47:31Z",
       "side": 1,
       "message": "We now have `skgpu::graphite::Flush(surface)` that will do all of this for us.",
+      "range": {
+        "startLine": 239,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 47
+      },
+      "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd841c8_9646cc2d",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-04T21:58:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "820c7d54_be779d51",
       "range": {
         "startLine": 239,
         "startChar": 8,
@@ -54,6 +96,30 @@
       "writtenOn": "2023-08-04T18:47:31Z",
       "side": 1,
       "message": "When we pass in kLinear for the rescale gamma, `progressive_rescale` converts from the non-linear input image to a linear full-sized image, and then all the downsampling except the last are rendered from linear-\u003elinear. The final downscale is then linear to non-linear.\n\nI agree with Jim that the mipmaps should be calculated in the linear gamma, but if `texture` is non-linear in its base level, we need to re-convert the linear gamma images to non-linear before issuing the copy tasks. It may be best to keep it as kSrc for now just so the levels are consistent, and is easier than adding the extra logic. The other alternative would be to do 4 NN samples in a shader, convert to linear, bilerp those, and then convert back. This avoids the extra intermediate surfaces but is a new shader we\u0027d have to write.",
+      "range": {
+        "startLine": 347,
+        "startChar": 74,
+        "endLine": 347,
+        "endChar": 81
+      },
+      "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b8c19f6_07cd6da3",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-04T21:58:29Z",
+      "side": 1,
+      "message": "Keeping it as kSrc for now. Seems like an easy follow-up to do the rescaling in linear gamma. Avoiding intermediate surfaces would be a little more work I think but maybe worth looking into if we anticipate this being a common code path long-term.",
+      "parentUuid": "2b8241b6_f7dbe859",
       "range": {
         "startLine": 347,
         "startChar": 74,
