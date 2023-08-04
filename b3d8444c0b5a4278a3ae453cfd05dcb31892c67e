@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3165c08d_d1f763d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-04T17:21:07Z",
+      "side": 1,
+      "message": "PTAL. Including James since this may relate to the mipmapping code as well. In the mipmapping case we probably don\u0027t want to do this, but that can be caught before starting the mipmap generation.",
+      "revId": "b3d8444c0b5a4278a3ae453cfd05dcb31892c67e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
