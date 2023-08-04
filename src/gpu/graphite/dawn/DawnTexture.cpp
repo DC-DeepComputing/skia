@@ -122,7 +122,17 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
     if (!texture) {
         return {};
     }
-    auto textureView = texture.CreateView();
+
+    DawnTextureInfo dawnInfo;
+    info.getDawnTextureInfo(&dawnInfo);
+    wgpu::TextureViewDescriptor viewDesc = {};
+    if (dawnInfo.fUsage & wgpu::TextureUsage::RenderAttachment &&
+        info.fMipmapped == Mipmapped::kYes) {
+        viewDesc.baseMipLevel = 0;
+        viewDesc.mipLevelCount = 1;
+    }
+
+    auto textureView = texture.CreateView(&viewDesc);
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
                                           info,
