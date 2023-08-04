@@ -289,7 +289,6 @@ skia_filegroup(
         "errors/InvalidAssignmentPipelineInputs.sksl",
         "errors/InvalidAtomicDeclarations.compute",
         "errors/InvalidAtomicOperations.compute",
-        "errors/InvalidBackendBindingFlagsGL.sksl",
         "errors/InvalidBackendBindingFlagsMetal.sksl",
         "errors/InvalidBackendBindingFlagsSPIRV.sksl",
         "errors/InvalidBackendBindingFlagsWGSL.sksl",
@@ -595,6 +594,7 @@ skia_filegroup(
 skia_filegroup(
     name = "sksl_metal_tests",
     srcs = [
+        "errors/ArrayUnspecifiedDimensions.sksl",
         "metal/CastHalf4ToMat2x2.sksl",
         "metal/CastMat2x2ToMat3x3.sksl",
         "metal/CastMat2x3ToMat4x4.sksl",
