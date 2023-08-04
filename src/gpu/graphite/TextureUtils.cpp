@@ -12,6 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkMipmap.h"
 
 #include "include/gpu/graphite/Context.h"
@@ -23,10 +24,12 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/CopyTask.h"
+#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/UploadTask.h"
@@ -170,6 +173,8 @@ size_t ComputeSize(SkISize dimensions,
     return finalSize;
 }
 
+namespace {
+
 sk_sp<SkSurface> make_surface_with_fallback(Recorder* recorder,
                                             const SkImageInfo& info,
                                             Mipmapped mipmapped,
@@ -182,36 +187,20 @@ sk_sp<SkSurface> make_surface_with_fallback(Recorder* recorder,
     return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, surfaceProps);
 }
 
-sk_sp<SkImage> RescaleImage(Recorder* recorder,
-                            const SkImage* srcImage,
-                            SkIRect srcIRect,
-                            const SkImageInfo& dstInfo,
-                            SkImage::RescaleGamma rescaleGamma,
-                            SkImage::RescaleMode rescaleMode) {
-    // make a Surface matching dstInfo to rescale into
-    SkSurfaceProps surfaceProps = {};
-    sk_sp<SkSurface> dst = make_surface_with_fallback(recorder,
-                                                      dstInfo,
-                                                      Mipmapped::kNo,
-                                                      &surfaceProps);
-    if (!dst) {
-        return nullptr;
-    }
+bool progressive_rescale(Recorder* recorder,
+                         const TextureProxyView& srcView,
+                         const SkColorInfo& srcColorInfo,
+                         SkIRect srcIRect,
+                         SkISize finalSize,
+                         SkImage::RescaleGamma rescaleGamma,
+                         SkImage::RescaleMode rescaleMode,
+                         sk_sp<SkSurface> finalDst,
+                         sk_sp<TextureProxy> mipmapDst) {
+    SkASSERT(!mipmapDst || mipmapDst->mipmapped() == Mipmapped::kYes);
 
     SkRect srcRect = SkRect::Make(srcIRect);
-    SkRect dstRect = SkRect::Make(dstInfo.dimensions());
+    SkRect dstRect = SkRect::Make(finalSize);
 
-    // Get backing texture information for source Image.
-    // For now this needs to be texturable because we can't depend on copies to scale.
-    auto srcGraphiteImage = reinterpret_cast<const skgpu::graphite::Image*>(srcImage);
-
-    TextureProxyView imageView = srcGraphiteImage->textureProxyView();
-    if (!imageView.proxy()) {
-        // TODO: if not texturable, copy to a texturable format
-        return nullptr;
-    }
-
-    SkISize finalSize = SkISize::Make(dstRect.width(), dstRect.height());
     if (finalSize == srcIRect.size()) {
         rescaleGamma = Image::RescaleGamma::kSrc;
         rescaleMode = Image::RescaleMode::kNearest;
@@ -219,19 +208,17 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
 
     // Within a rescaling pass tempInput is read from and tempOutput is written to.
     // At the end of the pass tempOutput's texture is wrapped and assigned to tempInput.
-    const SkImageInfo& srcImageInfo = srcImage->imageInfo();
-    sk_sp<SkImage> tempInput(new Image(kNeedNewImageUniqueID,
-                                       imageView,
-                                       srcImageInfo.colorInfo()));
+    sk_sp<SkImage> tempInput(new Image(kNeedNewImageUniqueID, srcView, srcColorInfo));
     sk_sp<SkSurface> tempOutput;
 
     // Assume we should ignore the rescale linear request if the surface has no color space since
     // it's unclear how we'd linearize from an unknown color space.
+    SkSurfaceProps surfaceProps = {};
     if (rescaleGamma == Image::RescaleGamma::kLinear &&
-        srcImageInfo.colorSpace() &&
-        !srcImageInfo.colorSpace()->gammaIsLinear()) {
+        srcColorInfo.colorSpace() &&
+        !srcColorInfo.colorSpace()->gammaIsLinear()) {
         // Draw the src image into a new surface with linear gamma, and make that the new tempInput
-        sk_sp<SkColorSpace> linearGamma = srcImageInfo.colorSpace()->makeLinearGamma();
+        sk_sp<SkColorSpace> linearGamma = srcColorInfo.colorSpace()->makeLinearGamma();
         SkImageInfo gammaDstInfo = SkImageInfo::Make(srcIRect.size(),
                                                      tempInput->imageInfo().colorType(),
                                                      kPremul_SkAlphaType,
@@ -241,7 +228,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
                                                 Mipmapped::kNo,
                                                 &surfaceProps);
         if (!tempOutput) {
-            return nullptr;
+            return false;
         }
         SkCanvas* gammaDst = tempOutput->getCanvas();
         SkRect gammaDstRect = SkRect::Make(srcIRect.size());
@@ -255,6 +242,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
     }
 
     SkImageInfo outImageInfo = tempInput->imageInfo().makeAlphaType(kPremul_SkAlphaType);
+    int mipLevel = 1;
     do {
         SkISize nextDims = finalSize;
         if (rescaleMode != Image::RescaleMode::kNearest &&
@@ -273,8 +261,8 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
 
         SkCanvas* stepDst;
         SkRect stepDstRect;
-        if (nextDims == finalSize) {
-            stepDst = dst->getCanvas();
+        if (finalDst && nextDims == finalSize) {
+            stepDst = finalDst->getCanvas();
             stepDstRect = dstRect;
         } else {
             SkImageInfo nextInfo = outImageInfo.makeDimensions(nextDims);
@@ -283,7 +271,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
                                                     Mipmapped::kNo,
                                                     &surfaceProps);
             if (!tempOutput) {
-                return nullptr;
+                return false;
             }
             stepDst = tempOutput->getCanvas();
             stepDstRect = SkRect::Make(tempOutput->imageInfo().dimensions());
@@ -301,11 +289,91 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
         stepDst->drawImageRect(tempInput, srcRect, stepDstRect, samplingOptions, &paint,
                                SkCanvas::kStrict_SrcRectConstraint);
 
+        if (mipmapDst) {
+            // Make sure the draw finishes before copying the results.
+            static_cast<Device*>(SkCanvasPriv::TopDevice(stepDst))->flushPendingWorkToRecorder();
+            sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(
+                    static_cast<const Surface*>(tempOutput.get())->readSurfaceView().refProxy(),
+                    SkIRect::MakeSize(tempOutput->imageInfo().dimensions()),
+                    mipmapDst,
+                    {0, 0},
+                    mipLevel);
+            if (!copyTask) {
+                return false;
+            }
+
+            recorder->priv().add(std::move(copyTask));
+        }
+
         tempInput = SkSurfaces::AsImage(tempOutput);
         srcRect = SkRect::Make(nextDims);
+        ++mipLevel;
     } while (srcRect.width() != finalSize.width() || srcRect.height() != finalSize.height());
 
+    return true;
+}
+
+}  // anonymous namespace
+
+sk_sp<SkImage> RescaleImage(Recorder* recorder,
+                            const SkImage* srcImage,
+                            SkIRect srcIRect,
+                            const SkImageInfo& dstInfo,
+                            SkImage::RescaleGamma rescaleGamma,
+                            SkImage::RescaleMode rescaleMode) {
+    // Get backing texture information for source Image.
+    // For now this needs to be texturable because we can't depend on copies to scale.
+    auto srcGraphiteImage = reinterpret_cast<const skgpu::graphite::Image*>(srcImage);
+
+    TextureProxyView srcView = srcGraphiteImage->textureProxyView();
+    if (!srcView.proxy()) {
+        // TODO: if not texturable, copy to a texturable format
+        return nullptr;
+    }
+
+    const SkColorInfo& srcColorInfo = srcImage->imageInfo().colorInfo();
+    const SkISize finalSize = dstInfo.dimensions();
+
+    // make a Surface matching dstInfo to rescale into
+    SkSurfaceProps surfaceProps = {};
+    sk_sp<SkSurface> dst = make_surface_with_fallback(recorder,
+                                                      dstInfo,
+                                                      Mipmapped::kNo,
+                                                      &surfaceProps);
+    if (!dst) {
+        return nullptr;
+    }
+
+    if (!progressive_rescale(recorder,
+                             srcView,
+                             srcColorInfo,
+                             srcIRect,
+                             finalSize,
+                             rescaleGamma,
+                             rescaleMode,
+                             /*finalDst=*/dst,
+                             /*mipmapDst=*/nullptr)) {
+        return nullptr;
+    }
+
     return SkSurfaces::AsImage(dst);
+}
+
+bool GenerateMipmaps(Recorder* recorder,
+                     sk_sp<TextureProxy> texture,
+                     const SkColorInfo& colorInfo) {
+    constexpr SkISize finalSize = SkISize::Make(1, 1);
+    constexpr SkImage::RescaleGamma rescaleGamma = SkImage::RescaleGamma::kSrc;
+    constexpr Image::RescaleMode rescaleMode = Image::RescaleMode::kRepeatedLinear;
+    return progressive_rescale(recorder,
+                               TextureProxyView(texture),
+                               colorInfo,
+                               SkIRect::MakeSize(texture->dimensions()),
+                               finalSize,
+                               rescaleGamma,
+                               rescaleMode,
+                               /*finalDst=*/nullptr,
+                               /*mipmapDst=*/texture);
 }
 
 } // namespace skgpu::graphite
