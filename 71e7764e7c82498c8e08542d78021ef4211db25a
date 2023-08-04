@@ -39,6 +39,30 @@
       },
       "revId": "71e7764e7c82498c8e08542d78021ef4211db25a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d38f7ca_990c24ef",
+        "filename": "src/core/SkBitmapProcState_opts_hsw.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-04T17:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b775839_0d7d2cd7",
+      "range": {
+        "startLine": 14,
+        "startChar": 19,
+        "endLine": 14,
+        "endChar": 35
+      },
+      "revId": "71e7764e7c82498c8e08542d78021ef4211db25a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
