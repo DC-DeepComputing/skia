@@ -69,6 +69,8 @@ using SkUniqueFTFace = std::unique_ptr<FT_FaceRec, SkFunctionObject<FT_Done_Face
 using SkUniqueFTSize = std::unique_ptr<FT_SizeRec, SkFunctionObject<FT_Done_Size>>;
 }
 
+#define COMPILE_FOR_WASMBOX 0
+
 // SK_FREETYPE_MINIMUM_RUNTIME_VERSION 0x<major><minor><patch><flags>
 // Flag SK_FREETYPE_DLOPEN: also try dlopen to get newer features.
 #define SK_FREETYPE_DLOPEN (0x1)
@@ -137,6 +139,96 @@ extern "C" {
 }
 FT_MemoryRec_ gFTMemory = { nullptr, sk_ft_alloc, sk_ft_free, sk_ft_realloc };
 
+#if COMPILE_FOR_WASMBOX
+
+// Global flag that marks if wasmbox has been initiated in the current thread.
+// Note that
+int g_wasmbox_inited = 0;
+
+// A wrapper class for wasmbox "pointer"
+class FTObjectWB {
+    public:
+        FTObjectWB(w2c_libfreetype* wbinst)
+                : wbinst_(wbinst)
+                ,
+                // TODO(mjzhang): Figure out how to increase memory if this malloc fails.
+                pp_(w2c_libfreetype_malloc(wbinst, 4)) {
+            DCHECK(pp_);
+        }
+
+        u32 pp() {
+            DCHECK(pp_);
+            return pp_;
+        }
+        u32 p() {
+            DCHECK(pp_);
+            DCHECK(p_);
+            return p_;
+        }
+        ~FTObjectWB() {
+            if (pp_) w2c_libfreetype_free(wbinst_, pp_);
+        }
+
+    protected:
+        // pointer to a wasmbox instance.
+        w2c_libfreetype* wbinst_;
+
+        // a "double pointer": memory offset of a u32 in the sandbox storing the offset to the
+        // object. This variable is needed because in FreeType, the creation of many objects are
+        // done through a double pointer passed to an object-creating function, e.g.
+        // FT_New_Library().
+        const u32 pp_ = 0;
+
+        // "pointer": memory offset of the object in the sandbox.
+        u32 p_ = 0;
+
+        // Populate the "pointer" from the double "pointer".
+        // This function should be called only once in the lifetime of FTObjectWB
+        void populate_p() {
+            p_ = read_u32(wbinst_, pp_);
+            DCHECK(p_);
+        }
+};
+
+// Wrapper of a wasmboxed instance of FT_Library
+struct FTLibraryWB : public FTObjectWB {
+    public:
+        u32 create(u32 mem_p) {
+            u32 res = w2c_libfreetype_FT_New_Library(wbinst_, mem_p, pp_);
+            if (res)
+                LOG(ERROR) << "ERROR: Failed to init FreeType (Sandboxed)\n";
+            else
+                populate_p();
+            return res;
+        }
+
+        ~FTLibraryWB() {
+            if (p_) w2c_libfreetype_FT_Done_Library(wbinst_, p_);
+        }
+};
+
+// Wrapper of a wasmboxed instance of FT_Face
+struct FTFaceWB : public FTObjectWB {
+    public:
+        FTFaceWB(w2c_libfreetype* wbinst, u32 lib_p) : FTObjectWB(wbinst), lib_p_(lib_p) {}
+        u32 create(u32 args_p, u32 face_index) {
+            u32 res = w2c_libfreetype_FT_Open_Face(wbinst_, lib_p_, args_p, face_index, pp_);
+            if (res)
+                LOG(ERROR) << "ERROR: Failed to create FT_Face";
+            else
+                populate_p();
+            return res;
+        }
+        ~FTFaceWB() {
+            if (p_) w2c_libfreetype_FT_Done_Face(wbinst_, p_);
+        }
+
+    private:
+        // Memory offset to a FT_Library instance in the sandbox.
+        const u32 lib_p_;
+};
+#endif
+
 class FreeTypeLibrary : SkNoncopyable {
 public:
     FreeTypeLibrary() : fLibrary(nullptr) {
@@ -150,18 +242,54 @@ public:
         // Newer versions may still need this, so this test with side effects must come first.
         // The default has changed over time, so this doesn't mean the same thing to all users.
         FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+
+#if COMPILE_FOR_WASMBOX
+        if (!g_wasmbox_inited) {
+            wasm_rt_init();  // Initialize wasmbox if necessary.
+            g_wasmbox_inited = 1;
+        }
+
+        env.inst = &wbinst;
+        wasm2c_libfreetype_instantiate(&wbinst, &env, NULL);  // Create a wasmbox instance
+
+        fLibraryWB = std::make_unique<FTLibraryWB>(&wbinst);
+
+        u32 mem_p = w2c_libfreetype_FT_New_Memory(&wbinst);
+
+        if (fLibraryWB->create(mem_p)) {
+            printf("ERROR: Failed to init FreeType (Sandboxed)\n");
+            return;
+        }
+
+        w2c_libfreetype_FT_Add_Default_Modules(&wbinst, fLibraryWB->p());     // ft2_p);
+        w2c_libfreetype_FT_Set_Default_Properties(&wbinst, fLibraryWB->p());  // ft2_p);
+#endif
     }
     ~FreeTypeLibrary() {
         if (fLibrary) {
             FT_Done_Library(fLibrary);
         }
+#if COMPILE_FOR_WASMBOX
+        fLibraryWB.reset();
+        wasm2c_libfreetype_free(&wbinst);  // wasmbox instance must be freed after fLibraryWB
+#endif
     }
 
     FT_Library library() { return fLibrary; }
 
+#if COMPILE_FOR_WASMBOX
+    w2c_libfreetype* get_wbinst() { return &wbinst; }
+    FTLibraryWB* libraryWB() { return fLibraryWB.get(); }
+#endif
 private:
     FT_Library fLibrary;
 
+#if COMPILE_FOR_WASMBOX
+    w2c_libfreetype wbinst;
+    w2c_env env;
+
+    std::unique_ptr<FTLibraryWB> fLibraryWB;
+#endif
     // FT_Library_SetLcdFilterWeights 2.4.0
     // FT_LOAD_COLOR 2.5.0
     // FT_Pixel_Mode::FT_PIXEL_MODE_BGRA 2.5.0
