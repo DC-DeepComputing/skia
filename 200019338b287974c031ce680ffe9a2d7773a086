@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b5f627a_4bcafb72",
+        "filename": "resources/sksl/errors/LayoutInFunctions.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-04T21:51:59Z",
+      "side": 1,
+      "message": "When cleaning up tests, I was able to replace `gl` with `wgsl` in several places, as the tests were written before we had a flag for the WGSL backend and weren\u0027t updated when the flag was added.",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 8
+      },
+      "revId": "200019338b287974c031ce680ffe9a2d7773a086",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
