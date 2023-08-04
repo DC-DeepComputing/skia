@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75934abe_d43e5e5d",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-04T00:07:15Z",
+      "side": 1,
+      "message": "Chromium roll failing with `error: no member named \u0027hasTasks\u0027 in \u0027skgpu::graphite::TaskGraph\u0027` because ion `src/gpu/graphite/TaskGraph.h` it is behind `#ifdef GRAPHITE_TEST_UTILS`.",
+      "revId": "7c83e2f458d3bc7901eca1b7b62449c3dd97dfa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
