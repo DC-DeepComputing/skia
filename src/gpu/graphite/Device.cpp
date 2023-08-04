@@ -291,9 +291,9 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     if (!recorder) {
         return nullptr;
     }
-    if (colorInfo.alphaType() != kPremul_SkAlphaType) {
-        return nullptr;
-    }
+//    if (colorInfo.alphaType() != kPremul_SkAlphaType) {
+//        return nullptr;
+//    }
 
     sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), deviceSize, colorInfo, props);
     if (!dc) {
