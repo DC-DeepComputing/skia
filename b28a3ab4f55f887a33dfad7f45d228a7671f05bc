@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4ca3b8c_53bb8552",
+        "filename": "modules/canvaskit/externs.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-04T20:15:40Z",
+      "side": 1,
+      "message": "This needs _getColorSlot and getColorSlot and _setColorSlot",
+      "revId": "b28a3ab4f55f887a33dfad7f45d228a7671f05bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
