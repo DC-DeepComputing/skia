@@ -156,11 +156,4 @@ public:
     static void AllowJIT();
 };
 
-class SkAutoGraphics {
-public:
-    SkAutoGraphics() {
-        SkGraphics::Init();
-    }
-};
-
 #endif
