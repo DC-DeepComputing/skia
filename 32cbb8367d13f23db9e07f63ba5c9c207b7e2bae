@@ -22,6 +22,30 @@
       },
       "revId": "32cbb8367d13f23db9e07f63ba5c9c207b7e2bae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bee3dcf4_21288b89",
+        "filename": "src/opts/SkOpts_SetTarget.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-04T17:17:14Z",
+      "side": 1,
+      "message": "Acknowledged. Yeah, if this header (SetTarget) ends up included in ANY other header, things are likely to break spectacularly. 😊",
+      "parentUuid": "9bbc4d8c_d68ce7d7",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 16
+      },
+      "revId": "32cbb8367d13f23db9e07f63ba5c9c207b7e2bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

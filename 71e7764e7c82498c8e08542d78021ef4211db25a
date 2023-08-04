@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ffaadc0_294fe14d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-04T17:17:14Z",
+      "side": 1,
+      "message": "I think I\u0027m *finally* getting ready to land this. I\u0027ve had to work around lots of subtle problems, and I think there are still other options for organization that might eventually be nicer. For now - I\u0027ve solved all the issues (I think), so I can move ahead with slicing off the other bits of functionality (BlitMask, BlitRow, Swizzler, Utils).",
+      "revId": "71e7764e7c82498c8e08542d78021ef4211db25a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
