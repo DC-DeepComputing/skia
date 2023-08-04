@@ -24,7 +24,14 @@ namespace GrAHardwareBufferUtils {
 
 SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat);
 
+#if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
 GrBackendFormat GetBackendFormat(GrDirectContext* context, AHardwareBuffer* hardwareBuffer,
+                                 uint32_t bufferFormat, bool requireKnownFormat);
+#endif
+
+GrBackendFormat GetGLBackendFormat(GrDirectContext* context, AHardwareBuffer* hardwareBuffer,
+                                 uint32_t bufferFormat, bool requireKnownFormat);
+GrBackendFormat GetVulkanBackendFormat(GrDirectContext* context, AHardwareBuffer* hardwareBuffer,
                                  uint32_t bufferFormat, bool requireKnownFormat);
 
 typedef void* TexImageCtx;
@@ -53,6 +60,7 @@ typedef void (*UpdateImageProc)(TexImageCtx, GrDirectContext*);
  *                          attachment
  * @return                  valid GrBackendTexture object on success
  */
+#if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
 GrBackendTexture MakeBackendTexture(GrDirectContext* context, AHardwareBuffer* hardwareBuffer,
                                     int width, int height,
                                     DeleteImageProc* deleteProc,
@@ -62,9 +70,31 @@ GrBackendTexture MakeBackendTexture(GrDirectContext* context, AHardwareBuffer* h
                                     const GrBackendFormat& backendFormat,
                                     bool isRenderable,
                                     bool fromAndroidWindow = false);
+#endif
 
-} // GrAHardwareBufferUtils
+GrBackendTexture MakeGLBackendTexture(GrDirectContext* context,
+                                      AHardwareBuffer* hardwareBuffer,
+                                      int width, int height,
+                                      DeleteImageProc* deleteProc,
+                                      UpdateImageProc* updateProc,
+                                      TexImageCtx* imageCtx,
+                                      bool isProtectedContent,
+                                      const GrBackendFormat& backendFormat,
+                                      bool isRenderable,
+                                      bool fromAndroidWindow = false);
 
+GrBackendTexture MakeVulkanBackendTexture(GrDirectContext* context,
+                                          AHardwareBuffer* hardwareBuffer,
+                                          int width, int height,
+                                          DeleteImageProc* deleteProc,
+                                          UpdateImageProc* updateProc,
+                                          TexImageCtx* imageCtx,
+                                          bool isProtectedContent,
+                                          const GrBackendFormat& backendFormat,
+                                          bool isRenderable,
+                                          bool fromAndroidWindow = false);
+
+}  // namespace GrAHardwareBufferUtils
 
 #endif
 #endif

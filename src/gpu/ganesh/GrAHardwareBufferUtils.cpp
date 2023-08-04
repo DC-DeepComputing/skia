@@ -5,13 +5,11 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkTypes.h"
+#include "include/android/GrAHardwareBufferUtils.h"
 
 #if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
 #define GL_GLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
-
-#include "src/gpu/ganesh/GrAHardwareBufferUtils_impl.h"
 
 #include <android/hardware_buffer.h>
 #ifdef SK_GL
