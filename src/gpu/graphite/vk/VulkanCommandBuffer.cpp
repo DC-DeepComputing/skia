@@ -891,21 +891,38 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                     drawPass.getTexture(command.fTextureIndices[i])));
             auto sampler = static_cast<const VulkanSampler*>(
                     drawPass.getSampler(command.fSamplerIndices[i]));
-            if (!texture || !sampler) {
-                // TODO(b/294198324): Investigate the root cause for null texture or samplers on
-                // Ubuntu QuadP400 GPU
-                SKGPU_LOG_E("Texture and sampler must not be null");
-                fNumTextureSamplers = 0;
-                fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
-                fBindTextureSamplers = false;
-                return;
+            if (texture) {
+                SkDebugf("Texture is valid\n");
+            } else {
+                SkDebugf("Texture is NOT valid\n");
             }
+            if (sampler) {
+                SkDebugf("Sampler is valid\n");
+            } else {
+                SkDebugf("Sampler is NOT valid\n");
+            }
+            // if (!texture || !sampler) {
+            //     // TODO(b/294198324): Investigate the root cause for null texture or samplers on
+            //     // Ubuntu QuadP400 GPU
+            //     if (!texture) {
+            //         SKGPU_LOG_W("Texture must not be null");
+            //     }
+            //     if (!sampler) {
+            //         SKGPU_LOG_W("Sampler must not be null");
+            //     }
+            //     fNumTextureSamplers = 0;
+            //     fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+            //     fBindTextureSamplers = false;
+            //     return;
+            // }
 
             VkDescriptorImageInfo textureInfo;
             memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
             textureInfo.sampler = sampler->vkSampler();
+            SkDebugf("VkSampler obtained");
             textureInfo.imageView =
                     texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
+            SkDebugf("image view obtained");
             textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
             VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
@@ -913,6 +930,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             writeInfo.pNext = nullptr;
             writeInfo.dstSet = *set->descriptorSet();
+            SkDebugf("Set assigned");
             writeInfo.dstBinding = i;
             writeInfo.dstArrayElement = 0;
             writeInfo.descriptorCount = 1;
@@ -928,11 +946,13 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                                      &writeDescriptorSets[0],
                                      /*descriptorCopyCount=*/0,
                                      /*pDescriptorCopies=*/nullptr));
+        SkDebugf("Updated set");
 
         // Store the updated descriptor set to be actually bound later on. This avoids binding and
         // potentially having to re-bind in cases where earlier descriptor sets change while going
         // through drawpass commands.
         fTextureSamplerDescSetToBind = *set->descriptorSet();
+        SkDebugf("desc set to bind assigned to member variable");
         fBindTextureSamplers = true;
         fNumTextureSamplers = command.fNumTexSamplers;
         this->trackResource(std::move(set));
@@ -952,6 +972,7 @@ void VulkanCommandBuffer::bindTextureSamplers() {
                                           &fTextureSamplerDescSetToBind,
                                           /*dynamicOffsetCount=*/0,
                                           /*dynamicOffsets=*/nullptr));
+        SkDebugf("Bound the texture/sampler desc set");
     }
 }
 
