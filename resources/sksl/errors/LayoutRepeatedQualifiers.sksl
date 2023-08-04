@@ -12,7 +12,7 @@ layout (
     input_attachment_index = 1,
     spirv,
     metal,
-    gl,
+    wgsl,
 
     origin_upper_left,
     push_constant,
@@ -27,7 +27,7 @@ layout (
     input_attachment_index = 2,
     spirv,
     metal,
-    gl
+    wgsl
 ) float x;
 
 /*%%*

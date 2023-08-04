@@ -12,7 +12,7 @@ layout (
     input_attachment_index = 1,
     spirv,
     metal,
-    gl)
+    wgsl)
 void on_return() {}
 
 void on_param(
@@ -30,7 +30,7 @@ layout (
     input_attachment_index = 1,
     spirv,
     metal,
-    gl) float x) {}
+    wgsl) float x) {}
 
 /*%%*
 only one backend qualifier can be used
