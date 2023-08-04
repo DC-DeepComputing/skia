@@ -19,6 +19,18 @@ namespace SkSL {
 std::string Layout::paddedDescription() const {
     std::string result;
     auto separator = SkSL::String::Separator();
+    if (fFlags & LayoutFlag::kSPIRV) {
+        result += separator() + "spirv";
+    }
+    if (fFlags & LayoutFlag::kMetal) {
+        result += separator() + "metal";
+    }
+    if (fFlags & LayoutFlag::kGL) {
+        result += separator() + "gl";
+    }
+    if (fFlags & LayoutFlag::kWGSL) {
+        result += separator() + "wgsl";
+    }
     if (fLocation >= 0) {
         result += separator() + "location = " + std::to_string(fLocation);
     }
