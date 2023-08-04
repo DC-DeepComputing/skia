@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "845275b0_f81eec10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-04T16:33:23Z",
+      "side": 1,
+      "message": "It turns out the issue wan\u0027t really with this particular change, but the fact that it broke up an existing filegroup which was being directly depended on by targets in g3.",
+      "revId": "3805861388bf2142a9121d74c675d673d13c55ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
