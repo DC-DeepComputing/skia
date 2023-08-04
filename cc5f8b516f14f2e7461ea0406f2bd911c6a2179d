@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ab3541_305576ea",
+        "filename": "tests/sksl/errors/ArrayUnspecifiedDimensions.metal",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-04T21:56:55Z",
+      "side": 0,
+      "message": "There weren\u0027t any commands in `resources/sksl/BUILD.bazel` to build this file, so it\u0027s just a straggler from the past. I\u0027m not sure why we would need Metal-specific testing for this; it seems like the error detection happens in the frontend. (I tried recreating it and the output was the same.)",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 23
+      },
+      "revId": "cc5f8b516f14f2e7461ea0406f2bd911c6a2179d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
