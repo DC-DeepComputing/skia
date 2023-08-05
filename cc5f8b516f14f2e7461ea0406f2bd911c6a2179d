@@ -22,6 +22,30 @@
       },
       "revId": "cc5f8b516f14f2e7461ea0406f2bd911c6a2179d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98b9a211_2c4247c3",
+        "filename": "tests/sksl/errors/ArrayUnspecifiedDimensions.metal",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-05T16:19:15Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "a5ab3541_305576ea",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 23
+      },
+      "revId": "cc5f8b516f14f2e7461ea0406f2bd911c6a2179d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

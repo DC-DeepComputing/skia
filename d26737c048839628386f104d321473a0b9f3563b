@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd4389c_aaefdca1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-05T16:19:15Z",
+      "side": 1,
+      "message": "Would Graphite ever want to use UBOs if it were to directly target OpenGL ES 3 end above? Then again, even if that happened the vanilla `layout(binding\u003d...)` should work without any backend specific nuance.",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "d26737c048839628386f104d321473a0b9f3563b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4139fec5_f10f6ac4",
+        "filename": "src/sksl/ir/SkSLLayout.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-05T16:19:15Z",
+      "side": 1,
+      "message": "nit: remove `and GLSL`.",
+      "range": {
+        "startLine": 138,
+        "startChar": 68,
+        "endLine": 138,
+        "endChar": 77
+      },
+      "revId": "d26737c048839628386f104d321473a0b9f3563b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

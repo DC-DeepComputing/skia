@@ -22,6 +22,30 @@
       },
       "revId": "200019338b287974c031ce680ffe9a2d7773a086",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e61c8374_f54251a9",
+        "filename": "resources/sksl/errors/LayoutInFunctions.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-05T16:19:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1b5f627a_4bcafb72",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 8
+      },
+      "revId": "200019338b287974c031ce680ffe9a2d7773a086",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
