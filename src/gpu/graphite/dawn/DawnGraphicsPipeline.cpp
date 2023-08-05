@@ -270,41 +270,61 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
     bool hasFragment = !fsSkSL.empty();
     if (hasFragment) {
-        if (!SkSLToSPIRV(compiler,
-                         fsSkSL,
-                         SkSL::ProgramKind::kGraphiteFragment,
-                         settings,
-                         &fsSPIRV,
-                         &fsInterface,
-                         errorHandler)) {
-            return {};
+        if (!SkSLToWGSL(compiler,
+                        fsSkSL,
+                        SkSL::ProgramKind::kGraphiteFragment,
+                        settings,
+                        &fsSPIRV,
+                        &fsInterface,
+                        errorHandler)) {
+            printf("Can't convert FS->WGSL\n");
         }
-        fsModule = DawnCompileSPIRVShaderModule(sharedContext,
-                                                fsSPIRV,
-                                                errorHandler);
-        if (!fsModule) {
-            return {};
-        }
+        fsModule = DawnCompileWGSLShaderModule(sharedContext, fsSPIRV, errorHandler);
+
+      // if (!SkSLToSPIRV(compiler,
+      //                  fsSkSL,
+      //                  SkSL::ProgramKind::kGraphiteFragment,
+      //                  settings,
+      //                  &fsSPIRV,
+      //                  &fsInterface,
+      //                  errorHandler)) {
+      //     return {};
+      // }
+      // fsModule = DawnCompileSPIRVShaderModule(sharedContext, fsSPIRV, errorHandler);
+      // if (!fsModule) {
+      //     return {};
+      // }
     }
 
     std::string vsSkSL = BuildVertexSkSL(sharedContext->caps()->resourceBindingRequirements(),
                                          step,
                                          useShadingSsboIndex,
                                          localCoordsNeeded);
-    if (!SkSLToSPIRV(compiler,
-                     vsSkSL,
-                     SkSL::ProgramKind::kGraphiteVertex,
-                     settings,
-                     &vsSPIRV,
-                     &vsInterface,
-                     errorHandler)) {
-        return {};
+    if (!SkSLToWGSL(compiler,
+                    vsSkSL,
+                    SkSL::ProgramKind::kGraphiteVertex,
+                    settings,
+                    &vsSPIRV,
+                    &vsInterface,
+                    errorHandler)) {
+        printf("Can't convert VS->WGSL\n");
     }
+    vsModule = DawnCompileWGSLShaderModule(sharedContext, vsSPIRV, errorHandler);
 
-    vsModule = DawnCompileSPIRVShaderModule(sharedContext, vsSPIRV, errorHandler);
-    if (!vsModule) {
-        return {};
-    }
+  //  if (!SkSLToSPIRV(compiler,
+  //                   vsSkSL,
+  //                   SkSL::ProgramKind::kGraphiteVertex,
+  //                   settings,
+  //                   &vsSPIRV,
+  //                   &vsInterface,
+  //                   errorHandler)) {
+  //      return {};
+  //  }
+//
+  //  vsModule = DawnCompileSPIRVShaderModule(sharedContext, vsSPIRV, errorHandler);
+  //  if (!vsModule) {
+  //      return {};
+  //  }
 
     wgpu::RenderPipelineDescriptor descriptor;
 #if defined(SK_DEBUG)
@@ -337,7 +357,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Dawn doesn't allow having a color attachment but without fragment shader, so have to use a
     // noop fragment shader, if fragment shader is null.
     fragment.module = hasFragment ? std::move(fsModule) : sharedContext->noopFragment();
-    fragment.entryPoint = "main";
+    fragment.entryPoint = "fragmentMain";
     fragment.targetCount = 1;
     fragment.targets = &colorTarget;
     descriptor.fragment = &fragment;
@@ -500,7 +520,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
     auto& vertex = descriptor.vertex;
     vertex.module = std::move(vsModule);
-    vertex.entryPoint = "main";
+    vertex.entryPoint = "vertexMain";
     vertex.constantCount = 0;
     vertex.constants = nullptr;
     vertex.bufferCount = vertexBufferLayouts.size();

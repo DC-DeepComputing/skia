@@ -527,7 +527,7 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         // TODO: There's probably a more efficient way to tessellate the hairline that lets us
         // avoid inverting the affine matrix to get back to local coords, but it's just a 2x2 so
         // this works for now.
-        return float4(strokeCoord + translate, inverse(affineMatrix) * strokeCoord);
+        return float4(strokeCoord + translate, $_inverse(affineMatrix) * strokeCoord);
     } else {
         // Normal case. Do the transform after tessellation.
         return float4(affineMatrix * strokeCoord + translate, strokeCoord);
@@ -732,7 +732,7 @@ float4 analytic_rrect_vertex_fn(// Vertex Attributes
     // inverse of the original SkM44 local-to-device matrix. We could calculate the 3x3 inverse
     // and upload it, but it does not seem to be a bottleneck and saves on bandwidth to
     // calculate it here instead.
-    float3x3 deviceToLocal = inverse(localToDevice);
+    float3x3 deviceToLocal = $_inverse(localToDevice);
     float3 devPos = localToDevice * localPos.xy1;
     jacobian = float4(deviceToLocal[0].xy - deviceToLocal[0].z*localPos,
                       deviceToLocal[1].xy - deviceToLocal[1].z*localPos);

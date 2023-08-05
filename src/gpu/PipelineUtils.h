@@ -22,12 +22,12 @@ namespace skgpu {
 #ifdef SK_PRINT_SKSL_SHADERS
 static constexpr bool gPrintSKSL  = true;
 #else
-static constexpr bool gPrintSKSL  = false;
+static constexpr bool gPrintSKSL  = true;
 #endif
 #ifdef SK_PRINT_NATIVE_SHADERS
 static const bool gPrintBackendSL = true;
 #else
-static const bool gPrintBackendSL = false;
+static const bool gPrintBackendSL = true;
 #endif
 
 // SkSL->SPIR-V is only needed by Dawn + Vulkan backends, but seeing as this is a small wrapper
@@ -39,6 +39,15 @@ bool SkSLToSPIRV(SkSL::Compiler*,
                  std::string* spirv,
                  SkSL::Program::Interface*,
                  ShaderErrorHandler*);
+
+// SkSL->WGSL is used by the Dawn backend.
+bool SkSLToWGSL(SkSL::Compiler* compiler,
+                const std::string& sksl,
+                SkSL::ProgramKind programKind,
+                const SkSL::ProgramSettings& settings,
+                std::string* wgsl,
+                SkSL::Program::Interface* outInterface,
+                ShaderErrorHandler* errorHandler);
 
 } // namespace skgpu
 

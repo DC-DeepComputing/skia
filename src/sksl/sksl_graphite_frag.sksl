@@ -561,7 +561,7 @@ $pure float3x3 $map_to_unit_x(float2 p0, float2 p1) {
         0, -1,  0,
         1,  0,  0,
         0,  0,  1
-    ) * inverse(float3x3(
+    ) * $_inverse(float3x3(
         p1.y - p0.y, p0.x - p1.x, 0,
         p1.x - p0.x, p1.y - p0.y, 0,
                p0.x,        p0.y, 1
