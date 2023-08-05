@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66662a62_36e11d18",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Here I deviated from what we discussed offline, which is that this function should just return a new `SkImageInfo`.\n\nBefore attempting that change, I started adding targets in `png_codec.bzl`, and I found that some targets were skipping all images, effectively testing nothing. I think failing louder is better. Based on this, I excluded some uninteresting combinations in `png_codec.bzl`.\n\nNote that we cannot perform this validation step in the GM registerer function (line 515) because the canvas color type is unknown at that time.\n\nThe notion of \"uninteresting\" test cases is borrowed from the `get_decode_info()` function in DM, see https://skia.googlesource.com/skia/+/ce49fc71bc7cc25244020cd3e64764a6d08e54fb/dm/DMSrcSink.cpp#398.",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 0
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

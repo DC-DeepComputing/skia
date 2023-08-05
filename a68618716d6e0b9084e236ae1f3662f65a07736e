@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf11c8c3_4d0951ac",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done; using `//bazel/external/skimage/BUILD.bazel`.",
+      "parentUuid": "01108d9e_f5248e9f",
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db5a8e7c_41f5d210",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-08-03T17:22:45Z",
       "side": 1,
       "message": "This should only be the PNG files. I think we talked about either partitioning them here, \"virtually\" in //resources, or in a BUILD.bazel used by WORKSPACE.bazel",
+      "range": {
+        "startLine": 604,
+        "startChar": 24,
+        "endLine": 604,
+        "endChar": 26
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "266e91a4_22a52d4d",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db5a8e7c_41f5d210",
       "range": {
         "startLine": 604,
         "startChar": 24,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "799828cd_fc2a6807",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "572ee969_ff6a2578",
+      "range": {
+        "startLine": 69,
+        "startChar": 14,
+        "endLine": 69,
+        "endChar": 30
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58089242_a2156ac1",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-08-02T23:14:40Z",
       "side": 1,
       "message": "See my feedback request in `//gm/gm.h`.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 0
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b07b75_7396dbce",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58089242_a2156ac1",
       "range": {
         "startLine": 201,
         "startChar": 0,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05c13a6_b156befb",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b2d826c_a956876c",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efc67360_808c787e",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-08-03T17:22:45Z",
       "side": 1,
       "message": "Let\u0027s change these to enum classes while we are forking this code\n\n```\nenum class Mode {\n  kCodec\n  kCodecZeroInit\n  ...\n}\n```",
+      "range": {
+        "startLine": 63,
+        "startChar": 9,
+        "endLine": 63,
+        "endChar": 13
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b3c932_9e913118",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efc67360_808c787e",
       "range": {
         "startLine": 63,
         "startChar": 9,
@@ -156,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47d8ffcf_c00407a1",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9c0d904_73bc9487",
+      "range": {
+        "startLine": 93,
+        "startChar": 13,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4a0de55_43163176",
@@ -169,6 +331,30 @@
       "writtenOn": "2023-08-03T17:22:45Z",
       "side": 1,
       "message": "remove?",
+      "range": {
+        "startLine": 152,
+        "startChar": 7,
+        "endLine": 152,
+        "endChar": 11
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8222cac1_8b764ff5",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4a0de55_43163176",
       "range": {
         "startLine": 152,
         "startChar": 7,
@@ -204,6 +390,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15012c2a_7675fa92",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "These functions do use private fields. We can make them static but we\u0027d have to pass those fields as arguments, which would make things more verbose. WDYT?",
+      "parentUuid": "b6a7dac1_94d1488c",
+      "range": {
+        "startLine": 245,
+        "startChar": 9,
+        "endLine": 245,
+        "endChar": 22
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c072043_8bab64fb",
         "filename": "gm/png_codec.cpp",
         "patchSetId": 8
@@ -215,6 +425,24 @@
       "writtenOn": "2023-08-03T17:22:45Z",
       "side": 1,
       "message": "I think we should be partitioning our PNGs in bazel based on if this is true or not instead of using code to do so. We can have code to an assertion if we try to use a non-greyscale image with kGrayscale_Always_DstColorType.",
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f7f3b37_c094ecac",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c072043_8bab64fb",
       "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -236,6 +464,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3696d568_4ccfa360",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "518506f9_eb25d320",
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47223773_7f39fed8",
@@ -249,6 +495,30 @@
       "writtenOn": "2023-08-03T17:22:45Z",
       "side": 1,
       "message": "Is this an anonymous heap allocation? Surely that\u0027s a memory leak, right?\n\nedit: I had a read (and a re-read and a re-re-read) through the Registry code to remember how it worked. Calling the Registry constructor automatically adds a pointer to the new object to the end of a linked list, so 1) Yes this must use new to put it on the heap and 2) it\u0027s not really a leak.\n\nI don\u0027t think we are going to want this mystical incantation in all calls to DEF_GM_REGISTERER_FN\n\nCan we instead have GMRegistererFn have a parameter that is a `std::function\u003cvoid\u003e(GM)` (Can be called with a GM and doesn\u0027t return anything) which hides that complexity? This callback can be called multiple times to register multiple GMs.",
+      "range": {
+        "startLine": 354,
+        "startChar": 16,
+        "endLine": 354,
+        "endChar": 44
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0029b39_aabda89c",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-05T02:12:28Z",
+      "side": 1,
+      "message": "I tried passing a `std::function` as an argument that takes a `std::unique_ptr\u003cskiagm::GM\u003e`, but I ran into various issues when trying to capture a `std::unique_ptr` from a lambda. See https://stackoverflow.com/questions/8236521/how-to-capture-a-unique-ptr-into-a-lambda-expression.\n\nInstead, in https://skia-review.googlesource.com/c/skia/+/734163/5..6 I defined a new function, `skiagm::Register`, that takes a `skiagm::GM*` and can be called from anywhere to dynamically register a GM.",
+      "parentUuid": "47223773_7f39fed8",
       "range": {
         "startLine": 354,
         "startChar": 16,
