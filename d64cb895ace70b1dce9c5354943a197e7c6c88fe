@@ -87,6 +87,23 @@
       "parentUuid": "0e04b425_6ef92ae6",
       "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e531d9_b04dc577",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-08-07T18:19:38Z",
+      "side": 1,
+      "message": "Ok, I addressed this in the ReadPixels test stub in Chrome here: https://chromium-review.googlesource.com/c/chromium/src/+/4744011\n\nClosing this CL.",
+      "revId": "d64cb895ace70b1dce9c5354943a197e7c6c88fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
