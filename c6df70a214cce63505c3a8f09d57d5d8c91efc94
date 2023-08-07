@@ -16,6 +16,24 @@
       "message": "nit: Add some reminder text \"Calling the GMRegistry constructor automatically adds it to the global linked list of GMFactory functions\"",
       "revId": "c6df70a214cce63505c3a8f09d57d5d8c91efc94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcee9a0b_ceeda603",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T19:20:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "131e62e1_bccb898e",
+      "revId": "c6df70a214cce63505c3a8f09d57d5d8c91efc94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
