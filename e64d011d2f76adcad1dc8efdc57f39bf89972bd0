@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06d89b8c_47f4f213",
+        "filename": "tests/sksl/intrinsics/Inverse.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-07T17:42:00Z",
+      "side": 1,
+      "message": "Didn\u0027t expect SPIRV-Cross\u0027 polyfill for the Inverse op to look like this!",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 0
+      },
+      "revId": "e64d011d2f76adcad1dc8efdc57f39bf89972bd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
