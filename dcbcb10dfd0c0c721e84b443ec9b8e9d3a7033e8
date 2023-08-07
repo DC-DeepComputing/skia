@@ -190,6 +190,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "397661e6_5631ee3e",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-07T14:23:08Z",
+      "side": 1,
+      "message": "This is an `sk_sp`, which has a dtor that (IIRC) performs `SkSafeUnref`.",
+      "parentUuid": "7919082c_f13b4a52",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
