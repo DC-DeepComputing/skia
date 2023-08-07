@@ -16,6 +16,23 @@
       "message": "The code was written in 2018:\n\nhttps://crsrc.org/c/base/no_destructor.h;l\u003d1?q\u003dnodestructor\u0026ss\u003dchromium",
       "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "343b3d54_f4d338f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-08-07T14:24:43Z",
+      "side": 1,
+      "message": "But, this is not the exact same file it has been changed, and needs a new copyright. It is a new work derived from previous work.",
+      "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
