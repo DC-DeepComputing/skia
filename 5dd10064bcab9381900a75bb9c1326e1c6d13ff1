@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3deb132e_c46f8063",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-07T18:11:32Z",
+      "side": 1,
+      "message": "Oh, I see. Thanks for the clarification.",
+      "parentUuid": "a2dfa732_61a9b39e",
+      "range": {
+        "startLine": 137,
+        "startChar": 23,
+        "endLine": 137,
+        "endChar": 28
+      },
+      "revId": "5dd10064bcab9381900a75bb9c1326e1c6d13ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3cfa3651_fd671602",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-03T12:23:05Z",
       "side": 1,
       "message": "Please do so for this CL. It would have caught the CanvasKit.Color issue",
+      "range": {
+        "startLine": 76,
+        "startChar": 46,
+        "endLine": 76,
+        "endChar": 87
+      },
+      "revId": "5dd10064bcab9381900a75bb9c1326e1c6d13ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea52a2c2_2ad93fa9",
+        "filename": "modules/canvaskit/tests/skottie_test.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-07T18:11:32Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3cfa3651_fd671602",
       "range": {
         "startLine": 76,
         "startChar": 46,

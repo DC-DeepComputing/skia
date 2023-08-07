@@ -576,6 +576,30 @@
       },
       "revId": "678bc439ae32148996241e18be5927fda61911b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec13abb_465eafad",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-07T18:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26884894_47a48e25",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 29
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
