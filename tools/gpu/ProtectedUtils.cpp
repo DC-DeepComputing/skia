@@ -125,7 +125,7 @@ sk_sp<SkImage> CreateProtectedSkImage(GrDirectContext* dContext,
                                                                 kTopLeft_GrSurfaceOrigin,
                                                                 skgpu::Protected(isProtected));
     if (!image) {
-        SK_ABORT("Could not create %s image.", isProtected ? "protected" : "unprotected");
+        SkDebugf("Could not create %s image.", isProtected ? "protected" : "unprotected");
         return nullptr;
     }
 
