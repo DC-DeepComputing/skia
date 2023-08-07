@@ -117,7 +117,12 @@ void SkTestFont::init(const SkScalar* pts, const unsigned char* verbs) {
                 case SkPath::kClose_Verb:
                     b.close();
                     break;
-                default: SkDEBUGFAIL("bad verb"); return;
+                default:
+                    SkDEBUGFAIL("bad verb");
+#if !defined(SK_DEBUG)
+                    return;
+#endif
+
             }
         }
         fPaths[index] = b.detach();
