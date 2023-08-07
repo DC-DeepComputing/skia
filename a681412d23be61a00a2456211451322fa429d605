@@ -16,6 +16,24 @@
       "message": "@kjlubick: Not sure if this the right selector/condition: Is there some config flag that tells us whether clang_linux_amd64 is the current toolchain? Then that might be the better option instead of using this platform\u003dlinux condition as a proxy.",
       "revId": "a681412d23be61a00a2456211451322fa429d605",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5904fa5_1880eebd",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T14:09:07Z",
+      "side": 1,
+      "message": "```\nconfig_setting(\n    name \u003d \"linux_x64\",\n    constraint_values \u003d [\n        \"@platforms//cpu:x86_64\",\n        \"@platforms//os:linux\",\n    ],\n)\n```\nThen use that as the key in the select map.",
+      "parentUuid": "ec3dfd21_d8bad17e",
+      "revId": "a681412d23be61a00a2456211451322fa429d605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
