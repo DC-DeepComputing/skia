@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "789a877e_c25798a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-07T15:56:18Z",
+      "side": 1,
+      "message": "As I sliced out other pieces of opts, I realized that the core CPU backend stuff really does fall under \"SkGraphics\", so it was easier to keep this here. (eg, next CL slices BlitMaskOpts, and adds an init call for those here, too). Keeping them enumerated like this makes it easier if we later decide we need to pull the init calls out, though.",
+      "revId": "7c1bda5ec466da5c10046e509af735b6b5a0fe46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
