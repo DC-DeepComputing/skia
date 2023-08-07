@@ -710,6 +710,7 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
         return false;
     }
     if (desc->fIsProtected == skgpu::Protected::kYes && !caps.supportsProtected()) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$$ check_backend_texture\n");
         return false;
     }
 
@@ -777,6 +778,7 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
         return false;
     }
     if (desc->fIsProtected == skgpu::Protected::kYes && !caps.supportsProtected()) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$$ check_compressed_backend_texture\n");
         return false;
     }
 
@@ -865,6 +867,7 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
     }
 
     if (backendRT.isProtected() && !this->glCaps().supportsProtected()) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$$ GrGLGpu::onWrapBackendRenderTarget\n");
         return nullptr;
     }
 
@@ -1486,6 +1489,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           uint32_t levelClearMask,
                                           std::string_view label) {
     if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$$ GrGLGpu::onCreateTexture\n");
         return nullptr;
     }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
@@ -1863,6 +1867,7 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
     GL_CALL(GenTextures(1, &id));
 
     if (!id) {
+        SkDebugf("$$$$$$$$$$$$$$$ failure in GrGLGpu::createTexture 1\n");
         return 0;
     }
 
@@ -1885,6 +1890,7 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         if (this->glCaps().supportsProtected()) {
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
+            SkDebugf("$$$$$$$$$$$$$$$ failure in GrGLGpu::createTexture 2\n");
             GL_CALL(DeleteTextures(1, &id));
             return 0;
         }
@@ -1920,9 +1926,11 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         }
     }
     if (success) {
+        SkDebugf("---------------- success in GrGLGpu::createTexture 3\n");
         return id;
     }
     GL_CALL(DeleteTextures(1, &id));
+    SkDebugf("$$$$$$$$$$$$$$$ failure in GrGLGpu::createTexture 3\n");
     return 0;
 }
 

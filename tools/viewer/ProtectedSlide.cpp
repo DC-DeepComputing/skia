@@ -14,7 +14,7 @@
 
 class ProtectedSlide : public Slide {
 public:
-    ProtectedSlide() { fName = "Protected"; }
+    ProtectedSlide() { fName = "Protected2"; }
 
     SkISize getDimensions() const override { return {kSize, 2*kSize}; }
 
@@ -28,6 +28,7 @@ public:
             return;
         }
 
+#if 0
         if (fCachedContext != dContext) {
             fCachedContext = dContext;
 
@@ -62,15 +63,23 @@ public:
         paint.setShader(fUnProtectedImage->makeShader({}));
         canvas->drawRect(SkRect::MakeXYWH(0, kSize, kSize, kSize), paint);
         canvas->drawRect(SkRect::MakeXYWH(0, kSize, kSize, kSize), stroke);
+#else
+        SkPaint paint;
+        paint.setColor(SK_ColorYELLOW);
+        canvas->drawRect(SkRect::MakeWH(kSize, kSize), paint);
+#endif
+
 #endif // SK_GANESH
     }
 
 private:
     static const int kSize = 128;
 
+#if 0
     GrDirectContext* fCachedContext = nullptr;
     sk_sp<SkImage> fProtectedImage;
     sk_sp<SkImage> fUnProtectedImage;
+#endif
 };
 
 DEF_SLIDE( return new ProtectedSlide(); )
