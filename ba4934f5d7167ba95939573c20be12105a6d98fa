@@ -159,6 +159,24 @@
       "parentUuid": "f48322ed_4dd5d8d6",
       "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a1c8a2_28cb2bea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-07T14:35:05Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t think postdating a copyright is correct here. You want an older copyright to give you an earlier claim.\n\n+1, that\u0027s what I\u0027m saying as well",
+      "parentUuid": "6e50292d_43c4cc60",
+      "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
