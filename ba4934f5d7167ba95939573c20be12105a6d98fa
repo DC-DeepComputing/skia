@@ -69,6 +69,24 @@
       "parentUuid": "343b3d54_f4d338f0",
       "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec038941_807c549d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-07T14:28:45Z",
+      "side": 1,
+      "message": "Public link, for posterity: https://opensource.google/documentation/reference/copyright",
+      "parentUuid": "5cdd3be1_fd75cb1b",
+      "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
