@@ -118,6 +118,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f20a200_7d695703",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-08-07T14:16:07Z",
+      "side": 1,
+      "message": "I don\u0027t understand your use of SkNoDestructor. SkNoDestructor is used to avoid heap allocation for static objects with complex constructors and destructors. SkFontMgr is an abstract type that implements an interface for instances of different implementations. So, are you just storing the sk_sp in the static memory. This seems confusing.\n\nTraditionally, this variable is SkFontMgr* singleton. The heap allocation and pointer are required in a multi-threaded environment because the main thread can exit calling dstors before other threads are finished with the resource. Is this what you are trying to indicate here? I can certainly see changing singleton to SkFontMgr*. The leak of the pointer is necessary because the main thread can exit before other threads are finished.",
+      "parentUuid": "a68c2354_7571e916",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
