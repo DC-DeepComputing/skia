@@ -12,6 +12,9 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
 
+#include <map>
+#include <string>
+
 /**
  *  Including this file (and compiling CommandLineFlags.cpp) provides command line
  *  parsing. In order to use it, use the following macros in global
@@ -158,6 +161,29 @@ public:
 
         const SkString* begin() const { return fStrings.begin(); }
         const SkString* end() const { return fStrings.end(); }
+
+        /**
+         * Parses and validates a string flag that requires exactly one value out of a set of
+         * possible values. Returns a non-empty message in the case of errors.
+         */
+        template <class E>
+        std::string parse_and_validate(std::string name,
+                                       std::map<std::string, E>& possibleValues,
+                                       E* out) {
+            if (size() == 0) {
+                return SkStringPrintf("Flag %s is required.", name.c_str()).c_str();
+            }
+            if (size() != 1) {
+                return SkStringPrintf("Flag %s takes 1 value, got %d.", name.c_str(), size())
+                        .c_str();
+            }
+            if (auto kv = possibleValues.find(operator[](0)); kv != possibleValues.end()) {
+                *out = kv->second;
+                return "";
+            }
+            return SkStringPrintf("Unknown value for flag %s: %s.", name.c_str(), operator[](0))
+                    .c_str();
+        }
 
     private:
         void reset() { fStrings.clear(); }
