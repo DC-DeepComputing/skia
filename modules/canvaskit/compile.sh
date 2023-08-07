@@ -252,6 +252,7 @@ echo "Compiling"
   skia_enable_skshaper=true \
   skia_enable_skparagraph=true \
   skia_enable_pdf=false \
+  skia_enable_bentleyottmann=false \
   skia_canvaskit_force_tracing=${FORCE_TRACING} \
   skia_canvaskit_profile_build=${PROFILE_BUILD} \
   skia_canvaskit_enable_skp_serialization=${SERIALIZE_SKP} \
