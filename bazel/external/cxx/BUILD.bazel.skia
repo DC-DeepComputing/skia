@@ -18,6 +18,13 @@ rust_library(
 
 cc_library(
     name = "core-lib",
-    srcs = ["src/cxx.cc"],
+    srcs = [
+        "src/cxx.cc",
+    ] + select(
+        {
+            "@platforms//os:linux": ["@clang_linux_amd64//:link_libs"],
+            "//conditions:default": [],
+        },
+    ),
     hdrs = ["include/cxx.h"],
 )
