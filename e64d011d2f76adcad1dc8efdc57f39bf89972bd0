@@ -22,6 +22,30 @@
       },
       "revId": "e64d011d2f76adcad1dc8efdc57f39bf89972bd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b56c9f_ca614a07",
+        "filename": "tests/sksl/intrinsics/Inverse.hlsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-07T18:31:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "06d89b8c_47f4f213",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 0
+      },
+      "revId": "e64d011d2f76adcad1dc8efdc57f39bf89972bd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
