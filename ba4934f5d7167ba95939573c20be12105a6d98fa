@@ -105,6 +105,24 @@
       "parentUuid": "5cdd3be1_fd75cb1b",
       "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57638ecb_612d73e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-07T14:33:20Z",
+      "side": 1,
+      "message": "I\u0027ve never seen us use the range-of-years pattern elsewhere, so I don\u0027t think I\u0027d start now.",
+      "parentUuid": "f48322ed_4dd5d8d6",
+      "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
