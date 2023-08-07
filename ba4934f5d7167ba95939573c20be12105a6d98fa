@@ -195,6 +195,24 @@
       "parentUuid": "98a1c8a2_28cb2bea",
       "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0af109c_5de95b4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-07T20:12:20Z",
+      "side": 1,
+      "message": "Given the policy doc, I think that either would have been acceptable, so I\u0027ll err on the side of inaction and suggest that we do nothing.",
+      "parentUuid": "82071acc_199b04f2",
+      "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
