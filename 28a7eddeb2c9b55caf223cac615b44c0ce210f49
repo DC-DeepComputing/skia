@@ -87,6 +87,24 @@
       "parentUuid": "12558c39_cfec6176",
       "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca400078_fff0b55e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-08-07T17:59:47Z",
+      "side": 1,
+      "message": "When built inside Chromium, yes. In Chromium\u0027s own GN build environment I am doing that and there the build is already working.",
+      "parentUuid": "ea33b538_38ddad51",
+      "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
