@@ -104,6 +104,7 @@
   {"name": "Build-Debian10-Clang-x86_64-Debug-AVIF"},
   {"name": "Build-Debian10-Clang-x86_64-Debug-Chromebook_GLES"},
   {"name": "Build-Debian10-Clang-x86_64-Debug-Dawn"},
+  {"name": "Build-Debian10-Clang-x86_64-Debug-Fontations"},
   {"name": "Build-Debian10-Clang-x86_64-Debug-SK_USE_DISCARDABLE_SCALEDIMAGECACHE"},
   {"name": "Build-Debian10-Clang-x86_64-Debug-SafeStack"},
   {"name": "Build-Debian10-Clang-x86_64-Debug-Static"},
@@ -200,6 +201,7 @@
   {"name": "Build-Mac-Clang-x86_64-Debug-ANGLE"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN_Metal"},
+  {"name": "Build-Mac-Clang-x86_64-Debug-Fontations"},
   {"name": "Build-Mac-Clang-x86_64-Debug-Graphite_Dawn",
    "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*", "src/sksl/generated/.*"]}
   },
