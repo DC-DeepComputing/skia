@@ -34,6 +34,24 @@
       "parentUuid": "ec3dfd21_d8bad17e",
       "revId": "a681412d23be61a00a2456211451322fa429d605",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc479da0_6ea0c378",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-08-07T14:21:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "f5904fa5_1880eebd",
+      "revId": "a681412d23be61a00a2456211451322fa429d605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
