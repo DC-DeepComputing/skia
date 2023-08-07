@@ -412,6 +412,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaf38211_924ec3ed",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "You might find yourself duplicating some of the code with other codecs, but you can refactor that when you get there if necessary.",
+      "parentUuid": "15012c2a_7675fa92",
+      "range": {
+        "startLine": 245,
+        "startChar": 9,
+        "endLine": 245,
+        "endChar": 22
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c072043_8bab64fb",
@@ -519,6 +543,30 @@
       "side": 1,
       "message": "I tried passing a `std::function` as an argument that takes a `std::unique_ptr\u003cskiagm::GM\u003e`, but I ran into various issues when trying to capture a `std::unique_ptr` from a lambda. See https://stackoverflow.com/questions/8236521/how-to-capture-a-unique-ptr-into-a-lambda-expression.\n\nInstead, in https://skia-review.googlesource.com/c/skia/+/734163/5..6 I defined a new function, `skiagm::Register`, that takes a `skiagm::GM*` and can be called from anywhere to dynamically register a GM.",
       "parentUuid": "47223773_7f39fed8",
+      "range": {
+        "startLine": 354,
+        "startChar": 16,
+        "endLine": 354,
+        "endChar": 44
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03eadcb0_e43faa16",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "That works for me",
+      "parentUuid": "f0029b39_aabda89c",
       "range": {
         "startLine": 354,
         "startChar": 16,

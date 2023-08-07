@@ -3,6 +3,236 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4a79f50_7113b732",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "\"This approach focuses on making the C++ code focus on decoding and drawing the image and moves the logic of deciding which combination of configuration options to Bazel. Instead of relying on many nested for loops with nested conditionals to determine what images to decode in which way to be drawn on which surfaces, we elected to go for a list comprehension of explicit options to make it more clear what is being tested. While (hopefully) reducing the complexity of the test harness, this should also be helpful in breaking up tests for better sharding.\"",
+      "range": {
+        "startLine": 11,
+        "startChar": 177,
+        "endLine": 11,
+        "endChar": 187
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d95f9b_f813a554",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "nit: Break this into three lists _GRAYSCALE_TESTS, _COLOR_TRANSLUCENT_TESTS, etc\n\nI would also like some prose like:\n\"This decodes each of images using a particular mode into an SkImage with the color type and alpha type specified by the appropriate option. Then the image is drawn into a surface of the specified surface_config before being uploaded to Gold.\"",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 6
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17ff2a5b_1ed18ceb",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "optional/suggestion: put surface_config last so then the options are in the order are roughly used.",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f249df4_9657164f",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "nit: typo\n\nFactual check, according to https://codereview.chromium.org/1704433003, it was not uninteresting, but unsupported. Do we know if it\u0027s still unsupported? i.e. if you remove the conditional that skips it, does something crash?",
+      "range": {
+        "startLine": 28,
+        "startChar": 48,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6197909_ddce432d",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "Should this be png-codec to be consistent with other places where we use underscores to separate fields and dashes to separate things inside of a particular field?",
+      "range": {
+        "startLine": 63,
+        "startChar": 21,
+        "endLine": 63,
+        "endChar": 31
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e034784e_87d3e4fd",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "optional/suggestion: put surface_config last so then the options are in the order are roughly used.",
+      "range": {
+        "startLine": 65,
+        "startChar": 12,
+        "endLine": 65,
+        "endChar": 26
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30864d4f_65de1391",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "nit: add Changing this list will have no effect - change the list comprehensions above to actually change which of the set of tests are run.",
+      "range": {
+        "startLine": 105,
+        "startChar": 42,
+        "endLine": 105,
+        "endChar": 54
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724f904c_5d39439e",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "ubernit: no period after LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 27,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d76ac9a4_201f15da",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "Suggestion: Call this DecodeMode or DecodeOptions so it\u0027s more explicit what it impacts",
+      "range": {
+        "startLine": 144,
+        "startChar": 15,
+        "endLine": 144,
+        "endChar": 19
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5db1051d_fbc23890",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "Suggestion: \"kCodec\" is a bit too vague. To contrast it with kScanline, maybe kGetAllPixels.\n\nMaybe kScanline is too jargony (or perhaps refers to implementation details/old API names), and we could rename it to kIncrementalDecode.\n\nOk, as long as we are renaming the other two, we could simply call it kZeroInit since that Codec word doesn\u0027t really seem information-carrying.",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 14
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66662a62_36e11d18",
         "filename": "gm/png_codec.cpp",
         "patchSetId": 13
@@ -19,6 +249,99 @@
         "startChar": 0,
         "endLine": 322,
         "endChar": 0
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9afd2fde_460e132c",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "I think uninteresting is too vague. It may mean unsupported or \"previously unsupported\" [1], or \"meaningless\" and I think we should endeavor to be more precise where we can be.\n\n[1] https://codereview.chromium.org/1704433003\n\nFailing loudly sgtm",
+      "parentUuid": "66662a62_36e11d18",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 0
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "231bf5c4_a6177976",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "Does this need updating now that we are focusing on just the PNG codec in this file?",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 63
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0155380_952c158d",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "one value out of a set of possible values.\n\nparse_flag could probably be a static function in CommandLineFlags or a method on CommandLineFlags::StringArray",
+      "range": {
+        "startLine": 448,
+        "startChar": 43,
+        "endLine": 448,
+        "endChar": 48
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e61846e_8b9ecf53",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-07T13:30:59Z",
+      "side": 1,
+      "message": "nit: parse_and_validate_flags",
+      "range": {
+        "startLine": 469,
+        "startChar": 19,
+        "endLine": 469,
+        "endChar": 30
       },
       "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
