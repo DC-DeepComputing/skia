@@ -310,6 +310,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "939e7364_bcf97da9",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-07T14:39:23Z",
+      "side": 1,
+      "message": "Then you are back to the problem that the first user of the singleton will destroy it as it refs down to zero, I think.",
+      "parentUuid": "75eda124_e4d440e3",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
