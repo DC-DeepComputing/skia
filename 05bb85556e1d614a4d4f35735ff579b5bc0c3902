@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5797dd7_124fa8cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4a79f50_7113b732",
+      "range": {
+        "startLine": 11,
+        "startChar": 177,
+        "endLine": 11,
+        "endChar": 187
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8d95f9b_f813a554",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "nit: Break this into three lists _GRAYSCALE_TESTS, _COLOR_TRANSLUCENT_TESTS, etc\n\nI would also like some prose like:\n\"This decodes each of images using a particular mode into an SkImage with the color type and alpha type specified by the appropriate option. Then the image is drawn into a surface of the specified surface_config before being uploaded to Gold.\"",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 6
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "105c7c70_df022062",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8d95f9b_f813a554",
       "range": {
         "startLine": 6,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6c0e9cb_fb53b831",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "I\u0027m unsure what order you\u0027re referring to. My intent here was to list them in the order that they are interpolated in the test names. Could you please clarify?",
+      "parentUuid": "17ff2a5b_1ed18ceb",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f249df4_9657164f",
         "filename": "gm/png_codec.bzl",
         "patchSetId": 13
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce50965c_77bef2d8",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "\u003e nit: typo\n\nFixed.\n\n\u003e if you remove the conditional that skips it, does something crash?\n\nI just tried that for `png_codec_rgba8888-translucent_565_codec-zero-init_force-nonnative-premul-color_premul_test`, and it did not crash. The PNG images saved by `BazelGMRunner.cpp` looked fine to my untrained eye.\n\nWDYT?",
+      "parentUuid": "6f249df4_9657164f",
+      "range": {
+        "startLine": 28,
+        "startChar": 48,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6197909_ddce432d",
         "filename": "gm/png_codec.bzl",
         "patchSetId": 13
@@ -106,6 +202,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "Should this be png-codec to be consistent with other places where we use underscores to separate fields and dashes to separate things inside of a particular field?",
+      "range": {
+        "startLine": 63,
+        "startChar": 21,
+        "endLine": 63,
+        "endChar": 31
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f827466f_660eec00",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "I\u0027m not sure if using dashes in a test\u0027s \"base name\" generalizes well for tests with no additional fields. For example, today we have:\n\n - `//tests:cpu_only_tests`\n - `//tests:android_cpu_only_test`\n - `//tests:discardable_memory_tests`\n - `//tests:android_discardable_memory_test`\n\nUnder the proposed convention, these would become:\n\n - `//tests:cpu-only_tests`\n - `//tests:android_cpu-only_test`\n - `//tests:discardable-memory_tests`\n - `//tests:android_discardable-memory_test`\n\nWhich strikes me as unconventional.\n\nCan we leave it as-is for now, and rethink our naming conventions later once things are a bit more settled?",
+      "parentUuid": "f6197909_ddce432d",
       "range": {
         "startLine": 63,
         "startChar": 21,
@@ -162,6 +282,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e97f334b_f42f83bd",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30864d4f_65de1391",
+      "range": {
+        "startLine": 105,
+        "startChar": 42,
+        "endLine": 105,
+        "endChar": 54
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "724f904c_5d39439e",
@@ -175,6 +319,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "ubernit: no period after LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 27,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b542ae_671be51b",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "724f904c_5d39439e",
       "range": {
         "startLine": 2,
         "startChar": 27,
@@ -208,6 +376,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de9e82e8_da326a28",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d76ac9a4_201f15da",
+      "range": {
+        "startLine": 144,
+        "startChar": 15,
+        "endLine": 144,
+        "endChar": 19
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5db1051d_fbc23890",
@@ -221,6 +413,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "Suggestion: \"kCodec\" is a bit too vague. To contrast it with kScanline, maybe kGetAllPixels.\n\nMaybe kScanline is too jargony (or perhaps refers to implementation details/old API names), and we could rename it to kIncrementalDecode.\n\nOk, as long as we are renaming the other two, we could simply call it kZeroInit since that Codec word doesn\u0027t really seem information-carrying.",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 14
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21b5878a_dcddcf8e",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done, though I went with `kIncremental` rather than `kIncrementalDecode` because I thought the additional information carried by the latter wasn\u0027t worth it (the enum is already called `DecodeMode`).",
+      "parentUuid": "5db1051d_fbc23890",
       "range": {
         "startLine": 145,
         "startChar": 8,
@@ -278,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51a7c3dc_87281396",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Replaced \"uninteresting\" with \"meaningless\" everywhere.",
+      "parentUuid": "9afd2fde_460e132c",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 0
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "231bf5c4_a6177976",
@@ -291,6 +531,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "Does this need updating now that we are focusing on just the PNG codec in this file?",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 63
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54bdb3dc_f803a20b",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "I turned this into an explicit TODO for when we tackle those derived codecs (if at all).",
+      "parentUuid": "231bf5c4_a6177976",
       "range": {
         "startLine": 401,
         "startChar": 0,
@@ -324,6 +588,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb746b9f_3a602f96",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/736364",
+      "parentUuid": "f0155380_952c158d",
+      "range": {
+        "startLine": 448,
+        "startChar": 43,
+        "endLine": 448,
+        "endChar": 48
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e61846e_8b9ecf53",
@@ -337,6 +625,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "nit: parse_and_validate_flags",
+      "range": {
+        "startLine": 469,
+        "startChar": 19,
+        "endLine": 469,
+        "endChar": 30
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f52013c1_d49604d0",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-07T23:43:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e61846e_8b9ecf53",
       "range": {
         "startLine": 469,
         "startChar": 19,
