@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "752d39ee_ea2bc59a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-07T13:21:04Z",
+      "side": 1,
+      "message": "I don\u0027t know how much demand there is going to be for OpenGL going forward at all; that\u0027s really up to the team. I don\u0027t think there\u0027s any internal demand for it. I could even envision a world where GL support is handled by Dawn.",
+      "parentUuid": "9fd4389c_aaefdca1",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "d26737c048839628386f104d321473a0b9f3563b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4139fec5_f10f6ac4",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-05T16:19:15Z",
       "side": 1,
       "message": "nit: remove `and GLSL`.",
+      "range": {
+        "startLine": 138,
+        "startChar": 68,
+        "endLine": 138,
+        "endChar": 77
+      },
+      "revId": "d26737c048839628386f104d321473a0b9f3563b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc309c23_bc51d9f4",
+        "filename": "src/sksl/ir/SkSLLayout.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-07T13:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4139fec5_f10f6ac4",
       "range": {
         "startLine": 138,
         "startChar": 68,
