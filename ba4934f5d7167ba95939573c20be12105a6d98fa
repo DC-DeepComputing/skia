@@ -51,6 +51,24 @@
       "parentUuid": "343b3d54_f4d338f0",
       "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cdd3be1_fd75cb1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-07T14:27:46Z",
+      "side": 1,
+      "message": "Yes: https://g3doc.corp.google.com/company/teams/opensource/copyright.md?cl\u003dhead#the-year\n\nInterestingly, those suggest (if anything) extending the range of years as files are edited. I think our usual policy fits with what\u0027s described, though - when a \"new\" file is created (and isn\u0027t a pure copy/move), start with the current year. After that, don\u0027t update it.",
+      "parentUuid": "343b3d54_f4d338f0",
+      "revId": "ba4934f5d7167ba95939573c20be12105a6d98fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
