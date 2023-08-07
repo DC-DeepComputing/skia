@@ -214,6 +214,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "228aafdd_b9c7269a",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-08-07T14:31:12Z",
+      "side": 1,
+      "message": "Here is a sketch of what I mean.\n\n// Get the naked pointer with 1 ref on it.\nstatic SkFontMgr* singlton \u003d (something that produces sk_sp).get();\n\nreturn sk_ref_sp(singleton);\n\nNow, there is a SkFontMgr* with not problems.",
+      "parentUuid": "397661e6_5631ee3e",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
