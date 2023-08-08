@@ -90,4 +90,3 @@ DEF_TEST(SkContainerAllocatorBasic, reporter) {
         REPORTER_ASSERT(reporter, r == max_capacity(i));
     }
 }
-
