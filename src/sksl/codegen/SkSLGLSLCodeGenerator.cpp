@@ -1114,8 +1114,14 @@ void GLSLCodeGenerator::writeLiteral(const Literal& l) {
 }
 
 void GLSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
-    this->writeTypePrecision(f.returnType());
-    this->writeType(f.returnType());
+    if (!f.isMain() && !this->caps().fCanUseVoidInSequenceExpressions && f.returnType().isVoid()) {
+        // If we can't use void in sequence expressions, update void-typed user functions to return
+        // a (meaningless) float.
+        this->write("float");
+    } else {
+        this->writeTypePrecision(f.returnType());
+        this->writeType(f.returnType());
+    }
     this->write(" ");
     this->writeIdentifier(f.mangledName());
     this->write("(");
@@ -1179,6 +1185,13 @@ void GLSLCodeGenerator::writeFunction(const FunctionDefinition& f) {
             this->writeStatement(*stmt);
             this->finishLine();
         }
+    }
+
+    if (!f.declaration().isMain() && !this->caps().fCanUseVoidInSequenceExpressions &&
+        f.declaration().returnType().isVoid()) {
+        // If we can't use void in sequence expressions, we update void-typed user functions to
+        // return a (meaningless) float in case they are used in a sequence expression.
+        this->writeLine("return 0.0;");
     }
 
     fIndentation--;
@@ -1630,6 +1643,10 @@ void GLSLCodeGenerator::writeReturnStatement(const ReturnStatement& r) {
     if (r.expression()) {
         this->write(" ");
         this->writeExpression(*r.expression(), Precedence::kExpression);
+    } else if (!this->caps().fCanUseVoidInSequenceExpressions) {
+        // If we can't use void in sequence expressions, replace `return` statements with
+        // `return 0.0`. We also change the function return type to `float` to match.
+        this->write(" 0.0");
     }
     this->write(";");
 }
