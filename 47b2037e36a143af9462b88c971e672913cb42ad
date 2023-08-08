@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e86a8e7_28735365",
+        "filename": "tests/GradientTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-08T21:35:23Z",
+      "side": 1,
+      "message": "I\u0027d like to define this same test for Graphite, but I want to consult with Kevin about how to define shared tests between backends without using ifdefs.",
+      "revId": "47b2037e36a143af9462b88c971e672913cb42ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
