@@ -16,6 +16,23 @@
       "message": "See new gms: https://gold.skia.org/search?issue\u003d737136\u0026crs\u003dgerrit\u0026patchsets\u003d3\u0026corpus\u003dgm",
       "revId": "135442d46d4a1376886ffc359c3ead46db5c797c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dea35a1d_a41180b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-08-08T13:27:20Z",
+      "side": 1,
+      "message": "Technically non-OWNER LGTM, thanks for creating the magic incantations for this. I think it makes sense to wait for Ben\u0027s competent feedback. Thanks for adding these, that\u0027s fantastic! Great to see images in gold already.",
+      "revId": "135442d46d4a1376886ffc359c3ead46db5c797c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
