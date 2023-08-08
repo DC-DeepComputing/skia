@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "622902dd_66df0fa6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-08T18:17:36Z",
+      "side": 1,
+      "message": "Quick CL per our offline discussion. These changes add an explicit (likely redundant) verification of size values and ensures non-null buffers in the case of counts \u003e 0. PTAL 😊",
+      "revId": "8c45f548f9dfba496b1bcb7d577c9e4f658e5e8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
