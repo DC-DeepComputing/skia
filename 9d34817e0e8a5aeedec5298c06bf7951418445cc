@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4213f274_dad97f39",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T17:45:58Z",
+      "side": 1,
+      "message": "I made this mirror by running:\n```\ngo run ./bazel/gcs_mirror/gcs_mirror.go --url https://github.com/emscripten-core/emsdk/archive/refs/tags/3.1.44.tar.gz --sha256 cb8cded78f6953283429d724556e89211e51ac4d871fcf38e0b32405ee248e91\n```",
+      "range": {
+        "startLine": 17,
+        "startChar": 66,
+        "endLine": 17,
+        "endChar": 130
+      },
+      "revId": "9d34817e0e8a5aeedec5298c06bf7951418445cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
