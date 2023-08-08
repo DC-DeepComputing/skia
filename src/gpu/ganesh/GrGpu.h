@@ -655,7 +655,8 @@ public:
     // the GrAttachment.
     virtual sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& colorFormat,
                                                       SkISize dimensions,
-                                                      int numStencilSamples) = 0;
+                                                      int numStencilSamples,
+                                                      GrProtected) = 0;
 
     virtual GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) = 0;
 

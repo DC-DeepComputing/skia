@@ -132,8 +132,12 @@ sk_sp<SkSurface> SkSurface_Ganesh::onNewSurface(const SkImageInfo& info) {
     GrSurfaceOrigin origin = targetView.origin();
     // TODO: Make caller specify this (change virtual signature of onNewSurface).
     static const skgpu::Budgeted kBudgeted = skgpu::Budgeted::kNo;
+
+    bool isProtected = targetView.asRenderTargetProxy()->isProtected() == GrProtected::kYes;
+    SkDebugf("--------- SkSurface_Ganesh::onNewSurface %d\n", isProtected);
     return SkSurfaces::RenderTarget(
-            fDevice->recordingContext(), kBudgeted, info, sampleCount, origin, &this->props());
+            fDevice->recordingContext(), kBudgeted, info, sampleCount, origin, &this->props(),
+            /* shouldCreateWithMips= */ false, isProtected);
 }
 
 sk_sp<SkImage> SkSurface_Ganesh::onNewImageSnapshot(const SkIRect* subset) {
@@ -168,6 +172,9 @@ sk_sp<SkImage> SkSurface_Ganesh::onNewImageSnapshot(const SkIRect* subset) {
                                            budgeted,
                                            /*label=*/"SurfaceGpu_NewImageSnapshot");
     }
+
+    SkDebugf("---------- onNewImageSnapshot %d\n",
+             srcView.proxy()->isProtected() == skgpu::Protected::kYes);
 
     const SkImageInfo info = fDevice->imageInfo();
     if (!srcView.asTextureProxy()) {
@@ -587,7 +594,8 @@ sk_sp<SkSurface> RenderTarget(GrRecordingContext* rContext,
                               int sampleCount,
                               GrSurfaceOrigin origin,
                               const SkSurfaceProps* props,
-                              bool shouldCreateWithMips) {
+                              bool shouldCreateWithMips,
+                              bool isProtected) {
     if (!rContext) {
         return nullptr;
     }
@@ -603,7 +611,7 @@ sk_sp<SkSurface> RenderTarget(GrRecordingContext* rContext,
                                                 SkBackingFit::kExact,
                                                 sampleCount,
                                                 mipmapped,
-                                                GrProtected::kNo,
+                                                GrProtected(isProtected),
                                                 origin,
                                                 SkSurfacePropsCopyOrDefault(props),
                                                 skgpu::ganesh::Device::InitContents::kClear);
@@ -669,6 +677,9 @@ sk_sp<SkSurface> WrapBackendTexture(GrRecordingContext* rContext,
         return nullptr;
     }
 
+    SkDebugf("------------- WrapBackendTexture %d %d\n", tex.isProtected(),
+             proxy->isProtected() == skgpu::Protected::kYes);
+
     auto device = rContext->priv().createDevice(grColorType,
                                                 std::move(proxy),
                                                 std::move(colorSpace),
@@ -691,6 +702,8 @@ sk_sp<SkSurface> WrapBackendRenderTarget(GrRecordingContext* rContext,
                                          const SkSurfaceProps* props,
                                          RenderTargetReleaseProc relProc,
                                          ReleaseContext releaseContext) {
+    SkDebugf("-------------- WrapBackendRenderTarget %d\n", rt.isProtected());
+
     auto releaseHelper = skgpu::RefCntedCallback::Make(relProc, releaseContext);
 
     if (!rContext) {
@@ -712,6 +725,7 @@ sk_sp<SkSurface> WrapBackendRenderTarget(GrRecordingContext* rContext,
         return nullptr;
     }
 
+    SkDebugf("----------- WrapBackendRenderTarget\n");
     auto device = rContext->priv().createDevice(grColorType,
                                                 std::move(proxy),
                                                 std::move(colorSpace),

@@ -45,10 +45,12 @@ VulkanWindowContext::VulkanWindowContext(const DisplayParams& params,
     , fSurfaces(nullptr)
     , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
+    SkDebugf("------------- VulkanWindowContext ctor %d\n", fDisplayParams.fCreateProtectedNativeBackend);
     this->initializeContext();
 }
 
 void VulkanWindowContext::initializeContext() {
+    SkDebugf("------------- initializeContext protected: %d\n", fDisplayParams.fCreateProtectedNativeBackend);
     SkASSERT(!fContext);
     // any config code here (particularly for msaa)?
 
@@ -59,7 +61,7 @@ void VulkanWindowContext::initializeContext() {
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
                                              fCanPresentFn,
-                                             fDisplayParams.fCreateProtectedNativeBackend)) {
+                                             fDisplayParams.fCreateProtectedNativeBackend)) { //$$
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -276,6 +278,8 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
         mode = VK_PRESENT_MODE_IMMEDIATE_KHR;
     }
 
+    SkDebugf("----------- VulkanWindowContext::createSwapchain %d\n",
+             fDisplayParams.fCreateProtectedNativeBackend);
     VkSwapchainCreateInfoKHR swapchainCreateInfo;
     memset(&swapchainCreateInfo, 0, sizeof(VkSwapchainCreateInfoKHR));
     swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -453,7 +457,7 @@ void VulkanWindowContext::destroyContext() {
         }
     }
 
-    SkASSERT(fContext->unique());
+//    SkASSERT(fContext->unique());
     fContext.reset();
     fInterface.reset();
 

@@ -492,7 +492,7 @@ public:
      * Skip checks for GL errors and framebuffer completeness. Note that this does not skip
      *  checking shader compilation and program linking status.
      */
-    bool skipErrorChecks() const { return fSkipErrorChecks; }
+    bool skipErrorChecks() const { return false; }
 
     bool supportsProtected() const { return fSupportsProtected; }
 

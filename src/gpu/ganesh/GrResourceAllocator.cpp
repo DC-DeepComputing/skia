@@ -60,6 +60,7 @@ void GrResourceAllocator::addInterval(GrSurfaceProxy* proxy, unsigned int start,
     if (proxy->readOnly()) {
         auto resourceProvider = fDContext->priv().resourceProvider();
         if (proxy->isLazy() && !proxy->priv().doLazyInstantiation(resourceProvider)) {
+            SkDebugf("$$$$$$$$$$$$$$$$$$$$$$ failure 1\n");
             fFailedInstantiation = true;
         } else {
             // Since we aren't going to add an interval we won't revisit this proxy in assign(). So
@@ -345,6 +346,7 @@ bool GrResourceAllocator::planAssignment() {
             if (cur->proxy()->isFullyLazy()) {
                 fFailedInstantiation = !cur->proxy()->priv().doLazyInstantiation(resourceProvider);
                 if (fFailedInstantiation) {
+                    SkDebugf("$$$$$$$$$$$$$$$$$$$$$$ failure 2\n");
                     break;
                 }
             }
@@ -422,11 +424,17 @@ bool GrResourceAllocator::assign() {
         }
         if (cur->proxy()->isLazy()) {
             fFailedInstantiation = !cur->proxy()->priv().doLazyInstantiation(resourceProvider);
+            if (fFailedInstantiation) {
+                SkDebugf("$$$$$$$$$$$$$$$$$$$$$$ failure 3\n");
+            }
             continue;
         }
         Register* r = cur->getRegister();
         SkASSERT(r);
         fFailedInstantiation = !r->instantiateSurface(cur->proxy(), resourceProvider);
+        if (fFailedInstantiation) {
+            SkDebugf("$$$$$$$$$$$$$$$$$$$$$$ failure 4\n");
+        }
     }
     return !fFailedInstantiation;
 }

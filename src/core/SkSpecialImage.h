@@ -66,6 +66,7 @@ public:
     SkAlphaType alphaType() const { return fColorInfo.alphaType(); }
     SkColorType colorType() const { return fColorInfo.colorType(); }
     SkColorSpace* getColorSpace() const { return fColorInfo.colorSpace(); }
+    virtual bool isProtected() const = 0;
 
     /**
      *  Draw this SpecialImage into the canvas, automatically taking into account the image's subset

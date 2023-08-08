@@ -119,6 +119,7 @@ void GrGLTexture::onRelease() {
 
     if (fID) {
         if (GrBackendObjectOwnership::kBorrowed != fTextureIDOwnership) {
+            SkDebugf("----------- deleting %d\n", fID);
             GL_CALL(DeleteTextures(1, &fID));
         }
         fID = 0;

@@ -95,6 +95,8 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
         fromWindowLocal = fromWindow;
 #endif
 
+        SkDebugf("--------------- WrapAndroidHardwareBuffer %d\n", isProtectedContent);
+
         GrBackendTexture backendTexture =
                 GrAHardwareBufferUtils::MakeBackendTexture(dContext,
                                                            hardwareBuffer,
@@ -105,11 +107,13 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
                                                            &deleteImageCtx,
                                                            isProtectedContent,
                                                            backendFormat,
-                                                           true,
+                                                           /* isRenderable= */ true,
                                                            fromWindowLocal);
         if (!backendTexture.isValid()) {
             return nullptr;
         }
+
+        SkDebugf("----------- post MakeBackendTexture %d\n", backendTexture.isProtected());
 
         SkColorType colorType =
                 GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);

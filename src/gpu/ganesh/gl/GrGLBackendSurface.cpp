@@ -139,7 +139,9 @@ GrGLenum AsGLFormatEnum(const GrBackendFormat& format) {
 
 GrGLBackendTextureData::GrGLBackendTextureData(const GrGLTextureInfo& info,
                                                sk_sp<GrGLTextureParameters> params)
-        : fGLInfo(info, params) {}
+        : fGLInfo(info, params) {
+    SkDebugf("----------- GrGLBackendTextureData %d\n", info.isProtected());
+}
 
 GrBackendTextureData* GrGLBackendTextureData::copy() const {
     return new GrGLBackendTextureData(fGLInfo.info(), fGLInfo.refParameters());

@@ -176,6 +176,10 @@ bool GrSurfaceProxy::canSkipResourceAllocator() const {
 void GrSurfaceProxy::assign(sk_sp<GrSurface> surface) {
     SkASSERT(!fTarget && surface);
 
+    SkDebugf("------------- GrSurfaceProxy::assign %d %d\n",
+             this->isProtected() == skgpu::Protected::kYes,
+             surface->isProtected());
+
     SkDEBUGCODE(this->validateSurface(surface.get());)
 
     fTarget = std::move(surface);
@@ -287,6 +291,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
                                            std::string_view label,
                                            RectsMustMatch rectsMustMatch,
                                            sk_sp<GrRenderTask>* outTask) {
+    SkDebugf("------------- GrSurfaceProxy::Copy %d", src->isProtected() == skgpu::Protected::kYes);
     SkASSERT(!src->isFullyLazy());
     int width;
     int height;
@@ -351,6 +356,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
         }
     }
     // Can't use backend copies or draws.
+    SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$ !!\n");
     return nullptr;
 }
 
@@ -501,6 +507,7 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
 void GrSurfaceProxy::validateSurface(const GrSurface* surface) {
     SkASSERTF(surface->backendFormat() == fFormat, "%s != %s",
               surface->backendFormat().toStr().c_str(), fFormat.toStr().c_str());
+//    SkASSERT(skgpu::Protected(surface->isProtected()) == this->isProtected());
 
     this->onValidateSurface(surface);
 }

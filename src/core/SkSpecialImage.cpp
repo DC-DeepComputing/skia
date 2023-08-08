@@ -69,6 +69,7 @@ public:
     }
 
     size_t getSize() const override { return fBitmap.computeByteSize(); }
+    bool isProtected() const override { return false; }
 
     void onDraw(SkCanvas* canvas, SkScalar x, SkScalar y, const SkSamplingOptions& sampling,
                 const SkPaint* paint) const override {

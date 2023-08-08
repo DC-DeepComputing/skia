@@ -180,6 +180,8 @@ sk_sp<Device> Device::Make(GrRecordingContext* rContext,
                            GrSurfaceOrigin origin,
                            const SkSurfaceProps& surfaceProps,
                            InitContents init) {
+
+    SkDebugf("------------- Device::Make %d", proxy->isProtected() == GrProtected::kYes);
     auto sdc = SurfaceDrawContext::Make(rContext,
                                         colorType,
                                         std::move(proxy),
@@ -897,6 +899,8 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
         finalSubset = SkIRect::MakeSize(view.dimensions());
     }
 
+    SkDebugf("-------------- Device::snapSpecial %d\n",
+             view.proxy()->isProtected() == skgpu::Protected::kYes);
     return SkSpecialImages::MakeDeferredFromGpu(fContext.get(),
                                                 finalSubset,
                                                 kNeedNewImageUniqueID_SpecialImage,
@@ -1245,6 +1249,10 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode,
                                  sk_sp<SkColorSpace> colorSpace,
                                  GrSurfaceOrigin origin,
                                  const SkSurfaceProps& props) {
+
+    SkDebugf("------------- Device::replaceBackingProxy %d",
+             newRTP->isProtected() == GrProtected::kYes);
+
     auto sdc = SurfaceDrawContext::Make(fContext.get(), grColorType, std::move(newRTP),
                                         std::move(colorSpace), origin, props);
     if (!sdc) {
@@ -1361,6 +1369,10 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& cinfo, const SkPaint*) {
 
     SkASSERT(cinfo.fInfo.colorType() != kRGBA_1010102_SkColorType);
 
+    SkDebugf("-------  Device::onCreateDevice %d %dx%d\n",
+             fSurfaceDrawContext->asSurfaceProxy()->isProtected() == skgpu::Protected::kYes,
+             cinfo.fInfo.dimensions().fWidth,
+             cinfo.fInfo.dimensions().fHeight);
     auto sdc = SurfaceDrawContext::MakeWithFallback(
             fContext.get(),
             SkColorTypeToGrColorType(cinfo.fInfo.colorType()),
@@ -1387,12 +1399,17 @@ sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& info, const SkSurfacePro
     ASSERT_SINGLE_OWNER
     // TODO: Change the signature of newSurface to take a budgeted parameter.
     static const skgpu::Budgeted kBudgeted = skgpu::Budgeted::kNo;
+    bool isProtected = this->targetProxy()->isProtected() == GrProtected::kYes;
+    SkDebugf("-----------------Device::makeSurface %d\n", isProtected);
+
     return SkSurfaces::RenderTarget(fContext.get(),
                                     kBudgeted,
                                     info,
                                     fSurfaceDrawContext->numSamples(),
                                     fSurfaceDrawContext->origin(),
-                                    &props);
+                                    &props,
+                                    /* shouldCreateWithMips= */ false,
+                                    isProtected);
 }
 
 SkImageFilterCache* Device::getImageFilterCache() {
