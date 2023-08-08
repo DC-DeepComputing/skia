@@ -59,6 +59,7 @@ public:
     bool onCopyOnWrite(ContentChangeMode) override;
     sk_sp<const SkCapabilities> onCapabilities() override;
 
+    const Device* targetDevice() const { return fDevice.get(); }
     TextureProxyView readSurfaceView() const;
     sk_sp<SkImage> asImage() const;
     sk_sp<SkImage> makeImageCopy(const SkIRect* subset, Mipmapped) const;

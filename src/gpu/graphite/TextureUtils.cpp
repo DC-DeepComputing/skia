@@ -12,6 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkMipmap.h"
 
 #include "include/gpu/graphite/Context.h"
@@ -23,10 +24,12 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/CopyTask.h"
+#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/UploadTask.h"
@@ -170,91 +173,73 @@ size_t ComputeSize(SkISize dimensions,
     return finalSize;
 }
 
+namespace {
+
 sk_sp<SkSurface> make_surface_with_fallback(Recorder* recorder,
                                             const SkImageInfo& info,
-                                            Mipmapped mipmapped,
-                                            const SkSurfaceProps* surfaceProps) {
+                                            Mipmapped mipmapped) {
     SkColorType ct = recorder->priv().caps()->getRenderableColorType(info.colorType());
     if (ct == kUnknown_SkColorType) {
         return nullptr;
     }
 
-    return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, surfaceProps);
+    return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, nullptr);
 }
 
-sk_sp<SkImage> RescaleImage(Recorder* recorder,
-                            const SkImage* srcImage,
-                            SkIRect srcIRect,
-                            const SkImageInfo& dstInfo,
-                            SkImage::RescaleGamma rescaleGamma,
-                            SkImage::RescaleMode rescaleMode) {
-    // make a Surface matching dstInfo to rescale into
-    SkSurfaceProps surfaceProps = {};
-    sk_sp<SkSurface> dst = make_surface_with_fallback(recorder,
-                                                      dstInfo,
-                                                      Mipmapped::kNo,
-                                                      &surfaceProps);
-    if (!dst) {
-        return nullptr;
-    }
-
-    SkRect srcRect = SkRect::Make(srcIRect);
-    SkRect dstRect = SkRect::Make(dstInfo.dimensions());
-
-    // Get backing texture information for source Image.
-    // For now this needs to be texturable because we can't depend on copies to scale.
-    auto srcGraphiteImage = reinterpret_cast<const skgpu::graphite::Image*>(srcImage);
-
-    TextureProxyView imageView = srcGraphiteImage->textureProxyView();
-    if (!imageView.proxy()) {
-        // TODO: if not texturable, copy to a texturable format
-        return nullptr;
-    }
-
-    SkISize finalSize = SkISize::Make(dstRect.width(), dstRect.height());
-    if (finalSize == srcIRect.size()) {
-        rescaleGamma = Image::RescaleGamma::kSrc;
-        rescaleMode = Image::RescaleMode::kNearest;
-    }
-
-    // Within a rescaling pass tempInput is read from and tempOutput is written to.
-    // At the end of the pass tempOutput's texture is wrapped and assigned to tempInput.
-    const SkImageInfo& srcImageInfo = srcImage->imageInfo();
-    sk_sp<SkImage> tempInput(new Image(kNeedNewImageUniqueID,
-                                       imageView,
-                                       srcImageInfo.colorInfo()));
-    sk_sp<SkSurface> tempOutput;
+sk_sp<SkImage> handle_linear_gamma(Recorder* recorder,
+                                   const TextureProxyView& srcView,
+                                   const SkColorInfo& srcColorInfo,
+                                   SkIRect srcRect,
+                                   SkImage::RescaleGamma rescaleGamma) {
+    sk_sp<SkImage> src(new Image(kNeedNewImageUniqueID, srcView, srcColorInfo));
 
     // Assume we should ignore the rescale linear request if the surface has no color space since
     // it's unclear how we'd linearize from an unknown color space.
     if (rescaleGamma == Image::RescaleGamma::kLinear &&
-        srcImageInfo.colorSpace() &&
-        !srcImageInfo.colorSpace()->gammaIsLinear()) {
-        // Draw the src image into a new surface with linear gamma, and make that the new tempInput
-        sk_sp<SkColorSpace> linearGamma = srcImageInfo.colorSpace()->makeLinearGamma();
-        SkImageInfo gammaDstInfo = SkImageInfo::Make(srcIRect.size(),
-                                                     tempInput->imageInfo().colorType(),
+        srcColorInfo.colorSpace() &&
+        !srcColorInfo.colorSpace()->gammaIsLinear()) {
+        // Draw the src image into a new surface with linear gamma, and make that the new src
+        sk_sp<SkColorSpace> linearGamma = srcColorInfo.colorSpace()->makeLinearGamma();
+        SkImageInfo gammaDstInfo = SkImageInfo::Make(srcRect.size(),
+                                                     src->imageInfo().colorType(),
                                                      kPremul_SkAlphaType,
                                                      std::move(linearGamma));
-        tempOutput = make_surface_with_fallback(recorder,
-                                                gammaDstInfo,
-                                                Mipmapped::kNo,
-                                                &surfaceProps);
-        if (!tempOutput) {
+        sk_sp<SkSurface> gammaSurface = make_surface_with_fallback(recorder,
+                                                                   gammaDstInfo,
+                                                                   Mipmapped::kNo);
+        if (!gammaSurface) {
             return nullptr;
         }
-        SkCanvas* gammaDst = tempOutput->getCanvas();
-        SkRect gammaDstRect = SkRect::Make(srcIRect.size());
+        SkCanvas* gammaDst = gammaSurface->getCanvas();
+        SkRect gammaDstRect = SkRect::Make(srcRect.size());
 
         SkPaint paint;
-        gammaDst->drawImageRect(tempInput, srcRect, gammaDstRect,
+        gammaDst->drawImageRect(src, SkRect::Make(srcRect), gammaDstRect,
                                 SkSamplingOptions(SkFilterMode::kNearest), &paint,
                                 SkCanvas::kStrict_SrcRectConstraint);
-        tempInput = SkSurfaces::AsImage(tempOutput);
-        srcRect = gammaDstRect;
+        src = SkSurfaces::AsImage(gammaSurface);
     }
 
-    SkImageInfo outImageInfo = tempInput->imageInfo().makeAlphaType(kPremul_SkAlphaType);
+    return src;
+}
+
+bool progressive_downscale(Recorder* recorder,
+                           sk_sp<SkImage> src,
+                           const SkColorInfo& srcColorInfo,
+                           SkIRect srcIRect,
+                           SkISize finalSize,
+                           SkImage::RescaleMode rescaleMode,
+                           std::function<SkCanvas*(SkISize curSize)> predraw,
+                           std::function<bool(SkCanvas* curDst, int curLevel)> postdraw) {
+    SkRect srcRect = SkRect::Make(srcIRect);
+
+    // Within a rescaling pass tempInput is read from and tempOutput is written to.
+    // At the end of the pass tempOutput's texture is wrapped and assigned to tempInput.
+    sk_sp<SkImage> tempInput = src;
+    sk_sp<SkSurface> tempOutput;
+
+    SkColorInfo outColorInfo = srcColorInfo.makeAlphaType(kPremul_SkAlphaType);
+    int mipLevel = 1;
     do {
         SkISize nextDims = finalSize;
         if (rescaleMode != Image::RescaleMode::kNearest &&
@@ -271,22 +256,14 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
             }
         }
 
-        SkCanvas* stepDst;
-        SkRect stepDstRect;
-        if (nextDims == finalSize) {
-            stepDst = dst->getCanvas();
-            stepDstRect = dstRect;
-        } else {
-            SkImageInfo nextInfo = outImageInfo.makeDimensions(nextDims);
-            tempOutput = make_surface_with_fallback(recorder,
-                                                    nextInfo,
-                                                    Mipmapped::kNo,
-                                                    &surfaceProps);
+        SkCanvas* stepDst = predraw(nextDims);
+        if (!stepDst) {
+            SkImageInfo nextInfo = SkImageInfo::Make(nextDims, outColorInfo);
+            tempOutput = make_surface_with_fallback(recorder, nextInfo, Mipmapped::kNo);
             if (!tempOutput) {
-                return nullptr;
+                return false;
             }
             stepDst = tempOutput->getCanvas();
-            stepDstRect = SkRect::Make(tempOutput->imageInfo().dimensions());
         }
 
         SkSamplingOptions samplingOptions;
@@ -298,14 +275,135 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
                                SkSamplingOptions(SkFilterMode::kLinear);
         }
         SkPaint paint;
-        stepDst->drawImageRect(tempInput, srcRect, stepDstRect, samplingOptions, &paint,
+        stepDst->drawImageRect(tempInput, srcRect, SkRect::Make(nextDims), samplingOptions, &paint,
                                SkCanvas::kStrict_SrcRectConstraint);
+
+        if (!postdraw(stepDst, mipLevel)) {
+            return false;
+        }
 
         tempInput = SkSurfaces::AsImage(tempOutput);
         srcRect = SkRect::Make(nextDims);
+        ++mipLevel;
     } while (srcRect.width() != finalSize.width() || srcRect.height() != finalSize.height());
 
+    return true;
+}
+
+}  // anonymous namespace
+
+sk_sp<SkImage> RescaleImage(Recorder* recorder,
+                            const SkImage* srcImage,
+                            SkIRect srcRect,
+                            const SkImageInfo& dstInfo,
+                            SkImage::RescaleGamma rescaleGamma,
+                            SkImage::RescaleMode rescaleMode) {
+    // Get backing texture information for source Image.
+    // For now this needs to be texturable because we can't depend on copies to scale.
+    auto srcGraphiteImage = reinterpret_cast<const skgpu::graphite::Image*>(srcImage);
+
+    TextureProxyView srcView = srcGraphiteImage->textureProxyView();
+    if (!srcView.proxy()) {
+        // TODO: if not texturable, copy to a texturable format
+        return nullptr;
+    }
+
+    // make a Surface matching dstInfo to rescale into
+    sk_sp<SkSurface> dst = make_surface_with_fallback(recorder, dstInfo, Mipmapped::kNo);
+    if (!dst) {
+        return nullptr;
+    }
+
+    const SkISize finalSize = dstInfo.dimensions();
+    if (finalSize == srcRect.size()) {
+        rescaleGamma = Image::RescaleGamma::kSrc;
+        rescaleMode = Image::RescaleMode::kNearest;
+    }
+
+    const SkColorInfo& srcColorInfo = srcImage->imageInfo().colorInfo();
+    sk_sp<SkImage> src =
+            handle_linear_gamma(recorder, srcView, srcColorInfo, srcRect, rescaleGamma);
+    if (!src) {
+        return nullptr;
+    }
+
+    bool downscale_success = progressive_downscale(
+            recorder,
+            std::move(src),
+            src->imageInfo().colorInfo(),
+            srcRect,
+            finalSize,
+            rescaleMode,
+
+            // Called before every progressive downscale to set up a dst image.
+            // Use "dst" if we're on the final downscale.
+            [&dst, &finalSize](SkISize curDims) -> SkCanvas* {
+                if (curDims == finalSize) {
+                    return dst->getCanvas();
+                } else {
+                    return nullptr;
+                }
+            },
+
+            // Called after every progressive downscale; not used.
+            [](SkCanvas* curDst, int curLevel) { return true; });
+
+    if (!downscale_success) {
+        return nullptr;
+    }
+
     return SkSurfaces::AsImage(dst);
+}
+
+bool GenerateMipmaps(Recorder* recorder,
+                     sk_sp<TextureProxy> texture,
+                     const SkColorInfo& colorInfo) {
+    constexpr SkISize finalSize = SkISize::Make(1, 1);
+    constexpr SkImage::RescaleGamma rescaleGamma = SkImage::RescaleGamma::kSrc;
+    constexpr Image::RescaleMode rescaleMode = Image::RescaleMode::kRepeatedLinear;
+
+    SkASSERT(texture->mipmapped() == Mipmapped::kYes);
+
+    SkIRect srcRect = SkIRect::MakeSize(texture->dimensions());
+    sk_sp<SkImage> src = handle_linear_gamma(
+            recorder, TextureProxyView(texture), colorInfo, srcRect, rescaleGamma);
+    if (!src) {
+        return false;
+    }
+
+    const SkColorInfo& srcColorInfo = src->imageInfo().colorInfo();
+    return progressive_downscale(
+            recorder,
+            std::move(src),
+            srcColorInfo,
+            srcRect,
+            finalSize,
+            rescaleMode,
+
+            // Called before every progressive downscale to set up a dst image; not used.
+            [](SkISize curDims) { return nullptr; },
+
+            // Called after every progressive downscale.
+            // Copies the newly downscaled image to a mip level of "texture".
+            [recorder, &texture](SkCanvas* curDst, int curLevel) {
+                sk_sp<SkSurface> curDstSurface = sk_ref_sp(curDst->getSurface());
+
+                // Make sure the rescaling draw finishes before copying the results.
+                skgpu::graphite::Flush(curDstSurface);
+                sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(
+                        static_cast<const Surface*>(curDstSurface.get())
+                                ->readSurfaceView()
+                                .refProxy(),
+                        SkIRect::MakeSize(curDst->imageInfo().dimensions()),
+                        texture,
+                        {0, 0},
+                        curLevel);
+                if (!copyTask) {
+                    return false;
+                }
+                recorder->priv().add(std::move(copyTask));
+                return true;
+            });
 }
 
 } // namespace skgpu::graphite
