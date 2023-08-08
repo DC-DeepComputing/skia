@@ -103,6 +103,7 @@ static void test_expect_fail(skiatest::Reporter* r, const char* testFile, SkSL::
         "sksl/errors/StaticSwitchWithConditionalBreak.sksl",
         "sksl/errors/StaticSwitchWithConditionalContinue.sksl",
         "sksl/errors/StaticSwitchWithConditionalReturn.sksl",
+        "sksl/errors/InvalidBackendBindingFlagsGL.glsl",
 
         "sksl/errors/ComputeUniform.compute",
         "sksl/errors/DuplicateBinding.compute",
