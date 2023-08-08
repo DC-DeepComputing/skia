@@ -35,21 +35,12 @@ SHARED_FILES = [
     "Swizzle.h",
     "TiledTextureUtils.cpp",
     "TiledTextureUtils.h",
+    "ShaderErrorHandler.cpp",
 ]
 
 split_srcs_and_hdrs(
     name = "shared",
     files = SHARED_FILES,
-)
-
-CORE_FILES = [
-    "ShaderErrorHandler.cpp",
-    "SkRenderEngineAbortf.h",
-]
-
-split_srcs_and_hdrs(
-    name = "core",
-    files = CORE_FILES,
 )
 
 string_flag_with_values(
@@ -92,6 +83,15 @@ selects.config_setting_group(
         ":dawn_graphite",
         ":metal_graphite",
         ":vulkan_graphite",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+selects.config_setting_group(
+    name = "has_gpu_backend",
+    match_any = [
+        ":has_ganesh_backend",
+        ":has_graphite_backend",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -143,16 +143,17 @@ selects.config_setting_group(
 skia_filegroup(
     name = "srcs",
     srcs = [
-        ":core_srcs",
         ":shared_srcs",
-        "//src/gpu/ganesh:srcs",
-        "//src/gpu/tessellate:srcs",
-    ] + select_multi(
-        {
-            ":has_dawn": ["//src/gpu/dawn:srcs"],
-            ":has_vulkan": ["//src/gpu/vk:srcs"],
-        },
-    ),
+    ] + select_multi({
+        ":has_dawn": ["//src/gpu/dawn:srcs"],
+        ":has_vulkan": ["//src/gpu/vk:srcs"],
+    }) + select_multi({
+        ":has_ganesh_backend": [
+            "//src/gpu/ganesh:srcs",
+            "//src/gpu/tessellate:srcs",
+        ],
+        ":has_graphite_backend": ["//src/gpu/graphite:srcs"],
+    }),
     visibility = ["//src:__pkg__"],
 )
 
@@ -168,7 +169,6 @@ skia_filegroup(
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
-        ":core_hdrs",
         ":shared_hdrs",
         "//src/gpu/ganesh:private_hdrs",
         "//src/gpu/tessellate:private_hdrs",
