@@ -168,6 +168,9 @@ public:
     friend bool operator!=(const SkString& a, const SkString& b) {
         return !a.equals(b);
     }
+    friend bool operator<(const SkString& a, const SkString& b) {
+        return std::string(a.c_str()) < std::string(b.c_str());
+    }
 
     // these methods edit the string
 
