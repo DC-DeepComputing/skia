@@ -29,23 +29,16 @@ GrBackendTexture MakeGL(int width,
                         std::string_view label = {});
 }  // namespace GrBackendTextures
 
-class GrGLBackendTextureData final : public GrBackendTextureData {
+class GrGLBackendSurfacePriv {
 public:
-    GrGLBackendTextureData(const GrGLTextureInfo& info, sk_sp<GrGLTextureParameters> params);
-
-    const GrGLBackendTextureInfo& info() const { return fGLInfo; }
-
-private:
-    GrBackendTextureData* copy() const override;
-    bool isProtected() const override;
-    bool equal(const GrBackendTextureData* that) const override;
-    bool isSameTexture(const GrBackendTextureData* that) const override;
-    GrBackendFormat getBackendFormat() const override;
-#if defined(SK_DEBUG)
-    GrBackendApi type() const override { return GrBackendApi::kOpenGL; }
-#endif
-
-    GrGLBackendTextureInfo fGLInfo;
+    static GrBackendTexture MakeGL(int width,
+                        int height,
+                        skgpu::Mipmapped mipped,
+                        const GrGLTextureInfo& glInfo,
+                        sk_sp<GrGLTextureParameters> params,
+                        std::string_view label) {
+        return GrBackendTexture(width, height, mipped, glInfo, params, label);
+    }
 };
 
 #endif
