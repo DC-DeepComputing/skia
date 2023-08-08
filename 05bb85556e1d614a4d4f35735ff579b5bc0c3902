@@ -166,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a253ef4_a15b5850",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:05:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88a3b784_e6e0007c",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f249df4_9657164f",
@@ -227,6 +251,30 @@
       "side": 1,
       "message": "You should ask scroggo@ to see if he remembers or knows.",
       "parentUuid": "ce50965c_77bef2d8",
+      "range": {
+        "startLine": 28,
+        "startChar": 48,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2bd6624_a24b809a",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:05:47Z",
+      "side": 1,
+      "message": "According to scroggo@ some of the combinations skipped in DM\u0027s `get_decode_info()`[1] function are incompatible, and others are just redundant. I added a note below with the rationale as to why some combinations of arguments are excluded.\n\n[1] https://skia.googlesource.com/skia/+/5c8c7faf91319ad7888f937565ad341d31a3746a/dm/DMSrcSink.cpp#403",
+      "parentUuid": "bfb82ded_47ddaff7",
       "range": {
         "startLine": 28,
         "startChar": 48,
@@ -321,6 +369,30 @@
       "writtenOn": "2023-08-07T13:30:59Z",
       "side": 1,
       "message": "optional/suggestion: put surface_config last so then the options are in the order are roughly used.",
+      "range": {
+        "startLine": 65,
+        "startChar": 12,
+        "endLine": 65,
+        "endChar": 26
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ddf6062_5fc7d16c",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:05:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e034784e_87d3e4fd",
       "range": {
         "startLine": 65,
         "startChar": 12,
@@ -628,6 +700,30 @@
       "side": 1,
       "message": "Do you know that those are \"meaningless\" or could some of them mean \"unsupported\"?",
       "parentUuid": "51a7c3dc_87281396",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 0
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e36974f_41089e3e",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:05:47Z",
+      "side": 1,
+      "message": "As per our offline chat, scroggo@ believes some of these combinations of arguments are incompatible and some others are redundant. For clarity, I\u0027ve replaced \"meaningless\" with \"incompatible\" or \"redundant\" as per his assessment.",
+      "parentUuid": "5691d463_ca35f014",
       "range": {
         "startLine": 318,
         "startChar": 0,
