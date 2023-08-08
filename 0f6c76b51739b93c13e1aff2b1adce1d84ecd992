@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b24c0d_6c177e2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:17:05Z",
+      "side": 1,
+      "message": "🚢",
+      "parentUuid": "16291c15_35207c71",
+      "revId": "0f6c76b51739b93c13e1aff2b1adce1d84ecd992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc846349_5004b89a",
@@ -88,6 +106,30 @@
       "writtenOn": "2023-08-08T21:16:58Z",
       "side": 1,
       "message": "Right, I think you only need the friend declaration (which implicitly serves as a forward declaration of a class).",
+      "parentUuid": "bc846349_5004b89a",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 16
+      },
+      "revId": "0f6c76b51739b93c13e1aff2b1adce1d84ecd992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54ff0cfd_cff86903",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:17:05Z",
+      "side": 1,
+      "message": "You\u0027re right, just the friend declare is enough.",
       "parentUuid": "bc846349_5004b89a",
       "range": {
         "startLine": 50,
