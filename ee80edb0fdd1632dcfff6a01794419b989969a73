@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c48456fe_cdceca44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-08T19:10:44Z",
+      "side": 1,
+      "message": "This is part of the fix for https://b.corp.google.com/issues/242266174",
+      "revId": "ee80edb0fdd1632dcfff6a01794419b989969a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
