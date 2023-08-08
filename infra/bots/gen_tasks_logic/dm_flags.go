@@ -58,12 +58,21 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		"--nameByHash",
 	}
 
-	configs := []string{}
-	skipped := []string{}
+	var configs []string
+	var skipped []string
+	var srcs []string
 
 	hasConfig := func(cfg string) bool {
 		for _, c := range configs {
 			if c == cfg {
+				return true
+			}
+		}
+		return false
+	}
+	hasSrc := func(src string) bool {
+		for _, s := range srcs {
+			if s == src {
 				return true
 			}
 		}
@@ -77,15 +86,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		rv := make([]string, 0, len(slice))
 		for _, e := range slice {
 			if m[e] {
-				rv = append(rv, e)
-			}
-		}
-		return rv
-	}
-	remove := func(slice []string, elem string) []string {
-		rv := make([]string, 0, len(slice))
-		for _, e := range slice {
-			if e != elem {
 				rv = append(rv, e)
 			}
 		}
@@ -117,11 +117,17 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	// See DM.cpp for more, especially should_skip(). ~ negates the match.
 	skip := func(config, src, srcOptions, name string) {
 		// config is also called "sink" in DM
-		if config == "_" ||
-			hasConfig(config) ||
-			(config[0] == '~' && hasConfig(config[1:])) {
-			skipped = append(skipped, config, src, srcOptions, name)
+		without_not := strings.TrimPrefix(config, "~")
+		if config != ALL && !hasConfig(without_not) {
+			// Do not apply a rule if the config was not being run.
+			return
 		}
+		// For historical reasons, we use test for the skip rule and tests for
+		// the src name.
+		if src != ALL && !hasSrc(src) {
+			return // Do not apply a rule if the config was not being run.
+		}
+		skipped = append(skipped, config, src, srcOptions, name)
 	}
 
 	// Keys.
@@ -137,6 +143,103 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 	args = append(args, "--key")
 	args = append(args, keys...)
+
+	// By default, run these sources everywhere.
+	srcMap := map[string]bool{
+		"tests":      true,
+		"gm":         true,
+		"image":      true,
+		"colorImage": true,
+		"svg":        true,
+		"skp":        true,
+	}
+	removeSrc := func(src string) {
+		if _, ok := srcMap[src]; !ok {
+			panic("Invalid src " + src)
+		}
+		srcMap[src] = false
+	}
+
+	// Eventually I'd like these to pass, but for now just skip 'em.
+	if b.extraConfig("SK_FORCE_RASTER_PIPELINE_BLITTER") {
+		removeSrc("tests")
+	}
+
+	if b.model("Spin513") {
+		removeSrc("tests")
+	}
+
+	if b.extraConfig("NativeFonts") { // images won't exercise native font integration :)
+		removeSrc("image")
+		removeSrc("colorImage")
+	}
+
+	if b.matchExtraConfig("Graphite") {
+		removeSrc("image")
+		removeSrc("colorImage")
+		removeSrc("svg")
+	}
+
+	// Remove skps for all bots except for a select few. On bots that will run SKPs remove some of their other tests.
+	if b.matchExtraConfig("DDL", "PDF") {
+		// The DDL and PDF bots just render the large skps and the gms
+		removeSrc("tests")
+		removeSrc("image")
+		removeSrc("colorImage")
+		removeSrc("svg")
+	} else if b.matchExtraConfig("OldestSupportedSkpVersion") {
+		// The OldestSupportedSkpVersion bot only renders skps.
+		removeSrc("tests")
+		removeSrc("gm")
+		removeSrc("image")
+		removeSrc("colorImage")
+		removeSrc("svg")
+	} else if b.matchExtraConfig("FailFlushTimeCallbacks") {
+		// The FailFlushTimeCallbacks bot only runs skps, gms and svgs
+		removeSrc("tests")
+		removeSrc("image")
+		removeSrc("colorImage")
+	} else {
+		// No other bots render the .skps.
+		removeSrc("skp")
+	}
+
+	if b.extraConfig("TSAN") {
+		// skbug.com/10848
+		removeSrc("svg")
+		// skbug.com/12900 avoid OOM on
+		//   Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan
+		// Avoid lots of spurious TSAN failures on
+		//   Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan
+		//   Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-DDL3_TSAN_Vulkan
+		if b.Name == "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan" ||
+			b.Name == "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan" ||
+			b.Name == "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-DDL3_TSAN_Vulkan" {
+			skip("_", "test", "_", "_")
+		}
+	}
+
+	if !b.gpu() && b.Name != "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN" {
+		// On CPU SVGs we only care about parsing. Only run them on the above task.
+		removeSrc("svg")
+	}
+
+	for src := range srcMap {
+		srcs = append(srcs, src)
+	}
+	if len(srcs) == 0 {
+		panic("no sources for " + b.Name)
+	}
+	sort.Strings(srcs)
+	args = append(args, "--src")
+	args = append(args, srcs...)
+	if b.gpu() {
+		// Don't run the "svgparse_*" svgs on GPU.
+		skip(ALL, "svg", ALL, "svgparse_")
+	} else if b.Name == "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN" {
+		// Only run the CPU SVGs on 8888.
+		skip("~8888", "svg", ALL, ALL)
+	}
 
 	// This enables non-deterministic random seeding of the GPU FP optimization
 	// test.
@@ -669,96 +772,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	args = append(args, "--config")
+	sort.Strings(configs)
 	args = append(args, configs...)
-
-	removeFromArgs := func(arg string) {
-		args = remove(args, arg)
-	}
-
-	// Run tests, gms, and image decoding tests everywhere.
-	args = append(args, "--src", "tests", "gm", "image", "lottie", "colorImage", "svg", "skp")
-	if b.gpu() {
-		// Don't run the "svgparse_*" svgs on GPU.
-		skip(ALL, "svg", ALL, "svgparse_")
-	} else if b.Name == "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN" {
-		// Only run the CPU SVGs on 8888.
-		skip("~8888", "svg", ALL, ALL)
-	} else {
-		// On CPU SVGs we only care about parsing. Only run them on the above bot.
-		removeFromArgs("svg")
-	}
-
-	// Eventually I'd like these to pass, but for now just skip 'em.
-	if b.extraConfig("SK_FORCE_RASTER_PIPELINE_BLITTER") {
-		removeFromArgs("tests")
-	}
-
-	if b.model("Spin513") {
-		removeFromArgs("tests")
-	}
-
-	if b.extraConfig("NativeFonts") { // images won't exercise native font integration :)
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-	}
-
-	if b.matchExtraConfig("Graphite") {
-		removeFromArgs("image")
-		removeFromArgs("lottie")
-		removeFromArgs("colorImage")
-		removeFromArgs("svg")
-	}
-
-	// Remove skps for all bots except for a select few. On bots that will run SKPs remove some of their other tests.
-	if b.matchExtraConfig("DDL", "PDF") {
-		// The DDL and PDF bots just render the large skps and the gms
-		removeFromArgs("tests")
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-		removeFromArgs("svg")
-	} else if b.matchExtraConfig("OldestSupportedSkpVersion") {
-		// The OldestSupportedSkpVersion bot only renders skps.
-		removeFromArgs("tests")
-		removeFromArgs("gm")
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-		removeFromArgs("svg")
-	} else if b.matchExtraConfig("FailFlushTimeCallbacks") {
-		// The FailFlushTimeCallbacks bot only runs skps, gms and svgs
-		removeFromArgs("tests")
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-	} else {
-		// No other bots render the .skps.
-		removeFromArgs("skp")
-	}
-
-	if b.extraConfig("Lottie") {
-		// Only run the lotties on Lottie bots.
-		removeFromArgs("tests")
-		removeFromArgs("gm")
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-		removeFromArgs("svg")
-		removeFromArgs("skp")
-	} else {
-		removeFromArgs("lottie")
-	}
-
-	if b.extraConfig("TSAN") {
-		// skbug.com/10848
-		removeFromArgs("svg")
-		// skbug.com/12900 avoid OOM on
-		//   Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan
-		// Avoid lots of spurious TSAN failures on
-		//   Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan
-		//   Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-DDL3_TSAN_Vulkan
-		if b.Name == "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan" ||
-			b.Name == "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan" ||
-			b.Name == "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-DDL3_TSAN_Vulkan" {
-			skip("_", "test", "_", "_")
-		}
-	}
 
 	// TODO: ???
 	skip("f16", ALL, ALL, "dstreadshuffle")
@@ -1168,7 +1183,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655|Xe)") {
 		skip(ALL, "tests", ALL, "SkSLSwitchDefaultOnly_GPU") // skia:12465
-		skip(ALL, "tests", ALL, "ImageFilterCropRect_Gpu") // b/294080402
+		skip(ALL, "tests", ALL, "ImageFilterCropRect_Gpu")   // b/294080402
 	}
 
 	if b.extraConfig("Dawn") {
