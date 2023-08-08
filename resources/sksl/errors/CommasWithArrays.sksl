@@ -1,0 +1,19 @@
+struct S {
+    int array[2];
+};
+
+void fn() {
+    S myStruct;
+    int myArray[2];
+
+    myStruct, 123;
+    123, myStruct;
+    myArray, 123;
+    123, myArray;
+    myArray, myStruct;
+    myStruct, myArray;
+}
+
+/*%%*
+
+*%%*/
