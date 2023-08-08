@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure if this is really the right solution to this problem. Could there be a situation where a client has a texture that they want to sample with mipmaps but also use as a render target? If so, would we need to expose the concept of a backend texture view so the client could have multiple views for the same texture?",
       "revId": "1c886cbf264242e568a729f82bb811801e0a37ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "442890d5_7512a10c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-08T21:37:14Z",
+      "side": 1,
+      "message": "I think we talked about exposing backend texture views last week. But for the moment I think this is fine.",
+      "parentUuid": "27296b48_1652a839",
+      "revId": "1c886cbf264242e568a729f82bb811801e0a37ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
