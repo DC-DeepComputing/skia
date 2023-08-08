@@ -765,7 +765,7 @@ static bool rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
 
 static bool rewind_if_necessary(Edge* edge, EdgeList* activeEdges, Vertex** current,
                                 const Comparator& c) {
-    if (!activeEdges || !current) {
+    if (!activeEdges || !current || !edge) {
         return true;
     }
     Vertex* top = edge->fTop;
@@ -853,6 +853,9 @@ bool GrTriangulator::setBottom(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
 
 bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
+    if (!edge || !other) {
+        return false;
+    }
     if (coincident(edge->fTop->fPoint, other->fTop->fPoint)) {
         TESS_LOG("merging coincident above edges (%g, %g) -> (%g, %g)\n",
                  edge->fTop->fPoint.fX, edge->fTop->fPoint.fY,
@@ -885,6 +888,9 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
 
 bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
+    if (!edge || !other) {
+        return false;
+    }
     if (coincident(edge->fBottom->fPoint, other->fBottom->fPoint)) {
         TESS_LOG("merging coincident below edges (%g, %g) -> (%g, %g)\n",
                  edge->fTop->fPoint.fX, edge->fTop->fPoint.fY,
