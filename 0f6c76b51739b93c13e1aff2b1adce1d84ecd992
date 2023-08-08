@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce4ab2a_b3f1bf72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-08T21:07:14Z",
+      "side": 1,
+      "message": "Adding Brian to reviewers for the `//include/codec/SkCodec.h` change.",
+      "revId": "0f6c76b51739b93c13e1aff2b1adce1d84ecd992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
