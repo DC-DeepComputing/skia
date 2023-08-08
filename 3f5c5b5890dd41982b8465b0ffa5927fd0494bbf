@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9500a104_a3b0cc38",
+        "filename": "tools/flags/CommandLineFlags.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T14:23:44Z",
+      "side": 1,
+      "message": "nit: As a public method, this should be parseAndValidate (only static internal functions use snake case)",
+      "range": {
+        "startLine": 170,
+        "startChar": 20,
+        "endLine": 170,
+        "endChar": 38
+      },
+      "revId": "3f5c5b5890dd41982b8465b0ffa5927fd0494bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
