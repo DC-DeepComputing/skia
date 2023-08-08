@@ -17,6 +17,7 @@ IWYU_HDRS = [
     "SkAPI.h",
     "SkAlign.h",
     "SkAlignedStorage.h",
+    "SkAnyTrivial.h",
     "SkAssert.h",
     "SkAttributes.h",
     "SkCPUTypes.h",
