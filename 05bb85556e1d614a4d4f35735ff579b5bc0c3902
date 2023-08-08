@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88a3b784_e6e0007c",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T14:31:06Z",
+      "side": 1,
+      "message": "My suggestion is to re-order both the options here as well as the ones in the test names so they follow \"the story of being used\", that is, if we have to explain in prose (as above) what they all do, we put them in that order also.\n\nSince surface_config is the last thing used (for the draw), it seemed odd that it should be listed and interpolated first.",
+      "parentUuid": "d6c0e9cb_fb53b831",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f249df4_9657164f",
         "filename": "gm/png_codec.bzl",
         "patchSetId": 13
@@ -191,6 +215,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfb82ded_47ddaff7",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T14:31:06Z",
+      "side": 1,
+      "message": "You should ask scroggo@ to see if he remembers or knows.",
+      "parentUuid": "ce50965c_77bef2d8",
+      "range": {
+        "startLine": 28,
+        "startChar": 48,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6197909_ddce432d",
         "filename": "gm/png_codec.bzl",
         "patchSetId": 13
@@ -226,6 +274,30 @@
       "side": 1,
       "message": "I\u0027m not sure if using dashes in a test\u0027s \"base name\" generalizes well for tests with no additional fields. For example, today we have:\n\n - `//tests:cpu_only_tests`\n - `//tests:android_cpu_only_test`\n - `//tests:discardable_memory_tests`\n - `//tests:android_discardable_memory_test`\n\nUnder the proposed convention, these would become:\n\n - `//tests:cpu-only_tests`\n - `//tests:android_cpu-only_test`\n - `//tests:discardable-memory_tests`\n - `//tests:android_discardable-memory_test`\n\nWhich strikes me as unconventional.\n\nCan we leave it as-is for now, and rethink our naming conventions later once things are a bit more settled?",
       "parentUuid": "f6197909_ddce432d",
+      "range": {
+        "startLine": 63,
+        "startChar": 21,
+        "endLine": 63,
+        "endChar": 31
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "264a0d8c_c4f63bcd",
+        "filename": "gm/png_codec.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T14:31:06Z",
+      "side": 1,
+      "message": "Works for me",
+      "parentUuid": "f827466f_660eec00",
       "range": {
         "startLine": 63,
         "startChar": 21,
@@ -447,6 +519,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9360494_7ecde6f2",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T14:31:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "21b5878a_dcddcf8e",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 14
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66662a62_36e11d18",
@@ -508,6 +604,30 @@
       "side": 1,
       "message": "Replaced \"uninteresting\" with \"meaningless\" everywhere.",
       "parentUuid": "9afd2fde_460e132c",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 0
+      },
+      "revId": "05bb85556e1d614a4d4f35735ff579b5bc0c3902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5691d463_ca35f014",
+        "filename": "gm/png_codec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-08T14:31:06Z",
+      "side": 1,
+      "message": "Do you know that those are \"meaningless\" or could some of them mean \"unsupported\"?",
+      "parentUuid": "51a7c3dc_87281396",
       "range": {
         "startLine": 318,
         "startChar": 0,
