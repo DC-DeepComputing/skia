@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb49ef2_8785a2bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-08T17:34:23Z",
+      "side": 1,
+      "message": "It is quite disappointing that this Skia test specific file is getting built in any other project. It looks like both Skottie and Dawn/Angle(!) may be leaking this into the Chromium build. Do you happen to know which was failing in the Chromium build?",
+      "revId": "a05215fb4c9cd450fadde4c5a396093fd596997f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e6ec47_d7753fa2",
+        "filename": "tools/fonts/TestTypeface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-08T17:34:23Z",
+      "side": 1,
+      "message": "This should just be `SK_ABORT(\"bad verb\")`. This file should only be used in tests and should fail release or debug.",
+      "revId": "a05215fb4c9cd450fadde4c5a396093fd596997f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
