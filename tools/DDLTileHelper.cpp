@@ -207,7 +207,7 @@ void DDLTileHelper::TileData::CreateBackendTexture(GrDirectContext* direct, Tile
                                          GrRenderable::kYes,
                                          GrProtected::kNo,
                                          /*label=*/"DDLTile_TileData_CreateBackendTexture");
-    tile->fCallbackContext->setBackendTexture(beTex);
+    tile->fCallbackContext->setBackendTexture(std::move(beTex));
 }
 
 void DDLTileHelper::TileData::DeleteBackendTexture(GrDirectContext* dContext, TileData* tile) {

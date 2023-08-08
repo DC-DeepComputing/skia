@@ -41,7 +41,7 @@ public:
 
     const GrBackendFormat& backendFormat() const { return fBackendFormat; }
 
-    void setBackendTexture(const GrBackendTexture& backendTexture);
+    void setBackendTexture(GrBackendTexture&& backendTexture);
 
     void destroyBackendTexture();
 

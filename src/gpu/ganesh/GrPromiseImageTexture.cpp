@@ -7,9 +7,9 @@
 
 #include "include/private/chromium/GrPromiseImageTexture.h"
 
-GrPromiseImageTexture::GrPromiseImageTexture(const GrBackendTexture& backendTexture) {
+GrPromiseImageTexture::GrPromiseImageTexture(GrBackendTexture&& backendTexture) {
     SkASSERT(backendTexture.isValid());
-    fBackendTexture = backendTexture;
+    fBackendTexture = std::move(backendTexture);
 }
 
 GrPromiseImageTexture::~GrPromiseImageTexture() {}

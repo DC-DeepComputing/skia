@@ -111,7 +111,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     if (!managedTex) {
         return;
     }
-    auto tex = managedTex->texture();
+    const GrBackendTexture& tex = managedTex->texture();
     // Wrap the backend surface but tell it rendering with MSAA so that the wrapped texture is the
     // resolve.
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,

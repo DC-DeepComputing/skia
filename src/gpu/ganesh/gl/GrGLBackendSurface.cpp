@@ -141,10 +141,11 @@ GrGLBackendTextureData::GrGLBackendTextureData(const GrGLTextureInfo& info,
                                                sk_sp<GrGLTextureParameters> params)
         : fGLInfo(info, params) {}
 
+/*
 GrBackendTextureData* GrGLBackendTextureData::copy() const {
     return new GrGLBackendTextureData(fGLInfo.info(), fGLInfo.refParameters());
 }
-
+*/
 bool GrGLBackendTextureData::isProtected() const { return fGLInfo.isProtected(); }
 
 bool GrGLBackendTextureData::equal(const GrBackendTextureData* that) const {

@@ -59,7 +59,7 @@ private:
     virtual bool equal(const GrBackendTextureData* that) const = 0;
     virtual bool isSameTexture(const GrBackendTextureData*) const = 0;
     virtual GrBackendFormat getBackendFormat() const = 0;
-    virtual GrBackendTextureData* copy() const = 0;
+//    virtual GrBackendTextureData* copy() const = 0;
 };
 
 class GrBackendRenderTargetData {

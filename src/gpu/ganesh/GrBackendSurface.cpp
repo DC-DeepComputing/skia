@@ -578,11 +578,11 @@ void GrBackendTexture::cleanup() {
 #endif
 }
 
-GrBackendTexture::GrBackendTexture(const GrBackendTexture& that) : fIsValid(false) {
-    *this = that;
+GrBackendTexture::GrBackendTexture(GrBackendTexture&& that) : fIsValid(false) {
+    *this = std::move(that);
 }
 
-GrBackendTexture& GrBackendTexture::operator=(const GrBackendTexture& that) {
+GrBackendTexture& GrBackendTexture::operator=(GrBackendTexture&& that) {
     if (!that.isValid()) {
         this->cleanup();
         fIsValid = false;
@@ -600,7 +600,7 @@ GrBackendTexture& GrBackendTexture::operator=(const GrBackendTexture& that) {
 
     switch (that.fBackend) {
         case GrBackendApi::kOpenGL:
-            fTextureData.reset(that.fTextureData->copy());
+            fTextureData = std::move(that.fTextureData);
             break;
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:

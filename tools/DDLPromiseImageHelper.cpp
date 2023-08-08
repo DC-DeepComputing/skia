@@ -80,10 +80,10 @@ PromiseImageCallbackContext::~PromiseImageCallbackContext() {
     }
 }
 
-void PromiseImageCallbackContext::setBackendTexture(const GrBackendTexture& backendTexture) {
+void PromiseImageCallbackContext::setBackendTexture(GrBackendTexture&& backendTexture) {
     SkASSERT(!fPromiseImageTexture);
     SkASSERT(fBackendFormat == backendTexture.getBackendFormat());
-    fPromiseImageTexture = GrPromiseImageTexture::Make(backendTexture);
+    fPromiseImageTexture = GrPromiseImageTexture::Make(std::move(backendTexture));
 }
 
 void PromiseImageCallbackContext::destroyBackendTexture() {
@@ -192,7 +192,7 @@ void DDLPromiseImageHelper::CreateBETexturesForPromiseImage(GrDirectContext* dir
             direct->checkAsyncWorkCompletion();
         }
 
-        callbackContext->setBackendTexture(backendTex);
+        callbackContext->setBackendTexture(std::move(backendTex));
     }
 }
 

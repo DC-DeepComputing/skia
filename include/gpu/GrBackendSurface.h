@@ -279,11 +279,11 @@ public:
                      const GrMockTextureInfo& mockInfo,
                      std::string_view label = {});
 
-    GrBackendTexture(const GrBackendTexture& that);
+    GrBackendTexture(GrBackendTexture&& that);
 
     ~GrBackendTexture();
 
-    GrBackendTexture& operator=(const GrBackendTexture& that);
+    GrBackendTexture& operator=(GrBackendTexture&& that);
 
     SkISize dimensions() const { return {fWidth, fHeight}; }
     int width() const { return fWidth; }
@@ -398,7 +398,7 @@ private:
     bool fIsValid;
     int fWidth;         //<! width in pixels
     int fHeight;        //<! height in pixels
-    const std::string fLabel;
+    std::string fLabel;
     GrMipmapped fMipmapped;
     GrBackendApi fBackend;
     GrTextureType fTextureType;

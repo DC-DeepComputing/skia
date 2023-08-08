@@ -25,17 +25,17 @@ public:
     GrPromiseImageTexture& operator=(const GrPromiseImageTexture&) = delete;
     GrPromiseImageTexture& operator=(GrPromiseImageTexture&&) = delete;
 
-    static sk_sp<GrPromiseImageTexture> Make(const GrBackendTexture& backendTexture) {
+    static sk_sp<GrPromiseImageTexture> Make(GrBackendTexture&& backendTexture) {
         if (!backendTexture.isValid()) {
             return nullptr;
         }
-        return sk_sp<GrPromiseImageTexture>(new GrPromiseImageTexture(backendTexture));
+        return sk_sp<GrPromiseImageTexture>(new GrPromiseImageTexture(std::move(backendTexture)));
     }
 
-    GrBackendTexture backendTexture() const { return fBackendTexture; }
+    const GrBackendTexture& backendTexture() const { return fBackendTexture; }
 
 private:
-    explicit GrPromiseImageTexture(const GrBackendTexture& backendTexture);
+    explicit GrPromiseImageTexture(GrBackendTexture&& backendTexture);
 
     GrBackendTexture fBackendTexture;
 };

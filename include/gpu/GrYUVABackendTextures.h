@@ -96,7 +96,7 @@ public:
         return fTextures;
     }
 
-    GrBackendTexture texture(int i) const {
+    const GrBackendTexture& texture(int i) const {
         SkASSERT(i >= 0 && i < SkYUVAInfo::kMaxPlanes);
         return fTextures[static_cast<size_t>(i)];
     }
