@@ -16,6 +16,24 @@
       "message": "This is just setting up the scaffolding for a new module, right? Source code and implementation to follow?",
       "revId": "2343cf297a20e4a703ae2231ba7f323d8de2c17a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c7891b3_ab9368dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-08-08T17:58:02Z",
+      "side": 1,
+      "message": "Yes. I updated the checkin comment to reflect that.",
+      "parentUuid": "f298c03e_522de0cf",
+      "revId": "2343cf297a20e4a703ae2231ba7f323d8de2c17a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
