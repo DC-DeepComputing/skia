@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d95c20a_513b9e0b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-08T20:48:12Z",
+      "side": 1,
+      "message": "Let\u0027s list https://g-issues.skia.org/issues/40045247 as a relevant bug.",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9bf6e12_aa20505f",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-08T20:48:12Z",
+      "side": 1,
+      "message": "Raising the others should be fine, but I think we should keep the `minSdkVersion` as low as we can. Did we need to raise this to support an API, or for simplicity?",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0d352bc_87da2feb",
+        "filename": "platform_tools/android/apps/viewer/src/main/AndroidManifest.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-08T20:48:12Z",
+      "side": 1,
+      "message": "Looks like this is https://developer.android.com/topic/security/risks/android-exported ? Seems fine, but why did you need it? In general, I like separate CLs for separate changes, but so long as the motivation is well documented in the commit message it\u0027s fine to have loosely related changes.",
+      "range": {
+        "startLine": 14,
+        "startChar": 45,
+        "endLine": 14,
+        "endChar": 61
+      },
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd379c5e_1774deec",
+        "filename": "platform_tools/android/apps/viewer/src/main/java/org/skia/viewer/StateAdapter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-08T20:48:12Z",
+      "side": 1,
+      "message": "Maybe this should be an option somehow?",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a33b1f05_5b7ffed4",
+        "filename": "platform_tools/android/bin/android_build_app",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-08T20:48:12Z",
+      "side": 1,
+      "message": "Maybe add a comment explaining why this is necessary/helpful?",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
