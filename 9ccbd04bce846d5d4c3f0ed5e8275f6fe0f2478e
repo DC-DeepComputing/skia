@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "25fa5da8_a938c1d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-08T14:04:24Z",
+      "side": 1,
+      "message": "Never mind, I think I see what you\u0027re saying. But it was a bit difficult to untangle the logic into these different functions. I ended up defining a function for the decimating inner loop that takes in two callbacks: one to set up the dst for the next downscale (used by RescaleImage) and one to take an action after the last downscale (used by GenerateMipmaps). PTAL.",
+      "parentUuid": "6cd222a8_96087fa4",
+      "revId": "9ccbd04bce846d5d4c3f0ed5e8275f6fe0f2478e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "820c7d54_be779d51",
         "filename": "src/gpu/graphite/ImageFactories.cpp",
         "patchSetId": 2
