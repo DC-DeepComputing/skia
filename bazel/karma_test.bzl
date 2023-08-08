@@ -324,7 +324,7 @@ def _karma_test_impl(ctx):
         if ExternalNpmPackageInfo in dep:
             node_modules_depsets.append(dep[ExternalNpmPackageInfo].sources)
         else:
-            fail("Not an external npm file: " + dep)
+            fail("Not an external npm file: " + str(dep.label))
     node_modules = depset(transitive = node_modules_depsets)
 
     # https://docs.bazel.build/versions/main/skylark/lib/DefaultInfo.html
