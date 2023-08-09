@@ -718,8 +718,8 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
 }
 
 static sk_sp<GrGLTextureParameters> get_gl_texture_params(const GrBackendTexture& backendTex) {
-    GrBackendTextureData* btd = GrBackendSurfacePriv::GetBackendData(backendTex);
-    auto glTextureData = static_cast<GrGLBackendTextureData*>(btd);
+    const GrBackendTextureData* btd = GrBackendSurfacePriv::GetBackendData(backendTex);
+    auto glTextureData = static_cast<const GrGLBackendTextureData*>(btd);
     SkASSERT(glTextureData);
     return glTextureData->info().refParameters();
 }

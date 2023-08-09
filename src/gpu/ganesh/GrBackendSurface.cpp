@@ -40,16 +40,9 @@
 #include <utility>
 
 namespace skgpu { class MutableTextureState; }
-GrBackendFormat::GrBackendFormat(){};
-GrBackendFormat::~GrBackendFormat() = default;
 
-GrBackendFormat::GrBackendFormat(GrTextureType texture,
-                                 GrBackendApi api,
-                                 std::unique_ptr<const GrBackendFormatData> data)
-        : fBackend(api)
-        , fValid(data != nullptr)
-        , fFormatData(std::move(data))
-        , fTextureType(texture) {}
+GrBackendFormat::GrBackendFormat() : fValid(false) {}
+GrBackendFormat::~GrBackendFormat() = default;
 
 GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
         : fBackend(that.fBackend)
@@ -61,8 +54,7 @@ GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
 
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-            SkASSERT(that.fFormatData);
-            fFormatData.reset(that.fFormatData->copy());
+            that.fFormatData->copyTo(fFormatData);
             break;  // fFormatData is sufficient
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
@@ -418,22 +410,6 @@ SkString GrBackendFormat::toStr() const {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GrBackendTexture::GrBackendTexture() : fIsValid(false) {}
 
-GrBackendTexture::GrBackendTexture(int width,
-                                   int height,
-                                   std::string_view label,
-                                   skgpu::Mipmapped mipped,
-                                   GrBackendApi backend,
-                                   GrTextureType texture,
-                                   std::unique_ptr<GrBackendTextureData> data)
-        : fIsValid(data != nullptr)
-        , fWidth(width)
-        , fHeight(height)
-        , fLabel(label)
-        , fMipmapped(mipped)
-        , fBackend(backend)
-        , fTextureType(texture)
-        , fTextureData(std::move(data)) {}
-
 #ifdef SK_DAWN
 GrBackendTexture::GrBackendTexture(int width,
                                    int height,
@@ -600,7 +576,7 @@ GrBackendTexture& GrBackendTexture::operator=(const GrBackendTexture& that) {
 
     switch (that.fBackend) {
         case GrBackendApi::kOpenGL:
-            fTextureData.reset(that.fTextureData->copy());
+            that.fTextureData->copyTo(fTextureData);
             break;
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
@@ -856,22 +832,6 @@ bool GrBackendTexture::TestingOnly_Equals(const GrBackendTexture& t0, const GrBa
 
 GrBackendRenderTarget::GrBackendRenderTarget() : fIsValid(false) {}
 
-GrBackendRenderTarget::GrBackendRenderTarget(int width,
-                                             int height,
-                                             int sampleCnt,
-                                             int stencilBits,
-                                             GrBackendApi backend,
-                                             bool framebufferOnly,
-                                             std::unique_ptr<const GrBackendRenderTargetData> data)
-        : fIsValid(data && data->isValid())
-        , fFramebufferOnly(framebufferOnly)
-        , fWidth(width)
-        , fHeight(height)
-        , fSampleCnt(sampleCnt)
-        , fStencilBits(stencilBits)
-        , fBackend(backend)
-        , fRTData(std::move(data)) {}
-
 #ifdef SK_DAWN
 GrBackendRenderTarget::GrBackendRenderTarget(int width,
                                              int height,
@@ -1019,10 +979,10 @@ GrBackendRenderTarget& GrBackendRenderTarget::operator=(const GrBackendRenderTar
 
     switch (that.fBackend) {
         case GrBackendApi::kOpenGL:
-            if (that.fRTData) {
-                fRTData.reset(that.fRTData->copy());
+            if (that.fRTData->isValid()) {
+                that.fRTData->copyTo(fRTData);
             } else {
-                fRTData = nullptr;
+                fRTData.reset();
             }
             break;
 #ifdef SK_VULKAN
