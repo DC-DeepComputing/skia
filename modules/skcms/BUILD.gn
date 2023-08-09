@@ -6,7 +6,7 @@
 import("skcms.gni")
 
 static_library("skcms") {
-  cflags = []
+  cflags = [ "-Wno-unsafe-buffer-usage" ]
   if (!is_win || is_clang) {
     cflags += [ "-std=c11" ]
   }

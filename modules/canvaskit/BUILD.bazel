@@ -36,7 +36,6 @@ DEBUG_OPTS = [
     "-sGL_ASSERTIONS",
     "-O0",
     "-g3",
-    "--source-map-base=/build/",
 ]
 
 skia_filegroup(
