@@ -46,6 +46,30 @@
       },
       "revId": "52d09585eb4e2562a9ae0c73ebdddc0b9331a0d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3be0c327_060d7314",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-09T15:26:06Z",
+      "side": 1,
+      "message": "LGTM, thanks!",
+      "parentUuid": "11e61161_007893ec",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1016,
+        "endChar": 59
+      },
+      "revId": "52d09585eb4e2562a9ae0c73ebdddc0b9331a0d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
