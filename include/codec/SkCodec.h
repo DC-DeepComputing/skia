@@ -1008,7 +1008,6 @@ private:
     virtual SkSampler* getSampler(bool /*createIfNecessary*/) { return nullptr; }
 
     friend class DM::CodecSrc;  // for fillIncompleteImage
-    friend class PNGCodecGM;    // for fillIncompleteImage
     friend class SkSampledCodec;
     friend class SkIcoCodec;
     friend class SkAndroidCodec; // for fEncodedInfo
