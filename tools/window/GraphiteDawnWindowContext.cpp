@@ -126,7 +126,20 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         return nullptr;
     }
 
-    auto device = wgpu::Device::Acquire(adapters[0].CreateDevice());
+    std::vector<wgpu::FeatureName> features;
+    wgpu::Adapter adapter = adapters[0].Get();
+    if (adapter.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled)) {
+        features.push_back(wgpu::FeatureName::MSAARenderToSingleSampled);
+    }
+    if (adapter.HasFeature(wgpu::FeatureName::TransientAttachments)) {
+        features.push_back(wgpu::FeatureName::TransientAttachments);
+    }
+
+    wgpu::DeviceDescriptor desc;
+    desc.requiredFeaturesCount = features.size();
+    desc.requiredFeatures = features.data();
+
+    auto device = adapter.CreateDevice(&desc);
     if (!device) {
         return nullptr;
     }
