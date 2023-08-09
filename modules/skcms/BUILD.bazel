@@ -39,6 +39,7 @@ skia_cc_library(
     hdrs = [
         "skcms.h",
     ],
+    copts = ["-Wno-unsafe-buffer-usage"],
     # The following comment will be replaced with G3-specific settings
     # SKCMS_REPLACE_IN_GOOGLE3_COMPATIBLE_WITH
     # This header does not compile on its own and is meant to be included from skcms.cc
