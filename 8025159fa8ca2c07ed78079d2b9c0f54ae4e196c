@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeac8903_ae7c223e",
+        "filename": "tools/viewer/ProtectedSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-09T19:31:37Z",
+      "side": 1,
+      "message": "Something planned for later here?",
+      "range": {
+        "startLine": 188,
+        "startChar": 10,
+        "endLine": 190,
+        "endChar": 56
+      },
+      "revId": "8025159fa8ca2c07ed78079d2b9c0f54ae4e196c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
