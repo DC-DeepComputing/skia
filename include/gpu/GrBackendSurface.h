@@ -13,6 +13,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAnySubclass.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
 #include "include/gpu/mock/GrMockTypes.h"
@@ -59,8 +60,8 @@ class GrD3DResourceState;
 class SkString;
 #endif
 
+#include <cstddef>
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <string_view>
 
@@ -172,11 +173,19 @@ public:
     SkString toStr() const;
 #endif
 
+    inline constexpr static size_t kMaxSubclassSize = 16;
+    using AnyFormatData = SkAnySubclass<GrBackendFormatData, kMaxSubclassSize>;
+
 private:
     friend class GrBackendSurfacePriv;
+
     // Used by internal factories. Should not be used externally. Use factories like
     // GrBackendFormats::MakeGL instead.
-    GrBackendFormat(GrTextureType, GrBackendApi, std::unique_ptr<const GrBackendFormatData>);
+    template <typename FormatData>
+    GrBackendFormat(GrTextureType textureType, GrBackendApi api, const FormatData& formatData)
+            : fBackend(api), fValid(true), fTextureType(textureType) {
+        fFormatData.make<FormatData>(formatData);
+    }
 
 #ifdef SK_VULKAN
     GrBackendFormat(const VkFormat vkFormat, const GrVkYcbcrConversionInfo&,
@@ -203,7 +212,7 @@ private:
 
     GrBackendApi fBackend = GrBackendApi::kMock;
     bool fValid = false;
-    std::unique_ptr<const GrBackendFormatData> fFormatData;
+    AnyFormatData fFormatData;
 
     union {
 #ifdef SK_VULKAN
@@ -357,17 +366,31 @@ public:
     static bool TestingOnly_Equals(const GrBackendTexture&, const GrBackendTexture&);
 #endif
 
+    inline constexpr static size_t kMaxSubclassSize = 32;
+    using AnyTextureData = SkAnySubclass<GrBackendTextureData, kMaxSubclassSize>;
+
 private:
     friend class GrBackendSurfacePriv;
+
     // Used by internal factories. Should not be used externally. Use factories like
     // GrBackendTextures::MakeGL instead.
+    template <typename TextureData>
     GrBackendTexture(int width,
                      int height,
                      std::string_view label,
                      skgpu::Mipmapped mipped,
                      GrBackendApi backend,
                      GrTextureType texture,
-                     std::unique_ptr<GrBackendTextureData> data);
+                     const TextureData& textureData)
+            : fIsValid(true)
+            , fWidth(width)
+            , fHeight(height)
+            , fLabel(label)
+            , fMipmapped(mipped)
+            , fBackend(backend)
+            , fTextureType(texture) {
+        fTextureData.make<TextureData>(textureData);
+    }
 
     friend class GrVkGpu;  // for getMutableState
     sk_sp<skgpu::MutableTextureStateRef> getMutableState() const;
@@ -402,7 +425,7 @@ private:
     GrMipmapped fMipmapped;
     GrBackendApi fBackend;
     GrTextureType fTextureType;
-    std::unique_ptr<GrBackendTextureData> fTextureData;
+    AnyTextureData fTextureData;
 
     union {
 #ifdef SK_VULKAN
@@ -548,17 +571,31 @@ public:
     static bool TestingOnly_Equals(const GrBackendRenderTarget&, const GrBackendRenderTarget&);
 #endif
 
+    inline constexpr static size_t kMaxSubclassSize = 32;
+    using AnyRenderTargetData = SkAnySubclass<GrBackendRenderTargetData, kMaxSubclassSize>;
+
 private:
     friend class GrBackendSurfacePriv;
+
     // Used by internal factories. Should not be used externally. Use factories like
     // GrBackendRenderTargets::MakeGL instead.
+    template <typename RenderTargetData>
     GrBackendRenderTarget(int width,
                           int height,
                           int sampleCnt,
                           int stencilBits,
                           GrBackendApi backend,
                           bool framebufferOnly,
-                          std::unique_ptr<const GrBackendRenderTargetData> data);
+                          const RenderTargetData& rtData)
+            : fIsValid(true)
+            , fFramebufferOnly(framebufferOnly)
+            , fWidth(width)
+            , fHeight(height)
+            , fSampleCnt(sampleCnt)
+            , fStencilBits(stencilBits)
+            , fBackend(backend) {
+        fRTData.make<RenderTargetData>(rtData);
+    }
 
     friend class GrVkGpu; // for getMutableState
     sk_sp<skgpu::MutableTextureStateRef> getMutableState() const;
@@ -593,7 +630,7 @@ private:
     int fStencilBits;
 
     GrBackendApi fBackend;
-    std::unique_ptr<const GrBackendRenderTargetData> fRTData;
+    AnyRenderTargetData fRTData;
 
     union {
 #ifdef SK_VULKAN
