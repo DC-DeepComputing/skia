@@ -28,7 +28,6 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTLogic.h"
 #include "include/private/base/SkTo.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkZip.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkDistanceFieldGen.h"
@@ -66,6 +65,7 @@
 class GrRecordingContext;
 
 #if defined(SK_GANESH)
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"

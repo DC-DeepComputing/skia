@@ -1,0 +1,29 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_filegroup(
+    name = "dawn_hdrs",
+    srcs = [
+        "DawnTypesPriv.h",
+    ],
+    visibility = ["//include/private/gpu:__pkg__"],
+)
+
+skia_filegroup(
+    name = "metal_hdrs",
+    srcs = [
+        "MtlGraphiteTypesPriv.h",
+    ],
+    visibility = ["//include/private/gpu:__pkg__"],
+)
+
+skia_filegroup(
+    name = "vulkan_hdrs",
+    srcs = [
+        "VulkanGraphiteTypesPriv.h",
+    ],
+    visibility = ["//include/private/gpu:__pkg__"],
+)
