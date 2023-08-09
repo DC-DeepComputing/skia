@@ -83,8 +83,14 @@ bool GrCopyRenderTask::onExecute(GrOpFlushState* flushState) {
     }
     GrSurfaceProxy* dstProxy = this->target(0);
     if (!fSrc->isInstantiated() || !dstProxy->isInstantiated()) {
+        SkDebugf("$$$$$$$ GrCopyRenderTask::onExecute\n");
         return false;
     }
+
+    SkDebugf("------- GrCopyRenderTask::onExecute %d %d\n",
+             fSrc->isProtected() == skgpu::Protected::kYes,
+             dstProxy->isProtected() == skgpu::Protected::kYes);
+
     GrSurface* srcSurface = fSrc->peekSurface();
     GrSurface* dstSurface = dstProxy->peekSurface();
     SkIRect srcRect = GrNativeRect::MakeIRectRelativeTo(fOrigin, srcSurface->height(), fSrcRect);

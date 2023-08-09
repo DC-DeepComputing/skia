@@ -1380,24 +1380,32 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
     }
 
     bool texStorageSupported = false;
+    SkDebugf("$$$$$$$$$ 1 %d\n", texStorageSupported);
     if (GR_IS_GR_GL(standard)) {
         // The EXT version can apply to either GL or GLES.
         texStorageSupported = version >= GR_GL_VER(4,2) ||
                               ctxInfo.hasExtension("GL_ARB_texture_storage") ||
                               ctxInfo.hasExtension("GL_EXT_texture_storage");
+        SkDebugf("$$$$$$$$$ 2 %d\n", texStorageSupported);
     } else if (GR_IS_GR_GL_ES(standard)) {
         texStorageSupported = version >= GR_GL_VER(3,0) ||
                               ctxInfo.hasExtension("GL_EXT_texture_storage");
+        SkDebugf("$$$$$$$$$ 3 %d\n", texStorageSupported);
     } else if (GR_IS_GR_WEBGL(standard)) {
         texStorageSupported = version >= GR_GL_VER(2,0);
+        SkDebugf("$$$$$$$$$ 4 %d\n", texStorageSupported);
     }
     if (fDriverBugWorkarounds.disable_texture_storage) {
         texStorageSupported = false;
+        SkDebugf("$$$$$$$$$ 5 %d\n", texStorageSupported);
     }
 
     if (formatWorkarounds.fDisableTexStorage) {
         texStorageSupported = false;
+        SkDebugf("$$$$$$$$$ 6 %d\n", texStorageSupported);
     }
+
+    SkDebugf("$$$$$$$$$ 7 %d\n", texStorageSupported);
 
     // ES 2.0 requires that the internal/external formats match so we can't use sized internal
     // formats for glTexImage until ES 3.0. TODO: Support sized internal formats in WebGL2.
@@ -4394,7 +4402,9 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // We allow the client to pass in a GrContextOption flag to say they prefer having tex storage
     // support regadless of memory usage impacts. This is important for supporting Protected
     // textures as they require tex storage support.
-    if (ctxInfo.vendor() == GrGLVendor::kARM && !contextOptions.fAlwaysUseTexStorageWhenAvailable) {
+    if (ctxInfo.vendor() == GrGLVendor::kARM &&
+        !contextOptions.fAlwaysUseTexStorageWhenAvailable &&
+        !fSupportsProtected) {
         formatWorkarounds->fDisableTexStorage = true;
     }
 #endif
