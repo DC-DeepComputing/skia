@@ -208,10 +208,17 @@ sk_sp<SkImage> SkImage_Ganesh::MakeWithVolatileSrc(sk_sp<GrRecordingContext> rCo
     if (!copy) {
         return nullptr;
     }
-    // We only attempt to make a dual-proxy image on a direct context. This optimziation requires
+
+    SkDebugf("------- MakeWithVolatileSrc %d %d\n",
+             volatileSrc.proxy()->isProtected() == skgpu::Protected::kYes,
+             copy->isProtected() == skgpu::Protected::kYes);
+
+    // We only attempt to make a dual-proxy image on a direct context. This optimization requires
     // knowing how things are ordered and recording-only contexts are not well ordered WRT other
     // recording contexts.
-    if (auto direct = sk_ref_sp(rContext->asDirectContext())) {
+    auto direct = sk_ref_sp(rContext->asDirectContext());
+#if 1
+    if (direct) {
         int targetCount = volatileSrc.proxy()->getTaskTargetCount();
         return sk_sp<SkImage>(new SkImage_Ganesh(std::move(direct),
                                                  std::move(volatileSrc),
@@ -220,6 +227,7 @@ sk_sp<SkImage> SkImage_Ganesh::MakeWithVolatileSrc(sk_sp<GrRecordingContext> rCo
                                                  targetCount,
                                                  std::move(colorInfo)));
     }
+#endif
     GrSurfaceProxyView copyView(std::move(copy), volatileSrc.origin(), volatileSrc.swizzle());
     return sk_make_sp<SkImage_Ganesh>(
             std::move(rContext), kNeedNewImageUniqueID, std::move(copyView), std::move(colorInfo));
@@ -302,6 +310,7 @@ sk_sp<SkImage> SkImage_Ganesh::onMakeColorTypeAndColorSpace(SkColorType targetCT
 
     sk_sp<GrSurfaceProxy> proxy = fChooser.chooseProxy(dContext);
 
+    SkDebugf("$$$$ SkImage_Ganesh::onMakeColorTypeAndColorSpace\n");
     auto sfc = dContext->priv().makeSFCWithFallback(GrImageInfo(info, this->dimensions()),
                                                     SkBackingFit::kExact,
                                                     /* sampleCount= */ 1,
@@ -396,6 +405,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::asView(
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
     if (!fContext->priv().matches(recordingContext)) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$ SkImage_Ganesh::asView mismatch\n");
         return {};
     }
     if (policy != GrImageTexGenPolicy::kDraw) {

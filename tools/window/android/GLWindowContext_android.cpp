@@ -58,6 +58,7 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     fWidth = ANativeWindow_getWidth(fNativeWindow);
     fHeight = ANativeWindow_getHeight(fNativeWindow);
 
+    SkDebugf("-----  GLWindowContext_android::onInitializeContext %d %d\n", fWidth, fHeight);
     fDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 
     EGLint majorVersion;
@@ -68,9 +69,12 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
 
     if (fDisplayParams.fCreateProtectedNativeBackend &&
         !strstr(extensions, "EGL_EXT_protected_content")) {
-        SkDebugf("Protected Context requested but no protected support\n");
+        SkDebugf("$$$$$$$$$$$$$$$$$ Protected Context requested but no protected support\n");
         fDisplayParams.fCreateProtectedNativeBackend = false;
     }
+
+    SkDebugf("------- GLWindowContext_android::onInitializeContext - protected %d",
+             fDisplayParams.fCreateProtectedNativeBackend);
 
     SkAssertResult(eglBindAPI(EGL_OPENGL_ES_API));
 
@@ -113,7 +117,13 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
 //    SkDebugf("Vendor: %s", eglQueryString(fDisplay, EGL_VENDOR));
 //    SkDebugf("Extensions: %s", eglQueryString(fDisplay, EGL_EXTENSIONS));
 
-    fSurfaceAndroid = eglCreateWindowSurface(fDisplay, surfaceConfig, fNativeWindow, nullptr);
+    const EGLint surfaceAttribs[] = {
+        fDisplayParams.fCreateProtectedNativeBackend ? EGL_PROTECTED_CONTENT_EXT :EGL_NONE,
+        fDisplayParams.fCreateProtectedNativeBackend ? EGL_TRUE : EGL_NONE,
+        EGL_NONE
+    };
+
+    fSurfaceAndroid = eglCreateWindowSurface(fDisplay, surfaceConfig, fNativeWindow, surfaceAttribs);
     SkASSERT(EGL_NO_SURFACE != fSurfaceAndroid);
 
     SkAssertResult(eglMakeCurrent(fDisplay, fSurfaceAndroid, fSurfaceAndroid, fEGLContext));

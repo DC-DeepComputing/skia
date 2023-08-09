@@ -15,14 +15,9 @@
 
 #define GL_ALLOC_CALL(call)                                   \
     [&] {                                                     \
-        if (gpu->glCaps().skipErrorChecks()) {               \
-            GR_GL_CALL(gpu->glInterface(), call);            \
-            return static_cast<GrGLenum>(GR_GL_NO_ERROR);     \
-        } else {                                              \
             gpu->clearErrorsAndCheckForOOM();                \
             GR_GL_CALL_NOERRCHECK(gpu->glInterface(), call); \
             return gpu->getErrorAndCheckForOOM();            \
-        }                                                     \
     }()
 
 static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
@@ -55,8 +50,12 @@ static bool renderbuffer_storage_msaa(GrGLGpu* gpu,
 sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
                                                   SkISize dimensions,
                                                   int sampleCnt,
+                                                  GrProtected isProtected,
                                                   GrGLFormat format) {
     GrGLuint rbID = 0;
+
+    SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$ creating stencil %d !!!!!!!!!!!!!\n",
+             isProtected == skgpu::Protected::kYes);
 
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
@@ -81,6 +80,8 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
         }
     }
 
+
+
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
@@ -93,8 +94,12 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
 sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
                                                SkISize dimensions,
                                                int sampleCnt,
+                                               GrProtected isProtected,
                                                GrGLFormat format) {
     GrGLuint rbID = 0;
+
+    SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$ creating MakeMSAA %d  !!!!!!\n",
+             isProtected == skgpu::Protected::kYes);
 
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
