@@ -1,0 +1,56 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "select_multi", "skia_cc_deps", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:flags.bzl", "bool_flag", "selects", "string_flag_with_values")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+MTL_FILES = [
+    "MtlBlitCommandEncoder.h",
+    "MtlBuffer.h",
+    "MtlBuffer.mm",
+    "MtlCaps.h",
+    "MtlCaps.mm",
+    "MtlCommandBuffer.h",
+    "MtlCommandBuffer.mm",
+    "MtlComputeCommandEncoder.h",
+    "MtlComputePipeline.h",
+    "MtlComputePipeline.mm",
+    "MtlGraphicsPipeline.h",
+    "MtlGraphicsPipeline.mm",
+    "MtlGraphiteTypes.mm",
+    "MtlGraphiteUtils.mm",
+    "MtlGraphiteUtilsPriv.h",
+    "MtlQueueManager.h",
+    "MtlQueueManager.mm",
+    "MtlRenderCommandEncoder.h",
+    "MtlResourceProvider.h",
+    "MtlResourceProvider.mm",
+    "MtlSampler.h",
+    "MtlSampler.mm",
+    "MtlSharedContext.h",
+    "MtlSharedContext.mm",
+    "MtlTexture.h",
+    "MtlTexture.mm",
+]
+
+split_srcs_and_hdrs(
+    name = "mtl",
+    files = MTL_FILES,
+)
+
+skia_filegroup(
+    name = "objc_srcs",
+    srcs = [
+        ":mtl_srcs",
+    ],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
+
+skia_filegroup(
+    name = "private_hdrs",
+    srcs = [
+        ":mtl_hdrs",
+    ],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)

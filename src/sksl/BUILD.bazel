@@ -111,6 +111,7 @@ selects.config_setting_group(
     name = "needs_sksl",
     match_any = [
         "//src/gpu:has_ganesh_backend",
+        "//src/gpu:has_graphite_backend",
         ":enable_sksl_true",
     ],
     visibility = ["//:__subpackages__"],

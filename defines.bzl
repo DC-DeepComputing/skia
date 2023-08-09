@@ -81,6 +81,10 @@ GPU_DEFINES = select_multi({
         "SK_METAL",
         "SK_GANESH",
     ],
+    "//src/gpu:metal_graphite": [
+        "SK_METAL",
+        "SK_GRAPHITE",
+    ],
 }) + select({
     "//src/gpu:gl_standard": [
         "SK_ASSUME_GL=1",

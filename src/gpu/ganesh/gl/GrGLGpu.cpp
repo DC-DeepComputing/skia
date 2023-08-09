@@ -24,7 +24,7 @@
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/SkRenderEngineAbortf.h"
+#include "src/gpu/ganesh/SkRenderEngineAbortf.h"
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrCpuBuffer.h"
