@@ -38029,7 +38029,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3667",
+        "id:skia-e-win-205",
+        "gpu:10de:2489-31.0.15.3669",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -38126,7 +38127,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3667",
+        "id:skia-e-win-205",
+        "gpu:10de:2489-31.0.15.3669",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -66143,7 +66145,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3667",
+        "id:skia-e-win-205",
+        "gpu:10de:2489-31.0.15.3669",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -66240,7 +66243,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3667",
+        "id:skia-e-win-205",
+        "gpu:10de:2489-31.0.15.3669",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -66337,7 +66341,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3667",
+        "id:skia-e-win-205",
+        "gpu:10de:2489-31.0.15.3669",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -66434,7 +66439,8 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3667",
+        "id:skia-e-win-205",
+        "gpu:10de:2489-31.0.15.3669",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
