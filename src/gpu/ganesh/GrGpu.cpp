@@ -109,6 +109,9 @@ sk_sp<GrTexture> GrGpu::createTextureCommon(SkISize dimensions,
                                             int mipLevelCount,
                                             uint32_t levelClearMask,
                                             std::string_view label) {
+    SkDebugf("------- GrGpu::createTextureCommon %dx%d\n",
+             dimensions.fWidth, dimensions.fHeight);
+
     if (this->caps()->isFormatCompressed(format)) {
         // Call GrGpu::createCompressedTexture.
         return nullptr;
@@ -164,6 +167,7 @@ sk_sp<GrTexture> GrGpu::createTexture(SkISize dimensions,
                                       skgpu::Budgeted budgeted,
                                       GrProtected isProtected,
                                       std::string_view label) {
+    SkDebugf("------ GrGpu::createTexture 2\n");
     int mipLevelCount = 1;
     if (mipmapped == GrMipmapped::kYes) {
         mipLevelCount =
@@ -200,6 +204,8 @@ sk_sp<GrTexture> GrGpu::createTexture(SkISize dimensions,
                                       const GrMipLevel texels[],
                                       int texelLevelCount,
                                       std::string_view label) {
+    SkDebugf("------ GrGpu::createTexture 1\n");
+
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     if (texelLevelCount) {
         if (!validate_texel_levels(dimensions, srcColorType, texels, texelLevelCount,

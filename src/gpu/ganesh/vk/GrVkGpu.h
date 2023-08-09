@@ -112,7 +112,9 @@ public:
 #endif
 
     sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                              SkISize dimensions, int numStencilSamples) override;
+                                              SkISize dimensions,
+                                              int numStencilSamples,
+                                              GrProtected) override;
 
     GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) override {
         return GrBackendFormat::MakeVk(this->vkCaps().preferredStencilFormat());
