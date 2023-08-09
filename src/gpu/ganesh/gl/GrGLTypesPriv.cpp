@@ -56,12 +56,12 @@ void GrGLTextureParameters::set(const SamplerOverriddenState* samplerState,
     fNonsamplerState = nonsamplerState;
     fResetTimestamp = currTimestamp;
 }
-
+/*
 void GrGLBackendTextureInfo::assign(const GrGLBackendTextureInfo& that, bool thisIsValid) {
     fInfo = that.fInfo;
     fParams = that.fParams;
 }
-
+*/
 GrGLSurfaceInfo GrGLTextureSpecToSurfaceInfo(const GrGLTextureSpec& glSpec,
                                              uint32_t sampleCount,
                                              uint32_t levelCount,

@@ -9,6 +9,7 @@
 #define GrBackendSurfacePriv_DEFINED
 
 #include "include/gpu/GrBackendSurface.h"
+#include "include/private/base/SkAnySized.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
@@ -35,13 +36,14 @@ public:
 #endif
 protected:
     GrBackendFormatData() = default;
+    GrBackendFormatData(const GrBackendFormatData&) = default;
 
 private:
     friend class GrBackendFormat;
     virtual uint32_t channelMask() const = 0;
     virtual GrColorFormatDesc desc() const = 0;
     virtual std::string toString() const = 0;
-    virtual GrBackendFormatData* copy() const = 0;
+    virtual void copyTo(GrBackendFormat::AnyFormatData&) const = 0;
 };
 
 class GrBackendTextureData {
@@ -52,6 +54,7 @@ public:
 #endif
 protected:
     GrBackendTextureData() = default;
+    GrBackendTextureData(const GrBackendTextureData&) = default;
 
 private:
     friend class GrBackendTexture;
@@ -59,7 +62,7 @@ private:
     virtual bool equal(const GrBackendTextureData* that) const = 0;
     virtual bool isSameTexture(const GrBackendTextureData*) const = 0;
     virtual GrBackendFormat getBackendFormat() const = 0;
-    virtual GrBackendTextureData* copy() const = 0;
+    virtual void copyTo(GrBackendTexture::AnyTextureData&) const = 0;
 };
 
 class GrBackendRenderTargetData {
@@ -70,6 +73,7 @@ public:
 #endif
 protected:
     GrBackendRenderTargetData() = default;
+    GrBackendRenderTargetData(const GrBackendRenderTargetData&) = default;
 
 private:
     friend class GrBackendRenderTarget;
@@ -77,32 +81,34 @@ private:
     virtual GrBackendFormat getBackendFormat() const = 0;
     virtual bool isProtected() const = 0;
     virtual bool equal(const GrBackendRenderTargetData* that) const = 0;
-    virtual GrBackendRenderTargetData* copy() const = 0;
+    virtual void copyTo(GrBackendRenderTarget::AnyRenderTargetData&) const = 0;
 };
 
 class GrBackendSurfacePriv final {
 public:
+    template <typename FormatData>
     static GrBackendFormat MakeGrBackendFormat(GrTextureType textureType,
                                                GrBackendApi api,
-                                               std::unique_ptr<const GrBackendFormatData> data) {
-        return GrBackendFormat(textureType, api, std::move(data));
+                                               const FormatData& data) {
+        return GrBackendFormat(textureType, api, data);
     }
 
     static const GrBackendFormatData* GetBackendData(const GrBackendFormat& format) {
         return format.fFormatData.get();
     }
 
+    template <typename TextureData>
     static GrBackendTexture MakeGrBackendTexture(int width,
                                                  int height,
                                                  std::string_view label,
                                                  skgpu::Mipmapped mipped,
                                                  GrBackendApi backend,
                                                  GrTextureType texture,
-                                                 std::unique_ptr<GrBackendTextureData> data) {
-        return GrBackendTexture(width, height, label, mipped, backend, texture, std::move(data));
+                                                 const TextureData& data) {
+        return GrBackendTexture(width, height, label, mipped, backend, texture, data);
     }
 
-    static GrBackendTextureData* GetBackendData(const GrBackendTexture& tex) {
+    static const GrBackendTextureData* GetBackendData(const GrBackendTexture& tex) {
         return tex.fTextureData.get();
     }
 
@@ -111,16 +117,16 @@ public:
         return tex->fTextureData.get();
     }
 
-    static GrBackendRenderTarget MakeGrBackendRenderTarget(
-            int width,
-            int height,
-            int sampleCnt,
-            int stencilBits,
-            GrBackendApi backend,
-            bool framebufferOnly,
-            std::unique_ptr<GrBackendRenderTargetData> data) {
+    template <typename RenderTargetData>
+    static GrBackendRenderTarget MakeGrBackendRenderTarget(int width,
+                                                           int height,
+                                                           int sampleCnt,
+                                                           int stencilBits,
+                                                           GrBackendApi backend,
+                                                           bool framebufferOnly,
+                                                           const RenderTargetData& data) {
         return GrBackendRenderTarget(
-                width, height, sampleCnt, stencilBits, backend, framebufferOnly, std::move(data));
+                width, height, sampleCnt, stencilBits, backend, framebufferOnly, data);
     }
 
     static const GrBackendRenderTargetData* GetBackendData(const GrBackendRenderTarget& rt) {
