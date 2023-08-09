@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8336b105_ddbff44c",
+        "filename": "tests/sksl/shared/UniformBuffers.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-09T19:55:31Z",
+      "side": 0,
+      "message": "`z` uses a `half3x3` in the original SkSL, which translates into a `mat3x3\u003cf32\u003e` in WGSL, which should not need padding. This is a concrete demonstration of the problem I\u0027m fixing in this CL.",
+      "range": {
+        "startLine": 42,
+        "startChar": 5,
+        "endLine": 42,
+        "endChar": 16
+      },
+      "revId": "fcffafbd37e58402fc31160b630a3acbfc19991f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
