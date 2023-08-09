@@ -101,6 +101,8 @@ void GLTextureHelper::rebind(GrDirectContext* dContext) {
 }
 
 void delete_gl_texture(void* context) {
+    SkDebugf("------- deleting AHW\n");
+
     GLTextureHelper* cleanupHelper = static_cast<GLTextureHelper*>(context);
     delete cleanupHelper;
 }
@@ -167,6 +169,7 @@ static GrBackendTexture make_gl_backend_texture(
     SkASSERT(backendFormat.isValid());
     textureInfo.fTarget = target;
     textureInfo.fFormat = GrBackendFormats::AsGLFormatEnum(backendFormat);
+    textureInfo.fProtected = skgpu::Protected(isProtectedContent);
 
     *deleteProc = delete_gl_texture;
     *updateProc = update_gl_texture;
@@ -206,6 +209,8 @@ GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
                                       bool isProtectedContent,
                                       const GrBackendFormat& backendFormat,
                                       bool isRenderable) {
+    SkDebugf("------- MakeGLBackendTexture %d\n", isProtectedContent);
+
     SkASSERT(dContext);
     if (!dContext || dContext->abandoned()) {
         return GrBackendTexture();
@@ -216,6 +221,7 @@ GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
     }
 
     if (isProtectedContent && !can_import_protected_content(dContext)) {
+        SkDebugf("$$$$$$$ MakeGLBackendTexture rejected\n");
         return GrBackendTexture();
     }
 

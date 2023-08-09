@@ -59,7 +59,7 @@ GrResourceProvider::GrResourceProvider(GrGpu* gpu,
     fCaps = sk_ref_sp(fGpu->caps());
 }
 
-sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
+sk_sp<GrTexture> GrResourceProvider::createTexture1(SkISize dimensions,
                                                    const GrBackendFormat& format,
                                                    GrTextureType textureType,
                                                    GrColorType colorType,
@@ -71,6 +71,8 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    const GrMipLevel texels[],
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
+
+    SkDebugf("------- GrResourceProvider::createTexture1\n");
 
     if (this->isAbandoned()) {
         return nullptr;
@@ -116,7 +118,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
             return nullptr;
         }
     }
-    return fGpu->createTexture(dimensions,
+    return fGpu->createTexture1(dimensions,
                                format,
                                textureType,
                                renderable,
@@ -154,7 +156,7 @@ sk_sp<GrTexture> GrResourceProvider::getExactScratch(SkISize dimensions,
     return tex;
 }
 
-sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
+sk_sp<GrTexture> GrResourceProvider::createTexture3(SkISize dimensions,
                                                    const GrBackendFormat& format,
                                                    GrTextureType textureType,
                                                    GrColorType colorType,
@@ -167,6 +169,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
 
+    SkDebugf("------- GrResourceProvider::createTexture3\n");
     if (!mipLevel.fPixels) {
         return nullptr;
     }
@@ -192,7 +195,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
         }
         return this->writePixels(std::move(tex), colorType, dimensions, &mipLevel, 1);
     } else {
-        return this->createTexture(dimensions,
+        return this->createTexture1(dimensions,
                                    format,
                                    textureType,
                                    colorType,
@@ -226,7 +229,7 @@ sk_sp<GrTexture> GrResourceProvider::createCompressedTexture(SkISize dimensions,
                                          data->size());
 }
 
-sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
+sk_sp<GrTexture> GrResourceProvider::createTexture2(SkISize dimensions,
                                                    const GrBackendFormat& format,
                                                    GrTextureType textureType,
                                                    GrRenderable renderable,
@@ -239,6 +242,8 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
     if (this->isAbandoned()) {
         return nullptr;
     }
+
+    SkDebugf("------- GrResourceProvider::createTexture2\n");
 
     if (!fCaps->validateSurfaceParams(dimensions, format, renderable, renderTargetSampleCnt,
                                       mipmapped, textureType)) {
@@ -264,7 +269,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
         return tex;
     }
 
-    return fGpu->createTexture(dimensions,
+    return fGpu->createTexture2(dimensions,
                                format,
                                textureType,
                                renderable,
@@ -334,7 +339,7 @@ sk_sp<GrTexture> GrResourceProvider::createApproxTexture(SkISize dimensions,
         return tex;
     }
 
-    return fGpu->createTexture(copyDimensions,
+    return fGpu->createTexture2(copyDimensions,
                                format,
                                textureType,
                                renderable,
@@ -708,7 +713,7 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         if (!keyedStencil) {
             // Need to try and create a new stencil
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
-                                                              numStencilSamples);
+                                                              numStencilSamples, isProtected);
             if (!keyedStencil) {
                 return false;
             }

@@ -72,7 +72,7 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(GrSurface, reporter, ctxInfo) {
     static constexpr SkISize kDesc = {256, 256};
     auto format = context->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                   GrRenderable::kYes);
-    sk_sp<GrSurface> texRT1 = resourceProvider->createTexture(kDesc,
+    sk_sp<GrSurface> texRT1 = resourceProvider->createTexture2(kDesc,
                                                               format,
                                                               GrTextureType::k2D,
                                                               GrRenderable::kYes,
@@ -91,7 +91,7 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(GrSurface, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, static_cast<GrSurface*>(texRT1->asRenderTarget()) ==
                     static_cast<GrSurface*>(texRT1->asTexture()));
 
-    sk_sp<GrTexture> tex1 = resourceProvider->createTexture(kDesc,
+    sk_sp<GrTexture> tex1 = resourceProvider->createTexture2(kDesc,
                                                             format,
                                                             GrTextureType::k2D,
                                                             GrRenderable::kNo,
@@ -161,7 +161,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
                                                data.get(),
                                                /*label=*/{});
         } else {
-            return rp->createTexture(dimensions,
+            return rp->createTexture2(dimensions,
                                      format,
                                      GrTextureType::k2D,
                                      renderable,
@@ -226,7 +226,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
         {
             bool isRenderable = caps->isFormatRenderable(combo.fFormat, 1);
 
-            sk_sp<GrSurface> tex = resourceProvider->createTexture(kDims,
+            sk_sp<GrSurface> tex = resourceProvider->createTexture2(kDims,
                                                                    combo.fFormat,
                                                                    GrTextureType::k2D,
                                                                    GrRenderable::kYes,
@@ -245,7 +245,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
         {
             bool isRenderable = caps->isFormatRenderable(combo.fFormat, 2);
 
-            sk_sp<GrSurface> tex = resourceProvider->createTexture(kDims,
+            sk_sp<GrSurface> tex = resourceProvider->createTexture2(kDims,
                                                                    combo.fFormat,
                                                                    GrTextureType::k2D,
                                                                    GrRenderable::kYes,

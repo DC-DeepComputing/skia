@@ -131,7 +131,7 @@ static sk_sp<GrRenderTarget> create_RT_with_SB(GrResourceProvider* provider,
                                                skgpu::Budgeted budgeted) {
     auto format =
             provider->caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888, GrRenderable::kYes);
-    sk_sp<GrTexture> tex(provider->createTexture({size, size},
+    sk_sp<GrTexture> tex(provider->createTexture2({size, size},
                                                  format,
                                                  GrTextureType::k2D,
                                                  GrRenderable::kYes,
@@ -1730,7 +1730,7 @@ static sk_sp<GrTexture> make_normal_texture(GrResourceProvider* provider,
                                             SkISize dims,
                                             int sampleCnt) {
     auto format = provider->caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888, renderable);
-    return provider->createTexture(dims,
+    return provider->createTexture2(dims,
                                    format,
                                    GrTextureType::k2D,
                                    renderable,

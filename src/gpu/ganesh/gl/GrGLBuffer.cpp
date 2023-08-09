@@ -18,14 +18,9 @@
 
 #define GL_ALLOC_CALL(gpu, call)                             \
     [&] {                                                    \
-        if (gpu->glCaps().skipErrorChecks()) {               \
-            GR_GL_CALL(gpu->glInterface(), call);            \
-            return static_cast<GrGLenum>(GR_GL_NO_ERROR);    \
-        } else {                                             \
             gpu->clearErrorsAndCheckForOOM();                \
             GR_GL_CALL_NOERRCHECK(gpu->glInterface(), call); \
             return gpu->getErrorAndCheckForOOM();            \
-        }                                                    \
     }()
 
 sk_sp<GrGLBuffer> GrGLBuffer::Make(GrGLGpu* gpu,

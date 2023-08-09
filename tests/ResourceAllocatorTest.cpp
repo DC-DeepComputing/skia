@@ -120,7 +120,7 @@ static sk_sp<GrSurfaceProxy> make_fully_lazy(GrProxyProvider* proxyProvider, con
                                              const ProxyParams& p) {
     const GrBackendFormat format = caps->getDefaultBackendFormat(p.fColorType, p.fRenderable);
     auto cb = [p](GrResourceProvider* provider, const GrSurfaceProxy::LazySurfaceDesc& desc) {
-        auto tex = provider->createTexture({p.fSize, p.fSize},
+        auto tex = provider->createTexture2({p.fSize, p.fSize},
                                            desc.fFormat,
                                            desc.fTextureType,
                                            desc.fRenderable,
@@ -140,7 +140,7 @@ static sk_sp<GrSurfaceProxy> make_lazy(GrProxyProvider* proxyProvider, const GrC
                                        const ProxyParams& p) {
     const GrBackendFormat format = caps->getDefaultBackendFormat(p.fColorType, p.fRenderable);
     auto cb = [](GrResourceProvider* provider, const GrSurfaceProxy::LazySurfaceDesc& desc) {
-        auto tex = provider->createTexture(desc.fDimensions,
+        auto tex = provider->createTexture2(desc.fDimensions,
                                            desc.fFormat,
                                            desc.fTextureType,
                                            desc.fRenderable,
