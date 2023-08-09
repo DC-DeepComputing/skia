@@ -22,6 +22,30 @@
       },
       "revId": "52d09585eb4e2562a9ae0c73ebdddc0b9331a0d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11e61161_007893ec",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-09T15:00:54Z",
+      "side": 1,
+      "message": "WDYT:\n\n```\nhalf angle;\nif (bool(useAtanWorkaround)) {\n   angle \u003d half(2 * atan(-coord.y, length(coord) - coord.x));\n} else {\n   angle \u003d (coord.x !\u003d 0) ? mix(half(atan(-coord.y, -coord.x)) :\n                            sign(coord.y) * -1.5707963267949;\n}\n```\n\n- The stacked ternary is hard to read so I removed it. (One side or the other will get eliminated regardless.)\n\n- I moved the negation onto the literal to make it free.\n\nIf we could use ES3 I would suggest maybe:\n\n```\n   angle \u003d mix(half(atan(-coord.y, -coord.x)),\n               sign(coord.y) * -1.5707963267949             \n               coord.x \u003d\u003d 0);\n```\nThis would guarantee that it is branchless. (A ternary probably will be anyway.) At any rate, I\u0027m not worried about the cost of a `sign` and a multiply; that\u0027s really cheap regardless.",
+      "parentUuid": "18d9b6bb_86cb74df",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1016,
+        "endChar": 59
+      },
+      "revId": "52d09585eb4e2562a9ae0c73ebdddc0b9331a0d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
