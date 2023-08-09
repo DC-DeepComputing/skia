@@ -49,7 +49,7 @@ skia_cc_deps(
     visibility = ["//src/ports:__pkg__"],
     deps = [
         ":bridge_rust_side",
-        ":fontations_ffi/include",
+        ":fontations_ffi",
         ":path_bridge_include",
     ],
 )
