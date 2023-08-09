@@ -9,6 +9,7 @@
 #define GrBackendSurfacePriv_DEFINED
 
 #include "include/gpu/GrBackendSurface.h"
+#include "include/private/base/SkAnySized.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 

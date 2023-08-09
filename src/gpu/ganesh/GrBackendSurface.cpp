@@ -40,15 +40,11 @@
 #include <utility>
 
 namespace skgpu { class MutableTextureState; }
-GrBackendFormat::GrBackendFormat(){};
-GrBackendFormat::~GrBackendFormat() = default;
 
 GrBackendFormat::GrBackendFormat(GrTextureType texture,
-                                 GrBackendApi api,
-                                 std::unique_ptr<const GrBackendFormatData> data)
+                                 GrBackendApi api)
         : fBackend(api)
-        , fValid(data != nullptr)
-        , fFormatData(std::move(data))
+        , fValid(false)
         , fTextureType(texture) {}
 
 GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
@@ -61,8 +57,8 @@ GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
 
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-            SkASSERT(that.fFormatData);
-            fFormatData.reset(that.fFormatData->copy());
+            SkASSERT(that.fFormatData.valid());
+            that.fFormatData.get<GrBackendFormatData>().copyTo(fFormatData);
             break;  // fFormatData is sufficient
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:

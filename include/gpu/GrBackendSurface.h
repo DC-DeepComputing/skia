@@ -13,6 +13,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAnySized.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
 #include "include/gpu/mock/GrMockTypes.h"
@@ -60,17 +61,15 @@ class SkString;
 #endif
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <string_view>
 
 class SK_API GrBackendFormat {
 public:
     // Creates an invalid backend format.
-    GrBackendFormat();
+    GrBackendFormat() {}
     GrBackendFormat(const GrBackendFormat&);
     GrBackendFormat& operator=(const GrBackendFormat&);
-    ~GrBackendFormat();
 
 #ifdef SK_VULKAN
     static GrBackendFormat MakeVk(VkFormat format, bool willUseDRMFormatModifiers = false) {
@@ -174,9 +173,14 @@ public:
 
 private:
     friend class GrBackendSurfacePriv;
+
+    // Large enough to hold any GrBackendFormatData subclass
+    inline constexpr static size_t kMaxSubclassSize = 8;
+
     // Used by internal factories. Should not be used externally. Use factories like
     // GrBackendFormats::MakeGL instead.
-    GrBackendFormat(GrTextureType, GrBackendApi, std::unique_ptr<const GrBackendFormatData>);
+    GrBackendFormat(GrTextureType, GrBackendApi);
+    SkAnySized<kMaxSubclassSize>& formatData() { return fFormatData; }
 
 #ifdef SK_VULKAN
     GrBackendFormat(const VkFormat vkFormat, const GrVkYcbcrConversionInfo&,
@@ -203,7 +207,7 @@ private:
 
     GrBackendApi fBackend = GrBackendApi::kMock;
     bool fValid = false;
-    std::unique_ptr<const GrBackendFormatData> fFormatData;
+    SkAnySized<kMaxSubclassSize> fFormatData;
 
     union {
 #ifdef SK_VULKAN
@@ -358,6 +362,9 @@ public:
 #endif
 
 private:
+    // Large enough to hold any GrBackendFormatData subclass
+    inline constexpr static size_t kMaxSubclassSize = 16;
+
     friend class GrBackendSurfacePriv;
     // Used by internal factories. Should not be used externally. Use factories like
     // GrBackendTextures::MakeGL instead.
@@ -366,8 +373,8 @@ private:
                      std::string_view label,
                      skgpu::Mipmapped mipped,
                      GrBackendApi backend,
-                     GrTextureType texture,
-                     std::unique_ptr<GrBackendTextureData> data);
+                     GrTextureType texture);
+    SkAnySized<kMaxSubclassSize>& textureData() { return fTextureData; }
 
     friend class GrVkGpu;  // for getMutableState
     sk_sp<skgpu::MutableTextureStateRef> getMutableState() const;
@@ -402,7 +409,7 @@ private:
     GrMipmapped fMipmapped;
     GrBackendApi fBackend;
     GrTextureType fTextureType;
-    std::unique_ptr<GrBackendTextureData> fTextureData;
+    SkAnySized<kMaxSubclassSize> fTextureData;
 
     union {
 #ifdef SK_VULKAN
@@ -549,6 +556,9 @@ public:
 #endif
 
 private:
+    // Large enough to hold any GrBackendFormatData subclass
+    inline constexpr static size_t kMaxSubclassSize = 16;
+
     friend class GrBackendSurfacePriv;
     // Used by internal factories. Should not be used externally. Use factories like
     // GrBackendRenderTargets::MakeGL instead.
@@ -557,8 +567,8 @@ private:
                           int sampleCnt,
                           int stencilBits,
                           GrBackendApi backend,
-                          bool framebufferOnly,
-                          std::unique_ptr<const GrBackendRenderTargetData> data);
+                          bool framebufferOnly);
+    SkAnySized<kMaxSubclassSize>& rtData() { return fRTData; }
 
     friend class GrVkGpu; // for getMutableState
     sk_sp<skgpu::MutableTextureStateRef> getMutableState() const;
@@ -593,7 +603,7 @@ private:
     int fStencilBits;
 
     GrBackendApi fBackend;
-    std::unique_ptr<const GrBackendRenderTargetData> fRTData;
+    SkAnySized<kMaxSubclassSize> fRTData;
 
     union {
 #ifdef SK_VULKAN
