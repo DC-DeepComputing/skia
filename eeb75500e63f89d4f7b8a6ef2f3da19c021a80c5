@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b99ec3_43686ef8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-09T04:35:22Z",
+      "side": 1,
+      "message": "Here\u0027s a potential fix forward: https://skia-review.googlesource.com/c/skia/+/737819",
+      "revId": "eeb75500e63f89d4f7b8a6ef2f3da19c021a80c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
