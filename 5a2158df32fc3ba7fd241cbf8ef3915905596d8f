@@ -46,6 +46,30 @@
       },
       "revId": "5a2158df32fc3ba7fd241cbf8ef3915905596d8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d54df7f_787442be",
+        "filename": "tests/sksl/workarounds/VoidInSequenceExpressionsWithVoidMain.glsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-09T14:05:05Z",
+      "side": 1,
+      "message": "Acknowledged (Yeah, I didn\u0027t think it was an issue, just double checking).",
+      "parentUuid": "d7cb274a_2dd2b3a5",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 15
+      },
+      "revId": "5a2158df32fc3ba7fd241cbf8ef3915905596d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
