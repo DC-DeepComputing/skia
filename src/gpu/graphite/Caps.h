@@ -180,6 +180,8 @@ public:
     // Returns whether a draw buffer can be mapped.
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
 
+    bool msaaRenderToSingleSampledSupport() const { return fMSAARenderToSingleSampledSupport; }
+
     // Returns whether compute shaders are supported.
     bool computeSupport() const { return fComputeSupport; }
 
@@ -264,6 +266,7 @@ protected:
     bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
+    bool fMSAARenderToSingleSampledSupport = false;
 
     bool fComputeSupport = false;
 
