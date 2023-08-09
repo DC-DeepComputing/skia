@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18d9b6bb_86cb74df",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-09T14:21:48Z",
+      "side": 1,
+      "message": "Maybe something like this to reduce branching?\n`half(atan(-coord.y, -sign(coord.x - 0.00001) * max(abs(coord.x), 0.00001)))`\nThis will pass 0 for x in atan(y, x) when coord.x \u003d\u003d 0.00001, which presumably is less likely than coord.x being zero (we make a similar assumption in the linear gradient shader).",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1016,
+        "endChar": 59
+      },
+      "revId": "52d09585eb4e2562a9ae0c73ebdddc0b9331a0d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
