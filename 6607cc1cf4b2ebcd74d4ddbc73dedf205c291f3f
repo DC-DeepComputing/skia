@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22a7215_5dad1618",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T13:46:12Z",
+      "side": 1,
+      "message": "I don\u0027t know how much of this we actually want to keep but the Android tooling was pretty disgruntled w/ all the old settings.",
+      "revId": "6607cc1cf4b2ebcd74d4ddbc73dedf205c291f3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40a1d60f_35b890fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T13:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d95c20a_513b9e0b",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9bf6e12_aa20505f",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "085ba295_ed49a70d",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T13:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9bf6e12_aa20505f",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0d352bc_87da2feb",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-08-08T20:48:12Z",
       "side": 1,
       "message": "Looks like this is https://developer.android.com/topic/security/risks/android-exported ? Seems fine, but why did you need it? In general, I like separate CLs for separate changes, but so long as the motivation is well documented in the commit message it\u0027s fine to have loosely related changes.",
+      "range": {
+        "startLine": 14,
+        "startChar": 45,
+        "endLine": 14,
+        "endChar": 61
+      },
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee04142f_128b8148",
+        "filename": "platform_tools/android/apps/viewer/src/main/AndroidManifest.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T13:46:12Z",
+      "side": 1,
+      "message": "At one point the compiler had flagged not having it as an issue. It doesn\u0027t appear to be needed w/ my latest setup (e.g., API level 30 and the updated build.gradle).\n\nRemoved.",
+      "parentUuid": "f0d352bc_87da2feb",
       "range": {
         "startLine": 14,
         "startChar": 45,
@@ -88,6 +148,24 @@
       "writtenOn": "2023-08-08T20:48:12Z",
       "side": 1,
       "message": "Maybe add a comment explaining why this is necessary/helpful?",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9213a520_6b35b6ae",
+        "filename": "platform_tools/android/bin/android_build_app",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T13:46:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a33b1f05_5b7ffed4",
       "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
