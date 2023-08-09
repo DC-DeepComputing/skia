@@ -469,6 +469,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		}
 		if b.extraConfig("Direct3D") {
 			configs = []string{"d3d"}
+			// b/1207715
+			skip(ALL, "test", ALL, "SurfaceAsyncReadPixels")
 		}
 
 		// Test 1010102 on our Linux/NVIDIA bots and the persistent cache config
