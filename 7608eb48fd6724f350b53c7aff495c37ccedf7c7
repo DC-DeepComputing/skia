@@ -16,6 +16,24 @@
       "message": "LGTM once the Fontations jobs pass",
       "revId": "7608eb48fd6724f350b53c7aff495c37ccedf7c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93bb7ede_d9345713",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-08-09T11:57:31Z",
+      "side": 1,
+      "message": "Ack, added those as mandatory jobs here as well.",
+      "parentUuid": "0515bb09_8d4c0ce2",
+      "revId": "7608eb48fd6724f350b53c7aff495c37ccedf7c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
