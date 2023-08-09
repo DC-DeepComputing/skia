@@ -141,7 +141,7 @@ sk_sp<GrSurface> GrSurfaceProxy::createSurfaceImpl(GrResourceProvider* resourceP
                                                         fIsProtected,
                                                         fLabel);
     } else {
-        surface = resourceProvider->createTexture(fDimensions,
+        surface = resourceProvider->createTexture2(fDimensions,
                                                   fFormat,
                                                   fFormat.textureType(),
                                                   renderable,
@@ -175,6 +175,11 @@ bool GrSurfaceProxy::canSkipResourceAllocator() const {
 
 void GrSurfaceProxy::assign(sk_sp<GrSurface> surface) {
     SkASSERT(!fTarget && surface);
+
+    SkDebugf("------- GrSurfaceProxy::assign %d %d - %dx%d\n",
+             this->isProtected() == skgpu::Protected::kYes,
+             surface->isProtected(),
+             this->width(), this->height());
 
     SkDEBUGCODE(this->validateSurface(surface.get());)
 
@@ -287,6 +292,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
                                            std::string_view label,
                                            RectsMustMatch rectsMustMatch,
                                            sk_sp<GrRenderTask>* outTask) {
+    SkDebugf("------- GrSurfaceProxy::Copy %d", src->isProtected() == skgpu::Protected::kYes);
     SkASSERT(!src->isFullyLazy());
     int width;
     int height;
@@ -351,6 +357,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
         }
     }
     // Can't use backend copies or draws.
+    SkDebugf("$$$$$$$ !!\n");
     return nullptr;
 }
 
@@ -501,6 +508,7 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
 void GrSurfaceProxy::validateSurface(const GrSurface* surface) {
     SkASSERTF(surface->backendFormat() == fFormat, "%s != %s",
               surface->backendFormat().toStr().c_str(), fFormat.toStr().c_str());
+//    SkASSERT(skgpu::Protected(surface->isProtected()) == this->isProtected());
 
     this->onValidateSurface(surface);
 }

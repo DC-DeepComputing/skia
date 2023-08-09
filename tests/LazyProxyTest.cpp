@@ -131,7 +131,7 @@ public:
                             return {};
                         } else {
                             static constexpr SkISize kDimensions = {1234, 567};
-                            sk_sp<GrTexture> texture = rp->createTexture(kDimensions,
+                            sk_sp<GrTexture> texture = rp->createTexture2(kDimensions,
                                                                          desc.fFormat,
                                                                          desc.fTextureType,
                                                                          desc.fRenderable,
@@ -293,7 +293,7 @@ DEF_GANESH_TEST(LazyProxyReleaseTest, reporter, /* options */, CtsEnforcement::k
     GrBackendFormat format = caps->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                            GrRenderable::kNo);
 
-    auto tex = ctx->priv().resourceProvider()->createTexture({kSize, kSize},
+    auto tex = ctx->priv().resourceProvider()->createTexture2({kSize, kSize},
                                                              format,
                                                              GrTextureType::k2D,
                                                              GrRenderable::kNo,
@@ -413,7 +413,7 @@ private:
                         *testExecuteValue = 1;
                         return {};
                     }
-                    return {rp->createTexture(desc.fDimensions,
+                    return {rp->createTexture2(desc.fDimensions,
                                               desc.fFormat,
                                               desc.fTextureType,
                                               desc.fRenderable,

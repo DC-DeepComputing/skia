@@ -158,7 +158,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DeferredProxyTest,
                                                                             GrProtected::kNo,
                                                                             /*label=*/{});
                             } else {
-                                tex = resourceProvider->createTexture(dims,
+                                tex = resourceProvider->createTexture2(dims,
                                                                       format,
                                                                       GrTextureType::k2D,
                                                                       GrRenderable::kYes,
@@ -204,7 +204,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DeferredProxyTest,
                                                                             GrProtected::kNo,
                                                                             /*label=*/{});
                             } else {
-                                tex = resourceProvider->createTexture(dims,
+                                tex = resourceProvider->createTexture2(dims,
                                                                       format,
                                                                       GrTextureType::k2D,
                                                                       GrRenderable::kNo,

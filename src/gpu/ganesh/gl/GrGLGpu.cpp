@@ -59,14 +59,9 @@ using namespace skia_private;
 
 #define GL_ALLOC_CALL(call)                                   \
     [&] {                                                     \
-        if (this->glCaps().skipErrorChecks()) {               \
-            GR_GL_CALL(this->glInterface(), call);            \
-            return static_cast<GrGLenum>(GR_GL_NO_ERROR);     \
-        } else {                                              \
             this->clearErrorsAndCheckForOOM();                \
             GR_GL_CALL_NOERRCHECK(this->glInterface(), call); \
             return this->getErrorAndCheckForOOM();            \
-        }                                                     \
     }()
 
 //#define USE_NSIGHT
@@ -709,6 +704,7 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
         return false;
     }
     if (desc->fIsProtected == skgpu::Protected::kYes && !caps.supportsProtected()) {
+        SkDebugf("$$$$$$$ check_backend_texture\n");
         return false;
     }
 
@@ -767,6 +763,7 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
         return false;
     }
     if (desc->fIsProtected == skgpu::Protected::kYes && !caps.supportsProtected()) {
+        SkDebugf("$$$$$$$ check_compressed_backend_texture\n");
         return false;
     }
 
@@ -844,6 +841,7 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
     }
 
     if (backendRT.isProtected() && !this->glCaps().supportsProtected()) {
+        SkDebugf("$$$$$$$ GrGLGpu::onWrapBackendRenderTarget\n");
         return nullptr;
     }
 
@@ -1464,7 +1462,10 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           int mipLevelCount,
                                           uint32_t levelClearMask,
                                           std::string_view label) {
+    SkDebugf("------- GrGLGpu::onCreateTexture %d\n", isProtected == skgpu::Protected::kYes);
+
     if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
+        SkDebugf("$$$$$$$ GrGLGpu::onCreateTexture\n");
         return nullptr;
     }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
@@ -1834,13 +1835,20 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
                                 int mipLevelCount,
                                 GrProtected isProtected,
                                 std::string_view label) {
+
+    SkDebugf("------- GrGLGpu::createTexture %d - %dx%d\n",
+             isProtected == skgpu::Protected::kYes,
+             dimensions.fWidth, dimensions.fHeight);
+
     SkASSERT(format != GrGLFormat::kUnknown);
     SkASSERT(!GrGLFormatIsCompressed(format));
 
     GrGLuint id = 0;
     GL_CALL(GenTextures(1, &id));
 
+    SkDebugf("------- generated texture ID %d\n", id);
     if (!id) {
+        SkDebugf("$$$$$$$ failure in GrGLGpu::createTexture 1\n");
         return 0;
     }
 
@@ -1859,10 +1867,12 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         set_initial_texture_params(this->glInterface(), this->glCaps(), target);
     }
 
+    isProtected = GrProtected::kYes;
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
+            SkDebugf("$$$$$$$ failure in GrGLGpu::createTexture 2\n");
             GL_CALL(DeleteTextures(1, &id));
             return 0;
         }
@@ -1898,21 +1908,26 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         }
     }
     if (success) {
+        SkDebugf("------- success in GrGLGpu::createTexture 3\n");
         return id;
     }
     GL_CALL(DeleteTextures(1, &id));
+    SkDebugf("$$$$$$$ failure in GrGLGpu::createTexture 3\n");
     return 0;
 }
 
 sk_sp<GrAttachment> GrGLGpu::makeStencilAttachment(const GrBackendFormat& colorFormat,
-                                                   SkISize dimensions, int numStencilSamples) {
+                                                   SkISize dimensions,
+                                                   int numStencilSamples,
+                                                   GrProtected isProtected) {
     int sIdx = this->getCompatibleStencilIndex(colorFormat.asGLFormat());
     if (sIdx < 0) {
         return nullptr;
     }
     GrGLFormat sFmt = this->glCaps().stencilFormats()[sIdx];
 
-    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples, sFmt);
+    auto stencil = GrGLAttachment::MakeStencil(this, dimensions, numStencilSamples, isProtected,
+                                               sFmt);
     if (stencil) {
         fStats.incStencilAttachmentCreates();
     }
@@ -1923,7 +1938,8 @@ sk_sp<GrAttachment> GrGLGpu::makeMSAAAttachment(SkISize dimensions, const GrBack
                                                 int numSamples, GrProtected isProtected,
                                                 GrMemoryless isMemoryless) {
     SkASSERT(isMemoryless == GrMemoryless::kNo);
-    return GrGLAttachment::MakeMSAA(this, dimensions, numSamples, format.asGLFormat());
+    return GrGLAttachment::MakeMSAA(
+            this, dimensions, numSamples, isProtected, format.asGLFormat());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2413,7 +2429,7 @@ void GrGLGpu::flushRenderTarget(GrGLRenderTarget* target, bool useMultisampleFBO
             GrGLenum status;
             GL_CALL_RET(status, CheckFramebufferStatus(GR_GL_FRAMEBUFFER));
             if (status != GR_GL_FRAMEBUFFER_COMPLETE) {
-                SkDebugf("GrGLGpu::flushRenderTargetNoColorWrites glCheckFramebufferStatus %x\n",
+                SkDebugf("------- GrGLGpu::flushRenderTargetNoColorWrites glCheckFramebufferStatus %x\n",
                          status);
             }
         }
@@ -3167,6 +3183,10 @@ void GrGLGpu::deleteFramebuffer(GrGLuint fboid) {
 bool GrGLGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
                             GrSurface* src, const SkIRect& srcRect,
                             GrSamplerState::Filter filter) {
+    SkDebugf("------- GrGLGpu::onCopySurface %d %d",
+             src->isProtected(),
+             dst->isProtected());
+
     // Don't prefer copying as a draw if the dst doesn't already have a FBO object.
     // This implicitly handles this->glCaps().useDrawInsteadOfAllRenderTargetWrites().
     bool preferCopy = SkToBool(dst->asRenderTarget());
@@ -3177,17 +3197,20 @@ bool GrGLGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
         GrRenderTarget* dstRT = dst->asRenderTarget();
         bool drawToMultisampleFBO = dstRT && dstRT->numSamples() > 1;
         if (this->copySurfaceAsDraw(dst, drawToMultisampleFBO, src, srcRect, dstRect, filter)) {
+            SkDebugf("------- asDraw\n");
             return true;
         }
     }
 
     // Prefer copying as with glCopyTexSubImage when the dimensions are the same.
     if (!scalingCopy && can_copy_texsubimage(dst, src, this->glCaps())) {
+        SkDebugf("------- asCopyTexSubImage\n");
         this->copySurfaceAsCopyTexSubImage(dst, src, srcRect, dstRect.topLeft());
         return true;
     }
 
     if (can_blit_framebuffer_for_copy_surface(dst, src, srcRect, dstRect, this->glCaps())) {
+        SkDebugf("------- asBlitFB\n");
         return this->copySurfaceAsBlitFramebuffer(dst, src, srcRect, dstRect, filter);
     }
 
@@ -3196,10 +3219,12 @@ bool GrGLGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
         GrRenderTarget* dstRT = dst->asRenderTarget();
         bool drawToMultisampleFBO = dstRT && dstRT->numSamples() > 1;
         if (this->copySurfaceAsDraw(dst, drawToMultisampleFBO, src, srcRect, dstRect, filter)) {
+            SkDebugf("------- asDraw2\n");
             return true;
         }
     }
 
+    SkDebugf("$$$$$$$ failed copy\n");
     return false;
 }
 
@@ -3835,6 +3860,9 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
                                                  GrMipmapped mipmapped,
                                                  GrProtected isProtected,
                                                  std::string_view label) {
+    SkDebugf("------- GrGLGpu::onCreateBackendTexture %d\n",
+             isProtected == skgpu::Protected::kYes);
+
     this->handleDirtyContext();
 
     GrGLFormat glFormat = format.asGLFormat();

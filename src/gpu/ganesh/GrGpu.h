@@ -129,7 +129,7 @@ public:
      *                       true.
      * @return  The texture object if successful, otherwise nullptr.
      */
-    sk_sp<GrTexture> createTexture(SkISize dimensions,
+    sk_sp<GrTexture> createTexture1(SkISize dimensions,
                                    const GrBackendFormat& format,
                                    GrTextureType textureType,
                                    GrRenderable renderable,
@@ -145,7 +145,7 @@ public:
     /**
      * Simplified createTexture() interface for when there is no initial texel data to upload.
      */
-    sk_sp<GrTexture> createTexture(SkISize dimensions,
+    sk_sp<GrTexture> createTexture2(SkISize dimensions,
                                    const GrBackendFormat& format,
                                    GrTextureType textureType,
                                    GrRenderable renderable,
@@ -655,7 +655,8 @@ public:
     // the GrAttachment.
     virtual sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& colorFormat,
                                                       SkISize dimensions,
-                                                      int numStencilSamples) = 0;
+                                                      int numStencilSamples,
+                                                      GrProtected) = 0;
 
     virtual GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) = 0;
 

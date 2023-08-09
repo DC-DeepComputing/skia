@@ -89,7 +89,7 @@ public:
                                          std::string_view label);
 
     /** Create an exact fit texture with no initial data to upload. */
-    sk_sp<GrTexture> createTexture(SkISize dimensions,
+    sk_sp<GrTexture> createTexture2(SkISize dimensions,
                                    const GrBackendFormat& format,
                                    GrTextureType textureType,
                                    skgpu::Renderable renderable,
@@ -104,7 +104,7 @@ public:
      * for the format and also describe the texel data. This will ensure any conversions that
      * need to get applied to the data before upload are applied.
      */
-    sk_sp<GrTexture> createTexture(SkISize dimensions,
+    sk_sp<GrTexture> createTexture1(SkISize dimensions,
                                    const GrBackendFormat& format,
                                    GrTextureType textureType,
                                    GrColorType colorType,
@@ -121,7 +121,7 @@ public:
      * for the format and also describe the texel data. This will ensure any conversions that
      * need to get applied to the data before upload are applied.
      */
-    sk_sp<GrTexture> createTexture(SkISize dimensions,
+    sk_sp<GrTexture> createTexture3(SkISize dimensions,
                                    const GrBackendFormat&,
                                    GrTextureType textureType,
                                    GrColorType srcColorType,
