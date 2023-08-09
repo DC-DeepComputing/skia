@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b0ec4d7_485eef5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-09T18:41:58Z",
+      "side": 1,
+      "message": "OK sorry I changed my mind, this should be easy to fix-forward. PTAL.",
+      "revId": "a05e3efb044cf44833b5ac258c37107377dbfe13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
