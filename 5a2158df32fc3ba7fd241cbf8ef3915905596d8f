@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1f54206_1694c96e",
+        "filename": "tests/sksl/workarounds/VoidInSequenceExpressionsWithVoidMain.glsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-09T13:49:15Z",
+      "side": 1,
+      "message": "Unreachable code is safe, we think?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 15
+      },
+      "revId": "5a2158df32fc3ba7fd241cbf8ef3915905596d8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
