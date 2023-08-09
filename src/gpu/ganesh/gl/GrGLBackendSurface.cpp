@@ -80,7 +80,9 @@ private:
 #endif
     }
 
-    GrBackendFormatData* copy() const override { return new GrGLBackendFormatData(fGLFormat); }
+    void copyTo(GrBackendFormat::AnyFormatData& formatData) const override {
+        formatData.make<GrGLBackendFormatData>(fGLFormat);
+    }
 
 #if defined(SK_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kOpenGL; }
@@ -141,8 +143,8 @@ GrGLBackendTextureData::GrGLBackendTextureData(const GrGLTextureInfo& info,
                                                sk_sp<GrGLTextureParameters> params)
         : fGLInfo(info, params) {}
 
-GrBackendTextureData* GrGLBackendTextureData::copy() const {
-    return new GrGLBackendTextureData(fGLInfo.info(), fGLInfo.refParameters());
+void GrGLBackendTextureData::copyTo(GrBackendTexture::AnyTextureData& textureData) const {
+    textureData.make<GrGLBackendTextureData>(fGLInfo.info(), fGLInfo.refParameters());
 }
 
 bool GrGLBackendTextureData::isProtected() const { return fGLInfo.isProtected(); }
@@ -167,10 +169,10 @@ GrBackendFormat GrGLBackendTextureData::getBackendFormat() const {
     return GrBackendFormats::MakeGL(fGLInfo.info().fFormat, fGLInfo.info().fTarget);
 }
 
-static GrGLBackendTextureData* get_and_cast_data(const GrBackendTexture& texture) {
+static const GrGLBackendTextureData* get_and_cast_data(const GrBackendTexture& texture) {
     auto data = GrBackendSurfacePriv::GetBackendData(texture);
     SkASSERT(!data || data->type() == GrBackendApi::kOpenGL);
-    return static_cast<GrGLBackendTextureData*>(data);
+    return static_cast<const GrGLBackendTextureData*>(data);
 }
 
 static GrGLBackendTextureData* get_and_cast_data(GrBackendTexture* texture) {
@@ -260,8 +262,8 @@ private:
         return false;
     }
 
-    GrBackendRenderTargetData* copy() const override {
-        return new GrGLBackendRenderTargetData(fGLInfo);
+    void copyTo(GrBackendRenderTarget::AnyRenderTargetData& rtData) const override {
+        rtData.make<GrGLBackendRenderTargetData>(fGLInfo);
     }
 
 #if defined(SK_DEBUG)
