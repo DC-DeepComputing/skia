@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "776509ff_72c2341b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-09T21:25:27Z",
+      "side": 1,
+      "message": "This now goes to a Skia issue. I\u0027m not sure what we need to do to target other Buganizer issues, or if this is a bug.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 16
+      },
+      "revId": "0aedfb1c73574fd123f97f5d06830266fff380ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acba32b4_9a516f78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-09T21:25:27Z",
+      "side": 1,
+      "message": "As discussed over chat, I think this seems like a reasonable compromise, though it does not quite fix the problem.",
+      "revId": "0aedfb1c73574fd123f97f5d06830266fff380ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
