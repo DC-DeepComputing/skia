@@ -69,6 +69,9 @@ struct RenderPassDesc {
 
     Swizzle fWriteSwizzle;
 
+    // Implicit sample count for multisampled render to single sampled texture.
+    uint32_t fImplicitSampleCount;
+
     // TODO:
     // * bounds (TBD whether exact bounds vs. granular)
     // * input attachments
