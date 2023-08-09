@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9660b7ff_6131b18c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-08-09T18:09:53Z",
+      "side": 1,
+      "message": "This is identical to http://review.skia.org/739078, but with a different author/committer. I must have run a local script that changed my `~/.gitconfig` file\u0027s email/name values. Easier to create a new CL than try to figure out how to change author/committer.",
+      "revId": "c07a6e85fc5e509fddbcb8d782023482428d8788",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
