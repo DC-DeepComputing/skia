@@ -16,6 +16,24 @@
       "message": "LGTM, but make sure the Fontations jobs I kicked off pass",
       "revId": "b37d88eb0945e38f3911cd0b5a37a64cc063b330",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed13a53_27d6e1d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-08-09T11:53:39Z",
+      "side": 1,
+      "message": "Thanks for the quick review. Good point, added those as mandatory CQ includes in the commit message and kicked off those jobs.",
+      "parentUuid": "b617cb11_8818a6e3",
+      "revId": "b37d88eb0945e38f3911cd0b5a37a64cc063b330",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
