@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dff2f723_073b9d4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-08-09T14:36:33Z",
+      "side": 1,
+      "message": "Odd that Housekeeper-OnDemand-Presubmit failed the first time with:\n\n    fatal: bad revision \u0027refs/heads/chrome/m117..0369c5fd4687c310ca04c59e8ebfc4c39320042f\u0027\n\nI triggered it manually and it passed.",
+      "revId": "0369c5fd4687c310ca04c59e8ebfc4c39320042f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
