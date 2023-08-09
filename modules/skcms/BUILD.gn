@@ -6,7 +6,6 @@
 import("skcms.gni")
 
 static_library("skcms") {
-  cflags = []
   if (!is_win || is_clang) {
     cflags += [ "-std=c11" ]
   }
