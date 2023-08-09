@@ -118,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a81f008f_65402c5c",
+        "filename": "platform_tools/android/apps/viewer/src/main/AndroidManifest.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T17:47:47Z",
+      "side": 1,
+      "message": "It turns out an explicit android:exported value is required when targeting API level 31+\n\nAnd it has to be true to avoid the \"App isn\u0027t installed\" error on launch",
+      "parentUuid": "ee04142f_128b8148",
+      "range": {
+        "startLine": 14,
+        "startChar": 45,
+        "endLine": 14,
+        "endChar": 61
+      },
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd379c5e_1774deec",
@@ -131,6 +155,24 @@
       "writtenOn": "2023-08-08T20:48:12Z",
       "side": 1,
       "message": "Maybe this should be an option somehow?",
+      "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f4fbb01_a2bff234",
+        "filename": "platform_tools/android/apps/viewer/src/main/java/org/skia/viewer/StateAdapter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T17:47:47Z",
+      "side": 1,
+      "message": "That\u0027s going to take a lot more doing so I\u0027ll pull that out into a separate CL.",
+      "parentUuid": "bd379c5e_1774deec",
       "revId": "909f86ffb5d26fb00d14c92a390b26e616e99163",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
