@@ -1,0 +1,42 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "select_multi", "skia_cc_deps", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:flags.bzl", "bool_flag", "selects", "string_flag_with_values")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+GEOM_FILES = [
+    "AtlasShape.h",
+    "BoundsManager.h",
+    "EdgeAAQuad.h",
+    "Geometry.h",
+    "IntersectionTree.cpp",
+    "IntersectionTree.h",
+    "Rect.h",
+    "Shape.cpp",
+    "Shape.h",
+    "SubRunData.h",
+    "Transform.cpp",
+    "Transform_graphite.h",
+]
+
+split_srcs_and_hdrs(
+    name = "geom",
+    files = GEOM_FILES,
+)
+
+skia_filegroup(
+    name = "srcs",
+    srcs = [
+        ":geom_srcs",
+    ],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
+
+skia_filegroup(
+    name = "private_hdrs",
+    srcs = [
+        ":geom_hdrs",
+    ],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)

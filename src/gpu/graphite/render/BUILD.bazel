@@ -1,0 +1,53 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "select_multi", "skia_cc_deps", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:flags.bzl", "bool_flag", "selects", "string_flag_with_values")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+RENDER_FILES = [
+    "AnalyticRRectRenderStep.cpp",
+    "AnalyticRRectRenderStep.h",
+    "AtlasShapeRenderStep.cpp",
+    "AtlasShapeRenderStep.h",
+    "BitmapTextRenderStep.cpp",
+    "BitmapTextRenderStep.h",
+    "CommonDepthStencilSettings.h",
+    "CoverBoundsRenderStep.cpp",
+    "CoverBoundsRenderStep.h",
+    "DynamicInstancesPatchAllocator.h",
+    "GraphiteVertexFiller.cpp",
+    "MiddleOutFanRenderStep.cpp",
+    "MiddleOutFanRenderStep.h",
+    "SDFTextRenderStep.cpp",
+    "SDFTextRenderStep.h",
+    "TessellateCurvesRenderStep.cpp",
+    "TessellateCurvesRenderStep.h",
+    "TessellateStrokesRenderStep.cpp",
+    "TessellateStrokesRenderStep.h",
+    "TessellateWedgesRenderStep.cpp",
+    "TessellateWedgesRenderStep.h",
+    "VerticesRenderStep.cpp",
+    "VerticesRenderStep.h",
+]
+
+split_srcs_and_hdrs(
+    name = "render",
+    files = RENDER_FILES,
+)
+
+skia_filegroup(
+    name = "srcs",
+    srcs = [
+        ":render_srcs",
+    ],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
+
+skia_filegroup(
+    name = "private_hdrs",
+    srcs = [
+        ":render_hdrs",
+    ],
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)

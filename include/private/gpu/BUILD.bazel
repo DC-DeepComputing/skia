@@ -6,12 +6,16 @@ exports_files_legacy()
 
 skia_filegroup(
     name = "private_hdrs",
-    srcs = [
-        "//include/private/gpu/ganesh:private_hdrs",
-    ] + select_multi(
+    srcs = select(
+        {
+            "//src/gpu:has_ganesh_backend": ["//include/private/gpu/ganesh:private_hdrs"],
+            "//conditions:default": [],
+        },
+    ) + select_multi(
         {
             "//src/gpu:vulkan_ganesh": ["//include/private/gpu/vk:private_hdrs"],
+            "//src/gpu:metal_graphite": ["//include/private/gpu/graphite:metal_hdrs"],
         },
-    ),  # TODO(kjlubick) add select for graphite
+    ),
     visibility = ["//include/private:__pkg__"],
 )
