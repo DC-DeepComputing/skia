@@ -22,6 +22,30 @@
       },
       "revId": "8025159fa8ca2c07ed78079d2b9c0f54ae4e196c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e590052_cf62224e",
+        "filename": "tools/viewer/ProtectedSlide.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-09T19:33:37Z",
+      "side": 1,
+      "message": "It is so that, while debugging, one can cycle through the four options:\n   [AHB, Skia] x [protected, unprotected]",
+      "parentUuid": "eeac8903_ae7c223e",
+      "range": {
+        "startLine": 188,
+        "startChar": 10,
+        "endLine": 190,
+        "endChar": 56
+      },
+      "revId": "8025159fa8ca2c07ed78079d2b9c0f54ae4e196c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
