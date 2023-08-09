@@ -155,7 +155,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::testingOnly_createInstantiatedProxy(
                 isProtected,
                 /*label=*/"InstantiatedProxyViaApproxTexture_Test");
     } else {
-        tex = resourceProvider->createTexture(dimensions,
+        tex = resourceProvider->createTexture2(dimensions,
                                               format,
                                               format.textureType(),
                                               renderable,
@@ -277,6 +277,8 @@ sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bit
                                                              SkBackingFit fit,
                                                              skgpu::Budgeted budgeted) {
     ASSERT_SINGLE_OWNER
+
+    SkDebugf("------- GrProxyProvider::createProxyFromBitmap\n");
     SkASSERT(fit == SkBackingFit::kExact || mipmapped == GrMipmapped::kNo);
 
     if (this->isAbandoned()) {
@@ -343,6 +345,9 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
                                                                       skgpu::Budgeted budgeted) {
     auto dims = bitmap.dimensions();
 
+    SkDebugf("------ GrProxyProvider::createNonMippedProxyFromBitmap %dx%d\n",
+             bitmap.width(), bitmap.height());
+
     auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
     GrBackendFormat format = this->caps()->getDefaultBackendFormat(colorType, GrRenderable::kNo);
     if (!format.isValid()) {
@@ -354,7 +359,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
                 SkASSERT(desc.fMipmapped == GrMipmapped::kNo);
                 GrMipLevel mipLevel = {bitmap.getPixels(), bitmap.rowBytes(), nullptr};
                 auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
-                return LazyCallbackResult(resourceProvider->createTexture(desc.fDimensions,
+                return LazyCallbackResult(resourceProvider->createTexture3(desc.fDimensions,
                                                                           desc.fFormat,
                                                                           desc.fTextureType,
                                                                           colorType,
@@ -414,7 +419,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
                     SkASSERT(texels[i].fPixels);
                     SkASSERT(generatedMipLevel.fPixmap.colorType() == bitmap.colorType());
                 }
-                return LazyCallbackResult(resourceProvider->createTexture(desc.fDimensions,
+                return LazyCallbackResult(resourceProvider->createTexture1(desc.fDimensions,
                                                                           desc.fFormat,
                                                                           desc.fTextureType,
                                                                           colorType,

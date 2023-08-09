@@ -293,6 +293,8 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
         std::unique_ptr<GrFragmentProcessor> inputFP,
         float range,
         const GrCaps* caps) {
+    return inputFP;
+
     if (range == 0 || inputFP == nullptr) {
         return inputFP;
     }

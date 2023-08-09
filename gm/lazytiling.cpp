@@ -50,7 +50,7 @@ static GrSurfaceProxyView create_view(GrDirectContext* dContext,
                     GrMipLevel mipLevel = {src.getPixels(), src.rowBytes(), nullptr};
                     auto colorType = SkColorTypeToGrColorType(src.colorType());
 
-                    return rp->createTexture(src.dimensions(),
+                    return rp->createTexture3(src.dimensions(),
                                              desc.fFormat,
                                              desc.fTextureType,
                                              colorType,

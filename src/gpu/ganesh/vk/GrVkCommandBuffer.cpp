@@ -540,6 +540,7 @@ static bool submit_to_queue(GrVkGpu* gpu,
                             GrProtected protectedContext) {
     VkProtectedSubmitInfo protectedSubmitInfo;
     if (protectedContext == GrProtected::kYes) {
+        SkDebugf("+++++++ protected submit_to_queue\n");
         memset(&protectedSubmitInfo, 0, sizeof(VkProtectedSubmitInfo));
         protectedSubmitInfo.sType = VK_STRUCTURE_TYPE_PROTECTED_SUBMIT_INFO;
         protectedSubmitInfo.pNext = nullptr;
@@ -999,4 +1000,3 @@ void GrVkSecondaryCommandBuffer::recycle(GrVkCommandPool* cmdPool) {
         cmdPool->recycleSecondaryCommandBuffer(this);
     }
 }
-

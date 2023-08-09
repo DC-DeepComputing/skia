@@ -346,7 +346,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
     for (int i = 0; i < 5; ++i) {
         auto format = dContext->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                        GrRenderable::kNo);
-        textures.emplace_back(dContext->priv().resourceProvider()->createTexture(
+        textures.emplace_back(dContext->priv().resourceProvider()->createTexture2(
                 {100, 100},
                 format,
                 GrTextureType::k2D,

@@ -146,7 +146,7 @@ void basic_transfer_to_test(skiatest::Reporter* reporter,
     int srcBufferWidth = caps->transferPixelsToRowBytesSupport() ? 20 : 16;
     const int kBufferHeight = 16;
 
-    sk_sp<GrTexture> tex = resourceProvider->createTexture(kTexDims,
+    sk_sp<GrTexture> tex = resourceProvider->createTexture2(kTexDims,
                                                            backendFormat,
                                                            GrTextureType::k2D,
                                                            renderable,
@@ -341,7 +341,7 @@ void basic_transfer_from_test(skiatest::Reporter* reporter, const sk_gpu_test::C
     GrMipLevel data;
     data.fPixels = textureData.get();
     data.fRowBytes = textureDataRowBytes;
-    sk_sp<GrTexture> tex = resourceProvider->createTexture(kTexDims,
+    sk_sp<GrTexture> tex = resourceProvider->createTexture1(kTexDims,
                                                            format,
                                                            GrTextureType::k2D,
                                                            colorType,

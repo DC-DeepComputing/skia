@@ -110,7 +110,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
     static constexpr SkISize kDims = {10, 10};
     GrBackendFormat format = gpu->caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
                                                                   GrRenderable::kNo);
-    auto tex = gpu->createTexture(kDims,
+    auto tex = gpu->createTexture2(kDims,
                                   format,
                                   GrTextureType::k2D,
                                   GrRenderable::kNo,
