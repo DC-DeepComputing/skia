@@ -324,6 +324,8 @@ private:
                                                 fQuads.count(),
                                                 totalNumVertices,
                                                 fBaseVertex);
+
+        SkDebugf("--------- GrFillRectOp::onExecute #quads: %d\n", fQuads.count());
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

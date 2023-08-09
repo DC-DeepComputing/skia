@@ -243,7 +243,8 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
 
     for (const auto& renderTask : fDAG) {
         if (!renderTask || !renderTask->isInstantiated()) {
-             continue;
+            SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$ WTH\n");
+            continue;
         }
 
         SkASSERT(renderTask->deferredProxiesAreInstantiated());
@@ -266,6 +267,7 @@ bool GrDrawingManager::executeRenderTasks(GrOpFlushState* flushState) {
     for (const auto& renderTask : fDAG) {
         SkASSERT(renderTask);
         if (!renderTask->isInstantiated()) {
+            SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$$$$ WTH 2 %s\n", renderTask->name());
             continue;
         }
 
@@ -371,6 +373,8 @@ static void reorder_array_by_llist(const SkTInternalLList<T>& llist, TArray<sk_s
 }
 
 bool GrDrawingManager::reorderTasks(GrResourceAllocator* resourceAllocator) {
+    return false;
+
     SkASSERT(fReduceOpsTaskSplitting);
     // We separately sort the ranges around non-reorderable tasks.
     bool clustered = false;

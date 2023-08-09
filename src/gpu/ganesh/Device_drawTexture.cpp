@@ -370,6 +370,11 @@ void Device::drawSpecial(SkSpecialImage* special,
                          const SkMatrix& localToDevice,
                          const SkSamplingOptions& origSampling,
                          const SkPaint& paint) {
+
+    SkDebugf("----------- Device::drawSpecial src %d dst %d\n",
+             special->isProtected(),
+             this->targetProxy()->isProtected() == skgpu::Protected::kYes);
+
     SkASSERT(!paint.getMaskFilter() && !paint.getImageFilter());
     SkASSERT(special->isGaneshBacked());
 

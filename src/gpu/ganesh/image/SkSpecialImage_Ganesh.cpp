@@ -73,6 +73,8 @@ public:
     size_t getSize() const override { return fView.proxy()->gpuMemorySize(); }
 
     bool isGaneshBacked() const override { return true; }
+    bool isProtected() const override { return fView.proxy()->isProtected() ==
+                                               skgpu::Protected::kYes; }
 
     void onDraw(SkCanvas* canvas,
                 SkScalar x,

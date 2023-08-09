@@ -32,6 +32,8 @@ GrBackendTexture MakeGL(int width,
                         skgpu::Mipmapped mipped,
                         const GrGLTextureInfo& glInfo,
                         std::string_view label) {
+    SkDebugf("----------- GrGLBackendTextureData %d\n", glInfo.isProtected());
+
     return GrBackendTexture(width, height, mipped, glInfo, label);
 }
 

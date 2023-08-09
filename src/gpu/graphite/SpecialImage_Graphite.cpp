@@ -36,6 +36,7 @@ public:
     }
 
     bool isGraphiteBacked() const override { return true; }
+    bool isProtected() const override { return false; }
 
     TextureProxyView textureProxyView() const { return fTextureProxyView; }
 

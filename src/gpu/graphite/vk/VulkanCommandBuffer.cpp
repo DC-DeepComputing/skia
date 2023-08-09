@@ -46,6 +46,7 @@ std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
     // Create VkCommandPool
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
     if (sharedContext->isProtected() == Protected::kYes) {
+        SkDebugf("+++++++++++++++ Creating protected command buffer");
         cmdPoolCreateFlags |= VK_COMMAND_POOL_CREATE_PROTECTED_BIT;
     }
 
@@ -257,6 +258,7 @@ static bool submit_to_queue(const VulkanInterface* interface,
                             Protected protectedContext) {
     VkProtectedSubmitInfo protectedSubmitInfo;
     if (protectedContext == Protected::kYes) {
+        SkDebugf("++++++++++++++ protected submit_to_queue\n");
         memset(&protectedSubmitInfo, 0, sizeof(VkProtectedSubmitInfo));
         protectedSubmitInfo.sType = VK_STRUCTURE_TYPE_PROTECTED_SUBMIT_INFO;
         protectedSubmitInfo.pNext = nullptr;
@@ -1397,4 +1399,3 @@ void VulkanCommandBuffer::submitPipelineBarriers(bool forSelfDependency) {
 
 
 } // namespace skgpu::graphite
-

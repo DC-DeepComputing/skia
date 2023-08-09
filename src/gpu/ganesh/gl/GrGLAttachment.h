@@ -18,11 +18,13 @@ public:
     static sk_sp<GrGLAttachment> MakeStencil(GrGLGpu* gpu,
                                              SkISize dimensions,
                                              int sampleCnt,
+                                             GrProtected,
                                              GrGLFormat format);
 
     static sk_sp<GrGLAttachment> MakeMSAA(GrGLGpu* gpu,
                                           SkISize dimensions,
                                           int sampleCnt,
+                                          GrProtected,
                                           GrGLFormat format);
 
     static sk_sp<GrGLAttachment> MakeWrappedRenderBuffer(GrGpu* gpu,

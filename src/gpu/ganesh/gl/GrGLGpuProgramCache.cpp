@@ -111,8 +111,9 @@ sk_sp<GrGLProgram> GrGLGpu::ProgramCache::findOrCreateProgramImpl(GrDirectContex
             return nullptr;
         }
         fStats.incNumCompilationSuccesses();
-        entry = fMap.insert(desc, std::make_unique<Entry>(std::move(program)));
+//        entry = fMap.insert(desc, std::make_unique<Entry>(std::move(program)));
         *stat = Stats::ProgramCacheResult::kMiss;
+        return program;
     }
 
     return (*entry)->fProgram;

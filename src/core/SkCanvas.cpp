@@ -986,6 +986,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
         const auto createInfo = SkBaseDevice::CreateInfo(info, geo, SkBaseDevice::kNever_TileUsage,
                                                          fAllocator.get());
         // Use the original paint as a hint so that it includes the image filter
+        SkDebugf("--------------- kFullLayer_SaveLayerStrategy\n");
         newDevice.reset(priorDevice->onCreateDevice(createInfo, rec.fPaint));
     }
 
