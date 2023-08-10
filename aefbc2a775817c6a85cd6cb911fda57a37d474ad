@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f182e1a1_3886a4f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T13:51:36Z",
+      "side": 1,
+      "message": "Leandro, can you look at my changes to karma_test.bzl? All the changes Jackson did to CanvasKit lgtm",
+      "revId": "aefbc2a775817c6a85cd6cb911fda57a37d474ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

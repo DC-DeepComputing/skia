@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae8f2c11_52948789",
+        "filename": "bazel/karma/karma_test.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T13:51:36Z",
+      "side": 0,
+      "message": "This was the main source of the problems. I had either not realized why https://github.com/bazelbuild/rules_nodejs/blob/c0b5865d7926298206e9a6aa32138967403ad1f2/packages/concatjs/web_test/karma_web_test.bzl#L66 did this. It worked in v4.x because of the ExternalNpmPackageInfo above, which (I think) treated all the npm modules as individual files. In 5.x (I think) they switched to treating npm packages as a single directory, switching from ExternalNpmPackageInfo to JSNamedModuleInfo [1] [2] [3], which caused the fail() to trigger. Furthermore, JSNamedModuleInfo\u0027s sources work differently, and thus the files for the karma plugins were not getting put in the node_modules folder in the sandbox.\n\nBy changing this to be a custom label (with all the necessary data dependencies, like [4]) this solves the problem. I think the concatjs version did it the way they did to allow more ergonomic addition of arbitrary plugins, but we don\u0027t really need that, so I simplified the logic in _karma_test_impl for combining dependencies.\n\n[1] https://github.com/bazelbuild/rules_nodejs/blob/9ebbd867c123bea5853be7c1922669976fd2b579/providers.bzl\n[2] https://github.com/bazelbuild/rules_nodejs/blob/9ebbd867c123bea5853be7c1922669976fd2b579/internal/providers/external_npm_package_info.bzl\n[3] https://github.com/bazelbuild/rules_nodejs/blob/9ebbd867c123bea5853be7c1922669976fd2b579/internal/providers/js_providers.bzl\n[4] https://github.com/bazelbuild/rules_nodejs/blob/c0b5865d7926298206e9a6aa32138967403ad1f2/packages/concatjs/web_test/BUILD.bazel#L22-L37",
+      "range": {
+        "startLine": 364,
+        "startChar": 12,
+        "endLine": 364,
+        "endChar": 46
+      },
+      "revId": "e892c300a7c43421d7875403c1ee413af3d27a4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
