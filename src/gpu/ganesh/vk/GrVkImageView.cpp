@@ -19,8 +19,7 @@ sk_sp<const GrVkImageView> GrVkImageView::Make(GrVkGpu* gpu,
     void* pNext = nullptr;
     VkSamplerYcbcrConversionInfo conversionInfo;
     GrVkSamplerYcbcrConversion* ycbcrConversion = nullptr;
-
-    if (ycbcrInfo.isValid()) {
+    if (ycbcrInfo.isValid() || ycbcrInfo.fExternalFormat) {
         SkASSERT(gpu->vkCaps().supportsYcbcrConversion() && format == ycbcrInfo.fFormat);
 
         ycbcrConversion =
