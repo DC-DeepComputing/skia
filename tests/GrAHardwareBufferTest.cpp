@@ -238,34 +238,11 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
-    AHardwareBuffer* buffer = nullptr;
-
-    AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE |
-                    AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT;
-
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
-        return;
-    }
-
-    sk_sp<SkSurface> surface =
-            SkSurfaces::WrapAndroidHardwareBuffer(context, buffer, surfaceOrigin, nullptr, nullptr);
+    sk_sp<SkSurface> surface = AHBUtils::CreateAHBBackedSurface(context, DEV_W, DEV_H,
+                                                                surfaceOrigin,
+                                                                /* isProtected= */ false);
     if (!surface) {
-        ERRORF(reporter, "Failed to make SkSurface.");
-        cleanup_resources(buffer);
+        ERRORF(reporter, "CreateAHBBackedSurface failed");
         return;
     }
 
