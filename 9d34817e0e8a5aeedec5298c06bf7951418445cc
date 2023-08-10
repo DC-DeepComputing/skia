@@ -46,6 +46,30 @@
       },
       "revId": "9d34817e0e8a5aeedec5298c06bf7951418445cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "890d3575_0d48cdda",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T16:05:46Z",
+      "side": 1,
+      "message": "Done, making use of the gcs_mirror_url here and in other places.",
+      "parentUuid": "44149a65_fd9fae82",
+      "range": {
+        "startLine": 17,
+        "startChar": 66,
+        "endLine": 17,
+        "endChar": 130
+      },
+      "revId": "9d34817e0e8a5aeedec5298c06bf7951418445cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
