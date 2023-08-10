@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd9f55cf_55e1b9b8",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T21:30:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90be6727_41e7eb67",
+      "range": {
+        "startLine": 176,
+        "startChar": 54,
+        "endLine": 176,
+        "endChar": 56
+      },
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "011e6e15_a9a439da",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-10T20:45:54Z",
       "side": 1,
       "message": "Can these two be private?\n\nSame x2 below.",
+      "range": {
+        "startLine": 177,
+        "startChar": 4,
+        "endLine": 177,
+        "endChar": 9
+      },
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33927323_09d20a7c",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T21:30:22Z",
+      "side": 1,
+      "message": "Originally they were. Then I had to friend BackendFormatData and all the derived classes (because of the signature of copyTo). But I realized I can just do one friend declaration, then re-declare the alias *in* BackendFormatData. Much better!",
+      "parentUuid": "011e6e15_a9a439da",
       "range": {
         "startLine": 177,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10594f08_ff702738",
+        "filename": "src/gpu/ganesh/GrBackendSurface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T21:30:22Z",
+      "side": 1,
+      "message": "It\u0027s not possible here (because this is the constructor, rather than the assignment operator).",
+      "parentUuid": "59567d2b_e447a451",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 15
+      },
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb672cff_9cbb202f",
@@ -83,6 +155,24 @@
       "writtenOn": "2023-08-10T20:47:09Z",
       "side": 1,
       "message": "Were there going to be static casts to make sure these subclasses fit in the AnyFormatData data?",
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82ac44ab_2ea10ee9",
+        "filename": "src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T21:30:22Z",
+      "side": 1,
+      "message": "It\u0027s checked (at compile time) when you try to instantiate one: https://skia-review.googlesource.com/c/skia/+/738102/14/include/private/base/SkAnySubclass.h#40",
+      "parentUuid": "bb672cff_9cbb202f",
       "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
