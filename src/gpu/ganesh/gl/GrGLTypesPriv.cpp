@@ -58,15 +58,18 @@ void GrGLTextureParameters::set(const SamplerOverriddenState* samplerState,
 }
 
 void GrGLBackendTextureInfo::assign(const GrGLBackendTextureInfo& that, bool thisIsValid) {
-    fInfo = that.fInfo;
-    SkSafeRef(that.fParams);
-    if (thisIsValid) {
-        SkSafeUnref(fParams);
+    // This object is a union member, so our bits might be uninitialized. In that case, we can't
+    // assign to fParams -- it will try to free a previously-held object that's not really there.
+    // To prevent that, set it to nullptr in a way that won't trigger the free:
+    if (!thisIsValid) {
+        (void)fParams.release();
     }
+
+    fInfo = that.fInfo;
     fParams = that.fParams;
 }
 
-void GrGLBackendTextureInfo::cleanup() { SkSafeUnref(fParams); }
+void GrGLBackendTextureInfo::cleanup() { fParams.reset(); }
 
 GrGLSurfaceInfo GrGLTextureSpecToSurfaceInfo(const GrGLTextureSpec& glSpec,
                                              uint32_t sampleCount,
