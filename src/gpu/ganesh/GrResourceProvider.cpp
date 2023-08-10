@@ -72,6 +72,8 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
 
+    SkDebugf("------- GrResourceProvider::createTexture\n");
+
     if (this->isAbandoned()) {
         return nullptr;
     }
@@ -167,6 +169,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
 
+    SkDebugf("------- GrResourceProvider::createTexture\n");
     if (!mipLevel.fPixels) {
         return nullptr;
     }
@@ -239,6 +242,8 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
     if (this->isAbandoned()) {
         return nullptr;
     }
+
+    SkDebugf("------- GrResourceProvider::createTexture\n");
 
     if (!fCaps->validateSurfaceParams(dimensions, format, renderable, renderTargetSampleCnt,
                                       mipmapped, textureType)) {
@@ -708,7 +713,7 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         if (!keyedStencil) {
             // Need to try and create a new stencil
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
-                                                              numStencilSamples);
+                                                              numStencilSamples, isProtected);
             if (!keyedStencil) {
                 return false;
             }
