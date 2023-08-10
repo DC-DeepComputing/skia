@@ -46,6 +46,30 @@
       },
       "revId": "a4a78b86db16508251951cf698c0417597add6dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfd10990_3effbd57",
+        "filename": "tests/GradientTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-10T14:15:02Z",
+      "side": 1,
+      "message": "It\u0027s still phrased as a hypothetical (\"If the implementation...\").\nLet\u0027s state it concretely, e.g. \"The gradient implementation must not call atan2(y, x) with x \u003d\u003d 0, as this will result in undefined behavior and likely incorrect results.\"",
+      "parentUuid": "750e0efc_37605815",
+      "range": {
+        "startLine": 628,
+        "startChar": 40,
+        "endLine": 630,
+        "endChar": 28
+      },
+      "revId": "a4a78b86db16508251951cf698c0417597add6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
