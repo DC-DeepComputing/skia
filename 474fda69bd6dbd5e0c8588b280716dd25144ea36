@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3a88944_1646b4d8",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T21:30:05Z",
+      "side": 1,
+      "message": "Yeah, I debated about this (started with init, then switched to make, considered emplace). That\u0027s probably the best option. Done.",
+      "parentUuid": "72f79479_460ef66d",
+      "range": {
+        "startLine": 38,
+        "startChar": 9,
+        "endLine": 38,
+        "endChar": 13
+      },
+      "revId": "474fda69bd6dbd5e0c8588b280716dd25144ea36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dc7077d_a41ec85a",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-10T21:10:48Z",
       "side": 1,
       "message": "While it seems we may not want a `std::any` style `any_cast`, `std::optional` uses `value` and `value_or` (which return references) because the idea is to model value semantics as opposed to pointer semantics (like `std::unique_ptr::get` which returns a pointer). Not sure if it makes a difference here. I suppose access has to go through `operator-\u003e` which looks like a pointer, so might as well just do that as opposed to `std::optional` which looks a bit confused on that issue.\n\nOn the other hand, an `any_cast` here could at least statically check that the type being cast to derives from `Base`, which would be useful if ever refactoring things in the future.",
+      "range": {
+        "startLine": 55,
+        "startChar": 16,
+        "endLine": 55,
+        "endChar": 19
+      },
+      "revId": "474fda69bd6dbd5e0c8588b280716dd25144ea36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ada1a65_7175e736",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T21:30:05Z",
+      "side": 1,
+      "message": "Yeah, I went through some of these ideas as well. Before Base was part of it (so it could be any type at all), I had:\n```\ntemplate \u003ctypename T\u003e T\u0026 get() { ... }\n```\n\nThen I oscillated between having it return the reference or the pointer. Once I had a fixed base-class as part of the interface, `operator-\u003e` felt natural, so I left it with the pointer.\n\nAs it stands now, the static checking is pretty much enforced by the caller of this having to (hopefully) `static_cast\u003cDerived\u003e()`. We\u0027ve used member template things in some other SkSL code, too, with the name `as`. WDYT?",
+      "parentUuid": "7dc7077d_a41ec85a",
       "range": {
         "startLine": 55,
         "startChar": 16,
