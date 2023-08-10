@@ -69,6 +69,8 @@ using SkUniqueFTFace = std::unique_ptr<FT_FaceRec, SkFunctionObject<FT_Done_Face
 using SkUniqueFTSize = std::unique_ptr<FT_SizeRec, SkFunctionObject<FT_Done_Size>>;
 }
 
+#define COMPILE_FOR_WASMBOX 0
+
 // SK_FREETYPE_MINIMUM_RUNTIME_VERSION 0x<major><minor><patch><flags>
 // Flag SK_FREETYPE_DLOPEN: also try dlopen to get newer features.
 #define SK_FREETYPE_DLOPEN (0x1)
@@ -137,31 +139,150 @@ extern "C" {
 }
 FT_MemoryRec_ gFTMemory = { nullptr, sk_ft_alloc, sk_ft_free, sk_ft_realloc };
 
+// Global flag that marks if wasmbox has been initiated in the current thread.
+int g_wasmbox_inited = 0;
+
+// A wrapper class for "pointers" in wasmbox.
+class FTObjectWB {
+    public:
+        FTObjectWB(w2c_libfreetype* wbinst)
+                : wbinst_(wbinst)
+                ,
+                // TODO(mjzhang): Figure out how to increase memory if this malloc fails.
+                pp_(w2c_libfreetype_malloc(wbinst, 4)) {
+            DCHECK(pp_);
+        }
+
+        u32 pp() {
+            DCHECK(pp_);
+            return pp_;
+        }
+        u32 p() {
+            DCHECK(pp_);
+            DCHECK(p_);
+            return p_;
+        }
+        ~FTObjectWB() {
+            if (pp_) w2c_libfreetype_free(wbinst_, pp_);
+        }
+
+    protected:
+        // pointer to a wasmbox instance.
+        w2c_libfreetype* wbinst_;
+
+        // a "double pointer": memory offset of a u32 in the sandbox storing the offset to the
+        // object. This variable is needed because in FreeType, the creation of many objects are
+        // done through a double pointer passed to an object-creating function, e.g.
+        // FT_New_Library().
+        const u32 pp_ = 0;
+
+        // "pointer": memory offset of the object in the sandbox.
+        u32 p_ = 0;
+
+        // Populate the "pointer" from the double "pointer".
+        // This function should be called only once in the lifetime of an FTObjectWB instance.
+        void populate_p() {
+            p_ = read_u32(wbinst_, pp_);
+            DCHECK(p_);
+        }
+};
+
+// Wrapper of a wasmboxed instance of FT_Library.
+struct FTLibraryWB : public FTObjectWB {
+    public:
+        u32 create(u32 mem_p) {
+            u32 res = w2c_libfreetype_FT_New_Library(wbinst_, mem_p, pp_);
+            if (res)
+                SK_TRACEFTR(res, "ERROR: Failed to create sandboxed FT_Library instance.");
+            else
+                populate_p();
+            return res;
+        }
+
+        ~FTLibraryWB() {
+            if (p_) w2c_libfreetype_FT_Done_Library(wbinst_, p_);
+        }
+};
+
+// Wrapper of a wasmboxed instance of FT_Face.
+struct FTFaceWB : public FTObjectWB {
+    public:
+        FTFaceWB(w2c_libfreetype* wbinst, u32 lib_p) : FTObjectWB(wbinst), lib_p_(lib_p) {}
+        u32 create(u32 args_p, u32 face_index) {
+            u32 res = w2c_libfreetype_FT_Open_Face(wbinst_, lib_p_, args_p, face_index, pp_);
+            if (res)
+                SK_TRACEFTR(res, "ERROR: Failed to create sandboxed FT_Face instance.";
+            else
+                populate_p();
+            return res;
+        }
+        ~FTFaceWB() {
+            if (p_) w2c_libfreetype_FT_Done_Face(wbinst_, p_);
+        }
+
+    private:
+        // Memory offset of a FT_Library instance in the sandbox.
+        const u32 lib_p_;
+};
+
 class FreeTypeLibrary : SkNoncopyable {
 public:
-    FreeTypeLibrary() : fLibrary(nullptr) {
-        if (FT_New_Library(&gFTMemory, &fLibrary)) {
-            return;
-        }
-        FT_Add_Default_Modules(fLibrary);
-        FT_Set_Default_Properties(fLibrary);
+    FreeTypeLibrary(bool is_sandboxed=false) : is_sandboxed_(is_sandboxed), fLibrary(nullptr) {
+        if (is_sandboxed_) {
+            if (FT_New_Library(&gFTMemory, &fLibrary)) {
+                return;
+            }
+            FT_Add_Default_Modules(fLibrary);
+            FT_Set_Default_Properties(fLibrary);
 
-        // Subpixel anti-aliasing may be unfiltered until the LCD filter is set.
-        // Newer versions may still need this, so this test with side effects must come first.
-        // The default has changed over time, so this doesn't mean the same thing to all users.
-        FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+            // Subpixel anti-aliasing may be unfiltered until the LCD filter is set.
+            // Newer versions may still need this, so this test with side effects must come first.
+            // The default has changed over time, so this doesn't mean the same thing to all users.
+            FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+        } else {
+            if (!g_wasmbox_inited) {
+                wasm_rt_init();  // Initialize wasmbox if necessary.
+                g_wasmbox_inited = 1;
+            }
+
+            env.inst = &wbinst;
+            wasm2c_libfreetype_instantiate(&wbinst, &env, NULL);  // Create a wasmbox instance
+
+            fLibraryWB = std::make_unique<FTLibraryWB>(&wbinst);
+
+            u32 mem_p = w2c_libfreetype_FT_New_Memory(&wbinst);
+
+            u32 res = fLibraryWB->create(mem_p);
+            if (res)
+                return;
+
+            w2c_libfreetype_FT_Add_Default_Modules(&wbinst, fLibraryWB->p());
+            w2c_libfreetype_FT_Set_Default_Properties(&wbinst, fLibraryWB->p());
+        }
     }
     ~FreeTypeLibrary() {
-        if (fLibrary) {
-            FT_Done_Library(fLibrary);
+        if (is_sandboxed_) {
+            if (fLibrary) {
+                FT_Done_Library(fLibrary);
+            }
+        } else {
+            fLibraryWB.reset();
+            wasm2c_libfreetype_free(&wbinst);  // wasmbox instance must be freed after fLibraryWB
         }
     }
 
     FT_Library library() { return fLibrary; }
 
+    w2c_libfreetype* get_wbinst() { return &wbinst; }
+    FTLibraryWB* libraryWB() { return fLibraryWB.get(); }
 private:
+    const bool is_sandboxed_;
     FT_Library fLibrary;
 
+    w2c_libfreetype wbinst;     // A wasmbox instance.
+    w2c_env env;
+
+    std::unique_ptr<FTLibraryWB> fLibraryWB;
     // FT_Library_SetLcdFilterWeights 2.4.0
     // FT_LOAD_COLOR 2.5.0
     // FT_Pixel_Mode::FT_PIXEL_MODE_BGRA 2.5.0
