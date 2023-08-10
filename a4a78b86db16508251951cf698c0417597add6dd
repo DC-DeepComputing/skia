@@ -70,6 +70,30 @@
       },
       "revId": "a4a78b86db16508251951cf698c0417597add6dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f9037a8_f8c13e83",
+        "filename": "tests/GradientTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-10T14:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfd10990_3effbd57",
+      "range": {
+        "startLine": 628,
+        "startChar": 40,
+        "endLine": 630,
+        "endChar": 28
+      },
+      "revId": "a4a78b86db16508251951cf698c0417597add6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
