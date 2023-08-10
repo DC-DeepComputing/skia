@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8666cba1_4d15f95c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T18:51:26Z",
+      "side": 1,
+      "message": "Not yet used in this CL. To see it in action, the next two CLs are helpful:\n\nhttps://skia-review.googlesource.com/c/skia/+/738881/8\n\nThis is just a pure revert of Kevin\u0027s revert (to fix the performance issues). There\u0027s no usage of SkAnySubclass - it still uses unique_ptr to hold pointers to backend-specific data (GL only).\n\nhttps://skia-review.googlesource.com/c/skia/+/738882\n\nThis is the fixup of the revert, converting it to use SkAnySubclass (and internal storage) rather than unique_ptr and the heap. This is the CL to look at, if you want to get a feel for how this thing behaves in practice.\n\nThere are some open questions - I had to make a decision about calling `make` on an instance that already has a valid object. One option is to silently destroy the old one. I went with an assert, instead (that eliminates some code from the common case where you\u0027re constructing a new object, but that means that various places have to be careful to call `reset()` before overwriting inside `operator\u003d`).\n\nIf we wanted this to be even more bespoke, we could enshrine traits of the stored base-class interface. For example: we could require the existence of `copyTo`, and implement assignment and copy-construction internally, I think? I\u0027m not too worried about the current pattern, but if you see any tricks to simplify it, I\u0027m open.",
+      "revId": "51012b447ac8ff58596d4f831309444ac4e3926c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
