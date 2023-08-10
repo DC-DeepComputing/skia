@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f79479_460ef66d",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-10T21:10:48Z",
+      "side": 1,
+      "message": "English has many synonyms. `SkTLazy` uses `init`, Skia likes `make`, the standard likes `emplace`. It might be easier to explain this as a restricted `std::any` using the term `emplace`?",
+      "range": {
+        "startLine": 38,
+        "startChar": 9,
+        "endLine": 38,
+        "endChar": 13
+      },
+      "revId": "474fda69bd6dbd5e0c8588b280716dd25144ea36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc7077d_a41ec85a",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-10T21:10:48Z",
+      "side": 1,
+      "message": "While it seems we may not want a `std::any` style `any_cast`, `std::optional` uses `value` and `value_or` (which return references) because the idea is to model value semantics as opposed to pointer semantics (like `std::unique_ptr::get` which returns a pointer). Not sure if it makes a difference here. I suppose access has to go through `operator-\u003e` which looks like a pointer, so might as well just do that as opposed to `std::optional` which looks a bit confused on that issue.\n\nOn the other hand, an `any_cast` here could at least statically check that the type being cast to derives from `Base`, which would be useful if ever refactoring things in the future.",
+      "range": {
+        "startLine": 55,
+        "startChar": 16,
+        "endLine": 55,
+        "endChar": 19
+      },
+      "revId": "474fda69bd6dbd5e0c8588b280716dd25144ea36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33cdc11f_28a1875f",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-10T21:10:48Z",
+      "side": 1,
+      "message": "Interestingly, the `std::any` implementation I just took a look at has a small-object optimization that works like this... but of course you can\u0027t rely on that (and it was just `sizeof(void*)` anyway).",
+      "revId": "474fda69bd6dbd5e0c8588b280716dd25144ea36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
