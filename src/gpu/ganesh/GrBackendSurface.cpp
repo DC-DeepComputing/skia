@@ -545,7 +545,7 @@ GrBackendTexture::GrBackendTexture(int width,
         , fMipmapped(mipmapped)
         , fBackend(GrBackendApi::kOpenGL)
         , fTextureType(gl_target_to_gr_target(glInfo.fTarget))
-        , fGLInfo(glInfo, params.release()) {}
+        , fGLInfo(glInfo, std::move(params)) {}
 
 sk_sp<GrGLTextureParameters> GrBackendTexture::getGLTextureParams() const {
     if (fBackend != GrBackendApi::kOpenGL) {
