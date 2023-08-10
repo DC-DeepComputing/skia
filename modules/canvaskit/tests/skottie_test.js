@@ -94,12 +94,16 @@ describe('Skottie behavior', () => {
 
         animation.setColorSlot('FillsGroup', CanvasKit.RED);
         animation.setScalarSlot('Opacity', 0);
+        animation.setVec2Slot('ScaleGroup', [50, 50]);
 
         expectArrayCloseTo(animation.getColorSlot('FillsGroup'), CanvasKit.RED, 4);
         expect(animation.getScalarSlot('Opacity')).toBe(0);
+        expectArrayCloseTo(animation.getColorSlot('ScaleGroup'), [50, 50], 4);
+
 
         expect(animation.getColorSlot('Bad ID')).toBeFalsy();
         expect(animation.getScalarSlot('Bad ID')).toBeFalsy();
+        expect(animation.getVec2Slot('Bad ID')).toBeFalsy();
 
         animation.seek(0.5);
         animation.render(canvas, bounds);
