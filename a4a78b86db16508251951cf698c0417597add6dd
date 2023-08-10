@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89d6ba7a_d794f21d",
+        "filename": "tests/GradientTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-10T14:06:43Z",
+      "side": 1,
+      "message": "Isn\u0027t this fixed now?",
+      "range": {
+        "startLine": 628,
+        "startChar": 40,
+        "endLine": 630,
+        "endChar": 28
+      },
+      "revId": "a4a78b86db16508251951cf698c0417597add6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
