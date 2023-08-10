@@ -51,7 +51,7 @@ sk_sp<SkSurface> create_protected_AHB_surface(GrDirectContext* dContext, int wid
     hwbDesc.rfu1= 0;
 
     if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        SkDebugf("Failed to allocated hardware buffer, error: %d\n", error);
+        SkDebugf("------- Failed to allocated hardware buffer, error: %d\n", error);
         cleanup_resources(buffer);
         return nullptr;
     }
@@ -60,7 +60,7 @@ sk_sp<SkSurface> create_protected_AHB_surface(GrDirectContext* dContext, int wid
                                                                      kTopLeft_GrSurfaceOrigin,
                                                                      nullptr, nullptr);
     if (!surface) {
-        SkDebugf("Failed to make SkSurface.\n");
+        SkDebugf("------- Failed to make SkSurface.\n");
         cleanup_resources(buffer);
         return nullptr;
     }
@@ -75,7 +75,12 @@ sk_sp<SkImage> create_protected_AHB_image(GrDirectContext* dContext,
         return nullptr;
     }
 
+    SkDebugf("------- create_protected_AHB_image - begin image creation %dx%d\n",
+             width, height);
+
     ToolUtils::draw_checkerboard(surf->getCanvas(), color, SK_ColorTRANSPARENT, 32);
+
+    SkDebugf("------- create_protected_AHB_image - end image creation\n");
 
     return surf->makeImageSnapshot();
 }
@@ -101,7 +106,7 @@ sk_sp<SkImage> create_unprotected_AHB_image(SkColor color, int width, int height
     hwbDesc.rfu1= 0;
 
     if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        SkDebugf("Failed to allocated hardware buffer, error: %d", error);
+        SkDebugf("$$$$$$$ Failed to allocated hardware buffer, error: %d", error);
         cleanup_resources(buffer);
         return nullptr;
     }
@@ -112,7 +117,7 @@ sk_sp<SkImage> create_unprotected_AHB_image(SkColor color, int width, int height
     uint32_t* bufferAddr;
     if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
                              reinterpret_cast<void**>(&bufferAddr))) {
-        SkDebugf("Failed to lock hardware buffer");
+        SkDebugf("$$$$$$$ Failed to lock hardware buffer");
         cleanup_resources(buffer);
         return nullptr;
     }
@@ -164,8 +169,11 @@ public:
     SkISize getDimensions() const override { return {kSize, 2*kSize}; }
 
     void draw(SkCanvas* origCanvas) override {
+        SkDebugf("------- Entering slide\n");
+
         origCanvas->clear(SK_ColorDKGRAY);
 
+#if defined(SK_GANESH)
         GrDirectContext* dContext = GrAsDirectContext(origCanvas->recordingContext());
         if (!dContext) {
             origCanvas->clear(SK_ColorGREEN);
@@ -192,6 +200,8 @@ public:
         sk_sp<SkImage> indirectImg;
 
         {
+            SkDebugf("------- Begin creating Indirect Image\n");
+
             SkImageInfo ii = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType,
                                                kPremul_SkAlphaType);
             sk_sp<SkSurface> tmpS = SkSurfaces::RenderTarget(dContext,
@@ -209,10 +219,29 @@ public:
             // For protected AHB-backed images this draw seems to poison all above the draws too
             tmpS->getCanvas()->drawImage(imgToUse, 0, 0);
             indirectImg = tmpS->makeImageSnapshot();
+
+            SkDebugf("------- End creating Indirect Image\n");
         }
 
+#if 0
         origCanvas->drawImage(imgToUse, 0, 0);
-        origCanvas->drawImage(indirectImg, 0, kSize);
+        origCanvas->drawImage(indirectI, 0, kSize);
+#else
+        SkPaint stroke;
+        stroke.setStyle(SkPaint::kStroke_Style);
+        stroke.setStrokeWidth(2);
+
+        SkPaint paint;
+        paint.setColor(SK_ColorBLUE);
+        paint.setShader(imgToUse ? imgToUse->makeShader({}) : nullptr);
+        paint.setImageFilter(SkImageFilters::Blur(10, 10, nullptr));
+
+        origCanvas->drawRect(SkRect::MakeWH(kSize, kSize), paint);
+        origCanvas->drawRect(SkRect::MakeWH(kSize, kSize), stroke);
+#endif
+
+        dContext->flushAndSubmit(true);
+        SkDebugf("------- Exiting slide\n");
     }
 
 private:
