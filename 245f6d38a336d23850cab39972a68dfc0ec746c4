@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90be6727_41e7eb67",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T20:45:54Z",
+      "side": 1,
+      "message": "Can you add a comment how you came to this number? Guess and check? Careful counting?\n\nSame x2 below.",
+      "range": {
+        "startLine": 176,
+        "startChar": 54,
+        "endLine": 176,
+        "endChar": 56
+      },
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "011e6e15_a9a439da",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T20:45:54Z",
+      "side": 1,
+      "message": "Can these two be private?\n\nSame x2 below.",
+      "range": {
+        "startLine": 177,
+        "startChar": 4,
+        "endLine": 177,
+        "endChar": 9
+      },
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59567d2b_e447a451",
+        "filename": "src/gpu/ganesh/GrBackendSurface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T20:45:54Z",
+      "side": 1,
+      "message": "Should this also have a `this \u003d\u003d \u0026that` check?",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 15
+      },
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
