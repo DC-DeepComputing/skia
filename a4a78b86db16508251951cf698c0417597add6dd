@@ -22,6 +22,30 @@
       },
       "revId": "a4a78b86db16508251951cf698c0417597add6dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750e0efc_37605815",
+        "filename": "tests/GradientTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-10T14:10:53Z",
+      "side": 1,
+      "message": "Yea, this is just meant to to document why this test was added. I updated the comment to try to make it a little more clear.",
+      "parentUuid": "89d6ba7a_d794f21d",
+      "range": {
+        "startLine": 628,
+        "startChar": 40,
+        "endLine": 630,
+        "endChar": 28
+      },
+      "revId": "a4a78b86db16508251951cf698c0417597add6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
