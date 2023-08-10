@@ -22,6 +22,30 @@
       },
       "revId": "e892c300a7c43421d7875403c1ee413af3d27a4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed983c32_7d13a72b",
+        "filename": "bazel/karma/karma_test.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-10T15:29:43Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "ae8f2c11_52948789",
+      "range": {
+        "startLine": 364,
+        "startChar": 12,
+        "endLine": 364,
+        "endChar": 46
+      },
+      "revId": "e892c300a7c43421d7875403c1ee413af3d27a4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
