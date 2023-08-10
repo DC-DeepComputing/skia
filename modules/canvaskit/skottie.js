@@ -137,6 +137,24 @@ CanvasKit.MakeManagedAnimation = function(json, assets, prop_filter_prefix, soun
       return fourFloats;
     }
 
+    CanvasKit.ManagedAnimation.prototype.setVec2Slot = function(key, vec) {
+      copy1dArray(vec, 'HEAPF32', _scratchThreeFloatsAPtr);
+      return this._setVec2Slot(key, _scratchThreeFloatsAPtr);
+    };
+
+    CanvasKit.ManagedAnimation.prototype.getVec2Slot = function(key) {
+      this._getVec2Slot(key, _scratchThreeFloatsAPtr);
+      if (CanvasKit.HEAPF32[_scratchThreeFloatsAPtr/4 + 2] == -1) { // last index acts as sentinel
+        return null;
+      }
+      var twoFloats = new Float32Array(2);
+      for (var i = 0; i < 2; i++) {
+        // divide by 4 to cast to float
+        twoFloats[i] = CanvasKit.HEAPF32[_scratchThreeFloatsAPtr/4 + i];
+      }
+      return twoFloats;
+    }
+
     CanvasKit.ManagedAnimation.prototype.setTransform = function(key, anchor, position, scale, rotation, skew, skew_axis) {
       let transformData = [anchor[0], anchor[1], position[0], position[1], scale[0], scale[1], rotation, skew, skew_axis];
       const tPtr = copy1dArray(transformData, 'HEAPF32', _scratch3x3MatrixPtr);
