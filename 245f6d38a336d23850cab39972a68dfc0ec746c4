@@ -68,6 +68,23 @@
       },
       "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb672cff_9cbb202f",
+        "filename": "src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-10T20:47:09Z",
+      "side": 1,
+      "message": "Were there going to be static casts to make sure these subclasses fit in the AnyFormatData data?",
+      "revId": "245f6d38a336d23850cab39972a68dfc0ec746c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
