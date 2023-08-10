@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c60dfe4_a0b95b9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T19:48:17Z",
+      "side": 1,
+      "message": "Up through PS8, this was a pure revert.\n\nPS8 -\u003e PS9 shows all of the changes to use SkAnySubclass rather than unique_ptr.",
+      "revId": "a0d929acd439c6c68440f4f39f91c1518ce2ccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
