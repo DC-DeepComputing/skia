@@ -22,6 +22,30 @@
       },
       "revId": "ab4a0e99314bf82430bc63fa052f4dcac8ab999e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bf5bb68_c058c044",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T14:33:49Z",
+      "side": 1,
+      "message": "I also realized that this is the critical reason for the `thisIsValid` parameter, and that we can respect that, if we really want:\n```\n    if (!thisIsValid) {\n        (void)fParams.release();\n    }\n```\n\nIt\u0027s ugly, but it serves to put fParams back in a safe state before we assign to it. We also need to keep the cleanup() method (with a call to `fParams.reset()`), or we leak memory: https://skia-review.googlesource.com/c/skia/+/740056\n\nIt\u0027s debatable if that CL (by itself) is an improvement. (Once the per-backend data is properly destructed, we won\u0027t need the extra safety checks, so I think it gets us closer to the final destination).",
+      "parentUuid": "25dc7a35_83fe27cd",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 178
+      },
+      "revId": "ab4a0e99314bf82430bc63fa052f4dcac8ab999e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
