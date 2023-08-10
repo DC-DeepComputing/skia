@@ -8,7 +8,7 @@
 #ifndef skgpu_Rectanizer_DEFINED
 #define skgpu_Rectanizer_DEFINED
 
-#include "include/gpu/GrTypes.h"
+#include "include/private/base/SkAssert.h"
 
 struct SkIPoint16;
 

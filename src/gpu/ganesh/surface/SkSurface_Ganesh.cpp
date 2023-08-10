@@ -30,7 +30,7 @@
 #include "src/core/SkSurfacePriv.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/SkBackingFit.h"
-#include "src/gpu/SkRenderEngineAbortf.h"
+#include "src/gpu/ganesh/SkRenderEngineAbortf.h"
 #include "src/gpu/ganesh/Device.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"

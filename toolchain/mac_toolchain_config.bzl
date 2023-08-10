@@ -293,7 +293,7 @@ def _make_default_flags():
                     # subfolders like OpenGL.framework
                     # We want -iframework so Clang hides diagnostic warnings from those header
                     # files we include. -F does not hide those.
-                    "-iframework",
+                    "-iframeworkwithsysroot",
                     XCODE_MACSDK_SYMLINK + "/Frameworks",
                     # We do not want clang to search in absolute paths for files. This makes
                     # Bazel think we are using an outside resource and fail the compile.
@@ -361,6 +361,17 @@ def _make_default_flags():
                     EXTERNAL_TOOLCHAIN + "/lib/libc++.a",
                     EXTERNAL_TOOLCHAIN + "/lib/libc++abi.a",
                     EXTERNAL_TOOLCHAIN + "/lib/libunwind.a",
+                    # https://github.com/llvm/llvm-project/blob/487ab39a5082098f92e886de606505f25031a22a/lld/MachO/Driver.cpp#L180
+                    #"-Z",
+                    #"-iframeworkwithsysroot",
+                    "-F",
+                    XCODE_MACSDK_SYMLINK + "/Frameworks",
+                    "-Wl,--error-limit=0",
+                    ##"--print-search-dirs",
+                    #"-Wl,-no_implicit_dylibs",
+                    "-Wl,-v",
+                    "--verbose",
+                    "-v",
                 ],
             ),
         ],
@@ -399,7 +410,10 @@ def _make_diagnostic_flags():
         flag_groups = [
             flag_group(
                 flags = [
+                    # --verbose and -v do different things
+                    # https://github.com/llvm/llvm-project/blob/487ab39a5082098f92e886de606505f25031a22a/lld/MachO/Options.td#L655
                     "-Wl,--verbose",
+                    "-Wl,-v",
                     "-v",
                 ],
             ),
@@ -412,6 +426,7 @@ def _make_diagnostic_flags():
             flag_group(
                 flags = [
                     "--print-search-dirs",
+                     "-Wl,-v",
                 ],
             ),
         ],
