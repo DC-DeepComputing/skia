@@ -288,7 +288,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_gpu_public",
 			Rules: []string{
 				"//include/gpu/mock:public_hdrs",
-				"//include/gpu:public_hdrs",
+				"//include/gpu:ganesh_hdrs",
 				"//include/gpu:shared_public_hdrs",
 				"//include/gpu/ganesh:public_hdrs",
 			}},
@@ -414,8 +414,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//include/gpu:shared_public_hdrs",
 				"//include/private/base:shared_gpu_private_hdrs",
 				"//include/private/chromium:shared_private_hdrs",
-				"//src/gpu:core_hdrs",
-				"//src/gpu:core_srcs",
 				"//src/gpu:shared_hdrs",
 				"//src/gpu:shared_srcs",
 				"//src/gpu/tessellate:tessellate_hdrs",

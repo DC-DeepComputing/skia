@@ -252,6 +252,7 @@ CORE_FILES = [
     "PathRendererChain.h",
     "SkGr.cpp",
     "SkGr.h",
+    "SkRenderEngineAbortf.h",
     "StencilClip.h",
     "StencilMaskHelper.cpp",
     "StencilMaskHelper.h",

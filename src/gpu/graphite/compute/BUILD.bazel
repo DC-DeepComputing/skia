@@ -1,0 +1,61 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_deps", "skia_filegroup", "split_srcs_and_hdrs")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+COMPUTE_FILES = [
+    "ComputeStep.cpp",
+    "ComputeStep.h",
+    "DispatchGroup.cpp",
+    "DispatchGroup.h",
+]
+
+VELLO_FILES = [
+    "VelloComputeSteps.cpp",
+    "VelloComputeSteps.h",
+    "VelloRenderer.cpp",
+    "VelloRenderer.h",
+]
+
+split_srcs_and_hdrs(
+    name = "compute",
+    files = COMPUTE_FILES,
+)
+
+split_srcs_and_hdrs(
+    name = "vello",
+    files = VELLO_FILES,
+)
+
+skia_filegroup(
+    name = "srcs",
+    srcs = [
+        ":compute_srcs",
+    ] + select({
+        "//src/gpu/graphite:use_vello_true": [":vello_srcs"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
+
+skia_filegroup(
+    name = "private_hdrs",
+    srcs = [
+        ":compute_hdrs",
+    ] + select({
+        "//src/gpu/graphite:use_vello_true": [":vello_hdrs"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//src/gpu/graphite:__pkg__"],
+)
+
+skia_cc_deps(
+    name = "deps",
+    visibility = ["//src:__pkg__"],
+    deps = select({
+        # TODO(kjlubick, armansito)
+        "//src/gpu/graphite:use_vello": [],
+        "//conditions:default": [],
+    }),
+)

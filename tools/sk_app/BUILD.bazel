@@ -37,35 +37,15 @@ skia_objc_library(
     name = "sk_app_objc",
     testonly = True,
     srcs = [
-        "RasterWindowContext.h",
         "Window.cpp",
-        "WindowContext.cpp",
-    ] + select_multi(
-        {
-            # TODO(kjlubick, jmbetancourt) Graphite backend
-            "//src/gpu:dawn_ganesh": [
-                "DawnWindowContext.h",
-                "DawnWindowContext.cpp",
-            ],
-            "//src/gpu:gl_ganesh": [
-                "GLWindowContext.cpp",
-                "GLWindowContext.h",
-            ],
-            "//src/gpu:metal_ganesh": [
-                "MetalWindowContext.h",
-                "MetalWindowContext.mm",
-            ],
-        },
-    ) + select({
+    ] + select({
         "@platforms//os:macos": ["//tools/sk_app/mac:srcs"],
         "//conditions:default": [],
         # TODO ios support
     }),
     hdrs = [
         "Application.h",
-        "DisplayParams.h",
         "Window.h",
-        "WindowContext.h",
     ],
     copts = DEFAULT_OBJC_COPTS + [
         "-Wno-deprecated-declarations",
@@ -77,6 +57,7 @@ skia_objc_library(
         "//:skia_internal",
         "//tools/skui",
         "//tools/timer",
+        "//tools/window",
     ],
 )
 

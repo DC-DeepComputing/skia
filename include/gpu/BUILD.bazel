@@ -15,7 +15,7 @@ skia_filegroup(
 )
 
 skia_filegroup(
-    name = "public_hdrs",
+    name = "ganesh_hdrs",
     srcs = [
         "GrBackendDrawableInfo.h",
         "GrBackendSemaphore.h",
@@ -30,11 +30,17 @@ skia_filegroup(
         "GrSurfaceInfo.h",
         "GrTypes.h",
         "GrYUVABackendTextures.h",
-        "//include/gpu/mock:public_hdrs",
+    ],
+)
+
+skia_filegroup(
+    name = "public_hdrs",
+    srcs = [
+        ":ganesh_hdrs",
+        ":shared_public_hdrs",
         # TODO(egdaniel, kjlubick) GrGLTypes.h is used unconditionally by GrBackendSemaphore.h
         "//include/gpu/gl:public_hdrs",
-        ":shared_public_hdrs",
-        "//include/gpu/ganesh:public_hdrs",
+        "//include/gpu/mock:public_hdrs",
     ] + select_multi(
         {
             "//src/gpu:dawn_ganesh": ["//include/gpu/dawn:public_hdrs"],
@@ -42,6 +48,11 @@ skia_filegroup(
             "//src/gpu:metal_ganesh": ["//include/gpu/mtl:public_hdrs"],
             # TODO(kjlubick) d3d backend
         },
-    ),
+    ) + select_multi({
+        "//src/gpu:has_ganesh_backend": [
+            "//include/gpu/ganesh:public_hdrs",
+        ],
+        "//src/gpu:has_graphite_backend": ["//include/gpu/graphite:public_hdrs"],
+    }),
     visibility = ["//include:__pkg__"],
 )

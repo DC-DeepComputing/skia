@@ -361,6 +361,9 @@ def _make_default_flags():
                     EXTERNAL_TOOLCHAIN + "/lib/libc++.a",
                     EXTERNAL_TOOLCHAIN + "/lib/libc++abi.a",
                     EXTERNAL_TOOLCHAIN + "/lib/libunwind.a",
+                    # "-F"+
+                    # XCODE_MACSDK_SYMLINK + "/Frameworks",
+                    "-Wl,--error-limit=0",
                 ],
             ),
         ],
