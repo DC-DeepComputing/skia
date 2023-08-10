@@ -51,6 +51,24 @@
       "message": "Should `make` `static_assert(std::has_virtual_destructor_v\u003cBase\u003e || std::is_trivially_destructible_v\u003cT\u003e)` or something like that?",
       "revId": "51012b447ac8ff58596d4f831309444ac4e3926c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be4f332_0ddb1fdd",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-10T20:09:23Z",
+      "side": 1,
+      "message": "Yes, definitely.",
+      "parentUuid": "772ffbaf_88952878",
+      "revId": "51012b447ac8ff58596d4f831309444ac4e3926c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
