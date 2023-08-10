@@ -14,6 +14,10 @@
 #include "include/core/SkSurface.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "tools/Resources.h"
+#include "tools/ToolUtils.h"
+
+#include "include/gpu/GrRecordingContext.h"
+#include "tools/gpu/android/AHBUtils_android.h"
 
 class KawaseBlurFilter {
 public:
@@ -78,6 +82,8 @@ public:
         if (sk_sp<SkSurface> surface = canvas->makeSurface(info)) {
             return surface;
         }
+
+        SkASSERT(0);
         // serialize-8888 returns null from makeSurface; fallback to a raster surface.
         return SkSurfaces::Raster(info);
     }
@@ -177,10 +183,26 @@ public:
     SkISize onISize() override { return {1280, 768}; }
 
     void onOnceBeforeDraw() override {
-        fMandrill = GetResourceAsImage("images/mandrill_256.png");
+//        fMandrill = GetResourceAsImage("images/mandrill_256.png");
+        fBM = ToolUtils::create_checkerboard_bitmap(256, 256,
+                                                    SK_ColorRED, SK_ColorTRANSPARENT,
+                                                    /* checkSize= */ 32);
+
     }
 
     void onDraw(SkCanvas* canvas) override {
+        auto dContext = GrAsDirectContext(canvas->recordingContext());
+        if (!dContext) {
+            canvas->clear(SK_ColorRED);
+            return;
+        }
+
+        if (!fMandrill) {
+            fMandrill = AHBUtils::CreateAHBBackedImage(dContext, fBM,
+                                                       kTopLeft_GrSurfaceOrigin,
+                                                       /* isProtected= */ true);
+        }
+
         canvas->drawImage(fMandrill, 0, 0);
         canvas->translate(256, 0);
         KawaseBlurFilter blurFilter;
@@ -190,6 +212,7 @@ public:
     }
 
 private:
+    SkBitmap fBM;
     sk_sp<SkImage> fMandrill;
 };
 DEF_GM(return new KawaseBlurRT;)
