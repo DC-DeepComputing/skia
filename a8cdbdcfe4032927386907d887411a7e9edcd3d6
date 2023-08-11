@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "385b3901_44b2e6dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T20:42:39Z",
+      "side": 1,
+      "message": "My Android studio is:\n\n```\nAndroid Studio Giraffe | 2022.3.1\nBuild #AI-223.8836.35.2231.10406996, built on June 29, 2023\nRuntime version: 17.0.6+0-17.0.6b829.9-10027231 amd64\nVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.\nLinux 6.3.11-1rodete1-amd64\nGC: G1 Young Generation, G1 Old Generation\nMemory: 1280M\nCores: 72\nRegistry:\n    external.system.auto.import.disabled\u003dtrue\n    ide.text.editor.with.preview.show.floating.toolbar\u003dfalse\n\n\nCurrent Desktop: GNOME\n```",
+      "parentUuid": "e538ddd9_5a2a458c",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 126
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a1582eb5_f623845a",
