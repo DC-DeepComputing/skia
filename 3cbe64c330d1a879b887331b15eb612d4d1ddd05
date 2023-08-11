@@ -187,6 +187,30 @@
       },
       "revId": "3cbe64c330d1a879b887331b15eb612d4d1ddd05",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54295d1e_91202d8b",
+        "filename": "gm/surface_manager/SurfaceManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T17:46:22Z",
+      "side": 1,
+      "message": "That is an elegant solution.",
+      "parentUuid": "10d75e6c_60550c53",
+      "range": {
+        "startLine": 126,
+        "startChar": 28,
+        "endLine": 126,
+        "endChar": 53
+      },
+      "revId": "3cbe64c330d1a879b887331b15eb612d4d1ddd05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
