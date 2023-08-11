@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b01d8ce_980e954e",
+        "filename": "site/docs/user/download.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T17:28:25Z",
+      "side": 1,
+      "message": "I1c80218f440324504cc485af47dcca287a19b509 implies that `gclient` can be used to get `ninja`, but I couldn\u0027t find any indication of using `gclient` in the docs.",
+      "range": {
+        "startLine": 33,
+        "startChar": 28,
+        "endLine": 33,
+        "endChar": 37
+      },
+      "revId": "2e7b43ae388a6eff4a502c8b2e6820866a0d1494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03df37bf_c6607c9a",
+        "filename": "site/docs/user/download.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T17:28:25Z",
+      "side": 1,
+      "message": "Is this a Googlers only thing?",
+      "range": {
+        "startLine": 33,
+        "startChar": 46,
+        "endLine": 33,
+        "endChar": 63
+      },
+      "revId": "2e7b43ae388a6eff4a502c8b2e6820866a0d1494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
