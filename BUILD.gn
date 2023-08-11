@@ -2097,6 +2097,11 @@ if (skia_enable_tools) {
       }
     }
 
+    if (is_android) {
+      sources += [ "tools/gpu/android/AHBUtils_android.cpp" ]
+      sources += [ "tools/gpu/android/AHBUtils_android.h" ]
+    }
+
     if (is_fuchsia && using_fuchsia_sdk) {
       libs +=
           [ "${fuchsia_sdk_path}/arch/${target_cpu}/sysroot/lib/libzircon.so" ]
