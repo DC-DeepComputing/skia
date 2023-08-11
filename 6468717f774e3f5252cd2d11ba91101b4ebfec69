@@ -105,6 +105,24 @@
       "parentUuid": "6a50edb6_0dd1b15b",
       "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dee74851_4e24af18",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-11T15:53:52Z",
+      "side": 1,
+      "message": "Done (correctly)",
+      "parentUuid": "d4c26bd8_8bab519c",
+      "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
