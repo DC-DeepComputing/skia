@@ -139,3 +139,10 @@ config_setting(
     name = "always_true_1",
     values = {"stamp": "1"},
 )
+
+# DO NOT SUBMIT - Run with --config=linux_rbe and --test_output=all to see if the zip command in
+# the RBE toolchain container is visible by Bazel.
+sh_test(
+    name = "rbe_zip_test",
+    srcs = ["rbe_zip_test.sh"],
+)
