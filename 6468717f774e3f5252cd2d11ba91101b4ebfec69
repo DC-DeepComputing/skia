@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63f5ee0f_3eef5f37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-11T15:41:53Z",
+      "side": 1,
+      "message": "Yes, in a soon-to-come followup CL.",
+      "parentUuid": "d92186fb_37b6004b",
+      "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a50edb6_0dd1b15b",
         "filename": "src/core/SkTHash.h",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2023-08-11T15:37:10Z",
       "side": 1,
       "message": "nit: spurious newline",
+      "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c26bd8_8bab519c",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-11T15:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a50edb6_0dd1b15b",
       "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
