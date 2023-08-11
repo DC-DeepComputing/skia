@@ -140,6 +140,30 @@
       },
       "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f946db_b90bfa19",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T15:08:53Z",
+      "side": 1,
+      "message": "Follow-up SGTM",
+      "parentUuid": "cb0aca53_831bf0db",
+      "range": {
+        "startLine": 11,
+        "startChar": 14,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
