@@ -38,8 +38,13 @@ DEF_TEST(SkSLWGSLTestbed, r) {
     // Add in your SkSL here.
     test(r,
          R"__SkSL__(
-             void main() {
-                 sk_FragColor = half4(0);
-             }
+layout(binding=123) uniform testBlock {
+    float x;
+    float2x2 m;
+} test[2];
+
+void main() {
+    sk_FragColor = half4(test[0].x, test[0].m[0][1], test[1].m[1]);
+}
          )__SkSL__");
 }
