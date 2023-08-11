@@ -59,6 +59,11 @@ public:
         // a way to provide content for levels other than via SkImageGenerator::generateTexture().
         return false;
     }
+    bool onIsProtected() const override {
+        // TODO: this isn't quite right
+        return false;
+    }
+
     bool onReadPixels(GrDirectContext*, const SkImageInfo&, void*, size_t, int srcX, int srcY,
                       CachingHint) const override;
     sk_sp<SkData> onRefEncoded() const override;
