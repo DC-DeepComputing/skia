@@ -16,6 +16,29 @@
       "message": "Link b/40045075 ?",
       "revId": "332e72a4d80df167bcbdec7a7b9d7dbb44ef6128",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2cde6ed_af195deb",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-11T16:29:49Z",
+      "side": 1,
+      "message": "```\nThe version of Python supplied by Apple is a few versions out of date,\nand is known to interact poorly with our build system. We recommend\ninstalling the latest official version of Python from \nhttps://www.python.org/downloads/.\n```\nWDYT? A little more detail for the curious reader.",
+      "range": {
+        "startLine": 271,
+        "startChar": 0,
+        "endLine": 273,
+        "endChar": 0
+      },
+      "revId": "332e72a4d80df167bcbdec7a7b9d7dbb44ef6128",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
