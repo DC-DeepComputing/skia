@@ -22,6 +22,30 @@
       },
       "revId": "234ba6fec2dc45add44e4bbb7f2454be5e2c5e99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78eb66f3_2c04d850",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-11T17:43:14Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "1246a83e_01c27e3b",
+      "range": {
+        "startLine": 274,
+        "startChar": 35,
+        "endLine": 275,
+        "endChar": 56
+      },
+      "revId": "234ba6fec2dc45add44e4bbb7f2454be5e2c5e99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
