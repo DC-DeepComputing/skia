@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1246a83e_01c27e3b",
+        "filename": "site/docs/user/build.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T17:40:18Z",
+      "side": 1,
+      "message": "Also added this, which seems to be necessary?",
+      "range": {
+        "startLine": 274,
+        "startChar": 35,
+        "endLine": 275,
+        "endChar": 56
+      },
+      "revId": "234ba6fec2dc45add44e4bbb7f2454be5e2c5e99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
