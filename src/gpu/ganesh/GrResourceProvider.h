@@ -329,7 +329,6 @@ public:
     sk_sp<GrAttachment> makeMSAAAttachment(SkISize dimensions,
                                            const GrBackendFormat& format,
                                            int sampleCnt,
-                                           skgpu::Protected isProtected,
                                            GrMemoryless isMemoryless);
 
     /**
@@ -341,7 +340,7 @@ public:
     sk_sp<GrAttachment> getDiscardableMSAAAttachment(SkISize dimensions,
                                                      const GrBackendFormat& format,
                                                      int sampleCnt,
-                                                     skgpu::Protected isProtected,
+                                                     GrProtected,
                                                      GrMemoryless memoryless);
 
     /**
@@ -392,7 +391,7 @@ private:
     sk_sp<GrAttachment> refScratchMSAAAttachment(SkISize dimensions,
                                                  const GrBackendFormat&,
                                                  int sampleCnt,
-                                                 skgpu::Protected,
+                                                 GrProtected isProtected,
                                                  GrMemoryless memoryless,
                                                  std::string_view label);
 

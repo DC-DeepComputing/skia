@@ -72,6 +72,8 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
 
+    SkDebugf("------- GrResourceProvider::createTexture\n");
+
     if (this->isAbandoned()) {
         return nullptr;
     }
@@ -167,6 +169,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
 
+    SkDebugf("------- GrResourceProvider::createTexture\n");
     if (!mipLevel.fPixels) {
         return nullptr;
     }
@@ -239,6 +242,8 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
     if (this->isAbandoned()) {
         return nullptr;
     }
+
+    SkDebugf("------- GrResourceProvider::createTexture\n");
 
     if (!fCaps->validateSurfaceParams(dimensions, format, renderable, renderTargetSampleCnt,
                                       mipmapped, textureType)) {
@@ -758,8 +763,7 @@ sk_sp<GrAttachment> GrResourceProvider::getDiscardableMSAAAttachment(SkISize dim
     if (msaaAttachment) {
         return msaaAttachment;
     }
-    msaaAttachment = this->makeMSAAAttachment(dimensions, format, sampleCnt, isProtected,
-                                              memoryless);
+    msaaAttachment = this->makeMSAAAttachment(dimensions, format, sampleCnt, memoryless);
     if (msaaAttachment) {
         this->assignUniqueKeyToResource(key, msaaAttachment.get());
     }
@@ -769,7 +773,6 @@ sk_sp<GrAttachment> GrResourceProvider::getDiscardableMSAAAttachment(SkISize dim
 sk_sp<GrAttachment> GrResourceProvider::makeMSAAAttachment(SkISize dimensions,
                                                            const GrBackendFormat& format,
                                                            int sampleCnt,
-                                                           GrProtected isProtected,
                                                            GrMemoryless memoryless) {
     ASSERT_SINGLE_OWNER
 
@@ -791,14 +794,14 @@ sk_sp<GrAttachment> GrResourceProvider::makeMSAAAttachment(SkISize dimensions,
     auto scratch = this->refScratchMSAAAttachment(dimensions,
                                                   format,
                                                   sampleCnt,
-                                                  isProtected,
+                                                  GrProtected::kNo,
                                                   memoryless,
                                                   /*label=*/"MakeMSAAAttachment");
     if (scratch) {
         return scratch;
     }
 
-    return fGpu->makeMSAAAttachment(dimensions, format, sampleCnt, isProtected, memoryless);
+    return fGpu->makeMSAAAttachment(dimensions, format, sampleCnt, memoryless);
 }
 
 sk_sp<GrAttachment> GrResourceProvider::refScratchMSAAAttachment(SkISize dimensions,

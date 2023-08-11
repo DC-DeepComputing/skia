@@ -171,7 +171,8 @@ private:
     }
 
     sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                              SkISize dimensions, int numStencilSamples) override;
+                                              SkISize dimensions,
+                                              int numStencilSamples) override;
 
     GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) override {
         return GrBackendFormat::MakeMock(GrColorType::kUnknown, SkTextureCompressionType::kNone,
@@ -181,7 +182,6 @@ private:
     sk_sp<GrAttachment> makeMSAAAttachment(SkISize dimensions,
                                            const GrBackendFormat& format,
                                            int numSamples,
-                                           GrProtected isProtected,
                                            GrMemoryless isMemoryless) override {
         return nullptr;
     }

@@ -934,6 +934,8 @@ private:
     }
 
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        SkDebugf("------- GrTextureOp::onExecute enter\n");
+
         if (!fDesc->fVertexBuffer) {
             return;
         }
@@ -972,6 +974,7 @@ private:
             }
         }
 
+        SkDebugf("------- GrTextureOp::onExecute exit - numDraws %d\n", numDraws);
         SkASSERT(totQuadsSeen == fDesc->fNumTotalQuads);
         SkASSERT(numDraws == fDesc->fNumProxies);
     }

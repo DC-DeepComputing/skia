@@ -237,7 +237,8 @@ sk_sp<GrGpuBuffer> GrMockGpu::onCreateBuffer(size_t sizeInBytes,
 }
 
 sk_sp<GrAttachment> GrMockGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                                     SkISize dimensions, int numStencilSamples) {
+                                                     SkISize dimensions,
+                                                     int numStencilSamples) {
     fStats.incStencilAttachmentCreates();
     return sk_sp<GrAttachment>(new GrMockAttachment(this,
                                                     dimensions,

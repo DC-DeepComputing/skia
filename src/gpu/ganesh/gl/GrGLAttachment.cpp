@@ -58,6 +58,8 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
                                                   GrGLFormat format) {
     GrGLuint rbID = 0;
 
+    SkDebugf("$$$$$$$ creating stencil !!!!!!!!!!!!!\n");
+
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
         return nullptr;
@@ -81,6 +83,8 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeStencil(GrGLGpu* gpu,
         }
     }
 
+
+
     return sk_sp<GrGLAttachment>(new GrGLAttachment(gpu,
                                                     rbID,
                                                     dimensions,
@@ -95,6 +99,8 @@ sk_sp<GrGLAttachment> GrGLAttachment::MakeMSAA(GrGLGpu* gpu,
                                                int sampleCnt,
                                                GrGLFormat format) {
     GrGLuint rbID = 0;
+
+    SkDebugf("$$$$$$$ creating MakeMSAA  !!!!!!\n");
 
     GL_CALL(GenRenderbuffers(1, &rbID));
     if (!rbID) {
