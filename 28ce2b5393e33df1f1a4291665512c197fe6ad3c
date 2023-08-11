@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cdd71c4_3097833e",
+        "filename": "bazel/rbe/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T13:19:59Z",
+      "side": 1,
+      "message": "nit: remove (pre-existing) trailing space",
+      "range": {
+        "startLine": 59,
+        "startChar": 63,
+        "endLine": 59,
+        "endChar": 64
+      },
+      "revId": "28ce2b5393e33df1f1a4291665512c197fe6ad3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd1423e_7f66140d",
+        "filename": "bazel/rbe/gce_linux/config/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T13:19:59Z",
+      "side": 1,
+      "message": "Is this now the \"preferred\" way to specify platforms?",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 21
+      },
+      "revId": "28ce2b5393e33df1f1a4291665512c197fe6ad3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
