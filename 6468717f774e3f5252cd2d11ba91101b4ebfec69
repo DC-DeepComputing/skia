@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d92186fb_37b6004b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T15:37:10Z",
+      "side": 1,
+      "message": "Is there a use-case for this somewhere?",
+      "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a50edb6_0dd1b15b",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T15:37:10Z",
+      "side": 1,
+      "message": "nit: spurious newline",
+      "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
