@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d3c37dd_0e4f06d4",
+        "filename": "src/codec/SkSwizzler.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:49:50Z",
+      "side": 1,
+      "message": "If it\u0027s not too late, how do you feel about:\n```\nusing Swizzle_8888_u32 \u003d void(*)(uint32_t*, const uint32_t*, int);\n```\nboth here and in the other SkOpts namespaces?\n\nI prefer that syntax because it\u0027s more clear (to me) what the name of the function alias is and what it\u0027s return value is.",
+      "range": {
+        "startLine": 233,
+        "startChar": 12,
+        "endLine": 233,
+        "endChar": 16
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76c4153e_9e48b3d4",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:49:50Z",
+      "side": 1,
+      "message": "See also comment in src/gpu about it being odd to have src/core depend on src/codec",
+      "range": {
+        "startLine": 17,
+        "startChar": 14,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14120903_49df7892",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:49:50Z",
+      "side": 1,
+      "message": "I think it\u0027s a smidge odd to have GPU depend on src/codec for this. I guess that\u0027s an argument to make the Swizzler opts be in src/core?",
+      "range": {
+        "startLine": 11,
+        "startChar": 14,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
