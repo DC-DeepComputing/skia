@@ -47,6 +47,31 @@ LOWP           = "lowp"
 ES3            = "$es3"
 EXPORT         = "$export"
 WORKGROUP      = "workgroup"
+
+// Layout Tokens (treated as identifiers outside of a layout block)
+ORIGIN_UPPER_LEFT           = "origin_upper_left"
+PUSH_CONSTANT               = "push_constant"
+BLEND_SUPPORT_ALL_EQUATIONS = "blend_support_all_equations"
+COLOR                       = "color"
+LOCATION                    = "location"
+OFFSET                      = "offset"
+BINDING                     = "binding"
+TEXTURE                     = "texture"
+SAMPLER                     = "sampler"
+INDEX                       = "index"
+SET                         = "set"
+BUILTIN                     = "builtin"
+INPUT_ATTACHMENT_INDEX      = "input_attachment_index"
+SPIRV                       = "spirv"
+METAL                       = "metal"
+WGSL                        = "wgsl"
+RGBA8                       = "rgba8"
+RGBA32F                     = "rgba32f"
+R32F                        = "r32f"
+LOCAL_SIZE_X                = "local_size_x"
+LOCAL_SIZE_Y                = "local_size_y"
+LOCAL_SIZE_Z                = "local_size_z"
+
 RESERVED       = atomic|attribute|varying|precision|invariant|asm|class|union|enum|typedef|template|this|packed|goto|volatile|public|static|extern|external|interface|long|double|fixed|unsigned|superp|input|output|hvec[234]|dvec[234]|fvec[234]|sampler[13]D|sampler[12]DShadow|sampler3DRect|sampler2DRectShadow|samplerCube|sizeof|cast|namespace|using|gl_[0-9a-zA-Z_]*
 PRIVATE_IDENTIFIER = $[0-9a-zA-Z_]*
 IDENTIFIER     = [a-zA-Z_][0-9a-zA-Z_]*

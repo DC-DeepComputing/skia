@@ -9,6 +9,7 @@
 #define SKSL_LAYOUT
 
 #include "src/base/SkEnumBitMask.h"
+#include "src/sksl/SkSLLexer.h"
 
 #include <string>
 
@@ -17,45 +18,51 @@ namespace SkSL {
 class Context;
 class Position;
 
+template <Token::Kind t>
+struct TokenToLayoutBit {
+    static_assert(t >= Token::Kind::TK_ORIGIN_UPPER_LEFT);
+    static constexpr int bit = 1 << ((int)t - (int)Token::Kind::TK_ORIGIN_UPPER_LEFT);
+};
+
 enum class LayoutFlag : int {
     kNone                       = 0,
     kAll                        = ~0,
 
-    kOriginUpperLeft            = 1 <<  0,
-    kPushConstant               = 1 <<  1,
-    kBlendSupportAllEquations   = 1 <<  2,
-    kColor                      = 1 <<  3,
+    kOriginUpperLeft            = TokenToLayoutBit<Token::Kind::TK_ORIGIN_UPPER_LEFT>::bit,
+    kPushConstant               = TokenToLayoutBit<Token::Kind::TK_PUSH_CONSTANT>::bit,
+    kBlendSupportAllEquations   = TokenToLayoutBit<Token::Kind::TK_BLEND_SUPPORT_ALL_EQUATIONS>::bit,
+    kColor                      = TokenToLayoutBit<Token::Kind::TK_COLOR>::bit,
 
     // These flags indicate if the qualifier appeared, regardless of the accompanying value.
-    kLocation                   = 1 <<  4,
-    kOffset                     = 1 <<  5,
-    kBinding                    = 1 <<  6,
-    kTexture                    = 1 <<  7,
-    kSampler                    = 1 <<  8,
-    kIndex                      = 1 <<  9,
-    kSet                        = 1 << 10,
-    kBuiltin                    = 1 << 11,
-    kInputAttachmentIndex       = 1 << 12,
+    kLocation                   = TokenToLayoutBit<Token::Kind::TK_LOCATION>::bit,
+    kOffset                     = TokenToLayoutBit<Token::Kind::TK_OFFSET>::bit,
+    kBinding                    = TokenToLayoutBit<Token::Kind::TK_BINDING>::bit,
+    kTexture                    = TokenToLayoutBit<Token::Kind::TK_TEXTURE>::bit,
+    kSampler                    = TokenToLayoutBit<Token::Kind::TK_SAMPLER>::bit,
+    kIndex                      = TokenToLayoutBit<Token::Kind::TK_INDEX>::bit,
+    kSet                        = TokenToLayoutBit<Token::Kind::TK_SET>::bit,
+    kBuiltin                    = TokenToLayoutBit<Token::Kind::TK_BUILTIN>::bit,
+    kInputAttachmentIndex       = TokenToLayoutBit<Token::Kind::TK_INPUT_ATTACHMENT_INDEX>::bit,
 
     // These flags indicate the backend type; only one at most can be set.
-    kSPIRV                      = 1 << 13,
-    kMetal                      = 1 << 14,
-    kWGSL                       = 1 << 15,
+    kSPIRV                      = TokenToLayoutBit<Token::Kind::TK_SPIRV>::bit,
+    kMetal                      = TokenToLayoutBit<Token::Kind::TK_METAL>::bit,
+    kWGSL                       = TokenToLayoutBit<Token::Kind::TK_WGSL>::bit,
 
     kAllBackends                = kSPIRV | kMetal | kWGSL,
 
     // These flags indicate the pixel format; only one at most can be set.
     // (https://www.khronos.org/opengl/wiki/Layout_Qualifier_(GLSL)#Image_formats)
-    kRGBA8                      = 1 << 16,
-    kRGBA32F                    = 1 << 17,
-    kR32F                       = 1 << 18,
+    kRGBA8                      = TokenToLayoutBit<Token::Kind::TK_RGBA8>::bit,
+    kRGBA32F                    = TokenToLayoutBit<Token::Kind::TK_RGBA32F>::bit,
+    kR32F                       = TokenToLayoutBit<Token::Kind::TK_R32F>::bit,
 
     kAllPixelFormats            = kRGBA8 | kRGBA32F | kR32F,
 
     // The local invocation size of a compute program.
-    kLocalSizeX                 = 1 << 19,
-    kLocalSizeY                 = 1 << 20,
-    kLocalSizeZ                 = 1 << 21,
+    kLocalSizeX                 = TokenToLayoutBit<Token::Kind::TK_LOCAL_SIZE_X>::bit,
+    kLocalSizeY                 = TokenToLayoutBit<Token::Kind::TK_LOCAL_SIZE_Y>::bit,
+    kLocalSizeZ                 = TokenToLayoutBit<Token::Kind::TK_LOCAL_SIZE_Z>::bit,
 };
 
 }  // namespace SkSL
