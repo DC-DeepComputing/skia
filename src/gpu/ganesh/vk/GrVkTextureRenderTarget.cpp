@@ -111,6 +111,10 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeNewTextureRenderTarg
                                &colorAttachment, &resolveAttachment)) {
         return nullptr;
     }
+
+    SkDebugf("------- GrVkTextureRenderTarget::MakeNewTextureRenderTarget %d %s\n",
+             isProtected == GrProtected::kYes, std::string(label).c_str());
+
     SkASSERT(colorAttachment);
     SkASSERT(sampleCnt == 1 || resolveAttachment);
     return sk_sp<GrVkTextureRenderTarget>(new GrVkTextureRenderTarget(gpu,
@@ -163,6 +167,9 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeWrappedTextureRender
 
     GrMipmapStatus mipmapStatus =
             info.fLevelCount > 1 ? GrMipmapStatus::kDirty : GrMipmapStatus::kNotAllocated;
+
+    SkDebugf("------- GrVkTextureRenderTarget::MakeWrappedTextureRenderTarget %d\n",
+             texture->isProtected());
 
     return sk_sp<GrVkTextureRenderTarget>(
             new GrVkTextureRenderTarget(gpu,

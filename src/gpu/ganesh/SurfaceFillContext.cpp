@@ -40,6 +40,8 @@ SurfaceFillContext::SurfaceFillContext(GrRecordingContext* rContext,
                                        const GrColorInfo& colorInfo)
             : SurfaceContext(rContext, std::move(readView), colorInfo)
             , fWriteView(std::move(writeView)) {
+    SkDebugf("------- SFC write %d\n", fWriteView.proxy()->isProtected() == GrProtected::kYes);
+
     SkASSERT(this->asSurfaceProxy() == fWriteView.proxy());
     SkASSERT(this->origin() == fWriteView.origin());
 

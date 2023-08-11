@@ -349,7 +349,7 @@ void GrGLCheckErr(const GrGLInterface* gl,
 
 // Conditionally checks glGetError based on compile-time and run-time flags.
 #if GR_GL_CHECK_ERROR
-    extern bool gCheckErrorGL;
+extern bool gCheckErrorGL;
 #define GR_GL_CHECK_ERROR_IMPL(IFACE, X)                 \
     do {                                                 \
         if (gCheckErrorGL) {                             \
@@ -365,12 +365,12 @@ void GrGLCheckErr(const GrGLInterface* gl,
 // internal macro to conditionally log the gl call using SkDebugf based on
 // compile-time and run-time flags.
 #if GR_GL_LOG_CALLS
-    extern bool gLogCallsGL;
-    #define GR_GL_LOG_CALLS_IMPL(X)                             \
+extern bool gLogCallsGL;
+#define GR_GL_LOG_CALLS_IMPL(X)                             \
         if (gLogCallsGL)                                        \
             SkDebugf(GR_FILE_AND_LINE_STR "GL: " #X "\n")
 #else
-    #define GR_GL_LOG_CALLS_IMPL(X)
+#define GR_GL_LOG_CALLS_IMPL(X)
 #endif
 
 // makes a GL call on the interface and does any error checking and logging

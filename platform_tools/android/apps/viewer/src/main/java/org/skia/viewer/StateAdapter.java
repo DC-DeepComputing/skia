@@ -213,6 +213,7 @@ public class StateAdapter extends BaseAdapter implements AdapterView.OnItemSelec
             surfaceView.setId(R.id.surfaceView);
             surfaceView.getHolder().addCallback(mViewerActivity);
             surfaceView.setOnTouchListener(mViewerActivity);
+            surfaceView.setSecure(true);
             mainLayout.addView(surfaceView);
         }
     }

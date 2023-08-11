@@ -78,6 +78,9 @@ void Window::onUIStateChanged(const SkString& stateName, const SkString& stateVa
     this->visitLayers([=](Layer* layer) { layer->onUIStateChanged(stateName, stateValue); });
 }
 
+// This is the root of the View call stack. We get the backBuffer here and that is fed into
+// Viewer::onPaint which the calls the current slide's draw method
+//$$
 void Window::onPaint() {
     if (!fWindowContext) {
         return;
@@ -91,6 +94,8 @@ void Window::onPaint() {
         // TODO: try recreating testcontext
         return;
     }
+
+    SkDebugf("+++++++ Window::onPaint %p\n", backbuffer->recordingContext());
 
     markInvalProcessed();
 

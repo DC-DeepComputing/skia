@@ -62,6 +62,7 @@ int main(int argc, char** argv) {
         backendContext.fInstance = VK_NULL_HANDLE;
         backendContext.fDevice = VK_NULL_HANDLE;
 
+        SkDebugf("------- booyah\n");
         if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions.get(),
                                                  features.get(), &debugCallback)) {
             return 1;

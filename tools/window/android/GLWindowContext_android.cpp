@@ -58,6 +58,7 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     fWidth = ANativeWindow_getWidth(fNativeWindow);
     fHeight = ANativeWindow_getHeight(fNativeWindow);
 
+    SkDebugf("------ GLWindowContext_android::onInitializeContext %d %d\n", fWidth, fHeight);
     fDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 
     EGLint majorVersion;
@@ -68,9 +69,12 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
 
     if (fDisplayParams.fCreateProtectedNativeBackend &&
         !strstr(extensions, "EGL_EXT_protected_content")) {
-        SkDebugf("Protected Context requested but no protected support\n");
+        SkDebugf("$$$$$$$$$$$$$$$$$ Protected Context requested but no protected support\n");
         fDisplayParams.fCreateProtectedNativeBackend = false;
     }
+
+    SkDebugf("------- GLWindowContext_android::onInitializeContext - protected %d",
+             fDisplayParams.fCreateProtectedNativeBackend);
 
     SkAssertResult(eglBindAPI(EGL_OPENGL_ES_API));
 

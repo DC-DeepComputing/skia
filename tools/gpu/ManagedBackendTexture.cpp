@@ -47,6 +47,7 @@ void ManagedBackendTexture::ReleaseProc(void* ctx) {
 
 ManagedBackendTexture::~ManagedBackendTexture() {
     if (fDContext && fTexture.isValid()) {
+        SkDebugf("$$$$$$$ Deleting\n");
         fDContext->deleteBackendTexture(fTexture);
     }
 }

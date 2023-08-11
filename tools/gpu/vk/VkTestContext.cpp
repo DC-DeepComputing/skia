@@ -40,6 +40,7 @@ public:
             extensions = new skgpu::VulkanExtensions();
             features = new VkPhysicalDeviceFeatures2;
             memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
+            SkDebugf("bar\n");
             if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions,
                                                      features, &debugCallback)) {
                 sk_gpu_test::FreeVulkanFeaturesStructs(features);

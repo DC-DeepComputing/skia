@@ -277,6 +277,8 @@ sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bit
                                                              SkBackingFit fit,
                                                              skgpu::Budgeted budgeted) {
     ASSERT_SINGLE_OWNER
+
+    SkDebugf("------- GrProxyProvider::createProxyFromBitmap\n");
     SkASSERT(fit == SkBackingFit::kExact || mipmapped == GrMipmapped::kNo);
 
     if (this->isAbandoned()) {
@@ -342,6 +344,9 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
                                                                       SkBackingFit fit,
                                                                       skgpu::Budgeted budgeted) {
     auto dims = bitmap.dimensions();
+
+    SkDebugf("------ GrProxyProvider::createNonMippedProxyFromBitmap %dx%d\n",
+             bitmap.width(), bitmap.height());
 
     auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
     GrBackendFormat format = this->caps()->getDefaultBackendFormat(colorType, GrRenderable::kNo);

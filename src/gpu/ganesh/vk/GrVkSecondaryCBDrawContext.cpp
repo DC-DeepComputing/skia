@@ -42,6 +42,7 @@ sk_sp<GrVkSecondaryCBDrawContext> GrVkSecondaryCBDrawContext::Make(GrRecordingCo
 
     SkASSERT(proxy->isInstantiated());
 
+    SkDebugf("------- GrVkSecondaryCBDrawContext::Make\n");
     auto device = rContext->priv().createDevice(SkColorTypeToGrColorType(imageInfo.colorType()),
                                                 std::move(proxy),
                                                 imageInfo.refColorSpace(),

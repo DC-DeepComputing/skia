@@ -22,6 +22,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ListView;
+import android.view.WindowManager;
 
 public class ViewerActivity
         extends Activity implements SurfaceHolder.Callback, View.OnTouchListener {
@@ -71,11 +72,16 @@ public class ViewerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                             WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(R.layout.activity_main);
 
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(this);
         surfaceView.setOnTouchListener(this);
+        surfaceView.setSecure(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         if (mDrawerLayout != null) { // xlarge-land has no drawer layout (drawer is always open)

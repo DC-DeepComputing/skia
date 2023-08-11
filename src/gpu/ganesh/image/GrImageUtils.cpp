@@ -246,6 +246,7 @@ static GrSurfaceProxyView generate_picture_texture(GrRecordingContext* ctx,
     skgpu::Budgeted budgeted = texGenPolicy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted
                                        ? skgpu::Budgeted::kNo
                                        : skgpu::Budgeted::kYes;
+    SkDebugf("$$$$$$$ generate_picture_texture\n");
     auto surface = SkSurfaces::RenderTarget(ctx,
                                             budgeted,
                                             img->imageInfo(),
