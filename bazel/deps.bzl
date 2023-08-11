@@ -169,7 +169,7 @@ def git_repos_from_deps(ws = "@"):
 
     git_repository(
         name = "spirv_tools",
-        commit = "d6300ee92b18c849caf834af2ff29bb1951a4817",
+        commit = "43b8886490eb6af81fc61e0ff071c51a922af864",
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git",
     )
 
