@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70e05d06_6421c992",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T15:51:12Z",
+      "side": 1,
+      "message": "Aha. I was wondering what the context would be where you\u0027d need the pair, rather than K,V ... makes sense. (Anything I was about to suggest in that other CL ended up more complex, and re-implementing an external pair).",
+      "parentUuid": "54ec8a59_f51db7ae",
+      "revId": "6468717f774e3f5252cd2d11ba91101b4ebfec69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a50edb6_0dd1b15b",
