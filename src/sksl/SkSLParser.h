@@ -316,6 +316,11 @@ private:
     ProgramKind fKind;
     std::unique_ptr<std::string> fText;
     Lexer fLexer;
+
+    // Layout tokens are only enabled inside a `layout (...)` block. Outside of this, when we see a
+    // layout token, it should be interpreted as a plain TK_IDENTIFIER.
+    bool fEnableLayoutTokens = false;
+
     // current parse depth, used to enforce a recursion limit to try to keep us from overflowing the
     // stack on pathological inputs
     int fDepth = 0;
