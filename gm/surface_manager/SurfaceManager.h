@@ -10,6 +10,7 @@
 
 #include "include/core/SkSurface.h"
 
+#include <map>
 #include <string>
 
 // Abstract class to create and manage surfaces.
@@ -27,6 +28,10 @@ public:
     // that all commands are flushed to the GPU in the case of Ganesh-backed surfaces. Failing to
     // do so may lead to blank pixmaps.
     virtual void flush() = 0;
+
+    // Returns the subset of Gold keys that are determined by the surface, such as color type and
+    // alpha type.
+    std::map<std::string, std::string> getGoldKeys();
 
     virtual ~SurfaceManager() = default;
 };
