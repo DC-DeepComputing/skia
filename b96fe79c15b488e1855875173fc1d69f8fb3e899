@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c90eab9e_23c8bef9",
+        "filename": "tools/gpu/android/AHBUtils_android.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T19:18:35Z",
+      "side": 1,
+      "message": "It\u0027s not obvious that these are the right settings for all users who might want to call this method. `GrAHardwareBufferTest.cpp` appears to have some other callers that might be able to use this if we could pass in the usage settings. (Or we could even have helpers, if we don\u0027t want to enter all of these long flags in?)",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89075a75_f9906e4a",
+        "filename": "tools/gpu/android/AHBUtils_android.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T19:18:35Z",
+      "side": 1,
+      "message": "On success, shouldn\u0027t we `cleanup_resources` when the `SkSurface` gets deleted?",
+      "range": {
+        "startLine": 81,
+        "startChar": 11,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "220298f5_48da418e",
+        "filename": "tools/gpu/android/AHBUtils_android.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T19:18:35Z",
+      "side": 1,
+      "message": "nit: It looks like you draw this into the surface and snap an image - maybe call this `source` to make it clear what you\u0027re doing with it?",
+      "range": {
+        "startLine": 29,
+        "startChar": 52,
+        "endLine": 29,
+        "endChar": 58
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
