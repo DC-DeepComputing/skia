@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4ab25e_96fe8196",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T18:32:36Z",
+      "side": 1,
+      "message": "This one has a bit more churn because:\n1) I renamed things from the very generic \"utils\" to \"memset\"\n2) This is the set of opts functions most often referenced elsewhere in the code (so lots of changes to #include lines)\n\nHowever, at this point, the only thing that remains in SkOpts.cpp and SkOpts_hsw.cpp is raster pipeline! And because of the clang bug, we can\u0027t change how RP compiles yet, but we can go ahead and remove all the SSSE3 and AVX targets from our customers.",
+      "revId": "5f5226e5eadc9d2f2ee672e11d161f5a6175229e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
