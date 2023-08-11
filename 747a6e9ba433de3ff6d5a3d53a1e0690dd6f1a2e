@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39b1542e_8a9238dc",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:43:09Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 772,
+        "startChar": 70,
+        "endLine": 772,
+        "endChar": 71
+      },
+      "revId": "747a6e9ba433de3ff6d5a3d53a1e0690dd6f1a2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75e5fd1f_774739e7",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:43:09Z",
+      "side": 1,
+      "message": "I would prefer not to be in the business of doing pointer arithmetic in JS. Creating a temporary Typed array is cheap, especially because it\u0027s backed by existing memory.\n\n```\nvar ta \u003d _scratchThreeFloatsA[\u0027toTypedArray\u0027]();\nif (ta[2] \u003d\u003d\u003d -1) {\n...\n\n```\n\nNote the three equals signs, which we should be using.",
+      "range": {
+        "startLine": 147,
+        "startChar": 10,
+        "endLine": 147,
+        "endChar": 64
+      },
+      "revId": "747a6e9ba433de3ff6d5a3d53a1e0690dd6f1a2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "008b6c06_a3d5b25f",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:43:09Z",
+      "side": 1,
+      "message": "return ta.slice(0, 2);",
+      "range": {
+        "startLine": 150,
+        "startChar": 6,
+        "endLine": 150,
+        "endChar": 9
+      },
+      "revId": "747a6e9ba433de3ff6d5a3d53a1e0690dd6f1a2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aabed01_6c67a6b5",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:43:09Z",
+      "side": 1,
+      "message": "nit: There\u0027s only 2 floats that we use, so call it twoFloats. (I know the buffer could be three floats long, but I think that\u0027s irrelevant to someone reading this function.",
+      "range": {
+        "startLine": 449,
+        "startChar": 19,
+        "endLine": 449,
+        "endChar": 30
+      },
+      "revId": "747a6e9ba433de3ff6d5a3d53a1e0690dd6f1a2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87905d8b_488e68fd",
+        "filename": "modules/canvaskit/tests/skottie_test.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:43:09Z",
+      "side": 1,
+      "message": "nit: could we adjust this opacity to be 0.1 for similar reason as below? 0 is sometimes a special value, or might be in uninitialize memory, but 0.1 should be less likely to accidental correctness.",
+      "range": {
+        "startLine": 96,
+        "startChar": 50,
+        "endLine": 96,
+        "endChar": 51
+      },
+      "revId": "747a6e9ba433de3ff6d5a3d53a1e0690dd6f1a2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38313bad_edaf5df5",
+        "filename": "modules/canvaskit/tests/skottie_test.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T14:43:09Z",
+      "side": 1,
+      "message": "nit: pick 2 different numbers so we know they stay in the right order and we haven\u0027t copy-pasta\u0027d an array[0] somewhere",
+      "range": {
+        "startLine": 97,
+        "startChar": 52,
+        "endLine": 97,
+        "endChar": 54
+      },
+      "revId": "747a6e9ba433de3ff6d5a3d53a1e0690dd6f1a2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
