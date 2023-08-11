@@ -44,6 +44,7 @@ class FunctionDefinition;
 class GlobalVarDeclaration;
 class IfStatement;
 class IndexExpression;
+class InterfaceBlock;
 enum IntrinsicKind : int8_t;
 struct Layout;
 class Literal;
@@ -309,7 +310,10 @@ private:
     void writeStageInputStruct();
     void writeStageOutputStruct();
     void writeUniformsAndBuffers();
-    void writeUniformPolyfills(const Type& structType, MemoryLayout::Standard nativeLayout);
+    void writeUniformPolyfills(std::string_view instanceName,
+                               const InterfaceBlock* interfaceBlock,
+                               MemoryLayout::Standard nativeLayout);
+    void writeUniformPolyfillInitialization();
 
     void writeTextureOrSampler(const Variable& var,
                                int bindingLocation,
@@ -356,9 +360,13 @@ private:
     // These fields control uniform-matrix polyfill support. Because our uniform data is provided in
     // std140 layout, matrices need to be represented as arrays of @size(16)-aligned vectors, and
     // are unpacked as they are referenced.
-    skia_private::THashSet<const Field*> fMatrixPolyfillFields;
-    bool fWrittenUniformMatrixPolyfill[5][5] = {};  // m[column][row] for each matrix type
-    bool fWrittenUniformRowPolyfill[5] = {};        // for each matrix row-size
+    struct MatrixPolyfillInfo {
+        const InterfaceBlock* fInterfaceBlock;
+        std::string fReplacementName;
+        bool fWasAccessed = false;
+    };
+    using MatrixPolyfillFieldMap = skia_private::THashMap<const Field*, MatrixPolyfillInfo>;
+    MatrixPolyfillFieldMap fMatrixPolyfillFields;
 
     // Output processing state.
     int fIndentation = 0;
