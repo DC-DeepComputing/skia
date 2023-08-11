@@ -121,6 +121,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "7e853201_7a4b639f",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:21:22Z",
+      "side": 1,
+      "message": "I\u0027ve set them back to the original. We can revisit if the warning/error crops back up.",
+      "parentUuid": "efc28f8a_ccbbd3dc",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 60
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a1582eb5_f623845a",
         "filename": "platform_tools/android/apps/viewer/build.gradle",
         "patchSetId": 12
@@ -173,6 +197,24 @@
       "side": 1,
       "message": "To me that says we should remove this line completely. We\u0027ll be getting some default, which seems better than this line getting out of date later.",
       "parentUuid": "06b56d29_f2f495c7",
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "142af513_16d8671e",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:21:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91bb9539_e011164b",
       "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
