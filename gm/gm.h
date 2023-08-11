@@ -115,6 +115,13 @@ namespace skiagm {
             kBench_Mode,
         };
 
+        // Ignored by DM. This is the return value of method getSourceType(). For context see said
+        // method's documentation.
+        enum class SourceType {
+            kGM,
+            kImage,
+        };
+
         void setMode(Mode mode) { fMode = mode; }
         Mode getMode() const { return fMode; }
 
@@ -199,6 +206,11 @@ namespace skiagm {
         //
         // TODO(lovisolo): Delete once it's no longer needed.
         virtual bool isBazelOnly() const { return false; }
+
+        // Ignored by DM. Used by //gm/BazelGMRunner.cpp to distinguish the GM's source type. This
+        // is necessary because codec tests are implemented as Bazel-only GMs (see method
+        // isBazelOnly() defined above).
+        virtual SourceType getSourceType() const { return SourceType::kGM; }
 
     protected:
         // onGpuSetup is called once before any other processing with a direct context.
