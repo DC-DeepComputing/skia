@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e538ddd9_5a2a458c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T19:50:32Z",
+      "side": 1,
+      "message": "Can you define \"disgruntled\"? Did it give a bunch of warnings? Or fail completely? FWIW, I was able to build on my Mac both with and without your changes. Here\u0027s the version of Android Studio I\u0027m using:\n```\nAndroid Studio Arctic Fox | 2020.3.1\nBuild #AI-203.7717.56.2031.7583922, built on July 26, 2021\nRuntime version: 11.0.10+0-b96-7281165 x86_64\nVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.\nmacOS 13.5\nGC: G1 Young Generation, G1 Old Generation\nMemory: 2048M\nCores: 16\nRegistry: external.system.auto.import.disabled\u003dtrue\nNon-Bundled Plugins: org.jetbrains.kotlin\n```\n\nI\u0027m using an NDK I got from https://skia.org/docs/user/build/#android.",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 126
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1582eb5_f623845a",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 12
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T19:50:32Z",
+      "side": 1,
+      "message": "This might mean that people will have to update their AndroidStudio, but perhaps that\u0027s ok.",
+      "range": {
+        "startLine": 15,
+        "startChar": 22,
+        "endLine": 15,
+        "endChar": 24
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
