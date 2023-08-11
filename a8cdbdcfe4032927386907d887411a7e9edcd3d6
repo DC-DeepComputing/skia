@@ -48,6 +48,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "64217ae6_86c24767",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:02:19Z",
+      "side": 1,
+      "message": "I\u0027ve added comments to the various changes below containing the warnings and errors that motivated them.",
+      "parentUuid": "385b3901_44b2e6dc",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 126
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dae2d30_7c16214f",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:02:19Z",
+      "side": 1,
+      "message": "Some error made me update these but I can\u0027t recreate it anymore.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 60
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a1582eb5_f623845a",
@@ -67,6 +114,63 @@
         "endLine": 15,
         "endChar": 24
       },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b56d29_f2f495c7",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:02:19Z",
+      "side": 1,
+      "message": "```\nWARNING: The specified Android SDK Build Tools version (27.0.3) is ignored, as it is below the minimum supported version (28.0.2) for Android Gradle Plugin 3.2.0.\nAndroid SDK Build Tools 28.0.2 will be used.\nTo suppress this warning, remove \"buildToolsVersion \u002727.0.3\u0027\" from your build.gradle file, as each version of the Android Gradle Plugin now has a default version of the build tools.\n```",
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0aef3d9_a2917fdc",
+        "filename": "platform_tools/android/apps/viewer/src/main/AndroidManifest.xml",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:02:19Z",
+      "side": 1,
+      "message": "```\nadb: failed to install out/arm64/viewer.apk: Failure [INSTALL_PARSE_FAILED_MANIFEST_MALFORMED: Failed parse during installPackageLI: /data/app/vmdl1739318992.tmp/base.apk (at Binary XML file line #19): org.skia.viewer.ViewerActivity: Targeting S+ (version 31 and above) requires that an explicit value for android:exported be defined when intent filters are present]\n```",
+      "range": {
+        "startLine": 14,
+        "startChar": 45,
+        "endLine": 14,
+        "endChar": 68
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76742ab4_4fd1dc53",
+        "filename": "platform_tools/android/bin/android_build_app",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T21:02:19Z",
+      "side": 1,
+      "message": "```\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 6.0.\nUse \u0027--warning-mode all\u0027 to show the individual deprecation warnings.\nSee https://docs.gradle.org/5.6.4/userguide/command_line_interface.html#sec:command_line_warnings\n```",
       "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
