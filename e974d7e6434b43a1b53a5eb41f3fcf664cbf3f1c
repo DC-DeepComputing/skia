@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e7afdc6_846d68d2",
+        "filename": "src/codec/SkSwizzler.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T15:07:38Z",
+      "side": 1,
+      "message": "Definitely. Done here. The other SkOpts namespaces either didn\u0027t have typedefs at all (eg, they just declared the function pointers), or were already using `using` (in the case of the RP StageFn declaration).",
+      "parentUuid": "0d3c37dd_0e4f06d4",
+      "range": {
+        "startLine": 233,
+        "startChar": 12,
+        "endLine": 233,
+        "endChar": 16
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76c4153e_9e48b3d4",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "693e910f_faa5dfda",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T15:07:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "76c4153e_9e48b3d4",
+      "range": {
+        "startLine": 17,
+        "startChar": 14,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14120903_49df7892",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-08-11T14:49:50Z",
       "side": 1,
       "message": "I think it\u0027s a smidge odd to have GPU depend on src/codec for this. I guess that\u0027s an argument to make the Swizzler opts be in src/core?",
+      "range": {
+        "startLine": 11,
+        "startChar": 14,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "e974d7e6434b43a1b53a5eb41f3fcf664cbf3f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb0aca53_831bf0db",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-11T15:07:38Z",
+      "side": 1,
+      "message": "Yes, for sure. I was going to make a comment about that, actually. One option is to further split the swizzles: there are only a couple that are needed in core, and the rest are specific to codec.\n\nI\u0027d like to look at that in a follow-up, but it seems reasonable. (I\u0027m hoping to further simplify/contract the structure a bit, so that it will be even easier to slice like that).",
+      "parentUuid": "14120903_49df7892",
       "range": {
         "startLine": 11,
         "startChar": 14,
