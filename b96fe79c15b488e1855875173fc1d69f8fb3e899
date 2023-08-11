@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4807b844_4342f72f",
+        "filename": "tools/gpu/android/AHBUtils_android.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T20:37:16Z",
+      "side": 1,
+      "message": "This refactoring was intended to only handle the creation of protected AHB-backed images - which require the CPU_READ_NEVER and CPU_WRITE_NEVER flags be set. I intend to follow up with a CL that handles two other more specialized AHB creation use cases.\n\nThe GrAHardwareBufferTest.cpp basic_draw_test_helper use case needs to just\ncreate an AHB bc it is specifically testing the caching of a deferred image (i.e., it calls DeferredFromAHardwareBuffer). To accommodate that case I intend to add a helper like:\n\n   AHardwareBuffer* CreateAHB(const SkBitmap\u0026 source);\n\nwhich sets the CPU_READ_NEVER, CPU_WRITE_OFTEN and GPU_SAMPLED_IMAGE flags.\n\nSimilarly, the MultiPictureDocumentTest.cpp test is being very particular about\nhow it constructs its AHB-backed image (using SkImages::BorrowTextureFrom) in order to mimic AutoBackendTextureRelease. It could use the \u0027CreateAHB\u0027 helper and at least get a little bit of code reuse.\n\nI considered the other AHB creation systems as out of scope. But this CL and\nthe follow up will bring us into closer alignment with how the VkHardwareBufferTest.cpp creates its AHBs, SkImages and SkSurfaces.",
+      "parentUuid": "c90eab9e_23c8bef9",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89075a75_f9906e4a",
         "filename": "tools/gpu/android/AHBUtils_android.cpp",
         "patchSetId": 12
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b11f8acf_fd3556a9",
+        "filename": "tools/gpu/android/AHBUtils_android.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T20:37:16Z",
+      "side": 1,
+      "message": "IIUC WrapAndroidHardwareBuffer takes the AHardwareBuffer* and wraps it with GrAHardwareBufferUtils::MakeBackendTexture. That call returns function pointers to do the deletion. Those are then fed into SkSurfaces::WrapBackendTexture so the backing memory will be cleaned up when possible (i.e., sometime after the SkSurface has been deleted). For GL, I believe the magic happens in AHardwareBufferGL.cpp GLTextureHelper - which refs and unrefs the AHardwareBuffer.",
+      "parentUuid": "89075a75_f9906e4a",
+      "range": {
+        "startLine": 81,
+        "startChar": 11,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "220298f5_48da418e",
         "filename": "tools/gpu/android/AHBUtils_android.h",
         "patchSetId": 12
@@ -60,6 +108,30 @@
       "writtenOn": "2023-08-11T19:18:35Z",
       "side": 1,
       "message": "nit: It looks like you draw this into the surface and snap an image - maybe call this `source` to make it clear what you\u0027re doing with it?",
+      "range": {
+        "startLine": 29,
+        "startChar": 52,
+        "endLine": 29,
+        "endChar": 58
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b233cf7_25696e4f",
+        "filename": "tools/gpu/android/AHBUtils_android.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-11T20:37:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "220298f5_48da418e",
       "range": {
         "startLine": 29,
         "startChar": 52,
