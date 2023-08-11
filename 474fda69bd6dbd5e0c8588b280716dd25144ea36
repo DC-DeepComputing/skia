@@ -97,6 +97,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "31392b93_4bb695e2",
+        "filename": "include/private/base/SkAnySubclass.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-11T13:39:18Z",
+      "side": 1,
+      "message": "Yeah, I suppose having the users type `static_cast` instead of `any_cast` or something like that is fine.",
+      "parentUuid": "3ada1a65_7175e736",
+      "range": {
+        "startLine": 55,
+        "startChar": 16,
+        "endLine": 55,
+        "endChar": 19
+      },
+      "revId": "474fda69bd6dbd5e0c8588b280716dd25144ea36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "33cdc11f_28a1875f",
         "filename": "include/private/base/SkAnySubclass.h",
         "patchSetId": 14
