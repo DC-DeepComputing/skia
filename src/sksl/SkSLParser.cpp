@@ -11,8 +11,6 @@
 #include "include/private/base/SkTArray.h"
 #include "include/sksl/SkSLVersion.h"
 #include "src/base/SkEnumBitMask.h"
-#include "src/base/SkNoDestructor.h"
-#include "src/core/SkTHash.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLConstantFolder.h"
@@ -64,7 +62,6 @@
 
 #include <algorithm>
 #include <climits>
-#include <initializer_list>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -220,6 +217,13 @@ std::shared_ptr<SymbolTable>& Parser::symbolTable() {
     return fCompiler.symbolTable();
 }
 
+constexpr Token::Kind kFirstLayoutToken = Token::Kind::TK_ORIGIN_UPPER_LEFT;
+constexpr Token::Kind kLastLayoutToken  = Token::Kind::TK_LOCAL_SIZE_Z;
+
+// If you add a layout token and trigger these asserts, please update the constants above.
+static_assert((int)kFirstLayoutToken - 1 == (int)Token::Kind::TK_WORKGROUP);
+static_assert((int)kLastLayoutToken  + 1 == (int)Token::Kind::TK_RESERVED);
+
 Token Parser::nextRawToken() {
     Token token;
     if (fPushback.fKind != Token::Kind::TK_NONE) {
@@ -229,6 +233,13 @@ Token Parser::nextRawToken() {
     } else {
         // Fetch a token from the lexer.
         token = fLexer.next();
+
+        // Layout tokens are contextually parsed, and are treated as plain identifiers outside of a
+        // `layout (...)` context.
+        if (token.fKind >= kFirstLayoutToken && token.fKind <= kLastLayoutToken &&
+            !fEnableLayoutTokens) {
+            token.fKind = Token::Kind::TK_IDENTIFIER;
+        }
 
         // Some tokens are always invalid, so we detect and report them here.
         switch (token.fKind) {
@@ -1056,54 +1067,39 @@ std::string_view Parser::layoutIdentifier() {
     return this->text(resultToken);
 }
 
+static LayoutFlag token_to_layout_flag(Token::Kind t) {
+    if (t < kFirstLayoutToken || t > kLastLayoutToken) {
+        return LayoutFlag::kNone;
+    }
+    int flagIndex = (int)t - (int)kFirstLayoutToken;
+    return (LayoutFlag)(1 << flagIndex);
+}
+
 /* LAYOUT LPAREN IDENTIFIER (EQ INT_LITERAL)? (COMMA IDENTIFIER (EQ INT_LITERAL)?)* RPAREN */
 SkSL::Layout Parser::layout() {
-    using LayoutMap = THashMap<std::string_view, SkSL::LayoutFlag>;
-    static SkNoDestructor<LayoutMap> sLayoutTokens(LayoutMap{
-            {"location",                    SkSL::LayoutFlag::kLocation},
-            {"offset",                      SkSL::LayoutFlag::kOffset},
-            {"binding",                     SkSL::LayoutFlag::kBinding},
-            {"texture",                     SkSL::LayoutFlag::kTexture},
-            {"sampler",                     SkSL::LayoutFlag::kSampler},
-            {"index",                       SkSL::LayoutFlag::kIndex},
-            {"set",                         SkSL::LayoutFlag::kSet},
-            {"builtin",                     SkSL::LayoutFlag::kBuiltin},
-            {"input_attachment_index",      SkSL::LayoutFlag::kInputAttachmentIndex},
-            {"origin_upper_left",           SkSL::LayoutFlag::kOriginUpperLeft},
-            {"blend_support_all_equations", SkSL::LayoutFlag::kBlendSupportAllEquations},
-            {"push_constant",               SkSL::LayoutFlag::kPushConstant},
-            {"color",                       SkSL::LayoutFlag::kColor},
-            {"spirv",                       SkSL::LayoutFlag::kSPIRV},
-            {"metal",                       SkSL::LayoutFlag::kMetal},
-            {"wgsl",                        SkSL::LayoutFlag::kWGSL},
-            {"rgba8",                       SkSL::LayoutFlag::kRGBA8},
-            {"rgba32f",                     SkSL::LayoutFlag::kRGBA32F},
-            {"r32f",                        SkSL::LayoutFlag::kR32F},
-            {"local_size_x",                SkSL::LayoutFlag::kLocalSizeX},
-            {"local_size_y",                SkSL::LayoutFlag::kLocalSizeY},
-            {"local_size_z",                SkSL::LayoutFlag::kLocalSizeZ},
-    });
-
     Layout result;
     if (this->checkNext(Token::Kind::TK_LAYOUT) &&
         this->expect(Token::Kind::TK_LPAREN, "'('")) {
 
         for (;;) {
+            fEnableLayoutTokens = true;
             Token t = this->nextToken();
-            std::string_view text = this->text(t);
-            SkSL::LayoutFlag* found = sLayoutTokens->find(text);
+            fEnableLayoutTokens = false;
 
-            if (!found) {
+            std::string_view text = this->text(t);
+            LayoutFlag layoutFlag = token_to_layout_flag(t.fKind);
+
+            if (layoutFlag == LayoutFlag::kNone) {
                 this->error(t, "'" + std::string(text) + "' is not a valid layout qualifier");
             } else {
-                if (result.fFlags & *found) {
+                if (result.fFlags & layoutFlag) {
                     this->error(t, "layout qualifier '" + std::string(text) +
                                    "' appears more than once");
                 }
 
-                result.fFlags |= *found;
+                result.fFlags |= layoutFlag;
 
-                switch (*found) {
+                switch (layoutFlag) {
                     case SkSL::LayoutFlag::kLocation:
                         result.fLocation = this->layoutInt();
                         break;

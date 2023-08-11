@@ -212,7 +212,7 @@ void WriteTransitionTable(std::ofstream& out, const DFA& dfa, size_t states) {
         }
         if (shiftBits > 0) {
             // Flush any partial values.
-            out << combinedBits;
+            out << combinedBits << ",";
         }
         out << "}},\n";
     }
