@@ -93,6 +93,30 @@
       },
       "revId": "2e7b43ae388a6eff4a502c8b2e6820866a0d1494",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54cd08a_c9691bec",
+        "filename": "site/docs/user/download.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-11T18:30:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "24667595_e7500679",
+      "range": {
+        "startLine": 33,
+        "startChar": 46,
+        "endLine": 33,
+        "endChar": 63
+      },
+      "revId": "2e7b43ae388a6eff4a502c8b2e6820866a0d1494",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
