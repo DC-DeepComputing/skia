@@ -728,6 +728,8 @@ public:
      */
     bool hasMipmaps() const;
 
+    bool isProtected() const;
+
     /**
      *  Returns an image with the same "base" pixels as the this image, but with mipmap levels
      *  automatically generated and attached.
