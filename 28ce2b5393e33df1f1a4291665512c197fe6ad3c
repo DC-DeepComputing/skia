@@ -93,6 +93,30 @@
       },
       "revId": "28ce2b5393e33df1f1a4291665512c197fe6ad3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "824ead26_5df38369",
+        "filename": "bazel/rbe/gce_linux/config/BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-11T17:50:22Z",
+      "side": 1,
+      "message": "I was just wondering if we should be updating //bazel/platform/BUILD.bazel and other places.",
+      "parentUuid": "9a7fa41b_c5e26b24",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 21
+      },
+      "revId": "28ce2b5393e33df1f1a4291665512c197fe6ad3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
