@@ -360,13 +360,15 @@ private:
     // These fields control uniform-matrix polyfill support. Because our uniform data is provided in
     // std140 layout, matrices need to be represented as arrays of @size(16)-aligned vectors, and
     // are unpacked into globals at the shader entrypoint.
-    struct MatrixPolyfillInfo {
+    struct FieldPolyfillInfo {
         const InterfaceBlock* fInterfaceBlock;
         std::string fReplacementName;
+        bool fIsArray = false;
+        bool fIsMatrix = false;
         bool fWasAccessed = false;
     };
-    using MatrixPolyfillFieldMap = skia_private::THashMap<const Field*, MatrixPolyfillInfo>;
-    MatrixPolyfillFieldMap fMatrixPolyfillFields;
+    using FieldPolyfillMap = skia_private::THashMap<const Field*, FieldPolyfillInfo>;
+    FieldPolyfillMap fFieldPolyfillMap;
 
     // Output processing state.
     int fIndentation = 0;
