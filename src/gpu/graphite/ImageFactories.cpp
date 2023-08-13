@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <iostream>
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -158,11 +160,13 @@ SK_API sk_sp<SkImage> PromiseTextureFromYUVA(skgpu::graphite::Recorder* recorder
     auto releaseHelper = skgpu::RefCntedCallback::Make(imageReleaseProc, imageContext);
 
     if (!backendTextureInfo.isValid()) {
+        std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
         return nullptr;
     }
 
     if (!recorder) {
         SKGPU_LOG_W("Null Recorder");
+        std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
         return nullptr;
     }
 
@@ -176,6 +180,7 @@ SK_API sk_sp<SkImage> PromiseTextureFromYUVA(skgpu::graphite::Recorder* recorder
             kRGBA_8888_SkColorType, at, imageColorSpace);
     if (!SkImageInfoIsValid(info)) {
         SKGPU_LOG_W("Invalid SkImageInfo");
+        std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
         return nullptr;
     }
 
@@ -191,6 +196,7 @@ SK_API sk_sp<SkImage> PromiseTextureFromYUVA(skgpu::graphite::Recorder* recorder
                                                            textureContexts[p],
                                                            textureReleaseProc);
         if (!proxies[p]) {
+            std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
             return nullptr;
         }
     }

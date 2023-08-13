@@ -159,7 +159,7 @@ private:
     ResourceMap fResourceMap;
 
     // Default maximum number of bytes of gpu memory of budgeted resources in the cache.
-    static const size_t kDefaultMaxSize = 256 * (1 << 20);
+    static const size_t kDefaultMaxSize = 256 * (1 << 20)  / 3;
 
     // Our budget
     size_t fMaxBytes = kDefaultMaxSize;
@@ -172,6 +172,8 @@ private:
     SkMutex fReturnMutex;
     using ReturnQueue = std::vector<std::pair<Resource*, LastRemovedRef>>;
     ReturnQueue fReturnQueue SK_GUARDED_BY(fReturnMutex);
+
+    int fId = 0;
 };
 
 } // namespace skgpu::graphite

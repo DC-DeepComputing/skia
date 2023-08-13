@@ -24,25 +24,25 @@ const char* texture_info_to_label(const TextureInfo& info,
 #ifdef SK_DEBUG
     if (dawnSpec.fUsage & wgpu::TextureUsage::RenderAttachment) {
         if (DawnFormatIsDepthOrStencil(dawnSpec.fFormat)) {
-            return "DepthStencil";
+            return "Graphite:DepthStencil";
         } else {
             if (info.numSamples() > 1) {
                 if (dawnSpec.fUsage & wgpu::TextureUsage::TextureBinding) {
-                    return "MSAA SampledTexture-ColorAttachment";
+                    return "Graphite:MSAA SampledTexture-ColorAttachment";
                 } else {
-                    return "MSAA ColorAttachment";
+                    return "Graphite:MSAA ColorAttachment";
                 }
             } else {
                 if (dawnSpec.fUsage & wgpu::TextureUsage::TextureBinding) {
-                    return "SampledTexture-ColorAttachment";
+                    return "Graphite:SampledTexture-ColorAttachment";
                 } else {
-                    return "ColorAttachment";
+                    return "Graphite:ColorAttachment";
                 }
             }
         }
     } else {
         SkASSERT(dawnSpec.fUsage & wgpu::TextureUsage::TextureBinding);
-        return "SampledTexture";
+        return "Graphite:SampledTexture";
     }
 #else
     return nullptr;

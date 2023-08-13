@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/ResourceCache.h"
 
+#include <iostream>
+
 #include "include/private/base/SingleOwner.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkTMultiMap.h"
@@ -36,6 +38,8 @@ ResourceCache::ResourceCache(SingleOwner* singleOwner, uint32_t recorderID)
 #ifndef SK_DEBUG
     (void)fSingleOwner;
 #endif
+   static int i = 0;
+   fId = ++i;
 }
 
 ResourceCache::~ResourceCache() {
@@ -107,6 +111,8 @@ void ResourceCache::insertResource(Resource* resource) {
     }
 
     this->purgeAsNeeded();
+
+    // std::cerr << "EEEE this: " <<  fId << " resource: " << fResourceMap.count() <<  " budget:" << (fBudgetedBytes/ 1024/1024) << " MB" << std::endl;
 }
 
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
