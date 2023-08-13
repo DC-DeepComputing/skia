@@ -7,6 +7,8 @@
 
 #include "src/gpu/ganesh/image/SkImage_GaneshYUVA.h"
 
+#include <iostream>
+
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
@@ -389,6 +391,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
                                       PromiseImageTextureReleaseProc textureReleaseProc,
                                       PromiseImageTextureContext textureContexts[]) {
     if (!backendTextureInfo.isValid()) {
+        std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
         return nullptr;
     }
 
@@ -404,6 +407,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
     }
 
     if (!threadSafeProxy) {
+        std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
         return nullptr;
     }
 
@@ -412,6 +416,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
     SkImageInfo info = SkImageInfo::Make(
             backendTextureInfo.yuvaInfo().dimensions(), kAssumedColorType, at, imageColorSpace);
     if (!SkImageInfoIsValid(info)) {
+        std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
         return nullptr;
     }
 
@@ -426,6 +431,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
                                                               textureFulfillProc,
                                                               std::move(releaseHelpers[i]));
         if (!proxies[i]) {
+            std::cerr << "EEEEE PromiseTextureFromYUVA return at line " << __LINE__ <<  std::endl;
             return nullptr;
         }
     }

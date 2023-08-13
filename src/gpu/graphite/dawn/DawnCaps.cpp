@@ -29,9 +29,11 @@ static constexpr wgpu::TextureFormat kFormats[] = {
     wgpu::TextureFormat::R8Unorm,
     wgpu::TextureFormat::BGRA8Unorm,
     wgpu::TextureFormat::RGBA16Float,
+    wgpu::TextureFormat::R16Unorm,
     wgpu::TextureFormat::R16Float,
     wgpu::TextureFormat::RG8Unorm,
     wgpu::TextureFormat::RGB10A2Unorm,
+    wgpu::TextureFormat::RG16Unorm,
     wgpu::TextureFormat::RG16Float,
 
     wgpu::TextureFormat::Stencil8,
@@ -366,6 +368,23 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 
+    // Format: R16Unorm
+    {
+        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Unorm)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos.reset(new ColorTypeInfo[info->fColorTypeInfoCount]());
+        int ctIdx = 0;
+        // Format: RUint, Surface: kA16_unorm_SkColorType
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kA16_unorm_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+            ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
+            ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
+        }
+    }
+
     // Format: R16Float
     {
         info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Float)];
@@ -413,6 +432,22 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
         }
     }
+
+    // Format: RG16Unorm
+    {
+        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG16Unorm)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos.reset(new ColorTypeInfo[info->fColorTypeInfoCount]());
+        int ctIdx = 0;
+        // Format: RG16Unorm, Surface: kR16G16_unorm
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kR16G16_unorm_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
+    }
+
 
     // Format: RG16Float
     {
