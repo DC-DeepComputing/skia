@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
+namespace skgpu::graphite {
 namespace {
 
 // These are all the valid wgpu::TextureFormat that we currently support in Skia.
@@ -29,9 +30,11 @@ static constexpr wgpu::TextureFormat kFormats[] = {
     wgpu::TextureFormat::R8Unorm,
     wgpu::TextureFormat::BGRA8Unorm,
     wgpu::TextureFormat::RGBA16Float,
+    wgpu::TextureFormat::R16Unorm,
     wgpu::TextureFormat::R16Float,
     wgpu::TextureFormat::RG8Unorm,
     wgpu::TextureFormat::RGB10A2Unorm,
+    wgpu::TextureFormat::RG16Unorm,
     wgpu::TextureFormat::RG16Float,
 
     wgpu::TextureFormat::Stencil8,
@@ -42,8 +45,6 @@ static constexpr wgpu::TextureFormat kFormats[] = {
 };
 
 }
-
-namespace skgpu::graphite {
 
 DawnCaps::DawnCaps(const wgpu::Device& device, const ContextOptions& options)
     : Caps() {
@@ -366,6 +367,23 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
         }
     }
 
+    // Format: R16Unorm
+    {
+        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Unorm)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos.reset(new ColorTypeInfo[info->fColorTypeInfoCount]());
+        int ctIdx = 0;
+        // Format: RUint, Surface: kA16_unorm_SkColorType
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kA16_unorm_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+            ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
+            ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
+        }
+    }
+
     // Format: R16Float
     {
         info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Float)];
@@ -413,6 +431,22 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
         }
     }
+
+    // Format: RG16Unorm
+    {
+        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG16Unorm)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos.reset(new ColorTypeInfo[info->fColorTypeInfoCount]());
+        int ctIdx = 0;
+        // Format: RG16Unorm, Surface: kR16G16_unorm
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kR16G16_unorm_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
+    }
+
 
     // Format: RG16Float
     {
@@ -500,7 +534,7 @@ size_t DawnCaps::GetFormatIndex(wgpu::TextureFormat format) {
 
 void DawnCaps::setColorType(SkColorType colorType,
                             std::initializer_list<wgpu::TextureFormat> formats) {
-    static_assert(std::tuple_size<decltype(fFormatTable)>::value == std::size(kFormats),
+    static_assert(kFormatCnt == std::size(kFormats),
                   "Size is not same for DawnCaps::fFormatTable and kFormats");
 #ifdef SK_DEBUG
     for (size_t i = 0; i < std::size(fFormatTable); ++i) {
