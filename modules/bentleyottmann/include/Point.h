@@ -33,6 +33,14 @@ struct Point {
     friend Point operator-(const Point& p0, const Point& p1) {
         return {p0.x - p1.x, p0.y - p1.y};
     }
+
+    // Factors
+    friend Point operator*(int32_t s, const Point& p) {
+        return {s * p.x, s * p.y};
+    }
+    friend Point operator*(const Point& p, int32_t s) {
+        return {s * p.x, s * p.y};
+    }
 };
 }  // namespace bentleyottmann
 #endif  // Point_DEFINED
