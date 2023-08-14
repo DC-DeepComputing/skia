@@ -34,6 +34,24 @@
       "parentUuid": "27296b48_1652a839",
       "revId": "1c886cbf264242e568a729f82bb811801e0a37ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6066ba0_31f57819",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-14T16:39:22Z",
+      "side": 1,
+      "message": "So I found that this didn\u0027t work in general because the view usable for an attachment is also being used when we try to sample the texture. So you can technically sample the texture but if you want to use mipmaps the results will look really bad.\n\nI uploaded a new revision that takes a similar approach to what we\u0027re currently doing for Vulkan; maintain a list of views for a given texture and pick one based on the current usage requirements. This is complicated in Dawn by the fact that sometimes Chrome wants to create their own texture views. Currently with this CL, a texture view provided by the client will always be used and we won\u0027t track our own list of views for that texture.",
+      "parentUuid": "442890d5_7512a10c",
+      "revId": "1c886cbf264242e568a729f82bb811801e0a37ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
