@@ -137,7 +137,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("analytic_gradients");
     }
 

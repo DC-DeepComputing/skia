@@ -128,7 +128,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         // To preserve history, useDrawPath==true has no suffix.
         SkString name{"strokedlines"};
         if (!fUseDrawPath) {

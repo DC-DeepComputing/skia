@@ -29,7 +29,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         if (fRotated) {
             return SkString("strokerects_rotated");
         } else {

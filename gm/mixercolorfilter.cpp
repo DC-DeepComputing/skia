@@ -71,7 +71,7 @@ public:
         , fTileCount(tileCount) {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("mixerCF");
     }
 

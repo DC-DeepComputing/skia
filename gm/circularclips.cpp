@@ -34,7 +34,7 @@ protected:
 
     bool runAsBench() const override { return true; }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("circular-clips");
     }
 

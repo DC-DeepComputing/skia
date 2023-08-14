@@ -21,7 +21,7 @@ public:
     DrawRegionGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("drawregion");
     }
 

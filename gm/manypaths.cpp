@@ -40,7 +40,7 @@ protected:
     static const int kWidth = 800;
     static const int kHeight = 600;
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("manycircles");
     }
 
@@ -79,7 +79,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("manyrrects");
     }
 

@@ -58,7 +58,7 @@ protected:
         }
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("scaledemoji_rendering");
     }
 

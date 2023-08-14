@@ -24,7 +24,7 @@ using namespace skia_private;
 class ConicPathsGM : public skiagm::GM {
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("conicpaths");
     }
 

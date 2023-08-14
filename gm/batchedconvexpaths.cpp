@@ -16,7 +16,7 @@ namespace skiagm {
 
 class BatchedConvexPathsGM : public GM {
 private:
-    SkString onShortName() override { return SkString("batchedconvexpaths"); }
+    SkString onShortName() const override { return SkString("batchedconvexpaths"); }
     SkISize onISize() override { return SkISize::Make(512, 512); }
 
     void modifyGrContextOptions(GrContextOptions* ctxOptions) override {

@@ -90,7 +90,7 @@ public:
     RuntimeColorFilterGM() = default;
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("runtimecolorfilter");
     }
 

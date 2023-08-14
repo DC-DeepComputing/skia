@@ -40,7 +40,7 @@ static sk_sp<SkShader> make_heatGradient(const SkPoint pts[2]) {
 
 class GammaTextGM : public skiagm::GM {
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("gammatext");
     }
 
@@ -129,7 +129,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("gammagradienttext");
     }
 

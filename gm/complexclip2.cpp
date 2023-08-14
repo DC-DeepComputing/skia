@@ -122,7 +122,7 @@ protected:
         return "";
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         if (kRect_Clip == fClip && !fAntiAlias) {
             return SkString("complexclip2");
         }

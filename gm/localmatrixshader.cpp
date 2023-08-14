@@ -222,7 +222,7 @@ public:
     LocalMatrixOrder() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("localmatrix_order");
     }
 

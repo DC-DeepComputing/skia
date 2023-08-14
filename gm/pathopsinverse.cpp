@@ -57,7 +57,7 @@ protected:
         paint->setColor(color);
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("pathopsinverse");
     }
 

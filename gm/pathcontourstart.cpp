@@ -48,7 +48,7 @@ protected:
         fRect = SkRect::MakeLTRB(10, 10, 100, 70);
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("contour_start");
     }
 

@@ -41,7 +41,7 @@ protected:
         SkColor color;
     };
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("fillrect_gradient");
     }
 

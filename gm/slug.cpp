@@ -57,7 +57,7 @@ protected:
         font.textToGlyphs(fText, txtLen, SkTextEncoding::kUTF8, fGlyphs.begin(), glyphCount);
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("slug");
     }
 

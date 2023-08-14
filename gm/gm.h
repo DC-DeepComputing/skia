@@ -150,7 +150,7 @@ namespace skiagm {
         DrawResult drawContent(SkCanvas*, SkString* errorMsg);
 
         SkISize getISize() { return this->onISize(); }
-        const char* getName();
+        const char* getName() const;
 
         virtual bool runAsBench() const;
 
@@ -218,7 +218,7 @@ namespace skiagm {
         virtual void onDraw(SkCanvas*);
 
         virtual SkISize onISize() = 0;
-        virtual SkString onShortName() = 0;
+        virtual SkString onShortName() const = 0;
 
         virtual bool onAnimate(double /*nanos*/);
         virtual bool onGetControls(SkMetaData*);
@@ -226,7 +226,6 @@ namespace skiagm {
 
     private:
         Mode       fMode;
-        SkString   fShortName;
         SkColor    fBGColor;
         bool       fHaveCalledOnceBeforeDraw = false;
         bool       fGpuSetup = false;
@@ -284,7 +283,7 @@ namespace skiagm {
 
     private:
         SkISize onISize() override;
-        SkString onShortName() override;
+        SkString onShortName() const override;
         DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override;
 
         const SkString fName;
@@ -302,7 +301,7 @@ namespace skiagm {
 
     private:
         SkISize onISize() override;
-        SkString onShortName() override;
+        SkString onShortName() const override;
         DrawResult onDraw(GrRecordingContext*, SkCanvas*, SkString* errorMsg) override;
 
         const SkString fName;

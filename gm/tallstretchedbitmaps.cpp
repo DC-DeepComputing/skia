@@ -67,7 +67,7 @@ public:
     TallStretchedBitmapsGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("tall_stretched_bitmaps");
     }
 

@@ -44,7 +44,7 @@ private:
 class SkottieExternalPropsGM : public skiagm::GM {
 public:
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("skottie_external_props");
     }
 

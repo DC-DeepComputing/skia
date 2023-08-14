@@ -92,7 +92,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("bitmapfilters");
     }
 
@@ -141,7 +141,7 @@ public:
     SkBitmap fBitmap, fAlpha;
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("extractalpha");
     }
 

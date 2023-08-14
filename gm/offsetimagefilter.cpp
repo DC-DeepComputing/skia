@@ -35,7 +35,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("offsetimagefilter");
     }
 
@@ -107,7 +107,7 @@ public:
     SimpleOffsetImageFilterGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("simple-offsetimagefilter");
     }
 

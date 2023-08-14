@@ -79,7 +79,7 @@ protected:
         emojiFont.text     = ToolUtils::emoji_sample_text();
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("coloremoji");
     }
 

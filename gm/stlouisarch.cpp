@@ -21,7 +21,7 @@ namespace skiagm {
 // this GM tests hairlines which fill nearly the entire render target
 class StLouisArchGM : public GM {
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("stlouisarch");
     }
 

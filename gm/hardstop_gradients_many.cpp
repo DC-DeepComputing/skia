@@ -38,7 +38,7 @@ public:
     HardstopGradientsManyGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("hardstop_gradients_many");
     }
 

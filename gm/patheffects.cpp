@@ -118,7 +118,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("patheffect");
     }
 
@@ -185,7 +185,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("combo-patheffects");
     }
 
@@ -362,7 +362,7 @@ sk_sp<SkFlattenable> StrokeLineInflated::CreateProc(SkReadBuffer&) { return null
 
 class CTMPathEffectGM : public skiagm::GM {
 protected:
-    SkString onShortName() override { return SkString("ctmpatheffect"); }
+    SkString onShortName() const override { return SkString("ctmpatheffect"); }
 
     SkISize onISize() override { return SkISize::Make(800, 600); }
 

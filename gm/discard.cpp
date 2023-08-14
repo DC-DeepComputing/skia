@@ -38,7 +38,7 @@ public:
     DiscardGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("discard");
     }
 

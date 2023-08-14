@@ -26,7 +26,7 @@ class HairlinesGM : public GM {
 protected:
 
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("hairlines");
     }
 

@@ -55,7 +55,7 @@ protected:
         fMask = draw_mask();
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("bitmapshaders");
     }
 

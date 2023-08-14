@@ -66,7 +66,7 @@ protected:
         kShape_Pass
     };
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("aaxfermodes");
     }
 

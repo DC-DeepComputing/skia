@@ -19,7 +19,7 @@
 class RSXShaderGM : public skiagm::GM {
 public:
 private:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("rsx_blob_shader");
     }
 

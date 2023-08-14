@@ -29,7 +29,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString name("nested");
         if (fFlipped) {
             name.append("_flipY");

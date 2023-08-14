@@ -36,7 +36,7 @@ public:
     SharedCornersGM() { this->setBGColor(ToolUtils::color_to_565(0xFF1A65D7)); }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("sharedcorners");
     }
 

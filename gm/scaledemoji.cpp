@@ -52,7 +52,7 @@ protected:
         fEmojiFont.fText     = ToolUtils::emoji_sample_text();
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("scaledemoji");
     }
 
@@ -101,7 +101,7 @@ protected:
         fEmojiFont.fText     = ToolUtils::emoji_sample_text();
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("scaledemojipos");
     }
 
@@ -169,7 +169,7 @@ protected:
         }
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("scaledemojiperspective");
     }
 

@@ -43,7 +43,7 @@ public:
     Xfermodes3GM() { this->setBGColor(ToolUtils::color_to_565(0xFF70D0E0)); }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("xfermodes3");
     }
 

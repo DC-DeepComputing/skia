@@ -66,7 +66,7 @@ public:
     PictureImageFilterGM() { }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("pictureimagefilter");
     }
 

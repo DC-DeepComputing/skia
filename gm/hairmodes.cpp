@@ -84,7 +84,7 @@ namespace skiagm {
         SkPaint fBGPaint;
 
     protected:
-        SkString onShortName() override {
+        SkString onShortName() const override {
             return SkString("hairmodes");
         }
 

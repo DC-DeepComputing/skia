@@ -55,7 +55,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("strokes_round");
     }
 
@@ -118,7 +118,7 @@ protected:
         }
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("zeroPath");
     }
 
@@ -175,7 +175,7 @@ private:
 
 class TeenyStrokesGM : public skiagm::GM {
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("teenyStrokes");
     }
 
@@ -297,7 +297,7 @@ protected:
     }
 
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("strokes_poly");
     }
 
@@ -389,7 +389,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("strokes3");
     }
 
@@ -446,7 +446,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("strokes_zoomed");
     }
 
@@ -474,7 +474,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("zero_control_stroke");
     }
 

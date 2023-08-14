@@ -28,7 +28,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("quadpath");
     }
 
@@ -158,7 +158,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("quadclosepath");
     }
 

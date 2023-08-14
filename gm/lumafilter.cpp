@@ -114,7 +114,7 @@ protected:
                                             SkTileMode::kClamp);
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("lumafilter");
     }
 

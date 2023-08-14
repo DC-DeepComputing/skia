@@ -141,7 +141,7 @@ protected:
         canvas->restore();
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString str;
         str.printf("simpleaaclip_%s",
                     kRect_GeomType == fGeomType ? "rect" :

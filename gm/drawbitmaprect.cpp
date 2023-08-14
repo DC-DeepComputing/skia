@@ -178,7 +178,7 @@ public:
     SkString            fName;
 
 protected:
-    SkString onShortName() override { return fName; }
+    SkString onShortName() const override { return fName; }
 
     SkISize onISize() override { return SkISize::Make(gSize, gSize); }
 

@@ -45,7 +45,7 @@ public:
     EncodeJpegAlphaOptsGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString("encode-alpha-jpeg");
     }
 

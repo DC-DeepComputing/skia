@@ -60,7 +60,7 @@ public:
     }
 
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkStringPrintf("pictureshader%s%s",
                               fUseLocalMatrixWrapper ? "_localwrapper" : "",
                               fAlpha < 1 ? "_alpha" : "");

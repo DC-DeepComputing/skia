@@ -31,7 +31,7 @@ static inline void set_bitmap(SkBitmap* bitmap, uint8_t alpha) {
 }
 
 struct OverdrawColorFilter : public skiagm::GM {
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkString{"overdrawcolorfilter"};
     }
 
