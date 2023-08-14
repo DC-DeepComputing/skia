@@ -63,20 +63,10 @@ static DEFINE_string(via,
                      "direct",  // Equivalent to running DM without a via.
                      "Name of the \"via\" to use (e.g. \"picture_serialization\"). Optional.");
 
-static std::string corpus_to_str(skiagm::GM::GoldCorpus goldCorpus) {
-    switch (goldCorpus) {
-        case skiagm::GM::GoldCorpus::kGM:
-            return "gm";
-        case skiagm::GM::GoldCorpus::kImage:
-            return "image";
-    }
-    SkUNREACHABLE;
-}
-
 // Takes a SkBitmap and writes the resulting PNG and MD5 hash into the given files. Returns an
 // empty string on success, or an error message in the case of failures.
 static std::string write_png_and_json_files(std::string name,
-                                            skiagm::GM::GoldCorpus goldCorpus,
+                                            std::map<std::string, std::string> gmGoldKeys,
                                             std::string surfaceConfig,
                                             std::map<std::string, std::string> surfaceGoldKeys,
                                             const SkBitmap& bitmap,
@@ -103,12 +93,12 @@ static std::string write_png_and_json_files(std::string name,
     // Compute Gold keys.
     std::map<std::string, std::string> keys = {
             {"name", name},
-            {"source_type", corpus_to_str(goldCorpus)},
             {"image_md5", md5.c_str()},
             {"surface_config", surfaceConfig},
             {"build_system", "bazel"},
     };
     keys.merge(surfaceGoldKeys);
+    keys.merge(gmGoldKeys);
 
     // Write JSON file with MD5 hash.
     SkFILEWStream jsonFile(jsonPath);
@@ -208,7 +198,7 @@ void run_gm(std::unique_ptr<skiagm::GM> gm, std::string config, std::string outp
         SkString jsonPath = SkOSPath::Join(outputDir.c_str(), (name + ".json").c_str());
 
         std::string pngAndJSONResult = write_png_and_json_files(gm->getName(),
-                                                                gm->getGoldCorpus(),
+                                                                gm->getGoldKeys(),
                                                                 config,
                                                                 surfaceManager->getGoldKeys(),
                                                                 bitmap,
