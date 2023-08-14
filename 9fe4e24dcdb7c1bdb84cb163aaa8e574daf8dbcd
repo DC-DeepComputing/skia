@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff41ebf_10b79956",
+        "filename": "site/docs/user/sample/viewer.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-14T14:54:05Z",
+      "side": 1,
+      "message": "I think I\u0027d been implicitly thinking that was obvious, but I don\u0027t think it hurts.",
+      "parentUuid": "d21a1dc8_eb3cf60a",
+      "revId": "9fe4e24dcdb7c1bdb84cb163aaa8e574daf8dbcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c008fcd_c1e48683",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "I was hoping something like `adb shell chmod 755 /data/local/tmp/resources` might help, but I still saw a lot of \"resource X not found errors\" after trying that then flailing around trying different slides (I\u0027m unsure which ones actually load resources).\n\nMight be from [storage changes in Android 11](https://developer.android.com/about/versions/11/privacy/storage)? I would lean towards adding a `TODO` unless other folks have ideas.",
       "parentUuid": "2c008fcd_c1e48683",
+      "revId": "9fe4e24dcdb7c1bdb84cb163aaa8e574daf8dbcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97bc3c1e_fc34fb29",
+        "filename": "site/docs/user/sample/viewer.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-14T14:54:05Z",
+      "side": 1,
+      "message": "That seems probably. I\u0027ve filed a bug and referenced it here.",
+      "parentUuid": "0891a0be_e1564c06",
       "revId": "9fe4e24dcdb7c1bdb84cb163aaa8e574daf8dbcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
