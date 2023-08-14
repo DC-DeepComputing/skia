@@ -471,6 +471,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                     (srcCT == kRGBA_1010102_SkColorType || srcCT == kBGRA_1010102_SkColorType);
 
             SkAutoPixmapStorage srcPixels = make_ref_data(refInfo, forceOpaque);
+
             auto src = srcFactory(srcPixels);
             if (!src) {
                 continue;
