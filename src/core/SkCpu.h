@@ -8,7 +8,9 @@
 #ifndef SkCpu_DEFINED
 #define SkCpu_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/base/SkFeatures.h"
+
+#include <cstdint>
 
 struct SkCpu {
     enum {

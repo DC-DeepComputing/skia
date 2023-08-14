@@ -8,7 +8,6 @@
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 
 #include "include/core/SkColorSpace.h"
-#include "include/encode/SkPngEncoder.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/codec/SkMasks.h"
 #include "src/core/SkDistanceFieldGen.h"
@@ -249,6 +248,10 @@ void GrAtlasManager::addGlyphToBulkAndSetUseToken(skgpu::BulkUsePlotUpdater* upd
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkStream.h"
+
+// TODO(b/40045064) This may need to be refactored
+#include "include/encode/SkPngEncoder.h"
+
 #include <stdio.h>
 
 /**

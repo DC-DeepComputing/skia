@@ -1,0 +1,35 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+cc_library(
+    name = "skia_buffet_path",
+    deps = [
+        "@skia//:core",
+        "@skia//:default_malloc",
+        "@skia//:pathops",
+    ],
+)
+
+cc_binary(
+    name = "path_combiner",
+    srcs = ["src/path_main.cpp"],
+    copts = ["-std=c++17"],
+    linkopts = ["-fuse-ld=lld"],
+    deps = [":skia_buffet_path"],
+)
+
+cc_library(
+    name = "skia_buffet_png",
+    deps = [
+        "@skia//:core",
+        "@skia//:default_malloc",
+        "@skia//:png_encode_codec",
+    ],
+)
+
+cc_binary(
+    name = "encode_gradient_as_png",
+    srcs = ["src/png_main.cpp"],
+    copts = ["-std=c++17"],
+    linkopts = ["-fuse-ld=lld"],
+    deps = [":skia_buffet_png"],
+)

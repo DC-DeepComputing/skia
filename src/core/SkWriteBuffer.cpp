@@ -17,7 +17,6 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
-#include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
@@ -26,6 +25,10 @@
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPtrRecorder.h"
 #include "src/image/SkImage_Base.h"
+
+// TODO(b/40045064) Remove this dependency (e.g. just fail to encode an image if dProcs.fImageProc
+// is not set or write the raw bytes). Would also need to update SkReadBuffer
+#include "include/encode/SkPngEncoder.h"
 
 #include <cstring>
 #include <utility>
