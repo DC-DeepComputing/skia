@@ -51,6 +51,24 @@
       "parentUuid": "4aa53a13_a22aedd8",
       "revId": "c045261c424a5d0e605951a3ae86f8bfef4e3397",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a7aa7a7_72f6fcca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-14T20:13:46Z",
+      "side": 1,
+      "message": "I updated the CL to set usages, flags, sample count, etc for copy sample texture.",
+      "parentUuid": "4c2dc32c_c91ef17e",
+      "revId": "c045261c424a5d0e605951a3ae86f8bfef4e3397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
