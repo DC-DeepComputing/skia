@@ -193,6 +193,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e063126e_713fda57",
+        "filename": "src/gpu/graphite/mtl/MtlComputeCommandEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-14T18:17:31Z",
+      "side": 1,
+      "message": "I agree, that\u0027s a typo.",
+      "parentUuid": "4ec74a3a_f2ed5aa7",
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b661175_bea6d48c",
