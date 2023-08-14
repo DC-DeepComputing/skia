@@ -76,8 +76,7 @@ public:
     ~GiantBitmapGM() override { delete fBM; }
 
 protected:
-
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString str("giantbitmap_");
         switch (fMode) {
             case SkTileMode::kClamp:

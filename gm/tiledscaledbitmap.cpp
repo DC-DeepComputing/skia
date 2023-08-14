@@ -32,9 +32,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("tiledscaledbitmap");
-    }
+    SkString onShortName() const override { return SkString("tiledscaledbitmap"); }
 
     SkISize onISize() override {
         return SkISize::Make(1016, 616);

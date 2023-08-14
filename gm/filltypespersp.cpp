@@ -38,10 +38,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("filltypespersp");
-    }
+    SkString onShortName() const override { return SkString("filltypespersp"); }
 
     SkISize onISize() override {
         return SkISize::Make(835, 840);

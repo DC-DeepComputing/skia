@@ -20,7 +20,7 @@ public:
     SimpleRectGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString name;
         name.printf("simplerect");
         return name;

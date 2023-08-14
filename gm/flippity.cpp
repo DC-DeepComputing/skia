@@ -177,9 +177,7 @@ public:
     }
 
 private:
-    SkString onShortName() override {
-        return SkString("flippity");
-    }
+    SkString onShortName() const override { return SkString("flippity"); }
 
     SkISize onISize() override {
         return SkISize::Make(kGMWidth, kGMHeight);

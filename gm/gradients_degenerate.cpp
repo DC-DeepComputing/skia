@@ -131,9 +131,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("degenerate_gradients");
-    }
+    SkString onShortName() const override { return SkString("degenerate_gradients"); }
 
     SkISize onISize() override {
         return SkISize::Make(800, 800);

@@ -28,9 +28,7 @@ public:
     EncodeGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("encode");
-    }
+    SkString onShortName() const override { return SkString("encode"); }
 
     SkISize onISize() override {
         return SkISize::Make(1024, 600);

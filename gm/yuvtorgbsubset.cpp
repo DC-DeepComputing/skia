@@ -47,9 +47,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("yuv_to_rgb_subset_effect");
-    }
+    SkString onShortName() const override { return SkString("yuv_to_rgb_subset_effect"); }
 
     SkISize onISize() override { return {1310, 540}; }
 

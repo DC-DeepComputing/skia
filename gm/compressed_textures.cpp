@@ -201,7 +201,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString name("compressed_textures");
 
         if (fType == Type::kNonPowerOfTwo) {

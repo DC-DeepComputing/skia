@@ -25,9 +25,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("thinstrokedrects");
-    }
+    SkString onShortName() const override { return SkString("thinstrokedrects"); }
 
     SkISize onISize() override {
         return SkISize::Make(240, 320);

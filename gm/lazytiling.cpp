@@ -182,8 +182,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkStringPrintf("lazytiling_%s", fOrigin == kTopLeft_GrSurfaceOrigin ? "tl" : "bl");
     }
 

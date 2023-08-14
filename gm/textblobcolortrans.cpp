@@ -57,9 +57,7 @@ protected:
         fBlob = builder.make();
     }
 
-    SkString onShortName() override {
-        return SkString("textblobcolortrans");
-    }
+    SkString onShortName() const override { return SkString("textblobcolortrans"); }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

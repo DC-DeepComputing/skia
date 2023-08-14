@@ -73,9 +73,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override  {
-        return SkString("modecolorfilters");
-    }
+    SkString onShortName() const override { return SkString("modecolorfilters"); }
 
     SkISize onISize() override  {
         return SkISize::Make(WIDTH, HEIGHT);

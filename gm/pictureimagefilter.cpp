@@ -66,9 +66,7 @@ public:
     PictureImageFilterGM() { }
 
 protected:
-    SkString onShortName() override {
-        return SkString("pictureimagefilter");
-    }
+    SkString onShortName() const override { return SkString("pictureimagefilter"); }
 
     SkISize onISize() override { return SkISize::Make(600, 300); }
 

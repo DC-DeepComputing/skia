@@ -30,10 +30,7 @@ public:
     ImageFiltersGraphGM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("imagefiltersgraph");
-    }
+    SkString onShortName() const override { return SkString("imagefiltersgraph"); }
 
     SkISize onISize() override { return SkISize::Make(600, 150); }
 

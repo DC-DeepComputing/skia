@@ -113,7 +113,7 @@ public:
             , fManuallyTile(manuallyTile) {}
 
 private:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString name(fBaseName);
 
         if (fManuallyTile) {

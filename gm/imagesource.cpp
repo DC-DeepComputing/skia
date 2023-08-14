@@ -40,9 +40,7 @@ public:
     ImageSourceGM() { }
 
 protected:
-    SkString onShortName() override {
-        return SkString("imagesource");
-    }
+    SkString onShortName() const override { return SkString("imagesource"); }
 
     SkISize onISize() override { return SkISize::Make(500, 150); }
 

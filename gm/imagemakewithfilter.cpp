@@ -188,7 +188,7 @@ public:
             , fAuxImage(nullptr) {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkString name = SkString("imagemakewithfilter");
 
         if (fFilterWithCropRect) {
