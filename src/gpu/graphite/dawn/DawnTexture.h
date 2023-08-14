@@ -9,6 +9,7 @@
 #define skgpu_graphite_DawnTexture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/Texture.h"
 
 #include "webgpu/webgpu_cpp.h"
@@ -40,7 +41,7 @@ public:
     ~DawnTexture() override {}
 
     const wgpu::Texture& dawnTexture() const { return fTexture; }
-    const wgpu::TextureView& dawnTextureView() const { return fTextureView; }
+    const wgpu::TextureView& getTextureView(wgpu::TextureUsage usage) const;
 
 private:
     DawnTexture(const DawnSharedContext* sharedContext,
@@ -55,6 +56,12 @@ private:
 
     wgpu::Texture     fTexture;
     wgpu::TextureView fTextureView;
+
+    struct TextureViewEntry {
+        wgpu::TextureView fTextureView;
+        wgpu::TextureUsage fUsage;
+    };
+    mutable skia_private::TArray<TextureViewEntry> fTextureViews;
 };
 
 } // namepsace skgpu::graphite
