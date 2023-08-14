@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82bab9ae_13071421",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-14T20:07:23Z",
+      "side": 1,
+      "message": "Since getName always (?) appears to just return onShortName(), could we remove onShortName and make getName() itself virtual (and const)?",
+      "range": {
+        "startLine": 156,
+        "startChar": 41,
+        "endLine": 156,
+        "endChar": 52
+      },
+      "revId": "446006ad0b24066b3c208eb4bc2a58c39585d721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd534dcb_dc7a4147",
+        "filename": "gm/gm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-14T20:07:23Z",
+      "side": 1,
+      "message": "I\u0027m now wondering if we can do this for `onISize` or make `getISize` itself virtual, but that can be a different CL",
+      "range": {
+        "startLine": 220,
+        "startChar": 24,
+        "endLine": 220,
+        "endChar": 31
+      },
+      "revId": "446006ad0b24066b3c208eb4bc2a58c39585d721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
