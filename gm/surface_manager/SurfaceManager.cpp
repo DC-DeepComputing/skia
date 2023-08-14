@@ -124,6 +124,7 @@ static std::string identify_transfer_fn(SkColorSpace* cs) {
 
 std::map<std::string, std::string> SurfaceManager::getGoldKeys() {
     return std::map<std::string, std::string>{
+            {"surface_config", fConfig},
             {"gamut", identify_gamut(fColorInfo.colorSpace())},
             {"transfer_fn", identify_transfer_fn(fColorInfo.colorSpace())},
             {"color_type", std::string(ToolUtils::colortype_name(fColorInfo.colorType()))},
