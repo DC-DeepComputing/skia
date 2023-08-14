@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73e22871_7d471eb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-08-14T19:48:14Z",
+      "side": 1,
+      "message": "FYI: This new target is landing before the Louhi flow that builds it and pushes to a new GCR folder.",
+      "revId": "982dbc06cf15cc81709c4b7bd6ba8a4c6f3253c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
