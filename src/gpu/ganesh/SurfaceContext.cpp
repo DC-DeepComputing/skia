@@ -574,10 +574,7 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
         callback(callbackContext, nullptr);
         return;
     }
-    bool needsRescale = srcRect.size() != info.dimensions()               ||
-                        this->origin() == kBottomLeft_GrSurfaceOrigin     ||
-                        this->colorInfo().alphaType() != info.alphaType() ||
-                        !SkColorSpace::Equals(this->colorInfo().colorSpace(), info.colorSpace());
+    bool needsRescale = srcRect.size() != info.dimensions();
     auto colorTypeOfFinalContext = this->colorInfo().colorType();
     auto backendFormatOfFinalContext = this->asSurfaceProxy()->backendFormat();
     if (needsRescale) {
@@ -620,6 +617,45 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
         SkASSERT(SkColorSpace::Equals(tempFC->colorInfo().colorSpace(), info.colorSpace()));
         SkASSERT(tempFC->origin() == kTopLeft_GrSurfaceOrigin);
         x = y = 0;
+    } else {
+        // TODO (jvanverth): Figure out how to do this properly with rescale()
+        sk_sp<GrColorSpaceXform> xform = GrColorSpaceXform::Make(this->colorInfo(),
+                                                                 info.colorInfo());
+        // Insert a draw to a temporary surface if we need to do a y-flip or color space conversion.
+        if (this->origin() == kBottomLeft_GrSurfaceOrigin || xform) {
+            GrSurfaceProxyView texProxyView = this->readSurfaceView();
+            SkIRect srcRectToDraw = srcRect;
+            // If the src is not texturable first try to make a copy to a texture.
+            if (!texProxyView.asTextureProxy()) {
+                texProxyView = GrSurfaceProxyView::Copy(fContext,
+                                                        texProxyView,
+                                                        GrMipmapped::kNo,
+                                                        srcRect,
+                                                        SkBackingFit::kApprox,
+                                                        Budgeted::kNo,
+                                                        "SurfaceContext_AsyncRescaleAndReadPixels");
+                if (!texProxyView) {
+                    callback(callbackContext, nullptr);
+                    return;
+                }
+                SkASSERT(texProxyView.asTextureProxy());
+                srcRectToDraw = SkIRect::MakeSize(srcRect.size());
+            }
+            auto tempInfo = GrImageInfo(info).makeColorType(this->colorInfo().colorType());
+            tempFC = dContext->priv().makeSFC(tempInfo,
+                                              "SurfaceContext_AsyncRescaleAndReadPixels2",
+                                              SkBackingFit::kApprox);
+            if (!tempFC) {
+                callback(callbackContext, nullptr);
+                return;
+            }
+            auto fp = GrTextureEffect::Make(std::move(texProxyView), this->colorInfo().alphaType());
+            fp = GrColorSpaceXformEffect::Make(std::move(fp), std::move(xform));
+            tempFC->fillRectToRectWithFP(srcRectToDraw,
+                                         SkIRect::MakeSize(tempFC->dimensions()),
+                                         std::move(fp));
+            x = y = 0;
+        }
     }
     auto srcCtx = tempFC ? tempFC.get() : this;
     return srcCtx->asyncReadPixels(dContext,
@@ -670,8 +706,6 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         ReadPixelsCallback* fClientCallback;
         ReadPixelsContext fClientContext;
         SkISize fSize;
-        SkColorType fColorType;
-        size_t fBufferAlignment;
         GrClientMappedBufferManager* fMappedBufferManager;
         PixelTransferResult fTransferResult;
     };
@@ -681,18 +715,15 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
     auto* finishContext = new FinishContext{callback,
                                             callbackContext,
                                             rect.size(),
-                                            colorType,
-                                            this->caps()->transferBufferRowBytesAlignment(),
                                             mappedBufferManager,
                                             std::move(transferResult)};
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
         auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        size_t rowBytes =
-                SkAlignTo(context->fSize.width() * SkColorTypeBytesPerPixel(context->fColorType),
-                          context->fBufferAlignment);
-        if (!result->addTransferResult(context->fTransferResult, context->fSize, rowBytes,
+        if (!result->addTransferResult(context->fTransferResult,
+                                       context->fSize,
+                                       context->fTransferResult.fRowBytes,
                                        manager)) {
             result.reset();
         }
@@ -938,7 +969,6 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         ReadPixelsContext fClientContext;
         GrClientMappedBufferManager* fMappedBufferManager;
         SkISize fSize;
-        size_t fBufferAlignment;
         PixelTransferResult fYTransfer;
         PixelTransferResult fUTransfer;
         PixelTransferResult fVTransfer;
@@ -951,7 +981,6 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
                                             callbackContext,
                                             dContext->priv().clientMappedBufferManager(),
                                             dstSize,
-                                            this->caps()->transferBufferRowBytesAlignment(),
                                             std::move(yTransfer),
                                             std::move(uTransfer),
                                             std::move(vTransfer),
@@ -960,28 +989,36 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
         auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        size_t yaRowBytes = SkToSizeT(context->fSize.width());
-        yaRowBytes = SkAlignTo(yaRowBytes, context->fBufferAlignment);
-        if (!result->addTransferResult(context->fYTransfer, context->fSize, yaRowBytes, manager)) {
+        if (!result->addTransferResult(context->fYTransfer,
+                                       context->fSize,
+                                       context->fYTransfer.fRowBytes,
+                                       manager)) {
             (*context->fClientCallback)(context->fClientContext, nullptr);
             delete context;
             return;
         }
-        size_t uvRowBytes = SkToSizeT(context->fSize.width()) / 2;
-        uvRowBytes = SkAlignTo(uvRowBytes, context->fBufferAlignment);
         SkISize uvSize = {context->fSize.width() / 2, context->fSize.height() / 2};
-        if (!result->addTransferResult(context->fUTransfer, uvSize, uvRowBytes, manager)) {
+        if (!result->addTransferResult(context->fUTransfer,
+                                       uvSize,
+                                       context->fUTransfer.fRowBytes,
+                                       manager)) {
             (*context->fClientCallback)(context->fClientContext, nullptr);
             delete context;
             return;
         }
-        if (!result->addTransferResult(context->fVTransfer, uvSize, uvRowBytes, manager)) {
+        if (!result->addTransferResult(context->fVTransfer,
+                                       uvSize,
+                                       context->fVTransfer.fRowBytes,
+                                       manager)) {
             (*context->fClientCallback)(context->fClientContext, nullptr);
             delete context;
             return;
         }
         if (context->fATransfer.fTransferBuffer &&
-            !result->addTransferResult(context->fATransfer, context->fSize, yaRowBytes, manager)) {
+            !result->addTransferResult(context->fATransfer,
+                                       context->fSize,
+                                       context->fATransfer.fRowBytes,
+                                       manager)) {
             (*context->fClientCallback)(context->fClientContext, nullptr);
             delete context;
             return;
@@ -1322,13 +1359,17 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
     result.fTransferBuffer = std::move(buffer);
     auto at = this->colorInfo().alphaType();
     if (supportedRead.fColorType != dstCT || flip) {
-        result.fPixelConverter = [w = rect.width(), h = rect.height(), dstCT, supportedRead, at](
+        int w = rect.width(), h = rect.height();
+        GrImageInfo srcInfo(supportedRead.fColorType, at, nullptr, w, h);
+        GrImageInfo dstInfo(dstCT, at, nullptr, w, h);
+        result.fRowBytes = dstInfo.minRowBytes();
+        result.fPixelConverter = [dstInfo, srcInfo, rowBytes](
                 void* dst, const void* src) {
-            GrImageInfo srcInfo(supportedRead.fColorType, at, nullptr, w, h);
-            GrImageInfo dstInfo(dstCT,                    at, nullptr, w, h);
             GrConvertPixels( GrPixmap(dstInfo, dst, dstInfo.minRowBytes()),
-                            GrCPixmap(srcInfo, src, srcInfo.minRowBytes()));
+                            GrCPixmap(srcInfo, src, rowBytes));
         };
+    } else {
+        result.fRowBytes = rowBytes;
     }
     return result;
 }
