@@ -52,6 +52,24 @@
       "tag": "mailMessageId\u003d\u003cCANBPXuBQ0sK8DuWLn13KW2M9WGXK9m\u003dDseefnJ\u003dxa7vPN0ELNg@mail.gmail.com\u003e",
       "revId": "d2742de73cef39a07a3b7a8e9bbcdda893471b46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a11bf2_e3c0e7e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2023-08-14T23:07:42Z",
+      "side": 1,
+      "message": "Something like this, then?",
+      "parentUuid": "ca5e1f7a_7855dc48",
+      "revId": "d2742de73cef39a07a3b7a8e9bbcdda893471b46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
