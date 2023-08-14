@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f26572_bd42181f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-14T14:59:53Z",
+      "side": 1,
+      "message": "AFAIK the only types supported by the rest of Skia (outside of SkSL) come from the `SkSLType` enum, and arrays of `SkSLType`s: https://osscs.corp.google.com/skia/skia/+/main:src/core/SkSLTypeShared.h;l\u003d16?q\u003dSkSLType\n\nWe shouldn\u0027t need to support nested structs unless this changes. Runtime effects certainly don\u0027t allow it.\n\n(In fact, we don\u0027t even allow non-square matrices yet, but one day I expect that we will.)",
+      "parentUuid": "658889cf_0fa5f716",
+      "revId": "5a1d0c677e6b15181ccbf801de26daf50b77db66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3b180d0_b7fa43b5",
