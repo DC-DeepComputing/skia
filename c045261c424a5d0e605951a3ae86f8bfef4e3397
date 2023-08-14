@@ -33,6 +33,24 @@
       "message": "woops actually adding james (see previous comment)",
       "revId": "c045261c424a5d0e605951a3ae86f8bfef4e3397",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c2dc32c_c91ef17e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-14T18:45:24Z",
+      "side": 1,
+      "message": "Ah, http://review.skia.org/734298 was never submitted, but it does include a similar caps call which always sets a copy-dst usage flag. It also sets a texture-read flag, but that was specific to the use case of dst readback. I defer to y\u0027all to decide what flags should be set here, but it seems like we could carry forward the flags from the source info and just make sure copy-dst is set?",
+      "parentUuid": "4aa53a13_a22aedd8",
+      "revId": "c045261c424a5d0e605951a3ae86f8bfef4e3397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
