@@ -17,6 +17,8 @@ extern "C" {
     typedef struct AHardwareBuffer AHardwareBuffer;
 }
 
+class AHardwareBuffer2;
+
 /**
  *  GrAHardwareBufferImageGenerator allows to create an SkImage attached to
  *  an existing android native hardware buffer. A hardware buffer has to be
@@ -30,7 +32,7 @@ extern "C" {
  */
 class GrAHardwareBufferImageGenerator : public GrTextureGenerator {
 public:
-    static std::unique_ptr<SkImageGenerator> Make(AHardwareBuffer*, SkAlphaType,
+    static std::unique_ptr<SkImageGenerator> Make(AHardwareBuffer2*, SkAlphaType,
                                                   sk_sp<SkColorSpace>, GrSurfaceOrigin);
 
     ~GrAHardwareBufferImageGenerator() override;
@@ -38,7 +40,7 @@ public:
     static void DeleteGLTexture(void* ctx);
 
 private:
-    GrAHardwareBufferImageGenerator(const SkImageInfo&, AHardwareBuffer*, SkAlphaType,
+    GrAHardwareBufferImageGenerator(const SkImageInfo&, AHardwareBuffer2*, SkAlphaType,
                                     bool isProtectedContent, uint32_t bufferFormat,
                                     GrSurfaceOrigin surfaceOrigin);
 
@@ -55,7 +57,7 @@ private:
 
     static void ReleaseRefHelper_TextureReleaseProc(void* ctx);
 
-    AHardwareBuffer* fHardwareBuffer;
+    AHardwareBuffer2* fHardwareBuffer;
     uint32_t         fBufferFormat;
     const bool       fIsProtectedContent;
     GrSurfaceOrigin  fSurfaceOrigin;

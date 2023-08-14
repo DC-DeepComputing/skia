@@ -53,6 +53,8 @@
 #include "src/gpu/ganesh/surface/SkSurface_Ganesh.h"
 #include "src/image/SkImage_Base.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <algorithm>
 #include <cstddef>
 #include <utility>
@@ -62,13 +64,13 @@
 namespace SkSurfaces {
 
 sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
-                                           AHardwareBuffer* hardwareBuffer,
+                                           AHardwareBuffer2* hardwareBuffer,
                                            GrSurfaceOrigin origin,
                                            sk_sp<SkColorSpace> colorSpace,
                                            const SkSurfaceProps* surfaceProps,
                                            bool fromWindow) {
     AHardwareBuffer_Desc bufferDesc;
-    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+    AHardwareBuffer_describe(hardwareBuffer->buffer1(), &bufferDesc);
 
     if (!SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT)) {
         return nullptr;
