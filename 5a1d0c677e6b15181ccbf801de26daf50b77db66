@@ -57,6 +57,30 @@
       },
       "revId": "5a1d0c677e6b15181ccbf801de26daf50b77db66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "080a3e68_ee3a8212",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-14T15:14:54Z",
+      "side": 1,
+      "message": "Good catch; done.",
+      "parentUuid": "a3b180d0_b7fa43b5",
+      "range": {
+        "startLine": 360,
+        "startChar": 28,
+        "endLine": 361,
+        "endChar": 30
+      },
+      "revId": "5a1d0c677e6b15181ccbf801de26daf50b77db66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
