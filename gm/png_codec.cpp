@@ -198,8 +198,9 @@ public:
         return true;
     }
 
-    std::map<std::string, std::string> getGoldKeys() const override {
+    std::map<std::string, std::string> getGoldKeys() override {
         return std::map<std::string, std::string>{
+                {"name", getName()},
                 {"source_type", "image"},
                 {"decode_mode", DecodeModeToString(fDecodeMode)},
                 {"dst_color_type", DstColorTypeToString(fDstColorType)},

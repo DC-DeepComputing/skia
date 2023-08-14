@@ -203,8 +203,9 @@ namespace skiagm {
 
         // Ignored by DM. Returns the set of Gold key/value pairs specific to this GM. For example,
         // codec GMs might return the parameters utilized to initialize the codec.
-        virtual std::map<std::string, std::string> getGoldKeys() const {
+        virtual std::map<std::string, std::string> getGoldKeys() {
             return std::map<std::string, std::string>{
+                    {"name", getName()},
                     {"source_type", "gm"},
             };
         }

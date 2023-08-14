@@ -36,10 +36,13 @@ public:
     virtual ~SurfaceManager() = default;
 
 protected:
-    // Takes the SkColorInfo used to create the surface by the FromConfig static method.
-    SurfaceManager(SkColorInfo colorInfo) : fColorInfo(colorInfo) {}
+    // Takes the config name passed to FromConfig(), and the SkColorInfo used by FromConfig() to
+    // create the surface.
+    SurfaceManager(std::string config, SkColorInfo colorInfo)
+            : fConfig(config), fColorInfo(colorInfo) {}
 
 private:
+    std::string fConfig;
     SkColorInfo fColorInfo;
 };
 
