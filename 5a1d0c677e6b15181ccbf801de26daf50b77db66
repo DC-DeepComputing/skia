@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "658889cf_0fa5f716",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-14T14:55:47Z",
+      "side": 1,
+      "message": "Just checking: We don\u0027t support structs in a way that could further cause problems here? Or is that a concern? (eg, UB holding an array of structs, where each struct holds an array, or a matrix, or ...)?",
+      "revId": "5a1d0c677e6b15181ccbf801de26daf50b77db66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3b180d0_b7fa43b5",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-14T14:55:47Z",
+      "side": 1,
+      "message": "ubernit: Comment still just mentions matrix/matrices.",
+      "range": {
+        "startLine": 360,
+        "startChar": 28,
+        "endLine": 361,
+        "endChar": 30
+      },
+      "revId": "5a1d0c677e6b15181ccbf801de26daf50b77db66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
