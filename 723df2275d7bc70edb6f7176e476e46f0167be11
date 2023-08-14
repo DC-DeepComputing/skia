@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7101417d_5a9e40e9",
+        "filename": "src/ports/SkImageEncoder_NDK.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-14T14:29:29Z",
+      "side": 0,
+      "message": "I\u0027m surprised the compiler didn\u0027t catch us here. Are we no longer testing the NDK build? Or maybe we\u0027re using different flags that allow converting `nullptr` to `bool`?",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 18
+      },
+      "revId": "723df2275d7bc70edb6f7176e476e46f0167be11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

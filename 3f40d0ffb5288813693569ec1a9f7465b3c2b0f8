@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2960966_238fcd6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-14T14:29:29Z",
+      "side": 1,
+      "message": "@robertphillips@google.com FYI: This seems to be what was preventing me from building last week. The build just mysteriously failed when I tried to run\n\n```\n./platform_tools/android/bin/android_build_app -C out/Arm64 viewer\n```\n\nbut if I run\n\n```\nninja -C out/Arm64 dm\n```\n\nI get the error. Once I fixed it, the `android_build_app` succeeds.",
+      "revId": "3f40d0ffb5288813693569ec1a9f7465b3c2b0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
