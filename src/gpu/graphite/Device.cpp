@@ -405,10 +405,7 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
 
     sk_sp<TextureProxy> dest = TextureProxy::Make(recorder->priv().caps(),
                                                   srcRect.size(),
-                                                  srcColorInfo.colorType(),
-                                                  mipmapped,
-                                                  srcView.proxy()->textureInfo().isProtected(),
-                                                  Renderable::kNo,
+                                                  srcView.proxy()->textureInfo(),
                                                   skgpu::Budgeted::kNo);
     if (!dest) {
         return {};
