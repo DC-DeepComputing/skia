@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfd5dda7_a5e13f1a",
+        "filename": "gm/gm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-14T20:05:06Z",
+      "side": 1,
+      "message": "Addressed in https://skia-review.googlesource.com/c/skia/+/741878.",
+      "parentUuid": "e2f7c75f_97ad7c5f",
+      "range": {
+        "startLine": 153,
+        "startChar": 20,
+        "endLine": 153,
+        "endChar": 30
+      },
+      "revId": "2b85712a9a6aa72b8d17f93bbe90f7dd7d8752c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5729b9f0_51791c7e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-14T19:12:31Z",
       "side": 1,
       "message": "nit: getGoldKeys should also be a const method",
+      "range": {
+        "startLine": 34,
+        "startChar": 39,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "2b85712a9a6aa72b8d17f93bbe90f7dd7d8752c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2e11099_4d0182d4",
+        "filename": "gm/surface_manager/SurfaceManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-14T20:05:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5729b9f0_51791c7e",
       "range": {
         "startLine": 34,
         "startChar": 39,
