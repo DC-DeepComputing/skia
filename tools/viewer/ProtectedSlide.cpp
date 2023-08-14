@@ -74,12 +74,14 @@ public:
         if (fCachedContext != dContext) {
             fProtectedAHBImage = nullptr;
             if (fProtectedAHB) {
-                AHardwareBuffer_release(fProtectedAHB);
+//                AHardwareBuffer_release(fProtectedAHB);
+                fProtectedAHB->release();
                 fProtectedAHB = nullptr;
             }
             fUnprotectedAHBImage = nullptr;
             if (fUnprotectedAHB) {
-                AHardwareBuffer_release(fUnprotectedAHB);
+//                AHardwareBuffer_release(fUnprotectedAHB);
+                fUnprotectedAHB->release();
                 fUnprotectedAHB = nullptr;
             }
 
@@ -139,9 +141,9 @@ private:
 
     GrDirectContext* fCachedContext = nullptr;
     sk_sp<SkImage> fProtectedAHBImage;
-    AHardwareBuffer* fProtectedAHB = nullptr;
+    AHardwareBuffer2* fProtectedAHB = nullptr;
     sk_sp<SkImage> fUnprotectedAHBImage;
-    AHardwareBuffer* fUnprotectedAHB = nullptr;
+    AHardwareBuffer2* fUnprotectedAHB = nullptr;
     sk_sp<SkImage> fProtectedSkImage;
     sk_sp<SkImage> fUnprotectedSkImage;
 };

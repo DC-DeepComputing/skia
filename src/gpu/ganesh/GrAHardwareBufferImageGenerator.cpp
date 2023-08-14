@@ -29,13 +29,15 @@
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/SkGr.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 std::unique_ptr<SkImageGenerator> GrAHardwareBufferImageGenerator::Make(
-        AHardwareBuffer* graphicBuffer, SkAlphaType alphaType, sk_sp<SkColorSpace> colorSpace,
+        AHardwareBuffer2* graphicBuffer, SkAlphaType alphaType, sk_sp<SkColorSpace> colorSpace,
         GrSurfaceOrigin surfaceOrigin) {
     AHardwareBuffer_Desc bufferDesc;
-    AHardwareBuffer_describe(graphicBuffer, &bufferDesc);
+    AHardwareBuffer_describe(graphicBuffer->buffer1(), &bufferDesc);
 
     SkColorType colorType =
             GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
@@ -49,18 +51,20 @@ std::unique_ptr<SkImageGenerator> GrAHardwareBufferImageGenerator::Make(
 }
 
 GrAHardwareBufferImageGenerator::GrAHardwareBufferImageGenerator(const SkImageInfo& info,
-        AHardwareBuffer* hardwareBuffer, SkAlphaType alphaType, bool isProtectedContent,
+        AHardwareBuffer2* hardwareBuffer, SkAlphaType alphaType, bool isProtectedContent,
         uint32_t bufferFormat, GrSurfaceOrigin surfaceOrigin)
     : GrTextureGenerator(info)
     , fHardwareBuffer(hardwareBuffer)
     , fBufferFormat(bufferFormat)
     , fIsProtectedContent(isProtectedContent)
     , fSurfaceOrigin(surfaceOrigin) {
-    AHardwareBuffer_acquire(fHardwareBuffer);
+    fHardwareBuffer->acquire();
+//    AHardwareBuffer_acquire(fHardwareBuffer);
 }
 
 GrAHardwareBufferImageGenerator::~GrAHardwareBufferImageGenerator() {
-    AHardwareBuffer_release(fHardwareBuffer);
+    fHardwareBuffer->release();
+//    AHardwareBuffer_release(fHardwareBuffer);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,16 +91,17 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
 
     auto proxyProvider = context->priv().proxyProvider();
 
-    AHardwareBuffer* hardwareBuffer = fHardwareBuffer;
-    AHardwareBuffer_acquire(hardwareBuffer);
+    AHardwareBuffer2* hardwareBuffer = fHardwareBuffer;
+    hardwareBuffer->acquire();
+//    AHardwareBuffer_acquire(hardwareBuffer);
 
     class AutoAHBRelease {
     public:
-        AutoAHBRelease(AHardwareBuffer* ahb) : fAhb(ahb) {}
+        AutoAHBRelease(AHardwareBuffer2* ahb) : fAhb(ahb) {}
         // std::function() must be CopyConstructible, but ours should never actually be copied.
         AutoAHBRelease(const AutoAHBRelease&) { SkASSERT(0); }
         AutoAHBRelease(AutoAHBRelease&& that) : fAhb(that.fAhb) { that.fAhb = nullptr; }
-        ~AutoAHBRelease() { fAhb ? AHardwareBuffer_release(fAhb) : void(); }
+        ~AutoAHBRelease() { fAhb ? /*AHardwareBuffer_release(fAhb) */ fAhb->release() : void(); }
 
         AutoAHBRelease& operator=(AutoAHBRelease&& that) {
             fAhb = std::exchange(that.fAhb, nullptr);
@@ -104,10 +109,10 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
         }
         AutoAHBRelease& operator=(const AutoAHBRelease&) = delete;
 
-        AHardwareBuffer* get() const { return fAhb; }
+        AHardwareBuffer2* get() const { return fAhb; }
 
     private:
-        AHardwareBuffer* fAhb;
+        AHardwareBuffer2* fAhb;
     };
 
     sk_sp<GrTextureProxy> texProxy = proxyProvider->createLazyProxy(

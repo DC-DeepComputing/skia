@@ -11,6 +11,8 @@
 #define GL_GLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 #if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
@@ -47,7 +49,7 @@ SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
 }
 
 #if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
-GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer2* hardwareBuffer,
                                  uint32_t bufferFormat, bool requireKnownFormat) {
     GrBackendApi backend = dContext->backend();
 
@@ -68,7 +70,7 @@ GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer* har
 }
 
 GrBackendTexture MakeBackendTexture(GrDirectContext* dContext,
-                                    AHardwareBuffer* hardwareBuffer,
+                                    AHardwareBuffer2* hardwareBuffer,
                                     int width, int height,
                                     DeleteImageProc* deleteProc,
                                     UpdateImageProc* updateProc,

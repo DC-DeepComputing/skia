@@ -98,9 +98,12 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& expectedBit
     return result;
 }
 
-static void cleanup_resources(AHardwareBuffer* buffer) {
+static void cleanup_resources(AHardwareBuffer2* buffer) {
+    SkASSERT(buffer);
+
     if (buffer) {
-        AHardwareBuffer_release(buffer);
+        buffer->release();
+//        AHardwareBuffer_release(buffer.buffer());
     }
 }
 
@@ -123,6 +126,9 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
+    AHardwareBuffer2* buffer = AHBUtils::CreateAHB(srcBitmap, surfaceOrigin);
+
+#if 0
     AHardwareBuffer* buffer = nullptr;
 
     AHardwareBuffer_Desc hwbDesc;
@@ -169,6 +175,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
         dst += hwbDesc.stride;
     }
     AHardwareBuffer_unlock(buffer, nullptr);
+#endif
 
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage
@@ -208,6 +215,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     image.reset();
 
     cleanup_resources(buffer);
+    delete buffer;
 }
 
 // Basic test to make sure we can import an AHardwareBuffer into an SkImage and draw it into a
@@ -239,7 +247,7 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
-    AHardwareBuffer* backingAHB;
+    AHardwareBuffer2* backingAHB;
 
     sk_sp<SkSurface> surface = AHBUtils::CreateAHBBackedSurface(context, DEV_W, DEV_H,
                                                                 surfaceOrigin,
@@ -259,6 +267,7 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
 
     cleanup_resources(backingAHB);
+    delete backingAHB;
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.

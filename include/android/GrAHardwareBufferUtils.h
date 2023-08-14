@@ -20,18 +20,20 @@ extern "C" {
     typedef struct AHardwareBuffer AHardwareBuffer;
 }
 
+class AHardwareBuffer2;
+
 namespace GrAHardwareBufferUtils {
 
 SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat);
 
 #if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
-GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer2* hardwareBuffer,
                                  uint32_t bufferFormat, bool requireKnownFormat);
 #endif
 
 GrBackendFormat GetGLBackendFormat(GrDirectContext* dContext, uint32_t bufferFormat,
                                    bool requireKnownFormat);
-GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffer2* hardwareBuffer,
                                        uint32_t bufferFormat, bool requireKnownFormat);
 
 typedef void* TexImageCtx;
@@ -61,7 +63,8 @@ typedef void (*UpdateImageProc)(TexImageCtx, GrDirectContext*);
  * @return                  valid GrBackendTexture object on success
  */
 #if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
-GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+GrBackendTexture MakeBackendTexture(GrDirectContext* dContext,
+                                    AHardwareBuffer2* hardwareBuffer,
                                     int width, int height,
                                     DeleteImageProc* deleteProc,
                                     UpdateImageProc* updateProc,
@@ -73,7 +76,7 @@ GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* 
 #endif
 
 GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
-                                      AHardwareBuffer* hardwareBuffer,
+                                      AHardwareBuffer2* hardwareBuffer,
                                       int width, int height,
                                       DeleteImageProc* deleteProc,
                                       UpdateImageProc* updateProc,
@@ -83,7 +86,7 @@ GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
                                       bool isRenderable);
 
 GrBackendTexture MakeVulkanBackendTexture(GrDirectContext* dContext,
-                                          AHardwareBuffer* hardwareBuffer,
+                                          AHardwareBuffer2* hardwareBuffer,
                                           int width, int height,
                                           DeleteImageProc* deleteProc,
                                           UpdateImageProc* updateProc,

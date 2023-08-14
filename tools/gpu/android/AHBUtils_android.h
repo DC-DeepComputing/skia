@@ -20,17 +20,42 @@ class SkBitmap;
 class SkImage;
 class SkSurface;
 
+struct AHardwareBuffer_Desc;
+
+
+// AHardwareBuffer_acquire
+// AHardwareBuffer_allocate
+// AHardwareBuffer_release
+class AHardwareBuffer2 {
+public:
+    ~AHardwareBuffer2();
+
+    int refCnt() const { return fRefCount; }
+    AHardwareBuffer* buffer1() { return fBuffer; }
+
+    bool allocate(const AHardwareBuffer_Desc& hwbDesc);
+    void acquire();
+    void release();
+
+private:
+    AHardwareBuffer* fBuffer = nullptr;
+    int32_t fID = -1;
+    int fRefCount = 0;
+};
+
 namespace AHBUtils {
 
 // This entry point can be used to create an AHB-backed surface that contains protected content.
 // As such the backing AHB cannot be read from or written to by the CPU.
 // The caller must explicitly call AHardwareBuffer_release on the returned backing AHB if the
 // returned surface is non-null.
+AHardwareBuffer2* CreateAHB(const SkBitmap& srcBitmap, GrSurfaceOrigin surfaceOrigin);
+
 sk_sp<SkSurface> CreateAHBBackedSurface(GrDirectContext* dContext,
                                         int width, int height,
                                         GrSurfaceOrigin surfaceOrigin,
                                         bool isProtected,
-                                        AHardwareBuffer** backingAHB);
+                                        AHardwareBuffer2** backingAHB);
 
 // This entry point can be used to create an AHB-backed image w/ protected content. As such
 // the backing AHB cannot be read from or written to by the CPU.
@@ -40,7 +65,7 @@ sk_sp<SkImage> CreateAHBBackedImage(GrDirectContext* dContext,
                                     const SkBitmap& srcBitmap,
                                     GrSurfaceOrigin surfaceOrigin,
                                     bool isProtected,
-                                    AHardwareBuffer** backingAHB);
+                                    AHardwareBuffer2** backingAHB);
 
 } // namespace AHBUtils
 

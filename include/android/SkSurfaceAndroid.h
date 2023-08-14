@@ -16,6 +16,7 @@ class SkColorSpace;
 class GrDirectContext;
 class SkPixmap;
 struct AHardwareBuffer;
+class AHardwareBuffer2;
 
 namespace SkSurfaces {
 
@@ -39,7 +40,7 @@ namespace SkSurfaces {
     @return                created SkSurface, or nullptr
 */
 SK_API sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* context,
-                                                  AHardwareBuffer* hardwareBuffer,
+                                                  AHardwareBuffer2* hardwareBuffer,
                                                   GrSurfaceOrigin origin,
                                                   sk_sp<SkColorSpace> colorSpace,
                                                   const SkSurfaceProps* surfaceProps,

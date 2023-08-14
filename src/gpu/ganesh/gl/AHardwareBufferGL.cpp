@@ -19,6 +19,8 @@
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
@@ -112,7 +114,7 @@ void update_gl_texture(void* context, GrDirectContext* dContext) {
 
 static GrBackendTexture make_gl_backend_texture(
         GrDirectContext* dContext,
-        AHardwareBuffer* hardwareBuffer,
+        AHardwareBuffer2* hardwareBuffer,
         int width, int height,
         DeleteImageProc* deleteProc,
         UpdateImageProc* updateProc,
@@ -122,7 +124,7 @@ static GrBackendTexture make_gl_backend_texture(
         bool isRenderable) {
     while (GL_NO_ERROR != glGetError()) {} //clear GL errors
 
-    EGLClientBuffer clientBuffer = eglGetNativeClientBufferANDROID(hardwareBuffer);
+    EGLClientBuffer clientBuffer = eglGetNativeClientBufferANDROID(hardwareBuffer->buffer1());
     EGLint attribs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE,
                          isProtectedContent ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
                          isProtectedContent ? EGL_TRUE : EGL_NONE,
@@ -199,7 +201,7 @@ static bool can_import_protected_content(GrDirectContext* dContext) {
 }
 
 GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
-                                      AHardwareBuffer* hardwareBuffer,
+                                      AHardwareBuffer2* hardwareBuffer,
                                       int width, int height,
                                       DeleteImageProc* deleteProc,
                                       UpdateImageProc* updateProc,
