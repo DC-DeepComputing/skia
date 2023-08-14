@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95f8eab0_39f68815",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-14T16:32:13Z",
+      "side": 1,
+      "message": "we are actively trying to remove all our uses of SK_[BACKEND] defines. I think this change really suggests we have a caps call that returns the copies TextureInfo (I think we had proposed the same thing in the dst copy CL so maybe that already got implemented??)",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 439,
+        "endChar": 5
+      },
+      "revId": "0b957ded321b1a265fdcd9f502892963508c9ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
