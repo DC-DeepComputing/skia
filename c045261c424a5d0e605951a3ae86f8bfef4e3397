@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa53a13_a22aedd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-14T18:15:19Z",
+      "side": 1,
+      "message": "don\u0027t we also need to update usage flags?\n\n+james, did you end up doing anything like this caps call when looking at the dst copy stuff?",
+      "revId": "c045261c424a5d0e605951a3ae86f8bfef4e3397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
