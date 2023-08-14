@@ -189,6 +189,7 @@ DEF_TEST(SkMultiPictureDocument_Serialize_and_deserialize, reporter) {
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "tools/gpu/android/AHBUtils_android.h"
 
 #include <android/hardware_buffer.h>
 
@@ -246,61 +247,29 @@ static void cleanup_resources(AHardwareBuffer* buffer) {
     }
 }
 
-static sk_sp<SkImage> makeAHardwareBufferTestImage(
-    skiatest::Reporter* reporter, GrDirectContext* context, AHardwareBuffer* buffer) {
+static sk_sp<SkImage> makeAHardwareBufferTestImage(skiatest::Reporter* reporter,
+                                                   GrDirectContext* context,
+                                                   AHardwareBuffer** backingAHB) {
 
     const SkBitmap srcBitmap = make_src_bitmap();
 
+    *backingAHB = AHBUtils::CreateAHB(srcBitmap, kTopLeft_GrSurfaceOrigin);
+    if (*backingAHB == nullptr) {
+        ERRORF(reporter, "Failed to create AHB");
+        return nullptr;
+    }
+
     AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_OFTEN |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE;
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
-        return nullptr;
-    }
-
-    // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-    AHardwareBuffer_describe(buffer, &hwbDesc);
-
-    void* bufferAddr;
-    if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                             &bufferAddr)) {
-        ERRORF(reporter, "Failed to lock hardware buffer");
-        cleanup_resources(buffer);
-        return nullptr;
-    }
-
-    // fill buffer
-    int bbp = srcBitmap.bytesPerPixel();
-    uint32_t* src = (uint32_t*)srcBitmap.getPixels();
-    int nextLineStep = DEV_W;
-    uint32_t* dst = static_cast<uint32_t*>(bufferAddr);
-    for (int y = 0; y < DEV_H; ++y) {
-        memcpy(dst, src, DEV_W * bbp);
-        src += nextLineStep;
-        dst += hwbDesc.stride;
-    }
-    AHardwareBuffer_unlock(buffer, nullptr);
+    AHardwareBuffer_describe(*backingAHB, &hwbDesc);
 
     // Make SkImage from buffer in a way that mimics libs/hwui/AutoBackendTextureRelease
     GrBackendFormat backendFormat =
-            GrAHardwareBufferUtils::GetBackendFormat(context, buffer, hwbDesc.format, false);
+            GrAHardwareBufferUtils::GetBackendFormat(context, *backingAHB, hwbDesc.format, false);
     GrAHardwareBufferUtils::DeleteImageProc deleteProc;
     GrAHardwareBufferUtils::UpdateImageProc updateProc;
     GrAHardwareBufferUtils::TexImageCtx imageCtx;
     GrBackendTexture texture = GrAHardwareBufferUtils::MakeBackendTexture(
-        context, buffer, hwbDesc.width, hwbDesc.height,
+        context, *backingAHB, hwbDesc.width, hwbDesc.height,
         &deleteProc, // set by MakeBackendTexture
         &updateProc, // set by MakeBackendTexture
         &imageCtx, // set by MakeBackendTexture
@@ -356,8 +325,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
     static const int HEIGHT = 256;
 
     // Make an image to be used in a later step.
-    AHardwareBuffer* ahbuffer = nullptr;
-    sk_sp<SkImage> image = makeAHardwareBufferTestImage(reporter, context, ahbuffer);
+    AHardwareBuffer* backingAHB = nullptr;
+    sk_sp<SkImage> image = makeAHardwareBufferTestImage(reporter, context, &backingAHB);
 
     const SkImageInfo info = SkImageInfo::MakeN32Premul(WIDTH, HEIGHT);
     std::vector<sk_sp<SkImage>> expectedImages;
@@ -375,7 +344,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
     // close() will fail.
     // Note that this only works because we're doing one frame only. If this test were recording
     // two or more frames, it would have change the buffer contents instead.
-    cleanup_resources(ahbuffer);
+    cleanup_resources(backingAHB);
 
     // Finalize
     multipic->close();

@@ -123,52 +123,11 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
-    AHardwareBuffer* buffer = nullptr;
-
-    AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE;
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
+    AHardwareBuffer* buffer = AHBUtils::CreateAHB(srcBitmap, surfaceOrigin);
+    if (!buffer) {
+        ERRORF(reporter, "Failed to create AHB");
         return;
     }
-
-    // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-    AHardwareBuffer_describe(buffer, &hwbDesc);
-
-    uint32_t* bufferAddr;
-    if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                             reinterpret_cast<void**>(&bufferAddr))) {
-        ERRORF(reporter, "Failed to lock hardware buffer");
-        cleanup_resources(buffer);
-        return;
-    }
-
-    int bbp = srcBitmap.bytesPerPixel();
-    uint32_t* src = (uint32_t*)srcBitmap.getPixels();
-    int nextLineStep = DEV_W;
-    if (surfaceOrigin == kBottomLeft_GrSurfaceOrigin) {
-        nextLineStep = -nextLineStep;
-        src += (DEV_H-1)*DEV_W;
-    }
-    uint32_t* dst = bufferAddr;
-    for (int y = 0; y < DEV_H; ++y) {
-        memcpy(dst, src, DEV_W * bbp);
-        src += nextLineStep;
-        dst += hwbDesc.stride;
-    }
-    AHardwareBuffer_unlock(buffer, nullptr);
 
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage
