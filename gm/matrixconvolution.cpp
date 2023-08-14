@@ -46,8 +46,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
+    SkString onShortName() const override {
         return SkStringPrintf("matrixconvolution%s", fNameSuffix);
     }
 

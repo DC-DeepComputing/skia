@@ -74,9 +74,7 @@ public:
     ImagePictGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("image-picture");
-    }
+    SkString onShortName() const override { return SkString("image-picture"); }
 
     SkISize onISize() override {
         return SkISize::Make(850, 450);
@@ -268,9 +266,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return fName;
-    }
+    SkString onShortName() const override { return fName; }
 
     SkISize onISize() override {
         return SkISize::Make(960, 450);

@@ -61,10 +61,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("imagefiltersscaled");
-    }
+    SkString onShortName() const override { return SkString("imagefiltersscaled"); }
 
     SkISize onISize() override {
         return SkISize::Make(1428, 500);

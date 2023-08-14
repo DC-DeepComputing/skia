@@ -65,7 +65,7 @@ protected:
         fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }
 
-    SkString onShortName() override {
+    SkString onShortName() const override {
         SkASSERT(!fTestName.isEmpty());
         SkString gm_name = SkStringPrintf("colrv1_%s", fTestName.c_str());
 

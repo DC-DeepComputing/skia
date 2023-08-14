@@ -28,9 +28,7 @@ public:
     DrawRegionModesGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("drawregionmodes");
-    }
+    SkString onShortName() const override { return SkString("drawregionmodes"); }
 
     SkISize onISize() override {
         return SkISize::Make(375, 500);
