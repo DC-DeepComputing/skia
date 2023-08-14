@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "304be335_43132ca5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-14T19:33:37Z",
+      "side": 1,
+      "message": "The D3D CL needs to land first.",
+      "revId": "b08ea1cce25d3ecefa8b15474381e34d5fe07ff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
