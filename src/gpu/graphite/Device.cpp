@@ -402,14 +402,44 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
                                         Mipmapped mipmapped) {
     SkASSERT(srcView.proxy()->isFullyLazy() ||
              SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(srcRect));
+    const skgpu::graphite::TextureInfo& srcTextureInfo = srcView.proxy()->textureInfo();
+    skgpu::graphite::TextureInfo dstTextureInfo;
+    switch (srcTextureInfo.backend()) {
+#ifdef SK_DAWN
+        case skgpu::BackendApi::kDawn: {
+            skgpu::graphite::DawnTextureInfo dawnTextureInfo;
+            srcTextureInfo.getDawnTextureInfo(&dawnTextureInfo);
+            dawnTextureInfo.fMipmapped = mipmapped;
+            dstTextureInfo = skgpu::graphite::TextureInfo(dawnTextureInfo);
+            break;
+        }
+#endif
+#ifdef SK_METAL
+        case skgpu::BackendApi::kMetal: {
+            skgpu::graphite::MetalTextureInfo metalTextureInfo;
+            srcTextureInfo.getMetalTextureInfo(&metalTextureInfo);
+            metalTextureInfo.fMipmapped = mipmapped;
+            dstTextureInfo = skgpu::graphite::TextureInfo(metalTextureInfo);
+            break;
+        }
+#endif
+#ifdef SK_VULKAN
+        case skgpu::BackendApi::kVulkan: {
+            skgpu::graphite::VulkanTextureInfo vulkanTextureInfo;
+            srcTextureInfo.getDawnTextureInfo(&vulkanTextureInfo);
+            vulkanTextureInfo.fMipmapped = mipmapped;
+            dstTextureInfo = skgpu::graphite::TextureInfo(vulkanTextureInfo);
+            break;
+        }
+#endif
+        default: {
+            SkUNREACHABLE();
+            return {};
+        }
+    }
 
-    sk_sp<TextureProxy> dest = TextureProxy::Make(recorder->priv().caps(),
-                                                  srcRect.size(),
-                                                  srcColorInfo.colorType(),
-                                                  mipmapped,
-                                                  srcView.proxy()->textureInfo().isProtected(),
-                                                  Renderable::kNo,
-                                                  skgpu::Budgeted::kNo);
+    sk_sp<TextureProxy> dest = TextureProxy::Make(
+            recorder->priv().caps(), srcRect.size(), dstTextureInfo, skgpu::Budgeted::kNo);
     if (!dest) {
         return {};
     }
