@@ -11,6 +11,8 @@
 #define GL_GLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 #if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)

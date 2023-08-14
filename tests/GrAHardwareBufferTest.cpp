@@ -123,6 +123,9 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
+    AHardwareBuffer* buffer = AHBUtils::CreateAHB(srcBitmap, surfaceOrigin);
+
+#if 0
     AHardwareBuffer* buffer = nullptr;
 
     AHardwareBuffer_Desc hwbDesc;
@@ -169,6 +172,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
         dst += hwbDesc.stride;
     }
     AHardwareBuffer_unlock(buffer, nullptr);
+#endif
 
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage
@@ -239,9 +243,12 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
+    AHardwareBuffer* buffer;
+
     sk_sp<SkSurface> surface = AHBUtils::CreateAHBBackedSurface(context, DEV_W, DEV_H,
                                                                 surfaceOrigin,
-                                                                /* isProtected= */ false);
+                                                                /* isProtected= */ false,
+                                                                &buffer);
     if (!surface) {
         ERRORF(reporter, "CreateAHBBackedSurface failed");
         return;
@@ -254,6 +261,9 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
 
     REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
     REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
+
+    cleanup_resources(buffer);
+    delete buffer;
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.

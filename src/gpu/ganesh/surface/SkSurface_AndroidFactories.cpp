@@ -53,6 +53,8 @@
 #include "src/gpu/ganesh/surface/SkSurface_Ganesh.h"
 #include "src/image/SkImage_Base.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <algorithm>
 #include <cstddef>
 #include <utility>

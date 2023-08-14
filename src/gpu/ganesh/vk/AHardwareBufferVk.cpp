@@ -16,6 +16,8 @@
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 #define VK_CALL(X) gpu->vkInterface()->fFunctions.f##X

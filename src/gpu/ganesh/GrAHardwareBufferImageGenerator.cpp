@@ -29,6 +29,8 @@
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/SkGr.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 std::unique_ptr<SkImageGenerator> GrAHardwareBufferImageGenerator::Make(

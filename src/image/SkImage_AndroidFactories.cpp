@@ -68,6 +68,8 @@
 #include <cstddef>
 #include <utility>
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 namespace SkImages {

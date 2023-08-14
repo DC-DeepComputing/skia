@@ -61,7 +61,8 @@ typedef void (*UpdateImageProc)(TexImageCtx, GrDirectContext*);
  * @return                  valid GrBackendTexture object on success
  */
 #if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
-GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+GrBackendTexture MakeBackendTexture(GrDirectContext* dContext,
+                                    AHardwareBuffer* hardwareBuffer,
                                     int width, int height,
                                     DeleteImageProc* deleteProc,
                                     UpdateImageProc* updateProc,

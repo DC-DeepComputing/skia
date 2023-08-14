@@ -13,6 +13,8 @@
 
 #if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
 
+struct AHardwareBuffer;
+
 class GrDirectContext;
 class SkBitmap;
 class SkImage;
@@ -20,15 +22,19 @@ class SkSurface;
 
 namespace AHBUtils {
 
+AHardwareBuffer* CreateAHB(const SkBitmap& srcBitmap, GrSurfaceOrigin surfaceOrigin);
+
 sk_sp<SkSurface> CreateAHBBackedSurface(GrDirectContext* dContext,
                                         int width, int height,
                                         GrSurfaceOrigin surfaceOrigin,
-                                        bool isProtected);
+                                        bool isProtected,
+                                        AHardwareBuffer** ahb);
 
 sk_sp<SkImage> CreateAHBBackedImage(GrDirectContext* dContext,
-                                    const SkBitmap& source,
+                                    const SkBitmap& srcBitmap,
                                     GrSurfaceOrigin surfaceOrigin,
-                                    bool isProtected);
+                                    bool isProtected,
+                                    AHardwareBuffer** ahb);
 
 } // namespace AHBUtils
 
