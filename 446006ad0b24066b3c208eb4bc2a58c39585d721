@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9727b25f_76f994c6",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-14T20:59:47Z",
+      "side": 1,
+      "message": "Done, but `const char* getName() const` is now `SkString getName() const` because `onShortName()` returns a `SkString`. Changing the return type back to `const char*` cannot be done with simple search/replace because we would need to add `.c_str()` in a bunch of places.\n\nIf we *really* care about using `const char*` (or `std::string`) I\u0027d rather do that in a separate CL.",
+      "parentUuid": "82bab9ae_13071421",
+      "range": {
+        "startLine": 156,
+        "startChar": 41,
+        "endLine": 156,
+        "endChar": 52
+      },
+      "revId": "446006ad0b24066b3c208eb4bc2a58c39585d721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "fd534dcb_dc7a4147",
         "filename": "gm/gm.h",
         "patchSetId": 3
