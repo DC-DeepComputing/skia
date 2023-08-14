@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db0d8a0b_d0459490",
+        "filename": "tools/gpu/android/AHBUtils_android.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-14T18:40:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ae76adc_aa23cce4",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89075a75_f9906e4a",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "Prior to this CL, `surface_draw_test_helper` had a `cleanup_resources` call after running the test, so I would\u0027ve expected we still needed it.\n\nAnd I would\u0027ve expected `WrapAndroidHardwareBuffer` to both `AHardwareBuffer_acquire` and `AHardwareBuffer_release`, but in my quick look before my class is starting, I haven\u0027t been able to confirm.",
       "parentUuid": "b11f8acf_fd3556a9",
+      "range": {
+        "startLine": 81,
+        "startChar": 11,
+        "endLine": 81,
+        "endChar": 18
+      },
+      "revId": "b96fe79c15b488e1855875173fc1d69f8fb3e899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d55afbee_f7d9e102",
+        "filename": "tools/gpu/android/AHBUtils_android.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-14T18:40:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12746223_d9e0eead",
       "range": {
         "startLine": 81,
         "startChar": 11,
