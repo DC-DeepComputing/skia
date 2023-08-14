@@ -77,6 +77,7 @@ static std::string corpus_to_str(skiagm::GM::GoldCorpus goldCorpus) {
 // empty string on success, or an error message in the case of failures.
 static std::string write_png_and_json_files(std::string name,
                                             skiagm::GM::GoldCorpus goldCorpus,
+                                            std::map<std::string, std::string> gmGoldKeys,
                                             std::string surfaceConfig,
                                             std::map<std::string, std::string> surfaceGoldKeys,
                                             const SkBitmap& bitmap,
@@ -109,6 +110,7 @@ static std::string write_png_and_json_files(std::string name,
             {"build_system", "bazel"},
     };
     keys.merge(surfaceGoldKeys);
+    keys.merge(gmGoldKeys);
 
     // Write JSON file with MD5 hash.
     SkFILEWStream jsonFile(jsonPath);
@@ -209,6 +211,7 @@ void run_gm(std::unique_ptr<skiagm::GM> gm, std::string config, std::string outp
 
         std::string pngAndJSONResult = write_png_and_json_files(gm->getName(),
                                                                 gm->getGoldCorpus(),
+                                                                gm->getGoldKeys(),
                                                                 config,
                                                                 surfaceManager->getGoldKeys(),
                                                                 bitmap,

@@ -17,6 +17,7 @@
 #include "tools/Registry.h"
 
 #include <functional>
+#include <map>
 #include <memory>
 
 class GrRecordingContext;
@@ -211,6 +212,12 @@ namespace skiagm {
         // is necessary because codec tests are implemented as Bazel-only GMs (see method
         // isBazelOnly() defined above).
         virtual GoldCorpus getGoldCorpus() const { return GoldCorpus::kGM; }
+
+        // Ignored by DM. Returns the set of Gold key/value pairs specific to this GM. For example,
+        // codec GMs might return the parameters utilized to initialize the codec.
+        virtual std::map<std::string, std::string> getGoldKeys() const {
+            return std::map<std::string, std::string>();
+        }
 
     protected:
         // onGpuSetup is called once before any other processing with a direct context.
