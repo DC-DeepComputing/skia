@@ -70,13 +70,26 @@ public:
         }
 
         if (fCachedContext != dContext) {
+            fProtectedAHBImage = nullptr;
+            if (fProtectedAHB) {
+                fProtectedAHB->release();
+                fProtectedAHB = nullptr;
+            }
+            fUnprotectedAHBImage = nullptr;
+            if (fUnprotectedAHB) {
+                fUnprotectedAHB->release();
+                fUnprotectedAHB = nullptr;
+            }
+
             fCachedContext = dContext;
             fProtectedAHBImage = AHBUtils::CreateAHBBackedImage(dContext, fRedBitmap,
                                                                 kTopLeft_GrSurfaceOrigin,
-                                                                /* isProtected= */ true);
+                                                                /* isProtected= */ true,
+                                                                &fProtectedAHB);
             fUnprotectedAHBImage = AHBUtils::CreateAHBBackedImage(dContext, fGreenBitmap,
                                                                   kTopLeft_GrSurfaceOrigin,
-                                                                  /* isProtected= */ false);
+                                                                  /* isProtected= */ false,
+                                                                  &fUnprotectedAHB);
             fProtectedSkImage = create_skia_image(dContext, kSize, kSize, SK_ColorBLUE,
                                                   /* isProtected= */ true);
             fUnprotectedSkImage = create_skia_image(dContext, kSize, kSize, SK_ColorCYAN,
@@ -124,7 +137,9 @@ private:
 
     GrDirectContext* fCachedContext = nullptr;
     sk_sp<SkImage> fProtectedAHBImage;
+    AHardwareBuffer2* fProtectedAHB = nullptr;
     sk_sp<SkImage> fUnprotectedAHBImage;
+    AHardwareBuffer2* fUnprotectedAHB = nullptr;
     sk_sp<SkImage> fProtectedSkImage;
     sk_sp<SkImage> fUnprotectedSkImage;
 };

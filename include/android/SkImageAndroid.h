@@ -16,6 +16,7 @@ class SkColorSpace;
 class GrDirectContext;
 class SkPixmap;
 struct AHardwareBuffer;
+class AHardwareBuffer2;
 
 namespace SkImages {
 
@@ -27,10 +28,10 @@ namespace SkImages {
     @param colorSpace      range of colors; may be nullptr
     @return                created SkImage, or nullptr
 */
-SK_API sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer,
+SK_API sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer2* hardwareBuffer,
                                                   SkAlphaType alphaType = kPremul_SkAlphaType);
 SK_API sk_sp<SkImage> DeferredFromAHardwareBuffer(
-        AHardwareBuffer* hardwareBuffer,
+        AHardwareBuffer2* hardwareBuffer,
         SkAlphaType alphaType,
         sk_sp<SkColorSpace> colorSpace,
         GrSurfaceOrigin surfaceOrigin = kTopLeft_GrSurfaceOrigin);
