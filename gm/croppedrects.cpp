@@ -54,8 +54,10 @@ static sk_sp<SkImage> create_image(SkCanvas* destCanvas) {
  * background, scissor is never used, and ideally, all the rectangles draw in one GrDrawOp.
  */
 class CroppedRectsGM : public GM {
+public:
+    SkString getName() const override { return SkString("croppedrects"); }
+
 private:
-    SkString onShortName() final { return SkString("croppedrects"); }
     SkISize onISize() override { return SkISize::Make(500, 500); }
 
     void onDraw(SkCanvas* canvas) override {
