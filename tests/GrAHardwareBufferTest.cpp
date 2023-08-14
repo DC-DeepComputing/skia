@@ -98,9 +98,12 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& expectedBit
     return result;
 }
 
-static void cleanup_resources(AHardwareBuffer* buffer) {
+static void cleanup_resources(AHardwareBuffer2* buffer) {
+    SkASSERT(buffer);
+
     if (buffer) {
-        AHardwareBuffer_release(buffer);
+        buffer->release();
+//        AHardwareBuffer_release(buffer.buffer());
     }
 }
 
@@ -123,6 +126,9 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
 
+    AHardwareBuffer2* buffer = AHBUtils::CreateAHB(srcBitmap, surfaceOrigin);
+
+#if 0
     AHardwareBuffer* buffer = nullptr;
 
     AHardwareBuffer_Desc hwbDesc;
@@ -169,6 +175,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
         dst += hwbDesc.stride;
     }
     AHardwareBuffer_unlock(buffer, nullptr);
+#endif
 
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage

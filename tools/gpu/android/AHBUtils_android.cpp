@@ -22,11 +22,33 @@
 
 #include <android/hardware_buffer.h>
 
+bool AHardwareBuffer2::allocate(const AHardwareBuffer_Desc& hwbDesc) {
+    if (int error = AHardwareBuffer_allocate(&hwbDesc, &fBuffer)) {
+        return false;
+    }
+
+    return true;
+}
+
+void AHardwareBuffer2::acquire() {
+    SkASSERT(fRefCount);
+    fRefCount++;
+    AHardwareBuffer_acquire(fBuffer);
+}
+
+void AHardwareBuffer2::release() {
+    SkASSERT(fRefCount);
+    fRefCount--;
+    AHardwareBuffer_release(fBuffer);
+}
+
 namespace {
 
-static void cleanup_resources(AHardwareBuffer* buffer) {
+static void cleanup_resources(AHardwareBuffer2* buffer) {
+    SkASSERT(buffer);
+
     if (buffer) {
-        AHardwareBuffer_release(buffer);
+        buffer->release();
     }
 }
 
@@ -34,12 +56,67 @@ static void cleanup_resources(AHardwareBuffer* buffer) {
 
 namespace AHBUtils {
 
+AHardwareBuffer2* CreateAHB(const SkBitmap& srcBitmap, GrSurfaceOrigin surfaceOrigin) {
+
+//    AHardwareBuffer* buffer1 = nullptr;
+
+    AHardwareBuffer_Desc hwbDesc;
+    hwbDesc.width = srcBitmap.width();
+    hwbDesc.height = srcBitmap.height();
+    hwbDesc.layers = 1;
+    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
+                    AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN |
+                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE;
+    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
+    // The following three are not used in the allocate
+    hwbDesc.stride = 0;
+    hwbDesc.rfu0= 0;
+    hwbDesc.rfu1= 0;
+
+    AHardwareBuffer2* buffer = new AHardwareBuffer2();
+
+//    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer1)) {
+    if (!buffer->allocate(hwbDesc)) {
+        SkDebugf("Failed to allocated hardware buffer");
+        cleanup_resources(buffer);
+        return nullptr;
+    }
+
+    // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
+    AHardwareBuffer_describe(buffer->buffer1(), &hwbDesc);
+
+    uint32_t* bufferAddr;
+    if (AHardwareBuffer_lock(buffer->buffer1(), AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
+                             reinterpret_cast<void**>(&bufferAddr))) {
+        SkDebugf("Failed to lock hardware buffer");
+        cleanup_resources(buffer);
+        return nullptr;
+    }
+
+    int bbp = srcBitmap.bytesPerPixel();
+    uint32_t* src = (uint32_t*)srcBitmap.getPixels();
+    int nextLineStep = srcBitmap.width();
+    if (surfaceOrigin == kBottomLeft_GrSurfaceOrigin) {
+        nextLineStep = -nextLineStep;
+        src += (srcBitmap.height()-1)*srcBitmap.width();
+    }
+    uint32_t* dst = bufferAddr;
+    for (int y = 0; y < srcBitmap.height(); ++y) {
+        memcpy(dst, src, srcBitmap.width() * bbp);
+        src += nextLineStep;
+        dst += hwbDesc.stride;
+    }
+    AHardwareBuffer_unlock(buffer->buffer1(), nullptr);
+
+    return buffer;
+}
+
 sk_sp<SkSurface> CreateAHBBackedSurface(GrDirectContext* dContext,
                                         int width, int height,
                                         GrSurfaceOrigin surfaceOrigin,
                                         bool isProtected) {
 
-    AHardwareBuffer* buffer = nullptr;
+//    AHardwareBuffer* buffer = nullptr;
 
     AHardwareBuffer_Desc hwbDesc;
     hwbDesc.width = width;
@@ -62,8 +139,11 @@ sk_sp<SkSurface> CreateAHBBackedSurface(GrDirectContext* dContext,
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
 
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        SkDebugf("Failed to allocated hardware buffer, error: %d\n", error);
+    AHardwareBuffer2* buffer = new AHardwareBuffer2();
+
+//    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
+    if (buffer->allocate(hwbDesc)) {
+        SkDebugf("Failed to allocated hardware buffer\n");
         cleanup_resources(buffer);
         return nullptr;
     }
@@ -78,14 +158,16 @@ sk_sp<SkSurface> CreateAHBBackedSurface(GrDirectContext* dContext,
         return nullptr;
     }
 
+    SkDebugf("RefCnt %d\n", buffer->refCnt());
+
     return surface;
 }
 
 sk_sp<SkImage> CreateAHBBackedImage(GrDirectContext* dContext,
-                                    const SkBitmap& source,
+                                    const SkBitmap& srcBitmap,
                                     GrSurfaceOrigin surfaceOrigin,
                                     bool isProtected) {
-    sk_sp<SkSurface> surf = CreateAHBBackedSurface(dContext, source.width(), source.height(),
+    sk_sp<SkSurface> surf = CreateAHBBackedSurface(dContext, srcBitmap.width(), srcBitmap.height(),
                                                    surfaceOrigin, isProtected);
     if (!surf) {
         return nullptr;
@@ -94,8 +176,8 @@ sk_sp<SkImage> CreateAHBBackedImage(GrDirectContext* dContext,
     SkCanvas* canvas = surf->getCanvas();
 
     SkPaint paint;
-    paint.setShader(source.makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
-                                      SkSamplingOptions()));
+    paint.setShader(srcBitmap.makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
+                                         SkSamplingOptions()));
     paint.setBlendMode(SkBlendMode::kSrc);
     canvas->drawPaint(paint);
 

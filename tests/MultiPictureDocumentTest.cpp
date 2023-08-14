@@ -190,6 +190,8 @@ DEF_TEST(SkMultiPictureDocument_Serialize_and_deserialize, reporter) {
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 static const int DEV_W = 16, DEV_H = 16;
@@ -240,14 +242,17 @@ static SkBitmap make_src_bitmap() {
     return bmp;
 }
 
-static void cleanup_resources(AHardwareBuffer* buffer) {
+static void cleanup_resources(AHardwareBuffer2* buffer) {
+    SkASSERT(buffer);
+
     if (buffer) {
-        AHardwareBuffer_release(buffer);
+        buffer->release();
+//        AHardwareBuffer_release(buffer);
     }
 }
 
 static sk_sp<SkImage> makeAHardwareBufferTestImage(
-    skiatest::Reporter* reporter, GrDirectContext* context, AHardwareBuffer* buffer) {
+    skiatest::Reporter* reporter, GrDirectContext* context, AHardwareBuffer2* bufferWhat) {
 
     const SkBitmap srcBitmap = make_src_bitmap();
 
@@ -264,20 +269,23 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
 
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
+    AHardwareBuffer2* buffer2 = new AHardwareBuffer2();
+
+//    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
+    if (buffer2->allocate(hwbDesc)) {
+        ERRORF(reporter, "Failed to allocated hardware buffer");
+        cleanup_resources(buffer2);
         return nullptr;
     }
 
     // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-    AHardwareBuffer_describe(buffer, &hwbDesc);
+    AHardwareBuffer_describe(buffer2->buffer1(), &hwbDesc);
 
     void* bufferAddr;
-    if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
+    if (AHardwareBuffer_lock(buffer2->buffer1(), AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
                              &bufferAddr)) {
         ERRORF(reporter, "Failed to lock hardware buffer");
-        cleanup_resources(buffer);
+        cleanup_resources(buffer2);
         return nullptr;
     }
 
@@ -291,16 +299,16 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
         src += nextLineStep;
         dst += hwbDesc.stride;
     }
-    AHardwareBuffer_unlock(buffer, nullptr);
+    AHardwareBuffer_unlock(buffer2->buffer1(), nullptr);
 
     // Make SkImage from buffer in a way that mimics libs/hwui/AutoBackendTextureRelease
     GrBackendFormat backendFormat =
-            GrAHardwareBufferUtils::GetBackendFormat(context, buffer, hwbDesc.format, false);
+            GrAHardwareBufferUtils::GetBackendFormat(context, buffer2, hwbDesc.format, false);
     GrAHardwareBufferUtils::DeleteImageProc deleteProc;
     GrAHardwareBufferUtils::UpdateImageProc updateProc;
     GrAHardwareBufferUtils::TexImageCtx imageCtx;
     GrBackendTexture texture = GrAHardwareBufferUtils::MakeBackendTexture(
-        context, buffer, hwbDesc.width, hwbDesc.height,
+        context, buffer2, hwbDesc.width, hwbDesc.height,
         &deleteProc, // set by MakeBackendTexture
         &updateProc, // set by MakeBackendTexture
         &imageCtx, // set by MakeBackendTexture
@@ -356,7 +364,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
     static const int HEIGHT = 256;
 
     // Make an image to be used in a later step.
-    AHardwareBuffer* ahbuffer = nullptr;
+    AHardwareBuffer2* ahbuffer = nullptr;
     sk_sp<SkImage> image = makeAHardwareBufferTestImage(reporter, context, ahbuffer);
 
     const SkImageInfo info = SkImageInfo::MakeN32Premul(WIDTH, HEIGHT);
