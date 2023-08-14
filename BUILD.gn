@@ -2919,6 +2919,7 @@ if (skia_enable_tools) {
         "tools/viewer/GraphitePrimitivesSlide.cpp",
         "tools/viewer/ImGuiLayer.cpp",
         "tools/viewer/ImGuiLayer.h",
+        "tools/viewer/ImageBlurAdjustableSlide.cpp",
         "tools/viewer/ImageFilterDAGSlide.cpp",
         "tools/viewer/ImageSlide.cpp",
         "tools/viewer/ImageSlide.h",
