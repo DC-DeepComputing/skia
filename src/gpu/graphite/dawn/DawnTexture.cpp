@@ -122,12 +122,11 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
     if (!texture) {
         return {};
     }
-    auto textureView = texture.CreateView();
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
                                           info,
                                           std::move(texture),
-                                          std::move(textureView),
+                                          nullptr,
                                           Ownership::kOwned,
                                           budgeted));
 }
@@ -140,12 +139,11 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
         SKGPU_LOG_E("No valid texture passed into MakeWrapped\n");
         return {};
     }
-    auto textureView = texture.CreateView();
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
                                           info,
                                           std::move(texture),
-                                          std::move(textureView),
+                                          nullptr,
                                           Ownership::kWrapped,
                                           skgpu::Budgeted::kNo));
 }
@@ -167,9 +165,30 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
                                           skgpu::Budgeted::kNo));
 }
 
+const wgpu::TextureView& DawnTexture::getTextureView(wgpu::TextureUsage usage) const {
+    if (fTextureView) {
+        return fTextureView;
+    }
+
+    for (int i = 0; i < fTextureViews.size(); ++i) {
+        if (fTextureViews[i].fUsage == usage) {
+            return fTextureViews[i].fTextureView;
+        }
+    }
+
+    wgpu::TextureViewDescriptor viewDesc = {};
+    if (usage & wgpu::TextureUsage::RenderAttachment && this->mipmapped() == Mipmapped::kYes) {
+        viewDesc.baseMipLevel = 0;
+        viewDesc.mipLevelCount = 1;
+    }
+
+    return fTextureViews.push_back({fTexture.CreateView(&viewDesc), usage}).fTextureView;
+}
+
 void DawnTexture::freeGpuData() {
     fTexture = nullptr;
     fTextureView = nullptr;
+    fTextureViews.clear();
 }
 
 } // namespace skgpu::graphite
