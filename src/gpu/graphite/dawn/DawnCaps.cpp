@@ -145,6 +145,13 @@ TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampled
     return info;
 }
 
+TextureInfo DawnCaps::getTextureInfoForSampledCopy(const TextureInfo& textureInfo,
+                                                   Mipmapped mipmapped) const {
+    TextureInfo copyTextureInfo = textureInfo;
+    copyTextureInfo.fMipmapped = mipmapped;
+    return copyTextureInfo;
+}
+
 TextureInfo DawnCaps::getDefaultDepthStencilTextureInfo(
     SkEnumBitMask<DepthStencilFlags> depthStencilType,
     uint32_t sampleCount,

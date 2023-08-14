@@ -197,6 +197,13 @@ TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType ct,
     return info;
 }
 
+TextureInfo VulkanCaps::getTextureInfoForSampledCopy(const TextureInfo& textureInfo,
+                                                     Mipmapped mipmapped) const {
+    TextureInfo copyTextureInfo = textureInfo;
+    copyTextureInfo.fMipmapped = mipmapped;
+    return copyTextureInfo;
+}
+
 TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
                                                   Discardable discardable) const {
     if (fDefaultMSAASamples <= 1) {
