@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcabc967_24947748",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-14T16:08:11Z",
+      "side": 1,
+      "message": "Hmm, I only see comments for one of them. Can you update the rest, along with this commit message? I think it should say something like:\n\n```\nFix various warnings and errors.\n```",
+      "parentUuid": "64217ae6_86c24767",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 126
+      },
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0dae2d30_7c16214f",
         "filename": "platform_tools/android/apps/viewer/build.gradle",
         "patchSetId": 12
@@ -215,6 +239,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "91bb9539_e011164b",
+      "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10945da8_1f326bf5",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-14T16:08:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "142af513_16d8671e",
       "revId": "a8cdbdcfe4032927386907d887411a7e9edcd3d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
