@@ -55,7 +55,7 @@ static sk_sp<SkImage> create_image(SkCanvas* destCanvas) {
  */
 class CroppedRectsGM : public GM {
 private:
-    SkString onShortName() final { return SkString("croppedrects"); }
+    SkString onShortName() const final { return SkString("croppedrects"); }
     SkISize onISize() override { return SkISize::Make(500, 500); }
 
     void onDraw(SkCanvas* canvas) override {

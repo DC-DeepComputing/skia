@@ -145,9 +145,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("image-surface");
-    }
+    SkString onShortName() const override { return SkString("image-surface"); }
 
     SkISize onISize() override {
         return SkISize::Make(960, 1200);
@@ -290,9 +288,7 @@ public:
     ScalePixelsGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("scale-pixels");
-    }
+    SkString onShortName() const override { return SkString("scale-pixels"); }
 
     SkISize onISize() override {
         return SkISize::Make(960, 1200);

@@ -34,10 +34,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("filltypes");
-    }
+    SkString onShortName() const override { return SkString("filltypes"); }
 
     SkISize onISize() override {
         return SkISize::Make(835, 840);

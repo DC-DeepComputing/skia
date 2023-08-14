@@ -62,10 +62,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("imageblurclampmode");
-    }
+    SkString onShortName() const override { return SkString("imageblurclampmode"); }
 
     SkISize onISize() override {
         return SkISize::Make(850, 920);

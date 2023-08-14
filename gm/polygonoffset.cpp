@@ -429,7 +429,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         if (fConvexOnly) {
             return SkString("convex-polygon-inset");
         } else {

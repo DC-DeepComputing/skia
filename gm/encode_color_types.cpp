@@ -82,7 +82,7 @@ public:
     {}
 
 protected:
-    SkString onShortName() override {
+    SkString onShortName() const override {
         const char* variant = fVariant == Variant::kOpaque ? "opaque-":
                               fVariant == Variant::kGray   ? "gray-"  :
                                                              ""       ;
