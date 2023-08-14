@@ -22,6 +22,12 @@ class SkSurface;
 
 namespace AHBUtils {
 
+// This entry point simply creates an AHB w/ 'srcBitmap' as its contents. It writes the
+// AHB from the CPU so cannot be protected content.
+// The caller must explicitly call AHardwareBuffer_release on the returned backing AHB if
+// it is non-null.
+AHardwareBuffer* CreateAHB(const SkBitmap& srcBitmap, GrSurfaceOrigin surfaceOrigin);
+
 // This entry point can be used to create an AHB-backed surface that contains protected content.
 // As such the backing AHB cannot be read from or written to by the CPU.
 // The caller must explicitly call AHardwareBuffer_release on the returned backing AHB if the
