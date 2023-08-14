@@ -93,10 +93,7 @@ static void draw_scene(SkCanvas* canvas, SkScalar pictureSize) {
 
 class PictureShaderTileGM : public skiagm::GM {
 protected:
-
-    SkString onShortName() override {
-        return SkString("pictureshadertile");
-    }
+    const char* getName() const override { return "pictureshadertile"; }
 
     SkISize onISize() override {
         return SkISize::Make(800, 600);

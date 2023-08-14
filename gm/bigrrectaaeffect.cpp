@@ -58,10 +58,8 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        SkString name;
-        name.printf("big_rrect_%s_aa_effect", fName);
-        return name;
+    const char* getName() const override {
+        return SkStringPrintf("big_rrect_%s_aa_effect", fName).c_str();
     }
 
     SkISize onISize() override { return SkISize::Make(fWidth, fHeight); }

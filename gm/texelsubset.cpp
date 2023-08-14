@@ -49,8 +49,7 @@ public:
         this->setBGColor(0xFFFFFFFF);
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("texel_subset");
         switch (fFilter) {
             case Filter::kNearest:
@@ -71,9 +70,10 @@ protected:
                 break;
         }
         name.append(fUpscale ? "_up" : "_down");
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override {
         static constexpr int kN = GrSamplerState::kWrapModeCount;
         int w = kTestPad + 2*kN*(kImageSize.width()  + 2*kDrawPad + kTestPad);

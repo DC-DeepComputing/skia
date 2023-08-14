@@ -99,9 +99,8 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients_no_texture" : "gradients_no_texture_nodither");
+    const char* getName() const override {
+        return fDither ? "gradients_no_texture" : "gradients_no_texture_nodither";
     }
 
     SkISize onISize() override { return SkISize::Make(640, 615); }
@@ -237,9 +236,8 @@ public:
     GradientsManyColorsGM(bool dither) : fDither(dither) {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients_many" : "gradients_many_nodither");
+    const char* getName() const override {
+        return fDither ? "gradients_many" : "gradients_many_nodither";
     }
 
     SkISize onISize() override { return SkISize::Make(880, 400); }

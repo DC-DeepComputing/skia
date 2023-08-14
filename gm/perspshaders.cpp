@@ -43,11 +43,8 @@ public:
     PerspShadersGM(bool doAA) : fDoAA(doAA) { }
 
 protected:
-    SkString onShortName() override {
-        SkString name;
-        name.printf("persp_shaders_%s",
-                     fDoAA ? "aa" : "bw");
-        return name;
+    const char* getName() const override {
+        return SkStringPrintf("persp_shaders_%s", fDoAA ? "aa" : "bw").c_str();
     }
 
     SkISize onISize() override {

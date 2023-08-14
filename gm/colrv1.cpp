@@ -55,17 +55,7 @@ public:
         fVariationPosition.coordinates = fCoordinates.get();
     }
 
-protected:
-    void onOnceBeforeDraw() override {
-        if (fVariationPosition.coordinateCount) {
-            fTypeface = MakeResourceAsTypeface(kTestFontNameVariable);
-        } else {
-            fTypeface = MakeResourceAsTypeface(kTestFontName);
-        }
-        fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
-    }
-
-    SkString onShortName() override {
+    const char* getName() const override {
         SkASSERT(!fTestName.isEmpty());
         SkString gm_name = SkStringPrintf("colrv1_%s", fTestName.c_str());
 
@@ -84,7 +74,17 @@ protected:
                     "_%s_%.2f", tagName.c_str(), fVariationPosition.coordinates[i].value));
         }
 
-        return gm_name;
+        return gm_name.c_str();
+    }
+
+protected:
+    void onOnceBeforeDraw() override {
+        if (fVariationPosition.coordinateCount) {
+            fTypeface = MakeResourceAsTypeface(kTestFontNameVariable);
+        } else {
+            fTypeface = MakeResourceAsTypeface(kTestFontName);
+        }
+        fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }
 
     bool onGetControls(SkMetaData* controls) override {

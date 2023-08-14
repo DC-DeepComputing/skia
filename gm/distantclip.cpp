@@ -21,7 +21,7 @@
 namespace skiagm {
 
 class DistantClipGM : public GM {
-    SkString onShortName() override { return SkString("distantclip"); }
+    const char* getName() const override { return "distantclip"; }
 
     SkISize onISize() override { return {100, 100}; }
 

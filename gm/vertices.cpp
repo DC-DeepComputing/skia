@@ -115,21 +115,20 @@ class VerticesGM : public skiagm::GM {
 public:
     VerticesGM(SkScalar shaderScale) : fShaderScale(shaderScale) {}
 
-protected:
+    const char* getName() const override {
+        SkString name("vertices");
+        if (fShaderScale != 1) {
+            name.append("_scaled_shader");
+        }
+        return name.c_str();
+    }
 
+protected:
     void onOnceBeforeDraw() override {
         fill_mesh(fPts, fTexs, fColors, fShaderScale);
         fShader1 = make_shader1(fShaderScale);
         fShader2 = make_shader2();
         fColorFilter = make_color_filter();
-    }
-
-    SkString onShortName() override {
-        SkString name("vertices");
-        if (fShaderScale != 1) {
-            name.append("_scaled_shader");
-        }
-        return name;
     }
 
     SkISize onISize() override {

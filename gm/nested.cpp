@@ -27,9 +27,7 @@ public:
         this->setBGColor(0xFFDDDDDD);
     }
 
-protected:
-
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("nested");
         if (fFlipped) {
             name.append("_flipY");
@@ -39,9 +37,10 @@ protected:
         } else {
             name.append("_bw");
         }
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(kImageWidth, kImageHeight);
     }

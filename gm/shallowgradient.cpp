@@ -47,14 +47,14 @@ public:
     ShallowGradientGM(MakeShaderProc proc, const char name[], bool dither)
         : fProc(proc), fName(name), fDither(dither) {}
 
+    const char* getName() const override {
+        return SkStringPrintf("shallow_gradient_%s%s", fName, fDither ? "" : "_nodither").c_str();
+    }
+
 private:
     MakeShaderProc fProc;
     const char* fName;
     bool fDither;
-
-    SkString onShortName() override {
-        return SkStringPrintf("shallow_gradient_%s%s", fName, fDither ? "" : "_nodither");
-    }
 
     SkISize onISize() override { return {800, 800}; }
 

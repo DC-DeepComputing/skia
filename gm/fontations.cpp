@@ -103,6 +103,10 @@ public:
         fVariationPosition.coordinates = fCoordinates.get();
     }
 
+    const char* getName() const override {
+        return SkStringPrintf("typeface_fontations_%s", fTestName.c_str()).c_str();
+    }
+
 protected:
     void onOnceBeforeDraw() override {
         if (fConstruction == TypefaceConstruction::kMakeWithFontArguments) {
@@ -117,10 +121,6 @@ protected:
         }
         fReportTypeface =
                 SkTypeface_Make_Fontations(GetResourceAsStream(kReportFontName), SkFontArguments());
-    }
-
-    SkString onShortName() override {
-        return SkStringPrintf("typeface_fontations_%s", fTestName.c_str());
     }
 
     SkISize onISize() override { return SkISize::Make(400, 200); }

@@ -48,13 +48,11 @@ public:
     DrawBitmapRect2(bool useIRect) : fUseIRect(useIRect) {
     }
 
-protected:
-    SkString onShortName() override {
-        SkString str;
-        str.printf("bitmaprect_%s", fUseIRect ? "i" : "s");
-        return str;
+    const char* getName() const override {
+        return SkStringPrintf("bitmaprect_%s", fUseIRect ? "i" : "s").c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(640, 480);
     }
@@ -140,11 +138,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        SkString str;
-        str.printf("3x3bitmaprect");
-        return str;
-    }
+    const char* getName() const override { return SkStringPrintf("3x3bitmaprect").c_str(); }
 
     SkISize onISize() override {
         return SkISize::Make(640, 480);
@@ -204,10 +198,8 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        SkString str;
-        str.printf("bigbitmaprect_%s", fUseIRect ? "i" : "s");
-        return str;
+    const char* getName() const override {
+        return SkStringPrintf("bigbitmaprect_%s", fUseIRect ? "i" : "s").c_str();
     }
 
     SkISize onISize() override {
@@ -254,11 +246,7 @@ public:
     BitmapRectRounding() {}
 
 protected:
-    SkString onShortName() override {
-        SkString str;
-        str.printf("bitmaprect_rounding");
-        return str;
-    }
+    const char* getName() const override { return SkStringPrintf("bitmaprect_rounding").c_str(); }
 
     SkISize onISize() override {
         return SkISize::Make(640, 480);

@@ -75,9 +75,7 @@ public:
     EncodePlatformGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("encode-platform");
-    }
+    const char* getName() const override { return "encode-platform"; }
 
     SkISize onISize() override {
         return SkISize::Make(256 * std::size(gRecs), 256 * 3);

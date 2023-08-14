@@ -45,9 +45,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("convex_poly_effect");
-    }
+    const char* getName() const override { return "convex_poly_effect"; }
 
     SkISize onISize() override { return SkISize::Make(720, 550); }
 

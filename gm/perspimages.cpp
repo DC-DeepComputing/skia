@@ -37,7 +37,7 @@ public:
     PerspImages() = default;
 
 protected:
-    SkString onShortName() override { return SkString("persp_images"); }
+    const char* getName() const override { return "persp_images"; }
 
     SkISize onISize() override { return SkISize::Make(1150, 1280); }
 

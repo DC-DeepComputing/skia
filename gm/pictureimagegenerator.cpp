@@ -118,9 +118,7 @@ static void draw_vector_logo(SkCanvas* canvas, const SkRect& viewBox) {
 // (in particular its matrix vs. bounds semantics).
 class PictureGeneratorGM : public skiagm::GM {
 protected:
-    SkString onShortName() override {
-        return SkString("pictureimagegenerator");
-    }
+    const char* getName() const override { return "pictureimagegenerator"; }
 
     SkISize onISize() override {
         return SkISize::Make(1160, 860);

@@ -31,10 +31,7 @@ public:
     PosterCircleGM() : fTime(0.f) {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("poster_circle");
-    }
+    const char* getName() const override { return "poster_circle"; }
 
     SkISize onISize() override {
         return SkISize::Make(kStageWidth, kStageHeight + 50);

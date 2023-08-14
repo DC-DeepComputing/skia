@@ -21,10 +21,7 @@ public:
     DRRectGM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("drrect");
-    }
+    const char* getName() const override { return "drrect"; }
 
     SkISize onISize() override {
         return SkISize::Make(640, 480);

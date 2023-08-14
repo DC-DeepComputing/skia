@@ -65,7 +65,7 @@ class FilterIndiaBoxGM : public skiagm::GM {
         fMatrix[1].setRotate(30, cx, cy); fMatrix[1].postScale(horizScale, vertScale);
     }
 
-    SkString onShortName() override { return SkString("filterindiabox"); }
+    const char* getName() const override { return "filterindiabox"; }
 
     SkISize onISize() override { return {680, 130}; }
 

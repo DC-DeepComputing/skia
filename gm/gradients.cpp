@@ -227,9 +227,7 @@ protected:
 private:
     void onOnceBeforeDraw() override { this->setBGColor(0xFFDDDDDD); }
 
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients" : "gradients_nodither");
-    }
+    const char* getName() const override { return fDither ? "gradients" : "gradients_nodither"; }
 
     SkISize onISize() override { return {840, 815}; }
 };
@@ -244,8 +242,8 @@ public:
 private:
     void onOnceBeforeDraw() override { this->setBGColor(0xFFDDDDDD); }
 
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients4f" : "gradients4f_nodither");
+    const char* getName() const override {
+        return fDither ? "gradients4f" : "gradients4f_nodither";
     }
 
     SkISize onISize() override { return {840, 815}; }
@@ -294,12 +292,11 @@ public:
         this->setBGColor(0xFFDDDDDD);
     }
 
-private:
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients_local_perspective" :
-                                  "gradients_local_perspective_nodither");
+    const char* getName() const override {
+        return fDither ? "gradients_local_perspective" : "gradients_local_perspective_nodither";
     }
 
+private:
     SkISize onISize() override { return {840, 815}; }
 
     void onDraw(SkCanvas* canvas) override {
@@ -343,12 +340,11 @@ class GradientsViewPerspectiveGM : public GradientsGM {
 public:
     GradientsViewPerspectiveGM(bool dither) : INHERITED(dither) { }
 
-private:
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients_view_perspective" :
-                                  "gradients_view_perspective_nodither");
+    const char* getName() const override {
+        return fDither ? "gradients_view_perspective" : "gradients_view_perspective_nodither";
     }
 
+private:
     SkISize onISize() override { return {840, 500}; }
 
     void onDraw(SkCanvas* canvas) override {
@@ -387,8 +383,8 @@ public:
     GradientsDegenrate2PointGM(bool dither) : fDither(dither) {}
 
 private:
-    SkString onShortName() override {
-        return SkString(fDither ? "gradients_degenerate_2pt" : "gradients_degenerate_2pt_nodither");
+    const char* getName() const override {
+        return fDither ? "gradients_degenerate_2pt" : "gradients_degenerate_2pt_nodither";
     }
 
     SkISize onISize() override { return {320, 320}; }
@@ -460,8 +456,8 @@ public:
     ClampedGradientsGM(bool dither) : fDither(dither) {}
 
 private:
-    SkString onShortName() override {
-        return SkString(fDither ? "clamped_gradients" : "clamped_gradients_nodither");
+    const char* getName() const override {
+        return fDither ? "clamped_gradients" : "clamped_gradients_nodither";
     }
 
     SkISize onISize() override { return {640, 510}; }
@@ -493,7 +489,7 @@ DEF_GM( return new ClampedGradientsGM(false); )
 /// some banding.
 
 class RadialGradientGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("radial_gradient"); }
+    const char* getName() const override { return "radial_gradient"; }
 
     SkISize onISize() override { return {1280, 1280}; }
 
@@ -527,8 +523,8 @@ public:
     RadialGradient2GM(bool dither) : fDither(dither) {}
 
 private:
-    SkString onShortName() override {
-        return SkString(fDither ? "radial_gradient2" : "radial_gradient2_nodither");
+    const char* getName() const override {
+        return fDither ? "radial_gradient2" : "radial_gradient2_nodither";
     }
 
     SkISize onISize() override { return {800, 400}; }
@@ -591,8 +587,8 @@ public:
     RadialGradient3GM(bool dither) : fDither(dither) { }
 
 private:
-    SkString onShortName() override {
-        return SkString(fDither ? "radial_gradient3" : "radial_gradient3_nodither");
+    const char* getName() const override {
+        return fDither ? "radial_gradient3" : "radial_gradient3_nodither";
     }
 
     SkISize onISize() override { return {500, 500}; }
@@ -628,8 +624,8 @@ public:
     RadialGradient4GM(bool dither) : fDither(dither) { }
 
 private:
-    SkString onShortName() override {
-        return SkString(fDither ? "radial_gradient4" : "radial_gradient4_nodither");
+    const char* getName() const override {
+        return fDither ? "radial_gradient4" : "radial_gradient4_nodither";
     }
 
     SkISize onISize() override { return {500, 500}; }
@@ -666,8 +662,8 @@ public:
     LinearGradientGM(bool dither) : fDither(dither) { }
 
 private:
-    SkString onShortName() override {
-        return SkString(fDither ? "linear_gradient" : "linear_gradient_nodither");
+    const char* getName() const override {
+        return fDither ? "linear_gradient" : "linear_gradient_nodither";
     }
 
     const SkScalar kWidthBump = 30.f;
@@ -716,7 +712,7 @@ DEF_GM( return new LinearGradientGM(false); )
 class LinearGradientTinyGM : public skiagm::GM {
     inline static constexpr uint32_t kFlags = 0;
 
-    SkString onShortName() override { return SkString("linear_gradient_tiny"); }
+    const char* getName() const override { return "linear_gradient_tiny"; }
 
     SkISize onISize() override { return {600, 500}; }
 

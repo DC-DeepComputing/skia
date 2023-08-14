@@ -23,7 +23,7 @@ class LcdTextGM : public skiagm::GM {
     static constexpr SkScalar kTextHeight = 36;
     SkScalar fY = kTextHeight;
 
-    SkString onShortName() override { return SkString("lcdtext"); }
+    const char* getName() const override { return "lcdtext"; }
 
     SkISize onISize() override { return {640, 480}; }
 
@@ -69,7 +69,7 @@ class LcdTextSizeGM : public skiagm::GM {
         canvas->concat(m);
     }
 
-    SkString onShortName() override { return SkString("lcdtextsize"); }
+    const char* getName() const override { return "lcdtextsize"; }
 
     SkISize onISize() override { return {320, 120}; }
 
@@ -107,7 +107,7 @@ class LcdTextSizeGM : public skiagm::GM {
 class SaveLayerPreserveLCDTextGM : public skiagm::GM {
     static constexpr SkScalar kTextHeight = 36;
 
-    SkString onShortName() override { return SkString("savelayerpreservelcdtext"); }
+    const char* getName() const override { return "savelayerpreservelcdtext"; }
 
     SkISize onISize() override { return {620, 300}; }
 

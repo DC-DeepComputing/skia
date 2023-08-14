@@ -74,7 +74,7 @@ class SrcModeGM : public skiagm::GM {
 
     void onOnceBeforeDraw() override { this->setBGColor(SK_ColorBLACK); }
 
-    SkString onShortName() override { return SkString("srcmode"); }
+    const char* getName() const override { return "srcmode"; }
 
     SkISize onISize() override { return {640, 760}; }
 

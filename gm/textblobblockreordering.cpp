@@ -50,9 +50,7 @@ protected:
         fBlob = builder.make();
     }
 
-    SkString onShortName() override {
-        return SkString("textblobblockreordering");
-    }
+    const char* getName() const override { return "textblobblockreordering"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

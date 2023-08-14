@@ -25,9 +25,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("thinstrokedrects");
-    }
+    const char* getName() const override { return "thinstrokedrects"; }
 
     SkISize onISize() override {
         return SkISize::Make(240, 320);

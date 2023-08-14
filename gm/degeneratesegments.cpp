@@ -30,7 +30,7 @@ class DegenerateSegmentsGM : public GM {
         const char* fName2;
     };
 
-    SkString onShortName() override { return SkString("degeneratesegments"); }
+    const char* getName() const override { return "degeneratesegments"; }
 
     SkISize onISize() override { return {896, 930}; }
 

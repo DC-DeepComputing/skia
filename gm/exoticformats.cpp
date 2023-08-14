@@ -334,9 +334,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("exoticformats");
-    }
+    const char* getName() const override { return "exoticformats"; }
 
     SkISize onISize() override {
         return SkISize::Make(2*kImgWidthHeight + 3 * kPad, kImgWidthHeight + 2 * kPad);

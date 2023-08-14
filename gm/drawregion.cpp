@@ -21,9 +21,7 @@ public:
     DrawRegionGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("drawregion");
-    }
+    const char* getName() const override { return "drawregion"; }
 
     SkISize onISize() override {
         return SkISize::Make(500, 500);

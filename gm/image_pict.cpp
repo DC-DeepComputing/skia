@@ -74,9 +74,7 @@ public:
     ImagePictGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("image-picture");
-    }
+    const char* getName() const override { return "image-picture"; }
 
     SkISize onISize() override {
         return SkISize::Make(850, 450);
@@ -267,11 +265,9 @@ public:
         fName.printf("image-cacherator-from-%s", suffix);
     }
 
-protected:
-    SkString onShortName() override {
-        return fName;
-    }
+    const char* getName() const override { return fName.c_str(); }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(960, 450);
     }

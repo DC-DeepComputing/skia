@@ -78,7 +78,7 @@ class FontMgrGM : public skiagm::GM {
         fFM = SkFontMgr::RefDefault();
     }
 
-    SkString onShortName() override { return SkString("fontmgr_iter"); }
+    const char* getName() const override { return "fontmgr_iter"; }
 
     SkISize onISize() override { return {1536, 768}; }
 
@@ -129,7 +129,7 @@ class FontMgrMatchGM : public skiagm::GM {
         SkGraphics::SetFontCacheLimit(16 * 1024 * 1024);
     }
 
-    SkString onShortName() override { return SkString("fontmgr_match"); }
+    const char* getName() const override { return "fontmgr_match"; }
 
     SkISize onISize() override { return {640, 1024}; }
 
@@ -203,14 +203,14 @@ class FontMgrBoundsGM : public skiagm::GM {
 public:
     FontMgrBoundsGM(float scale, float skew) : fScaleX(scale) , fSkewX(skew) {}
 
-private:
-    SkString onShortName() override {
+    const char* getName() const override {
         if (fScaleX != 1 || fSkewX != 0) {
-            return SkStringPrintf("fontmgr_bounds_%g_%g", fScaleX, fSkewX);
+            return SkStringPrintf("fontmgr_bounds_%g_%g", fScaleX, fSkewX).c_str();
         }
-        return SkString("fontmgr_bounds");
+        return "fontmgr_bounds";
     }
 
+private:
     void onOnceBeforeDraw() override {
         fFM = SkFontMgr::RefDefault();
     }

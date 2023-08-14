@@ -45,12 +45,11 @@ public:
         fColors[1] = colorTwo;
     }
 
-protected:
-
-    SkString onShortName() override {
-        return SkStringPrintf("matrixconvolution%s", fNameSuffix);
+    const char* getName() const override {
+        return SkStringPrintf("matrixconvolution%s", fNameSuffix).c_str();
     }
 
+protected:
     void makeBitmap() {
         // Draw our bitmap in N32, so legacy devices get "premul" values they understand
         auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(80, 80));

@@ -71,12 +71,7 @@ public:
         fPara->layout(400);
     }
 
-protected:
-    void onOnceBeforeDraw() override {
-        this->buildParagraph();
-    }
-
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name;
         name.printf("paragraph%s_%s",
                     fFlags & kTimeLayout   ? "_layout"    : "",
@@ -84,8 +79,11 @@ protected:
         if (fFlags & kShowVisitor) {
             name.append("_visitor");
         }
-        return name;
+        return name.c_str();
     }
+
+protected:
+    void onOnceBeforeDraw() override { this->buildParagraph(); }
 
     SkISize onISize() override {
         if (fFlags & kShowVisitor) {

@@ -54,10 +54,7 @@ public:
     StrokesGM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("strokes_round");
-    }
+    const char* getName() const override { return "strokes_round"; }
 
     SkISize onISize() override {
         return SkISize::Make(W, H*2);
@@ -118,9 +115,7 @@ protected:
         }
     }
 
-    SkString onShortName() override {
-        return SkString("zeroPath");
-    }
+    const char* getName() const override { return "zeroPath"; }
 
     SkISize onISize() override {
         return SkISize::Make(W, H*2);
@@ -174,10 +169,7 @@ private:
 };
 
 class TeenyStrokesGM : public skiagm::GM {
-
-    SkString onShortName() override {
-        return SkString("teenyStrokes");
-    }
+    const char* getName() const override { return "teenyStrokes"; }
 
     SkISize onISize() override {
         return SkISize::Make(W, H*2);
@@ -296,10 +288,7 @@ protected:
         }
     }
 
-
-    SkString onShortName() override {
-        return SkString("strokes_poly");
-    }
+    const char* getName() const override { return "strokes_poly"; }
 
     SkISize onISize() override {
         return SkISize::Make(W, H*2);
@@ -388,10 +377,7 @@ public:
     Strokes3GM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("strokes3");
-    }
+    const char* getName() const override { return "strokes3"; }
 
     SkISize onISize() override {
         return SkISize::Make(1500, 1500);
@@ -445,10 +431,7 @@ public:
     Strokes4GM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("strokes_zoomed");
-    }
+    const char* getName() const override { return "strokes_zoomed"; }
 
     SkISize onISize() override {
         return SkISize::Make(W, H*2);
@@ -473,10 +456,7 @@ public:
     Strokes5GM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("zero_control_stroke");
-    }
+    const char* getName() const override { return "zero_control_stroke"; }
 
     SkISize onISize() override {
         return SkISize::Make(W, H*2);

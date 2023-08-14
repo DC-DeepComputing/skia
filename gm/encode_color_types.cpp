@@ -82,11 +82,11 @@ public:
     {}
 
 protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         const char* variant = fVariant == Variant::kOpaque ? "opaque-":
                               fVariant == Variant::kGray   ? "gray-"  :
                                                              ""       ;
-        return SkStringPrintf("encode-%scolor-types-%s", variant, fName);
+        return SkStringPrintf("encode-%scolor-types-%s", variant, fName).c_str();
     }
 
     SkISize onISize() override {

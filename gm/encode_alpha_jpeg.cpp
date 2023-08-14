@@ -45,9 +45,7 @@ public:
     EncodeJpegAlphaOptsGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("encode-alpha-jpeg");
-    }
+    const char* getName() const override { return "encode-alpha-jpeg"; }
 
     SkISize onISize() override {
         return SkISize::Make(400, 200);

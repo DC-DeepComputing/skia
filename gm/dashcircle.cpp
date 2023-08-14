@@ -42,7 +42,7 @@ public:
     DashCircleGM() : fRotation(0) { }
 
 protected:
-    SkString onShortName() override { return SkString("dashcircle"); }
+    const char* getName() const override { return "dashcircle"; }
 
     SkISize onISize() override { return SkISize::Make(900, 1200); }
 
@@ -124,7 +124,7 @@ public:
     DashCircle2GM() {}
 
 protected:
-    SkString onShortName() override { return SkString("dashcircle2"); }
+    const char* getName() const override { return "dashcircle2"; }
 
     SkISize onISize() override { return SkISize::Make(635, 900); }
 

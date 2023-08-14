@@ -38,12 +38,12 @@ public:
 protected:
     bool runAsBench() const override { return true; }
 
-    SkString onShortName() override {
-        SkString name;
-        name.printf("blur_ignore_xform_%s",
-                    DrawType::kCircle == fDrawType ? "circle"
-                        : DrawType::kRect == fDrawType ? "rect" : "rrect");
-        return name;
+    const char* getName() const override {
+        return SkStringPrintf("blur_ignore_xform_%s",
+                              DrawType::kCircle == fDrawType ? "circle"
+                              : DrawType::kRect == fDrawType ? "rect"
+                                                             : "rrect")
+                .c_str();
     }
 
     SkISize onISize() override {

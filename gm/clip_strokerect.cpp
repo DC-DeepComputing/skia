@@ -20,9 +20,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("clip_strokerect");
-    }
+    const char* getName() const override { return "clip_strokerect"; }
 
     SkISize onISize() override {
         return SkISize::Make(200, 400);

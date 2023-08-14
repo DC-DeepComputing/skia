@@ -44,6 +44,13 @@ public:
         , fUseLocalMatrixWrapper(useLocalMatrixWrapper)
     {}
 
+    const char* getName() const override {
+        return SkStringPrintf("pictureshader%s%s",
+                              fUseLocalMatrixWrapper ? "_localwrapper" : "",
+                              fAlpha < 1 ? "_alpha" : "")
+                .c_str();
+    }
+
  protected:
     void onOnceBeforeDraw() override {
        // Build the picture.
@@ -57,13 +64,6 @@ public:
         fBitmap.eraseColor(SK_ColorTRANSPARENT);
         SkCanvas bitmapCanvas(fBitmap);
         this->drawTile(&bitmapCanvas);
-    }
-
-
-    SkString onShortName() override {
-        return SkStringPrintf("pictureshader%s%s",
-                              fUseLocalMatrixWrapper ? "_localwrapper" : "",
-                              fAlpha < 1 ? "_alpha" : "");
     }
 
     SkISize onISize() override {

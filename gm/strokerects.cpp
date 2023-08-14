@@ -27,16 +27,15 @@ class StrokeRectsGM : public GM {
 public:
     StrokeRectsGM(bool rotated) : fRotated(rotated) {}
 
-protected:
-
-    SkString onShortName() override {
+    const char* getName() const override {
         if (fRotated) {
-            return SkString("strokerects_rotated");
+            return "strokerects_rotated";
         } else {
-            return SkString("strokerects");
+            return "strokerects";
         }
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(W*2, H*2);
     }

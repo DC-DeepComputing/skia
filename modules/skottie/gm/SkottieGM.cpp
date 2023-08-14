@@ -44,9 +44,7 @@ private:
 class SkottieWebFontGM : public skiagm::GM {
 public:
 protected:
-    SkString onShortName() override {
-        return SkString("skottie_webfont");
-    }
+    const char* getName() const override { return "skottie_webfont"; }
 
     SkISize onISize() override {
         return SkISize::Make(kSize, kSize);
@@ -98,11 +96,11 @@ public:
         , fResource(resource)
     {}
 
-protected:
-    SkString onShortName() override {
-        return SkStringPrintf("skottie_colorize_%s", fName);
+    const char* getName() const override {
+        return SkStringPrintf("skottie_colorize_%s", fName).c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(kSize, kSize);
     }
@@ -185,9 +183,7 @@ DEF_GM(return new SkottieColorizeGM("text" , "skottie/skottie-text-animator-5.js
 class SkottieMultiFrameGM : public skiagm::GM {
 public:
 protected:
-    SkString onShortName() override {
-        return SkString("skottie_multiframe");
-    }
+    const char* getName() const override { return "skottie_multiframe"; }
 
     SkISize onISize() override {
         return SkISize::Make(kSize, kSize);

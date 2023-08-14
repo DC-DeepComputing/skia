@@ -58,9 +58,7 @@ protected:
         }
     }
 
-    SkString onShortName() override {
-        return SkString("scaledemoji_rendering");
-    }
+    const char* getName() const override { return "scaledemoji_rendering"; }
 
     SkISize onISize() override { return SkISize::Make(1200, 1200); }
 

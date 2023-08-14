@@ -97,9 +97,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("convex_poly_clip");
-    }
+    const char* getName() const override { return "convex_poly_clip"; }
 
     SkISize onISize() override {
         // When benchmarking the saveLayer set of draws is skipped.

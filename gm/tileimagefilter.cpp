@@ -38,9 +38,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("tileimagefilter");
-    }
+    const char* getName() const override { return "tileimagefilter"; }
 
     SkISize onISize() override {
         return SkISize::Make(WIDTH, HEIGHT);

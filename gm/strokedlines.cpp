@@ -127,16 +127,16 @@ public:
         this->setBGColor(ToolUtils::color_to_565(0xFF1A65D7));
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         // To preserve history, useDrawPath==true has no suffix.
         SkString name{"strokedlines"};
         if (!fUseDrawPath) {
             name.append("_drawPoints");
         }
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(kNumColumns * (2*kRadius+2*kPad), kNumRows * (2*kRadius+2*kPad));
     }

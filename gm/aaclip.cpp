@@ -177,9 +177,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("clipcubic");
-    }
+    const char* getName() const override { return "clipcubic"; }
 
     SkISize onISize() override {
         return SkISize::Make(400, 410);

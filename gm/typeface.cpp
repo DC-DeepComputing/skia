@@ -100,19 +100,19 @@ class TypefaceStylesGM : public skiagm::GM {
 public:
     TypefaceStylesGM(bool applyKerning) : fApplyKerning(applyKerning) {}
 
+    const char* getName() const override {
+        SkString name("typefacestyles");
+        if (fApplyKerning) {
+            name.append("_kerning");
+        }
+        return name.c_str();
+    }
+
 protected:
     void onOnceBeforeDraw() override {
         for (int i = 0; i < gStylesCount; i++) {
             fFaces[i] = SkTypeface::MakeFromName(nullptr, gStyles[i]);
         }
-    }
-
-    SkString onShortName() override {
-        SkString name("typefacestyles");
-        if (fApplyKerning) {
-            name.append("_kerning");
-        }
-        return name;
     }
 
     SkISize onISize() override {

@@ -55,7 +55,7 @@ class PerlinNoiseGM : public skiagm::GM {
 
     void onOnceBeforeDraw() override { this->setBGColor(0xFF000000); }
 
-    SkString onShortName() override { return SkString("perlinnoise"); }
+    const char* getName() const override { return "perlinnoise"; }
 
     SkISize onISize() override { return {200, 500}; }
 
@@ -132,7 +132,7 @@ private:
 class PerlinNoiseLocalMatrixGM : public skiagm::GM {
     SkISize fSize = {80, 80};
 
-    SkString onShortName() override { return SkString("perlinnoise_localmatrix"); }
+    const char* getName() const override { return "perlinnoise_localmatrix"; }
 
     SkISize onISize() override { return {640, 480}; }
 
@@ -196,7 +196,7 @@ class PerlinNoiseRotatedGM : public skiagm::GM {
     static constexpr int kCellsX = 3;
     static constexpr int kCellsY = 2;
 
-    SkString onShortName() override { return SkString("perlinnoise_rotated"); }
+    const char* getName() const override { return "perlinnoise_rotated"; }
 
     SkISize onISize() override { return { 2*kPad + kCellsX*kCellSize.width(),
                                           2*kPad + kCellsY*kCellSize.height() }; }
@@ -247,7 +247,7 @@ class PerlinNoiseRotatedGM : public skiagm::GM {
 
 // Demonstrate skbug.com/14411 (Intel GPUs show artifacts when applying perlin noise to layers)
 class PerlinNoiseLayeredGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("perlinnoise_layered"); }
+    const char* getName() const override { return "perlinnoise_layered"; }
 
     SkISize onISize() override { return {500, 500}; }
 

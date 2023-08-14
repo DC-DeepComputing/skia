@@ -26,7 +26,7 @@
 // https://bug.skia.org/1316 shows that this cubic, when slightly clipped, creates big
 // (incorrect) changes to its control points.
 class ClippedCubicGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("clippedcubic"); }
+    const char* getName() const override { return "clippedcubic"; }
 
     SkISize onISize() override { return {1240, 390}; }
 
@@ -57,7 +57,7 @@ class ClippedCubicGM : public skiagm::GM {
 
 
 class ClippedCubic2GM : public skiagm::GM {
-    SkString onShortName() override { return SkString("clippedcubic2"); }
+    const char* getName() const override { return "clippedcubic2"; }
 
     SkISize onISize() override { return {1240, 390}; }
 
@@ -119,7 +119,7 @@ private:
 };
 
 class CubicPathGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("cubicpath"); }
+    const char* getName() const override { return "cubicpath"; }
 
     SkISize onISize() override { return {1240, 390}; }
 
@@ -238,7 +238,7 @@ class CubicPathGM : public skiagm::GM {
 };
 
 class CubicClosePathGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("cubicclosepath"); }
+    const char* getName() const override { return "cubicclosepath"; }
 
     SkISize onISize() override { return {1240, 390}; }
 
@@ -359,7 +359,7 @@ class CubicClosePathGM : public skiagm::GM {
 };
 
 class CubicPathShaderGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("cubicpath_shader"); }
+    const char* getName() const override { return "cubicpath_shader"; }
 
     SkISize onISize() override { return {1240, 390}; }
 

@@ -222,9 +222,7 @@ public:
     XfermodesGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("xfermodes");
-    }
+    const char* getName() const override { return "xfermodes"; }
 
     SkISize onISize() override {
         return SkISize::Make(1990, 570);

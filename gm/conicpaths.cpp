@@ -23,10 +23,7 @@ using namespace skia_private;
 
 class ConicPathsGM : public skiagm::GM {
 protected:
-
-    SkString onShortName() override {
-        return SkString("conicpaths");
-    }
+    const char* getName() const override { return "conicpaths"; }
 
     SkISize onISize() override {
         return SkISize::Make(920, 960);

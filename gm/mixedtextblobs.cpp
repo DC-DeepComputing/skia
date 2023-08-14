@@ -103,9 +103,7 @@ protected:
         fBlob = builder.make();
     }
 
-    SkString onShortName() override {
-        return SkString("mixedtextblobs");
-    }
+    const char* getName() const override { return "mixedtextblobs"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

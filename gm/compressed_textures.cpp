@@ -200,8 +200,7 @@ public:
 
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("compressed_textures");
 
         if (fType == Type::kNonPowerOfTwo) {
@@ -210,9 +209,10 @@ protected:
             name.append("_nmof");
         }
 
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(2*kCellWidth + 3*kPad, 2*kBaseTexHeight + 3*kPad);
     }

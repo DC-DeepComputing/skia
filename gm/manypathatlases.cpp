@@ -28,8 +28,12 @@ namespace skiagm {
 class ManyPathAtlasesGM : public GM {
 public:
     ManyPathAtlasesGM(int maxAtlasSize) : fMaxAtlasSize(maxAtlasSize) {}
+
+    const char* getName() const override {
+        return SkStringPrintf("manypathatlases_%i", fMaxAtlasSize).c_str();
+    }
+
 private:
-    SkString onShortName() override { return SkStringPrintf("manypathatlases_%i", fMaxAtlasSize); }
     SkISize onISize() override { return SkISize::Make(128, 128); }
 
     void modifyGrContextOptions(GrContextOptions* ctxOptions) override {

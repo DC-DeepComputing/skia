@@ -122,16 +122,13 @@ protected:
         return "";
     }
 
-    SkString onShortName() override {
+    const char* getName() const override {
         if (kRect_Clip == fClip && !fAntiAlias) {
-            return SkString("complexclip2");
+        return "complexclip2";
         }
 
-        SkString str;
-        str.printf("complexclip2_%s_%s",
-                    ClipStr(fClip),
-                    fAntiAlias ? "aa" : "bw");
-        return str;
+        return SkStringPrintf("complexclip2_%s_%s", ClipStr(fClip), fAntiAlias ? "aa" : "bw")
+                .c_str();
     }
 
     SkISize onISize() override {

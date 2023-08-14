@@ -222,9 +222,7 @@ public:
     LocalMatrixOrder() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("localmatrix_order");
-    }
+    const char* getName() const override { return "localmatrix_order"; }
 
     SkISize onISize() override { return SkISize::Make(500, 500); }
 

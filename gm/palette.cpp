@@ -75,6 +75,10 @@ public:
                   const SkFontArguments::Palette& paletteOverride)
             : fName(test_name), fPalette(paletteOverride) {}
 
+    const char* getName() const override {
+        return SkStringPrintf("font_palette_%s", fName.c_str()).c_str();
+    }
+
 protected:
     sk_sp<SkTypeface> fTypefaceDefault;
     sk_sp<SkTypeface> fTypefaceFromStream;
@@ -90,11 +94,6 @@ protected:
 
         fTypefaceFromStream = SkFontMgr::RefDefault()->makeFromStream(
                 GetResourceAsStream(kColrCpalTestFontPath), paletteArguments);
-    }
-
-    SkString onShortName() override {
-        SkString gm_name = SkStringPrintf("font_palette_%s", fName.c_str());
-        return gm_name;
     }
 
     SkISize onISize() override { return SkISize::Make(1000, 400); }

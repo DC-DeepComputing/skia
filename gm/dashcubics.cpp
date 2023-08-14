@@ -104,7 +104,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override { return SkString("trimpatheffect"); }
+    const char* getName() const override { return "trimpatheffect"; }
 
     SkISize onISize() override {
         return SkISize::Make(1400, 1000);

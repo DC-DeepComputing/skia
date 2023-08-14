@@ -131,9 +131,7 @@ public:
     ReadPixelsGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("readpixels");
-    }
+    const char* getName() const override { return "readpixels"; }
 
     SkISize onISize() override {
         return SkISize::Make(6 * kWidth, 9 * kHeight);
@@ -191,9 +189,7 @@ public:
     ReadPixelsCodecGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("readpixelscodec");
-    }
+    const char* getName() const override { return "readpixelscodec"; }
 
     SkISize onISize() override {
         return SkISize::Make(3 * (kEncodedWidth + 1), 12 * (kEncodedHeight + 1));
@@ -255,9 +251,7 @@ public:
     ReadPixelsPictureGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("readpixelspicture");
-    }
+    const char* getName() const override { return "readpixelspicture"; }
 
     SkISize onISize() override {
         return SkISize::Make(3 * kWidth, 12 * kHeight);

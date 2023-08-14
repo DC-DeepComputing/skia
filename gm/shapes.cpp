@@ -31,6 +31,9 @@ namespace skiagm {
  * double-blended and/or dropped pixels stand out.
  */
 class ShapesGM : public GM {
+public:
+    const char* getName() const override { return fName.c_str(); }
+
 protected:
     ShapesGM(const char* name, bool antialias) : fName(name), fAntialias(antialias) {
         if (!antialias) {
@@ -38,7 +41,6 @@ protected:
         }
     }
 
-    SkString onShortName() final { return fName; }
     SkISize onISize() override { return SkISize::Make(500, 500); }
 
     void onOnceBeforeDraw() override {

@@ -48,9 +48,7 @@ protected:
         fEmojiText     = ToolUtils::emoji_sample_text();
     }
 
-    SkString onShortName() override {
-        return SkString("dftext");
-    }
+    const char* getName() const override { return "dftext"; }
 
     SkISize onISize() override {
         return SkISize::Make(1024, 768);

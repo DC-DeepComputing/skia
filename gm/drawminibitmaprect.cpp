@@ -84,9 +84,9 @@ public:
         }
     }
 
-protected:
-    SkString onShortName() override { return fName; }
+    const char* getName() const override { return fName.c_str(); }
 
+protected:
     SkISize onISize() override { return SkISize::Make(gSize, gSize); }
 
     void onDraw(SkCanvas* canvas) override {

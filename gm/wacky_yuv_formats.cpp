@@ -770,8 +770,7 @@ public:
         this->setBGColor(0xFFCCCCCC);
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("wacky_yuv_formats");
         if (fUseTargetColorSpace) {
             name += "_cs";
@@ -793,9 +792,10 @@ protected:
                 break;
         }
 
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override {
         int numCols = 2 * (kLastEnum_SkYUVColorSpace + 1); // opacity x #-color-spaces
         int numRows = 1 + (kLast_YUVFormat + 1);  // original + #-yuv-formats
@@ -1024,9 +1024,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("yuv_make_color_space");
-    }
+    const char* getName() const override { return "yuv_make_color_space"; }
 
     SkISize onISize() override {
         int numCols = 4; // (transparent, opaque) x (untagged, tagged)
@@ -1212,10 +1210,7 @@ public:
     YUVSplitterGM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("yuv_splitter");
-    }
+    const char* getName() const override { return "yuv_splitter"; }
 
     SkISize onISize() override {
         return SkISize::Make(1280, 768);

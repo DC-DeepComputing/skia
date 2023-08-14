@@ -97,9 +97,7 @@ protected:
         fBlob = builder.make();
     }
 
-    SkString onShortName() override {
-        return SkString("textblobrandomfont");
-    }
+    const char* getName() const override { return "textblobrandomfont"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

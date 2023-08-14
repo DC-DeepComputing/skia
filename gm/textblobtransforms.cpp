@@ -59,9 +59,7 @@ protected:
         fBlob = builder.make();
     }
 
-    SkString onShortName() override {
-        return SkString("textblobtransforms");
-    }
+    const char* getName() const override { return "textblobtransforms"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

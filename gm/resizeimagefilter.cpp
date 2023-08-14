@@ -31,9 +31,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("resizeimagefilter");
-    }
+    const char* getName() const override { return "resizeimagefilter"; }
 
     void draw(SkCanvas* canvas,
               const SkRect& rect,

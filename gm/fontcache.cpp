@@ -47,15 +47,15 @@ public:
         options->fAllowMultipleGlyphCacheTextures = fAllowMultipleTextures;
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("fontcache");
         if (GrContextOptions::Enable::kYes == fAllowMultipleTextures) {
             name.append("-mt");
         }
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override { return SkISize::Make(kSize, kSize); }
 
     void onOnceBeforeDraw() override {

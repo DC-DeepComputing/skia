@@ -66,6 +66,14 @@ public:
     : fGeomType(geomType) {
     }
 
+    const char* getName() const override {
+        return SkStringPrintf("simpleaaclip_%s",
+                              kRect_GeomType == fGeomType
+                                      ? "rect"
+                                      : (kPath_GeomType == fGeomType ? "path" : "aaclip"))
+                .c_str();
+    }
+
 protected:
     void onOnceBeforeDraw() override {
         // offset the rects a bit so we get anti-aliasing in the rect case
@@ -139,15 +147,6 @@ protected:
         canvas->drawRect(r, paint);
 
         canvas->restore();
-    }
-
-    SkString onShortName() override {
-        SkString str;
-        str.printf("simpleaaclip_%s",
-                    kRect_GeomType == fGeomType ? "rect" :
-                    (kPath_GeomType == fGeomType ? "path" :
-                    "aaclip"));
-        return str;
     }
 
     SkISize onISize() override {

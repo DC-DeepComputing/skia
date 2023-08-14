@@ -35,8 +35,7 @@ public:
         , fLCD(lcd) {
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("varied_text");
         if (fEffectiveClip) {
             name.append("_clipped");
@@ -48,9 +47,10 @@ protected:
         } else {
             name.append("_no_lcd");
         }
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(640, 480);
     }

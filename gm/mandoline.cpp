@@ -142,9 +142,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("mandoline");
-    }
+    const char* getName() const override { return "mandoline"; }
 
     SkISize onISize() override {
         return SkISize::Make(560, 475);

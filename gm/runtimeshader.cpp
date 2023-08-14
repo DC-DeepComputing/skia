@@ -45,7 +45,7 @@ public:
     }
 
     bool runAsBench() const override { return SkToBool(fFlags & kBench_RTFlag); }
-    SkString onShortName() override { return fName; }
+    const char* getName() const override { return fName.c_str(); }
     SkISize onISize() override { return fSize; }
 
     bool onAnimate(double nanos) override {

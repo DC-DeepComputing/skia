@@ -67,10 +67,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("shaderpath");
-    }
+    const char* getName() const override { return "shaderpath"; }
 
     SkISize onISize() override { return SkISize::Make(820, 930); }
 

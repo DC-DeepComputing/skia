@@ -29,10 +29,7 @@ public:
     BigTextGM() {}
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("bigtext");
-    }
+    const char* getName() const override { return "bigtext"; }
 
     SkISize onISize() override {
         return SkISize::Make(640, 480);

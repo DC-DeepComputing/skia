@@ -34,11 +34,8 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        SkString str;
-        str.printf("complexclip3_%s", fDoSimpleClipFirst ? "simple" : "complex");
-        return str;
+    const char* getName() const override {
+        return SkStringPrintf("complexclip3_%s", fDoSimpleClipFirst ? "simple" : "complex").c_str();
     }
 
     SkISize onISize() override { return SkISize::Make(400, 950); }

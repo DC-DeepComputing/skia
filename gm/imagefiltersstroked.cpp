@@ -31,10 +31,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("imagefiltersstroked");
-    }
+    const char* getName() const override { return "imagefiltersstroked"; }
 
     SkISize onISize() override {
         return SkISize::Make(860, 500);

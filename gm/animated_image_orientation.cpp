@@ -75,8 +75,8 @@ public:
     {}
     ~AnimatedImageGM() override = default;
 
-    SkString onShortName() override {
-        return SkStringPrintf("%s_animated_image", fName);
+    const char* getName() const override {
+        return SkStringPrintf("%s_animated_image", fName).c_str();
     }
 
     SkISize onISize() override {

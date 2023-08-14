@@ -38,9 +38,7 @@ public:
     DiscardGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("discard");
-    }
+    const char* getName() const override { return "discard"; }
 
     SkISize onISize() override {
         return SkISize::Make(100, 100);

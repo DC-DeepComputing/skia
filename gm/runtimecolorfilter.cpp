@@ -90,9 +90,7 @@ public:
     RuntimeColorFilterGM() = default;
 
 protected:
-    SkString onShortName() override {
-        return SkString("runtimecolorfilter");
-    }
+    const char* getName() const override { return "runtimecolorfilter"; }
 
     SkISize onISize() override {
         return SkISize::Make(256 * 3, 256 * 2);

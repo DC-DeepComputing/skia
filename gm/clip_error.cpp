@@ -46,7 +46,7 @@ public:
     ClipErrorGM() {}
 
 protected:
-    SkString onShortName() override { return SkString("cliperror"); }
+    const char* getName() const override { return "cliperror"; }
 
     SkISize onISize() override { return SkISize::Make(WIDTH, HEIGHT); }
 

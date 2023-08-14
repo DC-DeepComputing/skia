@@ -37,9 +37,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("xfermodeimagefilter");
-    }
+    const char* getName() const override { return "xfermodeimagefilter"; }
 
     SkISize onISize() override {
         return SkISize::Make(WIDTH, HEIGHT);

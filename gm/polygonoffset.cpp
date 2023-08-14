@@ -428,14 +428,15 @@ public:
         this->setBGColor(0xFFFFFFFF);
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         if (fConvexOnly) {
-            return SkString("convex-polygon-inset");
+            return "convex-polygon-inset";
         } else {
-            return SkString("simple-polygon-offset");
+            return "simple-polygon-offset";
         }
     }
+
+protected:
     SkISize onISize() override { return SkISize::Make(kGMWidth, kGMHeight); }
     bool runAsBench() const override { return true; }
 

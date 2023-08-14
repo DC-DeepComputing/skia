@@ -122,9 +122,7 @@ protected:
             SkTileMode::kClamp);
     }
 
-    SkString onShortName() override {
-        return SkString("highcontrastfilter");
-    }
+    const char* getName() const override { return "highcontrastfilter"; }
 
     SkISize onISize() override {
         return SkISize::Make(800, 420);

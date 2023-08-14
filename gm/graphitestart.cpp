@@ -265,9 +265,7 @@ protected:
     static constexpr int kHeight = 3 * kTileHeight;
     static constexpr int kClipInset = 4;
 
-    SkString onShortName() override {
-        return SkString("graphitestart");
-    }
+    const char* getName() const override { return "graphitestart"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

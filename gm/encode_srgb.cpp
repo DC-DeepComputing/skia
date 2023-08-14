@@ -92,8 +92,7 @@ public:
         : fEncodedFormat(format)
     {}
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         const char* format = nullptr;
         switch (fEncodedFormat) {
             case SkEncodedImageFormat::kPNG:
@@ -108,9 +107,10 @@ protected:
             default:
                 break;
         }
-        return SkStringPrintf("encode-srgb-%s", format);
+        return SkStringPrintf("encode-srgb-%s", format).c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(imageWidth * 2, imageHeight * 15);
     }

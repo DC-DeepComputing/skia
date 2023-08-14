@@ -32,9 +32,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("androidblendmodes");
-    }
+    const char* getName() const override { return "androidblendmodes"; }
 
     SkISize onISize() override {
         return SkISize::Make(kNumCols * kBitmapSize, kNumRows * kBitmapSize);

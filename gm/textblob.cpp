@@ -95,9 +95,7 @@ protected:
         font.textToGlyphs(fText, txtLen, SkTextEncoding::kUTF8, fGlyphs.begin(), glyphCount);
     }
 
-    SkString onShortName() override {
-        return SkString("textblob");
-    }
+    const char* getName() const override { return "textblob"; }
 
     SkISize onISize() override {
         return SkISize::Make(640, 480);

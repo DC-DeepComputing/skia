@@ -32,7 +32,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override { return SkString("graphite-replay"); }
+    const char* getName() const override { return "graphite-replay"; }
 
     SkISize onISize() override { return SkISize::Make(kTileWidth * 3, kTileHeight * 2); }
 

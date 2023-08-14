@@ -43,13 +43,12 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        SkString str;
-        str.printf("complexclip_%s%s%s",
-                   fDoAAClip ? "aa" : "bw",
-                   fDoSaveLayer ? "_layer" : "",
-                   fInvertDraw ? "_invert" : "");
-        return str;
+    const char* getName() const override {
+        return SkStringPrintf("complexclip_%s%s%s",
+                              fDoAAClip ? "aa" : "bw",
+                              fDoSaveLayer ? "_layer" : "",
+                              fInvertDraw ? "_invert" : "")
+                .c_str();
     }
 
     SkISize onISize() override { return SkISize::Make(388, 780); }

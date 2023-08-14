@@ -423,6 +423,10 @@ public:
             : fMakeRendererFn(std::move(makeRendererFn))
             , fName(name) {}
 
+    const char* getName() const override {
+        return SkStringPrintf("compositor_quads_%s", fName.c_str()).c_str();
+    }
+
 protected:
     SkISize onISize() override {
         // Initialize the array of renderers.
@@ -437,12 +441,6 @@ protected:
         static constexpr SkScalar kCellHeight = 1.3f * kRowCount * kTileHeight;
         return SkISize::Make(SkScalarRoundToInt(kCellWidth * kMatrixCount + 175.f),
                              SkScalarRoundToInt(kCellHeight * fRenderers.size() + 75.f));
-    }
-
-    SkString onShortName() override {
-        SkString fullName;
-        fullName.appendf("compositor_quads_%s", fName.c_str());
-        return fullName;
     }
 
     void onOnceBeforeDraw() override {

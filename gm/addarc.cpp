@@ -27,7 +27,7 @@ public:
     AddArcGM() : fRotate(0) {}
 
 protected:
-    SkString onShortName() override { return SkString("addarc"); }
+    const char* getName() const override { return "addarc"; }
 
     SkISize onISize() override { return SkISize::Make(1040, 1040); }
 
@@ -117,7 +117,7 @@ public:
     StrokeCircleGM() : fRotate(0) {}
 
 protected:
-    SkString onShortName() override { return SkString("strokecircle"); }
+    const char* getName() const override { return "strokecircle"; }
 
     SkISize onISize() override { return SkISize::Make(520, 520); }
 
@@ -167,7 +167,7 @@ public:
     FillCircleGM() : fRotate(0) {}
 
 protected:
-    SkString onShortName() override { return SkString("fillcircle"); }
+    const char* getName() const override { return "fillcircle"; }
 
     SkISize onISize() override { return SkISize::Make(520, 520); }
 

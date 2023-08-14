@@ -112,17 +112,17 @@ public:
             , fBaseName(baseName)
             , fManuallyTile(manuallyTile) {}
 
-private:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name(fBaseName);
 
         if (fManuallyTile) {
             name.append("_manual");
         }
 
-        return name;
+        return name.c_str();
     }
 
+private:
     SkISize onISize() override { return {500, 600}; }
 
     void onDraw(SkCanvas* canvas) override {

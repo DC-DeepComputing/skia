@@ -28,11 +28,8 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        SkString str;
-        str.printf("complexclip4_%s",
-                   fDoAAClip ? "aa" : "bw");
-        return str;
+    const char* getName() const override {
+        return SkStringPrintf("complexclip4_%s", fDoAAClip ? "aa" : "bw").c_str();
     }
 
     SkISize onISize() override { return SkISize::Make(970, 780); }

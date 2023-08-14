@@ -23,9 +23,7 @@ public:
     AlphaGradientsGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("alphagradients");
-    }
+    const char* getName() const override { return "alphagradients"; }
 
     SkISize onISize() override {
         return SkISize::Make(640, 480);

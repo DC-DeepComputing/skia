@@ -83,7 +83,7 @@ class BitmapCopyGM : public skiagm::GM {
 
     void onOnceBeforeDraw() override { this->setBGColor(0xFFDDDDDD); }
 
-    SkString onShortName() override { return SkString("bitmapcopy"); }
+    const char* getName() const override { return "bitmapcopy"; }
 
     SkISize onISize() override { return {540, 330}; }
 

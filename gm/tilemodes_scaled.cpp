@@ -68,19 +68,19 @@ public:
 
     SkBitmap    fTexture[std::size(gColorTypes)];
 
+    const char* getName() const override {
+        SkString name("scaled_tilemodes");
+        if (!fPowerOfTwoSize) {
+            name.append("_npot");
+        }
+        return name.c_str();
+    }
+
 protected:
     enum {
         kPOTSize = 4,
         kNPOTSize = 3,
     };
-
-    SkString onShortName() override {
-        SkString name("scaled_tilemodes");
-        if (!fPowerOfTwoSize) {
-            name.append("_npot");
-        }
-        return name;
-    }
 
     SkISize onISize() override { return SkISize::Make(880, 880); }
 
@@ -200,7 +200,7 @@ public:
     ScaledTiling2GM(ShaderProc proc, const char name[]) : fProc(proc), fName(name) {}
 
 private:
-    SkString onShortName() override { return SkString(fName); }
+    const char* getName() const override { return fName; }
 
     SkISize onISize() override { return SkISize::Make(650, 610); }
 

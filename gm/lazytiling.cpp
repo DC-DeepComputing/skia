@@ -181,12 +181,12 @@ public:
         this->setBGColor(0xFFCCCCCC);
     }
 
-protected:
-
-    SkString onShortName() override {
-        return SkStringPrintf("lazytiling_%s", fOrigin == kTopLeft_GrSurfaceOrigin ? "tl" : "bl");
+    const char* getName() const override {
+        return SkStringPrintf("lazytiling_%s", fOrigin == kTopLeft_GrSurfaceOrigin ? "tl" : "bl")
+                .c_str();
     }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(kTotalWidth, kTotalHeight);
     }

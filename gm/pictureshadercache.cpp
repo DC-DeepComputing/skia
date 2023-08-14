@@ -57,9 +57,7 @@ public:
         fPicture = recorder.finishRecordingAsPicture();
     }
 
-    SkString onShortName() override {
-        return SkString("pictureshadercache");
-    }
+    const char* getName() const override { return "pictureshadercache"; }
 
     SkISize onISize() override {
         return SkISize::Make(100, 100);

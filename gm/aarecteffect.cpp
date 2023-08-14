@@ -40,7 +40,7 @@ public:
     AARectEffect() { this->setBGColor(0xFFFFFFFF); }
 
 protected:
-    SkString onShortName() override { return SkString("aa_rect_effect"); }
+    const char* getName() const override { return "aa_rect_effect"; }
 
     SkISize onISize() override { return SkISize::Make(210, 250); }
 

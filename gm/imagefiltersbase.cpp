@@ -202,9 +202,7 @@ public:
     ImageFiltersBaseGM () {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("imagefiltersbase");
-    }
+    const char* getName() const override { return "imagefiltersbase"; }
 
     SkISize onISize() override { return SkISize::Make(700, 500); }
 
@@ -291,10 +289,8 @@ public:
     ImageFiltersTextBaseGM(const char suffix[]) : fSuffix(suffix) {}
 
 protected:
-    SkString onShortName() override {
-        SkString name;
-        name.printf("%s_%s", "textfilter", fSuffix.c_str());
-        return name;
+    const char* getName() const override {
+        return SkStringPrintf("%s_%s", "textfilter", fSuffix.c_str()).c_str();
     }
 
     SkISize onISize() override { return SkISize::Make(512, 342); }

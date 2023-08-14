@@ -114,9 +114,7 @@ protected:
                                             SkTileMode::kClamp);
     }
 
-    SkString onShortName() override {
-        return SkString("lumafilter");
-    }
+    const char* getName() const override { return "lumafilter"; }
 
     SkISize onISize() override {
         return SkISize::Make(600, 420);

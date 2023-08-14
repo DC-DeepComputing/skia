@@ -35,9 +35,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("offsetimagefilter");
-    }
+    const char* getName() const override { return "offsetimagefilter"; }
 
     SkISize onISize() override {
         return SkISize::Make(WIDTH, HEIGHT);
@@ -107,9 +105,7 @@ public:
     SimpleOffsetImageFilterGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("simple-offsetimagefilter");
-    }
+    const char* getName() const override { return "simple-offsetimagefilter"; }
 
     SkISize onISize() override { return SkISize::Make(640, 200); }
 

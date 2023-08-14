@@ -35,10 +35,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("ycbcrimage");
-    }
+    const char* getName() const override { return "ycbcrimage"; }
 
     SkISize onISize() override {
         return SkISize::Make(2*kPad+kImageSize, 2*kPad+kImageSize);

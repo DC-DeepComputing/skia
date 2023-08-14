@@ -164,7 +164,7 @@ protected:
     inline static constexpr int kNumVertTiles = 7;
     inline static constexpr int kNumXtraCols = 2;
 
-    SkString onShortName() override { return SkString("filterfastbounds"); }
+    const char* getName() const override { return "filterfastbounds"; }
 
     SkISize onISize() override {
         return SkISize::Make((std::size(gDrawMthds) + kNumXtraCols) * kTileWidth,

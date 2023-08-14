@@ -33,9 +33,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("bigblurs");
-    }
+    const char* getName() const override { return "bigblurs"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

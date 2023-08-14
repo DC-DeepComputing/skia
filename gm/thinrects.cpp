@@ -27,9 +27,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString(fRound ? "thinroundrects" : "thinrects");
-    }
+    const char* getName() const override { return fRound ? "thinroundrects" : "thinrects"; }
 
     SkISize onISize() override {
         return SkISize::Make(240, 320);

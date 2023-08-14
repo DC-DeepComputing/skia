@@ -31,13 +31,13 @@ public:
         this->setBGColor(0xFFFFFFFF);
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("imagesrc2_");
         name.append(fSuffix);
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override { return SkISize::Make(256, 256); }
 
     // Create an image with high frequency vertical stripes

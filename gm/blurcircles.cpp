@@ -25,9 +25,7 @@ public:
 protected:
     bool runAsBench() const override { return true; }
 
-    SkString onShortName() override {
-        return SkString("blurcircles");
-    }
+    const char* getName() const override { return "blurcircles"; }
 
     SkISize onISize() override {
         return SkISize::Make(950, 950);

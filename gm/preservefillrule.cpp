@@ -37,12 +37,13 @@ class PreserveFillRuleGM : public GM {
 public:
     PreserveFillRuleGM(bool big) : fBig(big) , fStarSize((big) ? 200 : 20) {}
 
-private:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("preservefillrule");
         name += (fBig) ? "_big" : "_little";
-        return name;
+        return name.c_str();
     }
+
+private:
     SkISize onISize() override { return SkISize::Make(fStarSize * 2, fStarSize * 2); }
 
     void modifyGrContextOptions(GrContextOptions* ctxOptions) override {

@@ -48,7 +48,7 @@ static void install_lighting(SkPaint* paint, uint32_t mul, uint32_t add) {
 }
 
 class ColorFiltersGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("lightingcolorfilter"); }
+    const char* getName() const override { return "lightingcolorfilter"; }
 
     SkISize onISize() override { return {620, 430}; }
 
@@ -84,7 +84,7 @@ DEF_GM(return new ColorFiltersGM;)
 
 class HSLColorFilterGM : public skiagm::GM {
 protected:
-    SkString onShortName() override { return SkString("hslcolorfilter"); }
+    const char* getName() const override { return "hslcolorfilter"; }
 
     SkISize onISize() override { return { 840, 1100 }; }
 

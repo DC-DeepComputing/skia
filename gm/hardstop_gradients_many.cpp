@@ -38,9 +38,7 @@ public:
     HardstopGradientsManyGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("hardstop_gradients_many");
-    }
+    const char* getName() const override { return "hardstop_gradients_many"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

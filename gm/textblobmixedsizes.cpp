@@ -40,6 +40,10 @@ public:
     // This gm tests that textblobs of mixed sizes with a large glyph will render properly
     TextBlobMixedSizes(bool useDFT) : fUseDFT(useDFT) {}
 
+    const char* getName() const override {
+        return SkStringPrintf("textblobmixedsizes%s", fUseDFT ? "_df" : "").c_str();
+    }
+
 protected:
     void onOnceBeforeDraw() override {
         SkTextBlobBuilder builder;
@@ -91,11 +95,6 @@ protected:
 
         // build
         fBlob = builder.make();
-    }
-
-    SkString onShortName() override {
-        return SkStringPrintf("textblobmixedsizes%s",
-                              fUseDFT ? "_df" : "");
     }
 
     SkISize onISize() override {

@@ -140,25 +140,18 @@ void GM::onDraw(SkCanvas*) { SK_ABORT("Not implemented."); }
 
 
 SkISize SimpleGM::onISize() { return fSize; }
-SkString SimpleGM::onShortName() { return fName; }
+const char* SimpleGM::getName() const { return fName.c_str(); }
 DrawResult SimpleGM::onDraw(SkCanvas* canvas, SkString* errorMsg) {
     return fDrawProc(canvas, errorMsg);
 }
 
 #if defined(SK_GANESH)
 SkISize SimpleGpuGM::onISize() { return fSize; }
-SkString SimpleGpuGM::onShortName() { return fName; }
+const char* SimpleGpuGM::getName() const { return fName.c_str(); }
 DrawResult SimpleGpuGM::onDraw(GrRecordingContext* rContext, SkCanvas* canvas, SkString* errorMsg) {
     return fDrawProc(rContext, canvas, errorMsg);
 }
 #endif
-
-const char* GM::getName() {
-    if (fShortName.size() == 0) {
-        fShortName = this->onShortName();
-    }
-    return fShortName.c_str();
-}
 
 void GM::setBGColor(SkColor color) {
     fBGColor = color;

@@ -187,8 +187,7 @@ public:
             , fMainImage(nullptr)
             , fAuxImage(nullptr) {}
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name = SkString("imagemakewithfilter");
 
         if (fFilterWithCropRect) {
@@ -197,9 +196,10 @@ protected:
         if (fStrategy == Strategy::kSaveLayer) {
             name.append("_ref");
         }
-        return name;
+        return name.c_str();
     }
 
+protected:
     SkISize onISize() override { return SkISize::Make(1840, 860); }
 
     void onOnceBeforeDraw() override {

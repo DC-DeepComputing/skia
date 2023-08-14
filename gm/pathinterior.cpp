@@ -33,9 +33,7 @@ protected:
         return SkISize::Make(770, 770);
     }
 
-    SkString onShortName() override {
-        return SkString("pathinterior");
-    }
+    const char* getName() const override { return "pathinterior"; }
 
     void show(SkCanvas* canvas, const SkPath& path) {
         SkPaint paint;

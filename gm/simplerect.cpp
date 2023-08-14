@@ -20,11 +20,7 @@ public:
     SimpleRectGM() {}
 
 protected:
-    SkString onShortName() override {
-        SkString name;
-        name.printf("simplerect");
-        return name;
-    }
+    const char* getName() const override { return SkStringPrintf("simplerect").c_str(); }
 
     SkISize onISize() override {
         return SkISize::Make(800, 800);

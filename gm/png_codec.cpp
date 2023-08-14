@@ -207,14 +207,11 @@ public:
         };
     }
 
-protected:
     // Based on CodecSrc::name().
     // https://skia.googlesource.com/skia/+/ce49fc71bc7cc25244020cd3e64764a6d08e54fb/dm/DMSrcSink.cpp#828
-    SkString onShortName() override {
-        SkString name = SkOSPath::Basename(fPath.c_str());
-        return name;
-    }
+    const char* getName() const override { return SkOSPath::Basename(fPath.c_str()).c_str(); }
 
+protected:
     // Based on CodecSrc::size().
     // https://skia.googlesource.com/skia/+/ce49fc71bc7cc25244020cd3e64764a6d08e54fb/dm/DMSrcSink.cpp#803
     SkISize onISize() override {

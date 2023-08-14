@@ -102,7 +102,7 @@ public:
 
     bool runAsBench() const override { return true; }
 
-    SkString onShortName() override { return SkString("user_typeface"); }
+    const char* getName() const override { return "user_typeface"; }
 
     SkISize onISize() override { return {810, 452}; }
 

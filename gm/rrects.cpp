@@ -48,14 +48,7 @@ public:
     };
     RRectGM(Type type) : fType(type) { }
 
-protected:
-
-    void onOnceBeforeDraw() override {
-        this->setBGColor(0xFFDDDDDD);
-        this->setUpRRects();
-    }
-
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString name("rrect");
         switch (fType) {
             case kBW_Draw_Type:
@@ -74,7 +67,13 @@ protected:
                 name.append("_effect");
                 break;
         }
-        return name;
+        return name.c_str();
+    }
+
+protected:
+    void onOnceBeforeDraw() override {
+        this->setBGColor(0xFFDDDDDD);
+        this->setUpRRects();
     }
 
     SkISize onISize() override { return SkISize::Make(kImageWidth, kImageHeight); }

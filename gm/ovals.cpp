@@ -36,10 +36,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("ovals");
-    }
+    const char* getName() const override { return "ovals"; }
 
     SkISize onISize() override {
         return SkISize::Make(1200, 900);

@@ -177,9 +177,9 @@ public:
     sk_sp<SkImage>      fImage;
     SkString            fName;
 
-protected:
-    SkString onShortName() override { return fName; }
+    const char* getName() const override { return fName.c_str(); }
 
+protected:
     SkISize onISize() override { return SkISize::Make(gSize, gSize); }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {

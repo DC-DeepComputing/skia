@@ -31,9 +31,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("imageblurtiled");
-    }
+    const char* getName() const override { return "imageblurtiled"; }
 
     SkISize onISize() override {
         return SkISize::Make(WIDTH, HEIGHT);

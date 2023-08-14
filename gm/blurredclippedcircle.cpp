@@ -30,10 +30,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString("blurredclippedcircle");
-    }
+    const char* getName() const override { return "blurredclippedcircle"; }
 
     SkISize onISize() override {
         return SkISize::Make(kWidth, kHeight);

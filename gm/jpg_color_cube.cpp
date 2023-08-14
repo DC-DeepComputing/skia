@@ -29,9 +29,7 @@ public:
     ColorCubeGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("jpg-color-cube");
-    }
+    const char* getName() const override { return "jpg-color-cube"; }
 
     SkISize onISize() override {
         return SkISize::Make(512, 512);

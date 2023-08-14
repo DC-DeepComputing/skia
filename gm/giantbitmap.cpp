@@ -75,9 +75,7 @@ public:
 
     ~GiantBitmapGM() override { delete fBM; }
 
-protected:
-
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString str("giantbitmap_");
         switch (fMode) {
             case SkTileMode::kClamp:
@@ -97,9 +95,10 @@ protected:
         }
         str.append(fDoFilter ? "_bilerp" : "_point");
         str.append(fDoRotate ? "_rotate" : "_scale");
-        return str;
+        return str.c_str();
     }
 
+protected:
     SkISize onISize() override { return SkISize::Make(640, 480); }
 
     void onDraw(SkCanvas* canvas) override {

@@ -46,7 +46,7 @@ public:
     FilterBugGM() { this->setBGColor(SK_ColorRED); }
 
 protected:
-    SkString onShortName() override { return SkString("filterbug"); }
+    const char* getName() const override { return "filterbug"; }
 
     SkISize onISize() override { return SkISize::Make(150, 150); }
 

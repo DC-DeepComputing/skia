@@ -173,13 +173,14 @@ public:
         this->setBGColor(0xFFFFFFFF);
     }
 
-protected:
-    SkString onShortName() override {
+    const char* getName() const override {
         if (fDoStrokeAndFill) {
-            return SkString("convex-lineonly-paths-stroke-and-fill");
+            return "convex-lineonly-paths-stroke-and-fill";
         }
-        return SkString("convex-lineonly-paths");
+        return "convex-lineonly-paths";
     }
+
+protected:
     SkISize onISize() override { return SkISize::Make(kGMWidth, kGMHeight); }
     bool runAsBench() const override { return true; }
 

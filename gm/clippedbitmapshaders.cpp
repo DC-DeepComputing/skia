@@ -58,7 +58,7 @@ protected:
     SkTileMode fMode;
     bool fHQ;
 
-    SkString onShortName() override {
+    const char* getName() const override {
         SkString descriptor;
         switch (fMode) {
             case SkTileMode::kRepeat:
@@ -78,7 +78,7 @@ protected:
         if (fHQ) {
             descriptor.append("-hq");
         }
-        return descriptor;
+        return descriptor.c_str();
     }
 
     SkISize onISize() override { return {300, 300}; }

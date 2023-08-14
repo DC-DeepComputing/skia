@@ -33,11 +33,9 @@ class Xfermodes2GM : public GM {
 public:
     Xfermodes2GM(bool grayscale) : fGrayscale(grayscale) {}
 
-protected:
-    SkString onShortName() override {
-        return fGrayscale ? SkString("xfermodes2_gray") : SkString("xfermodes2");
-    }
+    const char* getName() const override { return fGrayscale ? "xfermodes2_gray" : "xfermodes2"; }
 
+protected:
     SkISize onISize() override {
         return SkISize::Make(455, 475);
     }

@@ -33,10 +33,7 @@ public:
     }
 
 protected:
-
-    SkString onShortName() override {
-        return SkString(fMinimal ? "persptext_minimal" : "persptext");
-    }
+    const char* getName() const override { return fMinimal ? "persptext_minimal" : "persptext"; }
 
     SkISize onISize() override {
         return SkISize::Make(1024, 768);
