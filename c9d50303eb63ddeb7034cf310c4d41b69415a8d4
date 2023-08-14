@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07adb09f_28801213",
+        "filename": "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dc2c5e1_29e9bc8f",
+      "range": {
+        "startLine": 198,
+        "startChar": 98,
+        "endLine": 198,
+        "endChar": 110
+      },
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55725c9d_2d4e92ff",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-08-14T14:38:29Z",
       "side": 1,
       "message": "Line wrap",
+      "range": {
+        "startLine": 218,
+        "startChar": 97,
+        "endLine": 218,
+        "endChar": 109
+      },
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69935ab6_ef1a7061",
+        "filename": "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55725c9d_2d4e92ff",
       "range": {
         "startLine": 218,
         "startChar": 97,
@@ -104,6 +152,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "178061e0_4b8638bf",
+        "filename": "src/gpu/ganesh/mtl/GrMtlSemaphore.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "762ac0ff_75c64cd7",
+      "range": {
+        "startLine": 29,
+        "startChar": 90,
+        "endLine": 29,
+        "endChar": 109
+      },
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ec74a3a_f2ed5aa7",
+        "filename": "src/gpu/graphite/mtl/MtlComputeCommandEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "I believe the iOS 0.3 is a mistake as there is no 0.3 version of that OS and all other cases are 8.3. And the tvOS could work with 8.3 as well, but since tvOS only started at 9.0 I might as well make it correct.",
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b661175_bea6d48c",
@@ -117,6 +206,30 @@
       "writtenOn": "2023-08-14T14:38:29Z",
       "side": 1,
       "message": "Line wrap",
+      "range": {
+        "startLine": 200,
+        "startChar": 98,
+        "endLine": 200,
+        "endChar": 110
+      },
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdc61e2b_5db896dd",
+        "filename": "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b661175_bea6d48c",
       "range": {
         "startLine": 200,
         "startChar": 98,
@@ -150,6 +263,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1465465a_41b71e91",
+        "filename": "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32e2ab7c_24943a29",
+      "range": {
+        "startLine": 220,
+        "startChar": 97,
+        "endLine": 220,
+        "endChar": 109
+      },
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93259c52_a60ebfe9",
@@ -163,6 +300,30 @@
       "writtenOn": "2023-08-14T14:38:29Z",
       "side": 1,
       "message": "Line wrap",
+      "range": {
+        "startLine": 56,
+        "startChar": 90,
+        "endLine": 56,
+        "endChar": 102
+      },
+      "revId": "c9d50303eb63ddeb7034cf310c4d41b69415a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "919f26a8_38bfad9a",
+        "filename": "tools/window/MetalWindowContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2023-08-14T18:08:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93259c52_a60ebfe9",
       "range": {
         "startLine": 56,
         "startChar": 90,
