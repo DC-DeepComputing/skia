@@ -16,13 +16,15 @@
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 #define VK_CALL(X) gpu->vkInterface()->fFunctions.f##X
 
 namespace GrAHardwareBufferUtils {
 
-GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffer2* hardwareBuffer,
                                        uint32_t bufferFormat, bool requireKnownFormat) {
     GrBackendApi backend = dContext->backend();
 
@@ -67,7 +69,7 @@ GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffe
                 hwbProps.pNext = &hwbFormatProps;
 
                 VkResult err = VK_CALL(GetAndroidHardwareBufferProperties(device,
-                                                                          hardwareBuffer,
+                                                                          hardwareBuffer->buffer1(),
                                                                           &hwbProps));
                 if (VK_SUCCESS != err) {
                     return GrBackendFormat();
@@ -128,7 +130,7 @@ void update_vk_image(void* context, GrDirectContext* dContext) {
 }
 
 static GrBackendTexture make_vk_backend_texture(
-        GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
+        GrDirectContext* dContext, AHardwareBuffer2* hardwareBuffer,
         int width, int height,
         DeleteImageProc* deleteProc,
         UpdateImageProc* updateProc,
@@ -169,7 +171,7 @@ static GrBackendTexture make_vk_backend_texture(
     hwbProps.sType = VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_PROPERTIES_ANDROID;
     hwbProps.pNext = &hwbFormatProps;
 
-    err = VK_CALL(GetAndroidHardwareBufferProperties(device, hardwareBuffer, &hwbProps));
+    err = VK_CALL(GetAndroidHardwareBufferProperties(device, hardwareBuffer->buffer1(), &hwbProps));
     if (VK_SUCCESS != err) {
         return GrBackendTexture();
     }
@@ -291,7 +293,7 @@ static GrBackendTexture make_vk_backend_texture(
     VkImportAndroidHardwareBufferInfoANDROID hwbImportInfo;
     hwbImportInfo.sType = VK_STRUCTURE_TYPE_IMPORT_ANDROID_HARDWARE_BUFFER_INFO_ANDROID;
     hwbImportInfo.pNext = nullptr;
-    hwbImportInfo.buffer = hardwareBuffer;
+    hwbImportInfo.buffer = hardwareBuffer->buffer1();
 
     VkMemoryDedicatedAllocateInfo dedicatedAllocInfo;
     dedicatedAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO;
@@ -365,7 +367,7 @@ static bool can_import_protected_content(GrDirectContext* dContext) {
 }
 
 GrBackendTexture MakeVulkanBackendTexture(GrDirectContext* dContext,
-                                          AHardwareBuffer* hardwareBuffer,
+                                          AHardwareBuffer2* hardwareBuffer,
                                           int width, int height,
                                           DeleteImageProc* deleteProc,
                                           UpdateImageProc* updateProc,

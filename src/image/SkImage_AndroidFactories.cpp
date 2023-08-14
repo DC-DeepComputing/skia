@@ -68,17 +68,19 @@
 #include <cstddef>
 #include <utility>
 
+#include "tools/gpu/android/AHBUtils_android.h"
+
 #include <android/hardware_buffer.h>
 
 namespace SkImages {
 
-sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, SkAlphaType at) {
+sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer2* graphicBuffer, SkAlphaType at) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, nullptr,
                                                      kTopLeft_GrSurfaceOrigin);
     return DeferredFromGenerator(std::move(gen));
 }
 
-sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer,
+sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer2* graphicBuffer,
                                            SkAlphaType at,
                                            sk_sp<SkColorSpace> cs,
                                            GrSurfaceOrigin surfaceOrigin) {
@@ -88,10 +90,10 @@ sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer,
 
 sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
                                                   const SkPixmap& pixmap,
-                                                  AHardwareBuffer* hardwareBuffer,
+                                                  AHardwareBuffer2* hardwareBuffer,
                                                   GrSurfaceOrigin surfaceOrigin) {
     AHardwareBuffer_Desc bufferDesc;
-    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+    AHardwareBuffer_describe(hardwareBuffer->buffer1(), &bufferDesc);
 
     if (!SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE)) {
         return nullptr;
