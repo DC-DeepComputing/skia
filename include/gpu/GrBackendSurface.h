@@ -388,6 +388,7 @@ private:
 #ifdef SK_GL
     friend class GrGLTexture;
     friend class GrGLGpu;    // for getGLTextureParams
+    friend class GrGLBackendSurfacePriv;
     GrBackendTexture(int width,
                      int height,
                      GrMipmapped,

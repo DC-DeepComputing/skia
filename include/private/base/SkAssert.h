@@ -9,6 +9,7 @@
 #define SkAssert_DEFINED
 
 #include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAttributes.h"
 #include "include/private/base/SkDebug.h" // IWYU pragma: keep
 
 #include <cstddef>
@@ -163,8 +164,8 @@ SK_API inline void sk_collection_not_empty(bool empty) {
 }
 
 template <typename T>
-SK_API inline size_t check_size_bytes_too_big(size_t size) {
-    static constexpr size_t kMaxSize = std::numeric_limits<size_t>::max() / sizeof(T);
+SK_ALWAYS_INLINE size_t check_size_bytes_too_big(size_t size) {
+    const size_t kMaxSize = std::numeric_limits<size_t>::max() / sizeof(T);
     if (size > kMaxSize) {
         #if defined(SK_DEBUG)
             sk_print_size_too_big(size, kMaxSize);

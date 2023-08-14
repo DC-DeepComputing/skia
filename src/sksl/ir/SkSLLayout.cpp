@@ -19,6 +19,15 @@ namespace SkSL {
 std::string Layout::paddedDescription() const {
     std::string result;
     auto separator = SkSL::String::Separator();
+    if (fFlags & LayoutFlag::kSPIRV) {
+        result += separator() + "spirv";
+    }
+    if (fFlags & LayoutFlag::kMetal) {
+        result += separator() + "metal";
+    }
+    if (fFlags & LayoutFlag::kWGSL) {
+        result += separator() + "wgsl";
+    }
     if (fLocation >= 0) {
         result += separator() + "location = " + std::to_string(fLocation);
     }
@@ -59,6 +68,15 @@ std::string Layout::paddedDescription() const {
     if (fFlags & LayoutFlag::kColor) {
         result += separator() + "color";
     }
+    if (fLocalSizeX >= 0) {
+        result += separator() + "local_size_x = " + std::to_string(fLocalSizeX);
+    }
+    if (fLocalSizeY >= 0) {
+        result += separator() + "local_size_y = " + std::to_string(fLocalSizeY);
+    }
+    if (fLocalSizeZ >= 0) {
+        result += separator() + "local_size_z = " + std::to_string(fLocalSizeZ);
+    }
     if (result.size() > 0) {
         result = "layout (" + result + ") ";
     }
@@ -92,8 +110,10 @@ bool Layout::checkPermittedLayout(const Context& context,
         { LayoutFlag::kInputAttachmentIndex,     "input_attachment_index"},
         { LayoutFlag::kSPIRV,                    "spirv"},
         { LayoutFlag::kMetal,                    "metal"},
-        { LayoutFlag::kGL,                       "gl"},
         { LayoutFlag::kWGSL,                     "wgsl"},
+        { LayoutFlag::kLocalSizeX,               "local_size_x"},
+        { LayoutFlag::kLocalSizeY,               "local_size_y"},
+        { LayoutFlag::kLocalSizeZ,               "local_size_z"},
     };
 
     bool success = true;
@@ -115,10 +135,10 @@ bool Layout::checkPermittedLayout(const Context& context,
         permittedLayoutFlags &= ~LayoutFlag::kTexture;
         permittedLayoutFlags &= ~LayoutFlag::kSampler;
     }
-    // The `set` flag is not allowed when explicitly targeting Metal and GLSL. It is currently
-    // allowed when no backend flag is present.
+    // The `set` flag is not allowed when explicitly targeting Metal. It is currently allowed when
+    // no backend flag is present.
     // TODO(skia:14023): Further restrict the `set` flag to SPIR-V and WGSL
-    if (layoutFlags & (LayoutFlag::kMetal | LayoutFlag::kGL)) {
+    if (layoutFlags & LayoutFlag::kMetal) {
         permittedLayoutFlags &= ~LayoutFlag::kSet;
     }
     // TODO(skia:14023): Restrict the `push_constant` flag to SPIR-V and WGSL.
@@ -147,7 +167,10 @@ bool Layout::operator==(const Layout& other) const {
            fIndex                == other.fIndex &&
            fSet                  == other.fSet &&
            fBuiltin              == other.fBuiltin &&
-           fInputAttachmentIndex == other.fInputAttachmentIndex;
+           fInputAttachmentIndex == other.fInputAttachmentIndex &&
+           fLocalSizeX           == other.fLocalSizeX &&
+           fLocalSizeY           == other.fLocalSizeY &&
+           fLocalSizeZ           == other.fLocalSizeZ;
 }
 
 }  // namespace SkSL

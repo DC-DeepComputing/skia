@@ -484,6 +484,14 @@ exports_files(
     tag = "git_revision:1c4151ff5c1d6fbf7fa800b8d4bb34d3abc03a41",
 )
 
+cipd_install(
+    name = "skimage",
+    build_file = "//bazel/external/skimage:BUILD.bazel",
+    cipd_package = "skia/bots/skimage",
+    # From https://chrome-infra-packages.appspot.com/p/skia/bots/skimage/+/sRladEfUAXeYIBD3Pt3ke0Fd08vtYVLrg4IASKk5F6YC
+    sha256 = "b1195a7447d40177982010f73edde47b415dd3cbed6152eb83820048a93917a6",
+    tag = "version:47",
+)
 
 ##################################
 # Docker rules and dependencies. #
@@ -522,7 +530,7 @@ load(
 # Pulls the gcr.io/skia-public/debugger-app-base container.
 container_pull(
     name = "debugger-app-base",
-    digest = "sha256:a8be3b12ad179d02176f2d8dbf6408561e581c4dc0e24a02fd1b3d0152f31e76",
+    digest = "sha256:b026cfa1688634102f679f075554a06ac4807720d333ebd217b4b5b40da8365c",
     registry = "gcr.io",
     repository = "skia-public/debugger-app-base",
 )

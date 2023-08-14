@@ -134,7 +134,7 @@ inline GrMipmapped SkImage_Ganesh::ProxyChooser::mipmapped() const {
 }
 
 #ifdef SK_DEBUG
-inline GrBackendFormat SkImage_Ganesh::ProxyChooser::backendFormat() {
+inline const GrBackendFormat& SkImage_Ganesh::ProxyChooser::backendFormat() {
     SkAutoSpinlock hold(fLock);
     if (fVolatileProxy) {
         SkASSERT(fVolatileProxy->backendFormat() == fStableProxy->backendFormat());
@@ -300,8 +300,13 @@ sk_sp<SkImage> SkImage_Ganesh::onMakeColorTypeAndColorSpace(SkColorType targetCT
         return nullptr;
     }
 
+    sk_sp<GrSurfaceProxy> proxy = fChooser.chooseProxy(dContext);
+
     auto sfc = dContext->priv().makeSFCWithFallback(GrImageInfo(info, this->dimensions()),
-                                                    SkBackingFit::kExact);
+                                                    SkBackingFit::kExact,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo,
+                                                    proxy->isProtected());
     if (!sfc) {
         return nullptr;
     }

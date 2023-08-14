@@ -24,6 +24,7 @@
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/SkRenderEngineAbortf.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrCpuBuffer.h"
@@ -3292,31 +3293,31 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
     auto errorHandler = this->getContext()->priv().getShaderErrorHandler();
     std::string glsl[kGrShaderTypeCount];
     SkSL::ProgramSettings settings;
-    std::unique_ptr<SkSL::Program> program =
-            GrSkSLtoGLSL(this, SkSL::ProgramKind::kVertex, vertexSkSL, settings,
-                         &glsl[kVertex_GrShaderType], errorHandler);
+    SkSL::Program::Interface interface;
+    SkSLToGLSL(this->shaderCompiler(), vertexSkSL, SkSL::ProgramKind::kVertex, settings,
+               &glsl[kVertex_GrShaderType], &interface, errorHandler);
     GrGLuint vshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fCopyPrograms[progIdx].fProgram,
                                                   GR_GL_VERTEX_SHADER,
                                                   glsl[kVertex_GrShaderType],
                                                   fProgramCache->stats(),
                                                   errorHandler);
-    SkASSERT(program->fInterface == SkSL::Program::Interface());
+    SkASSERT(interface == SkSL::Program::Interface());
     if (!vshader) {
         // Just delete the program, no shaders to delete
         cleanup_program(this, &fCopyPrograms[progIdx].fProgram, nullptr, nullptr);
         return false;
     }
 
-    program = GrSkSLtoGLSL(this, SkSL::ProgramKind::kFragment, fragmentSkSL, settings,
-                           &glsl[kFragment_GrShaderType], errorHandler);
+    SkSLToGLSL(this->shaderCompiler(), fragmentSkSL, SkSL::ProgramKind::kFragment, settings,
+               &glsl[kFragment_GrShaderType], &interface, errorHandler);
     GrGLuint fshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fCopyPrograms[progIdx].fProgram,
                                                   GR_GL_FRAGMENT_SHADER,
                                                   glsl[kFragment_GrShaderType],
                                                   fProgramCache->stats(),
                                                   errorHandler);
-    SkASSERT(program->fInterface == SkSL::Program::Interface());
+    SkASSERT(interface == SkSL::Program::Interface());
     if (!fshader) {
         // Delete the program and previously compiled vertex shader
         cleanup_program(this, &fCopyPrograms[progIdx].fProgram, &vshader, nullptr);
@@ -3470,31 +3471,31 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
     auto errorHandler = this->getContext()->priv().getShaderErrorHandler();
     std::string glsl[kGrShaderTypeCount];
     SkSL::ProgramSettings settings;
+    SkSL::Program::Interface interface;
 
-    std::unique_ptr<SkSL::Program> program =
-            GrSkSLtoGLSL(this, SkSL::ProgramKind::kVertex, vertexSkSL, settings,
-                         &glsl[kVertex_GrShaderType], errorHandler);
+    SkSLToGLSL(this->shaderCompiler(), vertexSkSL, SkSL::ProgramKind::kVertex, settings,
+               &glsl[kVertex_GrShaderType], &interface, errorHandler);
     GrGLuint vshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fMipmapPrograms[progIdx].fProgram,
                                                   GR_GL_VERTEX_SHADER,
                                                   glsl[kVertex_GrShaderType],
                                                   fProgramCache->stats(),
                                                   errorHandler);
-    SkASSERT(program->fInterface == SkSL::Program::Interface());
+    SkASSERT(interface == SkSL::Program::Interface());
     if (!vshader) {
         cleanup_program(this, &fMipmapPrograms[progIdx].fProgram, nullptr, nullptr);
         return false;
     }
 
-    program = GrSkSLtoGLSL(this, SkSL::ProgramKind::kFragment, fragmentSkSL, settings,
-                           &glsl[kFragment_GrShaderType], errorHandler);
+    SkSLToGLSL(this->shaderCompiler(), fragmentSkSL, SkSL::ProgramKind::kFragment, settings,
+               &glsl[kFragment_GrShaderType], &interface, errorHandler);
     GrGLuint fshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fMipmapPrograms[progIdx].fProgram,
                                                   GR_GL_FRAGMENT_SHADER,
                                                   glsl[kFragment_GrShaderType],
                                                   fProgramCache->stats(),
                                                   errorHandler);
-    SkASSERT(program->fInterface == SkSL::Program::Interface());
+    SkASSERT(interface == SkSL::Program::Interface());
     if (!fshader) {
         cleanup_program(this, &fMipmapPrograms[progIdx].fProgram, &vshader, nullptr);
         return false;
@@ -3656,6 +3657,8 @@ bool GrGLGpu::copySurfaceAsBlitFramebuffer(GrSurface* dst, GrSurface* src, const
 }
 
 bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
+    using RegenerateMipmapType = GrGLCaps::RegenerateMipmapType;
+
     auto glTex = static_cast<GrGLTexture*>(texture);
     // Mipmaps are only supported on 2D textures:
     if (GR_GL_TEXTURE_2D != glTex->target()) {
@@ -3730,6 +3733,7 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     width = texture->width();
     height = texture->height();
 
+    std::unique_ptr<GrSemaphore> semaphore;
     for (GrGLint level = 1; level < levelCount; ++level) {
         // Get and bind the program for this particular downsample (filter shape can vary):
         int progIdx = TextureSizeToMipmapProgramIdx(width, height);
@@ -3742,6 +3746,12 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
             }
         }
         this->flushProgram(fMipmapPrograms[progIdx].fProgram);
+
+        if (this->glCaps().regenerateMipmapType() == RegenerateMipmapType::kBasePlusSync &&
+            level > 1) {
+            this->waitSemaphore(semaphore.get());
+            semaphore.reset();
+        }
 
         // Texcoord uniform is expected to contain (1/w, (w-1)/w, 1/h, (h-1)/h)
         const float invWidth = 1.0f / width;
@@ -3757,7 +3767,7 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         // validation for the framebuffer. However, by making it clear that a
         // rendering feedback loop is not occurring, we avoid hitting a slow
         // path on some drivers.
-        if (this->glCaps().setMaxLevelForRegenerateMipMapLevels()) {
+        if (this->glCaps().regenerateMipmapType() == RegenerateMipmapType::kBasePlusMaxLevel) {
             GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LEVEL, level - 1));
         }
 
@@ -3769,6 +3779,12 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         this->flushViewport(SkIRect::MakeWH(width, height), height, kTopLeft_GrSurfaceOrigin);
 
         GL_CALL(DrawArrays(GR_GL_TRIANGLE_STRIP, 0, 4));
+
+        if (this->glCaps().regenerateMipmapType() == RegenerateMipmapType::kBasePlusSync &&
+            level < levelCount-1) {
+            semaphore = this->makeSemaphore(true);
+            this->insertSemaphore(semaphore.get());
+        }
     }
 
     // Unbind:
@@ -3779,7 +3795,9 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     GrGLTextureParameters::NonsamplerState nonsamplerState = glTex->parameters()->nonsamplerState();
     // We drew the 2nd to last level into the last level.
     nonsamplerState.fBaseMipMapLevel = levelCount - 2;
-    nonsamplerState.fMaxMipmapLevel = levelCount - 2;
+    if (this->glCaps().regenerateMipmapType() == RegenerateMipmapType::kBasePlusMaxLevel) {
+        nonsamplerState.fMaxMipmapLevel = levelCount - 2;
+    }
     glTex->parameters()->set(nullptr, nonsamplerState, fResetTimestampForTextureParameters);
 
     return true;
