@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd4b67e_8252879b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-15T14:56:02Z",
+      "side": 1,
+      "message": "Chromium seems fine, and I couldn\u0027t find any usage in other clients, either.",
+      "revId": "c4ae628b0c17162aeb3c89a479b387e5cc98d601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
