@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94e95e2f_648fde02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-15T16:55:17Z",
+      "side": 1,
+      "message": "Asset + SlotID: asset gets wrapped in Slot\u0027s proxy\n!Asset + SlotID: generate a proxy with a null asset to be swapped later\nAsset + !SlotID: original FootageLayer behavior",
+      "revId": "4e63da8083f5291e414f539f1eed5d0b0f8651df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
