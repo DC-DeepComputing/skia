@@ -9,6 +9,7 @@
 
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "src/gpu/MutableTextureStateRef.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
@@ -511,8 +512,10 @@ GrBackendRenderTarget GrVkRenderTarget::getBackendRenderTarget() const {
     SkASSERT(!this->wasDestroyed());
     // If we have a resolve attachment that is what we return for the backend render target
     const GrVkImage* beAttachment = this->externalAttachment();
-    return GrBackendRenderTarget(beAttachment->width(), beAttachment->height(),
-                                 beAttachment->vkImageInfo(), beAttachment->getMutableState());
+    return GrBackendRenderTargets::MakeVk(beAttachment->width(),
+                                          beAttachment->height(),
+                                          beAttachment->vkImageInfo(),
+                                          beAttachment->getMutableState());
 }
 
 GrVkGpu* GrVkRenderTarget::getVkGpu() const {

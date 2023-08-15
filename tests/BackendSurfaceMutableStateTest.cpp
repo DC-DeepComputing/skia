@@ -20,6 +20,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/MutableTextureState.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
@@ -43,7 +44,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
                                    CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
 
-    GrBackendFormat format = GrBackendFormat::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
+    GrBackendFormat format = GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
     GrBackendTexture backendTex = dContext->createBackendTexture(
             32, 32, format, GrMipmapped::kNo, GrRenderable::kNo, GrProtected::kNo);
 

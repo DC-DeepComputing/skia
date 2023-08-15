@@ -49,6 +49,7 @@
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 
@@ -1490,7 +1491,7 @@ sk_sp<GrRenderTarget> GrVkGpu::onWrapVulkanSecondaryCBAsRenderTarget(
         return nullptr;
     }
 
-    GrBackendFormat backendFormat = GrBackendFormat::MakeVk(vkInfo.fFormat);
+    GrBackendFormat backendFormat = GrBackendFormats::MakeVk(vkInfo.fFormat);
     if (!backendFormat.isValid()) {
         return nullptr;
     }
