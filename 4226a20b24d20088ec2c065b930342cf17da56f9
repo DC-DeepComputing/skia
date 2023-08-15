@@ -1,0 +1,216 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c87e06e1_ebbc9937",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "I\u0027m guessing this is the same problem as [b/295805469](https://b.corp.google.com/issues/295805469).\n\nIf we were going to put them in `assets`, I think we\u0027d need to open them via `AAssetManager`.\n\nIf we put them in `getExternalFilesDirs()`, I don\u0027t know how we\u0027d get that before installing. Maybe we would need a multi-step process:\n- install the app\n- the app prints the storage directory\n- user manually `adb push`es resources into that directory",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5bc286_238416d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "I think they should be all the same, but it seems a little out of scope for this CL. I\u0027d also be happy to land a single CL that changes all of them. On that note, let me know if you think I should break this CL up in other ways.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 25
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee6d1964_c63fd058",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "Might want to add b/296040739. That actually inspired me to get on this one - I need to be able to run the tests to verify that I\u0027ve fixed that one.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 3
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "880965bb_9b126edf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "Gerrit is warning me that I\u0027m \"requiring attention from too many users\". Sorry!\n\n@johnstiles@google.com, I mainly included you for where this intersects with SkSLErrorTests. I was surprised they didn\u0027t run, but maybe I\u0027m doing something wrong? Anyway, feel free to remove yourself or switch to cc if you don\u0027t have anything to add. But I do appreciate your input if you have any!\n\n@djsollen@google.com, I hope you can take a look at this! I assume you have the most knowledge of the history.\n\n@jmbetancourt@google.com, you and I were talking about this earlier today. You helped me get it to load the right library, though I\u0027m afraid I\u0027ve broken CTS with [my change](https://skia-review.googlesource.com/c/skia/+/704897/4/platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java#33).\n\n@nscobie@google.com, I want to at least inform you about this, since we should be (at least among) the ones who understand this the best.",
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50006162_bf3cc588",
+        "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "I\u0027m not sure which direction to go in here. As I understand it, this file is *also* used by CTS, and `gn_to_bp.py` creates a library with the name `skqp_jni`. But `platform_tools/android/apps/skqp/build.gradle` passes `libskqp_app` to `setupSkiaLibraryBuild`, which is why this works when running directly from Skia.\n\nHow did these two get out of sync? I could change them all to be one or the other, or is there some other fix needed here?",
+      "range": {
+        "startLine": 33,
+        "startChar": 26,
+        "endLine": 33,
+        "endChar": 34
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0596805_8aab3993",
+        "filename": "platform_tools/android/apps/skqp/src/main/res/layout/activity_skqp.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "nit: line too long.",
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7437fda_6d39cf87",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "Without this, the command prints out the help and an error message:\n\n```\nError: Invalid userId -2\n```\n\nhttps://developer.android.com/studio/test/command-line#run-tests-with-adb tells me that I need a `\u003crunner_class\u003e`, and it suggests that it\u0027s \"usually `AndroidJUnitRunner`\". I\u0027m not attached to this one, but it worked.",
+      "range": {
+        "startLine": 57,
+        "startChar": 48,
+        "endLine": 57,
+        "endChar": 88
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cab24259_35e727b7",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "Technically, this *also* needs `/androidx.test.runner.AndroidJUnitRunner` (or some `runner_class`) at the end, but while that makes the command happy, it doesn\u0027t run any tests:\n\n```\nTime: 0.001\n\nOK (0 tests)\n```\n\nI think that was a reference to running `aarectmodes` with the `gles` backend, back when we used SkQP to run GMs. (Which I think is no longer the case?)\n\nWhen I run the whole suite, I see output naming the tests like `unitTest_makeBackendTexture`. Swapping out \"gles_aarectmodes\" with \"unitTest_makeBackendTexture\" or \"makeBackendTexture\" had the same effect.\n\n**EDIT**: Aha! I noticed that `SkQPRunner.java` prepends `UnitTest_` to the test, and I have confirmed that I can run a single test with a command like\n```\nadb shell am instrument -e class \u0027org.skia.skqp.SkQPRunner#UnitTest_AbandonedContextImage\u0027 -w org.skia.skqp/androidx.test.runner.AndroidJUnitRunner\n```\n\n(Running the same command without \"UnitTest_\", as implied by this line, does not work.)",
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51dabfc8_ffeb50bf",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "Shouldn\u0027t skqp be running `SkSLErrorTest_` as well? I don\u0027t see anything in the output indicating it has, while it does print many `UnitTest_`s.",
+      "range": {
+        "startLine": 81,
+        "startChar": 32,
+        "endLine": 81,
+        "endChar": 41
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57107c95_893fbafc",
+        "filename": "tools/skqp/create_apk.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T21:17:50Z",
+      "side": 1,
+      "message": "After converting this to Python3 so that it runs, it ends up hanging for me after printing\n\n```\nReview licenses that have not been accepted (y/N)?\n```\n\nTyping \u0027y\u0027 or `n` + `ENTER` didn\u0027t seem to help. I manually ran \n\n```\nANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses\n```\nand was able to move on, but now I\u0027m not sure whether I can *un*accept them to try this script again and fix it.",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 47
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
