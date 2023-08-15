@@ -35,6 +35,7 @@
 
 #ifdef SK_VULKAN
 #include "include/gpu/vk/GrVkTypes.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #endif
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fImageContext->priv().singleOwner())
@@ -753,7 +754,7 @@ sk_sp<GrRenderTargetProxy> GrProxyProvider::wrapVulkanSecondaryCBAsRenderTarget(
     GrColorType colorType = SkColorTypeToGrColorType(imageInfo.colorType());
 
     if (!this->caps()->isFormatAsColorTypeRenderable(
-            colorType, GrBackendFormat::MakeVk(vkInfo.fFormat), /*sampleCount=*/1)) {
+            colorType, GrBackendFormats::MakeVk(vkInfo.fFormat), /*sampleCount=*/1)) {
         return nullptr;
     }
 
