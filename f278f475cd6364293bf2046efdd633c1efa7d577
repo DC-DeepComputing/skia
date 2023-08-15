@@ -16,6 +16,24 @@
       "message": "Nit: why not a reference here and below?",
       "revId": "f278f475cd6364293bf2046efdd633c1efa7d577",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbf69a4_08934fd6",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-15T21:11:46Z",
+      "side": 1,
+      "message": "No reason, was just cribbing from existing code. I can change it if you prefer refs.\n\nhttps://osscs.corp.google.com/search?q\u003d%22const%20WGPUCompilationMessage*%20message%22",
+      "parentUuid": "94fdcdef_15ba5731",
+      "revId": "f278f475cd6364293bf2046efdd633c1efa7d577",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
