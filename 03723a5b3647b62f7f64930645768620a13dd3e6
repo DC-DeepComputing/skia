@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90ea8f5c_7c467751",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-15T14:48:46Z",
+      "side": 1,
+      "message": "nit: `[kFormatCnt]`",
+      "range": {
+        "startLine": 27,
+        "startChar": 45,
+        "endLine": 27,
+        "endChar": 47
+      },
+      "revId": "03723a5b3647b62f7f64930645768620a13dd3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac283bed_051bae1d",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-15T14:48:46Z",
+      "side": 1,
+      "message": "nit: use `kFormatCnt`?",
+      "range": {
+        "startLine": 539,
+        "startChar": 18,
+        "endLine": 539,
+        "endChar": 64
+      },
+      "revId": "03723a5b3647b62f7f64930645768620a13dd3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a22ee4_3e589db4",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-15T14:48:46Z",
+      "side": 1,
+      "message": "nit: have a `constexpr size_t kFormatCnt \u003d 14`",
+      "range": {
+        "startLine": 99,
+        "startChar": 27,
+        "endLine": 99,
+        "endChar": 29
+      },
+      "revId": "03723a5b3647b62f7f64930645768620a13dd3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
