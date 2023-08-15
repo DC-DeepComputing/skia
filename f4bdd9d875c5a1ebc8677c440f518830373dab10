@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2212d311_a94017a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-15T19:13:06Z",
+      "side": 1,
+      "message": "Brian, if the CQ dry run is still running, please look at the dry run for patchset 1. All subsequent changes are clang-format, editing the CL description, etc.",
+      "revId": "f4bdd9d875c5a1ebc8677c440f518830373dab10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
