@@ -56,14 +56,10 @@ GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
 
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
+        case GrBackendApi::kVulkan:
             fFormatData.reset();
             that.fFormatData->copyTo(fFormatData);
             break;  // fFormatData is sufficient
-#ifdef SK_VULKAN
-        case GrBackendApi::kVulkan:
-            fVk = that.fVk;
-            break;
-#endif
 #ifdef SK_METAL
         case GrBackendApi::kMetal:
             fMtlFormat = that.fMtlFormat;
@@ -201,11 +197,8 @@ uint32_t GrBackendFormat::channelMask() const {
     }
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-            return fFormatData->channelMask();
-#ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
-            return skgpu::VkFormatChannels(fVk.fFormat);
-#endif
+            return fFormatData->channelMask();
 #ifdef SK_METAL
         case GrBackendApi::kMetal:
             return GrMtlFormatChannels(fMtlFormat);
@@ -232,11 +225,8 @@ GrColorFormatDesc GrBackendFormat::desc() const {
     }
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-            return fFormatData->desc();
-#ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
-            return GrVkFormatDesc(fVk.fFormat);
-#endif
+            return fFormatData->desc();
 #ifdef SK_METAL
        case GrBackendApi::kMetal:
             return GrMtlFormatDesc(fMtlFormat);
@@ -335,12 +325,8 @@ bool GrBackendFormat::operator==(const GrBackendFormat& that) const {
 
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-            return fFormatData->equal(that.fFormatData.get());
-#ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
-            return fVk.fFormat == that.fVk.fFormat &&
-                   fVk.fYcbcrConversionInfo == that.fVk.fYcbcrConversionInfo;
-#endif
+            return fFormatData->equal(that.fFormatData.get());
 #ifdef SK_METAL
         case GrBackendApi::kMetal:
             return fMtlFormat == that.fMtlFormat;
@@ -377,12 +363,8 @@ SkString GrBackendFormat::toStr() const {
 
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-            str.append(fFormatData->toString());
-            break;
         case GrBackendApi::kVulkan:
-#ifdef SK_VULKAN
-            str.append(skgpu::VkFormatToStr(fVk.fFormat));
-#endif
+            str.append(fFormatData->toString());
             break;
         case GrBackendApi::kMetal:
 #ifdef SK_METAL
