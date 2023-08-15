@@ -43,6 +43,9 @@ private:
     virtual GrColorFormatDesc desc() const = 0;
     virtual std::string toString() const = 0;
     virtual void copyTo(AnyFormatData&) const = 0;
+
+    // All backends except Vulkan do nothing here:
+    virtual void makeTexture2D() {}
 };
 
 class GrBackendTextureData {
