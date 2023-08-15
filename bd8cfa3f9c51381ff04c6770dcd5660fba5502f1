@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d249cbbb_07fbd95e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-15T21:32:14Z",
+      "side": 1,
+      "message": "PTAL. Looking at the bots that failed, I suspect this may need to be restricted further, possibly to ES2 in general -- running some tests with the reland to see.",
+      "revId": "bd8cfa3f9c51381ff04c6770dcd5660fba5502f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
