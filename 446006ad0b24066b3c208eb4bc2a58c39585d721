@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b92f421e_a0cdf845",
+        "filename": "gm/gm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-15T19:24:23Z",
+      "side": 1,
+      "message": "Ok, I tried returning `const char*` but ran into issues due to accesses to the string after the GM is destroyed, see the failing ASAN task.",
+      "parentUuid": "9727b25f_76f994c6",
+      "range": {
+        "startLine": 156,
+        "startChar": 41,
+        "endLine": 156,
+        "endChar": 52
+      },
+      "revId": "446006ad0b24066b3c208eb4bc2a58c39585d721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "fd534dcb_dc7a4147",
         "filename": "gm/gm.h",
         "patchSetId": 3
@@ -61,6 +85,30 @@
       "writtenOn": "2023-08-14T20:07:23Z",
       "side": 1,
       "message": "I\u0027m now wondering if we can do this for `onISize` or make `getISize` itself virtual, but that can be a different CL",
+      "range": {
+        "startLine": 220,
+        "startChar": 24,
+        "endLine": 220,
+        "endChar": 31
+      },
+      "revId": "446006ad0b24066b3c208eb4bc2a58c39585d721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a0ab605_071fa3ac",
+        "filename": "gm/gm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-15T19:24:23Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "fd534dcb_dc7a4147",
       "range": {
         "startLine": 220,
         "startChar": 24,

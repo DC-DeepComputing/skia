@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90927450_13b421e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-15T19:24:23Z",
+      "side": 1,
+      "message": "Abandoning this CL and starting over at https://skia-review.googlesource.com/c/skia/+/742738.",
+      "revId": "ac82f8315dc3ec63ab659ec27e5223610954d3d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
