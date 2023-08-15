@@ -579,13 +579,14 @@ static bool special_image_to_bitmap(GrDirectContext* dContext, const SkSpecialIm
 
 static void test_negative_blur_sigma(skiatest::Reporter* reporter,
                                      GrDirectContext* dContext) {
-    // Check that SkBlurImageFilter will accept a negative sigma, either in
-    // the given arguments or after CTM application.
+    // Check that SkBlurImageFilter will rejects a negative sigma on creation, but properly uses the
+    // absolute value of the mapped sigma after CTM application.
     static const int kWidth = 32, kHeight = 32;
     static const SkScalar kBlurSigma = SkIntToScalar(5);
 
     sk_sp<SkImageFilter> positiveFilter(SkImageFilters::Blur(kBlurSigma, kBlurSigma, nullptr));
     sk_sp<SkImageFilter> negativeFilter(SkImageFilters::Blur(-kBlurSigma, kBlurSigma, nullptr));
+    REPORTER_ASSERT(reporter, !negativeFilter);
 
     sk_sp<SkImage> gradient = make_gradient_circle(kWidth, kHeight).asImage();
     sk_sp<SkSpecialImage> imgSrc;
@@ -599,57 +600,31 @@ static void test_negative_blur_sigma(skiatest::Reporter* reporter,
     SkIPoint offset;
     skif::Context ctx = make_context(32, 32, imgSrc.get());
 
-    sk_sp<SkSpecialImage> positiveResult1(
+    sk_sp<SkSpecialImage> positiveResult(
             as_IFB(positiveFilter)->filterImage(ctx).imageAndOffset(ctx, &offset));
-    REPORTER_ASSERT(reporter, positiveResult1);
-
-    sk_sp<SkSpecialImage> negativeResult1(
-            as_IFB(negativeFilter)->filterImage(ctx).imageAndOffset(ctx, &offset));
-    REPORTER_ASSERT(reporter, negativeResult1);
+    REPORTER_ASSERT(reporter, positiveResult);
 
     SkMatrix negativeScale;
     negativeScale.setScale(-SK_Scalar1, SK_Scalar1);
     skif::Context negativeCTX = ctx.withNewMapping(skif::Mapping(negativeScale));
 
-    sk_sp<SkSpecialImage> negativeResult2(
+    sk_sp<SkSpecialImage> negativeResult(
             as_IFB(positiveFilter)->filterImage(negativeCTX).imageAndOffset(ctx, &offset));
-    REPORTER_ASSERT(reporter, negativeResult2);
-
-    sk_sp<SkSpecialImage> positiveResult2(
-            as_IFB(negativeFilter)->filterImage(negativeCTX).imageAndOffset(ctx, &offset));
-    REPORTER_ASSERT(reporter, positiveResult2);
+    REPORTER_ASSERT(reporter, negativeResult);
 
 
-    SkBitmap positiveResultBM1, positiveResultBM2;
-    SkBitmap negativeResultBM1, negativeResultBM2;
+    SkBitmap positiveResultBM;
+    SkBitmap negativeResultBM;
 
-    REPORTER_ASSERT(reporter, special_image_to_bitmap(dContext, positiveResult1.get(),
-                                                      &positiveResultBM1));
-    REPORTER_ASSERT(reporter, special_image_to_bitmap(dContext, positiveResult2.get(),
-                                                      &positiveResultBM2));
-    REPORTER_ASSERT(reporter, special_image_to_bitmap(dContext, negativeResult1.get(),
-                                                      &negativeResultBM1));
-    REPORTER_ASSERT(reporter, special_image_to_bitmap(dContext, negativeResult2.get(),
-                                                      &negativeResultBM2));
+    REPORTER_ASSERT(reporter, special_image_to_bitmap(dContext, positiveResult.get(),
+                                                      &positiveResultBM));
+    REPORTER_ASSERT(reporter, special_image_to_bitmap(dContext, negativeResult.get(),
+                                                      &negativeResultBM));
 
     for (int y = 0; y < kHeight; y++) {
-        int diffs = memcmp(positiveResultBM1.getAddr32(0, y),
-                           negativeResultBM1.getAddr32(0, y),
-                           positiveResultBM1.rowBytes());
-        REPORTER_ASSERT(reporter, !diffs);
-        if (diffs) {
-            break;
-        }
-        diffs = memcmp(positiveResultBM1.getAddr32(0, y),
-                       negativeResultBM2.getAddr32(0, y),
-                       positiveResultBM1.rowBytes());
-        REPORTER_ASSERT(reporter, !diffs);
-        if (diffs) {
-            break;
-        }
-        diffs = memcmp(positiveResultBM1.getAddr32(0, y),
-                       positiveResultBM2.getAddr32(0, y),
-                       positiveResultBM1.rowBytes());
+        int diffs = memcmp(positiveResultBM.getAddr32(0, y),
+                           negativeResultBM.getAddr32(0, y),
+                           positiveResultBM.rowBytes());
         REPORTER_ASSERT(reporter, !diffs);
         if (diffs) {
             break;
