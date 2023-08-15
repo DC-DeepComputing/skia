@@ -11,17 +11,13 @@ script.  For example:
 
     python create_apk.py arm x86
 
-The environment variables ANDROID_NDK and ANDROID_HOME must be set to the
-locations of the Android NDK and SDK.
+The environment variables ANDROID_NDK_HOME and ANDROID_HOME must be set to
+the locations of the Android NDK and SDK.
 
 Additionally, `ninja` should be in your path.
 
 It assumes that the source tree is in the desired state, e.g. by having
 run 'python tools/git-sync-deps' in the root of the skia checkout.
-
-We also assume that the 'resources' directory has been copied to
-'platform_tools/android/apps/skqp/src/main/assets', and the
-'tools/skqp/download_model' script has been run.
 
 Also:
   * If the environment variable SKQP_BUILD_DIR is set, many of the
@@ -102,11 +98,20 @@ def make_symlinked_subdir(target, working_dir):
     os.symlink(os.path.relpath(newdir, os.path.dirname(target)), target)
 
 def accept_android_license(android_home):
-    proc = subprocess.Popen(
-            [android_home + '/tools/bin/sdkmanager', '--licenses'],
-            stdin=subprocess.PIPE)
+    # Depending on the SDK version, this may live in different places.
+    sdkmanager_new = android_home + '/cmdline-tools/latest/bin/sdkmanager'
+    sdkmanager_old = android_home + '/tools/bin/sdkmanager'
+    sdkmanager = sdkmanager_new
+    if not os.path.exists(sdkmanager):
+        sdkmanager = sdkmanager_old
+        if not os.path.exists(sdkmanager):
+            print("Failed to find (or wrong permissions on) ", sdkmanager_new,
+                  " or ", sdkmanager_old)
+            return
+
+    proc = subprocess.Popen([sdkmanager, '--licenses'], stdin=subprocess.PIPE)
     while proc.poll() is None:
-        proc.stdin.write('y\n')
+        proc.stdin.write('y\n'.encode('utf-8'))
         time.sleep(1)
 
 # pylint: disable=bad-whitespace
@@ -199,10 +204,10 @@ class SkQP_Build_Options(object):
         self.error = ''
         if not check_ninja():
             self.error += '`ninja` is not in the path.\n'
-        for var in ['ANDROID_NDK', 'ANDROID_HOME']:
+        for var in ['ANDROID_NDK_HOME', 'ANDROID_HOME']:
             if not os.path.exists(os.environ.get(var, '')):
                 self.error += 'Environment variable `%s` is not set.\n' % var
-        self.android_ndk = os.path.abspath(os.environ['ANDROID_NDK'])
+        self.android_ndk = os.path.abspath(os.environ['ANDROID_NDK_HOME'])
         self.android_home = os.path.abspath(os.environ['ANDROID_HOME'])
         args = sys.argv[1:]
         for arg in args:
@@ -220,7 +225,7 @@ class SkQP_Build_Options(object):
                                       api_level=26)
 
     def write(self, o):
-        for k, v in [('ANDROID_NDK', self.android_ndk),
+        for k, v in [('ANDROID_NDK_HOME', self.android_ndk),
                      ('ANDROID_HOME', self.android_home),
                      ('SKQP_OUTPUT_DIR', self.final_output_dir),
                      ('SKQP_BUILD_DIR', self.build_dir),

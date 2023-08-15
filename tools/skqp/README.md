@@ -22,17 +22,20 @@ How to build and run the SkQP tests
     -   Install the [Android NDK](https://developer.android.com/ndk/downloads/).
 
             ( cd ~; unzip ~/Downloads/android-ndk-*.zip )
-            ANDROID_NDK=$(ls -d ~/android-ndk-*)   # Or wherever you installed the Android NDK.
+            ANDROID_NDK_HOME=$(ls -d ~/android-ndk-*)   # Or wherever you installed the Android NDK.
 
-    -   Install the [Android SDK](https://developer.android.com/studio/#command-tools).
-        Set the `ANDROID_HOME` environment variable.
+    -   Install [Android Studio](https://developer.android.com/studio/).
 
-            mkdir ~/android-sdk
-            ( cd ~/android-sdk; unzip ~/Downloads/sdk-tools-*.zip )
-            yes | ~/android-sdk/tools/bin/sdkmanager --licenses
+    -   Set the `ANDROID_HOME` environment variable.
+
             export ANDROID_HOME=~/android-sdk  # Or wherever you installed the Android SDK.
 
-        Put `adb` in your `PATH`.
+    -   Install the Command-line Tools
+
+            Welcome to Android Studio -> More Actions -> SDK Manager -> System Settings
+            -> Android SDK -> SDK Tools -> Android SDK Command-line Tools -> Apply
+
+    -   Put `adb` in your `PATH`, if necessary
 
             export PATH="${PATH}:${ANDROID_HOME}/platform-tools"
 
@@ -51,7 +54,7 @@ How to build and run the SkQP tests
 
         adb install -r out/skqp/skqp-universal-debug.apk
         adb logcat -c
-        adb shell am instrument -w org.skia.skqp
+        adb shell am instrument -w org.skia.skqp/androidx.test.runner.AndroidJUnitRunner
 
 5.  Monitor the output with:
 
