@@ -16,6 +16,138 @@
       "message": "@egdaniel@google.com @michaelludwig@google.com PTAL",
       "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ff6fe3a_3791d8ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-15T13:36:36Z",
+      "side": 1,
+      "message": "t a",
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "875e3653_97effc42",
+        "filename": "src/gpu/graphite/AttachmentTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-15T13:36:36Z",
+      "side": 1,
+      "message": "This is kind of tangent to this CL, but why do we have a static factory here but still have all the fields public. Looking at the implementation, it doesn\u0027t even look like the Make call can fail. Should this just be a normal ctor? Also its a little strange that all the fields are public but don\u0027t have any default initialization if you don\u0027t call the factory.",
+      "range": {
+        "startLine": 53,
+        "startChar": 25,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1c71d1c_9184e1cd",
+        "filename": "src/gpu/graphite/AttachmentTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-15T13:36:36Z",
+      "side": 1,
+      "message": "What if we just call this fSampleCount and we just always set it to be the sample count of the whole render pass. We can assert if any attachment has samples the count matches the value here. If this is \u003e 1 and attachments have sample of 1, then we can assert implicit msaa resolves.\n\nNow the checks on whether to do implicit would need to check that attachment having 1 and this being \u003e 1. Or maybe those checks could just look at the cap for implicit feature support. Are there cases where we would have the feature but not use it?",
+      "range": {
+        "startLine": 73,
+        "startChar": 13,
+        "endLine": 73,
+        "endChar": 33
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb38130e_3ce9802b",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-15T13:36:36Z",
+      "side": 1,
+      "message": "so in the implicit case, we\u0027re just calling this to get the numSamples. I wonder if it makes more sense to just have a get[Default/Implicit/Internal]NumSamples() call on caps instead.",
+      "range": {
+        "startLine": 177,
+        "startChar": 31,
+        "endLine": 177,
+        "endChar": 62
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e330862f_339ce761",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-15T13:36:36Z",
+      "side": 1,
+      "message": "If we go with my suggestion about always setting sampleCnt on desc, we can just use that value here without the ternary.",
+      "range": {
+        "startLine": 219,
+        "startChar": 46,
+        "endLine": 219,
+        "endChar": 47
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcd4c918_7a5c4533",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-15T13:36:36Z",
+      "side": 1,
+      "message": "Does it make sense for this if check to be connected to the `if (resolveTexture)` possible as an else?",
+      "range": {
+        "startLine": 174,
+        "startChar": 8,
+        "endLine": 174,
+        "endChar": 10
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
