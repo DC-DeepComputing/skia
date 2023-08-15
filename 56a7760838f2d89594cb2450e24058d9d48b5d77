@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0831254_b47fdd60",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-15T21:05:44Z",
+      "side": 1,
+      "message": "Caching these texture views isn\u0027t thread safe, but if we only access the backend texture views in the CommandBuffer, that should avoid those problems. However, it seems like we could accidentally break it in the future.\n\nWDYT about making getTextureView private and friending DawnCommandBuffer, or some other pattern that makes it clear it can only be accessed on the context thread.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 65
+      },
+      "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
