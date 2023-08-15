@@ -84,6 +84,7 @@
 #endif
 
 #if defined(SK_VULKAN)
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include <vulkan/vulkan_core.h>
@@ -1008,7 +1009,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
             continue;
         }
 
-        GrBackendFormat format = GrBackendFormat::MakeVk(combo.fFormat);
+        GrBackendFormat format = GrBackendFormats::MakeVk(combo.fFormat);
 
         for (auto mipmapped : { GrMipmapped::kNo, GrMipmapped::kYes }) {
             if (GrMipmapped::kYes == mipmapped && !vkCaps->mipmapSupport()) {
@@ -1021,7 +1022,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                     // We must also check whether we allow rendering to the format using the
                     // color type.
                     if (!vkCaps->isFormatAsColorTypeRenderable(
-                            combo.fColorType, GrBackendFormat::MakeVk(combo.fFormat), 1)) {
+                            combo.fColorType, GrBackendFormats::MakeVk(combo.fFormat), 1)) {
                         continue;
                     }
                 }
