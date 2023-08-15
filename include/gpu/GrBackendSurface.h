@@ -18,7 +18,7 @@
 
 #include "include/gpu/mock/GrMockTypes.h"
 
-#ifdef SK_VULKAN
+#if !defined(SK_DISABLE_LEGACY_VK_BACKEND_SURFACE) && defined(SK_VULKAN)
 #include "include/gpu/vk/GrVkTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #endif
@@ -67,15 +67,6 @@ public:
     GrBackendFormat& operator=(const GrBackendFormat&);
     ~GrBackendFormat();
 
-#ifdef SK_VULKAN
-    static GrBackendFormat MakeVk(VkFormat format, bool willUseDRMFormatModifiers = false) {
-        return GrBackendFormat(format, GrVkYcbcrConversionInfo(), willUseDRMFormatModifiers);
-    }
-
-    static GrBackendFormat MakeVk(const GrVkYcbcrConversionInfo& ycbcrInfo,
-                                  bool willUseDRMFormatModifiers = false);
-#endif
-
 #ifdef SK_DAWN
     static GrBackendFormat MakeDawn(wgpu::TextureFormat format) {
         return GrBackendFormat(format);
@@ -111,16 +102,6 @@ public:
     uint32_t channelMask() const;
 
     GrColorFormatDesc desc() const;
-
-#ifdef SK_VULKAN
-    /**
-     * If the backend API is Vulkan this gets the format as a VkFormat and returns true. Otherwise,
-     * returns false.
-     */
-    bool asVkFormat(VkFormat*) const;
-
-    const GrVkYcbcrConversionInfo* getVkYcbcrConversionInfo() const;
-#endif
 
 #ifdef SK_DAWN
     /**
@@ -184,11 +165,6 @@ private:
         fFormatData.emplace<FormatData>(formatData);
     }
 
-#ifdef SK_VULKAN
-    GrBackendFormat(const VkFormat vkFormat, const GrVkYcbcrConversionInfo&,
-                    bool willUseDRMFormatModifiers);
-#endif
-
 #ifdef SK_DAWN
     GrBackendFormat(wgpu::TextureFormat format);
 #endif
@@ -212,12 +188,6 @@ private:
     AnyFormatData fFormatData;
 
     union {
-#ifdef SK_VULKAN
-        struct {
-            VkFormat                 fFormat;
-            GrVkYcbcrConversionInfo  fYcbcrConversionInfo;
-        } fVk;
-#endif
 #ifdef SK_DAWN
         wgpu::TextureFormat fDawnFormat;
 #endif
@@ -236,19 +206,24 @@ private:
         } fMock;
     };
     GrTextureType fTextureType = GrTextureType::kNone;
+
+#if !defined(SK_DISABLE_LEGACY_VK_BACKEND_SURFACE) && defined(SK_VULKAN)
+public:
+    GrBackendFormat(VkFormat vkFormat,
+                    const GrVkYcbcrConversionInfo& ycbcrInfo,
+                    bool willUseDRMFormatModifiers = false);
+    static GrBackendFormat MakeVk(VkFormat format, bool willUseDRMFormatModifiers);
+    static GrBackendFormat MakeVk(const GrVkYcbcrConversionInfo& ycbcrInfo,
+                                  bool willUseDRMFormatModifiers = false);
+    bool asVkFormat(VkFormat*) const;
+    const GrVkYcbcrConversionInfo* getVkYcbcrConversionInfo() const;
+#endif
 };
 
 class SK_API GrBackendTexture {
 public:
     // Creates an invalid backend texture.
     GrBackendTexture();
-
-#ifdef SK_VULKAN
-    GrBackendTexture(int width,
-                     int height,
-                     const GrVkImageInfo& vkInfo,
-                     std::string_view label = {});
-#endif
 
 #ifdef SK_METAL
     GrBackendTexture(int width,
@@ -421,9 +396,6 @@ private:
     AnyTextureData fTextureData;
 
     union {
-#ifdef SK_VULKAN
-        GrVkImageInfo fVkInfo;
-#endif
         GrMockTextureInfo fMockInfo;
 #ifdef SK_DIRECT3D
         GrD3DBackendSurfaceInfo fD3DInfo;
@@ -436,7 +408,13 @@ private:
     GrDawnTextureInfo fDawnInfo;
 #endif
 
-    sk_sp<skgpu::MutableTextureStateRef> fMutableState;
+#if !defined(SK_DISABLE_LEGACY_VK_BACKEND_SURFACE) && defined(SK_VULKAN)
+public:
+    GrBackendTexture(int width,
+                     int height,
+                     const GrVkImageInfo& vkInfo,
+                     std::string_view label = {});
+#endif
 };
 
 class SK_API GrBackendRenderTarget {
