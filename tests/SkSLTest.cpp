@@ -60,6 +60,14 @@
 #include <string_view>
 #include <vector>
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#endif
+
 using namespace skia_private;
 
 namespace SkSL { class Context; }
@@ -275,8 +283,8 @@ static void test_permutations(skiatest::Reporter* r,
                               SkSurface* surface,
                               const char* testFile,
                               bool strictES2) {
-    SkRuntimeEffect::Options options =
-            strictES2 ? SkRuntimeEffect::Options{} : SkRuntimeEffectPriv::ES3Options();
+    SkRuntimeEffect::Options options = strictES2 ? SkRuntimeEffect::Options{}
+                                                 : SkRuntimeEffectPriv::ES3Options();
     options.forceUnoptimized = false;
     test_one_permutation(r, surface, testFile, "", options);
 
@@ -296,10 +304,10 @@ static void test_cpu(skiatest::Reporter* r,
     test_permutations(r, surface.get(), testFile, /*strictES2=*/true);
 }
 
-static void test_gpu(skiatest::Reporter* r,
-                     GrDirectContext* ctx,
-                     const char* testFile,
-                     SkEnumBitMask<SkSLTestFlags> flags) {
+static void test_ganesh(skiatest::Reporter* r,
+                        GrDirectContext* ctx,
+                        const char* testFile,
+                        SkEnumBitMask<SkSLTestFlags> flags) {
     // If this is an ES3-only test on a GPU which doesn't support SkSL ES3, return immediately.
     bool shouldRunGPU = SkToBool(flags & SkSLTestFlags::GPU);
     bool shouldRunGPU_ES3 =
@@ -316,7 +324,7 @@ static void test_gpu(skiatest::Reporter* r,
         }
     }
 
-    // Create a GPU-backed surface.
+    // Create a Ganesh-backed surface.
     const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info));
 
@@ -326,6 +334,42 @@ static void test_gpu(skiatest::Reporter* r,
     if (shouldRunGPU_ES3) {
         test_permutations(r, surface.get(), testFile, /*strictES2=*/false);
     }
+}
+
+static void test_graphite(skiatest::Reporter* r,
+                          skgpu::graphite::Context* ctx,
+                          const char* testFile,
+                          SkEnumBitMask<SkSLTestFlags> flags) {
+#if defined(SK_GRAPHITE)
+    // If this is an ES3-only test on a GPU which doesn't support SkSL ES3, return immediately.
+    bool shouldRunGPU = SkToBool(flags & SkSLTestFlags::GPU);
+    bool shouldRunGPU_ES3 =
+            (flags & SkSLTestFlags::GPU_ES3) &&
+            (ctx->priv().caps()->shaderCaps()->supportedSkSLVerion() >= SkSL::Version::k300);
+    if (!shouldRunGPU && !shouldRunGPU_ES3) {
+        return;
+    }
+
+    // If this is a test that requires the GPU to generate NaN values, we don't run it here.
+    // (This is complicated by WGSL, which does not support NaN even if the GPU natively does.)
+    if (flags & SkSLTestFlags::UsesNaN) {
+        return;
+    }
+
+    // Create a Graphite-backed surface.
+    std::unique_ptr<skgpu::graphite::Recorder> recorder = ctx->makeRecorder();
+    const SkImageInfo info = SkImageInfo::Make({kWidth, kHeight},
+                                                kRGBA_8888_SkColorType,
+                                                kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
+
+    if (shouldRunGPU) {
+        test_permutations(r, surface.get(), testFile, /*strictES2=*/true);
+    }
+    if (shouldRunGPU_ES3) {
+        test_permutations(r, surface.get(), testFile, /*strictES2=*/false);
+    }
+#endif
 }
 
 static void test_clone(skiatest::Reporter* r,
@@ -485,8 +529,12 @@ static void test_raster_pipeline(skiatest::Reporter* r,
     DEF_CONDITIONAL_TEST(SkSL##name##_CPU, r, is_cpu(flags)) { test_cpu(r, path, flags); } \
     DEF_TEST(SkSL##name##_RP, r) { test_raster_pipeline(r, path, flags); }                 \
     DEF_CONDITIONAL_GANESH_TEST_FOR_RENDERING_CONTEXTS(                                    \
-            SkSL##name##_GPU, r, ctxInfo, is_gpu(flags), ctsEnforcement) {                 \
-        test_gpu(r, ctxInfo.directContext(), path, flags);                                 \
+            SkSL##name##_Ganesh, r, ctxInfo, is_gpu(flags), ctsEnforcement) {              \
+        test_ganesh(r, ctxInfo.directContext(), path, flags);                              \
+    }                                                                                      \
+    DEF_CONDITIONAL_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(                                  \
+            SkSL##name##_Graphite, r, context, is_gpu(flags)) {                            \
+        test_graphite(r, context, path, flags);                                            \
     }                                                                                      \
     DEF_TEST(SkSL##name##_Clone, r) { test_clone(r, path, flags); }
 
