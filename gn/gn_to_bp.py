@@ -460,6 +460,7 @@ android_test {
 
     static_libs: [
         "android-support-design",
+        "androidx.core_core",
         "ctstestrunner-axt",
     ],
     manifest: "platform_tools/android/apps/skqp/src/main/AndroidManifest.xml",

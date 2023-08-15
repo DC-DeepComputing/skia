@@ -19,10 +19,6 @@ Additionally, `ninja` should be in your path.
 It assumes that the source tree is in the desired state, e.g. by having
 run 'python tools/git-sync-deps' in the root of the skia checkout.
 
-We also assume that the 'resources' directory has been copied to
-'platform_tools/android/apps/skqp/src/main/assets', and the
-'tools/skqp/download_model' script has been run.
-
 Also:
   * If the environment variable SKQP_BUILD_DIR is set, many of the
     intermediate build objects will be placed here.
@@ -102,11 +98,20 @@ def make_symlinked_subdir(target, working_dir):
     os.symlink(os.path.relpath(newdir, os.path.dirname(target)), target)
 
 def accept_android_license(android_home):
-    proc = subprocess.Popen(
-            [android_home + '/tools/bin/sdkmanager', '--licenses'],
-            stdin=subprocess.PIPE)
+    # Depending on the SDK version, this may live in different places.
+    sdkmanager_new = android_home + '/cmdline-tools/latest/bin/sdkmanager'
+    sdkmanager_old = android_home + '/tools/bin/sdkmanager'
+    sdkmanager = sdkmanager_new
+    if not os.path.exists(sdkmanager):
+        sdkmanager = sdkmanager_old
+        if not os.path.exists(sdkmanager):
+            print("Failed to find (or wrong permissions on) ", sdkmanager_new,
+                  " or ", sdkmanager_old)
+            return
+
+    proc = subprocess.Popen([sdkmanager, '--licenses'], stdin=subprocess.PIPE)
     while proc.poll() is None:
-        proc.stdin.write('y\n')
+        proc.stdin.write('y\n'.encode('utf-8'))
         time.sleep(1)
 
 # pylint: disable=bad-whitespace
