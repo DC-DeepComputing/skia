@@ -131,7 +131,7 @@ public:
     ReadPixelsGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("readpixels");
     }
 
@@ -191,7 +191,7 @@ public:
     ReadPixelsCodecGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("readpixelscodec");
     }
 
@@ -255,7 +255,7 @@ public:
     ReadPixelsPictureGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("readpixelspicture");
     }
 

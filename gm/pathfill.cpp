@@ -318,7 +318,7 @@ protected:
     }
 
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("pathfill");
     }
 
@@ -367,7 +367,7 @@ protected:
         }
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("pathinvfill");
     }
 

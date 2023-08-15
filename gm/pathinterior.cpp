@@ -33,7 +33,7 @@ protected:
         return SkISize::Make(770, 770);
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("pathinterior");
     }
 

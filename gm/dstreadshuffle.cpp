@@ -47,7 +47,7 @@ protected:
         kNumShapeTypes
     };
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("dstreadshuffle");
     }
 

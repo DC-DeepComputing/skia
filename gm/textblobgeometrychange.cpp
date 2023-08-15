@@ -29,7 +29,7 @@ public:
     TextBlobGeometryChange() { }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("textblobgeometrychange");
     }
 

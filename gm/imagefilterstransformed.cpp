@@ -65,7 +65,7 @@ public:
 
 protected:
 
-    SkString onShortName() override { return SkString("imagefilterstransformed"); }
+    SkString getName() const override { return SkString("imagefilterstransformed"); }
 
     SkISize onISize() override { return SkISize::Make(420, 240); }
 
@@ -174,7 +174,7 @@ public:
     ImageFilterMatrixWLocalMatrix() : fDegrees(132.f) {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("imagefilter_matrix_localmatrix");
     }
 
@@ -227,7 +227,7 @@ public:
     ImageFilterComposedTransform() : fDegrees(70.f) {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("imagefilter_composed_transform");
     }
 

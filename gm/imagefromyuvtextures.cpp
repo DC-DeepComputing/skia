@@ -42,7 +42,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("image_from_yuv_textures");
     }
 

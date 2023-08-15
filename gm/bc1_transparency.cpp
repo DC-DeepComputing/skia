@@ -165,7 +165,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("bc1_transparency");
     }
 

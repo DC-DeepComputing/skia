@@ -31,7 +31,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("poly2poly");
     }
 

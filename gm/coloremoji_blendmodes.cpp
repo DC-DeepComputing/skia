@@ -65,7 +65,7 @@ protected:
                                             kOpaque_SkAlphaType), gData, 4);
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("coloremoji_blendmodes");
     }
 

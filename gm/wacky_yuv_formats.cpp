@@ -771,7 +771,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         SkString name("wacky_yuv_formats");
         if (fUseTargetColorSpace) {
             name += "_cs";
@@ -1024,7 +1024,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("yuv_make_color_space");
     }
 
@@ -1213,7 +1213,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("yuv_splitter");
     }
 

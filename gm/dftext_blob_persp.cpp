@@ -41,7 +41,7 @@ public:
     DFTextBlobPerspGM() { this->setBGColor(0xFFFFFFFF); }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("dftext_blob_persp");
     }
 

@@ -50,7 +50,7 @@ protected:
         fBlob = builder.make();
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("textblobblockreordering");
     }
 

@@ -220,7 +220,7 @@ protected:
     static const int kCellWidth = 128;
     static const int kCellHeight = 128;
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("bezier_conic_effects");
     }
 
@@ -426,7 +426,7 @@ protected:
     static const int kCellWidth = 128;
     static const int kCellHeight = 128;
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("bezier_quad_effects");
     }
 

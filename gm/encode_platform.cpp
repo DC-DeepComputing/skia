@@ -75,7 +75,7 @@ public:
     EncodePlatformGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("encode-platform");
     }
 

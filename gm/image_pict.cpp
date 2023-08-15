@@ -74,7 +74,7 @@ public:
     ImagePictGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("image-picture");
     }
 
@@ -268,7 +268,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return fName;
     }
 

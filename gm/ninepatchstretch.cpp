@@ -61,7 +61,7 @@ public:
     NinePatchStretchGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("ninepatch-stretch");
     }
 

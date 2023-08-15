@@ -20,7 +20,7 @@ public:
     CrBug224618GM() : fTime(0.f) {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("crbug_224618");
     }
 

@@ -57,7 +57,7 @@ public:
         fPicture = recorder.finishRecordingAsPicture();
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("pictureshadercache");
     }
 

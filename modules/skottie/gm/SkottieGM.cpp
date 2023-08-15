@@ -44,7 +44,7 @@ private:
 class SkottieWebFontGM : public skiagm::GM {
 public:
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("skottie_webfont");
     }
 
@@ -99,7 +99,7 @@ public:
     {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkStringPrintf("skottie_colorize_%s", fName);
     }
 
@@ -185,7 +185,7 @@ DEF_GM(return new SkottieColorizeGM("text" , "skottie/skottie-text-animator-5.js
 class SkottieMultiFrameGM : public skiagm::GM {
 public:
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("skottie_multiframe");
     }
 

@@ -55,7 +55,7 @@ protected:
          fPicture = make_picture();
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("pictures");
     }
 
@@ -123,7 +123,7 @@ protected:
         SkASSERT(fPicture->cullRect().top() == 80);
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("picture_cull_rect");
     }
 

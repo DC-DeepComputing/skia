@@ -78,7 +78,7 @@ public:
     SurfacePropsGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("surfaceprops");
     }
 
@@ -133,7 +133,7 @@ public:
     NewSurfaceGM() {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("surfacenew");
     }
 

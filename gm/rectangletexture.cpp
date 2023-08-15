@@ -54,7 +54,7 @@ private:
         k2x2
     };
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("rectangle_texture");
     }
 

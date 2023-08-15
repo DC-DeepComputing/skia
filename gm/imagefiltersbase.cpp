@@ -202,7 +202,7 @@ public:
     ImageFiltersBaseGM () {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("imagefiltersbase");
     }
 
@@ -291,7 +291,7 @@ public:
     ImageFiltersTextBaseGM(const char suffix[]) : fSuffix(suffix) {}
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         SkString name;
         name.printf("%s_%s", "textfilter", fSuffix.c_str());
         return name;

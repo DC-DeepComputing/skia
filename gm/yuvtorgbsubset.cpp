@@ -47,7 +47,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("yuv_to_rgb_subset_effect");
     }
 

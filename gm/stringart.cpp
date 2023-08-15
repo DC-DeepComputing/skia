@@ -33,7 +33,7 @@ public:
 
 protected:
 
-    SkString onShortName() override {
+    SkString getName() const override {
         return SkString("stringart");
     }
 
@@ -120,7 +120,7 @@ public:
 
 protected:
 
-    SkString onShortName() override { return SkString("skottie"); }
+    SkString getName() const override { return SkString("skottie"); }
 
     SkISize onISize() override { return SkISize::Make(kWidth, kHeight); }
 
