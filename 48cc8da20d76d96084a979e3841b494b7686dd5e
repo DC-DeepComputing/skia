@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2bdbc2_e70e9a16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T15:18:34Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "revId": "48cc8da20d76d96084a979e3841b494b7686dd5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6592d17_ee5f5592",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-15T15:18:34Z",
+      "side": 1,
+      "message": "nit: Bug reference? You could use b/242266174, which you used for other CLs.",
+      "revId": "48cc8da20d76d96084a979e3841b494b7686dd5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
