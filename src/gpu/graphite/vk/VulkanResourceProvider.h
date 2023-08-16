@@ -17,6 +17,7 @@ namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
 class VulkanDescriptorSet;
+class VulkanRenderPass;
 class VulkanSharedContext;
 
 class VulkanResourceProvider final : public ResourceProvider {
@@ -45,6 +46,10 @@ private:
     void onDeleteBackendTexture(BackendTexture&) override {}
 
     sk_sp<VulkanDescriptorSet> findOrCreateDescriptorSet(SkSpan<DescriptorData>);
+    sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&,
+                                                   const Texture* colorTexture,
+                                                   const Texture* resolveTexture,
+                                                   const Texture* depthStencilTexture);
     VkPipelineCache pipelineCache();
 
     friend class VulkanCommandBuffer;

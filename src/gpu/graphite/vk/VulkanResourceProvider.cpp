@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
+#include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
@@ -173,6 +174,16 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     auto descSet = fResourceCache->findAndRefResource(descSetKeys[0], skgpu::Budgeted::kNo);
     return descSet ? sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet))
                    : nullptr;
+}
+
+sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
+        const RenderPassDesc& renderPassDesc,
+        const Texture* colorTexture,
+        const Texture* resolveTexture,
+        const Texture* depthStencilTexture) {
+    VulkanRenderPass::GenerateRenderPassKey(
+            renderPassDesc, colorTexture, resolveTexture, depthStencilTexture);
+    return nullptr;
 }
 
 VkPipelineCache VulkanResourceProvider::pipelineCache() {
