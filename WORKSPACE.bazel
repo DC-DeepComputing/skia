@@ -445,6 +445,27 @@ local_repository(
 load("//bazel:cipd_install.bzl", "cipd_install")
 
 cipd_install(
+    name = "git_linux_amd64",
+    build_file_content = """
+filegroup(
+  name = "all_files",
+  # The exclude pattern prevents files with spaces in their names from tripping up Bazel.
+  srcs = glob(include=["**/*"], exclude=["**/* *"]),
+  visibility = ["//visibility:public"],
+)
+""",
+    cipd_package = "infra/3pp/tools/git/linux-amd64",
+    postinstall_cmds_posix = [
+        "mkdir etc",
+        "bin/git config --system user.name \"Bazel Test User\"",
+        "bin/git config --system user.email \"bazel-test-user@example.com\"",
+    ],
+    # From https://chrome-infra-packages.appspot.com/p/infra/3pp/tools/git/linux-amd64/+/version:2.29.2.chromium.6
+    sha256 = "36cb96051827d6a3f6f59c5461996fe9490d997bcd2b351687d87dcd4a9b40fa",
+    tag = "version:2.29.2.chromium.6",
+)
+
+cipd_install(
     name = "gn_linux_amd64",
     build_file_content = """
 exports_files(
