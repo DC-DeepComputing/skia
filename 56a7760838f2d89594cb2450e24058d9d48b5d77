@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "606fe608_11e05f1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-16T15:08:52Z",
+      "side": 1,
+      "message": "woops meant to respond to the comment thread, but also second view is RenderTextureView (not Read)",
+      "parentUuid": "62850131_4250a46f",
+      "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0831254_b47fdd60",
         "filename": "src/gpu/graphite/dawn/DawnTexture.h",
         "patchSetId": 4
