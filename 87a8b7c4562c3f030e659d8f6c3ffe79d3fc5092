@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a88552e5_553f1d06",
+        "filename": "modules/bentleyottmann/src/Point.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-16T16:03:16Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem right? We want to know if `b - a \u003c\u003d max`, right? This is testing something about `a + b`. Also, this can still overflow if `a \u003c 0` ?",
+      "revId": "87a8b7c4562c3f030e659d8f6c3ffe79d3fc5092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
