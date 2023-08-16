@@ -69,6 +69,8 @@ struct RenderPassDesc {
 
     Swizzle fWriteSwizzle;
 
+    uint32_t fSampleCount;
+
     // TODO:
     // * bounds (TBD whether exact bounds vs. granular)
     // * input attachments
