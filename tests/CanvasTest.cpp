@@ -620,40 +620,10 @@ DEF_TEST(Canvas_LegacyColorBehavior, r) {
 }
 #endif
 
-namespace {
-
-class ZeroBoundsImageFilter : public SkImageFilter_Base {
-public:
-    static sk_sp<SkImageFilter> Make() { return sk_sp<SkImageFilter>(new ZeroBoundsImageFilter); }
-
-protected:
-    sk_sp<SkSpecialImage> onFilterImage(const skif::Context&, SkIPoint*) const override {
-        return nullptr;
-    }
-    SkIRect onFilterNodeBounds(const SkIRect&, const SkMatrix&,
-                               MapDirection, const SkIRect* inputRect) const override {
-        return SkIRect::MakeEmpty();
-    }
-
-private:
-    SK_FLATTENABLE_HOOKS(ZeroBoundsImageFilter)
-
-    ZeroBoundsImageFilter() : INHERITED(nullptr, 0, nullptr) {}
-
-    using INHERITED = SkImageFilter_Base;
-};
-
-sk_sp<SkFlattenable> ZeroBoundsImageFilter::CreateProc(SkReadBuffer& buffer) {
-    SkDEBUGFAIL("Should never get here");
-    return nullptr;
-}
-
-}  // anonymous namespace
-
 DEF_TEST(Canvas_SaveLayerWithNullBoundsAndZeroBoundsImageFilter, r) {
     SkCanvas canvas(10, 10);
     SkPaint p;
-    p.setImageFilter(ZeroBoundsImageFilter::Make());
+    p.setImageFilter(SkImageFilters::Empty());
     // This should not fail any assert.
     canvas.saveLayer(nullptr, &p);
     REPORTER_ASSERT(r, canvas.getDeviceClipBounds().isEmpty());
