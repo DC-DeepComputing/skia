@@ -81,6 +81,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "300d6b8c_dbd05f7a",
+        "filename": "src/gpu/graphite/AttachmentTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-08-16T18:15:56Z",
+      "side": 1,
+      "message": "Done. For now I detect implicitness by checking that desc.fSampleCount \u003e 1 and color attachment\u0027s samples \u003d 1. This allows more flexibility in future.",
+      "parentUuid": "b1c71d1c_9184e1cd",
+      "range": {
+        "startLine": 73,
+        "startChar": 13,
+        "endLine": 73,
+        "endChar": 33
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb38130e_3ce9802b",
@@ -94,6 +118,30 @@
       "writtenOn": "2023-08-15T13:36:36Z",
       "side": 1,
       "message": "so in the implicit case, we\u0027re just calling this to get the numSamples. I wonder if it makes more sense to just have a get[Default/Implicit/Internal]NumSamples() call on caps instead.",
+      "range": {
+        "startLine": 177,
+        "startChar": 31,
+        "endLine": 177,
+        "endChar": 62
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18c1632e_abd17470",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-08-16T18:15:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb38130e_3ce9802b",
       "range": {
         "startLine": 177,
         "startChar": 31,
@@ -127,6 +175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38220147_7a936824",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-08-16T18:15:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e330862f_339ce761",
+      "range": {
+        "startLine": 219,
+        "startChar": 46,
+        "endLine": 219,
+        "endChar": 47
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcd4c918_7a5c4533",
@@ -150,6 +222,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e8e1dd2_2e77c12b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-08-16T18:15:56Z",
+      "side": 1,
+      "message": "Done. It makes sense.",
+      "parentUuid": "bcd4c918_7a5c4533",
+      "range": {
+        "startLine": 174,
+        "startChar": 8,
+        "endLine": 174,
+        "endChar": 10
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12274972_75ee910f",
@@ -163,6 +259,30 @@
       "writtenOn": "2023-08-15T14:36:09Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 108
+      },
+      "revId": "cd7fde035d64e5557402f09b38c468f8fbb95866",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73296f9f_041deec6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-08-16T18:15:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12274972_75ee910f",
       "range": {
         "startLine": 206,
         "startChar": 0,
