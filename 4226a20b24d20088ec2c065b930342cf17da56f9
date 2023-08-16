@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7fefb3e_bfbdabba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "I knew about that, but I assumed it was for reading other files. (Somewhere we have some files used for determining which tests to run, though maybe that was all replaced by `CtsEnforcement`?)\n\nAnyway, something seems to be broken. We successfully load resources when run as a non-APK, but I *think* we always fail as an APK.\n\nNote that there are multiple ways to get an APK:\n1. `tools/skqp/make_universal_apk`\n2. `platform_tools/android/bin/android_build_app -C out/Arm64 skqp`\n3. `tools/skqp/create_apk.py`\n\nI\u0027m not totally clear on the differences. Only `1` is recommended in the `README`. `3` is used by `1`, and it can also be used to make a *non*-universal APK. `2` appears to build the other apps. I briefly though the version in `2` was able to read the resources - it ran without crashing. But when I tried again later it crashed. Maybe I\u0027m doing something differently that I forgot about.\n\nAlso, while they create APKs with different names, I *think* they all get installed as the same app (and thus replace each other).",
+      "parentUuid": "5c3f65bf_d02c0631",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da5bc286_238416d2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -61,6 +85,30 @@
       "writtenOn": "2023-08-15T21:17:50Z",
       "side": 1,
       "message": "I think they should be all the same, but it seems a little out of scope for this CL. I\u0027d also be happy to land a single CL that changes all of them. On that note, let me know if you think I should break this CL up in other ways.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 25
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea611c4_4db0ef16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "Splitting this particular change into I156884cad034b4cf96f0608516e37845be306bac.",
+      "parentUuid": "da5bc286_238416d2",
       "range": {
         "startLine": 41,
         "startChar": 4,
@@ -84,6 +132,30 @@
       "writtenOn": "2023-08-15T21:17:50Z",
       "side": 1,
       "message": "Might want to add b/296040739. That actually inspired me to get on this one - I need to be able to run the tests to verify that I\u0027ve fixed that one.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 3
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d32e9c7_97cccbbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee6d1964_c63fd058",
       "range": {
         "startLine": 44,
         "startChar": 0,
@@ -158,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53879444_5eece3f8",
+        "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "When I first read this, I interpreted it as \"use `skqp_jni` everywhere. I\u0027m not sure whether that\u0027s what you meant, but looking over our code, I think I start to see a distinction; I\u0027m just not clear where the line should be drawn. I think part of this is that we can run SkQP in a variety of ways, which I don\u0027t have totally in my head. Looking at a couple of them:\n\n- `BUILD.gn` builds a `test_app` called `skqp`. This must be what is used for [building as a non-APK executable](https://skia.googlesource.com/skia/+/main/tools/skqp/README.md#run-as-a-non_apk-executable). \n- `BUILD.gn` builds a `shared_library`, `libskqp_app`, which includes `skqp_lib`. I was wondering if it might be inappropriate to call this `skqp_jni`, since it might be used in contexts where we don\u0027t use JNI. But it builds `jni_skqp.cpp`, so presumably it always does. It\u0027s used by `gn_to_bp` for creating the version used in CTS. It is also used by `setupSkiaLibraryBuild` to build for an Android app. So it looks like in both of these cases it\u0027s appropriate to call this `skqp_jni`.\n\nI\u0027m splitting this change out into I53eabdd55eb0ad9746d5c6e9fdb0ab92cb6a8a3a.",
+      "parentUuid": "5d289527_81d07f03",
+      "range": {
+        "startLine": 33,
+        "startChar": 26,
+        "endLine": 33,
+        "endChar": 34
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0596805_8aab3993",
@@ -171,6 +267,24 @@
       "writtenOn": "2023-08-15T21:17:50Z",
       "side": 1,
       "message": "nit: line too long.",
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e5879a5_a3c37015",
+        "filename": "platform_tools/android/apps/skqp/src/main/res/layout/activity_skqp.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0596805_8aab3993",
       "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -215,6 +329,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4b7482_4d458078",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cab24259_35e727b7",
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51dabfc8_ffeb50bf",
@@ -252,6 +384,30 @@
       "side": 1,
       "message": "We don\u0027t run them from the C++ side, since that wouldn\u0027t test any of the vendor\u0027s code or GPU at all. It would be testing SkQP\u0027s unchanged copy of Skia running against our unchanged error-test files. Error checking doesn\u0027t use the GPU or drivers so there\u0027s nothing external being tested there.\n\nInstead, what we do is we run the error test files using the Java RuntimeShader APIs. This ensures that we test the device\u0027s installed version of Skia against our error-test files.\n\nhttps://osscs.corp.google.com/skia/skia/+/main:platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQPRunner.java;l\u003d164;drc\u003d872be7ec539c827937513b8869f00d68b16a3727",
       "parentUuid": "51dabfc8_ffeb50bf",
+      "range": {
+        "startLine": 81,
+        "startChar": 32,
+        "endLine": 81,
+        "endChar": 41
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6251352c_a18611c0",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-16T16:15:45Z",
+      "side": 1,
+      "message": "Great, thanks for the explanation!",
+      "parentUuid": "ef433868_091d5e4e",
       "range": {
         "startLine": 81,
         "startChar": 32,
