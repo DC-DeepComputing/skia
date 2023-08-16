@@ -44,6 +44,7 @@ static std::tuple<wgpu::ShaderModule, std::string> compile_shader_module(
         std::string spirv;
         SkSL::Program::Interface interface;
         SkSL::ProgramSettings settings;
+        settings.fSPIRVDawnCompatMode = true;
 
         SkSL::Compiler compiler(caps->shaderCaps());
         std::string sksl = BuildComputeSkSL(caps, step);
@@ -95,6 +96,7 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
     }
 
     bindGroupLayoutEntries.reserve(resourceCount);
+    int declarationIndex = 0;
     for (const ComputeStep::ResourceDesc& r : resources) {
         bindGroupLayoutEntries.emplace_back();
         uint32_t bindingIndex = bindGroupLayoutEntries.size() - 1;
@@ -117,7 +119,7 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
                 entry.storageTexture.access = wgpu::StorageTextureAccess::WriteOnly;
                 entry.storageTexture.viewDimension = wgpu::TextureViewDimension::e2D;
 
-                auto [_, colorType] = step->calculateTextureParameters(bindingIndex, r);
+                auto [_, colorType] = step->calculateTextureParameters(declarationIndex, r);
                 auto textureInfo = sharedContext->caps()->getDefaultStorageTextureInfo(colorType);
                 entry.storageTexture.format = textureInfo.dawnTextureSpec().fFormat;
                 break;
@@ -132,11 +134,10 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
                 texEntry.visibility = wgpu::ShaderStage::Compute;
                 texEntry.texture.sampleType = wgpu::TextureSampleType::Float;
                 texEntry.texture.viewDimension = wgpu::TextureViewDimension::e2D;
-
-                bindGroupLayoutEntries.push_back(std::move(texEntry));
                 break;
             }
         }
+        declarationIndex++;
     }
 
     const wgpu::Device& device = sharedContext->device();
