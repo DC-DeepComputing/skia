@@ -25,7 +25,6 @@
 
 #ifdef SK_VULKAN
 #include "include/gpu/vk/GrVkTypes.h"
-#include "include/private/gpu/ganesh/GrVkTypesPriv.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #endif
 
@@ -435,7 +434,7 @@ private:
 
     union {
 #ifdef SK_VULKAN
-        GrVkBackendSurfaceInfo fVkInfo;
+        GrVkImageInfo fVkInfo;
 #endif
         GrMockTextureInfo fMockInfo;
 #ifdef SK_DIRECT3D
@@ -639,7 +638,7 @@ private:
 
     union {
 #ifdef SK_VULKAN
-        GrVkBackendSurfaceInfo fVkInfo;
+        GrVkImageInfo fVkInfo;
 #endif
         GrMockRenderTargetInfo fMockInfo;
 #ifdef SK_DIRECT3D
