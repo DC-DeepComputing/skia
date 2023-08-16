@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62850131_4250a46f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-16T15:08:01Z",
+      "side": 1,
+      "message": "Could we just have two TextureViews members: SampleTextureView and ReadTextureView? If the usage on the texture supports sampling we create a view for that. If the usage on the texture supports rendering we create a view for that. And if possible we share the same view object for both. WebGPU objects are ref cnted so shouldn\u0027t be an issue storing the same underlying thing in both slots.",
+      "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0831254_b47fdd60",
