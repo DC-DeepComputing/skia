@@ -101,7 +101,10 @@ protected:
     }
 
     bool isSuitableFor(Backend backend) override {
-        return backend == kNonRendering_Backend;
+        // We need the Graphite backend to test the Graphite shaders, since Graphite's modules are
+        // compiled out in a CPU-only or Ganesh-only build to save space.
+        return this->usesGraphite() ? backend == kGraphite_Backend
+                                    : backend == kNonRendering_Backend;
     }
 
     bool usesRuntimeShader() const {
@@ -117,7 +120,7 @@ protected:
             fSrc = std::regex_replace(fSrc, std::regex(input), replacement);
         };
 
-        // Runtime shaders which have slightly different conventions than fragment shaders.
+        // Runtime shaders have slightly different conventions than fragment shaders.
         // Perform a handful of fixups to compensate. These are hand-tuned for our current set of
         // test shaders and will probably need to be updated if we add more.
         if (this->usesRuntimeShader()) {
