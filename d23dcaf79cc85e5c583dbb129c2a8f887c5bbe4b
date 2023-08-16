@@ -16,6 +16,24 @@
       "message": "Failing tests are due to the problem potentially addressed by one of the revisions of http://review.skia.org/736303.",
       "revId": "d23dcaf79cc85e5c583dbb129c2a8f887c5bbe4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcebf090_dd8b7c69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-16T19:48:06Z",
+      "side": 1,
+      "message": "This should be good to go with http://review.skia.org/736303 submitted; PTAL.",
+      "parentUuid": "3f47abfd_ff20738b",
+      "revId": "d23dcaf79cc85e5c583dbb129c2a8f887c5bbe4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
