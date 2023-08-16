@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a3aee9_ef004429",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-16T13:21:40Z",
+      "side": 1,
+      "message": "There might be better ways to solve this. e.g. maybe we could always include the graphite modules inside `SkSLModuleLoader.cpp` if `GR_TEST_UTILS` is set? I\u0027m not sure if nanobench sets this #define; it doesn\u0027t seem to set any particular defines of its own. Open to ideas.",
+      "revId": "50805ec438ea11dc0d90dba6ffae559fbc599bf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
