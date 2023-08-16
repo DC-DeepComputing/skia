@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14524c79_ae1372ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-16T14:44:14Z",
+      "side": 1,
+      "message": "I doublechecked that there was not a reference to the flag in .bazelrc",
+      "revId": "e3759d8e5f3a3aef2f5fc8228d6bdfe47cae2453",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
