@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fe0d840_6661ee3d",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T17:40:27Z",
+      "side": 1,
+      "message": "nit: Can we keep the assignment of `baseMipLevel \u003d 0` even if that\u0027s the default?\n\nAlso wdyt about having an `if (info.mipmapped())` check to do this view modification, and otherwise just assigning `sampleTextureView` to `renderTextureView`?",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 37
+      },
+      "revId": "24a933563c195296864c104fa5d5d62643c6ea77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
