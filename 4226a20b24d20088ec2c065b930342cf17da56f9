@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c3f65bf_d02c0631",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-08-16T06:47:40Z",
+      "side": 1,
+      "message": "We do use the AAssetManger to open the assets. See https://source.corp.google.com/h/skia/codesearch/+/main:skia/tools/skqp/src/jni_skqp.cpp;l\u003d50\n\nI would update the gradle to stuff the resources directory into the asset directory so that everything is self contained in the APK.",
+      "parentUuid": "c87e06e1_ebbc9937",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da5bc286_238416d2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -100,6 +124,30 @@
       "writtenOn": "2023-08-15T21:17:50Z",
       "side": 1,
       "message": "I\u0027m not sure which direction to go in here. As I understand it, this file is *also* used by CTS, and `gn_to_bp.py` creates a library with the name `skqp_jni`. But `platform_tools/android/apps/skqp/build.gradle` passes `libskqp_app` to `setupSkiaLibraryBuild`, which is why this works when running directly from Skia.\n\nHow did these two get out of sync? I could change them all to be one or the other, or is there some other fix needed here?",
+      "range": {
+        "startLine": 33,
+        "startChar": 26,
+        "endLine": 33,
+        "endChar": 34
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d289527_81d07f03",
+        "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-08-16T06:47:40Z",
+      "side": 1,
+      "message": "I think they should be in sync.  I would leave this as skqp_jni to not interfere with how CTS works and update our BUILD.gn target to be `libskqp_jni` instead of `libskqp_app`",
+      "parentUuid": "50006162_bf3cc588",
       "range": {
         "startLine": 33,
         "startChar": 26,
