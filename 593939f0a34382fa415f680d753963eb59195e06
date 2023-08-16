@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f64e21_a408c058",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T17:46:02Z",
+      "side": 1,
+      "message": "Oops, I missed commenting about some of the GM changes:\n\n- the backdrop_imagefilter_croprect family of GMs seems to have improved; it looks like the originally \"correct\" images had some imperceptible transparency to them that is now not present, so arguably the new behavior is better.\n- imagefiltersblurrepeat_unclipped had not been rendering correctly, it was only seeing the red portion of the image instead of all of it. Now the non-intersecting clip is filled with the expected purple.\n- All DDL configs have had churn, but they never really drew correctly before anyways. The imagefilter pipeline hasn\u0027t been conveying content bounds fully through the layer and rendering functions so the DDL boundaries end up creating somewhat clunky and incorrect clips. This blur CL is one of the last dependencies on fixing up that data flow, though, and then I will revisit any other issues causing the DDL cases to render incorrectly.",
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6d5d54d_311ecb38",
