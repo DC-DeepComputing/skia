@@ -81,8 +81,8 @@ public:
         kStorageBuffer,
 
         kStorageTexture,
-        kTexture,
-        kSampler,
+        kReadOnlyTexture,
+        kSampledTexture,
     };
 
     enum class ResourcePolicy {
