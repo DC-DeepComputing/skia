@@ -32,6 +32,7 @@ static long ImageFilter_DistantLitDiffuse(JNIEnv* env, jobject, jfloat x, jfloat
 static long ImageFilter_Blur(JNIEnv* env, jobject, jfloat sigmaX, jfloat sigmaY,
                                                    jint jTileMode, jlong native_input) {
     auto input = sk_ref_sp(reinterpret_cast<SkImageFilter*>(native_input));
+    // FIXME look into jetski and hwui usage of blur..
     auto filter = SkImageFilters::Blur(sigmaX, sigmaY,
                                        jetski::utils::TileMode(jTileMode),
                                        std::move(input));

@@ -200,6 +200,7 @@ BlurImageFilter::BlurImageFilter(sk_sp<ImageFilter> input)
 BlurImageFilter::~BlurImageFilter() = default;
 
 sk_sp<SkImageFilter> BlurImageFilter::onRevalidateFilter() {
+    // FIXME crop somehow
     return SkImageFilters::Blur(fSigma.x(), fSigma.y(), fTileMode, this->refInput(0));
 }
 
