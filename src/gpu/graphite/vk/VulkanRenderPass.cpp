@@ -13,8 +13,8 @@
 
 namespace skgpu::graphite {
 
-GraphiteResourceKey VulkanRenderPass::GenerateRenderPassKey(const RenderPassDesc& renderPassDesc) {
-
+GraphiteResourceKey VulkanRenderPass::GenerateCompatibleRenderPassKey(
+        const RenderPassDesc& renderPassDesc) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
     // RenderPass key structure:
     // Color attachment compatibility, resolve attachment compat, stencil attach compat,
@@ -76,14 +76,35 @@ GraphiteResourceKey VulkanRenderPass::GenerateRenderPassKey(const RenderPassDesc
     return key;
 }
 
-sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* context) {
-    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context));
+GraphiteResourceKey VulkanRenderPass::GenerateRenderPassKey(const RenderPassDesc& renderPassDesc,
+                                                            const Texture* colorTexture,
+                                                            const Texture* resolveTexture,
+                                                            const Texture* depthStencilTexture) {
+    // TODO: Implement. For now, simply generate a compatible renderpass key.
+    return GenerateCompatibleRenderPassKey(renderPassDesc);
 }
 
-VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context)
+sk_sp<VulkanRenderPass> VulkanRenderPass::MakeCompatibleRenderPass(
+        const VulkanSharedContext* context, const RenderPassDesc& renderPassDesc) {
+    VkRenderPass renderPass;
+    renderPass = VK_NULL_HANDLE;
+    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass));
+}
+
+sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedContext* context,
+                                                         const RenderPassDesc& renderPassDesc,
+                                                         const Texture* colorTexture,
+                                                         const Texture* resolveTexture,
+                                                         const Texture* depthStencilTexture) {
+    VkRenderPass renderPass;
+    renderPass = VK_NULL_HANDLE;
+    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass));
+}
+
+VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context, VkRenderPass renderPass)
         : Resource(context, Ownership::kOwned, skgpu::Budgeted::kYes, sizeof(VkRenderPass))
         , fSharedContext(context)
-        , fRenderPass (VK_NULL_HANDLE) {
+        , fRenderPass (renderPass) {
 }
 
 void VulkanRenderPass::freeGpuData() {

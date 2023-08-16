@@ -22,14 +22,31 @@ class VulkanSharedContext;
 class VulkanRenderPass : public Resource {
 public:
 
-    static GraphiteResourceKey GenerateRenderPassKey(const RenderPassDesc&);
+    static GraphiteResourceKey GenerateCompatibleRenderPassKey(const RenderPassDesc&);
 
-    static sk_sp<VulkanRenderPass> Make(const VulkanSharedContext*);
+    static GraphiteResourceKey GenerateRenderPassKey(const RenderPassDesc&,
+                                                     const Texture* colorTexture,
+                                                     const Texture* resolveTexture,
+                                                     const Texture* depthStencilTexture);
+
+    static sk_sp<VulkanRenderPass> MakeCompatibleRenderPass(const VulkanSharedContext*,
+                                                            const RenderPassDesc&);
+
+    static sk_sp<VulkanRenderPass> MakeRenderPass(const VulkanSharedContext*,
+                                                  const RenderPassDesc&,
+                                                  const Texture* colorTexture,
+                                                  const Texture* resolveTexture,
+                                                  const Texture* depthStencilTexture);
+
+    VkRenderPass* renderPass() {
+        // TODO: Check for VK_NULL_HANDLE here or elsewhere?
+        return &fRenderPass;
+    }
 
 private:
     void freeGpuData() override;
 
-    VulkanRenderPass(const VulkanSharedContext*);
+    VulkanRenderPass(const VulkanSharedContext*, VkRenderPass);
 
     const VulkanSharedContext* fSharedContext;
     VkRenderPass fRenderPass;
