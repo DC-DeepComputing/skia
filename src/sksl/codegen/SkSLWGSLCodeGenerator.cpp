@@ -1740,45 +1740,68 @@ std::string WGSLCodeGenerator::assembleExpression(const Expression& e,
     }
 }
 
-std::string WGSLCodeGenerator::binaryOpOrComponentwiseDivision(const Expression& left,
-                                                               const Expression& right,
-                                                               const std::string& lhs,
-                                                               const std::string& rhs,
-                                                               Operator op) {
-    if (left.type().isMatrix() && right.type().matches(left.type()) &&
-        op.kind() == OperatorKind::SLASH) {
-        // WGSL does not natively support componentwise matrix-division-by-matrix.
-        // We break it apart into componentwise vector division.
-        return this->assembleComponentwiseMatrixBinary(left.type(), lhs, rhs, op);
+static bool is_nontrivial_expression(const Expression& expr) {
+    // We consider a "trivial expression" one which we can repeat multiple times in the output
+    // without being dangerous or spammy. We avoid emitting temporary variables for very trivial
+    // expressions: literals, unadorned variable references, or constant vectors.
+    if (expr.is<VariableReference>() || expr.is<Literal>()) {
+        // Variables and literals are trivial; adding a let-declaration won't simplify anything.
+        return false;
     }
-    // Every other SkSL operator has a direct analogue.
-    return lhs + operator_name(op) + rhs;
+    if (expr.type().isVector() && Analysis::IsConstantExpression(expr)) {
+        // Compile-time constant vectors are also considered trivial; they're short and sweet.
+        return false;
+    }
+    return true;
 }
 
-std::string WGSLCodeGenerator::assembleBinaryExpressionElement(const Expression& expr,
-                                                               Operator op,
-                                                               const Expression& other,
-                                                               Precedence precedence) {
-    // SkSL supports `matrix op scalar` for any operator, but WGSL only supports multiplication.
-    // If we detect a matrix-op-scalar expression that isn't multiplication, we need to manually
-    // splat the scalar into a matrix.
-    bool needMatrixSplatOnScalar = other.type().isMatrix() && expr.type().isScalar() &&
-                                   op.isValidForMatrixOrVector() &&
-                                   op.removeAssignment().kind() != Operator::Kind::STAR;
-    if (needMatrixSplatOnScalar) {
-        std::string scalar = this->writeNontrivialScratchLet(expr, Precedence::kSequence);
-        std::string result = to_wgsl_type(other.type()) + '(';
-        auto separator = String::Separator();
-        int numSlots = other.type().slotCount();
-        for (int index = 0; index < numSlots; ++index) {
-            result += separator();
-            result += scalar;
-        }
-        return result + ')';
+std::string WGSLCodeGenerator::binaryOpOrComponentwiseArithmetic(const Expression& left,
+                                                                 const Expression& right,
+                                                                 const std::string& lhs,
+                                                                 const std::string& rhs,
+                                                                 Operator op) {
+    switch (op.kind()) {
+        case OperatorKind::SLASH:
+            if (left.type().isMatrix() && right.type().isMatrix()) {
+                // WGSL does not natively support componentwise matrix-division-by-matrix.
+                // We break it apart into repeated vector-by-vector division instead.
+                return this->assembleComponentwiseMatrixBinary(
+                        left.type(),
+                        is_nontrivial_expression(left) ? this->writeScratchLet(lhs) : lhs,
+                        is_nontrivial_expression(right) ? this->writeScratchLet(rhs) : rhs,
+                        kMatrixOpMatrix,
+                        op);
+            }
+            [[fallthrough]];
+
+        case OperatorKind::PLUS:
+        case OperatorKind::MINUS:
+            // WGSL does not natively support matrix-plus-scalar or scalar-plus-matrix.
+            // We break it apart into repeated vector-plus-scalar/scalar-plus-vector instead.
+            if (left.type().isMatrix() && right.type().isScalar()) {
+                return this->assembleComponentwiseMatrixBinary(
+                        left.type(),
+                        is_nontrivial_expression(left) ? this->writeScratchLet(lhs) : lhs,
+                        is_nontrivial_expression(right) ? this->writeScratchLet(rhs) : rhs,
+                        kMatrixOpScalar,
+                        op);
+            }
+            if (left.type().isScalar() && right.type().isMatrix()) {
+                return this->assembleComponentwiseMatrixBinary(
+                        right.type(),
+                        is_nontrivial_expression(left) ? this->writeScratchLet(lhs) : lhs,
+                        is_nontrivial_expression(right) ? this->writeScratchLet(rhs) : rhs,
+                        kScalarOpMatrix,
+                        op);
+            }
+            break;
+
+        default:
+            break;
     }
 
-    // For other expression types, we can emit them as-is.
-    return this->assembleExpression(expr, precedence);
+    // Every other SkSL operator should have a direct analogue.
+    return lhs + operator_name(op) + rhs;
 }
 
 std::string WGSLCodeGenerator::assembleBinaryExpression(const BinaryExpression& b,
@@ -1895,15 +1918,14 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const Expression& left,
 
         if (op.kind() == OperatorKind::EQ) {
             // Evaluate the right-hand side of simple assignment (`a = b` --> `b`).
-            expr = this->assembleBinaryExpressionElement(right, op, left, Precedence::kAssignment);
+            expr = this->assembleExpression(right, Precedence::kAssignment);
         } else {
             // Evaluate the right-hand side of compound-assignment (`a += b` --> `a + b`).
             op = op.removeAssignment();
 
             std::string lhs = lvalue->load();
-            std::string rhs = this->assembleBinaryExpressionElement(right, op, left,
-                                                                    op.getBinaryPrecedence());
-            expr = this->binaryOpOrComponentwiseDivision(left, right, lhs, rhs, op);
+            std::string rhs = this->assembleExpression(right, op.getBinaryPrecedence());
+            expr = this->binaryOpOrComponentwiseArithmetic(left, right, lhs, rhs, op);
         }
 
         // Emit the assignment statement (`a = a + b`).
@@ -1953,12 +1975,11 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const Expression& left,
     // infinity or nan here, as we would expect. (skia:14385)
     bool bothSidesConstant = ConstantFolder::GetConstantValueOrNull(left) &&
                              ConstantFolder::GetConstantValueOrNull(right);
-    std::string lhs = bothSidesConstant
-                              ? this->writeScratchLet(left, precedence)
-                              : this->assembleBinaryExpressionElement(left, op, right, precedence);
-    std::string rhs = this->assembleBinaryExpressionElement(right, op, left, precedence);
+    std::string lhs = bothSidesConstant ? this->writeScratchLet(left, precedence)
+                                        : this->assembleExpression(left, precedence);
+    std::string rhs = this->assembleExpression(right, precedence);
 
-    expr += this->binaryOpOrComponentwiseDivision(left, right, lhs, rhs, op);
+    expr += this->binaryOpOrComponentwiseArithmetic(left, right, lhs, rhs, op);
 
     if (needParens) {
         expr += ')';
@@ -2169,14 +2190,27 @@ std::string WGSLCodeGenerator::assemblePartialSampleCall(std::string_view functi
 std::string WGSLCodeGenerator::assembleComponentwiseMatrixBinary(const Type& matrixType,
                                                                  const std::string& left,
                                                                  const std::string& right,
+                                                                 ComponentwiseMatrixInputs inputs,
                                                                  Operator op) {
     std::string expr = to_wgsl_type(matrixType) + '(';
 
     auto separator = String::Separator();
     int columns = matrixType.columns();
     for (int c = 0; c < columns; ++c) {
-        String::appendf(&expr, "%s%s[%d]%s%s[%d]",
-                        separator().c_str(), left.c_str(), c, op.operatorName(), right.c_str(), c);
+        expr += separator();
+        expr += left;
+        if (inputs != kScalarOpMatrix) {
+            expr += '[';
+            expr += std::to_string(c);
+            expr += ']';
+        }
+        expr += op.operatorName();
+        expr += right;
+        if (inputs != kMatrixOpScalar) {
+            expr += '[';
+            expr += std::to_string(c);
+            expr += ']';
+        }
     }
     return expr + ')';
 }
@@ -2252,8 +2286,12 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
                             ? this->writeScratchLet(*arguments[0], Precedence::kPostfix)
                             : this->writeNontrivialScratchLet(*arguments[0], Precedence::kPostfix);
             std::string arg1 = this->writeNontrivialScratchLet(*arguments[1], Precedence::kPostfix);
-            return this->writeScratchLet(this->assembleComponentwiseMatrixBinary(
-                    arguments[0]->type(), arg0, arg1, OperatorKind::STAR));
+            return this->writeScratchLet(
+                    this->assembleComponentwiseMatrixBinary(arguments[0]->type(),
+                                                            arg0,
+                                                            arg1,
+                                                            kMatrixOpMatrix,
+                                                            OperatorKind::STAR));
         }
         case k_mix_IntrinsicKind: {
             const char* name = arguments[2]->type().componentType().isBoolean() ? "select" : "mix";
@@ -2750,16 +2788,8 @@ std::string WGSLCodeGenerator::writeScratchLet(const Expression& expr,
 std::string WGSLCodeGenerator::writeNontrivialScratchLet(const Expression& expr,
                                                          Precedence parentPrecedence) {
     std::string result = this->assembleExpression(expr, parentPrecedence);
-
-    if (expr.is<VariableReference>() || expr.is<Literal>()) {
-        // Variables and literals are trivial; adding a let-declaration won't simplify anything.
-        return result;
-    }
-    if (expr.type().isVector() && Analysis::IsConstantExpression(expr)) {
-        // Compile-time constant vectors are also considered trivial; they're short and sweet.
-        return result;
-    }
-    return this->writeScratchLet(result);
+    return is_nontrivial_expression(expr) ? this->writeScratchLet(result)
+                                          : result;
 }
 
 std::string WGSLCodeGenerator::assembleTernaryExpression(const TernaryExpression& t,

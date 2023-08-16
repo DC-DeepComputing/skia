@@ -224,15 +224,11 @@ private:
                                          const Expression& right,
                                          const Type& resultType,
                                          Precedence parentPrecedence);
-    std::string assembleBinaryExpressionElement(const Expression& expr,
-                                                Operator op,
-                                                const Expression& other,
-                                                Precedence parentPrecedence);
-    std::string binaryOpOrComponentwiseDivision(const Expression& left,
-                                                const Expression& right,
-                                                const std::string& lhs,
-                                                const std::string& rhs,
-                                                Operator op);
+    std::string binaryOpOrComponentwiseArithmetic(const Expression& left,
+                                                  const Expression& right,
+                                                  const std::string& lhs,
+                                                  const std::string& rhs,
+                                                  Operator op);
     std::string assembleFieldAccess(const FieldAccess& f);
     std::string assembleFunctionCall(const FunctionCall& call, Precedence parentPrecedence);
     std::string assembleIndexExpression(const IndexExpression& i);
@@ -261,9 +257,15 @@ private:
                                           const Expression& sampler,
                                           const Expression& coords);
     std::string assembleInversePolyfill(const FunctionCall& call);
+    enum ComponentwiseMatrixInputs {
+        kMatrixOpMatrix,
+        kMatrixOpScalar,
+        kScalarOpMatrix,
+    };
     std::string assembleComponentwiseMatrixBinary(const Type& matrixType,
                                                   const std::string& left,
                                                   const std::string& right,
+                                                  ComponentwiseMatrixInputs inputs,
                                                   Operator op);
 
     // Constructor expressions
