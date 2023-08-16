@@ -46,6 +46,30 @@
       },
       "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ac9775_9a333ed7",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:01:03Z",
+      "side": 1,
+      "message": "Since they all extend Texture, and that\u0027s meant to be threadsafe, it feels a little odd to say that the Dawn/VK portion are not threadsafe. Maybe it\u0027s not worth a lot of fuss if the eventual BackendTextureView object would change how these views are cached?\n\nI think a lock would be safest, and we can always go back to a single-threaded use case if we see it showing up in a bottleneck. If actual usage is mostly single-threaded, the locks should be pretty free since there won\u0027t be any contention.\n\nCC\u0027ing Greg to see if he has any thoughts.",
+      "parentUuid": "f513ebd0_05a276ea",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 65
+      },
+      "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
