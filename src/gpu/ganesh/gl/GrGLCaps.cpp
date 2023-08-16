@@ -3479,10 +3479,10 @@ bool GrGLCaps::canCopyTexSubImage(GrGLFormat dstFormat, bool dstHasMSAARenderBuf
         // and SRGB isn't in the spec. There doesn't appear to be any extension that adds it.
         // ANGLE, for one, does not allow it. However, we've found it works on some drivers and
         // avoids bugs with using glBlitFramebuffer.
-        if ((GrGLFormatIsSRGB(dstFormat) || GrGLFormatIsSRGB(srcFormat)) &&
-            !fAllowSRGBCopyTexSubImage) {
-            return false;
-        }
+//        if ((GrGLFormatIsSRGB(dstFormat) || GrGLFormatIsSRGB(srcFormat)) &&
+//            !fAllowSRGBCopyTexSubImage) {
+//            return false;
+//        }
 
         // Table 3.9 of the ES2 spec and 3.16 of ES3 spec indicates the supported internal base
         // formats with CopyTexSubImage. Each base format can be copied to itself or formats with
