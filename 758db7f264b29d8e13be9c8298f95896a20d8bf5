@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ce036c0_d44c7fe9",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:26:03Z",
+      "side": 1,
+      "message": "do we need to set a read-only access here? or is that the default?",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 74
+      },
+      "revId": "758db7f264b29d8e13be9c8298f95896a20d8bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beef9b2c_f7372f4e",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:26:03Z",
+      "side": 1,
+      "message": "Does the ComputeStep and DispatchGroup bindings guarantee that a texture bound to a `kStorageTexture` resource will have the default storage texture format?",
+      "range": {
+        "startLine": 107,
+        "startChar": 37,
+        "endLine": 107,
+        "endChar": 43
+      },
+      "revId": "758db7f264b29d8e13be9c8298f95896a20d8bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b983d2b5_d4efa449",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:26:03Z",
+      "side": 1,
+      "message": "smallll nit: 😞 hanging chad",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 9
+      },
+      "revId": "758db7f264b29d8e13be9c8298f95896a20d8bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
