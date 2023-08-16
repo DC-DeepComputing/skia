@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c817ccc0_923bb27d",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-16T15:06:30Z",
+      "side": 1,
+      "message": "I don\u0027t like this because I worry it could overwrite a user\u0027s settings and break the hermetic workflow.\n\nWhat alternatives do we have?",
+      "range": {
+        "startLine": 460,
+        "startChar": 9,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a473b332_0a88743f",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-16T15:06:30Z",
+      "side": 1,
+      "message": "Can we make one (or two) test_suite labels for this purpose?\nhttps://bazel.build/reference/be/general#test_suite",
+      "range": {
+        "startLine": 2154,
+        "startChar": 11,
+        "endLine": 2154,
+        "endChar": 15
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30568cfc_4697028e",
+        "filename": "infra/bots/task_drivers/cpu_tests/cpu_tests.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-16T15:06:30Z",
+      "side": 1,
+      "message": "I think I prefer a test_suite rather than a space-separated list",
+      "range": {
+        "startLine": 31,
+        "startChar": 26,
+        "endLine": 31,
+        "endChar": 37
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
