@@ -23,7 +23,7 @@ class SkStrokeRec;
 
 namespace skgpu::graphite {
 
-class PathAtlas;
+class ComputeStep;
 class BoundsManager;
 class Clip;
 class Context;
@@ -31,6 +31,7 @@ class DrawContext;
 enum class DstReadRequirement;
 class Geometry;
 class PaintParams;
+class PathAtlas;
 class Recorder;
 class Renderer;
 class Shape;
@@ -72,6 +73,18 @@ public:
     void flushPendingWorkToRecorder();
 
     TextureProxyView createCopy(const SkIRect* subset, Mipmapped);
+
+    sk_sp<SkImage> rescale(SkIRect srcRect,
+                           const SkImageInfo& dstInfo,
+                           SkImage::RescaleGamma rescaleGamma,
+                           SkImage::RescaleMode);
+
+#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS
+    void drawComputeFilteredImage(const sk_sp<SkImage>& image,
+                                  SkScalar left,
+                                  SkScalar top,
+                                  const ComputeStep*);
+#endif
 
     const Transform& localToDeviceTransform();
 
