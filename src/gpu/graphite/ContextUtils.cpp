@@ -440,12 +440,63 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
     return result;
 }
 
-std::string BuildComputeSkSL(const Caps*, const ComputeStep* step) {
+std::string BuildComputeSkSL(const Caps* caps, const ComputeStep* step) {
     std::string sksl =
             SkSL::String::printf("layout(local_size_x=%u, local_size_y=%u, local_size_z=%u) in;\n",
                                  step->localDispatchSize().fWidth,
                                  step->localDispatchSize().fHeight,
                                  step->localDispatchSize().fDepth);
+
+    const auto& bindingReqs = caps->resourceBindingRequirements();
+    bool distinctRanges = bindingReqs.fDistinctIndexRanges;
+    bool separateSampler = bindingReqs.fSeparateTextureAndSamplerBinding;
+
+    int index = 0;
+    int texIdx = 0;
+    // NOTE: SkSL Metal codegen always assigns the same binding index to a texture and its sampler.
+    // TODO: This could cause sampler indices to not be tightly packed if the sampler2D declaration
+    // comes after 1 or more storage texture declarations (which don't have samplers). An optional
+    // "layout(msl, sampler=T, texture=T)" syntax to count them separately (like we do for WGSL)
+    // could come in handy here but it's not supported in MSL codegen yet.
+
+    for (const ComputeStep::ResourceDesc& r : step->resources()) {
+        using Type = ComputeStep::ResourceType;
+        switch (r.fType) {
+            case Type::kUniformBuffer:
+                sksl += SkSL::String::printf("layout(binding=%d) uniform ", index++);
+                sksl += r.fSkSL;
+                break;
+            case Type::kStorageBuffer:
+                sksl += SkSL::String::printf("layout(binding=%d) buffer ", index++);
+                sksl += r.fSkSL;
+                break;
+            case Type::kStorageTexture:
+                sksl += SkSL::String::printf("layout(binding=%d) writeonly texture2D ",
+                                             distinctRanges ? texIdx++ : index++);
+                sksl += r.fSkSL;
+                break;
+            case Type::kReadOnlyTexture:
+                sksl += SkSL::String::printf("layout(binding=%d) readonly texture2D ",
+                                             distinctRanges ? texIdx++ : index++);
+                sksl += r.fSkSL;
+                break;
+            case Type::kSampledTexture:
+                if (distinctRanges) {
+                    sksl += SkSL::String::printf("layout(metal, binding=%d) ", texIdx++);
+                } else if (separateSampler) {
+                    sksl += SkSL::String::printf(
+                            "layout(wgsl, sampler=%d, texture=%d) ", index, index + 1);
+                    index += 2;
+                } else {
+                    sksl += SkSL::String::printf("layout(binding=%d) ", index++);
+                }
+                sksl += "sampler2D ";
+                sksl += r.fSkSL;
+                break;
+        }
+        sksl += ";\n";
+    }
+
     sksl += step->computeSkSL();
     return sksl;
 }
