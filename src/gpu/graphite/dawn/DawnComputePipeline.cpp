@@ -79,7 +79,16 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
     SkASSERT(!sharedContext->caps()->resourceBindingRequirements().fDistinctIndexRanges);
     std::vector<wgpu::BindGroupLayoutEntry> bindGroupLayoutEntries;
     auto resources = step->resources();
-    bindGroupLayoutEntries.reserve(resources.size());
+
+    size_t resourceCount = 0;
+    for (const ComputeStep::ResourceDesc& r : resources) {
+        resourceCount++;
+        if (r.fType == ComputeStep::ResourceType::kSampledTexture) {
+            resourceCount++;
+        }
+    }
+
+    bindGroupLayoutEntries.reserve(resourceCount);
     for (const ComputeStep::ResourceDesc& r : resources) {
         bindGroupLayoutEntries.emplace_back();
         uint32_t bindingIndex = bindGroupLayoutEntries.size() - 1;
@@ -94,7 +103,7 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
             case ComputeStep::ResourceType::kStorageBuffer:
                 entry.buffer.type = wgpu::BufferBindingType::Storage;
                 break;
-            case ComputeStep::ResourceType::kTexture:
+            case ComputeStep::ResourceType::kReadOnlyTexture:
                 entry.texture.sampleType = wgpu::TextureSampleType::Float;
                 entry.texture.viewDimension = wgpu::TextureViewDimension::e2D;
                 break;
@@ -107,9 +116,20 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
                 entry.storageTexture.format = textureInfo.dawnTextureSpec().fFormat;
                 break;
             }
-            case ComputeStep::ResourceType::kSampler:
+            case ComputeStep::ResourceType::kSampledTexture: {
                 entry.sampler.type = wgpu::SamplerBindingType::Filtering;
+
+                // Add an additional entry for the texture.
+                bindGroupLayoutEntries.emplace_back();
+                wgpu::BindGroupLayoutEntry& texEntry = bindGroupLayoutEntries.back();
+                texEntry.binding = bindingIndex + 1;
+                texEntry.visibility = wgpu::ShaderStage::Compute;
+                texEntry.texture.sampleType = wgpu::TextureSampleType::Float;
+                texEntry.texture.viewDimension = wgpu::TextureViewDimension::e2D;
+
+                bindGroupLayoutEntries.push_back(std::move(texEntry));
                 break;
+            }
         }
     }
 
