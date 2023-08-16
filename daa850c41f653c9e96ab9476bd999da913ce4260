@@ -16,6 +16,161 @@
       "message": "gentle ping",
       "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e15bef_bb5caefc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "At one point, Peng or Quyen had had a CL to add size to BindBufferInfo directly, since the size of the sub allocation can help bind groups for DrawPasses too. They avoided it by just using the max allowable bind size as a pessimistic limit if the buffer itself was larger.\n\nI\u0027d had concerns about making BindBufferInfo larger, but being able to identify non-overlapping views seems like a critical use case. In practice, we probably don\u0027t care about the full `size_t` range and could change size and offset to both be uint32_t\u0027s and fit all of this data into the one struct.\n\nThis may necessitate some larger changes in DrawWriter in order to shrink its BindBufferInfos to the written range, but I think that can happen naturally when it returns data to the buffer manager.\n\nWDYT? I\u0027m open to landing this and migrating to one struct later if that becomes a larger change. I don\u0027t want to block the compute work too much.",
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b9c5c1c_a6052820",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 30,
+        "startChar": 66,
+        "endLine": 30,
+        "endChar": 104
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e027648e_82d33698",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "nit: wrap",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 106
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81bbd25f_9b8f210b",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "nit: wrap",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 100
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "110fe05a_35e9f80e",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "nit: wrap",
+      "range": {
+        "startLine": 373,
+        "startChar": 0,
+        "endLine": 373,
+        "endChar": 100
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc9cb8bb_4e434600",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "nit: wrap",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 376,
+        "endChar": 100
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c1eba8_87e027dc",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:19:54Z",
+      "side": 1,
+      "message": "Do we need to pass buffer-\u003efSize in here somewhere? I haven\u0027t found where we specify the actual binding size to wgpu.",
+      "range": {
+        "startLine": 118,
+        "startChar": 26,
+        "endLine": 118,
+        "endChar": 36
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
