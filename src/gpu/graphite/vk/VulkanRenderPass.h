@@ -26,6 +26,11 @@ public:
 
     static sk_sp<VulkanRenderPass> Make(const VulkanSharedContext*);
 
+    VkRenderPass* renderPass() {
+        // TODO: Check for VK_NULL_HANDLE here or elsewhere?
+        return &fRenderPass;
+    }
+
 private:
     void freeGpuData() override;
 

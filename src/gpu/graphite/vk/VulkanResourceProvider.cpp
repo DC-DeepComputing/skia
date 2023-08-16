@@ -99,11 +99,13 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
+    auto compatibleRenderPass = this->findOrCreateCompatibleRenderPass(renderPassDesc);
     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
                                         &skslCompiler,
                                         runtimeDict,
                                         pipelineDesc,
                                         renderPassDesc,
+                                        compatibleRenderPass,
                                         this->pipelineCache());
 }
 
@@ -176,7 +178,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
                    : nullptr;
 }
 
-sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
+sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateCompatibleRenderPass(
         const RenderPassDesc& renderPassDesc) {
 
     auto renderPassKey = VulkanRenderPass::GenerateRenderPassKey(renderPassDesc);
@@ -195,6 +197,16 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
     auto renderPass = fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
     return renderPass ? sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(renderPass))
                       : nullptr;
+}
+
+sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
+        const RenderPassDesc& renderPassDesc,
+        const Texture* colorTexture,
+        const Texture* resolveTexture,
+        const Texture* depthStencilTexture) {
+    // TODO: Implement creation of an actual, fleshed-out render pass. For now, just fetch a
+    // compatible render pass.
+    return this->findOrCreateCompatibleRenderPass(renderPassDesc);
 }
 
 VkPipelineCache VulkanResourceProvider::pipelineCache() {
