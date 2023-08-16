@@ -845,7 +845,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
                 /*localDispatchSize=*/{kDim, kDim, 1},
                 /*resources=*/{
                     {
-                        /*type=*/ResourceType::kTexture,
+                        /*type=*/ResourceType::kReadOnlyTexture,
                         /*flow=*/DataFlow::kShared,
                         /*policy=*/ResourcePolicy::kNone,
                         /*slot=*/0,
@@ -1037,7 +1037,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureMultipleComp
                 /*localDispatchSize=*/{kDim, kDim, 1},
                 /*resources=*/{
                     {
-                        /*type=*/ResourceType::kTexture,
+                        /*type=*/ResourceType::kReadOnlyTexture,
                         /*flow=*/DataFlow::kShared,
                         /*policy=*/ResourcePolicy::kNone,
                         /*slot=*/0,
@@ -1189,15 +1189,10 @@ DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(Compute_SampledTexture, reporter, context) {
                 /*localDispatchSize=*/{kDstDim, kDstDim, 1},
                 /*resources=*/{
                     {
-                        /*type=*/ResourceType::kTexture,
+                        /*type=*/ResourceType::kSampledTexture,
                         /*flow=*/DataFlow::kShared,
                         /*policy=*/ResourcePolicy::kNone,
                         /*slot=*/0,
-                    },
-                    {
-                        /*type=*/ResourceType::kSampler,
-                        /*flow=*/DataFlow::kPrivate,
-                        /*policy=*/ResourcePolicy::kNone,
                     },
                     {
                         /*type=*/ResourceType::kStorageTexture,
@@ -1229,12 +1224,12 @@ DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(Compute_SampledTexture, reporter, context) {
 
         std::tuple<SkISize, SkColorType> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
-            SkASSERT(index == 2);
+            SkASSERT(index == 1);
             return {{kDstDim, kDstDim}, kRGBA_8888_SkColorType};
         }
 
         SamplerDesc calculateSamplerParameters(int index, const ResourceDesc&) const override {
-            SkASSERT(index == 1);
+            SkASSERT(index == 0);
             // Use the repeat tile mode to sample an infinite checkerboard.
             constexpr SkTileMode kTileModes[2] = {SkTileMode::kRepeat, SkTileMode::kRepeat};
             return {SkFilterMode::kLinear, kTileModes};
