@@ -102,6 +102,14 @@ static void set_string_array_element(JNIEnv* env, jobjectArray a, const char* s,
     env->DeleteLocalRef(jstr);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+sk_sp<SkData> get_resource(const char* resource) {
+    return open_asset_data((std::string("resources/")  + resource).c_str());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 template <typename T, typename F>
 static jobjectArray to_java_string_array(JNIEnv* env,
                                          const std::vector<T>& array,
@@ -134,7 +142,7 @@ void Java_org_skia_skqp_SkQP_nInit(JNIEnv* env, jobject object, jobject assetMan
     jclass SkQP_class = env->GetObjectClass(object);
 
     // tools/Resources
-    gResourceFactory = &open_asset_data;
+    gResourceFactory = &get_resource;
 
     std::string reportDirectory = to_string(env, dataDir);
 
