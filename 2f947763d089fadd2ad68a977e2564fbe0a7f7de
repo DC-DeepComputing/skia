@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8be2e788_29a1e0ec",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 1072,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-16T16:16:17Z",
+      "side": 1,
+      "message": "These are Settings tests, but they live in Shared, and we had existing WGSL output for them in shared/ already, so they might have moved over from Shared into Settings at some point.",
+      "range": {
+        "startLine": 1064,
+        "startChar": 0,
+        "endLine": 1072,
+        "endChar": 0
+      },
+      "revId": "2f947763d089fadd2ad68a977e2564fbe0a7f7de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
