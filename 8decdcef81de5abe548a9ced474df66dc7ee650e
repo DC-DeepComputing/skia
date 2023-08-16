@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7666f908_f513e562",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-16T15:31:40Z",
+      "side": 1,
+      "message": "It should be safe to delete this code now; m117 beta has branched so any emergency revert can still be done with the staging flag in chromium on their branch. There should be enough time before the m118 beta branch to actually fix issues in the new code (famous last words).",
+      "revId": "8decdcef81de5abe548a9ced474df66dc7ee650e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
