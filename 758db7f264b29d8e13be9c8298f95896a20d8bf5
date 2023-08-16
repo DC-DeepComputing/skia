@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea4ce3a7_2dff8204",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T21:07:26Z",
+      "side": 1,
+      "message": "We currently use the \"sampled texture\" type for both readonly-storage and sampled-type textures, which doesn\u0027t have a way to specify \"readonly\", since a sampled texture binding doesn\u0027t allow writes (see the API declarations here: https://source.chromium.org/chromium/chromium/src/+/main:out/Debug/gen/third_party/dawn/include/dawn/webgpu_cpp.h;l\u003d2144;drc\u003dc410120011084508641f34a24d77d7625bd4f4bf)\n\nIn theory we would want to set read-only for the \"storageTexture\" binding type if we were using that here but WGSL 1.0 only supports write-only storage textures. There is a proposal to add support for `read_write` access but not readonly as far as I\u0027m aware: go/wgsl-rw-storage-textures.",
+      "parentUuid": "5ce036c0_d44c7fe9",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 74
+      },
+      "revId": "758db7f264b29d8e13be9c8298f95896a20d8bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "beef9b2c_f7372f4e",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57d6eb35_80766435",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T21:07:26Z",
+      "side": 1,
+      "message": "Good question: if the texture is internally allocated by DispatchGroup then yes, it will honor the type returned by `ComputeStep::calculateTextureParameters()`. I don\u0027t think they provide a guarantee if the texture is externally assigned via `ComputeStep::assignSharedTexture()`.\n\nI went ahead and added a debug assertion to `DispatchGroup::Builder::appendStep` just in case (binding a mismatching texture here should lead to a validation error regardless - unless we turn that off sometimes?).\n\nAs for the shader source itself it\u0027s up to the ComputeStep to declare the SkSL properly using the color format syntax proposed in go/samplers-and-storage-textures-in-sksl. That syntax isn\u0027t yet supported though and SPIR-V codegen currently assumes the texture format is compatible with a rgba8unorm texture view.",
+      "parentUuid": "beef9b2c_f7372f4e",
+      "range": {
+        "startLine": 107,
+        "startChar": 37,
+        "endLine": 107,
+        "endChar": 43
+      },
+      "revId": "758db7f264b29d8e13be9c8298f95896a20d8bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b983d2b5_d4efa449",
         "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2023-08-16T15:26:03Z",
       "side": 1,
       "message": "smallll nit: 😞 hanging chad",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 9
+      },
+      "revId": "758db7f264b29d8e13be9c8298f95896a20d8bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1178473_4827c736",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T21:07:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b983d2b5_d4efa449",
       "range": {
         "startLine": 119,
         "startChar": 4,
