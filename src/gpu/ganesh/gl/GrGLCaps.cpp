@@ -3767,9 +3767,10 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         ctxInfo.renderer() == GrGLRenderer::kMali4xx ||
         ctxInfo.renderer() == GrGLRenderer::kTegra_PreK1) {
         fAllowBGRA8CopyTexSubImage = true;
-        fAllowSRGBCopyTexSubImage = true;
+    }
+
     // glCopyTexSubImage2D works for sRGB with GLES 3.0
-    } else if (ctxInfo.version() > GR_GL_VER(3, 0)) {
+    if (ctxInfo.version() > GR_GL_VER(3, 0)) {
         fAllowSRGBCopyTexSubImage = true;
     }
 
