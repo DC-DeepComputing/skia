@@ -428,8 +428,10 @@ func GenTasks(cfg *Config) {
 			"skia/resources",
 			"skia/package.json",
 			"skia/package-lock.json",
-			"skia/DEPS", // needed to check generation
+			"skia/DEPS",       // needed to check generation
+			"skia/infra/bots", // Many Go tests live here.
 			// Needed to run bazel
+			"skia/.bazelignore",
 			"skia/.bazelrc",
 			"skia/.bazelversion",
 			"skia/BUILD.bazel",
@@ -2134,6 +2136,24 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 	"experimental_bazel_test_client": {"//experimental/bazel_test/client:client_lib", ""},
 	"cpu_gms":                        {"//gm:cpu_gm_tests", ""},
 
+	// Currently there is no way to tell Bazel "only test go_test targets", so we must provide a list
+	// of labels.
+	//
+	// Alternatives:
+	//
+	// - Use --test_lang_filters, which currently does not work for non-native rules. See
+	//   https://github.com/bazelbuild/bazel/issues/12618.
+	//
+	// - As suggested in the same GitHub issue, "bazel query 'kind(go_test, //...)'" would normally
+	//   return the list of labels. However, this fails due to BUILD.bazel files in
+	//   //third_party/externals and //bazel/external/vello. We could try either fixing those files
+	//   when possible, or adding them to //.bazelignore (either permanently or temporarily inside a
+	//   specialized task driver just for Go tests).
+	"go_tests": {strings.Join([]string{
+		"//bazel/exporter/...",
+		"//infra/bots/...",
+	}, " "), ""},
+
 	// Android tests that run on a device. We store the //bazel-bin/tests directory into CAS for use
 	// by subsequent CI tasks.
 	"android_codec_test":              {"//tests:android_codec_test", "tests"},
@@ -2275,7 +2295,7 @@ func (b *jobBuilder) bazelTest() {
 
 		case "cpu_tests":
 			cmd = append(cmd,
-				"--test_label="+labelAndSavedOutputDir.label,
+				"--test_labels="+labelAndSavedOutputDir.label,
 				"--test_config="+config)
 
 		case "toolchain_layering_check":
