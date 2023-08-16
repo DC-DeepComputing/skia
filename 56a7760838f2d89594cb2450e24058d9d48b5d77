@@ -22,6 +22,30 @@
       },
       "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f513ebd0_05a276ea",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-16T14:37:31Z",
+      "side": 1,
+      "message": "I\u0027m fine with friending DawnCommandBuffer. Alternatively, would it be appropriate to explicitly mark DawnTexture / VulkanTexture as not thread safe? Or if we do need them to be thread safe, just using locks in getTextureView?",
+      "parentUuid": "a0831254_b47fdd60",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 65
+      },
+      "revId": "56a7760838f2d89594cb2450e24058d9d48b5d77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
