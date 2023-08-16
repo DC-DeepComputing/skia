@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d63f94f_c62442c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Actually this is the route I wanted to take initially but felt less inclined to do so because I remember the discussion on that CL you\u0027re referring to 😊\n\nI think adding this to BindBufferInfo is a good idea in general and it will simplify code that carries a side-car size field only because BindBufferInfo doesn\u0027t (this CL and `ClearBufferInfo` are two examples). I\u0027m not entirely sure if it\u0027s a good idea to move to `uint32_t`, then again I don\u0027t quite foresee us allocating buffers that are \u003e4GB in size.\n\n\u003e WDYT? I\u0027m open to landing this and migrating to one struct later if that becomes a larger change. I don\u0027t want to block the compute work too much.\n\nI prefer to land this now as is, not because I want to avoid the work, but because it will require some changes to BufferManager code to make sure that it returns the correct size and I may want to couple that with some unit tests. I\u0027m going to file a bug for the task and I\u0027m happy to take it on as a follow-up.",
+      "parentUuid": "20e15bef_bb5caefc",
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b9c5c1c_a6052820",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-08-16T15:19:54Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 30,
+        "startChar": 66,
+        "endLine": 30,
+        "endChar": 104
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04b3824c_57de62b1",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b9c5c1c_a6052820",
       "range": {
         "startLine": 30,
         "startChar": 66,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31dbbb26_b83c0fff",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e027648e_82d33698",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 106
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81bbd25f_9b8f210b",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-08-16T15:19:54Z",
       "side": 1,
       "message": "nit: wrap",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 100
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40cec064_ce85b9f0",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81bbd25f_9b8f210b",
       "range": {
         "startLine": 343,
         "startChar": 0,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e91bc3_e4de8737",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "110fe05a_35e9f80e",
+      "range": {
+        "startLine": 373,
+        "startChar": 0,
+        "endLine": 373,
+        "endChar": 100
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc9cb8bb_4e434600",
@@ -150,6 +264,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "292604f6_9f56ea7d",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc9cb8bb_4e434600",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 376,
+        "endChar": 100
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46c1eba8_87e027dc",
@@ -163,6 +301,30 @@
       "writtenOn": "2023-08-16T15:19:54Z",
       "side": 1,
       "message": "Do we need to pass buffer-\u003efSize in here somewhere? I haven\u0027t found where we specify the actual binding size to wgpu.",
+      "range": {
+        "startLine": 118,
+        "startChar": 26,
+        "endLine": 118,
+        "endChar": 36
+      },
+      "revId": "daa850c41f653c9e96ab9476bd999da913ce4260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "999e23e2_7a237b60",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-16T19:39:06Z",
+      "side": 1,
+      "message": "Yes, we do, though that\u0027s not implemented in this CL. I rework this code quite a bit in https://skia-review.googlesource.com/c/skia/+/736377 which implements the buffer view setup.",
+      "parentUuid": "46c1eba8_87e027dc",
       "range": {
         "startLine": 118,
         "startChar": 26,
