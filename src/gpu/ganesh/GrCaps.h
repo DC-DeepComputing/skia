@@ -537,6 +537,11 @@ public:
     // anglebug.com/7796
     bool avoidLineDraws() const { return fAvoidLineDraws; }
 
+    // It looks like Adreno may do SRGB conversion on transfers
+    bool transferFromSRGBMayDoConversion() const {
+        return fTransferFromSRGBMayDoConversion;
+    }
+
     /**
      * Checks whether the passed color type is renderable. If so, the same color type is passed
      * back along with the default format used for the color type. If not, provides an alternative
@@ -608,6 +613,7 @@ protected:
     bool fAvoidDithering                             : 1;
     bool fDisablePerspectiveSDFText                  : 1;
     bool fAvoidLineDraws                             : 1;
+    bool fTransferFromSRGBMayDoConversion            : 1;
 
     // ANGLE performance workaround
     bool fPreferVRAMUseOverFlushes                   : 1;

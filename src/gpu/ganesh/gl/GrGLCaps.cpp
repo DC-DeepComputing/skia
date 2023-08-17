@@ -4609,6 +4609,13 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     } else if (ctxInfo.angleVendor() == GrGLVendor::kIntel) {
         fRegenerateMipmapType = RegenerateMipmapType::kBasePlusSync;
     }
+
+    // It appears that Qualcomm is performing some kind of color conversion when doing readbacks
+    // from sRGB textures, even when using transfer buffers.
+    if (ctxInfo.vendor() == GrGLVendor::kQualcomm ||
+        ctxInfo.angleVendor() == GrGLVendor::kQualcomm) {
+        fTransferFromSRGBMayDoConversion = true;
+    }
 }
 
 void GrGLCaps::onApplyOptionsOverrides(const GrContextOptions& options) {
