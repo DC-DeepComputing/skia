@@ -3221,6 +3221,7 @@ bool GrGLGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
         GrRenderTarget* dstRT = dst->asRenderTarget();
         bool drawToMultisampleFBO = dstRT && dstRT->numSamples() > 1;
         if (this->copySurfaceAsDraw(dst, drawToMultisampleFBO, src, srcRect, dstRect, filter)) {
+            SkDebugf("copy as draw\n");
             return true;
         }
     }
@@ -3228,10 +3229,12 @@ bool GrGLGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
     // Prefer copying as with glCopyTexSubImage when the dimensions are the same.
     if (!scalingCopy && can_copy_texsubimage(dst, src, this->glCaps())) {
         this->copySurfaceAsCopyTexSubImage(dst, src, srcRect, dstRect.topLeft());
+        SkDebugf("copy as texsubImage\n");
         return true;
     }
 
     if (can_blit_framebuffer_for_copy_surface(dst, src, srcRect, dstRect, this->glCaps())) {
+        SkDebugf("copy as blitFramebuffer\n");
         return this->copySurfaceAsBlitFramebuffer(dst, src, srcRect, dstRect, filter);
     }
 
@@ -3240,10 +3243,12 @@ bool GrGLGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
         GrRenderTarget* dstRT = dst->asRenderTarget();
         bool drawToMultisampleFBO = dstRT && dstRT->numSamples() > 1;
         if (this->copySurfaceAsDraw(dst, drawToMultisampleFBO, src, srcRect, dstRect, filter)) {
+            SkDebugf("copy as draw2\n");
             return true;
         }
     }
 
+    SkDebugf("copy failed\n");
     return false;
 }
 
