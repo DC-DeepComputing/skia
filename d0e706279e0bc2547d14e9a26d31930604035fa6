@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ef0e464_3486ea57",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-17T18:52:17Z",
+      "side": 1,
+      "message": "It might be nice to have this logic inside `Renderer` and have it just return the `Coverage` type it uses.",
+      "range": {
+        "startLine": 983,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 88
+      },
+      "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a88202_ba86bde3",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-17T18:52:17Z",
+      "side": 1,
+      "message": "For my other comment about just returning a `Coverage`, I think it is still convenient to have it represented in `fFlags`, but we just expose it in the public API as a single enum. This keeps creating the RenderSteps and defining their behavior flag based.",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 125,
+        "endChar": 95
+      },
+      "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7f878a2_ceccbcdd",
+        "filename": "src/gpu/graphite/render/SDFTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-17T18:52:17Z",
+      "side": 1,
+      "message": "I think this should be in the 565 case?",
+      "range": {
+        "startLine": 37,
+        "startChar": 28,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5961400_a0ef642a",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 1
@@ -14,6 +83,24 @@
       "writtenOn": "2023-08-17T16:39:33Z",
       "side": 1,
       "message": "Rather than passing this RendererData struct through to Device::chooseRenderer, we could expose isSDF and isLCD methods on SubRun \u0026 SubRunData and use those, though I see there was resistance in http://review.skia.org/712862 to exposing a SubRun type.",
+      "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "737f6a79_dab2e313",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-17T18:52:17Z",
+      "side": 1,
+      "message": "I think this is okay for now, but I\u0027m not opposed to pushing it into the SubRunData that is stored on the Geometry passed to chooseRenderer.",
+      "parentUuid": "c5961400_a0ef642a",
       "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
