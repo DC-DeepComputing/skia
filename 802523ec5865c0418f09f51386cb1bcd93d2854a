@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb190598_be170d85",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-17T00:46:46Z",
+      "side": 1,
+      "message": "This is what we do in the Skia Infrastructure repository: https://skia.googlesource.com/buildbot/+/f1d21dc58818cd6aba0a7822e59d37636aefe936/WORKSPACE#391\n\nThe `git config --system` commands do not affect the developer\u0027s environment; they only affect the \"system-wide\" `gitconfig` file, which per `man git-config` refers to `$(prefix)/etc/gitconfig`. It\u0027s unclear to me what `$(prefix)` means. Some folks on Stack Overflow say it\u0027s a setting determined at build time. Regardless, in practice it resolves correctly:\n\n```\n$ cat $(bazel info output_base)/external/git_linux_amd64/etc/gitconfig\n[user]\n        name \u003d Bazel Test User\n        email \u003d bazel-test-user@example.com\n```\n\nThe above snippet should produce the same result on both the Buildbot and Skia repositories.\n\nNote that the Bazel-downloaded `git` binary should only be visible to those Bazel targets that add `@git_linux_amd64//:all_files` as a `data` dependency.",
+      "parentUuid": "c817ccc0_923bb27d",
+      "range": {
+        "startLine": 460,
+        "startChar": 9,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a473b332_0a88743f",
         "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-16T15:06:30Z",
       "side": 1,
       "message": "Can we make one (or two) test_suite labels for this purpose?\nhttps://bazel.build/reference/be/general#test_suite",
+      "range": {
+        "startLine": 2154,
+        "startChar": 11,
+        "endLine": 2154,
+        "endChar": 15
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "044f1021_3176c215",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-17T00:46:46Z",
+      "side": 1,
+      "message": "I thought about it but went this route because `test_suite` does not allow wildcard expressions. This means if someone casually adds a Go test and forgets to add it to the `test_suite`, it won\u0027t be covered by this task.\n\nIdeally, we would want to use a single label or wildcard, presumably `//...`, and have `cpu_tests.go` (or a new `go_tests.go` task driver) limit `//...` to only `go_test` targets (e.g. via `bazel query \u0027kind(go_test, //...)\u0027` once we fix the issues mentioned in the above comments).\n\nDid you still want me to go the `test_suite` route? Any other thoughts?",
+      "parentUuid": "a473b332_0a88743f",
       "range": {
         "startLine": 2154,
         "startChar": 11,
