@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6edb7f6e_19d765d1",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-17T22:11:36Z",
+      "side": 1,
+      "message": "I realized that we were always passing isOpaque\u003dfalse to GetBlendFormula; this was intentional on my part but I thought adding a todo here was appropriate.",
+      "revId": "6bf73618e60d24235f2ef36d590c2d9adb3710ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

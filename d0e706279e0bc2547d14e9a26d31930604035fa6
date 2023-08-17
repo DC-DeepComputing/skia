@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad94ca26_fe122da7",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-17T22:11:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ef0e464_3486ea57",
+      "range": {
+        "startLine": 983,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 88
+      },
+      "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4a88202_ba86bde3",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-17T18:52:17Z",
       "side": 1,
       "message": "For my other comment about just returning a `Coverage`, I think it is still convenient to have it represented in `fFlags`, but we just expose it in the public API as a single enum. This keeps creating the RenderSteps and defining their behavior flag based.",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 125,
+        "endChar": 95
+      },
+      "revId": "d0e706279e0bc2547d14e9a26d31930604035fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2573b0f_8aa1dced",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-17T22:11:36Z",
+      "side": 1,
+      "message": "Done (that is, this is now *only* exposing Coverage through an enum, and not with emitsCoverage / emitsLCDCoverage)",
+      "parentUuid": "f4a88202_ba86bde3",
       "range": {
         "startLine": 124,
         "startChar": 4,
