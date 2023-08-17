@@ -227,34 +227,6 @@ GrSurfaceProxyView AsView(GrRecordingContext* context, const SkSpecialImage* img
             context, bm, /*label=*/"SpecialImageRaster_AsView", GrMipmapped::kNo));
 }
 
-sk_sp<SkSpecialImage> ImageToColorSpace(const skif::Context& ctx,
-                                        SkSpecialImage* src) {
-    // There are several conditions that determine if we actually need to convert the source to the
-    // destination's color space. Rather than duplicate that logic here, just try to make an xform
-    // object. If that produces something, then both are tagged, and the source is in a different
-    // gamut than the dest. There is some overhead to making the xform, but those are cached, and
-    // if we get one back, that means we're about to use it during the conversion anyway.
-    auto colorSpaceXform = GrColorSpaceXform::Make(src->getColorSpace(),  src->alphaType(),
-                                                   ctx.colorSpace(), kPremul_SkAlphaType);
-
-    if (!colorSpaceXform) {
-        // No xform needed, just return the original image
-        return sk_ref_sp(src);
-    }
-
-    sk_sp<SkSpecialSurface> surf = ctx.makeSurface(src->dimensions());
-    if (!surf) {
-        return sk_ref_sp(src);
-    }
-
-    SkCanvas* canvas = surf->getCanvas();
-    SkASSERT(canvas);
-    SkPaint p;
-    p.setBlendMode(SkBlendMode::kSrc);
-    src->draw(canvas, 0, 0, SkSamplingOptions(), &p);
-    return surf->makeImageSnapshot();
-}
-
 }  // namespace SkSpecialImages
 
 namespace SkSpecialSurfaces {
