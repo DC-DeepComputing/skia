@@ -200,6 +200,8 @@ BlurImageFilter::BlurImageFilter(sk_sp<ImageFilter> input)
 BlurImageFilter::~BlurImageFilter() = default;
 
 sk_sp<SkImageFilter> BlurImageFilter::onRevalidateFilter() {
+    // TODO(b/40039025): Pass in node bounds to revalidate() so that this does not rely on the
+    // legacy unbounded tiling behavior of SkBlurImageFilter.
     return SkImageFilters::Blur(fSigma.x(), fSigma.y(), fTileMode, this->refInput(0));
 }
 
