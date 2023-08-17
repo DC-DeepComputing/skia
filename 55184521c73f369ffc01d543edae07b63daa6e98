@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f636c9cb_2b7f28e7",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-17T19:10:32Z",
+      "side": 1,
+      "message": "It\u0027d be nice if we could limit this to only the shaders that need it (i.e., text), as we\u0027ll end up with a lot of combinations that will never get used. Something for a later CL I think.",
+      "range": {
+        "startLine": 140,
+        "startChar": 71,
+        "endLine": 140,
+        "endChar": 87
+      },
+      "revId": "55184521c73f369ffc01d543edae07b63daa6e98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
