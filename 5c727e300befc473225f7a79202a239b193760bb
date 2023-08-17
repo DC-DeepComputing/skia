@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05c0337c_cf38d5bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-17T20:53:36Z",
+      "side": 1,
+      "message": "I primarily tested this by comparing the blur CL\u0027s behavior on chromium\u0027s layout tests before adding back this legacy behavior. The obvious errors that had been present before from ignoring the tile mode when there was no crop rect have gone away; there\u0027s a few more subtle issues that may necessitate tweaking this behavior but I think I\u0027ll do that in the blur CL itself at this point.",
+      "revId": "5c727e300befc473225f7a79202a239b193760bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
