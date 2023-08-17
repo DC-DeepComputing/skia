@@ -303,7 +303,9 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
         mainBody += step->fragmentCoverageSkSL();
 
         BlendFormula coverageBlendFormula =
-                skgpu::GetBlendFormula(false, step->emitsCoverage(), fBlendMode);
+                step->emitsLCDCoverage()
+                        ? skgpu::GetLCDBlendFormula(fBlendMode)
+                        : skgpu::GetBlendFormula(false, step->emitsCoverage(), fBlendMode);
 
         const bool needsSurfaceColorForCoverage =
                 this->needsSurfaceColor() || (coverageBlendFormula.hasSecondaryOutput() &&

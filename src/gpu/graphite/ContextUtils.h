@@ -39,6 +39,8 @@ class UniquePaintParamsID;
 
 struct ResourceBindingRequirements;
 
+enum class Coverage { kNone, kSingleChannel, kLCD };
+
 struct FragSkSLInfo {
     std::string fSkSL;
     BlendInfo fBlendInfo;
@@ -65,7 +67,7 @@ std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepDa
         const RenderStep* step,
         const DrawParams& params);
 
-DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, bool hasCoverage);
+DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, Coverage);
 
 std::string BuildVertexSkSL(const ResourceBindingRequirements&,
                             const RenderStep* step,
