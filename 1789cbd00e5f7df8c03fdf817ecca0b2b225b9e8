@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "728d47e7_351d5576",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-17T21:23:08Z",
+      "side": 1,
+      "message": "I\u0027m getting some mysterious failures when I try to merge this into Android and run `atest CtsSkQPTestCases`: https://paste.googleplex.com/6510792068300800\n\nMost of the output consists of \"Warning\"s, but at the end there is an \"Error\". They seem to be related to manifest files I must be pulling in? Any ideas?\n\nThe `Android.bp` `static_libs` updates are sort of guesses; maybe I have the wrong/conflicting libraries? Something else internal that was using `androidx.appcompat.app.AppCompatActivity` was using `androidx.core_core`, so I thought that was it. But I also tried replacing it with `androidx.appcompat_appcompat`, which I see other things using. This ended up with the same/similar errors. (Adding `tools:replace\u003d` to *our* `AndroidManifest.xml` didn\u0027t work, but I think it\u0027s actually referring to a *different* `AndroidManifest.xml`.)",
+      "revId": "1789cbd00e5f7df8c03fdf817ecca0b2b225b9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9ecf624a_6aef28c4",
@@ -49,6 +66,24 @@
       "side": 1,
       "message": "I can\u0027t think of a good reason and I don\u0027t remember why we opted for that approach.  I think requiring the caller to run the python script is fine.",
       "parentUuid": "7432ebb5_f3a4ef35",
+      "revId": "1789cbd00e5f7df8c03fdf817ecca0b2b225b9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0f0349c_0aceb71c",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-17T21:23:08Z",
+      "side": 1,
+      "message": "Uploaded If4e8b0888b42cd06e4ada591e5563c9c8c4c5542.",
+      "parentUuid": "abd8750e_d65d8324",
       "revId": "1789cbd00e5f7df8c03fdf817ecca0b2b225b9e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

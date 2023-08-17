@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fda3745e_e5309ae0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-17T21:23:08Z",
+      "side": 1,
+      "message": "I\u0027ve fixed this with I784b13bf34e5eefebde882b2b3c85fd83d2180dd, which also restores a modified version of the comment I removed from `create_apk.py`. Now it says\n\n```\nWe also assume that the contents of the \u0027resources\u0027 directory have been copied\nto \u0027platform_tools/android/apps/skqp/src/main/assets\u0027. (Note: This is handled\nby make_universal_apk.)\n```\n\n`2` isn\u0027t recommended anywhere. I think we can leave fixing that to another day.",
+      "parentUuid": "95430a22_cdc4b7fc",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da5bc286_238416d2",
