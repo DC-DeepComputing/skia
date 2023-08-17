@@ -34,18 +34,31 @@ import sys
 import create_apk
 
 def make_apk(opts):
-    assert '/' in [os.sep, os.altsep]  # 'a/b' over os.path.join('a', 'b')
+    assert '/' in [os.sep, os.altsep]
 
-    skia_dir = os.path.dirname(__file__) + '/../..'
     create_apk.makedirs(opts.build_dir)
-    assets_dir = skia_dir + '/platform_tools/android/apps/skqp/src/main/assets'
-    resources_path = assets_dir + '/resources'
 
-    with create_apk.RemoveFiles(resources_path):  # always clean up
-        create_apk.remove(resources_path)
-        os.symlink('../../../../../../../resources', resources_path)
+    # Create symlinks to each top-level item in resources. The symlinks will be
+    # in the assets folder, so that the app can access them directly.
+    skia_dir = os.path.abspath(os.path.normpath(
+        os.path.join(os.path.dirname(__file__), '../..')))
+    assets_dir = os.path.join(skia_dir,
+        'platform_tools/android/apps/skqp/src/main/assets/')
+    skia_resources_dir = os.path.join(skia_dir, 'resources')
+    symlinks = []
+    for resource in os.listdir(skia_resources_dir):
+        symlinked_resource_path = os.path.join(assets_dir, resource)
+        if os.path.exists(symlinked_resource_path):
+            # symlink may be out of date, so remove and update.
+            os.remove(symlinked_resource_path)
+        os.symlink(os.path.join(skia_resources_dir, resource),
+            symlinked_resource_path)
+        symlinks.append(symlinked_resource_path)
 
-        create_apk.create_apk(opts)
+    create_apk.create_apk(opts)
+
+    for symlink in symlinks:
+        os.remove(symlink)
 
 def main():
     options = create_apk.SkQP_Build_Options()

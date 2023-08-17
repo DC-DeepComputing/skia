@@ -19,6 +19,10 @@ Additionally, `ninja` should be in your path.
 It assumes that the source tree is in the desired state, e.g. by having
 run 'python tools/git-sync-deps' in the root of the skia checkout.
 
+We also assume that the contents of the 'resources' directory have been copied
+to 'platform_tools/android/apps/skqp/src/main/assets'. (Note: This is handled
+by make_universal_apk.)
+
 Also:
   * If the environment variable SKQP_BUILD_DIR is set, many of the
     intermediate build objects will be placed here.
