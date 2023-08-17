@@ -20,6 +20,7 @@
 #include "src/core/SkWriteBuffer.h"
 
 #include <cstdint>
+#include <optional>
 #include <utility>
 
 namespace {
@@ -33,6 +34,10 @@ public:
         SkASSERT(cropRect.isFinite());
         SkASSERT(cropRect.isSorted());
     }
+    SkCropImageFilter(SkTileMode tileMode, sk_sp<SkImageFilter> input)
+            : SkImageFilter_Base(&input, 1, /*cropRect=*/nullptr)
+            , fCropRect(std::nullopt)
+            , fTileMode(tileMode) {}
 
     SkRect computeFastBounds(const SkRect& bounds) const override;
 
@@ -68,7 +73,8 @@ private:
     // The returned rect is intersected with 'outputBounds', which is either the desired or
     // actual bounds of the child filter.
     skif::LayerSpace<SkIRect> cropRect(const skif::Mapping& mapping) const {
-        skif::LayerSpace<SkRect> crop = mapping.paramToLayer(fCropRect);
+        SkASSERT(fCropRect.has_value());
+        skif::LayerSpace<SkRect> crop = mapping.paramToLayer(*fCropRect);
         // If 'crop' has fractional values, rounding out can mean that rendering of the input image
         // or (particularly) the source content will produce fractional coverage values in the
         // edge pixels. With decal tiling, this is the most accurate behavior and does not produce
@@ -84,7 +90,12 @@ private:
     skif::LayerSpace<SkIRect> requiredInput(const skif::Mapping& mapping,
                                             const skif::LayerSpace<SkIRect>& outputBounds) const;
 
-    skif::ParameterSpace<SkRect> fCropRect;
+    // If 'fCropRect' does not have a value, this image filter takes on special behavior where it
+    // applies the tilemode to the result of its child filter, without otherwise modifying the
+    // bounds for input or output.
+    // TODO (b/40039025): This special behavior is only needed to support legacy tiled blurs w/o
+    // crop rects and fCropRect can go back to non-optional when clients are updated.
+    std::optional<skif::ParameterSpace<SkRect>> fCropRect;
     SkTileMode fTileMode;
 };
 
@@ -97,6 +108,14 @@ sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect,
         return nullptr;
     }
     return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, tileMode, std::move(input)));
+}
+
+sk_sp<SkImageFilter> SkMakeLegacyTileModeImageFilter(SkTileMode tileMode,
+                                                     sk_sp<SkImageFilter> input) {
+    if (tileMode == SkTileMode::kDecal) {
+        return input;
+    }
+    return sk_sp<SkImageFilter>(new SkCropImageFilter(tileMode, std::move(input)));
 }
 
 sk_sp<SkImageFilter> SkImageFilters::Tile(const SkRect& src,
@@ -126,8 +145,13 @@ sk_sp<SkFlattenable> SkCropImageFilter::LegacyTileCreateProc(SkReadBuffer& buffe
 
 sk_sp<SkFlattenable> SkCropImageFilter::CreateProc(SkReadBuffer& buffer) {
     SK_IMAGEFILTER_UNFLATTEN_COMMON(common, 1);
-    SkRect cropRect = buffer.readRect();
-    if (!buffer.isValid() || !buffer.validate(SkIsValidRect(cropRect))) {
+    const bool hasCrop = buffer.isVersionLT(SkPicturePriv::kSupportLegacyTileModeForBlurs) ||
+                         buffer.readBool();
+    std::optional<SkRect> cropRect;
+    if (hasCrop) {
+        cropRect = buffer.readRect();
+    }
+    if (!buffer.isValid() || (cropRect.has_value() && !buffer.validate(SkIsValidRect(*cropRect)))) {
         return nullptr;
     }
 
@@ -136,12 +160,19 @@ sk_sp<SkFlattenable> SkCropImageFilter::CreateProc(SkReadBuffer& buffer) {
         tileMode = buffer.read32LE(SkTileMode::kLastTileMode);
     }
 
-    return SkMakeCropImageFilter(cropRect, tileMode, common.getInput(0));
+    if (cropRect.has_value()) {
+        return SkMakeCropImageFilter(*cropRect, tileMode, common.getInput(0));
+    } else {
+        return SkMakeLegacyTileModeImageFilter(tileMode, common.getInput(0));
+    }
 }
 
 void SkCropImageFilter::flatten(SkWriteBuffer& buffer) const {
     this->SkImageFilter_Base::flatten(buffer);
-    buffer.writeRect(SkRect(fCropRect));
+    buffer.writeBool(fCropRect.has_value());
+    if (fCropRect.has_value()) {
+        buffer.writeRect(SkRect(*fCropRect));
+    }
     buffer.writeInt(static_cast<int32_t>(fTileMode));
 }
 
@@ -150,6 +181,11 @@ void SkCropImageFilter::flatten(SkWriteBuffer& buffer) const {
 skif::LayerSpace<SkIRect> SkCropImageFilter::requiredInput(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& outputBounds) const {
+    // Legacy behavior for "uncropped" tiling is to not modify the required input or output
+    if (!fCropRect.has_value()) {
+        return outputBounds;
+    }
+
     skif::LayerSpace<SkIRect> crop = this->cropRect(mapping);
 
     if (fTileMode == SkTileMode::kRepeat || fTileMode == SkTileMode::kMirror) {
@@ -182,7 +218,9 @@ skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context
 
     // The 'cropInput' is the optimal input to satisfy the original crop rect, but we have to pass
     // the actual crop rect in order for the tile mode to be applied correctly to the FilterResult.
-    return childOutput.applyCrop(context, this->cropRect(context.mapping()), fTileMode);
+    skif::LayerSpace<SkIRect> crop = fCropRect.has_value() ? this->cropRect(context.mapping())
+                                                           : childOutput.layerBounds();
+    return childOutput.applyCrop(context, crop, fTileMode);
 }
 
 // TODO(michaelludwig) - onGetInputLayerBounds() and onGetOutputLayerBounds() are tightly coupled
@@ -213,7 +251,7 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetOutputLayerBounds(
     skif::LayerSpace<SkIRect> childOutput =
             this->getChildOutputLayerBounds(0, mapping, contentBounds);
 
-    skif::LayerSpace<SkIRect> crop = this->cropRect(mapping);
+    skif::LayerSpace<SkIRect> crop = fCropRect.has_value() ? this->cropRect(mapping) : childOutput;
     if (!crop.intersect(childOutput)) {
         // Regardless of tile mode, the content within the crop rect is fully transparent, so
         // any tiling will maintain that transparency.
@@ -250,7 +288,7 @@ SkRect SkCropImageFilter::computeFastBounds(const SkRect& bounds) const {
         }
     }
 
-    if (!inputBounds.intersect(SkRect(fCropRect))) {
+    if (fCropRect.has_value() && !inputBounds.intersect(SkRect(*fCropRect))) {
         return SkRect::MakeEmpty();
     }
     return fTileMode == SkTileMode::kDecal ? inputBounds : SkRectPriv::MakeLargeS32();

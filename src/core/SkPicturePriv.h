@@ -136,6 +136,7 @@ public:
         kDropShadowImageFilterComposition   = 100,
         kCropImageFilterSupportsTiling      = 101,
         kConvolutionImageFilterTilingUpdate = 102,
+        kSupportLegacyTileModeForBlurs      = 103,
 
         // Only SKPs within the min/current picture version range (inclusive) can be read.
         //
@@ -160,7 +161,7 @@ public:
         //
         // Contact the Infra Gardener if the above steps do not work for you.
         kMin_Version     = kPictureShaderFilterParam_Version,
-        kCurrent_Version = kConvolutionImageFilterTilingUpdate
+        kCurrent_Version = kSupportLegacyTileModeForBlurs
     };
 };
 
