@@ -33,6 +33,24 @@
       "message": "This gives me the error\n\n```\n./tools/skqp/make_universal_apk: line 7: exec: python: not found\n```\n\nThis bash script is pretty basic:\n\n```\n  1 #! /bin/sh                                                                                          \n  2                                                                                                     \n  3 # Copyright 2018 Google Inc.                                                                        \n  4 # Use of this source code is governed by a BSD-style license that can be                            \n  5 # found in the LICENSE file.                                                                        \n  6                                                                                                     \n  7 exec python \"$(dirname \"$0\")\"/make_universal_apk.py \"$@\"                                            \n```\n\nbut I always forget how to use bash. @djsollen@google.com, why do we have this script, rather than using python directly? (Which is what I\u0027ve been doing.)",
       "revId": "1789cbd00e5f7df8c03fdf817ecca0b2b225b9e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abd8750e_d65d8324",
+        "filename": "tools/skqp/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-08-17T09:11:07Z",
+      "side": 1,
+      "message": "I can\u0027t think of a good reason and I don\u0027t remember why we opted for that approach.  I think requiring the caller to run the python script is fine.",
+      "parentUuid": "7432ebb5_f3a4ef35",
+      "revId": "1789cbd00e5f7df8c03fdf817ecca0b2b225b9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

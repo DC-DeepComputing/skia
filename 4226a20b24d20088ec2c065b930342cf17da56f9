@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95430a22_cdc4b7fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-08-17T09:11:07Z",
+      "side": 1,
+      "message": "Looking at the code it seems that `tools/skqp/make_universal_apk` is the only one that includes the resources directory as assets when building.",
+      "parentUuid": "a7fefb3e_bfbdabba",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "4226a20b24d20088ec2c065b930342cf17da56f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da5bc286_238416d2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
