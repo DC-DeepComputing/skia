@@ -1093,6 +1093,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLSwitchWithFallthrough_GPU")
 		skip(ALL, "tests", ALL, "SkSLSwizzleIndexLookup_GPU") // skia:14177
 		skip(ALL, "tests", ALL, "SkSLSwizzleIndexStore_GPU")  // skia:14177
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels")   // b/296440036
+		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels") // b/296440036
 	}
 
 	if b.matchGpu("Adreno[345]") && !b.extraConfig("Vulkan") { // disable broken tests on Adreno 3/4/5xx GLSL

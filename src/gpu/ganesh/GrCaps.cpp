@@ -92,6 +92,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fAvoidReorderingRenderTasks = false;
     fAvoidDithering = false;
     fAvoidLineDraws = false;
+
     fDisablePerspectiveSDFText = false;
 
     fPreferVRAMUseOverFlushes = true;
