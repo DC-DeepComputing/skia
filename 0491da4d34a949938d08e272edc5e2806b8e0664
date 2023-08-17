@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a94ed505_38870ace",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-17T18:44:23Z",
+      "side": 1,
+      "message": "All else being equal, prefer `TArray`. It generates smaller code.",
+      "range": {
+        "startLine": 739,
+        "startChar": 4,
+        "endLine": 739,
+        "endChar": 15
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5c43d62_ae2d44ed",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-17T18:44:23Z",
+      "side": 1,
+      "message": "nit: in C++17 this can now be one line.\n\n`wgpu::BindGroupEntry\u0026 entry \u003d entries.emplace_back();`\n\nwith TArray, do:\n\n`wgpu::BindGroupEntry\u0026 entry \u003d entries.push_back();`",
+      "range": {
+        "startLine": 743,
+        "startChar": 8,
+        "endLine": 744,
+        "endChar": 53
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1aa7def_beb6f19b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-17T18:44:23Z",
+      "side": 1,
+      "message": "Not for this CL, but this `static_cast`-heavy API makes me squeamish. It\u0027s too easy for something to go wrong.\n\nWe should really think about doing something like in SkSL, where we can say `buffer-\u003eas\u003cDawnBuffer\u003e()` and it asserts validity then handles the casting on its own? (SkSL was also very cast-heavy before I joined the team, and this was one of the changes I focused on early.)",
+      "range": {
+        "startLine": 748,
+        "startChar": 27,
+        "endLine": 748,
+        "endChar": 95
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60e96ba9_c8f2a2dd",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-17T18:44:23Z",
+      "side": 1,
+      "message": "Is it worth crashing a Chrome view over? Would `SkDEBUGFAIL` be more appropriate?",
+      "range": {
+        "startLine": 761,
+        "startChar": 12,
+        "endLine": 761,
+        "endChar": 59
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
