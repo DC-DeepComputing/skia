@@ -122,6 +122,7 @@ public:
     bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
     bool hasTextures()         const { return SkToBool(fFlags & Flags::kHasTextures);         }
     bool emitsCoverage()       const { return SkToBool(fFlags & Flags::kEmitsCoverage);       }
+    bool emitsLCDCoverage()    const { return SkToBool(fFlags & Flags::kLCDCoverage);         }
     bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
 
     PrimitiveType primitiveType()  const { return fPrimitiveType;  }
@@ -159,12 +160,13 @@ public:
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
 protected:
     enum class Flags : unsigned {
-        kNone                  = 0b00000,
-        kRequiresMSAA          = 0b00001,
-        kPerformsShading       = 0b00010,
-        kHasTextures           = 0b00100,
-        kEmitsCoverage         = 0b01000,
-        kEmitsPrimitiveColor   = 0b10000,
+        kNone                  = 0b000000,
+        kRequiresMSAA          = 0b000001,
+        kPerformsShading       = 0b000010,
+        kHasTextures           = 0b000100,
+        kEmitsCoverage         = 0b001000,
+        kLCDCoverage           = 0b010000,
+        kEmitsPrimitiveColor   = 0b100000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags);
 
@@ -236,6 +238,9 @@ public:
     }
     bool emitsCoverage() const {
         return SkToBool(fStepFlags & StepFlags::kEmitsCoverage);
+    }
+    bool emitsLCDCoverage() const {
+        return SkToBool(fStepFlags & StepFlags::kLCDCoverage);
     }
     bool emitsPrimitiveColor() const {
         return SkToBool(fStepFlags & StepFlags::kEmitsPrimitiveColor);
