@@ -1,0 +1,85 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Viewer (Debug)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/clang-debug/viewer.exe",
+            "args": [
+                "--backend",
+                "gl",
+                "--skps",
+                "../../../../Downloads/",
+                "--slide",
+                "GM_crbug_1257515"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "logging": {
+                "moduleLoad": false,
+                "programOutput": true
+            }
+        },
+        {
+            "name": "DM (Debug)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/clang-debug/dm.exe",
+            "args": [
+                "--gpuThreads",
+                "0",
+                "-j",
+                "0",
+                "--config",
+                "glddl",
+                "--match",
+                "crop_imagefilter_decal"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "logging": {
+                "moduleLoad": false,
+                "programOutput": true
+            }
+        },
+        {
+            "name": "Fuzz (Debug)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/clang-fuzz/fuzz.exe",
+            "args": [
+                "-t",
+                "api",
+                "-n",
+                "MockGPUCanvas",
+                "-b",
+                "./out/mock-canvas-testcase-oom-36923.fuzz"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "logging": {
+                "moduleLoad": false,
+                "programOutput": true
+            }
+        },
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "enter program name, for example ${workspaceFolder}/a.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        }
+    ]
+}

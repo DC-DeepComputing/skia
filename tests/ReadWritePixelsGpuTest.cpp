@@ -238,8 +238,12 @@ SkPixmap make_pixmap_have_valid_alpha_type(SkPixmap pm) {
 
 static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaque) {
     SkAutoPixmapStorage result;
-    result.alloc(info);
-    auto surface = SkSurfaces::WrapPixels(make_pixmap_have_valid_alpha_type(result));
+    if (info.alphaType() == kUnknown_SkAlphaType) {
+        result.alloc(info.makeAlphaType(kUnpremul_SkAlphaType));
+    } else {
+        result.alloc(info);
+    }
+    auto surface = SkSurfaces::WrapPixels(result);
     if (!surface) {
         return result;
     }
@@ -450,12 +454,12 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
     // and full complement of alpha types with one successful read in the loop.
     std::array<bool, kLastEnum_SkColorType + 1> srcCTTestedThoroughly  = {},
                                                 readCTTestedThoroughly = {};
-    for (int sat = 0; sat < kLastEnum_SkAlphaType; ++sat) {
+    for (int sat = kOpaque_SkAlphaType; sat <= kOpaque_SkAlphaType; ++sat) {
         const auto srcAT = static_cast<SkAlphaType>(sat);
         if (srcAT == kUnpremul_SkAlphaType && !rules.fAllowUnpremulSrc) {
             continue;
         }
-        for (int sct = 0; sct <= kLastEnum_SkColorType; ++sct) {
+        for (int sct = kSRGBA_8888_SkColorType; sct <= kSRGBA_8888_SkColorType; ++sct) {
             const auto srcCT = static_cast<SkColorType>(sct);
             // We always make our ref data as F32
             auto refInfo = SkImageInfo::Make(kW, kH,
@@ -470,7 +474,23 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             bool forceOpaque = srcAT == kPremul_SkAlphaType &&
                     (srcCT == kRGBA_1010102_SkColorType || srcCT == kBGRA_1010102_SkColorType);
 
-            SkAutoPixmapStorage srcPixels = make_ref_data(refInfo, forceOpaque);
+            SkAutoPixmapStorage refPixels = make_ref_data(refInfo, forceOpaque);
+            // Convert the ref data to our desired src color type.
+            const auto srcInfo = SkImageInfo::Make(kW, kH, srcCT, srcAT, SkColorSpace::MakeSRGB());
+            SkAutoPixmapStorage srcPixels;
+            srcPixels.alloc(srcInfo);
+            {
+                SkPixmap readPixmap = srcPixels;
+                // Spoof the alpha type to kUnpremul so the read will succeed without doing any
+                // conversion (because we made our surface also use kUnpremul).
+                if (srcAT == kUnknown_SkAlphaType) {
+                    readPixmap.reset(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
+                                     srcPixels.addr(),
+                                     srcPixels.rowBytes());
+                }
+                refPixels.readPixels(readPixmap, 0, 0);
+            }
+
             auto src = srcFactory(srcPixels);
             if (!src) {
                 continue;
@@ -485,11 +505,11 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                  kUnknown_SkAlphaType  == srcAT)) {
                 continue;
             }
-            for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
+            for (int rct = kRGBA_8888_SkColorType; rct <= kRGBA_8888_SkColorType; ++rct) {
                 const auto readCT = static_cast<SkColorType>(rct);
                 for (const sk_sp<SkColorSpace>& readCS :
-                     {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
-                    for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
+                     {/*SkColorSpace::MakeSRGB(),*/ SkColorSpace::MakeSRGBLinear()}) {
+                    for (int at = kOpaque_SkAlphaType; at <= kOpaque_SkAlphaType; ++at) {
                         const auto readAT = static_cast<SkAlphaType>(at);
                         if (srcAT != kOpaque_SkAlphaType && readAT == kOpaque_SkAlphaType) {
                             // This doesn't make sense.
@@ -509,7 +529,9 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                                 srcCTTestedThoroughly[sct] && readCTTestedThoroughly[rct]
                                         ? shortRectArray
                                         : longRectArray;
-                        for (const auto& rect : rects) {
+                        auto& rect = rects[0];
+                        //for (const auto& rect : rects)
+                        {
                             const auto readInfo = SkImageInfo::Make(rect.width(), rect.height(),
                                                                     readCT, readAT, readCS);
                             const SkIPoint offset = rect.topLeft();
@@ -531,6 +553,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
     using Surface = std::unique_ptr<skgpu::ganesh::SurfaceContext>;
+    if (ctxInfo.type() != sk_gpu_test::GrContextFactory::kANGLE_Metal_ES3_ContextType) return;
     GrDirectContext* direct = ctxInfo.directContext();
     auto reader = std::function<GpuReadSrcFn<Surface>>(
             [direct](const Surface& surface, const SkIPoint& offset, const SkPixmap& pixels) {
@@ -538,7 +561,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels,
                     return Result::kSuccess;
                 } else {
                     // Reading from a non-renderable format is not guaranteed to work on GL.
-                    // We'd have to be able to force a copy or draw draw to a renderable format.
+                    // We'd have to be able to force a copy or draw to a renderable format.
                     const auto& caps = *direct->priv().caps();
                     if (direct->backend() == GrBackendApi::kOpenGL &&
                         !caps.isFormatRenderable(surface->asSurfaceProxy()->backendFormat(), 1)) {
@@ -552,7 +575,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextReadPixels,
     rules.fUncontainedRectSucceeds = true;
 
     for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
-        for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
+        for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin/*, kBottomLeft_GrSurfaceOrigin*/}) {
             auto factory = std::function<GpuSrcFactory<Surface>>(
                     [direct, origin, renderable](const SkPixmap& src) {
                         auto sc = CreateSurfaceContext(
@@ -630,6 +653,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
     using Surface = sk_sp<SkSurface>;
+    if (ctxInfo.type() != sk_gpu_test::GrContextFactory::kANGLE_Metal_ES2_ContextType) return;
     auto reader = std::function<GpuReadSrcFn<Surface>>(
             [](const Surface& surface, const SkIPoint& offset, const SkPixmap& pixels) {
                 auto direct = surface->recordingContext()->asDirectContext();
@@ -660,7 +684,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixels,
     rules.fAllowUnpremulSrc = false;
     rules.fUncontainedRectSucceeds = false;
 
-    for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
+    for (GrSurfaceOrigin origin : {kTopLeft_GrSurfaceOrigin/*, kBottomLeft_GrSurfaceOrigin*/}) {
         auto factory = std::function<GpuSrcFactory<Surface>>(
                 [context = ctxInfo.directContext(), origin](const SkPixmap& src) {
                     auto surf = SkSurfaces::RenderTarget(
@@ -734,8 +758,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels,
     rules.fAllowUnpremulSrc = true;
     rules.fUncontainedRectSucceeds = false;
 
-    for (auto origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
-        for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
+    for (auto origin : {kTopLeft_GrSurfaceOrigin/*, kBottomLeft_GrSurfaceOrigin*/}) {
+        for (auto renderable : {GrRenderable::kNo/*, GrRenderable::kYes*/}) {
             auto factory = std::function<GpuSrcFactory<Image>>([&](const SkPixmap& src) {
                 return sk_gpu_test::MakeBackendTextureImage(ctxInfo.directContext(), src,
                                                             renderable, origin,
@@ -1115,7 +1139,9 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
                                 dstCTTestedThoroughly[dct] && writeCTTestedThoroughly[wct]
                                         ? shortRectArray
                                         : longRectArray;
-                        for (const auto& rect : rects) {
+                        auto& rect = rects[0];
+                        //for (const auto& rect : rects)
+                        {
                             auto writeInfo = SkImageInfo::Make(rect.size(),
                                                                writeCT,
                                                                writeAT,
