@@ -46,7 +46,7 @@ public:
                          std::string_view childShaderNames[],
                          const sk_sp<SkImageFilter> inputs[],
                          int inputCount)
-            : SkImageFilter_Base(inputs, inputCount, /*cropRect=*/nullptr)
+            : SkImageFilter_Base(inputs, inputCount)
             , fRuntimeEffectBuilder(builder)
             , fMaxSampleRadius(maxSampleRadius) {
         SkASSERT(maxSampleRadius >= 0.f);

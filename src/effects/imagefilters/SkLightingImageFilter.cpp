@@ -160,7 +160,7 @@ struct Material {
 class SkLightingImageFilter final : public SkImageFilter_Base {
 public:
     SkLightingImageFilter(const Light& light, const Material& material, sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1, nullptr)
+            : SkImageFilter_Base(&input, 1)
             , fLight(light)
             , fMaterial(material) {}
 

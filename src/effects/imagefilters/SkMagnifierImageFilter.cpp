@@ -44,7 +44,7 @@ public:
                            float inset,
                            const SkSamplingOptions& sampling,
                            sk_sp<SkImageFilter> input)
-        : SkImageFilter_Base(&input, 1, nullptr)
+        : SkImageFilter_Base(&input, 1)
         , fLensBounds(lensBounds)
         , fZoomAmount(zoomAmount)
         , fInset(inset)
