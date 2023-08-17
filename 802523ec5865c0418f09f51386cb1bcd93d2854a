@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e67d0390_0e719fea",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-17T12:01:31Z",
+      "side": 1,
+      "message": "Acknowledged. Might be worth a comment that encapsulates what you just said.",
+      "parentUuid": "eb190598_be170d85",
+      "range": {
+        "startLine": 460,
+        "startChar": 9,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a473b332_0a88743f",
         "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
         "patchSetId": 10
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I thought about it but went this route because `test_suite` does not allow wildcard expressions. This means if someone casually adds a Go test and forgets to add it to the `test_suite`, it won\u0027t be covered by this task.\n\nIdeally, we would want to use a single label or wildcard, presumably `//...`, and have `cpu_tests.go` (or a new `go_tests.go` task driver) limit `//...` to only `go_test` targets (e.g. via `bazel query \u0027kind(go_test, //...)\u0027` once we fix the issues mentioned in the above comments).\n\nDid you still want me to go the `test_suite` route? Any other thoughts?",
       "parentUuid": "a473b332_0a88743f",
+      "range": {
+        "startLine": 2154,
+        "startChar": 11,
+        "endLine": 2154,
+        "endChar": 15
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20312410_92a760a6",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-17T12:01:31Z",
+      "side": 1,
+      "message": "Wildcards have led to problems before and I envision they will in the future.\nhttps://skia-review.googlesource.com/c/skia/+/702877/10/tests/BUILD.bazel",
+      "parentUuid": "044f1021_3176c215",
       "range": {
         "startLine": 2154,
         "startChar": 11,
