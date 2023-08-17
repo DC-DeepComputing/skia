@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68b2dc31_11c3d5ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-17T21:27:04Z",
+      "side": 1,
+      "message": "PTAL. Couldn\u0027t get the Adrenos to be happy but they\u0027re less broken than they were before. Disabling them for now until I can get more time to look at it.",
+      "revId": "2473465fca4a9a26acbd84db64b126e78b6a40ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
