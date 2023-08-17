@@ -322,6 +322,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
                                                   budgeted);
         sk_sp<GrRenderTask> copyTask;
         if (dstContext && (copyTask = dstContext->copy(src, srcRect, dstPoint))) {
+            SkDebugf("Created copy task\n");
             if (outTask) {
                 *outTask = std::move(copyTask);
             }
@@ -344,12 +345,14 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
                                                    label);
         GrSurfaceProxyView view(std::move(src), origin, skgpu::Swizzle::RGBA());
         if (dstContext && dstContext->blitTexture(std::move(view), srcRect, dstPoint)) {
+            SkDebugf("Doing blit\n");
             if (outTask) {
                 *outTask = dstContext->refRenderTask();
             }
             return dstContext->asSurfaceProxyRef();
         }
     }
+    SkDebugf("Failed to copy\n");
     // Can't use backend copies or draws.
     return nullptr;
 }
