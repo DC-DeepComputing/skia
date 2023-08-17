@@ -167,6 +167,17 @@ static DEFINE_string2(match, m, nullptr,
                "If a name does not match any list entry,\n"
                "it is skipped unless some list entry starts with ~");
 
+static DEFINE_string2(matchHack, m, "ImageAsyncReadPixels",
+               "[~][^]substring[$] [...] of name to run.\n"
+               "Multiple matches may be separated by spaces.\n"
+               "~ causes a matching name to always be skipped\n"
+               "^ requires the start of the name to match\n"
+               "$ requires the end of the name to match\n"
+               "^ and $ requires an exact match\n"
+               "If a name does not match any list entry,\n"
+               "it is skipped unless some list entry starts with ~");
+
+
 static DEFINE_bool2(quiet, q, false, "if true, don't print status updates.");
 static DEFINE_bool2(verbose, v, false, "enable verbose output from the test driver.");
 
@@ -535,7 +546,7 @@ static bool in_shard() {
 static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
-        !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
+        !CommandLineFlags::ShouldSkip(FLAGS_matchHack, src->name().c_str())) {
         TaggedSrc& s = gSrcs->push_back();
         s.reset(src.release());  // NOLINT(misc-uniqueptr-reset-release)
         s.tag = tag;
@@ -1511,7 +1522,7 @@ static void gather_tests() {
         if (!in_shard()) {
             continue;
         }
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, test.fName)) {
+        if (CommandLineFlags::ShouldSkip(FLAGS_matchHack, test.fName)) {
             continue;
         }
         if (test.fTestType == TestType::kGanesh && FLAGS_gpu) {
