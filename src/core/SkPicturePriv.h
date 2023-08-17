@@ -113,6 +113,7 @@ public:
     // V100: SkImageFilters::DropShadow does not have a dedicated implementation
     // V101: Crop image filter supports all SkTileModes instead of just kDecal
     // V102: Convolution image filter uses ::Crop to apply tile mode
+    // V103: Blur image filter uses ::Crop to apply tile mode
 
     enum Version {
         kPictureShaderFilterParam_Version   = 82,
@@ -136,6 +137,11 @@ public:
         kDropShadowImageFilterComposition   = 100,
         kCropImageFilterSupportsTiling      = 101,
         kConvolutionImageFilterTilingUpdate = 102,
+<<<<<<< PATCH SET (6714a7 [skif] Update Blur imagefilter to use new bounds APIs)
+        kSupportLegacyTileModeForBlurs      = 103,
+        kBlurImageFilterTilingUpdate        = 104,
+=======
+>>>>>>> BASE      (1ad986 Move unneeded constants out of header.)
 
         // Only SKPs within the min/current picture version range (inclusive) can be read.
         //
@@ -160,7 +166,11 @@ public:
         //
         // Contact the Infra Gardener if the above steps do not work for you.
         kMin_Version     = kPictureShaderFilterParam_Version,
+<<<<<<< PATCH SET (6714a7 [skif] Update Blur imagefilter to use new bounds APIs)
+        kCurrent_Version = kBlurImageFilterTilingUpdate
+=======
         kCurrent_Version = kConvolutionImageFilterTilingUpdate
+>>>>>>> BASE      (1ad986 Move unneeded constants out of header.)
     };
 };
 

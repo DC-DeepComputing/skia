@@ -52,11 +52,11 @@ protected:
         paint.setAntiAlias(true);
 
         for (int i = 0; i < kNumNodes; ++i) {
-            SkPaint layerPaint;
-            layerPaint.setImageFilter(SkImageFilters::Blur(fNodes[i].sigma(), fNodes[i].sigma(),
+            // SkPaint layerPaint;
+            paint.setImageFilter(SkImageFilters::Blur(fNodes[i].sigma(), fNodes[i].sigma(),
                                                            nullptr));
 
-            canvas->saveLayer(nullptr, &layerPaint);
+            // canvas->saveLayer(nullptr, &layerPaint);
                 // The rect is outset to block the circle case
                 SkRect rect = SkRect::MakeLTRB(fNodes[i].pos().fX - fNodes[i].size()-0.5f,
                                                fNodes[i].pos().fY - fNodes[i].size()-0.5f,
@@ -64,7 +64,7 @@ protected:
                                                fNodes[i].pos().fY + fNodes[i].size()+0.5f);
                 SkRRect rrect = SkRRect::MakeRectXY(rect, fNodes[i].size(), fNodes[i].size());
                 canvas->drawRRect(rrect, paint);
-            canvas->restore();
+            // canvas->restore();
         }
     }
 
