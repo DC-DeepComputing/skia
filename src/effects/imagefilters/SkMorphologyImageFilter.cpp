@@ -44,7 +44,7 @@ enum class MorphDirection { kX, kY };
 class SkMorphologyImageFilter final : public SkImageFilter_Base {
 public:
     SkMorphologyImageFilter(MorphType type, SkSize radii, sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1, nullptr)
+            : SkImageFilter_Base(&input, 1)
             , fType(type)
             , fRadii(radii) {}
 
