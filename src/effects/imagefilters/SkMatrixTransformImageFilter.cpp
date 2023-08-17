@@ -35,7 +35,7 @@ public:
     SkMatrixTransformImageFilter(const SkMatrix& transform,
                                  const SkSamplingOptions& sampling,
                                  sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1, nullptr)
+            : SkImageFilter_Base(&input, 1)
             , fTransform(transform)
             , fSampling(sampling) {
         // Pre-cache so future calls to fTransform.getType() are threadsafe.

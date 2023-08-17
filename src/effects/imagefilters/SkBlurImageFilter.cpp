@@ -62,7 +62,7 @@ namespace {
 class SkBlurImageFilter final : public SkImageFilter_Base {
 public:
     SkBlurImageFilter(SkSize sigma, sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1, /*cropRect=*/nullptr)
+            : SkImageFilter_Base(&input, 1)
             , fSigma{sigma} {}
 
     SkRect computeFastBounds(const SkRect&) const override;

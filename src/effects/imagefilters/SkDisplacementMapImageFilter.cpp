@@ -46,7 +46,7 @@ class SkDisplacementMapImageFilter final : public SkImageFilter_Base {
 public:
     SkDisplacementMapImageFilter(SkColorChannel xChannel, SkColorChannel yChannel,
                                  SkScalar scale, sk_sp<SkImageFilter> inputs[2])
-            : SkImageFilter_Base(inputs, 2, nullptr)
+            : SkImageFilter_Base(inputs, 2)
             , fXChannel(xChannel)
             , fYChannel(yChannel)
             , fScale(scale) {}
