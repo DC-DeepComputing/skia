@@ -34,8 +34,6 @@ public:
         SkASSERT(fPicture && fPicture->cullRect().contains(cullRect));
     }
 
-    SkRect computeFastBounds(const SkRect&) const override { return SkRect(fCullRect); }
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 

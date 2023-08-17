@@ -65,8 +65,6 @@ public:
             : SkImageFilter_Base(&input, 1)
             , fSigma{sigma} {}
 
-    SkRect computeFastBounds(const SkRect&) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -1056,10 +1054,4 @@ skif::LayerSpace<SkIRect> SkBlurImageFilter::onGetOutputLayerBounds(
     // produce 1px inset from this for very small sigmas.
     return this->kernelBounds(mapping, this->getChildOutputLayerBounds(0, mapping, contentBounds),
                               /*gpuBacked=*/true);
-}
-
-SkRect SkBlurImageFilter::computeFastBounds(const SkRect& src) const {
-    SkRect bounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    bounds.outset(SkSize(fSigma).width() * 3, SkSize(fSigma).height() * 3);
-    return bounds;
 }

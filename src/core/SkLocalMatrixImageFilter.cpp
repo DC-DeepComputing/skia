@@ -28,12 +28,7 @@ sk_sp<SkImageFilter> SkLocalMatrixImageFilter::Make(const SkMatrix& localMatrix,
         return nullptr;
     }
 
-    SkMatrix invLocal;
-    if (!localMatrix.invert(&invLocal)) {
-        return nullptr;
-    }
-
-    return sk_sp<SkImageFilter>(new SkLocalMatrixImageFilter(localMatrix, invLocal, input));
+    return sk_sp<SkImageFilter>(new SkLocalMatrixImageFilter(localMatrix, input));
 }
 
 sk_sp<SkFlattenable> SkLocalMatrixImageFilter::CreateProc(SkReadBuffer& buffer) {
@@ -46,7 +41,6 @@ sk_sp<SkFlattenable> SkLocalMatrixImageFilter::CreateProc(SkReadBuffer& buffer) 
 void SkLocalMatrixImageFilter::flatten(SkWriteBuffer& buffer) const {
     this->SkImageFilter_Base::flatten(buffer);
     buffer.writeMatrix(fLocalMatrix);
-    // fInvLocalMatrix will be reconstructed
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -77,17 +71,4 @@ skif::LayerSpace<SkIRect> SkLocalMatrixImageFilter::onGetOutputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
     return this->getChildOutputLayerBounds(0, this->localMapping(mapping), contentBounds);
-}
-
-SkRect SkLocalMatrixImageFilter::computeFastBounds(const SkRect& bounds) const {
-    // In onGet[Input|Output]LayerBounds, there is a Mapping that can be adjusted by the
-    // local matrix, so their layer-space parameters do not need to be modified. Since
-    // computeFastBounds() takes no matrix, it always operates as if it has the identity mapping.
-    //
-    // In order to match the behavior of onGetInputLayerBounds, we map 'bounds' by the inverse of
-    // the local matrix, pass that to the child, and then map the result by the local matrix.
-    // TODO: Implementing computeFastBounds in terms of onGetOutputLayerBounds() trivially removes
-    // this complexity.
-    SkRect localBounds = fInvLocalMatrix.mapRect(bounds);
-    return fLocalMatrix.mapRect(this->getInput(0)->computeFastBounds(localBounds));
 }

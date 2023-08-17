@@ -56,8 +56,6 @@ public:
         }
     }
 
-    SkRect computeFastBounds(const SkRect& src) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -296,11 +294,6 @@ skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetOutputLayerBounds(
         const skif::LayerSpace<SkIRect>& /*contentBounds*/) const {
     // Pessimistically assume it can cover anything
     return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
-}
-
-SkRect SkRuntimeImageFilter::computeFastBounds(const SkRect& src) const {
-    // Can't predict what the RT Shader will generate (see onGetOutputLayerBounds)
-    return SkRectPriv::MakeLargeS32();
 }
 
 #endif  // SK_ENABLE_SKSL

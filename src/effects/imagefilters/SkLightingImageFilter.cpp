@@ -164,8 +164,6 @@ public:
             , fLight(light)
             , fMaterial(material) {}
 
-    SkRect computeFastBounds(const SkRect& src) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -692,10 +690,6 @@ skif::LayerSpace<SkIRect> SkLightingImageFilter::onGetOutputLayerBounds(
     // the normal map is bounded. It just is evaluated at a constant normal vector, which can still
     // produce non-constant color since the direction to the eye and light change per pixel.
     return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
-}
-
-SkRect SkLightingImageFilter::computeFastBounds(const SkRect& src) const {
-    return SkRectPriv::MakeLargeS32();
 }
 
 #else // SK_ENABLE_SKSL

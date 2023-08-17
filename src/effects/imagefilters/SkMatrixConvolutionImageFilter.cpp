@@ -94,8 +94,6 @@ public:
         fKernelBitmap = create_kernel_bitmap(kernelSize, kernel, &fInnerGain, &fInnerBias);
     }
 
-    SkRect computeFastBounds(const SkRect& bounds) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -570,13 +568,6 @@ skif::LayerSpace<SkIRect> SkMatrixConvolutionImageFilter::onGetOutputLayerBounds
     skif::LayerSpace<SkIRect> outputBounds =
             this->getChildOutputLayerBounds(0, mapping, contentBounds);
     return this->boundsAffectedByKernel(outputBounds);
-}
-
-SkRect SkMatrixConvolutionImageFilter::computeFastBounds(const SkRect& bounds) const {
-    // See onAffectsTransparentBlack(), but without knowing the local-to-device transform, we don't
-    // know how many pixels will be sampled by the kernel. Return unbounded to match the
-    // expectations of an image filter that "affects" transparent black.
-    return SkRectPriv::MakeLargeS32();
 }
 
 #else

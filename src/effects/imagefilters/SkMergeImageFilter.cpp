@@ -28,8 +28,6 @@ public:
         SkASSERT(filters && count > 0);
     }
 
-    SkRect computeFastBounds(const SkRect&) const override;
-
     // No need to override flatten() since there's no additional state to write over base class.
 
 private:
@@ -111,13 +109,4 @@ skif::LayerSpace<SkIRect> SkMergeImageFilter::onGetOutputLayerBounds(
     return skif::LayerSpace<SkIRect>::Union(
             inputCount,
             [&](int i) { return this->getChildOutputLayerBounds(i, mapping, contentBounds); });
-}
-
-SkRect SkMergeImageFilter::computeFastBounds(const SkRect& rect) const {
-    // The base computeFastBounds() implementation is the union of all fast bounds from children,
-    // or 'rect' if there are none. For merge, zero children means zero output so only call the
-    // base implementation when there are filters to merge.
-    // TODO: When the bounds update is complete, this default implementation may go away and we
-    // can move the union'ing logic here.
-    return SkImageFilter_Base::computeFastBounds(rect);
 }

@@ -50,8 +50,6 @@ public:
         , fInset(inset)
         , fSampling(sampling) {}
 
-    SkRect computeFastBounds(const SkRect&) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -318,14 +316,5 @@ skif::LayerSpace<SkIRect> SkMagnifierImageFilter::onGetOutputLayerBounds(
     } else {
         // Nothing to magnify
         return skif::LayerSpace<SkIRect>::Empty();
-    }
-}
-
-SkRect SkMagnifierImageFilter::computeFastBounds(const SkRect& src) const {
-    SkRect bounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    if (bounds.intersect(SkRect(fLensBounds))) {
-        return bounds;
-    } else {
-        return SkRect::MakeEmpty();
     }
 }

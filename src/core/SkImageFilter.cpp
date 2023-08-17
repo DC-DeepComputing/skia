@@ -65,19 +65,15 @@ SkIRect SkImageFilter::filterBounds(const SkIRect& src, const SkMatrix& ctm,
 }
 
 SkRect SkImageFilter::computeFastBounds(const SkRect& src) const {
-    if (0 == this->countInputs()) {
-        return src;
-    }
-    SkRect combinedBounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    for (int i = 1; i < this->countInputs(); i++) {
-        const SkImageFilter* input = this->getInput(i);
-        if (input) {
-            combinedBounds.join(input->computeFastBounds(src));
-        } else {
-            combinedBounds.join(src);
-        }
-    }
-    return combinedBounds;
+    // TODO: Add a matrix to computeFastBounds() so that the rounding to pixels accurately matches
+    // the final device pixels, and allows SkMatrixConvolutionImageFilter to exact with it's
+    // layer-space kernel. For now, rounding out with an identity matrix will produce bounds that
+    // are conservative.
+    static const skif::Mapping kIdentity{SkMatrix::I()};
+
+    skif::DeviceSpace<SkIRect> output =
+            as_IFB(this)->getOutputBounds(kIdentity, skif::ParameterSpace<SkRect>(src));
+    return SkRect::Make(SkIRect(output));
 }
 
 bool SkImageFilter::canComputeFastBounds() const {

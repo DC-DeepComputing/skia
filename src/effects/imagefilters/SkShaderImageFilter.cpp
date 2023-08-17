@@ -35,10 +35,6 @@ public:
         SkASSERT(fShader);
     }
 
-    SkRect computeFastBounds(const SkRect& /*bounds*/) const override {
-        return SkRectPriv::MakeLargeS32();
-    }
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 

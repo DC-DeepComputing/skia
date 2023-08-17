@@ -37,8 +37,6 @@ public:
         SkASSERT(inputs[kInner].get());
     }
 
-    SkRect computeFastBounds(const SkRect& src) const override;
-
 protected:
     // No flatten() needed since this does not add state beyond the input image filters handled
     // by the parent implementation.
@@ -133,9 +131,4 @@ skif::LayerSpace<SkIRect> SkComposeImageFilter::onGetOutputLayerBounds(
     skif::LayerSpace<SkIRect> innerBounds =
             this->getChildOutputLayerBounds(kInner, mapping, contentBounds);
     return this->getChildOutputLayerBounds(kOuter, mapping, innerBounds);
-}
-
-SkRect SkComposeImageFilter::computeFastBounds(const SkRect& src) const {
-    return this->getInput(kOuter)->computeFastBounds(
-            this->getInput(kInner)->computeFastBounds(src));
 }

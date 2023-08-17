@@ -82,7 +82,7 @@ public:
     const SkImageFilter* getInput(int i) const;
 
     // Default impl returns union of all input bounds.
-    virtual SkRect computeFastBounds(const SkRect& bounds) const;
+    SkRect computeFastBounds(const SkRect& bounds) const;
 
     // Can this filter DAG compute the resulting bounds of an object-space rectangle?
     bool canComputeFastBounds() const;
