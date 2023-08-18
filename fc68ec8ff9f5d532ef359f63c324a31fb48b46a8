@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a732e820_e52ae45f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:43:15Z",
+      "side": 1,
+      "message": "One thing that struck me as a possible foot gun was the free-form sksl declaration sans layout for the variables. The RenderStep declarations are all able to use enum types so that the sksl is entirely constructed dynamically. \n\nBut I also don\u0027t see a simple solution to being able to statically declare struct definitions in C++ that would just be converted to the sksl you can write directly. Assuming we don\u0027t need reflection based on these struct definitions down the road, I think this is a fine solution that balances automatic assembly with C++ overhead.",
+      "revId": "fc68ec8ff9f5d532ef359f63c324a31fb48b46a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c26d7b4a_a0212913",
