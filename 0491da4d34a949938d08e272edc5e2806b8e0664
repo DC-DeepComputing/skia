@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74c0e1fe_78445c7c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:14:41Z",
+      "side": 1,
+      "message": "+1; at this point since we\u0027ve repeatedly found TArray and THashMap, etc. to have better code size and often better performance, we should not use the STL collections for core code.",
+      "parentUuid": "a94ed505_38870ace",
+      "range": {
+        "startLine": 739,
+        "startChar": 4,
+        "endLine": 739,
+        "endChar": 15
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5c43d62_ae2d44ed",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 6
@@ -83,6 +107,30 @@
       "writtenOn": "2023-08-17T18:44:23Z",
       "side": 1,
       "message": "Is it worth crashing a Chrome view over? Would `SkDEBUGFAIL` be more appropriate?",
+      "range": {
+        "startLine": 761,
+        "startChar": 12,
+        "endLine": 761,
+        "endChar": 59
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124f77d8_8d7b0afe",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:14:41Z",
+      "side": 1,
+      "message": "I think so, because a) we shouldn\u0027t get into this scenario in a properly written ComputeStep and b) if we don\u0027t bind an entry and then continue to use the compute program we could run into either dawn validation errors that would crash or to undefined behavior/memory accesses by the GPU.",
+      "parentUuid": "60e96ba9_c8f2a2dd",
       "range": {
         "startLine": 761,
         "startChar": 12,
