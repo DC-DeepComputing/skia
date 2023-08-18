@@ -33,6 +33,24 @@
       "message": "Not necessary in light of http://review.skia.org/744976",
       "revId": "0e9c77b481a718ea1c720799ed4f8bd490d29de7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfe59867_fc12e98b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-18T18:59:36Z",
+      "side": 1,
+      "message": "\u003e This is potentially because the `make_universal_apk` script needs to be updated to say `exec python3`.\n\u003e `python` is just an alias nowadays.\n\nYou are correct! Ia43bea81f904932d3dc0f733c41f5ca7a9ac11f3 takes that approach.\n\n\u003e This seems like a less robust fix as it still relies on the `python` alias.\n\nI\u0027m not sure what you\u0027re suggesting. I don\u0027t really have a preference for what to do here, except that I don\u0027t want to continue have the `README` recommend running a script that doesn\u0027t work.",
+      "parentUuid": "02a868bf_dfd9822d",
+      "revId": "0e9c77b481a718ea1c720799ed4f8bd490d29de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
