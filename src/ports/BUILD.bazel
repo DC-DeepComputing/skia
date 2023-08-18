@@ -27,8 +27,17 @@ skia_filegroup(
     srcs = [
         "SkFontHost_FreeType.cpp",
         "SkFontHost_FreeType_common.cpp",
+        "libfreetype.wasm.c",
+        "libfreetype.wasm.h",
+        "wasm2c_support.c",
+        "freetype-rt.h",
+        "wasm-rt-impl.c",
+        "wasm-rt-impl.h",
+        "wasm-rt.h",
     ],
 )
+#    # "src/ports/SkFontHost_FreeType.cpp",
+
 
 # There can only be one FontMgr Factory, but multiple different types of FontMgr compiled into
 # a single build.

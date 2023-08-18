@@ -1383,6 +1383,14 @@ optional("typeface_freetype") {
     "src/ports/SkFontHost_FreeType.cpp",
     "src/ports/SkFontHost_FreeType_common.cpp",
     "src/ports/SkFontHost_FreeType_common.h",
+    "src/ports/NonExist2.cpp",
+    "src/ports/libfreetype.wasm.c",
+    "src/ports/libfreetype.wasm.h",
+    "src/ports/wasm2c_support.c",
+    "src/ports/freetype-rt.h",
+    "src/ports/wasm-rt-impl.c",
+    "src/ports/wasm-rt-impl.h",
+    "src/ports/wasm-rt.h",
   ]
 }
 
