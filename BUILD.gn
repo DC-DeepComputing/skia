@@ -1324,6 +1324,8 @@ optional("typeface_freetype") {
   deps = [ "//third_party/freetype2" ]
   sources = [
     "src/ports/SkFontHost_FreeType.cpp",
+    "src/ports/SkFontHost_FreeType_bridge.cpp",
+    "src/ports/SkFontHost_FreeType_bridge.h",
     "src/ports/SkFontHost_FreeType_common.cpp",
     "src/ports/SkFontHost_FreeType_common.h",
   ]
