@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b1585e2_208970cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-18T18:40:02Z",
+      "side": 1,
+      "message": "With https://skia-review.googlesource.com/c/skia/+/744657 it looks like we can turn these back on.",
+      "revId": "304db7ebb8ae185425fe1827302dffaa724144c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
