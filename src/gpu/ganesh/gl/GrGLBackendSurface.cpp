@@ -238,11 +238,6 @@ public:
     GrGLFramebufferInfo info() const { return fGLInfo; }
 
 private:
-    bool isValid() const override {
-        // the glInfo must have a valid format
-        return SkToBool(fGLInfo.fFormat);
-    }
-
     GrBackendFormat getBackendFormat() const override {
         return GrBackendFormats::MakeGL(fGLInfo.fFormat, GR_GL_TEXTURE_NONE);
     }
