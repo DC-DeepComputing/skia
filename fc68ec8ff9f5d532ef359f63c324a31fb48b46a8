@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c26d7b4a_a0212913",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:24:29Z",
+      "side": 1,
+      "message": "nit: whitespace will make clang-tidy mad",
+      "range": {
+        "startLine": 177,
+        "startChar": 57,
+        "endLine": 177,
+        "endChar": 58
+      },
+      "revId": "fc68ec8ff9f5d532ef359f63c324a31fb48b46a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
