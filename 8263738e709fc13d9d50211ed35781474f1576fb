@@ -16,6 +16,24 @@
       "message": "This basically mirrors `DEF_GANESH_TEST_SUITE`. Is there any chance we\u0027ll add more tests using this macro? If so, it seems like we should add a parameter to the `TEST_SUITE` macros so we can divide them up by test suite. (It also seems reasonable to make that a separate CL.)",
       "revId": "8263738e709fc13d9d50211ed35781474f1576fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a10f9b86_b87a37e6",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:17:51Z",
+      "side": 1,
+      "message": "It does seem likely that we would add more FilterResult tests as bugs, etc. come in. Right now DEF_GRAPHITE_TEST_SUITE is never actually invoked because I need to dig through some crashes in its image readback, but having it be in the TEST_SUITE macro makes sense to me to specify per test for both ganesh and graphite.",
+      "parentUuid": "4a587866_a492ee63",
+      "revId": "8263738e709fc13d9d50211ed35781474f1576fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
