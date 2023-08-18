@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a40405e_6305e525",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:10:54Z",
+      "side": 1,
+      "message": "lgtm modulo John\u0027s remaining comments.",
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f330229_a53d349b",
@@ -26,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04346b31_0fd3210d",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:10:54Z",
+      "side": 1,
+      "message": "I was initially going to say that I didn\u0027t feel strongly about this for a function with internal linkage, but then I just assumed the 2nd string value would be an error message and not the entry point name. Given that, I agree with John that a struct would make it clearer.",
+      "parentUuid": "3f330229_a53d349b",
+      "range": {
+        "startLine": 22,
+        "startChar": 7,
+        "endLine": 22,
+        "endChar": 50
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c926d57b_9f9581f8",
         "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
         "patchSetId": 7
@@ -37,6 +78,30 @@
       "writtenOn": "2023-08-17T15:26:14Z",
       "side": 1,
       "message": "up to you: Any reason we don\u0027t just pass a reference instead?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 28
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c9b525a_9fa687ff",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:10:54Z",
+      "side": 1,
+      "message": "Graphite style is to pass contexts and shared contexts by const pointer. I don\u0027t know if I have a super concrete reason for it, but IMO it helps enforce a distinction between something that is heap allocated that you don\u0027t get to own or copy.",
+      "parentUuid": "c926d57b_9f9581f8",
       "range": {
         "startLine": 24,
         "startChar": 0,
