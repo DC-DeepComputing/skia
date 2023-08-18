@@ -149,14 +149,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/effects/colorfilters:colorfilter_srcs",
 				"//src/effects/colorfilters:colorfilter_hdrs",
 			}},
-		{Var: "skia_colorfilters_sksl_sources",
-			Rules: []string{
-				"//src/effects/colorfilters:sksl_srcs",
-			}},
-		{Var: "skia_colorfilters_nosksl_sources",
-			Rules: []string{
-				"//src/effects/colorfilters:no_sksl_srcs",
-			}},
 	}},
 	{GNI: "gn/effects_imagefilters.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_effects_imagefilter_public",
