@@ -1563,16 +1563,34 @@ static void add_to_key(const KeyContext& keyContext,
                        PipelineDataGatherer* gatherer,
                        const SkLocalMatrixShader* shader) {
     SkASSERT(shader);
+    auto wrappedShader = shader->wrappedShader().get();
 
-    LocalMatrixShaderBlock::LMShaderData lmShaderData(shader->localMatrix());
+    SkMatrix matrix;
+    if (as_SB(wrappedShader)->type() == SkShaderBase::ShaderType::kImage) {
+        auto imgShader = static_cast<const SkImageShader*>(wrappedShader);
+        auto imgGraphite = static_cast<Image*>(as_IB(imgShader->image()));
+        SkASSERT(imgGraphite);
+        auto view = imgGraphite->textureProxyView();
+        if (view.origin() == Origin::kBottomLeft) {
+            matrix.setScaleY(-1);
+            matrix.setTranslateY(view.height());
+        }
+    }
 
-    KeyContextWithLocalMatrix newContext(keyContext, shader->localMatrix());
+    if (!shader->localMatrix().isIdentity() || !matrix.isIdentity()) {
+        matrix.preConcat(shader->localMatrix());
+        LocalMatrixShaderBlock::LMShaderData lmShaderData(matrix);
 
-    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, &lmShaderData);
+        KeyContextWithLocalMatrix newContext(keyContext, matrix);
 
-    AddToKey(newContext, builder, gatherer, shader->wrappedShader().get());
+        LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, &lmShaderData);
 
-    builder->endBlock();
+        AddToKey(newContext, builder, gatherer, wrappedShader);
+
+        builder->endBlock();
+    } else  {
+        AddToKey(keyContext, builder, gatherer, wrappedShader);
+    }
 }
 
 // If either of these change then the corresponding change must also be made in the SkSL

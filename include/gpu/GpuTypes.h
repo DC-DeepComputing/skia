@@ -66,6 +66,14 @@ enum class Renderable : bool {
     kYes = true,
 };
 
+/**
+ * What is the logic origin of a Texture passed into Skia
+ */
+enum class Origin : unsigned {
+    kTopLeft,
+    kBottomLeft,
+};
+
 } // namespace skgpu
 
 
