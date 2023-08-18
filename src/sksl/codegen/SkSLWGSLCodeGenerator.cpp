@@ -3085,9 +3085,9 @@ std::string WGSLCodeGenerator::assembleTernaryExpression(const TernaryExpression
             expr.push_back('(');
         }
         expr += "select(";
-        expr += this->assembleExpression(*t.ifFalse(), Precedence::kTernary);
+        expr += this->assembleExpression(*t.ifFalse(), Precedence::kSequence);
         expr += ", ";
-        expr += this->assembleExpression(*t.ifTrue(), Precedence::kTernary);
+        expr += this->assembleExpression(*t.ifTrue(), Precedence::kSequence);
         expr += ", ";
 
         bool isVector = t.type().isVector();
@@ -3095,7 +3095,7 @@ std::string WGSLCodeGenerator::assembleTernaryExpression(const TernaryExpression
             // Splat the condition expression into a vector.
             expr += String::printf("vec%d<bool>(", t.type().columns());
         }
-        expr += this->assembleExpression(*t.test(), Precedence::kTernary);
+        expr += this->assembleExpression(*t.test(), Precedence::kSequence);
         if (isVector) {
             expr.push_back(')');
         }
