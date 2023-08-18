@@ -16,6 +16,29 @@
       "message": "I haven\u0027t spent enough time in the graphite resource declaration code to approve this.",
       "revId": "d55fe9813b12b0aac427da9ee4b1dc0dd774f7dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3735bdb4_264edc84",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:21:22Z",
+      "side": 1,
+      "message": "// Maybe add a comment here that we have to count 1 per regular resource and 2 per sampled texture to get the total number of bind group entries.",
+      "range": {
+        "startLine": 89,
+        "startChar": 11,
+        "endLine": 89,
+        "endChar": 24
+      },
+      "revId": "d55fe9813b12b0aac427da9ee4b1dc0dd774f7dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
