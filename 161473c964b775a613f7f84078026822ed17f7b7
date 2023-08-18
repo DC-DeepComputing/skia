@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7661ce9_c1de51be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-18T18:57:28Z",
+      "side": 1,
+      "message": "I\u0027d also be fine just to remove `tools/skqp/make_apk.sh`. It was added in I2dba20ef7017987cabb2bd49f070e2b1594785d5; I suppose because users might be using the old version. But we no longer reference the old version anywhere.\n\nThis is an alternative to If4e8b0888b42cd06e4ada591e5563c9c8c4c5542.",
+      "revId": "161473c964b775a613f7f84078026822ed17f7b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
