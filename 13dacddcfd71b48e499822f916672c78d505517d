@@ -63,6 +63,30 @@
       },
       "revId": "13dacddcfd71b48e499822f916672c78d505517d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef6e681_e41a913f",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-08-18T12:52:44Z",
+      "side": 1,
+      "message": "Sorry, I somehow missed your reply.  LGTM.",
+      "parentUuid": "4a309b10_6a5b72c7",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 39
+      },
+      "revId": "13dacddcfd71b48e499822f916672c78d505517d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
