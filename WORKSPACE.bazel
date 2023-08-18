@@ -442,6 +442,11 @@ local_repository(
     path = "bazel/external/expat/config",
 )
 
+local_repository(
+    name = "external-dawn",
+    path = "third_party/externals/dawn",
+)
+
 load("//bazel:cipd_install.bzl", "cipd_install")
 
 cipd_install(
