@@ -16,6 +16,24 @@
       "message": "The only significant diff is the 1010102 one -- but in comparing it to the\nexisting 1010102 images, they have the same fringing so I think it\u0027s fine.\n\nhttps://gold.skia.org/detail?grouping\u003dname%3Dasync_rescale_and_read_rose%26source_type%3Dgm\u0026digest\u003d093a16db71f365bdf13400ec37a553c3\u0026changelist_id\u003d744659\u0026crs\u003dgerrit\n\nvs\n\nhttps://gold.skia.org/search?left_filter\u003dconfig%3Dgl1010102%26name%3Dasync_rescale_and_read_rose\u0026negative\u003dtrue\u0026positive\u003dtrue\u0026untriaged\u003dfalse",
       "revId": "287ae5193c183b8b25d1114c964fbab2f57c8abc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0023fec2_1e99f6be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-18T19:57:46Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s a consequence of the 2-bit alpha when we end up doing unpremul as part of the read-back. Things get quantized badly. (1010102 is cursed).",
+      "parentUuid": "a7e03e75_9fd14fa7",
+      "revId": "287ae5193c183b8b25d1114c964fbab2f57c8abc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
