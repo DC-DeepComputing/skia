@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a868bf_dfd9822d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-18T17:11:20Z",
+      "side": 1,
+      "message": "This is potentially because the `make_universal_apk` script needs to be updated to say `exec python3`.\n`python` is just an alias nowadays.\nThis seems like a less robust fix as it still relies on the `python` alias.",
+      "revId": "0e9c77b481a718ea1c720799ed4f8bd490d29de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
