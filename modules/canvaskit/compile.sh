@@ -87,12 +87,6 @@ if [[ $@ == *no_pathops* ]] ; then
   ENABLE_PATHOPS="false"
 fi
 
-ENABLE_RT_SHADER="true"
-if [[ $@ == *no_rt_shader* ]] ; then
-  echo "Omitting runtime shaders"
-  ENABLE_RT_SHADER="false"
-fi
-
 ENABLE_SKSL_TRACE="true"
 if [[ $@ == *no_sksl_trace* ]] ; then
   echo "Omitting SkSl trace"
@@ -241,7 +235,6 @@ echo "Compiling"
   skia_use_wuffs=true \
   skia_use_zlib=true \
   skia_enable_ganesh=${ENABLE_GANESH} \
-  skia_enable_sksl=${ENABLE_RT_SHADER} \
   skia_build_for_debugger=${DEBUGGER_ENABLED} \
   skia_enable_sksl_tracing=${ENABLE_SKSL_TRACE} \
   \
