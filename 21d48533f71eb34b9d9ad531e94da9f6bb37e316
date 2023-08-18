@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20556643_ad4246da",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-18T21:00:00Z",
+      "side": 1,
+      "message": "Doing so would mean not being able to forward declare Origin. I was talking with Kevin about this and he was saying the Skia style guide now is to try and use as many forward declares as you can. So before chatting I was 50/50 on which way to go, but I that leaned me slightly towards putting all in cpp file.",
+      "parentUuid": "8d54d5a9_2f816911",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 51
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f70ff518_16bb0728",
         "filename": "src/gpu/graphite/ImageFactories.cpp",
         "patchSetId": 2
@@ -158,6 +182,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "220a1f2c_e71a39d5",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-18T21:00:00Z",
+      "side": 1,
+      "message": "I think preConcat is right...\n\nIn the end dont we want (inv flip is same as flip):\n\n`[inv local matrix] * [flip matrix] * [cord]`.\n\nSo since this is before we invert the matrix uniform we want:\n`[flip matrix] * [local matrix]`\n\nThus I want to preConcat the local matrix onto my flip matrix here right, or have I confused the these matrices again?",
+      "parentUuid": "4dc626d6_dfb77b99",
+      "range": {
+        "startLine": 1581,
+        "startChar": 15,
+        "endLine": 1581,
+        "endChar": 24
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "482d3084_256f3d0e",
         "filename": "src/shaders/SkLocalMatrixShader.h",
         "patchSetId": 2
@@ -169,6 +217,30 @@
       "writtenOn": "2023-08-18T19:39:16Z",
       "side": 1,
       "message": "We could just replace this with `static_cast\u003cconst SkImageShader*\u003e(t.get())`. We shouldn\u0027t need to call `as_SB` and I don\u0027t particularly feel like having another variable for the SkImageShader adds much.",
+      "range": {
+        "startLine": 39,
+        "startChar": 33,
+        "endLine": 39,
+        "endChar": 42
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8da25211_80ed86aa",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-18T21:00:00Z",
+      "side": 1,
+      "message": "Unfortunately we cannot do that. Since this is templated `t` already has a type of `T` which is going to be the subclass. You cannot static_cast a subclass to another subclass directly (remember there will be a copy of this function for every subclass).",
+      "parentUuid": "482d3084_256f3d0e",
       "range": {
         "startLine": 39,
         "startChar": 33,
