@@ -22,6 +22,30 @@
       },
       "revId": "f203ba41c4215158588dd943f4c54cd98623b115",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15fc03d7_e0bdebf9",
+        "filename": "src/gpu/graphite/Image_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "On 64-bit machines, adding the extra parameter probably doesn\u0027t change the size.\n\nBut passing by value here probably was creating extra churn on the ref counting on `fProxy`, so I think passing by reference seems fine to me.",
+      "parentUuid": "01645fe1_d5858c5b",
+      "range": {
+        "startLine": 43,
+        "startChar": 26,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "f203ba41c4215158588dd943f4c54cd98623b115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

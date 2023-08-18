@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d54d5a9_2f816911",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "Could these ones be defined in the header?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 51
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f70ff518_16bb0728",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "and this one in the header?",
+      "range": {
+        "startLine": 165,
+        "startChar": 15,
+        "endLine": 165,
+        "endChar": 33
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e13fd40b_1e2a0811",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1567,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "`// Fold the texture\u0027s origin flip into the local matrix so that the image shader doesn\u0027t need additional state`",
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06173db2_6429ee43",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1571,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "Shouldn\u0027t be needed if we\u0027re casting all the way to Image*.",
+      "range": {
+        "startLine": 1571,
+        "startChar": 47,
+        "endLine": 1571,
+        "endChar": 52
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c181ed_eec3194d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "Does switching this to `const auto\u0026` fix the ref counting issues?",
+      "range": {
+        "startLine": 1573,
+        "startChar": 8,
+        "endLine": 1573,
+        "endChar": 12
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b487b08_52196eb3",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1580,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "`preConcat` should be checking if the incoming matrix is identity or not, so you could always just concat shader-\u003elocalMatrix() onto matrix, and then the if for skipping the LM block is simpler.",
+      "range": {
+        "startLine": 1580,
+        "startChar": 0,
+        "endLine": 1580,
+        "endChar": 70
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dc626d6_dfb77b99",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "I think this needs to be postConcat since we\u0027re before the inverse local matrix is calculated.",
+      "range": {
+        "startLine": 1581,
+        "startChar": 15,
+        "endLine": 1581,
+        "endChar": 24
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "482d3084_256f3d0e",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "We could just replace this with `static_cast\u003cconst SkImageShader*\u003e(t.get())`. We shouldn\u0027t need to call `as_SB` and I don\u0027t particularly feel like having another variable for the SkImageShader adds much.",
+      "range": {
+        "startLine": 39,
+        "startChar": 33,
+        "endLine": 39,
+        "endChar": 42
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a01ac1e_bf7c79e6",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 43,
+        "startChar": 71,
+        "endLine": 43,
+        "endChar": 79
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b96b5862_408dafba",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-18T19:39:16Z",
+      "side": 1,
+      "message": "Maybe just do one return statement with a ternary `localMatrix ? *localMatrix : SkMatrix::I()` in the last arg?",
+      "range": {
+        "startLine": 51,
+        "startChar": 83,
+        "endLine": 51,
+        "endChar": 94
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
