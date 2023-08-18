@@ -32,6 +32,7 @@
 #include "src/core/SkMaskGamma.h"
 #include "src/core/SkScalerContext.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
+#include "src/ports/SkFontHost_FreeType_wrappers.h"
 #include "src/sfnt/SkOTUtils.h"
 #include "src/sfnt/SkSFNTHeader.h"
 #include "src/sfnt/SkTTCFHeader.h"
@@ -139,29 +140,28 @@ FT_MemoryRec_ gFTMemory = { nullptr, sk_ft_alloc, sk_ft_free, sk_ft_realloc };
 
 class FreeTypeLibrary : SkNoncopyable {
 public:
-    FreeTypeLibrary() : fLibrary(nullptr) {
-        if (FT_New_Library(&gFTMemory, &fLibrary)) {
+    FreeTypeLibrary()
+            : fLibrary(std::make_unique<FTLibraryNative>())
+            , fFTFuncs(std::make_unique<FTFunctionProviderNative>()) {
+        if (fFTFuncs->FT_New_Library(&gFTMemory, *fLibrary)) {
             return;
         }
-        FT_Add_Default_Modules(fLibrary);
-        FT_Set_Default_Properties(fLibrary);
+        fFTFuncs->FT_Add_Default_Modules(*fLibrary);
+        fFTFuncs->FT_Set_Default_Properties(*fLibrary);
 
         // Subpixel anti-aliasing may be unfiltered until the LCD filter is set.
         // Newer versions may still need this, so this test with side effects must come first.
         // The default has changed over time, so this doesn't mean the same thing to all users.
-        FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+        fFTFuncs->FT_Library_SetLcdFilter(*fLibrary, FT_LCD_FILTER_DEFAULT);
     }
-    ~FreeTypeLibrary() {
-        if (fLibrary) {
-            FT_Done_Library(fLibrary);
-        }
-    }
+    ~FreeTypeLibrary() {}
 
-    FT_Library library() { return fLibrary; }
+    FT_Library library() { return fLibrary->get_native(); }
+    FTFunctionProvider* ft_funcs() { return fFTFuncs.get(); }
 
 private:
-    FT_Library fLibrary;
-
+    std::unique_ptr<FTLibrary> fLibrary;
+    std::unique_ptr<FTFunctionProvider> fFTFuncs;
     // FT_Library_SetLcdFilterWeights 2.4.0
     // FT_LOAD_COLOR 2.5.0
     // FT_Pixel_Mode::FT_PIXEL_MODE_BGRA 2.5.0

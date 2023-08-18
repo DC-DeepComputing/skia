@@ -27,6 +27,8 @@ skia_filegroup(
     srcs = [
         "SkFontHost_FreeType.cpp",
         "SkFontHost_FreeType_common.cpp",
+        "src/ports/SkFontHost_FreeType_wrappers.cpp",
+        "src/ports/SkFontHost_FreeType_wrappers.h",
     ],
 )
 
