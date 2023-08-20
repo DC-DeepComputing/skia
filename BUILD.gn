@@ -323,6 +323,13 @@ optional("fontmgr_android_factory") {
   sources = [ "src/ports/SkFontMgr_android_factory.cpp" ]
 }
 
+optional("example_fontmgr") {
+  enabled = true
+
+  deps = [ ":typeface_freetype" ]
+  sources = [ "modules/example_fontmgr/example_fontmgr.cpp" ]
+}
+
 optional("fontmgr_custom") {
   enabled =
       skia_enable_fontmgr_custom_directory ||
