@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6509a5eb_10263ffd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-08-21T14:53:55Z",
+      "side": 1,
+      "message": "Added attribution in the commit. I also filed https://issues.skia.org/issues/296854546 which is a public bug where you should be able to post your analysis (the internal issue where you originally wrote it up isn\u0027t publicly-share-able).",
+      "parentUuid": "c72cc6a8_97a5372a",
+      "revId": "c2b36988a280f188d41c2c6f277d2a31c8d9dd08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e0561eb7_b7633e96",
