@@ -191,6 +191,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "973f20e1_45b74718",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-21T18:20:19Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "3645602b_8a479ff7",
+      "range": {
+        "startLine": 2154,
+        "startChar": 11,
+        "endLine": 2154,
+        "endChar": 15
+      },
+      "revId": "802523ec5865c0418f09f51386cb1bcd93d2854a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30568cfc_4697028e",
