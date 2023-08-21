@@ -37,6 +37,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "61e7089b_9edc75e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-08-21T12:53:25Z",
+      "side": 1,
+      "message": "This is starting to look pretty good to me, but we\u0027ll need to cleanup the commit comment and ensure that if the resources directory is indeed copied that the APK still works.",
+      "revId": "1789cbd00e5f7df8c03fdf817ecca0b2b225b9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9ecf624a_6aef28c4",
         "filename": "gn/gn_to_bp.py",
         "patchSetId": 5
