@@ -80,6 +80,11 @@
         "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64"
       ]
     },
+    "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64": {
+      "tasks": [
+        "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64"
+      ]
+    },
     "BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64": {
       "tasks": [
         "BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64"
@@ -4279,6 +4284,43 @@
         "--cpu_or_gpu_value=WebGL2",
         "--compilation_mode=Release",
         "--browser=Chrome"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./cpu_tests",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64",
+        "--workdir=.",
+        "--test_label=//:all_go_tests",
+        "--test_config=linux_rbe"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
@@ -92213,6 +92255,8 @@
         "skia/package.json",
         "skia/package-lock.json",
         "skia/DEPS",
+        "skia/infra/bots",
+        "skia/.bazelignore",
         "skia/.bazelrc",
         "skia/.bazelversion",
         "skia/BUILD.bazel",
