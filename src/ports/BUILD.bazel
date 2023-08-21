@@ -26,6 +26,7 @@ skia_filegroup(
     name = "typeface_freetype",
     srcs = [
         "SkFontHost_FreeType.cpp",
+        "SkFontHost_FreeType_bridge.cpp",
         "SkFontHost_FreeType_common.cpp",
     ],
 )
