@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84046343_13a2ca4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-21T18:07:31Z",
+      "side": 1,
+      "message": "Fixes ImageAsyncReadPixels on Swiftshader (via Android)",
+      "revId": "cdf67dd67bee091ec695ed876382fddaa9544069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
