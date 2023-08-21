@@ -26,7 +26,7 @@
 %_ptr_Function_v2float = OpTypePointer Function %v2float
          %20 = OpTypeFunction %v4float %_ptr_Function_v2float
     %float_1 = OpConstant %float 1
-         %24 = OpConstantComposite %v4float %float_0 %float_1 %float_0 %float_1
+         %24 = OpConstantComposite %v4float %float_1 %float_1 %float_0 %float_1
 %_entrypoint_v = OpFunction %void None %12
          %13 = OpLabel
          %17 = OpVariable %_ptr_Function_v2float Function

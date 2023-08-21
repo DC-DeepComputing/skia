@@ -7,7 +7,7 @@ struct SPIRV_Cross_Output
 
 float4 main(float2 _21)
 {
-    return float4(0.0f, 1.0f, 0.0f, 1.0f);
+    return float4(1.0f, 1.0f, 0.0f, 1.0f);
 }
 
 void frag_main()
