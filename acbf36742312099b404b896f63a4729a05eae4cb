@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "923f30ed_d6ba37a7",
+        "filename": "modules/skottie/src/effects/GaussianBlurEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-08-21T20:06:00Z",
+      "side": 1,
+      "message": "Would be nice to avoid this cast, but the rest of the framework really needs a stored a RenderNode, and untangling is not trivial.  I may attempt to clean up in a follow up.",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 76,
+        "endChar": 45
+      },
+      "revId": "acbf36742312099b404b896f63a4729a05eae4cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
