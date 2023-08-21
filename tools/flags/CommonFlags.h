@@ -10,6 +10,10 @@
 #include "include/private/base/SkTArray.h"
 #include "tools/flags/CommandLineFlags.h"
 
+namespace skgpu::graphite {
+struct ContextOptions;
+};
+
 namespace CommonFlags {
 /**
  *  Helper to assist in collecting image paths from |dir| specified through a command line
@@ -26,7 +30,7 @@ namespace CommonFlags {
 bool CollectImages(CommandLineFlags::StringArray dir, skia_private::TArray<SkString>* output);
 
 /**
- *  Helper to set GrContextOptions from common GPU flags, including
+ *  Helper to set ContextOptions from common GPU flags, including
  *     --gpuThreads
  *     --cachePathMasks
  *     --allPathsVolatile
