@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c72cc6a8_97a5372a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 20209
+      },
+      "writtenOn": "2023-08-21T07:21:43Z",
+      "side": 1,
+      "message": "I wouldn\u0027t mind a \"Root-caused-by: Snild Dolkow \u003csnild@sony.com\u003e\" or similar here. ;)",
+      "revId": "c2b36988a280f188d41c2c6f277d2a31c8d9dd08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e0561eb7_b7633e96",
@@ -14,6 +31,23 @@
       "writtenOn": "2023-08-19T03:38:43Z",
       "side": 1,
       "message": "ptal -- the bug reporter did a really good analysis (making this an easy fix for me)",
+      "revId": "c2b36988a280f188d41c2c6f277d2a31c8d9dd08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4092a9a5_08dd5c79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20209
+      },
+      "writtenOn": "2023-08-21T07:21:43Z",
+      "side": 1,
+      "message": "Code change LGTM.",
       "revId": "c2b36988a280f188d41c2c6f277d2a31c8d9dd08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
