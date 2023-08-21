@@ -153,6 +153,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba16894f_ca89801b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1567,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e13fd40b_1e2a0811",
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06173db2_6429ee43",
@@ -166,6 +184,30 @@
       "writtenOn": "2023-08-18T19:39:16Z",
       "side": 1,
       "message": "Shouldn\u0027t be needed if we\u0027re casting all the way to Image*.",
+      "range": {
+        "startLine": 1571,
+        "startChar": 47,
+        "endLine": 1571,
+        "endChar": 52
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc5d3ea5_49b43ddc",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1571,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06173db2_6429ee43",
       "range": {
         "startLine": 1571,
         "startChar": 47,
@@ -199,6 +241,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77aef852_3fb6d575",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "I believe the ref counting was from the casting non graphite images, but updated this anyways or else it will be doing a copy which we are trying to avoid.",
+      "parentUuid": "48c181ed_eec3194d",
+      "range": {
+        "startLine": 1573,
+        "startChar": 8,
+        "endLine": 1573,
+        "endChar": 12
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b487b08_52196eb3",
@@ -212,6 +278,30 @@
       "writtenOn": "2023-08-18T19:39:16Z",
       "side": 1,
       "message": "`preConcat` should be checking if the incoming matrix is identity or not, so you could always just concat shader-\u003elocalMatrix() onto matrix, and then the if for skipping the LM block is simpler.",
+      "range": {
+        "startLine": 1580,
+        "startChar": 0,
+        "endLine": 1580,
+        "endChar": 70
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "312f5199_c9305ecf",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1580,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b487b08_52196eb3",
       "range": {
         "startLine": 1580,
         "startChar": 0,
@@ -283,6 +373,30 @@
       "side": 1,
       "message": "`localMatrix` goes from the child\u0027s coordinate space to the parent (or at the root, the true geometric local space). The flip matrix goes from the logical image view\u0027s space to the true texture coordinates, so we want `[tex coord] \u003d [flip matrix] * [parent -\u003e child] * [coord]`, and `parent-\u003echild` is the inverse local matrix.\n\n`(flip*invLocal)^-1` is `local * flip`. Since `matrix` holds `flip`, we need postConcat to put `localMatrix` on the left hand side.",
       "parentUuid": "220a1f2c_e71a39d5",
+      "range": {
+        "startLine": 1581,
+        "startChar": 15,
+        "endLine": 1581,
+        "endChar": 24
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85a061e0_b2d37c8d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3957c77b_b76ae8c8",
       "range": {
         "startLine": 1581,
         "startChar": 15,
@@ -387,6 +501,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0797b686_25a4bb57",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a01ac1e_bf7c79e6",
+      "range": {
+        "startLine": 43,
+        "startChar": 71,
+        "endLine": 43,
+        "endChar": 79
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b96b5862_408dafba",
@@ -400,6 +538,30 @@
       "writtenOn": "2023-08-18T19:39:16Z",
       "side": 1,
       "message": "Maybe just do one return statement with a ternary `localMatrix ? *localMatrix : SkMatrix::I()` in the last arg?",
+      "range": {
+        "startLine": 51,
+        "startChar": 83,
+        "endLine": 51,
+        "endChar": 94
+      },
+      "revId": "21d48533f71eb34b9d9ad531e94da9f6bb37e316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f58813f0_5130e06b",
+        "filename": "src/shaders/SkLocalMatrixShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-21T15:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b96b5862_408dafba",
       "range": {
         "startLine": 51,
         "startChar": 83,
