@@ -10,17 +10,22 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/effects/SkImageFilters.h"
+#include "src/effects/imagefilters/SkCropImageFilter.h"
 
 static void drawOne(SkCanvas* canvas, SkRect rect, float saveBorder, float sigma, SkColor c) {
-    SkPaint sp;
-    sp.setImageFilter(SkImageFilters::Blur(sigma, sigma, SkTileMode::kClamp, nullptr));
+    SkRect borderRect = rect.makeOutset(saveBorder, saveBorder);
+
     SkPaint p;
     p.setColor(c);
+    // We apply a 3-sigma decal crop to the blur's output because we know that the input image has
+    // a buffer of transparent content so visually its output isn't unbounded, but w/o that hint the
+    // kClamp tile would require the output layer to fill the canvas.
+    p.setImageFilter(SkImageFilters::Blur(sigma, sigma,
+            SkMakeCropImageFilter(borderRect, SkTileMode::kClamp, nullptr),
+            borderRect.makeOutset(3 * sigma, 3 * sigma)));
     p.setAntiAlias(true);
 
-    canvas->saveLayer(rect.makeOutset(saveBorder, saveBorder), &sp);
     canvas->drawRect(rect, p);
-    canvas->restore();
 }
 
 DEF_SIMPLE_GM(crbug_1156804, canvas, 250, 250) {
