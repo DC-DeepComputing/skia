@@ -9,7 +9,7 @@ struct FSOut {
 fn _skslMain(_skParam0: vec2<f32>) -> vec4<f32> {
   let coords = _skParam0;
   {
-    return vec4<f32>(0.0, 1.0, 0.0, 1.0);
+    return vec4<f32>(1.0, 1.0, 0.0, 1.0);
   }
 }
 @fragment fn main(_stageIn: FSIn) -> FSOut {
