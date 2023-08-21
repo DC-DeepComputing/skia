@@ -16,6 +16,24 @@
       "message": "nit: `sk_make_sp\u003cSkBlurImageFilter\u003e(...)`",
       "revId": "214093978d133856a11bb3ad9c850df9a0de52bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b4f0eb5_b3e02573",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-21T17:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83e136cf_58ed94d5",
+      "revId": "214093978d133856a11bb3ad9c850df9a0de52bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
