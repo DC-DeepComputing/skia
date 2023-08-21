@@ -113,6 +113,7 @@ public:
     // V100: SkImageFilters::DropShadow does not have a dedicated implementation
     // V101: Crop image filter supports all SkTileModes instead of just kDecal
     // V102: Convolution image filter uses ::Crop to apply tile mode
+    // V103: Blur image filter uses ::Crop to apply tile mode
 
     enum Version {
         kPictureShaderFilterParam_Version   = 82,
