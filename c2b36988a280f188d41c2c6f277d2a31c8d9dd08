@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c6e2676f_43571a5c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 20209
+      },
+      "writtenOn": "2023-08-21T15:16:52Z",
+      "side": 1,
+      "message": "Thanks, LGTM.",
+      "parentUuid": "6509a5eb_10263ffd",
+      "revId": "c2b36988a280f188d41c2c6f277d2a31c8d9dd08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e0561eb7_b7633e96",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
