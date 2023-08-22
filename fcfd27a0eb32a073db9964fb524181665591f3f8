@@ -51,6 +51,24 @@
       "parentUuid": "e8a765a5_27445922",
       "revId": "fcfd27a0eb32a073db9964fb524181665591f3f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5479732c_f1c1adc2",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-22T19:31:43Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "bfdb3a01_f0964ba0",
+      "revId": "fcfd27a0eb32a073db9964fb524181665591f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
