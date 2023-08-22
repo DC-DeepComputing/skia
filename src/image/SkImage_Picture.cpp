@@ -41,18 +41,67 @@ SkPictureImageGenerator* SkImage_Picture::gen() const {
     return static_cast<SkPictureImageGenerator*>(this->generator()->fGenerator.get());
 }
 
-SkPicture* SkImage_Picture::picture() const {
+SkPicture* SkImage_Picture::picture1() const {
     return this->gen()->fPicture.get();
 }
 
-SkMatrix* SkImage_Picture::matrix() const {
+SkMatrix* SkImage_Picture::matrix1() const {
     return &this->gen()->fMatrix;
 }
 
-SkPaint* SkImage_Picture::paint() const {
+SkPaint* SkImage_Picture::paint1() const {
     return this->gen()->fPaint.getMaybeNull();
 }
 
 SkSurfaceProps* SkImage_Picture::props() const {
     return &this->gen()->fProps;
+}
+
+bool SkImage_Picture::getImageKeyValues(
+        uint32_t keyValues[SkTiledImageUtils::kNumImageKeyValues]) const {
+
+    auto sharedGenerator = this->generator();
+    SkAutoMutexExclusive mutex(sharedGenerator->fMutex);
+
+    if (this->paint1()) {
+        // A full paint complicates the potential key too much.
+        return false;
+    }
+
+    const SkImageInfo& ii = this->gen()->getInfo();
+    if (!ii.colorSpace()->isSRGB()) {
+        // We only return key values if the colorSpace is boring. Alternatively, we could
+        // use two uint32_ts to store the colorSpace's hash value.
+        return false;
+    }
+
+    const SkMatrix& m = this->gen()->fMatrix;
+    if (!m.isIdentity() && !m.isTranslate()) {
+        // To keep the key small we only cache simple (<= translation) matrices
+        return false;
+    }
+
+    bool isU8 = ii.colorType() != kRGBA_F16_SkColorType;
+    uint32_t pixelGeometry = this->props()->pixelGeometry();
+    uint32_t surfacePropFlags = this->props()->flags();
+    int width = ii.width();
+    int height = ii.height();
+    float fX = m.getTranslateX();
+    float fY = m.getTranslateX();
+
+    SkASSERT(pixelGeometry <= 4);
+    SkASSERT(surfacePropFlags < 8);
+    SkASSERT(SkTFitsIn<uint32_t>(width));
+    SkASSERT(SkTFitsIn<uint32_t>(height));
+    SkASSERT(sizeof(float) == sizeof(uint32_t));
+
+    keyValues[0] = (isU8 ? 0x1 : 0x0) |     // 1 bit
+                   (pixelGeometry << 1) |   // 3 bits
+                   (surfacePropFlags << 4); // 3 bits
+    keyValues[1] = this->picture1()->uniqueID();
+    keyValues[2] = width;
+    keyValues[3] = height;
+    memcpy(&keyValues[4], &fX, sizeof(uint32_t));
+    memcpy(&keyValues[5], &fY, sizeof(uint32_t));
+    return true;
 }

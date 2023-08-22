@@ -271,7 +271,7 @@ static sk_sp<SkImage> generate_picture_texture(skgpu::graphite::Recorder* record
     }
 
     surface->getCanvas()->clear(SkColors::kTransparent);
-    surface->getCanvas()->drawPicture(img->picture(), img->matrix(), img->paint());
+    surface->getCanvas()->drawPicture(img->picture1(), img->matrix1(), img->paint1());
 
     if (requiredProps.fMipmapped) {
         skgpu::graphite::Flush(surface);

@@ -258,7 +258,7 @@ static GrSurfaceProxyView generate_picture_texture(GrRecordingContext* ctx,
     }
 
     surface->getCanvas()->clear(SkColors::kTransparent);
-    surface->getCanvas()->drawPicture(img->picture(), img->matrix(), img->paint());
+    surface->getCanvas()->drawPicture(img->picture1(), img->matrix1(), img->paint1());
     sk_sp<SkImage> image(surface->makeImageSnapshot());
     if (!image) {
         return {};

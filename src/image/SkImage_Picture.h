@@ -8,6 +8,7 @@
 #define SkImage_Picture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTiledImageUtils.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Lazy.h"
 
@@ -35,10 +36,12 @@ public:
 
      // These are not necessarily thread-safe. Be sure to grab the mutex from the shared
      // generator before accessing them.
-     SkPicture* picture() const;
-     SkMatrix* matrix() const;
-     SkPaint* paint() const;
+     SkPicture* picture1() const;
+     SkMatrix* matrix1() const;
+     SkPaint* paint1() const;
      SkSurfaceProps* props() const;
+
+    bool getImageKeyValues(uint32_t keyValues[SkTiledImageUtils::kNumImageKeyValues]) const;
 
 private:
     SkPictureImageGenerator* gen() const;
