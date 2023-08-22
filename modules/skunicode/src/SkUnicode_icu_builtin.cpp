@@ -37,5 +37,6 @@ std::unique_ptr<SkICULib> SkLoadICULib() {
 
         &SkUbrkClone<const UBreakIterator*>::clone,
         nullptr,
+        ubrk_getLocaleByType,
     });
 }
