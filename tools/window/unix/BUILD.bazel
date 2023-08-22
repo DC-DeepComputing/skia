@@ -12,7 +12,6 @@ skia_filegroup(
         "RasterWindowContext_unix.cpp",
         "WindowContextFactory_unix.h",
     ] + select({
-        "//src/gpu:dawn_ganesh": ["DawnVulkanWindowContext_unix.cpp"],
         "//src/gpu:gl_ganesh": ["GLWindowContext_unix.cpp"],
         "//src/gpu:vulkan_ganesh": ["VulkanWindowContext_unix.cpp"],
         "//conditions:default": [],

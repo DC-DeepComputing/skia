@@ -1035,11 +1035,6 @@ optional("gpu") {
     }
   }
 
-  if (skia_use_dawn) {
-    public += skia_gpu_dawn_public
-    sources += skia_gpu_dawn_private
-  }
-
   if (skia_use_direct3d) {
     public_defines += [ "SK_DIRECT3D" ]
     deps += [ "//third_party/d3d12allocator" ]
