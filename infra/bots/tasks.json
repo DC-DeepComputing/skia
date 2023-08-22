@@ -21539,7 +21539,7 @@
         {
           "name": "skia/bots/dwritecore",
           "path": "dwritecore",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -64213,7 +64213,7 @@
         {
           "name": "skia/bots/dwritecore",
           "path": "dwritecore",
-          "version": "version:1"
+          "version": "version:2"
         },
         {
           "name": "skia/bots/skimage",
