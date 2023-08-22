@@ -213,7 +213,7 @@ static GrBackendTexture make_vk_backend_texture(
             VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID,  // handleTypes
     };
     VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
-    if (format != VK_FORMAT_UNDEFINED) {
+    if (format != VK_FORMAT_UNDEFINED && externalFormat.externalFormat == 0) {
         usageFlags = usageFlags |
                 VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
                 VK_IMAGE_USAGE_TRANSFER_DST_BIT;
