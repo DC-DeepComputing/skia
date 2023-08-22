@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2be2219a_44a7885c",
+        "filename": "modules/sksg/include/SkSGRenderEffect.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-22T17:12:07Z",
+      "side": 1,
+      "message": "Good point, LGTM",
+      "parentUuid": "be268a41_9d7719a1",
+      "revId": "58348640fa9cdc1f3f20dea86dcee20e71042ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e08e9b2_4f88b643",
