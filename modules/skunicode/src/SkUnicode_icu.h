@@ -57,6 +57,9 @@ struct SkICULib {
     // ubrk_safeClone deprecated in ICU69 and not exposed by Android.
     UBreakIterator* (*f_ubrk_clone_)(const UBreakIterator*, UErrorCode*);
     UBreakIterator* (*f_ubrk_safeClone_)(const UBreakIterator*, void*, int32_t*, UErrorCode*);
+    
+    // ubrk_getLocaleByType not exposed by Android.
+    const char* (*f_ubrk_getLocaleByType)(const UBreakIterator*, ULocDataLocaleType, UErrorCode*);
 };
 #undef SKICU_FUNC
 
