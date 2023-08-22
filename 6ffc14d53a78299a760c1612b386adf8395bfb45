@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ec7202_ff6180f7",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-22T19:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04346b31_0fd3210d",
+      "range": {
+        "startLine": 22,
+        "startChar": 7,
+        "endLine": 22,
+        "endChar": 50
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c926d57b_9f9581f8",
@@ -112,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f7e36c_69c7387f",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-22T19:16:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2c9b525a_9fa687ff",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 28
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a14ab857_c7dd3683",
@@ -125,6 +173,30 @@
       "writtenOn": "2023-08-17T15:26:14Z",
       "side": 1,
       "message": "up to you: I find that labeling `static` methods isn\u0027t very useful when the naming convention already distinguishes them (`CapitalMethodName` vs `lowercaseMethodName`).",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 9
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d3baef6_0c68d7ce",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-22T19:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a14ab857_c7dd3683",
       "range": {
         "startLine": 69,
         "startChar": 0,
@@ -158,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9289ed2d_2a148c95",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-22T19:16:57Z",
+      "side": 1,
+      "message": "Done. BTW I mainly imitated DawnGraphicsPipeline here but I wonder why do we want to avoid assigning a label in a release build? IMO labeling pipelines is useful in release builds too, e.g. when reading through a frame capture.\n\nP.S.: Following up on our conversation on the Skia GPU chat, I\u0027m removing the compile-time conditional and always assigning a label here. I went ahead and updated DawnGraphicsPipeline as well.",
+      "parentUuid": "f012ecb3_e35e342d",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6794e72_cd9e1c78",
@@ -171,6 +267,30 @@
       "writtenOn": "2023-08-17T15:26:14Z",
       "side": 1,
       "message": "I am not sure if this is the right way to check for successful creation. It wasn\u0027t for ShaderModules. There is an `ErrorComputePipeline` object that it looks like `CreateComputePipeline` might return:\n\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/ComputePipeline.cpp;l\u003d71;drc\u003d16f579bd5f425f27c30816cac4b06508bcb3e5c8",
+      "range": {
+        "startLine": 152,
+        "startChar": 3,
+        "endLine": 152,
+        "endChar": 20
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f1a804c_a3287a5b",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-22T19:16:57Z",
+      "side": 1,
+      "message": "That looks like a dawn native type but Graphite interfaces with Dawn using `webgpu_cpp.h` bindings and `wgpu::ComputePipeline` should just be a wrapper around a native handle: see https://source.chromium.org/chromium/chromium/src/+/main:out/Debug/gen/third_party/dawn/include/dawn/webgpu_cpp.h;drc\u003dd708cc843536cc344f0f7679a978634cc14d6153;l\u003d1019 and https://source.chromium.org/chromium/chromium/src/+/main:out/Debug/gen/third_party/dawn/include/dawn/webgpu_cpp.h;l\u003d867;drc\u003dd708cc843536cc344f0f7679a978634cc14d6153. If pipeline creation failed, I would expect this to be a null handle.\n\nI\u0027m curious why this didn\u0027t work for ShaderModules. I see that `wgpu::Device` there is an alternative `CreateErrorShaderModule` method. For pipelines there are async versions that seem to return an error description (see  https://source.chromium.org/chromium/chromium/src/+/main:out/Debug/gen/third_party/dawn/include/dawn/webgpu_cpp.h;l\u003d1043;drc\u003dd708cc843536cc344f0f7679a978634cc14d6153;bpv\u003d1;bpt\u003d1 and https://source.chromium.org/chromium/chromium/src/+/main:out/Debug/gen/third_party/dawn/include/dawn/webgpu.h;drc\u003def54bf45d50e6f9990713781e788c48102639d5e;bpv\u003d1;bpt\u003d1;l\u003d917).\n\nMaybe we should use the async versions instead? That said if the synchronous versions don\u0027t work as intended then we should probably file bugs against Dawn. If a pipeline is invalid it shouldn\u0027t have a valid handle?",
+      "parentUuid": "c6794e72_cd9e1c78",
       "range": {
         "startLine": 152,
         "startChar": 3,
