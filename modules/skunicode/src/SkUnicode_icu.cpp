@@ -131,7 +131,53 @@ class SkBreakIterator_icu : public SkBreakIterator {
 };
 
 class SkIcuBreakIteratorCache {
-    THashMap<SkUnicode::BreakType, ICUBreakIterator> fBreakCache;
+    struct BreakIteratorRequest {
+        BreakIteratorRequest(SkUnicode::BreakType type, const char* icuLocale)
+            : fType(type)
+            , fIcuLocale(icuLocale, icuLocale + strlen(icuLocale))
+            , hash(SkGoodHash()(type) ^ SkChecksum::Hash32(fIcuLocale.data(), fIcuLocale.size()))
+        {}
+        const SkUnicode::BreakType fType;
+        const std::vector<char> fIcuLocale; //AutoTArray doesn't have operator==?
+        const uint32_t hash;
+        struct Hash {
+            uint32_t operator()(const BreakIteratorRequest& key) const {
+                return key.hash;
+            }
+        };
+        bool operator==(const BreakIteratorRequest& that) const {
+            return this->fType == that.fType && this->fIcuLocale == that.fIcuLocale;
+        }
+    };
+    class BreakIteratorRef final {
+    public:
+        BreakIteratorRef(ICUBreakIterator iter) : breakIterator(iter.release()), fRefCnt(1) {}
+        BreakIteratorRef(SkRefCntBase&&) = delete;
+        BreakIteratorRef(const SkRefCntBase&) = delete;
+        BreakIteratorRef& operator=(SkRefCntBase&&) = delete;
+        BreakIteratorRef& operator=(const SkRefCntBase&) = delete;
+        ~BreakIteratorRef() {
+            if (breakIterator) {
+                ubrk_close_wrapper(breakIterator);
+            }
+        }
+
+        void ref() const {
+            SkASSERT(fRefCnt > 0);
+            ++fRefCnt;
+        }
+        void unref() const {
+            SkASSERT(fRefCnt > 0);
+            if (1 == fRefCnt--) {
+                delete this;
+            }
+        }
+
+        UBreakIterator* breakIterator; // This class just states that all holders resolve to the same break iterator kind. That actual break iterator may come and go.
+    private:
+        mutable int32_t fRefCnt;
+    };
+    THashMap<BreakIteratorRequest, sk_sp<BreakIteratorRef>, BreakIteratorRequest::Hash> fBreakRequestCache;
     SkMutex fBreakCacheMutex;
 
  public:
@@ -140,30 +186,125 @@ class SkIcuBreakIteratorCache {
         return instance;
     }
 
-    ICUBreakIterator makeBreakIterator(SkUnicode::BreakType type) {
+    ICUBreakIterator makeBreakIterator(SkUnicode::BreakType type, const char* langtag) {
+        SkAutoMutexExclusive lock(fBreakCacheMutex);
         UErrorCode status = U_ZERO_ERROR;
-        ICUBreakIterator* cachedIterator;
-        {
-            SkAutoMutexExclusive lock(fBreakCacheMutex);
-            cachedIterator = fBreakCache.find(type);
-            if (!cachedIterator) {
-                ICUBreakIterator newIterator(sk_ubrk_open(convertType(type), sk_uloc_getDefault(),
-                                                          nullptr, 0, &status));
-                if (U_FAILURE(status)) {
-                    SkDEBUGF("Break error: %s", sk_u_errorName(status));
-                } else {
-                    cachedIterator = fBreakCache.set(type, std::move(newIterator));
-                }
-            }
-        }
-        ICUBreakIterator iterator;
-        if (cachedIterator) {
-            iterator.reset(sk_ubrk_clone(cachedIterator->get(), &status));
+
+        // Get ICU locale for BCP47 langtag
+        int32_t localeIDLength = uloc_forLanguageTag(langtag, nullptr, 0, nullptr, &status) + 1;
+        auto localeID = std::make_unique<char[]>(localeIDLength);
+        uloc_forLanguageTag(langtag, localeID.get(), localeIDLength, nullptr, &status);
+
+        // TODO: cache on locale (language) as well.
+        // BreakIterator::createInstance and BreakIterator::buildInstance really determine the data used.
+        // What we want to know before we make an iterator is if we made it would be "be the same" as another
+        // break iterator we already have (would getLocale(Actual) return the same value).
+        // Except Android doesn't expose ubrk_getLocaleByType
+        //
+        // Since there is no API for this, we could cache it. First look for a type-locale pair in the cache.
+        // If found, return it. If not found, create a new instance. getLocale(Actual) and see if there is a
+        // match in the cache. If there is, discard the new instance and in the cache add the existing instance to the type-locale pair (maybe just a reference?).
+
+        // So what we want is a map of language to resolved language and then a map from
+        // resolved language to breaker
+
+        // The algorithm looks like
+        // 1. See if this request is already in the cache, if it is return a clone of the cached break iterator
+        // 2. Create a break iterator based on this request.
+        // 3. Get the newly created break iterator's actual locale.
+        // 4. See if this actual locale is in the actual locale cache, if it is
+        //    a. return a clone of the cached break iterator
+        //    b. delete the newly created one (it's redundant)
+        //    c. add a mapping in the reqest cache from this request to this cached break iterator
+        // 5. Add this new break iterator to the cache (wraped in a new BreakIteratorRef), map to it from the actual and requested locales.
+        // 6. Return a copy of this now cached break iterator
+
+        // It doesn't appear we need a mapping from request locale to actual locale. This just needs
+        // a mapping from request and actual locale strings to break iterators. This somewhat reference
+        // counts the break iterator entries.
+
+        // For space constraints removing mappings request mappings is fine.
+        // However if actual mappings are removed that is bad, as we may not be able to reach a cached iterator anymore.
+        // Unless the mappings reference count the cached iterator.
+
+        // Removing an iterator should be fine as it can always be re-created.
+        // There may still be references to it, but we can have a marker (like nullptr) which means it needs to be recreated.
+        // Unfortunately we don't know how big they are.
+
+        auto make = [](const BreakIteratorRequest& request) -> UBreakIterator* {
+            UErrorCode status = U_ZERO_ERROR;
+            UBreakIterator* bi = sk_ubrk_open(convertType(request.fType), request.fIcuLocale.data(), nullptr, 0, &status);
             if (U_FAILURE(status)) {
                 SkDEBUGF("Break error: %s", sk_u_errorName(status));
             }
+            return bi;
+        };
+
+        auto clone = [](const UBreakIterator* existing) -> ICUBreakIterator {
+            if (!existing) {
+                return nullptr;
+            }
+
+            UErrorCode status = U_ZERO_ERROR;
+            ICUBreakIterator clone(sk_ubrk_clone(existing, &status));
+            if (U_FAILURE(status)) {
+                SkDEBUGF("Break error: %s", sk_u_errorName(status));
+            }
+            return clone;
+        };
+
+        BreakIteratorRequest request(type, localeID.get());
+
+        // If this request is already in the cache
+        const sk_sp<BreakIteratorRef>* ref = fBreakRequestCache.find(request);
+        if (ref) {
+            // See if the breakIterator needs to be re-created
+            if (!(*ref)->breakIterator) {
+                (*ref)->breakIterator = make(request);
+            }
+            return clone((*ref)->breakIterator);
         }
-        return iterator;
+
+        // This request was not in the cache, create an iterator.
+        ICUBreakIterator newIter(make(request));
+        if (!newIter) {
+            return nullptr;
+        }
+
+        sk_sp<BreakIteratorRef> newRef;
+
+        // Check if the new iterator is a duplicate
+        // Android doesn't expose ubrk_getLocaleByType so there is no means of de-duplicating.
+        // ubrk_getAvailable seems like it should work, but the implementation is just every locale.
+        if (SkGetICULib()->f_ubrk_getLocaleByType) {
+            const char* actualLocale = SkGetICULib()->f_ubrk_getLocaleByType(newIter.get(), ULOC_ACTUAL_LOCALE, &status);
+            // If the actual locale is the same as the requested locale we know there is no entry.
+            if (strcmp(actualLocale, localeID.get()) != 0) {
+                BreakIteratorRequest actualRequest(type, actualLocale);
+                const sk_sp<BreakIteratorRef>* actualRef = fBreakRequestCache.find(actualRequest);
+                if (actualRef) {
+                    if (!(*actualRef)->breakIterator) {
+                        (*actualRef)->breakIterator = newIter.release();
+                    }
+                    fBreakRequestCache.set(request, *actualRef);
+                    return clone((*actualRef)->breakIterator);
+                } else {
+                    newRef = sk_make_sp<BreakIteratorRef>(std::move(newIter));
+                    fBreakRequestCache.set(actualRequest, newRef);
+                }
+            }
+        }
+
+        if (!newRef) {
+            newRef = sk_make_sp<BreakIteratorRef>(std::move(newIter));
+        }
+        fBreakRequestCache.set(request, newRef);
+
+        // Now if the cache is too big it is possible to go through the values in fBreakRequestCache
+        // and free some breakIterator (oldest first?). If there are too many entries then some
+        // keys can be dropped as well (oldest first?).
+
+        return clone(newRef->breakIterator);
     }
 };
 
@@ -173,11 +314,12 @@ class SkUnicode_icu : public SkUnicode {
         return std::make_unique<SkUnicode_icu>();
     }
 
-    static bool extractWords(uint16_t utf16[], int utf16Units, const char* locale,  std::vector<Position>* words) {
+    static bool extractWords(uint16_t utf16[], int utf16Units, const char* locale,
+                             std::vector<Position>* words) {
 
         UErrorCode status = U_ZERO_ERROR;
 
-        ICUBreakIterator iterator = SkIcuBreakIteratorCache::get().makeBreakIterator(BreakType::kWords);
+        ICUBreakIterator iterator = SkIcuBreakIteratorCache::get().makeBreakIterator(BreakType::kWords, locale);
         if (!iterator) {
             SkDEBUGF("Break error: %s", sk_u_errorName(status));
             return false;
@@ -206,8 +348,9 @@ class SkUnicode_icu : public SkUnicode {
         return true;
     }
 
-    static bool extractPositions
-        (const char utf8[], int utf8Units, BreakType type, std::function<void(int, int)> setBreak) {
+    static bool extractPositions(const char utf8[], int utf8Units,
+                                 BreakType type, const char* locale,
+                                 std::function<void(int, int)> setBreak) {
 
         UErrorCode status = U_ZERO_ERROR;
         ICUUText text(sk_utext_openUTF8(nullptr, &utf8[0], utf8Units, &status));
@@ -218,7 +361,7 @@ class SkUnicode_icu : public SkUnicode {
         }
         SkASSERT(text);
 
-        ICUBreakIterator iterator = SkIcuBreakIteratorCache::get().makeBreakIterator(type);
+        ICUBreakIterator iterator = SkIcuBreakIteratorCache::get().makeBreakIterator(type, locale);
         if (!iterator) {
             return false;
         }
@@ -303,6 +446,7 @@ public:
     }
     std::unique_ptr<SkBreakIterator> makeBreakIterator(const char locale[],
                                                        BreakType breakType) override {
+        SkIcuBreakIteratorCache::get().makeBreakIterator(breakType, locale);
         UErrorCode status = U_ZERO_ERROR;
         ICUBreakIterator iterator(sk_ubrk_open(convertType(breakType), locale, nullptr, 0,
                                                &status));
@@ -345,7 +489,8 @@ public:
         return SkUnicode_IcuBidi::ExtractBidi(utf8, utf8Units, dir, results);
     }
 
-    bool getWords(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
+    bool getWords(const char utf8[], int utf8Units, const char* locale,
+                  std::vector<Position>* results) override {
 
         // Convert to UTF16 since we want the results in utf16
         auto utf16 = convertUtf8ToUtf16(utf8, utf8Units);
@@ -353,19 +498,19 @@ public:
     }
 
     bool computeCodeUnitFlags(char utf8[], int utf8Units, bool replaceTabs,
-                          TArray<SkUnicode::CodeUnitFlags, true>* results) override {
+                              TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         results->clear();
         results->push_back_n(utf8Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
 
-        SkUnicode_icu::extractPositions(utf8, utf8Units, BreakType::kLines, [&](int pos,
-                                                                       int status) {
+        SkUnicode_icu::extractPositions(utf8, utf8Units, BreakType::kLines, "", // TODO: locale
+                                        [&](int pos, int status) {
             (*results)[pos] |= status == UBRK_LINE_HARD
-                                    ? CodeUnitFlags::kHardLineBreakBefore
-                                    : CodeUnitFlags::kSoftLineBreakBefore;
+                                       ? CodeUnitFlags::kHardLineBreakBefore
+                                       : CodeUnitFlags::kSoftLineBreakBefore;
         });
 
-        SkUnicode_icu::extractPositions(utf8, utf8Units, BreakType::kGraphemes, [&](int pos,
-                                                                       int status) {
+        SkUnicode_icu::extractPositions(utf8, utf8Units, BreakType::kGraphemes, "", //TODO: locale
+                                        [&](int pos, int status) {
             (*results)[pos] |= CodeUnitFlags::kGraphemeStart;
         });
 
