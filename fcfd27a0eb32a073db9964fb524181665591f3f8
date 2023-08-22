@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8a765a5_27445922",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-22T18:31:45Z",
+      "side": 1,
+      "message": "Are we going to end up with a Rect struct later? If this is the only rect we\u0027ll have, then it\u0027s probably fine.",
+      "revId": "fcfd27a0eb32a073db9964fb524181665591f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
