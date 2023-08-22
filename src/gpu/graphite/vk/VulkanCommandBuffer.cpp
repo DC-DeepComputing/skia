@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -444,6 +445,10 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     static_assert((int)StoreOp::kStore == 0);
     static_assert((int)StoreOp::kDiscard == 1);
     static_assert(std::size(vkStoreOp) == kStoreOpCount);
+
+    // TODO(b/293931220): Complete migration from using the dynamic rendering extension to instead
+    // using regular VkRenderPasses by calling and using the result of
+    // fResourceProvider->findOrCreateRenderPass.
 
     // Get render pass descriptor
     VkRenderingInfoKHR renderingInfo;
@@ -1193,7 +1198,8 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
 bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
                                                  SkIRect srcRect,
                                                  const Texture* dst,
-                                                 SkIPoint dstPoint) {
+                                                 SkIPoint dstPoint,
+                                                 int mipLevel) {
     const VulkanTexture* srcTexture = static_cast<const VulkanTexture*>(src);
     const VulkanTexture* dstTexture = static_cast<const VulkanTexture*>(dst);
 
@@ -1201,7 +1207,7 @@ bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
     memset(&copyRegion, 0, sizeof(VkImageCopy));
     copyRegion.srcSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
     copyRegion.srcOffset = { srcRect.fLeft, srcRect.fTop, 0 };
-    copyRegion.dstSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+    copyRegion.dstSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, (uint32_t)mipLevel, 0, 1 };
     copyRegion.dstOffset = { dstPoint.fX, dstPoint.fY, 0 };
     copyRegion.extent = { (uint32_t)srcRect.width(), (uint32_t)srcRect.height(), 1 };
 

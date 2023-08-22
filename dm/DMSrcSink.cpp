@@ -2083,13 +2083,14 @@ GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config)
         : fContextType(config->getContextType())
         , fColorType(config->getColorType())
         , fAlphaType(config->getAlphaType()) {
+    fBaseContextOptions.fEnableWGSL = config->getWGSL();
 }
 
 Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
-    skgpu::graphite::ContextOptions options;
+    skgpu::graphite::ContextOptions options = fBaseContextOptions;
 
     src.modifyGraphiteContextOptions(&options);
 
@@ -2110,7 +2111,9 @@ Result GraphiteSink::draw(const Src& src,
     dst->allocPixels(ii);
 
     {
-        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+        SkSurfaceProps props(0, kRGB_H_SkPixelGeometry);
+        sk_sp<SkSurface> surface =
+                SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo, &props);
         if (!surface) {
             return Result::Fatal("Could not create a surface.");
         }
