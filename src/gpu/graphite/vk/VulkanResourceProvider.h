@@ -46,6 +46,7 @@ private:
     void onDeleteBackendTexture(BackendTexture&) override {}
 
     sk_sp<VulkanDescriptorSet> findOrCreateDescriptorSet(SkSpan<DescriptorData>);
+
     // Find or create a compatible RenderPass. Needed when creating a frame buffer and graphics
     // pipeline.
     sk_sp<VulkanRenderPass> findOrCreateCompatibleRenderPass(const RenderPassDesc&);
@@ -56,6 +57,7 @@ private:
                                                    const Texture* colorTexture,
                                                    const Texture* resolveTexture,
                                                    const Texture* depthStencilTexture);
+
     VkPipelineCache pipelineCache();
 
     friend class VulkanCommandBuffer;
