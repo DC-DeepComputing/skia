@@ -90,7 +90,7 @@ FILE* sk_fopen(const char path[], SkFILE_Flags flags) {
 #endif
 
     if (nullptr == file && (flags & kWrite_SkFILE_Flag)) {
-        SkDEBUGF("sk_fopen: fopen(\"%s\", \"%s\") returned nullptr (errno:%d): %s\n",
+        SkDebugf("sk_fopen: fopen(\"%s\", \"%s\") returned nullptr (errno:%d): %s\n",
                  path, perm, errno, strerror(errno));
     }
     return file;
