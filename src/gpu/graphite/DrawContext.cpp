@@ -137,6 +137,13 @@ PathAtlas* DrawContext::getOrCreatePathAtlas(Recorder* recorder) {
     return fComputePathAtlas.get();
 }
 
+#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS
+void DrawContext::recordExplicitDispatchGroup(std::unique_ptr<DispatchGroup> group) {
+    SkASSERT(group);
+    fDispatchGroups.push_back(std::move(group));
+}
+#endif
+
 void DrawContext::snapDrawPass(Recorder* recorder) {
     if (fPendingDraws->drawCount() == 0 && fPendingLoadOp != LoadOp::kClear) {
         return;
@@ -261,7 +268,6 @@ sk_sp<Task> DrawContext::snapComputeTask(Recorder* recorder) {
     if (fDispatchGroups.empty()) {
         return nullptr;
     }
-    SkASSERT(fDispatchGroups.size() == 1);
     return ComputeTask::Make(std::move(fDispatchGroups));
 }
 
