@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec72105_925ee7f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-08-22T16:56:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ddf117a_cde8d45e",
+      "revId": "58348640fa9cdc1f3f20dea86dcee20e71042ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b8fb10b_2e2fd3c3",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be268a41_9d7719a1",
+        "filename": "modules/sksg/include/SkSGRenderEffect.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-08-22T16:56:28Z",
+      "side": 1,
+      "message": "It could be a boolean, but enums are generally preferred in APIs because they are self-documenting. E.g. https://google.github.io/styleguide/cppguide.html#Function_Argument_Comments",
+      "parentUuid": "5b8fb10b_2e2fd3c3",
+      "revId": "58348640fa9cdc1f3f20dea86dcee20e71042ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e08e9b2_4f88b643",
         "filename": "modules/sksg/include/SkSGRenderEffect.h",
         "patchSetId": 3
@@ -48,6 +84,24 @@
       "writtenOn": "2023-08-22T14:23:34Z",
       "side": 1,
       "message": "tiny nit: This comment seems misleading as by itself it reads that Image filters don\u0027t use crop rects which isn\u0027t true. I know that\u0027s specifically for the kNone enum, but consider\n```\nkNone,    // Doesn\u0027t use a crop rect.\nkContent, // Uses the content bounding box as the crop rect.\n```",
+      "revId": "58348640fa9cdc1f3f20dea86dcee20e71042ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88c00dbb_da812b5a",
+        "filename": "modules/sksg/include/SkSGRenderEffect.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-08-22T16:56:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e08e9b2_4f88b643",
       "revId": "58348640fa9cdc1f3f20dea86dcee20e71042ff2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
