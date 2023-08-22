@@ -17,6 +17,7 @@
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/SkRenderEngineAbortf.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -2654,6 +2655,7 @@ bool GrVkGpu::checkVkResult(VkResult result) {
         case VK_SUCCESS:
             return true;
         case VK_ERROR_DEVICE_LOST:
+            RENDERENGINE_ABORTF("VK_ERROR_DEVICE_LOST");
             fDeviceIsLost = true;
             return false;
         case VK_ERROR_OUT_OF_DEVICE_MEMORY:
