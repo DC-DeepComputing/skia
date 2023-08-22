@@ -16,6 +16,24 @@
       "message": "I\u0027ve tested this out with the debug `libmali` build as described in the bug, and it\u0027s no longer crashing! That said, when I rotate the phone, I do see some flickering, with the following steps in \"Google News\":\n- scroll down to a news link with an embedded video\n- tap on the *headline* (not the video)\n- now I\u0027m on a recycler view with lots of videos\n- rotate into landscape mode\n- scroll up and down\n- when a new video bounces into view, if it has an add, it flickers\n\nWhew - I finally found a similar article on a device without this CL, and it has the same issue!\n\nOver chat, Nicolette suggested that there\u0027s likely more to be done here, but this seems to fix the problem!",
       "revId": "f3147e30c68b21d77e017cc356f335339c2cc579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c9e6e9_ed5e07b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-22T21:22:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ba47f816_1967399e",
+      "revId": "f3147e30c68b21d77e017cc356f335339c2cc579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
