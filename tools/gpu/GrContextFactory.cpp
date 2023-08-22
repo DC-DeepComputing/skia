@@ -25,9 +25,6 @@
 #ifdef SK_DIRECT3D
 #include "tools/gpu/d3d/D3DTestContext.h"
 #endif
-#ifdef SK_DAWN
-#include "tools/gpu/dawn/DawnTestContext.h"
-#endif
 #include "src/gpu/ganesh/GrCaps.h"
 #include "tools/gpu/mock/MockTestContext.h"
 
@@ -91,7 +88,7 @@ void GrContextFactory::abandonContexts() {
                 context.fTestContext->testAbandon();
             }
             GrBackendApi api = context.fGrContext->backend();
-            bool requiresEarlyAbandon = api == GrBackendApi::kVulkan || api == GrBackendApi::kDawn;
+            bool requiresEarlyAbandon = api == GrBackendApi::kVulkan;
             if (requiresEarlyAbandon) {
                 context.fGrContext->abandonContext();
             }
@@ -276,17 +273,6 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
                     ? static_cast<D3DTestContext*>(primaryContext->fTestContext) : nullptr;
             SkASSERT(kDirect3D_ContextType == type);
             testCtx.reset(CreatePlatformD3DTestContext(d3dSharedContext));
-            if (!testCtx) {
-                return ContextInfo();
-            }
-            break;
-        }
-#endif
-#ifdef SK_DAWN
-        case GrBackendApi::kDawn: {
-            DawnTestContext* dawnSharedContext = primaryContext
-                    ? static_cast<DawnTestContext*>(primaryContext->fTestContext) : nullptr;
-            testCtx.reset(CreatePlatformDawnTestContext(dawnSharedContext));
             if (!testCtx) {
                 return ContextInfo();
             }

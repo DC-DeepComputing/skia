@@ -448,7 +448,7 @@ enum class GrInternalSurfaceFlags {
     // resolve the render target before accessing this texture's data.)
     kRequiresManualMSAAResolve      = 1 << 2,
 
-    // This means the pixels in the render target are write-only. This is used for Dawn and Metal
+    // This means the pixels in the render target are write-only. This is used for Metal
     // swap chain targets which can be rendered to, but not read or copied.
     kFramebufferOnly                = 1 << 3,
 
@@ -949,7 +949,6 @@ static constexpr const char* GrBackendApiToStr(GrBackendApi api) {
         case GrBackendApi::kVulkan:   return "Vulkan";
         case GrBackendApi::kMetal:    return "Metal";
         case GrBackendApi::kDirect3D: return "Direct3D";
-        case GrBackendApi::kDawn:     return "Dawn";
         case GrBackendApi::kMock:     return "Mock";
     }
     SkUNREACHABLE;

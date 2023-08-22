@@ -212,6 +212,9 @@ if (skia_enable_optimize_size) {
 # Current Perfetto integrations are mutually exclusive
 assert(!skia_use_perfetto || !skia_android_framework_use_perfetto)
 
+# Dawn only works with Graphite (there is no Dawn Ganesh backend)
+assert(!skia_use_dawn || skia_enable_graphite)
+
 # Skia's targets may be built inside other gn build systems.
 # Skia builds other project's build targets inside its build.
 # This is easier if the built-in target types remain generic.

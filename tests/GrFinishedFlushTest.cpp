@@ -93,7 +93,6 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
             dContext->backend() == GrBackendApi::kVulkan ||
             ((dContext->backend() == GrBackendApi::kOpenGL) && fenceSupport) ||
             ((dContext->backend() == GrBackendApi::kMetal) && fenceSupport) ||
-            dContext->backend() == GrBackendApi::kDawn ||
             dContext->backend() == GrBackendApi::kDirect3D;
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately

@@ -28,13 +28,6 @@
 #include "src/gpu/ganesh/mtl/GrMtlCppUtil.h"
 #endif
 
-#ifdef SK_DAWN
-#include "src/gpu/dawn/DawnUtilsPriv.h"
-#include "src/gpu/ganesh/dawn/GrDawnUtil.h"
-#include <cstdint>
-namespace wgpu { enum class TextureFormat : uint32_t; }
-#endif
-
 SkTextureCompressionType GrBackendFormatToCompressionType(const GrBackendFormat& format) {
     switch (format.backend()) {
         case GrBackendApi::kOpenGL: {
@@ -79,9 +72,6 @@ SkTextureCompressionType GrBackendFormatToCompressionType(const GrBackendFormat&
             break;
 #endif
         }
-        case GrBackendApi::kDawn: {
-            return SkTextureCompressionType::kNone;
-        }
         case GrBackendApi::kMock: {
             return format.asMockCompressionType();
         }
@@ -115,15 +105,6 @@ size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
             DXGI_FORMAT dxgiFormat;
             SkAssertResult(format.asDxgiFormat(&dxgiFormat));
             return GrDxgiFormatBytesPerBlock(dxgiFormat);
-#else
-            break;
-#endif
-        }
-        case GrBackendApi::kDawn: {
-#ifdef SK_DAWN
-            wgpu::TextureFormat dawnFormat;
-            SkAssertResult(format.asDawnFormat(&dawnFormat));
-            return skgpu::DawnFormatBytesPerBlock(dawnFormat);
 #else
             break;
 #endif
@@ -175,15 +156,6 @@ int GrBackendFormatStencilBits(const GrBackendFormat& format) {
             DXGI_FORMAT dxgiFormat;
             SkAssertResult(format.asDxgiFormat(&dxgiFormat));
             return GrDxgiFormatStencilBits(dxgiFormat);
-#else
-            break;
-#endif
-        }
-        case GrBackendApi::kDawn: {
-#ifdef SK_DAWN
-            wgpu::TextureFormat dawnFormat;
-            SkAssertResult(format.asDawnFormat(&dawnFormat));
-            return GrDawnFormatStencilBits(dawnFormat);
 #else
             break;
 #endif

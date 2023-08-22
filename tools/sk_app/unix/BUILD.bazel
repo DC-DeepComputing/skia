@@ -19,9 +19,8 @@ skia_filegroup(
 )
 
 selects.config_setting_group(
-    name = "dawn_or_vulkan",
+    name = "vulkan",
     match_any = [
-        "//src/gpu:dawn_ganesh",
         "//src/gpu:vulkan_ganesh",
     ],
 )
@@ -35,12 +34,12 @@ skia_cc_deps(
         "-lXau",  # dep of xcb
         "-lXdmcp",  # dep of xcb
     ] + select({
-        ":dawn_or_vulkan": ["-lX11-xcb"],
+        ":vulkan": ["-lX11-xcb"],
         "//conditions:default": [],
     }),
     visibility = ["//tools/sk_app:__pkg__"],
     deps = select({
-        ":dawn_or_vulkan": ["//tools/gpu/vk:testutils"],
+        ":vulkan": ["//tools/gpu/vk:testutils"],
         "//conditions:default": [],
     }),
 )

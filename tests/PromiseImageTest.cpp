@@ -242,11 +242,9 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
         auto contextType = static_cast<sk_gpu_test::GrContextFactory::ContextType>(type);
         // These tests are difficult to get working with Vulkan. See http://skbug.com/8705
         // and http://skbug.com/8275
-        // Also problematic on Dawn; see http://skbug.com/10326
         // And Direct3D, for similar reasons.
         GrBackendApi api = sk_gpu_test::GrContextFactory::ContextTypeBackend(contextType);
-        if (api == GrBackendApi::kVulkan || api == GrBackendApi::kDawn ||
-            api == GrBackendApi::kDirect3D) {
+        if (api == GrBackendApi::kVulkan || api == GrBackendApi::kDirect3D) {
             continue;
         }
         DeathFn contextKillers[] = {destroy, abandon, releaseResourcesAndAbandon};

@@ -62,9 +62,6 @@ bool IsMetalContextType(sk_gpu_test::GrContextFactory::ContextType type) {
 bool IsDirect3DContextType(sk_gpu_test::GrContextFactory::ContextType type) {
     return GrBackendApi::kDirect3D == sk_gpu_test::GrContextFactory::ContextTypeBackend(type);
 }
-bool IsDawnContextType(sk_gpu_test::GrContextFactory::ContextType type) {
-    return GrBackendApi::kDawn == sk_gpu_test::GrContextFactory::ContextTypeBackend(type);
-}
 bool IsRenderingGLContextType(sk_gpu_test::GrContextFactory::ContextType type) {
     return IsGLContextType(type) && sk_gpu_test::GrContextFactory::IsRenderingContext(type);
 }
@@ -84,9 +81,6 @@ sk_gpu_test::GrContextFactory::ContextType compiledInContextTypes[] = {
 #endif // defined(SK_GL)
 #if defined(SK_VULKAN)
     sk_gpu_test::GrContextFactory::kVulkan_ContextType,
-#endif
-#if defined(SK_DAWN)
-    sk_gpu_test::GrContextFactory::kDawn_ContextType,
 #endif
 // TODO(kjlubick) Other Ganesh backends
     sk_gpu_test::GrContextFactory::kMock_ContextType,
