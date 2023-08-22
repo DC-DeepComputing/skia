@@ -56,3 +56,45 @@ SkPaint* SkImage_Picture::paint() const {
 SkSurfaceProps* SkImage_Picture::props() const {
     return &this->gen()->fProps;
 }
+
+bool SkImage_Picture::getImageKeyValues(
+        uint32_t keyValues[SkTiledImageUtils::kNumImageKeyValues]) const {
+
+    if (this->paint()) {
+        // A full paint complicates the potential key too much.
+        return false;
+    }
+
+    const SkImageInfo& ii = this->gen()->getInfo();
+    if (!ii.colorSpace()->isSRGB()) {
+        // We only return key values if the colorSpace is boring. Alternatively, we could
+        // use two uint32_ts to store the colorSpace's hash value.
+        return false;
+    }
+
+    const SkMatrix& m = this->gen()->fMatrix;
+    if (!m.isIdentity() && !m.isTranslate()) {
+        // To keep the key small we only cache simple (<= translation) matrices
+        return false;
+    }
+
+
+
+    bool isU8 = ii.colorType() != kRGBA_F16_SkColorType;
+    int width = ii.width();
+    int height = ii.height();
+    float fX = m.getTranslateX();
+    float fY = m.getTranslateX();
+
+    SkASSERT(SkTFitsIn<uint32_t>(width));
+    SkASSERT(SkTFitsIn<uint32_t>(height));
+
+
+    keyValues[0] = isU8;
+    keyValues[1] = this->picture()->uniqueID();
+    keyValues[2] = width;
+    keyValues[3] = height;
+    keyValues[4] = 0;
+    keyValues[5] = 0;
+    return true;
+}
