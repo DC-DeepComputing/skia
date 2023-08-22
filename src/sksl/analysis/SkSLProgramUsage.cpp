@@ -135,8 +135,12 @@ ProgramUsage::VariableCounts ProgramUsage::get(const Variable& v) const {
 bool ProgramUsage::isDead(const Variable& v) const {
     ModifierFlags flags = v.modifierFlags();
     VariableCounts counts = this->get(v);
-    if ((v.storage() != Variable::Storage::kLocal && counts.fRead) ||
-        (flags & (ModifierFlag::kIn | ModifierFlag::kOut | ModifierFlag::kUniform))) {
+    if (flags & (ModifierFlag::kIn | ModifierFlag::kOut | ModifierFlag::kUniform)) {
+        // Never eliminate ins, outs, or uniforms.
+        return false;
+    }
+    if (v.type().componentType().isOpaque()) {
+        // Never eliminate samplers, runtime-effect children, or atomics.
         return false;
     }
     // Consider the variable dead if it's never read and never written (besides the initial-value).

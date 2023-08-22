@@ -264,7 +264,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addSampler(
     tempInfo.fVariable =
             GrShaderVar{std::move(mangleName),
                         SkSLCombinedSamplerTypeForTextureType(backendFormat.textureType()),
-                        GrShaderVar::TypeModifier::Uniform,
+                        GrShaderVar::TypeModifier::None,
                         GrShaderVar::kNonArray,
                         std::move(layoutQualifier),
                         SkString()};
