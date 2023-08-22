@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4571d4f6_f907d8af",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-22T20:08:15Z",
+      "side": 1,
+      "message": "Since this is depending on how image/bitmap fills out its keys, does it make more sense to have this logic defined in SkTiledImageUtils?\n\nSkImage_Picture already exposes a lot of its state, and has a comment about taking a lock, so it seems reasonable to just access its state in the other compilation unit.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 93
+      },
+      "revId": "2b93f9f9a3c102a8f7b2abaf9f63d8b3af490d42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "957d39e5_7c8d6143",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-22T20:08:15Z",
+      "side": 1,
+      "message": "Assert `this-\u003epicture()-\u003euniqueID() !\u003d 0` so that we don\u0027t violate the assumption about image/bitmap keys?",
+      "range": {
+        "startLine": 108,
+        "startChar": 19,
+        "endLine": 108,
+        "endChar": 47
+      },
+      "revId": "2b93f9f9a3c102a8f7b2abaf9f63d8b3af490d42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
