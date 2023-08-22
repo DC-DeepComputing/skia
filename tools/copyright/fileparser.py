@@ -7,14 +7,16 @@ found in the LICENSE file.
 
 import datetime
 import re
+import os
 
 def CreateParser(filepath):
     """Returns a Parser as appropriate for the file at this filepath.
     """
     if (filepath.endswith('.cpp') or
         filepath.endswith('.h') or
+        filepath.endswith('.proto') or
         filepath.endswith('.c')):
-        return CParser()
+        return CParser(filepath)
     else:
         return None
 
@@ -59,19 +61,18 @@ class CParser(Parser):
     """
 
     DEFAULT_YEAR = datetime.date.today().year
-    DEFAULT_HOLDER = 'Google Inc.'
-    COPYRIGHT_BLOCK_FORMAT = '''
-/*
- * Copyright %s %s
- *
- * Use of this source code is governed by a BSD-style license that can be
- * found in the LICENSE file.
- */
+    DEFAULT_HOLDER = 'The ChromiumOS Authors'
+    COPYRIGHT_BLOCK_FORMAT = '''\
+// Copyright %s %s
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 '''
 
-    def __init__(self):
+    def __init__(self, file):
         super(CParser, self).__init__()
-        self._comment_pattern = re.compile('/\*.*?\*/', re.DOTALL)
+        self.file = file
+        self._comment_pattern = re.compile('^//[^\n]*\n//[^\n]*\n//[^\n]*\n*', re.DOTALL)
 
     def FindAllCommentBlocks(self, file_contents):
         """Returns a list of all comment blocks within these file contents.
@@ -86,7 +87,7 @@ class CParser(Parser):
         @param holder holder of copyright (defaults to DEFAULT_HOLDER)
         """
         if not year:
-            year = self.DEFAULT_YEAR
-        if not holder:
-            holder = self.DEFAULT_HOLDER
+            year = os.popen(f"git log --follow --format=%as --date default {self.file} | tail -n 1 | cut -b1-4").readlines()[0].strip()
+            print(f"Got {year} for {self.file} via git log")
+        holder = self.DEFAULT_HOLDER
         return self.COPYRIGHT_BLOCK_FORMAT % (year, holder)
