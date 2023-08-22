@@ -16,6 +16,63 @@
       "message": "PTAL; I now believe that the client tests are failing in benign ways that will just require rebaselines or improving the test cases (my comment goes into some details).\n\nWhen all is reviewed, I will add staging flags to guard it like the other CLs.",
       "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b3b6fdb_ee9fb981",
+        "filename": "gm/animatedimageblurs.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-22T20:00:48Z",
+      "side": 1,
+      "message": "Did you intend to leave this stuff?",
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e1b10c5_5a876902",
+        "filename": "gm/crbug_1156804.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-22T20:00:48Z",
+      "side": 1,
+      "message": "clamp ?",
+      "range": {
+        "startLine": 20,
+        "startChar": 26,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95ea00f_55b96aad",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-22T20:00:48Z",
+      "side": 1,
+      "message": "got to here",
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
