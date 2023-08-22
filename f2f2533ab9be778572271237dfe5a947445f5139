@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "667c3046_c63eda51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-22T20:12:53Z",
+      "side": 1,
+      "message": "As an FYI, I am about to delete the built-in crop rects stored directly on SkImageFilter_Base. The factories will still take crop rects as a convenience, but everything is moving to being handled by `SkCropImageFilter`. Internally, for blurs and matrix convolutions a non-decal SkTileMode and a provided crop rect map to a chain of filters: crop w/ tile mode -\u003e blur/convolve -\u003e crop w/ decal. This uses the same crop geometry to define where the repeat/clamping starts and the limit of the final output.\n\nIt hasn\u0027t been a priority, but I plan on exposing `SkImageFilters::Crop` publicly to allow you to compose separate input and output crops and tile modes around other image filters. Since you\u0027re a module, you can experiment early by including `src/effects/imagefilters/SkCropImageFilter.h` and calling `SkMakeCropImageFilter(...)`.",
+      "revId": "f2f2533ab9be778572271237dfe5a947445f5139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
