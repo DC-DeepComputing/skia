@@ -16,6 +16,24 @@
       "message": "I\u0027ve looked into the failures on the clients, and *think* everything is okay except for some issues with some chrome pixeltests:\n\n1. The g3 failure appears to be a rebaseline, but it doesn\u0027t use scuba so I can\u0027t actually see the diff, and it will require staging a build flag and updating the expected .gif file.\n2. The flutter failure is because now a blur with kRepeat but no crop rect is correctly being reported as \"affecting transparent black\", which no longer matches the behavior of Flutter\u0027s image filter wrapper, so that will need a flag and updating their logic.\n3. The vast majority of layout tests in chrome are imperceptible diffs. There is a subset blur that has more significant changes, but like the morphology effect previously, I think it\u0027s actually now more correct. The offscreen red and other grid colors are being take into account by the blur whereas previously they were decal\u0027ed at the visible boundary.\n4. The software compositor\u0027s backdrop blur handling appears completely broken. It has a lot of custom code and skia-renderer is fine, so I suspect there is something silly and subtle that is causing the filtering to fail and I\u0027ll need to track it down.\n5. There is a pixeltest that expects kClamp blurring but doesn\u0027t provide a crop (because cc::FilterOperations don\u0027t yet support that). The test explicitly pads the texture out by 50px so I think that\u0027s confusing the \"unbounded\" crop workaround. I can either tweak that workaround, or just do the correct thing right away and have the FilterOperations use a crop to their layer bounds.",
       "revId": "6714a7005fef8afd4eea98f7af0d46a8a150d04a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97bc719d_949cf684",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-22T02:07:50Z",
+      "side": 1,
+      "message": "After moving the legacy \"uncropped\" tiling behavior directly into SkBlurImageFilter, the test cases described above have improved.\n\n1. g3 has rebaselines that will be required\n2. flutter\u0027s bounds unit test no longer fails because the new way of handling legacy tiling does not trigger filling the tiled boundary out to the full output (semantically incorrect but is what their test case was expecting, so the test can simply be updated when I remove their use of the legacy tiling).\n3. flutter now fails on a new test in dart code. This creates a 3x3 image and draws a 1x1 rectangle in the center with a blur using a sigma of 1 and kClamp. They test for expected colors in the 9 pixel locations. I modeled the test in viewer and their hardcoded expected values are what you get from the raster blur (namely it was ignoring kClamp and using kDecal blurring). The old GPU blur would clamp the center color to all pixels and the image would be a solid color. With this CL, the raster backend now supports tilemodes and matches the GPU blur. This test should just be updated to use kDecal explicitly.\n   - One thing I could do is only apply the legacy tile mode if the skif::Context was GPU-backed, but that feels wrong to further enshrine prior bugs.\n3. The software compositor for chromium is now working again. I suspect it was something related to tiled images reporting infinite size previously and the way they were calling it there wasn\u0027t an external clip to reduce it, so then allocating a backing SkBitmap manually in their code would fail.\n4. There is one backdrop blur test that expects kClamp and relies on the legacy tiling to work. This is now passing for GL and Vulkan, but \"fails\" on SW. It turns out that the SW expected image had enshrined the kDecal sampling that it had previously only supported. Now the new output has clamped edges on the top and left, but shows decal edges on the bottom and the right. Debugging the invocations, I think that the software compositor is just using the wrong backing image size and is tripping up the legacy hack. But arguably we\u0027re now half right instead of no right, so I think it\u0027s okay; if it still doesn\u0027t work once software_renderer.cc shares SkCanvas logic with skia_renderer.cc then we can look into it.",
+      "parentUuid": "55341229_2c3a24e4",
+      "revId": "6714a7005fef8afd4eea98f7af0d46a8a150d04a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
