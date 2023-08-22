@@ -299,6 +299,30 @@
       },
       "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ae3228c_d3152cb6",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-22T19:26:39Z",
+      "side": 1,
+      "message": "For shader modules, it makes sense that a handle is returned even when compilation fails; this gives them a mechanism to return errors/warnings/info messages, rather than getting back `nullptr` if the program is bad. \n\nI don\u0027t know if the same is true of compute pipelines, but given that `ErrorComputePipeline` objects exist, I thought it was plausible.",
+      "parentUuid": "3f1a804c_a3287a5b",
+      "range": {
+        "startLine": 152,
+        "startChar": 3,
+        "endLine": 152,
+        "endChar": 20
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
