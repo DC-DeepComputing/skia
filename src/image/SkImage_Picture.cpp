@@ -56,3 +56,53 @@ SkPaint* SkImage_Picture::paint() const {
 SkSurfaceProps* SkImage_Picture::props() const {
     return &this->gen()->fProps;
 }
+
+bool SkImage_Picture::getImageKeyValues(
+        uint32_t keyValues[SkTiledImageUtils::kNumImageKeyValues]) const {
+
+    auto sharedGenerator = this->generator();
+    SkAutoMutexExclusive mutex(sharedGenerator->fMutex);
+
+    if (this->paint()) {
+        // A full paint complicates the potential key too much.
+        return false;
+    }
+
+    const SkImageInfo& ii = this->gen()->getInfo();
+    if (!ii.colorSpace()->isSRGB()) {
+        // We only return key values if the colorSpace is sRGB.
+        return false;
+    }
+
+    const SkMatrix& m = this->gen()->fMatrix;
+    if (!m.isIdentity() && !m.isTranslate()) {
+        // To keep the key small we only cache simple (<= translation) matrices
+        return false;
+    }
+
+    bool isU8 = ii.colorType() != kRGBA_F16_SkColorType;
+    uint32_t pixelGeometry = this->props()->pixelGeometry();
+    uint32_t surfacePropFlags = this->props()->flags();
+    int width = ii.width();
+    int height = ii.height();
+    float fX = m.getTranslateX();
+    float fY = m.getTranslateX();
+
+    SkASSERT(pixelGeometry <= 4);
+    SkASSERT(surfacePropFlags < 8);
+    SkASSERT(SkTFitsIn<uint32_t>(width));
+    SkASSERT(SkTFitsIn<uint32_t>(height));
+    SkASSERT(sizeof(float) == sizeof(uint32_t));
+
+    // The 0th slot usually holds either the SkBitmap's ID or the image's. In those two cases
+    // slot #1 is zero so we can reuse the 0th slot here.
+    keyValues[0] = (isU8 ? 0x1 : 0x0) |     // 1 bit
+                   (pixelGeometry << 1) |   // 3 bits
+                   (surfacePropFlags << 4); // 3 bits
+    keyValues[1] = this->picture()->uniqueID();
+    keyValues[2] = width;
+    keyValues[3] = height;
+    memcpy(&keyValues[4], &fX, sizeof(uint32_t));
+    memcpy(&keyValues[5], &fY, sizeof(uint32_t));
+    return true;
+}
