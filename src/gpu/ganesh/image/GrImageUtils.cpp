@@ -240,9 +240,6 @@ static GrSurfaceProxyView generate_picture_texture(GrRecordingContext* ctx,
     SkASSERT(ctx);
     SkASSERT(img);
 
-    auto sharedGenerator = img->generator();
-    SkAutoMutexExclusive mutex(sharedGenerator->fMutex);
-
     skgpu::Budgeted budgeted = texGenPolicy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted
                                        ? skgpu::Budgeted::kNo
                                        : skgpu::Budgeted::kYes;
@@ -257,8 +254,8 @@ static GrSurfaceProxyView generate_picture_texture(GrRecordingContext* ctx,
         return {};
     }
 
-    surface->getCanvas()->clear(SkColors::kTransparent);
-    surface->getCanvas()->drawPicture(img->picture(), img->matrix(), img->paint());
+    img->replay(surface->getCanvas());
+
     sk_sp<SkImage> image(surface->makeImageSnapshot());
     if (!image) {
         return {};
