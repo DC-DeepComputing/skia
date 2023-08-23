@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d35f23ab_6ceb8a55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-23T16:09:32Z",
+      "side": 1,
+      "message": "cl/559212192 will add staging flags for g3. \ngithub.com/flutter/engine/pull/45004 fixes the failing unit test in flutter, so hopefully it won\u0027t have to add the staging flag at all.\n\nIn the mean time, Skottie has been updated to not depend on legacy tiling anymore, so all Skia code is now on the well-defined system. After this lands the staging code is removed, I\u0027ll guard the legacy behavior by a flag that will be enabled in android, flutter, and chrome until they can be updated.",
+      "revId": "bbaf18dc7dd4e09afb2c85095619180f5725e5aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
