@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdfa3554_33a98a81",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-23T17:38:20Z",
+      "side": 1,
+      "message": "I\u0027m going to go with this solution for now. I think, if we ever have to add another special case, I would propose storing a typeID (e.g., kBitmap, kImage, kPicture, kWhatever) in slot zero and the put all the ids in slot 1. I can\u0027t imagine what a new special case would be however.",
+      "parentUuid": "79bfe8b6_30e71d70",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 93
+      },
+      "revId": "2b93f9f9a3c102a8f7b2abaf9f63d8b3af490d42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "957d39e5_7c8d6143",
