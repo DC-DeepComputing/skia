@@ -8,8 +8,11 @@
 #define SkImage_Picture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTiledImageUtils.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Lazy.h"
+
+#include <cstdint>
 
 class SkColorSpace;
 class SkImage;
@@ -41,6 +44,8 @@ public:
     SkPicture* picture() const;
     SkMatrix* matrix() const;
     SkPaint* paint() const;
+
+    bool getImageKeyValues(uint32_t keyValues[SkTiledImageUtils::kNumImageKeyValues]) const;
 
 private:
     SkPictureImageGenerator* gen() const;
