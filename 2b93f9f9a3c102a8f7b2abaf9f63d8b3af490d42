@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "027e381a_99c67514",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-23T17:42:05Z",
+      "side": 1,
+      "message": "Sounds good.",
+      "parentUuid": "bdfa3554_33a98a81",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 93
+      },
+      "revId": "2b93f9f9a3c102a8f7b2abaf9f63d8b3af490d42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "957d39e5_7c8d6143",
