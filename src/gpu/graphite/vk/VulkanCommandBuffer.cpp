@@ -109,9 +109,6 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
 }
 
 VulkanCommandBuffer::~VulkanCommandBuffer() {
-    VULKAN_CALL(fSharedContext->interface(),
-            DestroyFramebuffer(fSharedContext->device(), fFrameBuffer, nullptr));
-
     if (fActive) {
         // Need to end command buffer before deleting it
         VULKAN_CALL(fSharedContext->interface(), EndCommandBuffer(fPrimaryCommandBuffer));
@@ -127,6 +124,12 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
     VULKAN_CALL(fSharedContext->interface(), DestroyCommandPool(fSharedContext->device(),
                                                                 fPool,
                                                                 nullptr));
+    if (fFrameBuffer != VK_NULL_HANDLE) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    DestroyFramebuffer(fSharedContext->device(), fFrameBuffer, nullptr));
+
+        fFrameBuffer = VK_NULL_HANDLE;
+    }
 }
 
 void VulkanCommandBuffer::onResetCommandBuffer() {
@@ -185,7 +188,6 @@ void VulkanCommandBuffer::end() {
     this->submitPipelineBarriers();
 
     VULKAN_CALL_ERRCHECK(fSharedContext->interface(), EndCommandBuffer(fPrimaryCommandBuffer));
-
     fActive = false;
 }
 
@@ -511,25 +513,29 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     frameBufferInfo.height = colorTexture->dimensions().height();
     frameBufferInfo.layers = 1;
 
-    VkFramebuffer frameBuffer;
-    VkResult result;
-    VULKAN_CALL_RESULT(fSharedContext->interface(), result,
-                       CreateFramebuffer(fSharedContext->device(),
-                                         &frameBufferInfo,
-                                         nullptr,
-                                         &frameBuffer));
-    if (result != VK_SUCCESS) {
-        // TODO: Delete unused structs?
-        return false;
+    // SkASSERT(fFrameBuffer == VK_NULL_HANDLE);
+    if (fFrameBuffer == VK_NULL_HANDLE) { // Other alternative to test:
+        VkFramebuffer frameBuffer;
+        VkResult result;
+        VULKAN_CALL_RESULT(fSharedContext->interface(), result,
+                        CreateFramebuffer(fSharedContext->device(),
+                                            &frameBufferInfo,
+                                            nullptr,
+                                            &frameBuffer));
+        if (result != VK_SUCCESS) {
+            // TODO: Delete unused structs?
+            return false;
+        }
+        fFrameBuffer = frameBuffer;
+        SkASSERT(fFrameBuffer != VK_NULL_HANDLE);
     }
-    fFrameBuffer = frameBuffer;
 
     VkRenderPassBeginInfo beginInfo;
     memset(&beginInfo, 0, sizeof(VkRenderPassBeginInfo));
     beginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = *(vulkanRenderPass->renderPass());
-    beginInfo.framebuffer = frameBuffer;
+    beginInfo.framebuffer = fFrameBuffer;
     beginInfo.renderArea = {{ 0, 0 },
                             { (unsigned int) colorTexture->dimensions().width(),
                               (unsigned int) colorTexture->dimensions().height() }};
@@ -557,6 +563,7 @@ void VulkanCommandBuffer::endRenderPass() {
     SkASSERT(fActive);
     VULKAN_CALL(fSharedContext->interface(), CmdEndRenderPass(fPrimaryCommandBuffer));
     fActiveRenderPass = false;
+    // TODO: Delete frame buffer here?
 }
 
 void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
