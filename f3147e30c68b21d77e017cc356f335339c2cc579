@@ -34,6 +34,24 @@
       "parentUuid": "ba47f816_1967399e",
       "revId": "f3147e30c68b21d77e017cc356f335339c2cc579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f1930c7_da3f2bf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-23T18:56:08Z",
+      "side": 1,
+      "message": "\u003e I\u0027ve tested this out with the debug `libmali` build as described in the bug, and it\u0027s no longer crashing!\n\nAfter further investigation, this seems to have been a coincidence. A more thorough look at the code told us that we don\u0027t need this special case, since we shouldn\u0027t reach here. And the crash isn\u0027t reliable anyway. I also tried adding some logs to verify that we hit the case that we thought might\u0027ve crashed, and I couldn\u0027t get them printed.",
+      "parentUuid": "53c9e6e9_ed5e07b3",
+      "revId": "f3147e30c68b21d77e017cc356f335339c2cc579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
