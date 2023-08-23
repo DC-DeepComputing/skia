@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d039c591_567e2a6a",
+        "filename": "gm/animatedimageblurs.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-23T15:03:08Z",
+      "side": 1,
+      "message": "Nope, I\u0027ve restored it. Visually these changes had no effect, but they did mean the layers for each blur were much smaller. I was just testing things though, not sure it\u0027s strictly necessary to update.",
+      "parentUuid": "9b3b6fdb_ee9fb981",
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e1b10c5_5a876902",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-08-22T20:00:48Z",
       "side": 1,
       "message": "clamp ?",
+      "range": {
+        "startLine": 20,
+        "startChar": 26,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb48d6bf_3e1674b8",
+        "filename": "gm/crbug_1156804.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-23T15:03:08Z",
+      "side": 1,
+      "message": "This comment was referring to the output crop rect passed into ::Blur, which uses kDecal by default. The kClamp one is the input crop. I\u0027ve re-formatted the lines and the comment to try and make it clearer what\u0027s being constructed.",
+      "parentUuid": "0e1b10c5_5a876902",
       "range": {
         "startLine": 20,
         "startChar": 26,
@@ -116,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af3e1462_701cc677",
+        "filename": "src/gpu/ganesh/GrBlurUtils.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-23T15:03:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1ec4c66_53559ec1",
+      "range": {
+        "startLine": 122,
+        "startChar": 98,
+        "endLine": 122,
+        "endChar": 99
+      },
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8108c84c_19438949",
@@ -129,6 +195,30 @@
       "writtenOn": "2023-08-22T21:01:14Z",
       "side": 1,
       "message": "reject ?",
+      "range": {
+        "startLine": 582,
+        "startChar": 41,
+        "endLine": 582,
+        "endChar": 48
+      },
+      "revId": "032a08a1c52dd964d7cd6aa3a10cd199db5d0b70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a94e8c_6dd15388",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-23T15:03:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8108c84c_19438949",
       "range": {
         "startLine": 582,
         "startChar": 41,
