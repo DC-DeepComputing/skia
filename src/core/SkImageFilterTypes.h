@@ -870,7 +870,7 @@ public:
     // eval() to control how 'input' is converted to an SkShader. 'inputSampling' specifies the
     // sampling options to use on the input's image when sampled by the final shader created in eval
     //
-    // 'sampleBounds', 'inputFlags' and 'inputSampling' must not be used with merge().
+    // 'sampleBounds', 'inputFlags' and 'inputSampling' must not be used with merge() or blur().
     Builder& add(const FilterResult& input,
                  std::optional<LayerSpace<SkIRect>> sampleBounds = {},
                  SkEnumBitMask<ShaderFlags> inputFlags = ShaderFlags::kNone,
@@ -881,6 +881,12 @@ public:
 
     // Combine all added inputs by merging them with src-over blending into a single output.
     FilterResult merge();
+
+    // Blur the single input with a Gaussian blur. The exact blur implementation is chosen based on
+    // the skif::Context's backend. The sample bounds of the input and the final output bounds are
+    // automatically derived from the sigma, input layer bounds, and desired output bounds of the
+    // Builder's Context.
+    FilterResult blur(const LayerSpace<SkSize>& sigma);
 
     // Combine all added inputs by transforming them into equivalent SkShaders and invoking the
     // shader factory that binds them together into a single shader that fills the output surface.
@@ -1005,10 +1011,13 @@ public:
     // DEPRECATED: Use source() instead to get both the image and its origin.
     const SkSpecialImage* sourceImage() const { return fInfo.fSource.image(); }
 
-    // True if image filtering should occur on the GPU if possible.
-    bool gpuBacked() const { return SkToBool(fGaneshContext); }
-    // The recording context to use when computing the filter with the GPU.
-    GrRecordingContext* getContext() const { return fGaneshContext; }
+    // True if image filtering must occur on the GPU if possible.
+    bool gpuBacked() const {
+        // TODO: Once CPU blurs are moved to a blur delegate, we'll need a different signal.
+        // On the otherhand, if CPU blurs become more consistent with handling of identity sigmas,
+        // then SkBlurImageFilter may not need to check this at all.
+        return SkToBool(fBlurImageDelegate);
+    }
 
     // Create a surface of the given size, that matches the context's color type and color space
     // as closely as possible, and uses the same backend of the device that produced the source
@@ -1055,41 +1064,53 @@ private:
             const SkIRect& subset, sk_sp<SkImage> image, const SkSurfaceProps& props)>;
     // For internal data to be accessed by filter implementations
     using MakeCachedBitmapDelegate = std::function<sk_sp<SkImage>(const SkBitmap& data)>;
+    // For backend-optimized blurring implementations (TODO: Possibly replaced by a SkBlurEngine).
+    // The srcRect and dstRect are relative to (0,0) of 'input's logical image (which may have its
+    // own offset to backing data). The returned image should have a width and height equal to the
+    // dstRect's dimensions and its (0,0) pixel is assumed to be located at dstRect.topLeft().
+    using BlurImageDelegate = std::function<sk_sp<SkSpecialImage>(SkSize sigma,
+                                                                  sk_sp<SkSpecialImage> input,
+                                                                  SkIRect srcRect,
+                                                                  SkIRect dstRect,
+                                                                  sk_sp<SkColorSpace> outCS,
+                                                                  const SkSurfaceProps& outProps)>;
 
     Context(const ContextInfo& info,
-            GrRecordingContext* ganeshContext,
             MakeSurfaceDelegate msd,
             MakeImageDelegate mid,
-            MakeCachedBitmapDelegate mbd)
+            MakeCachedBitmapDelegate mbd,
+            BlurImageDelegate blur)
             : fInfo(info)
-            , fGaneshContext(ganeshContext)
             , fMakeSurfaceDelegate(msd)
             , fMakeImageDelegate(mid)
-            , fMakeCachedBitmapDelegate(mbd) {
+            , fMakeCachedBitmapDelegate(mbd)
+            , fBlurImageDelegate(blur) {
         SkASSERT(fMakeSurfaceDelegate);
         SkASSERT(fMakeImageDelegate);
         SkASSERT(fMakeCachedBitmapDelegate);
+        // The blur delegate is currently not supported for CPU blurs
     }
     Context(const ContextInfo& info, const Context& ctx)
             : Context(info,
-                      ctx.fGaneshContext,
                       ctx.fMakeSurfaceDelegate,
                       ctx.fMakeImageDelegate,
-                      ctx.fMakeCachedBitmapDelegate) {}
+                      ctx.fMakeCachedBitmapDelegate,
+                      ctx.fBlurImageDelegate) {}
 
     ContextInfo fInfo;
 
-    // This will be null for CPU image filtering.
-    GrRecordingContext* fGaneshContext;
     MakeSurfaceDelegate fMakeSurfaceDelegate;
     MakeImageDelegate fMakeImageDelegate;
     MakeCachedBitmapDelegate fMakeCachedBitmapDelegate;
+    BlurImageDelegate fBlurImageDelegate;
 
     friend Context MakeGaneshContext(GrRecordingContext* context,
                                      GrSurfaceOrigin origin,
                                      const ContextInfo& info);
     friend Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                                        const ContextInfo& info);
+
+    friend class FilterResult::Builder; // for fBlurImageDelegate
 };
 
 } // end namespace skif
