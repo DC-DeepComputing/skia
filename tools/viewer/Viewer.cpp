@@ -243,11 +243,8 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 #if SK_ANGLE && defined(SK_BUILD_FOR_WIN)
         case sk_app::Window::kANGLE_BackendType: return "ANGLE";
 #endif
-#ifdef SK_DAWN
-        case sk_app::Window::kDawn_BackendType: return "Dawn";
-#if defined(SK_GRAPHITE)
+#if defined(SK_DAWN) && defined(SK_GRAPHITE)
         case sk_app::Window::kGraphiteDawn_BackendType: return "Dawn (Graphite)";
-#endif
 #endif
 #ifdef SK_VULKAN
         case sk_app::Window::kVulkan_BackendType: return "Vulkan";
@@ -271,15 +268,10 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 }
 
 static sk_app::Window::BackendType get_backend_type(const char* str) {
-#ifdef SK_DAWN
-    if (0 == strcmp(str, "dawn")) {
-        return sk_app::Window::kDawn_BackendType;
-    } else
-#if defined(SK_GRAPHITE)
+#if defined(SK_DAWN) && defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn")) {
         return sk_app::Window::kGraphiteDawn_BackendType;
     } else
-#endif
 #endif
 #ifdef SK_VULKAN
     if (0 == strcmp(str, "vk")) {
@@ -2025,14 +2017,10 @@ void Viewer::drawImGui() {
                 ImGui::SameLine();
                 ImGui::RadioButton("ANGLE", &newBackend, sk_app::Window::kANGLE_BackendType);
 #endif
-#if defined(SK_DAWN)
-                ImGui::SameLine();
-                ImGui::RadioButton("Dawn", &newBackend, sk_app::Window::kDawn_BackendType);
-#if defined(SK_GRAPHITE)
+#if defined(SK_DAWN) && defined(SK_GRAPHITE)
                 ImGui::SameLine();
                 ImGui::RadioButton("Dawn (Graphite)", &newBackend,
                                    sk_app::Window::kGraphiteDawn_BackendType);
-#endif
 #endif
 #if defined(SK_VULKAN) && !defined(SK_BUILD_FOR_MAC)
                 ImGui::SameLine();

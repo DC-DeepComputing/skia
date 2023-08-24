@@ -362,15 +362,10 @@ bool Window_win::attach(BackendType attachType) {
             fWindowContext = skwindow::MakeANGLEForWin(fHWnd, fRequestedDisplayParams);
             break;
 #endif
-#ifdef SK_DAWN
-        case kDawn_BackendType:
-            fWindowContext = skwindow::MakeDawnD3D12ForWin(fHWnd, fRequestedDisplayParams);
-            break;
-#if defined(SK_GRAPHITE)
+#if defined(SK_DAWN) && defined(SK_GRAPHITE)
         case kGraphiteDawn_BackendType:
             fWindowContext = skwindow::MakeGraphiteDawnD3D12ForWin(fHWnd, fRequestedDisplayParams);
             break;
-#endif
 #endif
         case kRaster_BackendType:
             fWindowContext = skwindow::MakeRasterForWin(fHWnd, fRequestedDisplayParams);
