@@ -144,10 +144,6 @@ skia_component("window") {
   }
 
   if (skia_use_dawn) {
-    sources += [
-      "DawnWindowContext.cpp",
-      "DawnWindowContext.h",
-    ]
     if (is_linux) {
       if (dawn_enable_vulkan) {
         sources += [ "unix/DawnVulkanWindowContext_unix.cpp" ]
@@ -174,7 +170,6 @@ skia_component("window") {
       }
     } else if (is_mac) {
       if (dawn_enable_metal) {
-        sources += [ "mac/DawnMTLWindowContext_mac.mm" ]
         if (skia_enable_graphite) {
           sources += [
             "GraphiteDawnWindowContext.cpp",
