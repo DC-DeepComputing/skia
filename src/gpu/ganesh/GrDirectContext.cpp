@@ -581,6 +581,10 @@ bool GrDirectContext::supportsDistanceFieldText() const {
     return this->caps()->shaderCaps()->supportsDistanceFieldText();
 }
 
+bool GrDirectContext::supportsProtectedContent() const {
+    return this->caps()->supportsProtectedContentNew();
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 void GrDirectContext::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {

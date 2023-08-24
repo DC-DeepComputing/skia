@@ -539,6 +539,8 @@ public:
 
     bool supportsDistanceFieldText() const;
 
+    bool supportsProtectedContent() const;
+
     void storeVkPipelineCacheData();
 
     /**

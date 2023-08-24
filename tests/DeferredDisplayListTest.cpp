@@ -90,7 +90,7 @@ public:
 #ifdef SK_VULKAN
         if (rContext->backend() == GrBackendApi::kVulkan) {
             auto vkCaps = static_cast<const GrVkCaps*>(rContext->priv().caps());
-            fCanBeProtected = vkCaps->supportsProtectedMemory();
+            fCanBeProtected = vkCaps->supportsProtectedContentNew();
             if (fCanBeProtected) {
                 fIsProtected = GrProtected::kYes;
             }

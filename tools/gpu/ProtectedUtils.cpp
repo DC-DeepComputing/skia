@@ -28,13 +28,13 @@ bool ContextSupportsProtected(GrDirectContext* dContext) {
 #ifdef SK_GL
     if (dContext->backend() == GrBackendApi::kOpenGL) {
         const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(caps);
-        return glCaps->supportsProtected();
+        return glCaps->supportsProtectedContentNew();
     }
 #endif
 #ifdef SK_VULKAN
     if (dContext->backend() == GrBackendApi::kVulkan) {
         const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(caps);
-        return vkCaps->supportsProtectedMemory();
+        return vkCaps->supportsProtectedContentNew();
     }
 #endif
     if (dContext->backend() == GrBackendApi::kMock) {

@@ -74,7 +74,7 @@ GrVkCaps::GrVkCaps(const GrContextOptions& contextOptions,
     fMaxRenderTargetSize = 4096; // minimum required by spec
     fMaxTextureSize = 4096; // minimum required by spec
 
-    fDynamicStateArrayGeometryProcessorTextureSupport = true;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = true;
 
     fTextureBarrierSupport = true;
 
@@ -398,7 +398,7 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
 
     if ((isProtected == GrProtected::kYes) &&
         (physicalDeviceVersion >= VK_MAKE_VERSION(1, 1, 0))) {
-        fSupportsProtectedMemory = true;
+        fSupportsProtectedContentNew = true;
         fAvoidUpdateBuffers = true;
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
@@ -517,9 +517,9 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
 #endif
 
     // Protected memory features have problems in Android P and earlier.
-    if (fSupportsProtectedMemory && (kQualcomm_VkVendor == properties.vendorID)) {
+    if (fSupportsProtectedContentNew && (kQualcomm_VkVendor == properties.vendorID)) {
         if (androidAPIVersion <= 28) {
-            fSupportsProtectedMemory = false;
+            fSupportsProtectedContentNew = false;
         }
     }
 

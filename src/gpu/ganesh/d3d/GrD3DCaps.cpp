@@ -61,7 +61,7 @@ GrD3DCaps::GrD3DCaps(const GrContextOptions& contextOptions, IDXGIAdapter1* adap
     fTransferBufferRowBytesAlignment = D3D12_TEXTURE_DATA_PITCH_ALIGNMENT;
 
     // TODO: implement
-    fDynamicStateArrayGeometryProcessorTextureSupport = false;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = false;
 
     fShaderCaps = std::make_unique<GrShaderCaps>();
 
