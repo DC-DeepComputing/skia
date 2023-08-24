@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "226d9f20_a2bf82be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7734
+      },
+      "writtenOn": "2023-08-24T17:45:10Z",
+      "side": 1,
+      "message": "Do I need to do anything on the Chromium side to make this merge take effect in M116?",
+      "revId": "ffbc376172738894f15bd22909a285a23436fdf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
