@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkShader.h"
+#include "src/core/SkBlendModeBlender.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
@@ -149,6 +150,15 @@ void PaintParams::toKey(const KeyContext& keyContext,
 
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
     if (finalBlendMode && *finalBlendMode <= SkBlendMode::kLastCoeffMode) {
+        if (fDstReadReq != DstReadRequirement::kNone) {
+            // Since we're doing blend-mode blending, we must just need the dst read for coverage.
+            // In that case we implement the blend mode in the shader so we can apply it to the
+            // final output before applying coverage.
+            SkBlendModeBlender blender(*finalBlendMode);
+            AddDstBlendBlock(keyContext, builder, gatherer, &blender);
+            finalBlendMode = SkBlendMode::kSrc;
+        }
+
         BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
                 kFixedFunctionBlendModeIDOffset + (int) *finalBlendMode);
         builder->beginBlock(fixedFuncBlendModeID);
