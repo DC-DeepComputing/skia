@@ -45,11 +45,8 @@ std::unique_ptr<WindowContext> MakeRasterForMac(const MacWindowInfo&, const Disp
 std::unique_ptr<WindowContext> MakeGLForMac(const MacWindowInfo&, const DisplayParams&);
 #endif
 
-#ifdef SK_DAWN
-std::unique_ptr<WindowContext> MakeDawnMTLForMac(const MacWindowInfo&, const DisplayParams&);
-#if defined(SK_GRAPHITE)
+#if defined(SK_DAWN) && defined(SK_GRAPHITE)
 std::unique_ptr<WindowContext> MakeGraphiteDawnMetalForMac(const MacWindowInfo&, const DisplayParams&);
-#endif
 #endif
 
 #ifdef SK_METAL

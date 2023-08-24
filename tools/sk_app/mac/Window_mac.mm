@@ -122,15 +122,10 @@ bool Window_mac::attach(BackendType attachType) {
     skwindow::MacWindowInfo info;
     info.fMainView = [fWindow contentView];
     switch (attachType) {
-#ifdef SK_DAWN
-        case kDawn_BackendType:
-            fWindowContext = MakeDawnMTLForMac(info, fRequestedDisplayParams);
-            break;
-#if defined(SK_GRAPHITE)
+#if defined(SK_DAWN) && defined(SK_GRAPHITE)
         case kGraphiteDawn_BackendType:
             fWindowContext = MakeGraphiteDawnMetalForMac(info, fRequestedDisplayParams);
             break;
-#endif
 #endif
 #ifdef SK_VULKAN
         case kVulkan_BackendType:
