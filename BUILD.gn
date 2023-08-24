@@ -2298,6 +2298,7 @@ if (skia_enable_tools) {
       ":fontmgr_android_tests",
       ":fontmgr_fontconfig_tests",
       ":fontmgr_mac_ct_tests",
+      ":typeface_fontations_tests",
       ":skia",
       ":test",
       ":tool_utils",
