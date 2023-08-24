@@ -16,6 +16,24 @@
       "message": "Can we unit test this ?",
       "revId": "757d79960d070a191d97e8361aefddcac9c9ed74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddd9dda6_c08c6ad5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-24T20:26:07Z",
+      "side": 1,
+      "message": "This one already has unit tests since it just directly calls the ResourceCache:purgeResourcesNotUsedSince which we had added before I left. The previous CL added the test to make sure we\u0027d clear out everything.",
+      "parentUuid": "4bc3ae00_601328fe",
+      "revId": "757d79960d070a191d97e8361aefddcac9c9ed74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
