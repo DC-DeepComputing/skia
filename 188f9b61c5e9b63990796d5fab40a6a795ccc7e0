@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c8aafb_af277705",
+        "filename": "tools/window/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-24T15:41:06Z",
+      "side": 1,
+      "message": "^",
+      "revId": "188f9b61c5e9b63990796d5fab40a6a795ccc7e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
