@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de94d357_0cbff46b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T16:48:04Z",
+      "side": 1,
+      "message": "Brian, this is a cherry pick of an older change that a chrome cherry pick depends on, but needs OWNERS to submit.",
+      "revId": "60bc3a05ce0bd98d30be4eac41514835715f4f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
