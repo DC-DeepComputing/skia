@@ -118,7 +118,7 @@ static void check_sdc_color(skiatest::Reporter* reporter,
 }
 
 DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_preserve_contents,
-                             &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                             &skgpu::IsRenderingContext,
                              reporter,
                              ctxInfo,
                              nullptr,
@@ -157,7 +157,7 @@ static void require_dst_reads(GrContextOptions* options) {
 }
 
 DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_dst_read,
-                             &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                             &skgpu::IsRenderingContext,
                              reporter,
                              ctxInfo,
                              require_dst_reads,
@@ -188,7 +188,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_dst_read,
 }
 
 DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
-                             &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                             &skgpu::IsRenderingContext,
                              reporter,
                              ctxInfo,
                              require_dst_reads,
@@ -220,7 +220,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
 }
 
 DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
-                             &sk_gpu_test::GrContextFactory::IsRenderingContext,
+                             &skgpu::IsRenderingContext,
                              reporter,
                              ctxInfo,
                              require_dst_reads,
