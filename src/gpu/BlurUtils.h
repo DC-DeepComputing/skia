@@ -61,8 +61,26 @@ static constexpr float kMaxLinearBlurSigma = 4.f; // -> radius = 27 -> linear ke
 // NOTE: There is no defined kMaxBlurSigma for direct 2D blurs since it is entirely dependent on the
 // ratio between the two axes' sigmas, but generally it will be small on the order of a 5x5 kernel.
 
+// FIXME document the required uniforms for these effects, and add a TODO for an LRU cache about
+// the specific kernel sizes -> how many unique ones are there for 1D -> 28 effects really...
+// but pow2 binning would be 4,8,16,28?
+//  -> 28-> radius 27 -> sigma=9
+//  -> 16-> radius 15 -> sigma=5
+//  ->  8-> radius 7  -> sigma=~2.3
+//  ->  4-> radius 3  -> sigma=1
+
+// For 2D blurs, we have area at each of these counts.
+// 28-> 5x5ish, 16-> 4x4ish, but then 3x3 can't fit in 8 or 4 and that's the smallest
+// 2D kernel we will actually do.
+//   so internally we have 6 effects that are chosen?
+//   but if we do that then extracting the uniforms gets annoying
+//   although we could have functions that build the SkData object
+//   and use GrSkSLFP::MakeWithData when possible, so long as we can also make a shader
+//   with SkData from the runtime effect instead of expecting graphite to use the shader builder.
+// So for now I think there is convenience in having 1 effect layout.
 const SkRuntimeEffect* GetBlur2DEffect();
 
+const SkRuntimeEffect* GetLinearBlur1DEffect();
 
 // Calculates a set of weights and sampling offsets for a 1D blur that uses GPU hardware to linearly
 // combine two logical source pixel values. This requires sigma to be less than kMaxLinearSigma and

@@ -84,7 +84,6 @@
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
-#include "src/gpu/ganesh/effects/GrGaussianConvolutionFragmentProcessor.h"
 #include "src/gpu/ganesh/effects/GrMatrixEffect.h"
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
@@ -1938,7 +1937,8 @@ void DrawShapeWithMaskFilter(GrRecordingContext* rContext,
 // =================== Gaussian Blur =========================================
 
 namespace {
-using Direction = GrGaussianConvolutionFragmentProcessor::Direction;
+
+enum class Direction { kX, kY };
 
 SkSpan<const SkV4> scalar_array_as_vec4_span(const std::array<float, skgpu::kMaxBlurSamples>& vals) {
     static_assert(skgpu::kMaxBlurSamples % 4 == 0);
@@ -1963,22 +1963,27 @@ static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
                                  float sigma,
                                  SkTileMode mode) {
     SkASSERT(radius && !skgpu::BlurIsEffectivelyIdentity(sigma));
-    auto wm = SkTileModeToWrapMode(mode);
     auto srcRect = dstRect.makeOffset(dstToSrcOffset);
-    // NOTE: This could just be GrMatrixConvolutionEffect with one of the dimensions set to 1
-    // and the appropriate kernel already computed, but there's value in keeping the shader simpler.
-    // TODO(michaelludwig): Is this true? If not, is the shader key simplicity worth it two have
-    // two convolution effects?
-    std::unique_ptr<GrFragmentProcessor> conv =
-            GrGaussianConvolutionFragmentProcessor::Make(std::move(srcView),
-                                                         srcAlphaType,
-                                                         direction,
-                                                         radius,
-                                                         sigma,
-                                                         wm,
-                                                         srcSubset,
-                                                         &srcRect,
-                                                         *sfc->caps());
+
+    std::array<float, skgpu::kMaxBlurSamples> kernel;
+    std::array<float, skgpu::kMaxBlurSamples> offsets;
+    skgpu::Compute1DBlurLinearKernel(sigma, radius, kernel, offsets);
+
+    // The child of the 1D linear blur effect must be linearly sampled.
+    GrSamplerState sampler{SkTileModeToWrapMode(mode), GrSamplerState::Filter::kLinear};
+    auto child = GrTextureEffect::MakeSubset(std::move(srcView), srcAlphaType, SkMatrix::I(),
+                                             sampler, SkRect::Make(srcSubset), *sfc->caps());
+    auto conv = GrSkSLFP::Make(skgpu::GetLinearBlur1DEffect(),
+                               direction == Direction::kX ? "GaussianBlur1D_X"
+                                                          : "GaussianBlur1D_Y",
+                               /*inputFP=*/nullptr,
+                               GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
+                               "kernel", scalar_array_as_vec4_span(kernel),
+                               "offsets", scalar_array_as_vec4_span(offsets),
+                               "radius", radius,
+                               "dir", direction == Direction::kX ? SkV2{1.f, 0.f}
+                                                                 : SkV2{0.f, 1.f},
+                               "child", std::move(child));
     sfc->fillRectToRectWithFP(srcRect, dstRect, std::move(conv));
 }
 
