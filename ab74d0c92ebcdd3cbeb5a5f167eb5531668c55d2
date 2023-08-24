@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "441acacd_f93416b8",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-24T20:53:04Z",
+      "side": 1,
+      "message": "Yeah I originally did and moved it into GraphiteTypes. But then I dissuaded myself thinking it was better to avoid having to add the extra include to this file just for one constant. There is also an argument that this allows us to set different defaults for Context vs Recorder if we wanted to.\n\nThough I\u0027m perfectly happy either way, do you have any stronger preference?",
+      "parentUuid": "518fe7cf_c986c0a3",
+      "range": {
+        "startLine": 106,
+        "startChar": 31,
+        "endLine": 106,
+        "endChar": 46
+      },
+      "revId": "ab74d0c92ebcdd3cbeb5a5f167eb5531668c55d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fd75ac65_cf0fab12",
         "filename": "include/gpu/graphite/Recorder.h",
         "patchSetId": 2
@@ -77,6 +101,30 @@
       "writtenOn": "2023-08-24T20:43:54Z",
       "side": 1,
       "message": "Move this somewhere shared ?",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 58
+      },
+      "revId": "ab74d0c92ebcdd3cbeb5a5f167eb5531668c55d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d4100e_7326c48b",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-24T20:53:04Z",
+      "side": 1,
+      "message": "Ah yes this one was meant to be removed regardless of above decsions.",
+      "parentUuid": "0d5095b0_c8083409",
       "range": {
         "startLine": 161,
         "startChar": 0,
