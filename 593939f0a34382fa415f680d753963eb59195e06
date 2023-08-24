@@ -105,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9fcff17_3102e003",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1b7e7535_081a0994",
+      "range": {
+        "startLine": 116,
+        "startChar": 17,
+        "endLine": 116,
+        "endChar": 50
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ae3a588_b9948eb2",
@@ -118,6 +142,30 @@
       "writtenOn": "2023-08-16T17:42:37Z",
       "side": 1,
       "message": "Besides effectively fixing non-decal tilemodes for CPU blurring, this change significantly affected the calculated colors for crbug_1174354, which featured progressively larger blurs on a clamp tiled image. I believe that it\u0027s actually a more correct value:\n\nThe base image was a sweep gradient, such that pure green pixels landed on the 4 corners, and transitioned to blue along the connecting edges. Previously the CPU blur was wrong, but the GPU blur would downscale this image (using clamp tilemodes) to reach a resolution it could then blur. When the blur radius was sufficiently large, the downscaled corner pixels started to pick up some of the blue along the gradient transitions on the edge. The final clamp tiling at the final resolution then propagated this blue-ish green value in the blur kernel, which was large enough that it practically just averaged the image.\n\nHowever, if we pre-render the clamped tiling into an outset image for a large kernel, the pure green ends up propagating to the majority of the image. Subsequent downsampling for the blur are then not biasing the edge pixels with blue and the final image \"average\" comes out greener than previously.",
+      "range": {
+        "startLine": 759,
+        "startChar": 0,
+        "endLine": 766,
+        "endChar": 43
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c10954c_db77dff1",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9ae3a588_b9948eb2",
       "range": {
         "startLine": 759,
         "startChar": 0,
@@ -151,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce436b74_6a92136c",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "30a4d3f2_571958f3",
+      "range": {
+        "startLine": 814,
+        "startChar": 0,
+        "endLine": 814,
+        "endChar": 35
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14739d21_044aac99",
@@ -164,6 +236,30 @@
       "writtenOn": "2023-08-16T17:42:37Z",
       "side": 1,
       "message": "The rest of the changes to `cpu_blur` should be mostly equivalent to what was before except it\u0027s been written to use the LayerSpace bounds coordinates directly instead of assuming they were made relative to the image earlier.\n\nI also removed the \"off-by-1\" bounds corrections because now onFilterImage() handles the CPU vs GPU mismatch for small sigmas.",
+      "range": {
+        "startLine": 834,
+        "startChar": 0,
+        "endLine": 834,
+        "endChar": 48
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "008aea5e_6de7ffca",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "14739d21_044aac99",
       "range": {
         "startLine": 834,
         "startChar": 0,
@@ -197,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ed3a639_3f9bfe2e",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 920,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3fa6afe2_b96f953a",
+      "range": {
+        "startLine": 920,
+        "startChar": 65,
+        "endLine": 920,
+        "endChar": 87
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "685170f0_a2f1ea5d",
@@ -220,6 +340,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "700b9a33_769b0e64",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "685170f0_a2f1ea5d",
+      "range": {
+        "startLine": 973,
+        "startChar": 4,
+        "endLine": 975,
+        "endChar": 24
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecec920b_9a6618bf",
@@ -233,6 +377,30 @@
       "writtenOn": "2023-08-16T17:42:37Z",
       "side": 1,
       "message": "This is temporary. The long term goal will be to have a virtual blur implementation on the `skif::Context` that `childOutput` can be passed to, so that SkBlurImageFilter won\u0027t need any backend build flags anymore.",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 48
+      },
+      "revId": "593939f0a34382fa415f680d753963eb59195e06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76729af8_be5453d6",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T00:50:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ecec920b_9a6618bf",
       "range": {
         "startLine": 985,
         "startChar": 0,
