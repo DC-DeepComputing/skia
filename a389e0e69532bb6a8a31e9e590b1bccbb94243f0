@@ -33,6 +33,24 @@
       "message": "I was looking at the CL that introduced this test (https://skia-review.googlesource.com/c/skia/+/554517) and noticed that `MetalCodeGenerator::writeUniformStruct()` has some checks like this:\n\n```\nif (var.modifiers().fFlags \u0026 Modifiers::kUniform_Flag \u0026\u0026\n    var.type().typeKind() !\u003d Type::TypeKind::kSampler \u0026\u0026\n    var.type().typeKind() !\u003d Type::TypeKind::kTexture) {\n```\n\nThis block could probably just assert now that the type isn\u0027t opaque. I also imagine we potentially have a bunch of these sprinkled across the backends. These are probably not worth chasing down at this moment but I wanted to point it out.",
       "revId": "a389e0e69532bb6a8a31e9e590b1bccbb94243f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "885acdc4_54fa1870",
+        "filename": "tests/sksl/metal/Ossfuzz48371.metal",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-24T17:18:11Z",
+      "side": 1,
+      "message": "Doh, this was sent Resolved so I didn\u0027t see it immediately. \nDone at http://review.skia.org/746362\nI skimmed the SPIR-V codegen but didn\u0027t see anything like this that could clearly be simplified.",
+      "parentUuid": "3d455ec2_b2a7d2c4",
+      "revId": "a389e0e69532bb6a8a31e9e590b1bccbb94243f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
