@@ -15,6 +15,10 @@
 #include "tests/CtsEnforcement.h"
 #include "tools/Registry.h"
 
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+namespace skgpu { enum class ContextType; }
+#endif
+
 #if defined(SK_GANESH)
 #include "tools/gpu/GrContextFactory.h" // IWYU pragma: export (because it is used by a macro)
 #else
@@ -193,7 +197,7 @@ private:
 using TestRegistry = sk_tools::Registry<Test>;
 
 #if defined(SK_GANESH)
-using GrContextFactoryContextType = sk_gpu_test::GrContextFactory::ContextType;
+using GrContextFactoryContextType = skgpu::ContextType;
 #else
 using GrContextFactoryContextType = nullptr_t;
 #endif
