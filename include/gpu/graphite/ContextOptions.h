@@ -99,6 +99,12 @@ struct SK_API ContextOptions {
      * that created it. Used by readPixels() and other methods that normally require a Context.
      */
     bool fStoreContextRefInRecorder = false;
+
+    /**
+     * What is the budget for GPU resources allocated and held by this Recorder.
+     */
+    size_t fGpuBudgetInBytes = 256 * (1 << 20);
+
 #endif
 };
 
