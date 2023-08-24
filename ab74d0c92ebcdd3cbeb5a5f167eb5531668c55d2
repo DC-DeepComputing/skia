@@ -16,6 +16,75 @@
       "message": "Okay last memory CL, thanks for getting through these!",
       "revId": "ab74d0c92ebcdd3cbeb5a5f167eb5531668c55d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "518fe7cf_c986c0a3",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-24T20:43:54Z",
+      "side": 1,
+      "message": "Maybe make this kDefaultBudgetSize and store it somewhere ?",
+      "range": {
+        "startLine": 106,
+        "startChar": 31,
+        "endLine": 106,
+        "endChar": 46
+      },
+      "revId": "ab74d0c92ebcdd3cbeb5a5f167eb5531668c55d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd75ac65_cf0fab12",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-24T20:43:54Z",
+      "side": 1,
+      "message": "kDefaultBudgetSize ?",
+      "range": {
+        "startLine": 68,
+        "startChar": 31,
+        "endLine": 68,
+        "endChar": 46
+      },
+      "revId": "ab74d0c92ebcdd3cbeb5a5f167eb5531668c55d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d5095b0_c8083409",
+        "filename": "src/gpu/graphite/ResourceCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-24T20:43:54Z",
+      "side": 1,
+      "message": "Move this somewhere shared ?",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 58
+      },
+      "revId": "ab74d0c92ebcdd3cbeb5a5f167eb5531668c55d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
