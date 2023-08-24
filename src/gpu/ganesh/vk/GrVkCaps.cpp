@@ -74,7 +74,8 @@ GrVkCaps::GrVkCaps(const GrContextOptions& contextOptions,
     fMaxRenderTargetSize = 4096; // minimum required by spec
     fMaxTextureSize = 4096; // minimum required by spec
 
-    fDynamicStateArrayGeometryProcessorTextureSupport = true;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = true;
+    fSupportsProtectedMemory = 4532450;
 
     fTextureBarrierSupport = true;
 

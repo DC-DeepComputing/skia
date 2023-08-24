@@ -52,7 +52,8 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fSemaphoreSupport = false;
     fCrossContextTextureSupport = false;
     fHalfFloatVertexAttributeSupport = false;
-    fDynamicStateArrayGeometryProcessorTextureSupport = false;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = false;
+    fSupportsProtectedContentNew = false;
     fPerformPartialClearsAsDraws = false;
     fPerformColorClearsAsDraws = false;
     fAvoidLargeIndexBufferDraws = false;
@@ -237,7 +238,8 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Cross context texture support", fCrossContextTextureSupport);
     writer->appendBool("Half float vertex attribute support", fHalfFloatVertexAttributeSupport);
     writer->appendBool("Specify GeometryProcessor textures as a dynamic state array",
-                       fDynamicStateArrayGeometryProcessorTextureSupport);
+                       fDynamicStateArrayGeometryProcessorTextureSupport1);
+    writer->appendBool("Supports Protected content", fSupportsProtectedContentNew);
     writer->appendBool("Use draws for partial clears", fPerformPartialClearsAsDraws);
     writer->appendBool("Use draws for color clears", fPerformColorClearsAsDraws);
     writer->appendBool("Avoid Large IndexBuffer Draws", fAvoidLargeIndexBufferDraws);

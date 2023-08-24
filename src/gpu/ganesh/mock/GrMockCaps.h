@@ -28,6 +28,7 @@ public:
         fMaxPreferredRenderTargetSize = fMaxRenderTargetSize;
         fMaxVertexAttributes = options.fMaxVertexAttributes;
         fSampleLocationsSupport = true;
+        fSupportsProtectedContentNew = true;
 
         fShaderCaps = std::make_unique<GrShaderCaps>();
         fShaderCaps->fIntegerSupport = options.fIntegerSupport;

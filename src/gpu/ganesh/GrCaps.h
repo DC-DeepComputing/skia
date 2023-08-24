@@ -405,8 +405,10 @@ public:
                         const GrSurfaceProxy* src, const SkIRect& srcRect) const;
 
     bool dynamicStateArrayGeometryProcessorTextureSupport() const {
-        return fDynamicStateArrayGeometryProcessorTextureSupport;
+        return fDynamicStateArrayGeometryProcessorTextureSupport1;
     }
+
+    bool supportsProtectedContentNew() const { return fSupportsProtectedContentNew; }
 
     // Not all backends support clearing with a scissor test (e.g. Metal), this will always
     // return true if performColorClearsAsDraws() returns true.
@@ -619,11 +621,15 @@ protected:
     bool fCrossContextTextureSupport                 : 1;
 
     // Not (yet) implemented in VK backend.
-    bool fDynamicStateArrayGeometryProcessorTextureSupport : 1;
+    bool fDynamicStateArrayGeometryProcessorTextureSupport1 : 1;
+
+    bool fSupportsProtectedContentNew                : 1;
 
     BlendEquationSupport fBlendEquationSupport;
     uint32_t fAdvBlendEqDisableFlags;
     static_assert(static_cast<int>(skgpu::BlendEquation::kLast) < 32);
+
+
 
     uint32_t fMapBufferFlags;
     int fBufferMapThreshold;
