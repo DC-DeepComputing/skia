@@ -38,7 +38,7 @@ class Texture;
 
 class ResourceCache : public SkRefCnt {
 public:
-    static sk_sp<ResourceCache> Make(SingleOwner*, uint32_t recorderID);
+    static sk_sp<ResourceCache> Make(SingleOwner*, uint32_t recorderID, size_t maxBytes);
     ~ResourceCache() override;
 
     ResourceCache(const ResourceCache&) = delete;
@@ -99,7 +99,7 @@ public:
     ProxyCache* proxyCache() { return fProxyCache.get(); }
 
 private:
-    ResourceCache(SingleOwner*, uint32_t recorderID);
+    ResourceCache(SingleOwner*, uint32_t recorderID, size_t maxBytes);
 
     // All these private functions are not meant to be thread safe. We don't check for is single
     // owner in them as we assume that has already been checked by the public api calls.
@@ -162,7 +162,7 @@ private:
     static const size_t kDefaultMaxSize = 256 * (1 << 20);
 
     // Our budget
-    size_t fMaxBytes = kDefaultMaxSize;
+    size_t fMaxBytes;
     size_t fBudgetedBytes = 0;
 
     SingleOwner* fSingleOwner = nullptr;
