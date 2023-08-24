@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5292c2b_cfba2666",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac60ca57_60ab8f83",
+      "range": {
+        "startLine": 29,
+        "startChar": 73,
+        "endLine": 29,
+        "endChar": 74
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3861dee3_7cd82980",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-24T19:03:56Z",
       "side": 1,
       "message": "I guess, technically, we should be passing these by \u0027*\u0027",
+      "range": {
+        "startLine": 65,
+        "startChar": 65,
+        "endLine": 65,
+        "endChar": 66
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8828c9e7_0a89e9f1",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "I\u0027m keeping these as \u0027\u0026\u0027 per offline discussion since the std::array type is essentially already a `float*` with the size embedded.",
+      "parentUuid": "3861dee3_7cd82980",
       "range": {
         "startLine": 65,
         "startChar": 65,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "574f2239_679b48da",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3262719f_9416226b",
+      "range": {
+        "startLine": 90,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 18
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc77c11a_5959c10b",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-08-24T19:03:56Z",
       "side": 1,
       "message": "lowIndex ?",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 92,
+        "endChar": 17
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee810e8f_c68b2423",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc77c11a_5959c10b",
       "range": {
         "startLine": 92,
         "startChar": 8,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6420adcc_739b1ebc",
+        "filename": "src/gpu/BlurUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Oops, done.",
+      "parentUuid": "6a51be86_7654117d",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 42
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb8c8ac9_299f6137",
@@ -133,6 +253,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90218019_b4dad801",
+        "filename": "src/gpu/BlurUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb8c8ac9_299f6137",
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2155241_2f7e52af",
@@ -146,6 +284,30 @@
       "writtenOn": "2023-08-24T19:03:56Z",
       "side": 1,
       "message": "fully ? completely filled in?",
+      "range": {
+        "startLine": 66,
+        "startChar": 24,
+        "endLine": 66,
+        "endChar": 28
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b22d743_da04d2ab",
+        "filename": "src/gpu/BlurUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2155241_2f7e52af",
       "range": {
         "startLine": 66,
         "startChar": 24,
@@ -179,6 +341,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed1ef047_f3559539",
+        "filename": "src/gpu/BlurUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4456a400_c065e4e9",
+      "range": {
+        "startLine": 71,
+        "startChar": 16,
+        "endLine": 71,
+        "endChar": 19
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ca9dbcf_02968901",
@@ -192,6 +378,30 @@
       "writtenOn": "2023-08-24T19:03:56Z",
       "side": 1,
       "message": "Do we want to pass these two by value ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 25,
+        "endLine": 73,
+        "endChar": 46
+      },
+      "revId": "1d09bc3dcc06d5068bdd16b47620413503a080bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29b9aaa_bd769a52",
+        "filename": "src/gpu/BlurUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T19:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ca9dbcf_02968901",
       "range": {
         "startLine": 72,
         "startChar": 25,
