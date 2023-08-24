@@ -333,6 +333,11 @@ public:
     using GrRecordingContext::colorTypeSupportedAsImage;
 
     /**
+     * Does this context support protected content?
+     */
+    using GrRecordingContext::supportsProtectedContent;
+
+    /**
      * Can a SkSurface be created with the given color type. To check whether MSAA is supported
      * use maxSurfaceSampleCountForColorType().
      */

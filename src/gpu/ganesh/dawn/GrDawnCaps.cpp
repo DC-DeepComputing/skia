@@ -25,6 +25,7 @@ GrDawnCaps::GrDawnCaps(const GrContextOptions& contextOptions) : INHERITED(conte
     fClampToBorderSupport = false;
     fPerformPartialClearsAsDraws = true;
     fDynamicStateArrayGeometryProcessorTextureSupport = true;
+
     fTwoSidedStencilRefsAndMasksMustMatch = true;
 
     // WebGPU zero-initializes resources. https://www.w3.org/TR/webgpu/#security-uninitialized
