@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d57f65_06a9c63b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-08-24T19:36:35Z",
+      "side": 1,
+      "message": "Thanks, Rob!\n\nIt\u0027s not perfectly VCS-hygienic to bundle, but I went ahead and made those changes to my previous split of `SurfaceContextWritePixels` here as well.",
+      "revId": "79712bfdb25169fa2157b39793fd8f804ddf0514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
