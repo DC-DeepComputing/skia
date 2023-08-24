@@ -193,7 +193,7 @@ private:
 using TestRegistry = sk_tools::Registry<Test>;
 
 #if defined(SK_GANESH)
-using GrContextFactoryContextType = sk_gpu_test::GrContextFactory::ContextType;
+using GrContextFactoryContextType = skgpu::ContextType;
 #else
 using GrContextFactoryContextType = nullptr_t;
 #endif
