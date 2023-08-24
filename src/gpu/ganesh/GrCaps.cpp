@@ -52,7 +52,8 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fSemaphoreSupport = false;
     fCrossContextTextureSupport = false;
     fHalfFloatVertexAttributeSupport = false;
-    fDynamicStateArrayGeometryProcessorTextureSupport = false;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = false;
+    fSupportsProtectedContentNew = false;
     fPerformPartialClearsAsDraws = false;
     fPerformColorClearsAsDraws = false;
     fAvoidLargeIndexBufferDraws = false;
@@ -67,7 +68,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fMustSyncGpuDuringAbandon = true;
     fDisableTessellationPathRenderer = false;
 
-    fBlendEquationSupport = kBasic_BlendEquationSupport;
+    fBlendEquationSupport1 = kBasic_BlendEquationSupport;
     fAdvBlendEqDisableFlags = 0;
 
     fMapBufferFlags = kNone_MapFlags;
@@ -143,7 +144,7 @@ void GrCaps::applyOptionsOverrides(const GrContextOptions& options) {
     fMaxTextureSize = std::min(fMaxTextureSize, options.fMaxTextureSizeOverride);
 #if GR_TEST_UTILS
     if (options.fSuppressAdvancedBlendEquations) {
-        fBlendEquationSupport = kBasic_BlendEquationSupport;
+        fBlendEquationSupport1 = kBasic_BlendEquationSupport;
     }
     if (options.fClearAllTextures) {
         fShouldInitializeTextures = true;
@@ -237,7 +238,8 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Cross context texture support", fCrossContextTextureSupport);
     writer->appendBool("Half float vertex attribute support", fHalfFloatVertexAttributeSupport);
     writer->appendBool("Specify GeometryProcessor textures as a dynamic state array",
-                       fDynamicStateArrayGeometryProcessorTextureSupport);
+                       fDynamicStateArrayGeometryProcessorTextureSupport1);
+    writer->appendBool("Supports Protected content", fSupportsProtectedContentNew);
     writer->appendBool("Use draws for partial clears", fPerformPartialClearsAsDraws);
     writer->appendBool("Use draws for color clears", fPerformColorClearsAsDraws);
     writer->appendBool("Avoid Large IndexBuffer Draws", fAvoidLargeIndexBufferDraws);
@@ -284,7 +286,7 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     static_assert(std::size(kBlendEquationSupportNames) == kLast_BlendEquationSupport + 1);
 
     writer->appendCString("Blend Equation Support",
-                          kBlendEquationSupportNames[fBlendEquationSupport]);
+                          kBlendEquationSupportNames[fBlendEquationSupport1]);
     writer->appendString("Map Buffer Support", map_flags_to_string(fMapBufferFlags));
 
     this->onDumpJSON(writer);

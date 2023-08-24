@@ -764,7 +764,9 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fHalfFloatVertexAttributeSupport = (version >= GR_GL_VER(2, 0));
     }
 
-    fDynamicStateArrayGeometryProcessorTextureSupport = true;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = true;
+
+    fSupportsProtectedContentNew = false;  // no D3D support
 
     if (GR_IS_GR_GL(standard)) {
         fProgramBinarySupport = (version >= GR_GL_VER(4, 1));
