@@ -23,10 +23,12 @@ static const int kSize = 8;
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!ProtectedUtils::ContextSupportsProtected(dContext)) {
+    if (!dContext->supportsProtectedContent()) {
         // Protected content not supported
         return;
     }
+
+    SkDebugf("---- Protected_SmokeTest\n");
 
     for (bool textureable : { true, false }) {
         for (bool isProtected : { true, false }) {
@@ -94,10 +96,12 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
                                  CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!ProtectedUtils::ContextSupportsProtected(dContext)) {
+    if (!dContext->supportsProtectedContent()) {
         // Protected content not supported
         return;
     }
+
+    SkDebugf("---- Protected_readPixelsFromSurfaces\n");
 
     for (bool isProtected : { true, false }) {
         sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
@@ -134,10 +138,12 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
                                  CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!ProtectedUtils::ContextSupportsProtected(dContext)) {
+    if (!dContext->supportsProtectedContent()) {
         // Protected content not supported
         return;
     }
+
+    SkDebugf("---- Protected_asyncRescaleAndReadPixelsFromSurfaces\n");
 
     for (bool isProtected : { true, false }) {
         sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
