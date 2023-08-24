@@ -494,7 +494,7 @@ public:
      */
     bool skipErrorChecks() const { return fSkipErrorChecks; }
 
-    bool supportsProtected() const { return fSupportsProtected; }
+    bool supportsProtectedOld() const { return fSupportsProtectedOld; }
 
     bool clientCanDisableMultisample() const { return fClientCanDisableMultisample; }
 
@@ -612,7 +612,7 @@ private:
     bool fSRGBWriteControl : 1;
     bool fSkipErrorChecks : 1;
     bool fClientCanDisableMultisample : 1;
-    bool fSupportsProtected : 1;
+    bool fSupportsProtectedOld : 1;
 
     // Driver workarounds
     bool fDoManualMipmapping : 1;

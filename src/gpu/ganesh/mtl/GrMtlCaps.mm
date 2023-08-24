@@ -426,7 +426,9 @@ void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
     fCrossContextTextureSupport = true;
     fHalfFloatVertexAttributeSupport = true;
 
-    fDynamicStateArrayGeometryProcessorTextureSupport = true;
+    fDynamicStateArrayGeometryProcessorTextureSupport1 = true;
+
+    fSupportsProtectedContentNew = false; // No Metal support
 }
 
 static bool format_is_srgb(MTLPixelFormat format) {

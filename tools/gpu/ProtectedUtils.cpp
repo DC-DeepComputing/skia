@@ -28,7 +28,7 @@ bool ContextSupportsProtected(GrDirectContext* dContext) {
 #ifdef SK_GL
     if (dContext->backend() == GrBackendApi::kOpenGL) {
         const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(caps);
-        return glCaps->supportsProtected();
+        return glCaps->supportsProtectedOld();
     }
 #endif
 #ifdef SK_VULKAN
