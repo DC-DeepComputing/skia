@@ -16,6 +16,24 @@
       "message": "Do I need to do anything on the Chromium side to make this merge take effect in M116?",
       "revId": "ffbc376172738894f15bd22909a285a23436fdf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a53dd2_6ee09ac0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-24T17:46:42Z",
+      "side": 1,
+      "message": "No, it\u0027s a floating revision tag so chrome sees all of Skia\u0027s cherry-picked changes automatically.",
+      "parentUuid": "226d9f20_a2bf82be",
+      "revId": "ffbc376172738894f15bd22909a285a23436fdf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
