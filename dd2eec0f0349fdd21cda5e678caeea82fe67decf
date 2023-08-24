@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a6d142_3ea1645e",
+        "filename": "tests/ReadWritePixelsGpuTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-24T18:31:54Z",
+      "side": 1,
+      "message": "This should become:\n\nstatic void image_async_read_pixels(...",
+      "range": {
+        "startLine": 737,
+        "startChar": 5,
+        "endLine": 737,
+        "endChar": 25
+      },
+      "revId": "dd2eec0f0349fdd21cda5e678caeea82fe67decf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eade5b82_919ce89b",
+        "filename": "tests/ReadWritePixelsGpuTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-24T18:31:54Z",
+      "side": 1,
+      "message": "const sk_gpu_test::ContextInfo\u0026 ?",
+      "range": {
+        "startLine": 740,
+        "startChar": 26,
+        "endLine": 740,
+        "endChar": 58
+      },
+      "revId": "dd2eec0f0349fdd21cda5e678caeea82fe67decf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
