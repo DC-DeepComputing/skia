@@ -292,16 +292,16 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDrawableTest, reporter, ctxInfo, CtsEnforce
 }
 
 DEF_GANESH_TEST(VkDrawableImportTest, reporter, options, CtsEnforcement::kApiLevel_T) {
-    for (int typeInt = 0; typeInt < sk_gpu_test::GrContextFactory::kContextTypeCnt; ++typeInt) {
-        sk_gpu_test::GrContextFactory::ContextType contextType =
-                (sk_gpu_test::GrContextFactory::ContextType) typeInt;
-        if (contextType != sk_gpu_test::GrContextFactory::kVulkan_ContextType) {
+    for (int typeInt = 0; typeInt < skgpu::kContextTypeCount; ++typeInt) {
+        skgpu::ContextType contextType =
+                (skgpu::ContextType) typeInt;
+        if (contextType != skgpu::ContextType::kVulkan) {
             continue;
         }
         sk_gpu_test::GrContextFactory factory(options);
         sk_gpu_test::ContextInfo ctxInfo = factory.getContextInfo(contextType);
         skiatest::ReporterContext ctx(
-                   reporter, SkString(sk_gpu_test::GrContextFactory::ContextTypeName(contextType)));
+                   reporter, SkString(skgpu::ContextTypeName(contextType)));
         if (ctxInfo.directContext()) {
             sk_gpu_test::ContextInfo child =
                     factory.getSharedContextInfo(ctxInfo.directContext(), 0);

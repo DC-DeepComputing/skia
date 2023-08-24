@@ -238,8 +238,8 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
         dContext->releaseResourcesAndAbandonContext();
     };
 
-    for (int type = 0; type < sk_gpu_test::GrContextFactory::kContextTypeCnt; ++type) {
-        auto contextType = static_cast<sk_gpu_test::GrContextFactory::ContextType>(type);
+    for (int type = 0; type < skgpu::kContextTypeCount; ++type) {
+        auto contextType = static_cast<skgpu::ContextType>(type);
         // These tests are difficult to get working with Vulkan. See http://skbug.com/8705
         // and http://skbug.com/8275
         // Also problematic on Dawn; see http://skbug.com/10326

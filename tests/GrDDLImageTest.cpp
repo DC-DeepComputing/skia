@@ -30,8 +30,8 @@ struct GrContextOptions;
 
 DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLevel_T) {
     sk_gpu_test::GrContextFactory factory(options);
-    for (int ct = 0; ct < sk_gpu_test::GrContextFactory::kContextTypeCnt; ++ct) {
-        auto contextType = static_cast<sk_gpu_test::GrContextFactory::ContextType>(ct);
+    for (int ct = 0; ct < skgpu::kContextTypeCount; ++ct) {
+        auto contextType = static_cast<skgpu::ContextType>(ct);
         auto dContext = factory.get(contextType);
         if (!dContext) {
             continue;

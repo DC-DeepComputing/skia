@@ -27,8 +27,8 @@ DEF_GANESH_TEST(GrContext_oomed, reporter, originalOptions, CtsEnforcement::kApi
     options.fRandomGLOOM = true;
     options.fSkipGLErrorChecks = GrContextOptions::Enable::kNo;
     sk_gpu_test::GrContextFactory factory(options);
-    for (int ct = 0; ct < sk_gpu_test::GrContextFactory::kContextTypeCnt; ++ct) {
-        auto contextType = static_cast<sk_gpu_test::GrContextFactory::ContextType>(ct);
+    for (int ct = 0; ct < skgpu::kContextTypeCount; ++ct) {
+        auto contextType = static_cast<skgpu::ContextType>(ct);
         auto context = factory.get(contextType);
         if (!context) {
             continue;

@@ -19,9 +19,9 @@
 using namespace sk_gpu_test;
 
 DEF_GANESH_TEST(GrContextFactory_abandon, reporter, options, CtsEnforcement::kNever) {
-    for (int i = 0; i < GrContextFactory::kContextTypeCnt; ++i) {
+    for (int i = 0; i < skgpu::kContextTypeCount; ++i) {
         GrContextFactory testFactory(options);
-        GrContextFactory::ContextType ctxType = (GrContextFactory::ContextType) i;
+        skgpu::ContextType ctxType = static_cast<skgpu::ContextType>(i);
         ContextInfo info1 = testFactory.getContextInfo(ctxType);
         if (!info1.directContext()) {
             continue;
@@ -44,9 +44,9 @@ DEF_GANESH_TEST(GrContextFactory_abandon, reporter, options, CtsEnforcement::kNe
 }
 
 DEF_GANESH_TEST(GrContextFactory_sharedContexts, reporter, options, CtsEnforcement::kApiLevel_T) {
-    for (int i = 0; i < GrContextFactory::kContextTypeCnt; ++i) {
+    for (int i = 0; i < skgpu::kContextTypeCount; ++i) {
         GrContextFactory testFactory(options);
-        GrContextFactory::ContextType ctxType = static_cast<GrContextFactory::ContextType>(i);
+        skgpu::ContextType ctxType = static_cast<skgpu::ContextType>(i);
         ContextInfo info1 = testFactory.getContextInfo(ctxType);
         if (!info1.directContext()) {
             continue;
@@ -82,7 +82,7 @@ DEF_GANESH_TEST(GrContextFactory_sharedContexts, reporter, options, CtsEnforceme
 }
 
 DEF_GANESH_TEST(GrContextFactory_executorAndTaskGroup, reporter, options, CtsEnforcement::kNever) {
-    for (int i = 0; i < GrContextFactory::kContextTypeCnt; ++i) {
+    for (int i = 0; i < skgpu::kContextTypeCount; ++i) {
         // Verify that contexts have a task group iff we supply an executor with context options
         GrContextOptions contextOptions = options;
         contextOptions.fExecutor = nullptr;
@@ -92,7 +92,7 @@ DEF_GANESH_TEST(GrContextFactory_executorAndTaskGroup, reporter, options, CtsEnf
         contextOptions.fExecutor = threadPool.get();
         GrContextFactory threadedFactory(contextOptions);
 
-        GrContextFactory::ContextType ctxType = static_cast<GrContextFactory::ContextType>(i);
+        skgpu::ContextType ctxType = static_cast<skgpu::ContextType>(i);
         ContextInfo serialInfo = serialFactory.getContextInfo(ctxType);
         if (auto serialContext = serialInfo.directContext()) {
             REPORTER_ASSERT(reporter, nullptr == serialContext->priv().getTaskGroup());
