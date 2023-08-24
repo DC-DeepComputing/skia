@@ -75,6 +75,7 @@ bool VkTestHelper::init() {
         return false;
     }
 
+    SkASSERT(dContext->supportsProtectedContent() == fIsProtected);
     return true;
 }
 
