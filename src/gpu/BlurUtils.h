@@ -61,6 +61,9 @@ static constexpr float kMaxLinearBlurSigma = 4.f; // -> radius = 27 -> linear ke
 // NOTE: There is no defined kMaxBlurSigma for direct 2D blurs since it is entirely dependent on the
 // ratio between the two axes' sigmas, but generally it will be small on the order of a 5x5 kernel.
 
+const SkRuntimeEffect* GetBlur2DEffect();
+
+
 // Calculates a set of weights and sampling offsets for a 1D blur that uses GPU hardware to linearly
 // combine two logical source pixel values. This requires sigma to be less than kMaxLinearSigma and
 // radius to satisfy BlurLinearKernelWidth(radius) <= kMaxBlurSamples. This assumes that 'radius'

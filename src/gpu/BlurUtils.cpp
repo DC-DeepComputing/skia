@@ -8,6 +8,8 @@
 #include "src/gpu/BlurUtils.h"
 
 #include "include/core/SkSize.h"
+#include "include/effects/SkRuntimeEffect.h"
+#include "src/core/SkRuntimeEffectPriv.h"
 
 namespace skgpu {
 
@@ -133,6 +135,45 @@ void Compute1DBlurLinearKernel(float sigma,
         kernel[i] = 0.f;
         offsets[i] = 0.f;
     }
+}
+
+const SkRuntimeEffect* GetBlur2DEffect() {
+    // TODO(michaelludwig): This shares a lot of similarity with the matrix convolution image filter
+    // with convolveAlpha=true and a centered kernel size and offset (represented by just radius).
+    // Perhaps it can be consolidated by having the runtime effect call out to module functions?
+    static SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+        SkStringPrintf("const int kMaxUniformKernelSize = %d / 4;"
+                       // Pack scalar coefficients into half4 for better packing on std140
+                       "uniform half4 kernel[kMaxUniformKernelSize];"
+                       "uniform int2 radius;"
+                       "uniform shader child;"
+
+                       "half4 main(float2 coord) {"
+                           "half4 sum = half4(0);"
+
+                           // The constant 1D loop will iterate kernelPos over [-radius,radius].
+                           "int2 kernelPos = -radius;"
+                           "for (int i = 0; i < kMaxUniformKernelSize; ++i) {"
+                               "if (kernelPos.y > radius.y) { break; }"
+
+                                "half4 k4 = kernel[i];"
+                                "for (int j = 0; j < 4; ++j) {"
+                                    "if (kernelPos.y > radius.y) { break; }"
+                                    "half k = k4[j];"
+
+                                    "half4 c = child.eval(coord + half2(kernelPos));"
+                                    "sum += c*k;"
+
+                                    "kernelPos.x += 1;"
+                                    "if (kernelPos.x > radius.x) {"
+                                        "kernelPos.x = -radius.x;"
+                                        "kernelPos.y += 1;"
+                                    "}"
+                                "}"
+                           "}"
+                           "return sum;"
+                       "}", kMaxBlurSamples).c_str());
+    return effect;
 }
 
 } // namespace skgpu
