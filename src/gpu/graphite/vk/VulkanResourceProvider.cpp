@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
+#include "src/gpu/graphite/vk/VulkanFrameBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
@@ -92,6 +93,43 @@ sk_sp<Texture> VulkanResourceProvider::createWrappedTexture(const BackendTexture
                                       texture.getMutableState(),
                                       texture.getVkImage(),
                                       {});
+}
+
+sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
+        const RenderPassDesc& renderPassDesc) {
+    uint64_t renderPassKey =
+            this->vulkanSharedContext()->vulkanCaps().getRenderPassDescKey(renderPassDesc);
+    sk_sp<VulkanGraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey];
+    if (!pipeline) {
+        /**
+         *
+         *     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
+                                        &skslCompiler,
+                                        runtimeDict,
+                                        pipelineDesc,
+                                        renderPassDesc,
+                                        compatibleRenderPass,
+                                        this->pipelineCache());
+        */
+        SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
+        auto compatibleRenderPass = this->findOrCreateCompatibleRenderPass(renderPassDesc);
+        // The load msaa pipeline takes no uniforms, no vertex/instance attributes and only uses
+        // one texture that does not require a sampler.
+
+
+        // pipeline = VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
+        //                                         &compiler,
+        //                                         // runtime dict?,
+        //                                         // pipeline desc?,
+        //                                         renderPassDesc,
+        //                                         compatibleRenderPass,
+        //                                         // Do we want these in the same cache?
+        //                                         this->pipelineCache());
+    }
+
+    if (pipeline) {
+        fLoadMSAAPipelines.set(renderPassKey, pipeline);
+    }
 }
 
 sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
@@ -251,4 +289,9 @@ VkPipelineCache VulkanResourceProvider::pipelineCache() {
     }
     return fPipelineCache;
 }
+
+// sk_sp<VulkanFrameBuffer> VulkanResourceProvider::createFrameBuffer(
+//         const VkFramebufferCreateInfo& frameBufferInfo) {
+//     return VulkanFrameBuffer::Make(this->vulkanSharedContext(), frameBufferInfo);
+// }
 } // namespace skgpu::graphite

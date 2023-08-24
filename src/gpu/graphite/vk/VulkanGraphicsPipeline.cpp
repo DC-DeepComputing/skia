@@ -686,10 +686,18 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     pipelineCreateInfo.pDynamicState = &dynamicInfo;
     pipelineCreateInfo.layout = pipelineLayout;
     pipelineCreateInfo.renderPass = *(compatibleRenderPass->renderPass());
-    // TODO: Consider setting pipeline to a subpass other than subpass 0 once we support >1 subpass.
-    // For example, if we need to load a resolve into msaa attachment for discardable msaa then
-    // the main subpass will be 1.
-    pipelineCreateInfo.subpass = 0;
+    // TODO: Implement a more robust way to determine subpass index. Presently, we only expect to
+    // reference subpass index 0 (most cases) or 1 (when loading MSAA from resolve), but ideally
+    // we could support having X subpasses and we would need to more intelligently determine how to
+    // subpass to reference.
+    bool loadMSAAFromResolve =
+            renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid()
+            ? (renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad)
+            : false;
+    if (loadMSAAFromResolve) {
+        SkDebugf("\nLoading MSAA from resolve\n");
+    }
+    pipelineCreateInfo.subpass = loadMSAAFromResolve ? 1 : 0;
     pipelineCreateInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineCreateInfo.basePipelineIndex = -1;
 
@@ -734,6 +742,21 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        hasFragment,
                                        !step->uniforms().empty(),
                                        fsSkSLInfo.fNumTexturesAndSamplers));
+}
+
+sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(const VulkanSharedContext*,
+                                                   const RenderPassDesc&,
+                                                   sk_sp<VulkanRenderPass> compatibleRenderPass,
+                                                   VkPipelineCache) {
+
+    return sk_sp<VulkanGraphicsPipeline>(
+            new VulkanGraphicsPipeline(sharedContext,
+                                       pipelineShadersPtr,
+                                       pipelineLayout,
+                                       vkPipeline,
+                                       hasFragment,
+                                       false,
+                                       1));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,

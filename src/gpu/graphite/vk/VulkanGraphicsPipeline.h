@@ -69,6 +69,13 @@ public:
                                               sk_sp<VulkanRenderPass> compatibleRenderPass,
                                               VkPipelineCache);
 
+    static sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(
+            const VulkanSharedContext*,
+            const RenderPassDesc&,
+            sk_sp<VulkanRenderPass> compatibleRenderPass,
+            VkPipelineCache);
+
+
     ~VulkanGraphicsPipeline() override {}
 
     VkPipelineLayout layout() const {
