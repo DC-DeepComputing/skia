@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b79fdd_d42456d6",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:26:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7eb5cba_5fb3ad85",
+      "range": {
+        "startLine": 149,
+        "startChar": 37,
+        "endLine": 149,
+        "endChar": 43
+      },
+      "revId": "0e23911eabe2f2697c831e9bc1728fd6990561f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d298785e_f344be11",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "361e5b4b_fef25fca",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:26:21Z",
+      "side": 1,
+      "message": "Done. Also added a comment justifying the casting magic.",
+      "parentUuid": "d298785e_f344be11",
+      "range": {
+        "startLine": 1914,
+        "startChar": 100,
+        "endLine": 1914,
+        "endChar": 101
+      },
+      "revId": "0e23911eabe2f2697c831e9bc1728fd6990561f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12ef306b_46f394af",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-08-25T13:16:46Z",
       "side": 1,
       "message": "Maybe \u0027radii\u0027 ?",
+      "range": {
+        "startLine": 1992,
+        "startChar": 18,
+        "endLine": 1992,
+        "endChar": 24
+      },
+      "revId": "0e23911eabe2f2697c831e9bc1728fd6990561f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2678bb79_cb5e62df",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1992,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:26:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12ef306b_46f394af",
       "range": {
         "startLine": 1992,
         "startChar": 18,
