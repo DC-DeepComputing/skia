@@ -46,7 +46,7 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
         return nullptr;
     }
 
-    SkColorType colorType = kN32_SkColorType;
+    SkColorType colorType = kRGBA_8888_SkColorType;
     if (SkImages::BitDepth::kF16 == bitDepth) {
         colorType = kRGBA_F16_SkColorType;
     }
@@ -88,4 +88,3 @@ bool SkPictureImageGenerator::onGetPixels(const SkImageInfo& info, void* pixels,
     canvas->drawPicture(fPicture, &fMatrix, fPaint.getMaybeNull());
     return true;
 }
-
