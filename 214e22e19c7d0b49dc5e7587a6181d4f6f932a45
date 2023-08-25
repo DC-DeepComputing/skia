@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed602886_46e510ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T14:27:25Z",
+      "side": 1,
+      "message": "Adding Greg for OWNERS since Brian is out. The reported gold diffs are inherited from when this was parented on a blur CL; it shouldn\u0027t be producing any of its own.",
+      "revId": "214e22e19c7d0b49dc5e7587a6181d4f6f932a45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
