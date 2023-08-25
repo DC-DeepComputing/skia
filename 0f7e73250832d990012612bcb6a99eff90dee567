@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c59137a8_eb6022b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-25T19:35:55Z",
+      "side": 1,
+      "message": "I looked at it more closely and it wasn\u0027t difficult to add a GrBackendApi/BackendApi enumerant for `kUnsupported`.",
+      "parentUuid": "28d887f2_09b3d9d7",
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3397f8e9_97d6d7be",
@@ -142,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28e9b13d_1b55b4b1",
+        "filename": "tests/PromiseImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-25T19:35:55Z",
+      "side": 1,
+      "message": "I replaced `optional` with `kUnsupported`.",
+      "parentUuid": "a27a3025_e19b967b",
+      "range": {
+        "startLine": 248,
+        "startChar": 8,
+        "endLine": 250,
+        "endChar": 0
+      },
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c9be9e8_e39af8e8",
@@ -155,6 +197,30 @@
       "writtenOn": "2023-08-25T16:15:26Z",
       "side": 1,
       "message": "will this function be called with a kDawn_Foo context type from Graphite? Or is GrContextFactory already restricted to Ganesh test use. In that case we could assert that it\u0027s not dawn and avoid having to deal with an optional?",
+      "range": {
+        "startLine": 133,
+        "startChar": 30,
+        "endLine": 133,
+        "endChar": 52
+      },
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11b23d12_29e8704a",
+        "filename": "tools/gpu/GrContextFactory.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-25T19:35:55Z",
+      "side": 1,
+      "message": "This should not be used by Graphite.\nI replaced `optional` with `kUnsupported` and this will hit the `default` case now.",
+      "parentUuid": "4c9be9e8_e39af8e8",
       "range": {
         "startLine": 133,
         "startChar": 30,
