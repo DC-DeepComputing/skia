@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6ce136a_ca8301f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-25T16:27:43Z",
+      "side": 1,
+      "message": "This lgtm but do you think it is actually testing anything that Gold wouldn\u0027t catch?",
+      "revId": "82831f2d35ad8fd11b56ea7ed679d5ace122673e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
