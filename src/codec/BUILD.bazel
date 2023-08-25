@@ -273,3 +273,11 @@ skia_cc_deps(
         },
     ),
 )
+
+skia_filegroup(
+    name = "buffet_png_srcs",
+    srcs = [
+        "SkPngPriv.h",
+    ],
+    visibility = ["//src/encode:__pkg__"],
+)

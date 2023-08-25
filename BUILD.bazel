@@ -87,20 +87,20 @@ alias(
 )
 
 alias(
-    name = "pathops",
-    actual = "//src:pathops",
-    visibility = ["//visibility:public"],
-)
-
-alias(
     name = "default_malloc",
     actual = "//src/ports:default_malloc",
     visibility = ["//visibility:public"],
 )
 
 alias(
-    name = "default_logging",
-    actual = "//src/ports:default_logging",
+    name = "png_encode_codec",
+    actual = "//src/encode:png_encode_module",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "pathops",
+    actual = "//src:pathops",
     visibility = ["//visibility:public"],
 )
 

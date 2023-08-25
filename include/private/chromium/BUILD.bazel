@@ -55,3 +55,11 @@ skia_filegroup(
     }),
     visibility = ["//include/private:__pkg__"],
 )
+
+skia_filegroup(
+    name = "buffet_hdrs",
+    srcs = [
+        "SkDiscardableMemory.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
