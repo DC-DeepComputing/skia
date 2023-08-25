@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "584a9135_e1b1623a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T22:13:54Z",
+      "side": 1,
+      "message": "This looks like RepeatedClippedBlurTest is failing on Win Intel Angle bots.",
+      "revId": "e67d9439a8c450df2e174b090e9eb2370e63d0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
