@@ -276,33 +276,24 @@ namespace {
 
 class TestImageFilter : public SkImageFilter_Base {
 public:
-    static sk_sp<TestImageFilter> Make(bool visited = false) {
-        return sk_sp<TestImageFilter>(new TestImageFilter(visited));
-    }
+    TestImageFilter() : SkImageFilter_Base(nullptr, 0, nullptr), fVisited(false) {}
 
     bool visited() const { return fVisited; }
 
-protected:
-    sk_sp<SkSpecialImage> onFilterImage(const skif::Context& ctx, SkIPoint* offset) const override {
+private:
+    Factory getFactory() const override {
+        SK_ABORT("Does not participate in serialization");
+        return nullptr;
+    }
+    const char* getTypeName() const override { return "TestImageFilter"; }
+
+    skif::FilterResult onFilterImage(const skif::Context& ctx) const override {
         fVisited = true;
-        offset->fX = offset->fY = 0;
-        return sk_ref_sp<SkSpecialImage>(ctx.sourceImage());
+        return ctx.source();
     }
 
-private:
-    SK_FLATTENABLE_HOOKS(TestImageFilter)
-    TestImageFilter(bool visited) : INHERITED(nullptr, 0, nullptr), fVisited(visited) {}
-
     mutable bool fVisited;
-
-    using INHERITED = SkImageFilter_Base;
 };
-
-sk_sp<SkFlattenable> TestImageFilter::CreateProc(SkReadBuffer& buffer) {
-    SK_IMAGEFILTER_UNFLATTEN_COMMON(common, 0);
-    bool visited = buffer.readBool();
-    return TestImageFilter::Make(visited);
-}
 
 }  // namespace
 
@@ -314,7 +305,7 @@ DEF_TEST(SkPDF_ImageFilter, reporter) {
     auto doc = SkPDF::MakeDocument(&stream);
     SkCanvas* canvas = doc->beginPage(100.0f, 100.0f);
 
-    sk_sp<TestImageFilter> filter(TestImageFilter::Make());
+    sk_sp<TestImageFilter> filter(new TestImageFilter());
 
     // Filter just created; should be unvisited.
     REPORTER_ASSERT(reporter, !filter->visited());
