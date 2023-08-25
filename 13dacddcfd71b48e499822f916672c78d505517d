@@ -111,6 +111,30 @@
       },
       "revId": "13dacddcfd71b48e499822f916672c78d505517d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b42d3319_15d3f4ca",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-08-25T12:23:36Z",
+      "side": 1,
+      "message": "I attempted earlier, but the CQ rejected it -- see message above.\n\nHave you completed the Skia CLA?  Also, add yourself to the AUTHORS file in this CL.\n\n(https://skia.org/docs/dev/contrib/#contribute-code)",
+      "parentUuid": "25fc246d_9565f1b4",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 39
+      },
+      "revId": "13dacddcfd71b48e499822f916672c78d505517d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
