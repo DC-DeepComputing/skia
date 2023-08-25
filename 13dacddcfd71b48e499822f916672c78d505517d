@@ -135,6 +135,30 @@
       },
       "revId": "13dacddcfd71b48e499822f916672c78d505517d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a4518a_5f420063",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-08-25T12:31:56Z",
+      "side": 1,
+      "message": "I found you in the CLA DB, I think all that\u0027s needed is to add yourself to AUTHORS.",
+      "parentUuid": "b42d3319_15d3f4ca",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 39
+      },
+      "revId": "13dacddcfd71b48e499822f916672c78d505517d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
