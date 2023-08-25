@@ -34,6 +34,24 @@
       "parentUuid": "a6ce136a_ca8301f5",
       "revId": "82831f2d35ad8fd11b56ea7ed679d5ace122673e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1643f3c_02cc41e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-25T16:41:53Z",
+      "side": 1,
+      "message": "Yeah - I checked after I made the comment and it looks like we\u0027re not checking the PDF results at all in Gold! I guess that\u0027s a bigger problem.",
+      "parentUuid": "1a1d85f3_beea85d7",
+      "revId": "82831f2d35ad8fd11b56ea7ed679d5ace122673e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
