@@ -22,6 +22,30 @@
       },
       "revId": "6dc9e52599518749b4765e2a3ed88a03c84f725a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a414135e_878db9b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T15:51:03Z",
+      "side": 1,
+      "message": "Before Mock context we use to have Null GL context. Basically went through our GL backend but all the GL function calls were stubbed out to not do anything.",
+      "parentUuid": "b6589042_bcad5d04",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "revId": "6dc9e52599518749b4765e2a3ed88a03c84f725a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
