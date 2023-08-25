@@ -37,6 +37,7 @@
 #include <string>
 #include <cstdint>
 #include <initializer_list>
+#include <optional>
 
 #ifdef SK_GL
 #include "include/gpu/gl/GrGLFunctions.h"

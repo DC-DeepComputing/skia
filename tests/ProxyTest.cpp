@@ -39,6 +39,7 @@
 #endif
 
 #include <initializer_list>
+#include <optional>
 
 struct GrContextOptions;
 

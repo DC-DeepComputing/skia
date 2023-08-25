@@ -104,7 +104,7 @@ public:
     ContextInfo& operator=(const ContextInfo&) = default;
 
     skgpu::ContextType type() const { return fType; }
-    GrBackendApi backend() const { return skgpu::ganesh::ContextTypeBackend(fType); }
+    std::optional<GrBackendApi> backend() const { return skgpu::ganesh::ContextTypeBackend(fType); }
 
     GrDirectContext* directContext() const { return fContext; }
     TestContext* testContext() const { return fTestContext; }

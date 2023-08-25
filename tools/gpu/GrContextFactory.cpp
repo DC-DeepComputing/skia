@@ -88,7 +88,7 @@ void GrContextFactory::abandonContexts() {
                 context.fTestContext->testAbandon();
             }
             GrBackendApi api = context.fGrContext->backend();
-            bool requiresEarlyAbandon = api == GrBackendApi::kVulkan || api == GrBackendApi::kDawn;
+            bool requiresEarlyAbandon = api == GrBackendApi::kVulkan;
             if (requiresEarlyAbandon) {
                 context.fGrContext->abandonContext();
             }
@@ -162,8 +162,11 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
     }
 
     std::unique_ptr<TestContext> testCtx;
-    GrBackendApi backend = skgpu::ganesh::ContextTypeBackend(type);
-    switch (backend) {
+    std::optional<GrBackendApi> backend = skgpu::ganesh::ContextTypeBackend(type);
+    if (!backend.has_value()) {
+        return ContextInfo();
+    }
+    switch (backend.value()) {
 #ifdef SK_GL
         case GrBackendApi::kOpenGL: {
             GLTestContext* glShareContext = primaryContext
@@ -316,7 +319,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
     // We must always add new contexts by pushing to the back so that when we delete them we delete
     // them in reverse order in which they were made.
     Context& context = fContexts.push_back();
-    context.fBackend = backend;
+    context.fBackend = backend.value();
     context.fTestContext = testCtx.release();
     context.fGrContext = SkRef(grCtx.get());
     context.fType = type;
