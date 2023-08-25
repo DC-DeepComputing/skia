@@ -371,7 +371,7 @@ std::unique_ptr<GrFragmentProcessor> GrMatrixConvolutionEffect::Make(GrRecording
 
 GR_DEFINE_FRAGMENT_PROCESSOR_TEST(GrMatrixConvolutionEffect)
 
-#if GR_TEST_UTILS
+#if defined(GR_TEST_UTILS)
 std::unique_ptr<GrFragmentProcessor> GrMatrixConvolutionEffect::TestCreate(GrProcessorTestData* d) {
     auto [view, ct, at] = d->randomView();
 
