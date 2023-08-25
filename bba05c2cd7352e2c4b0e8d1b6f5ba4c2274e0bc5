@@ -16,6 +16,75 @@
       "message": "This is parented on top of the runtime effect blur changes mostly because I need both to start working on the graphite-specific blur functor.\n\nThis change itself doesn\u0027t depend on those and can be split off to land separately if the others run into staging challenges.",
       "revId": "bba05c2cd7352e2c4b0e8d1b6f5ba4c2274e0bc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90efd6a4_ba280118",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-25T18:26:28Z",
+      "side": 1,
+      "message": "radii ?",
+      "range": {
+        "startLine": 1327,
+        "startChar": 30,
+        "endLine": 1327,
+        "endChar": 36
+      },
+      "revId": "bba05c2cd7352e2c4b0e8d1b6f5ba4c2274e0bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2530e8_49ad1c96",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1334,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-25T18:26:28Z",
+      "side": 1,
+      "message": "I guess move this down a line.",
+      "range": {
+        "startLine": 1334,
+        "startChar": 97,
+        "endLine": 1334,
+        "endChar": 98
+      },
+      "revId": "bba05c2cd7352e2c4b0e8d1b6f5ba4c2274e0bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9c06a6_62fb3ebe",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1363,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-25T18:26:28Z",
+      "side": 1,
+      "message": "Extra \u0027 \u0027s here and below ?",
+      "range": {
+        "startLine": 1363,
+        "startChar": 39,
+        "endLine": 1363,
+        "endChar": 45
+      },
+      "revId": "bba05c2cd7352e2c4b0e8d1b6f5ba4c2274e0bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
