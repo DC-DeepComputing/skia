@@ -34,6 +34,24 @@
       "parentUuid": "dcae3eaa_50c71b36",
       "revId": "4e42b51cfe27717ddbe9f4ba568647fe3800ee12",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "185a937d_ce04b5e2",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-25T14:22:32Z",
+      "side": 1,
+      "message": "Should be fixed over in: https://skia-review.googlesource.com/c/skia/+/747576",
+      "parentUuid": "f2dc8d28_40a44c08",
+      "revId": "4e42b51cfe27717ddbe9f4ba568647fe3800ee12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
