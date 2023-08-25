@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b89f80_9e959f66",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-25T16:52:44Z",
+      "side": 1,
+      "message": "I\u0027ve updated all of these to work with any combination of SK_GANESH/SK_GRAPHITE being enabled.",
+      "parentUuid": "3397f8e9_97d6d7be",
+      "range": {
+        "startLine": 42,
+        "startChar": 18,
+        "endLine": 42,
+        "endChar": 26
+      },
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a27a3025_e19b967b",
