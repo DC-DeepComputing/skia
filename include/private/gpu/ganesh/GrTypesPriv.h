@@ -949,7 +949,6 @@ static constexpr const char* GrBackendApiToStr(GrBackendApi api) {
         case GrBackendApi::kVulkan:   return "Vulkan";
         case GrBackendApi::kMetal:    return "Metal";
         case GrBackendApi::kDirect3D: return "Direct3D";
-        case GrBackendApi::kDawn:     return "Dawn";
         case GrBackendApi::kMock:     return "Mock";
     }
     SkUNREACHABLE;

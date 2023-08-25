@@ -98,7 +98,6 @@ enum class GrBackendApi : unsigned {
     kVulkan,
     kMetal,
     kDirect3D,
-    kDawn,
     /**
      * Mock is a backend that does not draw anything. It is used for unit tests
      * and to measure CPU overhead.

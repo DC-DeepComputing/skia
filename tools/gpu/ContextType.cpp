@@ -76,7 +76,7 @@ bool skgpu::IsRenderingContext(ContextType type) {
     return type != ContextType::kMock;
 }
 
-GrBackendApi skgpu::ganesh::ContextTypeBackend(skgpu::ContextType type) {
+std::optional<GrBackendApi> skgpu::ganesh::ContextTypeBackend(skgpu::ContextType type) {
     switch (type) {
         case skgpu::ContextType::kGL:
         case skgpu::ContextType::kGLES:
@@ -105,7 +105,7 @@ GrBackendApi skgpu::ganesh::ContextTypeBackend(skgpu::ContextType type) {
         case ContextType::kDawn_Vulkan:
         case ContextType::kDawn_OpenGL:
         case ContextType::kDawn_OpenGLES:
-            return GrBackendApi::kDawn;
+            return std::nullopt;  // no Ganesh backend
 
         case ContextType::kMock:
             return GrBackendApi::kMock;
