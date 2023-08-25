@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c49e2f1_497fdb9f",
+        "filename": "tools/SkSharingProc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-25T19:42:59Z",
+      "side": 1,
+      "message": "I don\u0027t have a strong preference on this comment, but looking at this function I was a little confused on why we always return `SkData::MakeEmpty()`, so I thought it might be helpful for others.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 88
+      },
+      "revId": "a722044a35e5116e27ae5f174e5a8f8c24a5dbf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a67f40c4_cf676bdf",
+        "filename": "tools/SkSharingProc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-08-25T19:42:59Z",
+      "side": 1,
+      "message": "Oops - forgot to mention this in the commit message. I changed this because the values we store are the size of the map. `THashMap` returns the size as an `int`.",
+      "range": {
+        "startLine": 54,
+        "startChar": 37,
+        "endLine": 54,
+        "endChar": 40
+      },
+      "revId": "a722044a35e5116e27ae5f174e5a8f8c24a5dbf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
