@@ -72,9 +72,6 @@ SkTextureCompressionType GrBackendFormatToCompressionType(const GrBackendFormat&
             break;
 #endif
         }
-        case GrBackendApi::kDawn: {
-            return SkTextureCompressionType::kNone;
-        }
         case GrBackendApi::kMock: {
             return format.asMockCompressionType();
         }
@@ -111,9 +108,6 @@ size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
 #else
             break;
 #endif
-        }
-        case GrBackendApi::kDawn: {
-            break;
         }
         case GrBackendApi::kMock: {
             SkTextureCompressionType compression = format.asMockCompressionType();
@@ -165,9 +159,6 @@ int GrBackendFormatStencilBits(const GrBackendFormat& format) {
 #else
             break;
 #endif
-        }
-        case GrBackendApi::kDawn: {
-            break;
         }
         case GrBackendApi::kMock: {
             if (format.isMockStencilFormat()) {

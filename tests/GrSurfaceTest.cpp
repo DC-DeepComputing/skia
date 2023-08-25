@@ -60,6 +60,7 @@
 #include <functional>
 #include <initializer_list>
 #include <memory>
+#include <optional>
 #include <tuple>
 #include <utility>
 #include <vector>

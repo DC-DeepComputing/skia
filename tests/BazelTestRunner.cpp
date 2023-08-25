@@ -29,6 +29,7 @@
 #include <cwchar>
 #include <functional>
 #include <iomanip>
+#include <optional>
 #include <sstream>
 #include <string>
 
@@ -62,9 +63,6 @@ bool IsMetalContextType(skgpu::ContextType type) {
 }
 bool IsDirect3DContextType(skgpu::ContextType type) {
     return skgpu::ganesh::ContextTypeBackend(type) == GrBackendApi::kDirect3D;
-}
-bool IsDawnContextType(skgpu::ContextType type) {
-    return skgpu::ganesh::ContextTypeBackend(type) == GrBackendApi::kDawn;
 }
 bool IsMockContextType(skgpu::ContextType type) {
     return type == skgpu::ContextType::kMock;

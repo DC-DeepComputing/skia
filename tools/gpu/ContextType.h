@@ -52,7 +52,7 @@ bool IsRenderingContext(skgpu::ContextType type);
 
 namespace ganesh {
 
-GrBackendApi ContextTypeBackend(skgpu::ContextType type);
+std::optional<GrBackendApi> ContextTypeBackend(skgpu::ContextType type);
 
 }  // namespace ganesh
 
