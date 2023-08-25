@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7680309c_9e7075c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-25T16:56:50Z",
+      "side": 1,
+      "message": "Why the opposition to `optional` exactly? It\u0027s all test code, so there really isn\u0027t a code-size reason to avoid it, and it makes sense in the given context. IMO it\u0027s cleaner than having your backend-lookup function nuke the entire process.\n\nI had considered adding a `kUnsupported` enum value, but the amount of touchpoints that this would affect is much much larger than an optional (we switch on backend type a lot), and that\u0027s functionally the same as an optional IMO.",
+      "parentUuid": "75e99e17_aff4789f",
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3397f8e9_97d6d7be",
         "filename": "dm/DMGpuTestProcs.cpp",
         "patchSetId": 1
