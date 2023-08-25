@@ -128,12 +128,9 @@ VulkanSharedContext::~VulkanSharedContext() {
 
 std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
         SingleOwner* singleOwner,
-        uint32_t recorderID,
-        size_t resourceBudget) {
-    return std::unique_ptr<ResourceProvider>(new VulkanResourceProvider(this,
-                                                                        singleOwner,
-                                                                        recorderID,
-                                                                        resourceBudget));
+        uint32_t recorderID) {
+    return std::unique_ptr<ResourceProvider>(new VulkanResourceProvider(this, singleOwner,
+                                                                        recorderID));
 }
 
 bool VulkanSharedContext::checkVkResult(VkResult result) const {

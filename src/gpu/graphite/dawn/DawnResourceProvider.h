@@ -18,10 +18,7 @@ class DawnTexture;
 
 class DawnResourceProvider final : public ResourceProvider {
 public:
-    DawnResourceProvider(SharedContext* sharedContext,
-                         SingleOwner*,
-                         uint32_t recorderID,
-                         size_t resourceBudget);
+    DawnResourceProvider(SharedContext* sharedContext, SingleOwner*, uint32_t recorderID);
     ~DawnResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;

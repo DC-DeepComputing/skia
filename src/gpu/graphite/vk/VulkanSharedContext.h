@@ -39,8 +39,7 @@ public:
     uint32_t  queueIndex() const { return fQueueIndex; }
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
-                                                           uint32_t recorderID,
-                                                           size_t resourceBudget) override;
+                                                           uint32_t recorderID) override;
 
     bool checkVkResult(VkResult result) const;
 

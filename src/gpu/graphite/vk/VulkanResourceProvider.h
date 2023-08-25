@@ -21,10 +21,7 @@ class VulkanSharedContext;
 
 class VulkanResourceProvider final : public ResourceProvider {
 public:
-    VulkanResourceProvider(SharedContext* sharedContext,
-                           SingleOwner*,
-                           uint32_t recorderID,
-                           size_t resourceBudget);
+    VulkanResourceProvider(SharedContext* sharedContext, SingleOwner*, uint32_t recorderID);
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
