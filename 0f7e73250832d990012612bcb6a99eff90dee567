@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28d887f2_09b3d9d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-25T17:24:10Z",
+      "side": 1,
+      "message": "There\u0027s lots of code which loops over all the ContextTypes and does a thing. That doesn\u0027t seem like it should be punishable by death :)",
+      "parentUuid": "8418fb62_a477da03",
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3397f8e9_97d6d7be",
