@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fdf223d_d01e2f70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T17:28:05Z",
+      "side": 1,
+      "message": "This is parented on top of the runtime effect blur changes mostly because I need both to start working on the graphite-specific blur functor.\n\nThis change itself doesn\u0027t depend on those and can be split off to land separately if the others run into staging challenges.",
+      "revId": "bba05c2cd7352e2c4b0e8d1b6f5ba4c2274e0bc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

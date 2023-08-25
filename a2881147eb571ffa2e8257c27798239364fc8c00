@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c401a8ee_55d330dc",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1059,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T17:28:05Z",
+      "side": 1,
+      "message": "We\u0027d been inconsistent with using Delegate, Callback, and Functor throughout the code and backends so this CL also settles on Functor.",
+      "range": {
+        "startLine": 1059,
+        "startChar": 10,
+        "endLine": 1059,
+        "endChar": 28
+      },
+      "revId": "a2881147eb571ffa2e8257c27798239364fc8c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
