@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8418fb62_a477da03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T17:22:59Z",
+      "side": 1,
+      "message": "Mostly from a POV of ganesh tests should only be attempting to use ContextTypes that map to GrBackendAPIs that are supported. In almost all cases that is how it works so they don\u0027t even worry about there being an optional. A hard failure because you wrote the tests wrong doesn\u0027t seem bad to me. But I\u0027m not going to stress too much about it.",
+      "parentUuid": "7680309c_9e7075c1",
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3397f8e9_97d6d7be",
