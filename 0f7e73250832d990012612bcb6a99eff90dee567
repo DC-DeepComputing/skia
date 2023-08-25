@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75e99e17_aff4789f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:15:26Z",
+      "side": 1,
+      "message": "I\u0027ve got some thoughts about the use of an optional return, which seems slightly overkill for how few places actually depend on skipping a dawn context type. But if my thoughts don\u0027t work or you\u0027re opposed, it\u0027s also not a big deal since it\u0027s just test code.",
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3397f8e9_97d6d7be",
+        "filename": "dm/DMGpuTestProcs.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:15:26Z",
+      "side": 1,
+      "message": "Does this need to be guarded by `defined(SK_GRAPHITE)`?",
+      "range": {
+        "startLine": 42,
+        "startChar": 18,
+        "endLine": 42,
+        "endChar": 26
+      },
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a27a3025_e19b967b",
+        "filename": "tests/PromiseImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:15:26Z",
+      "side": 1,
+      "message": "Could we instead check for `skiatest::IsDawnContextType(contextType)` before calling `ContextTypeBackend` and not have to wrap the return value in optional at all? Just let it be an SkUNREACHABLE or an assert in the ganesh function?",
+      "range": {
+        "startLine": 248,
+        "startChar": 8,
+        "endLine": 250,
+        "endChar": 0
+      },
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c9be9e8_e39af8e8",
+        "filename": "tools/gpu/GrContextFactory.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:15:26Z",
+      "side": 1,
+      "message": "will this function be called with a kDawn_Foo context type from Graphite? Or is GrContextFactory already restricted to Ganesh test use. In that case we could assert that it\u0027s not dawn and avoid having to deal with an optional?",
+      "range": {
+        "startLine": 133,
+        "startChar": 30,
+        "endLine": 133,
+        "endChar": 52
+      },
+      "revId": "0f7e73250832d990012612bcb6a99eff90dee567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
