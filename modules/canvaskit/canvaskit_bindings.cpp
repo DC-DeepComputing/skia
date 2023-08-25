@@ -126,6 +126,10 @@
 #include "include/ports/SkFontMgr_data.h"
 #endif
 
+#if GR_TEST_UTILS
+#error "Why is this here?"
+#endif
+
 struct OptionalMatrix : SkMatrix {
     OptionalMatrix(WASMPointerF32 mPtr) {
         if (mPtr) {
