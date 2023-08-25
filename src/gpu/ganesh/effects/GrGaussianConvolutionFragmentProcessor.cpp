@@ -1,3 +1,5 @@
+<<<<<<< PATCH SET (79825e Move 1D linear Gaussian FP to a runtime GrSkSLFP)
+=======
 /*
  * Copyright 2012 Google Inc.
  *
@@ -274,3 +276,4 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Tes
                                                         subset, domain, *d->caps());
 }
 #endif
+>>>>>>> BASE      (1b1e34 Remove some testing-only image filter subclasses)
