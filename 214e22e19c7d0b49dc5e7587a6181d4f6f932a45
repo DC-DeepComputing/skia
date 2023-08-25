@@ -16,6 +16,29 @@
       "message": "Adding Greg for OWNERS since Brian is out. The reported gold diffs are inherited from when this was parented on a blur CL; it shouldn\u0027t be producing any of its own.",
       "revId": "214e22e19c7d0b49dc5e7587a6181d4f6f932a45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a1dad1d_7fd333ee",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T14:32:38Z",
+      "side": 1,
+      "message": "nit: move over one space",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 6
+      },
+      "revId": "214e22e19c7d0b49dc5e7587a6181d4f6f932a45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
