@@ -16,6 +16,24 @@
       "message": "This lgtm but do you think it is actually testing anything that Gold wouldn\u0027t catch?",
       "revId": "82831f2d35ad8fd11b56ea7ed679d5ace122673e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a1d85f3_beea85d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-25T16:31:21Z",
+      "side": 1,
+      "message": "I think so because I don\u0027t think we are actively running or monitoring the pdf backend GMs.",
+      "parentUuid": "a6ce136a_ca8301f5",
+      "revId": "82831f2d35ad8fd11b56ea7ed679d5ace122673e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
