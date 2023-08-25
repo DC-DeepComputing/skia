@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d393bce_7f4f1ff0",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T13:46:08Z",
+      "side": 1,
+      "message": "So there are extensions that will allow us to also do the advanced blend modes using fixed function hardware.\n\nCould we not rewrite these two nested ifs as:\n\n```\nif (fDstReadReq !\u003d DstReadRequirement::kNone) {\n    SkBlendModeBlender blender(*finalBlendMode);\n    AddDstBlendBlock(keyContext, builder, gatherer, \u0026blender);\n    finalBlendMode \u003d SkBlendMode::kSrc;\nelse {\n    // TODO: once we support advanced blend extensions we can remove this assert\n    // but for now we should only get here if we have a normal porter-duff blend\n    // mode (i.e. a CoeffMode in SkBlendMode enum)\n    SkASSERT(*finalBlendMode \u003c\u003d kLastCoeffMode);\n    \u003cdo what\u0027s needed for fixed function blend mode\u003e\n}",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 75
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47295fbf_9b586e1d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T13:46:08Z",
+      "side": 1,
+      "message": "I don\u0027t think this is a very clear comment. If I\u0027m reading it correctly it seems to suggest the reason we\u0027re doing in shader blending is purely because we have coverage. Well technically the advanced blend modes are also SkBlendModes (e.g. color burn), and without the fixed function extensions for them they will always require in shader blending. I think leaving the comment simply as something like:\n```\nWe cannot handle the combination of blend mode and coverage using the fixed function blend hardware. Thus we manually do all the blending in the shader and set the fixed blend mode to be kSrc.\n```",
+      "range": {
+        "startLine": 154,
+        "startChar": 15,
+        "endLine": 154,
+        "endChar": 98
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1271823a_93ce3081",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T13:46:08Z",
+      "side": 1,
+      "message": "Does this block as do the coverage modulation?",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 70
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86affbad_6d52c13d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T13:46:08Z",
+      "side": 1,
+      "message": "Why do we need to add all this fixed function code after the DstBlendBlock above if we\u0027re handling all the blending in that block?",
+      "range": {
+        "startLine": 162,
+        "startChar": 7,
+        "endLine": 162,
+        "endChar": 29
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c193727_0256b083",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T13:46:08Z",
+      "side": 1,
+      "message": "So IIRC even when we can use fixed function blending, we don\u0027t always spit out the same \"output source color\" from the shader that feeds into the blending. For example sometimes it is `outColor \u003d Src * Coverage`,  `outColor \u003d Src.a * Coverage`, `outColor \u003d (1-Src) * coverage`, etc.\n\nDoes this beginBlock here handle all those cases?",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce2d404e_b819cb07",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-25T13:46:08Z",
+      "side": 1,
+      "message": "Why does this not need to make an SkBlendModeBlender with the finalBlendMode before adding the DstBlendBlock? I would think it would need to do identical stuff as the code you added, like setting finalBlendMode to kSrc.",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 77
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
