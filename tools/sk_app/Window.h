@@ -67,6 +67,7 @@ public:
         kANGLE_BackendType,
 #endif
 #ifdef SK_DAWN
+        kDawn_BackendType,
 #if defined(SK_GRAPHITE)
         kGraphiteDawn_BackendType,
 #endif

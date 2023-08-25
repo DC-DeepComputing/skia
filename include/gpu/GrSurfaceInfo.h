@@ -23,6 +23,9 @@ struct GrD3DSurfaceInfo;
 #ifdef SK_METAL
 #include "include/private/gpu/ganesh/GrMtlTypesPriv.h"
 #endif
+#ifdef SK_DAWN
+#include "include/private/gpu/ganesh/GrDawnTypesPriv.h"
+#endif
 #include "include/private/gpu/ganesh/GrMockTypesPriv.h"
 
 class GrSurfaceInfo {
@@ -57,6 +60,15 @@ public:
             , fLevelCount(mtlInfo.fLevelCount)
             , fProtected(mtlInfo.fProtected)
             , fMtlSpec(mtlInfo) {}
+#endif
+#ifdef SK_DAWN
+    GrSurfaceInfo(const GrDawnSurfaceInfo& dawnInfo)
+            : fBackend(GrBackendApi::kDawn)
+            , fValid(true)
+            , fSampleCount(dawnInfo.fSampleCount)
+            , fLevelCount(dawnInfo.fLevelCount)
+            , fProtected(dawnInfo.fProtected)
+            , fDawnSpec(dawnInfo) {}
 #endif
     GrSurfaceInfo(const GrMockSurfaceInfo& mockInfo)
             : fBackend(GrBackendApi::kMock)
@@ -106,6 +118,15 @@ public:
         return true;
     }
 #endif
+#ifdef SK_DAWN
+    bool getDawnSurfaceInfo(GrDawnSurfaceInfo* info) const {
+        if (!this->isValid() || fBackend != GrBackendApi::kDawn) {
+            return false;
+        }
+        *info = GrDawnTextureSpecToSurfaceInfo(fDawnSpec, fSampleCount, fLevelCount, fProtected);
+        return true;
+    }
+#endif
     bool getMockSurfaceInfo(GrMockSurfaceInfo* info) const {
         if (!this->isValid() || fBackend != GrBackendApi::kMock) {
             return false;
@@ -134,6 +155,9 @@ private:
 #endif
 #ifdef SK_METAL
         GrMtlTextureSpec fMtlSpec;
+#endif
+#ifdef SK_DAWN
+        GrDawnTextureSpec fDawnSpec;
 #endif
         GrMockTextureSpec fMockSpec;
     };
