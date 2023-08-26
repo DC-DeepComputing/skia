@@ -100,9 +100,9 @@
         "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64"
       ]
     },
-    "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64": {
+    "BazelTest-gm-hello_bazel_world_test-linux_rbe-linux_x64": {
       "tasks": [
-        "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64"
+        "BazelTest-gm-hello_bazel_world_test-linux_rbe-linux_x64"
       ]
     },
     "BazelTest-precompiled-android_codec_test-pixel_5-linux_arm64": {
@@ -4442,7 +4442,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64": {
+    "BazelTest-gm-hello_bazel_world_test-linux_rbe-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4460,10 +4460,10 @@
         "./bazel_test_gm",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64",
+        "--task_name=BazelTest-gm-hello_bazel_world_test-linux_rbe-linux_x64",
         "--workdir=.",
         "--test_label=//gm:hello_bazel_world_test",
-        "--test_config=cpu_only_release_rbe",
+        "--test_config=linux_rbe",
         "--goldctl_path=./cipd_bin_packages/goldctl",
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
@@ -91946,7 +91946,7 @@
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
       "experimental": true
     },
-    "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64": {
+    "BazelTest-gm-hello_bazel_world_test-linux_rbe-linux_x64": {
       "experimental": true
     },
     "Build-Debian10-Clang-arm-Debug-Android": {},
