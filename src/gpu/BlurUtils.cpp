@@ -138,6 +138,73 @@ void Compute1DBlurLinearKernel(float sigma,
     memset(offsets.data() + halfSize, 0, sizeof(float)*(kMaxBlurSamples - halfSize));
 }
 
+// FIXME: So the changes this time around are a hardcode loop limit w/ exact match for the radius
+// and re-organized the offset and kernels into a single array of half2's. This has less ideal
+// packing but matches what the gaussian effect had declared previously. The offsets are now also
+// ordered before the kernel, and the multiplication order of offset*dir matches. However, the
+// total size of the uniforms is always the max vs. being the exact fit. And I'm not sure if it
+// matters but I moved the half2 dir uniform to be declared before hand. This should mean that the
+// shaders are exactly the same barring local variable differences....
+const SkRuntimeEffect* GetLinearBlur1DEffect(int radius) {
+    static const auto makeEffect = [](int radius) {
+        return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                SkStringPrintf(
+                       // The coefficients are always stored in for the max radius to keep the
+                       // uniform block consistent across all effects.
+                       "const int kMaxUniformKernelSize = %d;"
+                        "uniform half2 dir;"
+                       "uniform half2 offsetAndKernels[kMaxUniformKernelSize];"
+                       "uniform shader child;"
+
+                       "half4 main(float2 coord) {"
+                           "half4 sum = half4(0);"
+
+                           "for (int i = 0; i < %d; ++i) {"
+                                // The offset value uploaded to the GPU already includes the
+                                // pixel-level shift for each iteration.
+                                "half2 s = offsetAndKernels[i];"
+                                "half4 c = child.eval(coord + s.x * dir);"
+                                "sum += c*s.y;"
+                           "}"
+                           "return sum;"
+                       "}", kMaxBlurSamples, radius).c_str());
+    };
+
+    switch (radius) {
+        case 1:  { static SkRuntimeEffect* effect = makeEffect(1);
+                   return effect; }
+        case 2:  { static SkRuntimeEffect* effect = makeEffect(2);
+                   return effect; }
+        case 3:  { static SkRuntimeEffect* effect = makeEffect(3);
+                   return effect; }
+        case 4:  { static SkRuntimeEffect* effect = makeEffect(4);
+                   return effect; }
+        case 5:  { static SkRuntimeEffect* effect = makeEffect(5);
+                   return effect; }
+        case 6:  { static SkRuntimeEffect* effect = makeEffect(6);
+                   return effect; }
+        case 7:  { static SkRuntimeEffect* effect = makeEffect(7);
+                   return effect; }
+        case 8:  { static SkRuntimeEffect* effect = makeEffect(8);
+                   return effect; }
+        case 9:  { static SkRuntimeEffect* effect = makeEffect(9);
+                   return effect; }
+        case 10: { static SkRuntimeEffect* effect = makeEffect(10);
+                  return effect; }
+        case 11: { static SkRuntimeEffect* effect = makeEffect(11);
+                  return effect; }
+        case 12: { static SkRuntimeEffect* effect = makeEffect(12);
+                  return effect; }
+        case 13: { static SkRuntimeEffect* effect = makeEffect(13);
+                  return effect; }
+        default:
+            // TODO given sigma vs max radius mismatch these are the only effects we need so far.
+            // not up to the actual max of 28.
+            SkASSERT(false);
+            return nullptr;
+    }
+}
+
 const SkRuntimeEffect* GetBlur2DEffect() {
     // TODO(michaelludwig): This shares a lot of similarity with the matrix convolution image filter
     // with convolveAlpha=true and a centered kernel size and offset (represented by just radii).
