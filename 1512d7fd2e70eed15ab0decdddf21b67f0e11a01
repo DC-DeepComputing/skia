@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "028627bb_716ee544",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-27T01:40:14Z",
+      "side": 1,
+      "message": "First test was switching back to using pixel-domain aware GrTextureEffects for the child. This seemed to reduce the number of gold diffs -\u003e only the Iris655 appears for this CL in PS2 even though a number of hardware was run.\n\nBut the iris655 still crashes on angle w/o any info. It passes on other configs, though...\n\nThe next test will use a runtime effect with a hard-coded radius and re-organizes the uniforms to almost exactly match the old shaders. The exception is that the uniform array size will always be the max size so that the calling code is simpler. \n\nI looked at generated MSL of the shaders before and after the original change and the only difference that had been there was the new looping structure and that the kernel and offsets were organized into two half4 arrays instead of a larger interleaved half2 array. The half2 array doesn\u0027t pack well in std140 but it does have a simpler indexing pattern.",
+      "revId": "1512d7fd2e70eed15ab0decdddf21b67f0e11a01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
