@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d00813_3f662325",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-27T12:54:00Z",
+      "side": 1,
+      "message": "3rd test is packing the interleaved offset and kernels into a half4, and manually unrolling the access to `.xy` and `.zw` plus an extra odd-radius access at the end.",
+      "revId": "a102d480496e36df9487b9a0de97120ee1b167d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
