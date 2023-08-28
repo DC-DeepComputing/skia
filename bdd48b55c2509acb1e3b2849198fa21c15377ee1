@@ -16,6 +16,24 @@
       "message": "FYI I updated this to fix precompilation, and also got rid of the defensive value_or on the blend mode -- it seems unnecessary given that we will definitely reject invalid snippet IDs later on in the pipeline creation process.",
       "revId": "bdd48b55c2509acb1e3b2849198fa21c15377ee1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d41b11_150eed97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-28T21:01:25Z",
+      "side": 1,
+      "message": "still looks good",
+      "parentUuid": "eb8f60a1_248d6b7e",
+      "revId": "bdd48b55c2509acb1e3b2849198fa21c15377ee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
