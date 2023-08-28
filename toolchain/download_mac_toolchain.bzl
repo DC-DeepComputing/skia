@@ -43,13 +43,15 @@ def _create_macos_sdk_symlinks(ctx):
     # https://bazel.build/rules/lib/actions#symlink
     ctx.symlink(
         # from =
-        system_xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr",
+        #        system_xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr",
+        system_xcode_path + "/SDKs/MacOSX.sdk/usr",
         # to =
         "./symlinks/xcode/MacSDK/usr",
     )
     ctx.symlink(
         # from =
-        system_xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
+        #        system_xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
+        system_xcode_path + "/SDKs/MacOSX.sdk/System/Library/Frameworks",
         # to =
         "./symlinks/xcode/MacSDK/Frameworks",
     )

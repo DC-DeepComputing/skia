@@ -1378,7 +1378,7 @@ optional("typeface_fontations") {
     "src/ports/SkTypeface_fontations_priv.h",
   ]
 
-  sources_for_tests = [ "tests/FontationsTest.cpp" ]
+  sources_for_tests = [ "tests/FontationsTest.cpp", "tests/FontationsFtCompTest.cpp" ]
 }
 
 optional("webp_decode") {
@@ -2144,6 +2144,8 @@ if (skia_enable_tools) {
       "tools/Stats.h",
       "tools/ToolUtils.cpp",
       "tools/ToolUtils.h",
+      "tools/RasterTestData.cpp",
+      "tools/RasterTestData.h",
       "tools/UrlDataManager.cpp",
       "tools/UrlDataManager.h",
       "tools/debugger/DebugCanvas.cpp",
@@ -2294,6 +2296,7 @@ if (skia_enable_tools) {
       ":fontmgr_android_tests",
       ":fontmgr_fontconfig_tests",
       ":fontmgr_mac_ct_tests",
+      ":typeface_fontations_tests",
       ":skia",
       ":test",
       ":tool_utils",
