@@ -234,3 +234,7 @@ bool SkSurface::characterize(GrSurfaceCharacterization* characterization) const 
 bool SkSurface::isCompatible(const GrSurfaceCharacterization& characterization) const {
     return asConstSB(this)->onIsCompatible(characterization);
 }
+
+bool SkSurface::isProtected() const {
+    return asConstSB(this)->onIsProtected();
+}
