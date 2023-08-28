@@ -33,6 +33,24 @@
       "message": "Seems like we ought to do a minimal (local?) test of chromium in graphite+dawn mode with this before landing?",
       "revId": "7ed2f7cec26eb7effaea828c477ab1702220a699",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01c75fa8_708c742a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-28T15:41:29Z",
+      "side": 1,
+      "message": "Why force it on Chrome immediately? Can\u0027t we flip this on some subset of our bots and then chrome can switch the flag when they\u0027re ready?",
+      "parentUuid": "8d09a313_a3490945",
+      "revId": "7ed2f7cec26eb7effaea828c477ab1702220a699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
