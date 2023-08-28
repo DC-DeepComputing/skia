@@ -39,7 +39,7 @@ DEF_TEST(SkSLGLSLTestbed, r) {
     test(r,
          R"__SkSL__(
              void main() {
-                 sk_FragColor = half4(0);
+                for (int i = 0; i >= 0; --i) { sk_FragColor = half4(0); }
              }
          )__SkSL__");
 }
