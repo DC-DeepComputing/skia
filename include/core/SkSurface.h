@@ -171,6 +171,11 @@ public:
     */
     bool isCompatible(const GrSurfaceCharacterization& characterization) const;
 
+    /**
+     *  Returns true if the surface can draw Protected content.
+     */
+    bool isProtected() const;
+
     /** Returns pixel count in each row; may be zero or greater.
 
         @return  number of pixel columns

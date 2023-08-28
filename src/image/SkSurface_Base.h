@@ -161,6 +161,7 @@ public:
 
     virtual bool onCharacterize(GrSurfaceCharacterization*) const { return false; }
     virtual bool onIsCompatible(const GrSurfaceCharacterization&) const { return false; }
+    virtual bool onIsProtected() const = 0;
 
     // TODO: Remove this (make it pure virtual) after updating Android (which has a class derived
     // from SkSurface_Base).
