@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkShader.h"
+#include "src/core/SkBlendModeBlender.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
@@ -147,15 +148,25 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 #endif
 
-    std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
-    if (finalBlendMode && *finalBlendMode <= SkBlendMode::kLastCoeffMode) {
-        BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
-                kFixedFunctionBlendModeIDOffset + (int) *finalBlendMode);
-        builder->beginBlock(fixedFuncBlendModeID);
-        builder->endBlock();
+    // If this draw needs a dst read, we are either doing custom blending or we cannot handle the
+    // combination of blend mode and coverage using fixed function blend hardware.
+    if (fDstReadReq != DstReadRequirement::kNone) {
+        // Add a block to implement the blending in the shader.
+        static const SkBlendModeBlender kDefaultBlender(SkBlendMode::kSrcOver);
+        AddDstBlendBlock(keyContext,
+                         builder,
+                         gatherer,
+                         fFinalBlender ? fFinalBlender.get() : &kDefaultBlender);
 
     } else {
-        AddDstBlendBlock(keyContext, builder, gatherer, fFinalBlender.get());
+        // Add a block which will set the blend mode and not add any shader code.
+        std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
+        SkASSERT(finalBlendMode);
+        BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
+                kFixedFunctionBlendModeIDOffset +
+                static_cast<int>(finalBlendMode.value_or(SkBlendMode::kClear)));
+        builder->beginBlock(fixedFuncBlendModeID);
+        builder->endBlock();
     }
 }
 
