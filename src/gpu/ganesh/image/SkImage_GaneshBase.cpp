@@ -26,6 +26,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/SkBackingFit.h"
@@ -399,6 +400,11 @@ sk_sp<GrTextureProxy> SkImage_GaneshBase::MakePromiseImageLazyProxy(
 
     return GrProxyProvider::CreatePromiseProxy(
             tsp, std::move(callback), backendFormat, dimensions, mipmapped);
+}
+
+skif::Context SkImage_GaneshBase::onCreateFilterContext(GrRecordingContext* rContext,
+                                                        const skif::ContextInfo& ctxInfo) const {
+    return skif::MakeGaneshContext(rContext, this->origin(), ctxInfo);
 }
 
 namespace SkImages {
