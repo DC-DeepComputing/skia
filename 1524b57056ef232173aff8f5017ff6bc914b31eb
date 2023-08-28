@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4aa9e5c_03d0a9d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T18:40:32Z",
+      "side": 1,
+      "message": "Always setting HW blend mode per offline discussion.",
+      "revId": "1524b57056ef232173aff8f5017ff6bc914b31eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
