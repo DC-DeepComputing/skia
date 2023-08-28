@@ -36,7 +36,8 @@ class Context;
 static constexpr int kLoopTerminationLimit = 100000;
 
 static int calculate_count(double start, double end, double delta, bool forwards, bool inclusive) {
-    if (forwards != (start < end)) {
+    if ((inclusive && forwards != (start <= end)) ||
+        (!inclusive && forwards != (start < end))) {
         // The loop starts in a completed state (the start has already advanced past the end).
         return 0;
     }

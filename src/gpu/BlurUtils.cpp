@@ -8,6 +8,7 @@
 #include "src/gpu/BlurUtils.h"
 
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/base/SkMathPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 
 #include <array>
@@ -136,6 +137,56 @@ void Compute1DBlurLinearKernel(float sigma,
     // Zero out remaining values in the arrays
     memset(kernel.data() + halfSize, 0, sizeof(float)*(kMaxBlurSamples - halfSize));
     memset(offsets.data() + halfSize, 0, sizeof(float)*(kMaxBlurSamples - halfSize));
+}
+
+const SkRuntimeEffect* GetLinearBlur1DEffect(int radius) {
+    static const auto makeEffect = [](int maxRadius) {
+        SkASSERT(maxRadius < kMaxBlurSamples);
+        return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                SkStringPrintf(
+                       // The coefficients are always stored in for the max radius to keep the
+                       // uniform block consistent across all effects.
+                       "const int kMaxUniformKernelSize = %d / 2;"
+                       // But to help lower-end GPUs with unrolling, we bucket the max loop level.
+                       "const int kMaxLoopLimit = %d / 2 + 1;"
+
+                       "uniform half4 offsetAndKernels[kMaxUniformKernelSize];"
+                       "uniform half2 dir;"
+                       "uniform int radius;"
+                       "uniform shader child;"
+
+                       "half4 main(float2 coord) {"
+                           "half4 sum = half4(0);"
+                            "for (int i = 0; i < kMaxLoopLimit; ++i) {"
+                                "half4 s = offsetAndKernels[i];"
+                                "if (radius < 2*i) { break; }"
+                                "half2 o = offsetAndKernels[i].x * dir;"
+                                "sum += offsetAndKernels[i].y * child.eval(coord + o);"
+
+                                "if (radius <= 2*i) { break; }"
+                                "o = offsetAndKernels[i].z * dir;"
+                                "sum += offsetAndKernels[i].w * child.eval(coord + o);"
+                            "}"
+                            "return sum;"
+                       "}", kMaxBlurSamples, maxRadius).c_str());
+    };
+
+    SkASSERT(radius > 0 && radius < kMaxBlurSamples);
+    switch(SkNextLog2(radius)) {
+        // Group radius [1,4] in the same shader
+        case 0: [[fallthrough]];
+        case 1: [[fallthrough]];
+        case 2: {  static const SkRuntimeEffect* effect = makeEffect(4);
+                   return effect; }
+        case 3: {  static const SkRuntimeEffect* effect = makeEffect(8);
+                   return effect; }
+        case 4: {  static const SkRuntimeEffect* effect = makeEffect(16);
+                   return effect; }
+        case 5: {  static const SkRuntimeEffect* effect = makeEffect(kMaxBlurSamples - 1);
+                   return effect; }
+        default:
+            SkUNREACHABLE;
+    }
 }
 
 const SkRuntimeEffect* GetBlur2DEffect() {
