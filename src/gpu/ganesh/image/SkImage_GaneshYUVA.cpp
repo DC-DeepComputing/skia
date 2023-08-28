@@ -230,11 +230,6 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_GaneshYUVA::asView(
     return {sfc->readSurfaceView(), sfc->colorInfo().colorType()};
 }
 
-skif::Context SkImage_GaneshYUVA::onCreateFilterContext(GrRecordingContext* rContext,
-                                                        const skif::ContextInfo& ctxInfo) const {
-    return skif::MakeGaneshContext(rContext, fYUVAProxies.textureOrigin(), ctxInfo);
-}
-
 std::unique_ptr<GrFragmentProcessor> SkImage_GaneshYUVA::asFragmentProcessor(
         GrRecordingContext* context,
         SkSamplingOptions sampling,
