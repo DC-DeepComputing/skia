@@ -959,6 +959,15 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             this->writeSimpleIntrinsic(c);
             return true;
         }
+        case k_not_IntrinsicKind: {
+            // Metal offers a native `not(bvec)` but it doesn't work properly on some GPUs.
+            this->write("(");
+            this->writeExpression(*c.arguments()[0], Precedence::kEquality);
+            this->write(" == ");
+            this->write(this->typeName(c.arguments()[0]->type()));
+            this->write("(false))");
+            return true;
+        }
         case k_equal_IntrinsicKind:
         case k_greaterThan_IntrinsicKind:
         case k_greaterThanEqual_IntrinsicKind:

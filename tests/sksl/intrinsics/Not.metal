@@ -18,6 +18,6 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     (void)_out;
     bool4 inputVal = bool4(_uniforms.colorGreen);
     bool4 expected = bool4(true, false, true, false);
-    _out.sk_FragColor = ((((all(not(inputVal.xy) == expected.xy) && all(not(inputVal.xyz) == expected.xyz)) && all(not(inputVal) == expected)) && all(bool2(true, false) == expected.xy)) && all(bool3(true, false, true) == expected.xyz)) && all(bool4(true, false, true, false) == expected) ? _uniforms.colorGreen : _uniforms.colorRed;
+    _out.sk_FragColor = ((((all((inputVal.xy == bool2(false)) == expected.xy) && all((inputVal.xyz == bool3(false)) == expected.xyz)) && all((inputVal == bool4(false)) == expected)) && all(bool2(true, false) == expected.xy)) && all(bool3(true, false, true) == expected.xyz)) && all(bool4(true, false, true, false) == expected) ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
