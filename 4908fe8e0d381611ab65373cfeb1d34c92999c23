@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80cbac33_deb212b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-28T17:13:06Z",
+      "side": 1,
+      "message": "Still not 100% sure what\u0027s going on here but this at least gets some testing on GL. It appears to be in the rescale code, when either doing premul-\u003eunpremul, or any colorspace conversion.",
+      "revId": "4908fe8e0d381611ab65373cfeb1d34c92999c23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
