@@ -38,7 +38,12 @@ bool loop_operator_le() {
     for (int i = 3; i <= 1; ++i) { return false; }
     for (int i = 3; i <= 1; --i) { return false; }
 
-    int4 result = int4(9);
+    // These loops are not inside-out and should execute exactly one time apiece.
+    int4 result = int4(7);
+    for (int i = 0; i <= 0; ++i) { result += int4(1); }
+    for (int i = 0; i >= 0; --i) { result += int4(1); }
+
+    // This loop executes three times.
     for (int i = 1; i <= 3; ++i) {
         result = int4(result.yzw, i);
     }
@@ -50,7 +55,11 @@ bool loop_operator_lt() {
     for (int i = 4; i < 1; ++i) { return false; }
     for (int i = 4; i < 1; --i) { return false; }
 
-    int4 result = int4(9);
+    // This loop is not inside-out and should execute exactly one time.
+    int4 result = int4(8);
+    for (int i = 0; i < 1; ++i) { result += int4(1); }
+
+    // This loop executes three times.
     for (int i = 1; i < 4; ++i) {
         result = int4(result.yzw, i);
     }
@@ -62,7 +71,12 @@ bool loop_operator_ge() {
     for (int i = 1; i >= 3; ++i) { return false; }
     for (int i = 1; i >= 3; --i) { return false; }
 
-    int4 result = int4(9);
+    // These loops are not inside-out and should execute exactly one time apiece.
+    int4 result = int4(7);
+    for (int i = 0; i <= 0; ++i) { result += int4(1); }
+    for (int i = 0; i >= 0; --i) { result += int4(1); }
+
+    // This loop executes three times.
     for (int i = 3; i >= 1; --i) {
         result = int4(result.yzw, i);
     }
@@ -74,7 +88,10 @@ bool loop_operator_gt() {
     for (int i = 0; i > 3; ++i) { return false; }
     for (int i = 0; i > 3; --i) { return false; }
 
-    int4 result = int4(9);
+    // This loop is not inside-out and should execute exactly one time.
+    int4 result = int4(8);
+    for (int i = 1; i > 0; --i) { result += int4(1); }
+
     for (int i = 3; i > 0; --i) {
         result = int4(result.yzw, i);
     }
@@ -85,7 +102,10 @@ bool loop_operator_ne() {
     // This loop executes zero times.
     for (int i = 1; i != 1; ++i) { return false; }
 
-    int4 result = int4(9);
+    // This loop should execute exactly one time.
+    int4 result = int4(8);
+    for (int i = 1; i != 2; ++i) { result += int4(1); }
+
     for (int i = 1; i != 4; ++i) {
         result = int4(result.yzw, i);
     }
@@ -96,6 +116,7 @@ bool loop_operator_eq() {
     // This loop executes zero times.
     for (int i = 1; i == 2; ++i) { return false; }
 
+    // This loop should execute exactly one time.
     int4 result = int4(9);
     for (int i = 1; i == 1; ++i) {
         result = int4(result.yzw, i);
