@@ -16,7 +16,6 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/MutableTextureStateRef.h"
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/vk/GrVkTypesPriv.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
@@ -156,23 +155,23 @@ const GrVkYcbcrConversionInfo* GetVkYcbcrConversionInfo(const GrBackendFormat& f
 class GrVkBackendTextureData final : public GrBackendTextureData {
 public:
     GrVkBackendTextureData(const GrVkImageInfo& info,
-                           sk_sp<skgpu::MutableTextureStateRef> mutableState = nullptr)
+                           sk_sp<skgpu::MutableTextureState> mutableState = nullptr)
             : fVkInfo(info)
             , fMutableState(mutableState ? std::move(mutableState)
-                                         : sk_make_sp<skgpu::MutableTextureStateRef>(
+                                         : sk_make_sp<skgpu::MutableTextureState>(
                                                    info.fImageLayout, info.fCurrentQueueFamily)) {}
 
     const GrVkImageInfo& info() const { return fVkInfo; }
 
-    sk_sp<skgpu::MutableTextureStateRef> getMutableState() const override {
+    sk_sp<skgpu::MutableTextureState> getMutableState() const override {
         return fMutableState;
     }
     void setMutableState(const skgpu::MutableTextureState& state) override {
         fMutableState->set(state);
     }
 
-    skgpu::MutableTextureStateRef* mutableState() { return fMutableState.get(); }
-    const skgpu::MutableTextureStateRef* mutableState() const { return fMutableState.get(); }
+    skgpu::MutableTextureState* mutableState() { return fMutableState.get(); }
+    const skgpu::MutableTextureState* mutableState() const { return fMutableState.get(); }
 
 private:
     void copyTo(AnyTextureData& textureData) const override {
@@ -219,7 +218,7 @@ private:
 #endif
 
     GrVkImageInfo fVkInfo;
-    sk_sp<skgpu::MutableTextureStateRef> fMutableState;
+    sk_sp<skgpu::MutableTextureState> fMutableState;
 };
 
 static const GrVkBackendTextureData* get_and_cast_data(const GrBackendTexture& texture) {
@@ -282,7 +281,7 @@ GrBackendTexture MakeVk(int width,
 GrBackendTexture MakeVk(int width,
                         int height,
                         const GrVkImageInfo& vkInfo,
-                        sk_sp<skgpu::MutableTextureStateRef> mutableState) {
+                        sk_sp<skgpu::MutableTextureState> mutableState) {
     return GrBackendSurfacePriv::MakeGrBackendTexture(
             width,
             height,
@@ -318,23 +317,23 @@ void SetVkImageLayout(GrBackendTexture* tex, VkImageLayout layout) {
 class GrVkBackendRenderTargetData final : public GrBackendRenderTargetData {
 public:
     GrVkBackendRenderTargetData(const GrVkImageInfo& info,
-                                sk_sp<skgpu::MutableTextureStateRef> mutableState = nullptr)
+                                sk_sp<skgpu::MutableTextureState> mutableState = nullptr)
             : fVkInfo(info)
             , fMutableState(mutableState ? std::move(mutableState)
-                                         : sk_make_sp<skgpu::MutableTextureStateRef>(
+                                         : sk_make_sp<skgpu::MutableTextureState>(
                                                    info.fImageLayout, info.fCurrentQueueFamily)) {}
 
     const GrVkImageInfo& info() const { return fVkInfo; }
 
-    sk_sp<skgpu::MutableTextureStateRef> getMutableState() const override {
+    sk_sp<skgpu::MutableTextureState> getMutableState() const override {
         return fMutableState;
     }
     void setMutableState(const skgpu::MutableTextureState& state) override {
         fMutableState->set(state);
     }
 
-    skgpu::MutableTextureStateRef* mutableState() { return fMutableState.get(); }
-    const skgpu::MutableTextureStateRef* mutableState() const { return fMutableState.get(); }
+    skgpu::MutableTextureState* mutableState() { return fMutableState.get(); }
+    const skgpu::MutableTextureState* mutableState() const { return fMutableState.get(); }
 
 private:
     GrBackendFormat getBackendFormat() const override {
@@ -371,7 +370,7 @@ private:
 #endif
 
     GrVkImageInfo fVkInfo;
-    sk_sp<skgpu::MutableTextureStateRef> fMutableState;
+    sk_sp<skgpu::MutableTextureState> fMutableState;
 };
 
 static const GrVkBackendRenderTargetData* get_and_cast_data(const GrBackendRenderTarget& rt) {
@@ -402,7 +401,7 @@ GrBackendRenderTarget MakeVk(int width, int height, const GrVkImageInfo& vkInfo)
 GrBackendRenderTarget MakeVk(int width,
                              int height,
                              const GrVkImageInfo& vkInfo,
-                             sk_sp<skgpu::MutableTextureStateRef> mutableState) {
+                             sk_sp<skgpu::MutableTextureState> mutableState) {
     return GrBackendSurfacePriv::MakeGrBackendRenderTarget(
             width,
             height,

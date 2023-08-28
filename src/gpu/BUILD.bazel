@@ -21,7 +21,6 @@ SHARED_FILES = [
     "DitherUtils.h",
     "GpuTypesPriv.h",
     "KeyBuilder.h",
-    "MutableTextureStateRef.h",
     "PipelineUtils.cpp",
     "PipelineUtils.h",
     "Rectanizer.h",

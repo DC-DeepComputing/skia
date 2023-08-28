@@ -132,7 +132,7 @@ sk_sp<GrVkRenderTarget> GrVkRenderTarget::MakeWrappedRenderTarget(
         SkISize dimensions,
         int sampleCnt,
         const GrVkImageInfo& info,
-        sk_sp<skgpu::MutableTextureStateRef> mutableState) {
+        sk_sp<skgpu::MutableTextureState> mutableState) {
     SkASSERT(VK_NULL_HANDLE != info.fImage);
     SkASSERT(1 == info.fLevelCount);
     SkASSERT(sampleCnt >= 1 && info.fSampleCount >= 1);

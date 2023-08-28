@@ -8,6 +8,7 @@
 #ifndef skgpu_MutableTextureState_DEFINED
 #define skgpu_MutableTextureState_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 
@@ -34,7 +35,7 @@ namespace skgpu {
  *
  * Vulkan: VkImageLayout and QueueFamilyIndex
  */
-class SK_API MutableTextureState {
+class SK_API MutableTextureState : public SkRefCnt {
 public:
     MutableTextureState() {}
 
@@ -97,7 +98,6 @@ public:
     bool isValid() const { return fIsValid; }
 
 private:
-    friend class MutableTextureStateRef;
     friend class ::GrVkGpu;
 
 #ifdef SK_VULKAN

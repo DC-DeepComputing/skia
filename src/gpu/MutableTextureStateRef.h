@@ -8,6 +8,7 @@
 #ifndef skgpu_MutableTextureStateRef_DEFINED
 #define skgpu_MutableTextureStateRef_DEFINED
 
+#if 0
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/MutableTextureState.h"
 
@@ -55,6 +56,8 @@ private:
 };
 
 } // namespace skgpu
+
+#endif
 
 #endif // skgpu_MutableTextureStateRef_DEFINED
 
