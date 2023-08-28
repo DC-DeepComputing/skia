@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09852f41_7a6f2ab3",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T17:09:32Z",
+      "side": 1,
+      "message": "So to try to fully spell things out for myself, we need to somehow account for three separate cases:\n1) a custom blender, that is, not a blend-mode blender\n2) a blend-mode blender that we must implement in a shader\n3) a blend-mode blender that we can do with HW\n\nAn assumption of this CL is that we already check for cases 1 and 2 when determining our dst read requirement. So actually, consistent with your comments, we should be able to just check the dst read requirement to decide whether to use HW blending (if we\u0027re ok with this assumption).",
+      "parentUuid": "4d393bce_7f4f1ff0",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 75
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47295fbf_9b586e1d",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-25T13:46:08Z",
       "side": 1,
       "message": "I don\u0027t think this is a very clear comment. If I\u0027m reading it correctly it seems to suggest the reason we\u0027re doing in shader blending is purely because we have coverage. Well technically the advanced blend modes are also SkBlendModes (e.g. color burn), and without the fixed function extensions for them they will always require in shader blending. I think leaving the comment simply as something like:\n```\nWe cannot handle the combination of blend mode and coverage using the fixed function blend hardware. Thus we manually do all the blending in the shader and set the fixed blend mode to be kSrc.\n```",
+      "range": {
+        "startLine": 154,
+        "startChar": 15,
+        "endLine": 154,
+        "endChar": 98
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b543cb53_0eefdf64",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T17:09:32Z",
+      "side": 1,
+      "message": "Done. I also explicitly mentioned the relationship between this \u0026 needing a dst read.",
+      "parentUuid": "47295fbf_9b586e1d",
       "range": {
         "startLine": 154,
         "startChar": 15,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a58483e4_abf975cf",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T17:09:32Z",
+      "side": 1,
+      "message": "The coverage modulation is added after all of the blocks\u0027 code: https://crsrc.org/c/third_party/skia/src/gpu/graphite/ShaderCodeDictionary.cpp;l\u003d301;drc\u003dcf37d99d",
+      "parentUuid": "1271823a_93ce3081",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 70
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86affbad_6d52c13d",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-08-25T13:46:08Z",
       "side": 1,
       "message": "Why do we need to add all this fixed function code after the DstBlendBlock above if we\u0027re handling all the blending in that block?",
+      "range": {
+        "startLine": 162,
+        "startChar": 7,
+        "endLine": 162,
+        "endChar": 29
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84bbbf4f_2217681c",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T17:09:32Z",
+      "side": 1,
+      "message": "The fixed function blend mode ID block sets the HW blend mode for this draw, which is done here https://crsrc.org/c/third_party/skia/src/gpu/graphite/ShaderCodeDictionary.cpp;l\u003d153;drc\u003dcf37d99d. If there\u0027s no such block then we\u0027ll default to src-over.\n\nI had assumed we always want src if we\u0027re implementing a blend mode in-shader, but now I can\u0027t create a test where we draw incorrectly using src-over in this case. So maybe we can get away with not adding a fixed function blend block here, though I want to investigate this a little more.",
+      "parentUuid": "86affbad_6d52c13d",
       "range": {
         "startLine": 162,
         "startChar": 7,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0290085_7370eaaa",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T17:09:32Z",
+      "side": 1,
+      "message": "Same thing as before about not doing coverage in blocks.",
+      "parentUuid": "7c193727_0256b083",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce2d404e_b819cb07",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-08-25T13:46:08Z",
       "side": 1,
       "message": "Why does this not need to make an SkBlendModeBlender with the finalBlendMode before adding the DstBlendBlock? I would think it would need to do identical stuff as the code you added, like setting finalBlendMode to kSrc.",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 77
+      },
+      "revId": "ff501238db3822013e505e3b2fbcd4cf4860c2fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b7d22ca_c497b683",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-28T17:09:32Z",
+      "side": 1,
+      "message": "Yea, this brings up the same question from above about needing the src blend mode with in-shader blending.",
+      "parentUuid": "ce2d404e_b819cb07",
       "range": {
         "startLine": 168,
         "startChar": 8,
