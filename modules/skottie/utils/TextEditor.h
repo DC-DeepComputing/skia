@@ -9,18 +9,21 @@
 #define SkottieTextEditor_DEFINED
 
 #include "include/core/SkPath.h"
+#include "include/core/SkTypes.h"
 #include "modules/skottie/include/SkottieProperty.h"
 #include "tools/skui/InputState.h"
 #include "tools/skui/ModifierKey.h"
 
 #include <chrono>
 
+namespace skottie_utils {
+
 // A sample WYSIWYG text editor built using the GlyphDecorator API.
-class SkottieTextEditor final : public skottie::GlyphDecorator {
+class TextEditor final : public skottie::GlyphDecorator {
 public:
-    explicit SkottieTextEditor(std::unique_ptr<skottie::TextPropertyHandle>&&,
-                               std::vector<std::unique_ptr<skottie::TextPropertyHandle>>&&);
-    ~SkottieTextEditor() override;
+    TextEditor(std::unique_ptr<skottie::TextPropertyHandle>&&,
+               std::vector<std::unique_ptr<skottie::TextPropertyHandle>>&&);
+    ~TextEditor() override;
 
     void toggleEnabled();
 
@@ -57,5 +60,7 @@ private:
 
     std::chrono::time_point<std::chrono::steady_clock> fTimeBase;
 };
+
+}  // namespace skottie_utils
 
 #endif // SkottieTextEditor_DEFINED
