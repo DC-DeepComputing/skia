@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b2a8fce_216a81e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-28T16:42:01Z",
+      "side": 1,
+      "message": "PS9 updates the comments in BlurUtils.h to reflect the finalized uniform structure of the 1D effect and updates the Compute1DLinearBlurKernel() to write the interleaved offsets and kernel to an SkV4 array to directly match the effect\u0027s required structure.",
+      "revId": "5f4eabbd994ba36f88f7d44e1cda8f0e852f86e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
