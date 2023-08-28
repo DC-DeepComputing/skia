@@ -1403,7 +1403,7 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
                                          this->surfaceProps());
 }
 
-skif::Context Device::createContext(const skif::ContextInfo& ctxInfo) const {
+skif::Context Device::createContext1(const skif::ContextInfo& ctxInfo) const {
     return skif::MakeGraphiteContext(fRecorder, ctxInfo);
 }
 

@@ -227,13 +227,13 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     // at all to still produce an output image.
     skif::FilterResult result;
     if (context.desiredOutput().isEmpty() ||
-        (fUsesSrcInput && !context.source()) ||
+        (fUsesSrcInput && !context.source1()) ||
         !context.mapping().layerMatrix().isFinite()) {
         return result;
     }
 
-    uint32_t srcGenID = fUsesSrcInput ? context.sourceImage()->uniqueID() : 0;
-    const SkIRect srcSubset = fUsesSrcInput ? context.sourceImage()->subset()
+    uint32_t srcGenID = fUsesSrcInput ? context.sourceImage1()->uniqueID() : 0;
+    const SkIRect srcSubset = fUsesSrcInput ? context.sourceImage1()->subset()
                                             : SkIRect::MakeWH(0, 0);
 
     SkImageFilterCacheKey key(fUniqueID, context.mapping().layerMatrix(), context.clipBounds(),
@@ -537,7 +537,7 @@ skif::LayerSpace<SkIRect> SkImageFilter_Base::onGetOutputLayerBounds(
 
 skif::FilterResult SkImageFilter_Base::getChildOutput(int index, const skif::Context& ctx) const {
     const SkImageFilter* input = this->getInput(index);
-    return input ? as_IFB(input)->filterImage(ctx) : ctx.source();
+    return input ? as_IFB(input)->filterImage(ctx) : ctx.source1();
 }
 
 sk_sp<SkSpecialImage> SkImageFilter_Base::filterInput(int index,
@@ -549,7 +549,7 @@ sk_sp<SkSpecialImage> SkImageFilter_Base::filterInput(int index,
     const SkImageFilter* input = this->getInput(index);
     if (!input) {
         // Null image filters late bind to the source image
-        return ctx.source().imageAndOffset(inputCtx, offset);
+        return ctx.source1().imageAndOffset(inputCtx, offset);
     }
 
     skif::FilterResult result = as_IFB(input)->filterImage(inputCtx);

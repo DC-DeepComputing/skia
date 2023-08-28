@@ -300,7 +300,7 @@ skif::FilterResult SkBlendImageFilter::onFilterImage(const skif::Context& ctx) c
     // children before evaluating them, we determine the maximum possible output the blend can
     // produce from the contentBounds and require that for both children to produce.
     skif::LayerSpace<SkIRect> requiredInput = this->onGetOutputLayerBounds(
-            ctx.mapping(), ctx.source().layerBounds());
+            ctx.mapping(), ctx.source1().layerBounds());
     if (!requiredInput.intersect(ctx.desiredOutput())) {
         return {};
     }

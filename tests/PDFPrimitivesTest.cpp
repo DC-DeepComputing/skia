@@ -286,7 +286,7 @@ protected:
     sk_sp<SkSpecialImage> onFilterImage(const skif::Context& ctx, SkIPoint* offset) const override {
         fVisited = true;
         offset->fX = offset->fY = 0;
-        return sk_ref_sp<SkSpecialImage>(ctx.sourceImage());
+        return sk_ref_sp<SkSpecialImage>(ctx.sourceImage1());
     }
 
 private:

@@ -726,7 +726,7 @@ Context MakeGaneshContext(GrRecordingContext* context,
                           GrSurfaceOrigin origin,
                           const ContextInfo& info) {
     SkASSERT(context);
-    SkASSERT(!info.fSource.image() || info.fSource.image()->isGaneshBacked());
+//    SkASSERT(!info.fSource1.image() || info.fSource1.image()->isGaneshBacked());
 
     auto makeSurfaceFunctor = [context, origin](const SkImageInfo& imageInfo,
                                                 const SkSurfaceProps* props) {

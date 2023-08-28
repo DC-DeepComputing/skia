@@ -808,7 +808,7 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool path
                                          paint, this->localToDevice(), shape);
 }
 
-skif::Context Device::createContext(const skif::ContextInfo& ctxInfo) const {
+skif::Context Device::createContext1(const skif::ContextInfo& ctxInfo) const {
     return skif::MakeGaneshContext(fContext.get(), fSurfaceDrawContext->origin(), ctxInfo);
 }
 

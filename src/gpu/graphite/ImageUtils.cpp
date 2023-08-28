@@ -130,7 +130,7 @@ namespace skif {
 Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                             const ContextInfo& info) {
     SkASSERT(recorder);
-    SkASSERT(!info.fSource.image() || info.fSource.image()->isGraphiteBacked());
+//    SkASSERT(!info.fSource1.image() || info.fSource1.image()->isGraphiteBacked());
 
     auto makeSurfaceFunctor = [recorder](const SkImageInfo& imageInfo,
                                          const SkSurfaceProps* props) {

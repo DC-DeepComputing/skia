@@ -295,7 +295,7 @@ protected:
     }
     SkIRect onDevClipBounds() const override { return fClip.getConservativeBounds(); }
 
-    skif::Context createContext(const skif::ContextInfo& ctxInfo) const override;
+    skif::Context createContext1(const skif::ContextInfo& ctxInfo) const override;
 
 private:
     enum class DeviceFlags {

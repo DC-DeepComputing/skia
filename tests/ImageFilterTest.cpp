@@ -90,7 +90,7 @@ protected:
     sk_sp<SkSpecialImage> onFilterImage(const skif::Context& ctx, SkIPoint* offset) const override {
         REPORTER_ASSERT(fReporter, ctx.ctm() == fExpectedMatrix);
         offset->fX = offset->fY = 0;
-        return sk_ref_sp<SkSpecialImage>(ctx.sourceImage());
+        return sk_ref_sp<SkSpecialImage>(ctx.sourceImage1());
     }
 
     void flatten(SkWriteBuffer& buffer) const override {
@@ -283,7 +283,7 @@ static skif::Context make_context(const SkIRect& out, const SkSpecialImage* src)
     skif::FilterResult source{sk_ref_sp(src)};
     skif::ContextInfo ctxInfo = {skif::Mapping(SkMatrix::I()),
                                  skif::LayerSpace<SkIRect>(out),
-                                 skif::FilterResult(sk_ref_sp(src)),
+//                                 skif::FilterResult(sk_ref_sp(src)), //$$
                                  src->colorType(),
                                  src->getColorSpace(),
                                  src->props(),

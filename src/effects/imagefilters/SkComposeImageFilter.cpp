@@ -91,7 +91,7 @@ sk_sp<SkFlattenable> SkComposeImageFilter::CreateProc(SkReadBuffer& buffer) {
 skif::FilterResult SkComposeImageFilter::onFilterImage(const skif::Context& ctx) const {
     // Get the expected output of the inner filter, given the source image's layer bounds as content
     skif::LayerSpace<SkIRect> innerOutputBounds =
-            this->getChildOutputLayerBounds(kInner, ctx.mapping(), ctx.source().layerBounds());
+            this->getChildOutputLayerBounds(kInner, ctx.mapping(), ctx.source1().layerBounds());
     // Get the required input for the outer filter, that it needs to cover the desired output.
     skif::LayerSpace<SkIRect> outerRequiredInput =
             this->getChildInputLayerBounds(kOuter,
@@ -108,7 +108,7 @@ skif::FilterResult SkComposeImageFilter::onFilterImage(const skif::Context& ctx)
     // were already created, there's no alternative way for the leaf nodes of the outer DAG to
     // get the results of the inner DAG. Overriding the source image of the context has the correct
     // effect, but means that the source image is not fixed for the entire filter process.
-    return this->getChildOutput(kOuter, ctx.withNewSource(innerResult));
+    return this->getChildOutput(kOuter, ctx.withNewSource1(innerResult));
 }
 
 skif::LayerSpace<SkIRect> SkComposeImageFilter::onGetInputLayerBounds(

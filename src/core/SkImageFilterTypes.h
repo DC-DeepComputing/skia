@@ -947,7 +947,7 @@ struct ContextInfo {
     Mapping             fMapping;
     LayerSpace<SkIRect> fDesiredOutput;
     // Can contain a null image if the image filter DAG has no late-bound null inputs.
-    FilterResult        fSource;
+//    FilterResult        fSource1;
 
     // Properties controlling the pixel data during image filtering
     SkColorType         fColorType;
@@ -1001,9 +1001,9 @@ public:
     // from the SkDevice that holds either the saveLayer or the temporary rendered result. The
     // exception is composing two image filters (via SkImageFilters::Compose), which must use
     // the output of the inner DAG as the "source" for the outer DAG.
-    const FilterResult& source() const { return fInfo.fSource; }
+    const FilterResult& source1() const { return /*fInfo. */fSource1; }
     // DEPRECATED: Use source() instead to get both the image and its origin.
-    const SkSpecialImage* sourceImage() const { return fInfo.fSource.image(); }
+    const SkSpecialImage* sourceImage1() const { return /*fInfo.*/fSource1.image(); }
 
     // True if image filtering should occur on the GPU if possible.
     bool gpuBacked() const { return SkToBool(fGaneshContext); }
@@ -1022,28 +1022,40 @@ public:
 
     // Create a new context that matches this context, but with an overridden layer space.
     Context withNewMapping(const Mapping& mapping) const {
-        ContextInfo info = fInfo;
-        info.fMapping = mapping;
-        return Context(info, *this);
+        Context foo(*this);
+        foo.fInfo.fMapping = mapping;
+        return foo;
+//        ContextInfo info = fInfo;
+//        info.fMapping = mapping;
+//        return Context(info, *this);
     }
     // Create a new context that matches this context, but with an overridden desired output rect.
     Context withNewDesiredOutput(const LayerSpace<SkIRect>& desiredOutput) const {
-        ContextInfo info = fInfo;
-        info.fDesiredOutput = desiredOutput;
-        return Context(info, *this);
+        Context foo(*this);
+        foo.fInfo.fDesiredOutput = desiredOutput;
+        return foo;
+//        ContextInfo info = fInfo;
+//        info.fDesiredOutput = desiredOutput;
+//        return Context(info, *this);
     }
     // Create a new context that matches this context, but with an overridden color space.
     Context withNewColorSpace(SkColorSpace* cs) const {
-        ContextInfo info = fInfo;
-        info.fColorSpace = cs;
-        return Context(info, *this);
+        Context foo(*this);
+        foo.fInfo.fColorSpace = cs;
+        return foo;
+//        ContextInfo info = fInfo;
+//        info.fColorSpace = cs;
+//        return Context(info, *this);
     }
 
     // Create a new context that matches this context, but with an overridden source.
-    Context withNewSource(const FilterResult& source) const {
-        ContextInfo info = fInfo;
-        info.fSource = source;
-        return Context(info, *this);
+    Context withNewSource1(const FilterResult& source) const {
+        Context foo(*this);
+        foo.fSource1 = source;
+        return foo;
+//        ContextInfo info = fInfo;
+//        info.fSource1 = source;
+//        return Context(fInfo, source, *this);
     }
 
 private:
@@ -1070,14 +1082,17 @@ private:
         SkASSERT(fMakeImageDelegate);
         SkASSERT(fMakeCachedBitmapDelegate);
     }
-    Context(const ContextInfo& info, const Context& ctx)
-            : Context(info,
-                      ctx.fGaneshContext,
-                      ctx.fMakeSurfaceDelegate,
-                      ctx.fMakeImageDelegate,
-                      ctx.fMakeCachedBitmapDelegate) {}
+//    Context(const ContextInfo& info, const FilterResult& source, const Context& ctx)
+//            : Context(info,
+//                      ctx.fGaneshContext,
+//                      ctx.fMakeSurfaceDelegate,
+//                      ctx.fMakeImageDelegate,
+//                      ctx.fMakeCachedBitmapDelegate) {
+//        fSource1 = source;
+//    }
 
     ContextInfo fInfo;
+    FilterResult fSource1;
 
     // This will be null for CPU image filtering.
     GrRecordingContext* fGaneshContext;

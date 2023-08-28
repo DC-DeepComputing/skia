@@ -472,7 +472,7 @@ protected:
     virtual bool isNoPixelsDevice() const { return false; }
 
     // Defaults to a CPU image filtering context.
-    virtual skif::Context createContext(const skif::ContextInfo&) const;
+    virtual skif::Context createContext1(const skif::ContextInfo&) const;
 
     // Returns whether or not localToDevice() has changed since the last call to this function.
     bool checkLocalToDeviceDirty() {

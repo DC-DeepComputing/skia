@@ -435,7 +435,7 @@ public:
     skif::Context newContext(const FilterResult& source) const {
         skif::ContextInfo ctxInfo = {skif::Mapping(SkMatrix::I()),
                                      skif::LayerSpace<SkIRect>::Empty(),
-                                     source,
+//                                     source, //$$
                                      kRGBA_8888_SkColorType,
                                      /*colorSpace=*/nullptr,
                                      /*surfaceProps=*/{},

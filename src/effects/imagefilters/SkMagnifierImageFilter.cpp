@@ -205,7 +205,7 @@ skif::FilterResult SkMagnifierImageFilter::onFilterImage(const skif::Context& co
     // produce. This should be correct in all cases except for failure to create an offscreen image,
     // at which point there's nothing to be done anyway.
     skif::LayerSpace<SkRect> expectedChildOutput{
-            this->getChildOutputLayerBounds(0, context.mapping(), context.source().layerBounds())};
+            this->getChildOutputLayerBounds(0, context.mapping(), context.source1().layerBounds())};
 
     // Clamp the zoom center to be within the childOutput image
     zoomCenter = expectedChildOutput.clamp(zoomCenter);
