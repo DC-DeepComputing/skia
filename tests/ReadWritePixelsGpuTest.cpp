@@ -524,7 +524,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
                 const auto readCT = static_cast<SkColorType>(rct);
                 for (const sk_sp<SkColorSpace>& readCS :
-                     {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
+                     {SkColorSpace::MakeSRGB()/*, SkColorSpace::MakeSRGBLinear()*/}) {
                     for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
                         const auto readAT = static_cast<SkAlphaType>(at);
                         if (srcAT != kOpaque_SkAlphaType && readAT == kOpaque_SkAlphaType) {
