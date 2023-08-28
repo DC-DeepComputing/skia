@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b07ea5_1d90f864",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-28T16:30:49Z",
+      "side": 1,
+      "message": "Issues creating the canary aside, I think this is ready for review. The bucketed runtime effect doesn\u0027t seem to make the tegra3 unhappy, and the alternate iteration structure and/or uniform packing does not make the iris 655 unhappy.",
+      "revId": "46e07516958479f81e432127ee74b3f5efb83478",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
