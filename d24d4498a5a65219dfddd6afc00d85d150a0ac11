@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ba723e_38488df0",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-28T17:28:12Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 153,
+        "startChar": 60,
+        "endLine": 153,
+        "endChar": 63
+      },
+      "revId": "d24d4498a5a65219dfddd6afc00d85d150a0ac11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
