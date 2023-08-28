@@ -34,6 +34,24 @@
       "parentUuid": "a8d00813_3f662325",
       "revId": "a102d480496e36df9487b9a0de97120ee1b167d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c985c3af_1270f034",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-28T14:11:22Z",
+      "side": 1,
+      "message": "The 4th test also didn\u0027t cause crashes. The red test failures are just issues with my patch for the sksl loop elision; I\u0027m not surprised I missed something there and will just hand off to John.\n\nHowever, switching back to a single effect with a maximum sized constant loop has caused the tegra3\u0027s to start producing garbage again. I\u0027m going to try doing a power-of-2 bucketing to see if that avoids the issue and keep the total number of effects down. This may also address the performance impact from the 2d runtime effect too.",
+      "parentUuid": "5c9c723c_8c41c924",
+      "revId": "a102d480496e36df9487b9a0de97120ee1b167d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
