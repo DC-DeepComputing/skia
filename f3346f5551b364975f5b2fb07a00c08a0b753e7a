@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2ba68e_6d1c8cac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-08-28T20:10:50Z",
+      "side": 1,
+      "message": "Preparing for CK integration.",
+      "revId": "f3346f5551b364975f5b2fb07a00c08a0b753e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
