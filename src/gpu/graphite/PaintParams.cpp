@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkShader.h"
+#include "src/core/SkBlendModeBlender.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
@@ -147,16 +148,28 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 #endif
 
-    std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
-    if (finalBlendMode && *finalBlendMode <= SkBlendMode::kLastCoeffMode) {
-        BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
-                kFixedFunctionBlendModeIDOffset + (int) *finalBlendMode);
-        builder->beginBlock(fixedFuncBlendModeID);
-        builder->endBlock();
-
-    } else {
-        AddDstBlendBlock(keyContext, builder, gatherer, fFinalBlender.get());
+    std::optional<SkBlendMode> finalBlendModeOpt = this->asFinalBlendMode();
+    // If this draw needs a dst read, we are either doing custom blending or we cannot handle the
+    // combination of blend mode and coverage using fixed function blend hardware.
+    if (fDstReadReq != DstReadRequirement::kNone) {
+        // Add a block to implement the blending in the shader.
+        static const SkBlendModeBlender kDefaultBlender(SkBlendMode::kSrcOver);
+        AddDstBlendBlock(keyContext,
+                         builder,
+                         gatherer,
+                         fFinalBlender ? fFinalBlender.get() : &kDefaultBlender);
+        finalBlendModeOpt = SkBlendMode::kSrc;
     }
+
+    // We expect the blend mode to be set at this point, but just in case we default to clear.
+    SkASSERT(finalBlendModeOpt);
+    SkBlendMode finalBlendMode = finalBlendModeOpt.value_or(SkBlendMode::kClear);
+
+    // Set the hardware blend mode.
+    BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
+            kFixedFunctionBlendModeIDOffset + static_cast<int>(finalBlendMode));
+    builder->beginBlock(fixedFuncBlendModeID);
+    builder->endBlock();
 }
 
 } // namespace skgpu::graphite
