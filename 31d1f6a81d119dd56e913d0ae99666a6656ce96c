@@ -22,6 +22,30 @@
       },
       "revId": "31d1f6a81d119dd56e913d0ae99666a6656ce96c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "980df956_fc54f2e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-28T15:46:45Z",
+      "side": 1,
+      "message": "That\u0027s a weird typo. Done",
+      "parentUuid": "c9f65255_0fb3943f",
+      "range": {
+        "startLine": 16,
+        "startChar": 54,
+        "endLine": 16,
+        "endChar": 64
+      },
+      "revId": "31d1f6a81d119dd56e913d0ae99666a6656ce96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
