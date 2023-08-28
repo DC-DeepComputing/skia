@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5229489_21a8c78b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-28T17:51:17Z",
+      "side": 1,
+      "message": "That\u0027s a good question; I think it\u0027s not unreasonable to have a way to iterate all the effects it may require compiling. This will also need to be done for the rest of the image filters, which also rely on runtime effects now. This should mean that it will be consistent.",
+      "parentUuid": "7186069a_37ae68f9",
+      "revId": "d24d4498a5a65219dfddd6afc00d85d150a0ac11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5ba723e_38488df0",
