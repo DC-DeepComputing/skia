@@ -809,7 +809,8 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool path
 }
 
 skif::Context Device::createContext(const skif::ContextInfo& ctxInfo) const {
-    return skif::MakeGaneshContext(fContext.get(), fSurfaceDrawContext->origin(), ctxInfo);
+    return skif::Context(ctxInfo,
+                         skif::MakeGaneshFunctors(fContext.get(), fSurfaceDrawContext->origin()));
 }
 
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap& bitmap) {

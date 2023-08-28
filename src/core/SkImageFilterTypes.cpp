@@ -343,12 +343,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-Context Context::MakeRaster(const ContextInfo& info) {
-    // TODO (skbug:14286): Remove this forcing to 8888. Many legacy image filters only support
-    // N32 on CPU, but once they are implemented in terms of draws and SkSL they will support
-    // all color types, like the GPU backends.
-    ContextInfo n32 = info;
-    n32.fColorType = kN32_SkColorType;
+Functors MakeRasterFunctors() {
     auto makeSurfaceCallback = [](const SkImageInfo& imageInfo,
                                   const SkSurfaceProps* props) {
         return SkSpecialSurfaces::MakeRaster(imageInfo, *props);
@@ -361,12 +356,23 @@ Context Context::MakeRaster(const ContextInfo& info) {
     auto makeCachedBitmapCallback = [](const SkBitmap& data) {
         return SkImages::RasterFromBitmap(data);
     };
-    return Context(n32, nullptr, makeSurfaceCallback, makeImageCallback, makeCachedBitmapCallback);
+
+    return Functors(nullptr, makeSurfaceCallback, makeImageCallback, makeCachedBitmapCallback);
+}
+
+Context Context::MakeRaster(const ContextInfo& info) {
+    // TODO (skbug:14286): Remove this forcing to 8888. Many legacy image filters only support
+    // N32 on CPU, but once they are implemented in terms of draws and SkSL they will support
+    // all color types, like the GPU backends.
+    ContextInfo n32 = info;
+    n32.fColorType = kN32_SkColorType;
+
+    return Context(n32, MakeRasterFunctors());
 }
 
 sk_sp<SkSpecialSurface> Context::makeSurface(const SkISize& size,
                                              const SkSurfaceProps* props) const {
-    SkASSERT(fMakeSurfaceDelegate);
+    SkASSERT(fFunctors.fMakeSurfaceDelegate);
     if (!props) {
         props = &fInfo.fSurfaceProps;
     }
@@ -375,17 +381,17 @@ sk_sp<SkSpecialSurface> Context::makeSurface(const SkISize& size,
                                               fInfo.fColorType,
                                               kPremul_SkAlphaType,
                                               sk_ref_sp(fInfo.fColorSpace));
-    return fMakeSurfaceDelegate(imageInfo, props);
+    return fFunctors.fMakeSurfaceDelegate(imageInfo, props);
 }
 
 sk_sp<SkSpecialImage> Context::makeImage(const SkIRect& subset, sk_sp<SkImage> image) const {
-    SkASSERT(fMakeImageDelegate);
-    return fMakeImageDelegate(subset, image, fInfo.fSurfaceProps);
+    SkASSERT(fFunctors.fMakeImageDelegate);
+    return fFunctors.fMakeImageDelegate(subset, image, fInfo.fSurfaceProps);
 }
 
 sk_sp<SkImage> Context::getCachedBitmap(const SkBitmap& data) const {
-    SkASSERT(fMakeCachedBitmapDelegate);
-    return fMakeCachedBitmapDelegate(data);
+    SkASSERT(fFunctors.fMakeCachedBitmapDelegate);
+    return fFunctors.fMakeCachedBitmapDelegate(data);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

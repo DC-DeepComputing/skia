@@ -127,10 +127,8 @@ std::tuple<skgpu::graphite::TextureProxyView, SkColorType> AsView(Recorder* reco
 
 namespace skif {
 
-Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
-                            const ContextInfo& info) {
+Functors MakeGraphiteFunctors(skgpu::graphite::Recorder* recorder) {
     SkASSERT(recorder);
-    SkASSERT(!info.fSource.image() || info.fSource.image()->isGraphiteBacked());
 
     auto makeSurfaceFunctor = [recorder](const SkImageInfo& imageInfo,
                                          const SkSurfaceProps* props) {
@@ -157,6 +155,6 @@ Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                 colorInfo);
     };
 
-    return Context(info, nullptr, makeSurfaceFunctor, makeImageCallback, makeCachedBitmapCallback);
+    return Functors(nullptr, makeSurfaceFunctor, makeImageCallback, makeCachedBitmapCallback);
 }
 }  // namespace skif

@@ -289,7 +289,8 @@ static skif::Context make_context(const SkIRect& out, const SkSpecialImage* src)
                                  src->props(),
                                  /*cache=*/nullptr};
     if (src->isGaneshBacked()) {
-        return skif::MakeGaneshContext(src->getContext(), kTestSurfaceOrigin, ctxInfo);
+        return skif::Context(ctxInfo, skif::MakeGaneshFunctors(src->getContext(),
+                                                               kTestSurfaceOrigin));
     } else {
         return skif::Context::MakeRaster(ctxInfo);
     }
