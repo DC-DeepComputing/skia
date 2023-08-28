@@ -16,6 +16,24 @@
       "message": "3rd test is packing the interleaved offset and kernels into a half4, and manually unrolling the access to `.xy` and `.zw` plus an extra odd-radius access at the end.",
       "revId": "a102d480496e36df9487b9a0de97120ee1b167d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9c723c_8c41c924",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-28T02:26:23Z",
+      "side": 1,
+      "message": "This maybe passed, although the sksl I made actually caught an sksl compiler bug where it would drop `for (int i \u003d 0; i \u003c\u003d 0; ++i) {}` loops because it wasn\u0027t taking inclusivity into account. I\u0027m not sure how this impacted the test crashing.\n\nAssuming it didn\u0027t (since it only really impacted radius\u003d1 blurs), the 4th test is going back to a single effect with breaking out of the loop, but keeps the interleaved half4 array.",
+      "parentUuid": "a8d00813_3f662325",
+      "revId": "a102d480496e36df9487b9a0de97120ee1b167d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
