@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce7eb8dd_4098234e",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-28T18:37:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "36cee4df_ecdf64b9",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 49
+      },
+      "revId": "4be51f0d62d40469c47ed6b82489501df2fe8c96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b563203_fc61de45",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-28T18:16:41Z",
       "side": 1,
       "message": "^ Incorrect elimination",
+      "range": {
+        "startLine": 61,
+        "startChar": 1,
+        "endLine": 61,
+        "endChar": 2
+      },
+      "revId": "4be51f0d62d40469c47ed6b82489501df2fe8c96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cfa00c2_2cd5afd1",
+        "filename": "tests/sksl/runtime/LoopInt.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-28T18:37:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4b563203_fc61de45",
       "range": {
         "startLine": 61,
         "startChar": 1,
