@@ -36,6 +36,8 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder*,
 namespace skif {
 class Context;
 struct ContextInfo;
+struct Functors;
+Functors MakeGraphiteFunctors(skgpu::graphite::Recorder* recorder);
 Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                             const ContextInfo& info);
 }  // namespace skif
