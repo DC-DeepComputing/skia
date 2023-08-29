@@ -213,6 +213,9 @@ const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
         }
     }
 
+    SkDebugf("colorType=%d and dawnFormat=0x%08X not supported\n",
+             static_cast<int>(colorType),
+             static_cast<int>(dawnFormat));
     return nullptr;
 }
 
