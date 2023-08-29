@@ -959,6 +959,38 @@ struct ContextInfo {
     SkImageFilterCache* fCache;
 };
 
+struct Functors {
+    using MakeSurfaceFunctor = std::function<sk_sp<SkSpecialSurface>(const SkImageInfo& info,
+                                                                     const SkSurfaceProps* props)>;
+    // For input images to be processed by image filters
+    using MakeImageFunctor = std::function<sk_sp<SkSpecialImage>(
+            const SkIRect& subset, sk_sp<SkImage> image, const SkSurfaceProps& props)>;
+    // For internal data to be accessed by filter implementations
+    using MakeCachedBitmapFunctor = std::function<sk_sp<SkImage>(const SkBitmap& data)>;
+
+    Functors(GrRecordingContext* ganeshContext,
+             MakeSurfaceFunctor msf,
+             MakeImageFunctor mif,
+             MakeCachedBitmapFunctor mcbf)
+                 : fGaneshContext(ganeshContext)
+                 , fMakeSurfaceFunctor(msf)
+                 , fMakeImageFunctor(mif)
+                 , fMakeCachedBitmapFunctor(mcbf) {
+        SkASSERT(fMakeSurfaceFunctor);
+        SkASSERT(fMakeImageFunctor);
+        SkASSERT(fMakeCachedBitmapFunctor);
+    }
+
+    Functors(const Functors&) = default;
+    Functors& operator=(const Functors&) = default;
+
+    // This will be null for CPU image filtering.
+    GrRecordingContext* fGaneshContext;
+    MakeSurfaceFunctor fMakeSurfaceFunctor;
+    MakeImageFunctor fMakeImageFunctor;
+    MakeCachedBitmapFunctor fMakeCachedBitmapFunctor;
+};
+
 class Context {
     static constexpr GrSurfaceOrigin kUnusedOrigin = (GrSurfaceOrigin) 0;
 public:
@@ -1006,9 +1038,9 @@ public:
     const SkSpecialImage* sourceImage() const { return fInfo.fSource.image(); }
 
     // True if image filtering should occur on the GPU if possible.
-    bool gpuBacked() const { return SkToBool(fGaneshContext); }
+    bool gpuBacked() const { return SkToBool(fFunctors.fGaneshContext); }
     // The recording context to use when computing the filter with the GPU.
-    GrRecordingContext* getContext() const { return fGaneshContext; }
+    GrRecordingContext* getContext() const { return fFunctors.fGaneshContext; }
 
     // Create a surface of the given size, that matches the context's color type and color space
     // as closely as possible, and uses the same backend of the device that produced the source
@@ -1024,66 +1056,36 @@ public:
     Context withNewMapping(const Mapping& mapping) const {
         ContextInfo info = fInfo;
         info.fMapping = mapping;
-        return Context(info, *this);
+        return Context(info, fFunctors);
     }
     // Create a new context that matches this context, but with an overridden desired output rect.
     Context withNewDesiredOutput(const LayerSpace<SkIRect>& desiredOutput) const {
         ContextInfo info = fInfo;
         info.fDesiredOutput = desiredOutput;
-        return Context(info, *this);
+        return Context(info, fFunctors);
     }
     // Create a new context that matches this context, but with an overridden color space.
     Context withNewColorSpace(SkColorSpace* cs) const {
         ContextInfo info = fInfo;
         info.fColorSpace = cs;
-        return Context(info, *this);
+        return Context(info, fFunctors);
     }
 
     // Create a new context that matches this context, but with an overridden source.
     Context withNewSource(const FilterResult& source) const {
         ContextInfo info = fInfo;
         info.fSource = source;
-        return Context(info, *this);
+        return Context(info, fFunctors);
     }
 
 private:
-    using MakeSurfaceDelegate = std::function<sk_sp<SkSpecialSurface>(const SkImageInfo& info,
-                                                                      const SkSurfaceProps* props)>;
-
-    // For input images to be processed by image filters
-    using MakeImageDelegate = std::function<sk_sp<SkSpecialImage>(
-            const SkIRect& subset, sk_sp<SkImage> image, const SkSurfaceProps& props)>;
-    // For internal data to be accessed by filter implementations
-    using MakeCachedBitmapDelegate = std::function<sk_sp<SkImage>(const SkBitmap& data)>;
-
-    Context(const ContextInfo& info,
-            GrRecordingContext* ganeshContext,
-            MakeSurfaceDelegate msd,
-            MakeImageDelegate mid,
-            MakeCachedBitmapDelegate mbd)
+    Context(const ContextInfo& info, const Functors& functors)
             : fInfo(info)
-            , fGaneshContext(ganeshContext)
-            , fMakeSurfaceDelegate(msd)
-            , fMakeImageDelegate(mid)
-            , fMakeCachedBitmapDelegate(mbd) {
-        SkASSERT(fMakeSurfaceDelegate);
-        SkASSERT(fMakeImageDelegate);
-        SkASSERT(fMakeCachedBitmapDelegate);
+            , fFunctors(functors) {
     }
-    Context(const ContextInfo& info, const Context& ctx)
-            : Context(info,
-                      ctx.fGaneshContext,
-                      ctx.fMakeSurfaceDelegate,
-                      ctx.fMakeImageDelegate,
-                      ctx.fMakeCachedBitmapDelegate) {}
 
     ContextInfo fInfo;
-
-    // This will be null for CPU image filtering.
-    GrRecordingContext* fGaneshContext;
-    MakeSurfaceDelegate fMakeSurfaceDelegate;
-    MakeImageDelegate fMakeImageDelegate;
-    MakeCachedBitmapDelegate fMakeCachedBitmapDelegate;
+    Functors fFunctors;
 
     friend Context MakeGaneshContext(GrRecordingContext* context,
                                      GrSurfaceOrigin origin,
