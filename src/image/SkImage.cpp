@@ -26,6 +26,9 @@
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkImageShader.h"
 
+#include "src/gpu/ganesh/image/GrImageUtils.h"
+#include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
+
 #include <utility>
 
 class SkShader;
@@ -303,14 +306,29 @@ sk_sp<SkImage> SkImage::withDefaultMipmaps() const {
     return this->withMipmaps(nullptr);
 }
 
-sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
-                                       const SkImageFilter* filter,
-                                       const SkIRect& subset,
-                                       const SkIRect& clipBounds,
-                                       SkIRect* outSubset,
-                                       SkIPoint* offset) const {
-    if (!filter || !outSubset || !offset || !this->bounds().contains(subset)) {
+sk_sp<SkImage> MakeWithFilter_Shared(const skif::Context& context,
+                                     sk_sp<SkImage> src,
+                                     const SkImageFilter* filter,
+                                     const SkIRect& subset,
+                                     const SkIRect& clipBounds,
+                                     SkIRect* outSubset,
+                                     SkIPoint* offset);
+
+sk_sp<SkImage> MakeWithFilter(GrRecordingContext* rContext,
+                              sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+    if (!rContext) {
         return nullptr;
+    }
+
+    GrSurfaceOrigin origin = kTopLeft_GrSurfaceOrigin;
+    if (as_IB(src)->isGaneshBacked()) {
+        SkImage_GaneshBase* base = static_cast<SkImage_GaneshBase*>(src.get());
+        origin = base->origin();
     }
 
     sk_sp<SkImageFilterCache> cache(
@@ -325,20 +343,93 @@ sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
     skif::ContextInfo ctxInfo = {
             skif::Mapping(SkMatrix::Translate(-subset.x(), -subset.y())),
             skif::LayerSpace<SkIRect>(clipBounds.makeOffset(-subset.topLeft())),
-            /*srcImag=*/{}, // Will be filled in with this image after createContext() comes back
-            fInfo.colorType(),
-            fInfo.colorSpace(),
+            /*fSource=*/{}, // Will be filled in with this image after createContext() comes back
+            src->imageInfo().colorType(),
+            src->imageInfo().colorSpace(),
             /*fSurfaceProps=*/{},
             cache.get()};
-    skif::Context context = as_IB(this)->onCreateFilterContext(rContext, ctxInfo);
+    skif::Context context = skif::MakeGaneshContext(rContext, origin, ctxInfo);
 
-    auto srcSpecialImage = context.makeImage(subset, sk_ref_sp(this));
+    return MakeWithFilter_Shared(context,
+                                 std::move(src),
+                                 filter,
+                                 subset,
+                                 clipBounds,
+                                 outSubset,
+                                 offset);
+}
+
+sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+
+    sk_sp<SkImageFilterCache> cache(
+            SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize));
+
+    // The filters operate in the local space of the src image, where (0,0) corresponds to the
+    // subset's top left corner. But the clip bounds and any crop rects on the filters are in the
+    // original coordinate system, so configure the CTM to correct crop rects and explicitly adjust
+    // the clip bounds (since it is assumed to already be in image space).
+    // TODO: Once all image filters support it, we can just use the subset's top left corner as
+    // the source FilterResult's origin.
+    skif::ContextInfo ctxInfo = {
+            skif::Mapping(SkMatrix::Translate(-subset.x(), -subset.y())),
+            skif::LayerSpace<SkIRect>(clipBounds.makeOffset(-subset.topLeft())),
+            /*fSource=*/{}, // Will be filled in with this image after createContext() comes back
+            src->imageInfo().colorType(),
+            src->imageInfo().colorSpace(),
+            /*fSurfaceProps=*/{},
+            cache.get()};
+    skif::Context context = skif::Context::MakeRaster(ctxInfo);
+
+    return MakeWithFilter_Shared(context,
+                                 std::move(src),
+                                 filter,
+                                 subset,
+                                 clipBounds,
+                                 outSubset,
+                                 offset);
+
+}
+
+sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
+                                       const SkImageFilter* filter,
+                                       const SkIRect& subset,
+                                       const SkIRect& clipBounds,
+                                       SkIRect* outSubset,
+                                       SkIPoint* offset) const {
+    if (!filter || !outSubset || !offset || !this->bounds().contains(subset)) {
+        return nullptr;
+    }
+
+#if defined(SK_GANESH)
+    if (as_IB(this)->isGaneshBacked()) {
+        return MakeWithFilter(rContext, sk_ref_sp(this),
+                              filter, subset, clipBounds, outSubset, offset);
+    }
+#endif
+
+    return MakeWithFilter(sk_ref_sp(this),
+                          filter, subset, clipBounds, outSubset, offset);
+}
+
+sk_sp<SkImage> MakeWithFilter_Shared(const skif::Context& contextIn,
+                                     sk_sp<SkImage> src,
+                                     const SkImageFilter* filter,
+                                     const SkIRect& subset,
+                                     const SkIRect& clipBounds,
+                                     SkIRect* outSubset,
+                                     SkIPoint* offset) {
+    auto srcSpecialImage = contextIn.makeImage(subset, std::move(src));
     if (!srcSpecialImage) {
         return nullptr;
     }
 
     // TODO: Pass subset.topLeft() as the origin of the source FilterResult
-    context = context.withNewSource(skif::FilterResult{srcSpecialImage});
+    skif::Context context = contextIn.withNewSource(skif::FilterResult{srcSpecialImage});
     sk_sp<SkSpecialImage> result = as_IFB(filter)->filterImage(context)
                                                   .imageAndOffset(context, offset);
     if (!result) {
