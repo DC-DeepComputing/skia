@@ -330,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "459ba19a_e1e373a2",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T18:00:47Z",
+      "side": 1,
+      "message": "What you did is fine, modulo my suggestion about generics instead of empty interface.",
+      "parentUuid": "4e879d30_b0ad69ec",
+      "range": {
+        "startLine": 286,
+        "startChar": 6,
+        "endLine": 286,
+        "endChar": 8
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cfcdd64_7300da40",

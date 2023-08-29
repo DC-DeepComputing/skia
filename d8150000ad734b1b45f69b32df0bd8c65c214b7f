@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "812265c0_e5a152da",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T18:00:47Z",
+      "side": 1,
+      "message": "Can\u0027t we use generic types to make a type union to go here instead of just interface{} ?",
+      "range": {
+        "startLine": 227,
+        "startChar": 134,
+        "endLine": 227,
+        "endChar": 145
+      },
+      "revId": "d8150000ad734b1b45f69b32df0bd8c65c214b7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
