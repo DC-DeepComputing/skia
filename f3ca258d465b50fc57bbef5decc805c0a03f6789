@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27fbe6bb_aea37d01",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1319,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-29T01:39:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e571338d_4cb89515",
+      "range": {
+        "startLine": 1319,
+        "startChar": 36,
+        "endLine": 1319,
+        "endChar": 40
+      },
+      "revId": "f3ca258d465b50fc57bbef5decc805c0a03f6789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2b44144_24162256",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4f78cd3_74b0f326",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1361,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-29T01:39:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d2b44144_24162256",
+      "range": {
+        "startLine": 1360,
+        "startChar": 0,
+        "endLine": 1361,
+        "endChar": 38
+      },
+      "revId": "f3ca258d465b50fc57bbef5decc805c0a03f6789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "319c2efb_9e09d74f",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-08-25T17:28:05Z",
       "side": 1,
       "message": "This is basically just `gpu_blur` moved out of SkBlurImageFilter.cpp and into ganesh code.",
+      "range": {
+        "startLine": 772,
+        "startChar": 0,
+        "endLine": 772,
+        "endChar": 51
+      },
+      "revId": "f3ca258d465b50fc57bbef5decc805c0a03f6789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a6cba15_1ef52b29",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-29T01:39:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "319c2efb_9e09d74f",
       "range": {
         "startLine": 772,
         "startChar": 0,
