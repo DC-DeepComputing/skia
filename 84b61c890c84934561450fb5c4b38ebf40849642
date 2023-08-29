@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c68897e2_6277d031",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-29T18:59:40Z",
+      "side": 1,
+      "message": "should this move up to the anonymous namespace? or will it be a public function shortly?",
+      "range": {
+        "startLine": 346,
+        "startChar": 9,
+        "endLine": 346,
+        "endChar": 27
+      },
+      "revId": "84b61c890c84934561450fb5c4b38ebf40849642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b51ceace_30d5670d",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 1113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-29T18:59:40Z",
+      "side": 1,
+      "message": "nit: just have this with the `{`",
+      "range": {
+        "startLine": 1113,
+        "startChar": 4,
+        "endLine": 1113,
+        "endChar": 5
+      },
+      "revId": "84b61c890c84934561450fb5c4b38ebf40849642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
