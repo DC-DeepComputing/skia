@@ -485,22 +485,20 @@ std::tuple<skgpu::graphite::TextureProxyView, SkColorType> AsView(Recorder* reco
 
 namespace skif {
 
-Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
-                            const ContextInfo& info) {
+Functors MakeGraphiteFunctors(skgpu::graphite::Recorder* recorder) {
     SkASSERT(recorder);
-    SkASSERT(!info.fSource.image() || info.fSource.image()->isGraphiteBacked());
 
     auto makeSurfaceFunctor = [recorder](const SkImageInfo& imageInfo,
                                          const SkSurfaceProps* props) {
         return SkSpecialSurfaces::MakeGraphite(recorder, imageInfo, *props);
     };
-    auto makeImageCallback = [recorder](const SkIRect& subset,
-                                sk_sp<SkImage> image,
-                                const SkSurfaceProps& props) {
+    auto makeImageFunctor = [recorder](const SkIRect& subset,
+                                       sk_sp<SkImage> image,
+                                       const SkSurfaceProps& props) {
         // This just makes a raster image, but it could maybe call MakeFromGraphite
         return SkSpecialImages::MakeGraphite(recorder, subset, image, props);
     };
-    auto makeCachedBitmapCallback = [recorder](const SkBitmap& data) -> sk_sp<SkImage> {
+    auto makeCachedBitmapFunctor = [recorder](const SkBitmap& data) -> sk_sp<SkImage> {
         auto proxy = skgpu::graphite::RecorderPriv::CreateCachedProxy(recorder, data);
         if (!proxy) {
             return nullptr;
@@ -515,6 +513,15 @@ Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                 colorInfo);
     };
 
-    return Context(info, nullptr, makeSurfaceFunctor, makeImageCallback, makeCachedBitmapCallback);
+    return Functors(nullptr, makeSurfaceFunctor, makeImageFunctor, makeCachedBitmapFunctor);
 }
+
+Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
+                            const ContextInfo& info) {
+    SkASSERT(recorder);
+    SkASSERT(!info.fSource.image() || info.fSource.image()->isGraphiteBacked());
+
+    return Context(info, MakeGraphiteFunctors(recorder));
+}
+
 }  // namespace skif
