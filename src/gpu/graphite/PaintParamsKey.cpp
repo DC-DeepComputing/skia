@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 
 #include "src/base/SkArenaAlloc.h"
+#include "src/base/SkStringView.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
@@ -107,6 +108,57 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionar
     return SkSpan(rootSpan, roots.size());
 }
 
+#if defined(GRAPHITE_TEST_UTILS)
+
+int key_to_string(SkString* str,
+                  const ShaderCodeDictionary* dict,
+                  SkSpan<const int32_t> keyData,
+                  int currentIndex) {
+    SkASSERT(currentIndex < SkTo<int>(keyData.size()));
+
+    int32_t id = keyData[currentIndex++];
+    auto entry = dict->getEntry(id);
+    if (!entry) {
+        str->appendS32(id);
+        str->append("? ");
+        return currentIndex;
+    }
+
+    std::string_view name = entry->fStaticFunctionName;
+    if (skstd::starts_with(name, "sk_")) {
+        name.remove_prefix(3);
+    }
+    if (skstd::ends_with(name, "_shader")) {
+        name.remove_suffix(7);
+    }
+    if (skstd::ends_with(name, "Shader")) {
+        name.remove_suffix(6);
+    }
+    str->append(name);
+
+    if (entry->fNumChildren > 0) {
+        str->append(" [ ");
+        for (int i = 0; i < entry->fNumChildren; ++i) {
+            currentIndex = key_to_string(str, dict, keyData, currentIndex);
+        }
+        str->append("]");
+    }
+
+    str->append(" ");
+    return currentIndex;
+}
+
+SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
+    SkString str;
+    const int keySize = SkTo<int>(fData.size());
+    for (int currentIndex = 0; currentIndex < keySize; ) {
+        currentIndex = key_to_string(&str, dict, fData, currentIndex);
+    }
+    return str.isEmpty() ? SkString("(empty)") : str;
+}
+
+#endif  // defined(GRAPHITE_TEST_UTILS)
+
 #ifdef SK_DEBUG
 
 int dump_node(const ShaderCodeDictionary* dict,
@@ -144,5 +196,6 @@ void PaintParamsKey::dump(const ShaderCodeDictionary* dict) const {
 }
 
 #endif // SK_DEBUG
+
 
 } // namespace skgpu::graphite
