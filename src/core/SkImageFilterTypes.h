@@ -1076,7 +1076,7 @@ public:
         return Context(info, fFunctors);
     }
 
-private:
+public:
     Context(const ContextInfo& info, const Functors& functors)
             : fInfo(info)
             , fFunctors(functors) {
@@ -1090,6 +1090,15 @@ private:
                                      const ContextInfo& info);
     friend Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                                        const ContextInfo& info);
+#if 0
+    friend sk_sp<SkImage> MakeWithFilter_Shared(const skif::Functors& functors,
+                                                sk_sp<SkImage> src,
+                                                const SkImageFilter* filter,
+                                                const SkIRect& subset,
+                                                const SkIRect& clipBounds,
+                                                SkIRect* outSubset,
+                                                SkIPoint* offset);
+#endif
 };
 
 } // end namespace skif
