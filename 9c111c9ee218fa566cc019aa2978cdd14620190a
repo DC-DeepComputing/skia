@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66371d42_134e5ff6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-29T14:05:14Z",
+      "side": 1,
+      "message": "Excellent. We could go further and split the swizzle stuff into two sets, so the codec-only ones are still in codec, but this is good for now. The opts refactor is great - what remains in SkOpts.h is really \"rasterpipeline opts\", just like the other opts headers for swizzle/bitmap_proc/etc...",
+      "revId": "9c111c9ee218fa566cc019aa2978cdd14620190a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
