@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21d294de_b9ebdec2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-29T15:05:21Z",
+      "side": 1,
+      "message": "Yeah, this seems to be a fairly sane way to ensure we don\u0027t go overboard overly relying on hermetic and not work on anything else.",
+      "revId": "ab3e836f0006085b62fd878fc5b5b482d53289cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
