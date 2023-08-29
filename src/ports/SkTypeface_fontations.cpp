@@ -79,26 +79,26 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
     return probeTypeface->hasValidBridgeFontRef() ? probeTypeface : nullptr;
 }
 
-void SkPathWrapper::move_to(float x, float y) { path_.moveTo(x, y); }
+namespace sk_fontations {
+void PathGeometrySink::move_to(float x, float y) { path_.moveTo(x, y); }
 
-void SkPathWrapper::line_to(float x, float y) { path_.lineTo(x, y); }
+void PathGeometrySink::line_to(float x, float y) { path_.lineTo(x, y); }
 
-void SkPathWrapper::quad_to(float cx0, float cy0, float x, float y) {
+void PathGeometrySink::quad_to(float cx0, float cy0, float x, float y) {
     path_.quadTo(cx0, cy0, x, y);
 }
-void SkPathWrapper::curve_to(float cx0, float cy0, float cx1, float cy1, float x, float y) {
+void PathGeometrySink::curve_to(float cx0, float cy0, float cx1, float cy1, float x, float y) {
     path_.cubicTo(cx0, cy0, cx1, cy1, x, y);
 }
 
-void SkPathWrapper::close() { path_.close(); }
+void PathGeometrySink::close() { path_.close(); }
 
-SkPath SkPathWrapper::into_inner() && { return std::move(path_); }
+SkPath PathGeometrySink::into_inner() && { return std::move(path_); }
 
-
-SkAxisWrapper::SkAxisWrapper(SkFontParameters::Variation::Axis axisArray[], size_t axisCount)
+AxisWrapper::AxisWrapper(SkFontParameters::Variation::Axis axisArray[], size_t axisCount)
         : fAxisArray(axisArray), fAxisCount(axisCount) {}
 
-bool SkAxisWrapper::populate_axis(
+bool AxisWrapper::populate_axis(
         size_t i, uint32_t axisTag, float min, float def, float max, bool hidden) {
     if (i >= fAxisCount) {
         return false;
@@ -112,7 +112,8 @@ bool SkAxisWrapper::populate_axis(
     return true;
 }
 
-size_t SkAxisWrapper::size() const { return fAxisCount; }
+size_t AxisWrapper::size() const { return fAxisCount; }
+}  // namespace sk_fontations
 
 int SkTypeface_Fontations::onGetUPEM() const {
     return fontations_ffi::units_per_em_or_zero(*fBridgeFontRef);
@@ -223,7 +224,7 @@ protected:
                     SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix)) {
             return false;
         }
-        SkPathWrapper pathWrapper;
+        sk_fontations::PathGeometrySink pathWrapper;
 
         if (!fontations_ffi::get_path(fBridgeFontRef,
                                       glyph.getGlyphID(),
@@ -322,6 +323,6 @@ int SkTypeface_Fontations::onGetVariationDesignPosition(
 
 int SkTypeface_Fontations::onGetVariationDesignParameters(
         SkFontParameters::Variation::Axis parameters[], int parameterCount) const {
-    SkAxisWrapper axisWrapper(parameters, parameterCount);
+    sk_fontations::AxisWrapper axisWrapper(parameters, parameterCount);
     return fontations_ffi::populate_axes(*fBridgeFontRef, axisWrapper);
 }
