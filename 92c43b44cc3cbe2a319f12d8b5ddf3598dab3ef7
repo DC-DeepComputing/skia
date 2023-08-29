@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9652ee41_146a5133",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-08-29T15:01:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "93e500d8_9daef4f7",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 18
+      },
+      "revId": "92c43b44cc3cbe2a319f12d8b5ddf3598dab3ef7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb930e3b_4ebb5c8d",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-29T14:39:49Z",
       "side": 1,
       "message": "Similarly generic, maybe `SkFontationsAxisWrapper`? Alternatively, these could be put in a `sk_fontations` namespace (or something like that) and drop the `Sk` and `Fontations` parts of the names (since that would be implied by the namespace name).",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 18
+      },
+      "revId": "92c43b44cc3cbe2a319f12d8b5ddf3598dab3ef7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b3e3a7_8c27ae8d",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-08-29T15:01:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eb930e3b_4ebb5c8d",
       "range": {
         "startLine": 135,
         "startChar": 5,
