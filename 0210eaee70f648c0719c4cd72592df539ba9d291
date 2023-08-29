@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6acd0f80_09a0c4bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-29T15:28:28Z",
+      "side": 1,
+      "message": "PS1-\u003ePS2 shows the fixes. PS3+ show the merge resolve from the combining of ImageUtils into TextureUtils",
+      "revId": "0210eaee70f648c0719c4cd72592df539ba9d291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
