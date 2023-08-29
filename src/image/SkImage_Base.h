@@ -188,10 +188,6 @@ public:
                                         const SkIRect&,
                                         RequiredProperties) const = 0;
 
-    // Returns a raster-backed image filtering context by default.
-    virtual skif::Context onCreateFilterContext(GrRecordingContext* rContext,
-                                                const skif::ContextInfo& info) const;
-
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);
 
