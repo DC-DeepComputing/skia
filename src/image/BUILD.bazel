@@ -52,3 +52,18 @@ skia_filegroup(
     srcs = [":core_hdrs"],
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "buffet_raster_srcs",
+    srcs = [
+        "SkImage.cpp",
+        "SkImage_Base.cpp",
+        "SkImage_Base.h",
+        "SkImage_Raster.cpp",
+        "SkImage_Raster.h",
+        "SkImage_RasterFactories.cpp",
+        "SkRescaleAndReadPixels.cpp",
+        "SkRescaleAndReadPixels.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

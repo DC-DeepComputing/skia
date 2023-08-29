@@ -77,3 +77,21 @@ skia_filegroup(
     ],
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "buffet_hdrs",
+    srcs = [
+        "SkImageShader.h",
+        "SkShaderBase.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_srcs",
+    srcs = [
+        "SkImageShader.cpp",
+        "SkShaderBase.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)

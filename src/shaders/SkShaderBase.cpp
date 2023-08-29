@@ -18,7 +18,6 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
-#include "src/shaders/SkLocalMatrixShader.h"
 
 #include <cstring>
 
@@ -174,10 +173,6 @@ bool SkShaderBase::appendStages(const SkStageRec& rec, const SkShaders::MatrixRe
         return true;
     }
     return false;
-}
-
-sk_sp<SkShader> SkShaderBase::makeWithCTM(const SkMatrix& postM) const {
-    return sk_sp<SkShader>(new SkCTMShader(sk_ref_sp(this), postM));
 }
 
 // need a cheap way to invert the alpha channel of a shader (i.e. 1 - a)

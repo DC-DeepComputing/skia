@@ -10,6 +10,7 @@ skia_filegroup(
         "SkEncoder.h",
         "SkICC.h",
     ],
+    visibility = ["//src/encode:__pkg__"],
 )
 
 skia_filegroup(
@@ -24,6 +25,7 @@ skia_filegroup(
     srcs = [
         "SkPngEncoder.h",
     ],
+    visibility = ["//src/encode:__pkg__"],
 )
 
 skia_filegroup(

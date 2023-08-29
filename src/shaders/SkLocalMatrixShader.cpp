@@ -77,3 +77,7 @@ sk_sp<SkFlattenable> SkCTMShader::CreateProc(SkReadBuffer& buffer) {
     SkASSERT(false);
     return nullptr;
 }
+
+sk_sp<SkShader> SkShaderBase::makeWithCTM(const SkMatrix& postM) const {
+    return sk_sp<SkShader>(new SkCTMShader(sk_ref_sp(this), postM));
+}
