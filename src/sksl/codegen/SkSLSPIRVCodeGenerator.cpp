@@ -1180,8 +1180,7 @@ SpvId SPIRVCodeGenerator::getFunctionType(const FunctionDeclaration& function) {
     words.push_back(Word::Result());
     words.push_back(this->getType(function.returnType()));
     for (const Variable* parameter : function.parameters()) {
-        if (parameter->type().typeKind() == Type::TypeKind::kSampler &&
-            fProgram.fConfig->fSettings.fSPIRVDawnCompatMode) {
+        if (parameter->type().isSampler() && !fSynthesizedSamplerMap.empty()) {
             words.push_back(this->getFunctionParameterType(parameter->type().textureType()));
             words.push_back(this->getFunctionParameterType(*fContext.fTypes.fSampler));
         } else {
@@ -1880,8 +1879,7 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(const FunctionCall& call,
 
         // In Dawn-mode the texture and sampler arguments are forwarded to the helper function.
         if (const auto* p = fSynthesizedSamplerMap.find(var)) {
-            SkASSERT(fProgram.fConfig->fSettings.fSPIRVDawnCompatMode);
-            SkASSERT(arg.type().typeKind() == Type::TypeKind::kSampler);
+            SkASSERT(arg.type().isSampler());
             SkASSERT(outSynthesizedSamplerId);
 
             SpvId* img = fVariableMap.find((*p)->fTexture.get());
@@ -2862,8 +2860,6 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
             // Variable references to opaque handles (texture/sampler) that appear as the argument
             // of a user-defined function call are explicitly handled in writeFunctionCallArgument.
             if (const auto* p = fSynthesizedSamplerMap.find(variable)) {
-                SkASSERT(fProgram.fConfig->fSettings.fSPIRVDawnCompatMode);
-
                 SpvId* imgPtr = fVariableMap.find((*p)->fTexture.get());
                 SpvId* samplerPtr = fVariableMap.find((*p)->fSampler.get());
                 SkASSERT(imgPtr);
@@ -3629,8 +3625,7 @@ SpvId SPIRVCodeGenerator::writeFunctionStart(const FunctionDeclaration& f, Outpu
                            std::string_view(mangledName.c_str(), mangledName.size()),
                            fNameBuffer);
     for (const Variable* parameter : f.parameters()) {
-        if (parameter->type().typeKind() == Type::TypeKind::kSampler &&
-            fProgram.fConfig->fSettings.fSPIRVDawnCompatMode) {
+        if (parameter->type().isSampler() && !fSynthesizedSamplerMap.empty()) {
             auto [texture, sampler] = this->synthesizeTextureAndSampler(*parameter);
 
             SpvId textureId = this->nextId(nullptr);
@@ -3867,13 +3862,15 @@ static bool is_vardecl_compile_time_constant(const VarDeclaration& varDecl) {
             Analysis::IsCompileTimeConstant(*varDecl.value()));
 }
 
+static bool is_webgpu_sampler(const Variable& var) {
+    return var.type().isSampler() && (var.layout().fFlags & LayoutFlag::kWebGPU);
+}
+
 bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
                                                    const VarDeclaration& varDecl) {
     const Variable* var = varDecl.var();
-    const bool inDawnMode = fProgram.fConfig->fSettings.fSPIRVDawnCompatMode;
     const LayoutFlags backendFlags = var->layout().fFlags & LayoutFlag::kAllBackends;
-    const LayoutFlags permittedBackendFlags =
-            LayoutFlag::kVulkan | (inDawnMode ? LayoutFlag::kWebGPU : LayoutFlag::kNone);
+    const LayoutFlags permittedBackendFlags = LayoutFlag::kVulkan | LayoutFlag::kWebGPU;
     if (backendFlags & ~permittedBackendFlags) {
         fContext.fErrors->error(var->fPosition, "incompatible backend flag in SPIR-V codegen");
         return false;
@@ -3897,12 +3894,10 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
         return true;
     }
 
-    if (var->type().typeKind() == Type::TypeKind::kSampler && inDawnMode) {
-        if (var->layout().fTexture == -1 ||
-            var->layout().fSampler == -1 ||
-            !(var->layout().fFlags & LayoutFlag::kWebGPU)) {
-            fContext.fErrors->error(var->fPosition, "SPIR-V dawn compatibility mode requires an "
-                                                    "explicit texture and sampler index");
+    if (is_webgpu_sampler(*var)) {
+        if (var->layout().fTexture == -1 || var->layout().fSampler == -1) {
+            fContext.fErrors->error(var->fPosition, "WebGPU samplers require explicit texture and "
+                                                    "sampler indices");
             return false;
         }
         SkASSERT(storageClass == SpvStorageClassUniformConstant);
@@ -4442,7 +4437,6 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
 
 std::tuple<const Variable*, const Variable*> SPIRVCodeGenerator::synthesizeTextureAndSampler(
         const Variable& combinedSampler) {
-    SkASSERT(fProgram.fConfig->fSettings.fSPIRVDawnCompatMode);
     SkASSERT(combinedSampler.type().typeKind() == Type::TypeKind::kSampler);
 
     const Layout& layout = combinedSampler.layout();
@@ -4489,38 +4483,67 @@ std::tuple<const Variable*, const Variable*> SPIRVCodeGenerator::synthesizeTextu
 void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream& out) {
     fGLSLExtendedInstructions = this->nextId(nullptr);
     StringStream body;
-    // Assign SpvIds to functions.
     const FunctionDeclaration* main = nullptr;
-    // During the same iteration, collect the local size values to assign if this is a compute
-    // program. Dimensions that are not present get assigned a value of 1.
-    int localSizeX = 1, localSizeY = 1, localSizeZ = 1;
+    Position vulkanSamplerPos;
+    Position webGPUSamplerPos;
     for (const ProgramElement* e : program.elements()) {
         if (e->is<FunctionDefinition>()) {
+            // Assign SpvIds to functions.
             const FunctionDefinition& funcDef = e->as<FunctionDefinition>();
             const FunctionDeclaration& funcDecl = funcDef.declaration();
             fFunctionMap.set(&funcDecl, this->nextId(nullptr));
             if (funcDecl.isMain()) {
                 main = &funcDecl;
             }
-        } else if (ProgramConfig::IsCompute(program.fConfig->fKind) &&
-                   e->is<ModifiersDeclaration>()) {
-            const ModifiersDeclaration& modifiers = e->as<ModifiersDeclaration>();
-            if (modifiers.layout().fLocalSizeX >= 0) {
-                localSizeX = modifiers.layout().fLocalSizeX;
-            }
-            if (modifiers.layout().fLocalSizeY >= 0) {
-                localSizeY = modifiers.layout().fLocalSizeY;
-            }
-            if (modifiers.layout().fLocalSizeZ >= 0) {
-                localSizeZ = modifiers.layout().fLocalSizeZ;
+        }
+
+        if (e->is<GlobalVarDeclaration>()) {
+            // Look for sampler variables and determine whether or not this program uses combined
+            // samplers or separate samplers. The layout backend will be marked as WebGPU for
+            // separate samplers, or Vulkan for combined samplers.
+            const GlobalVarDeclaration& decl = e->as<GlobalVarDeclaration>();
+            const Variable& var = *decl.varDeclaration().var();
+            if (var.type().isSampler()) {
+                if (var.layout().fFlags & LayoutFlag::kVulkan) {
+                    vulkanSamplerPos = decl.position();
+                }
+                if (var.layout().fFlags & LayoutFlag::kWebGPU) {
+                    webGPUSamplerPos = decl.position();
+                }
             }
         }
     }
-
     // Make sure we have a main() function.
     if (!main) {
         fContext.fErrors->error(Position(), "program does not contain a main() function");
         return;
+    }
+    // Make sure our program's sampler usage is consistent.
+    if (vulkanSamplerPos.valid() && webGPUSamplerPos.valid()) {
+        fContext.fErrors->error(Position(), "programs cannot contain a mixture of sampler types");
+        fContext.fErrors->error(vulkanSamplerPos, "Vulkan sampler found here:");
+        fContext.fErrors->error(webGPUSamplerPos, "WebGPU sampler found here:");
+        return;
+    }
+
+    // If this is a compute program, collect the local-size values. Dimensions that are not present
+    // will be assigned a value of 1.
+    int localSizeX = 1, localSizeY = 1, localSizeZ = 1;
+    if (ProgramConfig::IsCompute(program.fConfig->fKind)) {
+        for (const ProgramElement* e : program.elements()) {
+            if (e->is<ModifiersDeclaration>()) {
+                const ModifiersDeclaration& modifiers = e->as<ModifiersDeclaration>();
+                if (modifiers.layout().fLocalSizeX >= 0) {
+                    localSizeX = modifiers.layout().fLocalSizeX;
+                }
+                if (modifiers.layout().fLocalSizeY >= 0) {
+                    localSizeY = modifiers.layout().fLocalSizeY;
+                }
+                if (modifiers.layout().fLocalSizeZ >= 0) {
+                    localSizeZ = modifiers.layout().fLocalSizeZ;
+                }
+            }
+        }
     }
     // Emit interface blocks.
     std::set<SpvId> interfaceVars;
