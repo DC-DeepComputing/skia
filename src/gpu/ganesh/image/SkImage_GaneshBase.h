@@ -111,9 +111,6 @@ public:
                                                                      const SkRect*,
                                                                      const SkRect*) const = 0;
 
-    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
-                                        const skif::ContextInfo& ctxInfo) const override;
-
     virtual GrSurfaceOrigin origin() const = 0;
 
 protected:
