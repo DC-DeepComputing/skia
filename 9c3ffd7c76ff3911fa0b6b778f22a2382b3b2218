@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d50ced52_08de88e8",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "Should we be returning an error instead of ending fatally here? Same question below.",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 10
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e82283f_9d3ed570",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "I would rather there be two tests than these if statements here.\n\nAlternatively, have test() take a string for the name and taskDriverArgs since there appears to be no behavioral change (?) between the two states.",
+      "range": {
+        "startLine": 77,
+        "startChar": 2,
+        "endLine": 77,
+        "endChar": 4
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3875668c_63c01866",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "I\u0027m a bit hesitant to modify global state like this. Should this be something stored on context.Context instead if we need to overwrite it? Or another parameter in taskDriverArgs?",
+      "range": {
+        "startLine": 81,
+        "startChar": 3,
+        "endLine": 81,
+        "endChar": 29
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6547bf2_a27ec6fb",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "Can we have the helper function add on the ^ and $?\n\nI\u0027m also noticing that most of the time regular expressions are *not* used but because of the function name, my brain searches for regexes and doesn\u0027t see any.\n\nA dedicated helper that uses pure string matching would make the intent more clear. See other note below about checking step names at all.",
+      "range": {
+        "startLine": 112,
+        "startChar": 5,
+        "endLine": 112,
+        "endChar": 6
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebcd49e1_cbf882e6",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "How important is it that the step names are correct? The most important part (to me) is that the commands are run. How important to you are the contents of the step names?",
+      "range": {
+        "startLine": 188,
+        "startChar": 3,
+        "endLine": 188,
+        "endChar": 30
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b05535e_812ae78c",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "Typo?",
+      "range": {
+        "startLine": 198,
+        "startChar": 54,
+        "endLine": 198,
+        "endChar": 61
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c6eb1c0_b7f087f3",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "Once we start adding different expected steps, I think this should be two tests, not one.",
+      "range": {
+        "startLine": 286,
+        "startChar": 6,
+        "endLine": 286,
+        "endChar": 8
+      },
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cfcdd64_7300da40",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 13
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-29T15:40:05Z",
+      "side": 1,
+      "message": "Consider a mechanism like testutils.AssertCommandsMatch https://github.com/google/skia-buildbot/blob/286dd9073796b3c40aac340d66678abdb9fa9531/go/exec/testutils/testutils.go#L25-L38\n\n(see https://skia-review.googlesource.com/c/buildbot/+/724919 for examples)",
+      "revId": "9c3ffd7c76ff3911fa0b6b778f22a2382b3b2218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
