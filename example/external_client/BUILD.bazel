@@ -1,0 +1,19 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+# This first example only needs
+cc_binary(
+    name = "path_combiner",
+    srcs = ["src/path_main.cpp"],
+    copts = ["-std=c++17"],
+    linkopts = ["-fuse-ld=lld"],
+    deps = [":skia_core_and_pathops"],
+)
+
+cc_library(
+    name = "skia_core_and_pathops",
+    deps = [
+        "@skia//:core",
+        "@skia//:default_malloc",
+        "@skia//:pathops",
+    ],
+)
