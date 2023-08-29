@@ -442,12 +442,13 @@ public:
                                      /*cache=*/nullptr};
 #if defined(SK_GANESH)
         if (fDirectContext) {
-            return skif::MakeGaneshContext(fDirectContext, kTopLeft_GrSurfaceOrigin, ctxInfo);
+            return skif::Context(ctxInfo,
+                                 skif::MakeGaneshDelegates(fDirectContext, kTopLeft_GrSurfaceOrigin));
         } else
 #endif
 #if defined(SK_GRAPHITE)
         if (fRecorder) {
-            return skif::MakeGraphiteContext(fRecorder, ctxInfo);
+            return skif::Context(ctxInfo, skif::MakeGraphiteDelegates(fRecorder));
         } else
 #endif
         {

@@ -430,7 +430,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::asView(
 
 skif::Context SkImage_Ganesh::onCreateFilterContext(GrRecordingContext* rContext,
                                                     const skif::ContextInfo& ctxInfo) const {
-    return skif::MakeGaneshContext(rContext, fOrigin, ctxInfo);
+    return skif::Context(ctxInfo, skif::MakeGaneshDelegates(rContext, fOrigin));
 }
 
 std::unique_ptr<GrFragmentProcessor> SkImage_Ganesh::asFragmentProcessor(
