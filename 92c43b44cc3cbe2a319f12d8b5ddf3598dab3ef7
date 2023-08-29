@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d561ac68_969890af",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-08-29T15:11:50Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/749036",
+      "parentUuid": "9652ee41_146a5133",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 18
+      },
+      "revId": "92c43b44cc3cbe2a319f12d8b5ddf3598dab3ef7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb930e3b_4ebb5c8d",
