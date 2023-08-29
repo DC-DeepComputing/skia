@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e500d8_9daef4f7",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-29T14:39:49Z",
+      "side": 1,
+      "message": "Not something that needs to be done in this CL, but I just realized this is a super generic name that may eventually clash (ODR violate) with some other user of generic looking names. This should probably have been named something like `SkFontationsGeometySink` or something like that. This class does wrap an SkPath, but what it really does is sink geometry and produce an SkPath.",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 18
+      },
+      "revId": "92c43b44cc3cbe2a319f12d8b5ddf3598dab3ef7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb930e3b_4ebb5c8d",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-29T14:39:49Z",
+      "side": 1,
+      "message": "Similarly generic, maybe `SkFontationsAxisWrapper`? Alternatively, these could be put in a `sk_fontations` namespace (or something like that) and drop the `Sk` and `Fontations` parts of the names (since that would be implied by the namespace name).",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 18
+      },
+      "revId": "92c43b44cc3cbe2a319f12d8b5ddf3598dab3ef7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
