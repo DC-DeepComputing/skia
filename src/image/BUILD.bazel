@@ -6,6 +6,8 @@ exports_files_legacy()
 
 CORE_FILES = [
     "SkImage.cpp",
+    "SkImageFilterUtils.cpp",
+    "SkImageFilterUtils.h",
     "SkImageGeneratorPriv.h",
     "SkImage_Base.cpp",
     "SkImage_Base.h",
