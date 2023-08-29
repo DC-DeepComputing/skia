@@ -69,6 +69,23 @@ public:
                                               sk_sp<VulkanRenderPass> compatibleRenderPass,
                                               VkPipelineCache);
 
+    static sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(
+            const VulkanSharedContext*,
+            VkShaderModule vsModule,
+            VkShaderModule fsModule,
+            VkPipelineShaderStageCreateInfo* pipelineShaderStages,
+            VkPipelineLayout,
+            sk_sp<VulkanRenderPass> compatibleRenderPass,
+            VkPipelineCache);
+
+    static bool InitializeMSAALoadPipelineStructs(
+            const VulkanSharedContext*,
+            SkSL::Compiler*,
+            VkShaderModule* outVertexShaderModule,
+            VkShaderModule* outFragShaderModule,
+            VkPipelineShaderStageCreateInfo* outShaderStageInfo,
+            VkPipelineLayout* outPipelineLayout);
+
     ~VulkanGraphicsPipeline() override {}
 
     VkPipelineLayout layout() const {

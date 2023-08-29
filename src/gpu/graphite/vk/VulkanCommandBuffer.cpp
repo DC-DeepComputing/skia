@@ -109,9 +109,6 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
 }
 
 VulkanCommandBuffer::~VulkanCommandBuffer() {
-    VULKAN_CALL(fSharedContext->interface(),
-            DestroyFramebuffer(fSharedContext->device(), fFrameBuffer, nullptr));
-
     if (fActive) {
         // Need to end command buffer before deleting it
         VULKAN_CALL(fSharedContext->interface(), EndCommandBuffer(fPrimaryCommandBuffer));
@@ -152,11 +149,6 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     for (auto& boundInputOffset : fBoundInputBufferOffsets) {
         boundInputOffset = 0;
     }
-    if (fFrameBuffer != VK_NULL_HANDLE) {
-        VULKAN_CALL(fSharedContext->interface(),
-                DestroyFramebuffer(fSharedContext->device(), fFrameBuffer, nullptr));
-        fFrameBuffer = VK_NULL_HANDLE;
-    }
 }
 
 bool VulkanCommandBuffer::setNewCommandBufferResources() {
@@ -185,7 +177,6 @@ void VulkanCommandBuffer::end() {
     this->submitPipelineBarriers();
 
     VULKAN_CALL_ERRCHECK(fSharedContext->interface(), EndCommandBuffer(fPrimaryCommandBuffer));
-
     fActive = false;
 }
 
@@ -448,17 +439,11 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                          (resolveTexture      != nullptr) +
                          (depthStencilTexture != nullptr);
 
-    TArray<VkImageView> attachmentViews(numAttachments); // Needed for frame buffer
     TArray<VkClearValue> clearValues(numAttachments); // Needed for RenderPassBeginInfo
 
     // TODO: Determine whether to call track resources here or within the renderpass creation
     // in that class
     if (colorTexture) {
-        VkImageView& colorAttachmentView = attachmentViews.push_back();
-        auto vulkanColorTexture = static_cast<const VulkanTexture*>(colorTexture);
-        colorAttachmentView =
-                vulkanColorTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-
         VkClearValue& colorAttachmentClear = clearValues.push_back();
         memset(&colorAttachmentClear, 0, sizeof(VkClearValue));
         colorAttachmentClear.color = {{renderPassDesc.fClearColor[0],
@@ -468,11 +453,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
         this->trackResource(sk_ref_sp(colorTexture));
         if (resolveTexture) {
-            VkImageView& resolveView = attachmentViews.push_back();
-            auto vulkanResolveTexture = static_cast<const VulkanTexture*>(resolveTexture);
-            resolveView = vulkanResolveTexture->getImageView(VulkanImageView::Usage::kAttachment)->
-                          imageView();
-
             VkClearValue& resolveAttachmentClear = clearValues.push_back();
             memset(&resolveAttachmentClear, 0, sizeof(VkClearValue));
             // Resolve attachment should have the same clear value as the color attachment.
@@ -483,12 +463,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     if (depthStencilTexture) {
-        VkImageView& stencilView = attachmentViews.push_back();
-        memset(&stencilView, 0, sizeof(VkImageView));
-        auto vulkanDepthStencilTexture = static_cast<const VulkanTexture*>(depthStencilTexture);
-        stencilView = vulkanDepthStencilTexture->getImageView(VulkanImageView::Usage::kAttachment)->
-                      imageView();
-
         VkClearValue& depthStencilAttachmentClear = clearValues.push_back();
         memset(&depthStencilAttachmentClear, 0, sizeof(VkClearValue));
         depthStencilAttachmentClear.depthStencil = {renderPassDesc.fClearDepth,
@@ -497,46 +471,151 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         this->trackResource(sk_ref_sp(depthStencilTexture));
     }
 
-    // Create VkFrameBuffer
-    // TODO: Delete frame buffer at appropriate location
-    VkFramebufferCreateInfo frameBufferInfo;
-    memset(&frameBufferInfo, 0, sizeof(VkFramebufferCreateInfo));
-    frameBufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-    frameBufferInfo.pNext = nullptr;
-    frameBufferInfo.flags = 0;
-    frameBufferInfo.renderPass = *(vulkanRenderPass->renderPass());
-    frameBufferInfo.attachmentCount = numAttachments;
-    frameBufferInfo.pAttachments = attachmentViews.begin();
-    frameBufferInfo.width = colorTexture->dimensions().width();
-    frameBufferInfo.height = colorTexture->dimensions().height();
-    frameBufferInfo.layers = 1;
-
-    VkFramebuffer frameBuffer;
-    VkResult result;
-    VULKAN_CALL_RESULT(fSharedContext->interface(), result,
-                       CreateFramebuffer(fSharedContext->device(),
-                                         &frameBufferInfo,
-                                         nullptr,
-                                         &frameBuffer));
-    if (result != VK_SUCCESS) {
-        // TODO: Delete unused structs?
-        return false;
-    }
-    fFrameBuffer = frameBuffer;
-
     VkRenderPassBeginInfo beginInfo;
     memset(&beginInfo, 0, sizeof(VkRenderPassBeginInfo));
     beginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = *(vulkanRenderPass->renderPass());
-    beginInfo.framebuffer = frameBuffer;
+    beginInfo.framebuffer = vulkanRenderPass->frameBuffer();//fFrameBuffer->frameBuffer();
     beginInfo.renderArea = {{ 0, 0 },
                             { (unsigned int) colorTexture->dimensions().width(),
                               (unsigned int) colorTexture->dimensions().height() }};
     beginInfo.clearValueCount = numAttachments;
     beginInfo.pClearValues = clearValues.begin();
 
-    // TODO: If needed, load MSAA from resolve
+    bool loadMSAAFromResolve =
+            resolveTexture ? renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad
+                           : false;
+    if (loadMSAAFromResolve) {
+        // Manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the actual load op for the MSAA attachment had better have been discard.
+        // TODO: Restore this assertion?
+        //SkASSERT(renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kDiscard);
+        auto loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
+        this->bindGraphicsPipeline(loadPipeline.get());
+
+        // Load MSAA from resolve texture
+
+        // Subpass 0 (intermediate, front-end subpass when loading msaa):
+        // Load MSAA texture from resolve texture
+        // destination MSAA texture = color attachment of subpass 0 = colorTexture
+        // Source resolve texture (=resolveTexture) passed in as input attachment.
+
+        // color attachment of subpass 0 will be the ___ of subpass 1
+
+        // Subpass 1 (Main Subpass when loading msaa from resolve):
+        // Render to color attachment
+        // no input attachments
+        // color attachment =
+        // resolve attachment =
+
+        // colorTexture = destination MSAA texture
+        // resolveTexture =
+        // copy from resolve texture -> MSAA load texture
+        // color attachment dst for msaa load pipeline
+        // auto& msaaLoadDst = renderPassDesc.fColorResolveAttachment; //colorTexture;
+        // // resolve texture source for msaa load pipeline
+        // auto& resolveTextureSource = resolveTexture;
+
+        // Actual attachment, not reference
+        auto& msaaLoadDst = colorTexture;
+        // Resolve texture image from which to load MSAA
+        auto& sourceResolveTexture = resolveTexture;
+
+        // Set dynamic viewport and stencil. We always use one viewport the size of the render
+        // target.
+        VkViewport viewport;
+        viewport.x = 0.0f;
+        viewport.y = 0.0f;
+        viewport.width = SkIntToScalar(msaaLoadDst->width());
+        viewport.height = SkIntToScalar(msaaLoadDst->height());
+        viewport.minDepth = 0.0f;
+        viewport.maxDepth = 1.0f;
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetViewport(fPrimaryCommandBuffer,
+                                   /*firstViewport=*/0,
+                                   /*viewportCount=*/1,
+                                   &vkViewport));
+
+        // We assume the scissor is not enabled so just set it to the whole render target
+        VkRect2D scissor;
+        scissor.extent.width = msaaLoadDst->dimensions().fWidth;
+        scissor.extent.height = msaaLoadDst->dimensions().fHeight;
+        scissor.offset.x = 0;
+        scissor.offset.y = 0;
+        int dw = msaaLoadDst->width();
+        int dh = msaaLoadDst->height();
+        this->setScissor(0, 0, msaaLoadDst->width(), msaaLoadDst->height());
+
+        // LoadMSAAPipeline pipeline layout / descriptor set structure :
+        // Descriptor set #1 = uniforms (posXform... is that the same as rtAdjust?)
+        // descriptor set #2 = usually texture/samplers...
+
+        // dst rect edges in NDC (-1 to 1)
+        float dx0 = 2.f * rect.fLeft / dw - 1.f;
+        float dx1 = 2.f * (rect.fLeft + w) / dw - 1.f;
+        float dy0 = 2.f * rect.fTop / dh - 1.f;
+        float dy1 = 2.f * (rect.fTop + h) / dh - 1.f;
+        float uniData[] = {dx1 - dx0, dy1 - dy0, dx0, dy0};  // posXform
+
+/**
+    // Update and bind uniform descriptor set
+    int w = rect.width();
+    int h = rect.height();
+
+    // dst rect edges in NDC (-1 to 1)
+    int dw = dst->width();
+    int dh = dst->height();
+    float dx0 = 2.f * rect.fLeft / dw - 1.f;
+    float dx1 = 2.f * (rect.fLeft + w) / dw - 1.f;
+    float dy0 = 2.f * rect.fTop / dh - 1.f;
+    float dy1 = 2.f * (rect.fTop + h) / dh - 1.f;
+
+    float uniData[] = {dx1 - dx0, dy1 - dy0, dx0, dy0};  // posXform
+
+    GrResourceProvider* resourceProvider = gpu->getContext()->priv().resourceProvider();
+    // TODO: Is it worth holding onto the last used uniform buffer and tracking the width, height,
+    // dst width, and dst height so that we can use the buffer again without having to update the
+    // data?
+    sk_sp<GrGpuBuffer> uniformBuffer = resourceProvider->createBuffer(uniData,
+                                                                      sizeof(uniData),
+                                                                      GrGpuBufferType::kUniform,
+                                                                      kDynamic_GrAccessPattern);
+    if (!uniformBuffer) {
+        return false;
+    }
+    GrVkBuffer* vkUniformBuffer = static_cast<GrVkBuffer*>(uniformBuffer.get());
+    static_assert(GrVkUniformHandler::kUniformBufferDescSet < GrVkUniformHandler::kInputDescSet);
+//     commandBuffer->bindDescriptorSets(gpu, fPipelineLayout,
+//                                       GrVkUniformHandler::kUniformBufferDescSet,
+//                                       /*setCount=*/1, vkUniformBuffer->uniformDescriptorSet(),
+//                                       /*dynamicOffsetCount=*/0, /*dynamicOffsets=*/nullptr);
+//     commandBuffer->addGrBuffer(std::move(uniformBuffer));
+
+//     // Update the input descriptor set
+//     gr_rp<const GrVkDescriptorSet> inputDS = src->inputDescSetForMSAALoad(gpu);
+//     if (!inputDS) {
+//         return false;
+//     }
+//     commandBuffer->bindDescriptorSets(gpu, fPipelineLayout,
+//                                       GrVkUniformHandler::kInputDescSet, /*setCount=*/1,
+//                                       inputDS->descriptorSet(),
+//                                       /*dynamicOffsetCount=*/0, /*dynamicOffsets=*/nullptr);
+
+//     // We don't need to add the src and dst resources here since those are all tracked by the main
+//     // render pass code out in GrVkOpsRenderPass and GrVkRenderTarget::adResources.
+//     commandBuffer->addRecycledResource(std::move(inputDS));
+
+//     commandBuffer->draw(gpu, 4, 1, 0, 0);
+// */
+
+        // commandBuffer->bind
+        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+    }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
     // beginning the render pass.

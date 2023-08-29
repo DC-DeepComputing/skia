@@ -9,6 +9,8 @@
 #define skgpu_graphite_VulkanResourceProvider_DEFINED
 
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanFrameBuffer.h"
+#include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DescriptorTypes.h"
@@ -17,6 +19,7 @@ namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
 class VulkanDescriptorSet;
+class VulkanFrameBuffer;
 class VulkanRenderPass;
 class VulkanSharedContext;
 
@@ -26,6 +29,8 @@ public:
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
+
+    sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
 
 private:
     const VulkanSharedContext* vulkanSharedContext();
@@ -58,10 +63,20 @@ private:
                                                    const Texture* resolveTexture,
                                                    const Texture* depthStencilTexture);
 
+    // sk_sp<VulkanFrameBuffer> createFrameBuffer(const VkFramebufferCreateInfo&);
+
     VkPipelineCache pipelineCache();
 
     friend class VulkanCommandBuffer;
     VkPipelineCache fPipelineCache = VK_NULL_HANDLE;
+    skia_private::THashMap<uint64_t, sk_sp<VulkanGraphicsPipeline>> fLoadMSAAPipelines;
+
+    // All of the following attributes are the same between all msaa load pipelines, so they only
+    // need to be created once and can then be stored.
+    VkShaderModule fMSAALoadVertShaderModule = VK_NULL_HANDLE;
+    VkShaderModule fMSAALoadFragShaderModule = VK_NULL_HANDLE;
+    VkPipelineShaderStageCreateInfo fMSAALoadShaderStageInfo[2];
+    VkPipelineLayout fMSAALoadPipelineLayout = VK_NULL_HANDLE;
 };
 
 } // namespace skgpu::graphite

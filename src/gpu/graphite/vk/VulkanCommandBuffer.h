@@ -12,6 +12,7 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DrawPass.h"
+#include "src/gpu/graphite/vk/VulkanFrameBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 
 namespace skgpu::graphite {
@@ -89,6 +90,7 @@ private:
 
     void bindTextureSamplers();
     void bindUniformBuffers();
+    //void bindInputAttachments();
     void syncDescriptorSets();
 
     // TODO: Populate the following methods to handle the possible commands in a draw pass.
@@ -174,7 +176,6 @@ private:
     bool fActiveRenderPass = false;
 
     const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
-    VkFramebuffer fFrameBuffer = VK_NULL_HANDLE;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;
 
