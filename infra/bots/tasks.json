@@ -100,6 +100,11 @@
         "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64"
       ]
     },
+    "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64": {
+      "tasks": [
+        "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64"
+      ]
+    },
     "BazelTest-precompiled-android_codec_test-pixel_5-linux_arm64": {
       "tasks": [
         "BazelTest-precompiled-android_codec_test-pixel_5-linux_arm64"
@@ -4412,6 +4417,53 @@
         "--workdir=.",
         "--test_label=//gm:cpu_gm_tests",
         "--test_config=cpu_only_debug_rbe",
+        "--goldctl_path=./cipd_bin_packages/goldctl",
+        "--git_commit=<(REVISION)",
+        "--changelist_id=<(ISSUE)",
+        "--patchset_order=<(PATCHSET)",
+        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/tools/goldctl/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:9f6c2de25cce548433f4d0301bbde675a65a2f95"
+        }
+      ],
+      "command": [
+        "./bazel_test_gm",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64",
+        "--workdir=.",
+        "--test_label=//gm:hello_bazel_world_test",
+        "--test_config=cpu_only_release_rbe",
         "--goldctl_path=./cipd_bin_packages/goldctl",
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
@@ -91892,6 +91944,9 @@
       "experimental": true
     },
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
+      "experimental": true
+    },
+    "BazelTest-gm-hello_bazel_world_test-cpu_only_release_rbe-linux_x64": {
       "experimental": true
     },
     "Build-Debian10-Clang-arm-Debug-Android": {},
