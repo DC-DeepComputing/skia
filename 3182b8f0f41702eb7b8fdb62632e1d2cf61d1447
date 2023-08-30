@@ -94,6 +94,30 @@
       },
       "revId": "3182b8f0f41702eb7b8fdb62632e1d2cf61d1447",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae690abf_7033c9c1",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T17:06:45Z",
+      "side": 1,
+      "message": "Once this is landed and stable for a day or two I would like to turn this on for clients as well.",
+      "parentUuid": "bd812559_016a2acd",
+      "range": {
+        "startLine": 301,
+        "startChar": 24,
+        "endLine": 301,
+        "endChar": 52
+      },
+      "revId": "3182b8f0f41702eb7b8fdb62632e1d2cf61d1447",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
