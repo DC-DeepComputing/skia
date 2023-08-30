@@ -1,7 +1,6 @@
 // Copyright 2023 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
-
 #include "modules/bentleyottmann/include/EventQueue.h"
 
 namespace bentleyottmann {
@@ -37,26 +36,95 @@ EventQueue::EventQueue(EventQueue::Queue&& queue) : fQueue{std::move(queue)} { }
 
 void EventQueue::add(const Event& event) {
     // New events must be up stream from the current event.
-    SkASSERT(!fQueue.empty() && fQueue.begin()->where < event.where);
+        SkASSERT(fLastEventPoint < event.where);
+
     auto [_, success] = fQueue.insert(event);
     SkASSERT_RELEASE(success);
+}
+
+void EventQueue::addCrossing(Point crossingPoint, const Segment& s0, const Segment& s1) {
+    Event e{crossingPoint, Cross{s0, s1}};
+    this->add(e);
+    fCrossings.insert(e);
 }
 
 bool EventQueue::hasMoreEvents() const {
     return !fQueue.empty();
 }
 
-Event EventQueue::nextEvent() {
-    SkASSERT(this->hasMoreEvents());
+template<class... Ts>
+struct Visitor : Ts... { using Ts::operator()...; };
+template<class... Ts>
+Visitor(Ts...) -> Visitor<Ts...>;
 
-    auto firstElement = fQueue.begin();
+void EventQueue::handleNextEventPoint(EventHandlerInterface* handler) {
 
-    // Extract event at the beginning of the queue.
-    Event event = *firstElement;
+    // Clear temp segment buffers.
+    fDeletionSet.clear();
+    fInsertionSet.clear();
 
-    // Remove the beginning element from the queue.
-    fQueue.erase(firstElement);
+    // An events that are Lower points.
+    bool hasLower = false;
 
-    return event;
+    // Set up the visitors for the different event types.
+    auto handleLower = [&hasLower](const Lower& l) {
+        hasLower = true;
+    };
+
+    // Crossing Segments must be deleted and re-inserted in the sweep line.
+    auto handleCross = [this](const Cross& c) {
+        fDeletionSet.insert(c.s0);
+        fDeletionSet.insert(c.s1);
+        fInsertionSet.insert(c.s0);
+        fInsertionSet.insert(c.s1);
+    };
+
+    // Upper events are added to the sweep line, and a lower event is added to the event queue.
+    auto handleUpper = [this](const Upper& u) {
+        fInsertionSet.insert(u.s);
+        // Add the delete event for the inserted segment. Make sure we are not adding more events
+        // on this eventPoint.
+        SkASSERT(u.s.lower() != u.s.upper());
+        this->add(Event{u.s.lower(), Lower{}});
+    };
+
+    Visitor visitor{handleLower, handleCross, handleUpper};
+
+    auto cursor = fQueue.begin();
+    Event event = *cursor;
+    const Point eventPoint = event.where;
+
+    // We must make forward progress.
+    SkASSERT(fLastEventPoint < eventPoint);
+    fLastEventPoint = eventPoint;
+
+    // Accumulate changes for all events with the same event point.
+    do {
+        std::visit(visitor, event.type);
+        cursor++;
+        if (cursor == fQueue.end()) {
+            break;
+        }
+        event = *cursor;
+    } while(event.where == eventPoint);
+
+    // Remove all accumulated events with the same event point.
+    fQueue.erase(fQueue.begin(), cursor);
+
+    if (hasLower || !fDeletionSet.empty()) {
+        // There are segments to delete.
+        handler->handleDeletions(eventPoint, fDeletionSet);
+    }
+
+    if (hasLower || !fDeletionSet.empty() || !fInsertionSet.empty()) {
+        // If there are insertions then insert them. If there are no insertions, but there were
+        // deletions we need to check for new crossings.
+        handler->handleInsertionsAndCheckForNewCrossings(eventPoint, fInsertionSet, this);
+    }
+}
+
+bool OrderBySlope::operator()(const bentleyottmann::Segment& s0,
+                              const bentleyottmann::Segment&s1) const {
+    return compareSlopes(s0, s1) < 0;
 }
 }  // namespace bentleyottmann
