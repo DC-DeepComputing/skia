@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9fbee96_2aaa5e08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2023-08-30T22:39:28Z",
+      "side": 1,
+      "message": "It\u0027s intentional. In the general case where WebGPU may be remoted to another process, knowing whether the object is an error can\u0027t be known synchronously. This is the API for checking it asynchronously.",
+      "parentUuid": "bdbd222f_364f07df",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f1d30038_57eb7698",
@@ -101,6 +125,30 @@
       "side": 1,
       "message": "We allow user-authored shaders as well as pretty complex arbitrarily-deep nesting of Skia-provided shaders, so we can\u0027t predict with 100% certainty that the backend will be happy with our code. Exceeding some unpredicted driver limit is possible.",
       "parentUuid": "8b4799fb_d5b8a619",
+      "range": {
+        "startLine": 23,
+        "startChar": 46,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06599afc_676da728",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2023-08-30T22:39:28Z",
+      "side": 1,
+      "message": "Ack, makes sense. For user-provided shaders which are invalid or exceed normative limits on the current device, you\u0027ll get validation errors. Unpredicted driver limit issues will be exposed as \"internal\" errors.",
+      "parentUuid": "9719960a_23ffaa35",
       "range": {
         "startLine": 23,
         "startChar": 46,
