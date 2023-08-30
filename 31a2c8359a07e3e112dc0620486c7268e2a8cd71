@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0c1624c_d9a590c7",
+        "filename": "modules/bentleyottmann/include/BentleyOttmann1.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-30T21:16:31Z",
+      "side": 1,
+      "message": "Is it meaningful to the caller that we distinguish between \"failure\" and \"no intersections\"? If not, maybe we just always return the vector without the optional, (and leave it empty for failure)?",
+      "revId": "31a2c8359a07e3e112dc0620486c7268e2a8cd71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6fa3501_b52d10f3",
+        "filename": "modules/bentleyottmann/include/EventQueue.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-30T21:16:31Z",
+      "side": 1,
+      "message": "nit: spelling\n```suggestion\n    // contents of the event. The ordering of the contents of the event is arbitrary but need to\n```",
+      "range": {
+        "startLine": 77,
+        "startChar": 66,
+        "endLine": 77,
+        "endChar": 70
+      },
+      "revId": "31a2c8359a07e3e112dc0620486c7268e2a8cd71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bffc7bec_b5f5aebc",
+        "filename": "modules/bentleyottmann/include/EventQueue.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-30T21:16:31Z",
+      "side": 1,
+      "message": "I\u0027m not super familiar, but `set` seems like overkill for what we need here, right? Could we get by (and have better performance) with `std::priority_queue`?",
+      "revId": "31a2c8359a07e3e112dc0620486c7268e2a8cd71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceb31949_1f3c1f95",
+        "filename": "modules/bentleyottmann/src/BentleyOttmann1.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-30T21:16:31Z",
+      "side": 1,
+      "message": "This is copying the whole Queue (eg, set), right? Probably want `EventQueue\u0026 eventQueue \u003d possibleEQ.value();` ?",
+      "revId": "31a2c8359a07e3e112dc0620486c7268e2a8cd71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
