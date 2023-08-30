@@ -7594,7 +7594,8 @@ UNIX_ONLY_TEST(SkParagraph_TextEditingFunctionality, reporter) {
     lineNumber = paragraph->getLineNumberAt(len / 2);
     REPORTER_ASSERT(reporter, lineNumber == 1);
     lineNumber = paragraph->getLineNumberAt(len - 1);
-    REPORTER_ASSERT(reporter, lineNumber == -1);
+    // line 2 is the last line.
+    REPORTER_ASSERT(reporter, lineNumber == 2);
     lineNumber = paragraph->getLineNumberAt(len + 10);
     REPORTER_ASSERT(reporter, lineNumber == -1);
 
@@ -7632,8 +7633,9 @@ UNIX_ONLY_TEST(SkParagraph_TextEditingFunctionality, reporter) {
     REPORTER_ASSERT(reporter, foundClosest && glyphInfo.fClusterTextRange.start == 61 &&
                                               glyphInfo.fClusterTextRange.end == 62);
     foundClosest = paragraph->getClosestGlyphClusterAt(TestCanvasWidth + 10, 30, &glyphInfo);
-    REPORTER_ASSERT(reporter, foundClosest && glyphInfo.fClusterTextRange.start == 230 &&
-                                              glyphInfo.fClusterTextRange.end == 231);
+
+    REPORTER_ASSERT(reporter, foundClosest && glyphInfo.fClusterTextRange.start == 228 &&
+                                              glyphInfo.fClusterTextRange.end == 229);
 
     auto font = paragraph->getFontAt(10);
     REPORTER_ASSERT(reporter, font.getTypeface() != nullptr);
@@ -7647,6 +7649,105 @@ UNIX_ONLY_TEST(SkParagraph_TextEditingFunctionality, reporter) {
     REPORTER_ASSERT(reporter, fonts[0].fFont.getTypeface() != nullptr);
     font.getTypeface()->getFamilyName(&fontFamily);
     REPORTER_ASSERT(reporter, fontFamily.equals("Roboto"));
+}
+
+UNIX_ONLY_TEST(SkParagraph_API_USES_UTF16, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    // Each of these characters consists of 3 UTF-8 code points, or 1 UTF-16
+    // code point.
+    const char* text = "一丁丂七";
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(TestCanvasWidth);
+
+    REPORTER_ASSERT(reporter, paragraph->getFontAt(0).getTypeface() != nullptr);
+    REPORTER_ASSERT(reporter, paragraph->getFontAt(4).getTypeface() == nullptr);
+
+    REPORTER_ASSERT(reporter, paragraph->getGlyphClusterAt(0, nullptr));
+    REPORTER_ASSERT(reporter, !paragraph->getGlyphClusterAt(4, nullptr));
+    // Verify the output also uses UTF-16
+    Paragraph::GlyphClusterInfo glyphInfo;
+    REPORTER_ASSERT(reporter, paragraph->getGlyphClusterAt(3, &glyphInfo));
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.start == 3);
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.end == 4);
+
+    REPORTER_ASSERT(reporter, paragraph->getLineNumberAt(0) == 0);
+    REPORTER_ASSERT(reporter, paragraph->getLineNumberAt(4) == -1);
+
+    // The last logical character ("七") is considered hit.
+    REPORTER_ASSERT(reporter, paragraph->getClosestGlyphClusterAt(999.0f, 999.0f, &glyphInfo));
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.start == 3);
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.end == 4);
+
+    // The last logical character ("一") is considered hit.
+    REPORTER_ASSERT(reporter, paragraph->getClosestGlyphClusterAt(-999.0f, 0.0f, &glyphInfo));
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.start == 0);
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.end == 1);
+}
+
+UNIX_ONLY_TEST(SkParagraph_Empty_Paragraph_Metrics, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    // Each of these characters consists of 3 UTF-8 code points, or 1 UTF-16
+    // code point.
+    const char* text = "";
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    builder.addText(text, 0);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(TestCanvasWidth);
+
+    REPORTER_ASSERT(reporter, paragraph->getFontAt(0).getTypeface() == nullptr);
+    REPORTER_ASSERT(reporter, !paragraph->getGlyphClusterAt(0, nullptr));
+    REPORTER_ASSERT(reporter, paragraph->getLineNumberAt(0) == -1);
+    REPORTER_ASSERT(reporter, !paragraph->getClosestGlyphClusterAt(10.0, 5.0, nullptr));
+}
+
+UNIX_ONLY_TEST(SkParagraph_API_GlyphCluster_Ligature, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    // Each of these characters consists of 3 UTF-8 code points, or 1 UTF-16
+    // code point.
+    const char* text = "fi";
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(TestCanvasWidth);
+
+    Paragraph::GlyphClusterInfo glyphInfo;
+    REPORTER_ASSERT(reporter, paragraph->getGlyphClusterAt(0, &glyphInfo));
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.start == 0);
+    REPORTER_ASSERT(reporter, glyphInfo.fClusterTextRange.end == len);
 }
 
 UNIX_ONLY_TEST(SkParagraph_SingleDummyPlaceholder, reporter) {

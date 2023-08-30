@@ -215,14 +215,14 @@ public:
     bool containsColorFontOrBitmap(SkTextBlob* textBlob) override;
     bool containsEmoji(SkTextBlob* textBlob) override;
 
-    int getLineNumberAt(TextIndex codeUnitIndex) const override;
+    int getLineNumberAt(size_t codeUnitIndex) override;
     bool getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const override;
     TextRange getActualTextRange(int lineNumber, bool includeSpaces) const override;
-    bool getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo* glyphInfo) override;
+    bool getGlyphClusterAt(size_t codeUnitIndex, GlyphClusterInfo* glyphInfo) override;
     bool getClosestGlyphClusterAt(SkScalar dx,
                                   SkScalar dy,
                                   GlyphClusterInfo* glyphInfo) override;
-    SkFont getFontAt(TextIndex codeUnitIndex) const override;
+    SkFont getFontAt(size_t codeUnitIndex) override;
     std::vector<FontInfo> getFonts() const override;
 
     InternalLineMetrics getEmptyMetrics() const { return fEmptyMetrics; }
@@ -281,6 +281,8 @@ private:
     std::unordered_set<SkUnichar> fUnresolvedCodepoints;
 
     skia_private::TArray<TextLine, false> fLines;   // kFormatted   (cached: width, max lines, ellipsis, text align)
+    int getLineNumberAtUTF8Offset(TextIndex utf8Offset, size_t startLine, size_t endLine);
+
     sk_sp<SkPicture> fPicture;          // kRecorded    (cached: text styles)
 
     skia_private::TArray<ResolvedFontDescriptor> fFontSwitches;
