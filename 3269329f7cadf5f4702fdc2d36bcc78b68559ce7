@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd1ebdef_d8a61fe2",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-30T17:46:22Z",
+      "side": 1,
+      "message": "I could rm this header until we actually do something w/ it if it matters",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 49
+      },
+      "revId": "3269329f7cadf5f4702fdc2d36bcc78b68559ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "785d0e99_640154b8",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-30T17:46:22Z",
+      "side": 1,
+      "message": "From my researching, I don\u0027t immediately see how subpass count plays into overarching render pass compatibility (so long as the attachments are compatible) outside of disregarding some considerations when there\u0027s only 1 subpass. Any good resources or additional information there is welcome :)",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 51
+      },
+      "revId": "3269329f7cadf5f4702fdc2d36bcc78b68559ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
