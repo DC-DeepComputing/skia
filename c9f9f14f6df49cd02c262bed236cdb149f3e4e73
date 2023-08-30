@@ -16,6 +16,23 @@
       "message": "PTAL\n\nSorry, didn\u0027t run trybots before sending out for review, as I have no that Skia permission.",
       "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55a6d60_c85597ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-30T11:55:58Z",
+      "side": 1,
+      "message": "lgtm.\nAdd skia owner Greg, PTAL.",
+      "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
