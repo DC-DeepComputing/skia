@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9fe8233_7c6aa9a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:50:34Z",
+      "side": 1,
+      "message": "brianosman@ for `include/gpu/graphite/TextureInfo.h` OWNERS",
+      "revId": "abe0fbeda5b08a0946b12d7abb1de57ba4f5735a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
