@@ -33,6 +33,23 @@
       "message": "lgtm.\nAdd skia owner Greg, PTAL.",
       "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d8f6113_7649385b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-30T12:15:53Z",
+      "side": 1,
+      "message": "compile fails, looks like drawn changes haven\u0027t need rolled into skia\n```obj/src/gpu/dawn/gpu_shared.DawnUtils.o\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:21:35: error: no member named \u0027R16Unorm\u0027 in \u0027wgpu::TextureFormat\u0027\n        case wgpu::TextureFormat::R16Unorm:              return 2;\n             ~~~~~~~~~~~~~~~~~~~~~^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:25:35: error: no member named \u0027RG16Unorm\u0027 in \u0027wgpu::TextureFormat\u0027; did you mean \u0027RG8Unorm\u0027?\n        case wgpu::TextureFormat::RG16Unorm:             return 4;\n             ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~\n                                  RG8Unorm\ngen/third_party/externals/dawn/include/dawn/webgpu_cpp.h:377:9: note: \u0027RG8Unorm\u0027 declared here\n        RG8Unorm \u003d 0x00000008,\n        ^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:25:14: error: duplicate case value \u0027RG8Unorm\u0027\n        case wgpu::TextureFormat::RG16Unorm:             return 4;\n             ^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:24:14: note: previous case defined here\n        case wgpu::TextureFormat::RG8Unorm:              return 2;\n             ^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:46:35: error: no member named \u0027R16Unorm\u0027 in \u0027wgpu::TextureFormat\u0027\n        case wgpu::TextureFormat::R16Unorm:      return kRed_SkColorChannelFlag;\n             ~~~~~~~~~~~~~~~~~~~~~^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:50:35: error: no member named \u0027RG16Unorm\u0027 in \u0027wgpu::TextureFormat\u0027; did you mean \u0027RG8Unorm\u0027?\n        case wgpu::TextureFormat::RG16Unorm:     return kRG_SkColorChannelFlags;\n             ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~\n                                  RG8Unorm\ngen/third_party/externals/dawn/include/dawn/webgpu_cpp.h:377:9: note: \u0027RG8Unorm\u0027 declared here\n        RG8Unorm \u003d 0x00000008,\n        ^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:50:14: error: duplicate case value \u0027RG8Unorm\u0027\n        case wgpu::TextureFormat::RG16Unorm:     return kRG_SkColorChannelFlags;\n             ^\n../../../../../../skia/src/gpu/dawn/DawnUtils.cpp:49:14: note: previous case defined here\n        case wgpu::TextureFormat::RG8Unorm:     return kRG_SkColorChannelFlags;```",
+      "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
