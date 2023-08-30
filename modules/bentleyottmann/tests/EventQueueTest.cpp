@@ -4,6 +4,25 @@
 #include "modules/bentleyottmann/include/EventQueue.h"
 #include "tests/Test.h"
 
+namespace bentleyottmann {
+class EventQueueTestingPeer {
+public:
+    static Event NextEvent(EventQueue* eq) {
+        SkASSERT(eq->hasMoreEvents());
+
+        auto firstElement = eq->fQueue.begin();
+
+        // Extract event at the beginning of the queue.
+        Event event = *firstElement;
+
+        // Remove the beginning element from the queue.
+        eq->fQueue.erase(firstElement);
+
+        return event;
+    }
+};
+}  // namespace bentleyottmann
+
 using namespace bentleyottmann;
 
 DEF_TEST(BO_EventQueueBasic, reporter) {
@@ -19,7 +38,7 @@ DEF_TEST(BO_EventQueueBasic, reporter) {
         EventQueue eq{std::move(q)};
         {
             REPORTER_ASSERT(reporter, eq.hasMoreEvents());
-            Event e = eq.nextEvent();
+            Event e = EventQueueTestingPeer::NextEvent(&eq);
             REPORTER_ASSERT(reporter, e.where == eventPoint);
             REPORTER_ASSERT(reporter, !eq.hasMoreEvents());
         }
@@ -33,7 +52,7 @@ DEF_TEST(BO_EventQueueBasic, reporter) {
         {
             // There should be only one lower because of queue de-duplication
             REPORTER_ASSERT(reporter, eq.hasMoreEvents());
-            auto [p, _] = eq.nextEvent();
+            auto [p, _] = EventQueueTestingPeer::NextEvent(&eq);
             REPORTER_ASSERT(reporter, p == eventPoint);
             REPORTER_ASSERT(reporter, !eq.hasMoreEvents());
         }
@@ -49,13 +68,13 @@ DEF_TEST(BO_EventQueueBasic, reporter) {
         {
             // There should be only one lower because of queue de-duplication
             REPORTER_ASSERT(reporter, eq.hasMoreEvents());
-            auto [p, _] = eq.nextEvent();
+            auto [p, _] = EventQueueTestingPeer::NextEvent(&eq);
             REPORTER_ASSERT(reporter, p == eventPoint1);
         }
         {
             // There should be only one lower because of queue de-duplication
             REPORTER_ASSERT(reporter, eq.hasMoreEvents());
-            auto [p, _] = eq.nextEvent();
+            auto [p, _] = EventQueueTestingPeer::NextEvent(&eq);
             REPORTER_ASSERT(reporter, p == eventPoint2);
             REPORTER_ASSERT(reporter, !eq.hasMoreEvents());
         }
@@ -69,20 +88,19 @@ DEF_TEST(BO_EventQueueBasic, reporter) {
         EventQueue eq{std::move(q)};
         {
             REPORTER_ASSERT(reporter, eq.hasMoreEvents());
-            Event e = eq.nextEvent();
+            Event e = EventQueueTestingPeer::NextEvent(&eq);
             Point upperPt = Point{0, 0};
             REPORTER_ASSERT(reporter, e.where == upperPt);
             REPORTER_ASSERT(reporter, e.type.index() == 2);
             Upper upper = std::get<Upper>(e.type);
             REPORTER_ASSERT(reporter, !(upper < Upper{s1}) && !(Upper{s1} < upper));
-            Event e2 = eq.nextEvent();
+            Event e2 = EventQueueTestingPeer::NextEvent(&eq);
             REPORTER_ASSERT(reporter, e2.where == upperPt);
             REPORTER_ASSERT(reporter, e2.type.index() == 2);
             Upper upper2 = std::get<Upper>(e2.type);
             REPORTER_ASSERT(reporter, !(upper2 < Upper{s0}) && !(Upper{s0} < upper2));
             REPORTER_ASSERT(reporter, !eq.hasMoreEvents());
         }
-
     }
 }
 
