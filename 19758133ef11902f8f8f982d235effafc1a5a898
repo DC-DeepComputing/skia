@@ -46,6 +46,30 @@
       },
       "revId": "19758133ef11902f8f8f982d235effafc1a5a898",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "170ce33d_8d5bac18",
+        "filename": "AUTHORS",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-30T13:47:21Z",
+      "side": 1,
+      "message": "I think this needs to be \u003csosotsertsvadze2@gmail.com\u003e because that\u0027s who git and Gerrit think authored the CL.\n\nSorry for the churn :/",
+      "parentUuid": "c91913e5_58a2841d",
+      "range": {
+        "startLine": 95,
+        "startChar": 17,
+        "endLine": 95,
+        "endChar": 42
+      },
+      "revId": "19758133ef11902f8f8f982d235effafc1a5a898",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
