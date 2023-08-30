@@ -22,6 +22,30 @@
       },
       "revId": "b2e92f66a17d9dd51c36f336e457cb333093015d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "966d8f57_928918e2",
+        "filename": "tests/sksl/runtime/Commutative.skrp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-30T14:25:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0a883533_75ab00f7",
+      "range": {
+        "startLine": 21,
+        "startChar": 40,
+        "endLine": 21,
+        "endChar": 42
+      },
+      "revId": "b2e92f66a17d9dd51c36f336e457cb333093015d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
