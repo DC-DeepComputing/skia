@@ -37,7 +37,10 @@ EventQueue::EventQueue(EventQueue::Queue&& queue) : fQueue{std::move(queue)} { }
 
 void EventQueue::add(const Event& event) {
     // New events must be up stream from the current event.
-    SkASSERT(!fQueue.empty() && fQueue.begin()->where < event.where);
+    if (!fQueue.empty()) {
+        SkASSERT(fQueue.begin()->where < event.where);
+    }
+
     auto [_, success] = fQueue.insert(event);
     SkASSERT_RELEASE(success);
 }
