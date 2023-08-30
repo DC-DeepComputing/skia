@@ -15,7 +15,7 @@ public:
     void handleEvent(const Event& event, EventQueue* eventQueue) {}
 };
 
-std::optional<std::vector<Point>> bentley_ottmann_1(SkSpan<const Segment> segments) {
+std::optional<std::vector<Crossing>> bentley_ottmann_1(SkSpan<const Segment> segments) {
     if (auto possibleEQ = EventQueue::Make(segments)) {
         EventQueue eventQueue = std::move(possibleEQ.value());
         SweepLine sweepLine;

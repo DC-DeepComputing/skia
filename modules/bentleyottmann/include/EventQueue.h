@@ -81,6 +81,7 @@ public:
     static std::optional<EventQueue> Make(SkSpan<const Segment> segments);
 
     EventQueue(Queue&& queue);
+    EventQueue() = default;
 
     void add(const Event& e);
 
