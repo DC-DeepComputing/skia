@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "161c892b84fb7ac2fa8de260ba19d4a9dcbc2d52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "518ff1a7_656b2e35",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-30T16:25:33Z",
+      "side": 1,
+      "message": "Maybe kDefaultNumCachedImages ?",
+      "range": {
+        "startLine": 694,
+        "startChar": 36,
+        "endLine": 694,
+        "endChar": 38
+      },
+      "revId": "161c892b84fb7ac2fa8de260ba19d4a9dcbc2d52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
