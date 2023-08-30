@@ -298,7 +298,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				}
 			}
 			if b.extraConfig("Dawn") {
-				configs = []string{"grdawn"}
+				configs = []string{"graphite[api=dawn,wgsl=true]"}
 				// Could not readback from surface
 				// https://skbug.com/14105
 				skip(ALL, "gm", ALL, "tall_stretched_bitmaps")
