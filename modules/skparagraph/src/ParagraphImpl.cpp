@@ -1191,14 +1191,34 @@ void ParagraphImpl::visit(const Visitor& visitor) {
     }
 }
 
-int ParagraphImpl::getLineNumberAt(TextIndex codeUnitIndex) const {
-    for (auto i = 0; i < fLines.size(); ++i) {
-        auto& line = fLines[i];
-        if (line.text().contains({codeUnitIndex, codeUnitIndex + 1})) {
-            return i;
-        }
+int ParagraphImpl::getLineNumberAt(size_t codeUnitIndex) {
+    this->ensureUTF16Mapping();
+    if (codeUnitIndex >= SkToSizeT(fUTF8IndexForUTF16Index.size())) {
+        return -1;
     }
-    return -1;
+    const auto utf8 = fUTF8IndexForUTF16Index[codeUnitIndex];
+    const size_t lineNumber = fLines.size();
+    if (lineNumber == 0) {
+        return -1;
+    }
+    return getLineNumberAtUTF8Offset(utf8, 0, lineNumber);
+}
+
+// This method will never return -1 since sufficient boundary checks are already
+// performed by its caller.
+int ParagraphImpl::getLineNumberAtUTF8Offset(TextIndex utf8Offset, size_t startLine, size_t endLine) {
+    if (startLine + 1 == endLine) {
+        return startLine;
+    }
+    // startLine + 2 <= endLine => startLine + 1 <= midLine <= end - 1
+    const size_t midLine = (endLine + startLine) / 2;
+    const TextRange midLineRange = fLines[midLine].textWithNewlines();
+    if (midLine == endLine - 1 || utf8Offset < midLineRange.start) {
+        return getLineNumberAtUTF8Offset(utf8Offset, startLine, midLine);
+    }
+    return (midLineRange.end <= utf8Offset)
+        ? getLineNumberAtUTF8Offset(utf8Offset, midLine, endLine)
+        : midLine;
 }
 
 bool ParagraphImpl::getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const {
@@ -1220,29 +1240,32 @@ TextRange ParagraphImpl::getActualTextRange(int lineNumber, bool includeSpaces) 
     return includeSpaces ? line.text() : line.trimmedText();
 }
 
-bool ParagraphImpl::getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo* glyphInfo) {
-    for (auto i = 0; i < fLines.size(); ++i) {
-        auto& line = fLines[i];
-        if (!line.text().contains({codeUnitIndex, codeUnitIndex})) {
-            continue;
-        }
-        for (auto c = line.clustersWithSpaces().start; c < line.clustersWithSpaces().end; ++c) {
-            auto& cluster = fClusters[c];
-            if (cluster.contains(codeUnitIndex)) {
-                std::vector<TextBox> boxes;
-                line.getRectsForRange(cluster.textRange(),
-                                      RectHeightStyle::kTight,
-                                      RectWidthStyle::kTight,
-                                      boxes);
-                if (boxes.size() > 0) {
-                    if (glyphInfo) {
-                        *glyphInfo = {boxes[0].rect, cluster.textRange(), boxes[0].direction};
-                    }
-                    return true;
+bool ParagraphImpl::getGlyphClusterAt(size_t codeUnitIndex, GlyphClusterInfo* glyphInfo) {
+   this->ensureUTF16Mapping();
+    if (codeUnitIndex >= SkToSizeT(fUTF8IndexForUTF16Index.size())) {
+        return false;
+    }
+    const auto utf8 = fUTF8IndexForUTF16Index[codeUnitIndex];
+    const int lineNumber = getLineNumberAt(utf8);
+    if (lineNumber == -1) {
+        return false;
+    }
+    auto& line = fLines[lineNumber];
+    for (auto c = line.clustersWithSpaces().start; c < line.clustersWithSpaces().end; ++c) {
+        auto& cluster = fClusters[c];
+        if (cluster.contains(utf8)) {
+            std::vector<TextBox> boxes;
+            line.getRectsForRange(cluster.textRange(),
+                                    RectHeightStyle::kTight,
+                                    RectWidthStyle::kTight,
+                                    boxes);
+            if (boxes.size() > 0) {
+                if (glyphInfo) {
+                    *glyphInfo = {boxes[0].rect, cluster.textRange(), boxes[0].direction};
                 }
+                return true;
             }
         }
-        return false;
     }
     return false;
 }
@@ -1250,19 +1273,20 @@ bool ParagraphImpl::getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo*
 bool ParagraphImpl::getClosestGlyphClusterAt(SkScalar dx,
                                              SkScalar dy,
                                              GlyphClusterInfo* glyphInfo) {
-    auto res = this->getGlyphPositionAtCoordinate(dx, dy);
-    auto textIndex = res.position + (res.affinity == Affinity::kDownstream ? 0 : 1);
-    GlyphClusterInfo gci;
-    if (this->getGlyphClusterAt(textIndex, glyphInfo ? glyphInfo : &gci)) {
-        return true;
-    } else {
-        return false;
-    }
+    const PositionWithAffinity res = this->getGlyphPositionAtCoordinate(dx, dy);
+    SkAssertResult(res.position != 0 || res.affinity != Affinity::kUpstream);
+    const size_t utf16Offset = res.position + (res.affinity == Affinity::kDownstream ? 0 : -1);
+    return this->getGlyphClusterAt(utf16Offset, glyphInfo);
 }
 
-SkFont ParagraphImpl::getFontAt(TextIndex codeUnitIndex) const {
+SkFont ParagraphImpl::getFontAt(size_t codeUnitIndex) {
+   this->ensureUTF16Mapping();
+    if (codeUnitIndex >= SkToSizeT(fUTF8IndexForUTF16Index.size())) {
+        return SkFont();
+    }
+    const auto utf8 = fUTF8IndexForUTF16Index[codeUnitIndex];
     for (auto& run : fRuns) {
-        if (run.textRange().contains({codeUnitIndex, codeUnitIndex})) {
+        if (run.textRange().contains({utf8, utf8})) {
             return run.font();
         }
     }
