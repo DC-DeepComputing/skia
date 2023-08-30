@@ -371,6 +371,30 @@
       },
       "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5f0d52d_0eb09171",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T21:27:30Z",
+      "side": 1,
+      "message": "Following Kai\u0027s suggestion on the WebGPU team chat, I decided to use error scopes and added this utility to make the code easier to deal with: https://skia-review.googlesource.com/c/skia/+/749957. If you\u0027re OK with that utility, I\u0027m going to change this CL to use the same mechanism.",
+      "parentUuid": "6d90c388_9114f1ee",
+      "range": {
+        "startLine": 152,
+        "startChar": 3,
+        "endLine": 152,
+        "endChar": 20
+      },
+      "revId": "6ffc14d53a78299a760c1612b386adf8395bfb45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
