@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c088a4_2a3cbbd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-30T19:50:59Z",
+      "side": 1,
+      "message": "This is the minimum to get graphite blurring. After talking with Brian, I think I have a path forward for doing SkTileMode-aware downsizing that\u0027s a little more concise than what is in GrBlurUtils.\n\nMy hope is I can implement that logic internally to skif::FilterResult so that the asShader and AutoSurface helpers will simplify a lot of the intermediate management compared to what was added in this CL. It also means that we shouldn\u0027t worry too hard about the exact resize logic, since it\u0027ll go away once we\u0027re off a timeline.",
+      "revId": "45db08454ffcb088b3888f0f1496908191b1aaf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
