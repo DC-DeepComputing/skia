@@ -13,7 +13,6 @@
 #ifdef SK_VULKAN
 
 #include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/vk/GrVkTypes.h"
 
 class GrDirectContext;
 class GrVkGpu;

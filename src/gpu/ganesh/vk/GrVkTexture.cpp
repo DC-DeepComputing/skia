@@ -9,7 +9,6 @@
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
 
 #include "src/gpu/ganesh/GrTexture.h"
-#include "src/gpu/ganesh/vk/GrVkBackendSurfacePriv.h"
 #include "src/gpu/ganesh/vk/GrVkDescriptorSet.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkImageView.h"
@@ -194,10 +193,8 @@ void GrVkTexture::onAbandon() {
 }
 
 GrBackendTexture GrVkTexture::getBackendTexture() const {
-    return GrBackendTextures::MakeVk(fTexture->width(),
-                                     fTexture->height(),
-                                     fTexture->vkImageInfo(),
-                                     fTexture->getMutableState());
+    return GrBackendTexture(fTexture->width(), fTexture->height(), fTexture->vkImageInfo(),
+                            fTexture->getMutableState());
 }
 
 GrVkGpu* GrVkTexture::getVkGpu() const {
