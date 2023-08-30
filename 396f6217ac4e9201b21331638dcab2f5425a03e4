@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcffa076_daa65504",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2019,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-30T15:07:22Z",
+      "side": 1,
+      "message": "nit: Strange extra spaces",
+      "revId": "396f6217ac4e9201b21331638dcab2f5425a03e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
