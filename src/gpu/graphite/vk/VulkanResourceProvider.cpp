@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
+#include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
@@ -174,6 +175,57 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     auto descSet = fResourceCache->findAndRefResource(descSetKeys[0], skgpu::Budgeted::kNo);
     return descSet ? sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet))
                    : nullptr;
+}
+
+sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateCompatibleRenderPass(
+        const RenderPassDesc& renderPassDesc) {
+    auto renderPassKey = VulkanRenderPass::GenerateCompatibleRenderPassKey(renderPassDesc);
+    Resource* existingRenderPass =
+            fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
+
+    if (existingRenderPass) {
+        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(existingRenderPass));
+    } else {
+        auto newRenderPass = VulkanRenderPass::MakeCompatibleRenderPass(this->vulkanSharedContext(),
+                                                                        renderPassDesc);
+        SkASSERT(newRenderPass);
+        newRenderPass->setKey(renderPassKey);
+        fResourceCache->insertResource(newRenderPass.get());
+    }
+
+    auto renderPass = fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
+    return renderPass ? sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(renderPass))
+                      : nullptr;
+}
+
+sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
+        const RenderPassDesc& renderPassDesc,
+        VulkanCommandBuffer* cmdBuf,
+        const Texture* colorTexture,
+        const Texture* resolveTexture,
+        const Texture* depthStencilTexture) {
+    auto renderPassKey = VulkanRenderPass::GenerateRenderPassKey(
+            renderPassDesc, colorTexture, resolveTexture, depthStencilTexture);
+    Resource* existingRenderPass =
+            fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
+
+    if (existingRenderPass) {
+        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(existingRenderPass));
+    } else {
+        auto newRenderPass = VulkanRenderPass::MakeRenderPass(this->vulkanSharedContext(),
+                                                              renderPassDesc,
+                                                              cmdBuf,
+                                                              colorTexture,
+                                                              resolveTexture,
+                                                              depthStencilTexture);
+        SkASSERT(newRenderPass);
+        newRenderPass->setKey(renderPassKey);
+        fResourceCache->insertResource(newRenderPass.get());
+    }
+
+    auto renderPass = fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
+    return renderPass ? sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(renderPass))
+                      : nullptr;
 }
 
 VkPipelineCache VulkanResourceProvider::pipelineCache() {
