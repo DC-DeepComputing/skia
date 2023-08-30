@@ -143,7 +143,14 @@ public:
     virtual bool containsColorFontOrBitmap(SkTextBlob* textBlob) = 0;
 
     // Editing API
-    virtual int getLineNumberAt(TextIndex codeUnitIndex) const = 0;
+
+    /* Returns the line number of the line that contains the given UTF-16 offset.
+    *
+    * @param codeUnitIndex a UTF-16 offset into the paragraph
+    * @return              the line number if the given offset is within the
+    *                      valid paragraph range, otherwise returns -1.
+    */
+    virtual int getLineNumberAt(size_t codeUnitIndex) = 0;
 
     /* Returns line metrics info for the line
      *
@@ -164,16 +171,16 @@ public:
     struct GlyphClusterInfo {
         SkRect fBounds;
         TextRange fClusterTextRange;
-        TextDirection fGlyphClusterPosition;
+        TextDirection fDirection;
     };
 
-    /** Finds a glyph cluster for text index
+    /** Finds a glyph cluster at the given codeUnitIndex
      *
-     * @param codeUnitIndex   a text index
+     * @param codeUnitIndex   a UTF-16 offset within the paragraph
      * @param glyphInfo       a glyph cluster info filled if not null
      * @return                true if glyph cluster was found; false if not
      */
-    virtual bool getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo* glyphInfo) = 0;
+    virtual bool getGlyphClusterAt(size_t codeUnitIndex, GlyphClusterInfo* glyphInfo) = 0;
 
     /** Finds the closest glyph cluster for a visual text position
      *
@@ -197,10 +204,10 @@ public:
 
     /** Returns the font that is used to shape the text at the position
      *
-     * @param codeUnitIndex   text index
+     * @param codeUnitIndex   a UTF-16 offset within the paragraph
      * @return                font info or an empty font info if the text is not found
      */
-    virtual SkFont getFontAt(TextIndex codeUnitIndex) const = 0;
+    virtual SkFont getFontAt(size_t codeUnitIndex) = 0;
 
     /** Returns the information about all the fonts used to shape the paragraph text
      *
