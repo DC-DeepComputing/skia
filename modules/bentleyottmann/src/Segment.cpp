@@ -202,6 +202,29 @@ bool lessThanAt(const Segment& s0, const Segment& s1, int32_t y) {
     return s0Factor < s1Factor;
 }
 
+bool pointLessThanSegment(Point p, const Segment& segment) {
+    auto [l, t, r, b] = segment.bounds();
+    SkASSERT(t <= p.y && p.y <= b);
+
+    // Fast answers using bounding boxes.
+    if (p.x < l) {
+        return true;
+    } else if (p.x >= r) {
+        return false;
+    }
+
+    auto [x0, y0] = segment.upper();
+    auto [x1, y1] = segment.lower();
+
+    // For a point and a segment the comparison is:
+    //    x < x0 + (y - y0)(x1 - x0) / (y1 - y0)
+    // becomes
+    //    (x - x0)(y1 - y0) < (y - y0)(x1 - x0)
+    // We don't need to worry about the signs changing in the cross multiply because (y1 - y0) is
+    // always positive.
+    return SkToS64(p.x - x0) * SkToS64(y1 - y0) < SkToS64(p.y - y0) * SkToS64(x1 - x0);
+}
+
 int compareSlopes(const Segment& s0, const Segment& s1) {
     Point s0Delta = s0.lower() - s0.upper(),
           s1Delta = s1.lower() - s1.upper();
@@ -224,8 +247,8 @@ int compareSlopes(const Segment& s0, const Segment& s1) {
     // * proper slope ordering - the slope monotonically increases from the smallest along the
     //                           negative x-axis increasing counterclockwise to the largest along
     //                           the positive x-axis.
-    int64_t lhs = (int64_t)s0Delta.x * (int64_t)s1Delta.y,
-            rhs = (int64_t)s1Delta.x * (int64_t)s0Delta.y;
+    int64_t lhs = SkToS64(s0Delta.x) * SkToS64(s1Delta.y),
+            rhs = SkToS64(s1Delta.x) * SkToS64(s0Delta.y);
 
     if (lhs < rhs) {
         return -1;
