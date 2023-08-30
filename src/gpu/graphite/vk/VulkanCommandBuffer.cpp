@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 
 using namespace skia_private;
 
@@ -428,137 +429,122 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture) {
-    const static VkAttachmentLoadOp vkLoadOp[] {
-        VK_ATTACHMENT_LOAD_OP_LOAD,
-        VK_ATTACHMENT_LOAD_OP_CLEAR,
-        VK_ATTACHMENT_LOAD_OP_DONT_CARE
-    };
-    static_assert((int)LoadOp::kLoad == 0);
-    static_assert((int)LoadOp::kClear == 1);
-    static_assert((int)LoadOp::kDiscard == 2);
-    static_assert(std::size(vkLoadOp) == kLoadOpCount);
+    sk_sp<VulkanRenderPass> vulkanRenderPass =
+            fResourceProvider->findOrCreateRenderPass(renderPassDesc, this, colorTexture,
+                                                      resolveTexture, depthStencilTexture);
+    this->submitPipelineBarriers();
+    this->trackResource(vulkanRenderPass);
 
-    const static VkAttachmentStoreOp vkStoreOp[] {
-        VK_ATTACHMENT_STORE_OP_STORE,
-        VK_ATTACHMENT_STORE_OP_DONT_CARE
-    };
-    static_assert((int)StoreOp::kStore == 0);
-    static_assert((int)StoreOp::kDiscard == 1);
-    static_assert(std::size(vkStoreOp) == kStoreOpCount);
+    // TODO avoid repeating this if we can
+    int numAttachments = (colorTexture        != nullptr) +
+                         (resolveTexture      != nullptr) +
+                         (depthStencilTexture != nullptr);
 
-    // TODO(b/293931220): Complete migration from using the dynamic rendering extension to instead
-    // using regular VkRenderPasses by calling and using the result of
-    // fResourceProvider->findOrCreateRenderPass.
+    TArray<VkImageView> attachmentViews(numAttachments); // Needed for frame buffer
+    TArray<VkClearValue> clearValues(numAttachments); // Needed for RenderPassBeginInfo
 
-    // Get render pass descriptor
-    VkRenderingInfoKHR renderingInfo;
-    memset(&renderingInfo, 0, sizeof(VkRenderingInfoKHR));
-    renderingInfo.sType = VK_STRUCTURE_TYPE_RENDERING_INFO_KHR;
-    renderingInfo.renderArea = {{ 0, 0 },
-                                { (unsigned int) colorTexture->dimensions().width(),
-                                  (unsigned int) colorTexture->dimensions().height() }};
-    renderingInfo.layerCount = 1;
-
-    // Set up color attachment
-    VkRenderingAttachmentInfoKHR colorAttachment;
-    auto& colorInfo = renderPassDesc.fColorAttachment;
+    // TODO: Determine whether to call track resources here or within the renderpass creation
+    // in that class
     if (colorTexture) {
-        memset(&colorAttachment, 0, sizeof(VkRenderingAttachmentInfoKHR));
-        colorAttachment.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
-        VulkanTexture* vulkanTexture =
-            const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(colorTexture));
-        colorAttachment.imageView =
-                vulkanTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-        colorAttachment.imageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-        colorAttachment.loadOp = vkLoadOp[static_cast<int>(colorInfo.fLoadOp)];
-        colorAttachment.storeOp = vkStoreOp[static_cast<int>(colorInfo.fStoreOp)];
-        memcpy(&colorAttachment.clearValue.color.float32,
-               &renderPassDesc.fClearColor,
-               4*sizeof(float));
-        vulkanTexture->setImageLayout(this,
-                                      VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                      VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                      VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                      false);
-        // Set up resolve attachment
-        if (resolveTexture) {
-            SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
-            // TODO: check Texture matches RenderPassDesc
-            vulkanTexture =
-                const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(resolveTexture));
-            colorAttachment.resolveImageView =
-                    vulkanTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-            colorAttachment.resolveImageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-            SkASSERT(colorAttachment.storeOp == VK_ATTACHMENT_STORE_OP_DONT_CARE);
-            vulkanTexture->setImageLayout(this,
-                                          VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                          VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                          VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                          false);
-        }
+        VkImageView& colorAttachmentView = attachmentViews.push_back();
+        auto vulkanColorTexture = static_cast<const VulkanTexture*>(colorTexture);
+        colorAttachmentView =
+                vulkanColorTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
 
-        renderingInfo.colorAttachmentCount = 1;
-        renderingInfo.pColorAttachments = &colorAttachment;
+        VkClearValue& colorAttachmentClear = clearValues.push_back();
+        memset(&colorAttachmentClear, 0, sizeof(VkClearValue));
+        colorAttachmentClear.color = {{renderPassDesc.fClearColor[0],
+                                       renderPassDesc.fClearColor[1],
+                                       renderPassDesc.fClearColor[2],
+                                       renderPassDesc.fClearColor[3]}};
+
         this->trackResource(sk_ref_sp(colorTexture));
+        if (resolveTexture) {
+            VkImageView& resolveView = attachmentViews.push_back();
+            auto vulkanResolveTexture = static_cast<const VulkanTexture*>(resolveTexture);
+            resolveView = vulkanResolveTexture->getImageView(VulkanImageView::Usage::kAttachment)->
+                          imageView();
+
+            VkClearValue& resolveAttachmentClear = clearValues.push_back();
+            memset(&resolveAttachmentClear, 0, sizeof(VkClearValue));
+            // Resolve attachment should have the same clear value as the color attachment.
+            resolveAttachmentClear.color = colorAttachmentClear.color;
+
+            this->trackResource(sk_ref_sp(resolveTexture));
+        }
     }
 
-    // Set up depth/stencil attachments
-    VkRenderingAttachmentInfoKHR depthAttachment;
-    VkRenderingAttachmentInfoKHR stencilAttachment;
-    auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
     if (depthStencilTexture) {
-        VulkanTexture* vulkanTexture =
-                const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(depthStencilTexture));
-        VkImageView imageView =
-                vulkanTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-        VulkanTextureInfo vkTexInfo;
-        depthStencilTexture->textureInfo().getVulkanTextureInfo(&vkTexInfo);
+        VkImageView& stencilView = attachmentViews.push_back();
+        memset(&stencilView, 0, sizeof(VkImageView));
+        auto vulkanDepthStencilTexture = static_cast<const VulkanTexture*>(depthStencilTexture);
+        stencilView = vulkanDepthStencilTexture->getImageView(VulkanImageView::Usage::kAttachment)->
+                      imageView();
 
-        if (VkFormatIsDepth(vkTexInfo.fFormat)) {
-            memset(&depthAttachment, 0, sizeof(VkRenderingAttachmentInfoKHR));
-            depthAttachment.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
-            depthAttachment.imageView = imageView;
-            depthAttachment.imageLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-            depthAttachment.loadOp = vkLoadOp[static_cast<int>(depthStencilInfo.fLoadOp)];
-            depthAttachment.storeOp = vkStoreOp[static_cast<int>(depthStencilInfo.fStoreOp)];
-            depthAttachment.clearValue.depthStencil.depth = renderPassDesc.fClearDepth;
+        VkClearValue& depthStencilAttachmentClear = clearValues.push_back();
+        memset(&depthStencilAttachmentClear, 0, sizeof(VkClearValue));
+        depthStencilAttachmentClear.depthStencil = {renderPassDesc.fClearDepth,
+                                                    renderPassDesc.fClearStencil};
 
-            renderingInfo.pDepthAttachment = &depthAttachment;
-        }
-
-        if (VkFormatIsStencil(vkTexInfo.fFormat)) {
-            memset(&stencilAttachment, 0, sizeof(VkRenderingAttachmentInfoKHR));
-            stencilAttachment.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
-            stencilAttachment.imageView = imageView;
-            stencilAttachment.imageLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-            stencilAttachment.loadOp = vkLoadOp[static_cast<int>(depthStencilInfo.fLoadOp)];
-            stencilAttachment.storeOp = vkStoreOp[static_cast<int>(depthStencilInfo.fStoreOp)];
-            stencilAttachment.clearValue.depthStencil.stencil = renderPassDesc.fClearStencil;
-
-            renderingInfo.pStencilAttachment = &stencilAttachment;
-        }
-
-        vulkanTexture->setImageLayout(this, VK_IMAGE_LAYOUT_STENCIL_ATTACHMENT_OPTIMAL,
-                                      VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                      VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT |
-                                      VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT, false);
         this->trackResource(sk_ref_sp(depthStencilTexture));
     }
 
+    // Create VkFrameBuffer
+    // TODO: Delete frame buffer at appropriate location
+    VkFramebufferCreateInfo frameBufferInfo;
+    memset(&frameBufferInfo, 0, sizeof(VkFramebufferCreateInfo));
+    frameBufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    frameBufferInfo.pNext = nullptr;
+    frameBufferInfo.flags = 0;
+    frameBufferInfo.renderPass = *(vulkanRenderPass->renderPass());
+    frameBufferInfo.attachmentCount = numAttachments;
+    frameBufferInfo.pAttachments = attachmentViews.begin();
+    frameBufferInfo.width = colorTexture->dimensions().width();
+    frameBufferInfo.height = colorTexture->dimensions().height();
+    frameBufferInfo.layers = 1;
+
+    VkFramebuffer frameBuffer;
+    VkResult result;
+    VULKAN_CALL_RESULT(fSharedContext->interface(), result,
+                       CreateFramebuffer(fSharedContext->device(),
+                                         &frameBufferInfo,
+                                         nullptr,
+                                         &frameBuffer));
+    if (result != VK_SUCCESS) {
+        // TODO: Delete unused structs?
+        return false;
+    }
+
+    VkRenderPassBeginInfo beginInfo;
+    memset(&beginInfo, 0, sizeof(VkRenderPassBeginInfo));
+    beginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+    beginInfo.pNext = nullptr;
+    beginInfo.renderPass = *(vulkanRenderPass->renderPass());
+    beginInfo.framebuffer = frameBuffer;
+    beginInfo.renderArea = {{ 0, 0 },
+                            { (unsigned int) colorTexture->dimensions().width(),
+                              (unsigned int) colorTexture->dimensions().height() }};
+    beginInfo.clearValueCount = numAttachments;
+    beginInfo.pClearValues = clearValues.begin();
+
     // TODO: If needed, load MSAA from resolve
-    // Only possible with RenderPass interface, not beginRendering()
 
+    // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
+    // beginning the render pass.
     this->submitPipelineBarriers();
+    // TODO: If we add support for secondary command buffers, dynamically determine subpass contents
     VULKAN_CALL(fSharedContext->interface(),
-                CmdBeginRendering(fPrimaryCommandBuffer, &renderingInfo));
-    fActiveRenderPass = true;
+                CmdBeginRenderPass(fPrimaryCommandBuffer,
+                                   &beginInfo,
+                                   VK_SUBPASS_CONTENTS_INLINE));
 
+    fActiveRenderPass = true;
     return true;
 }
 
 void VulkanCommandBuffer::endRenderPass() {
     SkASSERT(fActive);
-    VULKAN_CALL(fSharedContext->interface(), CmdEndRendering(fPrimaryCommandBuffer));
+    VULKAN_CALL(fSharedContext->interface(), CmdEndRenderPass(fPrimaryCommandBuffer));
     fActiveRenderPass = false;
 }
 

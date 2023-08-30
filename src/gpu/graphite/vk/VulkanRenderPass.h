@@ -10,12 +10,24 @@
 
 #include "src/gpu/graphite/Resource.h"
 
+#include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
-
+#include "src/gpu/graphite/vk/VulkanFrameBuffer.h"
 namespace skgpu::graphite {
 
+class VulkanCommandBuffer;
 class VulkanSharedContext;
+
+const static VkAttachmentStoreOp vkStoreOp[] {
+    VK_ATTACHMENT_STORE_OP_STORE,
+    VK_ATTACHMENT_STORE_OP_DONT_CARE
+};
+const static VkAttachmentLoadOp vkLoadOp[] {
+    VK_ATTACHMENT_LOAD_OP_LOAD,
+    VK_ATTACHMENT_LOAD_OP_CLEAR,
+    VK_ATTACHMENT_LOAD_OP_DONT_CARE
+};
 
 /**
  * Wrapper around VkRenderPass.
@@ -42,6 +54,10 @@ public:
         return &fRenderPass;
     }
 
+    VkFramebuffer frameBuffer() {
+        return fFrameBuffer ? fFrameBuffer->frameBuffer() : VK_NULL_HANDLE;
+    }
+
 private:
     void freeGpuData() override;
 
@@ -49,6 +65,11 @@ private:
 
     const VulkanSharedContext* fSharedContext;
     VkRenderPass fRenderPass;
+    // Have the render pass hold on to a reference of its frame buffer render target such that
+    // the frame buffer stays alive as long as it needs to be rendered to. This member attribute is
+    // allowed to be null in the case of "compatible" render passes which don't have to be fully
+    // fleshed-out.
+    sk_sp<VulkanFrameBuffer> fFrameBuffer;
 };
 } // namespace skgpu::graphite
 
