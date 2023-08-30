@@ -22,6 +22,30 @@
       },
       "revId": "3182b8f0f41702eb7b8fdb62632e1d2cf61d1447",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc0757e_92387a77",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T16:59:21Z",
+      "side": 1,
+      "message": "This was implementing your request at http://review.skia.org/748316: \"Can\u0027t we flip this on some subset of our bots\" but we don\u0027t really have enough test bots to do a subset so I just changed them both.\n\nI\u0027ll put together a different CL which redefines the meaning of `grdawn`.",
+      "parentUuid": "00d3ed3b_6d103571",
+      "range": {
+        "startLine": 301,
+        "startChar": 24,
+        "endLine": 301,
+        "endChar": 52
+      },
+      "revId": "3182b8f0f41702eb7b8fdb62632e1d2cf61d1447",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
