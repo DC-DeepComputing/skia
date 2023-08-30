@@ -330,7 +330,6 @@ CORE_FILES = [
     "SkTextBlobTrace.cpp",
     "SkTextBlobTrace.h",
     "SkTextFormatParams.h",
-    "SkTime.cpp",
     "SkTraceEvent.h",
     "SkTraceEventCommon.h",
     "SkTypeface.cpp",
