@@ -87,6 +87,24 @@
       "parentUuid": "8946836d_d990499b",
       "revId": "7ed2f7cec26eb7effaea828c477ab1702220a699",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "effe741a_3c544071",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T16:28:45Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/749836\n\nNote that we have tons of Dawn builds on CQ, but very few Dawn tests. We only test Dawn on Windows/QuadroP400 and Mac M1 today. Graphite is definitely supported on Macs with Radeon/Intel GPUs, so there\u0027s a good argument to be made that we should start testing those configs on the tree.",
+      "parentUuid": "6f981e16_d53fe119",
+      "revId": "7ed2f7cec26eb7effaea828c477ab1702220a699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
