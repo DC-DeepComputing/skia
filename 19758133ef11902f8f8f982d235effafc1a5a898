@@ -22,6 +22,30 @@
       },
       "revId": "19758133ef11902f8f8f982d235effafc1a5a898",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c91913e5_58a2841d",
+        "filename": "AUTHORS",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 21029
+      },
+      "writtenOn": "2023-08-30T13:45:44Z",
+      "side": 1,
+      "message": "I deleted it",
+      "parentUuid": "eaae63c3_8dd47dd4",
+      "range": {
+        "startLine": 95,
+        "startChar": 17,
+        "endLine": 95,
+        "endChar": 42
+      },
+      "revId": "19758133ef11902f8f8f982d235effafc1a5a898",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
