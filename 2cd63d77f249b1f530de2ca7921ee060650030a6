@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb166d4a_8e340f06",
+        "filename": "src/image/SkImageFilterUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-08-30T13:56:21Z",
+      "side": 1,
+      "message": "This seemed exciting enough that I split it out into https://skia-review.googlesource.com/c/skia/+/749316",
+      "parentUuid": "a7246b3f_b0995a59",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 73
+      },
+      "revId": "2cd63d77f249b1f530de2ca7921ee060650030a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfae9b96_8057c846",
