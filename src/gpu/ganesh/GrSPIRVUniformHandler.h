@@ -52,8 +52,6 @@ private:
 
     SamplerHandle addSampler(const GrBackendFormat&, GrSamplerState, const skgpu::Swizzle&,
                              const char* name, const GrShaderCaps*) override;
-    const char* samplerVariable(SamplerHandle handle) const override;
-    skgpu::Swizzle samplerSwizzle(SamplerHandle handle) const override;
     void appendUniformDecls(GrShaderFlags visibility, SkString*) const override;
     UniformHandle internalAddUniformArray(const GrProcessor* owner,
                                           uint32_t visibility,
@@ -63,11 +61,9 @@ private:
                                           int arrayCount,
                                           const char** outName) override;
 
-    UniformInfoArray    fUniforms;
-    UniformInfoArray    fSamplers;
-    UniformInfoArray    fTextures;
+    UniformInfoArray fUniforms;
+    UniformInfoArray fSamplers;
     skia_private::TArray<skgpu::Swizzle> fSamplerSwizzles;
-    skia_private::TArray<SkString>  fSamplerReferences;
 
     uint32_t fCurrentUBOOffset = 0;
     uint32_t fRTFlipOffset = 0;
