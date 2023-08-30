@@ -17,15 +17,17 @@ DEF_TEST(BO_bruteForceCrossingsBasic, reporter) {
     segments.push_back(s0);
     segments.push_back(s1);
 
-    auto possiblePoints = brute_force_crossings(segments);
+    auto possibleCrossings = brute_force_crossings(segments);
 
-    REPORTER_ASSERT(reporter, possiblePoints.has_value());
+    REPORTER_ASSERT(reporter, possibleCrossings.has_value());
 
-    if (possiblePoints) {
-        auto points = possiblePoints.value();
-        REPORTER_ASSERT(reporter, points.size() == 1);
+    if (possibleCrossings) {
+        auto crossings = possibleCrossings.value();
+        REPORTER_ASSERT(reporter, crossings.size() == 1);
         Point p = {0, 0};
-        REPORTER_ASSERT(reporter, points[0] == p);
+        REPORTER_ASSERT(reporter, crossings[0].crossing == p);
+        REPORTER_ASSERT(reporter, (crossings[0].s0 == s0 && crossings[0].s1 == s1) ||
+                                  (crossings[0].s0 == s1 && crossings[0].s1 == s0));
     }
 
 }

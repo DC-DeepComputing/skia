@@ -81,14 +81,37 @@ public:
     static std::optional<EventQueue> Make(SkSpan<const Segment> segments);
 
     EventQueue(Queue&& queue);
+    EventQueue() = default;
 
     void add(const Event& e);
+    void addCrossing(const Event& e);
 
     bool hasMoreEvents() const;
     Event nextEvent();
 
+    struct OrderBySlope {
+        bool operator()(const Segment& s0, const Segment& s1) const;
+    };
+
+    using SegmentSet = std::set<Segment>;
+    using SlopeSegmentSet = std::set<Segment, OrderBySlope>;
+
+    class EventHandler {
+    public:
+        virtual ~EventHandler() = default;
+        virtual void handle(Point eventPoint,
+                            const SegmentSet& removing,
+                            const SlopeSegmentSet& inserting,
+                            EventQueue* queue) = 0;
+    };
+
+    void handleNextEventPoint(EventHandler* handler);
+
 private:
+    SegmentSet fDeleteSet;
+    SlopeSegmentSet fInsertionSet;
     Queue fQueue;
+    Queue fCrossings;
 };
 }  // namespace bentleyottmann
 #endif  // EventQueue_DEFINED
