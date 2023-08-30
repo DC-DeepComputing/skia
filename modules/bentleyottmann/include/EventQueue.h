@@ -1,6 +1,9 @@
 // Copyright 2023 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+#ifndef EventQueue_DEFINED
+#define EventQueue_DEFINED
+
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkAssert.h"
 #include "modules/bentleyottmann/include/Point.h"
@@ -12,9 +15,6 @@
 #include <set>
 #include <tuple>
 #include <variant>
-
-#ifndef EventQueue_DEFINED
-#define EventQueue_DEFINED
 
 namespace bentleyottmann {
 
