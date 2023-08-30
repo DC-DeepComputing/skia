@@ -47,6 +47,7 @@
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/image/SkImageFilterUtils.h"
 #include "src/image/SkImage_Base.h"
 
 #include <functional>
