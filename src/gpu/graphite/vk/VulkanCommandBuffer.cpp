@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -444,6 +445,10 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     static_assert((int)StoreOp::kStore == 0);
     static_assert((int)StoreOp::kDiscard == 1);
     static_assert(std::size(vkStoreOp) == kStoreOpCount);
+
+    // TODO(b/293931220): Complete migration from using the dynamic rendering extension to instead
+    // using regular VkRenderPasses by calling and using the result of
+    // fResourceProvider->findOrCreateRenderPass.
 
     // Get render pass descriptor
     VkRenderingInfoKHR renderingInfo;
