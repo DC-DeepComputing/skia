@@ -278,7 +278,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addSampler(
     fSamplers.push_back(tempInfo);
 
     // Check if we are dealing with an external texture and store the needed information if so.
-    auto ycbcrInfo = GrBackendFormats::GetVkYcbcrConversionInfo(backendFormat);
+    auto ycbcrInfo = backendFormat.getVkYcbcrConversionInfo();
     if (ycbcrInfo && ycbcrInfo->isValid()) {
         GrVkGpu* gpu = static_cast<GrVkPipelineStateBuilder*>(fProgramBuilder)->gpu();
         GrVkSampler* sampler = gpu->resourceProvider().findOrCreateCompatibleSampler(state,

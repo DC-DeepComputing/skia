@@ -20,7 +20,6 @@
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/MutableTextureState.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
-#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
@@ -44,14 +43,14 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
                                    CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
 
-    GrBackendFormat format = GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
+    GrBackendFormat format = GrBackendFormat::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
     GrBackendTexture backendTex = dContext->createBackendTexture(
             32, 32, format, GrMipmapped::kNo, GrRenderable::kNo, GrProtected::kNo);
 
     REPORTER_ASSERT(reporter, backendTex.isValid());
 
     GrVkImageInfo info;
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+    REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
     VkImageLayout initLayout = info.fImageLayout;
     uint32_t initQueue = info.fCurrentQueueFamily;
     skgpu::MutableTextureState initState(initLayout, initQueue);
@@ -59,7 +58,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
     // Verify that setting that state via a copy of a backendTexture is reflected in all the
     // backendTextures.
     GrBackendTexture backendTexCopy = backendTex;
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTexCopy, &info));
+    REPORTER_ASSERT(reporter, backendTexCopy.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, initLayout == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
@@ -67,11 +66,11 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
                                         VK_QUEUE_FAMILY_IGNORED);
     backendTexCopy.setMutableState(newState);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+    REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, VK_QUEUE_FAMILY_IGNORED == info.fCurrentQueueFamily);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTexCopy, &info));
+    REPORTER_ASSERT(reporter, backendTexCopy.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, VK_QUEUE_FAMILY_IGNORED == info.fCurrentQueueFamily);
 
@@ -98,14 +97,14 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
     REPORTER_ASSERT(reporter, initQueue == vkTexture->currentQueueFamilyIndex());
     vkTexture->updateImageLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+    REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
     GrBackendTexture backendTexImage;
     bool ok = SkImages::GetBackendTextureFromImage(wrappedImage, &backendTexImage, false);
     REPORTER_ASSERT(reporter, ok);
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTexImage, &info));
+    REPORTER_ASSERT(reporter, backendTexImage.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
@@ -118,15 +117,15 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
     vkTexture->setQueueFamilyIndex(initQueue);
     vkTexture->updateImageLayout(initLayout);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+    REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, initLayout == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTexCopy, &info));
+    REPORTER_ASSERT(reporter, backendTexCopy.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, initLayout == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTexImage, &info));
+    REPORTER_ASSERT(reporter, backendTexImage.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, initLayout == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
@@ -138,7 +137,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
 
     dContext->setBackendTextureState(backendTex, newState, &previousState);
 
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+    REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, gpu->queueIndex() == info.fCurrentQueueFamily);
 
@@ -150,7 +149,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
     // Make sure passing in VK_IMAGE_LAYOUT_UNDEFINED does not change the layout
     skgpu::MutableTextureState noopState(VK_IMAGE_LAYOUT_UNDEFINED, VK_QUEUE_FAMILY_IGNORED);
     dContext->setBackendTextureState(backendTex, noopState, &previousState);
-    REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+    REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, gpu->queueIndex() == info.fCurrentQueueFamily);
 
@@ -167,7 +166,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
 
         dContext->setBackendTextureState(backendTex, externalState, &previousState);
 
-        REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+        REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
         REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_GENERAL == info.fImageLayout);
         REPORTER_ASSERT(reporter, VK_QUEUE_FAMILY_EXTERNAL == info.fCurrentQueueFamily);
 
@@ -184,7 +183,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
         skgpu::MutableTextureState externalState2(VK_IMAGE_LAYOUT_UNDEFINED, initQueue);
         dContext->setBackendTextureState(backendTex, externalState2, &previousState);
 
-        REPORTER_ASSERT(reporter, GrBackendTextures::GetVkImageInfo(backendTex, &info));
+        REPORTER_ASSERT(reporter, backendTex.getVkImageInfo(&info));
         REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_GENERAL == info.fImageLayout);
         REPORTER_ASSERT(reporter, gpu->queueIndex() == info.fCurrentQueueFamily);
 
