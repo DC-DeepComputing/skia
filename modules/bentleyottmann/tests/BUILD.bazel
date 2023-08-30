@@ -11,5 +11,6 @@ skia_filegroup(
         "Int96Test.cpp",
         "PointTest.cpp",
         "SegmentTest.cpp",
+        "SweepLineTest.cpp",
     ],
 )
