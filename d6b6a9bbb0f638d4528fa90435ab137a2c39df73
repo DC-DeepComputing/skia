@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93df92e0_9cd1db09",
+        "filename": "src/gpu/ganesh/GrSPIRVUniformHandler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T15:56:09Z",
+      "side": 1,
+      "message": "We might want to introduce a new backend flag for Direct3D, but the higher priority was to confirm that this technique works.",
+      "range": {
+        "startLine": 238,
+        "startChar": 47,
+        "endLine": 238,
+        "endChar": 53
+      },
+      "revId": "d6b6a9bbb0f638d4528fa90435ab137a2c39df73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
