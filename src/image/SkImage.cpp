@@ -27,11 +27,6 @@
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkImageShader.h"
 
-#if defined(SK_GANESH)
-enum GrSurfaceOrigin : int;
-#include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
-#endif
-
 #include <utility>
 
 namespace skif {
@@ -324,6 +319,11 @@ sk_sp<SkImage> MakeWithFilter_Shared(const skif::Functors& functors,
                                      SkIPoint* offset);
 } // namespace skif
 
+#if !defined(SK_DISABLE_LEGACY_MAKEWITHFILTER)
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/SkImageGanesh.h"
+#endif
+
 sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
                                        const SkImageFilter* filter,
                                        const SkIRect& subset,
@@ -332,18 +332,15 @@ sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
                                        SkIPoint* offset) const {
 #if defined(SK_GANESH)
     if (as_IB(this)->isGaneshBacked()) {
-        const SkImage_GaneshBase* base = static_cast<const SkImage_GaneshBase*>(this);
-
-        return skif::MakeWithFilter_Shared(skif::MakeGaneshFunctors(rContext, base->origin()),
-                                           sk_ref_sp(this), filter, subset, clipBounds, outSubset,
-                                           offset);
+        return SkImages::MakeWithFilter(rContext, sk_ref_sp(this),
+                                        filter, subset, clipBounds, outSubset, offset);
     }
 #endif
 
-    return skif::MakeWithFilter_Shared(skif::MakeRasterFunctors(),
-                                       sk_ref_sp(this), filter, subset, clipBounds, outSubset,
-                                       offset);
+    return SkImages::MakeWithFilter(sk_ref_sp(this), filter, subset, clipBounds, outSubset,
+                                    offset);
 }
+#endif
 
 namespace skif {
 
@@ -386,7 +383,7 @@ sk_sp<SkImage> MakeWithFilter_Shared(const skif::Functors& functors,
     const skif::Context context(ctxInfo, functors);
 
     sk_sp<SkSpecialImage> result = as_IFB(filter)->filterImage(context)
-                                                  .imageAndOffset(context, offset);
+            .imageAndOffset(context, offset);
     if (!result) {
         return nullptr;
     }

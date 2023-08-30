@@ -12,6 +12,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/gpu/GrTypes.h"
+#include "src/gpu/ganesh/GrFragmentProcessor.h" // IWYU pragma: keep
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"  // IWYU pragma: keep
 #include "src/gpu/ganesh/SkGr.h"
 
@@ -21,7 +22,6 @@
 #include <tuple>
 
 class GrCaps;
-class GrFragmentProcessor;
 class GrImageContext;
 class GrRecordingContext;
 class SkImage;
