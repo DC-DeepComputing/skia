@@ -1271,6 +1271,8 @@ BASE_SRCS_ALL = [
     "src/gpu/tessellate/Tessellation.cpp",
     "src/gpu/tessellate/Tessellation.h",
     "src/gpu/tessellate/WangsFormula.h",
+    "src/image/SkImageFilterUtils.cpp",
+    "src/image/SkImageFilterUtils.h",
     "src/image/SkImage.cpp",
     "src/image/SkImageGeneratorPriv.h",
     "src/image/SkImage_Base.cpp",

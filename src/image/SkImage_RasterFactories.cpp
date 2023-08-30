@@ -18,11 +18,13 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkImagePriv.h"
+#include "src/image/SkImageFilterUtils.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <utility>
 
 class SkImageFilter;
