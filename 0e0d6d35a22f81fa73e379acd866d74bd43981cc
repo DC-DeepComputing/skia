@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b4fa7b5_e9c89f5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-30T17:42:10Z",
+      "side": 1,
+      "message": "Gotta start this CL chain somewhere... Here is one which adds the basic VulkanRenderPass wrapper, methods for the resource provider to create compatible/real renderpasses, and fills out a method to generate compatible RP keys.",
+      "revId": "0e0d6d35a22f81fa73e379acd866d74bd43981cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
