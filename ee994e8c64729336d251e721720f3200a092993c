@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d5a8c5d_77e83ce4",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f29cd64_7b38b42d",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 11
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b4799fb_d5b8a619",
@@ -159,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3081a119_453ba3b8",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "Acknowledged.",
+      "parentUuid": "06599afc_676da728",
+      "range": {
+        "startLine": 23,
+        "startChar": 46,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc6eeb8b_9e9b118f",
@@ -205,6 +253,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dd45a89_c4e46bc9",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "Done. Actually `auto` shouldn\u0027t really imply lambda-ness, the type will be whatever it gets deduced to given its usage below, so I think this is an appropriate use of auto. Explicit type declarations are always nice though.",
+      "parentUuid": "4ad5e509_a46c4a83",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 8
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "014b6471_5b6abdb2",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "I explicitly spelled out `wgpu::ErrorCallback` instead.",
+      "parentUuid": "cc6eeb8b_9e9b118f",
+      "range": {
+        "startLine": 48,
+        "startChar": 25,
+        "endLine": 48,
+        "endChar": 27
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8be15be_f8dc491b",
@@ -218,6 +314,30 @@
       "writtenOn": "2023-08-30T22:15:01Z",
       "side": 1,
       "message": "tiny nit: safer to use `bool fArmed \u003d true;` here and be guaranteed that it will be initialized even if new ctors are added in the future.",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 16
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "801ada32_b22a9bdd",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8be15be_f8dc491b",
       "range": {
         "startLine": 31,
         "startChar": 4,
@@ -288,6 +408,54 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "cc267204_b413586f",
+      "range": {
+        "startLine": 557,
+        "startChar": 33,
+        "endLine": 557,
+        "endChar": 42
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "556da71f_4fad0dc3",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "I renamed this to `popErrorScopes` which at least mirrors API that it\u0027s calling and it\u0027s a bit more descriptive. I also changed the return type to a bitmask of the error scope filters which is more self-documenting than a boolean.",
+      "parentUuid": "1fcd1afd_d096372c",
+      "range": {
+        "startLine": 557,
+        "startChar": 9,
+        "endLine": 557,
+        "endChar": 30
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7107c38c_8cc19836",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-30T23:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77139d96_28e9b260",
       "range": {
         "startLine": 557,
         "startChar": 33,
