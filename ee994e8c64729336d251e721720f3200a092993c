@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f29cd64_7b38b42d",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "tiny nit: `constexpr const char*` (as written here, `kErrorScopeNames` is actually mutable)",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 11
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b4799fb_d5b8a619",
         "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
         "patchSetId": 1
@@ -43,6 +66,99 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9719960a_23ffaa35",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "We allow user-authored shaders as well as pretty complex arbitrarily-deep nesting of Skia-provided shaders, so we can\u0027t predict with 100% certainty that the backend will be happy with our code. Exceeding some unpredicted driver limit is possible.",
+      "parentUuid": "8b4799fb_d5b8a619",
+      "range": {
+        "startLine": 23,
+        "startChar": 46,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc6eeb8b_9e9b118f",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "up to you: consider `+[]` to make the plain function-pointer type more explicit\n\nhttps://stackoverflow.com/a/18889029/291737",
+      "range": {
+        "startLine": 48,
+        "startChar": 25,
+        "endLine": 48,
+        "endChar": 27
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ad5e509_a46c4a83",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "`Device::ErrorCallback` (`auto` looks like it would be lambda-typed but isn\u0027t)",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 8
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8be15be_f8dc491b",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "tiny nit: safer to use `bool fArmed \u003d true;` here and be guaranteed that it will be initialized even if new ctors are added in the future.",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 16
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc267204_b413586f",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
         "patchSetId": 1
@@ -54,6 +170,53 @@
       "writtenOn": "2023-08-30T22:01:09Z",
       "side": 1,
       "message": "optional nit: CreateRenderPipeline shouldn\u0027t return null, you should be able to assert this if you want.",
+      "range": {
+        "startLine": 557,
+        "startChar": 33,
+        "endLine": 557,
+        "endChar": 42
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fcd1afd_d096372c",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "tiny nit: at the call site, I feel like `.check()` reads ambiguously; it\u0027s not clear what happens here. I like this functionality but I need to think about the name.",
+      "range": {
+        "startLine": 557,
+        "startChar": 9,
+        "endLine": 557,
+        "endChar": 30
+      },
+      "revId": "ee994e8c64729336d251e721720f3200a092993c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77139d96_28e9b260",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-30T22:15:01Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "cc267204_b413586f",
       "range": {
         "startLine": 557,
         "startChar": 33,
