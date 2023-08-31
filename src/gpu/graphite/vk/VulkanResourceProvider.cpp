@@ -100,11 +100,13 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
+    auto compatibleRenderPass = this->findOrCreateCompatibleRenderPass(renderPassDesc);
     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
                                         &skslCompiler,
                                         runtimeDict,
                                         pipelineDesc,
                                         renderPassDesc,
+                                        compatibleRenderPass,
                                         this->pipelineCache());
 }
 
