@@ -63,6 +63,30 @@
       },
       "revId": "a31578f016e11330e931da320f2735afa3771548",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f43aa69_13b46ca6",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-31T13:55:46Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s my concern, though I was thinking in that case of adding an allocated struct that wraps both the boolean and the vector, if it\u0027s needed (something like std::unique_ptr\u003cContextTestInfo\u003e). It can\u0027t be debug only, that would break readPixels in release.\n\nFor the ContextOptions I was thinking of adding an fTestInfo void* member, that defaults to nullptr but otherwise could be reinterpreted as a pointer to a struct that only the test code knows about.",
+      "parentUuid": "d2a5412f_d820e780",
+      "range": {
+        "startLine": 224,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 33
+      },
+      "revId": "a31578f016e11330e931da320f2735afa3771548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
