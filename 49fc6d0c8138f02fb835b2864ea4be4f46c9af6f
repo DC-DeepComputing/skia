@@ -70,6 +70,30 @@
       },
       "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac9c4b3_dae94d19",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-31T19:37:59Z",
+      "side": 1,
+      "message": "Sorry yea I see. Actually this is mentioned in the comment right above the code I linked to. In Ganesh we assume that any draws using LCD coverage and not doing shader blending will have a src alpha of 1. I\u0027m not sure yet what that assumption is based on.",
+      "parentUuid": "385dc419_900f9811",
+      "range": {
+        "startLine": 353,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
