@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd4f949a_ba81927c",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.metal",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T17:03:05Z",
+      "side": 1,
+      "message": "nit: Maybe `helpers_helper` should do a texture read from `t` as well? It\u0027s currently unused.\n\nThough that would require moving `textureRead` out of sksl_compute.sksl. I personally don\u0027t think there is a reason to restrict `textureRead` and `textureWrite` to compute shaders but moving them to a shared module is additional work.",
+      "revId": "0e0f6c918b1997619f23358bd9f1b5384d15010f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
