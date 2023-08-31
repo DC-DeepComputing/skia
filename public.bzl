@@ -2226,6 +2226,8 @@ BASE_DEFINES = [
     # Experiment to diagnose image diffs in Google3
     "SK_DISABLE_LOWP_RASTER_PIPELINE",
 
+    "SK_DISABLE_LEGACY_MAKEWITHFILTER",
+
     # JPEG is in codec_limited and is included in all
     # builds except the no_codec android build
 ]
