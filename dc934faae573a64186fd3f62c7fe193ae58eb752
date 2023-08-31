@@ -16,6 +16,23 @@
       "message": "gentle ping",
       "revId": "dc934faae573a64186fd3f62c7fe193ae58eb752",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7e0709c_7293be75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-31T17:46:25Z",
+      "side": 1,
+      "message": "LGTM but I\u0027d like Michael to check it out as well",
+      "revId": "dc934faae573a64186fd3f62c7fe193ae58eb752",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
