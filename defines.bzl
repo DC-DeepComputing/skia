@@ -36,7 +36,7 @@ GENERAL_DEFINES = [
         "SK_DISABLE_TRACING",
         "SK_ENABLE_SPIRV_CROSS",
         "SK_ENABLE_SPIRV_VALIDATION",
-        "SK_ENABLE_WGSL_VALIDATION",
+        #"SK_ENABLE_WGSL_VALIDATION",
     ],
     "//conditions:default": [],
 }) + select({

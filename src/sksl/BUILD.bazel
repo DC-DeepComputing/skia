@@ -171,7 +171,7 @@ skia_cc_deps(
     ] + select({
         "//src/sksl:enable_skslc_true": [
             "//tools:get_executable_path",
-            "@dawn//:tint",
+            #"@dawn//:tint",
             "@spirv_tools",
         ],
         "//conditions:default": [],
