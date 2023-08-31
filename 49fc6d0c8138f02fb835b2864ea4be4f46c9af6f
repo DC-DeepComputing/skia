@@ -46,6 +46,30 @@
       },
       "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "385dc419_900f9811",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-31T19:33:04Z",
+      "side": 1,
+      "message": "Because if I\u0027m reading the original bug correctly, it is only safe to take the max of each coverage in certain cases and need to use min otherwise. Specifically:\n\n```\na \u003d lerp(da, a, max(cr, cg, cb))\n\nwhich is correct when (a - da) \u003e\u003d 0, but when (a - da) \u003c 0 the min should be used.\n```\n\nBut if we know source alpha is always opaque, then we know we\u0027ll always be in the first case and can use max.",
+      "parentUuid": "72cc6833_8452bba5",
+      "range": {
+        "startLine": 353,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
