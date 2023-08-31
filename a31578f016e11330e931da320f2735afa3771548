@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0d4f08e_c92f352b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-31T13:30:11Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "a31578f016e11330e931da320f2735afa3771548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a447e75a_fc0f84fc",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-31T13:30:11Z",
+      "side": 1,
+      "message": "I\u0027m not sure about the approach here. On one hand I don\u0027t like adding data we\u0027re not going to use in non-test builds, on the other I\u0027m not sure where else to put it.",
+      "range": {
+        "startLine": 224,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 33
+      },
+      "revId": "a31578f016e11330e931da320f2735afa3771548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
