@@ -16,6 +16,29 @@
       "message": "PTAL :^)",
       "revId": "a6101ebcef50deebd383ef903270fe6604f982c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1713a8a_ea3e3b13",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-31T18:23:34Z",
+      "side": 1,
+      "message": "I am working on revising these method implementations already per Greg and I\u0027s offline conversation to better reflect the RenderPass attachment information, then subpass information, and dependency information.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 89
+      },
+      "revId": "a6101ebcef50deebd383ef903270fe6604f982c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
