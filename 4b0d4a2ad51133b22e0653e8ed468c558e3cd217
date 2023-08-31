@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4526d1a_b70969a9",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bddd9d45_2f61f618",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 11
+      },
+      "revId": "4b0d4a2ad51133b22e0653e8ed468c558e3cd217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6759de9_1ca5b522",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-17T18:51:31Z",
       "side": 1,
       "message": "Unclear (missing joining clause between fragments)",
+      "range": {
+        "startLine": 43,
+        "startChar": 43,
+        "endLine": 43,
+        "endChar": 99
+      },
+      "revId": "4b0d4a2ad51133b22e0653e8ed468c558e3cd217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be6aa5ed_c7d03bc3",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6759de9_1ca5b522",
       "range": {
         "startLine": 43,
         "startChar": 43,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15114f42_f8c512ba",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:56Z",
+      "side": 1,
+      "message": "Yeah, this was being extra defensive.",
+      "parentUuid": "4ef8f1d0_fd2d2a2f",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 51
+      },
+      "revId": "4b0d4a2ad51133b22e0653e8ed468c558e3cd217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6278757_4b0778db",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-08-17T18:51:31Z",
       "side": 1,
       "message": "`is_dawn_or_metal_context_type`",
+      "range": {
+        "startLine": 58,
+        "startChar": 5,
+        "endLine": 58,
+        "endChar": 29
+      },
+      "revId": "4b0d4a2ad51133b22e0653e8ed468c558e3cd217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e75097e2_bc6e81a8",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6278757_4b0778db",
       "range": {
         "startLine": 58,
         "startChar": 5,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed8fee14_97d25ce1",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:56Z",
+      "side": 1,
+      "message": "In my mind the helper function checks if a context is either Dawn _or_ Metal (it can\u0027t be both), but the macro defines a test that runs on _both_ Dawn _and_ Metal contexts.\n\nThe wording makes sense in my head but I don\u0027t mind changing it to OR.",
+      "parentUuid": "fe2d0a75_df8f3ef6",
+      "range": {
+        "startLine": 64,
+        "startChar": 35,
+        "endLine": 64,
+        "endChar": 38
+      },
+      "revId": "4b0d4a2ad51133b22e0653e8ed468c558e3cd217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11362a88_68b4da64",
         "filename": "tests/graphite/ComputeTest.cpp",
         "patchSetId": 8
@@ -129,6 +249,30 @@
       "writtenOn": "2023-08-17T18:51:31Z",
       "side": 1,
       "message": "nit: \u003e100 char",
+      "range": {
+        "startLine": 262,
+        "startChar": 95,
+        "endLine": 262,
+        "endChar": 101
+      },
+      "revId": "4b0d4a2ad51133b22e0653e8ed468c558e3cd217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7454e8f_16da8c75",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11362a88_68b4da64",
       "range": {
         "startLine": 262,
         "startChar": 95,
