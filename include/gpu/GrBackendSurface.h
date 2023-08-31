@@ -18,6 +18,8 @@
 
 #include "include/gpu/mock/GrMockTypes.h"
 
+#define SK_DISABLE_LEGACY_VK_BACKEND_SURFACE
+
 #if !defined(SK_DISABLE_LEGACY_VK_BACKEND_SURFACE) && defined(SK_VULKAN)
 #include "include/private/gpu/vk/SkiaVulkan.h"
 
