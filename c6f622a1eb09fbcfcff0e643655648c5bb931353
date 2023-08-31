@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63fc654f_5fe52c42",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-31T18:21:58Z",
+      "side": 1,
+      "message": "Switching to storing the actual active render pass and checking whether it is null or not (as opposed to using this bool) leads to us failing an assertion when we set pipeline barriers because we currently don\u0027t support self-dependencies. Will have to dig deeper there but wanted to get this CL out so you can start reviewing.",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 35
+      },
+      "revId": "c6f622a1eb09fbcfcff0e643655648c5bb931353",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
