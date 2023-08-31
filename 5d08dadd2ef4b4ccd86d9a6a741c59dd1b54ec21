@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94664344_cbbd9e5a",
+        "filename": "src/sksl/ir/SkSLLayout.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-31T19:16:56Z",
+      "side": 0,
+      "message": "This breaks a lot of tests and it doesn\u0027t seem worth forking the tests into multiple platform-specific variants, but LMK if you still want to tackle this.",
+      "range": {
+        "startLine": 162,
+        "startChar": 7,
+        "endLine": 162,
+        "endChar": 75
+      },
+      "revId": "5d08dadd2ef4b4ccd86d9a6a741c59dd1b54ec21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
