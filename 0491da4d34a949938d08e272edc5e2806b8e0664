@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "410e3d32_e487f659",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74c0e1fe_78445c7c",
+      "range": {
+        "startLine": 739,
+        "startChar": 4,
+        "endLine": 739,
+        "endChar": 15
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5c43d62_ae2d44ed",
@@ -71,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c9c0e8_24081ac5",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5c43d62_ae2d44ed",
+      "range": {
+        "startLine": 743,
+        "startChar": 8,
+        "endLine": 744,
+        "endChar": 53
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1aa7def_beb6f19b",
@@ -84,6 +132,30 @@
       "writtenOn": "2023-08-17T18:44:23Z",
       "side": 1,
       "message": "Not for this CL, but this `static_cast`-heavy API makes me squeamish. It\u0027s too easy for something to go wrong.\n\nWe should really think about doing something like in SkSL, where we can say `buffer-\u003eas\u003cDawnBuffer\u003e()` and it asserts validity then handles the casting on its own? (SkSL was also very cast-heavy before I joined the team, and this was one of the changes I focused on early.)",
+      "range": {
+        "startLine": 748,
+        "startChar": 27,
+        "endLine": 748,
+        "endChar": 95
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "593c8918_5274dfca",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:29Z",
+      "side": 1,
+      "message": "Down-casts like this across Graphite are relatively safe since it\u0027s hard to violate the invariant that a given backend context only creates resources of that backend\u0027s type (famous last words...?)\n\nI don\u0027t know if adding runtime type checks to the command encoder (which is in the hot path) would have a tangible performance impact though adding some type of debug-only assertion behind a `as\u003cT\u003e` method sounds useful to me.",
+      "parentUuid": "b1aa7def_beb6f19b",
       "range": {
         "startLine": 748,
         "startChar": 27,
@@ -131,6 +203,30 @@
       "side": 1,
       "message": "I think so, because a) we shouldn\u0027t get into this scenario in a properly written ComputeStep and b) if we don\u0027t bind an entry and then continue to use the compute program we could run into either dawn validation errors that would crash or to undefined behavior/memory accesses by the GPU.",
       "parentUuid": "60e96ba9_c8f2a2dd",
+      "range": {
+        "startLine": 761,
+        "startChar": 12,
+        "endLine": 761,
+        "endChar": 59
+      },
+      "revId": "0491da4d34a949938d08e272edc5e2806b8e0664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58163e0a_db573bf0",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:47:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "124f77d8_8d7b0afe",
       "range": {
         "startLine": 761,
         "startChar": 12,
