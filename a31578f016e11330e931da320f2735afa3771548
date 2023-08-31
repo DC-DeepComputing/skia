@@ -39,6 +39,30 @@
       },
       "revId": "a31578f016e11330e931da320f2735afa3771548",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2a5412f_d820e780",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-31T13:46:48Z",
+      "side": 1,
+      "message": "Hmm, is this going to ripple out and force us to add in the vector of tracked recorders? (https://skia-review.googlesource.com/c/skia/+/600344)\n\nWhat about making this `SK_DEBUG` instead?",
+      "parentUuid": "a447e75a_fc0f84fc",
+      "range": {
+        "startLine": 224,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 33
+      },
+      "revId": "a31578f016e11330e931da320f2735afa3771548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
