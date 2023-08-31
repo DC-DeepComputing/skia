@@ -16,6 +16,24 @@
       "message": "Zakhar, LMK what you want to do here?",
       "revId": "3e879058db7c3feb30a87c61c5121c63d18c65bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5328a6e6_2063408b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20956
+      },
+      "writtenOn": "2023-08-31T10:06:46Z",
+      "side": 1,
+      "message": "Was just waiting for an approval to merge to LTS. Thanks!",
+      "parentUuid": "746dffd9_892f22d6",
+      "revId": "3e879058db7c3feb30a87c61c5121c63d18c65bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
