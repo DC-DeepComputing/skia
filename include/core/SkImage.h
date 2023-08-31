@@ -8,6 +8,7 @@
 #ifndef SkImage_DEFINED
 #define SkImage_DEFINED
 
+#define SK_DISABLE_LEGACY_MAKEWITHFILTER
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
