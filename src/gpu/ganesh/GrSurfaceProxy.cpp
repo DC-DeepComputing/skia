@@ -376,7 +376,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* context,
                 outTask);
 }
 
-#if GR_TEST_UTILS
+#if defined(GR_TEST_UTILS)
 int32_t GrSurfaceProxy::testingOnly_getBackingRefCnt() const {
     if (fTarget) {
         return fTarget->testingOnly_getRefCnt();
@@ -501,7 +501,6 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
 void GrSurfaceProxy::validateSurface(const GrSurface* surface) {
     SkASSERTF(surface->backendFormat() == fFormat, "%s != %s",
               surface->backendFormat().toStr().c_str(), fFormat.toStr().c_str());
-    SkASSERT(skgpu::Protected(surface->isProtected()) == this->isProtected());
 
     this->onValidateSurface(surface);
 }

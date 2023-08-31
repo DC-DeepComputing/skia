@@ -264,7 +264,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addSampler(
     tempInfo.fVariable =
             GrShaderVar{std::move(mangleName),
                         SkSLCombinedSamplerTypeForTextureType(backendFormat.textureType()),
-                        GrShaderVar::TypeModifier::Uniform,
+                        GrShaderVar::TypeModifier::None,
                         GrShaderVar::kNonArray,
                         std::move(layoutQualifier),
                         SkString()};
@@ -278,7 +278,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addSampler(
     fSamplers.push_back(tempInfo);
 
     // Check if we are dealing with an external texture and store the needed information if so.
-    auto ycbcrInfo = backendFormat.getVkYcbcrConversionInfo();
+    auto ycbcrInfo = GrBackendFormats::GetVkYcbcrConversionInfo(backendFormat);
     if (ycbcrInfo && ycbcrInfo->isValid()) {
         GrVkGpu* gpu = static_cast<GrVkPipelineStateBuilder*>(fProgramBuilder)->gpu();
         GrVkSampler* sampler = gpu->resourceProvider().findOrCreateCompatibleSampler(state,
@@ -306,10 +306,15 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addInputSampler(
     layoutQualifier.appendf("input_attachment_index=%d, set=%d, binding=%d",
                             kDstInputAttachmentIndex, kInputDescSet, kInputBinding);
 
-    fInputUniform = {
-            GrShaderVar{std::move(mangleName), SkSLType::kInput, GrShaderVar::TypeModifier::Uniform,
-                        GrShaderVar::kNonArray, std::move(layoutQualifier), SkString()},
-            kFragment_GrShaderFlag, nullptr, SkString(name)};
+    fInputUniform = {GrShaderVar{std::move(mangleName),
+                                 SkSLType::kInput,
+                                 GrShaderVar::TypeModifier::None,
+                                 GrShaderVar::kNonArray,
+                                 std::move(layoutQualifier),
+                                 SkString()},
+                     kFragment_GrShaderFlag,
+                     nullptr,
+                     SkString(name)};
     fInputSwizzle = swizzle;
     return GrGLSLUniformHandler::SamplerHandle(0);
 }

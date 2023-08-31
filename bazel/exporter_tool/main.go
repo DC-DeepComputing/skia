@@ -64,8 +64,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/core:core_skslc_srcs",
 				"//src/core:core_srcs",
 				"//src/core:legacy_draw_looper",
-				"//src/core:sksl_hdrs",
-				"//src/core:sksl_srcs",
 				"//src/image:core_hdrs",
 				"//src/image:core_srcs",
 				"//src/lazy:lazy_hdrs",
@@ -73,8 +71,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/opts:private_hdrs",
 				"//src/shaders:shader_hdrs",
 				"//src/shaders:shader_srcs",
-				"//src/shaders:sksl_hdrs",
-				"//src/shaders:sksl_srcs",
 				"//src/text:text_hdrs",
 				"//src/text:text_srcs",
 			}},
@@ -146,10 +142,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/effects/colorfilters:colorfilter_srcs",
 				"//src/effects/colorfilters:colorfilter_hdrs",
 			}},
-		{Var: "skia_colorfilters_sksl_sources",
-			Rules: []string{
-				// TODO(b/294209201): remove skia_colorfilters_sksl_sources from Chrome GN files
-			}},
 	}},
 	{GNI: "gn/effects_imagefilters.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_effects_imagefilter_public",
@@ -193,10 +185,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/sksl:core_hdrs",
 				"//src/sksl:core_srcs",
 			}},
-		{Var: "skia_needs_sksl_sources",
-			Rules: []string{
-				// TODO(b/294209201): remove skia_needs_sksl_sources from Chrome GN files
-			}},
 		{Var: "skia_sksl_tracing_sources",
 			Rules: []string{
 				"//src/sksl/tracing:enabled_hdrs",
@@ -210,13 +198,15 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skslc_deps",
 			Rules: []string{
 				"//src/base:skslc_srcs",
+				"//src/core:core_skslc_hdrs",
 				"//src/core:core_skslc_srcs",
+				"//src/gpu/ganesh:core_skslc_hdrs",
 				"//src/gpu/ganesh:core_skslc_srcs",
 				"//src/ports:malloc",
 				"//src/ports:osfile",
+				"//src/utils:core_skslc_hdrs",
 				"//src/utils:core_skslc_srcs",
 				"//src/utils:json_srcs",
-				"//src/utils:sksl_srcs",
 			}}},
 	},
 	{GNI: "gn/sksl_tests.gni", Vars: []exporter.GNIFileListExportDesc{
@@ -251,8 +241,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/utils:core_srcs",
 				"//src/utils:json_hdrs",
 				"//src/utils:json_srcs",
-				"//src/utils:sksl_hdrs",
-				"//src/utils:sksl_srcs",
 				"//src/utils/mac:core_hdrs",
 				"//src/utils/mac:core_srcs",
 				"//src/utils/win:core_hdrs",
@@ -348,6 +336,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_gpu_vk_public",
 			Rules: []string{
 				"//include/gpu/vk:public_hdrs",
+				"//include/gpu/ganesh/vk:public_hdrs",
 			}},
 		{Var: "skia_gpu_vk_chromium_public",
 			Rules: []string{
@@ -369,16 +358,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//include/private/gpu/ganesh:d3d_private_hdrs",
 				"//src/gpu/ganesh/d3d:d3d_hdrs",
 				"//src/gpu/ganesh/d3d:d3d_srcs",
-			}},
-		{Var: "skia_gpu_dawn_public",
-			Rules: []string{
-				"//include/gpu/dawn:public_hdrs",
-			}},
-		{Var: "skia_gpu_dawn_private",
-			Rules: []string{
-				"//include/private/gpu/ganesh:dawn_private_hdrs",
-				"//src/gpu/ganesh/dawn:dawn_hdrs",
-				"//src/gpu/ganesh/dawn:dawn_srcs",
 			}},
 		{Var: "skia_gpu_metal_public",
 			Rules: []string{

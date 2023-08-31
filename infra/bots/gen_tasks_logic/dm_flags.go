@@ -269,14 +269,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			configs = append(configs, "gles", "glesdft")
 		}
 
-		// Dawn task *only* runs the dawn config
-		if b.extraConfig("Dawn") && !b.extraConfig("Graphite") {
-			// The SPIR-V reader emits bad code for a `matrixCompMult` that overflows. (tint:1989)
-			skip(ALL, "test", ALL, "SkSLIntrinsicMatrixCompMultES2_Ganesh")
-
-			configs = []string{"dawn"}
-		}
-
 		// The FailFlushTimeCallbacks tasks only run the 'gl' config
 		if b.extraConfig("FailFlushTimeCallbacks") {
 			configs = []string{"gl"}
@@ -317,7 +309,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				// https://skbug.com/14105
 				skip(ALL, "test", ALL, "BackendTextureTest")
 				skip(ALL, "test", ALL, "GraphitePurgeNotUsedSinceResourcesTest")
-				skip(ALL, "test", ALL, "MakeColorSpace_Test")
 				skip(ALL, "test", ALL, "PaintParamsKeyTest")
 
 				if b.matchOs("Win10") {
@@ -483,7 +474,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				configs = append(configs, "vk1010102")
 				// Decoding transparent images to 1010102 just looks bad
 				skip("vk1010102", "image", ALL, ALL)
-			} else if !b.extraConfig("Dawn") {
+			} else {
 				configs = append(configs, "gl1010102", "gltestpersistentcache", "gltestglslcache", "gltestprecompile")
 				// Decoding transparent images to 1010102 just looks bad
 				skip("gl1010102", "image", ALL, ALL)
@@ -1089,8 +1080,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchGpu("Adreno[3456]") { // disable broken tests on Adreno 3/4/5/6xx
-		skip(ALL, "tests", ALL, "ImageAsyncReadPixels")   // b/296440036
-		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels") // b/296440036
 		skip(ALL, "tests", ALL, "SkSLArrayCast_Ganesh")       // skia:12332
 		skip(ALL, "tests", ALL, "SkSLArrayComparison_Ganesh") // skia:12332
 		skip(ALL, "tests", ALL, "SkSLCommaSideEffects_Ganesh")
@@ -1120,6 +1109,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchGpu("Adreno[56]") && b.extraConfig("Vulkan") { // disable broken tests on Adreno 5/6xx Vulkan
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels") // b/296440036
+		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels") // b/296440036
 		skip(ALL, "tests", ALL, "SkSLInoutParameters_Ganesh")        // skia:12869
 		skip(ALL, "tests", ALL, "SkSLOutParams_Ganesh")              // skia:11919
 		skip(ALL, "tests", ALL, "SkSLOutParamsDoubleSwizzle_Ganesh") // skia:11919
@@ -1156,10 +1147,19 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLSwitchWithFallthrough_Ganesh")
 	}
 
-	if b.matchOs("Mac") && b.extraConfig("Metal") && (b.gpu("IntelIrisPlus") ||
-		b.gpu("IntelHD6000")) {
-		skip(ALL, "tests", ALL, "SkSLIntrinsicNot_Ganesh")         // skia:14025
-		skip(ALL, "tests", ALL, "SkSLIntrinsicMixFloatES3_Ganesh") // skia:14025
+	if b.matchOs("Mac") && (b.gpu("IntelIrisPlus") || b.gpu("IntelHD6000")) &&
+						   (b.extraConfig("Metal") || b.extraConfig("Dawn")) {
+		skip(ALL, "tests", ALL, "SkSLIntrinsicNot_Ganesh")           // skia:14025
+		skip(ALL, "tests", ALL, "SkSLIntrinsicMixFloatES3_Ganesh")   // skia:14025
+		skip(ALL, "tests", ALL, "SkSLIntrinsicNot_Graphite")         // skia:14025
+		skip(ALL, "tests", ALL, "SkSLIntrinsicMixFloatES3_Graphite") // skia:14025
+
+		// TODO(skia:296960708): The IntelIrisPlus+Metal config hangs on this test, but passes
+		// SurfaceContextWritePixelsMipped so let that one keep running.
+		skip(ALL, "tests", ALL, "SurfaceContextWritePixels")
+		skip(ALL, "tests", ALL, "SurfaceContextWritePixelsMipped")
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels")
+		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels")
 	}
 
 	if b.gpu("IntelIris6100", "IntelHD4400") && b.matchOs("Win") && b.extraConfig("ANGLE") {

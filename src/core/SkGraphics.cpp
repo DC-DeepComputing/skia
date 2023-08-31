@@ -15,10 +15,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
-#include "include/core/SkTime.h"
 #include "include/private/base/SkMath.h"
 #include "src/base/SkTSearch.h"
-#include "src/codec/SkSwizzler.h"
+#include "src/base/SkTime.h"
 #include "src/core/SkBitmapProcState.h"
 #include "src/core/SkBlitMask.h"
 #include "src/core/SkBlitRow.h"
@@ -31,6 +30,7 @@
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeCache.h"
+#include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkTypefaceCache.h"
 
 #include <stdlib.h>

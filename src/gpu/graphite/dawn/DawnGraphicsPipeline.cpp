@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/dawn/DawnCaps.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
@@ -556,12 +557,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
         return {};
     }
 
-#if GRAPHITE_TEST_UTILS
+#if defined(GRAPHITE_TEST_UTILS)
     GraphicsPipeline::Shaders pipelineShaders = {
         std::move(vsSkSL),
         std::move(fsSkSL),
-        "SPIR-V disassembly not available",
-        "SPIR-V disassembly not available",
+        enableWGSL ? std::move(vsCode) : std::string("SPIR-V disassembly not available"),
+        enableWGSL ? std::move(fsCode) : std::string("SPIR-V disassembly not available"),
     };
     GraphicsPipeline::Shaders* pipelineShadersPtr = &pipelineShaders;
 #else

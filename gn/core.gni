@@ -108,7 +108,6 @@ skia_core_public = [
   "$_include/core/SkTextureCompressionType.h",
   "$_include/core/SkTileMode.h",
   "$_include/core/SkTiledImageUtils.h",
-  "$_include/core/SkTime.h",
   "$_include/core/SkTraceMemoryDump.h",
   "$_include/core/SkTypeface.h",
   "$_include/core/SkTypes.h",
@@ -132,8 +131,6 @@ skia_core_public = [
 #  //src/core:core_skslc_srcs
 #  //src/core:core_srcs
 #  //src/core:legacy_draw_looper
-#  //src/core:sksl_hdrs
-#  //src/core:sksl_srcs
 #  //src/image:core_hdrs
 #  //src/image:core_srcs
 #  //src/lazy:lazy_hdrs
@@ -141,8 +138,6 @@ skia_core_public = [
 #  //src/opts:private_hdrs
 #  //src/shaders:shader_hdrs
 #  //src/shaders:shader_srcs
-#  //src/shaders:sksl_hdrs
-#  //src/shaders:sksl_srcs
 #  //src/text:text_hdrs
 #  //src/text:text_srcs
 skia_core_sources = [
@@ -243,6 +238,8 @@ skia_core_sources = [
   "$_src/base/SkTSearch.h",
   "$_src/base/SkTSort.h",
   "$_src/base/SkThreadID.cpp",
+  "$_src/base/SkTime.cpp",
+  "$_src/base/SkTime.h",
   "$_src/base/SkUTF.cpp",
   "$_src/base/SkUTF.h",
   "$_src/base/SkUtils.cpp",
@@ -442,6 +439,7 @@ skia_core_sources = [
   "$_src/core/SkOSFile.h",
   "$_src/core/SkOpts.cpp",
   "$_src/core/SkOpts.h",
+  "$_src/core/SkOptsTargets.h",
   "$_src/core/SkOverdrawCanvas.cpp",
   "$_src/core/SkPaint.cpp",
   "$_src/core/SkPaintDefaults.h",
@@ -564,7 +562,6 @@ skia_core_sources = [
   "$_src/core/SkTextBlobTrace.cpp",
   "$_src/core/SkTextBlobTrace.h",
   "$_src/core/SkTextFormatParams.h",
-  "$_src/core/SkTime.cpp",
   "$_src/core/SkTraceEvent.h",
   "$_src/core/SkTraceEventCommon.h",
   "$_src/core/SkTypeface.cpp",

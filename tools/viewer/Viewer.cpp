@@ -244,7 +244,6 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
         case sk_app::Window::kANGLE_BackendType: return "ANGLE";
 #endif
 #ifdef SK_DAWN
-        case sk_app::Window::kDawn_BackendType: return "Dawn";
 #if defined(SK_GRAPHITE)
         case sk_app::Window::kGraphiteDawn_BackendType: return "Dawn (Graphite)";
 #endif
@@ -272,9 +271,6 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 
 static sk_app::Window::BackendType get_backend_type(const char* str) {
 #ifdef SK_DAWN
-    if (0 == strcmp(str, "dawn")) {
-        return sk_app::Window::kDawn_BackendType;
-    } else
 #if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn")) {
         return sk_app::Window::kGraphiteDawn_BackendType;
@@ -2026,8 +2022,6 @@ void Viewer::drawImGui() {
                 ImGui::RadioButton("ANGLE", &newBackend, sk_app::Window::kANGLE_BackendType);
 #endif
 #if defined(SK_DAWN)
-                ImGui::SameLine();
-                ImGui::RadioButton("Dawn", &newBackend, sk_app::Window::kDawn_BackendType);
 #if defined(SK_GRAPHITE)
                 ImGui::SameLine();
                 ImGui::RadioButton("Dawn (Graphite)", &newBackend,
@@ -2633,7 +2627,7 @@ void Viewer::drawImGui() {
                         });
                     }
 #if defined(SK_GRAPHITE)
-#if GRAPHITE_TEST_UTILS
+#if defined(GRAPHITE_TEST_UTILS)
                     if (skgpu::graphite::Context* gctx = fWindow->graphiteContext()) {
                         // TODO(skia:14418): populate fCachedShaders with recently-used shaders
                         auto callback = [&](const skgpu::UniqueKey& key,

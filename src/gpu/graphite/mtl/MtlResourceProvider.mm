@@ -40,8 +40,9 @@ namespace skgpu::graphite {
 
 MtlResourceProvider::MtlResourceProvider(SharedContext* sharedContext,
                                          SingleOwner* singleOwner,
-                                         uint32_t recorderID)
-        : ResourceProvider(sharedContext, singleOwner, recorderID) {}
+                                         uint32_t recorderID,
+                                         size_t resourceBudget)
+        : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget) {}
 
 const MtlSharedContext* MtlResourceProvider::mtlSharedContext() {
     return static_cast<const MtlSharedContext*>(fSharedContext);
@@ -162,7 +163,7 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
     sk_cfp<id<MTLDepthStencilState>> dss =
             this->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
-#if GRAPHITE_TEST_UTILS
+#if defined(GRAPHITE_TEST_UTILS)
     GraphicsPipeline::Shaders pipelineShaders = {
         std::move(vsSkSL),
         std::move(fsSkSL),

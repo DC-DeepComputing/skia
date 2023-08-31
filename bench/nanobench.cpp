@@ -32,11 +32,11 @@
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
-#include "include/core/SkTime.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkMacros.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/base/SkLeanWindows.h"
+#include "src/base/SkTime.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
@@ -544,7 +544,7 @@ static int setup_gpu_bench(Target* target, Benchmark* bench, int maxGpuFrameLag)
     return loops;
 }
 
-#define kBogusContextType GrContextFactory::kGL_ContextType
+#define kBogusContextType skgpu::ContextType::kGL
 #define kBogusContextOverrides GrContextFactory::ContextOverrides::kNone
 
 static std::optional<Config> create_config(const SkCommandLineConfig* config) {
