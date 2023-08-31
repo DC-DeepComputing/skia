@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73350af9_ad814390",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-31T18:15:33Z",
+      "side": 1,
+      "message": "I\u0027m quite actively relying on the WGSL validation. How long will it be out of commission?",
+      "revId": "fe7fcd6c0b6ef13a2606ffde1e92b7a3fa691442",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
