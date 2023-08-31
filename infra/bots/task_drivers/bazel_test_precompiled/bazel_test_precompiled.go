@@ -6,9 +6,11 @@
 // This task driver runs an arbitary command specified via command-line arguments. Its purpose is
 // to run prebuilt Bazel tests on devices where we cannot (or don't want to) run Bazel, such as
 // Raspberry Pis.
+
 package main
 
 import (
+	"context"
 	"flag"
 	"path/filepath"
 
@@ -43,19 +45,37 @@ func main() {
 		td.Fatal(ctx, err)
 	}
 
-	commandAbs := filepath.Join(wd, *command)
-	commandWorkDirAbs := filepath.Join(wd, *commandWorkDir)
+	if err := run(ctx, taskDriverArgs{
+		commandPath:    filepath.Join(wd, *command),
+		commandArgs:    *commandArgs,
+		commandWorkDir: filepath.Join(wd, *commandWorkDir),
+	}); err != nil {
+		td.Fatal(ctx, err)
+	}
+}
 
+// taskDriverArgs gathers the inputs to this task driver, and decouples the task driver's
+// entry-point function from the command line flags, which facilitates writing unit tests.
+type taskDriverArgs struct {
+	commandPath    string
+	commandArgs    []string
+	commandWorkDir string
+}
+
+// run is the entrypoint of this task driver.
+func run(ctx context.Context, tdArgs taskDriverArgs) error {
 	runCmd := &sk_exec.Command{
-		Name:       commandAbs,
-		Args:       *commandArgs,
+		Name:       tdArgs.commandPath,
+		Args:       tdArgs.commandArgs,
 		InheritEnv: true, // Makes sure any CIPD-downloaded tools are available on $PATH.
-		Dir:        commandWorkDirAbs,
+		Dir:        tdArgs.commandWorkDir,
 		LogStdout:  true,
 		LogStderr:  true,
 	}
-	_, err = sk_exec.RunCommand(ctx, runCmd)
+	_, err := sk_exec.RunCommand(ctx, runCmd)
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	return nil
 }
