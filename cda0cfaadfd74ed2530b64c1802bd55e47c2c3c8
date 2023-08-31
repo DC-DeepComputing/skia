@@ -22,6 +22,30 @@
       },
       "revId": "cda0cfaadfd74ed2530b64c1802bd55e47c2c3c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55c001df_5682ae29",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-31T18:24:16Z",
+      "side": 1,
+      "message": "Yes, you\u0027re right. If this sticks w/o hurting performance I\u0027ll clean up the sksl template.",
+      "parentUuid": "b6995869_daab1e83",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 31
+      },
+      "revId": "cda0cfaadfd74ed2530b64c1802bd55e47c2c3c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
