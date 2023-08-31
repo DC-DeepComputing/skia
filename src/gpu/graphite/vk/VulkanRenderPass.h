@@ -10,12 +10,24 @@
 
 #include "src/gpu/graphite/Resource.h"
 
+#include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
 namespace skgpu::graphite {
 
+class VulkanCommandBuffer;
 class VulkanSharedContext;
+
+const static VkAttachmentStoreOp vkStoreOp[] {
+    VK_ATTACHMENT_STORE_OP_STORE,
+    VK_ATTACHMENT_STORE_OP_DONT_CARE
+};
+const static VkAttachmentLoadOp vkLoadOp[] {
+    VK_ATTACHMENT_LOAD_OP_LOAD,
+    VK_ATTACHMENT_LOAD_OP_CLEAR,
+    VK_ATTACHMENT_LOAD_OP_DONT_CARE
+};
 
 /**
  * Wrapper around VkRenderPass.

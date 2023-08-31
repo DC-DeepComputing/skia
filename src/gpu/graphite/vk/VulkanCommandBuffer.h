@@ -174,6 +174,7 @@ private:
     bool fActiveRenderPass = false;
 
     const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
+    VkFramebuffer fFrameBuffer = VK_NULL_HANDLE;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;
 
