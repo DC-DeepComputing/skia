@@ -16,6 +16,24 @@
       "message": "nit: Maybe `helpers_helper` should do a texture read from `t` as well? It\u0027s currently unused.\n\nThough that would require moving `textureRead` out of sksl_compute.sksl. I personally don\u0027t think there is a reason to restrict `textureRead` and `textureWrite` to compute shaders but moving them to a shared module is additional work.",
       "revId": "0e0f6c918b1997619f23358bd9f1b5384d15010f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "152fcd9b_1e38a426",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.metal",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-31T17:44:20Z",
+      "side": 1,
+      "message": "Good idea, and I had a pretty similar thought process; I ended up deciding that\u0027s its own CL. And it\u0027s probably a Graphite-specific feature... I don\u0027t think we want `textureRead`/`textureWrite` in Ganesh, right? A lot of open questions here.",
+      "parentUuid": "fd4f949a_ba81927c",
+      "revId": "0e0f6c918b1997619f23358bd9f1b5384d15010f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
