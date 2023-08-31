@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a53758c1_48e2ec6a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-31T19:11:13Z",
+      "side": 1,
+      "message": "Is this actually what ganesh does here? The top part with shader blending I agree with, but I\u0027m surprised we do this unless we know the source color is opaque",
+      "range": {
+        "startLine": 353,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
