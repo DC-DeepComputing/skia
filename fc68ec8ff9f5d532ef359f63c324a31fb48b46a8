@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "401ec731_7431033e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:51:33Z",
+      "side": 1,
+      "message": "Struct definitions were the main reason I didn\u0027t go the fully synthesized route. Though structs are actually broken atm, since there is no way to declare a struct type that is then later referenced in a resource declaration.\n\nI was thinking about inventing a \"skslHeader()\" method to return a program preamble which would contain struct definitions etc. I could also invent a way to declare an interface block member by type name. The layout of the struct wouldn\u0027t be automatically validated but the field declaration could contain additional metadata like size and alignment. For example:\n\n    ComputeStep(\n        ...\n        /*resources\u003d*/{\n            {\n                /*type\u003d*/ResourceType::kStorageBuffer,\n                /*flow\u003d*/DataFlow::kPrivate,\n                /*policy\u003d*/ResourcePolicy::kClear,\n                /*blockMembers\u003d*/{\n                    {\"foo\", SkSLType::kFloat4},\n                    {\"barStruct\", {\"Bar\", /*size\u003d*/32, /*alignment\u003d*/16}},\n                },\n            }\n        ...\n        std::string preambleSkSL() const {\n            return R\"(\n                struct Bar {\n                    ...\n                };\n            )\";\n        }\n        \nWhich turns into:\n\n    struct Bar {\n        ...\n    };\n    layout(...) buffer storageBuffer1 {\n        layout(offset \u003d 0) float4 foo;\n        layout(offset \u003d 16) Bar barStruct;\n    };\n    \nI could probably work something out using `std::variant`. I\u0027ll think about this some more for a follow-up CL.",
+      "parentUuid": "a732e820_e52ae45f",
+      "revId": "fc68ec8ff9f5d532ef359f63c324a31fb48b46a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c26d7b4a_a0212913",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-08-18T19:24:29Z",
       "side": 1,
       "message": "nit: whitespace will make clang-tidy mad",
+      "range": {
+        "startLine": 177,
+        "startChar": 57,
+        "endLine": 177,
+        "endChar": 58
+      },
+      "revId": "fc68ec8ff9f5d532ef359f63c324a31fb48b46a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9af4a062_e03a7035",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T03:51:33Z",
+      "side": 1,
+      "message": "Oops, done.",
+      "parentUuid": "c26d7b4a_a0212913",
       "range": {
         "startLine": 177,
         "startChar": 57,
