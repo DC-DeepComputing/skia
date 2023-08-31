@@ -7,6 +7,7 @@
 
 #include "src/core/SkImageFilterTypes.h"
 
+#include "SkDevice.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -321,6 +322,7 @@ public:
 
     explicit operator bool() const { return SkToBool(fSurface); }
 
+    // Should SkSpecialSurface just expose a device?
     SkCanvas* canvas() { SkASSERT(fSurface); return fSurface->getCanvas(); }
     SkCanvas* operator->() { SkASSERT(fSurface); return fSurface->getCanvas(); }
 
@@ -1031,6 +1033,17 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
     return surface.snap();
 }
 
+void FilterResult::draw(const skif::Context& ctx, SkDevice* device) const {
+    SkM44 oldDeviceTransform = device.localToDevice();
+    device.save();
+    device.setLocalToDevice(ctx.mapping().deviceMatrix());
+
+    this->draw(deviceASCanvas, ctx.targetOutput());
+
+    device->restoreLocal(oldDeviceTransform);
+}
+
+// FIXME just have this take a Device?
 void FilterResult::draw(SkCanvas* canvas, const LayerSpace<SkIRect>& dstBounds) const {
     if (!fImage) {
         return;

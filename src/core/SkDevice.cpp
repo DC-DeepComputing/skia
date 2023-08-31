@@ -7,6 +7,7 @@
 
 #include "src/core/SkDevice.h"
 
+#include "SkImageFilterTypes.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkDrawable.h"
@@ -350,13 +351,8 @@ void SkBaseDevice::drawFilteredImage(const skif::Mapping& mapping,
                                              src ? src->props() : this->surfaceProps(),
                                              cache.get()});
 
-    SkIPoint offset;
-    sk_sp<SkSpecialImage> result = as_IFB(filter)->filterImage(ctx).imageAndOffset(ctx, &offset);
-    if (result) {
-        SkMatrix deviceMatrixWithOffset = mapping.layerToDevice();
-        deviceMatrixWithOffset.preTranslate(offset.fX, offset.fY);
-        this->drawSpecial(result.get(), deviceMatrixWithOffset, sampling, paint);
-    }
+    skif::FilterResult result = as_IFB(filter)->filterImage(ctx);
+    result.draw(ctx, this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
