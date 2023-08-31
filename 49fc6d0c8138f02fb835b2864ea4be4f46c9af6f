@@ -22,6 +22,30 @@
       },
       "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72cc6833_8452bba5",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-31T19:18:49Z",
+      "side": 1,
+      "message": "Ganesh code is here:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/GrXferProcessor.cpp;l\u003d120\nand I don\u0027t believe this code path is taken depending on opacity. But why would we not want this when the source color is transparent?",
+      "parentUuid": "a53758c1_48e2ec6a",
+      "range": {
+        "startLine": 353,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
