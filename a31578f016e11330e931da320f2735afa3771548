@@ -87,6 +87,30 @@
       },
       "revId": "a31578f016e11330e931da320f2735afa3771548",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95493115_be6c19e1",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-31T13:59:30Z",
+      "side": 1,
+      "message": "I guess the Context\u0027s unique_ptr could also wrap void*.",
+      "parentUuid": "2f43aa69_13b46ca6",
+      "range": {
+        "startLine": 224,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 33
+      },
+      "revId": "a31578f016e11330e931da320f2735afa3771548",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
