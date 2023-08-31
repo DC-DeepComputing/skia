@@ -419,6 +419,7 @@ static skgpu::Swizzle get_load_and_src_swizzle(GrColorType ct, SkRasterPipelineO
         case GrColorType::kR_F16:
         case GrColorType::kGray_F16:
         case GrColorType::kUnknown:
+        case GrColorType::kRGBA_10x6: // TODO: Move this above once we add support in raster
             SK_ABORT("unexpected CT");
     }
     return swizzle;
@@ -513,6 +514,7 @@ static skgpu::Swizzle get_dst_swizzle_and_store(GrColorType ct, SkRasterPipeline
         // These are color types we don't expect to ever have to store.
         case GrColorType::kRGB_888:  // This is handled specially in GrConvertPixels.
         case GrColorType::kUnknown:
+        case GrColorType::kRGBA_10x6: // TODO: Move this above once we add support in raster
             SK_ABORT("unexpected CT");
     }
     return swizzle;
