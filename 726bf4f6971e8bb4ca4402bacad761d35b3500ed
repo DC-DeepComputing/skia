@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f70ab4c_3a247c94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-31T16:51:06Z",
+      "side": 1,
+      "message": "This one is pretty aggressive, and definitely impacts the sigma ranges that were used in the mobi_slashdot.skp that was regressing previously, so we\u0027ll see if doing extra samples w/o the branches avoids the regressions.",
+      "revId": "726bf4f6971e8bb4ca4402bacad761d35b3500ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
