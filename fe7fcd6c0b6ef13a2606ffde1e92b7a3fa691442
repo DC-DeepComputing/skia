@@ -34,6 +34,23 @@
       "parentUuid": "73350af9_ad814390",
       "revId": "fe7fcd6c0b6ef13a2606ffde1e92b7a3fa691442",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71307559_a6ee494f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-31T18:22:00Z",
+      "side": 1,
+      "message": "Actually, this will probably break the Housekeeper. You\u0027d need to regenerate all the golden output with WGSL validation off. Set `skia_compile_sksl_tests \u003d true` in your GN file to do this.",
+      "revId": "fe7fcd6c0b6ef13a2606ffde1e92b7a3fa691442",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
