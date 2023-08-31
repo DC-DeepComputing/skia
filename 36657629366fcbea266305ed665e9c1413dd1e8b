@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd7ab1b0_dd64a44d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-31T20:55:29Z",
+      "side": 1,
+      "message": "Picks up fix for clang warning about deprecated implicit special member functions.",
+      "revId": "36657629366fcbea266305ed665e9c1413dd1e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
