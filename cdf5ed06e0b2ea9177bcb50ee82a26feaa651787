@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56ffa6c1_54bc30ca",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-31T19:35:45Z",
+      "side": 1,
+      "message": "Use `SkSL::String::appendf`",
+      "range": {
+        "startLine": 470,
+        "startChar": 16,
+        "endLine": 470,
+        "endChar": 44
+      },
+      "revId": "cdf5ed06e0b2ea9177bcb50ee82a26feaa651787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
