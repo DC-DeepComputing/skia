@@ -1,14 +1,26 @@
 // Valid declarations:
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+layout(spirv, set=0, binding=0) uniform ubo { float a; };    // valid
+layout(spirv, set=0, binding=0) buffer ssbo { float b; };    // valid
+layout(spirv, set=0, binding=0) texture2D texture1;          // valid
+layout(spirv, set=0, binding=0) sampler2D sampler1;          // valid
+=======
 layout(vulkan, set=0, binding=0) uniform ubo { float a; };       // valid
 layout(vulkan, set=0, binding=0) buffer ssbo { float b; };       // valid
 layout(vulkan, set=0, binding=0) readonly texture2D rtexture1;   // valid
 layout(vulkan, set=0, binding=0) writeonly texture2D wtexture1;  // valid
 layout(vulkan, set=0, binding=0) sampler2D sampler1;             // valid
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 
 // Invalid declarations:
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+layout(spirv, texture=0) texture2D texture2;                 // invalid
+layout(spirv, texture=0, sampler=0) sampler2D sampler2;      // invalid
+=======
 layout(vulkan, texture=0) readonly texture2D rtexture2;   // invalid
 layout(vulkan, texture=0) writeonly texture2D wtexture2;  // invalid
 layout(vulkan, texture=0, sampler=0) sampler2D sampler2;  // invalid
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 
 /*%%*
 layout qualifier 'texture' is not permitted here

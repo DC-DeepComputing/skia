@@ -240,6 +240,15 @@ GrGLSLUniformHandler::SamplerHandle GrSPIRVUniformHandler::addSampler(
                                               binding,
                                               binding + 1);
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    SPIRVUniformInfo tempInfo;
+    tempInfo.fVariable = GrShaderVar{std::move(mangleName),
+                                     SkSLType::kSampler,
+                                     GrShaderVar::TypeModifier::None,
+                                     GrShaderVar::kNonArray,
+                                     std::move(layoutQualifier),
+                                     SkString()};
+=======
     SPIRVUniformInfo& uniformInfo = fSamplers.emplace_back();
     uniformInfo.fVariable =
             GrShaderVar{std::move(mangleName),
@@ -248,6 +257,7 @@ GrGLSLUniformHandler::SamplerHandle GrSPIRVUniformHandler::addSampler(
                         GrShaderVar::kNonArray,
                         std::move(layoutQualifier),
                         SkString()};
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 
     uniformInfo.fVisibility = kFragment_GrShaderFlag;
     uniformInfo.fOwner      = nullptr;
@@ -257,6 +267,25 @@ GrGLSLUniformHandler::SamplerHandle GrSPIRVUniformHandler::addSampler(
     fSamplerSwizzles.push_back(swizzle);
     SkASSERT(fSamplerSwizzles.size() == fSamplers.count());
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    SkString mangleTexName = fProgramBuilder->nameVariable('t', name, /*mangle=*/true);
+    SkString texLayoutQualifier;
+    texLayoutQualifier.appendf("set = %d, binding = %d", kSamplerTextureDescriptorSet, binding + 1);
+    tempInfo.fVariable = GrShaderVar{std::move(mangleTexName),
+                                     SkSLType::kTexture2D,
+                                     GrShaderVar::TypeModifier::None,
+                                     GrShaderVar::kNonArray,
+                                     std::move(texLayoutQualifier),
+                                     SkString()};
+    fTextures.push_back(tempInfo);
+
+    SkString reference;
+    reference.printf("makeSampler2D(%s, %s)",
+                     fTextures.back().fVariable.getName().c_str(),
+                     fSamplers.back().fVariable.getName().c_str());
+    fSamplerReferences.emplace_back(std::move(reference));
+=======
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
     return GrGLSLUniformHandler::SamplerHandle(fSamplers.count() - 1);
 }
 

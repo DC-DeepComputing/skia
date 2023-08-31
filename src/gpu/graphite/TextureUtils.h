@@ -68,9 +68,13 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder*,
 namespace skif {
 class Context;
 struct ContextInfo;
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+
+=======
 struct Functors;
 
 Functors MakeGraphiteFunctors(skgpu::graphite::Recorder* recorder);
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
                             const ContextInfo& info);
 }  // namespace skif

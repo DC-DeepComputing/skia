@@ -576,7 +576,11 @@ container_pull(
 # Pulls the gcr.io/skia-public/skottie-base container.
 container_pull(
     name = "skottie-base",
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    digest = "sha256:d5998642c25ba6826e7e69628c64fbf618d50196fd6256a323b6582581a49f79",
+=======
     digest = "sha256:3e2b0ed75e491b46f1d2628ecb2aebbf587c06674e9ec249a0e77fe77b43f03c",
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
     registry = "gcr.io",
     repository = "skia-public/skottie-base",
 )

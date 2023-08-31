@@ -391,9 +391,13 @@ void ResourceCache::purgeResources() {
 }
 
 void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime) {
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    fProxyCache->purgeProxiesNotUsedSince(purgeTime);
+=======
     if (fProxyCache) {
         fProxyCache->purgeProxiesNotUsedSince(purgeTime);
     }
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
     this->processReturnedResources();
 
     // Early out if the very first item is too new to purge to avoid sorting the queue when

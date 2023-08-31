@@ -12,7 +12,10 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+=======
 #include "include/effects/SkRuntimeEffect.h"
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkSamplingPriv.h"
@@ -40,6 +43,46 @@
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/UploadTask.h"
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+namespace {
+
+sk_sp<SkSurface> make_surface_with_fallback(skgpu::graphite::Recorder* recorder,
+                                            const SkImageInfo& info,
+                                            skgpu::Mipmapped mipmapped,
+                                            const SkSurfaceProps* surfaceProps) {
+    SkColorType ct = recorder->priv().caps()->getRenderableColorType(info.colorType());
+    if (ct == kUnknown_SkColorType) {
+        return nullptr;
+    }
+
+    return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, surfaceProps);
+}
+
+bool valid_client_provided_image(const SkImage* clientProvided,
+                                 const SkImage* original,
+                                 SkImage::RequiredProperties requiredProps) {
+    if (!clientProvided ||
+        !as_IB(clientProvided)->isGraphiteBacked() ||
+        original->dimensions() != clientProvided->dimensions() ||
+        original->alphaType() != clientProvided->alphaType()) {
+        return false;
+    }
+
+    uint32_t origChannels = SkColorTypeChannelFlags(original->colorType());
+    uint32_t clientChannels = SkColorTypeChannelFlags(clientProvided->colorType());
+    if ((origChannels & clientChannels) != origChannels) {
+        return false;
+    }
+
+    // We require provided images to have a TopLeft origin
+    auto graphiteImage = static_cast<const skgpu::graphite::Image*>(clientProvided);
+    if (graphiteImage->textureProxyView().origin() != skgpu::Origin::kTopLeft) {
+        SKGPU_LOG_E("Client provided image must have a TopLeft origin.");
+        return false;
+    }
+
+    return true;
+=======
 #include <array>
 
 namespace {
@@ -272,6 +315,7 @@ sk_sp<SkSpecialImage> blur(skgpu::graphite::Recorder* recorder,
                                              std::move(outputImage),
                                              outProps);
     }
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 }
 
 } // anonymous namespace
@@ -681,6 +725,40 @@ std::tuple<skgpu::graphite::TextureProxyView, SkColorType> AsView(Recorder* reco
 
 namespace skif {
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
+                            const ContextInfo& info) {
+    SkASSERT(recorder);
+    SkASSERT(!info.fSource.image() || info.fSource.image()->isGraphiteBacked());
+
+    auto makeSurfaceFunctor = [recorder](const SkImageInfo& imageInfo,
+                                         const SkSurfaceProps* props) {
+        return SkSpecialSurfaces::MakeGraphite(recorder, imageInfo, *props);
+    };
+    auto makeImageCallback = [recorder](const SkIRect& subset,
+                                sk_sp<SkImage> image,
+                                const SkSurfaceProps& props) {
+        // This just makes a raster image, but it could maybe call MakeFromGraphite
+        return SkSpecialImages::MakeGraphite(recorder, subset, image, props);
+    };
+    auto makeCachedBitmapCallback = [recorder](const SkBitmap& data) -> sk_sp<SkImage> {
+        auto proxy = skgpu::graphite::RecorderPriv::CreateCachedProxy(recorder, data);
+        if (!proxy) {
+            return nullptr;
+        }
+
+        const SkColorInfo& colorInfo = data.info().colorInfo();
+        skgpu::Swizzle swizzle = recorder->priv().caps()->getReadSwizzle(colorInfo.colorType(),
+                                                                         proxy->textureInfo());
+        return sk_make_sp<skgpu::graphite::Image>(
+                data.getGenerationID(),
+                skgpu::graphite::TextureProxyView(std::move(proxy), swizzle),
+                colorInfo);
+    };
+
+    return Context(info, nullptr, makeSurfaceFunctor, makeImageCallback, makeCachedBitmapCallback);
+}
+=======
 Functors MakeGraphiteFunctors(skgpu::graphite::Recorder* recorder) {
     SkASSERT(recorder);
 
@@ -730,4 +808,5 @@ Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
     return Context(info, MakeGraphiteFunctors(recorder));
 }
 
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 }  // namespace skif

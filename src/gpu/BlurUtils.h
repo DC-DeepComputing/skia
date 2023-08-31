@@ -71,6 +71,42 @@ static constexpr float kMaxLinearBlurSigma = 4.f; // -> radius = 27 -> linear ke
 // 'kernel' should be set to the output of Compute2DBlurKernel(). 'radius' should match the radii
 // passed into that function. 'child' should be bound to whatever input is intended to be blurred,
 // and can use nearest-neighbor sampling (when it's an image).
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+const SkRuntimeEffect* GetBlur2DEffect();
+
+// Return a runtime effect that applies a 1D Gaussian blur, taking advantage of HW linear
+// interpolation to accumulate adjacent pixels with fewer samples. The returned effect can be used
+// for both X and Y axes by changing the 'dir' uniform value (see below). It can be used for all
+// 1D blurs such that BlurLinearKernelWidth(radius) is less than or equal to kMaxBlurSamples.
+// Like GetBlur2DEffect(), the caller is free to convert this to an SkShader or a
+// GrFragmentProcessor and is responsible for assigning uniforms with the appropriate API. Its
+// uniforms are declared as:
+//
+//     uniform half4  offsetsAndKernel[14];
+//     uniform half2  dir;
+//     uniform int    radius;
+//     uniform shader child;
+//
+// 'offsetsAndKernel' should be set to the output of Compute1DBlurLinearKernel(). 'radius' should
+// match the radius passed to that function. 'dir' should either be the vector {1,0} or {0,1}
+// for X and Y axis passes, respectively. 'child' should be bound to whatever input is intended to
+// be blurred and must use linear sampling in order for the outer blur effect to function correctly.
+const SkRuntimeEffect* GetLinearBlur1DEffect(int radius);
+
+// Calculates a set of weights for a 2D Gaussian blur of the given sigma and radius. It is assumed
+// that the radius was from prior calls to BlurSigmaRadius(sigma.width()|height()) and is passed in
+// to avoid redundant calculations.
+//
+// The provided span is fully written. The kernel is stored in row-major order based on the provided
+// radius. Any remaining indices in the span are zero initialized. The span must have at least
+// BlurKernelWidth(radius.width())*BlurKernelWidth(radius.height()) elements.
+//
+// NOTE: These take spans because it can be useful to compute full kernels that are larger than what
+// is supported in the GPU effects.
+void Compute2DBlurKernel(SkSize sigma,
+                         SkISize radius,
+                         SkSpan<float> kernel);
+=======
 const SkRuntimeEffect* GetBlur2DEffect(const SkISize& radii);
 
 // Return a runtime effect that applies a 1D Gaussian blur, taking advantage of HW linear
@@ -112,6 +148,7 @@ void Compute2DBlurKernel(SkSize sigma,
                          SkISize radius,
                          std::array<SkV4, kMaxBlurSamples/4>& kernel);
 
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 // A convenience for the 2D case where one dimension has a sigma of 0.
 inline void Compute1DBlurKernel(float sigma, int radius, SkSpan<float> kernel) {
     Compute2DBlurKernel({sigma, 0.f}, {radius, 0}, kernel);

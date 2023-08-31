@@ -1,5 +1,10 @@
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+layout(metal, spirv, wgsl, binding = 0) uniform ubo { float f; };  // multiple backends
+layout(texture=0, sampler=0) sampler2D s;                          // invalid (requires backend)
+=======
 layout(metal, vulkan, webgpu, direct3d, binding = 0) uniform ubo { float f; }; // multiple backends
 layout(texture=0, sampler=0) sampler2D s;                                      // missing backend
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 
 /*%%*
 only one backend qualifier can be used

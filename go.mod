@@ -10,7 +10,11 @@ require (
 	github.com/google/uuid v1.1.2
 	github.com/stretchr/testify v1.7.0
 	go.chromium.org/luci v0.0.0-20201121231857-b9ab316d7198 // indirect
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+	go.skia.org/infra v0.0.0-20230828184258-d779093a7a96
+=======
 	go.skia.org/infra v0.0.0-20230901002426-2b76b0e00861
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 	google.golang.org/api v0.74.0
 	google.golang.org/protobuf v1.28.0
 )

@@ -47,7 +47,11 @@ bool GrVkMSAALoadManager::createMSAALoadProgram(GrVkGpu* gpu) {
 
     std::string fragShaderText;
     fragShaderText.append(
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+            "layout(spirv, input_attachment_index=0, set=2, binding=0) subpassInput uInput;"
+=======
             "layout(vulkan, input_attachment_index=0, set=2, binding=0) subpassInput uInput;"
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 
             "// MSAA Load Program FS\n"
             "void main() {"

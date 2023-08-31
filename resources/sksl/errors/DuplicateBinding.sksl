@@ -11,7 +11,11 @@ layout(binding=1) uniform bufferFive { float q; };
 // Should not generate any errors despite overlap with above.
 // TODO(skia:13664): Graphite currently generates programs with overlapping indices across interface
 // blocks and texture/sampler types. WGSL requires this to become an error.
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+layout(set=0, binding=0) texture2D t;
+=======
 layout(set=0, binding=0, rgba32f) readonly texture2D t;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 
 void main() {
 }

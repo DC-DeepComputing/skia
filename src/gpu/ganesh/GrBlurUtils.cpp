@@ -1911,6 +1911,16 @@ namespace {
 
 enum class Direction { kX, kY };
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+// On the CPU, the kernel coefficients are scalars, but are packed as half4's in the GPU shader.
+// For upload purposes, the memory size and layout of a float[28] vs. a SkV4[7] is the same, but the
+// type must be changed to pass uniform type validation in GrSkSLFP::Make.
+SkSpan<const SkV4> scalar_array_as_vec4_span(
+        const std::array<float, skgpu::kMaxBlurSamples>& vals) {
+    static_assert(skgpu::kMaxBlurSamples % 4 == 0);
+    const void* begin = static_cast<const void*>(vals.data());
+    return SkSpan<const SkV4>{static_cast<const SkV4*>(begin), skgpu::kMaxBlurSamples / 4};
+=======
 std::unique_ptr<GrFragmentProcessor> make_texture_effect(const GrCaps* caps,
                                                          GrSurfaceProxyView srcView,
                                                          SkAlphaType srcAlphaType,
@@ -1942,6 +1952,7 @@ std::unique_ptr<GrFragmentProcessor> make_texture_effect(const GrCaps* caps,
                                            domain,
                                            *caps);
     }
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 }
 
 } // end namespace
@@ -1968,6 +1979,47 @@ static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
 
     // The child of the 1D linear blur effect must be linearly sampled.
     GrSamplerState sampler{SkTileModeToWrapMode(mode), GrSamplerState::Filter::kLinear};
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    // It's pretty common to blur a subset of an input texture. In reduced shader mode we always
+    // apply the wrap mode in the shader.
+    // TODO(b/297590025): Extract this into a helper function and use it for for 2d case too.
+    std::unique_ptr<GrFragmentProcessor> child;
+    if (sfc->caps()->reducedShaderMode()) {
+        child = GrTextureEffect::MakeSubset(std::move(srcView),
+                                            srcAlphaType,
+                                            SkMatrix::I(),
+                                            sampler,
+                                            SkRect::Make(srcSubset),
+                                            *sfc->caps(),
+                                            GrTextureEffect::kDefaultBorder,
+                                            /*alwaysUseShaderTileMode=*/true);
+    } else {
+        // Inset because we expect to be invoked at pixel centers
+        SkRect domain = SkRect::Make(srcRect);
+        domain.inset(0.5f, 0.5f);
+        if (direction == Direction::kX) {
+            domain.outset(radius, 0);
+        } else {
+            domain.outset(0, radius);
+        }
+        child = GrTextureEffect::MakeSubset(std::move(srcView),
+                                            srcAlphaType,
+                                            SkMatrix::I(),
+                                            sampler,
+                                            SkRect::Make(srcSubset),
+                                            domain,
+                                            *sfc->caps());
+    }
+
+    auto conv = GrSkSLFP::Make(skgpu::GetLinearBlur1DEffect(radius),
+                               "GaussianBlur1D",
+                               /*inputFP=*/nullptr,
+                               GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
+                               "offsetsAndKernel", SkSpan<SkV4>{offsetsAndKernel},
+                               "dir", direction == Direction::kX ? SkV2{1.f, 0.f}
+                                                                 : SkV2{0.f, 1.f},
+                               "radius", radius,
+=======
 
     SkISize radii = {direction == Direction::kX ? radius : 0,
                      direction == Direction::kY ? radius : 0};
@@ -1986,6 +2038,7 @@ static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
                                "offsetsAndKernel", SkSpan<SkV4>{offsetsAndKernel},
                                "dir", direction == Direction::kX ? SkV2{1.f, 0.f}
                                                                  : SkV2{0.f, 1.f},
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
                                "child", std::move(child));
     sfc->fillRectToRectWithFP(srcRect, dstRect, std::move(conv));
 }
@@ -2027,10 +2080,21 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
     // GaussianBlur() should have downsampled the request until we can handle the 2D blur with
     // just a uniform array, which is asserted inside the Compute function.
     const SkISize radii{radiusX, radiusY};
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    std::array<float, skgpu::kMaxBlurSamples> kernel;
+=======
     std::array<SkV4, skgpu::kMaxBlurSamples/4> kernel;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
     skgpu::Compute2DBlurKernel({sigmaX, sigmaY}, radii, kernel);
 
     GrSamplerState sampler{SkTileModeToWrapMode(mode), GrSamplerState::Filter::kNearest};
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    auto child = GrTextureEffect::MakeSubset(std::move(srcView), kPremul_SkAlphaType, SkMatrix::I(),
+                                             sampler, SkRect::Make(srcBounds), *sdc->caps());
+    auto conv = GrSkSLFP::Make(skgpu::GetBlur2DEffect(), "GaussianBlur2D", /*inputFP=*/nullptr,
+                               GrSkSLFP::OptFlags::kNone,
+                               "kernel", scalar_array_as_vec4_span(kernel),
+=======
     auto child = make_texture_effect(sdc->caps(),
                                      std::move(srcView),
                                      kPremul_SkAlphaType,
@@ -2043,6 +2107,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
                                /*inputFP=*/nullptr,
                                GrSkSLFP::OptFlags::kNone,
                                "kernel", SkSpan<SkV4>{kernel},
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
                                "radii", radii,
                                "child", std::move(child));
 

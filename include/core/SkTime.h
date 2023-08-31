@@ -1,3 +1,5 @@
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+=======
 
 /*
  * Copyright 2006 The Android Open Source Project
@@ -42,3 +44,4 @@ public:
 };
 
 #endif
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)

@@ -17,7 +17,10 @@
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+=======
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
@@ -558,6 +561,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     }
 
 #if defined(GRAPHITE_TEST_UTILS)
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    GraphicsPipeline::Shaders pipelineShaders = {
+        std::move(vsSkSL),
+        std::move(fsSkSL),
+        enableWGSL ? std::move(vsCode) : std::string("SPIR-V disassembly not available"),
+        enableWGSL ? std::move(fsCode) : std::string("SPIR-V disassembly not available"),
+    };
+    GraphicsPipeline::Shaders* pipelineShadersPtr = &pipelineShaders;
+=======
     GraphicsPipeline::PipelineInfo pipelineInfo = {
             pipelineDesc.renderStepID(),
             pipelineDesc.paintParamsID(),
@@ -566,6 +578,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
             enableWGSL ? std::move(vsCode) : std::string("SPIR-V disassembly not available"),
             enableWGSL ? std::move(fsCode) : std::string("SPIR-V disassembly not available")};
     GraphicsPipeline::PipelineInfo* pipelineInfoPtr = &pipelineInfo;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #else
     GraphicsPipeline::PipelineInfo* pipelineInfoPtr = nullptr;
 #endif

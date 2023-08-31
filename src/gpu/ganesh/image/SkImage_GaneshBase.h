@@ -13,6 +13,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/chromium/SkImageChromium.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
+#include "src/core/SkImageFilterTypes.h"
 #include "src/image/SkImage_Base.h"
 
 #include <memory>
@@ -110,6 +111,12 @@ public:
                                                                      const SkRect*,
                                                                      const SkRect*) const = 0;
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+                                        const skif::ContextInfo& ctxInfo) const override;
+
+=======
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
     virtual GrSurfaceOrigin origin() const = 0;
 
 protected:

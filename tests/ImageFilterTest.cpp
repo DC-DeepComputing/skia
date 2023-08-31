@@ -49,7 +49,14 @@
 #include "src/core/SkSpecialSurface.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/effects/imagefilters/SkCropImageFilter.h"
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/image/GrImageUtils.h"
+#include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
+=======
 #include "src/image/SkImage_Base.h"
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"

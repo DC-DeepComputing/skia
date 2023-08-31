@@ -1079,6 +1079,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLVoidInSequenceExpressions_Ganesh") // b/295217166
 	}
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+	if b.matchGpu("Adreno[3456]") { // disable broken tests on Adreno 3/4/5/6xx
+=======
         // b/296440036
 	// disable broken tests on Adreno 5/6xx Vulkan or API30
 	if b.matchGpu("Adreno[56]") && (b.extraConfig("Vulkan") || b.extraConfig("API30")) {
@@ -1090,6 +1093,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
         if b.matchGpu("Adreno[3456]") { // disable broken tests on Adreno 3/4/5/6xx
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 		skip(ALL, "tests", ALL, "SkSLArrayCast_Ganesh")       // skia:12332
 		skip(ALL, "tests", ALL, "SkSLArrayComparison_Ganesh") // skia:12332
 		skip(ALL, "tests", ALL, "SkSLCommaSideEffects_Ganesh")
@@ -1119,6 +1123,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchGpu("Adreno[56]") && b.extraConfig("Vulkan") { // disable broken tests on Adreno 5/6xx Vulkan
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels") // b/296440036
+		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels") // b/296440036
 		skip(ALL, "tests", ALL, "SkSLInoutParameters_Ganesh")        // skia:12869
 		skip(ALL, "tests", ALL, "SkSLOutParams_Ganesh")              // skia:11919
 		skip(ALL, "tests", ALL, "SkSLOutParamsDoubleSwizzle_Ganesh") // skia:11919

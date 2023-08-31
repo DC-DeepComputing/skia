@@ -1,0 +1,12 @@
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+layout(wgsl, set=1, texture=2, sampler=3) sampler2D aSampler;
+
+void main() {
+    sk_FragColor = sample(aSampler, float2(0));
+}
+
+/*%%*
+incompatible backend flag in SPIR-V codegen
+*%%*/
+=======
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)

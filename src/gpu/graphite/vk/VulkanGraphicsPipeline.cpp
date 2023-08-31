@@ -722,6 +722,15 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     destroy_shader_modules(sharedContext, vsModule, fsModule);
 
 #if defined(GRAPHITE_TEST_UTILS)
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    GraphicsPipeline::Shaders pipelineShaders = {
+        std::move(vsSkSL),
+        std::move(fsSkSL),
+        "SPIR-V disassembly not available",
+        "SPIR-V disassembly not available",
+    };
+    GraphicsPipeline::Shaders* pipelineShadersPtr = &pipelineShaders;
+=======
     GraphicsPipeline::PipelineInfo pipelineInfo = {pipelineDesc.renderStepID(),
                                                    pipelineDesc.paintParamsID(),
                                                    std::move(vsSkSL),
@@ -729,6 +738,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                                    "SPIR-V disassembly not available",
                                                    "SPIR-V disassembly not available"};
     GraphicsPipeline::PipelineInfo* pipelineInfoPtr = &pipelineInfo;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #else
     GraphicsPipeline::PipelineInfo* pipelineInfoPtr = nullptr;
 #endif

@@ -7,6 +7,20 @@
 
 #include "include/core/SkGraphics.h"
 
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+#include "include/core/SkCanvas.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkOpenTypeSVGDecoder.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPathEffect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkStream.h"
+#include "include/private/base/SkMath.h"
+#include "src/base/SkTSearch.h"
+#include "src/base/SkTime.h"
+=======
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #include "src/core/SkBitmapProcState.h"
 #include "src/core/SkBlitMask.h"
 #include "src/core/SkBlitRow.h"

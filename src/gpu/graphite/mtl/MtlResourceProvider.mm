@@ -164,6 +164,15 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
             this->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
 #if defined(GRAPHITE_TEST_UTILS)
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    GraphicsPipeline::Shaders pipelineShaders = {
+        std::move(vsSkSL),
+        std::move(fsSkSL),
+        std::move(vsMSL),
+        std::move(fsMSL),
+    };
+    GraphicsPipeline::Shaders* pipelineShadersPtr = &pipelineShaders;
+=======
     GraphicsPipeline::PipelineInfo pipelineInfo = {pipelineDesc.renderStepID(),
                                                    pipelineDesc.paintParamsID(),
                                                    std::move(vsSkSL),
@@ -171,6 +180,7 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
                                                    std::move(vsMSL),
                                                    std::move(fsMSL) };
     GraphicsPipeline::PipelineInfo* pipelineInfoPtr = &pipelineInfo;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #else
     GraphicsPipeline::PipelineInfo* pipelineInfoPtr = nullptr;
 #endif

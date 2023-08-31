@@ -3080,8 +3080,13 @@ def go_repositories():
     go_repository(
         name = "org_skia_go_infra",
         importpath = "go.skia.org/infra",
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+        sum = "h1:Se16v0V6AGXCEmnmhVip3g27kA7Xv36PIM7Poa5QmE4=",
+        version = "v0.0.0-20230828184258-d779093a7a96",
+=======
         sum = "h1:ODZmZRxXBH3zd0bLKwgcv50wAgNn+fX4pQVWrhy7j+o=",
         version = "v0.0.0-20230901002426-2b76b0e00861",
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
     )
     go_repository(
         name = "org_uber_go_atomic",

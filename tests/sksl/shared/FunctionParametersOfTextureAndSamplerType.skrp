@@ -4,8 +4,13 @@ error: 1: type 'texture2D' does not support qualifier 'readonly'
 layout(set = 0, binding = 1, rgba8) readonly texture2D aTexture;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 error: 1: invalid type
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+layout(set = 0, binding = 1) texture2D aTexture;
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=======
 layout(set = 0, binding = 1, rgba8) readonly texture2D aTexture;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 error: 2: invalid type
 layout(set = 0, binding = 2) sampler2D aSampledTexture;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -28,11 +28,15 @@ public:
     ~GraphicsPipeline() override;
 
 #if defined(GRAPHITE_TEST_UTILS)
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    struct Shaders {
+=======
     // This is not quite enough information to fully recreate the pipeline, as the RenderPassDesc
     // used to make the pipeline is not preserved.
     struct PipelineInfo {
         uint32_t fRenderStepID;
         UniquePaintParamsID fPaintID;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
         std::string fSkSLVertexShader;
         std::string fSkSLFragmentShader;
         std::string fNativeVertexShader;
@@ -51,7 +55,11 @@ protected:
 
 private:
 #if defined(GRAPHITE_TEST_UTILS)
+<<<<<<< PATCH SET (0e6ef0 Remove SkTime from the public API)
+    Shaders fPipelineShaders;
+=======
     PipelineInfo fPipelineInfo;
+>>>>>>> BASE      (f3f6c7 Revert "Roll Dawn from beaf20f90f1b to b9afa50913de (668 rev)
 #endif
 };
 
