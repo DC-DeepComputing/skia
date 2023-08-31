@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "136485dd_41ce9fb7",
+        "filename": "tests/sksl/shared/FunctionParametersOfTextureAndSamplerType.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-31T18:12:06Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "5f8247fb_1b36bc16",
+      "range": {
+        "startLine": 3,
+        "startChar": 38,
+        "endLine": 3,
+        "endChar": 55
+      },
+      "revId": "5428d21b640ca215388c53aefd33ed0969c7e00c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b464db0_eb429a68",
