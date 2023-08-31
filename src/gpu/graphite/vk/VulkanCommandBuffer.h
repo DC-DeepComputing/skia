@@ -170,10 +170,11 @@ private:
     // the render pass.
     // TODO: define what this is once we implement renderpasses.
     //const void* fActiveRenderPass = nullptr;
-    // For now, use this to track whether we're between beginRendering/endRendering calls.
+    // For now, use this to track whether we're between beginRenderPass and endRenderPass calls.
     bool fActiveRenderPass = false;
 
     const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
+    VkFramebuffer fFrameBuffer = VK_NULL_HANDLE;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;
 
