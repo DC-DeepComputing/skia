@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47b30b32_5fa19568",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T19:41:03Z",
+      "side": 1,
+      "message": "These seem very Skottie specific. Can they be defined in skottie_bindings.cpp?",
+      "range": {
+        "startLine": 68,
+        "startChar": 21,
+        "endLine": 68,
+        "endChar": 31
+      },
+      "revId": "f5660472d111fc598be2e5d5467d5758ce693e6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b40315ac_340fac2d",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T19:41:03Z",
+      "side": 1,
+      "message": "nit: void",
+      "range": {
+        "startLine": 977,
+        "startChar": 35,
+        "endLine": 977,
+        "endChar": 39
+      },
+      "revId": "f5660472d111fc598be2e5d5467d5758ce693e6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a5dbc6_f155cfb8",
+        "filename": "modules/canvaskit/tests/skottie_test.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T19:41:03Z",
+      "side": 1,
+      "message": "Should this be a gm so we can see the result of editing the text?",
+      "range": {
+        "startLine": 361,
+        "startChar": 4,
+        "endLine": 361,
+        "endChar": 31
+      },
+      "revId": "f5660472d111fc598be2e5d5467d5758ce693e6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e942d5c6_e88f5de7",
+        "filename": "modules/canvaskit/tests/skottie_test.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T19:41:03Z",
+      "side": 1,
+      "message": "nit: nonexistent",
+      "range": {
+        "startLine": 416,
+        "startChar": 72,
+        "endLine": 416,
+        "endChar": 82
+      },
+      "revId": "f5660472d111fc598be2e5d5467d5758ce693e6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
