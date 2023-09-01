@@ -964,6 +964,21 @@ export interface ManagedSkottieAnimation extends SkottieAnimation {
     getColorSlot(key: string): Color | null;
     getScalarSlot(key: string): number | null;
     getVec2Slot(key: string): Vector2 | null;
+
+    // Attach a WYSIWYG editor to the text layer identified by 'id' and 'index' (multiple layers
+    // can be grouped with the same ID).
+    // Other layers with the same ID are attached as dependents, and updated on the fly as the
+    // edited layer changes.
+    attachEditor(id: string, index: number): boolean;
+
+    // Enable/disable the current editor.
+    enableEditor(enable: boolean): null;
+
+    // Send key events to the active editor.
+    dispatchEditorKey(key: string): boolean;
+
+    // Send pointer events to the active editor.
+    dispatchEditorPointer(x: number, y: number, state: number): boolean;
 }
 
 /**

@@ -145,6 +145,11 @@ var CanvasKit = {
       setImageSlot: function() {},
       setTransform: function() {},
       size: function() {},
+
+      attachEditor:          function() {},
+      enableEditor:          function() {},
+      dispatchEditorKey:     function() {},
+      dispatchEditorPointer: function() {},
     },
     _render: function() {},
     _seek: function() {},
