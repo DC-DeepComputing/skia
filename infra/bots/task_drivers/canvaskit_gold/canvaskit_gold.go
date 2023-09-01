@@ -22,6 +22,7 @@ import (
 	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
+	"go.skia.org/skia/infra/bots/task_drivers/common"
 )
 
 // This value is arbitrarily selected. It is smaller than our maximum RBE pool size.
@@ -118,6 +119,10 @@ func main() {
 		},
 	}
 	if err := uploadDataToGold(ctx, *testLabel, skiaDir, conf); err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	if err := common.BazelCleanIfLowDiskSpace(ctx, skiaDir, "bazelisk"); err != nil {
 		td.Fatal(ctx, err)
 	}
 }
