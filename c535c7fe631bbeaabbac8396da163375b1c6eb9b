@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b90ac4cb_ca0224d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-01T16:38:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4c9bd23_4b9a76c5",
+      "range": {
+        "startLine": 11,
+        "startChar": 102,
+        "endLine": 11,
+        "endChar": 107
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf333daf_0aaabe0a",
@@ -60,6 +84,30 @@
       "writtenOn": "2023-09-01T12:47:42Z",
       "side": 1,
       "message": "Opinion: these regexes complicate the reading of these tests and the conciseness of the assertions.\n\nSuggested solution: We add the ability to stub out the temporary directory to os_steps.TempDir using the context. The mechanism would be similar to what we do for stubbing out a time.\n\nI realize this complicates things in that you need to land the fix in the infra repo and then roll in the change, but I think it will make these more maintainable and less boiler-plate-ery",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 44
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "542d2195_2554136c",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-01T16:38:30Z",
+      "side": 1,
+      "message": "I\u0027m not sure I understand. Do you mean adding the ability to control the path returned by `os_steps.TempDir()` from tests using the context?\n\nIf so, I still need physical files to test this task driver (e.g. ZIP file extraction, directory contents scanning, etc.). Presumably these physical files would still live inside a temporary directory with a non-deterministic name (e.g. created by `t.TempDir()`), so the regular expressions would still be necessary.",
+      "parentUuid": "a9a80fd5_08670cd0",
       "range": {
         "startLine": 127,
         "startChar": 4,
