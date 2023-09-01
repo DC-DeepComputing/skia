@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47b66d74_211c7e66",
+        "filename": "tests/sksl/errors/PixelFormatOverloads.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-01T17:32:40Z",
+      "side": 1,
+      "message": "This wording here is actually not quite right--it\u0027s reporting it as if we had a function _prototype_ that differed from the function definition, not two competing definitions--but I think that\u0027s just a longstanding minor bug.",
+      "range": {
+        "startLine": 3,
+        "startChar": 50,
+        "endLine": 3,
+        "endChar": 76
+      },
+      "revId": "4aa28b683e78e8d8c5f04de03e5fd926b1b79297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
