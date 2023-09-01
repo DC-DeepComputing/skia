@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4c9bd23_4b9a76c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T12:47:42Z",
+      "side": 1,
+      "message": "built?",
+      "range": {
+        "startLine": 11,
+        "startChar": 102,
+        "endLine": 11,
+        "endChar": 107
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf333daf_0aaabe0a",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T12:47:42Z",
+      "side": 1,
+      "message": "nit: You don\u0027t *have* to put each argument on its own line. I would suggest:\n\n```\n\"/path/to/workdir\",\n\"/path/to/command\",\n\"--foo\", \"bar\",\n\"--baz\", \"qux\",\n```\n\nor even\n\n```\n\"/path/to/workdir\",\n\"/path/to/command\", \"--foo\", \"bar\", \"--baz\", \"qux\",\n```\n\nIf we make poor use of the vertical space, someone has to scroll a lot further to see what\u0027s going on, taxing memory.",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 10
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a80fd5_08670cd0",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T12:47:42Z",
+      "side": 1,
+      "message": "Opinion: these regexes complicate the reading of these tests and the conciseness of the assertions.\n\nSuggested solution: We add the ability to stub out the temporary directory to os_steps.TempDir using the context. The mechanism would be similar to what we do for stubbing out a time.\n\nI realize this complicates things in that you need to land the fix in the infra repo and then roll in the change, but I think it will make these more maintainable and less boiler-plate-ery",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 44
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
