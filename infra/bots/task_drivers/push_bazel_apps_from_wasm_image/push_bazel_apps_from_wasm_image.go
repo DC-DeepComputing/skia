@@ -19,7 +19,7 @@ import (
 	"google.golang.org/api/option"
 
 	"go.skia.org/infra/go/auth"
-	"go.skia.org/infra/go/common"
+	sk_common "go.skia.org/infra/go/common"
 	docker_pubsub "go.skia.org/infra/go/docker/build/pubsub"
 	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/task_driver/go/lib/auth_steps"
@@ -30,6 +30,7 @@ import (
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
 	"go.skia.org/infra/task_scheduler/go/types"
+	"go.skia.org/skia/infra/bots/task_drivers/common"
 )
 
 var (
@@ -66,7 +67,7 @@ func main() {
 		}
 		// Check out the Skia infra repo at the specified commit.
 		rs := types.RepoState{
-			Repo:     common.REPO_SKIA_INFRA,
+			Repo:     sk_common.REPO_SKIA_INFRA,
 			Revision: *infraRevision,
 		}
 		checkoutDir = filepath.Join("repo")
@@ -142,6 +143,10 @@ func main() {
 	if err := dkr.Run(ctx, releaseImg, cleanupCmd, volumes, nil); err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	if err := common.BazelCleanIfLowDiskSpace(ctx, checkoutDir, "bazelisk"); err != nil {
+		td.Fatal(ctx, err)
+	}
 }
 
 // buildPush pushes the app in the given skia-infra folder using `make bazel_release_ci`.
@@ -170,5 +175,5 @@ func buildPush(ctx context.Context, appName, wasmProductsDir, checkoutDir, skiaR
 	if err != nil {
 		return err
 	}
-	return docker.PublishToTopic(ctx, "gcr.io/skia-public/"+appName, skiaRevision, common.REPO_SKIA, topic)
+	return docker.PublishToTopic(ctx, "gcr.io/skia-public/"+appName, skiaRevision, sk_common.REPO_SKIA, topic)
 }

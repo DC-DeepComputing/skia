@@ -16,11 +16,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go.skia.org/infra/go/common"
+	sk_common "go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
+	"go.skia.org/skia/infra/bots/task_drivers/common"
 )
 
 var (
@@ -28,7 +29,7 @@ var (
 	// We want the cache to be on a bigger disk than default. The root disk, where the home
 	// directory (and default Bazel cache) lives, is only 15 GB on our GCE VMs.
 	cachePath = flag.String("cache_path", "/mnt/pd0/bazel_cache", "The path where the Bazel cache should live. This should be able to hold tens of GB at least.")
-	bazelArgs = common.NewMultiStringFlag("bazel_arg", nil, "Additional arguments that should be forwarded directly to the Bazel invocation.")
+	bazelArgs = sk_common.NewMultiStringFlag("bazel_arg", nil, "Additional arguments that should be forwarded directly to the Bazel invocation.")
 	gitPath   = flag.String("git_path", "", "Location of git binary to use for diffs.")
 	projectId = flag.String("project_id", "", "ID of the Google Cloud project.")
 	taskId    = flag.String("task_id", "", "ID of this task.")
@@ -116,6 +117,10 @@ func main() {
 	}
 
 	if err := checkGitDiff(ctx, absGit, skiaPath); err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	if err := common.BazelCleanIfLowDiskSpace(ctx, skiaPath, "bazelisk"); err != nil {
 		td.Fatal(ctx, err)
 	}
 }
