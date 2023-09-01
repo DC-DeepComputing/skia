@@ -22,6 +22,30 @@
       },
       "revId": "43a45c85d3c2bfe236f749f555f0b18674e692eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8b3ac2d_b7558754",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-01T22:22:58Z",
+      "side": 1,
+      "message": "It is. I renamed it to `kWriteOnlyStorageTexture` for clarity.",
+      "parentUuid": "9a5d6c03_ad749943",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 23
+      },
+      "revId": "43a45c85d3c2bfe236f749f555f0b18674e692eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
