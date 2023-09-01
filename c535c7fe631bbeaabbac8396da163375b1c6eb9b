@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "225cdc59_1bf1151f",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-01T22:33:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf333daf_0aaabe0a",
+      "range": {
+        "startLine": 116,
+        "startChar": 7,
+        "endLine": 116,
+        "endChar": 10
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9a80fd5_08670cd0",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Something like;\n\n```\nfunc Test(t *testing.T) {\nworkDir :\u003d t.TempDir()\n...\nctx \u003d os_steps.OverrideTempDir(ctx, workDir)\n...\n\"--work-dir\", workDir,\n...\n```\n\nMake an actual temp dir, but then have os_steps return that instead of generating a new random one.\n\nThen, no regex should be required and we are more confident the right workdir is used in the right spot.",
       "parentUuid": "542d2195_2554136c",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 44
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46887f79_ef4207fd",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-01T22:33:00Z",
+      "side": 1,
+      "message": "Ok, made the requested change to `os_steps.TempDir()`: https://skia-review.googlesource.com/c/buildbot/+/750919. I\u0027ll update this CL once said change lands and is rolled.",
+      "parentUuid": "110e7258_2b37952f",
       "range": {
         "startLine": 127,
         "startChar": 4,
