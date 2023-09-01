@@ -22,6 +22,30 @@
       },
       "revId": "4aa28b683e78e8d8c5f04de03e5fd926b1b79297",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6663ecd0_d5e898e3",
+        "filename": "tests/sksl/errors/PixelFormatOverloads.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-01T18:13:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "47b66d74_211c7e66",
+      "range": {
+        "startLine": 3,
+        "startChar": 50,
+        "endLine": 3,
+        "endChar": 76
+      },
+      "revId": "4aa28b683e78e8d8c5f04de03e5fd926b1b79297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
