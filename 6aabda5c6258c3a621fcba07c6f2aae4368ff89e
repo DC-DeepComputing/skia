@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "debcf9e8_fc3b6f26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-01T23:33:26Z",
+      "side": 1,
+      "message": "As we discussed over IM, you\u0027ll want to update the Graphite compute tests in ComputeTests.cpp to declare a color format (the graphite test jobs that I manually triggered failed as I expected - they weren\u0027t included in the CQ dry run)\n\nIf https://skia-review.googlesource.com/c/skia/+/743637 lands before this then you technically only need to change functions in ContextUtils.cpp rather than the tests. It\u0027s OK to hardcode the layout format as rgba8 for now.",
+      "revId": "6aabda5c6258c3a621fcba07c6f2aae4368ff89e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
