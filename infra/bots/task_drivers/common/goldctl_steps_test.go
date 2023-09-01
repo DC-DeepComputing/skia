@@ -71,7 +71,7 @@ func TestValidateLabelAndReturnOutputZipPath_InvalidLabel_Error(t *testing.T) {
 	test("//foo:bar:baz")
 }
 
-func TestUploadToGold_NoOutputsZip_Success(t *testing.T) {
+func TestUploadToGold_NoOutputsZIPOrDir_Success(t *testing.T) {
 	test := func(name string, utgArgs UploadToGoldArgs) {
 		t.Run(name, func(t *testing.T) {
 			commandCollector := exec.CommandCollector{}
@@ -87,7 +87,7 @@ func TestUploadToGold_NoOutputsZip_Success(t *testing.T) {
 			require.Empty(t, res.Errors)
 			require.Empty(t, res.Exceptions)
 			testutils.AssertStepNamesMatchStringsOrRegexps(t, res,
-				"Test did not produce an undeclared test outputs ZIP file; nothing to upload to Gold",
+				"Test did not produce an undeclared test outputs ZIP file or directory; nothing to upload to Gold",
 			)
 
 			assert.Empty(t, commandCollector.Commands())
@@ -115,13 +115,10 @@ func TestUploadToGold_NoOutputsZip_Success(t *testing.T) {
 	})
 }
 
-func TestUploadToGold_WithOutputsZip_NoValidImages_NoGoldctlInvocations(t *testing.T) {
-	test := func(name string, utgArgs UploadToGoldArgs) {
+func TestUploadToGold_WithOutputsZIPOrDir_NoValidImages_NoGoldctlInvocations(t *testing.T) {
+	test := func(name string, zip bool, utgArgs UploadToGoldArgs) {
 		t.Run(name, func(t *testing.T) {
-			// Create fake archive with undeclared test outputs.
-			outputsZipPath := filepath.Join(t.TempDir(), "bazel-testlogs", "some", "test", "target", "test.outputs", "outputs.zip")
-			require.NoError(t, os.MkdirAll(filepath.Dir(outputsZipPath), 0700))
-			testutils.MakeZIP(t, outputsZipPath, map[string]string{
+			undeclaredTestOutputs := map[string]string{
 				// The contents of PNG files does not matter for this test.
 				"image-with-invalid-json-file.png": "fake PNG",
 				"image-with-invalid-json-file.json": `{
@@ -136,13 +133,24 @@ func TestUploadToGold_WithOutputsZip_NoValidImages_NoGoldctlInvocations(t *testi
 					}
 				}`,
 				"not-an-image-nor-json-file.txt": "I'm neither a PNG nor a JSON file.",
-			})
+			}
+
+			// Write undeclared test outputs to disk.
+			outpusZIPOrDir := ""
+			if zip {
+				outpusZIPOrDir = filepath.Join(t.TempDir(), "bazel-testlogs", "some", "test", "target", "test.outputs", "outputs.zip")
+				require.NoError(t, os.MkdirAll(filepath.Dir(outpusZIPOrDir), 0700))
+				testutils.MakeZIP(t, outpusZIPOrDir, undeclaredTestOutputs)
+			} else {
+				outpusZIPOrDir = t.TempDir()
+				testutils.PopulateDir(t, outpusZIPOrDir, undeclaredTestOutputs)
+			}
 
 			commandCollector := exec.CommandCollector{}
 			res := td.RunTestSteps(t, false, func(ctx context.Context) error {
 				ctx = td.WithExecRunFn(ctx, commandCollector.Run)
 
-				err := UploadToGold(ctx, utgArgs, outputsZipPath)
+				err := UploadToGold(ctx, utgArgs, outpusZIPOrDir)
 
 				assert.NoError(t, err)
 				return err
@@ -151,31 +159,39 @@ func TestUploadToGold_WithOutputsZip_NoValidImages_NoGoldctlInvocations(t *testi
 			require.Empty(t, res.Errors)
 			require.Empty(t, res.Exceptions)
 
-			testutils.AssertStepNamesMatchStringsOrRegexps(t, res,
-				regexp.MustCompile("^Extract undeclared outputs archive .+/bazel-testlogs/some/test/target/test.outputs/outputs.zip into .+$"),
-				"Extracting file: image-with-invalid-json-file.json",
-				"Extracting file: image-with-invalid-json-file.png",
-				"Extracting file: image-with-no-json-file.png",
-				"Extracting file: json-file-with-no-image.json",
-				"Ignoring non-PNG / non-JSON file: not-an-image-nor-json-file.txt",
+			expectedSteps := []any{}
+			if zip {
+				expectedSteps = append(expectedSteps,
+					regexp.MustCompile("^Extract undeclared outputs archive .+/bazel-testlogs/some/test/target/test.outputs/outputs.zip into .+$"),
+					"Extracting file: image-with-invalid-json-file.json",
+					"Extracting file: image-with-invalid-json-file.png",
+					"Extracting file: image-with-no-json-file.png",
+					"Extracting file: json-file-with-no-image.json",
+					"Not extracting non-PNG / non-JSON file: not-an-image-nor-json-file.txt",
+				)
+			}
+			expectedSteps = append(expectedSteps,
 				"Gather JSON and PNG files produced by GMs",
 				"Ignoring \"image-with-invalid-json-file.json\": field \"md5\" not found",
 				"Ignoring \"json-file-with-no-image.json\": file \"json-file-with-no-image.png\" not found",
-				"Undeclared test outputs ZIP file contains no GM outputs; nothing to upload to Gold",
+				"Undeclared test outputs ZIP file or directory contains no GM outputs; nothing to upload to Gold",
 			)
+			testutils.AssertStepNamesMatchStringsOrRegexps(t, res, expectedSteps...)
 
 			assert.Empty(t, commandCollector.Commands())
 		})
 	}
 
-	test("post-submit task", UploadToGoldArgs{
+	postSubmitTaskArgs := UploadToGoldArgs{
 		TestOnlyAllowAnyBazelLabel: true,
 		BazelLabel:                 "//some/test:target",
 		GoldctlPath:                "/path/to/goldctl",
 		GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-	})
+	}
+	test("post-submit task, ZIP file", true /* =zip */, postSubmitTaskArgs)
+	test("post-submit task, directory", false /* =zip */, postSubmitTaskArgs)
 
-	test("CL task", UploadToGoldArgs{
+	clTaskArgs := UploadToGoldArgs{
 		TestOnlyAllowAnyBazelLabel: true,
 		BazelLabel:                 "//some/test:target",
 		GoldctlPath:                "/path/to/goldctl",
@@ -186,16 +202,15 @@ func TestUploadToGold_WithOutputsZip_NoValidImages_NoGoldctlInvocations(t *testi
 		ChangelistID:  "changelist-id",
 		PatchsetOrder: "1",
 		TryjobID:      "tryjob-id",
-	})
+	}
+	test("CL task, ZIP file", true /* =zip */, clTaskArgs)
+	test("CL task, directory", false /* =zip */, clTaskArgs)
 }
 
-func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing.T) {
-	test := func(name string, utgArgs UploadToGoldArgs, goldctlImgtestInitStepName *regexp.Regexp, goldctlImgtestInitArgsStringsOrRegexps []any) {
+func TestUploadToGold_WithOutputsZIPOrDir_ValidImages_ImagesUploadedToGold(t *testing.T) {
+	test := func(name string, zip bool, utgArgs UploadToGoldArgs, goldctlImgtestInitStepName *regexp.Regexp, goldctlImgtestInitArgsStringsOrRegexps []any) {
 		t.Run(name, func(t *testing.T) {
-			// Create fake archive with undeclared test outputs.
-			outputsZipPath := filepath.Join(t.TempDir(), "bazel-testlogs", "some", "test", "target", "test.outputs", "outputs.zip")
-			require.NoError(t, os.MkdirAll(filepath.Dir(outputsZipPath), 0700))
-			testutils.MakeZIP(t, outputsZipPath, map[string]string{
+			undeclaredTestOutputs := map[string]string{
 				// The contents of PNG files does not matter for this test.
 				"alfa.png": "fake PNG",
 				"alfa.json": `{
@@ -228,13 +243,24 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 					}
 				}`,
 				"not-an-image-nor-json-file.txt": "I'm neither a PNG nor a JSON file.",
-			})
+			}
+
+			// Write undeclared test outputs to disk.
+			outpusZIPOrDir := ""
+			if zip {
+				outpusZIPOrDir = filepath.Join(t.TempDir(), "bazel-testlogs", "some", "test", "target", "test.outputs", "outputs.zip")
+				require.NoError(t, os.MkdirAll(filepath.Dir(outpusZIPOrDir), 0700))
+				testutils.MakeZIP(t, outpusZIPOrDir, undeclaredTestOutputs)
+			} else {
+				outpusZIPOrDir = t.TempDir()
+				testutils.PopulateDir(t, outpusZIPOrDir, undeclaredTestOutputs)
+			}
 
 			commandCollector := exec.CommandCollector{}
 			res := td.RunTestSteps(t, false, func(ctx context.Context) error {
 				ctx = td.WithExecRunFn(ctx, commandCollector.Run)
 
-				err := UploadToGold(ctx, utgArgs, outputsZipPath)
+				err := UploadToGold(ctx, utgArgs, outpusZIPOrDir)
 
 				assert.NoError(t, err)
 				return err
@@ -243,17 +269,22 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 			require.Empty(t, res.Errors)
 			require.Empty(t, res.Exceptions)
 
-			testutils.AssertStepNamesMatchStringsOrRegexps(t, res,
-				regexp.MustCompile("^Extract undeclared outputs archive .+/bazel-testlogs/some/test/target/test.outputs/outputs.zip into .+$"),
-				"Extracting file: alfa.json",
-				"Extracting file: alfa.png",
-				"Extracting file: beta.json",
-				"Extracting file: beta.png",
-				"Extracting file: image-with-invalid-json-file.json",
-				"Extracting file: image-with-invalid-json-file.png",
-				"Extracting file: image-with-no-json-file.png",
-				"Extracting file: json-file-with-no-image.json",
-				"Ignoring non-PNG / non-JSON file: not-an-image-nor-json-file.txt",
+			expectedSteps := []any{}
+			if zip {
+				expectedSteps = append(expectedSteps,
+					regexp.MustCompile("^Extract undeclared outputs archive .+/bazel-testlogs/some/test/target/test.outputs/outputs.zip into .+$"),
+					"Extracting file: alfa.json",
+					"Extracting file: alfa.png",
+					"Extracting file: beta.json",
+					"Extracting file: beta.png",
+					"Extracting file: image-with-invalid-json-file.json",
+					"Extracting file: image-with-invalid-json-file.png",
+					"Extracting file: image-with-no-json-file.png",
+					"Extracting file: json-file-with-no-image.json",
+					"Not extracting non-PNG / non-JSON file: not-an-image-nor-json-file.txt",
+				)
+			}
+			expectedSteps = append(expectedSteps,
 				"Gather JSON and PNG files produced by GMs",
 				"Gather \"alfa.png\"",
 				"Gather \"beta.png\"",
@@ -261,12 +292,13 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 				"Ignoring \"json-file-with-no-image.json\": file \"json-file-with-no-image.png\" not found",
 				"Upload GM outputs to Gold",
 				"Creating TempDir",
-				regexp.MustCompile("^/path/to/goldctl auth --work-dir [a-zA-Z0-9-/]+ --luci$"),
+				regexp.MustCompile("^/path/to/goldctl auth --work-dir [a-zA-Z0-9/_,-]+ --luci$"),
 				goldctlImgtestInitStepName,
-				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9-/]+ --test-name alfa --png-file [a-zA-Z0-9-/]+/alfa.png --png-digest a01a01a01a01a01a01a01a01a01a01a0 --add-test-key build_system:bazel --add-test-key name:alfa --add-test-key source_type:gm$"),
-				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9-/]+ --test-name beta --png-file [a-zA-Z0-9-/]+/beta.png --png-digest b02b02b02b02b02b02b02b02b02b02b0 --add-test-key build_system:bazel --add-test-key name:beta --add-test-key source_type:gm$"),
-				regexp.MustCompile("^/path/to/goldctl imgtest finalize --work-dir [a-zA-Z0-9-/]+$"),
+				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9/_,-]+ --test-name alfa --png-file [a-zA-Z0-9/_,-]+/alfa.png --png-digest a01a01a01a01a01a01a01a01a01a01a0 --add-test-key build_system:bazel --add-test-key name:alfa --add-test-key source_type:gm$"),
+				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9/_,-]+ --test-name beta --png-file [a-zA-Z0-9/_,-]+/beta.png --png-digest b02b02b02b02b02b02b02b02b02b02b0 --add-test-key build_system:bazel --add-test-key name:beta --add-test-key source_type:gm$"),
+				regexp.MustCompile("^/path/to/goldctl imgtest finalize --work-dir [a-zA-Z0-9/_,-]+$"),
 			)
+			testutils.AssertStepNamesMatchStringsOrRegexps(t, res, expectedSteps...)
 
 			require.Len(t, commandCollector.Commands(), 5)
 
@@ -275,7 +307,7 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 				"/path/to/goldctl",
 				"auth",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				regexp.MustCompile("^[a-zA-Z0-9/_,-]+$"),
 				"--luci",
 			)
 
@@ -291,11 +323,11 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 				"imgtest",
 				"add",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				regexp.MustCompile("^[a-zA-Z0-9/_,-]+$"),
 				"--test-name",
 				"alfa",
 				"--png-file",
-				regexp.MustCompile("[a-zA-Z0-9-/]+/alfa.png"),
+				regexp.MustCompile("[a-zA-Z0-9/_,-]+/alfa.png"),
 				"--png-digest",
 				"a01a01a01a01a01a01a01a01a01a01a0",
 				"--add-test-key",
@@ -312,11 +344,11 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 				"imgtest",
 				"add",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				regexp.MustCompile("^[a-zA-Z0-9/_,-]+$"),
 				"--test-name",
 				"beta",
 				"--png-file",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+/beta.png$"),
+				regexp.MustCompile("^[a-zA-Z0-9/_,-]+/beta.png$"),
 				"--png-digest",
 				"b02b02b02b02b02b02b02b02b02b02b0",
 				"--add-test-key",
@@ -333,75 +365,73 @@ func TestUploadToGold_WithOutputsZip_ValidImages_ImagesUploadedToGold(t *testing
 				"imgtest",
 				"finalize",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				regexp.MustCompile("^[a-zA-Z0-9/_,-]+$"),
 			)
 		})
 	}
 
-	test(
-		"post-submit task",
-		UploadToGoldArgs{
-			TestOnlyAllowAnyBazelLabel: true,
-			BazelLabel:                 "//some/test:target",
-			GoldctlPath:                "/path/to/goldctl",
-			GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-		},
-		regexp.MustCompile("^/path/to/goldctl imgtest init --work-dir [a-zA-Z0-9-/]+ --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --key os:linux$"),
-		[]any{
-			"imgtest",
-			"init",
-			"--work-dir",
-			regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
-			"--instance",
-			"skia",
-			"--url",
-			"https://gold.skia.org",
-			"--bucket",
-			"skia-infra-gm",
-			"--git_hash",
-			"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-			"--key",
-			"os:linux",
-		},
-	)
+	postSubmitTaskArgs := UploadToGoldArgs{
+		TestOnlyAllowAnyBazelLabel: true,
+		BazelLabel:                 "//some/test:target",
+		GoldctlPath:                "/path/to/goldctl",
+		GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
+	}
+	postSubmitTaskGoldctlImgtestInitStep := regexp.MustCompile("^/path/to/goldctl imgtest init --work-dir [a-zA-Z0-9/_,-]+ --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --key os:linux$")
+	postSubmitTaskGoldctlImgtestInitArgs := []any{
+		"imgtest",
+		"init",
+		"--work-dir",
+		regexp.MustCompile("^[a-zA-Z0-9/_,-]+$"),
+		"--instance",
+		"skia",
+		"--url",
+		"https://gold.skia.org",
+		"--bucket",
+		"skia-infra-gm",
+		"--git_hash",
+		"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
+		"--key",
+		"os:linux",
+	}
+	test("post-submit task, ZIP file", true /* =zip */, postSubmitTaskArgs, postSubmitTaskGoldctlImgtestInitStep, postSubmitTaskGoldctlImgtestInitArgs)
+	test("post-submit task, directory", false /* =zip */, postSubmitTaskArgs, postSubmitTaskGoldctlImgtestInitStep, postSubmitTaskGoldctlImgtestInitArgs)
 
-	test(
-		"CL task",
-		UploadToGoldArgs{
-			TestOnlyAllowAnyBazelLabel: true,
-			BazelLabel:                 "//some/test:target",
-			GoldctlPath:                "/path/to/goldctl",
-			GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-			ChangelistID:               "changelist-id",
-			PatchsetOrder:              "1",
-			TryjobID:                   "tryjob-id",
-		},
-		regexp.MustCompile("^/path/to/goldctl imgtest init --work-dir [a-zA-Z0-9-/]+ --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id --key os:linux$"),
-		[]any{
-			"imgtest",
-			"init",
-			"--work-dir",
-			regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
-			"--instance",
-			"skia",
-			"--url",
-			"https://gold.skia.org",
-			"--bucket",
-			"skia-infra-gm",
-			"--git_hash",
-			"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-			"--crs",
-			"gerrit",
-			"--cis",
-			"buildbucket",
-			"--changelist",
-			"changelist-id",
-			"--patchset",
-			"1",
-			"--jobid",
-			"tryjob-id",
-			"--key",
-			"os:linux",
-		},
-	)
+	clTaskArgs := UploadToGoldArgs{
+		TestOnlyAllowAnyBazelLabel: true,
+		BazelLabel:                 "//some/test:target",
+		GoldctlPath:                "/path/to/goldctl",
+		GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
+		ChangelistID:               "changelist-id",
+		PatchsetOrder:              "1",
+		TryjobID:                   "tryjob-id",
+	}
+	clTaskGoldctlImgtestInitStep := regexp.MustCompile("^/path/to/goldctl imgtest init --work-dir [a-zA-Z0-9/_,-]+ --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id --key os:linux$")
+	clTaskGoldctlImgtestInitArgs := []any{
+		"imgtest",
+		"init",
+		"--work-dir",
+		regexp.MustCompile("^[a-zA-Z0-9/_,-]+$"),
+		"--instance",
+		"skia",
+		"--url",
+		"https://gold.skia.org",
+		"--bucket",
+		"skia-infra-gm",
+		"--git_hash",
+		"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
+		"--crs",
+		"gerrit",
+		"--cis",
+		"buildbucket",
+		"--changelist",
+		"changelist-id",
+		"--patchset",
+		"1",
+		"--jobid",
+		"tryjob-id",
+		"--key",
+		"os:linux",
+	}
+	test("CL task, ZIP file", true /* =zip */, clTaskArgs, clTaskGoldctlImgtestInitStep, clTaskGoldctlImgtestInitArgs)
+	test("CL task, directory", false /* =zip */, clTaskArgs, clTaskGoldctlImgtestInitStep, clTaskGoldctlImgtestInitArgs)
 }
