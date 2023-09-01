@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de69cb4d_c497a9d4",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-01T19:47:59Z",
+      "side": 1,
+      "message": "Dropped the \"Maybe\" part as per the comment below.",
+      "parentUuid": "5c14a428_8638bae2",
+      "range": {
+        "startLine": 70,
+        "startChar": 5,
+        "endLine": 70,
+        "endChar": 26
+      },
+      "revId": "3bdac3c877cd58abe206124f50ebeed4e6f92432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba0071cb_ad953538",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-01T12:34:02Z",
       "side": 1,
       "message": "The \"Maybe\" part of this name is a touch awkward. IIUC, the \"Maybe\" only exists because of that first if block, right? Eventually, this will just be the upload to gold part?\n\nIf so, let\u0027s drop Maybe from here",
+      "range": {
+        "startLine": 86,
+        "startChar": 5,
+        "endLine": 86,
+        "endChar": 22
+      },
+      "revId": "3bdac3c877cd58abe206124f50ebeed4e6f92432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a23a9b44_522d7401",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-01T19:47:59Z",
+      "side": 1,
+      "message": "Dropped the \"Maybe\" prefix for conciseness.\n\nI originally went with \"Maybe\" because it will only upload to Gold if there are any images to upload. For example if all GMs are skipped via BazelGMRunner.cpp\u0027s `--skip` flag (which I have yet to add), no images will be produced, so nothing will be uploaded. But perhaps the prefix is too much information. I think it\u0027s fine to remove it.",
+      "parentUuid": "ba0071cb_ad953538",
       "range": {
         "startLine": 86,
         "startChar": 5,
