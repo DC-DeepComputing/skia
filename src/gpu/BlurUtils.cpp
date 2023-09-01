@@ -144,9 +144,13 @@ void Compute1DBlurLinearKernel(float sigma,
         offsets[lowIndex] = -offsets[i];
     }
 
-    // Zero out remaining values in the arrays
+    // Zero out remaining values in the kernel
     memset(kernel.data() + halfSize, 0, sizeof(float)*(kMaxBlurSamples - halfSize));
-    memset(offsets.data() + halfSize, 0, sizeof(float)*(kMaxBlurSamples - halfSize));
+    // But copy the last valid offset into the remaining offsets, to increase the chance that
+    // over-iteration in a fragment shader will have a cache hit.
+    for (int i = halfSize; i < kMaxBlurSamples; ++i) {
+        offsets[i] = offsets[halfSize - 1];
+    }
 
     // Interleave into the output array to match the 1D SkSL effect
     for (int i = 0; i < skgpu::kMaxBlurSamples / 2; ++i) {
@@ -155,15 +159,16 @@ void Compute1DBlurLinearKernel(float sigma,
 }
 
 const SkRuntimeEffect* GetLinearBlur1DEffect(int radius) {
-    static const auto makeEffect = [](int maxRadius) {
-        SkASSERT(maxRadius < kMaxBlurSamples);
-        int kernelWidth = BlurLinearKernelWidth(maxRadius);
+    static const auto makeEffect = [](int kernelWidth) {
+        SkASSERT(kernelWidth <= kMaxBlurSamples);
         return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
                 SkStringPrintf(
                         // The coefficients are always stored for the max radius to keep the
                         // uniform block consistent across all effects.
                         "const int kMaxUniformKernelSize = %d / 2;"
-                        // But we generate an exact loop over the specific kernel size
+                        // But we generate an exact loop over the kernel size. Note that this
+                        // program can be used for kernels smaller than the constructed max as long
+                        // as the kernel weights for excess entries are set to 0.
                         "const int kMaxLoopLimit = %d;"
 
                         "uniform half4 offsetsAndKernel[kMaxUniformKernelSize];"
@@ -182,38 +187,41 @@ const SkRuntimeEffect* GetLinearBlur1DEffect(int radius) {
                                 "sum += s.y * child.eval(coord + s.x*dir);"
                             "}"
                             "return sum;"
-                        "}",  kMaxBlurSamples, kernelWidth/2, kernelWidth%2, maxRadius/2).c_str());
+                        "}", kMaxBlurSamples, kernelWidth/2, kernelWidth%2, kernelWidth/2).c_str());
     };
 
-    SkASSERT(radius > 0 && radius < kMaxBlurSamples);
-    switch(radius) {
-        case 1:  { static const SkRuntimeEffect* effect = makeEffect(1);  return effect; }
-        case 2:  { static const SkRuntimeEffect* effect = makeEffect(2);  return effect; }
-        case 3:  { static const SkRuntimeEffect* effect = makeEffect(3);  return effect; }
+    const int kernelWidth = BlurLinearKernelWidth(radius);
+    SkASSERT(kernelWidth >= 2 && kernelWidth <= kMaxBlurSamples);
+    switch(kernelWidth) {
+        // Batch on multiples of 4 (skipping width=1, since that can't happen)
+        case 2:  [[fallthrough]];
+        case 3:  [[fallthrough]];
         case 4:  { static const SkRuntimeEffect* effect = makeEffect(4);  return effect; }
-        case 5:  { static const SkRuntimeEffect* effect = makeEffect(5);  return effect; }
-        case 6:  { static const SkRuntimeEffect* effect = makeEffect(6);  return effect; }
-        case 7:  { static const SkRuntimeEffect* effect = makeEffect(7);  return effect; }
+        case 5:  [[fallthrough]];
+        case 6:  [[fallthrough]];
+        case 7:  [[fallthrough]];
         case 8:  { static const SkRuntimeEffect* effect = makeEffect(8);  return effect; }
-        case 9:  { static const SkRuntimeEffect* effect = makeEffect(9);  return effect; }
-        case 10: { static const SkRuntimeEffect* effect = makeEffect(10); return effect; }
-        case 11: { static const SkRuntimeEffect* effect = makeEffect(11); return effect; }
+        case 9:  [[fallthrough]];
+        case 10: [[fallthrough]];
+        case 11: [[fallthrough]];
         case 12: { static const SkRuntimeEffect* effect = makeEffect(12); return effect; }
-        case 13: { static const SkRuntimeEffect* effect = makeEffect(13); return effect; }
-        case 14: { static const SkRuntimeEffect* effect = makeEffect(14); return effect; }
-        case 15: { static const SkRuntimeEffect* effect = makeEffect(15); return effect; }
+        case 13: [[fallthrough]];
+        case 14: [[fallthrough]];
+        case 15: [[fallthrough]];
         case 16: { static const SkRuntimeEffect* effect = makeEffect(16); return effect; }
-        case 17: { static const SkRuntimeEffect* effect = makeEffect(17); return effect; }
-        case 18: { static const SkRuntimeEffect* effect = makeEffect(18); return effect; }
-        case 19: { static const SkRuntimeEffect* effect = makeEffect(19); return effect; }
+        case 17: [[fallthrough]];
+        case 18: [[fallthrough]];
+        case 19: [[fallthrough]];
+        // With larger kernels, batch on multiples of eight so up to 7 wasted samples.
         case 20: { static const SkRuntimeEffect* effect = makeEffect(20); return effect; }
-        case 21: { static const SkRuntimeEffect* effect = makeEffect(21); return effect; }
-        case 22: { static const SkRuntimeEffect* effect = makeEffect(22); return effect; }
-        case 23: { static const SkRuntimeEffect* effect = makeEffect(23); return effect; }
-        case 24: { static const SkRuntimeEffect* effect = makeEffect(24); return effect; }
-        case 25: { static const SkRuntimeEffect* effect = makeEffect(25); return effect; }
-        case 26: { static const SkRuntimeEffect* effect = makeEffect(26); return effect; }
-        case 27: { static const SkRuntimeEffect* effect = makeEffect(27); return effect; }
+        case 21: [[fallthrough]];
+        case 22: [[fallthrough]];
+        case 23: [[fallthrough]];
+        case 24: [[fallthrough]];
+        case 25: [[fallthrough]];
+        case 26: [[fallthrough]];
+        case 27: [[fallthrough]];
+        case 28: { static const SkRuntimeEffect* effect = makeEffect(28); return effect; }
         default:
             SkUNREACHABLE;
     }
