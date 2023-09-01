@@ -65,6 +65,8 @@
 #include "src/core/SkResourceCache.h"
 #include "src/image/SkImage_Base.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "tools/skui/InputState.h"
+#include "tools/skui/ModifierKey.h"
 
 #include "modules/canvaskit/WasmCommon.h"
 #include <emscripten.h>
@@ -2524,6 +2526,21 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .value("Triangles",       SkVertices::VertexMode::kTriangles_VertexMode)
         .value("TrianglesStrip",  SkVertices::VertexMode::kTriangleStrip_VertexMode)
         .value("TriangleFan",     SkVertices::VertexMode::kTriangleFan_VertexMode);
+
+    enum_<skui::InputState>("InputState")
+        .value("Down",  skui::InputState::kDown)
+        .value("Up",    skui::InputState::kUp)
+        .value("Move",  skui::InputState::kMove)
+        .value("Right", skui::InputState::kRight)
+        .value("Left",  skui::InputState::kLeft);
+
+    enum_<skui::ModifierKey>("ModifierKey")
+        .value("None"      , skui::ModifierKey::kNone)
+        .value("Shift"     , skui::ModifierKey::kShift)
+        .value("Control"   , skui::ModifierKey::kControl)
+        .value("Option"    , skui::ModifierKey::kOption)
+        .value("Command"   , skui::ModifierKey::kCommand)
+        .value("FirstPress", skui::ModifierKey::kFirstPress);
 
     // A value object is much simpler than a class - it is returned as a JS
     // object and does not require delete().
