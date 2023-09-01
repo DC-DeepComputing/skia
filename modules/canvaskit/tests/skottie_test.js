@@ -357,4 +357,106 @@ describe('Skottie behavior', () => {
         expect(animation.setOpacity('INVALID_KEY', 100)).toEqual(false);
         expect(animation.setText('INVALID KEY', '', 10)).toEqual(false);
     });
+
+    it('can edit text', () => {
+        if (!CanvasKit.skottie || !CanvasKit.managed_skottie) {
+            console.warn('Skipping test because not compiled with skottie');
+            return;
+        }
+
+        const json = `{
+            "v": "5.2.1",
+            "w": 100,
+            "h": 100,
+            "fr": 10,
+            "ip": 0,
+            "op": 100,
+            "fonts": {
+              "list": [{
+                "fName": "test_font",
+                "fFamily": "Arial",
+                "fStyle": "Regular"
+              }]
+            },
+            "layers": [
+              {
+                "ty": 5,
+                "nm": "text_layer",
+                "ip": 0,
+                "op": 100,
+                "t": {
+                  "d": {
+                    "k": [{
+                      "t": 0,
+                      "s": {
+                        "f":  "test_font",
+                        "fc": [ 1, 0, 0],
+                        "ps": [300,300],
+                        "s":  10,
+                        "t":  "foobar",
+                        "lh": 12
+                      }
+                    }]
+                  }
+                }
+              }
+            ]
+        }`;
+
+        const animation = CanvasKit.MakeManagedAnimation(json, null);
+        expect(animation).toBeTruthy();
+
+        {
+            const texts = animation.getTextProps();
+            expect(texts.length).toEqual(1);
+            expect(texts[0].key).toEqual('text_layer');
+            expect(texts[0].value.text).toEqual('foobar');
+        }
+
+        expect(animation.attachEditor('txt_layer', 0)).toBeFalse();  // inexistent layer
+        expect(animation.attachEditor('text_layer', 1)).toBeFalse(); // inexistent index
+        expect(animation.attachEditor('text_layer', 0)).toBeTrue();
+
+        {
+            // no effect, editor inactive
+            expect(animation.dispatchEditorKey('Backspace')).toBeFalse();
+
+            const texts = animation.getTextProps();
+            expect(texts.length).toEqual(1);
+            expect(texts[0].key).toEqual('text_layer');
+            expect(texts[0].value.text).toEqual('foobar');
+        }
+
+        animation.enableEditor(true);
+
+        {
+            // To be fully functional, the editor requires glyph data issued during rendering
+            // callbacks.
+            const surface = CanvasKit.MakeCanvasSurface('test');
+            expect(surface).toBeTruthy();
+            const bounds = CanvasKit.LTRBRect(0, 0, 600, 600);
+            animation.seekFrame(0);
+            animation.render(surface.getCanvas(), bounds);
+        }
+
+        {
+            expect(animation.dispatchEditorKey('Backspace')).toBeTrue();
+            expect(animation.dispatchEditorKey('Backspace')).toBeTrue();
+            expect(animation.dispatchEditorKey('Backspace')).toBeTrue();
+
+            const texts = animation.getTextProps();
+            expect(texts.length).toEqual(1);
+            expect(texts[0].key).toEqual('text_layer');
+            expect(texts[0].value.text).toEqual('foo');
+        }
+
+        {
+            expect(animation.dispatchEditorPointer(10, 10, CanvasKit.InputState.Down,
+                                                   CanvasKit.ModifierKey.None)).toBeTrue();
+            expect(animation.dispatchEditorPointer(10, 20, CanvasKit.InputState.Move,
+                                                   CanvasKit.ModifierKey.None)).toBeTrue();
+            expect(animation.dispatchEditorPointer(10, 30, CanvasKit.InputState.Up,
+                                                   CanvasKit.ModifierKey.None)).toBeTrue();
+        }
+    });
 });
