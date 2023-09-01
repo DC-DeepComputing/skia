@@ -83,7 +83,7 @@ type MaybeUploadToGoldArgs struct {
 }
 
 // MaybeUploadToGold uploads any GM results to Gold via goldctl.
-func MaybeUploadToGold(ctx context.Context, mutgArgs MaybeUploadToGoldArgs, outputsZipPath string) error {
+func MaybeUploadToGold(ctx context.Context, mutgArgs MaybeUploadToGoldArgs, outputsZIPOrDir string) error {
 	// TODO(lovisolo): Delete once migration is complete.
 	if !mutgArgs.TestOnlyAllowAnyBazelLabel {
 		if _, ok := goldctlBazelLabelAllowList[mutgArgs.BazelLabel]; !ok {
@@ -92,9 +92,10 @@ func MaybeUploadToGold(ctx context.Context, mutgArgs MaybeUploadToGoldArgs, outp
 	}
 
 	// Were there any undeclared test outputs?
-	if _, err := os.Stat(outputsZipPath); err != nil {
+	fileInfo, err := os.Stat(outputsZIPOrDir)
+	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return td.Do(ctx, td.Props("Test did not produce an undeclared test outputs ZIP file; nothing to upload to Gold"), func(ctx context.Context) error {
+			return td.Do(ctx, td.Props("Test did not produce an undeclared test outputs ZIP file or directory; nothing to upload to Gold"), func(ctx context.Context) error {
 				return nil
 			})
 		} else {
@@ -102,12 +103,18 @@ func MaybeUploadToGold(ctx context.Context, mutgArgs MaybeUploadToGoldArgs, outp
 		}
 	}
 
-	// Extract undeclared outputs ZIP archive.
-	outputsDir, err := extractOutputsZip(ctx, outputsZipPath)
-	if err != nil {
-		return skerr.Wrap(err)
+	// If the undeclared outputs ZIP file or directory is a ZIP file, extract it.
+	outputsDir := ""
+	if fileInfo.IsDir() {
+		outputsDir = outputsZIPOrDir
+	} else {
+		var err error
+		outputsDir, err = extractOutputsZip(ctx, outputsZIPOrDir)
+		if err != nil {
+			return skerr.Wrap(err)
+		}
+		defer util.RemoveAll(outputsDir)
 	}
-	defer util.RemoveAll(outputsDir)
 
 	// Gather GM outputs.
 	gmOutputs, err := gatherGMOutputs(ctx, outputsDir)
@@ -115,7 +122,7 @@ func MaybeUploadToGold(ctx context.Context, mutgArgs MaybeUploadToGoldArgs, outp
 		return skerr.Wrap(err)
 	}
 	if len(gmOutputs) == 0 {
-		return td.Do(ctx, td.Props("Undeclared test outputs ZIP file contains no GM outputs; nothing to upload to Gold"), func(ctx context.Context) error {
+		return td.Do(ctx, td.Props("Undeclared test outputs ZIP file or directory contains no GM outputs; nothing to upload to Gold"), func(ctx context.Context) error {
 			return nil
 		})
 	}
@@ -219,7 +226,7 @@ func extractOutputsZip(ctx context.Context, outputsZipPath string) (string, erro
 		for _, file := range outputsZip.File {
 			// Skip directories. We assume all output files are at the root directory of the archive.
 			if file.FileInfo().IsDir() {
-				if err := td.Do(ctx, td.Props(fmt.Sprintf("Ignoring directory: %s", file.Name)), func(ctx context.Context) error { return nil }); err != nil {
+				if err := td.Do(ctx, td.Props(fmt.Sprintf("Not extracting subdirectory: %s", file.Name)), func(ctx context.Context) error { return nil }); err != nil {
 					return skerr.Wrap(err)
 				}
 				continue
@@ -227,7 +234,7 @@ func extractOutputsZip(ctx context.Context, outputsZipPath string) (string, erro
 
 			// Ignore anything that is not a PNG or JSON file.
 			if !strings.HasSuffix(strings.ToLower(file.Name), ".png") && !strings.HasSuffix(strings.ToLower(file.Name), ".json") {
-				if err := td.Do(ctx, td.Props(fmt.Sprintf("Ignoring non-PNG / non-JSON file: %s", file.Name)), func(ctx context.Context) error { return nil }); err != nil {
+				if err := td.Do(ctx, td.Props(fmt.Sprintf("Not extracting non-PNG / non-JSON file: %s", file.Name)), func(ctx context.Context) error { return nil }); err != nil {
 					return skerr.Wrap(err)
 				}
 				continue
