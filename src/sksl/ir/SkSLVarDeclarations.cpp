@@ -154,6 +154,11 @@ void VarDeclaration::ErrorCheck(const Context& context,
         context.fErrors->error(pos, "variables of type '" + baseType->displayName() +
                                     "' must be global");
     }
+    if (baseType->componentType().typeKind() == Type::TypeKind::kTexture) {
+        if (!(layout.fFlags & LayoutFlag::kAllPixelFormats)) {
+            context.fErrors->error(pos, "storage textures must declare a pixel format");
+        }
+    }
     if ((modifierFlags & ModifierFlag::kIn) && baseType->isMatrix()) {
         context.fErrors->error(pos, "'in' variables may not have matrix type");
     }
