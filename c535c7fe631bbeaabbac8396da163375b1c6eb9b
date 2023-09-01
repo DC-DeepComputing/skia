@@ -116,6 +116,30 @@
       },
       "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "110e7258_2b37952f",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-01T17:33:11Z",
+      "side": 1,
+      "message": "Something like;\n\n```\nfunc Test(t *testing.T) {\nworkDir :\u003d t.TempDir()\n...\nctx \u003d os_steps.OverrideTempDir(ctx, workDir)\n...\n\"--work-dir\", workDir,\n...\n```\n\nMake an actual temp dir, but then have os_steps return that instead of generating a new random one.\n\nThen, no regex should be required and we are more confident the right workdir is used in the right spot.",
+      "parentUuid": "542d2195_2554136c",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 44
+      },
+      "revId": "c535c7fe631bbeaabbac8396da163375b1c6eb9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
