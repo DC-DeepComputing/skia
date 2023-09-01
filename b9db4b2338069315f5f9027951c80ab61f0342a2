@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84c9cac5_b86f5588",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-01T00:57:47Z",
+      "side": 1,
+      "message": "Oops, forgot to rebase its assignment to the uniforms the reduced blur shaders are using.",
+      "revId": "b9db4b2338069315f5f9027951c80ab61f0342a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
