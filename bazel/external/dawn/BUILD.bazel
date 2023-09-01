@@ -632,7 +632,7 @@ cc_library(
     ],
     visibility = ["//visibility:private"],  # only used by :dawn
     deps = [
-        # Dawn specifically depends on dawn/src/tint:libtint
+        # Dawn specifically depends on dawn/src/tint/api:api
         ":tint",
         "@abseil_cpp//absl/strings:str_format",
         "@vulkan_headers",
