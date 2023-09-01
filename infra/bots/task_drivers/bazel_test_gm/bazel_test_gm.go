@@ -122,6 +122,10 @@ func run(ctx context.Context, tdArgs taskDriverArgs) error {
 		return skerr.Wrap(err)
 	}
 
+	if err := common.BazelCleanIfLowDiskSpace(ctx, tdArgs.checkoutDir, "bazelisk"); err != nil {
+		return skerr.Wrap(err)
+	}
+
 	return nil
 }
 
