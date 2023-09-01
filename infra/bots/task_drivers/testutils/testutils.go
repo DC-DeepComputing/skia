@@ -9,6 +9,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"testing"
@@ -90,4 +91,12 @@ func MakeZIP(t *testing.T, zipPath string, contents map[string]string) {
 
 	require.NoError(t, zipWriter.Close())
 	require.NoError(t, os.WriteFile(zipPath, buf.Bytes(), 0644))
+}
+
+// PopulateDir populates a directory with the given contents, represented as a map from file paths
+// to file contents.
+func PopulateDir(t *testing.T, dirPath string, contents map[string]string) {
+	for filePath, fileContents := range contents {
+		require.NoError(t, os.WriteFile(filepath.Join(dirPath, filePath), []byte(fileContents), 0644))
+	}
 }
