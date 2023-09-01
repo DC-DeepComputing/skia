@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30850f28_e3e834cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-09-01T23:07:25Z",
+      "side": 1,
+      "message": "\u003e [SubmittableVerifier]: CL is not submittable\n\nOh, the joy...",
+      "revId": "0dc8aadb2b8465e20f0222d5052e665960e56e74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
