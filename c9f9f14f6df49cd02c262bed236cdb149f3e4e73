@@ -67,6 +67,24 @@
       "message": "lgtm once we get dawn updated in Skia and compiles pass",
       "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5bf67b1_95714513",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-02T01:05:52Z",
+      "side": 1,
+      "message": "It looks the Dawn change has been rolled in. Could you please help have another try?",
+      "parentUuid": "8d8f6113_7649385b",
+      "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
