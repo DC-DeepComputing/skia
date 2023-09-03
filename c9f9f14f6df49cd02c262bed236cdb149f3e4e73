@@ -102,6 +102,24 @@
       "message": "There is validation errors:\n```\nstart unit test  SurfaceAsyncReadPixelsGraphite\nDevice error: The texture usage (TextureUsage::(CopySrc|CopyDst|TextureBinding|RenderAttachment)) includes TextureUsage::RenderAttachment, which is incompatible with the non-renderable format (TextureFormat::R16Unorm).\n - While validating [TextureDescriptor].\n - While calling [Device].CreateTexture([TextureDescriptor]).\n\nDevice error: [Invalid Texture] is invalid.\n - While calling [Invalid Texture].CreateView([null]).\n\nDevice error: [Invalid TextureView] is invalid.\n - While validating colorAttachments[0].\n - While encoding [CommandEncoder].BeginRenderPass([RenderPassDescriptor]).\n\nDevice error: [Invalid CommandBuffer] is invalid.\n - While calling [Queue].Submit([[Invalid CommandBuffer]])```",
       "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d22616_87c00375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-09-03T23:11:57Z",
+      "side": 1,
+      "message": "I think you need enable `Feature::Norm16TextureFormats` at [1]\n\n[1]https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/graphite/dawn/GraphiteDawnTestContext.cpp;l\u003d71?q\u003dfeatures%20dawn\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F",
+      "parentUuid": "3b954b24_33cf7c86",
+      "revId": "c9f9f14f6df49cd02c262bed236cdb149f3e4e73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
