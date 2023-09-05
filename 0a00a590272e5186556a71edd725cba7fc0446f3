@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45c239f4_de38eb8a",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-05T12:25:15Z",
+      "side": 1,
+      "message": "This should be a flag passed in instead of hard-coded. Ideally, we should have all taskdrivers be run-able locally.",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 30
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15d27b77_4c4f0a2a",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-05T12:25:15Z",
+      "side": 1,
+      "message": "Previous context keys have been strings to make them a bit more readable when debugging. The minor performance difference between using a struct and a string is not worth it IMO.\n\nSee time.Now in the infra repo and be consistent with that.",
+      "range": {
+        "startLine": 28,
+        "startChar": 40,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c225cc1_8a616829",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-05T12:25:15Z",
+      "side": 1,
+      "message": "See e.g. is a bit strange wording wise. Just say \"For example, see:\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 41,
+        "endLine": 35,
+        "endChar": 49
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b1b267_064b4da6",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-05T12:25:15Z",
+      "side": 1,
+      "message": "I think this should take in the partition path and be less specifically named as a result.",
+      "range": {
+        "startLine": 51,
+        "startChar": 20,
+        "endLine": 51,
+        "endChar": 62
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
