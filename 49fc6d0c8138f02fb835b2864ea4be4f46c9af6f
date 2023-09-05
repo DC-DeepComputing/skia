@@ -94,6 +94,30 @@
       },
       "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cc74a79_36d6ba81",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-05T15:26:34Z",
+      "side": 1,
+      "message": "Perhaps this assumption was invalidated by http://review.skia.org/19840. That CL says that we can assume the dst alpha is 1 on this code path, which would mean that the resulting alpha would be 1 regardless of coverage alpha. However, I tested this locally and it looks like this code path is taken regardless of dst alpha. So I believe this CL is matching the current functionality of Ganesh. Maybe we can accept this as good-enough-for-now, and revisit whether we want to correct this later?",
+      "parentUuid": "0ac9c4b3_dae94d19",
+      "range": {
+        "startLine": 353,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "49fc6d0c8138f02fb835b2864ea4be4f46c9af6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
