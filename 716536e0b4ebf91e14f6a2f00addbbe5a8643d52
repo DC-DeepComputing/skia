@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ef23bd4_a7a0471f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-05T14:30:18Z",
+      "side": 1,
+      "message": "Don\u0027t expect anything to really change, as this should just be the release version of preview2 which were were previously using.",
+      "revId": "716536e0b4ebf91e14f6a2f00addbbe5a8643d52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
