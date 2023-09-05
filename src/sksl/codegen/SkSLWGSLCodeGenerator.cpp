@@ -2756,6 +2756,12 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             expr += ", " + this->assembleExpression(*arguments[3], Precedence::kSequence);
             return expr + ')';
         }
+        case k_textureHeight_IntrinsicKind:
+            return this->assembleSimpleIntrinsic("textureDimensions", call) + ".y";
+
+        case k_textureWidth_IntrinsicKind:
+            return this->assembleSimpleIntrinsic("textureDimensions", call) + ".x";
+
         case k_abs_IntrinsicKind:
         case k_acos_IntrinsicKind:
         case k_all_IntrinsicKind:

@@ -1067,7 +1067,6 @@ skia_filegroup(
     name = "sksl_wgsl_tests",
     srcs = [
         "compute/Barrier.compute",
-        "compute/Raytrace.compute",
         "shared/Derivatives.sksl",
         "shared/Optimizations.sksl",
         "shared/Switch.sksl",
@@ -1100,6 +1099,7 @@ skia_filegroup(
         "wgsl/OutParams.sksl",
         "wgsl/Sample.sksl",
         "wgsl/TernaryThenShortCircuit.sksl",
+        "wgsl/TextureIntrinsics.compute",
         "wgsl/UniformArrays.sksl",
         "wgsl/UniformMatrices.sksl",
         "wgsl/UserDefinedPipelineIO.sksl",
