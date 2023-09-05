@@ -116,6 +116,24 @@
       "parentUuid": "9de0768c_80936341",
       "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96258b3b_0947464a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-05T21:24:11Z",
+      "side": 1,
+      "message": "We already disallow negative layout qualifiers in the parser. I\u0027ve added a check for zeros at http://review.skia.org/751837",
+      "parentUuid": "d1de4924_30d2aa7f",
+      "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
