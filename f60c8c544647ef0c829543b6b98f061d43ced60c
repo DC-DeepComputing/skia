@@ -56,6 +56,24 @@
       "message": "Since the program must specify at least the X dimension maybe assign `-1` or `0` to it by default and assert here that it has a positive value?",
       "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9de0768c_80936341",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-05T20:28:04Z",
+      "side": 1,
+      "message": "Doesn\u0027t the front end already validate these?",
+      "parentUuid": "25d7b2e2_a1a24d2c",
+      "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
