@@ -16,17 +16,18 @@ import (
 	"io/fs"
 	"path/filepath"
 
-	"go.skia.org/infra/go/common"
+	sk_common "go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/skerr"
 	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
+	"go.skia.org/skia/infra/bots/task_drivers/common"
 )
 
 var (
 	// Required properties for this task.
-	bazelArgs      = common.NewMultiStringFlag("bazel_arg", nil, "Additional arguments that should be forwarded directly to the Bazel invocation.")
+	bazelArgs      = sk_common.NewMultiStringFlag("bazel_arg", nil, "Additional arguments that should be forwarded directly to the Bazel invocation.")
 	cross          = flag.String("cross", "", "An identifier specifying the target platform that Bazel should build for. If empty, Bazel builds for the host platform (the machine on which this executable is run).")
 	config         = flag.String("config", "", "A custom configuration specified in //bazel/buildrc. This configuration potentially encapsulates many features and options.")
 	expungeCache   = flag.Bool("expunge_cache", false, "If set, the Bazel cache will be cleaned with --expunge before execution. We should only have to set this rarely, if something gets messed up.")
@@ -36,7 +37,7 @@ var (
 	taskName       = flag.String("task_name", "", "Name of the task.")
 	workdir        = flag.String("workdir", ".", "Working directory, the root directory of a full Skia checkout")
 	outPath        = flag.String("out_path", "", "Directory into which to copy the //bazel-bin subdirectories provided via --saved_output_dir. If unset, nothing will be copied.")
-	savedOutputDir = common.NewMultiStringFlag("saved_output_dir", nil, `//bazel-bin subdirectories to copy into the path provided via --out_path (e.g. "tests" will copy the contents of //bazel-bin/tests).`)
+	savedOutputDir = sk_common.NewMultiStringFlag("saved_output_dir", nil, `//bazel-bin subdirectories to copy into the path provided via --out_path (e.g. "tests" will copy the contents of //bazel-bin/tests).`)
 	// Optional flags.
 	local  = flag.Bool("local", false, "True if running locally (as opposed to on the CI/CQ)")
 	output = flag.String("o", "", "If provided, dump a JSON blob of step data to the given file. Prints to stdout if '-' is given.")
@@ -88,6 +89,12 @@ func main() {
 
 	if *outPath != "" {
 		if err := copyBazelBinSubdirs(ctx, skiaDir, *savedOutputDir, filepath.Join(wd, *outPath)); err != nil {
+			td.Fatal(ctx, err)
+		}
+	}
+
+	if !*local {
+		if err := common.BazelCleanIfLowDiskSpace(ctx, skiaDir, "bazelisk"); err != nil {
 			td.Fatal(ctx, err)
 		}
 	}

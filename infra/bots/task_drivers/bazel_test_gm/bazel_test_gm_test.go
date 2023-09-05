@@ -54,6 +54,9 @@ func TestRun_Success(t *testing.T) {
 			commandCollector := exec.CommandCollector{}
 			res := td.RunTestSteps(t, false, func(ctx context.Context) error {
 				ctx = td.WithExecRunFn(ctx, commandCollector.Run)
+				ctx = context.WithValue(ctx, common.BazelCleanIfLowDiskSpaceContextKey{}, func() (uint64, error) {
+					return uint64(20_000_000_000), nil
+				})
 
 				err := run(ctx, tdArgs)
 
@@ -82,6 +85,8 @@ func TestRun_Success(t *testing.T) {
 				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9-/]+ --test-name alfa --png-file [a-zA-Z0-9-/]+/alfa.png --png-digest a01a01a01a01a01a01a01a01a01a01a0 --add-test-key build_system:bazel --add-test-key name:alfa --add-test-key source_type:gm$"),
 				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9-/]+ --test-name beta --png-file [a-zA-Z0-9-/]+/beta.png --png-digest b02b02b02b02b02b02b02b02b02b02b0 --add-test-key build_system:bazel --add-test-key name:beta --add-test-key source_type:gm$"),
 				regexp.MustCompile("^/path/to/goldctl imgtest finalize --work-dir [a-zA-Z0-9-/]+$"),
+				"Clean Bazel cache if disk space is too low",
+				"No need to clear the Bazel cache: free space on partition /mnt/pd0 is 20000000000 bytes, which is above the threshold of 15000000000 bytes",
 			)
 
 			require.Len(t, commandCollector.Commands(), 6)
