@@ -5,13 +5,18 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkTime.h"
+#include "include/core/SkString.h"
+#include "include/docs/SkPDFDocument.h"
+#include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
+#include "src/pdf/SkPDFUtils.h"
 #include "tests/Test.h"
 
-DEF_TEST(Time_GetDateTime, r) {
-    SkTime::DateTime dateTime;
-    SkTime::GetDateTime(&dateTime);
+#include <cstdint>
+
+DEF_TEST(SkPDFUtils_GetDateTime, r) {
+    SkPDF::DateTime dateTime;
+    SkPDFUtils::GetDateTime(&dateTime);
 
     // TODO(future generation): update these values.
     const uint16_t kMinimumSaneYear = 1964;
@@ -19,13 +24,13 @@ DEF_TEST(Time_GetDateTime, r) {
 
     if (dateTime.fYear < kMinimumSaneYear) {
         ERRORF(r,
-               "SkTime::GetDateTime: %u (CurrentYear) < %u (MinimumSaneYear)",
+               "SkPDFUtils::GetDateTime: %u (CurrentYear) < %u (MinimumSaneYear)",
                static_cast<unsigned>(dateTime.fYear),
                static_cast<unsigned>(kMinimumSaneYear));
     }
     if (dateTime.fYear > kMaximumSaneYear) {
         ERRORF(r,
-               "SkTime::GetDateTime: %u (CurrentYear) > %u (MaximumSaneYear)",
+               "SkPDFUtils::GetDateTime: %u (CurrentYear) > %u (MaximumSaneYear)",
                static_cast<unsigned>(dateTime.fYear),
                static_cast<unsigned>(kMaximumSaneYear));
     }
