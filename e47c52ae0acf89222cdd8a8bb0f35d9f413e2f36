@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63ec2d32_0dc6615f",
+        "filename": "src/sksl/SkSLMemoryPool.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-05T19:35:05Z",
+      "side": 1,
+      "message": "Please move to the `private` section at the bottom of the class",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 32
+      },
+      "revId": "e47c52ae0acf89222cdd8a8bb0f35d9f413e2f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f664d930_d173bc83",
+        "filename": "src/sksl/SkSLMemoryPool.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-05T19:35:05Z",
+      "side": 1,
+      "message": "`inline` isn\u0027t needed. See https://abseil.io/tips/140 (\"A static Class Member\")",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "e47c52ae0acf89222cdd8a8bb0f35d9f413e2f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
