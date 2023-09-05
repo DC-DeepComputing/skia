@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06782cff_ff6d6045",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-09-05T14:16:41Z",
+      "side": 1,
+      "message": "Hi Greg, Jie is sick. So I helped him to address review issues in CL https://skia-review.googlesource.com/c/skia/+/742636 . I cannot modify his CL, So I have to create a new one. PTAL. Thanks",
+      "revId": "64e7a238e2e798ffebf18550828dfac2b98aeafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
