@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3af5f34e_e168002f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-05T21:05:15Z",
+      "side": 1,
+      "message": "Turns out a lot of the code size increase at PS9 may come from THashMap requiring the key and value to be copied. In this case the value is fairly light (an `sk_sp` to a non-atomic reference count) but the key is fairly heavy (it contains an allocation for a string). In all cases we could just move the key into the map, but that currently isn\u0027t possible.",
+      "revId": "c24a0792fc53c38456b25b920c4838e6b84e2064",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
