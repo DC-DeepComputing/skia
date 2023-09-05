@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af9a4f84_7f4309a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-05T20:01:55Z",
+      "side": 1,
+      "message": "lgtm % nits",
+      "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c94625_90f59541",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1386,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-05T20:01:55Z",
+      "side": 1,
+      "message": "This isn\u0027t quite right. Compute programs do not have outputs but they do have inputs, which are limited to the builtin variables declared at https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/sksl_compute.sksl;l\u003d3?q\u003dsksl_compute.sksl\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F. For example, if the `sk_LocalInvocationID` input is defined, then the entry-point should have a parameter that looks like this:\n\n    fn main(@builtin(local_invocation_id) sk_LocalInvocationID : vec3\u003cu32\u003e)\n    \nSince this CL is mainly about the workgroup size declaration it\u0027s OK to add that in a follow-up but I suggest fixing the comment here to reflect the plans.",
+      "range": {
+        "startLine": 1386,
+        "startChar": 39,
+        "endLine": 1386,
+        "endChar": 51
+      },
+      "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d7b2e2_a1a24d2c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-05T20:01:55Z",
+      "side": 1,
+      "message": "Since the program must specify at least the X dimension maybe assign `-1` or `0` to it by default and assert here that it has a positive value?",
+      "revId": "f60c8c544647ef0c829543b6b98f061d43ced60c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
