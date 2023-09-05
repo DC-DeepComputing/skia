@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c16213f_7e99ff43",
+        "filename": "tools/viewer/ClockSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-09-05T12:26:46Z",
+      "side": 1,
+      "message": "Add TODO to switch to std::chrono::system_clock.",
+      "range": {
+        "startLine": 92,
+        "startChar": 7,
+        "endLine": 93,
+        "endChar": 39
+      },
+      "revId": "2a178867b1e314a7b5f5428b19764704707af580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
