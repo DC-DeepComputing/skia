@@ -166,7 +166,7 @@ private:
             const skia_private::TArray<GrSurfaceProxy*, true>& sampledProxies,
             GrXferBarrierFlags renderPassXferBarriers) override;
 
-    bool onSubmitToGpu(bool syncCpu) override {
+    bool onSubmitToGpu(GrSyncCpu) override {
         return true;
     }
 

@@ -285,8 +285,8 @@ void GrMtlGpu::addFinishedCallback(sk_sp<skgpu::RefCntedCallback> finishedCallba
     commandBuffer()->addFinishedCallback(std::move(finishedCallback));
 }
 
-bool GrMtlGpu::onSubmitToGpu(bool syncCpu) {
-    if (syncCpu) {
+bool GrMtlGpu::onSubmitToGpu(GrSyncCpu sync) {
+    if (sync == GrSyncCpu::kYes) {
         return this->submitCommandBuffer(kForce_SyncQueue);
     } else {
         return this->submitCommandBuffer(kSkip_SyncQueue);

@@ -1750,8 +1750,8 @@ void GrD3DGpu::takeOwnershipOfBuffer(sk_sp<GrGpuBuffer> buffer) {
     fCurrentDirectCommandList->addGrBuffer(std::move(buffer));
 }
 
-bool GrD3DGpu::onSubmitToGpu(bool syncCpu) {
-    if (syncCpu) {
+bool GrD3DGpu::onSubmitToGpu(GrSyncCpu sync) {
+    if (sync == GrSyncCpu::kYes) {
         return this->submitDirectCommandList(SyncQueue::kForce);
     } else {
         return this->submitDirectCommandList(SyncQueue::kSkip);
