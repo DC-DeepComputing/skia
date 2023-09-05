@@ -33,6 +33,24 @@
       "message": "Idiomatically, we usually add a !\u003d operator too:\nbool operator!\u003d(const RequiredProperties\u0026 that) const { return !(*this \u003d\u003d that); }",
       "revId": "c6f4553474768b849bfd0cc5ca1ca31dfffd9638",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c4c8c6_e36d3737",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2023-09-05T15:01:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ea36d3e_913fe3ab",
+      "revId": "c6f4553474768b849bfd0cc5ca1ca31dfffd9638",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
