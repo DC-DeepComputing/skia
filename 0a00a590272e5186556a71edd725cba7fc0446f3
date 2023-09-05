@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98f3b780_029739e8",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-05T21:03:07Z",
+      "side": 1,
+      "message": "I updated this CL to just skip this step when running locally (i.e. when the `--local` flag is set). I\u0027m not sure if it makes sense to run `bazel clean` when running locally anyway.\n\nNote that the `/mnt/pd0` path is hardcoded in various task drivers already (try `$ git grep /mnt/pd0`). Example: https://skia.googlesource.com/skia/+/2b9fc6a2c250b16ce4b3a12e04dbf8b41ce8022f/infra/bots/task_drivers/bazel_build/bazel_build.go#67. Because of these hardcoded paths, I suspect that most such task drivers are actually impossible to run locally today.\n\nLet me know if you would like me to extract the hardcoded `/mnt/pd0` paths into command-line flags for all existing task drivers.",
+      "parentUuid": "45c239f4_de38eb8a",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 30
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15d27b77_4c4f0a2a",
         "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-05T12:25:15Z",
       "side": 1,
       "message": "Previous context keys have been strings to make them a bit more readable when debugging. The minor performance difference between using a struct and a string is not worth it IMO.\n\nSee time.Now in the infra repo and be consistent with that.",
+      "range": {
+        "startLine": 28,
+        "startChar": 40,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcb0d9c7_05102b1d",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-05T21:03:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15d27b77_4c4f0a2a",
       "range": {
         "startLine": 28,
         "startChar": 40,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec17050_62f934ae",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-05T21:03:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c225cc1_8a616829",
+      "range": {
+        "startLine": 35,
+        "startChar": 41,
+        "endLine": 35,
+        "endChar": 49
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12b1b267_064b4da6",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-09-05T12:25:15Z",
       "side": 1,
       "message": "I think this should take in the partition path and be less specifically named as a result.",
+      "range": {
+        "startLine": 51,
+        "startChar": 20,
+        "endLine": 51,
+        "endChar": 62
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa5432b_e36334aa",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-05T21:03:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12b1b267_064b4da6",
       "range": {
         "startLine": 51,
         "startChar": 20,
