@@ -2230,8 +2230,8 @@ void GrVkGpu::takeOwnershipOfBuffer(sk_sp<GrGpuBuffer> buffer) {
     this->currentCommandBuffer()->addGrBuffer(std::move(buffer));
 }
 
-bool GrVkGpu::onSubmitToGpu(bool syncCpu) {
-    if (syncCpu) {
+bool GrVkGpu::onSubmitToGpu(GrSyncCpu sync) {
+    if (sync == GrSyncCpu::kYes) {
         return this->submitCommandBuffer(kForce_SyncQueue);
     } else {
         return this->submitCommandBuffer(kSkip_SyncQueue);
