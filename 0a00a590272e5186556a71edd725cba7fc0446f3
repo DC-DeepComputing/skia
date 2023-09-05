@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88cd2971_8f72941b",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-05T22:15:56Z",
+      "side": 1,
+      "message": "Yes, we should strive to have these be configurable via the CLI. Fewer hardcoded paths.",
+      "parentUuid": "98f3b780_029739e8",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 30
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15d27b77_4c4f0a2a",
         "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
         "patchSetId": 4
