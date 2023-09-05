@@ -16,6 +16,24 @@
       "message": "Hypothesis: The fuzzer had to learn/stumble upon a few keywords that were not in the corpus, which can take a while for it do so.",
       "revId": "a30c820bcc934f0dbbf88a0f141e30b0a8a606f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c1383c0_68517843",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-05T14:15:42Z",
+      "side": 1,
+      "message": "Quite possible, but AFAICS this has been a bug since the day the fuzzers were first turned on! So this took years to find.",
+      "parentUuid": "32fea4bc_0a458322",
+      "revId": "a30c820bcc934f0dbbf88a0f141e30b0a8a606f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
