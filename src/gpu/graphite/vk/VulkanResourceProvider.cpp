@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
+#include "src/gpu/graphite/vk/VulkanFrameBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
@@ -100,11 +101,13 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
+    auto compatibleRenderPass = this->findOrCreateCompatibleRenderPass(renderPassDesc);
     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
                                         &skslCompiler,
                                         runtimeDict,
                                         pipelineDesc,
                                         renderPassDesc,
+                                        compatibleRenderPass,
                                         this->pipelineCache());
 }
 
@@ -250,4 +253,27 @@ VkPipelineCache VulkanResourceProvider::pipelineCache() {
     }
     return fPipelineCache;
 }
+
+sk_sp<VulkanFrameBuffer> VulkanResourceProvider::createFrameBuffer(
+        const VulkanSharedContext* context,
+        const skia_private::TArray<VkImageView>& attachmentViews,
+        const VulkanRenderPass& renderPass,
+        const int width,
+        const int height) {
+    // TODO: Consider caching these in the future. If we pursue that, it may make more sense to
+    // use a compatible renderpass rather than a full one to make each frame buffer more versatile.
+    VkFramebufferCreateInfo frameBufferInfo;
+    memset(&frameBufferInfo, 0, sizeof(VkFramebufferCreateInfo));
+    frameBufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    frameBufferInfo.pNext = nullptr;
+    frameBufferInfo.flags = 0;
+    frameBufferInfo.renderPass = renderPass.renderPass();
+    frameBufferInfo.attachmentCount = attachmentViews.size();
+    frameBufferInfo.pAttachments = attachmentViews.begin();
+    frameBufferInfo.width = width;
+    frameBufferInfo.height = height;
+    frameBufferInfo.layers = 1;
+    return VulkanFrameBuffer::Make(context, frameBufferInfo);
+}
+
 } // namespace skgpu::graphite
