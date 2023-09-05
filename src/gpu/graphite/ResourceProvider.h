@@ -82,10 +82,10 @@ public:
     void freeGpuResources();
     void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
 
-#if defined(GRAPHITE_TEST_UTILS)
+    ////////////////////////////////////////////////////////////////////////////////
+    // Utility methods for testing only
     ResourceCache* resourceCache() { return fResourceCache.get(); }
     const SharedContext* sharedContext() { return fSharedContext; }
-#endif
 
 protected:
     ResourceProvider(SharedContext* sharedContext,
