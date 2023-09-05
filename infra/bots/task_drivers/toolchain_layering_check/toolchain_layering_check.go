@@ -18,6 +18,7 @@ import (
 	"go.skia.org/infra/task_driver/go/lib/bazel"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
+	"go.skia.org/skia/infra/bots/task_drivers/common"
 )
 
 var (
@@ -76,6 +77,12 @@ func main() {
 	}
 	for _, define := range definesToIncludeExtraHeaders {
 		if err := expectFailure(ctx, skiaDir, *label, *config, define); err != nil {
+			td.Fatal(ctx, err)
+		}
+	}
+
+	if !*local {
+		if err := common.BazelCleanIfLowDiskSpace(ctx, skiaDir, "bazelisk"); err != nil {
 			td.Fatal(ctx, err)
 		}
 	}
