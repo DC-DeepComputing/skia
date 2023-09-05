@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2874098_da87d686",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-05T15:03:12Z",
+      "side": 1,
+      "message": "PTA(nother)L - I hope this is closer to what you had in mind for making it easier down the line to plug in information from the RenderPassDesc. There are some local variables now that aren\u0027t necessary but help to demonstrate how information will be extracted and processed later on.",
+      "revId": "f940285fa13bc72e90079fe02fe52bf78b06b520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
