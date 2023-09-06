@@ -38,6 +38,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "854414c2_fa85dd80",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-06T13:01:16Z",
+      "side": 1,
+      "message": "Don\u0027t add a ColorTypeInfo if we don\u0027t have support. We default the info\u0027s to have the flags set to 0, so you could probably get away with just putting the entire block here in an if check",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 372,
+        "endChar": 9
+      },
+      "revId": "64e7a238e2e798ffebf18550828dfac2b98aeafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5dd2d7a0_f5e3b3b9",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 1
