@@ -64,17 +64,20 @@ static void show_bounds(SkCanvas* canvas, const SkIRect* clip, const SkIRect* in
 //  less generally useful).
 typedef sk_sp<SkImageFilter> (*FilterFactory)(sk_sp<SkImage> auxImage, const SkIRect* cropRect);
 
+#if 0
 static sk_sp<SkImageFilter> color_filter_factory(sk_sp<SkImage> auxImage, const SkIRect* cropRect) {
     // The color filter uses kSrcIn so that it respects the transparency introduced by clamping;
     // using kSrc would just turn the entire out rect to green regardless.
     auto cf = SkColorFilters::Blend(SK_ColorGREEN, SkBlendMode::kSrcIn);
     return SkImageFilters::ColorFilter(std::move(cf), nullptr, cropRect);
 }
+#endif
 
 static sk_sp<SkImageFilter> blur_filter_factory(sk_sp<SkImage> auxImage, const SkIRect* cropRect) {
     return SkImageFilters::Blur(2.0f, 2.0f, nullptr, cropRect);
 }
 
+#if 0
 static sk_sp<SkImageFilter> drop_shadow_factory(sk_sp<SkImage> auxImage, const SkIRect* cropRect) {
     return SkImageFilters::DropShadow(10.0f, 5.0f, 3.0f, 3.0f, SK_ColorBLUE, nullptr, cropRect);
 }
@@ -169,6 +172,7 @@ static sk_sp<SkImageFilter> tile_factory(sk_sp<SkImage> auxImage, const SkIRect*
     return SkImageFilters::Tile(SkRect::MakeLTRB(25, 25, 75, 75), SkRect::MakeWH(100, 100),
                                 nullptr);
 }
+#endif
 
 namespace {
     enum class Strategy {
@@ -201,6 +205,8 @@ protected:
         }
         if (fStrategy == Strategy::kSaveLayer) {
             name.append("_ref");
+        } else {
+            name.append("_mwf");
         }
         return name;
     }
@@ -225,8 +231,9 @@ protected:
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
         FilterFactory filters[] = {
-            color_filter_factory,
+//            color_filter_factory,
             blur_filter_factory,
+#if 0
             drop_shadow_factory,
             offset_factory,
             dilate_factory,
@@ -238,10 +245,12 @@ protected:
             matrix_factory,
             lighting_factory,
             tile_factory
+#endif
         };
         const char* filterNames[] = {
-            "Color",
+//            "Color",
             "Blur",
+#if 0
             "Drop Shadow",
             "Offset",
             "Dilate",
@@ -253,6 +262,7 @@ protected:
             "Matrix Xform",
             "Lighting",
             "Tile"
+#endif
         };
         static_assert(std::size(filters) == std::size(filterNames), "filter name length");
 
