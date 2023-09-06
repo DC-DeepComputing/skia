@@ -22,6 +22,30 @@
       },
       "revId": "75786cd24e27b7e2a80a9844f9c1c1a2aaa08b2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b135f6de_089ead84",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T20:30:22Z",
+      "side": 1,
+      "message": "Ha, yep, I had the same thought. That and I plan on updating that key generation w/ the learnings from making one for the renderpasses, so I\u0027ll likely do those in the same CL.",
+      "parentUuid": "dbfbd99a_2fbfc237",
+      "range": {
+        "startLine": 175,
+        "startChar": 70,
+        "endLine": 175,
+        "endChar": 90
+      },
+      "revId": "75786cd24e27b7e2a80a9844f9c1c1a2aaa08b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
