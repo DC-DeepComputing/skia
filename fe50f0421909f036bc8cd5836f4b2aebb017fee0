@@ -33,6 +33,29 @@
       "message": "Greg: friendly ping, thanks!",
       "revId": "fe50f0421909f036bc8cd5836f4b2aebb017fee0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32547279_b1a79231",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-06T13:08:01Z",
+      "side": 1,
+      "message": "Is this really the API we want here? What does this look like if/when we add more RequiredProperties? When I see the `operator\u003c` my mind thinks the type is some bitfield or something where I\u0027m actually checking if some value is less or not.\n\nI assume the intent hear is to use this to ask can I use \"this\" RequiredProperties if what I have I want logical is \"that\" (or reversed logic if desired). Instead does it make sense to have a \"isCompatible\" function?",
+      "range": {
+        "startLine": 737,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 9
+      },
+      "revId": "fe50f0421909f036bc8cd5836f4b2aebb017fee0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
