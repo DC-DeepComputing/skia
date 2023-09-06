@@ -222,6 +222,9 @@ public:
     bool getClosestGlyphClusterAt(SkScalar dx,
                                   SkScalar dy,
                                   GlyphClusterInfo* glyphInfo) override;
+
+    bool getGraphemeClusterAt(size_t codeUnitIndex, GraphemeClusterInfo* graphemeInfo) override;
+    bool getClosestGraphemeClusterAt(SkScalar dx, SkScalar dy, GraphemeClusterInfo* graphemeInfo) override;
     SkFont getFontAt(TextIndex codeUnitIndex) const override;
     std::vector<FontInfo> getFonts() const override;
 
@@ -281,6 +284,8 @@ private:
     std::unordered_set<SkUnichar> fUnresolvedCodepoints;
 
     skia_private::TArray<TextLine, false> fLines;   // kFormatted   (cached: width, max lines, ellipsis, text align)
+    int getLineNumberAtUTF8Offset(TextIndex utf8Offset, size_t startLine, size_t endLine) const;
+
     sk_sp<SkPicture> fPicture;          // kRecorded    (cached: text styles)
 
     skia_private::TArray<ResolvedFontDescriptor> fFontSwitches;
