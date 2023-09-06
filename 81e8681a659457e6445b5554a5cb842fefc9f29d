@@ -16,6 +16,23 @@
       "message": "Locally verified, however I am not firmly sure about the fix. PTAL",
       "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d90cd716_6797a829",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-06T12:39:53Z",
+      "side": 1,
+      "message": "If I remember correctly, cached uploads were part of being able to reuse an existing Recording for replaying at other translations. From the linked bug it seems like we\u0027re still paying a hefty cost for preparing the copy src buffers with the mask data in them. \n\nI am not sure this is the right solution, but it is good to now that it is a bottleneck and we can look into improvements.",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
