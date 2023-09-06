@@ -427,16 +427,13 @@ protected:
     struct CreateInfo {
         CreateInfo(const SkImageInfo& info,
                    SkPixelGeometry geo,
-                   TileUsage tileUsage,
                    SkRasterHandleAllocator* allocator)
             : fInfo(info)
-            , fTileUsage(tileUsage)
             , fPixelGeometry(geo)
             , fAllocator(allocator)
         {}
 
         const SkImageInfo        fInfo;
-        const TileUsage          fTileUsage;
         const SkPixelGeometry    fPixelGeometry;
         SkRasterHandleAllocator* fAllocator = nullptr;
     };
@@ -452,7 +449,7 @@ protected:
      *  and the caller may then decide to explicitly create a bitmapdevice, knowing that later
      *  it could not call drawDevice with it (but it could call drawSprite or drawBitmap).
      */
-    virtual SkDevice* onCreateDevice(const CreateInfo&, const SkPaint*) {
+    virtual sk_sp<SkDevice> onCreateDevice(const CreateInfo&, const SkPaint*) {
         return nullptr;
     }
 
