@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5af00828_d15b8472",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T18:55:59Z",
+      "side": 1,
+      "message": "Yes, I see that we have TODOs to verify that the passed-in textures align with the attachments stored in RenderPassDesc in `CommandBuffer::beginRenderPass` within all backends, so we don\u0027t need to worry about that by this point.\n\nI removed those values and actually experimented w/ collapsing the render pass and RP key creation methods into one, where we pass in a bool instead to signify whether we want a compatible RP or a full one. This helped to share more code b/w compatible and full RP operations. Please LMKWYT... if a bool seems too unclear, we could use an enum like we do for skgpu::Budgeted. Note that this change also results in being able to generate compatible and full RP keys within this CL.\n\nThank you for your in-depth review/analysis here. The line reduction benefits of this reorg is even more apparent in the child CL.",
+      "parentUuid": "5920c41b_292e6af6",
+      "range": {
+        "startLine": 135,
+        "startChar": 58,
+        "endLine": 137,
+        "endChar": 90
+      },
+      "revId": "ab9c93f0802077599c104622a85f6748d2543c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "448dcb5e_2c252410",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 18
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-06T17:49:02Z",
       "side": 1,
       "message": "This is talking about gpu memory size. Basically for anything not a texture or buffer we set this to be 0.",
+      "range": {
+        "startLine": 144,
+        "startChar": 70,
+        "endLine": 144,
+        "endChar": 90
+      },
+      "revId": "ab9c93f0802077599c104622a85f6748d2543c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a1f9d0_3d3376ca",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T18:55:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "448dcb5e_2c252410",
       "range": {
         "startLine": 144,
         "startChar": 70,
