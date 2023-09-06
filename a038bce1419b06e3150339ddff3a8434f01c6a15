@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e20b1baa_764a4ed7",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-09-06T19:08:58Z",
+      "side": 1,
+      "message": "s0 and s1 don\u0027t need to intersect. This just compares which segment comes first along the horizontal line y.",
+      "parentUuid": "902bc804_143a8e8e",
+      "range": {
+        "startLine": 35,
+        "startChar": 3,
+        "endLine": 35,
+        "endChar": 55
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41d76dfe_db1c3bac",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-06T15:42:08Z",
       "side": 1,
       "message": "WDYT of lessThanAt(const Segment\u0026 s0, const Segment\u0026 s1, int32_t y)? Or if that\u0027s too long a name, at least swapping the arguments. The meaning seems clearer to me that way.",
+      "range": {
+        "startLine": 36,
+        "startChar": 5,
+        "endLine": 36,
+        "endChar": 11
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35aec8f9_399ed632",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-09-06T19:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41d76dfe_db1c3bac",
       "range": {
         "startLine": 36,
         "startChar": 5,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff22e471_fc52fd51",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-09-06T19:08:58Z",
+      "side": 1,
+      "message": "Yeah. This was confusing. I reworked the comment.",
+      "parentUuid": "7be514b4_fe5493b7",
+      "range": {
+        "startLine": 147,
+        "startChar": 61,
+        "endLine": 147,
+        "endChar": 97
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceb09cd0_8223b2f2",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-09-06T15:42:08Z",
       "side": 1,
       "message": "I think some explanation of the comparison would be useful here so someone doesn\u0027t have to figure it out again later -- i.e., we check the bbox x-extents first, and if they don\u0027t overlap then that\u0027s all we need. Otherwise we check the x-intercepts along the sweepline.",
+      "range": {
+        "startLine": 155,
+        "startChar": 4,
+        "endLine": 155,
+        "endChar": 32
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac6c57b5_07d7864d",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-09-06T19:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceb09cd0_8223b2f2",
       "range": {
         "startLine": 155,
         "startChar": 4,
