@@ -192,7 +192,7 @@ std::unique_ptr<Recording> Recorder::snap() {
 
     // inject an initial task to maintain atlas state for next Recording
     auto uploads = std::make_unique<UploadList>();
-    fAtlasProvider->textAtlasManager()->recordUploads(uploads.get(), /*useCachedUploads=*/true);
+    fAtlasProvider->textAtlasManager()->recordUploads(uploads.get(), /*useCachedUploads=*/false);
     if (uploads->size() > 0) {
         sk_sp<Task> uploadTask = UploadTask::Make(uploads.get());
         this->priv().add(std::move(uploadTask));
