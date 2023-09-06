@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09b29597_00281ac2",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T19:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd97cdf8_bdd5e864",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 44
+      },
+      "revId": "abaaae6130e9734d9efadbcfb849e1a1fe0a8082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b1e0480_9e24798e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-06T19:28:22Z",
       "side": 1,
       "message": "can drop this if we make even compatible just set a default load/store",
+      "range": {
+        "startLine": 83,
+        "startChar": 37,
+        "endLine": 83,
+        "endChar": 67
+      },
+      "revId": "abaaae6130e9734d9efadbcfb849e1a1fe0a8082",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62df7ec4_3576d98b",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T19:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b1e0480_9e24798e",
       "range": {
         "startLine": 83,
         "startChar": 37,

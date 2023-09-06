@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "118a2828_82f5764b",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T19:44:09Z",
+      "side": 1,
+      "message": "Marking this as resolved since we chatted and you didn\u0027t seem appalled - feel free to add a new comment w/ any other suggestions",
+      "parentUuid": "5af00828_d15b8472",
+      "range": {
+        "startLine": 135,
+        "startChar": 58,
+        "endLine": 137,
+        "endChar": 90
+      },
+      "revId": "ab9c93f0802077599c104622a85f6748d2543c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "448dcb5e_2c252410",
