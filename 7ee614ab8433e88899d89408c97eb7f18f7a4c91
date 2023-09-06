@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a6e736d_a42a788a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-06T12:24:11Z",
+      "side": 1,
+      "message": "Fix-forward in https://skia-review.googlesource.com/c/skia/+/752277",
+      "revId": "7ee614ab8433e88899d89408c97eb7f18f7a4c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
