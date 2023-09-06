@@ -121,9 +121,9 @@ private:
     // No need to specialize drawDRRect, drawArc, drawRegion, drawPatch as the default impls all
     // route to drawPath, drawRect, or drawVertices as desired.
 
-    // Pixel management
     sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
-    SkDevice* onCreateDevice(const CreateInfo&, const SkPaint*) override;
+
+    sk_sp<SkDevice> onCreateDevice(const CreateInfo&, const SkPaint*) override;
 
     bool onReadPixels(const SkPixmap&, int x, int y) override;
 
