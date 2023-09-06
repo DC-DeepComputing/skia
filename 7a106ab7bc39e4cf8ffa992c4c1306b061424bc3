@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b082f18c_a7c9b461",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-06T13:26:15Z",
+      "side": 1,
+      "message": "just the one last thing then lgtm",
+      "revId": "7a106ab7bc39e4cf8ffa992c4c1306b061424bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9f3ea06_1c8ab1ee",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-06T13:26:15Z",
+      "side": 1,
+      "message": "just one minor thing. info-\u003efFlags is already default initialized to be 0. So we can just move the if (supportNorm16) to this out block here and then remove the ternary for the info-\u003efFlags. Same with one below.",
+      "range": {
+        "startLine": 357,
+        "startChar": 4,
+        "endLine": 357,
+        "endChar": 5
+      },
+      "revId": "7a106ab7bc39e4cf8ffa992c4c1306b061424bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
