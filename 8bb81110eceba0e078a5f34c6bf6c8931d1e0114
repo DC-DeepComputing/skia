@@ -16,6 +16,24 @@
       "message": "Can we add (or do we already have) a test that exercises that the sk_FragCoord builtin gets synthesized correctly in a fragment shader that references the `sk_FragCoord` variable by name?\n\nIIRC I wanted to make the codegen work in a way that all pipeline inputs that are reachable and has a declaration in the SkSL program would get a field synthesized in the stage input struct without special-casing them (so the built-ins in sksl_frag.sksl would automatically get declarations) but I\u0027m not sure that was tested for sk_FragCoord.",
       "revId": "8bb81110eceba0e078a5f34c6bf6c8931d1e0114",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c067a367_969fd6fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-06T18:22:26Z",
+      "side": 1,
+      "message": "In a fragment shader, FragCoord doesn\u0027t need special treatment; it exists in the module as a variable with a builtin layout value:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/sksl_frag.sksl;l\u003d4;drc\u003dd3ecfb3bb86a62fa0643a7dda24701b8e1ef4d00\n\nWe already had a test for sk_FragCoord here:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:resources/sksl/shared/FragCoords.sksl;drc\u003d82915f80e341bea2b122d0a2cdd05aee3b51ff93\n\nHowever, this test was previously written in \"runtime effect\" style (returns half4, takes float2) so it wasn\u0027t really a good test. I\u0027ve reworked it in this CL to use a \"fragment\" style (returns/takes nothing). This is just a better test all around:\n\nhttps://skia-review.googlesource.com/c/skia/+/752379/5/resources/sksl/shared/FragCoords.sksl",
+      "parentUuid": "6e1f475b_aa8a8b43",
+      "revId": "8bb81110eceba0e078a5f34c6bf6c8931d1e0114",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
