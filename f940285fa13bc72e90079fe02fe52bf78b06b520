@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80b1e89a_ae040d3d",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T15:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b09c596_929385f5",
+      "range": {
+        "startLine": 69,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 9
+      },
+      "revId": "f940285fa13bc72e90079fe02fe52bf78b06b520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "835bb962_91889af1",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd059c04_2ca7d459",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T15:37:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "835bb962_91889af1",
+      "range": {
+        "startLine": 85,
+        "startChar": 79,
+        "endLine": 85,
+        "endChar": 83
+      },
+      "revId": "f940285fa13bc72e90079fe02fe52bf78b06b520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "564a7ca7_5d2d77fe",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-09-05T19:44:04Z",
       "side": 1,
       "message": "does this need to be public? Can it just be declared where it is used in code?",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 59
+      },
+      "revId": "f940285fa13bc72e90079fe02fe52bf78b06b520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc764de0_b38a5581",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-06T15:37:14Z",
+      "side": 1,
+      "message": "I figured at some point we may want to have it public in order to check whether certain parts of/slots within the key are equal to the unused value, but thinking about it more, I don\u0027t think we will need that ability to reverse engineer a key like that.",
+      "parentUuid": "564a7ca7_5d2d77fe",
       "range": {
         "startLine": 25,
         "startChar": 4,
