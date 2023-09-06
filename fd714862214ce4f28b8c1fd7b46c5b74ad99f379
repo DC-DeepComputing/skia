@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da0d8504_f7178e08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-06T00:22:09Z",
+      "side": 1,
+      "message": "lgtm % iwyu fixes",
+      "revId": "fd714862214ce4f28b8c1fd7b46c5b74ad99f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4af91a5_0b0fafe0",
+        "filename": "resources/sksl/wgsl/TextureIntrinsics.compute",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-06T00:22:09Z",
+      "side": 1,
+      "message": "nit: `use_texture`?",
+      "range": {
+        "startLine": 6,
+        "startChar": 14,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "fd714862214ce4f28b8c1fd7b46c5b74ad99f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
