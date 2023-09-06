@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e1f475b_aa8a8b43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-06T18:08:42Z",
+      "side": 1,
+      "message": "Can we add (or do we already have) a test that exercises that the sk_FragCoord builtin gets synthesized correctly in a fragment shader that references the `sk_FragCoord` variable by name?\n\nIIRC I wanted to make the codegen work in a way that all pipeline inputs that are reachable and has a declaration in the SkSL program would get a field synthesized in the stage input struct without special-casing them (so the built-ins in sksl_frag.sksl would automatically get declarations) but I\u0027m not sure that was tested for sk_FragCoord.",
+      "revId": "8bb81110eceba0e078a5f34c6bf6c8931d1e0114",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
