@@ -827,7 +827,7 @@ DEF_TEST(Serialization, reporter) {
 
 static sk_sp<SkPicture> copy_picture_via_serialization(SkPicture* src) {
     SkDynamicMemoryWStream wstream;
-    src->serialize(&wstream);
+    src->serialize(&wstream, nullptr);  // default is fine, no SkImages to encode
     std::unique_ptr<SkStreamAsset> rstream(wstream.detachAsStream());
     return SkPicture::MakeFromStream(rstream.get());
 }
