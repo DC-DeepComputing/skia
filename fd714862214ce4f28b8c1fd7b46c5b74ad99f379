@@ -39,6 +39,30 @@
       },
       "revId": "fd714862214ce4f28b8c1fd7b46c5b74ad99f379",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e489bbac_b7a94825",
+        "filename": "resources/sksl/wgsl/TextureIntrinsics.compute",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-06T00:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4af91a5_0b0fafe0",
+      "range": {
+        "startLine": 6,
+        "startChar": 14,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "fd714862214ce4f28b8c1fd7b46c5b74ad99f379",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
