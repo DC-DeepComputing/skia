@@ -90,7 +90,7 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                 sk_sp<SkColorSpace> outCS,
                                 const SkSurfaceProps& outProps) {
     SkImageInfo outII = SkImageInfo::Make({dstRect.width(), dstRect.height()},
-                                          colorType, alphaType, std::move(outCS));
+                                          colorType, kPremul_SkAlphaType, std::move(outCS));
     auto surface = SkSpecialSurfaces::MakeGraphite(recorder, outII, outProps);
     if (!surface) {
         return nullptr;
