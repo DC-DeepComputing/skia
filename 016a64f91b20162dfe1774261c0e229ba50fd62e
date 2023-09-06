@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a62cbb57_e8b7385a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-06T12:34:55Z",
+      "side": 1,
+      "message": "G3 canary and Android canary issues were not our fault. Chrome canary is broken, so I\u0027m testing that out locally.",
+      "revId": "016a64f91b20162dfe1774261c0e229ba50fd62e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
