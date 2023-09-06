@@ -16,6 +16,24 @@
       "message": "Nit: why isn\u0027t this next to textureHeight?",
       "revId": "78efab80b4685366037c758538aafce3e00403e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e10565f3_6cccb9f2",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2771,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-06T15:10:47Z",
+      "side": 1,
+      "message": "The intent was alphabetical order but I didn\u0027t get that right either.\nRe-alphabetized.",
+      "parentUuid": "c49b48eb_7b7b0b57",
+      "revId": "78efab80b4685366037c758538aafce3e00403e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
