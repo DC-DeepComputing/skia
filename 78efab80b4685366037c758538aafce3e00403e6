@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c49b48eb_7b7b0b57",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2771,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-06T15:08:35Z",
+      "side": 1,
+      "message": "Nit: why isn\u0027t this next to textureHeight?",
+      "revId": "78efab80b4685366037c758538aafce3e00403e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
