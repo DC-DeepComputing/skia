@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb19b09b_9a740f53",
+        "filename": "src/gpu/dawn/DawnUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-06T07:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca71c9bd_77037985",
+      "range": {
+        "startLine": 46,
+        "startChar": 48,
+        "endLine": 46,
+        "endChar": 49
+      },
+      "revId": "87fee4c461d574d417a1d8c9d9e4fdc99b575893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f95ca9b_8e4ea14e",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "383219d5_f9a376fd",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-06T07:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f95ca9b_8e4ea14e",
+      "range": {
+        "startLine": 358,
+        "startChar": 35,
+        "endLine": 358,
+        "endChar": 44
+      },
+      "revId": "87fee4c461d574d417a1d8c9d9e4fdc99b575893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91f31662_3a8a4a72",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-09-05T13:04:37Z",
       "side": 1,
       "message": "same as above with checking feature.",
+      "range": {
+        "startLine": 445,
+        "startChar": 35,
+        "endLine": 445,
+        "endChar": 44
+      },
+      "revId": "87fee4c461d574d417a1d8c9d9e4fdc99b575893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a37ca8f_32088331",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-06T07:48:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91f31662_3a8a4a72",
       "range": {
         "startLine": 445,
         "startChar": 35,
