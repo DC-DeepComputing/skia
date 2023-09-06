@@ -16,6 +16,29 @@
       "message": "G3 canary and Android canary issues were not our fault. Chrome canary is broken, so I\u0027m testing that out locally.",
       "revId": "016a64f91b20162dfe1774261c0e229ba50fd62e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2546749_2b2ab191",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-06T13:44:41Z",
+      "side": 1,
+      "message": "Part of me reads this as there could be more values in the enum but they are unsupported here. I don\u0027t have any strong opinion here, but does it make it clearer to leave the else above and then just have `SkASSERT(opts \u003d\u003d kScratchResourcesOnly)`?",
+      "range": {
+        "startLine": 546,
+        "startChar": 6,
+        "endLine": 547,
+        "endChar": 57
+      },
+      "revId": "016a64f91b20162dfe1774261c0e229ba50fd62e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
