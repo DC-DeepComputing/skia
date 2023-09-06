@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40ca3873_4e1d8398",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-06T13:20:32Z",
+      "side": 1,
+      "message": "Fixed in https://skia-review.googlesource.com/c/skia/+/742636, PTAL\n\n@penghuang@chromium.org How about closing this one and resume the original CL?",
+      "parentUuid": "854414c2_fa85dd80",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 372,
+        "endChar": 9
+      },
+      "revId": "64e7a238e2e798ffebf18550828dfac2b98aeafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dd2d7a0_f5e3b3b9",
