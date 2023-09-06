@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddd65045_cdf24076",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-06T09:22:40Z",
+      "side": 1,
+      "message": "Locally verified, however I am not firmly sure about the fix. PTAL",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
