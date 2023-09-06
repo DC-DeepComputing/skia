@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6692008_5497cf40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-06T17:37:21Z",
+      "side": 1,
+      "message": "I\u0027m not going to land this for a day or two, but this is the last of the legacy image filter code in `src/effects/imagefilters` (there\u0027s still legacy code to update in SkCanvas, SkDevice, and the base classes though).",
+      "revId": "19ea360272cf3fa26fd07ada557e94cd64a58c18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
