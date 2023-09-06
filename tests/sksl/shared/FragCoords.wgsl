@@ -13,6 +13,6 @@ fn _skslMain(_stageIn: FSIn, _skParam0: vec2<f32>) -> vec4<f32> {
 }
 @fragment fn main(_stageIn: FSIn) -> FSOut {
   var _stageOut: FSOut;
-  _stageOut.sk_FragColor = _skslMain(_stageIn, _stageIn.sk_FragCoord.xy);
+  _stageOut.sk_FragColor = _skslMain(_stageIn, /*fragcoord*/ vec2<f32>());
   return _stageOut;
 }
