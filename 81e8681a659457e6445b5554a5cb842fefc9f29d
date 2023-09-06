@@ -33,6 +33,24 @@
       "message": "If I remember correctly, cached uploads were part of being able to reuse an existing Recording for replaying at other translations. From the linked bug it seems like we\u0027re still paying a hefty cost for preparing the copy src buffers with the mask data in them. \n\nI am not sure this is the right solution, but it is good to now that it is a bottleneck and we can look into improvements.",
       "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "671bf254_3ae0137c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-06T19:23:16Z",
+      "side": 1,
+      "message": "Cached uploads for text are necessary if we want to play Recordings in any order, because they are used to set up the atlas in the state that the Recording expects. But they\u0027re only inserted in the command buffer if necessary so perhaps the data shouldn\u0027t be loaded into a Buffer until we actually need to do an upload.",
+      "parentUuid": "d90cd716_6797a829",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
