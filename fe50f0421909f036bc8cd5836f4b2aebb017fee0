@@ -56,6 +56,30 @@
       },
       "revId": "fe50f0421909f036bc8cd5836f4b2aebb017fee0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "806ea79a_dbda079c",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2023-09-06T14:24:21Z",
+      "side": 1,
+      "message": "Thanks! I agree that the \u003c operator here is weird. It\u0027s needed due to RequiredProperties being used as part of a key in a map [1]. Whether a given RequiredProperties is \u003c or \u003e another one doesn\u0027t actually mean anything logically as you pointed out. Let me know if you see another solution!\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:gpu/command_buffer/service/graphite_image_provider.h;l\u003d34-57?q\u003dgraphite_image_provider\u0026ss\u003dchromium",
+      "parentUuid": "32547279_b1a79231",
+      "range": {
+        "startLine": 737,
+        "startChar": 8,
+        "endLine": 739,
+        "endChar": 9
+      },
+      "revId": "fe50f0421909f036bc8cd5836f4b2aebb017fee0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
