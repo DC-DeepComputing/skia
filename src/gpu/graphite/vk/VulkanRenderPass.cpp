@@ -8,8 +8,10 @@
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+#include "src/gpu/graphite/vk/VulkanTexture.h"
 
 namespace skgpu::graphite {
 
@@ -26,9 +28,68 @@ void add_attachment_description_info_to_key(
         builder[builderIdx++] = vkTexInfo.fSampleCount;
     }
 }
+// Overloaded helper which will also add load/store operations to the key
+void add_attachment_description_info_to_key(GraphiteResourceKey::Builder& builder,
+                                            const TextureInfo& textureInfo,
+                                            int& builderIdx,
+                                            LoadOp loadOp,
+                                            StoreOp storeOp) {
+    VulkanTextureInfo vkTexInfo;
+    if (textureInfo.isValid() && textureInfo.getVulkanTextureInfo(&vkTexInfo)) {
+        builder[builderIdx++] = vkTexInfo.fFormat;
+        builder[builderIdx++] = vkTexInfo.fSampleCount;
+        builder[builderIdx++] = (vkLoadOp[static_cast<int>(loadOp)] << 8) |
+                                (vkStoreOp[static_cast<int>(storeOp)]);
+    }
+}
 
-GraphiteResourceKey VulkanRenderPass::GenerateCompatibleRenderPassKey(
-        const RenderPassDesc& renderPassDesc) {
+void setup_vk_attachment_description(VkAttachmentDescription* outAttachment,
+                                     const VulkanTextureInfo& textureInfo,
+                                     const AttachmentDesc& desc,
+                                     const LoadOp loadOp,
+                                     const StoreOp storeOp,
+                                     const VkImageLayout initialLayout,
+                                     const VkImageLayout finalLayout) {
+    static_assert((int)LoadOp::kLoad == 0);
+    static_assert((int)LoadOp::kClear == 1);
+    static_assert((int)LoadOp::kDiscard == 2);
+    static_assert(std::size(vkLoadOp) == kLoadOpCount);
+    static_assert((int)StoreOp::kStore == 0);
+    static_assert((int)StoreOp::kDiscard == 1);
+    static_assert(std::size(vkStoreOp) == kStoreOpCount);
+
+    outAttachment->flags = 0;
+    outAttachment->format = textureInfo.fFormat;
+    VkSampleCountFlagBits sampleCount;
+    SkAssertResult(
+            skgpu::SampleCountToVkSampleCount(textureInfo.fSampleCount, &sampleCount));
+    outAttachment->samples = sampleCount;
+    switch (initialLayout) {
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+        case VK_IMAGE_LAYOUT_GENERAL:
+            outAttachment->loadOp = vkLoadOp[static_cast<int>(loadOp)];
+            outAttachment->storeOp = vkStoreOp[static_cast<int>(storeOp)];
+            outAttachment->stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            outAttachment->stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            break;
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+            outAttachment->loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            outAttachment->storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            outAttachment->loadOp = vkLoadOp[static_cast<int>(loadOp)];
+            outAttachment->storeOp = vkStoreOp[static_cast<int>(storeOp)];
+            break;
+        default:
+            SK_ABORT("Unexpected attachment layout");
+    }
+    outAttachment->initialLayout = initialLayout;
+    outAttachment->finalLayout = finalLayout == VK_IMAGE_LAYOUT_UNDEFINED ? initialLayout
+                                                                          : finalLayout;
+}
+
+
+GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
+        const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
     static constexpr uint32_t kKeyValueUnused = UINT32_MAX;
     bool  hasColorAttachment        = renderPassDesc.fColorAttachment.fTextureInfo.isValid();
     bool  hasColorResolveAttachment = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid();
@@ -40,8 +101,9 @@ GraphiteResourceKey VulkanRenderPass::GenerateCompatibleRenderPassKey(
     const int numColorAttachments        = hasColorAttachment        ? 1 : 0;
     const int numResolveAttachments      = hasColorResolveAttachment ? 1 : 0;
     const int numDepthStencilAttachments = hasDepthStencilAttachment ? 1 : 0;
+    const int numInputAttachments        = hasInputAttachment        ? 1 : 0;
     const int totalRenderPassAttachments = numColorAttachments + numResolveAttachments +
-                                           numDepthStencilAttachments;
+                                           numDepthStencilAttachments + numInputAttachments;
 
     // Accumulate attachments into a container to mimic future structure in RenderPassDesc
     skia_private::TArray<const AttachmentDesc*> rpAttachments(totalRenderPassAttachments);
@@ -54,17 +116,21 @@ GraphiteResourceKey VulkanRenderPass::GenerateCompatibleRenderPassKey(
     if (hasDepthStencilAttachment) {
         rpAttachments.push_back(&renderPassDesc.fDepthStencilAttachment);
     }
+    // TODO: Add input attachment from RenderPassDesc if it has one
 
     // Calculate how many int32s we need to capture all relevant information.
     int num32DataCnt = 0;
     // Each renderpass key will start with the total number of attachments associated with it.
     // This will use one uint32.
     num32DataCnt++;
-    // The key will then contain attachment compatibility information for every attachment (format
-    // and sample count), which means we need two uint32s for each attachment on the renderpass.
-    num32DataCnt += 2 * totalRenderPassAttachments;
-    // Then, subpass compatibility information will be added in the form of attachment reference
-    // indices. Reserve one int32 for each possible attachment reference type, of which there are 4.
+    // The key will then contain attachment information for every attachment. For compatible render
+    // passes, this just means capturing format and sample count information which needs two uint32s
+    // for each attachment on the renderpass. For full render passes, we will need an additional
+    // int32 to capture load/store operation information.
+    num32DataCnt += compatibleOnly ? 2 * totalRenderPassAttachments
+                                   : 3 * totalRenderPassAttachments;
+    // Then, subpass information will be added in the form of attachment reference indices. Reserve
+    // one int32 for each possible attachment reference type, of which there are 4.
     // TODO: Reference RenderPassDesc to determine number and makeup of subpasses. For now, we only
     // ever expect 1 (in most cases) or 2 (when loading MSAA from resolve).
     int subpassCount = 1;
@@ -81,9 +147,19 @@ GraphiteResourceKey VulkanRenderPass::GenerateCompatibleRenderPassKey(
     // Now we can actually populate the key.
     int builderIdx = 0;
     builder[builderIdx++] = totalRenderPassAttachments;
-    // Iterate through each renderpass attachment to add its compatibility information
+    // Iterate through each renderpass attachment to add its information
     for (int i = 0; i < totalRenderPassAttachments; i++) {
-        add_attachment_description_info_to_key(builder, rpAttachments[i]->fTextureInfo, builderIdx);
+        if (compatibleOnly) {
+            add_attachment_description_info_to_key(
+                    builder, rpAttachments[i]->fTextureInfo, builderIdx);
+        } else {
+            add_attachment_description_info_to_key(builder,
+                                               rpAttachments[i]->fTextureInfo,
+                                               builderIdx,
+                                               rpAttachments[i]->fLoadOp,
+                                               rpAttachments[i]->fStoreOp);
+        }
+
     }
     // Add subpass information to the key
     for (int j = 0; j < subpassCount; j++) {
@@ -113,30 +189,137 @@ GraphiteResourceKey VulkanRenderPass::GenerateCompatibleRenderPassKey(
     return key;
 }
 
-GraphiteResourceKey VulkanRenderPass::GenerateRenderPassKey(const RenderPassDesc& renderPassDesc,
-                                                            const Texture* colorTexture,
-                                                            const Texture* resolveTexture,
-                                                            const Texture* depthStencilTexture) {
-    // TODO: Implement. For now, simply generate a compatible renderpass key. On top of having a
-    // render pass be "compatible", fully fleshed-out renderpasses must consider load/store ops.
-    return GenerateCompatibleRenderPassKey(renderPassDesc);
-}
-
-sk_sp<VulkanRenderPass> VulkanRenderPass::MakeCompatibleRenderPass(
-        const VulkanSharedContext* context, const RenderPassDesc& renderPassDesc) {
-    // TODO: Create VkRenderPass.
-    VkRenderPass renderPass = VK_NULL_HANDLE;
-    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass));
-}
-
 sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedContext* context,
                                                          const RenderPassDesc& renderPassDesc,
-                                                         VulkanCommandBuffer* cmdBuf,
-                                                         const Texture* colorTexture,
-                                                         const Texture* resolveTexture,
-                                                         const Texture* depthStencilTexture) {
-    // TODO: Create VkRenderPass.
-    VkRenderPass renderPass = VK_NULL_HANDLE;
+                                                         bool compatibleOnly) {
+    VkRenderPass renderPass;
+    renderPass = VK_NULL_HANDLE;
+    auto& colorAttachmentTextureInfo        = renderPassDesc.fColorAttachment.fTextureInfo;
+    auto& colorResolveAttachmentTextureInfo = renderPassDesc.fColorResolveAttachment.fTextureInfo;
+    auto& depthStencilAttachmentTextureInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
+    bool hasColorAttachment        = colorAttachmentTextureInfo.isValid();
+    bool hasColorResolveAttachment = colorResolveAttachmentTextureInfo.isValid();
+    bool hasDepthStencilAttachment = depthStencilAttachmentTextureInfo.isValid();
+    // Process render pass attachments
+    int numAttachments = 0;
+    if (hasColorAttachment) {
+        numAttachments++;
+    }
+    if (hasColorResolveAttachment) {
+        numAttachments++;
+    }
+    if (hasDepthStencilAttachment) {
+        numAttachments++;
+    }
+    skia_private::TArray<VkAttachmentDescription> attachmentDescs(numAttachments);
+    // Create and track attachment references for the subpass.
+    VkAttachmentReference colorRef;
+    VkAttachmentReference resolveRef;
+    VkAttachmentReference depthStencilRef;
+
+    if (hasColorAttachment) {
+        VulkanTextureInfo colorAttachTexInfo;
+        colorAttachmentTextureInfo.getVulkanTextureInfo(&colorAttachTexInfo);
+        auto& colorAttachDesc = renderPassDesc.fColorAttachment;
+
+        colorRef.attachment = attachmentDescs.size();
+        VkAttachmentDescription& vkColorAttachDesc = attachmentDescs.push_back();
+        memset(&vkColorAttachDesc, 0, sizeof(VkAttachmentDescription));
+        setup_vk_attachment_description(
+                &vkColorAttachDesc,
+                colorAttachTexInfo,
+                colorAttachDesc,
+                compatibleOnly ? LoadOp::kDiscard  : colorAttachDesc.fLoadOp,
+                compatibleOnly ? StoreOp::kDiscard : colorAttachDesc.fStoreOp,
+                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+        colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        if (hasColorResolveAttachment) {
+            SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+            VulkanTextureInfo resolveAttachTexInfo;
+            colorResolveAttachmentTextureInfo.getVulkanTextureInfo(&resolveAttachTexInfo);
+            auto& resolveAttachDesc = renderPassDesc.fColorResolveAttachment;\
+
+            VkAttachmentDescription& vkResolveAttachDesc = attachmentDescs.push_back();
+            memset(&vkResolveAttachDesc, 0, sizeof(VkAttachmentDescription));
+            setup_vk_attachment_description(
+                    &vkResolveAttachDesc,
+                    resolveAttachTexInfo,
+                    resolveAttachDesc,
+                    compatibleOnly ? LoadOp::kDiscard  : resolveAttachDesc.fLoadOp,
+                    compatibleOnly ? StoreOp::kDiscard : resolveAttachDesc.fStoreOp,
+                    VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                    VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+            resolveRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        } else {
+            resolveRef.attachment = VK_ATTACHMENT_UNUSED;
+            resolveRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
+        }
+
+    } else {
+        SkASSERT(false);
+        colorRef.attachment = VK_ATTACHMENT_UNUSED;
+        colorRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
+    }
+
+    if (depthStencilAttachmentTextureInfo.isValid()) {
+        VulkanTextureInfo depthStencilTexInfo;
+        depthStencilAttachmentTextureInfo.getVulkanTextureInfo(&depthStencilTexInfo);
+        auto& depthStencilAttachDesc = renderPassDesc.fDepthStencilAttachment;
+
+        depthStencilRef.attachment = attachmentDescs.size();
+        VkAttachmentDescription& vkDepthStencilAttachDesc = attachmentDescs.push_back();
+        setup_vk_attachment_description(
+                &vkDepthStencilAttachDesc,
+                depthStencilTexInfo,
+                depthStencilAttachDesc,
+                compatibleOnly ? LoadOp::kDiscard   : depthStencilAttachDesc.fLoadOp,
+                compatibleOnly ? StoreOp::kDiscard  : depthStencilAttachDesc.fStoreOp,
+                VK_IMAGE_LAYOUT_STENCIL_ATTACHMENT_OPTIMAL,
+                VK_IMAGE_LAYOUT_STENCIL_ATTACHMENT_OPTIMAL);
+        depthStencilRef.layout = VK_IMAGE_LAYOUT_STENCIL_ATTACHMENT_OPTIMAL;
+    } else {
+        depthStencilRef.attachment = VK_ATTACHMENT_UNUSED;
+        depthStencilRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
+    }
+
+    // Create VkRenderPass
+    VkRenderPassCreateInfo renderPassInfo;
+    memset(&renderPassInfo, 0, sizeof(VkRenderPassCreateInfo));
+    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    renderPassInfo.pNext = nullptr;
+    renderPassInfo.flags = 0;
+
+    // TODO: Support multiple subpasses. 2 are needed for loading MSAA from resolve.
+    renderPassInfo.subpassCount = 1;
+    VkSubpassDescription subpassDesc;
+    memset(&subpassDesc, 0, sizeof(VkSubpassDescription));
+    subpassDesc.flags = 0;
+    subpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    // TODO: Add support for input attachments
+    subpassDesc.inputAttachmentCount = 0;
+    subpassDesc.pInputAttachments = nullptr;
+    subpassDesc.colorAttachmentCount = 1;
+    subpassDesc.pColorAttachments = &colorRef;
+    subpassDesc.pResolveAttachments = &resolveRef;
+    subpassDesc.pDepthStencilAttachment = &depthStencilRef;
+    subpassDesc.preserveAttachmentCount = 0;
+    subpassDesc.pPreserveAttachments = nullptr;
+
+    renderPassInfo.pSubpasses = &subpassDesc;
+    renderPassInfo.dependencyCount = 0;
+    renderPassInfo.pDependencies = VK_NULL_HANDLE;
+    renderPassInfo.attachmentCount = numAttachments;
+    renderPassInfo.pAttachments = attachmentDescs.begin();
+
+    VkResult result;
+    VULKAN_CALL_RESULT(context->interface(), result, CreateRenderPass(context->device(),
+                                                                      &renderPassInfo,
+                                                                      nullptr,
+                                                                      &renderPass));
+    if (result != VK_SUCCESS) {
+        return nullptr;
+    }
     return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass));
 }
 

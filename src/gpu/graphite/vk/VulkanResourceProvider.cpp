@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
+#include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
@@ -100,11 +101,14 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
+    auto compatibleRenderPass =
+            this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
                                         &skslCompiler,
                                         runtimeDict,
                                         pipelineDesc,
                                         renderPassDesc,
+                                        compatibleRenderPass,
                                         this->pipelineCache());
 }
 
@@ -177,47 +181,17 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
                    : nullptr;
 }
 
-sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateCompatibleRenderPass(
-        const RenderPassDesc& renderPassDesc) {
-    auto renderPassKey = VulkanRenderPass::GenerateCompatibleRenderPassKey(renderPassDesc);
-    Resource* existingRenderPass =
-            fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
-
-    if (existingRenderPass) {
-        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(existingRenderPass));
-    } else {
-        auto newRenderPass = VulkanRenderPass::MakeCompatibleRenderPass(this->vulkanSharedContext(),
-                                                                        renderPassDesc);
-        SkASSERT(newRenderPass);
-        newRenderPass->setKey(renderPassKey);
-        fResourceCache->insertResource(newRenderPass.get());
-    }
-
-    auto renderPass = fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
-    return renderPass ? sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(renderPass))
-                      : nullptr;
-}
-
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
-        const RenderPassDesc& renderPassDesc,
-        VulkanCommandBuffer* cmdBuf,
-        const Texture* colorTexture,
-        const Texture* resolveTexture,
-        const Texture* depthStencilTexture) {
-    auto renderPassKey = VulkanRenderPass::GenerateRenderPassKey(
-            renderPassDesc, colorTexture, resolveTexture, depthStencilTexture);
+        const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
+    auto renderPassKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
     Resource* existingRenderPass =
             fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
 
     if (existingRenderPass) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(existingRenderPass));
     } else {
-        auto newRenderPass = VulkanRenderPass::MakeRenderPass(this->vulkanSharedContext(),
-                                                              renderPassDesc,
-                                                              cmdBuf,
-                                                              colorTexture,
-                                                              resolveTexture,
-                                                              depthStencilTexture);
+        auto newRenderPass = VulkanRenderPass::MakeRenderPass(
+                this->vulkanSharedContext(), renderPassDesc, compatibleOnly);
         SkASSERT(newRenderPass);
         newRenderPass->setKey(renderPassKey);
         fResourceCache->insertResource(newRenderPass.get());
@@ -250,4 +224,27 @@ VkPipelineCache VulkanResourceProvider::pipelineCache() {
     }
     return fPipelineCache;
 }
+
+sk_sp<VulkanFramebuffer> VulkanResourceProvider::createFramebuffer(
+        const VulkanSharedContext* context,
+        const skia_private::TArray<VkImageView>& attachmentViews,
+        const VulkanRenderPass& renderPass,
+        const int width,
+        const int height) {
+    // TODO: Consider caching these in the future. If we pursue that, it may make more sense to
+    // use a compatible renderpass rather than a full one to make each frame buffer more versatile.
+    VkFramebufferCreateInfo framebufferInfo;
+    memset(&framebufferInfo, 0, sizeof(VkFramebufferCreateInfo));
+    framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    framebufferInfo.pNext = nullptr;
+    framebufferInfo.flags = 0;
+    framebufferInfo.renderPass = renderPass.renderPass();
+    framebufferInfo.attachmentCount = attachmentViews.size();
+    framebufferInfo.pAttachments = attachmentViews.begin();
+    framebufferInfo.width = width;
+    framebufferInfo.height = height;
+    framebufferInfo.layers = 1;
+    return VulkanFramebuffer::Make(context, framebufferInfo);
+}
+
 } // namespace skgpu::graphite
