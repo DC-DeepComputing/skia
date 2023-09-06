@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "902bc804_143a8e8e",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-06T15:42:08Z",
+      "side": 1,
+      "message": "Intersect with y? It looks like the algorithm works even if s0 and s1 don\u0027t intersect.",
+      "range": {
+        "startLine": 35,
+        "startChar": 3,
+        "endLine": 35,
+        "endChar": 55
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41d76dfe_db1c3bac",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-06T15:42:08Z",
+      "side": 1,
+      "message": "WDYT of lessThanAt(const Segment\u0026 s0, const Segment\u0026 s1, int32_t y)? Or if that\u0027s too long a name, at least swapping the arguments. The meaning seems clearer to me that way.",
+      "range": {
+        "startLine": 36,
+        "startChar": 5,
+        "endLine": 36,
+        "endChar": 11
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be514b4_fe5493b7",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-06T15:42:08Z",
+      "side": 1,
+      "message": "Is that true? Unless I\u0027m misreading it, Segment::upper() guarantees that y1 \u003e\u003d y0 but not necessarily that x1 \u003e x0, unless y1 \u003d\u003d y0. Given that it passes your tests I\u0027m not sure it matters.\n\nOh, and since your coordinate system is left-handed (x right, y down) there may be some issues with the signs of cross-products in comparison with the academic papers, which probably use a RH system. As long as it\u0027s consistent I don\u0027t think that matters either.",
+      "range": {
+        "startLine": 147,
+        "startChar": 61,
+        "endLine": 147,
+        "endChar": 97
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceb09cd0_8223b2f2",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-06T15:42:08Z",
+      "side": 1,
+      "message": "I think some explanation of the comparison would be useful here so someone doesn\u0027t have to figure it out again later -- i.e., we check the bbox x-extents first, and if they don\u0027t overlap then that\u0027s all we need. Otherwise we check the x-intercepts along the sweepline.",
+      "range": {
+        "startLine": 155,
+        "startChar": 4,
+        "endLine": 155,
+        "endChar": 32
+      },
+      "revId": "a038bce1419b06e3150339ddff3a8434f01c6a15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
