@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a5b1ef_6d7e95bf",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-06T19:30:23Z",
+      "side": 1,
+      "message": "Nit: bounding",
+      "range": {
+        "startLine": 161,
+        "startChar": 27,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "bebad0c27764e9dce54695d27504c8ec15569e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
