@@ -143,6 +143,13 @@ public:
     virtual bool containsColorFontOrBitmap(SkTextBlob* textBlob) = 0;
 
     // Editing API
+
+    /* Returns the line number of the line that contains the given UTF-8 index.
+    *
+    * @param index         a UTF-8 TextIndex into the paragraph
+    * @return              the line number if the given offset is within the
+    *                      valid paragraph range, otherwise returns -1.
+    */
     virtual int getLineNumberAt(TextIndex codeUnitIndex) const = 0;
 
     /* Returns line metrics info for the line
@@ -173,18 +180,43 @@ public:
      * @param glyphInfo       a glyph cluster info filled if not null
      * @return                true if glyph cluster was found; false if not
      */
-    virtual bool getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo* glyphInfo) = 0;
+    virtual bool getGlyphClusterAt(size_t codeUnitIndex, GlyphClusterInfo* glyphInfo) = 0;
 
     /** Finds the closest glyph cluster for a visual text position
      *
      * @param dx              x coordinate
      * @param dy              y coordinate
      * @param glyphInfo       a glyph cluster info filled if not null
-     * @return
+     * @return                true if glyph cluster was found; false if not
+     *                        (which usually means the paragraph is empty).
      */
     virtual bool getClosestGlyphClusterAt(SkScalar dx,
                                           SkScalar dy,
                                           GlyphClusterInfo* glyphInfo) = 0;
+    struct GraphemeClusterInfo {
+        SkRect fLayoutBounds;
+        TextRange fGraphemeClusterTextRange;
+        TextRange fGlyphClusterTextRange;
+        TextDirection fDirection;
+    };
+
+    /** Finds the grapheme cluster at the given text index.
+     *
+     * @param codeUnitIndex   a UTF-8 text index
+     * @param glyphInfo       a glyph cluster info filled if the return value is true.
+     * @return                true if glyph cluster was found; false if not
+     */
+    virtual bool getGraphemeClusterAt(TextIndex codeUnitIndex, GraphemeClusterInfo* graphemeInfo) = 0;
+
+    /** Finds the closest grapheme cluster at the given paragraph coordinates.
+     *
+     * @param dx              x coordinate
+     * @param dy              y coordinate
+     * @param graphemeInfo    a GraphmeClusterInfo filled if the return value is true.
+     * @return                true if a graphme cluster was found; false if not
+     *                        (which usually means the paragraph is empty).
+     */
+    virtual bool getClosestGraphemeClusterAt(SkScalar dx, SkScalar dy, GraphemeClusterInfo* graphemeInfo) = 0;
 
     struct FontInfo {
         FontInfo(const SkFont font, const TextRange textRange)
