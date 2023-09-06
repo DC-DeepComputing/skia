@@ -9,12 +9,12 @@ import (
 	"context"
 	"os"
 	"path/filepath"
-	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.skia.org/infra/go/exec"
+	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
 	"go.skia.org/skia/infra/bots/task_drivers/common"
 	"go.skia.org/skia/infra/bots/task_drivers/testutils"
@@ -24,12 +24,12 @@ func TestRun_Success(t *testing.T) {
 	// Given that we have tests for common.UploadToGold(), it suffices to test a couple of
 	// "happy" cases here.
 
-	test := func(name string, tdArgs taskDriverArgs, goldctlImgtestInitStepName *regexp.Regexp, goldctlImgtestInitArgsStringsOrRegexps []any) {
+	test := func(name string, tdArgs taskDriverArgs, goldctlWorkDir, goldctlImgtestInitStepName string, goldctlImgtestInitArgsStringsOrRegexps []any) {
 		t.Run(name, func(t *testing.T) {
 			// Create fake archive with undeclared test outputs.
-			outputsZipPath := filepath.Join(tdArgs.checkoutDir, "bazel-testlogs", "some", "test", "target", "test.outputs", "outputs.zip")
-			require.NoError(t, os.MkdirAll(filepath.Dir(outputsZipPath), 0700))
-			testutils.MakeZIP(t, outputsZipPath, map[string]string{
+			outputsZIP := filepath.Join(tdArgs.checkoutDir, "bazel-testlogs", "some", "test", "target", "test.outputs", "outputs.zip")
+			require.NoError(t, os.MkdirAll(filepath.Dir(outputsZIP), 0700))
+			testutils.MakeZIP(t, outputsZIP, map[string]string{
 				// The contents of PNG files does not matter for this test.
 				"alfa.png": "fake PNG",
 				"alfa.json": `{
@@ -51,9 +51,26 @@ func TestRun_Success(t *testing.T) {
 				}`,
 			})
 
+			// Will be returned by the mocked os_steps.TempDir() when the task driver tries to create a
+			// directory in which to extract the undeclared outputs ZIP archive.
+			outputsZIPExtractionDir := t.TempDir()
+
 			commandCollector := exec.CommandCollector{}
 			res := td.RunTestSteps(t, false, func(ctx context.Context) error {
 				ctx = td.WithExecRunFn(ctx, commandCollector.Run)
+
+				numTimesCalled := 0
+				ctx = context.WithValue(ctx, os_steps.TempDirContextKey, func(string, string) (string, error) {
+					numTimesCalled++
+					if numTimesCalled == 1 {
+						return outputsZIPExtractionDir, nil
+					}
+					if numTimesCalled == 2 {
+						return goldctlWorkDir, nil
+					}
+					require.Fail(t, "os_steps.TempDir called more than twice")
+					return "", nil
+				})
 
 				err := run(ctx, tdArgs)
 
@@ -67,7 +84,8 @@ func TestRun_Success(t *testing.T) {
 			testutils.AssertStepNamesMatchStringsOrRegexps(t, res,
 				"Test //some/test:target with config linux_rbe",
 				"bazelisk test //some/test:target --config=linux_rbe --test_output=errors --jobs=100",
-				regexp.MustCompile("^Extract undeclared outputs archive .+/bazel-testlogs/some/test/target/test.outputs/outputs.zip into .+$"),
+				"Creating TempDir",
+				"Extract undeclared outputs archive "+outputsZIP+" into "+outputsZIPExtractionDir,
 				"Extracting file: alfa.json",
 				"Extracting file: alfa.png",
 				"Extracting file: beta.json",
@@ -77,11 +95,11 @@ func TestRun_Success(t *testing.T) {
 				"Gather \"beta.png\"",
 				"Upload GM outputs to Gold",
 				"Creating TempDir",
-				regexp.MustCompile("^/path/to/goldctl auth --work-dir [a-zA-Z0-9-/]+ --luci$"),
+				"/path/to/goldctl auth --work-dir "+goldctlWorkDir+" --luci",
 				goldctlImgtestInitStepName,
-				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9-/]+ --test-name alfa --png-file [a-zA-Z0-9-/]+/alfa.png --png-digest a01a01a01a01a01a01a01a01a01a01a0 --add-test-key build_system:bazel --add-test-key name:alfa --add-test-key source_type:gm$"),
-				regexp.MustCompile("^/path/to/goldctl imgtest add --work-dir [a-zA-Z0-9-/]+ --test-name beta --png-file [a-zA-Z0-9-/]+/beta.png --png-digest b02b02b02b02b02b02b02b02b02b02b0 --add-test-key build_system:bazel --add-test-key name:beta --add-test-key source_type:gm$"),
-				regexp.MustCompile("^/path/to/goldctl imgtest finalize --work-dir [a-zA-Z0-9-/]+$"),
+				"/path/to/goldctl imgtest add --work-dir "+goldctlWorkDir+" --test-name alfa --png-file "+outputsZIPExtractionDir+"/alfa.png --png-digest a01a01a01a01a01a01a01a01a01a01a0 --add-test-key build_system:bazel --add-test-key name:alfa --add-test-key source_type:gm",
+				"/path/to/goldctl imgtest add --work-dir "+goldctlWorkDir+" --test-name beta --png-file "+outputsZIPExtractionDir+"/beta.png --png-digest b02b02b02b02b02b02b02b02b02b02b0 --add-test-key build_system:bazel --add-test-key name:beta --add-test-key source_type:gm",
+				"/path/to/goldctl imgtest finalize --work-dir "+goldctlWorkDir,
 			)
 
 			require.Len(t, commandCollector.Commands(), 6)
@@ -101,7 +119,7 @@ func TestRun_Success(t *testing.T) {
 				"/path/to/goldctl",
 				"auth",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				goldctlWorkDir,
 				"--luci",
 			)
 
@@ -117,11 +135,11 @@ func TestRun_Success(t *testing.T) {
 				"imgtest",
 				"add",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				goldctlWorkDir,
 				"--test-name",
 				"alfa",
 				"--png-file",
-				regexp.MustCompile("[a-zA-Z0-9-/]+/alfa.png"),
+				outputsZIPExtractionDir+"/alfa.png",
 				"--png-digest",
 				"a01a01a01a01a01a01a01a01a01a01a0",
 				"--add-test-key",
@@ -138,11 +156,11 @@ func TestRun_Success(t *testing.T) {
 				"imgtest",
 				"add",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				goldctlWorkDir,
 				"--test-name",
 				"beta",
 				"--png-file",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+/beta.png$"),
+				outputsZIPExtractionDir+"/beta.png",
 				"--png-digest",
 				"b02b02b02b02b02b02b02b02b02b02b0",
 				"--add-test-key",
@@ -159,13 +177,14 @@ func TestRun_Success(t *testing.T) {
 				"imgtest",
 				"finalize",
 				"--work-dir",
-				regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
+				goldctlWorkDir,
 			)
 		})
 	}
 
 	checkoutDir := t.TempDir()
 
+	goldctlWorkDir := t.TempDir()
 	test(
 		"post-submit task",
 		taskDriverArgs{
@@ -178,25 +197,21 @@ func TestRun_Success(t *testing.T) {
 			checkoutDir: checkoutDir,
 			bazelConfig: "linux_rbe",
 		},
-		regexp.MustCompile("^/path/to/goldctl imgtest init --work-dir [a-zA-Z0-9-/]+ --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --key os:linux$"),
+		goldctlWorkDir,
+		"/path/to/goldctl imgtest init --work-dir "+goldctlWorkDir+" --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --key os:linux",
 		[]any{
 			"imgtest",
 			"init",
-			"--work-dir",
-			regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
-			"--instance",
-			"skia",
-			"--url",
-			"https://gold.skia.org",
-			"--bucket",
-			"skia-infra-gm",
-			"--git_hash",
-			"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-			"--key",
-			"os:linux",
+			"--work-dir", goldctlWorkDir,
+			"--instance", "skia",
+			"--url", "https://gold.skia.org",
+			"--bucket", "skia-infra-gm",
+			"--git_hash", "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
+			"--key", "os:linux",
 		},
 	)
 
+	goldctlWorkDir = t.TempDir()
 	test(
 		"CL task",
 		taskDriverArgs{
@@ -212,32 +227,22 @@ func TestRun_Success(t *testing.T) {
 			checkoutDir: checkoutDir,
 			bazelConfig: "linux_rbe",
 		},
-		regexp.MustCompile("^/path/to/goldctl imgtest init --work-dir [a-zA-Z0-9-/]+ --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id --key os:linux$"),
+		goldctlWorkDir,
+		"/path/to/goldctl imgtest init --work-dir "+goldctlWorkDir+" --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id --key os:linux",
 		[]any{
 			"imgtest",
 			"init",
-			"--work-dir",
-			regexp.MustCompile("^[a-zA-Z0-9-/]+$"),
-			"--instance",
-			"skia",
-			"--url",
-			"https://gold.skia.org",
-			"--bucket",
-			"skia-infra-gm",
-			"--git_hash",
-			"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-			"--crs",
-			"gerrit",
-			"--cis",
-			"buildbucket",
-			"--changelist",
-			"changelist-id",
-			"--patchset",
-			"1",
-			"--jobid",
-			"tryjob-id",
-			"--key",
-			"os:linux",
+			"--work-dir", goldctlWorkDir,
+			"--instance", "skia",
+			"--url", "https://gold.skia.org",
+			"--bucket", "skia-infra-gm",
+			"--git_hash", "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
+			"--crs", "gerrit",
+			"--cis", "buildbucket",
+			"--changelist", "changelist-id",
+			"--patchset", "1",
+			"--jobid", "tryjob-id",
+			"--key", "os:linux",
 		},
 	)
 }
