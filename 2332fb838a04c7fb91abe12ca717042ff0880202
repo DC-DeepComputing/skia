@@ -22,6 +22,30 @@
       },
       "revId": "2332fb838a04c7fb91abe12ca717042ff0880202",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "579451e0_d7b73071",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-07T19:18:13Z",
+      "side": 1,
+      "message": "yeah if we don\u0027t have color just use the size of the depth stencil here.\n\nThe beingInfo.renderArea should actually be the bounds of the all the draws in the render pass rounded up the the device specific render pass granularity and clamped to the bounds of the framebuffer. This value says what pixels are affected by the load/store operations on the attachments. Performance wise keeping this as tight as possible is better to move less data around, but correctness would be fine to always do the full framebuffer. The one caveat to this is with clear loads. Those are also restricted to these bounds. However, I don\u0027t believe we currently do clear loads with the expectation it is only clearing a subset of the texture.",
+      "parentUuid": "83bcc266_a27e3eb0",
+      "range": {
+        "startLine": 521,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 86
+      },
+      "revId": "2332fb838a04c7fb91abe12ca717042ff0880202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

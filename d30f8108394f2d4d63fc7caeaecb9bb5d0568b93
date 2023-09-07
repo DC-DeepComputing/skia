@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcb58f56_c844fc34",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-07T19:18:13Z",
+      "side": 1,
+      "message": "Why do we think this? FWIW, I also don\u0027t think we\u0027d ever have a resolve attachment with a clear load",
+      "range": {
+        "startLine": 492,
+        "startChar": 12,
+        "endLine": 492,
+        "endChar": 91
+      },
+      "revId": "d30f8108394f2d4d63fc7caeaecb9bb5d0568b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c787cff_8b55488e",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-07T19:18:13Z",
+      "side": 1,
+      "message": "can we move this helper down to above where it is used in MakeRenderPass?\n\nAlso these helper functions should be \"static\" to this file. But since we\u0027re not using static keyword anymore, it should be wrapped in an anonymous namespace, which is fine to do even inside the graphite namespace.",
+      "range": {
+        "startLine": 38,
+        "startChar": 5,
+        "endLine": 38,
+        "endChar": 36
+      },
+      "revId": "d30f8108394f2d4d63fc7caeaecb9bb5d0568b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
