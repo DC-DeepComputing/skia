@@ -14,6 +14,7 @@
 
 GrStagingBufferManager::Slice GrStagingBufferManager::allocateStagingBufferSlice(
         size_t size, size_t requiredAlignment) {
+    SkDebugf("Requested staging buffer slice size: %d\n", size);
     StagingBuffer* buffer = nullptr;
     size_t offset = 0;
     for (size_t i = 0; i < fBuffers.size(); ++i) {

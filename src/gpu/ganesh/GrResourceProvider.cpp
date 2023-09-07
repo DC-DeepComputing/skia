@@ -643,6 +643,9 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
         if (this->caps()->buffersAreInitiallyZero()) {
             zeroInit = ZeroInit::kNo;
         }
+        if (intendedType == GrGpuBufferType::kXferCpuToGpu) {
+            SkDebugf("Creating a new transfer buffer of alloc size: %d\n", allocSize);
+        }
         buffer = this->gpu()->createBuffer(allocSize, intendedType, kDynamic_GrAccessPattern);
     }
     if (buffer && zeroInit == ZeroInit::kYes && !buffer->clearToZero()) {
