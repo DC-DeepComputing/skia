@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83bcc266_a27e3eb0",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-07T12:26:35Z",
+      "side": 1,
+      "message": "In the instance where we do not have a color texture, what should we be referencing for dimensions here? If we have a depth/stencil texture, then those dimensions? And if we have neither? Same question goes for VkRenderPassBeginInfo renderArea below.",
+      "range": {
+        "startLine": 521,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 86
+      },
+      "revId": "2332fb838a04c7fb91abe12ca717042ff0880202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

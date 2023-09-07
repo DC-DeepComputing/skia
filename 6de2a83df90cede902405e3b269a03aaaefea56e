@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5efe562_36be91cd",
+        "filename": "src/gpu/graphite/vk/VulkanFramebuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-07T12:26:35Z",
+      "side": 1,
+      "message": "Please confirm whether this is correct. Because framebuffers are buffers, it made me think we do actually want a nonzero size here, but wanted to call it out to make sure.",
+      "range": {
+        "startLine": 31,
+        "startChar": 44,
+        "endLine": 31,
+        "endChar": 57
+      },
+      "revId": "6de2a83df90cede902405e3b269a03aaaefea56e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
