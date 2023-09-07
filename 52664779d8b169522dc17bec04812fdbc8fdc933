@@ -16,6 +16,24 @@
       "message": "Looks like any g3 failures are unrelated.",
       "revId": "52664779d8b169522dc17bec04812fdbc8fdc933",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e7eb1e3_7c43d54b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-07T15:18:11Z",
+      "side": 1,
+      "message": "Web Flutter (via CanvasKit) and native Flutter probably will fail.",
+      "parentUuid": "47865707_8beef806",
+      "revId": "52664779d8b169522dc17bec04812fdbc8fdc933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
