@@ -22,6 +22,30 @@
       },
       "revId": "66cf281ac42ec2f9f051df2661677d6381b0779d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c17626_f8719a0c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3914,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-07T13:35:37Z",
+      "side": 0,
+      "message": "Unfortunately SkSL doesn\u0027t currently have a mechanism for warnings, which seems to be what you\u0027re thinking of. In this case I don\u0027t think it\u0027s too important; write-only buffers are functionally equivalent to read-write buffers, and there\u0027s no performance being sacrificed because WGSL doesn\u0027t expose anything better for us to use instead.",
+      "parentUuid": "dd3e343a_d23116eb",
+      "range": {
+        "startLine": 3908,
+        "startChar": 0,
+        "endLine": 3914,
+        "endChar": 13
+      },
+      "revId": "66cf281ac42ec2f9f051df2661677d6381b0779d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
