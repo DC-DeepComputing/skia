@@ -87,6 +87,24 @@
       "parentUuid": "3c39a854_f1182ea6",
       "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "475ad9f6_796ab8fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-07T18:04:21Z",
+      "side": 1,
+      "message": "So after some discussion in our weekly Skia GPU meeting, unless you somehow find a simple solution I would hold off on this for now. It\u0027s looking like the solution we\u0027re tending towards will be more involved and will include some significant refactoring in how we manage Buffers.",
+      "parentUuid": "7b21601f_7f0f329f",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
