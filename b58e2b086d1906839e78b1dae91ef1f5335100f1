@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63266191_3ce4bfc8",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Do we even want those helpers anymore? I landed them because I needed regexps, but after this CL we\u0027re not using regexps anymore.",
+      "parentUuid": "b63e9e33_696a03bf",
+      "range": {
+        "startLine": 20,
+        "startChar": 43,
+        "endLine": 20,
+        "endChar": 52
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2fb6932_85c2e5fe",
         "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
         "patchSetId": 12
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-07T12:52:40Z",
       "side": 1,
       "message": "nit: this should be strings only, right?",
+      "range": {
+        "startLine": 27,
+        "startChar": 101,
+        "endLine": 27,
+        "endChar": 145
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8543295f_635d99c2",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2fb6932_85c2e5fe",
       "range": {
         "startLine": 27,
         "startChar": 101,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "717c28e3_bbecfa8a",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c559f5a_40697272",
+      "range": {
+        "startLine": 107,
+        "startChar": 13,
+        "endLine": 107,
+        "endChar": 26
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b67e945_4baf4dd5",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-09-07T12:52:40Z",
       "side": 1,
       "message": "nit: move this up a line to pair it with the corresponding flag.\n\nSame thing on 138, 140, etc",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 18
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed847e13_6e2817a1",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b67e945_4baf4dd5",
       "range": {
         "startLine": 122,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5336a142_460804fd",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1937e21c_a6f46ef0",
+      "range": {
+        "startLine": 59,
+        "startChar": 108,
+        "endLine": 59,
+        "endChar": 146
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c285e51_fa870972",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82846859_2c1bc3b0",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Not absolutely necessary. In fact it\u0027s redundant because `os_steps.TempDir` produces a \"Creating TempDir\" step, and we already assert the exact list of steps produced. I deleted this assertion.\n\nIn light of this, I simplified the mocked `os_steps.TempDir` function on lines 284-307, which has two cases. I don\u0027t think this warrants a helper in the `os_steps` function.",
+      "parentUuid": "8c285e51_fa870972",
+      "range": {
+        "startLine": 159,
+        "startChar": 5,
+        "endLine": 159,
+        "endChar": 18
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ad4d7c5_136cc7fb",
@@ -152,6 +296,30 @@
       "writtenOn": "2023-09-07T12:52:40Z",
       "side": 1,
       "message": "nit: typo outpus -\u003e outputs",
+      "range": {
+        "startLine": 318,
+        "startChar": 25,
+        "endLine": 318,
+        "endChar": 39
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d131c1d9_f0eb8cee",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ad4d7c5_136cc7fb",
       "range": {
         "startLine": 318,
         "startChar": 25,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d95f38cf_d76b4846",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "This is passed to `testutils.AssertStepNamesMatchStringsOrRegexps`, which expects an `expectedStringsOrRegexps ...any` argument. If I change `expectedSteps` to `[]string{}` the compiler complains with:\n\n\u003ecannot use expectedSteps (variable of type []string) as []any value in argument to testutils.AssertStepNamesMatchStringsOrRegexps\".\n\nSome options:\n\n1. Leave it as-is.\n2. Explicitly populate a new `[]any` slice from the `[]string` slice (`[]string` cannot be cast to `[]any`).\n3. Rename `testutils.AssertStepNamesMatchStringsOrRegexps` to `testutils.AssertStepNamesMatch` and make it take a `...string` argument, because we aren\u0027t using regexps anywhere anymore.\n\nThoughts?",
+      "parentUuid": "e098cd2b_f8f93d47",
+      "range": {
+        "startLine": 323,
+        "startChar": 20,
+        "endLine": 323,
+        "endChar": 27
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abc7e254_a5df1e4f",
         "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
         "patchSetId": 12
@@ -198,6 +390,30 @@
       "writtenOn": "2023-09-07T12:52:40Z",
       "side": 1,
       "message": "As in the other files, can we make these assertions use a bit less vertical space, either by pairing up commands or making them use https://github.com/google/skia-buildbot/blob/main/go/exec/testutils/testutils.go#L25-L38",
+      "range": {
+        "startLine": 378,
+        "startChar": 4,
+        "endLine": 378,
+        "endChar": 18
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db7d5a8f_d5d43b62",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-07T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abc7e254_a5df1e4f",
       "range": {
         "startLine": 378,
         "startChar": 4,
