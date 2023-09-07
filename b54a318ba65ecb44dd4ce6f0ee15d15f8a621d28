@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d351000_46614ca1",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-07T18:05:06Z",
+      "side": 1,
+      "message": "Done. (FWIW, there really isn\u0027t anyplace where we would ever use or want a `const WGSLCompiler`, but it\u0027s harmless either way.)",
+      "parentUuid": "a241d8ac_0c88df4f",
+      "range": {
+        "startLine": 300,
+        "startChar": 9,
+        "endLine": 300,
+        "endChar": 30
+      },
+      "revId": "b54a318ba65ecb44dd4ce6f0ee15d15f8a621d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74feaf6d_2d3a4a52",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-09-07T17:45:52Z",
       "side": 1,
       "message": "Can this be `const`?",
+      "range": {
+        "startLine": 302,
+        "startChar": 9,
+        "endLine": 302,
+        "endChar": 31
+      },
+      "revId": "b54a318ba65ecb44dd4ce6f0ee15d15f8a621d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f48885_13b94ab7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-07T18:05:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74feaf6d_2d3a4a52",
       "range": {
         "startLine": 302,
         "startChar": 9,
