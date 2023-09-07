@@ -131,10 +131,16 @@ bool DrawContext::recordUpload(Recorder* recorder,
 }
 
 PathAtlas* DrawContext::getOrCreatePathAtlas(Recorder* recorder) {
-    if (!fComputePathAtlas) {
-        fComputePathAtlas = recorder->priv().atlasProvider()->createComputePathAtlas(recorder);
+    if (recorder->priv().caps()->computeSupport()) {
+        if (!fComputePathAtlas) {
+            fComputePathAtlas = recorder->priv().atlasProvider()->createComputePathAtlas(recorder);
+        }
+        return fComputePathAtlas.get();
     }
-    return fComputePathAtlas.get();
+    if (!fSoftwarePathAtlas) {
+        fSoftwarePathAtlas = recorder->priv().atlasProvider()->createSoftwarePathAtlas();
+    }
+    return fSoftwarePathAtlas.get();
 }
 
 void DrawContext::snapDrawPass(Recorder* recorder) {
@@ -254,6 +260,10 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
+    if (fSoftwarePathAtlas) {
+        fSoftwarePathAtlas->recordUploads(fPendingUploads.get());
+    }
+
     if (!fPendingUploads || fPendingUploads->size() == 0) {
         return nullptr;
     }
