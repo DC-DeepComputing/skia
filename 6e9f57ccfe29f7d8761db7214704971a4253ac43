@@ -34,6 +34,41 @@
       "parentUuid": "25e37b93_659355f5",
       "revId": "6e9f57ccfe29f7d8761db7214704971a4253ac43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4279c24d_db3efdec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2023-09-07T16:51:41Z",
+      "side": 1,
+      "message": "G",
+      "revId": "6e9f57ccfe29f7d8761db7214704971a4253ac43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eb72610_bb2f5281",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2023-09-07T16:51:41Z",
+      "side": 1,
+      "message": "Understood, thanks!",
+      "parentUuid": "c8a81f9f_6e3ce0f0",
+      "revId": "6e9f57ccfe29f7d8761db7214704971a4253ac43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
