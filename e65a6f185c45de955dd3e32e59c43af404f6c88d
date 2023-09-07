@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdc7a98f_6826c870",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T13:01:24Z",
+      "side": 1,
+      "message": "I believe http://cl/563177214 supersedes this",
+      "revId": "e65a6f185c45de955dd3e32e59c43af404f6c88d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
