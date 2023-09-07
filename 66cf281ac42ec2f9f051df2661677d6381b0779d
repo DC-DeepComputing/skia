@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd3e343a_d23116eb",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3914,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-07T11:57:48Z",
+      "side": 0,
+      "message": "What are your thoughts on still checking for the write-only case and having some kind of log output if we attempt to use a write only modifier here, like \"WGSL does not allow for write-only access to a storage buffer\"? You could still default to read_write from there. You\u0027d know better whether that is actually necessary or useful though, so up to you.",
+      "range": {
+        "startLine": 3908,
+        "startChar": 0,
+        "endLine": 3914,
+        "endChar": 13
+      },
+      "revId": "66cf281ac42ec2f9f051df2661677d6381b0779d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
