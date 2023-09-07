@@ -123,6 +123,24 @@
       "parentUuid": "effe741a_3c544071",
       "revId": "7ed2f7cec26eb7effaea828c477ab1702220a699",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2108997f_1b11966b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-07T17:36:28Z",
+      "side": 1,
+      "message": "I\u0027ve locally tested Chromium with WGSL enabled; it works fine on both Linux + Dawn-SwiftShader and Mac M1. I think this is ready to land.",
+      "parentUuid": "1ad3aab7_d1ec4c42",
+      "revId": "7ed2f7cec26eb7effaea828c477ab1702220a699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
