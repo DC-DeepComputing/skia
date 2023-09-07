@@ -69,6 +69,24 @@
       "parentUuid": "671bf254_3ae0137c",
       "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b21601f_7f0f329f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-07T15:00:34Z",
+      "side": 1,
+      "message": "Is the issue the large number of calls to memcpy_repmovs, the total amount of data moved, or the fact that moving it into a Buffer is slower?",
+      "parentUuid": "3c39a854_f1182ea6",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
