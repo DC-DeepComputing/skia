@@ -40,5 +40,8 @@ skia_filegroup(
         "SkTrimPathEffect.h",
         ":public_imagefilters_hdrs",
     ],
-    visibility = ["//include:__pkg__"],
+    visibility = [
+        "//include:__pkg__",
+        "//src/core:__pkg__",
+    ],
 )
