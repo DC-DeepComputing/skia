@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b63e9e33_696a03bf",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "observation (not for this CL): \nhttps://github.com/google/skia/blob/c99601816d845d5c7cfc34ac0028cdfc0870a628/infra/bots/task_drivers/testutils/testutils.go#L31-L37\nand\nhttps://github.com/google/skia/blob/c99601816d845d5c7cfc34ac0028cdfc0870a628/infra/bots/task_drivers/testutils/testutils.go#L55-L69\nprobably should live alongside https://github.com/google/skia-buildbot/blob/main/go/exec/testutils/testutils.go#L25-L38",
+      "range": {
+        "startLine": 20,
+        "startChar": 43,
+        "endLine": 20,
+        "endChar": 52
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2fb6932_85c2e5fe",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "nit: this should be strings only, right?",
+      "range": {
+        "startLine": 27,
+        "startChar": 101,
+        "endLine": 27,
+        "endChar": 145
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c559f5a_40697272",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "Since these are now strings, we can use a more concise version like \nhttps://github.com/google/skia-buildbot/blob/57d0270cd1e1bbdc4da12a772c5ffc82f38255fa/go/exec/testutils/testutils.go#L25\nhttps://github.com/google/skia-buildbot/blob/57d0270cd1e1bbdc4da12a772c5ffc82f38255fa/cd/go/build-images/build_test.go#L44-L61\nif you think that is more readable.",
+      "range": {
+        "startLine": 107,
+        "startChar": 13,
+        "endLine": 107,
+        "endChar": 26
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b67e945_4baf4dd5",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "nit: move this up a line to pair it with the corresponding flag.\n\nSame thing on 138, 140, etc",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 18
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1937e21c_a6f46ef0",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "Same feedback as infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go. Here and below.",
+      "range": {
+        "startLine": 59,
+        "startChar": 108,
+        "endLine": 59,
+        "endChar": 146
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c285e51_fa870972",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "Is this assertion absolutely necessary? If so, can we maybe make a helper in the os_steps package that allows specifying a list of files and it the end of the file list is reached, a panic is invoked? That would also simplify the case where there are two files necessary.",
+      "range": {
+        "startLine": 159,
+        "startChar": 5,
+        "endLine": 159,
+        "endChar": 18
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad4d7c5_136cc7fb",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "nit: typo outpus -\u003e outputs",
+      "range": {
+        "startLine": 318,
+        "startChar": 25,
+        "endLine": 318,
+        "endChar": 39
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e098cd2b_f8f93d47",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "`var expectedSteps` []string right?",
+      "range": {
+        "startLine": 323,
+        "startChar": 20,
+        "endLine": 323,
+        "endChar": 27
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abc7e254_a5df1e4f",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-07T12:52:40Z",
+      "side": 1,
+      "message": "As in the other files, can we make these assertions use a bit less vertical space, either by pairing up commands or making them use https://github.com/google/skia-buildbot/blob/main/go/exec/testutils/testutils.go#L25-L38",
+      "range": {
+        "startLine": 378,
+        "startChar": 4,
+        "endLine": 378,
+        "endChar": 18
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
