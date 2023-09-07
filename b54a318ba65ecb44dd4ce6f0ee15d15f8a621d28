@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed352f88_6d1fefda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-07T17:45:52Z",
+      "side": 1,
+      "message": "Looks great, thank you!",
+      "revId": "b54a318ba65ecb44dd4ce6f0ee15d15f8a621d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a241d8ac_0c88df4f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-07T17:45:52Z",
+      "side": 1,
+      "message": "Can this be `const`?",
+      "range": {
+        "startLine": 300,
+        "startChar": 9,
+        "endLine": 300,
+        "endChar": 30
+      },
+      "revId": "b54a318ba65ecb44dd4ce6f0ee15d15f8a621d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74feaf6d_2d3a4a52",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-07T17:45:52Z",
+      "side": 1,
+      "message": "Can this be `const`?",
+      "range": {
+        "startLine": 302,
+        "startChar": 9,
+        "endLine": 302,
+        "endChar": 31
+      },
+      "revId": "b54a318ba65ecb44dd4ce6f0ee15d15f8a621d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
