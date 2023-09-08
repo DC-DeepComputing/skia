@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "009f37dd_45d6d23f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-08T16:07:15Z",
+      "side": 1,
+      "message": "Yeah here is where we set it up in Ganesh. https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp;l\u003d2635. You can see we just skip setting clear values in the resolve slot, but it doesn\u0027t really matter if we put in a default value or leave it unitialized. We will never read it.",
+      "parentUuid": "52f0f612_50ac0ca7",
+      "range": {
+        "startLine": 492,
+        "startChar": 12,
+        "endLine": 492,
+        "endChar": 91
+      },
+      "revId": "d30f8108394f2d4d63fc7caeaecb9bb5d0568b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c787cff_8b55488e",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 30
