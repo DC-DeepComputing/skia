@@ -89,30 +89,12 @@ public:
         fKernelBitmap = create_kernel_bitmap(kernelSize, kernel, &fInnerGain, &fInnerBias);
     }
 
-    SkRect computeFastBounds(const SkRect& bounds) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
 private:
     friend void ::SkRegisterMatrixConvolutionImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkMatrixConvolutionImageFilter)
-
-    bool onAffectsTransparentBlack() const override {
-        // affectsTransparentBlack() is conflated with "canComputeFastBounds" and MatrixConvolution
-        // is unique in that it might not produce unbounded output, but we can't calculate the
-        // fast bounds because the kernel is applied in device space and no transform is provided
-        // with that API.
-        // TODO(skbug.com/14617): Accept a matrix in computeFastBounds() so that we can handle the
-        // layer-space kernel case.
-
-        // That issue aside, a matrix convolution can affect transparent black when it has a
-        // non-zero bias and convolves alpha (if it doesn't convolve the alpha channel then the bias
-        // applied to RGB doesn't matter for transparent black pixels).
-        // NOTE: The crop image filters that wrap the matrix convolution to apply tile modes will
-        // reset this property when possible.
-        return true;
-    }
 
     skif::FilterResult onFilterImage(const skif::Context& context) const override;
 
@@ -124,6 +106,15 @@ private:
     skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
             const skif::Mapping& mapping,
             const skif::LayerSpace<SkIRect>& contentBounds) const override;
+
+    bool affectsTransparentBlack() const {
+        // Applying the kernel as a convolution to fully transparent black will result in 0 for
+        // each channel, unless the bias itself shifts this "zero-point". However, when the alpha
+        // channel is not convolved, the original a=0 is preserved and producing a premul color
+        // discards the non-zero bias. Convolving the alpha channel and a non-zero bias can mean
+        // the transparent black pixels outside of any input image become non-transparent black.
+        return fConvolveAlpha && fBias != 0.f;
+    }
 
     // Helper functions to adjust 'bounds' by the kernel size and offset, either for what would be
     // sampled when covering 'bounds', or what could produce values when applied to 'bounds'.
@@ -518,7 +509,7 @@ skif::FilterResult SkMatrixConvolutionImageFilter::onFilterImage(
             this->getChildOutput(0, context.withNewDesiredOutput(requiredInput));
 
     skif::LayerSpace<SkIRect> outputBounds;
-    if (fConvolveAlpha && fBias != 0.f) {
+    if (this->affectsTransparentBlack()) {
         // The convolution will produce a non-trivial value for every pixel so fill desired output.
         outputBounds = context.desiredOutput();
     } else {
@@ -552,12 +543,10 @@ skif::LayerSpace<SkIRect> SkMatrixConvolutionImageFilter::onGetInputLayerBounds(
 skif::LayerSpace<SkIRect> SkMatrixConvolutionImageFilter::onGetOutputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
-    if (fConvolveAlpha && fBias != 0.f) {
-        // Applying the kernel as a convolution to fully transparent black will result in 0 for
-        // each channel, unless the bias itself shifts this "zero-point". However, when the alpha
-        // channel is not convolved, the original a=0 is preserved and producing a premul color
-        // discards the non-zero bias. Convolving the alpha channel and a non-zero bias can mean
-        // the transparent black pixels outside of any input image become non-transparent black.
+    // When we affect transparent black the output is unbounded. When the layer space is not well
+    // defined, we don't know the appropriate pixel size. The final output will likely not be
+    // unbounded but for the initial bounds tests we have to behave that way.
+    if (this->affectsTransparentBlack() || !mapping.isLayerSpaceWellDefined()) {
         return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
     }
 
@@ -565,11 +554,4 @@ skif::LayerSpace<SkIRect> SkMatrixConvolutionImageFilter::onGetOutputLayerBounds
     skif::LayerSpace<SkIRect> outputBounds =
             this->getChildOutputLayerBounds(0, mapping, contentBounds);
     return this->boundsAffectedByKernel(outputBounds);
-}
-
-SkRect SkMatrixConvolutionImageFilter::computeFastBounds(const SkRect& bounds) const {
-    // See onAffectsTransparentBlack(), but without knowing the local-to-device transform, we don't
-    // know how many pixels will be sampled by the kernel. Return unbounded to match the
-    // expectations of an image filter that "affects" transparent black.
-    return SkRectPriv::MakeLargeS32();
 }

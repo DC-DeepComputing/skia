@@ -34,8 +34,6 @@ public:
         SkASSERT(cropRect.isSorted());
     }
 
-    SkRect computeFastBounds(const SkRect& bounds) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -43,12 +41,6 @@ private:
     friend void ::SkRegisterCropImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkCropImageFilter)
     static sk_sp<SkFlattenable> LegacyTileCreateProc(SkReadBuffer&);
-
-    bool onAffectsTransparentBlack() const override { return fTileMode != SkTileMode::kDecal; }
-
-    // Disable recursing in affectsTransparentBlack() if we hit a Crop.
-    // TODO(skbug.com/14611): Automatically infer this from the output bounds being finite.
-    bool ignoreInputsAffectsTransparentBlack() const override { return true; }
 
     skif::FilterResult onFilterImage(const skif::Context& context) const override;
 
@@ -233,17 +225,4 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetOutputLayerBounds(
             return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
         }
     }
-}
-
-SkRect SkCropImageFilter::computeFastBounds(const SkRect& bounds) const {
-    // TODO(michaelludwig) - This is conceptually very similar to calling onGetOutputLayerBounds()
-    // with an identity skif::Mapping (hence why fCropRect can be used directly), but it also does
-    // not involve any rounding to pixels for both the content bounds or the output.
-    // NOTE: This relies on all image filters returning an infinite bounds when they affect
-    // transparent black.
-    SkRect inputBounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(bounds) : bounds;
-    if (!inputBounds.intersect(SkRect(fCropRect))) {
-        return SkRect::MakeEmpty();
-    }
-    return fTileMode == SkTileMode::kDecal ? inputBounds : SkRectPriv::MakeLargeS32();
 }

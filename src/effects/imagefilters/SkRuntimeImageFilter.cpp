@@ -55,8 +55,6 @@ public:
         }
     }
 
-    SkRect computeFastBounds(const SkRect& src) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -64,7 +62,6 @@ private:
     friend void ::SkRegisterRuntimeImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkRuntimeImageFilter)
 
-    bool onAffectsTransparentBlack() const override { return true; }
     // Currently there is no way for a client to specify the semantics of geometric uniforms that
     // should respond to the canvas matrix. Forcing translate-only is a hammer that lets the output
     // be correct at the expense of resolution when there's a lot of scaling. See skbug.com/13416.
@@ -295,9 +292,4 @@ skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetOutputLayerBounds(
         const skif::LayerSpace<SkIRect>& /*contentBounds*/) const {
     // Pessimistically assume it can cover anything
     return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
-}
-
-SkRect SkRuntimeImageFilter::computeFastBounds(const SkRect& src) const {
-    // Can't predict what the RT Shader will generate (see onGetOutputLayerBounds)
-    return SkRectPriv::MakeLargeS32();
 }

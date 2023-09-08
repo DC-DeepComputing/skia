@@ -47,9 +47,6 @@ public:
             , fType(type)
             , fRadii(radii) {}
 
-    SkRect computeFastBounds(const SkRect& src) const override;
-
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -330,15 +327,4 @@ skif::LayerSpace<SkIRect> SkMorphologyImageFilter::onGetOutputLayerBounds(
     skif::LayerSpace<SkIRect> childOutput =
             this->getChildOutputLayerBounds(0, mapping, contentBounds);
     return this->kernelOutputBounds(mapping, childOutput);
-}
-
-SkRect SkMorphologyImageFilter::computeFastBounds(const SkRect& src) const {
-    // See kernelOutputBounds() for rationale
-    SkRect bounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    if (fType == MorphType::kDilate) {
-        bounds.outset(SkSize(fRadii).width(), SkSize(fRadii).height());
-    } else {
-        bounds.inset(SkSize(fRadii).width(), SkSize(fRadii).height());
-    }
-    return bounds;
 }
