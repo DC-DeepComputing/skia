@@ -16,6 +16,9 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
+#include "include/private/base/SkTArray.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
 namespace skgpu::graphite {
 
@@ -81,7 +84,7 @@ public:
     UploadInstance& operator=(UploadInstance&&);
     ~UploadInstance();
 
-    bool isValid() const { return fBuffer != nullptr; }
+    bool isValid() const { return fBindBufferInfo.fBuffer != nullptr; }
 
     bool prepareResources(ResourceProvider*);
 
@@ -90,16 +93,26 @@ public:
 
 private:
     UploadInstance();
-    UploadInstance(const Buffer*,
+    UploadInstance(const std::vector<MipLevel>& levels,
+                   const skia_private::TArray<std::pair<size_t, size_t>>& levelOffsetsAndRowBytes,
+                   const BindBufferInfo& bindBufferInfo,
+                   const SkIRect& rect,
+                   const SkColorInfo& srcColorInfo,
+                   const SkColorInfo& dstColorInfo,
+                   size_t bufferSize,
                    size_t bytesPerPixel,
                    sk_sp<TextureProxy>,
-                   std::vector<BufferTextureCopyData>,
                    std::unique_ptr<ConditionalUploadContext>);
 
-    const Buffer* fBuffer;
+    std::vector<MipLevel> fLevels;
+    skia_private::TArray<std::pair<size_t, size_t>> fLevelOffsetsAndRowBytes;
+    BindBufferInfo fBindBufferInfo;
+    SkIRect fRect;
+    SkColorInfo fSrcColorInfo;
+    SkColorInfo fDstColorInfo;
+    size_t fBufferSize;
     size_t fBytesPerPixel;
     sk_sp<TextureProxy> fTextureProxy;
-    std::vector<BufferTextureCopyData> fCopyData;
     std::unique_ptr<ConditionalUploadContext> fConditionalContext;
 };
 

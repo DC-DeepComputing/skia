@@ -123,7 +123,7 @@ enum class LastRemovedRef {
  * buffers created by DrawBufferManager).
  */
 struct BindBufferInfo {
-    const Buffer* fBuffer = nullptr;
+    Buffer* fBuffer = nullptr;
     size_t fOffset = 0;
 
     operator bool() const { return SkToBool(fBuffer); }
