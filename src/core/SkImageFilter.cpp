@@ -23,6 +23,7 @@
 #include "src/core/SkLocalMatrixImageFilter.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkValidationUtils.h"
 #include "src/core/SkWriteBuffer.h"
@@ -333,27 +334,13 @@ skif::LayerSpace<SkIRect> SkImageFilter_Base::getInputBounds(
     // Map both the device-space desired coverage area and the known content bounds to layer space
     skif::LayerSpace<SkIRect> desiredBounds = mapping.deviceToLayer(desiredOutput);
 
-    // If we have no known content bounds use the desired coverage area, because that is the most
-    // conservative possibility.
+    // If we have no known content bounds use an effectively infinite rectangle
     skif::LayerSpace<SkIRect> contentBounds =
             knownContentBounds ? mapping.paramToLayer(*knownContentBounds).roundOut()
-                               : desiredBounds;
+                               : skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
 
     // Process the layer-space desired output with the filter DAG to determine required input
-    skif::LayerSpace<SkIRect> requiredInput = this->onGetInputLayerBounds(
-            mapping, desiredBounds, contentBounds);
-    // If we know what's actually going to be drawn into the layer, and we don't change transparent
-    // black, then we can further restrict the layer to what the known content is
-    // TODO (michaelludwig) - Once all filters are robust to tiling and transparency-affecting
-    // FilterResults, there's no reason this can't always be applied, or be an expectation from the
-    // leaf filters.
-    if (knownContentBounds && !this->affectsTransparentBlack()) {
-        if (!requiredInput.intersect(contentBounds)) {
-            // Nothing would be output by the filter, so return empty rect
-            return skif::LayerSpace<SkIRect>(SkIRect::MakeEmpty());
-        }
-    }
-    return requiredInput;
+    return this->onGetInputLayerBounds(mapping, desiredBounds, contentBounds);
 }
 
 skif::DeviceSpace<SkIRect> SkImageFilter_Base::getOutputBounds(
@@ -383,17 +370,21 @@ skif::LayerSpace<SkIRect> SkImageFilter_Base::getChildInputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& desiredOutput,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
-    // The required input for childFilter filter, or 'contentBounds' intersected with 'desiredOutput'
-    // if the filter is null and the source image is used (i.e. the identity filter).
+    // The required input for childFilter filter, or 'contentBounds' intersected with
+    // 'desiredOutput' if the filter is null and the source image is used (i.e. the identity filter)
     const SkImageFilter* childFilter = this->getInput(index);
     if (childFilter) {
         return as_IFB(childFilter)->onGetInputLayerBounds(mapping, desiredOutput, contentBounds);
     } else {
-        // TODO: The leaf bounds should be the contentBounds intersected with the desired output,
-        // but currently legacy filters often discard or replace the contentBounds with the
-        // desiredOutput. We also need to be robust to unbounded content (i.e. when it's unknown).
-        // See skbug.com/10984
-        return desiredOutput;
+        // NOTE: We don't calculate the intersection between content and root desired output because
+        // the desired output can expand or contract as it propagates through the filter graph to
+        // the leaves that would actually sample from the source content.
+        skif::LayerSpace<SkIRect> visibleContent = contentBounds;
+        if (!visibleContent.intersect(desiredOutput)) {
+            return skif::LayerSpace<SkIRect>::Empty();
+        } else {
+            return visibleContent;
+        }
     }
 }
 
