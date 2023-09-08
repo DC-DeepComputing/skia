@@ -16,6 +16,24 @@
       "message": "I don\u0027t understand the point of this change and think it should be reverted. `std::function` is heavy and you can this is what the `ctx` is for.",
       "revId": "3d1567a97cd3956e6de85c35b1d302b1fc63a08c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "405de340_8685fb72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-08T17:26:45Z",
+      "side": 1,
+      "message": "Part of my point is that if for some crazy reason we really wanted `std::function` (which I would prefer not to) then that change would also remove the `ctx` parameter and everything associated with it (like the `f*Ctx` members and their use).",
+      "parentUuid": "cab5f247_bc9cdf35",
+      "revId": "3d1567a97cd3956e6de85c35b1d302b1fc63a08c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
