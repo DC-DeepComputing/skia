@@ -32,6 +32,12 @@
 #include <string>
 #include <utility>
 
+#if defined(SK_BUILD_FOR_DEBUGGER)
+    #define SK_LENIENT_SKSL_DESERIALIZATION 1
+#else
+    #define SK_LENIENT_SKSL_DESERIALIZATION 0
+#endif
+
 class SkColorSpace;
 struct SkIPoint;
 
