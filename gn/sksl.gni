@@ -272,8 +272,8 @@ skia_sksl_gpu_sources = [
 #  //src/gpu/ganesh:core_skslc_srcs
 #  //src/ports:malloc
 #  //src/ports:osfile
-#  //src/utils:core_skslc_hdrs
-#  //src/utils:core_skslc_srcs
+#  //src/utils:utils_skslc_hdrs
+#  //src/utils:utils_skslc_srcs
 #  //src/utils:json_srcs
 skslc_deps = [
   "$_src/base/SkArenaAlloc.cpp",

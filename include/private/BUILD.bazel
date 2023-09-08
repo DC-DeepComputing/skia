@@ -44,6 +44,9 @@ skia_filegroup(
         # Files listed here will be available to Skia internals via the core_priv target.
         "SkColorData.h",
         "SkIDChangeListener.h",
+        "SkShadowFlags.h",
+        "SkSLSampleUsage.h",
+        "SkGainmapShader.h",
     ],
     visibility = ["//src/core:__pkg__"],
 )
@@ -54,6 +57,7 @@ skia_filegroup(
         # We really don't want this header to be used outside of SkPath and SkPathBuilder
         # so we add it to core under srcs instead to enforce that.
         "SkPathRef.h",
+        "SkWeakRefCnt.h",
     ],
     visibility = ["//src/core:__pkg__"],
 )
