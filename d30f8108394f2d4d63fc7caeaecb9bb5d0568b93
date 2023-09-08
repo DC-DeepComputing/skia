@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1547606f_64f302c7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-08T18:21:20Z",
+      "side": 1,
+      "message": "Ah, I see. Alright, I made it such that the clear values array is initialized to 3, and we populate it with actual values only for color and depth/stencil attachments   based upon attachment index. Thank you for the clarification :^)",
+      "parentUuid": "009f37dd_45d6d23f",
+      "range": {
+        "startLine": 492,
+        "startChar": 12,
+        "endLine": 492,
+        "endChar": 91
+      },
+      "revId": "d30f8108394f2d4d63fc7caeaecb9bb5d0568b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c787cff_8b55488e",
