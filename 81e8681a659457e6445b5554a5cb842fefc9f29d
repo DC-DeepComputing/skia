@@ -123,6 +123,24 @@
       "parentUuid": "475ad9f6_796ab8fa",
       "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f77381e0_9b664e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-08T05:41:07Z",
+      "side": 1,
+      "message": "With this solution, the memcpy_repmovs issue seemed gone, however UploadInstance::Make looked still a bit in hotspots.\n\n\n```\n\n + skgpu::graphite::DrawAtlas::recordUploads\t1300 (14.04%)\t10 (0.11%)\n| + skgpu::graphite::UploadList::recordUpload\t1241 (13.41%)\t4 (0.04%)\n|| + skgpu::graphite::UploadInstance::Make\t1219 (13.17%)\t1 (0.01%)\n||| + skgpu::graphite::UploadBufferManager::getUploadBuffer\t1158 (12.51%)\t1 (0.01%)\n|||| + skgpu::graphite::ResourceProvider::findOrCreateBuffer\t1157 (12.50%)\t3 (0.03%)\n||||| + skgpu::graphite::ResourceCache::findAndRefResource\t1153 (12.46%)\t0 (0.00%)\n|||||| - skgpu::graphite::ResourceCache::refAndMakeResourceMRU\t503 (5.43%)\t5 (0.05%)\n|||||| - skgpu::graphite::ResourceCache::validate\t420 (4.54%)\t38 (0.41%)\n```",
+      "parentUuid": "bbc63a2b_1222907a",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
