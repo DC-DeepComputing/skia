@@ -67,11 +67,7 @@ SkShaper::MakeBiDiRunIterator(const char* utf8, size_t utf8Bytes, uint8_t bidiLe
 
 std::unique_ptr<SkShaper::ScriptRunIterator>
 SkShaper::MakeScriptRunIterator(const char* utf8, size_t utf8Bytes, SkFourByteTag scriptTag) {
-#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_UNICODE_AVAILABLE)
-    auto unicode = SkUnicode::Make();
-    if (!unicode) {
-        return nullptr;
-    }
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
     std::unique_ptr<SkShaper::ScriptRunIterator> script =
         SkShaper::MakeSkUnicodeHbScriptRunIterator(utf8, utf8Bytes, scriptTag);
     if (script) {
