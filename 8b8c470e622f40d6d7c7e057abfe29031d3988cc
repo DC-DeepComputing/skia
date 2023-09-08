@@ -56,6 +56,30 @@
       },
       "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06762db8_4fbfedba",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-08T18:22:05Z",
+      "side": 1,
+      "message": "Maybe RasterPathAtlas?",
+      "parentUuid": "1941de45_fc5831dd",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
