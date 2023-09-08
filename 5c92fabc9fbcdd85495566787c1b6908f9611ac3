@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c379b356_ff23fd9d",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-08T16:16:47Z",
+      "side": 1,
+      "message": "nit: Technically this is only true for bitmap device?",
+      "revId": "5c92fabc9fbcdd85495566787c1b6908f9611ac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
