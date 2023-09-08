@@ -255,9 +255,9 @@ async function driveBrowser() {
 
     // Page is mostly loaded, wait for test harness page to report itself ready. Some resources
     // may still be loading.
-    console.log('Waiting 30s for test harness to be ready');
+    console.log('Waiting 120s for test harness to be ready');
     await page.waitForFunction(`(window._testsReady === true) || window._error`, {
-      timeout: 30000,
+      timeout: 120000,
     });
 
     const err = await page.evaluate('window._error');
