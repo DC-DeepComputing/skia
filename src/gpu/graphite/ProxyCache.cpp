@@ -124,7 +124,10 @@ void ProxyCache::processInvalidKeyMsgs() {
 
     if (!invalidKeyMsgs.empty()) {
         for (int i = 0; i < invalidKeyMsgs.size(); ++i) {
-            fCache.remove(invalidKeyMsgs[i].key());
+            // TODO: it seems like we could have a THashMap::removeIfItIsThereButIgnoreOwise variant
+            if (fCache.find(invalidKeyMsgs[i].key())) {
+                fCache.remove(invalidKeyMsgs[i].key());
+            }
         }
     }
 }
