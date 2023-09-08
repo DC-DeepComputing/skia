@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cab5f247_bc9cdf35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-08T17:22:46Z",
+      "side": 1,
+      "message": "I don\u0027t understand the point of this change and think it should be reverted. `std::function` is heavy and you can this is what the `ctx` is for.",
+      "revId": "3d1567a97cd3956e6de85c35b1d302b1fc63a08c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
