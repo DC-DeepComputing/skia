@@ -20,7 +20,6 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkMath.h"
 #include "src/core/SkBitmapDevice.h"
-#include "src/core/SkDevice.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSurfacePriv.h"

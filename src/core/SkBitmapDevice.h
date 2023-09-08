@@ -125,7 +125,7 @@ private:
 
     class BDDraw;
 
-    // used to change the backend's pixels (and possibly config/rowbytes) but cannot change the
+    // Used to change the backend's pixels (and possibly config/rowbytes) but cannot change the
     // width/height, so there should be no change to any clip information.
     void replaceBitmapBackendForRasterSurface(const SkBitmap&);
 
