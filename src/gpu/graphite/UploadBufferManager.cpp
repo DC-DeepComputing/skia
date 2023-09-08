@@ -25,10 +25,10 @@ UploadBufferManager::UploadBufferManager(ResourceProvider* resourceProvider,
 
 UploadBufferManager::~UploadBufferManager() {}
 
-std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
-        size_t requiredBytes, size_t requiredAlignment) {
+BindBufferInfo UploadBufferManager::getUploadBuffer(size_t requiredBytes,
+                                                    size_t requiredAlignment) {
     if (!requiredBytes) {
-        return {UploadWriter(), BindBufferInfo()};
+        return BindBufferInfo();
     }
 
     requiredAlignment = std::max(requiredAlignment, fMinAlignment);
@@ -42,9 +42,8 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
         bindInfo.fBuffer = buffer.get();
         bindInfo.fOffset = 0;
 
-        void* bufferMapPtr = buffer->map();
         fUsedBuffers.push_back(std::move(buffer));
-        return {UploadWriter(bufferMapPtr, requiredBytes), bindInfo};
+        return bindInfo;
     }
 
     // Try to reuse an already-allocated buffer.
@@ -58,7 +57,7 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
                 kReusedBufferSize, BufferType::kXferCpuToGpu, AccessPattern::kHostVisible);
         fReusedBufferOffset = 0;
         if (!fReusedBuffer) {
-            return {UploadWriter(), BindBufferInfo()};
+            return BindBufferInfo();
         }
     }
 
@@ -70,7 +69,7 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
     bufferMapPtr = SkTAddOffset<void>(bufferMapPtr, fReusedBufferOffset);
 
     fReusedBufferOffset += requiredBytes;
-    return {UploadWriter(bufferMapPtr, requiredBytes), bindInfo};
+    return bindInfo;
 }
 
 void UploadBufferManager::transferToRecording(Recording* recording) {

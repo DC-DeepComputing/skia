@@ -31,15 +31,25 @@ UploadInstance::UploadInstance(UploadInstance&&) = default;
 UploadInstance& UploadInstance::operator=(UploadInstance&&) = default;
 UploadInstance::~UploadInstance() = default;
 
-UploadInstance::UploadInstance(const Buffer* buffer,
+UploadInstance::UploadInstance(const std::vector<MipLevel>& levels,
+                               const TArray<std::pair<size_t, size_t>>& levelOffsetsAndRowBytes,
+                               const BindBufferInfo& bindBufferInfo,
+                               const SkIRect& rect,
+                               const SkColorInfo& srcColorInfo,
+                               const SkColorInfo& dstColorInfo,
+                               size_t bufferSize,
                                size_t bytesPerPixel,
                                sk_sp<TextureProxy> textureProxy,
-                               std::vector<BufferTextureCopyData> copyData,
                                std::unique_ptr<ConditionalUploadContext> condContext)
-        : fBuffer(buffer)
+        : fLevels(levels)
+        , fLevelOffsetsAndRowBytes(levelOffsetsAndRowBytes)
+        , fBindBufferInfo(bindBufferInfo)
+        , fRect(rect)
+        , fSrcColorInfo(srcColorInfo)
+        , fDstColorInfo(dstColorInfo)
+        , fBufferSize(bufferSize)
         , fBytesPerPixel(bytesPerPixel)
         , fTextureProxy(textureProxy)
-        , fCopyData(copyData)
         , fConditionalContext(std::move(condContext)) {}
 
 // Returns total buffer size to allocate, and required offset alignment of that allocation.
@@ -132,54 +142,14 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
     SkASSERT(combinedBufferSize);
 
     UploadBufferManager* bufferMgr = recorder->priv().uploadBufferManager();
-    auto [writer, bufferInfo] = bufferMgr->getUploadWriter(combinedBufferSize, minAlignment);
-
-    std::vector<BufferTextureCopyData> copyData(mipLevelCount);
-
-    if (!bufferInfo.fBuffer) {
-        return {};
-    }
-    size_t baseOffset = bufferInfo.fOffset;
-
-    int32_t currentWidth = dstRect.width();
-    int32_t currentHeight = dstRect.height();
-    bool needsConversion = (srcColorInfo != dstColorInfo);
-    for (unsigned int currentMipLevel = 0; currentMipLevel < mipLevelCount; currentMipLevel++) {
-        const size_t trimRowBytes = currentWidth * bpp;
-        const size_t srcRowBytes = levels[currentMipLevel].fRowBytes;
-        const auto [mipOffset, dstRowBytes] = levelOffsetsAndRowBytes[currentMipLevel];
-
-        // copy data into the buffer, skipping any trailing bytes
-        const char* src = (const char*)levels[currentMipLevel].fPixels;
-        if (needsConversion) {
-            SkISize dims = {currentWidth, currentHeight};
-            SkImageInfo srcImageInfo = SkImageInfo::Make(dims, srcColorInfo);
-            SkImageInfo dstImageInfo = SkImageInfo::Make(dims, dstColorInfo);
-
-            writer.convertAndWrite(
-                    mipOffset, srcImageInfo, src, srcRowBytes, dstImageInfo, dstRowBytes);
-        } else {
-            writer.write(mipOffset, src, srcRowBytes, dstRowBytes, trimRowBytes, currentHeight);
-        }
-
-        copyData[currentMipLevel].fBufferOffset = baseOffset + mipOffset;
-        copyData[currentMipLevel].fBufferRowBytes = dstRowBytes;
-        copyData[currentMipLevel].fRect = {
-            dstRect.left(), dstRect.top(), // TODO: can we recompute this for mips?
-            dstRect.left() + currentWidth, dstRect.top() + currentHeight
-        };
-        copyData[currentMipLevel].fMipLevel = currentMipLevel;
-
-        currentWidth = std::max(1, currentWidth / 2);
-        currentHeight = std::max(1, currentHeight / 2);
-    }
+    BindBufferInfo bufferInfo = bufferMgr->getUploadBuffer(combinedBufferSize, minAlignment);
 
     ATRACE_ANDROID_FRAMEWORK("Upload %sTexture [%ux%u]",
                              mipLevelCount > 1 ? "MipMap " : "",
                              dstRect.width(), dstRect.height());
 
-    return {bufferInfo.fBuffer, bpp, std::move(textureProxy), std::move(copyData),
-            std::move(condContext)};
+    return {levels, levelOffsetsAndRowBytes, bufferInfo, dstRect, srcColorInfo, dstColorInfo,
+            combinedBufferSize, bpp, std::move(textureProxy),std::move(condContext)};
 }
 
 bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
@@ -203,32 +173,76 @@ void UploadInstance::addCommand(Context* context,
         return;
     }
 
+    void* bufferMapPtr = fBindBufferInfo.fBuffer->map();
+    bufferMapPtr = SkTAddOffset<void>(bufferMapPtr, fBindBufferInfo.fOffset);
+
+    UploadWriter writer{bufferMapPtr, fBufferSize};
+
+    unsigned int mipLevelCount = fLevels.size();
+    std::vector<BufferTextureCopyData> copyData(mipLevelCount);
+
+    size_t baseOffset = fBindBufferInfo.fOffset;
+
+    int32_t currentWidth = fRect.width();
+    int32_t currentHeight = fRect.height();
+    bool needsConversion = (fSrcColorInfo != fDstColorInfo);
+    for (unsigned int currentMipLevel = 0; currentMipLevel < mipLevelCount; currentMipLevel++) {
+        const size_t trimRowBytes = currentWidth * fBytesPerPixel;
+        const size_t srcRowBytes = fLevels[currentMipLevel].fRowBytes;
+        const auto [mipOffset, dstRowBytes] = fLevelOffsetsAndRowBytes[currentMipLevel];
+
+        // copy data into the buffer, skipping any trailing bytes
+        const char* src = (const char*)fLevels[currentMipLevel].fPixels;
+        if (needsConversion) {
+            SkISize dims = {currentWidth, currentHeight};
+            SkImageInfo srcImageInfo = SkImageInfo::Make(dims, fSrcColorInfo);
+            SkImageInfo dstImageInfo = SkImageInfo::Make(dims, fDstColorInfo);
+
+            writer.convertAndWrite(
+                    mipOffset, srcImageInfo, src, srcRowBytes, dstImageInfo, dstRowBytes);
+        } else {
+            writer.write(mipOffset, src, srcRowBytes, dstRowBytes, trimRowBytes, currentHeight);
+        }
+
+        copyData[currentMipLevel].fBufferOffset = baseOffset + mipOffset;
+        copyData[currentMipLevel].fBufferRowBytes = dstRowBytes;
+        copyData[currentMipLevel].fRect = {
+            fRect.left(), fRect.top(), // TODO: can we recompute this for mips?
+            fRect.left() + currentWidth, fRect.top() + currentHeight
+        };
+        copyData[currentMipLevel].fMipLevel = currentMipLevel;
+
+        currentWidth = std::max(1, currentWidth / 2);
+        currentHeight = std::max(1, currentHeight / 2);
+    }
+    fBindBufferInfo.fBuffer->unmap();
+
     if (fTextureProxy->texture() != replayData.fTarget) {
         // The CommandBuffer doesn't take ownership of the upload buffer here; it's owned by
         // UploadBufferManager, which will transfer ownership in transferToCommandBuffer.
         commandBuffer->copyBufferToTexture(
-                fBuffer, fTextureProxy->refTexture(), fCopyData.data(), fCopyData.size());
+            fBindBufferInfo.fBuffer, fTextureProxy->refTexture(), copyData.data(), copyData.size());
 
     } else {
         // Here we assume that multiple copies in a single UploadInstance are always used for
         // mipmaps of a single image, and that we won't ever copy to a replay target with mipmaps.
-        SkASSERT(fCopyData.size() == 1);
-        const BufferTextureCopyData& copyData = fCopyData[0];
-        SkIRect dstRect = copyData.fRect;
+        SkASSERT(copyData.size() == 1);
+        const BufferTextureCopyData& copy = copyData[0];
+        SkIRect dstRect = copy.fRect;
         dstRect.offset(replayData.fTranslation);
         SkIRect croppedDstRect = dstRect;
         if (!croppedDstRect.intersect(SkIRect::MakeSize(fTextureProxy->dimensions()))) {
             return;
         }
 
-        BufferTextureCopyData transformedCopyData = copyData;
+        BufferTextureCopyData transformedCopyData = copy;
         transformedCopyData.fBufferOffset +=
-                (croppedDstRect.y() - dstRect.y()) * copyData.fBufferRowBytes +
+                (croppedDstRect.y() - dstRect.y()) * copy.fBufferRowBytes +
                 (croppedDstRect.x() - dstRect.x()) * fBytesPerPixel;
         transformedCopyData.fRect = croppedDstRect;
 
         commandBuffer->copyBufferToTexture(
-                fBuffer, fTextureProxy->refTexture(), &transformedCopyData, 1);
+                fBindBufferInfo.fBuffer, fTextureProxy->refTexture(), &transformedCopyData, 1);
     }
 
     if (fConditionalContext) {

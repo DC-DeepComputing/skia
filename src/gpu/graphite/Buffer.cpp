@@ -17,9 +17,10 @@ void* Buffer::map() {
 }
 
 void Buffer::unmap() {
-    SkASSERT(this->isMapped());
-    this->onUnmap();
-    fMapPtr = nullptr;
+    if (this->isMapped()) {
+        this->onUnmap();
+        fMapPtr = nullptr;
+    }
 }
 
 } // namespace skgpu::graphite

@@ -27,8 +27,7 @@ public:
     UploadBufferManager(ResourceProvider*, const Caps*);
     ~UploadBufferManager();
 
-    std::tuple<UploadWriter, BindBufferInfo> getUploadWriter(size_t requiredBytes,
-                                                             size_t requiredAlignment);
+    BindBufferInfo getUploadBuffer(size_t requiredBytes, size_t requiredAlignment);
 
     // Finalizes all buffers and transfers ownership of them to a Recording.
     void transferToRecording(Recording*);
