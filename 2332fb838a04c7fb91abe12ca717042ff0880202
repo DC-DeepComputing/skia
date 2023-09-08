@@ -46,6 +46,30 @@
       },
       "revId": "2332fb838a04c7fb91abe12ca717042ff0880202",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec25136_b6cc2fa2",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-08T15:59:40Z",
+      "side": 1,
+      "message": "Gotcha. Yeah, that makes sense. I see we have a TODO in RenderPassDesc to determine and store render pass bounds, exact and/or granular, which will presumably be calculated from considering the bounds of all the draw commands contained within it. https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/AttachmentTypes.h#78\n\nFor now, I added a granularity attribute to VulkanRenderPass so it\u0027s accessible later on, used the frame buffer bounds, and added an appropriate TODO.",
+      "parentUuid": "579451e0_d7b73071",
+      "range": {
+        "startLine": 521,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 86
+      },
+      "revId": "2332fb838a04c7fb91abe12ca717042ff0880202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

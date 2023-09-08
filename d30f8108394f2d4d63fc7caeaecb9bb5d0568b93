@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52f0f612_50ac0ca7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-08T15:59:40Z",
+      "side": 1,
+      "message": "Ah, I incorrectly interpreted that because there\u0027s only one clear color value stored in RenderPassDesc that the color and resolve attachment would both use that (in whatever bizarre event the resolve attachment would have a clear load). \n\n\"The [clear values] array is indexed by attachment number\" - so if we had a color, resolve, and depth/stencil attachment, wouldn\u0027t we need 3 clear values (even if the one for resolve attachment is unused and can be ignored) such that the depth/stencil attachment could use clearValues[2]? If so, then I suppose we could have an arbitrary value for it.",
+      "parentUuid": "fcb58f56_c844fc34",
+      "range": {
+        "startLine": 492,
+        "startChar": 12,
+        "endLine": 492,
+        "endChar": 91
+      },
+      "revId": "d30f8108394f2d4d63fc7caeaecb9bb5d0568b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c787cff_8b55488e",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 30
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-07T19:18:13Z",
       "side": 1,
       "message": "can we move this helper down to above where it is used in MakeRenderPass?\n\nAlso these helper functions should be \"static\" to this file. But since we\u0027re not using static keyword anymore, it should be wrapped in an anonymous namespace, which is fine to do even inside the graphite namespace.",
+      "range": {
+        "startLine": 38,
+        "startChar": 5,
+        "endLine": 38,
+        "endChar": 36
+      },
+      "revId": "d30f8108394f2d4d63fc7caeaecb9bb5d0568b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdad7502_7dbb0ecd",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-08T15:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c787cff_8b55488e",
       "range": {
         "startLine": 38,
         "startChar": 5,
