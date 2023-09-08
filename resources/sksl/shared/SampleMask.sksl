@@ -1,3 +1,5 @@
+uint testGlobal;
+
 noinline half4 samplemaskin_as_color() {
     return half4(sk_SampleMaskIn);
 }

@@ -84,6 +84,7 @@ struct Layout {
             , fBuiltin(builtin)
             , fInputAttachmentIndex(inputAttachmentIndex) {}
 
+
     constexpr Layout() = default;
 
     static Layout builtin(int builtin) {
