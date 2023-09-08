@@ -3868,22 +3868,6 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
     return result;
 }
 
-bool SPIRVCodeGenerator::isDead(const Variable& var) const {
-    // During SPIR-V code generation, we synthesize some extra bonus variables that don't actually
-    // exist in the Program at all and aren't tracked by the ProgramUsage. They aren't dead, though.
-    if (fSPIRVBonusVariables.contains(&var)) {
-        return false;
-    }
-    ProgramUsage::VariableCounts counts = fProgram.usage()->get(var);
-    if (counts.fRead || counts.fWrite) {
-        return false;
-    }
-    // It's not entirely clear what the rules are for eliding interface variables. Generally, it
-    // causes problems to elide them, even when they're dead.
-    return !(var.modifierFlags() &
-             (ModifierFlag::kIn | ModifierFlag::kOut | ModifierFlag::kUniform));
-}
-
 // This function determines whether to skip an OpVariable (of pointer type) declaration for
 // compile-time constant scalars and vectors which we turn into OpConstant/OpConstantComposite and
 // always reference by value.
@@ -3923,10 +3907,6 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
     if (storageClass == SpvStorageClassUniform) {
         // Top-level uniforms are emitted in writeUniformBuffer.
         fTopLevelUniforms.push_back(&varDecl);
-        return true;
-    }
-
-    if (this->isDead(*var)) {
         return true;
     }
 
@@ -4600,8 +4580,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
             SpvId id = this->writeInterfaceBlock(intf);
 
             if ((intf.var()->modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut)) &&
-                intf.var()->layout().fBuiltin == -1 &&
-                !this->isDead(*intf.var())) {
+                intf.var()->layout().fBuiltin == -1) {
                 interfaceVars.insert(id);
             }
         }
@@ -4639,8 +4618,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
     // Add global in/out variables to the list of interface variables.
     for (const auto& [var, spvId] : fVariableMap) {
         if (var->storage() == Variable::Storage::kGlobal &&
-            (var->modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut)) &&
-            !this->isDead(*var)) {
+            (var->modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut))) {
             interfaceVars.insert(spvId);
         }
     }

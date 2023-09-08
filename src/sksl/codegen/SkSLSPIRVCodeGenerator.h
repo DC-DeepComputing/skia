@@ -508,8 +508,6 @@ private:
     void writeLabel(SpvId label, BranchingLabelType type, ConditionalOpCounts ops,
                     OutputStream& out);
 
-    bool isDead(const Variable& var) const;
-
     MemoryLayout memoryLayoutForStorageClass(SpvStorageClass_ storageClass);
     MemoryLayout memoryLayoutForVariable(const Variable&) const;
 
