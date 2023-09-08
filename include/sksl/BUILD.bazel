@@ -10,5 +10,8 @@ skia_filegroup(
         "SkSLDebugTrace.h",
         "SkSLVersion.h",
     ],
-    visibility = ["//include:__pkg__"],
+    visibility = [
+        "//include:__pkg__",
+        "//src/core:__pkg__",
+    ],
 )
