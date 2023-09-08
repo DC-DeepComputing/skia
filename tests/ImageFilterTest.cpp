@@ -42,11 +42,12 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
+#include "src/core/SkBitmapDevice.h"
+#include "src/core/SkDevice.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
-#include "src/core/SkSpecialSurface.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/effects/imagefilters/SkCropImageFilter.h"
 #include "src/image/SkImage_Base.h"
@@ -60,6 +61,8 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "src/gpu/SkBackingFit.h"
+#include "src/gpu/ganesh/Device.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
@@ -94,7 +97,7 @@ static constexpr GrSurfaceOrigin kTestSurfaceOrigin = kTopLeft_GrSurfaceOrigin;
 class MatrixTestImageFilter : public SkImageFilter_Base {
 public:
     MatrixTestImageFilter(skiatest::Reporter* reporter, const SkMatrix& expectedMatrix)
-            : SkImageFilter_Base(nullptr, 0, nullptr)
+            : SkImageFilter_Base(nullptr, 0)
             , fReporter(reporter)
             , fExpectedMatrix(expectedMatrix) {}
 
@@ -108,6 +111,19 @@ private:
     skif::FilterResult onFilterImage(const skif::Context& ctx) const override {
         REPORTER_ASSERT(fReporter, ctx.mapping().layerMatrix() == fExpectedMatrix);
         return ctx.source();
+    }
+
+    skif::LayerSpace<SkIRect> onGetInputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& desiredOutput,
+            const skif::LayerSpace<SkIRect>& contentBounds) const override {
+        return desiredOutput;
+    }
+
+    skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& contentBounds) const override {
+        return contentBounds;
     }
 
     skiatest::Reporter* fReporter;
@@ -352,33 +368,36 @@ static sk_sp<SkImageFilter> make_blue(sk_sp<SkImageFilter> input, const SkIRect*
     return SkImageFilters::ColorFilter(std::move(filter), std::move(input), cropRect);
 }
 
-static sk_sp<SkSpecialSurface> create_empty_special_surface(GrRecordingContext* rContext,
-                                                            int widthHeight) {
+static sk_sp<SkDevice> create_empty_device(GrRecordingContext* rContext, int widthHeight) {
 
     const SkImageInfo ii = SkImageInfo::Make({ widthHeight, widthHeight },
                                              kRGBA_8888_SkColorType,
                                              kPremul_SkAlphaType);
 
     if (rContext) {
-        return SkSpecialSurfaces::MakeRenderTarget(rContext, ii, SkSurfaceProps(),
-                                                  kTestSurfaceOrigin);
+        return rContext->priv().createDevice(skgpu::Budgeted::kNo, ii, SkBackingFit::kApprox, 1,
+                                             skgpu::Mipmapped::kNo, skgpu::Protected::kNo,
+                                             kTestSurfaceOrigin, {},
+                                             skgpu::ganesh::Device::InitContents::kUninit);
     } else {
-        return SkSpecialSurfaces::MakeRaster(ii, SkSurfaceProps());
+        SkBitmap bm;
+        SkAssertResult(bm.tryAllocPixels(ii));
+        return sk_make_sp<SkBitmapDevice>(bm, SkSurfaceProps());
     }
 }
 
 static sk_sp<SkSpecialImage> create_empty_special_image(GrRecordingContext* rContext,
-                                                        int widthHeight) {
-    sk_sp<SkSpecialSurface> surf(create_empty_special_surface(rContext, widthHeight));
+                                                        int widthHeight,
+                                                        SkColor4f color = SkColors::kTransparent) {
+    sk_sp<SkDevice> device = create_empty_device(rContext, widthHeight);
 
-    SkASSERT(surf);
+    SkASSERT(device);
 
-    SkCanvas* canvas = surf->getCanvas();
-    SkASSERT(canvas);
-
-    canvas->clear(0x0);
-
-    return surf->makeImageSnapshot();
+    SkPaint p;
+    p.setColor4f(color, /*colorSpace=*/nullptr);
+    p.setBlendMode(SkBlendMode::kSrc);
+    device->drawPaint(p);
+    return device->snapSpecial(SkIRect::MakeWH(widthHeight, widthHeight));
 }
 
 
@@ -685,9 +704,7 @@ static void test_zero_blur_sigma(skiatest::Reporter* reporter, GrDirectContext* 
     sk_sp<SkImageFilter> input(SkImageFilters::Offset(0, 0, nullptr, &cropRect));
     sk_sp<SkImageFilter> filter(SkImageFilters::Blur(0, 0, std::move(input), &cropRect));
 
-    sk_sp<SkSpecialSurface> surf(create_empty_special_surface(dContext, 10));
-    surf->getCanvas()->clear(SK_ColorGREEN);
-    sk_sp<SkSpecialImage> image(surf->makeImageSnapshot());
+    sk_sp<SkSpecialImage> image = create_empty_special_image(dContext, 10, SkColors::kGreen);
 
     SkIPoint offset;
     skif::Context ctx = make_context(32, 32, image.get());
@@ -1809,50 +1826,6 @@ DEF_TEST(ImageFilterMakeWithFilter, reporter) {
                      };
 
     test_make_with_filter(reporter, createRasterSurface, raster);
-}
-
-// TODO(b/293326072): remove when SkImage::makeWithFilter is removed
-DEF_TEST(ImageFilterMakeWithFilter_LegacyRaster, reporter) {
-    auto createRasterSurface = [](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        return SkSurfaces::Raster(info);
-    };
-
-    auto legacy = [](sk_sp<SkImage> src,
-                     const SkImageFilter* filter,
-                     const SkIRect& subset,
-                     const SkIRect& clipBounds,
-                     SkIRect* outSubset,
-                     SkIPoint* offset) -> sk_sp<SkImage> {
-        return src->makeWithFilter(nullptr, filter, subset, clipBounds, outSubset, offset);
-    };
-
-    test_make_with_filter(reporter, createRasterSurface, legacy);
-}
-
-// TODO(b/293326072): remove when SkImage::makeWithFilter is removed
-DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_LegacyGanesh,
-                                       reporter,
-                                       ctxInfo,
-                                       CtsEnforcement::kNever) {
-    GrRecordingContext* rContext = ctxInfo.directContext();
-
-    auto createGaneshSurface = [rContext](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        return SkSurfaces::RenderTarget(
-                rContext, skgpu::Budgeted::kNo, info, 0, kTestSurfaceOrigin, nullptr);
-    };
-
-    auto legacy = [rContext](sk_sp<SkImage> src,
-                             const SkImageFilter* filter,
-                             const SkIRect& subset,
-                             const SkIRect& clipBounds,
-                             SkIRect* outSubset,
-                             SkIPoint* offset) -> sk_sp<SkImage> {
-        return src->makeWithFilter(rContext, filter, subset, clipBounds, outSubset, offset);
-    };
-
-    test_make_with_filter(reporter, createGaneshSurface, legacy);
 }
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Ganesh,
