@@ -50,8 +50,6 @@ public:
             , fYChannel(yChannel)
             , fScale(scale) {}
 
-    SkRect computeFastBounds(const SkRect& src) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -293,11 +291,4 @@ skif::LayerSpace<SkIRect> SkDisplacementMapImageFilter::onGetOutputLayerBounds(
     skif::LayerSpace<SkIRect> colorOutput =
             this->getChildOutputLayerBounds(kColor, mapping, contentBounds);
     return this->outsetByMaxDisplacement(mapping, colorOutput);
-}
-
-SkRect SkDisplacementMapImageFilter::computeFastBounds(const SkRect& src) const {
-    SkRect colorBounds = this->getInput(kColor) ? this->getInput(kColor)->computeFastBounds(src)
-                                                : src;
-    float maxDisplacement = 0.5f * SkScalarAbs(fScale);
-    return colorBounds.makeOutset(maxDisplacement, maxDisplacement);
 }

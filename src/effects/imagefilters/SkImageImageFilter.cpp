@@ -41,8 +41,6 @@ public:
         SkASSERT(fImage && !dstRect.isEmpty());
     }
 
-    SkRect computeFastBounds(const SkRect&) const override { return SkRect(fDstRect); }
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 

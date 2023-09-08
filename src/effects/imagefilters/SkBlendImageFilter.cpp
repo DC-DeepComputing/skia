@@ -55,8 +55,6 @@ public:
         SkASSERT(fBlender);
     }
 
-    SkRect computeFastBounds(const SkRect& bounds) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -68,13 +66,6 @@ private:
     static sk_sp<SkFlattenable> LegacyArithmeticCreateProc(SkReadBuffer& buffer);
 
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
-
-    bool onAffectsTransparentBlack() const override {
-        // An arbitrary runtime blender or an arithmetic runtime blender with k3 != 0 affects
-        // transparent black.
-        return !as_BB(fBlender)->asBlendMode().has_value() &&
-               (!fArithmeticCoefficients.has_value() || (*fArithmeticCoefficients)[3] != 0.f);
-    }
 
     skif::FilterResult onFilterImage(const skif::Context&) const override;
 
@@ -266,7 +257,10 @@ sk_sp<SkShader> SkBlendImageFilter::makeBlendShader(sk_sp<SkShader> bg, sk_sp<Sk
     if (!bg || !fg) {
         // If we don't affect transparent black and both inputs are null, then return a null
         // shader to skip any evaluation.
-        if (!this->onAffectsTransparentBlack() && !bg && !fg) {
+        const bool affectsTransparentBlack =
+                !as_BB(fBlender)->asBlendMode().has_value() &&
+                (!fArithmeticCoefficients.has_value() || (*fArithmeticCoefficients)[3] != 0.f);
+        if (!affectsTransparentBlack && !bg && !fg) {
             return nullptr;
         }
         // Otherwise if only one input is null, we might be able to just return that one.
@@ -397,63 +391,6 @@ skif::LayerSpace<SkIRect> SkBlendImageFilter::onGetOutputLayerBounds(
             // Output is the intersection of both
             if (!foregroundBounds.intersect(backgroundBounds)) {
                 return skif::LayerSpace<SkIRect>::Empty();
-            }
-        }
-        return foregroundBounds;
-    } else {
-        if (!transparentOutsideBG) {
-            // Output is the union of both (infinite bounds were detected earlier).
-            backgroundBounds.join(foregroundBounds);
-        }
-        return backgroundBounds;
-    }
-}
-
-SkRect SkBlendImageFilter::computeFastBounds(const SkRect& bounds) const {
-    // TODO: This is a prime example of why computeFastBounds() and onGetOutputLayerBounds() should
-    // be combined into the same function.
-    bool transparentOutsideFG = false;
-    bool transparentOutsideBG = false;
-    if (auto bm = as_BB(fBlender)->asBlendMode()) {
-        SkASSERT(*bm != SkBlendMode::kClear); // Should have been caught at creation time
-        SkBlendModeCoeff src, dst;
-        if (SkBlendMode_AsCoeff(*bm, &src, &dst)) {
-            // If dst's coefficient is 0 then nothing can produce non-transparent content outside
-            // of the foreground. When dst coefficient is SA, it will always be 0 outside the FG.
-            transparentOutsideFG = dst == SkBlendModeCoeff::kZero || dst == SkBlendModeCoeff::kSA;
-            // And the reverse is true for src and the background content.
-            transparentOutsideBG = src == SkBlendModeCoeff::kZero || src == SkBlendModeCoeff::kDA;
-        }
-    } else if (fArithmeticCoefficients.has_value()) {
-        [[maybe_unused]] static constexpr SkV4 kClearCoeff = {0.f, 0.f, 0.f, 0.f};
-        const SkV4& k = *fArithmeticCoefficients;
-        SkASSERT(k != kClearCoeff); // Should have been converted to an empty image filter
-
-        if (k[3] != 0.f) {
-            // The arithmetic equation produces non-transparent black everywhere
-            return SkRectPriv::MakeLargeS32();
-        } else {
-            // Given the earlier assert and if, then (k[1] == k[2] == 0) implies k[0] != 0. If only
-            // one of k[1] or k[2] are non-zero then, regardless of k[0], then only that bounds
-            // has non-transparent content.
-            transparentOutsideFG = k[2] == 0.f;
-            transparentOutsideBG = k[1] == 0.f;
-        }
-    } else {
-        // A non-arithmetic runtime blender, so pessimistically assume it can return non-transparent
-        // black anywhere.
-        return SkRectPriv::MakeLargeS32();
-    }
-
-    SkRect foregroundBounds = this->getInput(kForeground) ?
-            this->getInput(kForeground)->computeFastBounds(bounds) : bounds;
-    SkRect backgroundBounds = this->getInput(kBackground) ?
-            this->getInput(kBackground)->computeFastBounds(bounds) : bounds;
-    if (transparentOutsideFG) {
-        if (transparentOutsideBG) {
-            // Output is the intersection of both
-            if (!foregroundBounds.intersect(backgroundBounds)) {
-                return SkRect::MakeEmpty();
             }
         }
         return foregroundBounds;

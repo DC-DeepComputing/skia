@@ -36,18 +36,12 @@ public:
         SkASSERT(fShader);
     }
 
-    SkRect computeFastBounds(const SkRect& /*bounds*/) const override {
-        return SkRectPriv::MakeLargeS32();
-    }
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
 private:
     friend void ::SkRegisterShaderImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkShaderImageFilter)
-
-    bool onAffectsTransparentBlack() const override { return true; }
 
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
 

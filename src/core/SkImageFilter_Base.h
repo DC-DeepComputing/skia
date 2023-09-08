@@ -107,10 +107,6 @@ public:
     skif::DeviceSpace<SkIRect> getOutputBounds(
             const skif::Mapping& mapping, const skif::ParameterSpace<SkRect>& contentBounds) const;
 
-    // Returns true if this image filter graph transforms a source transparent black pixel to a
-    // color other than transparent black.
-    bool affectsTransparentBlack() const;
-
     // Returns true if this image filter graph references the Context's source image.
     bool usesSource() const { return fUsesSrcInput; }
 
@@ -226,19 +222,6 @@ private:
     }
 
     /**
-     *  Return true if this filter would transform transparent black pixels to a color other than
-     *  transparent black. When false, optimizations can be taken to discard regions known to be
-     *  transparent black and thus process fewer pixels.
-     */
-    virtual bool onAffectsTransparentBlack() const { return false; }
-
-    /**
-     * Return true if `affectsTransparentBlack()` should only be based on
-     * `onAffectsTransparentBlack()` and ignore the transparency behavior of child input filters.
-     */
-    virtual bool ignoreInputsAffectsTransparentBlack() const { return false; }
-
-    /**
      *  This is the virtual which should be overridden by the derived class to perform image
      *  filtering. Subclasses are responsible for recursing to their input filters, although the
      *  filterInput() function is provided to handle all necessary details of this.
@@ -275,8 +258,6 @@ private:
      *  Unlike the public getOutputBounds(), all internal bounds calculations are done in the
      *  shared layer space defined by 'mapping'.
      */
-    // TODO (michaelludwig) - When layerMatrix = I, this function could be used to implement
-    // onComputeFastBounds() instead of making filters implement the essentially the same calcs x2
     virtual skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
             const skif::Mapping& mapping, const skif::LayerSpace<SkIRect>& contentBounds) const = 0;
 

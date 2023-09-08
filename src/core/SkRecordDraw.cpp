@@ -328,9 +328,7 @@ private:
     static bool PaintMayAffectTransparentBlack(const SkPaint* paint) {
         if (paint) {
             // FIXME: this is very conservative
-            if ((paint->getImageFilter() &&
-                 as_IFB(paint->getImageFilter())->affectsTransparentBlack()) ||
-                (paint->getColorFilter() &&
+            if ((paint->getColorFilter() &&
                  as_CFB(paint->getColorFilter())->affectsTransparentBlack())) {
                 return true;
             }

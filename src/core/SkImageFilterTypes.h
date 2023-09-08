@@ -548,9 +548,7 @@ public:
 
     // Helper constructor that equates device and layer space to the same coordinate space.
     explicit Mapping(const SkMatrix& paramToLayer)
-            : fLayerToDevMatrix(SkMatrix::I())
-            , fParamToLayerMatrix(paramToLayer)
-            , fDevToLayerMatrix(SkMatrix::I()) {}
+            : Mapping(SkMatrix::I(), SkMatrix::I(), paramToLayer) {}
 
     // This constructor allows the decomposition to be explicitly provided, assumes that
     // 'layerToDev's inverse has already been calculated in 'devToLayer'
@@ -558,6 +556,14 @@ public:
             : fLayerToDevMatrix(layerToDev)
             , fParamToLayerMatrix(paramToLayer)
             , fDevToLayerMatrix(devToLayer) {}
+
+    static Mapping UnknownIdentity() {
+        Mapping unknown{SkMatrix::I()};
+        unknown.fLayerSpaceIsWellDefined = false;
+        return unknown;
+    }
+
+    bool isLayerSpaceWellDefined() const { return fLayerSpaceIsWellDefined; }
 
     // Sets this Mapping to the default decomposition of the canvas's total transform, given the
     // requirements of the 'filter'. Returns false if the decomposition failed or would produce an
@@ -620,6 +626,19 @@ private:
 
     // Cached inverse of fLayerToDevMatrix
     SkMatrix fDevToLayerMatrix;
+
+    // When this is true, it means that the param-to-layer transform and layer-to-device transform
+    // accurately match how source images were rendered and how the final result will be restored to
+    // the parent device.
+    //
+    // When this is false, it means there is some unknown post transform that will be applied to
+    // filter results. This is only used when calculating approximate output bounds. For the
+    // majority of image filters, this being false is irrelevant because post-transforming their
+    // output by this unknown transform will still produce valid conservative bounds. The exception
+    // is filters that always operate in the layer space without adjusting their parameters to match
+    // the param-to-layer transform. In this case their final output is directly impacted by the
+    // actual (but currently unknown) pixel size.
+    bool fLayerSpaceIsWellDefined = true;
 
     // Actual geometric mapping operations that work on coordinates and matrices w/o the type
     // safety of the coordinate space wrappers (hence these are private).

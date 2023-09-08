@@ -31,8 +31,6 @@ public:
             : SkImageFilter_Base(&input, 1)
             , fColorFilter(std::move(cf)) {}
 
-    SkRect computeFastBounds(const SkRect& bounds) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -52,10 +50,6 @@ private:
             const skif::LayerSpace<SkIRect>& contentBounds) const override;
 
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
-
-    bool onAffectsTransparentBlack() const override {
-        return as_CFB(fColorFilter)->affectsTransparentBlack();
-    }
 
     bool onIsColorFilterNode(SkColorFilter** filter) const override {
         SkASSERT(1 == this->countInputs());
@@ -136,16 +130,5 @@ skif::LayerSpace<SkIRect> SkColorFilterImageFilter::onGetOutputLayerBounds(
         return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
     } else {
         return this->getChildOutputLayerBounds(0, mapping, contentBounds);
-    }
-}
-
-SkRect SkColorFilterImageFilter::computeFastBounds(const SkRect& bounds) const {
-    // See comment in onGetOutputLayerBounds().
-    if (as_CFB(fColorFilter)->affectsTransparentBlack()) {
-        return SkRectPriv::MakeLargeS32();
-    } else if (this->getInput(0)) {
-        return this->getInput(0)->computeFastBounds(bounds);
-    } else {
-        return bounds;
     }
 }

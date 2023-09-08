@@ -86,11 +86,20 @@ public:
      */
     const SkImageFilter* getInput(int i) const;
 
-    // Default impl returns union of all input bounds.
-    virtual SkRect computeFastBounds(const SkRect& bounds) const;
+    /**
+     *  Calculate the conservative output bounds the image filter DAG would produce when operating
+     *  on content whose non-transparent pixels are contained within 'bounds'. This is intended
+     *  to operate on the local coordinate space, such that 'bounds' and the returned output bounds
+     *  would still be transformed by the full SkCanvas matrix to determine the final affected
+     *  pixels.
+     *
+     *  This may return a rectangle with very large  (effectively infinite) coordinates if the
+     *  output of the DAG is only restricted by the size of the canvas it's being drawn into.
+    */
+    SkRect computeFastBounds(const SkRect& bounds) const;
 
-    // Can this filter DAG compute the resulting bounds of an object-space rectangle?
-    bool canComputeFastBounds() const;
+    // DEPRECATED: An image filter can always calculate its bounds
+    bool canComputeFastBounds() const { return true; }
 
     /**
      *  If this filter can be represented by another filter + a localMatrix, return that filter,

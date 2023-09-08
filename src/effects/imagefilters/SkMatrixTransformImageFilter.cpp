@@ -43,8 +43,6 @@ public:
         (void) static_cast<const SkMatrix&>(fTransform).getType();
     }
 
-    SkRect computeFastBounds(const SkRect&) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -148,11 +146,6 @@ skif::FilterResult SkMatrixTransformImageFilter::onFilterImage(const skif::Conte
 
     skif::LayerSpace<SkMatrix> transform = context.mapping().paramToLayer(fTransform);
     return childOutput.applyTransform(context, transform, fSampling);
-}
-
-SkRect SkMatrixTransformImageFilter::computeFastBounds(const SkRect& src) const {
-    SkRect bounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    return static_cast<const SkMatrix&>(fTransform).mapRect(bounds);
 }
 
 skif::LayerSpace<SkIRect> SkMatrixTransformImageFilter::requiredInput(
