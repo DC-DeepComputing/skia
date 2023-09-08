@@ -118,7 +118,8 @@ private:
     int fHeight = 0;
     SkFont fFont;
     bool fNeedsReshape = false;
-    const char* fLocale = "en";  // TODO: make this setable
+    //const char* fLocale = "jp-JP-lb-strict";  // TODO: make this setable
+    const char* fLocale = "th";  // TODO: make this setable
 
     void markDirty(TextLine*);
     void reshapeAll();
