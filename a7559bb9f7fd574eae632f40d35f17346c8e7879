@@ -22,6 +22,30 @@
       },
       "revId": "a7559bb9f7fd574eae632f40d35f17346c8e7879",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aab6b4c3_e92aadd5",
+        "filename": "src/core/SkRuntimeBlender.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-08T15:20:48Z",
+      "side": 1,
+      "message": "They implicitly have static linkage; adding `static` is a no-op.\n\nhttp://go/totw/140#approaches-that-work-in-source-files",
+      "parentUuid": "8fc7222b_949647bf",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 13
+      },
+      "revId": "a7559bb9f7fd574eae632f40d35f17346c8e7879",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
