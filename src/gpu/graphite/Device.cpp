@@ -1221,16 +1221,19 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     // if hardware MSAA is required.
     // TODO(b/285195175): There may be reasons to prefer tessellation, e.g. if the shape is large
     // and hardware MSAA looks acceptable.
-    // TODO(b/280927548): Currently we assume `pathAtlas` is a GPU compute path atlas and select it
-    // if it's supported (this should be always nullptr if SK_ENABLE_VELLO_SHADERS isn't defined).
+    // TODO(b/280927548): Currently we assume `pathAtlas` is a single path atlas type, either a GPU
+    // compute path atlas, selected if it's supported (this should be always nullptr if
+    // SK_ENABLE_VELLO_SHADERS isn't defined) or a software path atlas.
     // This will likely need to provide more information about the PathAtlas' rendering algorithm
-    // when we support non-compute PathAtlases, which may factor into the renderer choice.
+    // which may factor into the renderer choice.
     PathAtlas* pathAtlas = fDC->getOrCreatePathAtlas(fRecorder);
     if (!requireMSAA && pathAtlas) {
         // TODO: vello can't do correct strokes yet. Maybe this shouldn't get selected for stroke
         // renders until all stroke styles are supported?
         return {renderers->atlasShape(), pathAtlas};
     }
+
+    //*** probably shouldn't prefer software path renderer over tessellating unless no MSAA
 
     // If we got here, it requires tessellated path rendering or an MSAA technique applied to a
     // simple shape (so we interpret them as paths to reduce the number of pipelines we need).
