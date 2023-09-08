@@ -80,6 +80,53 @@
       },
       "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3856bb4_5919deda",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-08T18:45:19Z",
+      "side": 1,
+      "message": "RasterPathAtlas works for me, but I also don\u0027t have problems with SoftwarePathAtlas in this context. But that might be because I\u0027m used to the history of the SoftwarePathRenderer in Ganesh.",
+      "parentUuid": "06762db8_4fbfedba",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c81d7fd7_93eeda2b",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-08T18:45:19Z",
+      "side": 1,
+      "message": "nit: are",
+      "range": {
+        "startLine": 163,
+        "startChar": 11,
+        "endLine": 163,
+        "endChar": 13
+      },
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
