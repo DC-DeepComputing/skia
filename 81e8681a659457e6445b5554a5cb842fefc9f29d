@@ -105,6 +105,24 @@
       "parentUuid": "7b21601f_7f0f329f",
       "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbc63a2b_1222907a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-09-08T01:56:31Z",
+      "side": 1,
+      "message": "If my understanding is right, memcpy_repmovs comes from this [line](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/UploadTask.cpp;l\u003d162).\n```\n        } else {\n            writer.write(mipOffset, src, srcRowBytes, dstRowBytes, trimRowBytes, currentHeight);\n        }\n\n```\n\nMy current solution is to simply split buffer assignment and actual buffer write, so that the costly ops like buffer map and copy only happen as necessarily as needed.",
+      "parentUuid": "475ad9f6_796ab8fa",
+      "revId": "81e8681a659457e6445b5554a5cb842fefc9f29d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
