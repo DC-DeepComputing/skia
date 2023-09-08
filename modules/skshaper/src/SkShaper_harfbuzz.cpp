@@ -891,6 +891,8 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
 
     const char* utf8Start = nullptr;
     const char* utf8End = utf8;
+    SkUnicodeBreak lineBreakIterator;
+    SkString currentLanguage;
     while (runSegmenter.advanceRuns()) {  // For each item
         utf8Start = utf8End;
         utf8End = utf8 + runSegmenter.endOfCurrentRun();
@@ -945,12 +947,17 @@ void ShaperDrivenWrapper::wrap(char const * const utf8, size_t utf8Bytes,
 
             // TODO: break iterator per item, but just reset position if needed?
             // Maybe break iterator with model?
-
-            // TODO: this line break iterator needs to be in the current language.
-            if (!fLineBreakIterator->setText(utf8Start, utf8runLength)) {
+            if (!lineBreakIterator || !currentLanguage.equals(language.currentLanguage())) {
+                currentLanguage = language.currentLanguage();
+                lineBreakIterator = fUnicode->makeBreakIterator(currentLanguage.c_str(), SkUnicode::BreakType::kLines);
+                if (!lineBreakIterator) {
+                    return;
+                }
+            }
+            if (!lineBreakIterator->setText(utf8Start, utf8runLength)) {
                 return;
             }
-            SkBreakIterator& breakIterator = *fLineBreakIterator;
+            SkBreakIterator& breakIterator = *lineBreakIterator;
 
             ShapedRun best(RunHandler::Range(), SkFont(), 0, nullptr, 0,
                            { SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity });

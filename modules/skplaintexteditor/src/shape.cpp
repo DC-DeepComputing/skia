@@ -272,20 +272,45 @@ ShapeResult SkPlainTextEditor::Shape(const char* utf8Text,
     float height = font.getSpacing();
     RunHandler runHandler(utf8Text, textByteLen);
     if (textByteLen) {
+        std::unique_ptr<SkShaper::BiDiRunIterator> bidi(
+                SkShaper::MakeBiDiRunIterator(utf8Text, textByteLen, 0 /*LTR*/));
+
+        auto language = SkShaper::TrivialLanguageRunIterator(locale, textByteLen);
+
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        std::unique_ptr<SkShaper::ScriptRunIterator> script(
+            SkShaper::MakeSkUnicodeHbScriptRunIterator(utf8Text, textByteLen));
+#else
+        SkFourByteTag undeterminedScript = SkSetFourByteTag('Z','y','y','y');
+        std::unique_ptr<SkShaper::ScriptRunIterator> script(
+                SkShaper::MakeScriptRunIterator(utf8Text, textByteLen, undeterminedScript));
+#endif
+
         result.glyphBounds.resize(textByteLen);
         for (SkRect& c : result.glyphBounds) {
             c = SkRect{-FLT_MAX, -FLT_MAX, -FLT_MAX, -FLT_MAX};
         }
         runHandler.setRunCallback(set_character_bounds, result.glyphBounds.data());
-        // TODO: make use of locale in shaping.
-        shaper->shape(utf8Text, textByteLen, font, true, width, &runHandler);
-        if (runHandler.lineEndOffsets().size() > 1) {
-            result.lineBreakOffsets = runHandler.lineEndOffsets();
-            SkASSERT(result.lineBreakOffsets.size() > 0);
-            result.lineBreakOffsets.pop_back();
+
+        std::unique_ptr<SkShaper::FontRunIterator> fontIter(
+                SkShaper::MakeFontMgrRunIterator(utf8Text,
+                                                 textByteLen,
+                                                 font,
+                                                 SkFontMgr::RefDefault(),
+                                                 "Arial",
+                                                 font.getTypefaceOrDefault()->fontStyle(),
+                                                 &language));
+
+        if (bidi && script && fontIter) {
+            shaper->shape(utf8Text, textByteLen, *fontIter, *bidi, *script, language, width, &runHandler);
+            if (runHandler.lineEndOffsets().size() > 1) {
+                result.lineBreakOffsets = runHandler.lineEndOffsets();
+                SkASSERT(result.lineBreakOffsets.size() > 0);
+                result.lineBreakOffsets.pop_back();
+            }
+            height = std::max(height, runHandler.endPoint().y());
+            result.blob = runHandler.makeBlob();
         }
-        height = std::max(height, runHandler.endPoint().y());
-        result.blob = runHandler.makeBlob();
     }
     result.glyphBounds.push_back(runHandler.finalRect(font));
     result.verticalAdvance = (int)ceilf(height);
