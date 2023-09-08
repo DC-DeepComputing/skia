@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a123f180_34c003cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-08T18:18:28Z",
+      "side": 1,
+      "message": "LGTM % one comment suggestion",
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1941de45_fc5831dd",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-08T18:18:28Z",
+      "side": 1,
+      "message": "Technically `ComputePathAtlas` is also a software atlas but the software runs on the GPU instead of the CPU. I\u0027m OK with the class name as it is but maybe the comments should reflect the fact that the software rending happens on the CPU.",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
