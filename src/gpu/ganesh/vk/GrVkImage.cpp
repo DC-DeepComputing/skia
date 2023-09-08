@@ -470,8 +470,7 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
     if (0 == imageDesc.fWidth || 0 == imageDesc.fHeight) {
         return false;
     }
-    if ((imageDesc.fIsProtected == GrProtected::kYes) &&
-        !gpu->vkCaps().supportsProtectedContent()) {
+    if (imageDesc.fIsProtected == GrProtected::kYes && !gpu->vkCaps().supportsProtectedContent()) {
         return false;
     }
 
@@ -489,7 +488,7 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
              VK_SAMPLE_COUNT_1_BIT == vkSamples);
 
     VkImageCreateFlags createflags = 0;
-    if (imageDesc.fIsProtected == GrProtected::kYes || gpu->protectedContext()) {
+    if (imageDesc.fIsProtected == GrProtected::kYes) {
         createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
     }
     const VkImageCreateInfo imageCreateInfo = {
@@ -517,8 +516,7 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
         return false;
     }
 
-    skgpu::Protected isProtected = gpu->protectedContext() ? skgpu::Protected::kYes
-                                                           : skgpu::Protected::kNo;
+    skgpu::Protected isProtected = imageDesc.fIsProtected;
     bool forceDedicatedMemory = gpu->vkCaps().shouldAlwaysUseDedicatedImageMemory();
     bool useLazyAllocation =
             SkToBool(imageDesc.fUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT);
