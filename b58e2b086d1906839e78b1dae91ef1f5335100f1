@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed839a74_d69d2804",
+        "filename": "infra/bots/task_drivers/bazel_test_gm/bazel_test_gm_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-09T01:06:16Z",
+      "side": 1,
+      "message": "Deleted in this CL.",
+      "parentUuid": "0b4bc676_00d56773",
+      "range": {
+        "startLine": 20,
+        "startChar": 43,
+        "endLine": 20,
+        "endChar": 52
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2fb6932_85c2e5fe",
@@ -415,6 +439,30 @@
       "side": 1,
       "message": "4. Port to using exec_testutils.AssertCommandsMatchlike the other unit tests\n\nor 3 if we must keep it around",
       "parentUuid": "d95f38cf_d76b4846",
+      "range": {
+        "startLine": 323,
+        "startChar": 20,
+        "endLine": 323,
+        "endChar": 27
+      },
+      "revId": "b58e2b086d1906839e78b1dae91ef1f5335100f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ceb0074_2450e982",
+        "filename": "infra/bots/task_drivers/common/goldctl_steps_test.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-09T01:06:16Z",
+      "side": 1,
+      "message": "The above options were in regard to step names. I ended up renaming `testutils.AssertStepNamesMatchStringsOrRegexps` to `testutils.AssertStepNames` and deleted the regexp-related code and unused helpers.\n\nNote that I rewrote the command assertions using `exec_testutils.AssertCommandsMatch` on patchset 13.",
+      "parentUuid": "bd462c8b_803ab2c7",
       "range": {
         "startLine": 323,
         "startChar": 20,
