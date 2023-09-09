@@ -9,6 +9,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"testing"
@@ -90,4 +91,27 @@ func MakeZIP(t *testing.T, zipPath string, contents map[string]string) {
 
 	require.NoError(t, zipWriter.Close())
 	require.NoError(t, os.WriteFile(zipPath, buf.Bytes(), 0644))
+}
+
+// PopulateDir populates a directory with the given contents, represented as a map from file paths
+// to file contents.
+func PopulateDir(t *testing.T, dirPath string, contents map[string]string) {
+	for filePath, fileContents := range contents {
+		require.NoError(t, os.WriteFile(filepath.Join(dirPath, filePath), []byte(fileContents), 0644))
+	}
+}
+
+// MakeTempDirMockFn returns a function that can be used to mock os_steps.TempDir by setting the
+// os_steps.TempDirContextKey context key. It takes a list of directory paths, and returns the
+// first path on first call, then the second, and so on. If the function is called more times than
+// the number of directories, the test fails.
+func MakeTempDirMockFn(t *testing.T, dirs ...string) func(string, string) (string, error) {
+	require.NotEmpty(t, dirs)
+	i := 0
+	return func(string, string) (string, error) {
+		require.Less(t, i, len(dirs))
+		dir := dirs[i]
+		i++
+		return dir, nil
+	}
 }
