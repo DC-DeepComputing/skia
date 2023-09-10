@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931e2312_fd0d75ed",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-10T19:09:11Z",
+      "side": 1,
+      "message": "I think I\u0027ll leave it as SoftwarePathAtlas for historical reasons -- we know what it means and it might be confusing to change it. Arguably rendering with vertex and fragment programs could also be considered running software, as opposed to using a fixed function pipeline. Updated the comment.",
+      "parentUuid": "c3856bb4_5919deda",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c81d7fd7_93eeda2b",
@@ -119,6 +143,30 @@
       "writtenOn": "2023-09-08T18:45:19Z",
       "side": 1,
       "message": "nit: are",
+      "range": {
+        "startLine": 163,
+        "startChar": 11,
+        "endLine": 163,
+        "endChar": 13
+      },
+      "revId": "8b8c470e622f40d6d7c7e057abfe29031d3988cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec7e72aa_989cdf52",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-10T19:09:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c81d7fd7_93eeda2b",
       "range": {
         "startLine": 163,
         "startChar": 11,
