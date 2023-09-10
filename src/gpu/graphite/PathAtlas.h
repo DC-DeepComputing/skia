@@ -170,15 +170,15 @@ class SoftwarePathAtlas : public PathAtlas {
 public:
     SoftwarePathAtlas();
     ~SoftwarePathAtlas() override {}
-    void recordUploads(UploadList*) const {}
+    void recordUploads(UploadList*) const;
 
 protected:
     void onAddShape(const Shape&,
                     const Transform& transform,
                     const Rect& atlasBounds,
                     skvx::int2 deviceOffset,
-                    const SkStrokeRec&) override {}
-    void onReset() override {}
+                    const SkStrokeRec&) override;
+    void onReset() override;
 };
 
 }  // namespace skgpu::graphite
