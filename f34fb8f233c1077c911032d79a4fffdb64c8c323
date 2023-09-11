@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8a51c1a_5ae53b19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T18:18:42Z",
+      "side": 1,
+      "message": "lgtm % iwyu errors",
+      "revId": "f34fb8f233c1077c911032d79a4fffdb64c8c323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d264c7bc_f2321b92",
+        "filename": "tests/sksl/wgsl/PixelLocalStorage.wgsl",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T18:18:42Z",
+      "side": 1,
+      "message": "Code search didn\u0027t reveal any results for this unfortunately. Do you have any idea where this flag gets defined?",
+      "range": {
+        "startLine": 3,
+        "startChar": 62,
+        "endLine": 3,
+        "endChar": 97
+      },
+      "revId": "f34fb8f233c1077c911032d79a4fffdb64c8c323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
