@@ -106,6 +106,24 @@
       "parentUuid": "ef5f293f_3ba71c0e",
       "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5b2b4c0_de409fb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T21:47:18Z",
+      "side": 1,
+      "message": "Yes, and the tests are currently passing with this CL afaict. I\u0027ll send you a separate CL that turns on WGSL on compute and fixes up the tests.",
+      "parentUuid": "e6996904_a9da53f6",
+      "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
