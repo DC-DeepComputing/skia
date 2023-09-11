@@ -39,6 +39,30 @@
       },
       "revId": "f34fb8f233c1077c911032d79a4fffdb64c8c323",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca551d2a_1c21ef9b",
+        "filename": "tests/sksl/wgsl/PixelLocalStorage.wgsl",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-11T18:20:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d264c7bc_f2321b92",
+      "range": {
+        "startLine": 3,
+        "startChar": 62,
+        "endLine": 3,
+        "endChar": 97
+      },
+      "revId": "f34fb8f233c1077c911032d79a4fffdb64c8c323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
