@@ -33,6 +33,23 @@
       "message": "I like this a lot.",
       "revId": "ff9e59d59fff540f5671ba84dc937826616bed1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aeae87f_2ffbd18e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-11T15:42:44Z",
+      "side": 1,
+      "message": "I\u0027m ambivalent. I tried to go back and find the justification, but couldn\u0027t. Now that there is no SkBaseDevice class name, I find \"base\" device not very objectionable, but I\u0027m happy with root, as well.",
+      "revId": "ff9e59d59fff540f5671ba84dc937826616bed1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
