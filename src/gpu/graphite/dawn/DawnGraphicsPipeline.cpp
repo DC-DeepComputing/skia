@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
@@ -149,7 +150,7 @@ size_t create_vertex_attributes(SkSpan<const Attribute> attrs,
     size_t vertexAttributeOffset = 0;
     int attributeIndex = 0;
     for (const auto& attr : attrs) {
-        wgpu::VertexAttribute& vertexAttribute =  (*out)[attributeIndex];
+        wgpu::VertexAttribute& vertexAttribute = (*out)[attributeIndex];
         vertexAttribute.format = attribute_type_to_dawn(attr.cpuType());
         SkASSERT(vertexAttribute.format != wgpu::VertexFormat::Undefined);
         vertexAttribute.offset = vertexAttributeOffset;
@@ -229,7 +230,7 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
     return gTable[(int)equation];
 }
 
-} // anonymous namespace
+}  // anonymous namespace
 
 // static
 sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* sharedContext,
@@ -247,15 +248,14 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                    std::string*,
                                    SkSL::Program::Interface*,
                                    ShaderErrorHandler*);
-    const SkSLCompileFn kSkSLCompileFn = enableWGSL ? SkSLToWGSL
-                                                    : SkSLToSPIRV;
+    const SkSLCompileFn kSkSLCompileFn = enableWGSL ? SkSLToWGSL : SkSLToSPIRV;
 
     using DawnCompileFn = bool (*)(const DawnSharedContext* sharedContext,
                                    const std::string&,
                                    wgpu::ShaderModule* module,
                                    ShaderErrorHandler*);
-    const DawnCompileFn kDawnCompileFn = enableWGSL ? DawnCompileWGSLShaderModule
-                                                    : DawnCompileSPIRVShaderModule;
+    const DawnCompileFn kDawnCompileFn =
+            enableWGSL ? DawnCompileWGSLShaderModule : DawnCompileSPIRVShaderModule;
 
     const auto& device = sharedContext->device();
 
@@ -303,10 +303,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
         }
     }
 
-    std::string vsSkSL = BuildVertexSkSL(caps.resourceBindingRequirements(),
-                                         step,
-                                         useShadingSsboIndex,
-                                         localCoordsNeeded);
+    std::string vsSkSL = BuildVertexSkSL(
+            caps.resourceBindingRequirements(), step, useShadingSsboIndex, localCoordsNeeded);
     if (!kSkSLCompileFn(compiler,
                         vsSkSL,
                         SkSL::ProgramKind::kGraphiteVertex,
@@ -459,7 +457,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
         layoutDesc.label = step->name();
 #endif
         layoutDesc.bindGroupLayoutCount =
-            hasFragmentSamplers ? groupLayouts.size() : groupLayouts.size() - 1;
+                hasFragmentSamplers ? groupLayouts.size() : groupLayouts.size() - 1;
         layoutDesc.bindGroupLayouts = groupLayouts.data();
         auto layout = device.CreatePipelineLayout(&layoutDesc);
         if (!layout) {
@@ -473,9 +471,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Vertex buffer layout
     std::vector<wgpu::VertexAttribute> vertexAttributes;
     {
-        auto arrayStride = create_vertex_attributes(step->vertexAttributes(),
-                                                    0,
-                                                    &vertexAttributes);
+        auto arrayStride = create_vertex_attributes(step->vertexAttributes(), 0, &vertexAttributes);
         auto& layout = vertexBufferLayouts[kVertexBufferIndex];
         if (arrayStride) {
             layout.arrayStride = arrayStride;
@@ -493,9 +489,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Instance buffer layout
     std::vector<wgpu::VertexAttribute> instanceAttributes;
     {
-        auto arrayStride = create_vertex_attributes(step->instanceAttributes(),
-                                                    step->vertexAttributes().size(),
-                                                    &instanceAttributes);
+        auto arrayStride = create_vertex_attributes(
+                step->instanceAttributes(), step->vertexAttributes().size(), &instanceAttributes);
         auto& layout = vertexBufferLayouts[kInstanceBufferIndex];
         if (arrayStride) {
             layout.arrayStride = arrayStride;
@@ -521,7 +516,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Other state
     descriptor.primitive.frontFace = wgpu::FrontFace::CCW;
     descriptor.primitive.cullMode = wgpu::CullMode::None;
-    switch(step->primitiveType()) {
+    switch (step->primitiveType()) {
         case PrimitiveType::kTriangles:
             descriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
             break;
@@ -550,10 +545,35 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
-    DawnErrorChecker errorChecker(device);
-    wgpu::RenderPipeline pipeline = device.CreateRenderPipeline(&descriptor);
-    SkASSERT(pipeline);
-    if (errorChecker.popErrorScopes() != DawnErrorType::kNoError) {
+    struct PipelineAsyncArg {
+        PipelineAsyncArg(const wgpu::Device& device) : sync(device) {}
+        DawnAsyncWait sync;
+        wgpu::RenderPipeline pipeline;
+    };
+
+    PipelineAsyncArg asyncArg(device);
+
+    device.CreateRenderPipelineAsync(
+            &descriptor,
+            [](WGPUCreatePipelineAsyncStatus status,
+               WGPURenderPipeline pipeline,
+               char const* message,
+               void* userdata) {
+                PipelineAsyncArg* arg = static_cast<PipelineAsyncArg*>(userdata);
+
+                if (status != WGPUCreatePipelineAsyncStatus_Success) {
+                    SKGPU_LOG_E("Failed to create render pipeline (%d): %s", status, message);
+                    arg->pipeline = nullptr;
+                } else {
+                    arg->pipeline = wgpu::RenderPipeline::Acquire(pipeline);
+                }
+                arg->sync.signal();
+            },
+            &asyncArg);
+
+    asyncArg.sync.busyWait();
+
+    if (asyncArg.pipeline == nullptr) {
         return {};
     }
 
@@ -573,7 +593,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     return sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
                                      pipelineInfoPtr,
-                                     std::move(pipeline),
+                                     std::move(asyncArg.pipeline),
                                      step->primitiveType(),
                                      depthStencilSettings.fStencilReferenceValue,
                                      !step->uniforms().empty(),
@@ -594,12 +614,10 @@ DawnGraphicsPipeline::DawnGraphicsPipeline(const skgpu::graphite::SharedContext*
         , fHasStepUniforms(hasStepUniforms)
         , fHasFragment(hasFragment) {}
 
-void DawnGraphicsPipeline::freeGpuData() {
-    fRenderPipeline = nullptr;
-}
+void DawnGraphicsPipeline::freeGpuData() { fRenderPipeline = nullptr; }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     return fRenderPipeline;
 }
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
