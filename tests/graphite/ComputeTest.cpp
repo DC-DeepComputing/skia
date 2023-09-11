@@ -88,10 +88,15 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_SingleDispatchTest, report
                 /*resources=*/{
                     // Input buffer:
                     {
+                        // TODO(armansito): Ideally this should be a read-only storage buffer but
+                        // that leads to an issue on the Dawn backend since WebGPU's restrictions
+                        // on buffer usages on a whole buffer is not compatible with Graphite's
+                        // storage buffer sub-allocation scheme.
+                        // See https://www.w3.org/TR/webgpu/#programming-model-resource-usages
                         /*type=*/ResourceType::kStorageBuffer,
                         /*flow=*/DataFlow::kPrivate,
                         /*policy=*/ResourcePolicy::kMapped,
-                        /*sksl=*/"readonly inputBlock {\n"
+                        /*sksl=*/"inputBlock {\n"
                             "    float factor;\n"
                             "    layout(offset=16) float4 in_data[];\n"
                             "}",
@@ -220,10 +225,15 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_DispatchGroupTest, reporte
                 /*resources=*/{
                     // Input buffer:
                     {
+                        // TODO(armansito): Ideally this should be a read-only storage buffer but
+                        // that leads to an issue on the Dawn backend since WebGPU's restrictions
+                        // on buffer usages on a whole buffer is not compatible with Graphite's
+                        // storage buffer sub-allocation scheme.
+                        // See https://www.w3.org/TR/webgpu/#programming-model-resource-usages
                         /*type=*/ResourceType::kStorageBuffer,
                         /*flow=*/DataFlow::kPrivate,
                         /*policy=*/ResourcePolicy::kMapped,  // mappable for read-back
-                        /*sksl=*/"readonly inputBlock {\n"
+                        /*sksl=*/"inputBlock {\n"
                             "    float factor;\n"
                             "    layout(offset=16) float4 in_data[];\n"
                             "}",
@@ -1538,10 +1548,15 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ClearedBuffer, reporter, c
                 /*resources=*/{
                     // Zero initialized input buffer
                     {
+                        // TODO(armansito): Ideally this should be a read-only storage buffer but
+                        // that leads to an issue on the Dawn backend since WebGPU's restrictions
+                        // on buffer usages on a whole buffer is not compatible with Graphite's
+                        // storage buffer sub-allocation scheme.
+                        // See https://www.w3.org/TR/webgpu/#programming-model-resource-usages
                         /*type=*/ResourceType::kStorageBuffer,
                         /*flow=*/DataFlow::kPrivate,
                         /*policy=*/ResourcePolicy::kClear,
-                        /*sksl=*/"readonly inputBlock { uint4 in_data[]; }\n",
+                        /*sksl=*/"inputBlock { uint4 in_data[]; }\n",
                     },
                     // Output buffer:
                     {
