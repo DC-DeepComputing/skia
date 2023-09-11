@@ -88,6 +88,24 @@
       "parentUuid": "4e694c6a_498a0016",
       "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6996904_a9da53f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-11T21:44:30Z",
+      "side": 1,
+      "message": "Oh, I didn\u0027t know about that one. Cool, thanks for the pointer. I guess I\u0027ll take a look at these buffer issues. But it seems like it doesn\u0027t impact this CL either way, right? It\u0027s just a separate path from `DawnGraphicsPipeline::Make` entirely?",
+      "parentUuid": "ef5f293f_3ba71c0e",
+      "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
