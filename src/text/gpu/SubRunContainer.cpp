@@ -1237,8 +1237,70 @@ public:
                     sk_sp<SkRefCnt>&& subRunStorage,
                     skgpu::v1::SurfaceDrawContext*) const override;
 
+<<<<<<< HEAD   (ae193d Revert "Fix the way of Alpha8 gainmap support in Skia.")
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+=======
+        auto [integerTranslate, subRunDeviceBounds] =
+                fVertexFiller.deviceRectAndCheckTransform(positionMatrix);
+        if (subRunDeviceBounds.isEmpty()) {
+            return {nullptr, nullptr};
+        }
+        // Rect for optimized bounds clipping when doing an integer translate.
+        SkIRect geometricClipRect = SkIRect::MakeEmpty();
+        if (integerTranslate) {
+            // We can clip geometrically using clipRect and ignore clip when an axis-aligned
+            // rectangular non-AA clip is used. If clipRect is empty, and clip is nullptr, then
+            // there is no clipping needed.
+            const SkRect deviceBounds = SkRect::MakeWH(sdc->width(), sdc->height());
+            auto [clipMethod, clipRect] = calculate_clip(clip, deviceBounds, subRunDeviceBounds);
+
+            switch (clipMethod) {
+                case kClippedOut:
+                    // Returning nullptr as op means skip this op.
+                    return {nullptr, nullptr};
+                case kUnclipped:
+                case kGeometryClipped:
+                    // GPU clip is not needed.
+                    clip = nullptr;
+                    break;
+                case kGPUClipped:
+                    // Use th GPU clip; clipRect is ignored.
+                    break;
+            }
+            geometricClipRect = clipRect;
+
+            if (!geometricClipRect.isEmpty()) { SkASSERT(clip == nullptr); }
+        }
+
+        GrPaint grPaint;
+        const SkPMColor4f drawingColor = calculate_colors(sdc,
+                                                          paint,
+                                                          viewMatrix,
+                                                          fVertexFiller.grMaskType(),
+                                                          &grPaint);
+
+        auto geometry = AtlasTextOp::Geometry::Make(*this,
+                                                    viewMatrix,
+                                                    drawOrigin,
+                                                    geometricClipRect,
+                                                    std::move(subRunStorage),
+                                                    drawingColor,
+                                                    sdc->arenaAlloc());
+
+        GrRecordingContext* const rContext = sdc->recordingContext();
+
+        GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
+                                                 fVertexFiller.opMaskType(),
+                                                 !integerTranslate,
+                                                 this->glyphCount(),
+                                                 subRunDeviceBounds,
+                                                 geometry,
+                                                 sdc->colorInfo(),
+                                                 std::move(grPaint));
+        return {clip, std::move(op)};
+    }
+>>>>>>> CHANGE (0ace46 [ganesh] Add colorspace conversion for color emoji)
 
     void fillVertexData(void* vertexDst, int offset, int count,
                         GrColor color,
@@ -1803,6 +1865,7 @@ public:
                                                  this->glyphCount(),
                                                  this->deviceRect(positionMatrix),
                                                  geometry,
+                                                 sdc->colorInfo(),
                                                  std::move(grPaint));
         return {clip, std::move(op)};
     }

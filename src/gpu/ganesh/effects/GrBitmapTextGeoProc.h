@@ -8,14 +8,31 @@
 #ifndef GrBitmapTextGeoProc_DEFINED
 #define GrBitmapTextGeoProc_DEFINED
 
+<<<<<<< HEAD   (ae193d Revert "Fix the way of Alpha8 gainmap support in Skia.")
+=======
+#include "include/core/SkMatrix.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSize.h"
+#include "include/private/SkColorData.h"
+>>>>>>> CHANGE (0ace46 [ganesh] Add colorspace conversion for color emoji)
 #include "src/base/SkArenaAlloc.h"
+<<<<<<< HEAD   (ae193d Revert "Fix the way of Alpha8 gainmap support in Skia.")
 #include "src/gpu/AtlasTypes.h"
+=======
+#include "src/gpu/ganesh/GrColorSpaceXform.h"
+>>>>>>> CHANGE (0ace46 [ganesh] Add colorspace conversion for color emoji)
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrProcessor.h"
 #include "src/gpu/ganesh/GrProcessorUnitTest.h"
 
+<<<<<<< HEAD   (ae193d Revert "Fix the way of Alpha8 gainmap support in Skia.")
 class GrGLBitmapTextGeoProc;
 class GrInvariantOutput;
+=======
+#include <memory>
+#include <utility>
+
+>>>>>>> CHANGE (0ace46 [ganesh] Add colorspace conversion for color emoji)
 class GrSurfaceProxyView;
 
 /**
@@ -31,6 +48,7 @@ public:
                                      const GrShaderCaps& caps,
                                      const SkPMColor4f& color,
                                      bool wideColor,
+                                     sk_sp<GrColorSpaceXform> colorSpaceXform,
                                      const GrSurfaceProxyView* views,
                                      int numActiveViews,
                                      GrSamplerState p,
@@ -38,7 +56,8 @@ public:
                                      const SkMatrix& localMatrix,
                                      bool usesW) {
         return arena->make([&](void* ptr) {
-            return new (ptr) GrBitmapTextGeoProc(caps, color, wideColor, views, numActiveViews,
+            return new (ptr) GrBitmapTextGeoProc(caps, color, wideColor, std::move(colorSpaceXform),
+                                                 views, numActiveViews,
                                                  p, format, localMatrix, usesW);
         });
     }
@@ -57,6 +76,7 @@ private:
     class Impl;
 
     GrBitmapTextGeoProc(const GrShaderCaps&, const SkPMColor4f&, bool wideColor,
+                        sk_sp<GrColorSpaceXform> colorSpaceXform,
                         const GrSurfaceProxyView* views, int numViews, GrSamplerState params,
                         skgpu::MaskFormat format, const SkMatrix& localMatrix, bool usesW);
 
@@ -64,15 +84,16 @@ private:
 
     const TextureSampler& onTextureSampler(int i) const override { return fTextureSamplers[i]; }
 
-    SkPMColor4f      fColor;
-    SkMatrix         fLocalMatrix;
-    bool             fUsesW;
-    SkISize          fAtlasDimensions;  // dimensions for all textures used with fTextureSamplers[].
-    TextureSampler   fTextureSamplers[kMaxTextures];
-    Attribute        fInPosition;
-    Attribute        fInColor;
-    Attribute        fInTextureCoords;
-    skgpu::MaskFormat     fMaskFormat;
+    SkPMColor4f              fColor;
+    sk_sp<GrColorSpaceXform> fColorSpaceXform;
+    SkMatrix                 fLocalMatrix;
+    bool                     fUsesW;
+    SkISize                  fAtlasDimensions;  // dims for all textures used with fTextureSamplers
+    TextureSampler           fTextureSamplers[kMaxTextures];
+    Attribute                fInPosition;
+    Attribute                fInColor;
+    Attribute                fInTextureCoords;
+    skgpu::MaskFormat        fMaskFormat;
 
     GR_DECLARE_GEOMETRY_PROCESSOR_TEST
 
