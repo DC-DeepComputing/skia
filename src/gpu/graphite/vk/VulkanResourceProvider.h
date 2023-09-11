@@ -45,7 +45,7 @@ private:
                                  SkTileMode yTileMode) override;
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
-    void onDeleteBackendTexture(BackendTexture&) override {}
+    void onDeleteBackendTexture(BackendTexture&) override;
 
     sk_sp<VulkanDescriptorSet> findOrCreateDescriptorSet(SkSpan<DescriptorData>);
     VkPipelineCache pipelineCache();

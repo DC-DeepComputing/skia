@@ -131,6 +131,7 @@ private:
 #endif
 #ifdef SK_VULKAN
         VkImage fVkImage;
+        // Store Vulkan MemoryAlloc to delete?
 #endif
         void* fEnsureUnionNonEmpty;
     };
