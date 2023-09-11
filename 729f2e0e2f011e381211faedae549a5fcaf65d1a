@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f75dcf8e_97490a3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-11T21:03:27Z",
+      "side": 1,
+      "message": "Neat. Compute pipelines are still using SPIRV, right? (But we probably won\u0027t need to stage the switch for that, as we\u0027ll probably switch those to WGSL before compute is being used by clients?)",
+      "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
