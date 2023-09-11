@@ -22,6 +22,17 @@ class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class TextureProxy;
 
+
+#if 0
+using PFEmitChild = void (*)(const KeyContext& keyContext,
+                         PaintParamsKeyBuilder* builder,
+                         PipelineDataGatherer* gatherer);
+#else
+using PFEmitChild = std::function<void(const KeyContext& keyContext,
+                                       PaintParamsKeyBuilder* builder,
+                                       PipelineDataGatherer* gatherer)>;
+#endif
+
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
 // PaintParams is not required as an intermediate representation.
@@ -71,6 +82,10 @@ public:
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+
+    void addShaderToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void handlePrimitiveColor(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void applyPaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
     SkColor4f            fColor;
