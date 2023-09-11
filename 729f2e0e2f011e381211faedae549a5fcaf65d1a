@@ -52,6 +52,24 @@
       "parentUuid": "61b65d28_6703744a",
       "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e694c6a_498a0016",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T21:32:21Z",
+      "side": 1,
+      "message": "All the compute tests on Dawn currently exercise the SkSL-\u003eSPIR-V path: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/dawn/DawnComputePipeline.cpp;l\u003d58?q\u003dDawnComputePipeline\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F; that needs to be switched over as well.\n\nWhen I tried switching that over locally I ran into some validation failures. I know why they are happening (`ComputeStep` resource currently don\u0027t have a ReadOnlyStorageBuffer type, which I was working on separately). I think enabling read-only storage buffers on Dawn is likely to run into the buffer scope binding problem, so I\u0027m inclined to remove the readonly buffer declarations from the compute test suite for the time being.\n\nAnother thing I noticed is that I don\u0027t think we have any Graphite Test jobs on the CQ, which means that you wouldn\u0027t see that failure in a CQ dry run.",
+      "parentUuid": "db29790d_2a02031d",
+      "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
