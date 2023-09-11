@@ -70,6 +70,24 @@
       "parentUuid": "db29790d_2a02031d",
       "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef5f293f_3ba71c0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T21:36:28Z",
+      "side": 1,
+      "message": "\u003e Another thing I noticed is that I don\u0027t think we have any Graphite Test jobs on the CQ, which means that you wouldn\u0027t see that failure in a CQ dry run.\n\nScratch this part, I see that compute tests still passed in both Graphite Metal and Dawn test jobs. The tests still use SPIR-V on the Dawn backend but they pass because John recently added logic that removed the need for the explicit \"compat mode\" flag.",
+      "parentUuid": "4e694c6a_498a0016",
+      "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
