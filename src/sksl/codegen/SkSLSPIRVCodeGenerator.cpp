@@ -28,6 +28,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLConstructor.h"
@@ -2807,6 +2808,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
                                                 /*mangledName=*/"",
                                                 /*builtin=*/true,
                                                 Variable::Storage::kGlobal);
+                fSPIRVBonusVariables.add(coordsVar.get());
                 fProgram.fSymbols->add(std::move(coordsVar));
             }
             std::unique_ptr<Expression> deviceCoord = this->identifier(DEVICE_COORDS_NAME);
@@ -2858,6 +2860,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
                                                    /*mangledName=*/"",
                                                    /*builtin=*/true,
                                                    Variable::Storage::kGlobal);
+                fSPIRVBonusVariables.add(clockwiseVar.get());
                 fProgram.fSymbols->add(std::move(clockwiseVar));
             }
             // FrontFacing in Vulkan is defined in terms of a top-down render target. In Skia,
@@ -3829,6 +3832,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                                    /*mangledName=*/"",
                                    intfVar.isBuiltin(),
                                    intfVar.storage()));
+            fSPIRVBonusVariables.add(modifiedVar);
             InterfaceBlock modifiedCopy(intf.fPosition, modifiedVar, intf.typeOwner());
             result = this->writeInterfaceBlock(modifiedCopy, /*appendRTFlip=*/false);
             fProgram.fSymbols->add(std::make_unique<FieldSymbol>(
@@ -3862,6 +3866,22 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
     this->writeLayout(layout, result, intfVar.fPosition);
     fVariableMap.set(&intfVar, result);
     return result;
+}
+
+bool SPIRVCodeGenerator::isDead(const Variable& var) const {
+    // During SPIR-V code generation, we synthesize some extra bonus variables that don't actually
+    // exist in the Program at all and aren't tracked by the ProgramUsage. They aren't dead, though.
+    if (fSPIRVBonusVariables.contains(&var)) {
+        return false;
+    }
+    ProgramUsage::VariableCounts counts = fProgram.usage()->get(var);
+    if (counts.fRead || counts.fWrite) {
+        return false;
+    }
+    // It's not entirely clear what the rules are for eliding interface variables. Generally, it
+    // causes problems to elide them, even when they're dead.
+    return !(var.modifierFlags() &
+             (ModifierFlag::kIn | ModifierFlag::kOut | ModifierFlag::kUniform));
 }
 
 // This function determines whether to skip an OpVariable (of pointer type) declaration for
@@ -3903,6 +3923,10 @@ bool SPIRVCodeGenerator::writeGlobalVarDeclaration(ProgramKind kind,
     if (storageClass == SpvStorageClassUniform) {
         // Top-level uniforms are emitted in writeUniformBuffer.
         fTopLevelUniforms.push_back(&varDecl);
+        return true;
+    }
+
+    if (this->isDead(*var)) {
         return true;
     }
 
@@ -4441,6 +4465,7 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
                                                              /*mangledName=*/"",
                                                              /*builtin=*/false,
                                                              Variable::Storage::kGlobal));
+    fSPIRVBonusVariables.add(intfVar);
     {
         AutoAttachPoolToThread attach(fProgram.fPool.get());
         fProgram.fSymbols->add(std::make_unique<FieldSymbol>(Position(), intfVar, /*field=*/0));
@@ -4575,7 +4600,8 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
             SpvId id = this->writeInterfaceBlock(intf);
 
             if ((intf.var()->modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut)) &&
-                intf.var()->layout().fBuiltin == -1) {
+                intf.var()->layout().fBuiltin == -1 &&
+                !this->isDead(*intf.var())) {
                 interfaceVars.insert(id);
             }
         }
@@ -4613,7 +4639,8 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, OutputStream&
     // Add global in/out variables to the list of interface variables.
     for (const auto& [var, spvId] : fVariableMap) {
         if (var->storage() == Variable::Storage::kGlobal &&
-            (var->modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut))) {
+            (var->modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut)) &&
+            !this->isDead(*var)) {
             interfaceVars.insert(spvId);
         }
     }
