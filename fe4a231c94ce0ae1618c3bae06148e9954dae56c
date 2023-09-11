@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92e854df_a0082d33",
+        "filename": "src/gpu/ganesh/ops/AtlasTextOp.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-11T19:44:39Z",
+      "side": 1,
+      "message": "nit: leftover, can be deleted",
+      "revId": "fe4a231c94ce0ae1618c3bae06148e9954dae56c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

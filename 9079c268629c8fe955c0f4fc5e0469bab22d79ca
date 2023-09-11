@@ -99,6 +99,30 @@
       },
       "revId": "9079c268629c8fe955c0f4fc5e0469bab22d79ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c487256d_c1e8008a",
+        "filename": "src/gpu/ganesh/ops/AtlasTextOp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-11T19:44:39Z",
+      "side": 1,
+      "message": "Yup, I think we have to assume that the emoji themselves are in sRGB. Might be worth a comment saying that.",
+      "parentUuid": "b9d45a9e_29b442cc",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 69
+      },
+      "revId": "9079c268629c8fe955c0f4fc5e0469bab22d79ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
