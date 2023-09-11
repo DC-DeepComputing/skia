@@ -22,6 +22,30 @@
       },
       "revId": "3ed290acb65f4715b883ef56b05f99c3792b485c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a3fd7bb_c1621b9e",
+        "filename": "docs/examples/Picture_008.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-11T21:24:17Z",
+      "side": 0,
+      "message": "This was a duplicate (effectively) of docs/examples/Picture_serialize.cpp",
+      "parentUuid": "5c64762f_d5f2d2f3",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 10
+      },
+      "revId": "3ed290acb65f4715b883ef56b05f99c3792b485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
