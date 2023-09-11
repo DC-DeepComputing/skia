@@ -22,6 +22,30 @@
       },
       "revId": "feecddde7f35d9b63bc0c310c30f00297be554d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c893366_aa8bb044",
+        "filename": "tests/sksl/wgsl/PixelLocalStorage.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-11T17:43:13Z",
+      "side": 1,
+      "message": "Fixed at http://review.skia.org/753568",
+      "parentUuid": "90302cae_661f13fc",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "feecddde7f35d9b63bc0c310c30f00297be554d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
