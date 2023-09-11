@@ -11,7 +11,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <string>
+#include <cstring>
 
 DEF_TEST(MetaData, reporter) {
     SkMetaData m1;
