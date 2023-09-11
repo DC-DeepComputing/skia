@@ -127,12 +127,12 @@ public:
         using DepsMap = skia_private::THashMap<const FunctionDeclaration*,
                                                WGSLFunctionDependencies>;
 
-        ProgramRequirements() = default;
-        ProgramRequirements(DepsMap dependencies) : dependencies(std::move(dependencies)) {}
-
         // Mappings used to synthesize function parameters according to dependencies on pipeline
         // input/output variables.
-        DepsMap dependencies;
+        DepsMap fDependencies;
+
+        // These flags track extensions that will need to be enabled.
+        bool fPixelLocalExtension = false;
     };
 
     WGSLCodeGenerator(const Context* context, const Program* program, OutputStream* out)
@@ -306,6 +306,7 @@ private:
     void prepareUniformPolyfillsForInterfaceBlock(const InterfaceBlock* interfaceBlock,
                                                   std::string_view instanceName,
                                                   MemoryLayout::Standard nativeLayout);
+    void writeEnables();
     void writeUniformPolyfills();
 
     void writeTextureOrSampler(const Variable& var,
@@ -339,7 +340,7 @@ private:
     // We assign unique names to anonymous interface blocks based on the type.
     skia_private::THashMap<const Type*, std::string> fInterfaceBlockNameMap;
 
-    // Stores the disallowed identifier names.
+    // Stores the functions which use stage inputs/outputs as well as required WGSL extensions.
     ProgramRequirements fRequirements;
     skia_private::TArray<const Variable*> fPipelineInputs;
     skia_private::TArray<const Variable*> fPipelineOutputs;
