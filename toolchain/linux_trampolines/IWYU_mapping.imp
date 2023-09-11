@@ -379,7 +379,6 @@
   { include: ["<stdint.h>", "public", "<cstdint>", "public"] },
   { include: ["<stdio.h>", "public", "<cstdio>", "public"] },
   { include: ["<stdlib.h>", "public", "<cstdlib>", "public"] },
-  { include: ["<string.h>", "public", "<string>", "public"] },
   { include: ["<string.h>", "public", "<cstring>", "public"] },
   { include: ["<tgmath.h>", "public", "<ctgmath>", "public"] },
   { include: ["<time.h>", "public", "<ctime>", "public"] },
