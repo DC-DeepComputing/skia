@@ -16,6 +16,46 @@
       "message": "I\u0027m waiting until the current rollers are a bit happier before landing this, just in case I missed something.",
       "revId": "665867f1da5293c6152a1760999820ef65e72964",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948072e5_f9a6524d",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2009,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-09-11T20:00:55Z",
+      "side": 1,
+      "message": "nit: This looks like a static variable to me. (Here and below.)\n\nDon\u0027t we typically name static variables `sName`? I don\u0027t see anything in our [style guide](https://skia.org/docs/dev/contrib/style/), so maybe I\u0027m misremembering?\n\nRegardless, I\u0027m not sure `sProcs` provides more meaningful information than just `procs`, so I might prefer `procs` anyway.",
+      "range": {
+        "startLine": 2009,
+        "startChar": 18,
+        "endLine": 2009,
+        "endChar": 24
+      },
+      "revId": "665867f1da5293c6152a1760999820ef65e72964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d72fd058_bffc1a6a",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-09-11T20:00:55Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "revId": "665867f1da5293c6152a1760999820ef65e72964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

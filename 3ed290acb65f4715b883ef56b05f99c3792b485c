@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c64762f_d5f2d2f3",
+        "filename": "docs/examples/Picture_008.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-09-11T20:00:55Z",
+      "side": 0,
+      "message": "Why is this deleted?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 10
+      },
+      "revId": "3ed290acb65f4715b883ef56b05f99c3792b485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
