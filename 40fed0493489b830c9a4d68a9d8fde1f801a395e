@@ -16,6 +16,24 @@
       "message": "@fmalita@google.com, Not sure why the +1 got removed, added myself to the AUTHORS file",
       "revId": "40fed0493489b830c9a4d68a9d8fde1f801a395e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e885a3_dacbf16d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-09-11T12:48:52Z",
+      "side": 1,
+      "message": "Thanks.\n\nI think there\u0027s been a recent Gerrit policy change where if you touch a new file you need re-approval.",
+      "parentUuid": "2904c69d_1c36dbc4",
+      "revId": "40fed0493489b830c9a4d68a9d8fde1f801a395e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
