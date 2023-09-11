@@ -16,6 +16,24 @@
       "message": "Neat. Compute pipelines are still using SPIRV, right? (But we probably won\u0027t need to stage the switch for that, as we\u0027ll probably switch those to WGSL before compute is being used by clients?)",
       "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61b65d28_6703744a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-11T21:17:25Z",
+      "side": 1,
+      "message": "No, I think compute is on WGSL too. PTAL http://b/40044665 ... I spent last week fixing up the unit tests to generate good code. I will double check here but I don\u0027t think there\u0027s any path from Graphite-Dawn into SPIR-V.",
+      "parentUuid": "f75dcf8e_97490a3c",
+      "revId": "729f2e0e2f011e381211faedae549a5fcaf65d1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
