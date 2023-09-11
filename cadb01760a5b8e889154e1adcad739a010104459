@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d2fafb_f1d997f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:26:34Z",
+      "side": 1,
+      "message": "Is it not possible to append the condition on here as well? I do find it generally useful when seeing an error log and having an idea what the assert that fire did without having to looking up line numbers (which may change a lot depending on skia versions).\n\nIf it is not easy to add the condition in the macro, can we find the places where we use SkASSERTF and add a similar failure message like you did for bitmap here?",
+      "range": {
+        "startLine": 9,
+        "startChar": 89,
+        "endLine": 9,
+        "endChar": 251
+      },
+      "revId": "cadb01760a5b8e889154e1adcad739a010104459",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
