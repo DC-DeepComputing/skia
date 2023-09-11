@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a0a3221_807597d2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-11T17:50:06Z",
+      "side": 1,
+      "message": "You should return int, remember?",
+      "range": {
+        "startLine": 1208,
+        "startChar": 0,
+        "endLine": 1208,
+        "endChar": 21
+      },
+      "revId": "6d2e192d920aa79b92a54797c976e65628d76081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2493c141_f88ec2a3",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1224,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-11T17:50:06Z",
+      "side": 1,
+      "message": "Could you rewrite it without using recursion?\nThis is not a cheap operation. Also, I would rather see an explicit code iterating through lines/runs here. Please, look at extendedVisit implementation, it has more or less the same purpose. (You probably could even reuse it?)",
+      "revId": "6d2e192d920aa79b92a54797c976e65628d76081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dab87ed_032e432a",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-11T17:50:06Z",
+      "side": 1,
+      "message": "Personally, I would prefer one loop iterating through lines and then clusters within one line. \nBut your code is equally effective anyway.",
+      "revId": "6d2e192d920aa79b92a54797c976e65628d76081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b08bbee_89c54ceb",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1282,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-11T17:50:06Z",
+      "side": 1,
+      "message": "utf16Offset should always be inside fUTF8IndexForUTF16Index but still, since you already used ASSERT few lines above, could you add one more here?",
+      "revId": "6d2e192d920aa79b92a54797c976e65628d76081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd0f6f8c_99c1f252",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1336,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-11T17:50:06Z",
+      "side": 1,
+      "message": "This method\u0027s signature is different from the previous one for no reason. Could you come up with something that returns SkFont in both cases?",
+      "range": {
+        "startLine": 1336,
+        "startChar": 0,
+        "endLine": 1336,
+        "endChar": 73
+      },
+      "revId": "6d2e192d920aa79b92a54797c976e65628d76081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
