@@ -22,6 +22,30 @@
       },
       "revId": "c4e94d5febdce98b3949d43aab24203e5d283c4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "811c059e_03dac928",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2023-09-11T23:03:40Z",
+      "side": 1,
+      "message": "Ah, just read the relevant bit in the CL description. Oh well.",
+      "parentUuid": "a3232f38_29df9c71",
+      "range": {
+        "startLine": 710,
+        "startChar": 4,
+        "endLine": 715,
+        "endChar": 6
+      },
+      "revId": "c4e94d5febdce98b3949d43aab24203e5d283c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
