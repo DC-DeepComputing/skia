@@ -30,6 +30,7 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class KeyContext;
+class PaintParams;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class UniquePaintParamsID;
@@ -381,6 +382,7 @@ void AddDstBlendBlock(const KeyContext&,
                       PipelineDataGatherer*,
                       const SkBlender*);
 
+#if 0
 /**
  * Primitive blend blocks are used to blend either the paint color or the output of another shader
  * with a primitive color emitted by certain draw geometry calls (drawVertices, drawAtlas, etc.).
@@ -389,6 +391,7 @@ void AddDstBlendBlock(const KeyContext&,
 void AddPrimitiveBlendBlock(const KeyContext&,
                             PaintParamsKeyBuilder*,
                             PipelineDataGatherer*,
+                            const PaintParams* pp,
                             const SkBlender*);
 
 /**
@@ -397,8 +400,10 @@ void AddPrimitiveBlendBlock(const KeyContext&,
 void AddColorBlendBlock(const KeyContext&,
                         PaintParamsKeyBuilder*,
                         PipelineDataGatherer*,
+                        const PaintParams* pp,
                         SkBlendMode,
                         const SkPMColor4f& srcColor);
+#endif
 
 struct RuntimeEffectBlock {
     struct ShaderData {
@@ -424,7 +429,7 @@ struct RuntimeEffectBlock {
                            const ShaderData&);
 };
 
-void AddToKey(const KeyContext&,
+void AddToKeyB(const KeyContext&,
               PaintParamsKeyBuilder*,
               PipelineDataGatherer*,
               const SkBlender*);
@@ -438,7 +443,7 @@ void AddToKey(const KeyContext&,
  *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param filter     This function is a no-op if filter is null.
  */
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyCF(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkColorFilter* filter);
@@ -452,7 +457,7 @@ void AddToKey(const KeyContext& keyContext,
  *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param shader     This function is a no-op if shader is null.
  */
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyS(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkShader* shader);

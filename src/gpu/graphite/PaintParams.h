@@ -72,6 +72,10 @@ public:
 
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
+    void foo(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void bar(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void baz(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+
 private:
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending

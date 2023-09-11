@@ -18,7 +18,7 @@ struct SkStageRec;
 
 class SkBlendModeColorFilter final : public SkColorFilterBase {
 public:
-    SkBlendModeColorFilter(const SkColor4f& color, SkBlendMode mode);
+    SkBlendModeColorFilter(const SkColor4f& color, SkBlendMode mode, bool foo);
 
     bool appendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
 
