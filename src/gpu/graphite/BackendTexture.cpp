@@ -44,6 +44,8 @@ BackendTexture& BackendTexture::operator=(const BackendTexture& that) {
 #ifdef SK_VULKAN
         case BackendApi::kVulkan:
             fVkImage = that.fVkImage;
+            fMutableState = that.fMutableState;
+            fMemoryAlloc = that.fMemoryAlloc;
             break;
 #endif
         default:
@@ -156,6 +158,24 @@ BackendTexture::BackendTexture(SkISize dimensions,
         , fMutableState(new MutableTextureStateRef(layout, queueFamilyIndex))
         , fVkImage(image) {}
 
+BackendTexture::BackendTexture(SkISize dimensions,
+                               const VulkanTextureInfo& info,
+                               VkImageLayout layout,
+                               uint32_t queueFamilyIndex,
+                               VkImage image,
+                               VulkanAlloc vulkanMemoryAllocation)
+        : fDimensions(dimensions)
+        , fInfo(info)
+        , fMutableState(new MutableTextureStateRef(layout, queueFamilyIndex))
+        , fVkImage(image)
+        , fMemoryAlloc(vulkanMemoryAllocation) {}
+
+void BackendTexture::setVkImage(VkImage img) {
+    if (this->isValid() && this->backend() == BackendApi::kVulkan) {
+        fVkImage = img;
+    }
+}
+
 VkImage BackendTexture::getVkImage() const {
     if (this->isValid() && this->backend() == BackendApi::kVulkan) {
         return fVkImage;
@@ -177,6 +197,13 @@ uint32_t BackendTexture::getVkQueueFamilyIndex() const {
         return fMutableState->getQueueFamilyIndex();
     }
     return 0;
+}
+
+const VulkanAlloc* BackendTexture::getMemoryAlloc() const {
+    if (this->isValid() && this->backend() == BackendApi::kVulkan) {
+        return &fMemoryAlloc;
+    }
+    return {};
 }
 #endif // SK_VULKAN
 
