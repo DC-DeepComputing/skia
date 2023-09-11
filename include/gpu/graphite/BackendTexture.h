@@ -22,6 +22,7 @@
 #endif
 
 #ifdef SK_VULKAN
+#include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #endif
 
@@ -71,6 +72,12 @@ public:
                    VkImageLayout,
                    uint32_t queueFamilyIndex,
                    VkImage);
+    BackendTexture(SkISize dimensions,
+                   const VulkanTextureInfo&,
+                   VkImageLayout,
+                   uint32_t queueFamilyIndex,
+                   VkImage,
+                   VulkanAlloc);
 #endif
 
     BackendTexture(const BackendTexture&);
@@ -108,6 +115,8 @@ public:
     VkImage getVkImage() const;
     VkImageLayout getVkImageLayout() const;
     uint32_t getVkQueueFamilyIndex() const;
+    const VulkanAlloc* getMemoryAlloc() const;
+    void setVkImage(VkImage); // TODO: Remove. Debugging
 #endif
 
 private:
@@ -131,6 +140,7 @@ private:
 #endif
 #ifdef SK_VULKAN
         VkImage fVkImage;
+        VulkanAlloc fMemoryAlloc;
 #endif
         void* fEnsureUnionNonEmpty;
     };
