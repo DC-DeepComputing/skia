@@ -185,6 +185,36 @@ void VelloComputePathAtlas::onAddShape(const Shape& shape,
 
 #endif  // SK_ENABLE_VELLO_SHADERS
 
-SoftwarePathAtlas::SoftwarePathAtlas() : PathAtlas(kSoftwareAtlasDim, kSoftwareAtlasDim) {}
+///////////////////////////////////////////////////////////////////////////////////////
+
+SoftwarePathAtlas::SoftwarePathAtlas() : PathAtlas(kSoftwareAtlasDim, kSoftwareAtlasDim) {
+
+}
+
+void SoftwarePathAtlas::recordUploads(UploadList* uploadList) const {
+    // add queued uploads to upload list
+    // clear queue
+}
+
+void SoftwarePathAtlas::onAddShape(const Shape& shape,
+                                   const Transform& transform,
+                                   const Rect& atlasBounds,
+                                   skvx::int2 deviceOffset,
+                                   const SkStrokeRec& strokeRec) {
+    // TODO: look up shape and use cached texture
+
+    // rasterize path and add to queued upload list
+    // See SoftwarePathRenderer::onDrawPath()
+    // TODO: in a separate thread?
+
+    // TODO: cache shape data and resulting texture... how?
+    // Maybe do the rendering in recordUploads?
+    // Doesn't seem to fit multithreading approach though.
+}
+
+void SoftwarePathAtlas::onReset() {
+
+}
+
 
 }  // namespace skgpu::graphite
