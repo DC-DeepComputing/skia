@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "212087b2_907a3fc1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "this needs to be: `VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT`. We also read the color attachment when needing to blending (even if it is actually the hardware doing the blending).",
+      "range": {
+        "startLine": 444,
+        "startChar": 43,
+        "endLine": 444,
+        "endChar": 79
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78843e14_5d2e157b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "We also use both read and write here. It is not 100% obvious to me why the read is needed but we\u0027ve added in Ganesh and the Vulkan spec in the resolve section says a vague: `Access to the single sample attachment can be synchronized with VK_ACCESS_COLOR_ATTACHMENT_READ_BIT and VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT.`",
+      "range": {
+        "startLine": 451,
+        "startChar": 48,
+        "endLine": 451,
+        "endChar": 84
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48b430e5_736565a0",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "I think we want to be using VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL here. Unless we start tracking that we\u0027re only doing things for DEPTH or STENCIL, then we can use the individual flags, otherwise we should default to the combined.",
+      "range": {
+        "startLine": 458,
+        "startChar": 50,
+        "endLine": 458,
+        "endChar": 92
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a4f8e21_437ccded",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "The first stage we access the d/s attachment is in `VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT` so we need to set the stage to that and not color attachment outpu",
+      "range": {
+        "startLine": 459,
+        "startChar": 50,
+        "endLine": 459,
+        "endChar": 95
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "570a94fb_f64a8b69",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "I imagine this call can fail, e.g. if the driver fails to create a VkRenderPass. If so we need to check the return value here before using it. I\u0027m not sure what the best fallback here is since we are pretty late in the game, but at least the calling code will need to know not to add any more commands if beingRenderPass failed.\n\nI kind of feel like we should just abort the entire insertion of the Recording, but that makes it awkward if we already have recording some commands into the command buffer.",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 465,
+        "endChar": 45
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6eb620c_cec12432",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "same thing with render pass about checking if this returned a valid object.",
+      "range": {
+        "startLine": 517,
+        "startChar": 29,
+        "endLine": 517,
+        "endChar": 40
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad59258_1436bd9c",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-11T19:09:58Z",
+      "side": 1,
+      "message": "VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL",
+      "range": {
+        "startLine": 261,
+        "startChar": 16,
+        "endLine": 261,
+        "endChar": 58
+      },
+      "revId": "8dac779e3ac5e79589580046fd7a9245cbe10c00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
