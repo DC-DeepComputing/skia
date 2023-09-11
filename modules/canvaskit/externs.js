@@ -142,6 +142,8 @@ var CanvasKit = {
       getScalarSlot: function() {},
       setVec2Slot: function() {},
       getVec2Slot: function() {},
+      setTextSlot: function() {},
+      getTextSlot: function() {},
       setImageSlot: function() {},
       setTransform: function() {},
       size: function() {},
@@ -157,8 +159,7 @@ var CanvasKit = {
     _setTransform: function() {},
     _setColorSlot: function() {},
     _getColorSlot: function() {},
-    _setVec2Slot: function() {},
-    _getVec2Slot: function() {},
+    _setTextSlot: function() {},
     _size: function() {},
   },
 

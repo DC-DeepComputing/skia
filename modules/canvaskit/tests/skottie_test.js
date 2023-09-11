@@ -94,15 +94,20 @@ describe('Skottie behavior', () => {
         expect(animation).toBeTruthy();
 
         expect(animation.getScalarSlot('Opacity')).toBe(100);
+        const textProp = animation.getTextSlot('Something');
+        expect(textProp['text']).toBe('text slots');
+        textProp['text'] = 'new text';
 
         expect(animation.setColorSlot('FillsGroup', CanvasKit.RED)).toBeTruthy();
         expect(animation.setScalarSlot('Opacity', 25)).toBeTruthy();
         expect(animation.setVec2Slot('ScaleGroup', [25, 50])).toBeTruthy();
         expect(animation.setImageSlot('ImageSource', 'flighAnim.gif')).toBeTruthy();
+        expect(animation.setTextSlot('Something', textProp)).toBeTruthy();
 
         expectArrayCloseTo(animation.getColorSlot('FillsGroup'), CanvasKit.RED, 4);
         expect(animation.getScalarSlot('Opacity')).toBe(25);
         expectArrayCloseTo(animation.getVec2Slot('ScaleGroup'), [25, 50], 4);
+        expect(animation.getTextSlot('Something')).toBe('new text');
 
 
         expect(animation.getColorSlot('Bad ID')).toBeFalsy();
