@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff0b6c57_86d12e82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-11T16:20:20Z",
+      "side": 1,
+      "message": "Before this change a number of `linux-blink-rel` images were flaky bad. With this change they became at best flaky good. Investigation happened at https://chromium-review.googlesource.com/c/chromium/src/+/4855849 .",
+      "revId": "ee19390d0908c07a6bcce53b1b19d7542b891113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
