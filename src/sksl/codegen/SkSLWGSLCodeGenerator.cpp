@@ -3678,6 +3678,8 @@ void WGSLCodeGenerator::writeGlobalVarDeclaration(const GlobalVarDeclaration& d)
         this->write("const ");
     } else if (var.modifierFlags().isWorkgroup()) {
         this->write("var<workgroup> ");
+    } else if (var.modifierFlags().isPixelLocal()) {
+        this->write("var<pixel_local> ");
     } else {
         this->write("var<private> ");
     }
