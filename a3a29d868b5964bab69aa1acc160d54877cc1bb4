@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "928bc11c_380d4a43",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T22:15:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4345fa80_fc1a4b0f",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "a3a29d868b5964bab69aa1acc160d54877cc1bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72823720_99fed0d1",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-11T22:01:30Z",
       "side": 1,
       "message": "Please cut a bug and reference it rather than copy-pasting the same five-line TODO text three times.",
+      "range": {
+        "startLine": 91,
+        "startChar": 32,
+        "endLine": 91,
+        "endChar": 41
+      },
+      "revId": "a3a29d868b5964bab69aa1acc160d54877cc1bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c99e63c_35434e97",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-11T22:15:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72823720_99fed0d1",
       "range": {
         "startLine": 91,
         "startChar": 32,
