@@ -107,6 +107,48 @@ DstReadRequirement get_dst_read_req(const Caps* caps,
     return GetDstReadRequirement(caps, SkBlendMode::kSrcOver, coverage);
 }
 
+// TODO: maybe create a PaintOption to better parallel PaintParams?
+void PaintOptions::foo(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* keyBuilder,
+                       int desiredShaderCombination) const {
+    if (!fShaderOptions.empty()) {
+        PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
+    } else {
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                          {1, 0, 0, 1});
+        keyBuilder->endBlock();
+    }
+}
+
+void PaintOptions::bar(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* keyBuilder,
+                       bool addPrimitiveBlender,
+                       int desiredShaderCombination) const {
+    if (addPrimitiveBlender) {
+        BlendShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+
+            // src -- whatever
+            this->foo(keyContext, keyBuilder, desiredShaderCombination);
+//        PriorOutputBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+//        keyBuilder->endBlock();
+
+            // dst -- primitive color
+            PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+            keyBuilder->endBlock();
+
+            // blender -- shader based blending
+            // TODO: Support runtime blenders for primitive blending in the precompile API.
+            // In the meantime, assume for now that we're using a coefficient blend mode here.
+            SkSpan<const float> coeffs = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kSrcOver);
+            CoeffBlenderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr, coeffs);
+            keyBuilder->endBlock();
+
+        keyBuilder->endBlock();  // BlendShaderBlock
+    } else {
+        this->foo(keyContext, keyBuilder, desiredShaderCombination);
+    }
+}
+
 void PaintOptions::createKey(const KeyContext& keyContext,
                              int desiredCombination,
                              PaintParamsKeyBuilder* keyBuilder,
@@ -131,11 +173,6 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     const int desiredShaderCombination = remainingCombinations;
     SkASSERT(desiredShaderCombination < this->numShaderCombinations());
 
-    // TODO: eliminate this block for the Paint's color when it isn't needed
-    SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                      {1, 0, 0, 1});
-    keyBuilder->endBlock();
-
     DstReadRequirement dstReadReq = get_dst_read_req(
             keyContext.caps(), coverage, fBlenderOptions, desiredBlendCombination);
     bool needsDstSample = dstReadReq == DstReadRequirement::kTextureCopy ||
@@ -153,26 +190,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
         keyBuilder->endBlock();
     }
 
-    if (!fShaderOptions.empty()) {
-        PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
-    }
-
-    if (addPrimitiveBlender) {
-        BlendShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
-        // src -- prior output
-        PriorOutputBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
-        keyBuilder->endBlock();
-        // dst -- primitive color
-        PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
-        keyBuilder->endBlock();
-        // blender -- shader based blending
-        // TODO: Support runtime blenders for primitive blending in the precompile API.
-        // In the meantime, assume for now that we're using a coefficient blend mode here.
-        SkSpan<const float> coeffs = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kSrcOver);
-        CoeffBlenderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr, coeffs);
-        keyBuilder->endBlock();
-        keyBuilder->endBlock();  // BlendShaderBlock
-    }
+    this->bar(keyContext, keyBuilder, addPrimitiveBlender, desiredShaderCombination);
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
                              desiredMaskFilterCombination);

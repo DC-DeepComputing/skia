@@ -458,10 +458,30 @@ public:
 private:
     void addToKey(const KeyContext& keyContext,
                   int desiredCombination,
-                  PaintParamsKeyBuilder* builder) const override {
+                  PaintParamsKeyBuilder* builder,
+                  PFEmitContained emitContained) const override {
         SkASSERT(desiredCombination == 0);
 
-        AddColorBlendBlock(keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver, {});
+        BlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr);
+
+            // src -- solid color
+            SolidColorShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr, {});
+            builder->endBlock();
+
+            //pp->bar(keyContext, builder, /* gatherer= */ nullptr); //$$ !!!
+
+// dst -- prior output
+//        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+//        builder->endBlock();
+
+            // blender -- shader based blending
+            BlendModeBlenderBlock::BeginBlock(keyContext, builder,
+                                              /* gatherer= */ nullptr, SkBlendMode::kSrcOver);
+            builder->endBlock();
+
+        builder->endBlock();  // BlendShaderBlock
+
+//        AddColorBlendBlock(keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver, {});
     }
 };
 

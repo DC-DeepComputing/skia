@@ -71,9 +71,12 @@ private:
 
     virtual bool isALocalMatrixShader() const { return false; }
 
+    using PFEmitContained = void (*)(const KeyContext& keyContext, PaintParamsKeyBuilder* builder);
+
     virtual void addToKey(const KeyContext&,
                           int desiredCombination,
-                          PaintParamsKeyBuilder*) const = 0;
+                          PaintParamsKeyBuilder*,
+                          PFEmitContained) const = 0;
 
     Type fType;
 };
@@ -179,6 +182,10 @@ public:
 
 private:
     friend class PaintOptionsPriv;
+
+    void foo(const KeyContext&, PaintParamsKeyBuilder*, int desiredShaderCombination) const;
+    void bar(const KeyContext&, PaintParamsKeyBuilder*,
+             bool addPrimitiveBlender, int desiredShaderCombination) const;
 
     int numShaderCombinations() const;
     int numMaskFilterCombinations() const;
