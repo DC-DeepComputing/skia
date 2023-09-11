@@ -196,6 +196,8 @@ private:
         Coverage coverage,
         const std::function<void(UniquePaintParamsID)>& processCombination) const;
 
+    void addShaderToKey(const KeyContext&, int desiredShaderCombination, PaintParamsKeyBuilder*) const;
+
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
