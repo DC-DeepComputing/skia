@@ -16,6 +16,10 @@
 #define VMA_NOT_NULL
 
 #define VMA_IMPLEMENTATION
+#define VMA_DEBUG_LOG(format, ...) do { \
+       printf(format, __VA_ARGS__); \
+       printf("\n"); \
+} while(false)
 
 // On windows, vk_mem_alloc.h uses Windows SRWLock, which is normally included by vulkan.h, and so
 // the relevant symbols/defines need to be included here.
