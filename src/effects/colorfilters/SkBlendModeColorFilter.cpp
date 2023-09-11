@@ -32,7 +32,7 @@ static SkRGBA4f<kDstAT> map_color(const SkColor4f& c, SkColorSpace* src, SkColor
     return color;
 }
 
-SkBlendModeColorFilter::SkBlendModeColorFilter(const SkColor4f& color, SkBlendMode mode)
+SkBlendModeColorFilter::SkBlendModeColorFilter(const SkColor4f& color, SkBlendMode mode, bool foo)
         : fColor(color), fMode(mode) {}
 
 bool SkBlendModeColorFilter::onAsAColorMode(SkColor* color, SkBlendMode* mode) const {
@@ -123,7 +123,7 @@ sk_sp<SkColorFilter> SkColorFilters::Blend(const SkColor4f& color,
         return nullptr;
     }
 
-    return sk_sp<SkColorFilter>(new SkBlendModeColorFilter(srgb, mode));
+    return sk_sp<SkColorFilter>(new SkBlendModeColorFilter(srgb, mode, true));
 }
 
 sk_sp<SkColorFilter> SkColorFilters::Blend(SkColor color, SkBlendMode mode) {

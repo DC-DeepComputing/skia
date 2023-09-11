@@ -104,13 +104,87 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+void PaintParams::addShaderToKey(const KeyContext& keyContext,
+                                 PaintParamsKeyBuilder* keyBuilder,
+                                 PipelineDataGatherer* gatherer) const {
+    if (fShader) {
+        AddToKeyS(keyContext, keyBuilder, gatherer, fShader.get());
+    } else {
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
+                                          keyContext.paintColor());
+        keyBuilder->endBlock();
+    }
+}
+
+void PaintParams::handlePrimitiveColor(const KeyContext& keyContext,
+                                       PaintParamsKeyBuilder* keyBuilder,
+                                       PipelineDataGatherer* gatherer,
+                                       PFEmitChild emitSrc) const {
+    if (fPrimitiveBlender) {
+        BlendShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+#if 0
+            auto emitSrc = [this](const KeyContext& keyContext,
+                                  PaintParamsKeyBuilder* keyBuilder,
+                                  PipelineDataGatherer* gatherer) -> void {
+                // src - whatever
+                this->addShaderToKey(keyContext, keyBuilder, gatherer);
+            };
+#endif
+
+            auto emitDst = [](const KeyContext& keyContext,
+                              PaintParamsKeyBuilder* keyBuilder,
+                              PipelineDataGatherer* gatherer) -> void {
+                // dst -- primitive color
+                PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+                keyBuilder->endBlock();
+            };
+
+            // blender -- shader based blending
+            AddToKeyB(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get(),
+                      emitSrc, emitDst);
+
+        keyBuilder->endBlock();  // BlendShaderBlock
+    } else {
+        emitSrc(keyContext, keyBuilder, gatherer);
+    }
+}
+
+void PaintParams::applyPaintAlpha(const KeyContext& keyContext,
+                                  PaintParamsKeyBuilder* builder,
+                                  PipelineDataGatherer* gatherer) const {
+    // Apply the paint's alpha value.
+    if (fColor.fA != 1.0f) {
+        BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+            // blender -- shader based blending
+            BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kDstIn);
+
+                auto emitSrc = [this](const KeyContext& keyContext,
+                                      PaintParamsKeyBuilder* keyBuilder,
+                                      PipelineDataGatherer* gatherer) -> void {
+                    // src -- solid color
+                    SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer, {0, 0, 0, fColor.fA});
+                    keyBuilder->endBlock();
+                };
+
+                this->handlePrimitiveColor(keyContext, builder, gatherer, emitSrc);
+
+            builder->endBlock();
+
+        builder->endBlock();  // BlendShaderBlock
+
+//        AddColorBlendBlock(
+//                keyContext, builder, gatherer, this, SkBlendMode::kDstIn, {0, 0, 0, fColor.fA});
+    } else {
+        this->handlePrimitiveColor(keyContext, builder, gatherer);
+    }
+}
+
+//$$
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    // TODO: figure out how we can omit this block when the Paint's color isn't used.
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
-    builder->endBlock();
-
     bool needsDstSample = fDstReadReq == DstReadRequirement::kTextureCopy ||
                           fDstReadReq == DstReadRequirement::kTextureSample;
     SkASSERT(needsDstSample == SkToBool(keyContext.dstTexture()));
@@ -124,19 +198,9 @@ void PaintParams::toKey(const KeyContext& keyContext,
         builder->endBlock();
     }
 
-    AddToKey(keyContext, builder, gatherer, fShader.get());
+    this->applyPaintAlpha(keyContext, builder, gatherer);
 
-    if (fPrimitiveBlender) {
-        AddPrimitiveBlendBlock(keyContext, builder, gatherer, fPrimitiveBlender.get());
-    }
-
-    // Apply the paint's alpha value.
-    if (fColor.fA != 1.0f) {
-        AddColorBlendBlock(
-                keyContext, builder, gatherer, SkBlendMode::kDstIn, {0, 0, 0, fColor.fA});
-    }
-
-    AddToKey(keyContext, builder, gatherer, fColorFilter.get());
+    AddToKeyCF(keyContext, builder, gatherer, fColorFilter.get());
 
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
@@ -148,6 +212,12 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 #endif
 
+    auto emitSrc = [](const KeyContext& keyContext,
+                      PaintParamsKeyBuilder* keyBuilder,
+                      PipelineDataGatherer* gatherer) -> void {
+
+    };
+
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
     // If this draw needs a dst read, we are either doing custom blending or we cannot handle the
     // combination of blend mode and coverage using fixed function blend hardware.
@@ -157,7 +227,8 @@ void PaintParams::toKey(const KeyContext& keyContext,
         AddDstBlendBlock(keyContext,
                          builder,
                          gatherer,
-                         fFinalBlender ? fFinalBlender.get() : &kDefaultBlender);
+                         fFinalBlender ? fFinalBlender.get() : &kDefaultBlender,
+                         emitSrc);
         finalBlendMode = SkBlendMode::kSrc;
     }
 
