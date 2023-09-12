@@ -73,6 +73,11 @@ public:
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
+    using AddChildToKey = std::function<void(const KeyContext& keyContext,
+                                             PaintParamsKeyBuilder* builder,
+                                             PipelineDataGatherer* gatherer)>;
+    void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+               AddChildToKey addSrcToKey, AddChildToKey addDstToKey, const SkBlender* blender);
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     SkColor4f            fColor;

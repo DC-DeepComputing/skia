@@ -104,6 +104,27 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+void PaintParams::Blend(const KeyContext& keyContext,
+                        PaintParamsKeyBuilder* keyBuilder,
+                        PipelineDataGatherer* gatherer,
+                        AddChildToKey addSrcToKey,
+                        AddChildToKey addDstToKey,
+                        const SkBlender* blender) {
+    if (!blender) {
+        addSrcToKey(keyContext, keyBuilder, gatherer);
+    }
+
+    BlendShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+        addSrcToKey(keyContext, keyBuilder, gatherer);
+
+        addDstToKey(keyContext, keyBuilder, gatherer);
+
+        AddToKeyB(keyContext, keyBuilder, gatherer, blender);
+
+    keyBuilder->endBlock();  // BlendShaderBlock
+}
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
