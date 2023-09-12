@@ -75,9 +75,22 @@
     static_cast<void>( __builtin_expect(static_cast<bool>(cond), 1) \
         ? static_cast<void>(0) \
         : []{ SK_ABORT("check(%s)", #cond); }() )
+
+#define SkASSERTF_RELEASE(cond, fmt, ...) \
+    static_cast<void>( __builtin_expect(static_cast<bool>(cond), 1) \
+        ? static_cast<void>(0) \
+        : [&]{  SkDebugf(fmt"\n", ##__VA_ARGS__);                           \
+               SK_ABORT("check(%s)", #cond);                               \
+               }() )
 #else
 #define SkASSERT_RELEASE(cond) \
     static_cast<void>( (cond) ? static_cast<void>(0) : []{ SK_ABORT("check(%s)", #cond); }() )
+
+#define SkASSERTF_RELEASE(cond, fmt, ...) \
+    static_cast<void>( (cond) ? static_cast<void>(0) : []{ \
+      SkDebugf(fmt"\n", ##__VA_ARGS__);                                          \
+      SK_ABORT("check(%s)", #cond);                                         \
+    }() )
 #endif
 
 #if defined(SK_DEBUG)

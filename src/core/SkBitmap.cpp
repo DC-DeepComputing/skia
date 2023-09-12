@@ -243,11 +243,19 @@ void SkBitmap::allocPixels(Allocator* allocator) {
 }
 
 void SkBitmap::allocPixelsFlags(const SkImageInfo& info, uint32_t flags) {
-    SkASSERT_RELEASE(this->tryAllocPixelsFlags(info, flags));
+    SkASSERTF_RELEASE(this->tryAllocPixelsFlags(info, flags),
+                      "SkBitmap::allocPixelsFlags failed "
+                      "ColorType:%d AlphaType:%d [w:%d h:%d] rb:%zu",
+                      info.colorType(), info.alphaType(), info.width(), info.height(),
+                      this->rowBytes());
 }
 
 void SkBitmap::allocPixels(const SkImageInfo& info, size_t rowBytes) {
-    SkASSERT_RELEASE(this->tryAllocPixels(info, rowBytes));
+    SkASSERTF_RELEASE(this->tryAllocPixels(info, rowBytes),
+                      "SkBitmap::allocPixels failed "
+                      "ColorType:%d AlphaType:%d [w:%d h:%d] rb:%zu",
+                      info.colorType(), info.alphaType(), info.width(), info.height(),
+                      this->rowBytes());
 }
 
 void SkBitmap::allocPixels(const SkImageInfo& info) {

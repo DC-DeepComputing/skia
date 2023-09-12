@@ -21,10 +21,11 @@ public:
         return fPrecompileBase->isALocalMatrixShader();
     }
 
-    void addToKey(const KeyContext& keyContext,
+    void addToKey2(const KeyContext& keyContext,
                   int desiredCombination,
-                  PaintParamsKeyBuilder* builder) const {
-        fPrecompileBase->addToKey(keyContext, desiredCombination, builder);
+                  PaintParamsKeyBuilder* builder
+                  /*PrecompileBase::PFEmitContained emitContained*/) const {
+        fPrecompileBase->addToKey1(keyContext, desiredCombination, builder);
     }
 
 private:

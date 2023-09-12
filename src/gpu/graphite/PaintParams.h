@@ -22,6 +22,17 @@ class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class TextureProxy;
 
+
+#if 0
+using PFEmitChild = void (*)(const KeyContext& keyContext,
+                         PaintParamsKeyBuilder* builder,
+                         PipelineDataGatherer* gatherer);
+#else
+using PFEmitChild = std::function<void(const KeyContext& keyContext,
+                                       PaintParamsKeyBuilder* builder,
+                                       PipelineDataGatherer* gatherer)>;
+#endif
+
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
 // PaintParams is not required as an intermediate representation.
@@ -72,6 +83,10 @@ public:
 
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
+    void addShaderToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void handlePrimitiveColor(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void applyPaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+
 private:
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
@@ -88,6 +103,13 @@ private:
     // TODO: Will also store ColorFilter, dither, and any extra shader from an
     // active clipShader().
 };
+
+void add_blend(const KeyContext& keyContext,
+               PaintParamsKeyBuilder* keyBuilder,
+               PipelineDataGatherer* gatherer,
+               PFEmitChild emitSrc,
+               PFEmitChild emitDst,
+               const SkBlender* blender);
 
 } // namespace skgpu::graphite
 
