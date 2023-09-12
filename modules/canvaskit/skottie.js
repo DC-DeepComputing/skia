@@ -151,6 +151,18 @@ CanvasKit.MakeManagedAnimation = function(json, assets, prop_filter_prefix, soun
       return ta.slice(0, 2);
     }
 
+    CanvasKit.ManagedAnimation.prototype.setTextSlot = function(key, textValue) {
+      var fillPtr = copyColorToWasm(textValue['fillColor'], _scratchColorPtr);
+      var strokePtr = copyColorToWasm(textValue['strokeColor'], _scratchFourFloatsAPtr);
+      var boxPtr = copyRectToWasm(textValue['boundingBox'], _scratchFourFloatsAPtr);
+
+      textValue['_fillColorPtr'] = fillPtr;
+      textValue['_strokeColorPtr'] = strokePtr;
+      textValue['_boundingBoxPtr'] = boxPtr;
+
+      return this._setTextSlot(key, textValue);
+    }
+
     CanvasKit.ManagedAnimation.prototype.setTransform = function(key, anchor, position, scale, rotation, skew, skew_axis) {
       let transformData = [anchor[0], anchor[1], position[0], position[1], scale[0], scale[1], rotation, skew, skew_axis];
       const tPtr = copy1dArray(transformData, 'HEAPF32', _scratch3x3MatrixPtr);
