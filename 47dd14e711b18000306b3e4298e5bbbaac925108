@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1410f80a_b4ff30c2",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-12T16:49:57Z",
+      "side": 1,
+      "message": "Done. But also, does this caps check apply to your concern below? We could instead check this caps higher up when setting fOutputSecondaryColor. We have a similar check to this in the Metal code generator which could maybe go away in that case.",
+      "parentUuid": "fe1b4e89_680521a4",
+      "range": {
+        "startLine": 906,
+        "startChar": 0,
+        "endLine": 912,
+        "endChar": 5
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9f6e255_9909119d",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 1
@@ -90,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53ff5f36_919aad56",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-12T16:49:57Z",
+      "side": 1,
+      "message": "I think this would require that we dynamically define sk_FragColor rather than statically defining it with an index in sksl_frag.sksl. My understanding is that though it always has a kind of \"logical\" index of 0, we can only emit that in WGSL if we\u0027ve enabled dual-source blending (per https://crsrc.org/c/third_party/dawn/docs/dawn/features/dual_source_blending.md and verified by testing).\n\nWe\u0027d want to have a check for `index \u003e\u003d 0` anyways, since uniforms declarations are written here and have an index of -1, which we wouldn\u0027t want to emit.\n\nMaybe this could all be expressed better, or at least have a comment separate from the assert\u0027s comment? And maybe the assert is superfluous since invalid code emitted here will be caught by the WGSL compiler anyways.",
+      "parentUuid": "b4136976_89cfd2e3",
+      "range": {
+        "startLine": 1247,
+        "startChar": 0,
+        "endLine": 1251,
+        "endChar": 74
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22530c47_cb8d0713",
         "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
         "patchSetId": 1
@@ -101,6 +149,30 @@
       "writtenOn": "2023-09-12T15:07:52Z",
       "side": 1,
       "message": "!!\nThis is weird and surprising, why?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 65
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78fc99eb_c9238151",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-12T16:49:57Z",
+      "side": 1,
+      "message": "Here \"unsafe\" is used synonymously with \"experimental\", and dual-source blending is currently considered experimental in Dawn: https://crsrc.org/c/third_party/dawn/src/dawn/native/PhysicalDevice.cpp;l\u003d156;drc\u003dd1dcb504",
+      "parentUuid": "22530c47_cb8d0713",
       "range": {
         "startLine": 94,
         "startChar": 0,
