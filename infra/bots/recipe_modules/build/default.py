@@ -183,7 +183,8 @@ def compile_fn(api, checkout_root, out_dir):
     extra_ldflags.append('-fcoverage-mapping')
 
   if compiler != 'MSVC' and configuration == 'Debug':
-    extra_cflags.append('-O1')
+    extra_cflags.append('-O0')
+    extra_cflags.append('-fno-omit-frame-pointer')
   if compiler != 'MSVC' and configuration == 'OptimizeForSize':
     # build IDs are required for Bloaty if we want to use strip to ignore debug symbols.
     # https://github.com/google/bloaty/blob/master/doc/using.md#debugging-stripped-binaries
