@@ -903,6 +903,14 @@ bool WGSLCodeGenerator::generateCode() {
     // - All uniform and storage type resources are declared in global scope.
     this->preprocessProgram();
 
+    if (fProgram.fInterface.fOutputSecondaryColor) {
+        if (fContext.fCaps->fDualSourceBlendingSupport) {
+            this->writeLine("enable chromium_internal_dual_source_blending;");
+        } else {
+            fContext.fErrors->error({}, "dual-src blending not supported");
+        }
+    }
+
     {
         AutoOutputStream outputToHeader(this, &fHeader, &fIndentation);
         this->writeLine("diagnostic(off, derivative_uniformity);");
@@ -1235,6 +1243,14 @@ void WGSLCodeGenerator::writeUserDefinedIODecl(const Layout& layout,
                                                std::string_view name,
                                                Delimiter delimiter) {
     this->write("@location(" + std::to_string(layout.fLocation) + ") ");
+
+    // If writing an index greater than zero, then a) we must support dual-src blending, and
+    // b) this must be location 0.
+    SkASSERT(layout.fIndex <= 0 ||
+             (fProgram.fInterface.fOutputSecondaryColor && layout.fLocation == 0));
+    if (layout.fIndex >= 0 && fProgram.fInterface.fOutputSecondaryColor) {
+        this->write("@index(" + std::to_string(layout.fIndex) + ") ");
+    }
 
     // "User-defined IO of scalar or vector integer type must always be specified as
     // @interpolate(flat)" (see https://www.w3.org/TR/WGSL/#interpolation)
