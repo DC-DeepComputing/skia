@@ -22,6 +22,30 @@
       },
       "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "097d614e_62b6369e",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-12T15:46:47Z",
+      "side": 1,
+      "message": "I did consider this - I am mildly paranoid that if we don\u0027t make them explicitly pass in an empty VulkanAlloc to indicate that we have no way to access the memory allocation itself that they could be lulled into a false sense of security thinking we can manage it. If we think that\u0027s clear enough without this additional step, I am fine w/ that.",
+      "parentUuid": "0d8da260_70c0f476",
+      "range": {
+        "startLine": 75,
+        "startChar": 19,
+        "endLine": 75,
+        "endChar": 30
+      },
+      "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
