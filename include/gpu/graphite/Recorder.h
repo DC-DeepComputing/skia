@@ -97,6 +97,23 @@ public:
      */
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
 
+#ifdef  SK_BUILD_FOR_ANDROID
+    extern "C" {
+        typedef struct AHardwareBuffer AHardwareBuffer;
+    }
+    // Must compile for an Android device to use this hypothetical method. #ifdef fine in this case
+    // See SkImageAndroid (include/Android) for other example/option
+    TextureInfo getTextureInfoFromAHardwareBuffer(
+            AHardwareBuffer*, uint32_t bufferFormat, bool requireKnownFormat);
+
+    BackendTexture createBackendTexture(AHardwareBuffer*,
+                                        int width, int height,
+                                        bool isProtectedContent,
+                                        const TextureInfo& textureInfo,
+                                        bool isRenderable,
+                                        bool fromAndroidWindow = false);
+#endif
+
     /**
      * If possible, updates a backend texture with the provided pixmap data. The client
      * should check the return value to see if the update was successful. The client is required

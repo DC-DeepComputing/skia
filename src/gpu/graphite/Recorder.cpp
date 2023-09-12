@@ -244,6 +244,66 @@ BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureI
     return fResourceProvider->createBackendTexture(dimensions, info);
 }
 
+#ifdef SK_BUILD_FOR_ANDROID
+    TextureInfo getTextureInfoFromAHardwareBuffer(
+            AHardwareBuffer*, uint32_t bufferFormat, bool requireKnownFormat) {
+        if (context->backend() != BackendApi::kVulkan) {
+            return {};
+        };
+#ifdef SK_VULKAN
+        VkFormat format;
+        switch (bufferFormat) {
+            case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM: {
+                format = VK_FORMAT_R8G8B8A8_UNORM;
+                break;
+            }
+            case AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT: {
+                format = VK_FORMAT_R16G16B16A16_SFLOAT;
+                break;
+            }
+            case AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM: {
+                format = VK_FORMAT_R5G6B5_UNORM_PACK16;
+                break;
+            }
+            case AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM: {
+                format = VK_FORMAT_A2B10G10R10_UNORM_PACK32;
+                break;
+            }
+            case AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM: {
+                format = VK_FORMAT_R8G8B8A8_UNORM;
+                break;
+            }
+            case AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM: {
+                format = VK_FORMAT_R8G8B8_UNORM;
+                break;
+            }
+#if __ANDROID_API__ >= 33
+            case AHARDWAREBUFFER_FORMAT_R8_UNORM: {
+                format = VK_FORMAT_R8_UNORM;
+                break;
+            }
+#endif
+            default: {
+                if (requireKnownFormat) {
+                    return {};
+                } else {
+                    // overlap
+                }
+            }
+#endif // #ifdef SK_VULKAN
+        }
+    }
+
+    BackendTexture createBackendTexture(AHardwareBuffer*,
+                                        int width, int height,
+                                        bool isProtectedContent,
+                                        const TextureInfo& textureInfo,
+                                        bool isRenderable,
+                                        bool fromAndroidWindow = false) {
+
+    }
+#endif // SK_BUILD_FOR_ANDROID
+
 bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
                                     const SkPixmap srcData[],
                                     int numLevels) {
