@@ -119,7 +119,7 @@ void AtlasShapeRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
 
     const AtlasShape& atlasShape = params.geometry().atlasShape();
-    const TextureProxy* proxy = atlasShape.atlas()->texture();
+    const TextureProxy* proxy = atlasShape.textureProxy();
     SkASSERT(proxy);
 
     // write uniforms

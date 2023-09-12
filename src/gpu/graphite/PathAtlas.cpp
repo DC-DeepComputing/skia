@@ -185,6 +185,57 @@ void VelloComputePathAtlas::onAddShape(const Shape& shape,
 
 #endif  // SK_ENABLE_VELLO_SHADERS
 
+///////////////////////////////////////////////////////////////////////////////////////
+
 SoftwarePathAtlas::SoftwarePathAtlas() : PathAtlas(kSoftwareAtlasDim, kSoftwareAtlasDim) {}
+
+void SoftwarePathAtlas::recordUploads(UploadList* uploadList) {
+    // add queued uploads to upload list
+    //const void* uploadData = fBackingPixmap.addr();
+
+    // clear queue
+    fDirtyRect.setEmpty();
+}
+
+void SoftwarePathAtlas::onAddShape(const Shape& shape,
+                                   const Transform& transform,
+                                   const Rect& atlasBounds,
+                                   skvx::int2 deviceOffset,
+                                   const SkStrokeRec& strokeRec) {
+    // TODO: look up shape and use cached texture
+    // Need to push this up into addShape() somehow
+
+    // rasterize path and add to queued upload list
+    // See SoftwarePathRenderer::onDrawPath()/GrSWMaskHelper::drawShape()
+    // TODO: in a separate thread?
+
+    // allocate pixmap if needed
+    if (!fBackingPixmap.addr()) {
+        SkImageInfo imageInfo = SkImageInfo::Make(kSoftwareAtlasDim, kSoftwareAtlasDim,
+                                                  kAlpha_8_SkColorType, kUnpremul_SkAlphaType);
+        if (!fBackingPixmap.tryAlloc(imageInfo)) {
+            return;
+        }
+        fBackingPixmap.erase(0);
+    }
+
+    //*** keep draw around?
+    SkDraw draw;
+    draw.fBlitterChooser = SkA8Blitter_Choose;
+    draw.fDst      = *fBackingPixmap;
+    SkRasterClip rasterClip;
+    rasterClip.setRect(atlasBounds.asSkRect());
+    draw.fRC       = &rasterClip;
+
+    fDirtyRect.join(atlasBounds.asSkIRect());
+
+    // TODO: cache shape data and resulting texture... how?
+    // Idea: use shape, transform, and strokeRec as key to find texture and atlasBounds
+}
+
+void SoftwarePathAtlas::onReset() {
+    //**** anything to do here?
+}
+
 
 }  // namespace skgpu::graphite

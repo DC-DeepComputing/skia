@@ -14,7 +14,7 @@
 
 namespace skgpu::graphite {
 
-class PathAtlas;
+class TextureProxy;
 
 /**
  * AtlasShape represents a shape for which per-pixel coverage data comes from a transient atlas
@@ -58,10 +58,10 @@ public:
 
     AtlasShape() = default;
     AtlasShape(const Shape& shape,
-               const PathAtlas* atlas,
+               const TextureProxy* proxy,
                const SkM44& deviceToLocal,
                const MaskInfo& maskInfo)
-            : fAtlas(atlas)
+            : fTextureProxy(proxy)
             , fDeviceToLocal(deviceToLocal)
             , fInverted(shape.inverted())
             , fMaskInfo(maskInfo) {}
@@ -97,14 +97,14 @@ public:
     // The width and height of the bounds of the coverage mask shape in device coordinates.
     const half2& maskSize() const { return fMaskInfo.fMaskSize; }
 
-    // The atlas that the shape will be rendered to.
-    const PathAtlas* atlas() const { return fAtlas; }
+    // The texture that the shape will be rendered from.
+    const TextureProxy* textureProxy() const { return fTextureProxy; }
 
     // Whether or not the shape will be painted according to an inverse fill rule.
     bool inverted() const { return fInverted; }
 
 private:
-    const PathAtlas* fAtlas;
+    const TextureProxy* fTextureProxy;
     SkM44 fDeviceToLocal;
     bool fInverted;
     MaskInfo fMaskInfo;

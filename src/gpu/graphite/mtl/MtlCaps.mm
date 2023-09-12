@@ -253,7 +253,8 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
     fStorageBufferSupport = true;
     fStorageBufferPreferred = true;
 
-    fComputeSupport = true;
+    //**** restore to default
+    fComputeSupport = false; //true;
 
     if (@available(macOS 10.12, iOS 14.0, tvOS 14.0, *)) {
         fClampToBorderSupport = (this->isMac() || fFamilyGroup >= 7);

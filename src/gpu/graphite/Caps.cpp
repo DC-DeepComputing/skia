@@ -27,7 +27,8 @@ Caps::~Caps() {}
 void Caps::finishInitialization(const ContextOptions& options) {
     fCapabilities->initSkCaps(fShaderCaps.get());
 
-    fDefaultMSAASamples = options.fInternalMultisampleCount;
+    //*** restore to default
+    fDefaultMSAASamples = 1;//options.fInternalMultisampleCount;
 
     if (options.fShaderErrorHandler) {
         fShaderErrorHandler = options.fShaderErrorHandler;

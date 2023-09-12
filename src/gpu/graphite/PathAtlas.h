@@ -9,6 +9,7 @@
 #define skgpu_graphite_PathAtlas_DEFINED
 
 #include "include/core/SkStrokeRec.h"
+#include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/RectanizerSkyline.h"
 #include "src/gpu/graphite/geom/AtlasShape.h"
 
@@ -170,15 +171,18 @@ class SoftwarePathAtlas : public PathAtlas {
 public:
     SoftwarePathAtlas();
     ~SoftwarePathAtlas() override {}
-    void recordUploads(UploadList*) const {}
+    void recordUploads(UploadList*);
 
 protected:
     void onAddShape(const Shape&,
                     const Transform& transform,
                     const Rect& atlasBounds,
                     skvx::int2 deviceOffset,
-                    const SkStrokeRec&) override {}
-    void onReset() override {}
+                    const SkStrokeRec&) override;
+    void onReset() override;
+
+    SkAutoPixmapStorage fBackingPixmap; // *** would SkPixmap work here?
+    SkIRect fDirtyRect;
 };
 
 }  // namespace skgpu::graphite
