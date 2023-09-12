@@ -104,13 +104,21 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+void PaintParams::addPaintColorKey(const KeyContext& keyContext,
+                                   PaintParamsKeyBuilder* keyBuilder,
+                                   PipelineDataGatherer* gatherer) const {
+    if (fShader) {
+        AddToKey(keyContext, keyBuilder, gatherer, fShader.get());
+    } else {
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
+                                          keyContext.paintColor());
+        keyBuilder->endBlock();
+    }
+}
+
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    // TODO: figure out how we can omit this block when the Paint's color isn't used.
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
-    builder->endBlock();
-
     bool needsDstSample = fDstReadReq == DstReadRequirement::kTextureCopy ||
                           fDstReadReq == DstReadRequirement::kTextureSample;
     SkASSERT(needsDstSample == SkToBool(keyContext.dstTexture()));
@@ -124,7 +132,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
         builder->endBlock();
     }
 
-    AddToKey(keyContext, builder, gatherer, fShader.get());
+    this->addPaintColorKey(keyContext, builder, gatherer);
 
     if (fPrimitiveBlender) {
         AddPrimitiveBlendBlock(keyContext, builder, gatherer, fPrimitiveBlender.get());
