@@ -9,6 +9,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlender.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -1014,6 +1015,12 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
     return transformed;
 }
 
+void FilterResult::draw(SkDevice* target, const Mapping& mapping, const SkBlender* blender) const {
+    skif::DeviceSpace<SkIRect> outputBounds{target->devClipBounds()};
+    SkAutoDeviceTransformRestore adtr{target, mapping.layerToDevice()};
+    this->draw(target, mapping.deviceToLayer(outputBounds), blender);
+}
+
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         const Context& ctx,
         LayerSpace<SkIRect> dstBounds,
@@ -1046,7 +1053,7 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
     return surface.snap();
 }
 
-void FilterResult::draw(SkDevice* device, const LayerSpace<SkIRect>& dstBounds) const {
+void FilterResult::draw(SkDevice* device, const LayerSpace<SkIRect>& dstBounds, const SkBlender* blender) const {
     if (!fImage) {
         return;
     }
@@ -1054,11 +1061,18 @@ void FilterResult::draw(SkDevice* device, const LayerSpace<SkIRect>& dstBounds) 
     // When this is called by resolve(), the surface and transform are such that this clip is
     // trivially a no-op, but including the clip means draw() works correctly in other scenarios.
     device->pushClipStack();
+    // FIXME if blender is not src-over or does not preserve transparency, we somehow need to fill
+    // the rest of devClipBounds() with the blender's output when processing transparent black.j
+    // Should this be included in modifiesPixelsBeyondImage() to become a drawPaint() call?
     device->clipRect(SkRect::Make(SkIRect(fLayerBounds)), SkClipOp::kIntersect, /*aa=*/false);
 
     SkPaint paint;
     paint.setAntiAlias(true);
-    paint.setBlendMode(SkBlendMode::kSrcOver);
+    if (blender) {
+        paint.setBlender(sk_ref_sp(blender));
+    } else {
+        paint.setBlendMode(SkBlendMode::kSrcOver);
+    }
     paint.setColorFilter(fColorFilter);
 
     // If we are an integer translate, the default bilinear sampling *should* be equivalent to
