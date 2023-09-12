@@ -162,6 +162,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2bfa0c6_6ca252dc",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-12T18:46:13Z",
+      "side": 1,
+      "message": "OK, so should we just do away with this assert? Are you ok with this if-statement, if it is needed in order to define sk_FragColor and sk_SecondaryFragColor statically with indices?",
+      "parentUuid": "3d019ab8_fa2194a6",
+      "range": {
+        "startLine": 1247,
+        "startChar": 0,
+        "endLine": 1251,
+        "endChar": 74
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22530c47_cb8d0713",
         "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
         "patchSetId": 1
