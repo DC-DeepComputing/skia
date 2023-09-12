@@ -46,6 +46,30 @@
       },
       "revId": "d7dd1957d12ba510edadc89221fe8a2bc21d84a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af2ecf6e_992ba387",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-12T15:43:20Z",
+      "side": 1,
+      "message": "Should there be a D3D backend it will also need MutableTextureState for the Resource State (it\u0027s similar to texture layout, but generalized across buffers and textures).",
+      "parentUuid": "5ee97a19_39ed0584",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 45
+      },
+      "revId": "d7dd1957d12ba510edadc89221fe8a2bc21d84a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
