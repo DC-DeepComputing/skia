@@ -208,6 +208,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75cb9a4b_abe28322",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-12T19:01:22Z",
+      "side": 1,
+      "message": "Done. Also checking that `location \u003d\u003d 0`.",
+      "parentUuid": "5fffa898_77662df7",
+      "range": {
+        "startLine": 1247,
+        "startChar": 0,
+        "endLine": 1251,
+        "endChar": 74
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22530c47_cb8d0713",
