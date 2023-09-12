@@ -37,7 +37,6 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkSpecialImage.h"
-#include "src/core/SkSpecialSurface.h"  // IWYU pragma: keep
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
@@ -728,12 +727,17 @@ namespace skif {
 Functors MakeGaneshFunctors(GrRecordingContext* context, GrSurfaceOrigin origin) {
     SkASSERT(context);
 
-    auto makeSurfaceFunctor = [context, origin](const SkImageInfo& imageInfo,
-                                                const SkSurfaceProps* props) {
-        return SkSpecialSurfaces::MakeRenderTarget(context,
-                                                   imageInfo,
-                                                   *props,
-                                                   origin);
+    auto makeDeviceFunctor = [context, origin](const SkImageInfo& imageInfo,
+                                               const SkSurfaceProps& props) {
+        return context->priv().createDevice(skgpu::Budgeted::kYes,
+                                            imageInfo,
+                                            SkBackingFit::kApprox,
+                                            1,
+                                            GrMipmapped::kNo,
+                                            GrProtected::kNo,
+                                            origin,
+                                            props,
+                                            skgpu::ganesh::Device::InitContents::kUninit);
     };
 
     auto makeImageFunctor = [context](const SkIRect& subset,
@@ -805,8 +809,7 @@ Functors MakeGaneshFunctors(GrRecordingContext* context, GrSurfaceOrigin origin)
                                                     outProps);
     };
 
-    return Functors(makeSurfaceFunctor, makeImageFunctor, makeCachedBitmapFunctor,
-                    blurImageFunctor);
+    return Functors(makeDeviceFunctor, makeImageFunctor, makeCachedBitmapFunctor, blurImageFunctor);
 }
 
 Context MakeGaneshContext(GrRecordingContext* context,
