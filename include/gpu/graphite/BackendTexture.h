@@ -22,6 +22,7 @@
 #endif
 
 #ifdef SK_VULKAN
+#include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #endif
 
@@ -70,7 +71,8 @@ public:
                    const VulkanTextureInfo&,
                    VkImageLayout,
                    uint32_t queueFamilyIndex,
-                   VkImage);
+                   VkImage,
+                   VulkanAlloc);
 #endif
 
     BackendTexture(const BackendTexture&);
@@ -108,6 +110,8 @@ public:
     VkImage getVkImage() const;
     VkImageLayout getVkImageLayout() const;
     uint32_t getVkQueueFamilyIndex() const;
+    const VulkanAlloc* getMemoryAlloc() const;
+    void setVkImage(VkImage); // TODO: Remove. Debugging
 #endif
 
 private:
@@ -131,6 +135,10 @@ private:
 #endif
 #ifdef SK_VULKAN
         VkImage fVkImage;
+        // fMemoryAlloc == VulkanAlloc() if the client has already created their own VkImage and
+        // will destroy it themselves as opposed to having Skia create/destroy it via
+        // Recorder::createBackendTexture and Context::deleteBackendTexture.
+        VulkanAlloc fMemoryAlloc;
 #endif
         void* fEnsureUnionNonEmpty;
     };
