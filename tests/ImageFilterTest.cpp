@@ -94,7 +94,7 @@ static constexpr GrSurfaceOrigin kTestSurfaceOrigin = kTopLeft_GrSurfaceOrigin;
 class MatrixTestImageFilter : public SkImageFilter_Base {
 public:
     MatrixTestImageFilter(skiatest::Reporter* reporter, const SkMatrix& expectedMatrix)
-            : SkImageFilter_Base(nullptr, 0, nullptr)
+            : SkImageFilter_Base(nullptr, 0)
             , fReporter(reporter)
             , fExpectedMatrix(expectedMatrix) {}
 
@@ -108,6 +108,19 @@ private:
     skif::FilterResult onFilterImage(const skif::Context& ctx) const override {
         REPORTER_ASSERT(fReporter, ctx.mapping().layerMatrix() == fExpectedMatrix);
         return ctx.source();
+    }
+
+    skif::LayerSpace<SkIRect> onGetInputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& desiredOutput,
+            const skif::LayerSpace<SkIRect>& contentBounds) const override {
+        return desiredOutput;
+    }
+
+    skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& contentBounds) const override {
+        return contentBounds;
     }
 
     skiatest::Reporter* fReporter;
@@ -1810,52 +1823,6 @@ DEF_TEST(ImageFilterMakeWithFilter, reporter) {
 
     test_make_with_filter(reporter, createRasterSurface, raster);
 }
-
-#if !defined(SK_DISABLE_LEGACY_MAKEWITHFILTER)
-// TODO(b/293326072): remove when SkImage::makeWithFilter is removed
-DEF_TEST(ImageFilterMakeWithFilter_LegacyRaster, reporter) {
-    auto createRasterSurface = [](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        return SkSurfaces::Raster(info);
-    };
-
-    auto legacy = [](sk_sp<SkImage> src,
-                     const SkImageFilter* filter,
-                     const SkIRect& subset,
-                     const SkIRect& clipBounds,
-                     SkIRect* outSubset,
-                     SkIPoint* offset) -> sk_sp<SkImage> {
-        return src->makeWithFilter(nullptr, filter, subset, clipBounds, outSubset, offset);
-    };
-
-    test_make_with_filter(reporter, createRasterSurface, legacy);
-}
-
-// TODO(b/293326072): remove when SkImage::makeWithFilter is removed
-DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_LegacyGanesh,
-                                       reporter,
-                                       ctxInfo,
-                                       CtsEnforcement::kNever) {
-    GrRecordingContext* rContext = ctxInfo.directContext();
-
-    auto createGaneshSurface = [rContext](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
-        return SkSurfaces::RenderTarget(
-                rContext, skgpu::Budgeted::kNo, info, 0, kTestSurfaceOrigin, nullptr);
-    };
-
-    auto legacy = [rContext](sk_sp<SkImage> src,
-                             const SkImageFilter* filter,
-                             const SkIRect& subset,
-                             const SkIRect& clipBounds,
-                             SkIRect* outSubset,
-                             SkIPoint* offset) -> sk_sp<SkImage> {
-        return src->makeWithFilter(rContext, filter, subset, clipBounds, outSubset, offset);
-    };
-
-    test_make_with_filter(reporter, createGaneshSurface, legacy);
-}
-#endif
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Ganesh,
                                        reporter,
