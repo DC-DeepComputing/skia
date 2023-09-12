@@ -16,6 +16,23 @@
       "message": "friendly ping",
       "revId": "04c9eac8c1c8bb348b41181c89622269124febac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d640bd_84d9b72f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-12T15:02:22Z",
+      "side": 1,
+      "message": "Chrome Canary doesn\u0027t work, so I can\u0027t preflight. Fingers crossed it doesn\u0027t mess up layout tests.",
+      "revId": "04c9eac8c1c8bb348b41181c89622269124febac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
