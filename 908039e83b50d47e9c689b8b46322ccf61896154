@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0a7ff44_75f5313c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-12T14:34:49Z",
+      "side": 1,
+      "message": "In addition to just being a better cache, this will be needed to fix the TODO added here to `SkShaper_harfbuzz.cpp`.",
+      "revId": "908039e83b50d47e9c689b8b46322ccf61896154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
