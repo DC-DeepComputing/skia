@@ -46,6 +46,30 @@
       },
       "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67c6f0f0_a5e5132c",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-12T16:51:30Z",
+      "side": 1,
+      "message": "I think it is rare we\u0027d want an empty alloc at all. There are Vulkan APIs that need the alloc information and not just the VkImage (e.g. I know to query memory layout for uploading to a linear texture). But maybe it is small enough that we would be able to validate correctly when I client should have given us a valid Alloc or not.\n\nFor now I think it is better to just require one is passed in and if needed special case the times where we could have an empty one.",
+      "parentUuid": "097d614e_62b6369e",
+      "range": {
+        "startLine": 75,
+        "startChar": 19,
+        "endLine": 75,
+        "endChar": 30
+      },
+      "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
