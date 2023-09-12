@@ -15,7 +15,6 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
-#include "include/core/SkSurfaceProps.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
@@ -24,10 +23,7 @@
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSpecialImage.h"
-#include "src/core/SkSpecialSurface.h"
 #include "src/gpu/SkBackingFit.h"
-#include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/Device.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
@@ -224,6 +220,8 @@ GrSurfaceProxyView AsView(GrRecordingContext* context, const SkSpecialImage* img
 }
 
 }  // namespace SkSpecialImages
+<<<<<<< PATCH SET (c7e9ef Delete unused SkSpecialSurface)
+=======
 
 namespace SkSpecialSurfaces {
 sk_sp<SkSpecialSurface> MakeRenderTarget(GrRecordingContext* rContext,
@@ -252,3 +250,4 @@ sk_sp<SkSpecialSurface> MakeRenderTarget(GrRecordingContext* rContext,
     return sk_make_sp<SkSpecialSurface>(std::move(device), subset);
 }
 }  // namespace SkSpecialSurfaces
+>>>>>>> BASE      (de56f2 Optimize 'expr ? 1 : 0' into 'cast(expr)'.)
