@@ -50,6 +50,19 @@ struct VulkanAlloc {
                fFlags == that.fFlags && fUsesSystemHeap == that.fUsesSystemHeap;
     }
 
+    // VulkanAlloc::VulkanAlloc(VkDeviceMemory memory,
+    //                          VkDeviceSize offset,
+    //                          VkDeviceSize size,
+    //                          uint32_t flags,
+    //                          VulkanBackendMemory backendMemory)
+    //     : fMemory(memory)
+    //     , fOffset(offset)
+    //     , fSize(size)
+    //     , fFlags(flags)
+    //     , fBackendMemory(backendMemory) {
+
+    // }
+
 private:
     bool fUsesSystemHeap = false;
 };

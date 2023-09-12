@@ -24,6 +24,7 @@
 #ifdef SK_VULKAN
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
+#include "src/gpu/vk/VulkanMemory.h"
 #endif
 
 namespace skgpu {
