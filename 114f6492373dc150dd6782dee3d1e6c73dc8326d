@@ -94,6 +94,30 @@
       },
       "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0854830b_3c7b9dc8",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-12T17:14:59Z",
+      "side": 1,
+      "message": "SGTM to leave it as is then.",
+      "parentUuid": "a25c65ab_6400336c",
+      "range": {
+        "startLine": 75,
+        "startChar": 19,
+        "endLine": 75,
+        "endChar": 30
+      },
+      "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
