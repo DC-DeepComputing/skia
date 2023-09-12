@@ -9,6 +9,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/vk/VulkanTypes.h" // Needed?
 #include "src/gpu/MutableTextureStateRef.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/ComputePipeline.h"
