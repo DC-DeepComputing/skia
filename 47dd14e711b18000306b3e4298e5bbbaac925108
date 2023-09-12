@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4136976_89cfd2e3",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-12T15:15:56Z",
+      "side": 1,
+      "message": "Err… \"If the Layout is `layout(index\u003d3)`, we should emit `@index(3)`.\" Not sure how that sentence got chopped in half.",
+      "parentUuid": "a9f6e255_9909119d",
+      "range": {
+        "startLine": 1247,
+        "startChar": 0,
+        "endLine": 1251,
+        "endChar": 74
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "22530c47_cb8d0713",
         "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
         "patchSetId": 1
