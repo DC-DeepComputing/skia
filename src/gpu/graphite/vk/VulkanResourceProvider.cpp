@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
+#include "src/gpu/vk/VulkanMemory.h"
 #include "src/sksl/SkSLCompiler.h"
 
 namespace skgpu::graphite {
@@ -130,8 +131,23 @@ sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions& sa
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
-                                                              const TextureInfo&) {
-    return {};
+                                                              const TextureInfo& info) {
+    VulkanTextureInfo vkTexInfo;
+    if (!info.getVulkanTextureInfo(&vkTexInfo)) {
+        return {};
+    }
+    VulkanTexture::CreatedImageInfo createdTextureInfo;
+    if (!VulkanTexture::MakeVkImage(this->vulkanSharedContext(), dimensions, info,
+                                    &createdTextureInfo)) {
+        return {};
+    } else {
+        return {dimensions,
+                vkTexInfo,
+                createdTextureInfo.fMutableState->getImageLayout(),
+                createdTextureInfo.fMutableState->getQueueFamilyIndex(),
+                createdTextureInfo.fImage,
+                createdTextureInfo.fMemoryAlloc};
+    }
 }
 
 sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
@@ -219,5 +235,16 @@ VkPipelineCache VulkanResourceProvider::pipelineCache() {
         }
     }
     return fPipelineCache;
+}
+
+void VulkanResourceProvider::onDeleteBackendTexture(BackendTexture& texture) {
+    SkASSERT(texture.isValid());
+    SkASSERT(texture.backend() == BackendApi::kVulkan);
+
+    skgpu::VulkanMemory::FreeImageMemory(
+            this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
+
+    VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                DestroyImage(this->vulkanSharedContext()->device(), texture.getVkImage(), nullptr));
 }
 } // namespace skgpu::graphite
