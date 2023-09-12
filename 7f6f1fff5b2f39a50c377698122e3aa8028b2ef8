@@ -125,6 +125,30 @@
       },
       "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ddbd079_98b979ef",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-12T23:30:53Z",
+      "side": 1,
+      "message": "Actually I think this comment is stale. Each atlas shape gets a 1 pixel border (which amounts to a 2-pixel margin between adjacent atlas slots). The \"AA border\" that this is referring to used to always get added by PathAtlas but this is no longer the case, as it now relies purely on the bounding box calculated by the ClipStack, which handles inserting a 1 pixel border for AA depending on the shape.\n\nSo you can update this comment to just say `..plus a 1-pixel wide margin if the mask is in an atlas`.",
+      "parentUuid": "645638c7_45f069b9",
+      "range": {
+        "startLine": 50,
+        "startChar": 29,
+        "endLine": 50,
+        "endChar": 64
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
