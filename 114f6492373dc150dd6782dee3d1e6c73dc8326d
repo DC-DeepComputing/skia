@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d8da260_70c0f476",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-12T15:39:12Z",
+      "side": 1,
+      "message": "Maybe use \"VulkanAlloc vkAlloc \u003d VulkanAlloc()\" so clients that manage image lifetime don\u0027t need to explicitly specify it? WD you both think?",
+      "range": {
+        "startLine": 75,
+        "startChar": 19,
+        "endLine": 75,
+        "endChar": 30
+      },
+      "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
