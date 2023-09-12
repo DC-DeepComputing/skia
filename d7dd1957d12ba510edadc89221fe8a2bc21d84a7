@@ -22,6 +22,30 @@
       },
       "revId": "d7dd1957d12ba510edadc89221fe8a2bc21d84a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ee97a19_39ed0584",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-12T15:40:22Z",
+      "side": 1,
+      "message": "If we aren\u0027t opposed to how this is implemented, do we want to take a similar approach and have MutableTextureStateRef be Vulkan-only?",
+      "parentUuid": "77121dd5_ec3b286e",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 45
+      },
+      "revId": "d7dd1957d12ba510edadc89221fe8a2bc21d84a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
