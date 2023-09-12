@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ea005f2_9e7dc0f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-09-12T13:59:15Z",
+      "side": 1,
+      "message": "This isn\u0027t actually working in dm, because `adapter.HasFeature(wgpu::FeatureName::DualSourceBlending)` is returning false. But for now I wanted to see if it seemed like a reasonable approach.",
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
