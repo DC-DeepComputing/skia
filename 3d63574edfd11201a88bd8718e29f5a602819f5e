@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9b76489_be70f93c",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-12T18:50:06Z",
+      "side": 1,
+      "message": "This might not work because the annotation is ambiguous on what it affects. I usually just drop them from multi-line constructors.",
+      "range": {
+        "startLine": 758,
+        "startChar": 52,
+        "endLine": 758,
+        "endChar": 88
+      },
+      "revId": "3d63574edfd11201a88bd8718e29f5a602819f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "989027f1_770dcf43",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-12T18:50:06Z",
+      "side": 1,
+      "message": "If you want these to be truly optional, I think you will need to set them in skottie.js if they are not set by the user, otherwise the binding magic will not work.",
+      "range": {
+        "startLine": 955,
+        "startChar": 12,
+        "endLine": 955,
+        "endChar": 13
+      },
+      "revId": "3d63574edfd11201a88bd8718e29f5a602819f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b28bb2b2_a8ffbe26",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 4125,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-12T18:50:06Z",
+      "side": 1,
+      "message": "You need to define this in skottie.js if you have not already.",
+      "range": {
+        "startLine": 4125,
+        "startChar": 17,
+        "endLine": 4125,
+        "endChar": 49
+      },
+      "revId": "3d63574edfd11201a88bd8718e29f5a602819f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a05ec36f_1899a827",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-12T18:50:06Z",
+      "side": 1,
+      "message": "A failing test suggests \"resize\" is missing",
+      "revId": "3d63574edfd11201a88bd8718e29f5a602819f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
