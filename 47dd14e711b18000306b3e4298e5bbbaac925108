@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2d0768_5c5e7271",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-12T21:16:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1410f80a_b4ff30c2",
+      "range": {
+        "startLine": 906,
+        "startChar": 0,
+        "endLine": 912,
+        "endChar": 5
+      },
+      "revId": "47dd14e711b18000306b3e4298e5bbbaac925108",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9f6e255_9909119d",
