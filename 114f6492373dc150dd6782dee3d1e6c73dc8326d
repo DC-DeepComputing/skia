@@ -70,6 +70,30 @@
       },
       "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a25c65ab_6400336c",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-12T16:55:17Z",
+      "side": 1,
+      "message": "Yeah, the only instances currently that we pass in an empty one are for unit tests and the viewer window context where, internal to skia, we create BackendTextures through ctors directly w/ a premade VkImage as opposed to going through recorder-\u003ecreateBackendTexture() to generate a backend VkImage. I would imagine we expect most external clients to go through the recorder call, but I could be wrong on that.",
+      "parentUuid": "67c6f0f0_a5e5132c",
+      "range": {
+        "startLine": 75,
+        "startChar": 19,
+        "endLine": 75,
+        "endChar": 30
+      },
+      "revId": "114f6492373dc150dd6782dee3d1e6c73dc8326d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
