@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b3971c_83b7466d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-12T22:30:38Z",
+      "side": 1,
+      "message": "We can land this despite the other CL being reverted, right? Then update Chromium, then reland?",
+      "revId": "3b960adcc0b8ad33bccbeea6070a1ed03b85bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
