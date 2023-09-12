@@ -16,6 +16,24 @@
       "message": "So currently https://source.chromium.org/chromium/chromium/src/+/main:cc/paint/paint_op_writer.cc;l\u003d540;drc\u003d5ca8523b8c9ff9a7b3e7eb349d8fc7566f660675;bpv\u003d1;bpt\u003d1 won\u0027t serialize paints with shaders which have bitmaps. So they must not be testing that since it appears that tests are still passing. This would also have issues for serializing slugs with drawables which draw bitmaps, though that doesn\u0027t really happen at the moment in Chromium.",
       "revId": "47a8b1b5bf29918e527316dc4bd911b64e92672f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e4c79d_904f6a54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-12T19:26:11Z",
+      "side": 1,
+      "message": "Printing still works because they set the serialization procs already https://source.chromium.org/chromium/chromium/src/+/main:printing/common/metafile_utils.cc;l\u003d319;drc\u003d5ca8523b8c9ff9a7b3e7eb349d8fc7566f660675;bpv\u003d1;bpt\u003d0 . The general drawing works because that\u0027s using Chrome\u0027s PaintOps.",
+      "parentUuid": "e9188e6d_c2d0ce34",
+      "revId": "47a8b1b5bf29918e527316dc4bd911b64e92672f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
