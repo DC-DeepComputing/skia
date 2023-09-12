@@ -2233,7 +2233,7 @@ protected:
                               const SkPaint& paint);
 
     virtual void onDrawImage2(const SkImage*, SkScalar dx, SkScalar dy, const SkSamplingOptions&,
-                              const SkPaint*);
+                              const SkPaint*) {}
     virtual void onDrawImageRect2(const SkImage*, const SkRect& src, const SkRect& dst,
                                   const SkSamplingOptions&, const SkPaint*, SrcRectConstraint);
     virtual void onDrawImageLattice2(const SkImage*, const Lattice&, const SkRect& dst,

@@ -36,6 +36,7 @@ class FilterResultTestAccess;  // for testing
 class SkImageFilter_Base;
 class GrRecordingContext;
 class SkBitmap;
+class SkBlender;
 class SkDevice;
 class SkImage;
 class SkImageFilter;
@@ -776,6 +777,11 @@ public:
     // away entirely.
     std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> imageAndOffset(const Context& ctx) const;
 
+    // Draw this FilterResult into 'target' by applying the remaining layer-to-device transform of
+    // 'mapping', using the provided 'blender' to composite the effective image on top of 'target'.
+    // If 'blender' is null, it's equivalent to kSrcOver blending.
+    void draw(SkDevice* target, const Mapping& mapping, const SkBlender* blender) const;
+
     class Builder;
 
     enum class ShaderFlags : int {
@@ -820,7 +826,7 @@ private:
     // This assumes that the device's transform is set to match the current layer space coordinate
     // system. This will concat any internal extra transform and apply clipping as necessary, but
     // will restore the device to the original state before returning.
-    void draw(SkDevice* device, const LayerSpace<SkIRect>& dstBounds) const;
+    void draw(SkDevice* device, const LayerSpace<SkIRect>& dstBounds, const SkBlender* blender=nullptr) const;
 
     // Returns the FilterResult as a shader, ideally without resolving to an axis-aligned image.
     // 'xtraSampling' is the sampling that any parent shader applies to the FilterResult.
