@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40f4ff03_469c011c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-12T19:55:12Z",
+      "side": 1,
+      "message": "It looks important that https://source.chromium.org/chromium/chromium/src/+/main:cc/paint/paint_op_writer.cc;l\u003d540;drc\u003d5ca8523b8c9ff9a7b3e7eb349d8fc7566f660675;bpv\u003d1;bpt\u003d1 and https://source.chromium.org/chromium/chromium/src/+/main:cc/paint/paint_op_reader.cc;l\u003d557;drc\u003d5ca8523b8c9ff9a7b3e7eb349d8fc7566f660675;bpv\u003d1;bpt\u003d1 be updated as part of this.",
+      "revId": "55c9c377f0b028c4966481d7e437536eeca8a734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
