@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0beb94ab_34417b04",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-13T17:59:57Z",
+      "side": 1,
+      "message": "I guess to answer your question another way--we are calling `SkChecksum::Hash32(\u0026key, sizeof(Key))` so every single byte of the key is incorporated into the hash so all of them need to be accounted-for. If the compiler decides to leave a padding byte as garbage it will affect the hash.\n\nIf we hashed each of the fields individually we would just ignore padding concerns, but in general Skia doesn\u0027t do this.",
+      "parentUuid": "7838df2f_fe6e077d",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 53
+      },
+      "revId": "6b654a441873deb85b035671c31771a3328808c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3cf3b3f8_444810a4",
         "filename": "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h",
         "patchSetId": 1
