@@ -16,6 +16,24 @@
       "message": "DM already appears to do this [0] and weirdly, `SkCodecs::Register` will replace an existing \"png\" decoder with this one -- and appears to do so without a lock! Need to fix that for sure right now first. In any event, this is weird action at a distance.\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/dm/DM.cpp;l\u003d276;drc\u003db5e8e34ca0f3a355ef5a7ca63a591a27010ecd9c",
       "revId": "bff0251ffb3586b74019b45f4058dfb3611bea4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da3cdde1_7093673c",
+        "filename": "src/utils/SkTestCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-13T21:27:34Z",
+      "side": 1,
+      "message": "Looks like `SkCodecs::Register` isn\u0027t supposed to be thread safe writable as it is supposed to be called only at early startup. So I don\u0027t think it should be called here.",
+      "parentUuid": "d53831e0_9cdd93fc",
+      "revId": "bff0251ffb3586b74019b45f4058dfb3611bea4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
