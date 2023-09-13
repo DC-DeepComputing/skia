@@ -62,13 +62,20 @@ protected:
     bool generateGlyphPath(FT_Face, SkPath*);
     bool generateFacePath(FT_Face, SkGlyphID, uint32_t loadGlyphFlags, SkPath*);
 
-    /** Computes a bounding box for a COLRv1 glyph.
+    /** Computes a bounding box for and validates a COLRv1 glyph.
      *
      *  This method may change the configured size and transforms on FT_Face. Make sure to
      *  configure size, matrix and load glyphs as needed after using this function to restore the
      *  state of FT_Face.
      */
     static bool computeColrV1GlyphBoundingBox(FT_Face, SkGlyphID, SkRect* bounds);
+    /** Validates a COLRv1 glyph.
+     *
+     *  This method may change the configured size and transforms on FT_Face. Make sure to
+     *  configure size, matrix and load glyphs as needed after using this function to restore the
+     *  state of FT_Face.
+     */
+    static bool validateColrV1Glyph(FT_Face, SkGlyphID);
 
     struct ScalerContextBits {
         static const constexpr uint32_t COLRv0 = 1;
