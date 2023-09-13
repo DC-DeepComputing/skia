@@ -16,6 +16,1494 @@
       "message": "It\u0027s mainly a set of golang utilities but I had to extend SkUnicode API a bit to get what I wanted.",
       "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82329583_dbe27ced",
+        "filename": "go.mod",
+        "patchSetId": 55
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "MIT License",
+      "range": {
+        "startLine": 12,
+        "startChar": 1,
+        "endLine": 12,
+        "endChar": 7
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c06ee0b9_37ef49bf",
+        "filename": "go.mod",
+        "patchSetId": 55
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "MIT License",
+      "range": {
+        "startLine": 26,
+        "startChar": 1,
+        "endLine": 26,
+        "endChar": 7
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62fa4c33_1878b769",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Can you split these API changes to their own CL? Let\u0027s try to focus the CL on just the go code and the related C++ code",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42f4eda8_a52a044b",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This should also be std::vector or SkSpan - we don\u0027t want public APIs to take in a TArray\n\n(computeCodeUnitFlags should similarly be changed at some point)",
+      "range": {
+        "startLine": 170,
+        "startChar": 82,
+        "endLine": 170,
+        "endChar": 88
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d214956a_317b1260",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "driveby nit: extra space here",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 43
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ba4731_d66ce7c2",
+        "filename": "modules/skunicode/src/SkUnicode_libgrapheme.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "getSentences does not appear to be implemented for libgrapheme",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "185d4f6d_f93ee85b",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Are there unit tests for getSentences?",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb6a05cf_6ec5c300",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Is this doing a performance measurement? Can we name the function something like perf_compute_codeunit_flags or similar?",
+      "range": {
+        "startLine": 51,
+        "startChar": 11,
+        "endLine": 51,
+        "endChar": 15
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3b02ec3_a1e72feb",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Should this also be -1?",
+      "range": {
+        "startLine": 55,
+        "startChar": 15,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81fd94f5_78d0dc00",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Should we be doing two performance metrics in the same function? Why not split them into two different ones?",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9063d0ee_98b5d2cf",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Instead of returning a boolean here, can we instead return the flags (as an integer) and abort if the unicode object was not initialized or the index is out of range? Such behavior seems like it\u0027s a bug and not an \"expected\" error",
+      "range": {
+        "startLine": 69,
+        "startChar": 15,
+        "endLine": 69,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07d0e125_4b54af9d",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: not quite lined up. Did you try running `git clang-format origin/main` to see what it did?",
+      "range": {
+        "startLine": 99,
+        "startChar": 3,
+        "endLine": 99,
+        "endChar": 6
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ae69a88_6b597196",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: remove debugging code",
+      "range": {
+        "startLine": 108,
+        "startChar": 6,
+        "endLine": 108,
+        "endChar": 14
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5c56229_fef9ae84",
+        "filename": "tools/unicode_comparison/cpp/bridge.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "suggestion: rename this to `instantiate_unicode_impl` or `init_skunicode_impl` or something.",
+      "range": {
+        "startLine": 13,
+        "startChar": 9,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5da371a_48bb83e6",
+        "filename": "tools/unicode_comparison/cpp/bridge.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "suggestion: `cleanup_unicode_impl`",
+      "range": {
+        "startLine": 14,
+        "startChar": 9,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37f4845f_54f68f97",
+        "filename": "tools/unicode_comparison/cpp/bridge.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "general suggestion: can we make these named more similar to the C++ API on SkUnicode? e.g. `upper` -\u003e `toUpper`",
+      "range": {
+        "startLine": 15,
+        "startChar": 9,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82f3b156_d57c22f0",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "From the documentation:\n```\nThe C string is allocated in the C heap using malloc.\nIt is the caller\u0027s responsibility to arrange for it to be freed.\n```\nI don\u0027t see bridge::getSentences call free on text unless `gUnicode-\u003egetSentences()` takes ownership of the string (which would be a strange API decision IMO).\n\nI have the same concerns for all calls to C.CString in this file.",
+      "range": {
+        "startLine": 54,
+        "startChar": 31,
+        "endLine": 54,
+        "endChar": 38
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aed4909_f2512792",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "I\u0027m not a huge fan of having a global block of memory in the C++ side (gSentences) and then having to be careful to copy the data out of it using reflection.\n\nAssuming we have a reasonable upperbound of points that getSentences can return, we can declare a large array (or slice)\n\n```\nvar sentenceData uint[10000]\n\nfunc GetSentences(text string) []uint {\n\tlength :\u003d C.getSentences(C.CString(text), unsafe.Pointer(sentenceData))\n\tvar result \u003d make([]uint, length)\n\tcopy(result, sentenceData[:length])\n\treturn result\n}\n```\n\nWould something like that work ok or do we *need* the dynamic allocation?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "802bf265_4ddcc999",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Avoid len as a variable name because it masks the built-in function by the same name.",
+      "range": {
+        "startLine": 71,
+        "startChar": 5,
+        "endLine": 71,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134d4bd3_b90d646b",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "defer only defers the call until the end of the function call. I think you can omit defer here unless you meant to defer it until later in the program, in which case something else must be designed.",
+      "range": {
+        "startLine": 112,
+        "startChar": 1,
+        "endLine": 112,
+        "endChar": 6
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a3a2242_8c06470f",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "At the top of each file with a main(), please include a comment generally describing what the executable does.",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db59cac3_d3f4f138",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "As mentioned elsewhere, golang lets you drop int from the first two of these\n\n```\ndownloadLocalPagesBySections(searchResult []string, localInput string, lastCount, fileLimit, textLimit int) int\n```",
+      "range": {
+        "startLine": 15,
+        "startChar": 81,
+        "endLine": 15,
+        "endChar": 124
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e0abea_0a5b1a94",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: golang naming convention is to use camelCase for variable names and functions, so `searchResult` and `downloadLocalPagesBySections`",
+      "range": {
+        "startLine": 15,
+        "startChar": 38,
+        "endLine": 15,
+        "endChar": 51
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3845f8_28ba938f",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Instead of having multiple main functions in the same folder, can you put each main in a subfolder? Golang will use the folder name when making the executable name, so something like \n\ntools/unicode_comparison/go/download_wiki/main.go\n\nwould be compiled into a binary called `download_wiki`",
+      "range": {
+        "startLine": 82,
+        "startChar": 5,
+        "endLine": 82,
+        "endChar": 9
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb07dba7_3521ead8",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Maybe make a comment why `pt` is not included?",
+      "range": {
+        "startLine": 120,
+        "startChar": 181,
+        "endLine": 120,
+        "endChar": 183
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a3b6cb4_a7a336ba",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "At the top of each file with a main(), please include a comment generally describing what the executable does.",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf6cb52e_17733e7e",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: remove the unneeded imports",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "262837b7_b9e1c11c",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Can we remove the commented out code?",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 46,
+        "endChar": 9
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02684f2_626c7e83",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "ioutil has been deprecated (the functions moved elsewhere).\n\nUse os.ReadFile instead",
+      "range": {
+        "startLine": 57,
+        "startChar": 21,
+        "endLine": 57,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa7b08f_7fa22220",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "At the top of each file with a main(), please include a comment generally describing what the executable does.",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0ef82f3_9bbc93fa",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: remove these comments from import",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 9
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c022ab6_5fe9a08b",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "\"this\" is not an idiomatic name (although conceptually it is the same). Usually, we would just use the lowercase letter of the type name `r`\n\nSame below.",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4a22194_79ee2f2c",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "suggestion: If you implement this as called \"Less\", you can use sort.Slice to sort a slice of these\n\n[1] https://pkg.go.dev/sort#Slice",
+      "range": {
+        "startLine": 54,
+        "startChar": 18,
+        "endLine": 54,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2523cc3e_ac73fe73",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "While this is legal Go code, I prefer using the field names when initializing structs:\n```\nCalculatedDelta{\n  // You can omit Memory, Performance, Disk since golang defaults them to 0\n  Graphemes: Ratio{0, 1},\n  SoftBreaks: Ratio{0, 1},\n  // ...\n  // Data can also be omitted because it can use the zero intializer.\n}\n```",
+      "range": {
+        "startLine": 83,
+        "startChar": 2,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33ad580c_5fc78cf8",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "If this constructor is not doing anything, we can remove it.",
+      "range": {
+        "startLine": 126,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 18
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5412b7b0_b576773d",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Children can safely be initialized to a nil slice (the default). Calling append([nil slice], data) will create a non-nil slice to hold the data.\n\nHere and other constructors",
+      "range": {
+        "startLine": 159,
+        "startChar": 90,
+        "endLine": 159,
+        "endChar": 96
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2409624c_2d74b17a",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "FYI: This is potentially risky if the client could add to names after passing it in.\n\nOne thing you could do is have NewSize take a variadic string\n\n```\nfunc NewSize(names ...string) *Row {\n  return \u0026Row{Names: names, ...}\n}\n```\n\nThat allows you to call NewSize with any amount of strings, so the names and the size.",
+      "range": {
+        "startLine": 167,
+        "startChar": 21,
+        "endLine": 167,
+        "endChar": 39
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1752232f_60dd4c9d",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Same note about how appending to names is a bit risky. You could allocate a new slice and append names and then file to it.",
+      "range": {
+        "startLine": 171,
+        "startChar": 26,
+        "endLine": 171,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7169027_4640cb0f",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "prefer `var results []Chunk`\n\nhttps://github.com/golang/go/wiki/CodeReviewComments/#declaring-empty-slices",
+      "range": {
+        "startLine": 182,
+        "startChar": 1,
+        "endLine": 182,
+        "endChar": 21
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5caa0844_5dece08e",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to be passed in via pointer, AFACT. Modifying the contents of a passed in slice like you have should be sufficient.",
+      "range": {
+        "startLine": 477,
+        "startChar": 24,
+        "endLine": 477,
+        "endChar": 30
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63f41b50_d035ac60",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: assignIDs \nhttps://github.com/golang/go/wiki/CodeReviewComments/#initialisms",
+      "range": {
+        "startLine": 477,
+        "startChar": 5,
+        "endLine": 477,
+        "endChar": 14
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce81ab3_2b52ecb2",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "golang allows you to drop repeated parameter types that are adjacent. So you could specify this as\n`func assignIDs(children []Row, parentID, parentNum string) {...`\n\nand parentID will be inferred to be a `string` as well",
+      "range": {
+        "startLine": 477,
+        "startChar": 41,
+        "endLine": 477,
+        "endChar": 47
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a391cb7_c64c275e",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this return an error? We usually try to keep panics/checks out of main() unless it would indicate a programming mistake not a user mistake",
+      "range": {
+        "startLine": 504,
+        "startChar": 1,
+        "endLine": 504,
+        "endChar": 11
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5bdec0_22ef2d8a",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "the 0,0 can be omitted and the default values (of 0) will be used.",
+      "range": {
+        "startLine": 591,
+        "startChar": 25,
+        "endLine": 591,
+        "endChar": 29
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47bc58f_7521a832",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "As above, I don\u0027t think this doesn\u0027t need to be a pointer. The idiomatic thing to do would be pass in a slice and return a slice (the subslice based on start, IIUC)",
+      "range": {
+        "startLine": 651,
+        "startChar": 21,
+        "endLine": 651,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa29aa54_ea652fb7",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Golang lets you omit 0 as the starting index of the slice, like Python does.",
+      "range": {
+        "startLine": 662,
+        "startChar": 18,
+        "endLine": 662,
+        "endChar": 19
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "778bdb51_f0606622",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to be a pointer.",
+      "range": {
+        "startLine": 668,
+        "startChar": 24,
+        "endLine": 668,
+        "endChar": 30
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6386bc69_e37be0ac",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This param is also unused",
+      "range": {
+        "startLine": 678,
+        "startChar": 18,
+        "endLine": 678,
+        "endChar": 32
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c348820a_7febb5cf",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This parameter doesn\u0027t seem to be used",
+      "range": {
+        "startLine": 678,
+        "startChar": 59,
+        "endLine": 678,
+        "endChar": 69
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89c22eaa_2dc61903",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Should this be filepath.SplitList ? \nhttps://pkg.go.dev/path/filepath#SplitList",
+      "range": {
+        "startLine": 688,
+        "startChar": 13,
+        "endLine": 688,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faddcec1_a68ef98e",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Try fmt.Errorf which combines these two calls",
+      "range": {
+        "startLine": 697,
+        "startChar": 11,
+        "endLine": 697,
+        "endChar": 33
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bdf8054_04d837dc",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "nit: can we remove this commented out code?",
+      "range": {
+        "startLine": 725,
+        "startChar": 5,
+        "endLine": 725,
+        "endChar": 6
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71b4b5e7_b61a5bf1",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "We should probably use filepath.Join to build paths in a file-system dependent way.\nhttps://pkg.go.dev/path/filepath#Join\nHere and below",
+      "range": {
+        "startLine": 803,
+        "startChar": 14,
+        "endLine": 803,
+        "endChar": 35
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "425847de_843b6fd8",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Instead of passing this in by pointer, can we have compareFiles return two values? web and error?",
+      "range": {
+        "startLine": 809,
+        "startChar": 73,
+        "endLine": 809,
+        "endChar": 77
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7283d29_9fb4e3e8",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Why does this need to be exported? Could it be `abs`?",
+      "range": {
+        "startLine": 19,
+        "startChar": 5,
+        "endLine": 19,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64a72d11_172f8acd",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "min exists in golang 1.21 now https://pkg.go.dev/builtin#min",
+      "range": {
+        "startLine": 26,
+        "startChar": 5,
+        "endLine": 26,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97643a9e_748ff7c8",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Could this also be changed to a call to the built-in min function?\n\nYou can \"expand\" a slice by doing `min(my_slice...)`",
+      "range": {
+        "startLine": 33,
+        "startChar": 5,
+        "endLine": 33,
+        "endChar": 13
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f02df24c_e2ae5e95",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "The idiomatic way for this would be to return a new string not pass in a pointer and write to it.",
+      "range": {
+        "startLine": 46,
+        "startChar": 5,
+        "endLine": 46,
+        "endChar": 25
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0573e4e2_ebcaadad",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Maybe call this splitAsInts or something to imply the functionality here.",
+      "range": {
+        "startLine": 54,
+        "startChar": 5,
+        "endLine": 54,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52cec80_325fc321",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "https://github.com/golang/go/wiki/CodeReviewComments/#declaring-empty-slices",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 21
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa82dabd_78a53328",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Unless it is important for exporting to JSON at some point, we prefer nil slices to an empty slice. So just return nil here",
+      "range": {
+        "startLine": 60,
+        "startChar": 10,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82efed08_44e3fcfd",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Why does this exist as well as expand?",
+      "range": {
+        "startLine": 76,
+        "startChar": 5,
+        "endLine": 76,
+        "endChar": 16
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7439be3f_a743b0af",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This can probably be replaced with a call to https://pkg.go.dev/os#WriteFile",
+      "range": {
+        "startLine": 84,
+        "startChar": 5,
+        "endLine": 84,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c3fbbc_f1ce05fb",
+        "filename": "tools/unicode_comparison/html/index.html",
+        "patchSetId": 55
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "This is a *very* old version of JQuery. See my comments in scripts for suggestions on how we can drop the dependency.",
+      "range": {
+        "startLine": 18,
+        "startChar": 61,
+        "endLine": 18,
+        "endChar": 66
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc575ca_7a99c56e",
+        "filename": "tools/unicode_comparison/html/scripts.html",
+        "patchSetId": 55
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "Can you use string literal templates to make these more complicated selectors? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 58
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744b1401_874cb368",
+        "filename": "tools/unicode_comparison/html/scripts.html",
+        "patchSetId": 55
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T17:04:05Z",
+      "side": 1,
+      "message": "If this was the only thing you need JQuery for, you could use https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector or\nhttps://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll\n\nand drop the dependency on JQuery",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 3
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
