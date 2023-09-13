@@ -51,7 +51,7 @@ the features of the c++17 standard. Older compilers that lack C++17 support may
 produce non-obvious compilation errors. You can configure your build to use
 specific executables for `cc` and `cxx` invocations using e.g.
 `--args='cc="clang-6.0" cxx="clang++6.0"'` GN build arguments, as illustrated in
-[Quickstart](#quick). This can be useful for building Skia without needing to
+[Quickstart](#quickstart). This can be useful for building Skia without needing to
 modify your machine's default compiler toolchain.
 
 ## Quickstart
