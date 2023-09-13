@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7456de6_d733d7f2",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1085,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-13T15:32:46Z",
+      "side": 1,
+      "message": "I left this deliberately -- this is only for the atlas path renderer cases, which happen to use a CoverageMaskShape. I tweaked the comment a bit though.",
+      "parentUuid": "756d91f9_058b7d1f",
+      "range": {
+        "startLine": 1085,
+        "startChar": 14,
+        "endLine": 1085,
+        "endChar": 34
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e184a1b8_fca6f623",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 3
@@ -54,6 +78,24 @@
       "writtenOn": "2023-09-12T22:45:22Z",
       "side": 1,
       "message": "s/AtlasShape/CoverageMaskShape/",
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b16c9b2a_b3a1af5f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1086,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-13T15:32:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e184a1b8_fca6f623",
       "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75fac593_5c1c09df",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-13T15:32:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f9ccc4f_e7bbeb89",
+      "range": {
+        "startLine": 291,
+        "startChar": 5,
+        "endLine": 291,
+        "endChar": 6
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "156c04f5_6bd3850f",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-09-12T22:45:22Z",
       "side": 1,
       "message": "nit: s/an/a/",
+      "range": {
+        "startLine": 24,
+        "startChar": 17,
+        "endLine": 24,
+        "endChar": 19
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c4bf31_64962ba0",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-13T15:32:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "156c04f5_6bd3850f",
       "range": {
         "startLine": 24,
         "startChar": 17,
@@ -189,6 +279,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "a3d27956_ca650499",
+      "range": {
+        "startLine": 50,
+        "startChar": 29,
+        "endLine": 50,
+        "endChar": 64
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9df426d_47ccf21a",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-13T15:32:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4d01839_0c94ef8f",
       "range": {
         "startLine": 50,
         "startChar": 29,
