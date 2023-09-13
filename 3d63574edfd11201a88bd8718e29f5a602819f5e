@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d43e6cdd_e51178d9",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T15:32:42Z",
+      "side": 1,
+      "message": "The type annotation could apply to either the return value `textProp` or the parameter passed in. The preferred way could be to have `textProp` be on the next line as a no-op with the type annotation. But if it\u0027s not causing errors, just leave it.",
+      "parentUuid": "eb2f07d5_252bb5e7",
+      "range": {
+        "startLine": 758,
+        "startChar": 52,
+        "endLine": 758,
+        "endChar": 88
+      },
+      "revId": "3d63574edfd11201a88bd8718e29f5a602819f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "989027f1_770dcf43",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 5
