@@ -166,7 +166,7 @@ def c_plus_plus_deps(ws = "@"):
 
     git_repository(
         name = "spirv_headers",
-        commit = "d790ced752b5bfc06b6988baadef6eb2d16bdf96",
+        commit = "a8af2ce341cfd73a44a37bf62642a2cdf45938df",
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers.git",
     )
 
