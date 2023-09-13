@@ -104,6 +104,27 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
+void PaintParams::Blend(const KeyContext& keyContext,
+                        PaintParamsKeyBuilder* keyBuilder,
+                        PipelineDataGatherer* gatherer,
+                        const SkBlender* blender,
+                        AddToKeyFn addSrcToKey,
+                        AddToKeyFn addDstToKey) {
+    if (!blender) {
+        addSrcToKey();
+    }
+
+    BlendShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+        addSrcToKey();
+
+        addDstToKey();
+
+        AddToKey(keyContext, keyBuilder, gatherer, blender);
+
+    keyBuilder->endBlock();  // BlendShaderBlock
+}
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
@@ -114,6 +135,27 @@ void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                           keyContext.paintColor());
         keyBuilder->endBlock();
     }
+}
+
+/**
+ * Primitive blend blocks are used to blend either the paint color or the output of another shader
+ * with a primitive color emitted by certain draw geometry calls (drawVertices, drawAtlas, etc.).
+ * Dst: primitiveColor Src: Paint color/shader output
+ */
+void PaintParams::handlePrimitiveColor(const KeyContext& keyContext,
+                                       PaintParamsKeyBuilder* keyBuilder,
+                                       PipelineDataGatherer* gatherer) const {
+
+    auto addSrcToKey = [&]() -> void {
+        this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+    };
+
+    auto addDstToKey = [&]() -> void {
+        PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+        keyBuilder->endBlock();
+    };
+
+    Blend(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get(), addSrcToKey, addDstToKey);
 }
 
 void PaintParams::toKey(const KeyContext& keyContext,
@@ -136,11 +178,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
         builder->endBlock();
     }
 
-    this->addPaintColorToKey(keyContext, builder, gatherer);
-
-    if (fPrimitiveBlender) {
-        AddPrimitiveBlendBlock(keyContext, builder, gatherer, fPrimitiveBlender.get());
-    }
+    this->handlePrimitiveColor(keyContext, builder, gatherer);
 
     // Apply the paint's alpha value.
     if (fColor.fA != 1.0f) {
