@@ -162,12 +162,20 @@ void FindAndDeclareBuiltinVariables(Program& program) {
                 // Set the UseLastFragColor program input if we find sk_LastFragColor.
                 // Metal defines this as a program input, rather than a global variable.
                 case SK_LASTFRAGCOLOR_BUILTIN:
-                    program.fInterface.fUseLastFragColor = true;
+                    if (context.fCaps->fFBFetchSupport) {
+                        program.fInterface.fUseLastFragColor = true;
+                    } else {
+                        context.fErrors->error({}, std::string(var->name()) + " not supported");
+                    }
                     break;
 
                 // Set secondary color output if we find sk_SecondaryFragColor.
                 case SK_SECONDARYFRAGCOLOR_BUILTIN:
-                    program.fInterface.fOutputSecondaryColor = true;
+                    if (context.fCaps->fDualSourceBlendingSupport) {
+                        program.fInterface.fOutputSecondaryColor = true;
+                    } else {
+                        context.fErrors->error({}, std::string(var->name()) + " not supported");
+                    }
                     break;
             }
         }
