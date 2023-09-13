@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd79780_80bc56fc",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T20:16:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10d6a52f_e1da55dc",
+      "range": {
+        "startLine": 816,
+        "startChar": 41,
+        "endLine": 816,
+        "endChar": 63
+      },
+      "revId": "3b960adcc0b8ad33bccbeea6070a1ed03b85bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5168d480_491ed160",
@@ -60,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23e46576_8e9e81f4",
+        "filename": "src/text/gpu/Slug.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T20:16:40Z",
+      "side": 1,
+      "message": "Done for SkWriteBuffer. SkReadBuffer actually uses `SkImages::DeferredFromEncodedData` which makes use of registered codecs, so I think we can hold off on updating that for now. WDYT?",
+      "parentUuid": "5168d480_491ed160",
+      "revId": "3b960adcc0b8ad33bccbeea6070a1ed03b85bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80f92d00_169f955f",
         "filename": "tests/SkRemoteGlyphCacheTest.cpp",
         "patchSetId": 4
@@ -71,6 +113,30 @@
       "writtenOn": "2023-09-13T14:45:49Z",
       "side": 1,
       "message": "For consistency `deserializeSlugForTest` should take deserialization procs so that it is obvious that this is the deserializer for the `serialize` call above.",
+      "range": {
+        "startLine": 430,
+        "startChar": 26,
+        "endLine": 430,
+        "endChar": 48
+      },
+      "revId": "3b960adcc0b8ad33bccbeea6070a1ed03b85bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52a0c83c_33721417",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T20:16:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80f92d00_169f955f",
       "range": {
         "startLine": 430,
         "startChar": 26,
