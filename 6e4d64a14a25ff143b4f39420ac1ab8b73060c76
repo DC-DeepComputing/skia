@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6083540_7361f04b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-13T18:23:54Z",
+      "side": 1,
+      "message": "I split Skia changes from golang-related changes into two separate CLs.",
+      "revId": "6e4d64a14a25ff143b4f39420ac1ab8b73060c76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
