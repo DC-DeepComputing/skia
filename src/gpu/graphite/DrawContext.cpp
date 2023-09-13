@@ -131,11 +131,20 @@ bool DrawContext::recordUpload(Recorder* recorder,
 }
 
 PathAtlas* DrawContext::getOrCreatePathAtlas(Recorder* recorder) {
-    // TODO: Determine whether to use SoftwarePathAtlas
-    if (!fComputePathAtlas) {
-        fComputePathAtlas = recorder->priv().atlasProvider()->createComputePathAtlas(recorder);
+    // TODO: choosing between compute and software will need more info on what's being rendered
+    if (recorder->priv().caps()->computeSupport()) {
+        if (!fComputePathAtlas) {
+            fComputePathAtlas = recorder->priv().atlasProvider()->createComputePathAtlas(recorder);
+        }
+        return fComputePathAtlas.get();
     }
-    return fComputePathAtlas.get();
+    if (recorder->priv().caps()->defaultMSAASamplesCount() <= 1) {
+        if (!fSoftwarePathAtlas) {
+            fSoftwarePathAtlas = recorder->priv().atlasProvider()->createSoftwarePathAtlas();
+        }
+        return fSoftwarePathAtlas.get();
+    }
+    return nullptr;
 }
 
 void DrawContext::snapDrawPass(Recorder* recorder) {
