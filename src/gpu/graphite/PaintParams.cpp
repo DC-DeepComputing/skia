@@ -178,6 +178,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
 
     this->handlePrimitiveColor(keyContext, builder, gatherer);
 
+    //$$
     // Apply the paint's alpha value.
     if (fColor.fA != 1.0f) {
         AddColorBlendBlock(
