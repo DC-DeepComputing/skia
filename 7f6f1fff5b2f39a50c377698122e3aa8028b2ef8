@@ -173,6 +173,30 @@
       },
       "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4d01839_0c94ef8f",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-13T01:06:13Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a3d27956_ca650499",
+      "range": {
+        "startLine": 50,
+        "startChar": 29,
+        "endLine": 50,
+        "endChar": 64
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
