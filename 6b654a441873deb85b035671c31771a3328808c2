@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "845d565a_b0309474",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-13T17:42:03Z",
+      "side": 1,
+      "message": "I forget the specifics on which devices we saw issues and exactly where the extra padding was in the struct. But I\u0027m curious why we need this padding here? My gut would have told me the extra padding was between the fYcbcrKey and the start of fSamplerKey. Or is this only here to make the REQUIRE_DENSE happy and the padding added to GrVkSamplerYcbcrConversion fixes the original issue?",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 53
+      },
+      "revId": "6b654a441873deb85b035671c31771a3328808c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cf3b3f8_444810a4",
+        "filename": "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-13T17:42:03Z",
+      "side": 1,
+      "message": "This being an enum type, do we have guarantees that is 32 bits?",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "6b654a441873deb85b035671c31771a3328808c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
