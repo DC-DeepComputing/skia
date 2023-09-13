@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4817934b_ff27ae1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-13T12:49:42Z",
+      "side": 1,
+      "message": "This generally looks good to me, I just was wondering about the changes to DawnAsyncWait.",
+      "revId": "832db8dc7763e0171090b409118c41a20b6b3556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c2a8847_727b5512",
+        "filename": "src/gpu/graphite/dawn/DawnAsyncWait.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-13T12:49:42Z",
+      "side": 1,
+      "message": "Is this necessary? Sleeping doesn\u0027t seem like it fits with a busy wait to me",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 66
+      },
+      "revId": "832db8dc7763e0171090b409118c41a20b6b3556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
