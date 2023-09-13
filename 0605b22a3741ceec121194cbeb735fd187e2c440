@@ -87,6 +87,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01b173a4_e564edbb",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-13T18:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62fa4c33_1878b769",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42f4eda8_a52a044b",
@@ -100,6 +124,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "This should also be std::vector or SkSpan - we don\u0027t want public APIs to take in a TArray\n\n(computeCodeUnitFlags should similarly be changed at some point)",
+      "range": {
+        "startLine": 170,
+        "startChar": 82,
+        "endLine": 170,
+        "endChar": 88
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1c3459a_6255720f",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-13T18:25:08Z",
+      "side": 1,
+      "message": "I updated getSentences in this CL and will do the rest in another one.",
+      "parentUuid": "42f4eda8_a52a044b",
       "range": {
         "startLine": 170,
         "startChar": 82,
@@ -133,6 +181,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9b08a2e_0b312ad2",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-13T18:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d214956a_317b1260",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 43
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0ba4731_d66ce7c2",
@@ -150,6 +222,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85d3b13b_fab2792a",
+        "filename": "modules/skunicode/src/SkUnicode_libgrapheme.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-13T18:25:08Z",
+      "side": 1,
+      "message": "It\u0027s not needed but I added a dummy implementation.",
+      "parentUuid": "a0ba4731_d66ce7c2",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "185d4f6d_f93ee85b",
@@ -163,6 +253,24 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "Are there unit tests for getSentences?",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51afa94d_ad11f19d",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-13T18:25:08Z",
+      "side": 1,
+      "message": "No, but I added one for getSentences.",
+      "parentUuid": "185d4f6d_f93ee85b",
       "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
