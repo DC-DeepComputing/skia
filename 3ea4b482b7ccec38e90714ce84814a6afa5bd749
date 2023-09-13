@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "697559b2_1b9e862e",
+        "filename": "infra/bots/task_drivers/common/bazel_flags.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-13T20:15:31Z",
+      "side": 1,
+      "message": "Since this is not required, do we need it to be in MakeBazelFlagOpts? Could it just always be there?",
+      "range": {
+        "startLine": 61,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 23
+      },
+      "revId": "3ea4b482b7ccec38e90714ce84814a6afa5bd749",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
