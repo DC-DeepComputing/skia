@@ -88,8 +88,14 @@ public:
     AI void setTopLeft(float2 topLeft) { fVals.xy() = topLeft; }
     AI void setBotRight(float2 botRight) { fVals.zw() = -botRight; }
 
-    AI SkRect asSkRect() const { return sk_bit_cast<SkRect>(this->ltrb()); }
-    AI SkIRect asSkIRect() const { return sk_bit_cast<SkIRect>(skvx::cast<int>(this->ltrb())); }
+    AI SkRect asSkRect() const {
+        skvx::float4 ltrb = this->ltrb();
+        return SkRect::MakeLTRB(ltrb.x(), ltrb.y(), ltrb.z(), ltrb.w());
+    }
+    AI SkIRect asSkIRect() const {
+        skvx::int4 ltrb = skvx::cast<int>(this->ltrb());
+        return SkIRect::MakeLTRB(ltrb.x(), ltrb.y(), ltrb.z(), ltrb.w());
+    }
 
     AI bool isEmptyNegativeOrNaN() const {
         return !all(fVals.xy() + fVals.zw() < 0);  // !([l-r, r-b] < 0) == ([w, h] <= 0)
