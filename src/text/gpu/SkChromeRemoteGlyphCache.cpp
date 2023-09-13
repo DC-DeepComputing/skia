@@ -319,7 +319,7 @@ size_t SkStrikeServerImpl::remoteStrikeMapSizeForTesting() const {
 }
 
 void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {
-    SkBinaryWriteBuffer buffer{nullptr, 0};
+    SkBinaryWriteBuffer buffer{nullptr, 0, {}};
 
     // Gather statistics about what needs to be sent.
     size_t strikesToSend = 0;
@@ -814,5 +814,5 @@ bool SkStrikeClient::translateTypefaceID(SkAutoDescriptor* descriptor) const {
 }
 
 sk_sp<sktext::gpu::Slug> SkStrikeClient::deserializeSlugForTest(const void* data, size_t size) const {
-    return sktext::gpu::Slug::Deserialize(data, size, this);
+    return sktext::gpu::Slug::Deserialize(data, size, this, {});
 }
