@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7527b90_ba6d1e00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-13T14:35:46Z",
+      "side": 1,
+      "message": "PS1-\u003e2 shows the updated logic in graphite.",
+      "revId": "d3dadc5986014bcc26171d9b68ccc7b27f4a790d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
