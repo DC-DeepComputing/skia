@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e14e016_4b51284d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-13T18:30:43Z",
+      "side": 1,
+      "message": "what this was a feature. We didn\u0027t want to clog up anyones logs with errors, but want to computer spirits to know what happened.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 55
+      },
+      "revId": "fd4668b8f672b2b5b32004bbbcd1858dfa4331e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
