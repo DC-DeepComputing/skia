@@ -16,6 +16,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
@@ -319,7 +320,7 @@ size_t SkStrikeServerImpl::remoteStrikeMapSizeForTesting() const {
 }
 
 void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {
-    SkBinaryWriteBuffer buffer{nullptr, 0};
+    SkBinaryWriteBuffer buffer{nullptr, 0, {}};
 
     // Gather statistics about what needs to be sent.
     size_t strikesToSend = 0;
@@ -813,6 +814,7 @@ bool SkStrikeClient::translateTypefaceID(SkAutoDescriptor* descriptor) const {
     return fImpl->translateTypefaceID(descriptor);
 }
 
-sk_sp<sktext::gpu::Slug> SkStrikeClient::deserializeSlugForTest(const void* data, size_t size) const {
-    return sktext::gpu::Slug::Deserialize(data, size, this);
+sk_sp<sktext::gpu::Slug> SkStrikeClient::deserializeSlugForTest(const void* data, size_t size,
+                                                                const SkDeserialProcs& p) const {
+    return sktext::gpu::Slug::Deserialize(data, size, this, p);
 }

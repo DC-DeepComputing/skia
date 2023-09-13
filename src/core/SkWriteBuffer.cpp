@@ -36,13 +36,15 @@ class SkRegion;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkBinaryWriteBuffer::SkBinaryWriteBuffer()
-    : fFactorySet(nullptr)
+SkBinaryWriteBuffer::SkBinaryWriteBuffer(const SkSerialProcs& p)
+    : SkWriteBuffer(p)
+    , fFactorySet(nullptr)
     , fTFSet(nullptr) {
 }
 
-SkBinaryWriteBuffer::SkBinaryWriteBuffer(void* storage, size_t storageSize)
-    : fFactorySet(nullptr)
+SkBinaryWriteBuffer::SkBinaryWriteBuffer(void* storage, size_t storageSize, const SkSerialProcs& p)
+    : SkWriteBuffer(p)
+    , fFactorySet(nullptr)
     , fTFSet(nullptr)
     , fWriter(storage, storageSize)
 {}
@@ -196,7 +198,7 @@ static sk_sp<SkData> serialize_mipmap(const SkMipmap* mipmap, SkSerialProcs dPro
     */
     const int count = mipmap->countLevels();
 
-    SkBinaryWriteBuffer buffer;
+    SkBinaryWriteBuffer buffer(dProcs);
     buffer.write32(count);
     for (int i = 0; i < count; ++i) {
         SkMipmap::Level level;
