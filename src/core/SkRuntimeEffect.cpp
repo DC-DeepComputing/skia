@@ -267,7 +267,7 @@ bool RuntimeEffectRPCallbacks::appendShader(int index) {
         return as_SB(shader)->appendStages(fStage, nonPassthroughMatrix);
     }
     // Return the paint color when a null child shader is evaluated.
-    fStage.fPipeline->append_constant_color(fStage.fAlloc, fStage.fPaintColor);
+    fStage.fPipeline->append_constant_color(fStage.fAlloc, fStage.fPaintColor.makeOpaque());
     return true;
 }
 bool RuntimeEffectRPCallbacks::appendColorFilter(int index) {
