@@ -1169,8 +1169,6 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
         FT_OpaquePaint opaqueLayerPaint{nullptr, 1};
         if (FT_Get_Color_Glyph_Paint(fFace, glyph.getGlyphID(),
                                      FT_COLOR_INCLUDE_ROOT_TRANSFORM, &opaqueLayerPaint)) {
-            haveLayers = true;
-            mx.extraBits = ScalerContextBits::COLRv1;
 
             // COLRv1 optionally provides a ClipBox.
             FT_ClipBox clipBox;
@@ -1189,13 +1187,26 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
                 }
                 bounds = SkRect::MakeLTRB(SkFDot6ToScalar(bbox.xMin), -SkFDot6ToScalar(bbox.yMax),
                                           SkFDot6ToScalar(bbox.xMax), -SkFDot6ToScalar(bbox.yMin));
+
+                // Traverse the glyph graph with a focus on validating the data.
+                // The call to validateColrV1Glyph may modify the face.
+                // Reset the face to load the base glyph for metrics.
+                if (validateColrV1Glyph(fFace, glyph.getGlyphID())) {
+                    haveLayers = true;
+                    mx.extraBits = ScalerContextBits::COLRv1;
+                }
+                if (this->setupSize()) {
+                    return mx;
+                }
             } else {
                 // Traverse the glyph graph with a focus on measuring the required bounding box.
                 // The call to computeColrV1GlyphBoundingBox may modify the face.
                 // Reset the face to load the base glyph for metrics.
-                if (!computeColrV1GlyphBoundingBox(fFace, glyph.getGlyphID(), &bounds) ||
-                    this->setupSize())
-                {
+                if (computeColrV1GlyphBoundingBox(fFace, glyph.getGlyphID(), &bounds)) {
+                    haveLayers = true;
+                    mx.extraBits = ScalerContextBits::COLRv1;
+                }
+                if (this->setupSize()) {
                     return mx;
                 }
             }
