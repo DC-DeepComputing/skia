@@ -1541,7 +1541,9 @@ bool colrv1_traverse_paint_bounds(SkMatrix* ctm,
     SkUNREACHABLE;
 }
 
-
+/* Traverse a colrv1 glyph and compute the bounds of the glyph.
+ * @return true if the colrv1 data is valid.
+ */
 bool colrv1_start_glyph_bounds(SkMatrix *ctm,
                                SkRect* bounds,
                                FT_Face face,
@@ -1551,6 +1553,101 @@ bool colrv1_start_glyph_bounds(SkMatrix *ctm,
     FT_OpaquePaint opaquePaint{nullptr, 1};
     return FT_Get_Color_Glyph_Paint(face, glyphId, rootTransform, &opaquePaint) &&
            colrv1_traverse_paint_bounds(ctm, bounds, face, opaquePaint, activePaints);
+}
+
+bool colrv1_start_glyph_validate(FT_Face face,
+                                 uint16_t glyphId,
+                                 FT_Color_Root_Transform rootTransform,
+                                 VisitedSet* activePaints);
+
+bool colrv1_traverse_paint_validate(FT_Face face,
+                                    FT_OpaquePaint opaquePaint,
+                                    VisitedSet* activePaints) {
+    // Cycle detection, see section "5.7.11.1.9 Color glyphs as a directed acyclic graph".
+    if (activePaints->contains(opaquePaint)) {
+        return false;
+    }
+
+    activePaints->add(opaquePaint);
+    SK_AT_SCOPE_EXIT(activePaints->remove(opaquePaint));
+
+    FT_COLR_Paint paint;
+    if (!FT_Get_Paint(face, opaquePaint, &paint)) {
+        return false;
+    }
+
+    switch (paint.format) {
+        case FT_COLR_PAINTFORMAT_COLR_LAYERS: {
+            FT_LayerIterator& layerIterator = paint.u.colr_layers.layer_iterator;
+            FT_OpaquePaint layerPaint{nullptr, 1};
+            while (FT_Get_Paint_Layers(face, &layerIterator, &layerPaint)) {
+                if (!colrv1_traverse_paint_validate(face, layerPaint, activePaints)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        case FT_COLR_PAINTFORMAT_GLYPH: {
+            FT_UInt glyphID = paint.u.glyph.glyphID;
+            if (!generateFacePathCOLRv1(face, glyphID, nullptr)) {
+                return false;
+            }
+            return true;
+        }
+        case FT_COLR_PAINTFORMAT_COLR_GLYPH: {
+            FT_UInt glyphID = paint.u.colr_glyph.glyphID;
+            return colrv1_start_glyph_validate(face, glyphID, FT_COLOR_NO_ROOT_TRANSFORM,
+                                               activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_TRANSFORM: {
+            FT_OpaquePaint& transformPaint = paint.u.transform.paint;
+            return colrv1_traverse_paint_validate(face, transformPaint, activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_TRANSLATE: {
+            FT_OpaquePaint& translatePaint = paint.u.translate.paint;
+            return colrv1_traverse_paint_validate(face, translatePaint, activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_SCALE: {
+            FT_OpaquePaint& scalePaint = paint.u.scale.paint;
+            return colrv1_traverse_paint_validate(face, scalePaint, activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_ROTATE: {
+            FT_OpaquePaint& rotatePaint = paint.u.rotate.paint;
+            return colrv1_traverse_paint_validate(face, rotatePaint, activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_SKEW: {
+            FT_OpaquePaint& skewPaint = paint.u.skew.paint;
+            return colrv1_traverse_paint_validate(face, skewPaint, activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_COMPOSITE: {
+            FT_OpaquePaint& backdropPaint = paint.u.composite.backdrop_paint;
+            FT_OpaquePaint&   sourcePaint = paint.u.composite.  source_paint;
+            return colrv1_traverse_paint_validate(face, backdropPaint, activePaints) &&
+                   colrv1_traverse_paint_validate(face,   sourcePaint, activePaints);
+        }
+        case FT_COLR_PAINTFORMAT_SOLID:
+        case FT_COLR_PAINTFORMAT_LINEAR_GRADIENT:
+        case FT_COLR_PAINTFORMAT_RADIAL_GRADIENT:
+        case FT_COLR_PAINTFORMAT_SWEEP_GRADIENT: {
+            return true;
+        }
+        default:
+            SkASSERT(false);
+            return false;
+    }
+    SkUNREACHABLE;
+}
+
+/* Traverse a colrv1 glyph and ensure that the data can be read.
+ * @return true if the colrv1 data is valid.
+ */
+bool colrv1_start_glyph_validate(FT_Face face,
+                                 uint16_t glyphId,
+                                 FT_Color_Root_Transform rootTransform,
+                                 VisitedSet* activePaints) {
+    FT_OpaquePaint opaquePaint{nullptr, 1};
+    return FT_Get_Color_Glyph_Paint(face, glyphId, rootTransform, &opaquePaint) &&
+           colrv1_traverse_paint_validate(face, opaquePaint, activePaints);
 }
 #endif // TT_SUPPORT_COLRV1
 
@@ -1992,14 +2089,21 @@ public:
 };
 
 bool generateGlyphPathStatic(FT_Face face, SkPath* path) {
-    SkFTGeometrySink sink{path};
-    if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE ||
-        FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink))
-    {
-        path->reset();
+    if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
+        if (path) {
+            path->reset();
+        }
         return false;
     }
-    path->close();
+    if (path) {
+        SkFTGeometrySink sink{path};
+        if (FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink))
+        {
+            path->reset();
+            return false;
+        }
+        path->close();
+    }
     return true;
 }
 
@@ -2059,12 +2163,13 @@ bool generateFacePathCOLRv1(FT_Face face, SkGlyphID glyphID, SkPath* path) {
 
         err = FT_Load_Glyph(face, glyphID, flags);
         if (err != 0) {
-            path->reset();
+            if (path) {
+                path->reset();
+            }
             return false;
         }
 
         if (!generateGlyphPathStatic(face, path)) {
-            path->reset();
             return false;
         }
 
@@ -2111,5 +2216,11 @@ bool SkScalerContext_FreeType_Base::computeColrV1GlyphBoundingBox(FT_Face face,
     VisitedSet activePaints;
     return colrv1_start_glyph_bounds(&ctm, bounds, face, glyphID,
                                      FT_COLOR_INCLUDE_ROOT_TRANSFORM, &activePaints);
+}
+bool SkScalerContext_FreeType_Base::validateColrV1Glyph(FT_Face face,
+                                                        SkGlyphID glyphID) {
+    VisitedSet activePaints;
+    return colrv1_start_glyph_validate(face, glyphID,
+                                       FT_COLOR_INCLUDE_ROOT_TRANSFORM, &activePaints);
 }
 #endif
