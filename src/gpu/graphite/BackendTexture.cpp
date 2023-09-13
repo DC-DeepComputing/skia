@@ -44,6 +44,7 @@ BackendTexture& BackendTexture::operator=(const BackendTexture& that) {
 #ifdef SK_VULKAN
         case BackendApi::kVulkan:
             fVkImage = that.fVkImage;
+            fMutableState = that.fMutableState;
             break;
 #endif
         default:
