@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cbe4795_0429f7cd",
+        "filename": "src/gpu/graphite/geom/Rect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-13T16:50:24Z",
+      "side": 1,
+      "message": "Does `SkRect r; this-\u003eltrb().store(r.asScalars()); return r;` avoid the warnings?\n\n\"Random\" access into the vectorized types has sometimes been slow, so being able to be explicit about the sequential copy seems nice.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 72
+      },
+      "revId": "dee99f0c25b60c4a6bc25d1623661a8d873ba708",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
