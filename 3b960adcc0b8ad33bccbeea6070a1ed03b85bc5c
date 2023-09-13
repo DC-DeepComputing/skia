@@ -102,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26b2de0a_ca6c1254",
+        "filename": "src/text/gpu/Slug.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-13T20:30:28Z",
+      "side": 1,
+      "message": "Why should it be different? Couldn\u0027t we just say that `SkWriteBuffer` should use some registered (probably lossless) encoder by default. And maybe fail if one doesn\u0027t exist (I assume without looking that `SkReadBuffer` will fail to decode if there isn\u0027t a codec registered which will decode the data).",
+      "parentUuid": "23e46576_8e9e81f4",
+      "revId": "3b960adcc0b8ad33bccbeea6070a1ed03b85bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80f92d00_169f955f",
         "filename": "tests/SkRemoteGlyphCacheTest.cpp",
         "patchSetId": 4
