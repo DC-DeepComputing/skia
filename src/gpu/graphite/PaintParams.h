@@ -73,7 +73,13 @@ public:
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
+    using AddToKeyFn = std::function<void(const KeyContext& keyContext)>;
+    static void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+                      const SkBlender* blender, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void handlePrimitiveColor(const KeyContext&,
+                              PaintParamsKeyBuilder*,
+                              PipelineDataGatherer*) const;
 
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
