@@ -79,6 +79,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 
 using namespace skia_private;
 
@@ -717,20 +718,30 @@ private:
 };
 
 WGSLCodeGenerator::ProgramRequirements resolve_program_requirements(const Program* program) {
-    WGSLCodeGenerator::ProgramRequirements::DepsMap dependencies;
+    WGSLCodeGenerator::ProgramRequirements requirements;
 
     for (const ProgramElement* e : program->elements()) {
-        if (!e->is<FunctionDefinition>()) {
-            continue;
+        switch (e->kind()) {
+            case ProgramElement::Kind::kFunction: {
+                const FunctionDeclaration& decl = e->as<FunctionDefinition>().declaration();
+
+                FunctionDependencyResolver resolver(program, &decl, &requirements.fDependencies);
+                requirements.fDependencies.set(&decl, resolver.resolve());
+                break;
+            }
+            case ProgramElement::Kind::kGlobalVar: {
+                const GlobalVarDeclaration& decl = e->as<GlobalVarDeclaration>();
+                if (decl.varDeclaration().var()->modifierFlags().isPixelLocal()) {
+                    requirements.fPixelLocalExtension = true;
+                }
+                break;
+            }
+            default:
+                break;
         }
-
-        const FunctionDeclaration& decl = e->as<FunctionDefinition>().declaration();
-
-        FunctionDependencyResolver resolver(program, &decl, &dependencies);
-        dependencies.set(&decl, resolver.resolve());
     }
 
-    return WGSLCodeGenerator::ProgramRequirements(std::move(dependencies));
+    return requirements;
 }
 
 void collect_pipeline_io_vars(const Program* program,
@@ -912,7 +923,7 @@ bool WGSLCodeGenerator::generateCode() {
 
     {
         AutoOutputStream outputToHeader(this, &fHeader, &fIndentation);
-        this->writeLine("diagnostic(off, derivative_uniformity);");
+        this->writeEnables();
         this->writeStageInputStruct();
         this->writeStageOutputStruct();
         this->writeUniformsAndBuffers();
@@ -1243,6 +1254,12 @@ void WGSLCodeGenerator::writeUserDefinedIODecl(const Layout& layout,
                                                Delimiter delimiter) {
     this->write("@location(" + std::to_string(layout.fLocation) + ") ");
 
+    // Indices are only allowed when doing dual-source blending, and only on color attachment 0.
+    if (layout.fLocation == 0 && layout.fIndex >= 0 && fContext.fCaps->fDualSourceBlendingSupport &&
+        fProgram.fInterface.fOutputSecondaryColor) {
+        this->write("@index(" + std::to_string(layout.fIndex) + ") ");
+    }
+
     // "User-defined IO of scalar or vector integer type must always be specified as
     // @interpolate(flat)" (see https://www.w3.org/TR/WGSL/#interpolation)
     if (type.isInteger() || (type.isVector() && type.componentType().isInteger())) {
@@ -1480,7 +1497,7 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     // Generate a function call to the user-defined main.
     this->write("_skslMain(");
     auto separator = SkSL::String::Separator();
-    WGSLFunctionDependencies* deps = fRequirements.dependencies.find(&main.declaration());
+    WGSLFunctionDependencies* deps = fRequirements.fDependencies.find(&main.declaration());
     if (deps) {
         if (*deps & WGSLFunctionDependency::kPipelineInputs) {
             this->write(separator());
@@ -3574,10 +3591,9 @@ void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
     switch (e.kind()) {
         case ProgramElement::Kind::kExtension:
             // TODO(skia:13092): WGSL supports extensions via the "enable" directive
-            // (https://www.w3.org/TR/WGSL/#language-extensions). While we could easily emit this
+            // (https://www.w3.org/TR/WGSL/#enable-extensions-sec ). While we could easily emit this
             // directive, we should first ensure that all possible SkSL extension names are
-            // converted to their appropriate WGSL extension. Currently there are no known supported
-            // WGSL extensions aside from the hypotheticals listed in the spec.
+            // converted to their appropriate WGSL extension.
             break;
         case ProgramElement::Kind::kGlobalVar:
             this->writeGlobalVarDeclaration(e.as<GlobalVarDeclaration>());
@@ -3678,6 +3694,8 @@ void WGSLCodeGenerator::writeGlobalVarDeclaration(const GlobalVarDeclaration& d)
         this->write("const ");
     } else if (var.modifierFlags().isWorkgroup()) {
         this->write("var<workgroup> ");
+    } else if (var.modifierFlags().isPixelLocal()) {
+        this->write("var<pixel_local> ");
     } else {
         this->write("var<private> ");
     }
@@ -3768,6 +3786,20 @@ void WGSLCodeGenerator::writeFields(SkSpan<const Field> fields, const MemoryLayo
     }
 
     fIndentation--;
+}
+
+void WGSLCodeGenerator::writeEnables() {
+    this->writeLine("diagnostic(off, derivative_uniformity);");
+    if (fRequirements.fPixelLocalExtension) {
+        this->writeLine("enable chromium_experimental_pixel_local;");
+    }
+    if (fProgram.fInterface.fOutputSecondaryColor) {
+        if (fContext.fCaps->fDualSourceBlendingSupport) {
+            this->writeLine("enable chromium_internal_dual_source_blending;");
+        } else {
+            fContext.fErrors->error({}, "dual-src blending not supported");
+        }
+    }
 }
 
 bool WGSLCodeGenerator::needsStageInputStruct() const {
@@ -4008,7 +4040,7 @@ void WGSLCodeGenerator::writeNonBlockUniformsForTests() {
 }
 
 std::string WGSLCodeGenerator::functionDependencyArgs(const FunctionDeclaration& f) {
-    WGSLFunctionDependencies* deps = fRequirements.dependencies.find(&f);
+    WGSLFunctionDependencies* deps = fRequirements.fDependencies.find(&f);
     std::string args;
     if (deps && *deps) {
         const char* separator = "";
@@ -4025,7 +4057,7 @@ std::string WGSLCodeGenerator::functionDependencyArgs(const FunctionDeclaration&
 }
 
 bool WGSLCodeGenerator::writeFunctionDependencyParams(const FunctionDeclaration& f) {
-    WGSLFunctionDependencies* deps = fRequirements.dependencies.find(&f);
+    WGSLFunctionDependencies* deps = fRequirements.fDependencies.find(&f);
     if (!deps || !*deps) {
         return false;
     }

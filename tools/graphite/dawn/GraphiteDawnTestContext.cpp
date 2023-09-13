@@ -51,8 +51,11 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
                 gAdapter = adapter;
                 break;
             }
+            // We never want a null/undefined backend.
             // Skip Dawn D3D11 backend for now.
-            if (props.backendType != wgpu::BackendType::D3D11) {
+            if (props.backendType != wgpu::BackendType::Null &&
+                props.backendType != wgpu::BackendType::Undefined &&
+                props.backendType != wgpu::BackendType::D3D11) {
                 gAdapter = adapter;
                 break;
             }
@@ -77,6 +80,9 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
     if (adapter.HasFeature(wgpu::FeatureName::Norm16TextureFormats)) {
         features.push_back(wgpu::FeatureName::Norm16TextureFormats);
     }
+    if (adapter.HasFeature(wgpu::FeatureName::DualSourceBlending)) {
+        features.push_back(wgpu::FeatureName::DualSourceBlending);
+    }
 
     wgpu::DeviceDescriptor desc;
 #ifdef WGPU_BREAKING_CHANGE_COUNT_RENAME
@@ -88,7 +94,8 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
 
     wgpu::DawnTogglesDescriptor deviceTogglesDesc;
     static constexpr const char* kToggles[] = {
-        "use_user_defined_labels_in_backend"
+        "allow_unsafe_apis",  // Needed for dual-source blending.
+        "use_user_defined_labels_in_backend",
     };
 #ifdef WGPU_BREAKING_CHANGE_COUNT_RENAME
     deviceTogglesDesc.enabledToggleCount  = std::size(kToggles);
