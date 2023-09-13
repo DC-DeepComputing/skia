@@ -1074,10 +1074,7 @@ FT_Error SkScalerContext_FreeType::setupSize() {
 }
 
 bool SkScalerContext_FreeType::getBoundsOfCurrentOutlineGlyph(FT_GlyphSlot glyph, SkRect* bounds) {
-    if (glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
-        SkASSERT(false);
-        return false;
-    }
+    SkASSERT(glyph->format == FT_GLYPH_FORMAT_OUTLINE);
     if (0 == glyph->outline.n_contours) {
         return false;
     }
@@ -1169,8 +1166,6 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
         FT_OpaquePaint opaqueLayerPaint{nullptr, 1};
         if (FT_Get_Color_Glyph_Paint(fFace, glyph.getGlyphID(),
                                      FT_COLOR_INCLUDE_ROOT_TRANSFORM, &opaqueLayerPaint)) {
-            haveLayers = true;
-            mx.extraBits = ScalerContextBits::COLRv1;
 
             // COLRv1 optionally provides a ClipBox.
             FT_ClipBox clipBox;
@@ -1189,13 +1184,26 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
                 }
                 bounds = SkRect::MakeLTRB(SkFDot6ToScalar(bbox.xMin), -SkFDot6ToScalar(bbox.yMax),
                                           SkFDot6ToScalar(bbox.xMax), -SkFDot6ToScalar(bbox.yMin));
+
+                // Traverse the glyph graph with a focus on validating the data.
+                // The call to validateColrV1Glyph may modify the face.
+                // Reset the face to load the base glyph for metrics.
+                if (validateColrV1Glyph(fFace, glyph.getGlyphID())) {
+                    haveLayers = true;
+                    mx.extraBits = ScalerContextBits::COLRv1;
+                }
+                if (this->setupSize()) {
+                    return mx;
+                }
             } else {
                 // Traverse the glyph graph with a focus on measuring the required bounding box.
                 // The call to computeColrV1GlyphBoundingBox may modify the face.
                 // Reset the face to load the base glyph for metrics.
-                if (!computeColrV1GlyphBoundingBox(fFace, glyph.getGlyphID(), &bounds) ||
-                    this->setupSize())
-                {
+                if (computeColrV1GlyphBoundingBox(fFace, glyph.getGlyphID(), &bounds)) {
+                    haveLayers = true;
+                    mx.extraBits = ScalerContextBits::COLRv1;
+                }
+                if (this->setupSize()) {
                     return mx;
                 }
             }
@@ -1211,20 +1219,25 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
             flags |= FT_LOAD_NO_BITMAP; // Ignore embedded bitmaps.
             flags &= ~FT_LOAD_RENDER;  // Don't scan convert.
             flags &= ~FT_LOAD_COLOR;  // Ignore SVG.
+            FT_UInt validLayers = 0;
             // For COLRv0 compute the glyph bounding box from the union of layer bounding boxes.
             while (FT_Get_Color_Glyph_Layer(fFace, glyph.getGlyphID(), &layerGlyphIndex,
                                             &layerColorIndex, &layerIterator)) {
-                haveLayers = true;
                 if (FT_Load_Glyph(fFace, layerGlyphIndex, flags)) {
-                    return mx;
+                    break;
+                }
+                if (fFace->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
+                    break;
                 }
 
                 SkRect currentBounds;
                 if (getBoundsOfCurrentOutlineGlyph(fFace->glyph, &currentBounds)) {
                     bounds.join(currentBounds);
                 }
+                ++validLayers;
             }
-            if (haveLayers) {
+            if (validLayers && validLayers == layerIterator.num_layers) {
+                haveLayers = true;
                 mx.extraBits = ScalerContextBits::COLRv0;
             }
         }
