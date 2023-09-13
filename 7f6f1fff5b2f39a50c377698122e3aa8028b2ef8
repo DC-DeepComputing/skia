@@ -149,6 +149,30 @@
       },
       "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d27956_ca650499",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-13T00:36:31Z",
+      "side": 1,
+      "message": "I think it will make sense for non-atlas cases to just include an extra pixel of padding. I\u0027m starting to feel like shader-based clamping against undefined extra approx-fit pixel data is a can of worms. For cases where we control the filling, may as well add the extra data and keep it simple.",
+      "parentUuid": "9ddbd079_98b979ef",
+      "range": {
+        "startLine": 50,
+        "startChar": 29,
+        "endLine": 50,
+        "endChar": 64
+      },
+      "revId": "7f6f1fff5b2f39a50c377698122e3aa8028b2ef8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
