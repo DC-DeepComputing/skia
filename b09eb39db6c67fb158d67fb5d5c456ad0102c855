@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9a85560_0c7146d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-09-13T17:00:59Z",
+      "side": 1,
+      "message": "fyi, we are working on a way for you to do an efficient blocking wait on async work - so the busy wait situation can improve in the future.",
+      "revId": "b09eb39db6c67fb158d67fb5d5c456ad0102c855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
