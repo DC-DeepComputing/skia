@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/KeyHelpers.h"
 
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -66,6 +67,7 @@
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/SkTransformShader.h"
 #include "src/shaders/SkTriColorShader.h"
+#include "src/shaders/SkWorkingColorSpaceShader.h"
 #include "src/shaders/gradients/SkConicalGradient.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
@@ -1760,6 +1762,47 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkTriColorShader* shader) {
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
     builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkWorkingColorSpaceShader* shader) {
+    SkASSERT(shader);
+
+    const SkAlphaType dstAT = keyContext.dstColorInfo().alphaType();
+    sk_sp<SkColorSpace> dstCS = keyContext.dstColorInfo().refColorSpace();
+    if (!dstCS) {
+        dstCS = SkColorSpace::MakeSRGB();
+    }
+    sk_sp<SkColorSpace> workingCS = shader->workingSpace();
+
+    // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
+    // while appearing as one block to the parent node.
+    Compose(keyContext, builder, gatherer,
+            /* addInnerToKey= */ [&]() -> void {
+                // Inner compose
+                Compose(keyContext, builder, gatherer,
+                        /* addInnerToKey= */ [&]() -> void {
+                            // Innermost (inner of inner compose)
+                            ColorSpaceTransformBlock::ColorSpaceTransformData data1(
+                                    dstCS.get(), dstAT, workingCS.get(), dstAT);
+                            ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer,
+                                                                 &data1);
+                            builder->endBlock();
+                        },
+                        /* addOuterToKey= */ [&]() -> void {
+                            // Middle (outer of inner compose)
+                            AddToKey(keyContext, builder, gatherer, shader->shader().get());
+                        });
+            },
+            /* addOuterToKey= */ [&]() -> void {
+                // Outermost (outer of outer compose)
+                ColorSpaceTransformBlock::ColorSpaceTransformData data2(
+                        workingCS.get(), dstAT, dstCS.get(), dstAT);
+                ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data2);
+                builder->endBlock();
+            });
 }
 
 static SkBitmap create_color_and_offset_bitmap(int numStops,
