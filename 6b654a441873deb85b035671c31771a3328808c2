@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7838df2f_fe6e077d",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-13T17:53:10Z",
+      "side": 1,
+      "message": "The compiler wants to insert trailing padding here to push the struct to be 24 bytes wide (instead of 20 bytes wide).\nDemonstration: https://godbolt.org/z/TzqasEaox",
+      "parentUuid": "845d565a_b0309474",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 53
+      },
+      "revId": "6b654a441873deb85b035671c31771a3328808c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3cf3b3f8_444810a4",
         "filename": "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-13T17:42:03Z",
       "side": 1,
       "message": "This being an enum type, do we have guarantees that is 32 bits?",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "6b654a441873deb85b035671c31771a3328808c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0b9d48_13a2b51b",
+        "filename": "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-13T17:53:10Z",
+      "side": 1,
+      "message": "`VK_FORMAT_MAX_ENUM` is 0x7FFFFFFF: http://google3/third_party/vulkan_headers/include/vulkan/vulkan_core.h;l\u003d1743;rcl\u003d561092612\n\nAt any rate, if padding occurs, `SK_BEGIN_REQUIRE_DENSE` will trigger a compile error.",
+      "parentUuid": "3cf3b3f8_444810a4",
       "range": {
         "startLine": 35,
         "startChar": 8,
