@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "590225d4_317511c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-13T18:45:19Z",
+      "side": 1,
+      "message": "This CL should now be a no-op logical and just adds the context option.",
+      "revId": "4539764d458119c08c1a16df2936aa4feeed797e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
