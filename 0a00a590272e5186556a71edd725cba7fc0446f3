@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b14ac508_271ff875",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-09-13T20:36:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88cd2971_8f72941b",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 30
+      },
+      "revId": "0a00a590272e5186556a71edd725cba7fc0446f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15d27b77_4c4f0a2a",
