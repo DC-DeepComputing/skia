@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e675c2b_d4a8c572",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-13T15:07:21Z",
+      "side": 1,
+      "message": "Please surround name with `\u0027` apostrophes",
+      "range": {
+        "startLine": 168,
+        "startChar": 51,
+        "endLine": 168,
+        "endChar": 76
+      },
+      "revId": "1e2b2b355c3e86d4ba209316dd13af52f544501b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
