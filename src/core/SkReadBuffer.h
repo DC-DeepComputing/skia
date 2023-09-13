@@ -47,6 +47,7 @@ class SkRRect;
 class SkRegion;
 class SkString;
 class SkTypeface;
+struct SkDeserialProcs;
 struct SkPoint3;
 
 #ifdef SK_SUPPORT_LEGACY_DRAWLOOPER

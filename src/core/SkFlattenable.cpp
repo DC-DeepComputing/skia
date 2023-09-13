@@ -126,10 +126,12 @@ const char* SkFlattenable::FactoryToName(Factory fact) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkData> SkFlattenable::serialize(const SkSerialProcs* procs) const {
-    SkBinaryWriteBuffer writer;
+    SkSerialProcs p;
     if (procs) {
-        writer.setSerialProcs(*procs);
+        p = *procs;
     }
+    SkBinaryWriteBuffer writer(p);
+
     writer.writeFlattenable(this);
     size_t size = writer.bytesWritten();
     auto data = SkData::MakeUninitialized(size);
@@ -139,10 +141,11 @@ sk_sp<SkData> SkFlattenable::serialize(const SkSerialProcs* procs) const {
 
 size_t SkFlattenable::serialize(void* memory, size_t memory_size,
                                 const SkSerialProcs* procs) const {
-  SkBinaryWriteBuffer writer(memory, memory_size);
-  if (procs) {
-      writer.setSerialProcs(*procs);
-  }
+SkSerialProcs p;
+if (procs) {
+    p = *procs;
+}
+  SkBinaryWriteBuffer writer(memory, memory_size, p);
   writer.writeFlattenable(this);
   return writer.usingInitialStorage() ? writer.bytesWritten() : 0u;
 }
