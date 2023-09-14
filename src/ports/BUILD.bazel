@@ -370,3 +370,13 @@ skia_filegroup(
     ],
     visibility = ["//src/base:__pkg__"],
 )
+
+skia_filegroup(
+    name = "buffet_core_srcs",
+    srcs = [
+        ":osfile",
+        #":image_generator",
+        ":global_init",
+    ],
+    visibility = ["//src/core:__pkg__"],
+)

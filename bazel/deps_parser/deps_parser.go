@@ -239,7 +239,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//bazel:gcs_mirror.bzl", "gcs_mirror_url")
 
-def c_plus_plus_deps(ws = "@"):
+def c_plus_plus_deps(ws = "@skia"):
     """A list of native Bazel git rules to download third party git repositories
 
        These are in the order they appear in //DEPS.

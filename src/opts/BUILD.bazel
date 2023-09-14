@@ -40,7 +40,10 @@ skia_filegroup(
         "SkRasterPipeline_opts.h",
         "SkSwizzler_opts.h",
     ],
-    visibility = ["//src:__pkg__"],
+    visibility = [
+        "//src:__pkg__",
+        "//src/core:__pkg__",
+    ],
 )
 
 OPTS_HDRS = [
