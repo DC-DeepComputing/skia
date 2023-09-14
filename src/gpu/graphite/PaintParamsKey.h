@@ -141,7 +141,9 @@ private:
         SkASSERT(fStack.empty()); // All beginBlocks() had a matching endBlock()
 
         SkDEBUGCODE(fLocked = true;)
-        return PaintParamsKey({fData.data(), fData.size()});
+        PaintParamsKey k = PaintParamsKey({fData.data(), fData.size()});
+        k.dump(fDict);
+        return k;
     }
 
     // Invalidates any PaintParamsKey returned by lockAsKey() unless it has been cloned.
