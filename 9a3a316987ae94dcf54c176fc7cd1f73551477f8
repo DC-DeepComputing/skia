@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec8f482a_84a6d82c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-14T20:28:26Z",
+      "side": 1,
+      "message": "Definitely more legible!",
+      "revId": "9a3a316987ae94dcf54c176fc7cd1f73551477f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50c8a967_6ba7d1f8",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-14T20:28:26Z",
+      "side": 1,
+      "message": "nit: indent like the `Blend` case?",
+      "range": {
+        "startLine": 136,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 20
+      },
+      "revId": "9a3a316987ae94dcf54c176fc7cd1f73551477f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
