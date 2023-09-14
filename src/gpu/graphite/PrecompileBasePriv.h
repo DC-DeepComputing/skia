@@ -23,7 +23,8 @@ public:
 
     void addToKey(const KeyContext& keyContext,
                   int desiredCombination,
-                  PaintParamsKeyBuilder* builder) const {
+                  PaintParamsKeyBuilder* builder
+                  /*PrecompileBase::PFEmitContained emitContained*/) const {
         fPrecompileBase->addToKey(keyContext, desiredCombination, builder);
     }
 
