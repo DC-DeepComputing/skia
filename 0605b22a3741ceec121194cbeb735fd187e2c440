@@ -745,6 +745,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "641dbb63_01852a98",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T20:51:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82f3b156_d57c22f0",
+      "range": {
+        "startLine": 54,
+        "startChar": 31,
+        "endLine": 54,
+        "endChar": 38
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2aed4909_f2512792",
@@ -758,6 +782,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "I\u0027m not a huge fan of having a global block of memory in the C++ side (gSentences) and then having to be careful to copy the data out of it using reflection.\n\nAssuming we have a reasonable upperbound of points that getSentences can return, we can declare a large array (or slice)\n\n```\nvar sentenceData uint[10000]\n\nfunc GetSentences(text string) []uint {\n\tlength :\u003d C.getSentences(C.CString(text), unsafe.Pointer(sentenceData))\n\tvar result \u003d make([]uint, length)\n\tcopy(result, sentenceData[:length])\n\treturn result\n}\n```\n\nWould something like that work ok or do we *need* the dynamic allocation?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "918ee654_c5fe28af",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T20:51:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2aed4909_f2512792",
       "range": {
         "startLine": 59,
         "startChar": 4,
@@ -1390,6 +1438,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef64bfa2_c6090201",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T20:51:20Z",
+      "side": 1,
+      "message": "Makes sense.",
+      "parentUuid": "0f584e31_8a6ebd43",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4a22194_79ee2f2c",
@@ -1484,6 +1556,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38ecd860_2cbd98cb",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T20:51:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5be0d834_81e0d4fd",
+      "range": {
+        "startLine": 83,
+        "startChar": 2,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33ad580c_5fc78cf8",
@@ -1545,6 +1641,30 @@
       "side": 1,
       "message": "What I meant was that the constructor is not adding any non-default values to RangedData, so we can replace `NewRangedData()` with `RangedData{}` and get rid of this function.",
       "parentUuid": "e790aa6c_0f3dc44d",
+      "range": {
+        "startLine": 126,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 18
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8b1be33_14cbe4ca",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T20:51:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7425188_a9bc44b9",
       "range": {
         "startLine": 126,
         "startChar": 5,
@@ -2101,6 +2221,30 @@
       "side": 1,
       "message": "https://go.dev/tour/basics/3\n\nMy suggestion was to rename `Abs` to `abs` because this is not a public function, AFAICT",
       "parentUuid": "719d1775_7a13e95f",
+      "range": {
+        "startLine": 19,
+        "startChar": 5,
+        "endLine": 19,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b4049af_54b8df9a",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T20:51:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb7e3255_49150980",
       "range": {
         "startLine": 19,
         "startChar": 5,
