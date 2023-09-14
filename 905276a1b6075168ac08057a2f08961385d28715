@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd34c1b5_7495fa8e",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 11
+      },
+      "lineNbr": 4132,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-09-14T19:24:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1f2f741_36b76b3d",
+      "range": {
+        "startLine": 4132,
+        "startChar": 59,
+        "endLine": 4132,
+        "endChar": 60
+      },
+      "revId": "905276a1b6075168ac08057a2f08961385d28715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f284b47_5742d8a2",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7306a432_80e23241",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-09-14T19:24:50Z",
+      "side": 1,
+      "message": "The tests only modified the text property of the slot, not the strokeColor. I\u0027ll add some more changes to the text slot to check the other popular properties.",
+      "parentUuid": "4f284b47_5742d8a2",
+      "range": {
+        "startLine": 187,
+        "startChar": 60,
+        "endLine": 187,
+        "endChar": 82
+      },
+      "revId": "905276a1b6075168ac08057a2f08961385d28715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b64fb059_656b209f",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-09-14T18:03:09Z",
       "side": 1,
       "message": "nit: move this to the same line as switch. Same below.",
+      "range": {
+        "startLine": 73,
+        "startChar": 3,
+        "endLine": 73,
+        "endChar": 5
+      },
+      "revId": "905276a1b6075168ac08057a2f08961385d28715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24316884_f184f7ee",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-09-14T19:24:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b64fb059_656b209f",
       "range": {
         "startLine": 73,
         "startChar": 3,
