@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b89a2e_826053d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-14T07:54:41Z",
+      "side": 1,
+      "message": "Looking at the bug report, can we avoid the extra traverse if we have a known, newer version of FreeType?",
+      "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
