@@ -120,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3620d6f1_1f31c35b",
+        "filename": "src/text/gpu/Slug.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T13:56:07Z",
+      "side": 1,
+      "message": "In an ideal world, it probably should not be different. Since we\u0027ve decided the default behavior for WriteBuffer is to encode a null image if there is no default, the default for ReadBuffer should fail to decode and image if no proc was specified.\n\nIn a practical world, I don\u0027t want to make that change as it would probably involve a lot of churn with clients who use SKP serializiation.\n\nRegarding registered encoder - we don\u0027t have a way to register encoders, only decoders. I have no plans to add any.",
+      "parentUuid": "26b2de0a_ca6c1254",
+      "revId": "3b960adcc0b8ad33bccbeea6070a1ed03b85bc5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80f92d00_169f955f",
         "filename": "tests/SkRemoteGlyphCacheTest.cpp",
         "patchSetId": 4

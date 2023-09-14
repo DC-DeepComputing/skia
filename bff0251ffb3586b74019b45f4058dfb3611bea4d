@@ -34,6 +34,24 @@
       "parentUuid": "d53831e0_9cdd93fc",
       "revId": "bff0251ffb3586b74019b45f4058dfb3611bea4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4448b0ab_9fb360ce",
+        "filename": "src/utils/SkTestCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T13:56:07Z",
+      "side": 1,
+      "message": "Good catch. I used an actual image proc instead for both of these.",
+      "parentUuid": "da3cdde1_7093673c",
+      "revId": "bff0251ffb3586b74019b45f4058dfb3611bea4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
