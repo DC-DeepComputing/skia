@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f77fbf_d0a29eb2",
+        "filename": "infra/bots/task_drivers/common/bazel_clean_step.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T17:17:08Z",
+      "side": 1,
+      "message": "Do we need Sprintf for a constant string?",
+      "range": {
+        "startLine": 89,
+        "startChar": 14,
+        "endLine": 89,
+        "endChar": 21
+      },
+      "revId": "a8f9f26bc5a5e51be83618310eb93c89e2d1239d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
