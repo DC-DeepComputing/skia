@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc8a3e1_0608291d",
+        "filename": "tests/sksl/shared/ForLoopShadowing.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-14T19:26:45Z",
+      "side": 1,
+      "message": "^ scope of inner `increment`",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 25
+      },
+      "revId": "4327eb56c585a4dd6d9fb97736ad645923aae2d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2028fbd9_5a92366b",
+        "filename": "tests/sksl/shared/ForLoopShadowing.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-14T19:26:45Z",
+      "side": 1,
+      "message": "^ this will see outer `increment`",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "4327eb56c585a4dd6d9fb97736ad645923aae2d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
