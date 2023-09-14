@@ -104,12 +104,12 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
     return result;
 }
 
-void PaintParams::Blend(const KeyContext& keyContext,
-                        PaintParamsKeyBuilder* keyBuilder,
-                        PipelineDataGatherer* gatherer,
-                        const SkBlender* blender,
-                        AddToKeyFn addSrcToKey,
-                        AddToKeyFn addDstToKey) {
+void Blend(const KeyContext& keyContext,
+           PaintParamsKeyBuilder* keyBuilder,
+           PipelineDataGatherer* gatherer,
+           const SkBlender* blender,
+           AddToKeyFn addSrcToKey,
+           AddToKeyFn addDstToKey) {
     if (!blender) {
         addSrcToKey();
         return;
@@ -125,6 +125,21 @@ void PaintParams::Blend(const KeyContext& keyContext,
 
     keyBuilder->endBlock();  // BlendShaderBlock
 }
+
+void Compose(const KeyContext& keyContext,
+             PaintParamsKeyBuilder* keyBuilder,
+             PipelineDataGatherer* gatherer,
+             AddToKeyFn addInnerToKey,
+             AddToKeyFn addOuterToKey) {
+    ComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+    addInnerToKey();
+
+    addOuterToKey();
+
+    keyBuilder->endBlock();  // ComposeBlock
+}
+
 
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
@@ -173,13 +188,11 @@ void PaintParams::handlePaintAlpha(const KeyContext& keyContext,
           });
 }
 
+
+//$$
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    // TODO: figure out how we can omit this block when the Paint's color isn't used.
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
-    builder->endBlock();
-
     bool needsDstSample = fDstReadReq == DstReadRequirement::kTextureCopy ||
                           fDstReadReq == DstReadRequirement::kTextureSample;
     SkASSERT(needsDstSample == SkToBool(keyContext.dstTexture()));
