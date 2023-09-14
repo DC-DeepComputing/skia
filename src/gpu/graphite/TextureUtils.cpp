@@ -17,6 +17,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkSpecialSurface.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/image/SkImage_Base.h"
 
 #include "include/gpu/graphite/Context.h"
@@ -422,11 +423,15 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
                             const SkImageInfo& dstInfo,
                             SkImage::RescaleGamma rescaleGamma,
                             SkImage::RescaleMode rescaleMode) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    TRACE_EVENT_INSTANT2("skia.gpu", "RescaleImage Src", TRACE_EVENT_SCOPE_THREAD, "width", srcIRect.width(), "height", srcIRect.height());
+    TRACE_EVENT_INSTANT2("skia.gpu", "RescaleImage Dst", TRACE_EVENT_SCOPE_THREAD, "width", dstInfo.width(), "height", dstInfo.height());
+
     // make a Surface matching dstInfo to rescale into
     SkSurfaceProps surfaceProps = {};
     sk_sp<SkSurface> dst = make_surface_with_fallback(recorder,
                                                       dstInfo,
-                                                      Mipmapped::kNo,
+                                       i               Mipmapped::kNo,
                                                       &surfaceProps);
     if (!dst) {
         return nullptr;

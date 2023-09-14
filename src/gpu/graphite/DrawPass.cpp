@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/base/SkAlign.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
@@ -455,6 +456,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     static_assert(sizeof(DrawPass::SortKey) ==
                   SkAlignTo(16 + sizeof(void*), alignof(DrawPass::SortKey)));
 
+    TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws->fDraws.count());
+
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor));
@@ -639,12 +642,18 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     drawPass->fSamplerDescs    = textureBindingTracker.detachSamplers();
     drawPass->fSampledTextures = textureBindingTracker.detachTextures();
 
+    TRACE_COUNTER1("skia.gpu", "DrawPass Pipelines", drawPass->fPipelineDescs.size());
+    TRACE_COUNTER1("skia.gpu", "DrawPass Textures", drawPass->fSampledTextures.size());
+    TRACE_COUNTER1("skia.gpu", "DrawPass # Commands", drawPass->fCommandList.count());
+
     return drawPass;
 }
 
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RuntimeEffectDictionary* runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+
     fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
