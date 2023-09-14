@@ -16,6 +16,24 @@
       "message": "lgtm, but looping in Greg to double check this behavior is acceptable. \n\nOriginally, this sort of issue was meant to be a failed Recorder::snap() or a failed insert so it bubbled up to the client. Failing at the DrawPass level is the most convenient way to do this, but I wonder if we need to mark something on the Recorder to know to fail as well?\n\nShort term for avoiding the crashes in canary, I\u0027m still fine with this as-is regardless of what we decide for long-term behavioral goals.",
       "revId": "b8207f68020fc9e6a17c4649fb8f0c37c2e93ccd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd243e00_98500ad0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-14T19:30:07Z",
+      "side": 1,
+      "message": "yeah this is fine for now to fix crash, but I agree we definitely want a better system here to inform the client that something bad happened and some of their recorder draws may no longer be there.",
+      "parentUuid": "4a233182_f67cc7a5",
+      "revId": "b8207f68020fc9e6a17c4649fb8f0c37c2e93ccd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
