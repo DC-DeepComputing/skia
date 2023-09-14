@@ -269,7 +269,7 @@ static GrFPResult make_colorfilter_fp(GrRecordingContext*,
                                       const SkBlendModeColorFilter* filter,
                                       std::unique_ptr<GrFragmentProcessor> inputFP,
                                       const GrColorInfo& dstColorInfo,
-                                      const SkSurfaceProps& props) {
+                                      const SkSurfaceProps& props) { //$$
     if (filter->mode() == SkBlendMode::kDst) {
         // If the blend mode is "dest," the blend color won't factor into it at all.
         // We can return the input FP as-is.
@@ -455,6 +455,7 @@ static GrFPResult make_colorfilter_fp(GrRecordingContext* context,
               : GrFPFailure(std::move(fp));
 }
 
+//$$
 GrFPResult Make(GrRecordingContext* ctx,
                 const SkColorFilter* cf,
                 std::unique_ptr<GrFragmentProcessor> inputFP,
