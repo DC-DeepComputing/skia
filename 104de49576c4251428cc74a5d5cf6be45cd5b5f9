@@ -16,6 +16,23 @@
       "message": "The part about Skia code is addressed in a parent CL",
       "revId": "104de49576c4251428cc74a5d5cf6be45cd5b5f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "721fcb84_0dfda71a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 61
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "First part of comments addressed. I think there are few questions there...",
+      "revId": "104de49576c4251428cc74a5d5cf6be45cd5b5f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

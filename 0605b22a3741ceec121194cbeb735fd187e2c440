@@ -298,6 +298,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74834256_b236b2c1",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb6a05cf_6ec5c300",
+      "range": {
+        "startLine": 51,
+        "startChar": 11,
+        "endLine": 51,
+        "endChar": 15
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3b02ec3_a1e72feb",
@@ -311,6 +335,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "Should this also be -1?",
+      "range": {
+        "startLine": 55,
+        "startChar": 15,
+        "endLine": 55,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92129f47_e7c0f81f",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3b02ec3_a1e72feb",
       "range": {
         "startLine": 55,
         "startChar": 15,
@@ -344,6 +392,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "572224f9_50788b0a",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Not really. I only collect one number and that number shows how much time all methods involved took. In this case, there are two methods; it could be one or many, it does not matter. We do not need to know more.",
+      "parentUuid": "81fd94f5_78d0dc00",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9063d0ee_98b5d2cf",
@@ -357,6 +429,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "Instead of returning a boolean here, can we instead return the flags (as an integer) and abort if the unicode object was not initialized or the index is out of range? Such behavior seems like it\u0027s a bug and not an \"expected\" error",
+      "range": {
+        "startLine": 69,
+        "startChar": 15,
+        "endLine": 69,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ba22a74_4f191821",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9063d0ee_98b5d2cf",
       "range": {
         "startLine": 69,
         "startChar": 15,
@@ -390,6 +486,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a54f241f_61d0a3d6",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Problem while looking for clang-format in Chromium source tree:\nFile does not exist: /usr/local/google/home/jlavrova/Sources/skia/buildtools/linux64/clang-format\nI will sort it out later, fixed the immediate problem.",
+      "parentUuid": "07d0e125_4b54af9d",
+      "range": {
+        "startLine": 99,
+        "startChar": 3,
+        "endLine": 99,
+        "endChar": 6
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ae69a88_6b597196",
@@ -403,6 +523,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "nit: remove debugging code",
+      "range": {
+        "startLine": 108,
+        "startChar": 6,
+        "endLine": 108,
+        "endChar": 14
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc96e096_55d8d656",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ae69a88_6b597196",
       "range": {
         "startLine": 108,
         "startChar": 6,
@@ -436,6 +580,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77fdbf07_056051ce",
+        "filename": "tools/unicode_comparison/cpp/bridge.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5c56229_fef9ae84",
+      "range": {
+        "startLine": 13,
+        "startChar": 9,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5da371a_48bb83e6",
@@ -459,6 +627,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bee1649_e540505a",
+        "filename": "tools/unicode_comparison/cpp/bridge.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5da371a_48bb83e6",
+      "range": {
+        "startLine": 14,
+        "startChar": 9,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37f4845f_54f68f97",
@@ -472,6 +664,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "general suggestion: can we make these named more similar to the C++ API on SkUnicode? e.g. `upper` -\u003e `toUpper`",
+      "range": {
+        "startLine": 15,
+        "startChar": 9,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d31346a_f468cd22",
+        "filename": "tools/unicode_comparison/cpp/bridge.h",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37f4845f_54f68f97",
       "range": {
         "startLine": 15,
         "startChar": 9,
@@ -551,6 +767,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "700501f0_7e356dbc",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "802bf265_4ddcc999",
+      "range": {
+        "startLine": 71,
+        "startChar": 5,
+        "endLine": 71,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "134d4bd3_b90d646b",
@@ -574,6 +814,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32aa9f16_f04b455d",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134d4bd3_b90d646b",
+      "range": {
+        "startLine": 112,
+        "startChar": 1,
+        "endLine": 112,
+        "endChar": 6
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a3a2242_8c06470f",
@@ -587,6 +851,24 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "At the top of each file with a main(), please include a comment generally describing what the executable does.",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5886b240_3522991b",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a3a2242_8c06470f",
       "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -632,6 +914,54 @@
         "startChar": 38,
         "endLine": 15,
         "endChar": 51
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25a2ed23_3d8bbd34",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55e0abea_0a5b1a94",
+      "range": {
+        "startLine": 15,
+        "startChar": 38,
+        "endLine": 15,
+        "endChar": 51
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69cd40a5_3050aac0",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db59cac3_d3f4f138",
+      "range": {
+        "startLine": 15,
+        "startChar": 81,
+        "endLine": 15,
+        "endChar": 124
       },
       "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -683,6 +1013,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d438e03f_f14326d8",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb07dba7_3521ead8",
+      "range": {
+        "startLine": 120,
+        "startChar": 181,
+        "endLine": 120,
+        "endChar": 183
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a3b6cb4_a7a336ba",
@@ -700,6 +1054,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e3e0dd_e36365c5",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a3b6cb4_a7a336ba",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf6cb52e_17733e7e",
@@ -713,6 +1085,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "nit: remove the unneeded imports",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "940408e9_eb3a1d3e",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf6cb52e_17733e7e",
       "range": {
         "startLine": 17,
         "startChar": 4,
@@ -746,6 +1142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "828bde00_a07a0786",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "262837b7_b9e1c11c",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 46,
+        "endChar": 9
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a02684f2_626c7e83",
@@ -759,6 +1179,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "ioutil has been deprecated (the functions moved elsewhere).\n\nUse os.ReadFile instead",
+      "range": {
+        "startLine": 57,
+        "startChar": 21,
+        "endLine": 57,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b19c9c_fafb1567",
+        "filename": "tools/unicode_comparison/go/extract_info.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a02684f2_626c7e83",
       "range": {
         "startLine": 57,
         "startChar": 21,
@@ -786,6 +1230,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b632750_623a34cc",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daa7b08f_7fa22220",
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0ef82f3_9bbc93fa",
@@ -809,6 +1271,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e307ccbf_91ddc62f",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0ef82f3_9bbc93fa",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 9
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c022ab6_5fe9a08b",
@@ -822,6 +1308,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "\"this\" is not an idiomatic name (although conceptually it is the same). Usually, we would just use the lowercase letter of the type name `r`\n\nSame below.",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f853afdc_016efa67",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Unless you strongly object, I like \"this\" since it does look more like C++.",
+      "parentUuid": "4c022ab6_5fe9a08b",
       "range": {
         "startLine": 39,
         "startChar": 6,
@@ -880,6 +1390,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "245650d8_e7c27a6b",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "A, the reason for it is that IntelliJ adds these default names itself and if I add it myself it will be doubled.",
+      "parentUuid": "2523cc3e_ac73fe73",
+      "range": {
+        "startLine": 83,
+        "startChar": 2,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33ad580c_5fc78cf8",
         "filename": "tools/unicode_comparison/go/generate_table.go",
         "patchSetId": 55
@@ -891,6 +1425,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "If this constructor is not doing anything, we can remove it.",
+      "range": {
+        "startLine": 126,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 18
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e790aa6c_0f3dc44d",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "There is one usage! Line #94",
+      "parentUuid": "33ad580c_5fc78cf8",
       "range": {
         "startLine": 126,
         "startChar": 5,
@@ -1315,6 +1873,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b176399_58c40abb",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71b4b5e7_b61a5bf1",
+      "range": {
+        "startLine": 803,
+        "startChar": 14,
+        "endLine": 803,
+        "endChar": 35
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "425847de_843b6fd8",
@@ -1328,6 +1910,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "Instead of passing this in by pointer, can we have compareFiles return two values? web and error?",
+      "range": {
+        "startLine": 809,
+        "startChar": 73,
+        "endLine": 809,
+        "endChar": 77
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61d6e921_b7f9768d",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "425847de_843b6fd8",
       "range": {
         "startLine": 809,
         "startChar": 73,
@@ -1363,6 +1969,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "719d1775_7a13e95f",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Not sure what you mean... I didn\u0027t find Abs function for integers, only for floats in math.",
+      "parentUuid": "e7283d29_9fb4e3e8",
+      "range": {
+        "startLine": 19,
+        "startChar": 5,
+        "endLine": 19,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64a72d11_172f8acd",
         "filename": "tools/unicode_comparison/go/helpers.go",
         "patchSetId": 55
@@ -1374,6 +2004,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "min exists in golang 1.21 now https://pkg.go.dev/builtin#min",
+      "range": {
+        "startLine": 26,
+        "startChar": 5,
+        "endLine": 26,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8bd4cdd_6eba78cb",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64a72d11_172f8acd",
       "range": {
         "startLine": 26,
         "startChar": 5,
@@ -1407,6 +2061,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e5e511_f01546fb",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97643a9e_748ff7c8",
+      "range": {
+        "startLine": 33,
+        "startChar": 5,
+        "endLine": 33,
+        "endChar": 13
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f02df24c_e2ae5e95",
@@ -1420,6 +2098,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "The idiomatic way for this would be to return a new string not pass in a pointer and write to it.",
+      "range": {
+        "startLine": 46,
+        "startChar": 5,
+        "endLine": 46,
+        "endChar": 25
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed24d48_aa165455",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f02df24c_e2ae5e95",
       "range": {
         "startLine": 46,
         "startChar": 5,
@@ -1453,6 +2155,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9c985e4_b5594b72",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0573e4e2_ebcaadad",
+      "range": {
+        "startLine": 54,
+        "startChar": 5,
+        "endLine": 54,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d52cec80_325fc321",
@@ -1466,6 +2192,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "https://github.com/golang/go/wiki/CodeReviewComments/#declaring-empty-slices",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 21
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21f2b2a7_0fb88521",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d52cec80_325fc321",
       "range": {
         "startLine": 56,
         "startChar": 1,
@@ -1499,6 +2249,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cac0ea43_42c86d44",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa82dabd_78a53328",
+      "range": {
+        "startLine": 60,
+        "startChar": 10,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82efed08_44e3fcfd",
@@ -1522,6 +2296,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "318c2002_7d5540b4",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82efed08_44e3fcfd",
+      "range": {
+        "startLine": 76,
+        "startChar": 5,
+        "endLine": 76,
+        "endChar": 16
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7439be3f_a743b0af",
@@ -1535,6 +2333,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "This can probably be replaced with a call to https://pkg.go.dev/os#WriteFile",
+      "range": {
+        "startLine": 84,
+        "startChar": 5,
+        "endLine": 84,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34f20dd5_a46736b1",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-14T16:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7439be3f_a743b0af",
       "range": {
         "startLine": 84,
         "startChar": 5,
