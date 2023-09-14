@@ -91,11 +91,10 @@ func main() {
 	}
 
 	// Create pubsub client.
-	client, err := pubsub.NewClient(ctx, docker_pubsub.TOPIC_PROJECT_ID, option.WithTokenSource(ts))
+	_, err = pubsub.NewClient(ctx, docker_pubsub.TOPIC_PROJECT_ID, option.WithTokenSource(ts))
 	if err != nil {
 		td.Fatal(ctx, err)
 	}
-	topic := client.Topic(docker_pubsub.TOPIC)
 
 	dkr, err := docker.New(ctx, ts)
 	if err != nil {
@@ -122,10 +121,6 @@ func main() {
 		CachePath: *bazelFlags.CacheDir,
 	}
 	if err := bazel.EnsureBazelRCFile(ctx, opts); err != nil {
-		td.Fatal(ctx, err)
-	}
-
-	if err := buildPush(ctx, "skottie", wasmProductsDir, checkoutDir, *skiaRevision, topic); err != nil {
 		td.Fatal(ctx, err)
 	}
 
