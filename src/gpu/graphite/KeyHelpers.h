@@ -30,6 +30,7 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class KeyContext;
+class PaintParams;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class UniquePaintParamsID;
@@ -44,6 +45,8 @@ enum class DstColorType {
     // A color evaluated by a child shader.
     kChildOutput,
 };
+
+using AddToKeyFn = std::function<void()>;
 
 /**
  * The KeyHelpers can be used to manually construct an SkPaintParamsKey.
@@ -303,7 +306,15 @@ struct PrimitiveColorBlock {
     static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
 };
 
+#if 0
 struct ColorFilterShaderBlock {
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*);
+};
+#endif
+
+struct ComposeBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*);
@@ -333,11 +344,13 @@ struct MatrixColorFilterBlock {
                            const MatrixColorFilterData*);
 };
 
+#if 0
 struct ComposeColorFilterBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*);
 };
+#endif
 
 struct TableColorFilterBlock {
     struct TableColorFilterData {
@@ -379,8 +392,10 @@ struct ColorSpaceTransformBlock {
 void AddDstBlendBlock(const KeyContext&,
                       PaintParamsKeyBuilder*,
                       PipelineDataGatherer*,
-                      const SkBlender*);
+                      const SkBlender*,
+                      AddToKeyFn emitSrc);
 
+#if 0
 /**
  * Primitive blend blocks are used to blend either the paint color or the output of another shader
  * with a primitive color emitted by certain draw geometry calls (drawVertices, drawAtlas, etc.).
@@ -389,6 +404,7 @@ void AddDstBlendBlock(const KeyContext&,
 void AddPrimitiveBlendBlock(const KeyContext&,
                             PaintParamsKeyBuilder*,
                             PipelineDataGatherer*,
+                            const PaintParams* pp,
                             const SkBlender*);
 
 /**
@@ -397,8 +413,10 @@ void AddPrimitiveBlendBlock(const KeyContext&,
 void AddColorBlendBlock(const KeyContext&,
                         PaintParamsKeyBuilder*,
                         PipelineDataGatherer*,
+                        const PaintParams* pp,
                         SkBlendMode,
                         const SkPMColor4f& srcColor);
+#endif
 
 struct RuntimeEffectBlock {
     struct ShaderData {
@@ -424,7 +442,7 @@ struct RuntimeEffectBlock {
                            const ShaderData&);
 };
 
-void AddToKey(const KeyContext&,
+void AddToKeyB(const KeyContext&,
               PaintParamsKeyBuilder*,
               PipelineDataGatherer*,
               const SkBlender*);
@@ -438,10 +456,11 @@ void AddToKey(const KeyContext&,
  *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param filter     This function is a no-op if filter is null.
  */
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyCF(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
-              const SkColorFilter* filter);
+              const SkColorFilter* filter,
+              AddToKeyFn emitInput);
 
 /**
  *  Add implementation details, for the specified backend, of this SkShader to the
@@ -452,7 +471,7 @@ void AddToKey(const KeyContext& keyContext,
  *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param shader     This function is a no-op if shader is null.
  */
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyS(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkShader* shader);
