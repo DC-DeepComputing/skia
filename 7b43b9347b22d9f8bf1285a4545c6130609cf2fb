@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb30ae9b_3547cb8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-14T16:54:04Z",
+      "side": 1,
+      "message": "I\u0027m not opposed to being defensive to avoid crashing when we don\u0027t have a dstTexture, but can we detect this earlier, at the time we try to make the copy? If the dst copy fails, maybe we drop the DrawPass? \n\nIf we tweak the key based on the success of the copy or not, I could see running into inconsistencies accidentally in the future.",
+      "revId": "7b43b9347b22d9f8bf1285a4545c6130609cf2fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
