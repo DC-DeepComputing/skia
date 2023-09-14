@@ -16,6 +16,29 @@
       "message": "I really like this change, but it\u0027s important to note that it\u0027s a behavioral change for AGSL. The previous behavior was never documented (I double checked all the AGSL docs), and I couldn\u0027t find any info on the web suggesting that people had discovered it. We *do* have Android tests verifying the old behavior, though:\n\nhttps://cs.android.com/android/platform/superproject/main/+/main:cts/tests/tests/uirendering/src/android/uirendering/cts/testclasses/RuntimeShaderTests.kt;l\u003d230;drc\u003d34dda56129eeeaed6a81aed7e426b8a0e8a138f5\n\nThoughts?",
       "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6664da47_56d1a40a",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1315,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-14T17:47:19Z",
+      "side": 1,
+      "message": "tiny nit: moving this value away from `effect.test(0xFF00407F, ...` makes the test significantly more confusing to read. I\u0027m not sure why such a specific color was picked for the original test, but at least its float variant and its hex variant were on adjacent lines. Maybe we could reuse a preexisting named color?",
+      "range": {
+        "startLine": 1315,
+        "startChar": 52,
+        "endLine": 1315,
+        "endChar": 83
+      },
+      "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
