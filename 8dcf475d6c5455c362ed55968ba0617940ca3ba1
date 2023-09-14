@@ -52,6 +52,24 @@
       "parentUuid": "f516fc7c_d66472ce",
       "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99b4ee9_090602d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-14T15:29:35Z",
+      "side": 1,
+      "message": "The FreeType library mismatch is what the linked issue is about, but this only fixes that tangentially. This is about basic validation.",
+      "parentUuid": "73eb92a1_a7d3d523",
+      "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
