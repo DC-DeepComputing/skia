@@ -489,6 +489,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d14d22e9_e8ba83ee",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T22:29:03Z",
+      "side": 1,
+      "message": "These were not the changes I wanted.\n\n```\nSkUnicode::CodeUnitFlags getFlags(int index) {\n...\n    if (gUnicode \u003d\u003d nullptr) {\n        SkABORT(\"Unicode object does not exist\");\n    }\n...\n```",
+      "parentUuid": "5ba22a74_4f191821",
+      "range": {
+        "startLine": 69,
+        "startChar": 15,
+        "endLine": 69,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07d0e125_4b54af9d",
         "filename": "tools/unicode_comparison/cpp/bridge.cpp",
         "patchSetId": 55
@@ -771,6 +795,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fb4eb7f_14fc7048",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T22:29:03Z",
+      "side": 1,
+      "message": "I do not see the logic to clean up the CString either here or in the C code",
+      "parentUuid": "641dbb63_01852a98",
+      "range": {
+        "startLine": 54,
+        "startChar": 31,
+        "endLine": 54,
+        "endChar": 38
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2aed4909_f2512792",
         "filename": "tools/unicode_comparison/go/bridge.go",
         "patchSetId": 55
@@ -806,6 +854,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "2aed4909_f2512792",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "017ccbc1_9da1095c",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T22:29:03Z",
+      "side": 1,
+      "message": "You did not answer my question. Do we need to dynamically allocate the memory or could we statically do so?",
+      "parentUuid": "918ee654_c5fe28af",
       "range": {
         "startLine": 59,
         "startChar": 4,
