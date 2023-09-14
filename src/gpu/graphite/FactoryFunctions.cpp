@@ -457,9 +457,9 @@ sk_sp<PrecompileMaskFilter> PrecompileMaskFilters::Blur() {
 }
 
 //--------------------------------------------------------------------------------------------------
-class PrecompileBlendColorFilter : public PrecompileColorFilter {
+class PrecompileBlendModeColorFilter : public PrecompileColorFilter {
 public:
-    PrecompileBlendColorFilter() {}
+    PrecompileBlendModeColorFilter() {}
 
 private:
     void addToKey(const KeyContext& keyContext,
@@ -467,12 +467,26 @@ private:
                   PaintParamsKeyBuilder* builder) const override {
         SkASSERT(desiredCombination == 0);
 
-        AddColorBlendBlock(keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver, {});
+        //$$
+        // Here, kSrcOver and the white color are just a stand-ins for some later blend mode
+        // and color.
+        sk_sp<SkBlender> blender = SkBlender::Mode(SkBlendMode::kSrcOver);
+
+        Blend(keyContext, builder, /* gatherer= */ nullptr, blender.get(),
+              /* addSrcToKey= */ [&]() -> void {
+                  SolidColorShaderBlock::BeginBlock(keyContext, builder,
+                                                    /* gatherer= */ nullptr, SK_PMColor4fWHITE);
+                  builder->endBlock();
+              },
+              /* addDstToKey= */ [&]() -> void {
+                  PriorOutputBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr);
+                  builder->endBlock();
+              });
     }
 };
 
 sk_sp<PrecompileColorFilter> PrecompileColorFilters::Blend() {
-    return sk_make_sp<PrecompileBlendColorFilter>();
+    return sk_make_sp<PrecompileBlendModeColorFilter>();
 }
 
 //--------------------------------------------------------------------------------------------------

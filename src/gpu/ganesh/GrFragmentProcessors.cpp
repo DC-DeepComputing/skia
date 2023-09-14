@@ -265,6 +265,7 @@ static SkPMColor4f map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace
     SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, kPremul_SkAlphaType).apply(color.vec());
     return color;
 }
+//$$
 static GrFPResult make_colorfilter_fp(GrRecordingContext*,
                                       const SkBlendModeColorFilter* filter,
                                       std::unique_ptr<GrFragmentProcessor> inputFP,
