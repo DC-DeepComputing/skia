@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1f2f741_36b76b3d",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 11
+      },
+      "lineNbr": 4132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T18:03:09Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 4132,
+        "startChar": 59,
+        "endLine": 4132,
+        "endChar": 60
+      },
+      "revId": "905276a1b6075168ac08057a2f08961385d28715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f284b47_5742d8a2",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T18:03:09Z",
+      "side": 1,
+      "message": "We shouldn\u0027t be copying to the same pointer. How do the tests pass despite this?",
+      "range": {
+        "startLine": 187,
+        "startChar": 60,
+        "endLine": 187,
+        "endChar": 82
+      },
+      "revId": "905276a1b6075168ac08057a2f08961385d28715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b64fb059_656b209f",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T18:03:09Z",
+      "side": 1,
+      "message": "nit: move this to the same line as switch. Same below.",
+      "range": {
+        "startLine": 73,
+        "startChar": 3,
+        "endLine": 73,
+        "endChar": 5
+      },
+      "revId": "905276a1b6075168ac08057a2f08961385d28715",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
