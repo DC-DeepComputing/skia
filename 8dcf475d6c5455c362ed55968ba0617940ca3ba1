@@ -34,6 +34,24 @@
       "parentUuid": "05b89a2e_826053d6",
       "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73eb92a1_a7d3d523",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-14T14:53:21Z",
+      "side": 1,
+      "message": "From reading the issue what we\u0027re trying to address is more of a FreeType library mismatch rather than the expectation that there is invalid data in the font, is that right? That makes me thing there\u0027s difference here between: \"not valid\" - as the font is valid according to spec - and \"understood\". I would prefer not to introduce a general extra traversal for the extra costs especially in complex glyphs. Reason being: we\u0027re much less likely to find such broken fonts and the library mismatch is a separate problem. If the font has an entry point in COLRv1 and during the traversal of the graph something fails, I think we can handle that as cancelling drawing or drawing nothing - since a fallback, different glyph representation would only be potentially available in rare hybrid fonts - and also not in general.",
+      "parentUuid": "f516fc7c_d66472ce",
+      "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
