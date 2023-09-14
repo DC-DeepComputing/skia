@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "403b3c87_fff3be7c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-14T00:02:00Z",
+      "side": 1,
+      "message": "^\nThe values inside `rtAdjust` need to live until this point.",
+      "range": {
+        "startLine": 787,
+        "startChar": 44,
+        "endLine": 787,
+        "endChar": 54
+      },
+      "revId": "ea53c8ada96f028cd6ba01884b91a30507c88618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
