@@ -30,6 +30,7 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class KeyContext;
+class PaintParams;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class UniquePaintParamsID;
@@ -44,6 +45,8 @@ enum class DstColorType {
     // A color evaluated by a child shader.
     kChildOutput,
 };
+
+using AddToKeyFn = std::function<void()>;
 
 /**
  * The KeyHelpers can be used to manually construct an SkPaintParamsKey.
@@ -303,7 +306,7 @@ struct PrimitiveColorBlock {
     static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
 };
 
-struct ColorFilterShaderBlock {
+struct ComposeBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*);
@@ -331,12 +334,6 @@ struct MatrixColorFilterBlock {
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*,
                            const MatrixColorFilterData*);
-};
-
-struct ComposeColorFilterBlock {
-    static void BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*);
 };
 
 struct TableColorFilterBlock {
