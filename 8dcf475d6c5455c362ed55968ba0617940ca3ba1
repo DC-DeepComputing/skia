@@ -16,6 +16,24 @@
       "message": "Looking at the bug report, can we avoid the extra traverse if we have a known, newer version of FreeType?",
       "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f516fc7c_d66472ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-14T14:32:11Z",
+      "side": 1,
+      "message": "I don\u0027t think so. I would prefer to attempt to fallback to some other glyph representation if the COLRv1 data for a glyph for some reason isn\u0027t valid or understood. The issue really is that the FreeType side doesn\u0027t do any validation up front, only while traversing, so just because we can get a clip box from FreeType doesn\u0027t mean that there is any valid COLRv1 Paint tree in there.\n\nFor outline loading FreeType loads the whole thing up and will give an error if the outline can\u0027t be loaded. For bitmaps unfortunately we don\u0027t appear to actually ensure the bitmap is valid. In the case of SVG the bounds are needed and are created by parsing ~all the data to ensure that it is valid (currently the code returns early if the SVG data isn\u0027t valid, but there\u0027s nothing left to fall back to at that point the way things are right now). For COLRv0 the code here should be a little more strict, currently FreeType ensures that all the data is there but does not up front check that all the glyphids and paletteids are in range up front, early aborting if something doesn\u0027t check out on an iteration, though we do get `num_layers` so we do know when early exit happens and should skip the COLRv0 in that case instead of just drawing the first bit. I\u0027ll make that change here as well.\n\nAll that being said, I would prefer a sanity check up front that the data is valid.",
+      "parentUuid": "05b89a2e_826053d6",
+      "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
