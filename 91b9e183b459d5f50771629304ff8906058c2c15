@@ -33,6 +33,24 @@
       "message": "I wonder if we should just add a `clamp_01` stage after the program is appended in `SkColorFilterBase::onFilterColor4f`? This would ~match what we do in the blitter (via `append_clamp_if_normalized`).\n\nThis also has the benefit(?) of preserving the assertion in case our non-runtime-effect-based color filters start returning bad values.\n\nGiving +1 since I don\u0027t really have a strong reason to prefer either approach, andt this seems reasonable/harmless as well, although it still passes through out-of-band colors in the RGB channels.",
       "revId": "91b9e183b459d5f50771629304ff8906058c2c15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed7ab37b_ca94234e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-14T21:52:41Z",
+      "side": 1,
+      "message": "Yeah, I wanted to do as little clamping as possible, so this intentionally leaves wide-gamut/HDR colors intact (which are generally handled correctly everywhere else).",
+      "parentUuid": "f73a9743_fdc8e28c",
+      "revId": "91b9e183b459d5f50771629304ff8906058c2c15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
