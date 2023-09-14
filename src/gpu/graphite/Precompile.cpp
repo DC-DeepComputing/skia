@@ -108,6 +108,7 @@ DstReadRequirement get_dst_read_req(const Caps* caps,
     return GetDstReadRequirement(caps, SkBlendMode::kSrcOver, coverage);
 }
 
+// TODO: maybe create a PaintOption to better parallel PaintParams?
 void PaintOptions::addPaintColorToKey(const KeyContext& keyContext,
                                       PaintParamsKeyBuilder* keyBuilder,
                                       int desiredShaderCombination) const {
@@ -129,16 +130,14 @@ void PaintOptions::handlePrimitiveColor(const KeyContext& keyContext,
     sk_sp<SkBlender> blender = addPrimitiveBlender ? SkBlender::Mode(SkBlendMode::kSrcOver)
                                                    : nullptr;
 
-    PaintParams::Blend(keyContext, keyBuilder, /* gatherer= */ nullptr, blender.get(),
-                       /* addSrcToKey= */ [&]() -> void {
-                           this->addPaintColorToKey(keyContext, keyBuilder,
-                                                    desiredShaderCombination);
-                       },
-                       /* addDstToKey= */ [&]() -> void {
-                           PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder,
-                                                           /* gatherer= */ nullptr);
-                           keyBuilder->endBlock();
-                       });
+    Blend(keyContext, keyBuilder, /* gatherer= */ nullptr, blender.get(),
+          /* addSrcToKey= */ [&]() -> void {
+              this->addPaintColorToKey(keyContext, keyBuilder, desiredShaderCombination);
+          },
+          /* addDstToKey= */ [&]() -> void {
+              PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+              keyBuilder->endBlock();
+          });
 }
 
 void PaintOptions::handlePaintAlpha(const KeyContext& keyContext,
@@ -148,18 +147,17 @@ void PaintOptions::handlePaintAlpha(const KeyContext& keyContext,
                                     bool nonOpaquePaintColor) const {
     sk_sp<SkBlender> blender = nonOpaquePaintColor ? SkBlender::Mode(SkBlendMode::kSrcIn) : nullptr;
 
-    PaintParams::Blend(keyContext, keyBuilder, /* gatherer= */ nullptr, blender.get(),
-                       /* addSrcToKey= */ [&]() -> void {
-                           this->handlePrimitiveColor(keyContext, keyBuilder,
-                                                      desiredShaderCombination,
-                                                      addPrimitiveBlender);
-                       },
-                       /* addDstToKey= */ [&]() -> void {
-                           SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder,
-                                                             /* gatherer= */ nullptr,
-                                                             {0, 0, 0, 0.5f});
-                           keyBuilder->endBlock();
-                       });
+    Blend(keyContext, keyBuilder, /* gatherer= */ nullptr, blender.get(),
+          /* addSrcToKey= */ [&]() -> void {
+              this->handlePrimitiveColor(keyContext, keyBuilder,
+                                         desiredShaderCombination,
+                                         addPrimitiveBlender);
+          },
+          /* addDstToKey= */ [&]() -> void {
+              SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                                {0, 0, 0, 0.5f});
+              keyBuilder->endBlock();
+          });
 }
 
 void PaintOptions::createKey(const KeyContext& keyContext,
@@ -185,11 +183,6 @@ void PaintOptions::createKey(const KeyContext& keyContext,
 
     const int desiredShaderCombination = remainingCombinations;
     SkASSERT(desiredShaderCombination < this->numShaderCombinations());
-
-    // TODO: eliminate this block for the Paint's color when it isn't needed
-    SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                      {1, 0, 0, 1});
-    keyBuilder->endBlock();
 
     DstReadRequirement dstReadReq = get_dst_read_req(
             keyContext.caps(), coverage, fBlenderOptions, desiredBlendCombination);
