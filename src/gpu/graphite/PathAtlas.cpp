@@ -19,6 +19,11 @@
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
 
+// for SW Path Renderer
+#include "src/core/SkBlitter_A8.h"
+#include "src/core/SkDrawBase.h"
+#include "src/core/SkRasterClip.h"
+
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #endif
@@ -185,6 +190,82 @@ void VelloComputePathAtlas::onAddShape(const Shape& shape,
 
 #endif  // SK_ENABLE_VELLO_SHADERS
 
+///////////////////////////////////////////////////////////////////////////////////////
+
 SoftwarePathAtlas::SoftwarePathAtlas() : PathAtlas(kSoftwareAtlasDim, kSoftwareAtlasDim) {}
+
+void SoftwarePathAtlas::recordUploads(UploadList* uploadList) {
+    // add queued uploads to upload list
+    //const void* uploadData = fBackingPixmap.addr();
+    // use dirty rect to determine what part to upload
+    // build an upload and jam it in there
+
+    // clear backing data
+    fDirtyRect.setEmpty();
+    fPixels.erase(0);
+}
+
+void SoftwarePathAtlas::onAddShape(const Shape& shape,
+                                   const Transform& transform,
+                                   const Rect& atlasBounds,
+                                   skvx::int2 deviceOffset,
+                                   const SkStrokeRec& strokeRec) {
+    // TODO: look up shape and use cached texture
+    // Need to push this up into addShape() somehow
+
+    // rasterize path and add to queued upload list
+    // See SoftwarePathRenderer::onDrawPath()/GrSWMaskHelper::drawShape()
+    // TODO: in a separate thread?
+
+    // allocate pixmap if needed
+    if (!fPixels.addr()) {
+        const SkImageInfo bmImageInfo = SkImageInfo::MakeA8(kSoftwareAtlasDim, kSoftwareAtlasDim);
+        if (!fPixels.tryAlloc(bmImageInfo)) {
+            return;
+        }
+        fPixels.erase(0);
+    }
+
+    //*** keep draw around?
+    SkDrawBase draw;
+    draw.fBlitterChooser = SkA8Blitter_Choose;
+    draw.fDst      = fPixels;
+    SkRasterClip rasterClip;
+    rasterClip.setRect(atlasBounds.asSkIRect());
+    draw.fRC       = &rasterClip;
+
+    // And render it (from GrSKMaskHelper)
+    SkPaint paint = get_paint(aa, alpha);
+
+    SkMatrix translatedMatrix = matrix;
+    translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
+    // I think this is right? Places it in the atlas.
+    translatedMatrix.postTranslate(atlasBounds.fLeft, atlasBounds.fTop);
+    fDraw.fCTM = &translatedMatrix;
+
+    // A complex, or inverse-filled shape, so go through drawPath.
+    SkPath path;
+    shape.asPath(&path);
+    if (0xFF == alpha) {
+        SkASSERT(0xFF == paint.getAlpha());
+        fDraw.drawPathCoverage(path, paint);
+    } else {
+        fDraw.drawPath(path, paint);
+    }
+
+    // Add to dirtyRect
+    fDirtyRect.join(atlasBounds.asSkIRect());
+
+    //----------------------
+
+    // TODO: cache shape data and resulting texture... how?
+    // Idea: use shape, transform, and strokeRec as key to find texture and atlasBounds
+}
+
+void SoftwarePathAtlas::onReset() {
+    //**** anything to do here?
+    // clear backing data here instead?
+}
+
 
 }  // namespace skgpu::graphite
