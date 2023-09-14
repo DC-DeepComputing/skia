@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc5a69e7_d20b4937",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-14T20:22:54Z",
+      "side": 1,
+      "message": "I decided to add a release note, so I will need +1 again. Sorry.",
+      "revId": "c2e911a1e51c69fd67241a1cc8809da91ef3e795",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
