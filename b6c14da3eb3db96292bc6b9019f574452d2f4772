@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b646deff_97b0ee42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-14T15:50:05Z",
+      "side": 1,
+      "message": "I really like this change, but it\u0027s important to note that it\u0027s a behavioral change for AGSL. The previous behavior was never documented (I double checked all the AGSL docs), and I couldn\u0027t find any info on the web suggesting that people had discovered it. We *do* have Android tests verifying the old behavior, though:\n\nhttps://cs.android.com/android/platform/superproject/main/+/main:cts/tests/tests/uirendering/src/android/uirendering/cts/testclasses/RuntimeShaderTests.kt;l\u003d230;drc\u003d34dda56129eeeaed6a81aed7e426b8a0e8a138f5\n\nThoughts?",
+      "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
