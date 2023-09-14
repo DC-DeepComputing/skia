@@ -416,6 +416,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4df92f2_bc90c71f",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "Works for me.",
+      "parentUuid": "572224f9_50788b0a",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9063d0ee_98b5d2cf",
@@ -1344,6 +1368,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f584e31_8a6ebd43",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "I would prefer our go code to look like go code and not like C++.",
+      "parentUuid": "f853afdc_016efa67",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 10
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4a22194_79ee2f2c",
         "filename": "tools/unicode_comparison/go/generate_table.go",
         "patchSetId": 55
@@ -1414,6 +1462,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5be0d834_81e0d4fd",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "With my IntelliJ settings, if the names are specified, IntelliJ does *not* add them. Please put them in so the code is more readable in its raw text form.",
+      "parentUuid": "245650d8_e7c27a6b",
+      "range": {
+        "startLine": 83,
+        "startChar": 2,
+        "endLine": 83,
+        "endChar": 5
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33ad580c_5fc78cf8",
         "filename": "tools/unicode_comparison/go/generate_table.go",
         "patchSetId": 55
@@ -1449,6 +1521,30 @@
       "side": 1,
       "message": "There is one usage! Line #94",
       "parentUuid": "33ad580c_5fc78cf8",
+      "range": {
+        "startLine": 126,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 18
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7425188_a9bc44b9",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "What I meant was that the constructor is not adding any non-default values to RangedData, so we can replace `NewRangedData()` with `RangedData{}` and get rid of this function.",
+      "parentUuid": "e790aa6c_0f3dc44d",
       "range": {
         "startLine": 126,
         "startChar": 5,
@@ -1981,6 +2077,30 @@
       "side": 1,
       "message": "Not sure what you mean... I didn\u0027t find Abs function for integers, only for floats in math.",
       "parentUuid": "e7283d29_9fb4e3e8",
+      "range": {
+        "startLine": 19,
+        "startChar": 5,
+        "endLine": 19,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb7e3255_49150980",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "https://go.dev/tour/basics/3\n\nMy suggestion was to rename `Abs` to `abs` because this is not a public function, AFAICT",
+      "parentUuid": "719d1775_7a13e95f",
       "range": {
         "startLine": 19,
         "startChar": 5,

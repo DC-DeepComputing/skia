@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4ed2d57_94034522",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 62
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "nit: This executable downloads...",
+      "range": {
+        "startLine": 5,
+        "startChar": 3,
+        "endLine": 5,
+        "endChar": 39
+      },
+      "revId": "e644bc711a0c1eb64dcb5342bd585638aa370b09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8002ced9_8491af4a",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 62
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "nit: wrap comments in Golang to 100 cols",
+      "range": {
+        "startLine": 5,
+        "startChar": 91,
+        "endLine": 5,
+        "endChar": 97
+      },
+      "revId": "e644bc711a0c1eb64dcb5342bd585638aa370b09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ad25ed_1b118544",
+        "filename": "tools/unicode_comparison/go/helpers.go",
+        "patchSetId": 62
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-14T16:14:05Z",
+      "side": 1,
+      "message": "nit: since the above if block ends with a return, we don\u0027t need the else and can just return path (minimizing blocks and indention to tidy up the code).",
+      "range": {
+        "startLine": 61,
+        "startChar": 3,
+        "endLine": 61,
+        "endChar": 9
+      },
+      "revId": "e644bc711a0c1eb64dcb5342bd585638aa370b09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
