@@ -23,6 +23,8 @@ class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class TextureProxy;
 
+using AddToKeyFn = std::function<void()>;
+
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
 // PaintParams is not required as an intermediate representation.
@@ -74,8 +76,6 @@ public:
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     using AddToKeyFn = std::function<void()>;
-    static void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
-                      const SkBlender* blender, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
 
 private:
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
@@ -99,6 +99,11 @@ private:
     // TODO: Will also store ColorFilter, dither, and any extra shader from an
     // active clipShader().
 };
+
+void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+           const SkBlender* blender, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
+void Compose(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+             AddToKeyFn addInnerToKey, AddToKeyFn addOuterToKey);
 
 } // namespace skgpu::graphite
 
