@@ -113,8 +113,9 @@ void PaintParams::toKey(const KeyContext& keyContext,
 
     bool needsDstSample = fDstReadReq == DstReadRequirement::kTextureCopy ||
                           fDstReadReq == DstReadRequirement::kTextureSample;
-    SkASSERT(needsDstSample == SkToBool(keyContext.dstTexture()));
-    if (needsDstSample) {
+    bool hasDstTexture = SkToBool(keyContext.dstTexture());
+    SkASSERT(needsDstSample == hasDstTexture);
+    if (needsDstSample && hasDstTexture) {
         DstReadSampleBlock::BeginBlock(
                 keyContext, builder, gatherer, keyContext.dstTexture(), keyContext.dstOffset());
         builder->endBlock();
