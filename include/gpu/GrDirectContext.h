@@ -172,6 +172,9 @@ public:
      */
     bool abandoned() override;
 
+
+    GrAbandoned abandonedAndLost();
+
     // TODO: Remove this from public after migrating Chrome.
     sk_sp<GrContextThreadSafeProxy> threadSafeProxy();
 
