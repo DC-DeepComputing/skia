@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95781f32_f98fe539",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-15T16:09:08Z",
+      "side": 1,
+      "message": "As mentioned in chat - it returned `(paintColor.rgb, 1)`",
+      "parentUuid": "60328f61_1e4de3f6",
+      "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6664da47_56d1a40a",
