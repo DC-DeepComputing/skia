@@ -57,13 +57,14 @@ protected:
     // In general, derived classes should use AddToKey to select the desired child option from
     // a vector and then have it added to the key with its reduced/nested child option.
     template<typename T>
-    static void AddToKey(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         const std::vector<sk_sp<T>>& options,
-                         int desiredOption);
+    static void AddToKeyPC(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           const std::vector<sk_sp<T>>& options,
+                           int desiredOption);
 
     template<typename T>
-    static const sk_sp<T> SelectOption(const std::vector<sk_sp<T>>& options, int desiredOption);
+    static const std::tuple<sk_sp<T>, int> SelectOption(const std::vector<sk_sp<T>>& options,
+                                                        int desiredOption);
 
 private:
     friend class PaintOptions;
@@ -79,31 +80,28 @@ private:
 };
 
 //--------------------------------------------------------------------------------------------------
+
 template<typename T>
-void PrecompileBase::AddToKey(const KeyContext& keyContext,
-                              PaintParamsKeyBuilder* builder,
-                              const std::vector<sk_sp<T>>& options,
-                              int desiredOption) {
+const std::tuple<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
+                                                             int desiredOption) {
     for (const sk_sp<T>& option : options) {
         if (desiredOption < option->numCombinations()) {
-            option->priv().addToKey(keyContext, desiredOption, builder);
-            break;
+            return { option, desiredOption };
         }
-
         desiredOption -= option->numCombinations();
     }
+    return { nullptr, 0 };
 }
 
 template<typename T>
-const sk_sp<T> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
-                                            int desiredOption) {
-    for (const sk_sp<T>& option : options) {
-        if (desiredOption < option->numCombinations()) {
-            return option;
-        }
-        desiredOption -= option->numCombinations();
+void PrecompileBase::AddToKeyPC(const KeyContext& keyContext,
+                                PaintParamsKeyBuilder* builder,
+                                const std::vector<sk_sp<T>>& options,
+                                int desiredOption) {
+    auto [option, childOptions] = SelectOption(options, desiredOption);
+    if (option) {
+        option->priv().addToKey(keyContext, childOptions, builder);
     }
-    return nullptr;
 }
 
 //--------------------------------------------------------------------------------------------------

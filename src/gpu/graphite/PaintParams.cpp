@@ -121,7 +121,7 @@ void Blend(const KeyContext& keyContext,
 
         addDstToKey();
 
-        AddToKey(keyContext, keyBuilder, gatherer, blender);
+        AddToKeyB(keyContext, keyBuilder, gatherer, blender);
 
     keyBuilder->endBlock();  // BlendShaderBlock
 }
@@ -145,7 +145,7 @@ void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
     if (fShader) {
-        AddToKey(keyContext, keyBuilder, gatherer, fShader.get());
+        AddToKeyS(keyContext, keyBuilder, gatherer, fShader.get());
     } else {
         SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
                                           keyContext.paintColor());
@@ -188,6 +188,8 @@ void PaintParams::handlePaintAlpha(const KeyContext& keyContext,
           });
 }
 
+
+//$$
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
@@ -208,9 +210,17 @@ void PaintParams::toKey(const KeyContext& keyContext,
         builder->endBlock();
     }
 
-    this->handlePaintAlpha(keyContext, builder, gatherer);
-
-    AddToKey(keyContext, builder, gatherer, fColorFilter.get());
+    if (fColorFilter) {
+        Compose(keyContext, builder, gatherer,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handlePaintAlpha(keyContext, builder, gatherer);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    AddToKeyCF(keyContext, builder, gatherer, fColorFilter.get());
+                });
+    } else {
+        this->handlePaintAlpha(keyContext, builder, gatherer);
+    }
 
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
