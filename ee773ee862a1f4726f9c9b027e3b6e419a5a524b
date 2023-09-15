@@ -52,6 +52,24 @@
       "parentUuid": "b0eee77c_91624aaa",
       "revId": "ee773ee862a1f4726f9c9b027e3b6e419a5a524b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c14e48c1_7567d6c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-15T20:02:40Z",
+      "side": 1,
+      "message": "OK, I can wrap the setting code too.",
+      "parentUuid": "bffdb20e_bc84b2a4",
+      "revId": "ee773ee862a1f4726f9c9b027e3b6e419a5a524b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
