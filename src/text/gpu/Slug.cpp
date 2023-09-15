@@ -9,10 +9,13 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkSerialProcs.h"
+#include "include/private/base/SkAssert.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 
 #include <atomic>
+
 class SkData;
 
 namespace sktext::gpu {
@@ -43,12 +46,31 @@ size_t Slug::serialize(void* buffer, size_t size) const {
 }
 
 sk_sp<Slug> Slug::MakeFromBuffer(SkReadBuffer& buffer) {
+    auto procs = buffer.getDeserialProcs();
+    if (procs.fSlugProc) {
+        return procs.fSlugProc(buffer, procs.fSlugCtx);
+    }
+#if !defined(SK_SLUG_LEGACY_DESERIALIZE)
     return SkMakeSlugFromBuffer(buffer, nullptr);
+#else
+    return nullptr;
+#endif
 }
+
+void Slug::AddDeserialProcs(SkDeserialProcs* procs, const SkStrikeClient* client) {
+    SkASSERT(procs);
+    procs->fSlugProc = [](SkReadBuffer& buffer, void* ctx) -> sk_sp<Slug> {
+        auto client = static_cast<const SkStrikeClient*>(ctx);
+        return SkMakeSlugFromBuffer(buffer, client);
+    };
+}
+
 
 sk_sp<Slug> Slug::Deserialize(const void* data, size_t size, const SkStrikeClient* client) {
     SkReadBuffer buffer{data, size};
-    return SkMakeSlugFromBuffer(buffer, client);
+    SkDeserialProcs procs;
+    AddDeserialProcs(&procs, client);
+    return MakeFromBuffer(buffer);
 }
 
 void Slug::draw(SkCanvas* canvas) const {
