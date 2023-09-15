@@ -70,6 +70,24 @@
       "parentUuid": "73eb92a1_a7d3d523",
       "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6417f151_9bb293d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-15T10:14:32Z",
+      "side": 1,
+      "message": "Ok. I am concerned about the performance overhead of the extra full traversal upfront if it\u0027s not strictly needed for generating the bounding box for a font without ClipBox. - \n\nIs your point that all other formats have that (even SVG?), but COLRv1 doesn\u0027t? How would for example SVG pre-validate? I am not 100% clear from what you\u0027re saying above re SVG, but it sounds like bitmap formats also don\u0027t know up-front whether the image is going to be valid and bail out later. COLRv0 seems to partially pre-validate, but may miss issues with the sanity of glyphs in the layers, IIUC?\n\n* If we\u0027re talking about the font data validity: I think it\u0027s fair to bail out of drawing while it happens. If that happens, the glyph is invalid \u003d\u003e the font is broken - attempts to recover from that are somewhat undefined and are likely anyway not successful. Fallback non-color glyphs are likely not available.\n* If we\u0027re talking about FT not understanding the updated format primitives - that\u0027s more of a build/versioning issue - solving that with full traversal is IMO too expensive - and I\u0027d hope we could fix that differently.",
+      "parentUuid": "c99b4ee9_090602d9",
+      "revId": "8dcf475d6c5455c362ed55968ba0617940ca3ba1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
