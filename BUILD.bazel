@@ -97,6 +97,18 @@ alias(
     visibility = ["//visibility:public"],
 )
 
+alias(
+    name = "png_decode_codec",
+    actual = "//src/codec:png_decode",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "png_encode_codec",
+    actual = "//src/codec:png_encode",
+    visibility = ["//visibility:public"],
+)
+
 # Load bearing comment below - gazelle looks here (and not in any other BUILD.bazel files)
 # for a special comment indicating the prefix.
 # gazelle:prefix go.skia.org/skia
