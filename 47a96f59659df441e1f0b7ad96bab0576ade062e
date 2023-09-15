@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "597e0c20_d2b51f92",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 14
+      },
+      "lineNbr": 4785,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-09-15T16:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24a8e336_318e0229",
+      "range": {
+        "startLine": 4774,
+        "startChar": 0,
+        "endLine": 4785,
+        "endChar": 73
+      },
+      "revId": "47a96f59659df441e1f0b7ad96bab0576ade062e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81f3468e_33743810",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-15T12:42:24Z",
       "side": 1,
       "message": "Nit: can we make this a conversion operator on SimpleSlottableTextProperty?  Then you should be able to pass SSTPs straight to Skottie:\n\n    operator skottie::TextPropertyValue() const { ... }\n    ...\n    bool setTextSlot(const std::string\u0026 slotID, SimpleSlottableTextProperty t) {\n        return fSlotMgr-\u003esetTextSlot(SkString(slotID), t);\n    }",
+      "range": {
+        "startLine": 58,
+        "startChar": 27,
+        "endLine": 58,
+        "endChar": 41
+      },
+      "revId": "47a96f59659df441e1f0b7ad96bab0576ade062e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b38a9ef_faed484f",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-09-15T16:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81f3468e_33743810",
       "range": {
         "startLine": 58,
         "startChar": 27,
