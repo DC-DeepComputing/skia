@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9328d62a_49a85ea5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-15T14:53:57Z",
+      "side": 1,
+      "message": "This is at least the first set to make inverseclip draw correctly. I haven\u0027t reran tests to see what else needs fixing after this.",
+      "revId": "c87d935a4fc713067b4b1404a5a7f0d0062c659a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
