@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80b090a3_7c6c1403",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-15T15:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db242777_a865fbbb",
+      "range": {
+        "startLine": 322,
+        "startChar": 43,
+        "endLine": 322,
+        "endChar": 45
+      },
+      "revId": "a8bdb9bd1856757d23ce1247f0c722257f5aebc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "545a16ac_33f2465e",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-09-15T15:04:37Z",
       "side": 1,
       "message": "When deserializing this `SkReadBuffer` appears to be assuming that `strike-\u003emergeFromBuffer` below will not need to decode any images. This might even currently be true, but it doesn\u0027t need to remain so. At the very least this should be commented. Or is it the case that the `SkReadBuffer` will attempt to use one of the registered decoders and we hope the right one is in there? Because any encoder (some custom one) could be applied at writing, we at least need a way to specify the deserialize procs so that the user can pass the appropriate decoder (and not have to put that decoder on the public list if they don\u0027t want to).\n\nI think this argument applies to the other uses of `SkReadBuffer`. If we allow arbitrary encoders then the user is somewhat forced to (at early application startup) put the appropriate decoder on the public list. But this may be a specialized encoder/decoder pair (maybe they\u0027re just referencing contextual image indexes or something unrelated to the data) which doesn\u0027t make sense to be global, or maybe it even has local context.",
+      "revId": "a8bdb9bd1856757d23ce1247f0c722257f5aebc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca3845a_61ad4e1d",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-15T15:21:49Z",
+      "side": 1,
+      "message": "Comment added.\n\nSkReadBuffer first looks at the SkImage `dProcs.fImageProc` and if it is non-null, tries to use it. If the result or the proc was null, it then falls back to all the registered codecs. I think that addresses your concerns in general that a user does not *need* to call `SkCodecs::Register` if they properly set the SkSerialProcs and SkDeserialProcs.",
+      "parentUuid": "545a16ac_33f2465e",
       "revId": "a8bdb9bd1856757d23ce1247f0c722257f5aebc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
