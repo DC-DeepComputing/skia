@@ -23,6 +23,8 @@ class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class TextureProxy;
 
+using AddToKeyFn = std::function<void()>;
+
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
 // PaintParams is not required as an intermediate representation.

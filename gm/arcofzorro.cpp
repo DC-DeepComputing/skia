@@ -15,6 +15,27 @@
 #include "include/core/SkString.h"
 #include "src/base/SkRandom.h"
 
+#include "include/effects/SkGradientShader.h"
+
+static sk_sp<SkShader> make_shader(SkBlendMode mode) {
+    SkPoint pts[2];
+    SkColor colors[2];
+
+    pts[0].set(0, 0);
+    pts[1].set(SkIntToScalar(100), 0);
+    colors[0] = SK_ColorRED;
+    colors[1] = SK_ColorBLUE;
+    auto shaderA = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp);
+
+    pts[0].set(0, 0);
+    pts[1].set(0, SkIntToScalar(100));
+    colors[0] = SK_ColorBLACK;
+    colors[1] = SkColorSetARGB(0x80, 0, 0, 0);
+    auto shaderB = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp);
+
+    return SkShaders::Blend(mode, std::move(shaderA), std::move(shaderB));
+}
+
 namespace skiagm {
 
 // This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
@@ -29,50 +50,13 @@ public:
 protected:
     SkString getName() const override { return SkString("arcofzorro"); }
 
-    SkISize getISize() override { return SkISize::Make(1000, 1000); }
+    SkISize getISize() override { return SkISize::Make(100, 100); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
-
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
-
         SkPaint p;
 
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
-
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
-
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
-
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        p.setShader(make_shader(SkBlendMode::kSrcOver));
+        canvas->drawRect(SkRect::MakeWH(100, 100), p);
     }
 
 private:

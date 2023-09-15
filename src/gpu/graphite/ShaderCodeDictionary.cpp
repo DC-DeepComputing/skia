@@ -1740,7 +1740,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
             "Compose",
             { },     // no uniforms
-            SnippetRequirementFlags::kPriorStageOutput,
+            SnippetRequirementFlags::kPriorStageOutput, // ??
             { },     // no samplers
             kComposeName,
             GenerateDefaultExpression,

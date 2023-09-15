@@ -174,8 +174,8 @@ private:
             desiredBlendCombination -= fBlenderIndex;
         }
 
-        AddToKey<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
-        AddToKey<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
+        AddToKeyPC<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
+        AddToKeyPC<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
 
         if (desiredBlendCombination == fPorterDuffIndex) {
             CoeffBlenderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
@@ -186,8 +186,8 @@ private:
                                               SkBlendMode::kOverlay); // the blendmode is unused
             builder->endBlock();
         } else {
-            AddToKey<PrecompileBlender>(keyContext, builder, fRuntimeBlendEffects,
-                                        desiredBlendCombination);
+            AddToKeyPC<PrecompileBlender>(keyContext, builder, fRuntimeBlendEffects,
+                                          desiredBlendCombination);
         }
 
         builder->endBlock();  // BlendShaderBlock or RuntimeEffectBlock
@@ -464,10 +464,33 @@ public:
 private:
     void addToKey(const KeyContext& keyContext,
                   int desiredCombination,
-                  PaintParamsKeyBuilder* builder) const override {
+                  PaintParamsKeyBuilder* builder
+                  /*PFEmitContained emitContained*/) const override {
         SkASSERT(desiredCombination == 0);
 
-        AddColorBlendBlock(keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver, {});
+        BlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr);
+
+            // blender -- shader based blending
+            BlendModeBlenderBlock::BeginBlock(keyContext, builder,
+                                              /* gatherer= */ nullptr, SkBlendMode::kSrcOver);
+
+                // src -- solid color
+                SolidColorShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr, {});
+                builder->endBlock();
+
+                // TODO: need to emit dst!
+                //pp->bar(keyContext, builder, /* gatherer= */ nullptr); //$$ !!!
+
+// dst -- prior output
+//        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+//        builder->endBlock();
+
+
+            builder->endBlock();
+
+        builder->endBlock();  // BlendShaderBlock
+
+//        AddColorBlendBlock(keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver, {});
     }
 };
 
