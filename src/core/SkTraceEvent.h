@@ -11,6 +11,7 @@
 #define SkTraceEvent_DEFINED
 
 #include "include/utils/SkEventTracer.h"
+#include "src/base/SkUtils.h"
 #include "src/core/SkTraceEventCommon.h"
 #include <atomic>
 
@@ -251,11 +252,13 @@ private:
     uint64_t data_;
 };
 
-// Simple union to store various types as uint64_t.
+// Simple union to reinterpret various types from a uint64_t.
+// DEPRECATED: SetTraceValue bit casts and sets the uint64_t directly based on the types; code that
+// must re-interpret it ought to do the same.
 union TraceValueUnion {
   bool as_bool;
   uint64_t as_uint;
-  long long as_int;
+  int64_t as_int;
   double as_double;
   const void* as_pointer;
   const char* as_string;
@@ -273,47 +276,35 @@ class TraceStringWithCopy {
 // Define SetTraceValue for each allowed type. It stores the type and
 // value in the return arguments. This allows this API to avoid declaring any
 // structures so that it is portable to third_party libraries.
-#define INTERNAL_DECLARE_SET_TRACE_VALUE(actual_type, \
-                                         union_member, \
-                                         value_type_id) \
-    static inline void SetTraceValue( \
-        actual_type arg, \
-        unsigned char* type, \
-        uint64_t* value) { \
-      TraceValueUnion type_value; \
-      type_value.union_member = arg; \
-      *type = value_type_id; \
-      *value = type_value.as_uint; \
+template <typename T>
+static inline void SetTraceValue(const T& arg, unsigned char* type, uint64_t* value) {
+    if constexpr (std::is_same<bool, T>::value) {
+        *type = TRACE_VALUE_TYPE_BOOL;
+        *value = arg;
+    } else if constexpr (std::is_same<const char*, T>::value) {
+        *type = TRACE_VALUE_TYPE_STRING;
+        *value = reinterpret_cast<uintptr_t>(arg);
+    } else if constexpr (std::is_same<TraceStringWithCopy, T>::value) {
+        *type = TRACE_VALUE_TYPE_COPY_STRING;
+        *value = reinterpret_cast<uintptr_t>(static_cast<const char*>(arg));
+    } else if constexpr (std::is_pointer<T>::value) {
+        *type = TRACE_VALUE_TYPE_POINTER;
+        *value = reinterpret_cast<uintptr_t>(arg);
+    } else if constexpr (std::is_unsigned_v<T>) {
+        *type = TRACE_VALUE_TYPE_UINT;
+        *value = arg;
+    } else if constexpr (std::is_signed_v<T>) {
+        *type = TRACE_VALUE_TYPE_INT;
+        *value = static_cast<uint64_t>(arg);
+    } else if constexpr (std::is_floating_point_v<T>) {
+        *type = TRACE_VALUE_TYPE_DOUBLE;
+        *value = sk_bit_cast<uint64_t>(arg);
+    } else {
+        // This is really an assert(false), but if it doesn't reference T, some compilers seem to
+        // evaluate it universally (and then fail).
+        static_assert(!sizeof(T), "Unsupported type for trace argument");
     }
-// Simpler form for int types that can be safely casted.
-#define INTERNAL_DECLARE_SET_TRACE_VALUE_INT(actual_type, \
-                                             value_type_id) \
-    static inline void SetTraceValue( \
-        actual_type arg, \
-        unsigned char* type, \
-        uint64_t* value) { \
-      *type = value_type_id; \
-      *value = static_cast<uint64_t>(arg); \
-    }
-
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(uint64_t, TRACE_VALUE_TYPE_UINT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(unsigned int, TRACE_VALUE_TYPE_UINT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(unsigned short, TRACE_VALUE_TYPE_UINT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(unsigned char, TRACE_VALUE_TYPE_UINT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(long long, TRACE_VALUE_TYPE_INT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(long, TRACE_VALUE_TYPE_INT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(int, TRACE_VALUE_TYPE_INT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(short, TRACE_VALUE_TYPE_INT)
-INTERNAL_DECLARE_SET_TRACE_VALUE_INT(signed char, TRACE_VALUE_TYPE_INT)
-INTERNAL_DECLARE_SET_TRACE_VALUE(bool, as_bool, TRACE_VALUE_TYPE_BOOL)
-INTERNAL_DECLARE_SET_TRACE_VALUE(double, as_double, TRACE_VALUE_TYPE_DOUBLE)
-INTERNAL_DECLARE_SET_TRACE_VALUE(const void*, as_pointer, TRACE_VALUE_TYPE_POINTER)
-INTERNAL_DECLARE_SET_TRACE_VALUE(const char*, as_string, TRACE_VALUE_TYPE_STRING)
-INTERNAL_DECLARE_SET_TRACE_VALUE(const TraceStringWithCopy&, as_string,
-                                 TRACE_VALUE_TYPE_COPY_STRING)
-
-#undef INTERNAL_DECLARE_SET_TRACE_VALUE
-#undef INTERNAL_DECLARE_SET_TRACE_VALUE_INT
+}
 
 // These AddTraceEvent and AddTraceEvent template
 // functions are defined here instead of in the macro, because the arg_values
