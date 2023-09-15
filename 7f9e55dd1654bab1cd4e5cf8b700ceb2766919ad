@@ -16,6 +16,47 @@
       "message": "Works pretty well for the most part, I mainly need to work out when to trigger it.",
       "revId": "7f9e55dd1654bab1cd4e5cf8b700ceb2766919ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f0752c_369290d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-15T17:15:44Z",
+      "side": 1,
+      "message": "I have several thoughts on this:\n1. We trigger it when the transform has perspective, and remove the path-transform hack that currently is in Device::drawGeometry. At some point the tessellating path renderer will hopefully support perspective, but we may as well be correct as soon as possible (ignoring the issue about not having perspective interpolating local coords yet...)\n2. We have a context option to trigger it, and/or build flag like Vello\n3. We select it if we the context option to disable msaa is set",
+      "parentUuid": "c651791a_b4cb65cb",
+      "revId": "7f9e55dd1654bab1cd4e5cf8b700ceb2766919ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1911fe8f_f8db081f",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-15T17:15:44Z",
+      "side": 1,
+      "message": "Should we just have `recordUploads` take the `DrawContext` as an argument to then use `DrawContext::recordUpload` vs. exposing its DrawList to the atlas?",
+      "range": {
+        "startLine": 208,
+        "startChar": 7,
+        "endLine": 209,
+        "endChar": 53
+      },
+      "revId": "7f9e55dd1654bab1cd4e5cf8b700ceb2766919ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
