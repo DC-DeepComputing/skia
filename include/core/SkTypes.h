@@ -26,6 +26,8 @@
 #include <climits>
 #include <cstdint>
 
+This is an intentional error to break the canary
+
 #if !defined(SK_GANESH) && !defined(SK_GRAPHITE)
 #  undef SK_GL
 #  undef SK_VULKAN
