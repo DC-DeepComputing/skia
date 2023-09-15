@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8458f40d_1c335dee",
+        "filename": "src/core/SkTraceEvent.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-15T17:28:52Z",
+      "side": 1,
+      "message": "the static_assert fails before the template is instantiated",
+      "range": {
+        "startLine": 303,
+        "startChar": 75,
+        "endLine": 304,
+        "endChar": 51
+      },
+      "revId": "79f2e2c3f671433bdbd1a380409569be02927470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
