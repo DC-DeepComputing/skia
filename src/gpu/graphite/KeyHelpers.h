@@ -408,7 +408,7 @@ struct RuntimeEffectBlock {
                            const ShaderData&);
 };
 
-void AddToKey(const KeyContext&,
+void AddToKeyB(const KeyContext&,
               PaintParamsKeyBuilder*,
               PipelineDataGatherer*,
               const SkBlender*);
@@ -422,7 +422,7 @@ void AddToKey(const KeyContext&,
  *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param filter     This function is a no-op if filter is null.
  */
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyCF(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkColorFilter* filter);
@@ -436,7 +436,7 @@ void AddToKey(const KeyContext& keyContext,
  *  @param gatherer   if non-null, storage for this colorFilter's data
  *  @param shader     This function is a no-op if shader is null.
  */
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyS(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkShader* shader);
