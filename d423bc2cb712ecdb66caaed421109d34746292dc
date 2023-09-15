@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d12a050b_3ffe086a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-15T18:17:56Z",
+      "side": 1,
+      "message": "For this pass, I opted for fairly coarse operations. Let me know if you think some are too fine to be tracing with the skia.gpu category (vs. adding a skia.gpu.fine category), or if there are phases that I missed.",
+      "revId": "d423bc2cb712ecdb66caaed421109d34746292dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
