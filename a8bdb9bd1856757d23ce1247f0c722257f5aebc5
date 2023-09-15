@@ -81,6 +81,24 @@
       "parentUuid": "545a16ac_33f2465e",
       "revId": "a8bdb9bd1856757d23ce1247f0c722257f5aebc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b95ce559_87ded454",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-15T15:49:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4ca3845a_61ad4e1d",
+      "revId": "a8bdb9bd1856757d23ce1247f0c722257f5aebc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
