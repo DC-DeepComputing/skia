@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92522560_2a0a37f5",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-09-15T19:24:56Z",
+      "side": 1,
+      "message": "if the device is lost then this will result in calling `abandonContext()` - is that going to potentially clear the `isDeviceLost()` state?",
+      "range": {
+        "startLine": 207,
+        "startChar": 27,
+        "endLine": 207,
+        "endChar": 36
+      },
+      "revId": "bbe3c16b652af766dc9414da3acb465aae4ee1ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
