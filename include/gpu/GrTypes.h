@@ -256,4 +256,10 @@ enum class GrSyncCpu : bool {
     kYes = true,
 };
 
+enum class GrAbandoned {
+    kNo,
+    kAbandoned,
+    kAbandonedAndDeviceLost,
+};
+
 #endif

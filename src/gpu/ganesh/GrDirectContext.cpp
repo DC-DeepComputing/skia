@@ -203,6 +203,21 @@ bool GrDirectContext::abandoned() {
     return false;
 }
 
+GrAbandoned GrDirectContext::abandonedAndLost() {
+    bool abandoned = this->abandoned();
+    SkASSERT(fGpu);
+    bool deviceLost = fGpu->isDeviceLost();
+
+    SkASSERT(!deviceLost || abandoned);
+
+    GrAbandoned status = GrAbandoned::kNo;
+    if (abandoned) {
+        status = deviceLost ? GrAbandoned::kAbandonedAndDeviceLost : GrAbandoned::kAbandoned;
+    }
+    return status;
+}
+
+
 bool GrDirectContext::oomed() { return fGpu ? fGpu->checkAndResetOOMed() : false; }
 
 void GrDirectContext::releaseResourcesAndAbandonContext() {

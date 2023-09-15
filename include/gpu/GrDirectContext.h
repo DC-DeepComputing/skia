@@ -172,6 +172,14 @@ public:
      */
     bool abandoned() override;
 
+    /**
+     * Returns GrAbandoned::kAbandoned if the context was abandoned.
+     * If the backend specific context has gotten into an unrecoverarble, lost state (e.g. in Vulkan
+     * backend if we've gotten a VK_ERROR_DEVICE_LOST) GrAbandoned::kAbandonedAndDeviceLost.
+     * Otherwise it will return GrAbandoned::kNo.
+     */
+    GrAbandoned abandonedAndLost();
+
     // TODO: Remove this from public after migrating Chrome.
     sk_sp<GrContextThreadSafeProxy> threadSafeProxy();
 
