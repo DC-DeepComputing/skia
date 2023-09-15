@@ -6,8 +6,12 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
@@ -18,10 +22,13 @@
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "modules/skcms/skcms.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "tools/Resources.h"
+#include "tools/ToolUtils.h"
 
 enum RT_Flags {
     kAnimate_RTFlag     = 0x1,
@@ -1050,4 +1057,98 @@ DEF_SIMPLE_GM_CAN_FAIL(deferred_shader_rt, canvas, errorMsg, 150, 50) {
     }
 
     return skiagm::DrawResult::kOk;
+}
+
+sk_sp<SkShader> paint_color_shader() {
+    SkBitmap bmp;
+    bmp.allocPixels(SkImageInfo::Make(1, 1, kAlpha_8_SkColorType, kPremul_SkAlphaType));
+    bmp.eraseColor(SK_ColorWHITE);
+    return bmp.makeShader(SkFilterMode::kNearest);
+}
+
+DEF_SIMPLE_GM(paintcolorshader, canvas, 200, 200) {
+    auto checkerboard = ToolUtils::create_checkerboard_shader(SK_ColorBLACK, SK_ColorWHITE, 4);
+    auto paint_shader = paint_color_shader();
+    SkRuntimeEffect::ChildPtr children[1] = { paint_shader };
+
+    SkPaint paint;
+    paint.setColor({0.5f, 0, 0.5f, 1.0f});
+
+    auto rect = [&]() {
+        canvas->drawRect({0, 0, 48, 48}, paint);
+        canvas->translate(50, 0);
+    };
+
+    auto row = [&]() {
+        canvas->restore();
+        canvas->translate(0, 50);
+        canvas->save();
+    };
+
+    canvas->save();
+
+    // Two simple cases: just paint color, then the "paint color" shader:
+    rect();
+
+    paint.setShader(paint_shader);
+    rect();
+    row();
+
+    // Shader, color-filter, and blender that each evaluate the "paint color" shader:
+    paint.setShader(
+            SkRuntimeEffect::MakeForShader(SkString("uniform shader s;"
+                                                    "half4 main(float2 p) { return s.eval(p); }"))
+                    .effect->makeShader(nullptr, children));
+    rect();
+
+    paint.setShader(nullptr);
+    paint.setColorFilter(SkRuntimeEffect::MakeForColorFilter(
+                                 SkString("uniform shader s;"
+                                          "half4 main(half4 color) { return s.eval(float2(0)); }"))
+                                 .effect->makeColorFilter(nullptr, children));
+    rect();
+
+    paint.setColorFilter(nullptr);
+    paint.setBlender(
+            SkRuntimeEffect::MakeForBlender(
+                    SkString("uniform shader s;"
+                             "half4 main(half4 src, half4 dst) { return s.eval(float2(0)); }"))
+                    .effect->makeBlender(nullptr, children));
+    rect();
+    row();
+
+    // Color-filter and blender, with the paint's shader updated to checkerboard:
+    canvas->translate(50, 0);
+    paint.setShader(checkerboard);
+    paint.setColorFilter(SkRuntimeEffect::MakeForColorFilter(
+                                 SkString("uniform shader s;"
+                                          "half4 main(half4 color) { return s.eval(float2(0)); }"))
+                                 .effect->makeColorFilter(nullptr, children));
+    rect();
+
+    paint.setColorFilter(nullptr);
+    paint.setBlender(
+            SkRuntimeEffect::MakeForBlender(
+                    SkString("uniform shader s;"
+                             "half4 main(half4 src, half4 dst) { return s.eval(float2(0)); }"))
+                    .effect->makeBlender(nullptr, children));
+    rect();
+    row();
+
+    // Color-filter with working space applied:
+    auto workingSpace = SkColorSpace::MakeSRGB()->makeColorSpin();
+    skcms_Matrix3x3 gamut;
+    workingSpace->toXYZD50(&gamut);
+    canvas->translate(50, 0);
+    paint.setShader(checkerboard);
+    paint.setBlender(nullptr);
+    paint.setColorFilter(SkColorFilterPriv::WithWorkingFormat(
+            SkRuntimeEffect::MakeForColorFilter(
+                    SkString("uniform shader s;"
+                             "half4 main(half4 color) { return s.eval(float2(0)) + half4(0, 0.5, 0, 0); }"))
+                    .effect->makeColorFilter(nullptr, children),
+            nullptr,
+            &gamut,
+            nullptr));
+    rect();
 }

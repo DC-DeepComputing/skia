@@ -8,6 +8,7 @@
 #ifndef SkRuntimeEffectPriv_DEFINED
 #define SkRuntimeEffectPriv_DEFINED
 
+#include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -15,6 +16,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkSpan_impl.h"
 #include "include/private/base/SkTArray.h"
+#include "src/core/SkEffectPriv.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 
 #include <cstddef>
@@ -166,7 +168,15 @@ public:
                              const SkShaders::MatrixRec& m,
                              SkSpan<const SkRuntimeEffect::ChildPtr> c,
                              SkSpan<const SkSL::SampleUsage> u)
-            : fStage(s), fMatrix(m), fChildren(c), fSampleUsages(u) {}
+            : fStage{s.fPipeline,
+                     s.fAlloc,
+                     s.fDstColorType,
+                     s.fDstCS,
+                     SkColors::kTransparent,
+                     s.fSurfaceProps}
+            , fMatrix(m)
+            , fChildren(c)
+            , fSampleUsages(u) {}
 
     bool appendShader(int index) override;
     bool appendColorFilter(int index) override;
@@ -181,7 +191,7 @@ public:
 private:
     void applyColorSpaceXform(const SkColorSpaceXformSteps& tempXform, const void* color);
 
-    const SkStageRec& fStage;
+    const SkStageRec fStage;
     const SkShaders::MatrixRec& fMatrix;
     SkSpan<const SkRuntimeEffect::ChildPtr> fChildren;
     SkSpan<const SkSL::SampleUsage> fSampleUsages;
