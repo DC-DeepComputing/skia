@@ -250,6 +250,10 @@ SkColorType DawnCaps::supportedReadPixelsColorType(SkColorType srcColorType,
 }
 
 void DawnCaps::initCaps(const wgpu::Device& device, const ContextOptions& options) {
+    wgpu::AdapterProperties props;
+    device.GetAdapter().GetProperties(&props);
+    this->setDeviceName(props.name);
+
     wgpu::SupportedLimits limits;
     if (!device.GetLimits(&limits)) {
         SkASSERT(false);
