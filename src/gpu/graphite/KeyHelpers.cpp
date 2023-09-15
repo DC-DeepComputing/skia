@@ -71,6 +71,8 @@
 #include "src/shaders/gradients/SkRadialGradient.h"
 #include "src/shaders/gradients/SkSweepGradient.h"
 
+#include "src/gpu/graphite/PaintParams.h"
+
 constexpr SkPMColor4f kErrorColor = { 1, 0, 0, 1 };
 
 #define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID) \
@@ -917,21 +919,16 @@ void ColorSpaceTransformBlock::BeginBlock(const KeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 
 void AddDstBlendBlock(const KeyContext& keyContext,
-                      PaintParamsKeyBuilder* builder,
+                      PaintParamsKeyBuilder* keyBuilder,
                       PipelineDataGatherer* gatherer,
                       const SkBlender* blender) {
-    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
-    // src -- prior output
-    PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
-    builder->endBlock();
-    // dst -- surface color
-    DstColorBlock::BeginBlock(keyContext, builder, gatherer);
-    builder->endBlock();
-    // blender -- shader based blending
-    AddToKey(keyContext, builder, gatherer, blender);
+    auto emitDst = [&]() -> void {
+        DstColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+        keyBuilder->endBlock();
+    };
 
-    builder->endBlock();  // BlendShaderBlock
+//    Blend(keyContext, keyBuilder, gatherer, blender, emitSrc, emitDst);
 }
 
 void AddColorBlendBlock(const KeyContext& keyContext,
@@ -941,15 +938,17 @@ void AddColorBlendBlock(const KeyContext& keyContext,
                         const SkPMColor4f& srcColor) {
     BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
-    // src -- solid color
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, srcColor);
-    builder->endBlock();
-    // dst -- prior output
-    PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
-    builder->endBlock();
-    // blender -- shader based blending
-    BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, bm);
-    builder->endBlock();
+        // src -- solid color
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, srcColor);
+        builder->endBlock();
+
+        // dst -- prior output
+        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+        builder->endBlock();
+
+        // blender -- shader based blending
+        BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, bm);
+        builder->endBlock();
 
     builder->endBlock();  // BlendShaderBlock
 }
@@ -1041,11 +1040,11 @@ static void add_children_to_key(const KeyContext& keyContext,
         const SkRuntimeEffect::ChildPtr& child = children[index];
         std::optional<ChildType> type = child.type();
         if (type == ChildType::kShader) {
-            AddToKey(keyContext, builder, gatherer, child.shader());
+            AddToKeyS(keyContext, builder, gatherer, child.shader());
         } else if (type == ChildType::kColorFilter) {
-            AddToKey(keyContext, builder, gatherer, child.colorFilter());
+            AddToKeyCF(keyContext, builder, gatherer, child.colorFilter());
         } else if (type == ChildType::kBlender) {
-            AddToKey(keyContext, builder, gatherer, child.blender());
+            AddToKeyB(keyContext, builder, gatherer, child.blender());
         } else {
             // We don't have a child effect. Substitute in a no-op effect.
             switch (childInfo[index].type) {
@@ -1066,6 +1065,7 @@ static void add_children_to_key(const KeyContext& keyContext,
         }
     }
 }
+
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
@@ -1088,7 +1088,7 @@ static void add_to_key(const KeyContext& keyContext,
     builder->endBlock();
 }
 
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyB(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkBlender* blender) {
@@ -1101,7 +1101,7 @@ void AddToKey(const KeyContext& keyContext,
         add_to_key(keyContext,                                     \
                    builder,                                        \
                    gatherer,                                       \
-                   static_cast<const Sk##type##Blender*>(blender)); \
+                   static_cast<const Sk##type##Blender*>(blender));
         return;
         SK_ALL_BLENDERS(M)
 #undef M
@@ -1120,9 +1120,10 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkBlendModeColorFilter* filter) {
     SkASSERT(filter);
 
-    SkPMColor4f color =
+    SkPMColor4f srcColor =
             map_color(filter->color(), sk_srgb_singleton(), keyContext.dstColorInfo().colorSpace());
-    AddColorBlendBlock(keyContext, builder, gatherer, filter->mode(), color);
+
+    AddColorBlendBlock(keyContext, builder, gatherer, filter->mode(), srcColor);
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1134,6 +1135,7 @@ static void add_to_key(const KeyContext& keyContext,
     constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
     ColorSpaceTransformBlock::ColorSpaceTransformData data(
             filter->src().get(), kAlphaType, filter->dst().get(), kAlphaType);
+
     ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
     builder->endBlock();
 }
@@ -1146,10 +1148,10 @@ static void add_to_key(const KeyContext& keyContext,
 
     Compose(keyContext, keyBuilder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                AddToKey(keyContext, keyBuilder, gatherer, filter->inner().get());
+                AddToKeyCF(keyContext, keyBuilder, gatherer, filter->inner().get());
             },
             /* addOuterToKey= */ [&]() -> void {
-                AddToKey(keyContext, keyBuilder, gatherer, filter->outer().get());
+                AddToKeyCF(keyContext, keyBuilder, gatherer, filter->outer().get());
             });
 }
 
@@ -1247,7 +1249,7 @@ static void add_to_key(const KeyContext& keyContext,
                         },
                         /* addOuterToKey= */ [&]() -> void {
                             // Middle (outer of inner compose)
-                            AddToKey(keyContext, builder, gatherer, filter->child().get());
+                            AddToKeyCF(keyContext, builder, gatherer, filter->child().get());
                         });
             },
             /* addOuterToKey= */ [&]() -> void {
@@ -1259,7 +1261,7 @@ static void add_to_key(const KeyContext& keyContext,
             });
 }
 
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyCF(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkColorFilter* filter) {
@@ -1295,8 +1297,8 @@ static void add_to_key(const KeyContext& keyContext,
 
     BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
-    AddToKey(keyContext, builder, gatherer, shader->src().get());
-    AddToKey(keyContext, builder, gatherer, shader->dst().get());
+    AddToKeyS(keyContext, builder, gatherer, shader->src().get());
+    AddToKeyS(keyContext, builder, gatherer, shader->dst().get());
 
     SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(shader->mode());
     if (!porterDuffConstants.empty()) {
@@ -1348,10 +1350,10 @@ static void add_to_key(const KeyContext& keyContext,
 
     Compose(keyContext, builder, gatherer,
             /* emitInnerToKey= */ [&]() -> void {
-                AddToKey(keyContext, builder, gatherer, shader->shader().get());
+                AddToKeyS(keyContext, builder, gatherer, shader->shader().get());
             },
             /* emitOuterToKey= */ [&]() -> void {
-                AddToKey(keyContext, builder, gatherer, shader->filter().get());
+                AddToKeyCF(keyContext, builder, gatherer, shader->filter().get());
             });
 }
 
@@ -1364,7 +1366,7 @@ static void add_to_key(const KeyContext& keyContext,
     CoordClampShaderBlock::CoordClampData data(shader->subset());
 
     CoordClampShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
-        AddToKey(keyContext, builder, gatherer, shader->shader().get());
+        AddToKeyS(keyContext, builder, gatherer, shader->shader().get());
     builder->endBlock();
 }
 
@@ -1582,11 +1584,11 @@ static void add_to_key(const KeyContext& keyContext,
 
         LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, &lmShaderData);
 
-        AddToKey(newContext, builder, gatherer, wrappedShader);
+        AddToKeyS(newContext, builder, gatherer, wrappedShader);
 
         builder->endBlock();
     } else  {
-        AddToKey(keyContext, builder, gatherer, wrappedShader);
+        AddToKeyS(keyContext, builder, gatherer, wrappedShader);
     }
 }
 
@@ -1714,7 +1716,7 @@ static void add_to_key(const KeyContext& keyContext,
         return;
     }
 
-    AddToKey(keyContext, builder, gatherer, imgShader.get());
+    AddToKeyS(keyContext, builder, gatherer, imgShader.get());
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1995,7 +1997,7 @@ static void add_to_key(const KeyContext& keyContext,
 }
 
 
-void AddToKey(const KeyContext& keyContext,
+void AddToKeyS(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
               const SkShader* shader) {
