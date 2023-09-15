@@ -208,13 +208,25 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     // TODO: this probably needs to be passed in just like addPrimitiveBlender
     const bool kNonOpaquePaintColor = false;
 
-    this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
-                           addPrimitiveBlender, kNonOpaquePaintColor);
+    sk_sp<PrecompileColorFilter> cf = PrecompileBase::SelectOption(fColorFilterOptions,
+                                                                   desiredColorFilterCombination);
+    if (cf) {
+        Compose(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
+                                           addPrimitiveBlender, kNonOpaquePaintColor);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
+                                             desiredColorFilterCombination);
+                });
+    } else {
+        this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
+                               addPrimitiveBlender, kNonOpaquePaintColor);
+    }
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
                              desiredMaskFilterCombination);
-    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
-                             desiredColorFilterCombination);
 
     sk_sp<PrecompileBlender> blender =
             PrecompileBase::SelectOption(fBlenderOptions, desiredBlendCombination);
