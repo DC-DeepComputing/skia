@@ -332,6 +332,8 @@ bool GrMtlCaps::onCanCopySurface(const GrSurfaceProxy* dst, const SkIRect& dstRe
 }
 
 void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
+    this->setDeviceName([[device name] UTF8String]);
+
     // Max vertex attribs is the same on all devices
     fMaxVertexAttributes = 31;
 

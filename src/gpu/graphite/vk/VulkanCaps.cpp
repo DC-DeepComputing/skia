@@ -46,6 +46,8 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     VkPhysicalDeviceProperties physDevProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceProperties(physDev, &physDevProperties));
 
+    this->setDeviceName(physDevProperties.deviceName);
+
     // Graphite requires Vulkan version 1.1 or later, which has protected support.
     fProtectedSupport = true;
 
