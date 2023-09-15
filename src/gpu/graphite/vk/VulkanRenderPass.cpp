@@ -166,8 +166,12 @@ void setup_vk_attachment_description(VkAttachmentDescription* outAttachment,
             outAttachment->stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
             break;
         case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-            outAttachment->loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-            outAttachment->storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            // The loadOp and storeOp refer to the depth part of the attachment and the stencil*Ops
+            // refer to the stencil bits in the attachment.
+            // TODO: Right now we only have a single load and store op on our RenderPassDesc for the
+            // combined DepthStencil. Should these be separated?
+            outAttachment->loadOp = vkLoadOp[static_cast<int>(loadOp)];
+            outAttachment->storeOp = vkStoreOp[static_cast<int>(storeOp)];
             outAttachment->stencilLoadOp = vkLoadOp[static_cast<int>(loadOp)];
             outAttachment->stencilStoreOp = vkStoreOp[static_cast<int>(storeOp)];
             break;
