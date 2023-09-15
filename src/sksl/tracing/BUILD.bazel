@@ -52,3 +52,21 @@ skia_filegroup(
     ],
     visibility = ["//src/sksl:__pkg__"],
 )
+
+skia_filegroup(
+    name = "core_hdrs",
+    srcs = [
+        "SkSLDebugTracePriv.h",
+        "SkSLTraceHook.h",
+    ],
+    visibility = ["//src/sksl:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_srcs",
+    srcs = [
+        "SkSLDebugTracePriv.cpp",
+        "SkSLTraceHook.cpp",
+    ],
+    visibility = ["//src/sksl:__pkg__"],
+)
