@@ -22,8 +22,8 @@ struct GrMtlBackendContext;
  */
 class GrMtlTrampoline {
 public:
-    static sk_sp<GrGpu> MakeGpu(const GrMtlBackendContext&, const GrContextOptions&,
-                                GrDirectContext*);
+    static std::unique_ptr<GrGpu> MakeGpu(const GrMtlBackendContext&, const GrContextOptions&,
+                                          GrDirectContext*);
 };
 
 #endif
