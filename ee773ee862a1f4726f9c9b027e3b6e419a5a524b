@@ -34,6 +34,24 @@
       "parentUuid": "d1554de5_75444be0",
       "revId": "ee773ee862a1f4726f9c9b027e3b6e419a5a524b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bffdb20e_bc84b2a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-15T19:47:36Z",
+      "side": 1,
+      "message": "Ah I guess I was thinking even the setDeviceName function. Like don\u0027t even pretend we are doing anything with device name outside of testing.",
+      "parentUuid": "b0eee77c_91624aaa",
+      "revId": "ee773ee862a1f4726f9c9b027e3b6e419a5a524b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
