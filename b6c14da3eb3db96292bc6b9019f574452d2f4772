@@ -39,6 +39,30 @@
       },
       "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ed6c640_d000a1ad",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1315,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-15T14:09:47Z",
+      "side": 1,
+      "message": "I think those values were chosen to unambiguously convert to/from UNORM8, even after the `* 0.5`? In any case, I just moved the expected output right after it, so it\u0027s at least clearer.",
+      "parentUuid": "6664da47_56d1a40a",
+      "range": {
+        "startLine": 1315,
+        "startChar": 52,
+        "endLine": 1315,
+        "endChar": 83
+      },
+      "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
