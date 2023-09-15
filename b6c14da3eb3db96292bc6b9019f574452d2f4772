@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60328f61_1e4de3f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-09-15T15:30:52Z",
+      "side": 1,
+      "message": "Sampling null providing transparent black makes a lot of sense but I\u0027m unclear what the previous behavior was - it gave you back the paint color?",
+      "parentUuid": "b646deff_97b0ee42",
+      "revId": "b6c14da3eb3db96292bc6b9019f574452d2f4772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6664da47_56d1a40a",
