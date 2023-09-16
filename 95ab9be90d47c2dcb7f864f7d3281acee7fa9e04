@@ -22,6 +22,30 @@
       },
       "revId": "95ab9be90d47c2dcb7f864f7d3281acee7fa9e04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f632f8b4_b12980ef",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-16T01:11:10Z",
+      "side": 1,
+      "message": "nope using format is definitely better approach. I was mostly just trying to move quick and fix bugs (which of course led me to adding a new bug)",
+      "parentUuid": "516dc35b_a6c98c71",
+      "range": {
+        "startLine": 829,
+        "startChar": 8,
+        "endLine": 829,
+        "endChar": 33
+      },
+      "revId": "95ab9be90d47c2dcb7f864f7d3281acee7fa9e04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
