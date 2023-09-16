@@ -236,7 +236,91 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
                                 std::string_view backendAPI,    // "OpenGL"
                                 std::string_view name,          // "MatrixToVectorCast"
                                 skiatest::TestType testType) {  // skiatest::TestType::kGraphite
-    // TODO(b/40044139): migrate test-disable list from dm_flags into this file
+    enum TestTypeMatcher { CPU, Ganesh, Graphite, GPU /* either Ganesh or Graphite */ };
+
+    struct TestDisable {
+        std::optional<std::string_view> deviceName;
+        std::optional<std::string_view> backendAPI;
+        std::optional<TestTypeMatcher> testTypeMatcher;
+        std::optional<bool> platform;
+    };
+
+    using TestDisableMap = THashMap<std::string_view, std::vector<TestDisable>>;
+
+    static SkNoDestructor<TestDisableMap> testDisableMap{[] {
+        TestDisableMap disables;
+        constexpr std::nullopt_t _ = std::nullopt;
+
+#if defined(SK_BUILD_FOR_UNIX)
+        [[maybe_unused]] constexpr bool kLinux = true;
+#else
+        [[maybe_unused]] constexpr bool kLinux = false;
+#endif
+#if defined(SK_BUILD_FOR_MAC)
+        constexpr bool kMac = true;
+#else
+        constexpr bool kMac = false;
+#endif
+#if defined(SK_BUILD_FOR_IOS)
+        constexpr bool kiOS = true;
+#else
+        constexpr bool kiOS = false;
+#endif
+#if defined(SK_BUILD_FOR_WIN)
+        [[maybe_unused]] constexpr bool kWindows = true;
+#else
+        [[maybe_unused]] constexpr bool kWindows = false;
+#endif
+#if defined(SK_BUILD_FOR_ANDROID)
+        [[maybe_unused]] constexpr bool kAndroid = true;
+#else
+        [[maybe_unused]] constexpr bool kAndroid = false;
+#endif
+
+        // MacOS/iOS do not handle short-circuit evaluation properly in OpenGL (chromium:307751)
+        for (const char* test : {"LogicalAndShortCircuit",
+                                 "LogicalOrShortCircuit"}) {
+            disables[test].push_back({_, "OpenGL", GPU, kMac || kiOS});
+        }
+
+        // Tegra3 fails to compile break stmts inside a for loop (b/40043561)
+        for (const char* test : {"Switch",
+                                 "SwitchDefaultOnly",
+                                 "SwitchWithFallthrough",
+                                 "SwitchWithFallthroughAndVarDecls",
+                                 "SwitchWithLoops",
+                                 "SwitchCaseFolding",
+                                 "LoopFloat",
+                                 "LoopInt"}) {
+            disables[test].push_back({"Tegra 3", _, GPU, _});
+        }
+
+        return disables;
+    }()};
+
+    if (const std::vector<TestDisable>* testDisables = testDisableMap->find(name)) {
+        for (const TestDisable& d : *testDisables) {
+            if (d.platform.has_value() && !*d.platform) {
+                continue;
+            }
+            if (d.backendAPI.has_value() && backendAPI != *d.backendAPI) {
+                continue;
+            }
+            if (d.testTypeMatcher.has_value()) {
+                if ((testType == skiatest::TestType::kCPU      && d.testTypeMatcher == CPU) ||
+                    (testType == skiatest::TestType::kGanesh   && d.testTypeMatcher == Ganesh) ||
+                    (testType == skiatest::TestType::kGraphite && d.testTypeMatcher == Graphite) ||
+                    (testType != skiatest::TestType::kCPU      && d.testTypeMatcher == GPU)) {
+                    continue;
+                }
+            }
+            if (d.deviceName.has_value() && !skstd::contains(deviceName, *d.deviceName)) {
+                continue;
+            }
+            return true;
+        }
+    }
+
     return false;
 }
 
