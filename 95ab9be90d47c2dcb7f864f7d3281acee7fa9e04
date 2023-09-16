@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516dc35b_a6c98c71",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-16T00:58:16Z",
+      "side": 1,
+      "message": "A better fix might be to use `format` (or even `kFormat`) here?\n\nAll three \"Format\" blocks could use the `format` constexpr in their calls to `set_ds_flags_to_format`. I\u0027m not sure if you had a reason for writing it this way, though.",
+      "range": {
+        "startLine": 829,
+        "startChar": 8,
+        "endLine": 829,
+        "endChar": 33
+      },
+      "revId": "95ab9be90d47c2dcb7f864f7d3281acee7fa9e04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
