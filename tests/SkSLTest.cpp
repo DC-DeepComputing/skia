@@ -236,7 +236,97 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
                                 std::string_view backendAPI,    // "OpenGL"
                                 std::string_view name,          // "MatrixToVectorCast"
                                 skiatest::TestType testType) {  // skiatest::TestType::kGraphite
-    // TODO(b/40044139): migrate test-disable list from dm_flags into this file
+    enum TestTypeMatcher { CPU, Ganesh, Graphite, GPU /* either Ganesh or Graphite */ };
+
+    struct TestDisable {
+        std::optional<std::string_view> deviceName;
+        std::optional<std::string_view> backendAPI;
+        std::optional<TestTypeMatcher> testTypeMatcher;
+        std::optional<bool> platform;
+    };
+
+    using TestDisableMap = THashMap<std::string_view, std::vector<TestDisable>>;
+
+    static SkNoDestructor<TestDisableMap> testDisableMap{[] {
+        TestDisableMap disables;
+        constexpr std::nullopt_t _ = std::nullopt;
+
+#if defined(SK_BUILD_FOR_UNIX)
+        [[maybe_unused]] constexpr bool kLinux = true;
+#else
+        [[maybe_unused]] constexpr bool kLinux = false;
+#endif
+#if defined(SK_BUILD_FOR_MAC)
+        constexpr bool kMac = true;
+#else
+        constexpr bool kMac = false;
+#endif
+#if defined(SK_BUILD_FOR_IOS)
+        constexpr bool kiOS = true;
+#else
+        constexpr bool kiOS = false;
+#endif
+#if defined(SK_BUILD_FOR_WIN)
+        [[maybe_unused]] constexpr bool kWindows = true;
+#else
+        [[maybe_unused]] constexpr bool kWindows = false;
+#endif
+#if defined(SK_BUILD_FOR_ANDROID)
+        [[maybe_unused]] constexpr bool kAndroid = true;
+#else
+        [[maybe_unused]] constexpr bool kAndroid = false;
+#endif
+
+        // MacOS/iOS do not handle short-circuit evaluation properly in OpenGL (chromium:307751)
+        for (const char* test : {"LogicalAndShortCircuit",
+                                 "LogicalOrShortCircuit"}) {
+            disables[test].push_back({_, "OpenGL", GPU, kMac || kiOS});
+        }
+
+        // Tegra3 fails to compile break stmts inside a for loop (b/40043561)
+        for (const char* test : {"Switch",
+                                 "SwitchDefaultOnly",
+                                 "SwitchWithFallthrough",
+                                 "SwitchWithFallthroughAndVarDecls",
+                                 "SwitchWithLoops",
+                                 "SwitchCaseFolding",
+                                 "LoopFloat",
+                                 "LoopInt"}) {
+            disables[test].push_back({"Tegra 3", _, GPU, _});
+        }
+
+        return disables;
+    }()};
+
+    if (const std::vector<TestDisable>* testDisables = testDisableMap->find(name)) {
+        for (const TestDisable& d : *testDisables) {
+            if (d.platform.has_value() && !*d.platform) {
+                continue;  // disable applies to a different platform
+            }
+            if (d.backendAPI.has_value() && !skstd::contains(backendAPI, *d.backendAPI)) {
+                continue;  // disable applies to a different backend API
+            }
+            if (d.deviceName.has_value() && !skstd::contains(deviceName, *d.deviceName)) {
+                continue;  // disable applies to a different device
+            }
+            if (d.testTypeMatcher == CPU && testType != skiatest::TestType::kCPU) {
+                continue;  // disable only applies to CPU
+            }
+            if (d.testTypeMatcher == Ganesh && testType != skiatest::TestType::kGanesh) {
+                continue;  // disable only applies to Ganesh
+            }
+            if (d.testTypeMatcher == Graphite && testType != skiatest::TestType::kGraphite) {
+                continue;  // disable only applies to Graphites
+            }
+            if (d.testTypeMatcher == GPU && testType == skiatest::TestType::kCPU) {
+                continue;  // disable only applies to GPU
+            }
+            // This test was disabled.
+            return true;
+        }
+    }
+
+    // This test was not in our disable list.
     return false;
 }
 
@@ -343,10 +433,12 @@ static void test_cpu(skiatest::Reporter* r,
 
 #if defined(SK_GANESH)
 static void test_ganesh(skiatest::Reporter* r,
-                        GrDirectContext* ctx,
+                        const sk_gpu_test::ContextInfo& ctxInfo,
                         const char* name,
                         const char* testFile,
                         SkSLTestFlags flags) {
+    GrDirectContext *ctx = ctxInfo.directContext();
+
     // If this is an ES3-only test on a GPU which doesn't support SkSL ES3, return immediately.
     bool shouldRunGPU = SkToBool(flags & SkSLTestFlag::GPU);
     bool shouldRunGPU_ES3 =
@@ -367,14 +459,14 @@ static void test_ganesh(skiatest::Reporter* r,
     const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info));
     std::string_view deviceName = ctx->priv().caps()->deviceName();
-    std::string_view backend = GrBackendApiToStr(ctx->backend());
+    std::string_view backendAPI = skgpu::ContextTypeName(ctxInfo.type());
 
     if (shouldRunGPU) {
-        test_permutations(r, deviceName, backend, surface.get(), name, testFile,
+        test_permutations(r, deviceName, backendAPI, surface.get(), name, testFile,
                           skiatest::TestType::kGanesh, /*strictES2=*/true);
     }
     if (shouldRunGPU_ES3) {
-        test_permutations(r, deviceName, backend, surface.get(), name, testFile,
+        test_permutations(r, deviceName, backendAPI, surface.get(), name, testFile,
                           skiatest::TestType::kGanesh, /*strictES2=*/false);
     }
 }
@@ -413,21 +505,21 @@ static void test_graphite(skiatest::Reporter* r,
                                                 kPremul_SkAlphaType);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
     std::string_view deviceName = ctx->priv().caps()->deviceName();
-    std::string_view backend;
+    std::string_view backendAPI;
     switch (ctx->backend()) {
-        case skgpu::BackendApi::kDawn:   backend = "Dawn"; break;
-        case skgpu::BackendApi::kMetal:  backend = "Metal"; break;
-        case skgpu::BackendApi::kVulkan: backend = "Vulkan"; break;
-        case skgpu::BackendApi::kMock:   backend = "Mock"; break;
-        default:                         backend = "Unknown"; break;
+        case skgpu::BackendApi::kDawn:   backendAPI = "Dawn"; break;
+        case skgpu::BackendApi::kMetal:  backendAPI = "Metal"; break;
+        case skgpu::BackendApi::kVulkan: backendAPI = "Vulkan"; break;
+        case skgpu::BackendApi::kMock:   backendAPI = "Mock"; break;
+        default:                         backendAPI = "Unknown"; break;
     }
 
     if (shouldRunGPU) {
-        test_permutations(r, deviceName, backend, surface.get(), name, testFile,
+        test_permutations(r, deviceName, backendAPI, surface.get(), name, testFile,
                           skiatest::TestType::kGraphite, /*strictES2=*/true);
     }
     if (shouldRunGPU_ES3) {
-        test_permutations(r, deviceName, backend, surface.get(), name, testFile,
+        test_permutations(r, deviceName, backendAPI, surface.get(), name, testFile,
                           skiatest::TestType::kGraphite, /*strictES2=*/false);
     }
 }
@@ -589,7 +681,7 @@ static void test_raster_pipeline(skiatest::Reporter* r,
                                                        ctxInfo,             \
                                                        is_gpu(flags),       \
                                                        ctsEnforcement) {    \
-        test_ganesh(r, ctxInfo.directContext(), #name, path, flags);        \
+        test_ganesh(r, ctxInfo, #name, path, flags);        \
     }
 #else
 #define DEF_GANESH_SKSL_TEST(flags, ctsEnforcement, name, path) /* Ganesh is disabled */
