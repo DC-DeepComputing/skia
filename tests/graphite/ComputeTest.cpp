@@ -529,7 +529,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_UniformBufferTest, reporte
             SkASSERT(resourceIndex == 0);
             SkDEBUGCODE(
                 const Uniform uniforms[] = {{"factor", SkSLType::kFloat}};
-                mgr->setExpectedUniforms(uniforms);
+                mgr->setExpectedUniforms2(uniforms);
             )
             mgr->write(kFactor);
         }

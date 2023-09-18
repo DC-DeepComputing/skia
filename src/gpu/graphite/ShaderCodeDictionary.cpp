@@ -146,7 +146,7 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
         : fRuntimeEffectDictionary(rteDict)
         , fSsboIndex(ssboIndex)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
-    PaintParamsKey key = dict->lookup(id);
+    PaintParamsKey key = dict->lookup1(id);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
 
     fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
@@ -409,11 +409,11 @@ PaintParamsKey ShaderCodeDictionary::lookup(UniquePaintParamsID codeID) const {
     return fIDToPaintKey[codeID.asUInt()];
 }
 
-SkSpan<const Uniform> ShaderCodeDictionary::getUniforms(BuiltInCodeSnippetID id) const {
+SkSpan<const Uniform> ShaderCodeDictionary::getUniforms7(BuiltInCodeSnippetID id) const {
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
+const ShaderSnippet* ShaderCodeDictionary::getEntry1(int codeSnippetID) const {
     if (codeSnippetID < 0) {
         return nullptr;
     }

@@ -558,7 +558,7 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
 
 #ifdef SK_DEBUG
 void dump(ShaderCodeDictionary* dict, UniquePaintParamsID id) {
-    dict->lookup(id).dump(dict);
+    dict->lookup1(id).dump(dict);
 }
 #endif
 

@@ -48,7 +48,7 @@ public:
 
     // Call fn on every item in the set.  You may not mutate anything.
     template <typename Fn>  // f(T), f(const T&)
-    void foreach(Fn&& fn) const {
+    void foreach1(Fn&& fn) const {
         fDataPointers.foreach([fn](const DataRef& ref){
             fn(ref.fPointer);
         });
