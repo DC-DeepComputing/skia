@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21e73b32_09b239b9",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-18T18:30:24Z",
+      "side": 1,
+      "message": "What a difference compared to 3 years ago!\n\nWhen you put it that way, now I\u0027m really thinking... how many users will break if we just get rid of this entirely? They can replicate the desired effect with shaders, and it is simpler all around.",
+      "range": {
+        "startLine": 81,
+        "startChar": 47,
+        "endLine": 81,
+        "endChar": 84
+      },
+      "revId": "30113534b92de642a055d3edce0ad7b6cb629451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
