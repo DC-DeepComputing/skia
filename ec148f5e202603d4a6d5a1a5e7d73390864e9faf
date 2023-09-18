@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "775e8069_b68b81bb",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-18T13:40:44Z",
+      "side": 1,
+      "message": "A Graphite context doesn\u0027t currently expose the original ContextType anywhere. I might do a followup and add this.",
+      "range": {
+        "startLine": 419,
+        "startChar": 17,
+        "endLine": 419,
+        "endChar": 24
+      },
+      "revId": "ec148f5e202603d4a6d5a1a5e7d73390864e9faf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
