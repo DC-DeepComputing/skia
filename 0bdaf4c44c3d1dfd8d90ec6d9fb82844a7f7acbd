@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af177488_e1508259",
+        "filename": "include/private/chromium/Slug.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-18T13:22:26Z",
+      "side": 1,
+      "message": "nit\n```suggestion\n    // Allows clients to deserialize SkPictures that contain slug data\n```",
+      "revId": "0bdaf4c44c3d1dfd8d90ec6d9fb82844a7f7acbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b728da2_45ae1a63",
         "filename": "src/text/SlugFromBuffer.cpp",
         "patchSetId": 5
