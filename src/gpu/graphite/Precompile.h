@@ -208,6 +208,12 @@ private:
                           int desiredShaderCombination,
                           bool addPrimitiveBlender,
                           bool nonOpaquePaintColor) const;
+    void PaintOptions::handleColorFilter(const KeyContext&,
+                                         PaintParamsKeyBuilder*,
+                                         int desiredShaderCombination,
+                                         bool addPrimitiveBlender,
+                                         bool nonOpaquePaintColor,
+                                         int desiredColorFilterCombination) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;

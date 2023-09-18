@@ -173,6 +173,28 @@ void PaintOptions::handlePaintAlpha(const KeyContext& keyContext,
     }
 }
 
+void PaintOptions::handleColorFilter(const KeyContext& keyContext,
+                                     PaintParamsKeyBuilder* builder,
+                                     int desiredShaderCombination,
+                                     bool addPrimitiveBlender,
+                                     bool nonOpaquePaintColor,
+                                     int desiredColorFilterCombination) const {
+    if (!fColorFilterOptions.empty()) {
+        Compose(keyContext, builder, /* gatherer= */ nullptr,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handlePaintAlpha(keyContext, builder, desiredShaderCombination,
+                                           addPrimitiveBlender, nonOpaquePaintColor);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    PrecompileBase::AddToKey(keyContext, builder, fColorFilterOptions,
+                                             desiredColorFilterCombination);
+                });
+    } else {
+        this->handlePaintAlpha(keyContext, builder, desiredShaderCombination,
+                               addPrimitiveBlender, nonOpaquePaintColor);
+    }
+}
+
 void PaintOptions::createKey(const KeyContext& keyContext,
                              int desiredCombination,
                              PaintParamsKeyBuilder* keyBuilder,
@@ -222,20 +244,11 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     // TODO: this probably needs to be passed in just like addPrimitiveBlender
     const bool kNonOpaquePaintColor = false;
 
-    if (!fColorFilterOptions.empty()) {
-        Compose(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                /* addInnerToKey= */ [&]() -> void {
-                    this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
-                                           addPrimitiveBlender, kNonOpaquePaintColor);
-                },
-                /* addOuterToKey= */ [&]() -> void {
-                    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
-                                             desiredColorFilterCombination);
-                });
-    } else {
-        this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
-                               addPrimitiveBlender, kNonOpaquePaintColor);
-    }
+    this->handleColorFilter(keyContext, keyBuilder,
+                            desiredShaderCombination,
+                            addPrimitiveBlender,
+                            kNonOpaquePaintColor,
+                            desiredColorFilterCombination);
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
                              desiredMaskFilterCombination);
