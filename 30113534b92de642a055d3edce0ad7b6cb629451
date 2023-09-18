@@ -22,6 +22,30 @@
       },
       "revId": "30113534b92de642a055d3edce0ad7b6cb629451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a66c41_976cfa13",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-18T19:23:01Z",
+      "side": 1,
+      "message": "Oh, I\u0027d love to do that. Unfortunately, Android\u0027s Canvas exposes this behavior to users (and it\u0027s definitely been used by apps).",
+      "parentUuid": "21e73b32_09b239b9",
+      "range": {
+        "startLine": 81,
+        "startChar": 47,
+        "endLine": 81,
+        "endChar": 84
+      },
+      "revId": "30113534b92de642a055d3edce0ad7b6cb629451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
