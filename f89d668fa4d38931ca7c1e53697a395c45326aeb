@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b299ca7_ac44b405",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-18T18:11:51Z",
+      "side": 1,
+      "message": "The actual fix [0] is obvious once pointed out. Rust was written to avoid this particular issue.\n\nhttps://skia-review.googlesource.com/c/skia/+/754877/1..5",
+      "revId": "f89d668fa4d38931ca7c1e53697a395c45326aeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
