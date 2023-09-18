@@ -30,6 +30,7 @@
 #include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/ToolUtils.h"
+#include "tools/gpu/ManagedBackendTexture.h"
 
 using Mipmapped = skgpu::Mipmapped;
 
@@ -568,18 +569,20 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixelsGraphite,
                 skgpu::graphite::Recorder* recorder,
                 const SkPixmap& src) {
             // TODO: put this in the equivalent of sk_gpu_test::MakeBackendTextureImage
-            TextureInfo info = recorder->priv().caps()->getDefaultSampledTextureInfo(
-                    src.colorType(),
-                    Mipmapped::kNo,
-                    skgpu::Protected::kNo,
-                    renderable);
-            auto texture = recorder->createBackendTexture(src.dimensions(), info);
-            if (!recorder->updateBackendTexture(texture, &src, 1)) {
+            // TextureInfo info = recorder->priv().caps()->getDefaultSampledTextureInfo(
+            //         src.colorType(),
+            //         Mipmapped::kNo,
+            //         skgpu::Protected::kNo,
+            //         renderable);
+            auto managedTexture = sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap(
+                    recorder, src, Mipmapped::kNo, renderable, skgpu::Protected::kNo);
+            // auto texture = recorder->createBackendTexture(src.dimensions(), info);
+            if (!managedTexture) {
                 return (Image)(nullptr);
             }
 
             Image image = SkImages::AdoptTextureFrom(recorder,
-                                                     texture,
+                                                     managedTexture->texture(),
                                                      src.colorType(),
                                                      src.alphaType(),
                                                      /*colorSpace=*/nullptr);
