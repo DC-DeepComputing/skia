@@ -16,6 +16,24 @@
       "message": "In principle this looks fine -- not sure what\u0027s up with the builders though.",
       "revId": "b438af27eb638b899596141329ed0d24ffe45c43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f8ae021_7f163019",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T14:22:08Z",
+      "side": 1,
+      "message": "Forgot to remove the deleted file in one of the Bazel lists.",
+      "parentUuid": "15e1b56d_b38b42e3",
+      "revId": "b438af27eb638b899596141329ed0d24ffe45c43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
