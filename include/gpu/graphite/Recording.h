@@ -69,6 +69,8 @@ private:
     bool addCommands(CommandBuffer*, ResourceProvider*);
     void addResourceRef(sk_sp<Resource>);
 
+    uint32_t fRecordingID;  // Used to verify ordering
+
     std::unique_ptr<TaskGraph> fGraph;
     // We don't always take refs to all resources used by specific Tasks (e.g. a common buffer used
     // for uploads). Instead we'll just hold onto one ref for those Resources outside the Tasks.
