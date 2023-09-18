@@ -39,6 +39,30 @@
       },
       "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daeee311_8e45233e",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-18T20:14:43Z",
+      "side": 1,
+      "message": "I agree, though we use this same uint32/int32 pattern elsewhere and I\u0027m not sure why. Might be one mistake carrying over to multiple places?",
+      "parentUuid": "86bf506a_b80e3d46",
+      "range": {
+        "startLine": 29,
+        "startChar": 7,
+        "endLine": 29,
+        "endChar": 14
+      },
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
