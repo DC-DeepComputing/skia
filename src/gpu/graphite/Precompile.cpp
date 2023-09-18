@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/DitherUtils.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
@@ -110,67 +111,171 @@ DstReadRequirement get_dst_read_req(const Caps* caps,
 
 void PaintOptions::addPaintColorToKey(const KeyContext& keyContext,
                                       PaintParamsKeyBuilder* keyBuilder,
+                                      PipelineDataGatherer* gatherer,
                                       int desiredShaderCombination) const {
     if (!fShaderOptions.empty()) {
         PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
     } else {
-        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                          {1, 0, 0, 1});
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer, {1, 0, 0, 1});
         keyBuilder->endBlock();
     }
 }
 
 void PaintOptions::handlePrimitiveColor(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* keyBuilder,
+                                        PipelineDataGatherer* gatherer,
                                         int desiredShaderCombination,
                                         bool addPrimitiveBlender) const {
     if (addPrimitiveBlender) {
-        Blend(keyContext, keyBuilder, /* gatherer= */ nullptr,
+        Blend(keyContext, keyBuilder, gatherer,
             /* addBlendToKey= */ [&] () -> void {
                 // TODO: Support runtime blenders for primitive blending in the precompile API.
                 // In the meantime, assume for now that we're using kSrcOver here.
-                AddToKey(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                AddToKey(keyContext, keyBuilder, gatherer,
                          SkBlender::Mode(SkBlendMode::kSrcOver).get());
             },
             /* addSrcToKey= */ [&]() -> void {
-                this->addPaintColorToKey(keyContext, keyBuilder, desiredShaderCombination);
+                this->addPaintColorToKey(keyContext, keyBuilder, gatherer,
+                                         desiredShaderCombination);
             },
             /* addDstToKey= */ [&]() -> void {
-                PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+                PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
                 keyBuilder->endBlock();
             });
     } else {
-        this->addPaintColorToKey(keyContext, keyBuilder, desiredShaderCombination);
+        this->addPaintColorToKey(keyContext, keyBuilder, gatherer, desiredShaderCombination);
     }
 }
 
 void PaintOptions::handlePaintAlpha(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* keyBuilder,
+                                    PipelineDataGatherer* gatherer,
                                     int desiredShaderCombination,
                                     bool addPrimitiveBlender,
-                                    bool nonOpaquePaintColor) const {
-    if (nonOpaquePaintColor) {
-        Blend(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                                    bool opaquePaintColor) const {
+    if (!opaquePaintColor) {
+        Blend(keyContext, keyBuilder, gatherer,
               /* addBlendToKey= */ [&] () -> void {
                   auto coeffs = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kSrcIn);
                   SkASSERT(!coeffs.empty());
-                  CoeffBlenderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                                coeffs);
+                  CoeffBlenderBlock::BeginBlock(keyContext, keyBuilder, gatherer, coeffs);
                   keyBuilder->endBlock();
               },
               /* addSrcToKey= */ [&]() -> void {
-                  this->handlePrimitiveColor(keyContext, keyBuilder, desiredShaderCombination,
-                                             addPrimitiveBlender);
+                  this->handlePrimitiveColor(keyContext, keyBuilder, gatherer,
+                                             desiredShaderCombination, addPrimitiveBlender);
               },
               /* addDstToKey= */ [&]() -> void {
-                  SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                  SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
                                                     {0, 0, 0, 0.5f});
                   keyBuilder->endBlock();
               });
     } else {
-        this->handlePrimitiveColor(keyContext, keyBuilder, desiredShaderCombination,
+        this->handlePrimitiveColor(keyContext, keyBuilder, gatherer, desiredShaderCombination,
                                    addPrimitiveBlender);
     }
+}
+
+void PaintOptions::handleColorFilter(const KeyContext& keyContext,
+                                     PaintParamsKeyBuilder* builder,
+                                     PipelineDataGatherer* gatherer,
+                                     int desiredShaderCombination,
+                                     bool addPrimitiveBlender,
+                                     bool opaquePaintColor,
+                                     int desiredColorFilterCombination) const {
+    if (!fColorFilterOptions.empty()) {
+        Compose(keyContext, builder, gatherer,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handlePaintAlpha(keyContext, builder, gatherer, desiredShaderCombination,
+                                           addPrimitiveBlender, opaquePaintColor);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    PrecompileBase::AddToKey(keyContext, builder, fColorFilterOptions,
+                                             desiredColorFilterCombination);
+                });
+    } else {
+        this->handlePaintAlpha(keyContext, builder, gatherer, desiredShaderCombination,
+                               addPrimitiveBlender, opaquePaintColor);
+    }
+}
+
+// This should be kept in sync w/ SkPaintPriv::ShouldDither and PaintParams::should_dither
+// TODO: make a member of PaintOption
+static bool shouldDither(PrecompileShader* shader, bool dither, SkColorType dstCT) {
+    // The paint dither flag can veto.
+    if (!dither) {
+        return false;
+    }
+
+    if (dstCT == kUnknown_SkColorType) {
+        return false;
+    }
+
+    // We always dither 565 or 4444 when requested.
+    if (dstCT == kRGB_565_SkColorType || dstCT == kARGB_4444_SkColorType) {
+        return true;
+    }
+
+    // Otherwise, dither is only needed for non-const paints.
+    return shader && !shader->isConstant();
+}
+
+void PaintOptions::handleDithering(const KeyContext& keyContext,
+                                   PaintParamsKeyBuilder* builder,
+                                   PipelineDataGatherer* gatherer,
+                                   int desiredShaderCombination,
+                                   bool addPrimitiveBlender,
+                                   bool opaquePaintColor,
+                                   int desiredColorFilterCombination,
+                                   bool dither) const {
+
+
+
+#ifndef SK_IGNORE_GPU_DITHER
+    sk_sp<PrecompileShader> shader =
+            PrecompileBase::SelectOption(fShaderOptions, desiredShaderCombination);
+
+    SkColorType ct = keyContext.dstColorInfo().colorType();
+    if (shouldDither(shader.get(), dither, ct)) {
+        Compose(keyContext, builder, gatherer,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handleColorFilter(keyContext, builder, gatherer,
+                                            desiredShaderCombination,
+                                            addPrimitiveBlender,
+                                            opaquePaintColor,
+                                            desiredColorFilterCombination);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    DitherShaderBlock::DitherData data(skgpu::DitherRangeForConfig(ct));
+
+                    DitherShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
+                    builder->endBlock();
+                });
+    } else
+#endif
+    {
+        this->handleColorFilter(keyContext, builder, gatherer,
+                                desiredShaderCombination,
+                                addPrimitiveBlender,
+                                opaquePaintColor,
+                                desiredColorFilterCombination);
+    }
+}
+
+void PaintOptions::toKey(const KeyContext& keyContext,
+                         PaintParamsKeyBuilder* keyBuilder,
+                         PipelineDataGatherer* gatherer,
+                         int desiredShaderCombination,
+                         bool addPrimitiveBlender,
+                         bool opaquePaintColor,
+                         int desiredColorFilterCombination,
+                         bool dither) const {
+    this->handleDithering(keyContext, keyBuilder, gatherer,
+                          desiredShaderCombination,
+                          addPrimitiveBlender,
+                          opaquePaintColor,
+                          desiredColorFilterCombination,
+                          dither);
 }
 
 void PaintOptions::createKey(const KeyContext& keyContext,
@@ -220,22 +325,15 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     }
 
     // TODO: this probably needs to be passed in just like addPrimitiveBlender
-    const bool kNonOpaquePaintColor = false;
+    const bool kOpaquePaintColor = true;
+    const bool kDither = false;
 
-    if (!fColorFilterOptions.empty()) {
-        Compose(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                /* addInnerToKey= */ [&]() -> void {
-                    this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
-                                           addPrimitiveBlender, kNonOpaquePaintColor);
-                },
-                /* addOuterToKey= */ [&]() -> void {
-                    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
-                                             desiredColorFilterCombination);
-                });
-    } else {
-        this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
-                               addPrimitiveBlender, kNonOpaquePaintColor);
-    }
+    this->toKey(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                desiredShaderCombination,
+                addPrimitiveBlender,
+                kOpaquePaintColor,
+                desiredColorFilterCombination,
+                kDither);
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
                              desiredMaskFilterCombination);
