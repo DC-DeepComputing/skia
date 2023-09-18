@@ -16,6 +16,24 @@
       "message": "After a second look: The callback function is always the same. Do we need to store a pointer to it? Can\u0027t we just call it directly?",
       "revId": "63374393442103a3d17a493a79200de48d1e4afe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b4079a_569ba240",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T14:28:17Z",
+      "side": 1,
+      "message": "If we call it directly, then we need to have the function at link time, which is not the case in a CPU build. Unless there\u0027s another way to call it directly that I missed...",
+      "parentUuid": "5f27cddb_9c2ca399",
+      "revId": "63374393442103a3d17a493a79200de48d1e4afe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
