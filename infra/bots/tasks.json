@@ -47637,6 +47637,11 @@
       "casSpec": "test",
       "cipd_packages": [
         {
+          "name": "chromium/third_party/googlefonts_testdata",
+          "path": "skia/third_party/externals/googlefonts_testdata",
+          "version": "version:20230913"
+        },
+        {
           "name": "infra/3pp/tools/cpython3/linux-amd64",
           "path": "cipd_bin_packages/cpython3",
           "version": "version:2@3.8.10.chromium.19"
@@ -58138,6 +58143,11 @@
       ],
       "casSpec": "test",
       "cipd_packages": [
+        {
+          "name": "chromium/third_party/googlefonts_testdata",
+          "path": "skia/third_party/externals/googlefonts_testdata",
+          "version": "version:20230913"
+        },
         {
           "name": "infra/3pp/tools/cpython3/mac-amd64",
           "path": "cipd_bin_packages/cpython3",
