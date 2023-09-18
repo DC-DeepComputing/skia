@@ -16,6 +16,24 @@
       "message": "Is this a temporary API? This is exposing internals that we\u0027ve previously kept hidden.",
       "revId": "ffde6e6e5f3459f26cc944b1669033e3a3bfdb06",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31af0a3b_a6c4ff67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T21:53:33Z",
+      "side": 1,
+      "message": "I would hope it\u0027s temporary but bungeman@ mentioned it was odd that we expose this on SkSurfaces and SkCanvases but not SkImages.",
+      "parentUuid": "71572eca_1c236561",
+      "revId": "ffde6e6e5f3459f26cc944b1669033e3a3bfdb06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
