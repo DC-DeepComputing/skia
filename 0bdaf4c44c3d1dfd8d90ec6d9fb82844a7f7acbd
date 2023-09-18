@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b728da2_45ae1a63",
+        "filename": "src/text/SlugFromBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T12:06:24Z",
+      "side": 1,
+      "message": "I\u0027m surprised we don\u0027t see this assertion show up.",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 15
+      },
+      "revId": "0bdaf4c44c3d1dfd8d90ec6d9fb82844a7f7acbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
