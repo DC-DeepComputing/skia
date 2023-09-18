@@ -96,6 +96,7 @@ bool MtlCommandBuffer::commit() {
 }
 
 void MtlCommandBuffer::onResetCommandBuffer() {
+    [(*fCommandBuffer) waitUntilCompleted];
     fCommandBuffer.reset();
     fActiveRenderCommandEncoder.reset();
     fActiveComputeCommandEncoder.reset();
