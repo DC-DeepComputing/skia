@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b23123_c3697fd5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-18T14:45:02Z",
+      "side": 1,
+      "message": "Kevin, PTAL. This now requires the googlefonts_testdata CIPD to be downloaded (as described in the commit msg). I\u0027d appreciate your help adjusting - as a preparation to running this test - the respective infra tasks so that they unpack this specific CIPD archive. Would you be okay looking into that? Thanks for your help in advance.",
+      "revId": "3f289d723f514e9c374ae69bd4d7f1db2c59eb91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
