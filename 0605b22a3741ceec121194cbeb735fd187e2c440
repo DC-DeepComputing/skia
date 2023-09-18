@@ -511,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e47cc76_4051038b",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T14:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d14d22e9_e8ba83ee",
+      "range": {
+        "startLine": 69,
+        "startChar": 15,
+        "endLine": 69,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07d0e125_4b54af9d",
@@ -817,6 +841,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5d9084a_d08e65fb",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T14:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fb4eb7f_14fc7048",
+      "range": {
+        "startLine": 54,
+        "startChar": 31,
+        "endLine": 54,
+        "endChar": 38
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2aed4909_f2512792",
@@ -878,6 +926,30 @@
       "side": 1,
       "message": "You did not answer my question. Do we need to dynamically allocate the memory or could we statically do so?",
       "parentUuid": "918ee654_c5fe28af",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fdedbf6_0c2ba5f0",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T14:46:53Z",
+      "side": 1,
+      "message": "I fixed the reflection part...\nBut yes, we can do it statically. If you think that static approach is better I will fix it. I do however have global block of C++ memory for all gFlags and gWords and fixing gSentences only seems like not a complete solution (but then again, if you think that it should fix all of them I wlll).",
+      "parentUuid": "017ccbc1_9da1095c",
       "range": {
         "startLine": 59,
         "startChar": 4,
@@ -1124,6 +1196,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "Instead of having multiple main functions in the same folder, can you put each main in a subfolder? Golang will use the folder name when making the executable name, so something like \n\ntools/unicode_comparison/go/download_wiki/main.go\n\nwould be compiled into a binary called `download_wiki`",
+      "range": {
+        "startLine": 82,
+        "startChar": 5,
+        "endLine": 82,
+        "endChar": 9
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042c6412_4c2a0ec1",
+        "filename": "tools/unicode_comparison/go/download_wiki.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T14:46:53Z",
+      "side": 1,
+      "message": "I have done with that and now I am stuck trying to figure out how to deal with bridge.go and helpers.go. I tried to create packages for them but didn\u0027t succeeded. Right now I cannot build anything at all :(.",
+      "parentUuid": "4c3845f8_28ba938f",
       "range": {
         "startLine": 82,
         "startChar": 5,
