@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efded0d0_a59ed443",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1072,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-18T17:48:33Z",
+      "side": 1,
+      "message": "\"Historically\" leaves it ambiguous as to whether or not the behavior still exists today. Let\u0027s say \"Skia typically applies...\" instead so that the distinction isn\u0027t rooted in \"old\" vs \"new.\"",
+      "range": {
+        "startLine": 1072,
+        "startChar": 7,
+        "endLine": 1072,
+        "endChar": 19
+      },
+      "revId": "2a7dabad6b77dbf9e52a4d6edec49202b1b80019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
