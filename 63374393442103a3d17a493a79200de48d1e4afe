@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f27cddb_9c2ca399",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-18T14:26:21Z",
+      "side": 1,
+      "message": "After a second look: The callback function is always the same. Do we need to store a pointer to it? Can\u0027t we just call it directly?",
+      "revId": "63374393442103a3d17a493a79200de48d1e4afe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
