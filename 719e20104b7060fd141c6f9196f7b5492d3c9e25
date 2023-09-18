@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7787f3d5_baa77017",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-18T20:28:05Z",
+      "side": 1,
+      "message": "Yeah that seems like the most straight forward. We could keep it a single atomic sequence and just use `\u003e` relative to the Recorder. Or we move the sequence to each Recorder and keep the comparison as `\u003d\u003d +1`.\n\nRecordings also don\u0027t currently store the Recorder they come from. Recorders also have an ID, so maybe we stash their ID on the Recordings they produce too (preserving the otherwise strict break between the two objects). Then the map in QueueManager will have a primitive key and we can probably not worry about cleaning it up?",
+      "parentUuid": "cc6444ba_942ec4dc",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86bf506a_b80e3d46",
         "filename": "src/gpu/graphite/Recording.cpp",
         "patchSetId": 1
