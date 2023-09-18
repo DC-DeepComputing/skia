@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "177f7af5_a76f4c11",
+        "filename": "include/private/chromium/Slug.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T13:27:26Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "af177488_e1508259",
+      "revId": "0bdaf4c44c3d1dfd8d90ec6d9fb82844a7f7acbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b728da2_45ae1a63",
