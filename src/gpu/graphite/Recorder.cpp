@@ -182,6 +182,7 @@ std::unique_ptr<Recording> Recorder::snap() {
                                                        std::move(nonVolatileLazyProxies),
                                                        std::move(volatileLazyProxies),
                                                        std::move(targetProxyData),
+                                                       this->priv().recorderID(),
                                                        std::move(fFinishedProcs)));
 
     fDrawBufferManager->transferToRecording(recording.get());

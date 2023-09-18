@@ -64,10 +64,15 @@ private:
               std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
               std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileLazyProxies,
               std::unique_ptr<LazyProxyData> targetProxyData,
+              uint32_t recorderID,
               skia_private::TArray<sk_sp<RefCntedCallback>>&& finishedProcs);
 
     bool addCommands(CommandBuffer*, ResourceProvider*);
     void addResourceRef(sk_sp<Resource>);
+
+    // Used to verify ordering
+    uint32_t fRecorderID;
+    uint32_t fUniqueID;
 
     std::unique_ptr<TaskGraph> fGraph;
     // We don't always take refs to all resources used by specific Tasks (e.g. a common buffer used
