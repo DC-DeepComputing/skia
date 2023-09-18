@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b68b7fb_eaad046a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-18T16:18:39Z",
+      "side": 1,
+      "message": "In some cases (mipmap generation, in particular), we assume that the data has been copied into the buffer so we deallocate its memory once it goes out of scope.\n\nI still think a proper solution to this will take some time to address, probably by  managing the atlas dynamically on Recording playback. However, I believe that Chrome is playing back Recordings in the order they were made, which means that the first solution will work, with some guardrails. I\u0027ve created two CLs to address this, the second of which is here: https://skia-review.googlesource.com/c/skia/+/757136",
+      "revId": "ed0c79e0e2d25bf43a723c13d44003b0e8d0a032",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
