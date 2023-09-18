@@ -63,7 +63,8 @@ protected:
                          int desiredOption);
 
     template<typename T>
-    static const sk_sp<T> SelectOption(const std::vector<sk_sp<T>>& options, int desiredOption);
+    static std::pair<sk_sp<T>, int> SelectOption(const std::vector<sk_sp<T>>& options,
+                                                 int desiredOption);
 
 private:
     friend class PaintOptions;
@@ -79,31 +80,28 @@ private:
 };
 
 //--------------------------------------------------------------------------------------------------
+
+template<typename T>
+std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
+                                                      int desiredOption) {
+    for (const sk_sp<T>& option : options) {
+        if (desiredOption < option->numCombinations()) {
+            return { option, desiredOption };
+        }
+        desiredOption -= option->numCombinations();
+    }
+    return { nullptr, 0 };
+}
+
 template<typename T>
 void PrecompileBase::AddToKey(const KeyContext& keyContext,
                               PaintParamsKeyBuilder* builder,
                               const std::vector<sk_sp<T>>& options,
                               int desiredOption) {
-    for (const sk_sp<T>& option : options) {
-        if (desiredOption < option->numCombinations()) {
-            option->priv().addToKey(keyContext, desiredOption, builder);
-            break;
-        }
-
-        desiredOption -= option->numCombinations();
+    auto [option, childOptions] = SelectOption(options, desiredOption);
+    if (option) {
+        option->priv().addToKey(keyContext, childOptions, builder);
     }
-}
-
-template<typename T>
-const sk_sp<T> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
-                                            int desiredOption) {
-    for (const sk_sp<T>& option : options) {
-        if (desiredOption < option->numCombinations()) {
-            return option;
-        }
-        desiredOption -= option->numCombinations();
-    }
-    return nullptr;
 }
 
 //--------------------------------------------------------------------------------------------------
