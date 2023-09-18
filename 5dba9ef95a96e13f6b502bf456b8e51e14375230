@@ -16,6 +16,24 @@
       "message": "Looks like you have 1 more missing call in android RE",
       "revId": "5dba9ef95a96e13f6b502bf456b8e51e14375230",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a4926e_851890ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T14:01:10Z",
+      "side": 1,
+      "message": "See http://ag/24790088",
+      "parentUuid": "ce841832_87c4f00c",
+      "revId": "5dba9ef95a96e13f6b502bf456b8e51e14375230",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
