@@ -20,6 +20,7 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkRectPriv.h"
 #include "tools/ToolUtils.h"
 #include "tools/viewer/Slide.h"
 
@@ -218,9 +219,9 @@ public:
         // type requirements.
         skif::LayerSpace<SkIRect> targetOutputInLayer = mapping.deviceToLayer(targetOutput);
         skif::LayerSpace<SkIRect> hintedLayerBounds = as_IFB(fBlur)->getInputBounds(
-                mapping, targetOutput, &contentBounds);
+                mapping, targetOutput, contentBounds);
         skif::LayerSpace<SkIRect> unhintedLayerBounds = as_IFB(fBlur)->getInputBounds(
-                mapping, targetOutput, nullptr);
+                mapping, targetOutput, {});
 
         canvas->setMatrix(mapping.layerToDevice());
         canvas->drawRect(SkRect::Make(SkIRect(targetOutputInLayer)),
@@ -231,14 +232,17 @@ public:
         // For visualization purposes, we want to show the layer-space output, this is what we get
         // when contentBounds is provided as a hint in local/parameter space.
         skif::Mapping layerOnly{mapping.layerMatrix()};
-        skif::DeviceSpace<SkIRect> hintedOutputBounds = as_IFB(fBlur)->getOutputBounds(
-                layerOnly, contentBounds);
-        canvas->drawRect(SkRect::Make(SkIRect(hintedOutputBounds)), line_paint(SK_ColorBLUE));
+        std::optional<skif::DeviceSpace<SkIRect>> hintedOutputBounds =
+                as_IFB(fBlur)->getOutputBounds(layerOnly, contentBounds);
+        if (hintedOutputBounds) {
+            canvas->drawRect(SkRect::Make(SkIRect(*hintedOutputBounds)), line_paint(SK_ColorBLUE));
+        }
 
         canvas->resetMatrix();
         float y = print_info(canvas, SkIRect(mapping.paramToLayer(contentBounds).roundOut()),
                              SkIRect(targetOutput),
-                             SkIRect(hintedOutputBounds),
+                             hintedOutputBounds ? SkIRect(*hintedOutputBounds)
+                                                : SkRectPriv::MakeILarge(),
                              SkIRect(unhintedLayerBounds));
 
         // Draw color key for layer visualization
