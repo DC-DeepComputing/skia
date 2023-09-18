@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc6444ba_942ec4dc",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-18T20:18:21Z",
+      "side": 1,
+      "message": "Sounds like we need a map to track the latest recording for each recorder ID.",
+      "parentUuid": "86220aa8_ad32abd1",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86bf506a_b80e3d46",
         "filename": "src/gpu/graphite/Recording.cpp",
         "patchSetId": 1
