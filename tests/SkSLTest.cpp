@@ -313,6 +313,24 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
             disables[test].push_back({regex("Tegra 3"), _, GPU, _});
         }
 
+        // Various Nvidia GPUs generate errors when assembling weird matrices, and erroneously
+        // constant-fold expressions with side-effects in constructors when compiling GLSL.
+        for (const char* test : {"MatrixConstructorsES2",    // b/40043524
+                                 "MatrixConstructorsES3",    // b/40043524
+                                 "MatrixScalarNoOpFolding",  // b/40044644
+                                 "PreserveSideEffects",      // b/40044140
+                                 "StructFieldNoFolding"}) {  // b/40044479
+            disables[test].push_back({regex("NVIDIA"), "OpenGL", _, _});
+        }
+
+        disables["IntrinsicMixFloatES3"].push_back(regex("RTX 3060"), "Vulkan", _, kWindows);
+
+        // The Golo features P400s with older and buggier drivers than usual.
+        for (const char* test : {"PreserveSideEffects",  // b/40044140
+                                 "CommaSideEffects"}) {
+            disables[test].push_back({regex("Quadro P400"), _, _, kLinux});
+        }
+
         // Disable broken tests on Android with Adreno GPUs (b/40043413, b/40045254)
         for (const char* test : {"ArrayCast",
                                  "ArrayComparison",
