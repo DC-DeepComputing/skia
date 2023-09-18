@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64af2356_497c2770",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-18T20:15:08Z",
+      "side": 1,
+      "message": "I just realized one issue as I started reviewing the follow-on CL",
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86220aa8_ad32abd1",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-18T20:15:08Z",
+      "side": 1,
+      "message": "This could lead to problems when we have Recorders on multiple threads, since the Recording order isn\u0027t well defined between them. For glyph uploads we only require that the Recordings from a given Recorder are submitted in the same order relative to each other.",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86bf506a_b80e3d46",
