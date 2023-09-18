@@ -1655,6 +1655,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18f441d3_e14ae2e8",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "I am not sure I see the difference between what I do (sort.Slice) and what you suggest (sort.SliceStable)",
+      "parentUuid": "d4a22194_79ee2f2c",
+      "range": {
+        "startLine": 54,
+        "startChar": 18,
+        "endLine": 54,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2523cc3e_ac73fe73",
         "filename": "tools/unicode_comparison/go/generate_table.go",
         "patchSetId": 55
@@ -1866,6 +1890,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20bec648_aa162516",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5412b7b0_b576773d",
+      "range": {
+        "startLine": 159,
+        "startChar": 90,
+        "endLine": 159,
+        "endChar": 96
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2409624c_2d74b17a",
@@ -1879,6 +1927,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "FYI: This is potentially risky if the client could add to names after passing it in.\n\nOne thing you could do is have NewSize take a variadic string\n\n```\nfunc NewSize(names ...string) *Row {\n  return \u0026Row{Names: names, ...}\n}\n```\n\nThat allows you to call NewSize with any amount of strings, so the names and the size.",
+      "range": {
+        "startLine": 167,
+        "startChar": 21,
+        "endLine": 167,
+        "endChar": 39
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97777de1_459cb7c6",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2409624c_2d74b17a",
       "range": {
         "startLine": 167,
         "startChar": 21,
@@ -1914,6 +1986,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b8d06c40_955dd126",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done (as much as I could understand the usage of it)",
+      "parentUuid": "1752232f_60dd4c9d",
+      "range": {
+        "startLine": 171,
+        "startChar": 26,
+        "endLine": 171,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7169027_4640cb0f",
         "filename": "tools/unicode_comparison/go/generate_table.go",
         "patchSetId": 55
@@ -1925,6 +2021,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "prefer `var results []Chunk`\n\nhttps://github.com/golang/go/wiki/CodeReviewComments/#declaring-empty-slices",
+      "range": {
+        "startLine": 182,
+        "startChar": 1,
+        "endLine": 182,
+        "endChar": 21
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72bee25_0ac71092",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7169027_4640cb0f",
       "range": {
         "startLine": 182,
         "startChar": 1,
@@ -2004,6 +2124,78 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b68963ba_2607459f",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cce81ab3_2b52ecb2",
+      "range": {
+        "startLine": 477,
+        "startChar": 41,
+        "endLine": 477,
+        "endChar": 47
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e03e8ca_8973a496",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63f41b50_d035ac60",
+      "range": {
+        "startLine": 477,
+        "startChar": 5,
+        "endLine": 477,
+        "endChar": 14
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cff5eb3_ff7a23ef",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "So slices are passed by reference?",
+      "parentUuid": "5caa0844_5dece08e",
+      "range": {
+        "startLine": 477,
+        "startChar": 24,
+        "endLine": 477,
+        "endChar": 30
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a391cb7_c64c275e",
@@ -2052,6 +2244,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70cb82be_ae078cf4",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Yes but then I have a problem.Few lines below I have 2 values returned from a function, and if one of them requires declaration and another assignment I don\u0027t know what to do.\ndeltaGraphemes, delta.Data.Missing.Graphemes \u003d ...",
+      "parentUuid": "df5bdec0_22ef2d8a",
+      "range": {
+        "startLine": 591,
+        "startChar": 25,
+        "endLine": 591,
+        "endChar": 29
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b47bc58f_7521a832",
         "filename": "tools/unicode_comparison/go/generate_table.go",
         "patchSetId": 55
@@ -2063,6 +2279,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "As above, I don\u0027t think this doesn\u0027t need to be a pointer. The idiomatic thing to do would be pass in a slice and return a slice (the subslice based on start, IIUC)",
+      "range": {
+        "startLine": 651,
+        "startChar": 21,
+        "endLine": 651,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5c2b922_66e8daf4",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b47bc58f_7521a832",
       "range": {
         "startLine": 651,
         "startChar": 21,
@@ -2096,6 +2336,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc731a1a_d9d941e0",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa29aa54_ea652fb7",
+      "range": {
+        "startLine": 662,
+        "startChar": 18,
+        "endLine": 662,
+        "endChar": 19
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "778bdb51_f0606622",
@@ -2109,6 +2373,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "This doesn\u0027t need to be a pointer.",
+      "range": {
+        "startLine": 668,
+        "startChar": 24,
+        "endLine": 668,
+        "endChar": 30
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab20a76a_766cfb7f",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "778bdb51_f0606622",
       "range": {
         "startLine": 668,
         "startChar": 24,
@@ -2165,6 +2453,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d4991dc_5ca9a138",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c348820a_7febb5cf",
+      "range": {
+        "startLine": 678,
+        "startChar": 59,
+        "endLine": 678,
+        "endChar": 69
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4695c81_11a5af08",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6386bc69_e37be0ac",
+      "range": {
+        "startLine": 678,
+        "startChar": 18,
+        "endLine": 678,
+        "endChar": 32
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89c22eaa_2dc61903",
@@ -2178,6 +2514,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "Should this be filepath.SplitList ? \nhttps://pkg.go.dev/path/filepath#SplitList",
+      "range": {
+        "startLine": 688,
+        "startChar": 13,
+        "endLine": 688,
+        "endChar": 26
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7321ab2b_45e8855f",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89c22eaa_2dc61903",
       "range": {
         "startLine": 688,
         "startChar": 13,
@@ -2211,6 +2571,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e076420_63265df1",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Convenient!",
+      "parentUuid": "faddcec1_a68ef98e",
+      "range": {
+        "startLine": 697,
+        "startChar": 11,
+        "endLine": 697,
+        "endChar": 33
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bdf8054_04d837dc",
@@ -2224,6 +2608,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "nit: can we remove this commented out code?",
+      "range": {
+        "startLine": 725,
+        "startChar": 5,
+        "endLine": 725,
+        "endChar": 6
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f943b39_b1d11ca5",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-18T21:20:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bdf8054_04d837dc",
       "range": {
         "startLine": 725,
         "startChar": 5,
