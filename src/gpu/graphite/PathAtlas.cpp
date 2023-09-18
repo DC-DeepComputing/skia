@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/PathAtlas.h"
 
+#include "include/core/SkColorSpace.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkIPoint16.h"
 #include "src/gpu/graphite/AtlasProvider.h"
@@ -15,9 +16,15 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/UploadTask.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
+
+// for SW Path Renderer
+#include "src/core/SkBlitter_A8.h"
+#include "src/core/SkDrawBase.h"
+#include "src/core/SkRasterClip.h"
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -234,6 +241,7 @@ void SoftwarePathAtlas::onAddShape(const Shape& shape,
 
     // Rasterize path to backing pixmap
     // TODO: render in a separate thread?
+	//*** keep draw around?
     SkDrawBase draw;
     draw.fBlitterChooser = SkA8Blitter_Choose;
     draw.fDst      = fPixels;
