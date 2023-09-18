@@ -279,13 +279,6 @@ public:
     void performDeferredCleanup(
             std::chrono::milliseconds msNotUsed,
             GrPurgeResourceOptions opts = GrPurgeResourceOptions::kAllResources);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_BOOLS)
-    void performDeferredCleanup(std::chrono::milliseconds msNotUsed, bool scratchResourcesOnly) {
-        performDeferredCleanup(msNotUsed,
-                               scratchResourcesOnly ? GrPurgeResourceOptions::kScratchResourcesOnly
-                                                    : GrPurgeResourceOptions::kAllResources);
-    }
-#endif
 
     // Temporary compatibility API for Android.
     void purgeResourcesNotUsedInMs(std::chrono::milliseconds msNotUsed) {
@@ -318,12 +311,6 @@ public:
      *             enforcing the budget requirements.
      */
     void purgeUnlockedResources(GrPurgeResourceOptions opts);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_BOOLS)
-    void purgeUnlockedResources(bool scratchResourcesOnly) {
-        purgeUnlockedResources(scratchResourcesOnly ? GrPurgeResourceOptions::kScratchResourcesOnly
-                                                    : GrPurgeResourceOptions::kAllResources);
-    }
-#endif
 
     /**
      * Gets the maximum supported texture size.
@@ -384,12 +371,6 @@ public:
         this->flush(GrFlushInfo());
         this->submit(sync);
     }
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_BOOLS)
-    void flushAndSubmit(bool syncCpu) {
-        this->flush(GrFlushInfo());
-        this->submit(syncCpu ? GrSyncCpu::kYes : GrSyncCpu::kNo);
-    }
-#endif
 
     /**
      * Call to ensure all drawing to the context has been flushed to underlying 3D API specific
@@ -484,11 +465,6 @@ public:
     GrSemaphoresSubmitted flush(SkSurface* surface,
                                 SkSurfaces::BackendSurfaceAccess access,
                                 const GrFlushInfo& info);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_FLUSH)
-    GrSemaphoresSubmitted flush(sk_sp<SkSurface> surface,
-                                SkSurfaces::BackendSurfaceAccess access,
-                                const GrFlushInfo& info);
-#endif
 
     /**
      *  Same as above except:
@@ -512,12 +488,6 @@ public:
     GrSemaphoresSubmitted flush(SkSurface* surface,
                                 const GrFlushInfo& info,
                                 const skgpu::MutableTextureState* newState = nullptr);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_FLUSH)
-    // TODO(kjlubick) Remove this variant to be consistent with flushAndSubmit
-    GrSemaphoresSubmitted flush(sk_sp<SkSurface> surface,
-                                const GrFlushInfo& info,
-                                const skgpu::MutableTextureState* newState = nullptr);
-#endif
 
     /** Call to ensure all reads/writes of the surface have been issued to the underlying 3D API.
      *  Skia will correctly order its own draws and pixel operations. This must to be used to ensure
@@ -529,25 +499,12 @@ public:
      */
     void flushAndSubmit(SkSurface* surface, GrSyncCpu sync = GrSyncCpu::kNo);
 
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_BOOLS)
-    void flushAndSubmit(SkSurface* surface, bool syncCpu);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_FLUSH)
-    // TODO(kjlubick) remove this as it is error prone https://crbug.com/1475906
-    void flushAndSubmit(sk_sp<SkSurface> surface, bool syncCpu);
-    void flushAndSubmit(sk_sp<SkSurface> surface, GrSyncCpu sync = GrSyncCpu::kNo);
-#endif
-#endif
-
     /**
      * Flushes the given surface with the default GrFlushInfo.
      *
      *  Has no effect on a CPU-backed surface.
      */
     void flush(SkSurface* surface);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_FLUSH)
-    // TODO(kjlubick) Remove this variant to be consistent with flushAndSubmit
-    void flush(sk_sp<SkSurface> surface);
-#endif
 
     /**
      * Submit outstanding work to the gpu from all previously un-submitted flushes. The return
@@ -564,9 +521,6 @@ public:
      * submitted work.
      */
     bool submit(GrSyncCpu sync = GrSyncCpu::kNo);
-#if !defined(SK_DISABLE_LEGACY_GRDIRECTCONTEXT_BOOLS)
-    bool submit(bool syncCpu) { return this->submit(syncCpu ? GrSyncCpu::kYes : GrSyncCpu::kNo); }
-#endif
 
     /**
      * Checks whether any asynchronous work is complete and if so calls related callbacks.
