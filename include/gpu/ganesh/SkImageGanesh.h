@@ -356,6 +356,13 @@ SK_API sk_sp<SkImage> MakeWithFilter(GrRecordingContext* context,
                                      SkIRect* outSubset,
                                      SkIPoint* offset);
 
+/** Returns the GPU context associated with this image or nullptr if the image is not Ganesh-backed.
+*/
+SK_API GrDirectContext* GetContext(const SkImage* src);
+inline GrDirectContext* GetContext(sk_sp<const SkImage> src) {
+    return GetContext(src.get());
+}
+
 }  // namespace SkImages
 
 #endif

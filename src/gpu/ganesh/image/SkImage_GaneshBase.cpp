@@ -442,4 +442,12 @@ sk_sp<SkImage> MakeWithFilter(GrRecordingContext* rContext,
                                                offset);
 }
 
+GrDirectContext* GetContext(const SkImage* src) {
+    if (!src || !as_IB(src)->isGaneshBacked()) {
+        return nullptr;
+    }
+    return as_IB(src)->directContext();
+}
+
+
 } // namespace SkImages
