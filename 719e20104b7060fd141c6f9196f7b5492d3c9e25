@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "306cf43e_f496721a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-18T16:05:31Z",
+      "side": 1,
+      "message": "Set up to disabling cached uploads. PTAL.",
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
