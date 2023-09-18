@@ -16,6 +16,24 @@
       "message": "Kevin, PTAL. This now requires the googlefonts_testdata CIPD to be downloaded (as described in the commit msg). I\u0027d appreciate your help adjusting - as a preparation to running this test - the respective infra tasks so that they unpack this specific CIPD archive. Would you be okay looking into that? Thanks for your help in advance.",
       "revId": "3f289d723f514e9c374ae69bd4d7f1db2c59eb91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3126faa5_3fff0345",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-18T17:03:40Z",
+      "side": 1,
+      "message": "I think https://skia-review.googlesource.com/c/skia/+/757236 will do what we want, but we might need to set a flag to specify where to find the font files.",
+      "parentUuid": "99b23123_c3697fd5",
+      "revId": "3f289d723f514e9c374ae69bd4d7f1db2c59eb91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
