@@ -217,6 +217,10 @@ public:
     bool allowMultipleGlyphCacheTextures() const { return fAllowMultipleGlyphCacheTextures; }
     bool supportBilerpFromGlyphAtlas() const { return fSupportBilerpFromGlyphAtlas; }
 
+    bool disableCachedGlyphUploads() const { return fDisableCachedGlyphUploads; }
+
+    bool verifyRecordingOrder() const { return fVerifyRecordingOrder; }
+
     sktext::gpu::SDFTControl getSDFTControl(bool useSDFTForSmallText) const;
 
 protected:
@@ -309,6 +313,10 @@ protected:
 
     bool fAllowMultipleGlyphCacheTextures = true;
     bool fSupportBilerpFromGlyphAtlas = false;
+
+    bool fDisableCachedGlyphUploads = false;
+
+    bool fVerifyRecordingOrder = false;
 
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;

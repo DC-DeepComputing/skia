@@ -65,6 +65,8 @@ private:
     SkDeque fOutstandingSubmissions;
 
     std::vector<std::unique_ptr<CommandBuffer>> fAvailableCommandBuffers;
+
+    uint32_t fLastAddedRecordingID = SK_InvalidGenID;
 };
 
 } // namespace skgpu::graphite

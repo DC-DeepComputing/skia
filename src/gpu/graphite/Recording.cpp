@@ -26,12 +26,22 @@ using namespace skia_private;
 
 namespace skgpu::graphite {
 
+static int32_t next_id() {
+    static std::atomic<int32_t> nextID{1};
+    int32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+    } while (id == SK_InvalidGenID);
+    return id;
+}
+
 Recording::Recording(std::unique_ptr<TaskGraph> graph,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileLazyProxies,
                      std::unique_ptr<LazyProxyData> targetProxyData,
                      TArray<sk_sp<RefCntedCallback>>&& finishedProcs)
-        : fGraph(std::move(graph))
+        : fRecordingID(next_id())
+        , fGraph(std::move(graph))
         , fNonVolatileLazyProxies(std::move(nonVolatileLazyProxies))
         , fVolatileLazyProxies(std::move(volatileLazyProxies))
         , fTargetProxyData(std::move(targetProxyData))

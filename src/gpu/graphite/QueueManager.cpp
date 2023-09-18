@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
@@ -70,6 +71,14 @@ bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* contex
         }
         SKGPU_LOG_E("No valid Recording passed into addRecording call");
         return false;
+    }
+
+    if (this->fSharedContext->caps()->verifyRecordingOrder()) {
+        if (fLastAddedRecordingID != SK_InvalidGenID &&
+            info.fRecording->priv().recordingID() != fLastAddedRecordingID+1) {
+            SKGPU_LOG_E("Recordings are expected to be replayed in order");
+            return false;
+        }
     }
 
     if (info.fTargetSurface &&
@@ -139,6 +148,8 @@ bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* contex
     }
 
     info.fRecording->priv().deinstantiateVolatileLazyProxies();
+
+    fLastAddedRecordingID = info.fRecording->priv().recordingID();
     return true;
 }
 
