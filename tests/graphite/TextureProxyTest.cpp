@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "tools/gpu/ManagedBackendTexture.h"
 
 namespace skgpu::graphite {
 
@@ -36,7 +37,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
     ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
     const TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(
             kValidColorType, Mipmapped::kNo, Protected::kNo, Renderable::kNo);
-    const BackendTexture backendTexture = recorder->createBackendTexture(kValidSize, textureInfo);
+    BackendTexture backendTexture = recorder->createBackendTexture(kValidSize, textureInfo);
     sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture);
 
     auto nullCallback = [](ResourceProvider*) -> sk_sp<Texture> { return nullptr; };
@@ -151,7 +152,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
     REPORTER_ASSERT(reporter, textureProxy->isFullyLazy());
 
     constexpr SkISize kLargerSize = SkISize::Make(2, 2);
-    const BackendTexture largerBackendTexture =
+    BackendTexture largerBackendTexture =
             recorder->createBackendTexture(kLargerSize, textureInfo);
     assignableTexture = resourceProvider->createWrappedTexture(largerBackendTexture);
     instantiateSuccess = textureProxy->lazyInstantiate(resourceProvider);
@@ -173,6 +174,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
             caps, kValidSize, textureInfo, skgpu::Budgeted::kNo, Volatile::kNo, nullCallback);
     instantiateSuccess = TextureProxy::InstantiateIfNotLazy(resourceProvider, textureProxy.get());
     REPORTER_ASSERT(reporter, instantiateSuccess);
+    // Clean up the backend texture.
+    recorder->deleteBackendTexture(backendTexture);
+    recorder->deleteBackendTexture(largerBackendTexture);
 }
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureTooLargeTest, reporter, context,
@@ -225,25 +229,30 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteLazyTextureInvalidDimensions, reporte
 
         // The created BackendTexture should be invalid, so an invalid texture would be used to
         // fulfill the promise image created later, if we were to attempt to draw it.
-        BackendTexture backendTexture =
-                recorder->createBackendTexture(imageInfo.dimensions(), textureInfo);
-        FulfillContext fulfillContext(backendTexture);
-        REPORTER_ASSERT(reporter, !backendTexture.isValid());
+        auto managedTexture = sk_gpu_test::ManagedGraphiteTexture::MakeWithData(recorder.get(),
+                                                                                dimensions,
+                                                                                textureInfo);
+        // BackendTexture backendTexture =
+        //         recorder->createBackendTexture(imageInfo.dimensions(), textureInfo);
+        FulfillContext fulfillContext(managedTexture->texture());
+        REPORTER_ASSERT(reporter, !managedTexture->texture().isValid());
 
         // Drawing should still succeed, as no image draw should actually be attempted with this
         // texture.
         SkImageInfo surfaceImageInfo = SkImageInfo::Make(
                 1, 1, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
         sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), surfaceImageInfo);
-        sk_sp<SkImage> promiseImage = SkImages::PromiseTextureFrom(recorder.get(),
-                                                                   imageInfo.dimensions(),
-                                                                   textureInfo,
-                                                                   imageInfo.colorInfo(),
-                                                                   Volatile::kNo,
-                                                                   FulfillContext::Fulfill,
-                                                                   nullptr,
-                                                                   nullptr,
-                                                                   &fulfillContext);
+        sk_sp<SkImage> promiseImage =
+                SkImages::PromiseTextureFrom(recorder.get(),
+                                             imageInfo.dimensions(),
+                                             textureInfo,
+                                             imageInfo.colorInfo(),
+                                             Volatile::kNo,
+                                             FulfillContext::Fulfill,
+                                             nullptr,
+                                             sk_gpu_test::ManagedGraphiteTexture::ImageReleaseProc,
+                                             &fulfillContext);
+
         surface->getCanvas()->drawImage(promiseImage, 0.0f, 0.0f);
         std::unique_ptr<Recording> recording = recorder->snap();
         REPORTER_ASSERT(reporter, context->insertRecording({recording.get()}));

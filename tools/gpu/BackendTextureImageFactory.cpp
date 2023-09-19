@@ -10,18 +10,29 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPixmap.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
+#ifdef SK_GANESH
+#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
+#endif
+
+#ifdef SK_GRAPHITE
+#include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/ImageFactories.cpp"
+#include "src/gpu/graphite/RecorderPriv.h"
+#endif
+
 namespace sk_gpu_test {
+#ifdef SK_GANESH
 sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                        const SkPixmap& pixmap,
-                                       GrRenderable renderable,
+                                       Renderable renderable,
                                        GrSurfaceOrigin origin,
-                                       GrProtected isProtected) {
+                                       Protected isProtected) {
     auto mbet = ManagedBackendTexture::MakeWithData(dContext,
                                                     pixmap,
                                                     origin,
@@ -43,10 +54,10 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
 sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                        const SkImageInfo& info,
                                        SkColor4f color,
-                                       skgpu::Mipmapped mipmapped,
-                                       GrRenderable renderable,
+                                       Mipmapped mipmapped,
+                                       Renderable renderable,
                                        GrSurfaceOrigin origin,
-                                       GrProtected isProtected) {
+                                       Protected isProtected) {
     if (info.alphaType() == kOpaque_SkAlphaType) {
         color = color.makeOpaque();
     } else if (info.alphaType() == kPremul_SkAlphaType) {
@@ -73,5 +84,54 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                        ManagedBackendTexture::ReleaseProc,
                                        mbet->releaseContext());
 }
+#endif  // SK_GANESH
+
+#ifdef SK_GRAPHITE
+using Recorder = skgpu::graphite::Recorder;
+sk_sp<SkImage> MakeBackendTextureImage(Recorder* recorder,
+                                       const SkPixmap& pixmap,
+                                       skgpu::Mipmapped isMipmapped,
+                                       Renderable isRenderable,
+                                       Origin origin,
+                                       Protected isProtected) {
+    auto mbet = ManagedGraphiteTexture::MakeFromPixmap(
+            recorder, pixmap, isMipmapped, isRenderable, isProtected);
+    if (!mbet) {
+        return nullptr;
+    }
+    return SkImages::AdoptTextureFrom(recorder,
+                                      mbet->texture(),
+                                      pixmap.colorType(),
+                                      pixmap.alphaType(),
+                                      sk_sp<SkColorSpace>(pixmap.colorSpace()), // Is this acceptable?
+                                      origin); // Managed graphite texture will handle deletion
+                                      //ManagedGraphiteTexture::ReleaseProc,
+                                     // mbet->releaseContext());
+}
+
+// sk_sp<SkImage> MakeBackendTextureImage(Recorder* recorder,
+//                                        const SkImageInfo& imageInfo,
+//                                        SkColor4f color,
+//                                        skgpu::Mipmapped isMipmapped,
+//                                        Renderable isRenderable,
+//                                        Origin origin,
+//                                        Protected isProtected) {
+//     // dimensions, textureInfo
+//     //getDefaultSampledTextureInfo
+//     TextureInfo texInfo = recorder->priv().caps()->getDefaultSampledTextureInfo(
+//             imageInfo.colorType(), isMipmapped, isProtected, isRenderable);
+//     auto mbet =
+//             ManagedGraphiteTexture::MakeWithData(recorder, imageInfo.dimensions(), texInfo);
+//     if (!mbet) {
+//         return nullptr;
+//     }
+//     return SkImages::AdoptTextureFrom(recorder,
+//                                       mbet->texture(),
+//                                       imageInfo.colorType(),
+//                                       imageInfo.alphaType(),
+//                                       sk_sp<SkColorSpace>(imageInfo.colorSpace()),
+//                                       origin);
+// }
+#endif  // SK_GRAPHITE
 
 }  // namespace sk_gpu_test
