@@ -130,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1ef2eee_e8da2c8b",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-19T13:24:59Z",
+      "side": 1,
+      "message": "lgtm!",
+      "parentUuid": "c00e1a2e_f82c8147",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 76
+      },
+      "revId": "719e20104b7060fd141c6f9196f7b5492d3c9e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86bf506a_b80e3d46",
