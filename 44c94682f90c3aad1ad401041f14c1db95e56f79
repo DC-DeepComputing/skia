@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed39e654_916f3b08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-19T15:35:12Z",
+      "side": 1,
+      "message": "`skia_vulkan` and `skia_flutter` require this extra step.",
+      "revId": "44c94682f90c3aad1ad401041f14c1db95e56f79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
