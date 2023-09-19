@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58401f24_57c28bf5",
+        "filename": "src/core/SkImageFilter_Base.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-19T18:25:26Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 99,
+        "startChar": 58,
+        "endLine": 99,
+        "endChar": 66
+      },
+      "revId": "6f6ad31d81107da5d1ec29e48c07320d6e1a6ab4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5863a601_c7cc787a",
+        "filename": "tools/viewer/FilterBoundsSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-19T18:25:26Z",
+      "side": 1,
+      "message": "This is fine but why not pass in the optional bounds have a print_info print \"infinite\" when it isn\u0027t instantiated ?",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 75
+      },
+      "revId": "6f6ad31d81107da5d1ec29e48c07320d6e1a6ab4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
