@@ -107,6 +107,9 @@ public:
 
     void write(const SkM44& mat) { fUniformManager.write(mat); }
     void write(const SkPMColor4f& premulColor) { fUniformManager.write(premulColor); }
+    void writePaintColor(const SkPMColor4f& premulColor) {
+        fUniformManager.writePaintColor(premulColor);
+    }
     void write(const SkRect& rect) { fUniformManager.write(rect); }
     void write(const SkV2& v) { fUniformManager.write(v); }
     void write(const SkV4& v) { fUniformManager.write(v); }
@@ -140,7 +143,7 @@ private:
     friend class UniformExpectationsValidator;
 
     void setExpectedUniforms(SkSpan<const Uniform> expectedUniforms);
-    void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
+    void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms2(); }
 #endif // SK_DEBUG
 
     TextureDataBlock                       fTextureDataBlock;

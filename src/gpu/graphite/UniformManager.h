@@ -81,6 +81,7 @@ public:
 
     void write(const SkM44&);
     void write(const SkPMColor4f&);
+    void writePaintColor(const SkPMColor4f&);
     void write(const SkRect&);
     void write(const SkV2&);
     void write(const SkV4&);
@@ -101,9 +102,9 @@ public:
 
     // Debug only utilities used for debug assertions and tests.
     void checkReset() const;
-    void setExpectedUniforms(SkSpan<const Uniform>);
-    void checkExpected(SkSLType, unsigned int count);
-    void doneWithExpectedUniforms();
+    void setExpectedUniforms2(SkSpan<const Uniform>);
+    void checkExpected2(SkSLType, unsigned int count);
+    void doneWithExpectedUniforms2();
 
 private:
     // Writes a single element of the given `type` if `count` == 0 (aka Uniform::kNonArray).

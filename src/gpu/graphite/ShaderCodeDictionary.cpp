@@ -146,7 +146,7 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
         : fRuntimeEffectDictionary(rteDict)
         , fSsboIndex(ssboIndex)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
-    PaintParamsKey key = dict->lookup(id);
+    PaintParamsKey key = dict->lookup1(id);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
 
     fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
@@ -399,7 +399,7 @@ UniquePaintParamsID ShaderCodeDictionary::findOrCreate(PaintParamsKeyBuilder* bu
     return newID;
 }
 
-PaintParamsKey ShaderCodeDictionary::lookup(UniquePaintParamsID codeID) const {
+PaintParamsKey ShaderCodeDictionary::lookup1(UniquePaintParamsID codeID) const {
     if (!codeID.isValid()) {
         return PaintParamsKey::Invalid();
     }
@@ -776,6 +776,13 @@ static constexpr Uniform kSolidShaderUniforms[] = {
 };
 
 static constexpr char kSolidShaderName[] = "sk_solid_shader";
+
+//--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPaintColorUniforms[] = {
+        { "paintColor", SkSLType::kFloat4, Uniform::kNonArray, true }
+};
+
+static constexpr char kPaintColorName[] = "what_what";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kLocalMatrixShaderUniforms[] = {
@@ -1428,6 +1435,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kNone,
             { },     // no samplers
             kSolidShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPaintColorShader] = {
+            "PaintColor",
+            SkSpan(kPaintColorUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kPaintColorName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren

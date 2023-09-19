@@ -26,7 +26,7 @@ void PipelineDataGatherer::checkReset() {
 }
 
 void PipelineDataGatherer::setExpectedUniforms(SkSpan<const Uniform> expectedUniforms) {
-    fUniformManager.setExpectedUniforms(expectedUniforms);
+    fUniformManager.setExpectedUniforms2(expectedUniforms);
 }
 #endif // SK_DEBUG
 
