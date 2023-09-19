@@ -22,6 +22,7 @@ namespace skgpu::graphite {
 
 enum class Coverage;
 class KeyContext;
+class PipelineDataGatherer;
 class PrecompileBasePriv;
 class UniquePaintParamsID;
 
@@ -112,6 +113,8 @@ class PrecompileShader : public PrecompileBase {
 public:
     PrecompileShader() : PrecompileBase(Type::kShader) {}
 
+    virtual bool isConstant() const { return false; }
+
     sk_sp<PrecompileShader> makeWithLocalMatrix();
 
     sk_sp<PrecompileShader> makeWithColorFilter(sk_sp<PrecompileColorFilter>);
@@ -172,6 +175,8 @@ public:
         fBlenderOptions.assign(blenders.begin(), blenders.end());
     }
 
+    void setDither(bool dither) { fDither = dither; }
+
     // Provides access to functions that aren't part of the public API.
     PaintOptionsPriv priv();
     const PaintOptionsPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -197,22 +202,49 @@ private:
 
     void addPaintColorToKey(const KeyContext&,
                             PaintParamsKeyBuilder*,
+                            PipelineDataGatherer*,
                             int desiredShaderCombination) const;
     void handlePrimitiveColor(const KeyContext&,
                               PaintParamsKeyBuilder*,
+                              PipelineDataGatherer*,
                               int desiredShaderCombination,
                               bool addPrimitiveBlender) const;
     void handlePaintAlpha(const KeyContext&,
                           PaintParamsKeyBuilder*,
+                          PipelineDataGatherer*,
                           int desiredShaderCombination,
                           bool addPrimitiveBlender,
                           bool nonOpaquePaintColor) const;
+    void handleColorFilter(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           int desiredShaderCombination,
+                           bool addPrimitiveBlender,
+                           bool nonOpaquePaintColor,
+                           int desiredColorFilterCombination) const;
+    void handleDithering(const KeyContext& keyContext,
+                         PaintParamsKeyBuilder* keyBuilder,
+                         PipelineDataGatherer* gatherer,
+                         int desiredShaderCombination,
+                         bool addPrimitiveBlender,
+                         bool nonOpaquePaintColor,
+                         int desiredColorFilterCombination,
+                         bool dither) const;
+    void toKey(const KeyContext& keyContext,
+               PaintParamsKeyBuilder* keyBuilder,
+               PipelineDataGatherer* gatherer,
+               int desiredShaderCombination,
+               bool addPrimitiveBlender,
+               bool nonOpaquePaintColor,
+               int desiredColorFilterCombination,
+               bool dither) const;
 
     std::vector<sk_sp<PrecompileShader>> fShaderOptions;
     std::vector<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
     std::vector<sk_sp<PrecompileColorFilter>> fColorFilterOptions;
     std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
     std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
+    bool fDither = false;
 };
 
 } // namespace skgpu::graphite
