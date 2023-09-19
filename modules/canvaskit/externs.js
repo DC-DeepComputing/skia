@@ -170,16 +170,21 @@ var CanvasKit = {
     getHeight: function() {},
     getIdeographicBaseline: function() {},
     getLineMetrics: function() {},
+    getLineMetricsAt: function() {},
+    getLineNumberAt: function() {},
     getLongestLine: function() {},
     getMaxIntrinsicWidth: function() {},
     getMaxWidth: function() {},
     getMinIntrinsicWidth: function() {},
+    getNumberOfLines: function() {},
     getWordBoundary: function() {},
     getShapedLines: function() {},
     layout: function() {},
 
     // private API
     /** @return {Float32Array} */
+    _getClosestGlyphInfoAt: function() {},
+    _getGlyphInfoAt: function() {},
     _getRectsForRange: function() {},
     _getRectsForPlaceholders: function() {},
   },
