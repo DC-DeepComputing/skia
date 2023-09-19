@@ -960,6 +960,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eae00265_2fbc18c5",
+        "filename": "tools/unicode_comparison/go/bridge.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T12:29:51Z",
+      "side": 1,
+      "message": "After thinking about it, I think it\u0027s fine as is.",
+      "parentUuid": "8fdedbf6_0c2ba5f0",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "802bf265_4ddcc999",
@@ -1677,6 +1701,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a1a6127_0a6d1d5d",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T12:29:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "18f441d3_e14ae2e8",
+      "range": {
+        "startLine": 54,
+        "startChar": 18,
+        "endLine": 54,
+        "endChar": 20
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2523cc3e_ac73fe73",
@@ -2256,6 +2304,30 @@
       "side": 1,
       "message": "Yes but then I have a problem.Few lines below I have 2 values returned from a function, and if one of them requires declaration and another assignment I don\u0027t know what to do.\ndeltaGraphemes, delta.Data.Missing.Graphemes \u003d ...",
       "parentUuid": "df5bdec0_22ef2d8a",
+      "range": {
+        "startLine": 591,
+        "startChar": 25,
+        "endLine": 591,
+        "endChar": 29
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3f832d_6d7f42ac",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T12:29:51Z",
+      "side": 1,
+      "message": "```\nvar deltaGraphemes Ratio\ndeltaGraphemes, delta.Data.Missing.Graphemes \u003d compareLines(expected.Graphemes, actual.Graphemes, true, true)\n```",
+      "parentUuid": "70cb82be_ae078cf4",
       "range": {
         "startLine": 591,
         "startChar": 25,
