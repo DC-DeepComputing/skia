@@ -33,6 +33,24 @@
       "message": "Wrong reviewers, sorry.",
       "revId": "01f0988b2bb643f1d4dd56dd19a3ab25d66cbd29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8094bd3b_2fe14f2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-19T18:31:53Z",
+      "side": 1,
+      "message": "Well, signed overflow is UB, so leaving them signed means that if you overflow you may start WW3. Internally G3 is full of bad advice about signed vs unsigned. Also, these also aren\u0027t numbers but ids, so the actual representation hardly matters. If I could wave my magic wand I would insist that these not be `uint32_t` or any other \"modular integer arithmetic type\" but instead a \"modular permuted bit identifier type\" from which one could get the next permutation but nothing else (no +, -, *, /, implicit conversion to any arithmetic type, etc). In other words, since you asked, there is no reason for these to be signed, but there are reasons why it shouldn\u0027t be signed or unsigned.\n\nAnyhow, at least this is less confusing with less UB than before. If only we had a good language to program in.",
+      "parentUuid": "ffe5c864_41038462",
+      "revId": "01f0988b2bb643f1d4dd56dd19a3ab25d66cbd29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
