@@ -94,6 +94,30 @@
       },
       "revId": "30113534b92de642a055d3edce0ad7b6cb629451",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68e33dc0_7a294507",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-19T14:01:29Z",
+      "side": 1,
+      "message": "John Reck actually agreed with the null-shader sampling, so we were able to make that change. The alpha-shader via runtime effect feels REALLY unlikely to be ever used, but the simple case of alpha-image tinted by paint is definitely known/used. This is really about threading the needle of what we can \"safely\" change.",
+      "parentUuid": "7984c587_64ce40f3",
+      "range": {
+        "startLine": 81,
+        "startChar": 47,
+        "endLine": 81,
+        "endChar": 84
+      },
+      "revId": "30113534b92de642a055d3edce0ad7b6cb629451",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
