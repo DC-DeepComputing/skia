@@ -45,6 +45,30 @@
       },
       "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95447360_0987a410",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T13:10:14Z",
+      "side": 1,
+      "message": "On second thought a constructor might be a touch difficult logistics wise, given that DM doesn\u0027t have a great mechanism (that I know of) to pass in an object to a specific test.\n\nMaybe have DM call a static function which sets a global variable or something like that?",
+      "parentUuid": "43f5b00f_b920ff5f",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
