@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77afbbb4_de645cc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-19T18:18:20Z",
+      "side": 1,
+      "message": "Okay, after doing some backend texture management cleanup/re-org, this should allow all unit tests to pass while using actual Vulkan BackendTextures. PTAL - friendly reminder to compare against patchset 1 if you don\u0027t want to re-review the previously-approved changes.",
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
