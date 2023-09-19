@@ -16,6 +16,52 @@
       "message": "Okay, after doing some backend texture management cleanup/re-org, this should allow all unit tests to pass while using actual Vulkan BackendTextures. PTAL - friendly reminder to compare against patchset 1 if you don\u0027t want to re-review the previously-approved changes.",
       "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f743831d_d6195252",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-19T20:31:46Z",
+      "side": 1,
+      "message": "is removing of the \"const\" so that we can call DeleteBackendTexture? I feel like we could have that function take a const\u0026 to the BackendTexture instead. In theory we are not modifying that struct at all and it is in const. We\u0027re just reading the struct to get a gpu handle and telling the gpu to delete some memory associated with that handle",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd206d57_43fe6bce",
+        "filename": "tools/gpu/BackendTextureImageFactory.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-19T20:31:46Z",
+      "side": 1,
+      "message": "we shouldn\u0027t need this cast here.",
+      "range": {
+        "startLine": 100,
+        "startChar": 15,
+        "endLine": 100,
+        "endChar": 31
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
