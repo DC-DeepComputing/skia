@@ -22,6 +22,30 @@
       },
       "revId": "f0f69acd5a0a7e2eea88e39c00f02dca2ae06424",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9afbdb66_ce5194df",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-19T14:11:50Z",
+      "side": 0,
+      "message": "Mali 400 AFAIK has never supported Vulkan, and this check was silly",
+      "parentUuid": "14d83caa_775e7b62",
+      "range": {
+        "startLine": 1082,
+        "startChar": 31,
+        "endLine": 1082,
+        "endChar": 55
+      },
+      "revId": "f0f69acd5a0a7e2eea88e39c00f02dca2ae06424",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
