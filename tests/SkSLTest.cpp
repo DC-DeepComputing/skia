@@ -258,9 +258,9 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
         using regex = std::regex;
 
 #if defined(SK_BUILD_FOR_UNIX)
-        [[maybe_unused]] constexpr bool kLinux = true;
+        constexpr bool kLinux = true;
 #else
-        [[maybe_unused]] constexpr bool kLinux = false;
+        constexpr bool kLinux = false;
 #endif
 #if defined(SK_BUILD_FOR_MAC)
         constexpr bool kMac = true;
@@ -273,14 +273,14 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
         constexpr bool kiOS = false;
 #endif
 #if defined(SK_BUILD_FOR_WIN)
-        [[maybe_unused]] constexpr bool kWindows = true;
+        constexpr bool kWindows = true;
 #else
-        [[maybe_unused]] constexpr bool kWindows = false;
+        constexpr bool kWindows = false;
 #endif
 #if defined(SK_BUILD_FOR_ANDROID)
-        [[maybe_unused]] constexpr bool kAndroid = true;
+        constexpr bool kAndroid = true;
 #else
-        [[maybe_unused]] constexpr bool kAndroid = false;
+        constexpr bool kAndroid = false;
 #endif
 
         // - Apple --------------------------------------------------------------------------------
@@ -381,6 +381,57 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
         // Adreno generates the wrong result for this test. (b/40044477)
         disables["StructFieldFolding"].push_back({regex(ADRENO "[56]"), "OpenGL",
                                                         _, kAndroid});
+
+        // - Intel --------------------------------------------------------------------------------
+        // Disable various tests on Intel.
+        // Intrinsic floor() on Intel + ANGLE + DirectX is broken (anglebug.com/5588)
+        disables["IntrinsicFloor"].push_back({regex("Intel Iris"), "ANGLE D3D", _, _});
+
+        // Intrinsic not() and mix() are broken on Intel GPUs in Metal. b/40045105
+        for (const char* test : {"IntrinsicNot", "IntrinsicMixFloatES3"}) {
+            disables[test].push_back({regex("Intel (Iris Plus|HD6000)"), "Metal", _, kMac || kiOS});
+        }
+
+        // Swizzled-index store is broken across many Intel GPUs. (b/40045254)
+        disables["SwizzleIndexStore"].push_back({regex("Intel"), "OpenGL", _, kMac});
+        disables["SwizzleIndexStore"].push_back({regex("Intel Iris 655"), _, _, kWindows});
+
+        // vec4(mat2) conversions can lead to a crash on Intel + ANGLE (b/40043275)
+        for (const char* test : {"VectorToMatrixCast",
+                                 "VectorScalarMath",
+                                 "TrivialArgumentsInlineDirectly"}) {
+            disables[test].push_back({regex("Intel (Iris 6100|HD4400)"), "ANGLE", _, kWindows});
+        }
+
+        for (const char* test : {"MatrixFoldingES2",
+                                 "MatrixEquality",
+                                 "TemporaryIndexLookup",  // b/40045228
+                                 "SwizzleIndexLookup"}) { // b/40045254
+            disables[test].push_back({regex("Intel (Iris 6100|HD4400)"), "OpenGL", _, kWindows});
+        }
+
+        for (const char* test : {"ReturnsValueOnEveryPathES3",      // b/40043548
+                                 "OutParamsAreDistinctFromGlobal",  // b/40044222
+                                 "StructFieldFolding"}) {           // b/40044477
+            disables[test].push_back({regex("Intel"), "OpenGL", _, kWindows});
+        }
+
+        for (const char* test : {"SwitchDefaultOnly",               // b/40043548
+                                 "ReturnsValueOnEveryPathES3"}) {   // b/40045205
+            disables[test].push_back({regex("Intel"), "Vulkan", _, kLinux});
+        }
+
+        for (const char* test : {"SwitchDefaultOnly",      // b/40043548
+                                 "SwizzleAsLValueES3"}) {  // https://anglebug.com/8260
+            disables[test].push_back({regex("Intel"), "ANGLE", _, kWindows});
+        }
+
+        // Some Intel GPUs don't return zero for the derivative of a uniform.
+        for (const char* test : {"IntrinsicDFdy",
+                                 "IntrinsicDFdx",
+                                 "IntrinsicFwidth"}) {
+            disables[test].push_back({regex("Intel"), _, GPU, _});
+        }
 
         #undef ADRENO
 
