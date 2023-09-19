@@ -30,7 +30,6 @@
 #include "include/private/chromium/Slug.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
-#include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecords.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
@@ -314,8 +313,7 @@ private:
         // Starting a new Save block.  Push a new entry to represent that.
         SaveBounds sb;
         sb.controlOps = 0;
-        // If the paint affects transparent black,
-        // the bound shouldn't be smaller than the cull.
+        // If the paint affects transparent black, the bound shouldn't be smaller than the cull.
         sb.bounds =
             PaintMayAffectTransparentBlack(paint) ? fCullRect : Bounds::MakeEmpty();
         sb.paint = paint;
@@ -328,9 +326,7 @@ private:
     static bool PaintMayAffectTransparentBlack(const SkPaint* paint) {
         if (paint) {
             // FIXME: this is very conservative
-            if ((paint->getImageFilter() &&
-                 as_IFB(paint->getImageFilter())->affectsTransparentBlack()) ||
-                (paint->getColorFilter() &&
+            if ((paint->getColorFilter() &&
                  as_CFB(paint->getColorFilter())->affectsTransparentBlack())) {
                 return true;
             }
@@ -368,6 +364,14 @@ private:
         // We're done the Save block.  Apply the block's bounds to all control ops inside it.
         SaveBounds sb = fSaveStack.back();
         fSaveStack.pop_back();
+
+        // If it's an empty saveLayer()/restore() pair where the layer's paint still
+        // produces content, we need to adjust sb.bounds. If the bounds aren't empty, there were
+        // draws that were recorded, which calculate the bounds of the full save stack so the
+        // SaveBlock's union already includes any of its own paint behavior.
+        if (sb.paint && sb.bounds.isEmpty()) {
+            sb.bounds = this->adjustAndMap(SkRect::MakeEmpty(), sb.paint);
+        }
 
         while (sb.controlOps --> 0) {
             this->popControl(sb.bounds);
@@ -525,7 +529,12 @@ private:
         if (paint) {
             if (paint->canComputeFastBounds()) {
                 *rect = paint->computeFastBounds(*rect, rect);
-                return true;
+                // Image filters with unbounded output (which can depend on the src rect, so
+                // canComputeFastBounds() remains true) will return infinity. Report this as false.
+                static constexpr SkRect kInfinite =
+                        {SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity,
+                         SK_ScalarInfinity, SK_ScalarInfinity};
+                return *rect != kInfinite;
             }
             return false;
         }

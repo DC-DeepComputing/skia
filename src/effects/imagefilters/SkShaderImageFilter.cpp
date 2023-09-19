@@ -9,7 +9,6 @@
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTypes.h"
@@ -25,6 +24,8 @@
 #include <optional>
 #include <utility>
 
+struct SkIRect;
+
 namespace {
 
 class SkShaderImageFilter final : public SkImageFilter_Base {
@@ -36,18 +37,12 @@ public:
         SkASSERT(fShader);
     }
 
-    SkRect computeFastBounds(const SkRect& /*bounds*/) const override {
-        return SkRectPriv::MakeLargeS32();
-    }
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
 private:
     friend void ::SkRegisterShaderImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkShaderImageFilter)
-
-    bool onAffectsTransparentBlack() const override { return true; }
 
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
 

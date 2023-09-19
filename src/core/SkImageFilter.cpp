@@ -81,39 +81,22 @@ SkIRect SkImageFilter::filterBounds(const SkIRect& src, const SkMatrix& ctm,
 }
 
 SkRect SkImageFilter::computeFastBounds(const SkRect& src) const {
-    if (0 == this->countInputs()) {
-        return src;
+    // computeFastBounds() uses the unknown identity mapping because this function is used to
+    // calculate local bounds before mapping with the full canvas matrix. This is equivalent to
+    // the layer space equaling the parameter space for filters whose bounds have well-behaved
+    // geometries that respond to the layer-space transform. However, in this context, we don't
+    // know the full mapping so filters whose bounds are defined directly by layer pixels have
+    // undefined bounds.
+    skif::Mapping mapping = skif::Mapping::UnknownIdentity();
+    auto output = as_IFB(this)->getOutputBounds(mapping, skif::ParameterSpace<SkRect>(src));
+    if (output) {
+        return SkRect::Make(SkIRect(*output));
+    } else {
+        // TODO(michaelludwig) - It would be most accurate if computeFastBounds() could return an
+        // optional so we can force callers to check for unbounded outputs easily.
+        return SkRect::MakeLTRB(SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity,
+                                SK_ScalarInfinity, SK_ScalarInfinity);
     }
-    SkRect combinedBounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    for (int i = 1; i < this->countInputs(); i++) {
-        const SkImageFilter* input = this->getInput(i);
-        if (input) {
-            combinedBounds.join(input->computeFastBounds(src));
-        } else {
-            combinedBounds.join(src);
-        }
-    }
-    return combinedBounds;
-}
-
-bool SkImageFilter::canComputeFastBounds() const {
-    return !as_IFB(this)->affectsTransparentBlack();
-}
-
-bool SkImageFilter_Base::affectsTransparentBlack() const {
-    if (this->onAffectsTransparentBlack()) {
-        return true;
-    } else if (this->ignoreInputsAffectsTransparentBlack()) {
-        // TODO(skbug.com/14611): Automatically infer this from output bounds being finite
-        return false;
-    }
-    for (int i = 0; i < this->countInputs(); i++) {
-        const SkImageFilter* input = this->getInput(i);
-        if (input && as_IFB(input)->affectsTransparentBlack()) {
-            return true;
-        }
-    }
-    return false;
 }
 
 bool SkImageFilter::asAColorFilter(SkColorFilter** filterPtr) const {

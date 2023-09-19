@@ -65,8 +65,6 @@ public:
             , fSigma(sigma)
             , fLegacyTileMode(legacyTileMode) {}
 
-    SkRect computeFastBounds(const SkRect&) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -1026,10 +1024,4 @@ std::optional<skif::LayerSpace<SkIRect>> SkBlurImageFilter::onGetOutputLayerBoun
     } else {
         return skif::LayerSpace<SkIRect>::Unbounded();
     }
-}
-
-SkRect SkBlurImageFilter::computeFastBounds(const SkRect& src) const {
-    SkRect bounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(src) : src;
-    bounds.outset(SkSize(fSigma).width() * 3, SkSize(fSigma).height() * 3);
-    return bounds;
 }

@@ -9,7 +9,6 @@
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkImageFilter.h"
-#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkImageFilterTypes.h"
@@ -20,6 +19,8 @@
 #include <optional>
 #include <utility>
 
+struct SkIRect;
+
 namespace {
 
 class SkMergeImageFilter final : public SkImageFilter_Base {
@@ -28,8 +29,6 @@ public:
             : SkImageFilter_Base(filters, count) {
         SkASSERT(filters && count > 0);
     }
-
-    SkRect computeFastBounds(const SkRect&) const override;
 
     // No need to override flatten() since there's no additional state to write over base class.
 
@@ -127,13 +126,4 @@ std::optional<skif::LayerSpace<SkIRect>> SkMergeImageFilter::onGetOutputLayerBou
     } else {
         return childOutput;
     }
-}
-
-SkRect SkMergeImageFilter::computeFastBounds(const SkRect& rect) const {
-    // The base computeFastBounds() implementation is the union of all fast bounds from children,
-    // or 'rect' if there are none. For merge, zero children means zero output so only call the
-    // base implementation when there are filters to merge.
-    // TODO: When the bounds update is complete, this default implementation may go away and we
-    // can move the union'ing logic here.
-    return SkImageFilter_Base::computeFastBounds(rect);
 }

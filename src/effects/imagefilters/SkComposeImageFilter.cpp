@@ -9,7 +9,6 @@
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkImageFilter.h"
-#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkImageFilterTypes.h"
@@ -18,6 +17,7 @@
 #include <optional>
 #include <utility>
 
+struct SkIRect;
 class SkReadBuffer;
 
 namespace {
@@ -36,8 +36,6 @@ public:
         SkASSERT(inputs[kOuter].get());
         SkASSERT(inputs[kInner].get());
     }
-
-    SkRect computeFastBounds(const SkRect& src) const override;
 
 protected:
     // No flatten() needed since this does not add state beyond the input image filters handled
@@ -137,9 +135,4 @@ std::optional<skif::LayerSpace<SkIRect>> SkComposeImageFilter::onGetOutputLayerB
     // NOTE: Even if innerBounds is unbounded, the outer image filter may be capable of restricting
     // it if it contains a crop image filter.
     return this->getChildOutputLayerBounds(kOuter, mapping, innerBounds);
-}
-
-SkRect SkComposeImageFilter::computeFastBounds(const SkRect& src) const {
-    return this->getInput(kOuter)->computeFastBounds(
-            this->getInput(kInner)->computeFastBounds(src));
 }

@@ -19,8 +19,6 @@ class SkLocalMatrixImageFilter : public SkImageFilter_Base {
 public:
     static sk_sp<SkImageFilter> Make(const SkMatrix& localMatrix, sk_sp<SkImageFilter> input);
 
-    SkRect computeFastBounds(const SkRect&) const override;
-
 protected:
     void flatten(SkWriteBuffer&) const override;
 
@@ -28,11 +26,9 @@ private:
     SK_FLATTENABLE_HOOKS(SkLocalMatrixImageFilter)
 
     SkLocalMatrixImageFilter(const SkMatrix& localMatrix,
-                             const SkMatrix& invLocalMatrix,
                              sk_sp<SkImageFilter> input)
             : SkImageFilter_Base(&input, 1)
-            , fLocalMatrix{localMatrix}
-            , fInvLocalMatrix{invLocalMatrix} {}
+            , fLocalMatrix{localMatrix} {}
 
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
 
@@ -54,7 +50,6 @@ private:
     // to represent a layer-space transform: (L*P*L^-1); while this local matrix changes L directly
     // to L*P for its child filter.
     SkMatrix fLocalMatrix;
-    SkMatrix fInvLocalMatrix;
 };
 
 #endif

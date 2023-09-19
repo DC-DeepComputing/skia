@@ -1522,8 +1522,19 @@ bool SkCanvas::quickReject(const SkRect& src) const {
     this->validateClip();
 #endif
 
-    SkRect devRect = SkMatrixPriv::MapRect(fMCRec->fMatrix, src);
-    return !devRect.isFinite() || !devRect.intersects(fQuickRejectBounds);
+    static constexpr SkRect kInfinity = {SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity,
+                                         SK_ScalarInfinity, SK_ScalarInfinity};
+
+    if (src == kInfinity) {
+        // If the source is infinite (which is produced by image filters that modify transparent
+        // black and are not constrained by some source of coverage or explicit crop), do not map
+        // by the canvas matrix, but treat the device-space bounds as infinite as well. In that case
+        // the draw can only be rejected if the the clip bounds are empty.
+        return fQuickRejectBounds.isEmpty();
+    } else {
+        SkRect devRect = SkMatrixPriv::MapRect(fMCRec->fMatrix, src);
+        return !devRect.isFinite() || !devRect.intersects(fQuickRejectBounds);
+    }
 }
 
 bool SkCanvas::quickReject(const SkPath& path) const {

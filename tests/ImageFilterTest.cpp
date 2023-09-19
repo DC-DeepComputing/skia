@@ -858,8 +858,10 @@ static void draw_saveLayer_picture(int width, int height, int tileSize,
     SkMatrix matrix;
     matrix.setTranslate(SkIntToScalar(50), 0);
 
+    SkIRect crop = SkIRect::MakeXYWH(0, 0, 50, 50);
+
     sk_sp<SkColorFilter> cf(SkColorFilters::Blend(SK_ColorWHITE, SkBlendMode::kSrc));
-    sk_sp<SkImageFilter> cfif(SkImageFilters::ColorFilter(std::move(cf), nullptr));
+    sk_sp<SkImageFilter> cfif(SkImageFilters::ColorFilter(std::move(cf), nullptr, crop));
     sk_sp<SkImageFilter> imageFilter(SkImageFilters::MatrixTransform(matrix,
                                                                      SkSamplingOptions(),
                                                                      std::move(cfif)));
@@ -867,12 +869,11 @@ static void draw_saveLayer_picture(int width, int height, int tileSize,
     SkPaint paint;
     paint.setImageFilter(std::move(imageFilter));
     SkPictureRecorder recorder;
-    SkRect bounds = SkRect::Make(SkIRect::MakeXYWH(0, 0, 50, 50));
     SkCanvas* recordingCanvas = recorder.beginRecording(SkIntToScalar(width),
                                                         SkIntToScalar(height),
                                                         factory);
     recordingCanvas->translate(-55, 0);
-    recordingCanvas->saveLayer(&bounds, &paint);
+    recordingCanvas->saveLayer(nullptr, &paint);
     recordingCanvas->restore();
     sk_sp<SkPicture> picture1(recorder.finishRecordingAsPicture());
 
@@ -896,12 +897,24 @@ DEF_TEST(ImageFilterDrawMatrixBBH, reporter) {
     draw_saveLayer_picture(width, height, tileSize, &factory, &result1);
     draw_saveLayer_picture(width, height, tileSize, nullptr, &result2);
 
-    for (int y = 0; y < height; y++) {
-        int diffs = memcmp(result1.getAddr32(0, y), result2.getAddr32(0, y), result1.rowBytes());
-        REPORTER_ASSERT(reporter, !diffs);
-        if (diffs) {
-            break;
+    if (!ToolUtils::equal_pixels(result1, result2)) {
+        SkString encoded;
+        SkString errString("BBH recorded image filter doesn't match unbounded reference");
+        errString.append("\nWith BBH: ");
+        if (BitmapToBase64DataURI(result1, &encoded)) {
+            errString.append(encoded);
+        } else {
+            errString.append("failed to encode");
         }
+
+        errString.append("\nUnbounded: ");
+        if (BitmapToBase64DataURI(result2, &encoded)) {
+            errString.append(encoded);
+        } else {
+            errString.append("failed to encode");
+        }
+
+        ERRORF(reporter, "%s", errString.c_str());
     }
 }
 
@@ -1617,67 +1630,6 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ComposedImageFilterBounds_Gpu,
                                        ctxInfo,
                                        CtsEnforcement::kNever) {
     test_composed_imagefilter_bounds(reporter, ctxInfo.directContext());
-}
-
-DEF_TEST(ImageFilterCanComputeFastBounds, reporter) {
-
-    {
-        SkPoint3 location = SkPoint3::Make(0, 0, SK_Scalar1);
-        sk_sp<SkImageFilter> lighting(SkImageFilters::PointLitDiffuse(
-                location,  SK_ColorGREEN, 0, 0, nullptr));
-        REPORTER_ASSERT(reporter, !lighting->canComputeFastBounds());
-    }
-
-    {
-        sk_sp<SkImageFilter> gray(make_grayscale(nullptr, nullptr));
-        REPORTER_ASSERT(reporter, gray->canComputeFastBounds());
-        {
-            SkColorFilter* grayCF;
-            REPORTER_ASSERT(reporter, gray->asAColorFilter(&grayCF));
-            REPORTER_ASSERT(reporter, !as_CFB(grayCF)->affectsTransparentBlack());
-            grayCF->unref();
-        }
-        REPORTER_ASSERT(reporter, gray->canComputeFastBounds());
-
-        sk_sp<SkImageFilter> grayBlur(SkImageFilters::Blur(
-                SK_Scalar1, SK_Scalar1, std::move(gray)));
-        REPORTER_ASSERT(reporter, grayBlur->canComputeFastBounds());
-    }
-
-    {
-        float greenMatrix[20] = { 0, 0, 0, 0, 0,
-                                  0, 0, 0, 0, 1.0f/255,
-                                  0, 0, 0, 0, 0,
-                                  0, 0, 0, 0, 1.0f/255
-        };
-        sk_sp<SkColorFilter> greenCF(SkColorFilters::Matrix(greenMatrix));
-        sk_sp<SkImageFilter> green(SkImageFilters::ColorFilter(greenCF, nullptr));
-
-        REPORTER_ASSERT(reporter, as_CFB(greenCF)->affectsTransparentBlack());
-        REPORTER_ASSERT(reporter, !green->canComputeFastBounds());
-
-        sk_sp<SkImageFilter> greenBlur(SkImageFilters::Blur(SK_Scalar1, SK_Scalar1,
-                                                               std::move(green)));
-        REPORTER_ASSERT(reporter, !greenBlur->canComputeFastBounds());
-    }
-
-    uint8_t allOne[256], identity[256];
-    for (int i = 0; i < 256; ++i) {
-        identity[i] = i;
-        allOne[i] = 255;
-    }
-
-    sk_sp<SkColorFilter> identityCF(SkColorFilters::TableARGB(identity, identity,
-                                                              identity, allOne));
-    sk_sp<SkImageFilter> identityFilter(SkImageFilters::ColorFilter(identityCF, nullptr));
-    REPORTER_ASSERT(reporter, !as_CFB(identityCF)->affectsTransparentBlack());
-    REPORTER_ASSERT(reporter, identityFilter->canComputeFastBounds());
-
-    sk_sp<SkColorFilter> forceOpaqueCF(SkColorFilters::TableARGB(allOne, identity,
-                                                                 identity, identity));
-    sk_sp<SkImageFilter> forceOpaque(SkImageFilters::ColorFilter(forceOpaqueCF, nullptr));
-    REPORTER_ASSERT(reporter, as_CFB(forceOpaqueCF)->affectsTransparentBlack());
-    REPORTER_ASSERT(reporter, !forceOpaque->canComputeFastBounds());
 }
 
 // Verify that SkImageSource survives serialization

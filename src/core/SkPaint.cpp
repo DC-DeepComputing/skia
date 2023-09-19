@@ -199,9 +199,6 @@ void SkPaint::setStrokeJoin(Join jt) {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkPaint::canComputeFastBounds() const {
-    if (this->getImageFilter() && !this->getImageFilter()->canComputeFastBounds()) {
-        return false;
-    }
     // Pass nullptr for the bounds to determine if they can be computed
     if (this->getPathEffect() &&
         !as_PEB(this->getPathEffect())->computeFastBounds(nullptr)) {
@@ -265,8 +262,8 @@ static bool affects_alpha(const SkColorFilter* cf) {
 
 // return true if the filter exists, and may affect alpha
 static bool affects_alpha(const SkImageFilter* imf) {
-    // TODO: check if we should allow imagefilters to broadcast that they don't affect alpha
-    // ala colorfilters
+    // Image filters need to know the bounds of their input to determine if they'd produce output,
+    // so universally assume the image filter will affect alpha for now.
     return imf != nullptr;
 }
 
