@@ -143,7 +143,7 @@ std::unique_ptr<Recording> Recorder::snap() {
 
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
-    fTextureDataCache->foreach([&](const TextureDataBlock* block) {
+    fTextureDataCache->foreach1([&](const TextureDataBlock* block) {
         for (int j = 0; j < block->numTextures(); ++j) {
             const TextureDataBlock::SampledTexture& tex = block->texture(j);
 

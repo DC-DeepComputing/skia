@@ -25,8 +25,8 @@ void PipelineDataGatherer::checkReset() {
     SkDEBUGCODE(fUniformManager.checkReset());
 }
 
-void PipelineDataGatherer::setExpectedUniforms(SkSpan<const Uniform> expectedUniforms) {
-    fUniformManager.setExpectedUniforms(expectedUniforms);
+void PipelineDataGatherer::setExpectedUniforms1(SkSpan<const Uniform> expectedUniforms) {
+    fUniformManager.setExpectedUniforms2(expectedUniforms);
 }
 #endif // SK_DEBUG
 
@@ -88,7 +88,7 @@ uint32_t TextureDataBlock::hash() const {
 UniformExpectationsValidator::UniformExpectationsValidator(PipelineDataGatherer *gatherer,
                                                            SkSpan<const Uniform> expectedUniforms)
         : fGatherer(gatherer) {
-    fGatherer->setExpectedUniforms(expectedUniforms);
+    fGatherer->setExpectedUniforms1(expectedUniforms);
 }
 #endif
 

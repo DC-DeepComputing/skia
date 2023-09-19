@@ -72,8 +72,8 @@ VerticesRenderStep::VerticesRenderStep(PrimitiveType type, bool hasColor, bool h
                      variant_name(type, hasColor, hasTexCoords),
                      hasColor ? Flags::kEmitsPrimitiveColor | Flags::kPerformsShading
                               : Flags::kPerformsShading,
-                     /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},
-                                   {"depth", SkSLType::kFloat}},
+                     /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4, true},
+                                   {"depth", SkSLType::kFloat, true}},
                      type,
                      kDirectDepthGEqualPass,
                      /*vertexAttrs=*/  kAttributes[2*hasTexCoords + hasColor],

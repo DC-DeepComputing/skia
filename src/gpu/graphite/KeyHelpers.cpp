@@ -74,7 +74,7 @@
 constexpr SkPMColor4f kErrorColor = { 1, 0, 0, 1 };
 
 #define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID) \
-    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, dict->getUniforms(codeSnippetID));)
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, dict->getUniforms7(codeSnippetID));)
 
 namespace skgpu::graphite {
 
@@ -107,6 +107,31 @@ void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
         auto dict = keyContext.dict();
 
         add_solid_uniform_data(dict, premulColor, gatherer);
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kSolidColorShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
+void add_paint_color_uniform_data(const ShaderCodeDictionary* dict,
+                                  const SkPMColor4f& premulColor,
+                                  PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kSolidColorShader)
+    gatherer->writePaintColor(premulColor);
+}
+
+} // anonymous namespace
+
+void PaintColorBlock::BeginBlock(const KeyContext& keyContext,
+                                 PaintParamsKeyBuilder* builder,
+                                 PipelineDataGatherer* gatherer) {
+    if (gatherer) {
+        auto dict = keyContext.dict();
+
+        add_paint_color_uniform_data(dict, keyContext.paintColor(), gatherer);
     }
 
     builder->beginBlock(BuiltInCodeSnippetID::kSolidColorShader);
@@ -1002,7 +1027,7 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
     keyContext.rtEffectDict()->set(codeSnippetID, shaderData.fEffect);
 
     if (gatherer) {
-        const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
+        const ShaderSnippet* entry = dict->getEntry1(codeSnippetID);
         SkASSERT(entry);
 
         SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, entry->fUniforms);)

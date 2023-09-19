@@ -25,10 +25,11 @@ public:
 
     constexpr Uniform(const char* name, SkSLType type) : Uniform(name, type, kNonArray) {}
 
-    constexpr Uniform(const char* name, SkSLType type, int count)
-            : fType      (static_cast<unsigned>(type))
-            , fCount     (static_cast<unsigned>(count))
-            , fName      (name) {
+    constexpr Uniform(const char* name, SkSLType type, int count, bool foo = false)
+            : fType(static_cast<unsigned>(type))
+            , fCount(static_cast<unsigned>(count))
+            , fName(name)
+            , fFoo(foo){
     }
 
     constexpr Uniform(const Uniform&) = default;
@@ -39,11 +40,13 @@ public:
     constexpr const char* name() const  { return fName; }
     constexpr SkSLType    type() const  { return static_cast<SkSLType>(fType);  }
     constexpr uint32_t    count() const { return static_cast<uint32_t>(fCount); }
+    constexpr bool        foo() const   { return fFoo; }
 
 private:
     uint32_t    fType    : 6;
     uint32_t    fCount   : 26;
     const char* fName;
+    bool        fFoo;
 
     static_assert(kSkSLTypeCount <= (1 << 6));
 };

@@ -223,9 +223,9 @@ public:
 
     UniquePaintParamsID findOrCreate(PaintParamsKeyBuilder*) SK_EXCLUDES(fSpinLock);
 
-    PaintParamsKey lookup(UniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
+    PaintParamsKey lookup1(UniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
-    SkSpan<const Uniform> getUniforms(BuiltInCodeSnippetID) const;
+    SkSpan<const Uniform> getUniforms7(BuiltInCodeSnippetID) const;
     SkEnumBitMask<SnippetRequirementFlags> getSnippetRequirementFlags(
             BuiltInCodeSnippetID id) const {
         return fBuiltInCodeSnippets[(int) id].fSnippetRequirementFlags;
@@ -234,9 +234,9 @@ public:
     bool isValidID(int snippetID) const;
 
     // This method can return nullptr
-    const ShaderSnippet* getEntry(int codeSnippetID) const;
-    const ShaderSnippet* getEntry(BuiltInCodeSnippetID codeSnippetID) const {
-        return this->getEntry(SkTo<int>(codeSnippetID));
+    const ShaderSnippet* getEntry1(int codeSnippetID) const;
+    const ShaderSnippet* getEntry2(BuiltInCodeSnippetID codeSnippetID) const {
+        return this->getEntry1(SkTo<int>(codeSnippetID));
     }
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);

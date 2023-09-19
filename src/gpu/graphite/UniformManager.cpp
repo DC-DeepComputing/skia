@@ -537,12 +537,12 @@ void UniformManager::checkReset() const {
     SkASSERT(fStorage.empty());
 }
 
-void UniformManager::setExpectedUniforms(SkSpan<const Uniform> expectedUniforms) {
+void UniformManager::setExpectedUniforms2(SkSpan<const Uniform> expectedUniforms) {
     SkDEBUGCODE(fExpectedUniforms = expectedUniforms;)
     SkDEBUGCODE(fExpectedUniformIndex = 0;)
 }
 
-void UniformManager::checkExpected(SkSLType type, unsigned int count) {
+void UniformManager::checkExpected2(SkSLType type, unsigned int count) {
     SkASSERT(fExpectedUniforms.size());
     SkASSERT(fExpectedUniformIndex >= 0 && fExpectedUniformIndex < (int)fExpectedUniforms.size());
 
@@ -552,7 +552,7 @@ void UniformManager::checkExpected(SkSLType type, unsigned int count) {
     SkDEBUGCODE(fExpectedUniformIndex++;)
 }
 
-void UniformManager::doneWithExpectedUniforms() {
+void UniformManager::doneWithExpectedUniforms2() {
     SkASSERT(fExpectedUniformIndex == static_cast<int>(fExpectedUniforms.size()));
     SkDEBUGCODE(fExpectedUniforms = {};)
 }
@@ -578,7 +578,7 @@ void UniformManager::writeInternal(SkSLType type, unsigned int count, const void
 }
 
 void UniformManager::write(SkSLType type, const void* src) {
-    this->checkExpected(type, 1);
+    this->checkExpected2(type, 1);
     this->writeInternal(type, Uniform::kNonArray, src);
 }
 
@@ -586,13 +586,13 @@ void UniformManager::writeArray(SkSLType type, const void* src, unsigned int cou
     // Don't write any elements if count is 0. Since Uniform::kNonArray == 0, passing count
     // directly would cause a one-element non-array write.
     if (count > 0) {
-        this->checkExpected(type, count);
+        this->checkExpected2(type, count);
         this->writeInternal(type, count, src);
     }
 }
 
 void UniformManager::write(const Uniform& u, const uint8_t* src) {
-    this->checkExpected(u.type(), (u.count() == Uniform::kNonArray) ? 1 : u.count());
+    this->checkExpected2(u.type(), (u.count() == Uniform::kNonArray) ? 1 : u.count());
     this->writeInternal(u.type(), u.count(), src);
 }
 
@@ -602,6 +602,11 @@ void UniformManager::write(const SkM44& mat) {
 }
 
 void UniformManager::write(const SkPMColor4f& color) {
+    static constexpr SkSLType kType = SkSLType::kFloat4;
+    this->write(kType, &color);
+}
+
+void UniformManager::writePaintColor(const SkPMColor4f& color) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
     this->write(kType, &color);
 }

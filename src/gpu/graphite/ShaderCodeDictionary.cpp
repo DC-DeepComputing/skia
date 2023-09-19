@@ -146,7 +146,7 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
         : fRuntimeEffectDictionary(rteDict)
         , fSsboIndex(ssboIndex)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
-    PaintParamsKey key = dict->lookup(id);
+    PaintParamsKey key = dict->lookup1(id);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
 
     fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
@@ -399,7 +399,7 @@ UniquePaintParamsID ShaderCodeDictionary::findOrCreate(PaintParamsKeyBuilder* bu
     return newID;
 }
 
-PaintParamsKey ShaderCodeDictionary::lookup(UniquePaintParamsID codeID) const {
+PaintParamsKey ShaderCodeDictionary::lookup1(UniquePaintParamsID codeID) const {
     if (!codeID.isValid()) {
         return PaintParamsKey::Invalid();
     }
@@ -409,11 +409,11 @@ PaintParamsKey ShaderCodeDictionary::lookup(UniquePaintParamsID codeID) const {
     return fIDToPaintKey[codeID.asUInt()];
 }
 
-SkSpan<const Uniform> ShaderCodeDictionary::getUniforms(BuiltInCodeSnippetID id) const {
+SkSpan<const Uniform> ShaderCodeDictionary::getUniforms7(BuiltInCodeSnippetID id) const {
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
+const ShaderSnippet* ShaderCodeDictionary::getEntry1(int codeSnippetID) const {
     if (codeSnippetID < 0) {
         return nullptr;
     }
@@ -772,14 +772,21 @@ static constexpr char kConicalGradientTextureName[] = "sk_conical_grad_tex_shade
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kSolidShaderUniforms[] = {
-        { "color", SkSLType::kFloat4 }
+        { "color", SkSLType::kFloat4, true }
 };
 
 static constexpr char kSolidShaderName[] = "sk_solid_shader";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPaintColorUniforms[] = {
+        { "paintColor", SkSLType::kFloat4, Uniform::kNonArray, true }
+};
+
+static constexpr char kPaintColorName[] = "what_what";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr Uniform kLocalMatrixShaderUniforms[] = {
-        { "localMatrix", SkSLType::kFloat4x4 },
+        { "localMatrix", SkSLType::kFloat4x4, true },
 };
 
 static constexpr int kNumLocalMatrixShaderChildren = 1;
@@ -815,33 +822,33 @@ std::string GenerateLocalMatrixPreamble(const ShaderInfo& shaderInfo,
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kImageShaderUniforms[] = {
-        { "imgSize",               SkSLType::kFloat2 },
-        { "subset",                SkSLType::kFloat4 },
-        { "tilemodeX",             SkSLType::kInt },
-        { "tilemodeY",             SkSLType::kInt },
-        { "filterMode",            SkSLType::kInt },
-        { "readSwizzle",           SkSLType::kInt },
+        { "imgSize",               SkSLType::kFloat2, true },
+        { "subset",                SkSLType::kFloat4, true },
+        { "tilemodeX",             SkSLType::kInt, true },
+        { "tilemodeY",             SkSLType::kInt, true },
+        { "filterMode",            SkSLType::kInt, true },
+        { "readSwizzle",           SkSLType::kInt, true },
         // The next 5 uniforms are for the color space transformation
-        { "csXformFlags",          SkSLType::kInt },
-        { "csXformSrcKind",        SkSLType::kInt },
-        { "csXformGamutTransform", SkSLType::kHalf3x3 },
-        { "csXformDstKind",        SkSLType::kInt },
-        { "csXformCoeffs",         SkSLType::kHalf4x4 },
+        { "csXformFlags",          SkSLType::kInt, true },
+        { "csXformSrcKind",        SkSLType::kInt, true },
+        { "csXformGamutTransform", SkSLType::kHalf3x3, true },
+        { "csXformDstKind",        SkSLType::kInt, true },
+        { "csXformCoeffs",         SkSLType::kHalf4x4, true },
 };
 
 static constexpr Uniform kCubicImageShaderUniforms[] = {
-        { "imgSize",               SkSLType::kFloat2 },
-        { "subset",                SkSLType::kFloat4 },
-        { "tilemodeX",             SkSLType::kInt },
-        { "tilemodeY",             SkSLType::kInt },
-        { "cubicCoeffs",           SkSLType::kHalf4x4 },
-        { "readSwizzle",           SkSLType::kInt },
+        { "imgSize",               SkSLType::kFloat2, true },
+        { "subset",                SkSLType::kFloat4, true },
+        { "tilemodeX",             SkSLType::kInt, true },
+        { "tilemodeY",             SkSLType::kInt, true },
+        { "cubicCoeffs",           SkSLType::kHalf4x4, true },
+        { "readSwizzle",           SkSLType::kInt, true },
         // The next 5 uniforms are for the color space transformation
-        { "csXformFlags",          SkSLType::kInt },
-        { "csXformSrcKind",        SkSLType::kInt },
-        { "csXformGamutTransform", SkSLType::kHalf3x3 },
-        { "csXformDstKind",        SkSLType::kInt },
-        { "csXformCoeffs",         SkSLType::kHalf4x4 },
+        { "csXformFlags",          SkSLType::kInt, true },
+        { "csXformSrcKind",        SkSLType::kInt, true },
+        { "csXformGamutTransform", SkSLType::kHalf3x3, true },
+        { "csXformDstKind",        SkSLType::kInt, true },
+        { "csXformCoeffs",         SkSLType::kHalf4x4, true },
 };
 
 static constexpr TextureAndSampler kISTexturesAndSamplers[] = {
@@ -1428,6 +1435,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kNone,
             { },     // no samplers
             kSolidShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPaintColorShader] = {
+            "PaintColor",
+            SkSpan(kPaintColorUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kPaintColorName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren
