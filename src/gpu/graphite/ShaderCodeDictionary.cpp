@@ -43,7 +43,7 @@ std::string get_mangled_uniform_name(const ShaderInfo& shaderInfo,
                                      const Uniform& uniform,
                                      int manglingSuffix) {
     std::string result;
-    result = uniform.name() + std::string("_") + std::to_string(manglingSuffix);
+    result = uniform.name1() + std::string("_") + std::to_string(manglingSuffix);
     if (shaderInfo.ssboIndex()) {
         result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
     }
@@ -233,13 +233,16 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     // API-independent ones.
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     if (step->numUniforms() > 0) {
+        Dude dude;
         preamble += EmitRenderStepUniforms(
-                /*bufferID=*/1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
+                &dude, /*bufferID=*/1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
     }
+    Dude dude;
     if (this->ssboIndex()) {
-        preamble += EmitPaintParamsStorageBuffer(/*bufferID=*/2, "FS", "fs", fRootNodes);
+        preamble += EmitPaintParamsStorageBuffer(&dude, /*bufferID=*/2, "FS", "fs", fRootNodes);
     } else {
         preamble += EmitPaintParamsUniforms(
+                &dude,
                 /*bufferID=*/2,
                 "FS",
                 useStorageBuffers ? bindingReqs.fStorageBufferLayout
@@ -776,6 +779,11 @@ static constexpr Uniform kSolidShaderUniforms[] = {
 };
 
 static constexpr char kSolidShaderName[] = "sk_solid_shader";
+
+//--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPaintColorUniforms[] = {
+        { "paintColor", SkSLType::kFloat4, Uniform::kNonArray, true }
+};
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kLocalMatrixShaderUniforms[] = {
@@ -1425,6 +1433,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSolidColorShader] = {
             "SolidColor",
             SkSpan(kSolidShaderUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kSolidShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPaintColorShader] = {
+            "PaintColor",
+            SkSpan(kPaintColorUniforms),
             SnippetRequirementFlags::kNone,
             { },     // no samplers
             kSolidShaderName,

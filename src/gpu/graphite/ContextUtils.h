@@ -83,15 +83,26 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 
-std::string EmitPaintParamsUniforms(int bufferID,
+class Dude {
+public:
+    bool alreadySeen() const { return fSeenIt; }
+    void seenIt() { fSeenIt = true;}
+
+    bool fSeenIt = false;
+};
+
+std::string EmitPaintParamsUniforms(Dude* dude,
+                                    int bufferID,
                                     const char* name,
                                     const Layout layout,
                                     SkSpan<const ShaderNode*> nodes);
-std::string EmitRenderStepUniforms(int bufferID,
+std::string EmitRenderStepUniforms(Dude* dude,
+                                   int bufferID,
                                    const char* name,
                                    const Layout layout,
                                    SkSpan<const Uniform> uniforms);
-std::string EmitPaintParamsStorageBuffer(int bufferID,
+std::string EmitPaintParamsStorageBuffer(Dude* dude,
+                                         int bufferID,
                                          const char* bufferTypePrefix,
                                          const char* bufferNamePrefix,
                                          SkSpan<const ShaderNode*> nodes);

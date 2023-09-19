@@ -97,17 +97,17 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderUniforms_FindOrCreateSnippetForRuntimeE
     REPORTER_ASSERT(reporter, snippet->fUniforms.size() == 3);
 
     REPORTER_ASSERT(reporter,
-                    std::string_view(snippet->fUniforms[0].name()) == "MyFloat3x3Uniform");
+                    std::string_view(snippet->fUniforms[0].name1()) == "MyFloat3x3Uniform");
     REPORTER_ASSERT(reporter, snippet->fUniforms[0].type() == SkSLType::kFloat3x3);
     REPORTER_ASSERT(reporter, snippet->fUniforms[0].count() == 0);
 
     REPORTER_ASSERT(reporter,
-                    std::string_view(snippet->fUniforms[1].name()) == "MyInt4ArrayUniform");
+                    std::string_view(snippet->fUniforms[1].name1()) == "MyInt4ArrayUniform");
     REPORTER_ASSERT(reporter, snippet->fUniforms[1].type() == SkSLType::kInt4);
     REPORTER_ASSERT(reporter, snippet->fUniforms[1].count() == 1);
 
     REPORTER_ASSERT(reporter,
-                    std::string_view(snippet->fUniforms[2].name()) == "MyHalf2ArrayUniform");
+                    std::string_view(snippet->fUniforms[2].name1()) == "MyHalf2ArrayUniform");
     REPORTER_ASSERT(reporter, snippet->fUniforms[2].type() == SkSLType::kHalf2);
     REPORTER_ASSERT(reporter, snippet->fUniforms[2].count() == 99);
 }
@@ -141,17 +141,17 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilterUniforms_FindOrCreateSnippetForRun
     REPORTER_ASSERT(reporter, snippet->fUniforms.size() == 3);
 
     REPORTER_ASSERT(reporter,
-                    std::string_view(snippet->fUniforms[0].name()) == "MyFloat3x3Uniform");
+                    std::string_view(snippet->fUniforms[0].name1()) == "MyFloat3x3Uniform");
     REPORTER_ASSERT(reporter, snippet->fUniforms[0].type() == SkSLType::kFloat3x3);
     REPORTER_ASSERT(reporter, snippet->fUniforms[0].count() == 0);
 
     REPORTER_ASSERT(reporter,
-                    std::string_view(snippet->fUniforms[1].name()) == "MyInt4ArrayUniform");
+                    std::string_view(snippet->fUniforms[1].name1()) == "MyInt4ArrayUniform");
     REPORTER_ASSERT(reporter, snippet->fUniforms[1].type() == SkSLType::kInt4);
     REPORTER_ASSERT(reporter, snippet->fUniforms[1].count() == 1);
 
     REPORTER_ASSERT(reporter,
-                    std::string_view(snippet->fUniforms[2].name()) == "MyHalf2ArrayUniform");
+                    std::string_view(snippet->fUniforms[2].name1()) == "MyHalf2ArrayUniform");
     REPORTER_ASSERT(reporter, snippet->fUniforms[2].type() == SkSLType::kHalf2);
     REPORTER_ASSERT(reporter, snippet->fUniforms[2].count() == 99);
 }

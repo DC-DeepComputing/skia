@@ -23,6 +23,7 @@ enum class BuiltInCodeSnippetID : int32_t {
 
     // SkShader code snippets
     kSolidColorShader,
+    kPaintColorShader,
     kLinearGradientShader4,
     kLinearGradientShader8,
     kLinearGradientShaderTexture,
