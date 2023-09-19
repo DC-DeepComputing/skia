@@ -316,17 +316,21 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
         }
 
         // - Nvidia -------------------------------------------------------------------------------
-        // Tegra3 fails to compile break stmts inside a for loop (b/40043561)
-        for (const char* test : {"Switch",
-                                 "SwitchDefaultOnly",
-                                 "SwitchWithFallthrough",
-                                 "SwitchWithFallthroughAndVarDecls",
-                                 "SwitchWithLoops",
-                                 "SwitchCaseFolding",
-                                 "LoopFloat",
-                                 "LoopInt",
-                                 "MatrixScalarNoOpFolding",  // b/40044644 - matrix trouble as well
-                                 "MatrixScalarMath"}) {      // b/40043764
+        // Tegra3 has several issues, but the inability to break from a for loop is a common theme.
+        for (const char* test : {"Switch",                            // b/40043561
+                                 "SwitchDefaultOnly",                 //  "      "
+                                 "SwitchWithFallthrough",             //  "      "
+                                 "SwitchWithFallthroughAndVarDecls",  //  "      "
+                                 "SwitchWithLoops",                   //  "      "
+                                 "SwitchCaseFolding",                 //  "      "
+                                 "LoopFloat",                         //  "      "
+                                 "LoopInt",                           //  "      "
+                                 "MatrixScalarNoOpFolding",           // b/40044644
+                                 "MatrixScalarMath",                  // b/40043764
+                                 "MatrixFoldingES2",                  // b/40043017
+                                 "MatrixEquality",                    // b/40043017
+                                 "IntrinsicFract",
+                                 "ModifiedStructParametersCannotBeInlined"}) {
             disables[test].push_back({regex("Tegra 3"), _, GPU, _});
         }
 
@@ -347,6 +351,29 @@ static bool failure_is_expected(std::string_view deviceName,    // "Geforce RTX4
         for (const char* test : {"PreserveSideEffects",  // b/40044140
                                  "CommaSideEffects"}) {
             disables[test].push_back({regex("Quadro P400"), _, _, kLinux});
+        }
+
+        // - PowerVR ------------------------------------------------------------------------------
+        for (const char* test : {"OutParamsAreDistinct"              // b/40044222
+                                 "OutParamsAreDistinctFromGlobal"}) {
+            disables[test].push_back({regex("PowerVR GE8320"), _, GPU, _});
+        }
+
+        // - Radeon -------------------------------------------------------------------------------
+        for (const char* test : {"IntrinsicAll",               // b/40045114
+                                 "MatrixConstructors",         // b/40043524
+                                 "MatrixScalarNoOpFolding",    // b/40044644
+                                 "StructIndexStore",           // b/40045236
+                                 "SwizzleIndexLookup",         // b/40045254
+                                 "SwizzleIndexStore"}) {       // b/40045254
+            disables[test].push_back({regex("Radeon (R9|HD)"), "OpenGL", GPU, _});
+        }
+
+        // Some Radeon GPUs don't return zero for the derivative of a uniform.
+        for (const char* test : {"IntrinsicDFdy",
+                                 "IntrinsicDFdx",
+                                 "IntrinsicFwidth"}) {
+            disables[test].push_back({regex("Radeon Vega 6"), _, GPU, _});
         }
 
         // - Adreno -------------------------------------------------------------------------------
