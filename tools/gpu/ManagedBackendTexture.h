@@ -16,17 +16,22 @@
 #endif
 #ifdef SK_GRAPHITE
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/Context.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #endif
 
 namespace skgpu {
 class RefCntedCallback;
 }
 namespace skgpu::graphite {
-class Context;
 class Recorder;
 }
 class SkBitmap;
 struct SkImageInfo;
+
+#ifdef SK_GRAPHITE
+using Recorder = skgpu::graphite::Recorder;
+#endif
 
 namespace sk_gpu_test {
 
@@ -146,7 +151,15 @@ inline sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeWithoutData(
  */
 class ManagedGraphiteTexture : public SkNVRefCnt<ManagedGraphiteTexture> {
 public:
-    static sk_sp<ManagedGraphiteTexture> MakeFromPixmap(skgpu::graphite::Recorder*,
+    /**
+     * Make a managed backend texture with initial pixmap/color data. The 'Args' are any valid set
+     * of arguments to Recorder::createBackendTexture that takes data but with the release
+     * proc/context omitted as the ManagedBackendTexture will provide them.
+     */
+    template <typename... Args>
+    static sk_sp<ManagedGraphiteTexture> MakeWithData(Recorder*, Args&&...);
+
+    static sk_sp<ManagedGraphiteTexture> MakeFromPixmap(Recorder*,
                                                         const SkPixmap&,
                                                         skgpu::Mipmapped,
                                                         skgpu::Renderable,
@@ -184,6 +197,18 @@ private:
     skgpu::graphite::Context* fContext;
     skgpu::graphite::BackendTexture fTexture;
 };
+
+template <typename... Args>
+inline sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeWithData(Recorder* recorder,
+                                                                          Args&&... args) {
+    sk_sp<ManagedGraphiteTexture> mbet(new ManagedGraphiteTexture);
+    mbet->fContext = recorder->priv().context();
+    mbet->fTexture = recorder->createBackendTexture(std::forward<Args>(args)...);
+
+    recorder->addFinishInfo({mbet->releaseContext(), FinishedProc});
+    return mbet;
+}
+
 #endif  // SK_GRAPHITE
 
 }  // namespace sk_gpu_test
