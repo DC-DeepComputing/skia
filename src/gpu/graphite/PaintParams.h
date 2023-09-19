@@ -73,15 +73,12 @@ public:
 
     void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
-    using AddToKeyFn = std::function<void()>;
-    static void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
-                      const SkBlender* blender, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
-
 private:
     void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
     void handlePrimitiveColor(const KeyContext&,
                               PaintParamsKeyBuilder*,
                               PipelineDataGatherer*) const;
+    void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
@@ -98,6 +95,13 @@ private:
     // TODO: Will also store ColorFilter, dither, and any extra shader from an
     // active clipShader().
 };
+
+using AddToKeyFn = std::function<void()>;
+
+void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+           AddToKeyFn addBlendToKey, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
+void Compose(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+             AddToKeyFn addInnerToKey, AddToKeyFn addOuterToKey);
 
 } // namespace skgpu::graphite
 
