@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71508049_e2b5dbc2",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-19T23:16:51Z",
+      "side": 1,
+      "message": "I think several removed tests had the `_Ganesh` suffix in the Go file. Does the `disables` map take that into account? It looks like the failing jobs actually ran these tests.",
+      "range": {
+        "startLine": 418,
+        "startChar": 34,
+        "endLine": 418,
+        "endChar": 64
+      },
+      "revId": "3097970aac8bc0de0abc46b2f7cf1a8b72190cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
