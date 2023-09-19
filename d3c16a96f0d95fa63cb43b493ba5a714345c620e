@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07009c54_07187f3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T12:18:25Z",
+      "side": 1,
+      "message": "Can you also add to //modules/canvaskit/CHANGELOG.md ?",
+      "revId": "d3c16a96f0d95fa63cb43b493ba5a714345c620e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "045de686_8641e46d",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 12
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T12:18:25Z",
+      "side": 1,
+      "message": "This is a bit hard to parse. Can you re-write with a nested if statement?\n\nAlso use either `glyphInfo[\u0027dir\u0027] \u003d\u003d\u003d 0` or `!glyphInfo[\u0027dir\u0027]` depending on whether you want it to be exactly 0 or falsy.",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 23,
+        "endChar": 48
+      },
+      "revId": "d3c16a96f0d95fa63cb43b493ba5a714345c620e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
