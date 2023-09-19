@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b58e6fb_d6e21615",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T13:54:45Z",
+      "side": 1,
+      "message": "PTAL. I moved the exposition to SkImageChromium.h to prevent it from spreading more broadly.",
+      "revId": "ec2c1456a545652f4703b80bc9fed17c63b04db2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
