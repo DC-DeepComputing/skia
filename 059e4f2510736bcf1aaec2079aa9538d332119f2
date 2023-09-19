@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2d929ad_a12a07e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-19T15:38:01Z",
+      "side": 1,
+      "message": "The reason for doing this is to both remove the old name (no longer makes sense) for this (which doesn\u0027t appear to be used anymore) as well as break off the non-harfbuzz parts from the harfbuzz file so that this could be used in other ways. This sets up a place to put a potential ICU base script and language iterator.",
+      "revId": "059e4f2510736bcf1aaec2079aa9538d332119f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
