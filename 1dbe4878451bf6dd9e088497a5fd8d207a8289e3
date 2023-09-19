@@ -22,6 +22,29 @@
       },
       "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f5b00f_b920ff5f",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-19T12:48:00Z",
+      "side": 1,
+      "message": "Please make this (and possibly kFileBasePath?) a parameter to the RasterTestDataIterator constructor, then add a command line flag to DM (which can use this as a default) so we can override this on the CI?\n\nThen, I plan to adopt this CL to make sure the CIPD package is put in the right spot and specified correctly when the task is running.",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
