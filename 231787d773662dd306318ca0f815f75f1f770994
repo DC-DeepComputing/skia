@@ -62,6 +62,23 @@
       },
       "revId": "231787d773662dd306318ca0f815f75f1f770994",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4141c104_b6b3f485",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2087,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-19T19:25:49Z",
+      "side": 1,
+      "message": "Are we missing an assert here?",
+      "revId": "231787d773662dd306318ca0f815f75f1f770994",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
