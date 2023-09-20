@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a743944_e055b3a7",
+        "filename": "src/core/SkImageFilter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-20T13:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "163a2a9b_64855c7b",
+      "range": {
+        "startLine": 243,
+        "startChar": 74,
+        "endLine": 243,
+        "endChar": 75
+      },
+      "revId": "231787d773662dd306318ca0f815f75f1f770994",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a87d408_836356db",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f0d7aa_1a13c1ce",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-20T13:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a87d408_836356db",
+      "range": {
+        "startLine": 925,
+        "startChar": 12,
+        "endLine": 925,
+        "endChar": 32
+      },
+      "revId": "231787d773662dd306318ca0f815f75f1f770994",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4141c104_b6b3f485",
@@ -77,6 +125,24 @@
       "writtenOn": "2023-09-19T19:25:49Z",
       "side": 1,
       "message": "Are we missing an assert here?",
+      "revId": "231787d773662dd306318ca0f815f75f1f770994",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdad83bd_a6cb597d",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2087,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-20T13:46:39Z",
+      "side": 1,
+      "message": "Good catch! Thankfully tests still pass when I add the assert that the bounds aren\u0027t empty.",
+      "parentUuid": "4141c104_b6b3f485",
       "revId": "231787d773662dd306318ca0f815f75f1f770994",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
