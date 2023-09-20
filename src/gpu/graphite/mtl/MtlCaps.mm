@@ -292,12 +292,14 @@ void MtlCaps::initShaderCaps() {
     shaderCaps->fShaderDerivativeSupport = true;
     shaderCaps->fInfinitySupport = true;
 
+#if 0
     if (@available(macOS 11.0, *)) {
         if (this->isApple()) {
             shaderCaps->fFBFetchSupport = true;
             shaderCaps->fFBFetchColorName = "sk_LastFragColor";
         }
     }
+#endif
 
     shaderCaps->fIntegerSupport = true;
     shaderCaps->fNonsquareMatrixSupport = true;
