@@ -22,6 +22,30 @@
       },
       "revId": "c33a325ea2836fe83dbd8f2d9f8ae9f1c7673d65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2919ca0a_68d831bc",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-20T16:42:53Z",
+      "side": 1,
+      "message": "As discussed, no. `GPUDDLSink` records to a picture, so we can\u0027t detect that case within the GM code while the GM is being drawn.",
+      "parentUuid": "3b14212f_1f2d1a13",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 63
+      },
+      "revId": "c33a325ea2836fe83dbd8f2d9f8ae9f1c7673d65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
