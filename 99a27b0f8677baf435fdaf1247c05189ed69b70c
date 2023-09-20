@@ -16,6 +16,24 @@
       "message": "Approving because you\u0027d know best, but are we sure we won\u0027t be wanting these methods sometime in the near future?",
       "revId": "99a27b0f8677baf435fdaf1247c05189ed69b70c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94734bee_b13e4667",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-20T17:10:57Z",
+      "side": 1,
+      "message": "We use `castScalarToType` to do this now. These methods became unreferenced in 2021: https://skia-review.googlesource.com/c/skia/+/392197/comment/d0b56e1d_cad6b83c/",
+      "parentUuid": "5a18e6d0_8d8151a6",
+      "revId": "99a27b0f8677baf435fdaf1247c05189ed69b70c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
