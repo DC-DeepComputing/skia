@@ -12,6 +12,8 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStrokeRec.h"
+#include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/compute/VelloComputeSteps.h"
 #include "third_party/vello/cpp/vello.h"
 
@@ -60,6 +62,35 @@ private:
     SkDEBUGCODE(int fLayers = 0;)
 };
 
+// TODO(b/301139790): This is a stop-gap solution to prevent overallocating Vello bump allocation
+// arena buffers when vello dispatches get recorded while some are in flight. These buffers are
+// transient and GPU-only. It is safe for multiple vello submissions to reuse the same set of
+// buffers as long as the submissions don't execute concurrently and the buffers are owned and
+// managed by a single Recorder.
+//
+// Probably a better long term solution is to have a mechanism for a Recording to track and allow
+// the reuse of buffer objects across tasks that are serialized.
+class VelloReusableBuffers final {
+public:
+    VelloReusableBuffers() = default;
+    ~VelloReusableBuffers() = default;
+
+    BufferView binData(size_t size, Recorder*);
+    BufferView tiles(size_t size, Recorder*);
+    BufferView segments(size_t size, Recorder*);
+    BufferView ptcl(size_t size, Recorder*);
+
+    void reset();
+
+private:
+    BufferView allocateIfNeeded(size_t, sk_sp<Buffer>*, Recorder*);
+
+    sk_sp<Buffer> fBinData;
+    sk_sp<Buffer> fTiles;
+    sk_sp<Buffer> fSegments;
+    sk_sp<Buffer> fPtcl;
+};
+
 class VelloRenderer final {
 public:
     explicit VelloRenderer(const Caps*);
@@ -80,7 +111,8 @@ public:
     std::unique_ptr<DispatchGroup> renderScene(const RenderParams&,
                                                const VelloScene&,
                                                sk_sp<TextureProxy> target,
-                                               Recorder*) const;
+                                               Recorder*,
+                                               VelloReusableBuffers*) const;
 
 private:
     // Pipelines
