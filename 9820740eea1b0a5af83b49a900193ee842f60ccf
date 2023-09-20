@@ -16,6 +16,24 @@
       "message": "What happens if someone wants to build iOS for GL?",
       "revId": "9820740eea1b0a5af83b49a900193ee842f60ccf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "049a7480_9615ff7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-20T18:51:40Z",
+      "side": 1,
+      "message": "That define gets set later in the process",
+      "parentUuid": "6341d7f7_f830df86",
+      "revId": "9820740eea1b0a5af83b49a900193ee842f60ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
