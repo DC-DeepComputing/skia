@@ -117,6 +117,30 @@
       },
       "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3588d1dc_eda22817",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-20T12:45:00Z",
+      "side": 1,
+      "message": "Yes, that seems reasonable to me.",
+      "parentUuid": "19fdc8d0_21be7362",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
