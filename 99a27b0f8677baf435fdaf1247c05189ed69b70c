@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a18e6d0_8d8151a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-20T16:35:28Z",
+      "side": 1,
+      "message": "Approving because you\u0027d know best, but are we sure we won\u0027t be wanting these methods sometime in the near future?",
+      "revId": "99a27b0f8677baf435fdaf1247c05189ed69b70c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
