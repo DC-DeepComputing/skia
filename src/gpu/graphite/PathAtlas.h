@@ -138,7 +138,7 @@ class DispatchGroup;
 class ComputePathAtlas : public PathAtlas {
 public:
     ComputePathAtlas();
-    virtual std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const = 0;
+    virtual std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) = 0;
 
 protected:
     MaskFormat coverageMaskFormat(const Caps*) const override;
@@ -152,18 +152,20 @@ protected:
 class VelloComputePathAtlas final : public ComputePathAtlas {
 public:
     // Record the compute dispatches that will draw the atlas contents.
-    std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const override;
+    std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) override;
 
 private:
     void onAddShape(
             const Shape&, const Transform&, const Rect&, skvx::int2, const SkStrokeRec&) override;
     void onReset() override {
         fScene.reset();
+        fReusableBuffers.reset();
         fOccuppiedWidth = fOccuppiedHeight = 0;
     }
 
     // Contains the encoded scene buffer data that serves as the input to a vello compute pass.
     VelloScene fScene;
+    VelloReusableBuffers fReusableBuffers;
 
     // Occuppied bounds of the atlas
     uint32_t fOccuppiedWidth = 0;

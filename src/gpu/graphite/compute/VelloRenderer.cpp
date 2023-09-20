@@ -21,7 +21,6 @@
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/UniformManager.h"
-#include "src/gpu/graphite/compute/DispatchGroup.h"
 
 #include <algorithm>
 
@@ -216,6 +215,47 @@ void VelloScene::popClipLayer() {
     SkDEBUGCODE(fLayers--;)
 }
 
+BufferView VelloReusableBuffers::binData(size_t size, Recorder* recorder) {
+    return this->allocateIfNeeded(size, &fBinData, recorder);
+}
+
+BufferView VelloReusableBuffers::tiles(size_t size, Recorder* recorder) {
+    return this->allocateIfNeeded(size, &fTiles, recorder);
+}
+
+BufferView VelloReusableBuffers::segments(size_t size, Recorder* recorder) {
+    return this->allocateIfNeeded(size, &fSegments, recorder);
+}
+
+BufferView VelloReusableBuffers::ptcl(size_t size, Recorder* recorder) {
+    return this->allocateIfNeeded(size, &fPtcl, recorder);
+}
+
+void VelloReusableBuffers::reset() {
+    fBinData = nullptr;
+    fTiles = nullptr;
+    fSegments = nullptr;
+    fPtcl = nullptr;
+}
+
+BufferView VelloReusableBuffers::allocateIfNeeded(size_t size,
+                                                  sk_sp<Buffer>* owner,
+                                                  Recorder* recorder) {
+    SkASSERT(owner);
+    SkASSERT(recorder);
+    SkASSERT(size > 0u);
+
+    if (!owner->get()) {
+        *owner = recorder->priv().resourceProvider()->findOrCreateBuffer(
+                SkAlignTo(size, 256), BufferType::kStorage, AccessPattern::kGpuOnly);
+    }
+    // TODO: This should support resizing these buffers so we can support smaller conservative
+    // estimates. A DispatchGroup currently doesn't take ownership of buffer bindings, so to support
+    // reallocating we need to ensure that somebody adds a usage ref to the buffer.
+    SkASSERT((*owner)->size() >= size);
+    return {{/*buffer=*/owner->get(), /*offset=*/0u}, size};
+}
+
 VelloRenderer::VelloRenderer(const Caps* caps)
         // We currently use the fine stage to rasterize a coverage mask. For full compositing, we
         // should instantiate a second variant of fine with a different color format.
@@ -241,10 +281,12 @@ VelloRenderer::VelloRenderer(const Caps* caps)
 
 VelloRenderer::~VelloRenderer() = default;
 
-std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& params,
-                                                          const VelloScene& scene,
-                                                          sk_sp<TextureProxy> target,
-                                                          Recorder* recorder) const {
+std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(
+        const RenderParams& params,
+        const VelloScene& scene,
+        sk_sp<TextureProxy> target,
+        Recorder* recorder,
+        VelloReusableBuffers* reusableBuffers) const {
     SkASSERT(target);
 
     if (scene.fEncoding->is_empty()) {
@@ -352,7 +394,8 @@ std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& pa
     // draw_leaf
     builder.assignSharedBuffer(new_storage_slice(bufMgr, bufferSizes.draw_monoids),
                                kVelloSlot_DrawMonoid);
-    builder.assignSharedBuffer(new_storage_slice(bufMgr, bin_data_size), kVelloSlot_InfoBinData);
+    builder.assignSharedBuffer(reusableBuffers->binData(bin_data_size, recorder),
+                               kVelloSlot_InfoBinData);
     // A clip input buffer must still get bound even if the encoding doesn't contain any clips
     builder.assignSharedBuffer(new_storage_slice(bufMgr, std::max(1u, bufferSizes.clip_inps)),
                                kVelloSlot_ClipInput);
@@ -391,18 +434,19 @@ std::unique_ptr<DispatchGroup> VelloRenderer::renderScene(const RenderParams& pa
 
     // tile_alloc
     builder.assignSharedBuffer(new_storage_slice(bufMgr, bufferSizes.paths), kVelloSlot_Path);
-    builder.assignSharedBuffer(new_storage_slice(bufMgr, tiles_size), kVelloSlot_Tile);
+    builder.assignSharedBuffer(reusableBuffers->tiles(tiles_size, recorder), kVelloSlot_Tile);
     builder.appendStep(&fTileAlloc, to_wg_size(dispatchInfo.tile_alloc));
 
     // path_coarse
-    builder.assignSharedBuffer(new_storage_slice(bufMgr, segments_size), kVelloSlot_Segments);
+    builder.assignSharedBuffer(reusableBuffers->segments(segments_size, recorder),
+                               kVelloSlot_Segments);
     builder.appendStep(&fPathCoarseFull, to_wg_size(dispatchInfo.path_coarse));
 
     // backdrop
     builder.appendStep(&fBackdropDyn, to_wg_size(dispatchInfo.backdrop));
 
     // coarse
-    builder.assignSharedBuffer(new_storage_slice(bufMgr, ptcl_size), kVelloSlot_PTCL);
+    builder.assignSharedBuffer(reusableBuffers->ptcl(ptcl_size, recorder), kVelloSlot_PTCL);
     builder.appendStep(&fCoarse, to_wg_size(dispatchInfo.coarse));
 
     // fine
