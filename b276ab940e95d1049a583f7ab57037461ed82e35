@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6745994e_ba3db12b",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-20T16:05:44Z",
+      "side": 1,
+      "message": "Not really. The GPU backend might honor that, but the CPU backend still has code that checks if the shader returns true for `isConstant` and does up-front simplification of the paint.",
+      "parentUuid": "ebd7a15e_5aaffc91",
+      "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "274b855c_2a18c3ba",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4011f397_b9faeae2",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-20T16:05:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "274b855c_2a18c3ba",
+      "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "464c769e_7551b3ed",
@@ -65,6 +101,30 @@
       "writtenOn": "2023-09-20T15:52:34Z",
       "side": 1,
       "message": "blackShader ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 21
+      },
+      "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1c258ba_8501e29f",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-20T16:05:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "464c769e_7551b3ed",
       "range": {
         "startLine": 75,
         "startChar": 9,
