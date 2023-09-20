@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfc70e23_6e6351d0",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-20T20:15:16Z",
+      "side": 1,
+      "message": "I believe we should invalidate the texture to enforce that we should not attempt to use that BackendTexture. Th GraphiteLazyTextureInvalidDimensions test specifically checks for that, at least. \n\nI\u0027m not sure if we need to be setting it to a default BackndTexture() or if we can just set the TextureInfo attribute to invalid, but either way, this likely shouldn\u0027t be const.",
+      "parentUuid": "ae9910f0_6b3e7284",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd206d57_43fe6bce",
         "filename": "tools/gpu/BackendTextureImageFactory.cpp",
         "patchSetId": 11
