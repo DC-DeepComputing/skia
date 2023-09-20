@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bad101c_d82285d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-20T20:08:44Z",
+      "side": 1,
+      "message": "The iterator construction is non-trivial cost, right? So this pretty much makes it proportional to the number of language changes in the text? Not a problem, just want to understand the tradeoffs (and the potential failure modes).",
+      "revId": "9ec0815bd8772ec82489c6d8f0f1abc60e32da13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "286c0f73_3c19eb77",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-20T20:08:44Z",
+      "side": 1,
+      "message": "Will this ever be the empty string? If not, we could get rid of `needIteratorInit`, right? (Or just initialize `currentLanguage` to something like `\"\u003cINVALID\u003e\"`)?",
+      "range": {
+        "startLine": 1006,
+        "startChar": 56,
+        "endLine": 1006,
+        "endChar": 82
+      },
+      "revId": "9ec0815bd8772ec82489c6d8f0f1abc60e32da13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
