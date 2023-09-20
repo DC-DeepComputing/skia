@@ -2009,7 +2009,6 @@ PORTS_SRCS_IOS = [
     "src/ports/SkFontMgr_mac_ct_factory.cpp",
     "src/ports/SkGlobalInitialization_default.cpp",
     "src/ports/SkImageGenerator_skia.cpp",
-    "src/ports/SkImageGeneratorCG.cpp",
     "src/ports/SkMemory_malloc.cpp",
     "src/ports/SkOSFile_ios.h",
     "src/ports/SkOSFile_posix.cpp",
@@ -2238,7 +2237,6 @@ ANDROID_DEFINES = [
 ]
 IOS_DEFINES = [
     "SK_BUILD_FOR_IOS",
-    "SK_GL",
     "SK_CODEC_DECODES_JPEG",
 ]
 WASM_DEFINES = [
