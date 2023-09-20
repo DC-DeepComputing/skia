@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14a3f5e7_03fad647",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-20T16:00:36Z",
+      "side": 1,
+      "message": "Unfortunately, there are still users of SkShaper::MakeIcuBiDiRunIterator even though it is rather inefficient and misnamed. So I have to keep it for now. However, I changed too much and now need another +1.",
+      "revId": "101c532c64696a49ba43f8bed3b3dbfae38b7344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
