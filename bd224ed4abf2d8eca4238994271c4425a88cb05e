@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9170dd8d_7d5d17ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-20T16:59:52Z",
+      "side": 1,
+      "message": "PTAL. This gets it working in the core use case.",
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
