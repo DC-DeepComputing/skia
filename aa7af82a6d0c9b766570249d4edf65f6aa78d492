@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "829ca105_4d0a3398",
+        "filename": "tools/unicode_comparison/go/helpers/helpers.go",
+        "patchSetId": 71
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-20T20:19:27Z",
+      "side": 1,
+      "message": "If this is no longer used, please remove.",
+      "range": {
+        "startLine": 39,
+        "startChar": 5,
+        "endLine": 39,
+        "endChar": 11
+      },
+      "revId": "aa7af82a6d0c9b766570249d4edf65f6aa78d492",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
