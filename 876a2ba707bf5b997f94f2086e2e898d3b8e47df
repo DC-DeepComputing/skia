@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae9910f0_6b3e7284",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-20T15:46:11Z",
+      "side": 1,
+      "message": "It may be fine to not invalidate it, but I defer to Greg on that. However if we do decide to invalidate it, by convention we should be passing it as BackendTexture*, not BackendTexture\u0026, so it\u0027s clear that the method changes its value.",
+      "parentUuid": "0dcd2bf5_eeadc451",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd206d57_43fe6bce",
         "filename": "tools/gpu/BackendTextureImageFactory.cpp",
         "patchSetId": 11
