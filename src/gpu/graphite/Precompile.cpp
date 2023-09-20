@@ -109,14 +109,17 @@ DstReadRequirement get_dst_read_req(const Caps* caps,
 }
 
 void PaintOptions::addPaintColorToKey(const KeyContext& keyContext,
-                                      PaintParamsKeyBuilder* keyBuilder,
+                                      PaintParamsKeyBuilder* builder,
                                       int desiredShaderCombination) const {
-    if (!fShaderOptions.empty()) {
-        PrecompileBase::AddToKey(keyContext, keyBuilder, fShaderOptions, desiredShaderCombination);
+    auto [shaderOption, childOptions] = PrecompileBase::SelectOption(fShaderOptions,
+                                                                     desiredShaderCombination);
+
+    if (shaderOption) {
+        shaderOption->priv().addToKey(keyContext, childOptions, builder);
     } else {
-        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
                                           {1, 0, 0, 1});
-        keyBuilder->endBlock();
+        builder->endBlock();
     }
 }
 
@@ -222,16 +225,26 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     // TODO: this probably needs to be passed in just like addPrimitiveBlender
     const bool kNonOpaquePaintColor = false;
 
-    this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
-                           addPrimitiveBlender, kNonOpaquePaintColor);
+    if (!fColorFilterOptions.empty()) {
+        Compose(keyContext, keyBuilder, /* gatherer= */ nullptr,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
+                                           addPrimitiveBlender, kNonOpaquePaintColor);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
+                                             desiredColorFilterCombination);
+                });
+    } else {
+        this->handlePaintAlpha(keyContext, keyBuilder, desiredShaderCombination,
+                               addPrimitiveBlender, kNonOpaquePaintColor);
+    }
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
                              desiredMaskFilterCombination);
-    PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
-                             desiredColorFilterCombination);
 
-    sk_sp<PrecompileBlender> blender =
-            PrecompileBase::SelectOption(fBlenderOptions, desiredBlendCombination);
+    auto [blender, _] = PrecompileBase::SelectOption(fBlenderOptions, desiredBlendCombination);
+
     std::optional<SkBlendMode> finalBlendMode = blender ? blender->asBlendMode()
                                                         : SkBlendMode::kSrcOver;
     if (dstReadReq != DstReadRequirement::kNone) {
