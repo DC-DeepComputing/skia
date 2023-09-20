@@ -16,6 +16,63 @@
       "message": "Can confirm that this produced incorrect results before my fix.",
       "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebd7a15e_5aaffc91",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-20T15:52:34Z",
+      "side": 1,
+      "message": "Can we use SkShaders::Color for this now ?",
+      "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "274b855c_2a18c3ba",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-20T15:52:34Z",
+      "side": 1,
+      "message": "I guess should all these helpers be static or in an anonymous namespace ?",
+      "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "464c769e_7551b3ed",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-20T15:52:34Z",
+      "side": 1,
+      "message": "blackShader ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 21
+      },
+      "revId": "b276ab940e95d1049a583f7ab57037461ed82e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
