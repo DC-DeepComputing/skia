@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1488389d_6e90c990",
+        "filename": "tests/FontationsFtCompTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-20T10:13:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cebb9e4_b19ce62f",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43f5b00f_b920ff5f",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "On second thought a constructor might be a touch difficult logistics wise, given that DM doesn\u0027t have a great mechanism (that I know of) to pass in an object to a specific test.\n\nMaybe have DM call a static function which sets a global variable or something like that?",
       "parentUuid": "43f5b00f_b920ff5f",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "1dbe4878451bf6dd9e088497a5fd8d207a8289e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19fdc8d0_21be7362",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-20T10:13:31Z",
+      "side": 1,
+      "message": "I now added a `CommonFlags` affordance for configuring the fontTestData path based on a global variable. Locally tested with tests commented in and \n\n```\n$ dm --fontTestDataPath third_party/externals/googlefonts_testdata/data/ -m \u0027Fontations_NotoSans$\u0027\n```\n\nFor ease of landing, I commented the tests out for now. \nMy idea was, if you create a forthcoming change to to pass the path to DM, you could in the same CL comment-in the tests for being tested.",
+      "parentUuid": "95447360_0987a410",
       "range": {
         "startLine": 13,
         "startChar": 11,
