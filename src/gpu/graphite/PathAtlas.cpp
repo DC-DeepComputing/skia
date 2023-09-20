@@ -109,7 +109,7 @@ SkColorType ComputePathAtlas::coverageMaskFormat(const Caps* caps) const {
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 
-std::unique_ptr<DispatchGroup> VelloComputePathAtlas::recordDispatches(Recorder* recorder) const {
+std::unique_ptr<DispatchGroup> VelloComputePathAtlas::recordDispatches(Recorder* recorder) {
     if (!this->texture()) {
         return nullptr;
     }
@@ -119,7 +119,8 @@ std::unique_ptr<DispatchGroup> VelloComputePathAtlas::recordDispatches(Recorder*
             {fOccuppiedWidth, fOccuppiedHeight, SkColors::kBlack},
             fScene,
             sk_ref_sp(this->texture()),
-            recorder);
+            recorder,
+            &fReusableBuffers);
 }
 
 void VelloComputePathAtlas::onAddShape(const Shape& shape,
