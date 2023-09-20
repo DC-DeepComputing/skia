@@ -368,14 +368,6 @@ struct ColorSpaceTransformBlock {
 };
 
 /**
- * Dst blend blocks are used to blend the output of a shader with a color attachment.
- */
-void AddDstBlendBlock(const KeyContext&,
-                      PaintParamsKeyBuilder*,
-                      PipelineDataGatherer*,
-                      const SkBlender*);
-
-/**
  * Blend mode color filters blend their input (as the dst color) with some given color (supplied
  * via a uniform) as the src color.
  */
