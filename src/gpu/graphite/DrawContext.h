@@ -88,8 +88,9 @@ public:
     // supported.
     //
     // TODO: Should this be explicit about how the atlas gets drawn (i.e. GPU compute vs CPU)?
-    // Currently this is assumed to use GPU compute atlas. Maybe the PathAtlas class should report
-    // its rendering algorithm to aid the renderer selection in `chooseRenderer`?
+    // Currently we assume a single atlas. Maybe the PathAtlas class should report
+    // its rendering algorithm to aid the renderer selection in `chooseRenderer`, or perhaps
+    // we should pass in rendering data to make the choice here?
     PathAtlas* getOrCreatePathAtlas(Recorder*);
 
     // Ends the current DrawList being accumulated by the SDC, converting it into an optimized and
