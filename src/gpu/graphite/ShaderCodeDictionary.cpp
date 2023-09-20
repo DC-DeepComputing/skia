@@ -581,24 +581,19 @@ std::string GenerateDstReadSampleExpression(const ShaderInfo& shaderInfo,
             get_mangled_uniform_name(shaderInfo, entry->fUniforms[0], node->keyIndex());
     std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, node->keyIndex());
 
-    return SkSL::String::printf("%s(%s, %s, %s)",
+    return SkSL::String::printf("%s(%s, %s)",
                                 helperFnName.c_str(),
-                                args.fPriorStageOutput.data(),
                                 coords.c_str(),
                                 sampler.c_str());
 }
 
-// Emit a surfaceColor global, and a function that passes through a half4 value and initializes
-// surfaceColor as a side effect.
 std::string GenerateDstReadSamplePreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
     std::string helperFnName =
             get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
 
     return SkSL::String::printf(
-            "half4 surfaceColor;"
-            "half4 %s(half4 priorStageOutput, float4 coords, sampler2D dstSampler) {"
-                "surfaceColor = sample(dstSampler, (sk_FragCoord.xy - coords.xy) * coords.zw);"
-                "return priorStageOutput;"
+            "half4 %s(float4 coords, sampler2D dstSampler) {"
+                "return sample(dstSampler, (sk_FragCoord.xy - coords.xy) * coords.zw);"
             "}",
             helperFnName.c_str());
 }
@@ -607,26 +602,7 @@ std::string GenerateDstReadSamplePreamble(const ShaderInfo& shaderInfo, const Sh
 std::string GenerateDstReadFetchExpression(const ShaderInfo& shaderInfo,
                                            const ShaderNode* node,
                                            const ShaderSnippet::Args& args) {
-    std::string helperFnName =
-            get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
-
-    return SkSL::String::printf(
-            "%s(%s)",
-            helperFnName.c_str(),
-            args.fPriorStageOutput.data());
-}
-
-std::string GenerateDstReadFetchPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
-    std::string helperFnName =
-            get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
-
-    return SkSL::String::printf(
-            "half4 surfaceColor;"
-            "half4 %s(half4 priorStageOutput) {"
-                "surfaceColor = sk_LastFragColor;"
-                "return priorStageOutput;"
-            "}",
-            helperFnName.c_str());
+    return SkSL::String::printf("sk_LastFragColor");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1734,7 +1710,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             { },     // no samplers
             "InitSurfaceColor",
             GenerateDstReadFetchExpression,
-            GenerateDstReadFetchPreamble,
+            GenerateDefaultPreamble,
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
