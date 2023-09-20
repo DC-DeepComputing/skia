@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cccf509e_26b85475",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-20T13:12:54Z",
+      "side": 1,
+      "message": "Waiting on one more change in Android: http://ag/24810780",
+      "revId": "3882f919da28f1784f48f9b8d6e3d716bf25a5be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
