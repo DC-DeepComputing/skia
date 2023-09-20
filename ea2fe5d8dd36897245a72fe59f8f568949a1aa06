@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef04e09f_e8782a3d",
+        "filename": "tools/unicode_comparison/cpp/bridge.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae762f56_d49af4e2",
+      "range": {
+        "startLine": 66,
+        "startChar": 24,
+        "endLine": 66,
+        "endChar": 35
+      },
+      "revId": "ea2fe5d8dd36897245a72fe59f8f568949a1aa06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a53868f0_35ee4aa3",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-19T12:29:51Z",
       "side": 1,
       "message": "nit: `cs :\u003d C.CString(text)`\n\nHere and below.\n\nvar is typically only used when declaring a module variable or when we are instantiating something to its zero value.",
+      "range": {
+        "startLine": 44,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 9
+      },
+      "revId": "ea2fe5d8dd36897245a72fe59f8f568949a1aa06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08c3e511_07c22967",
+        "filename": "tools/unicode_comparison/go/bridge/bridge.go",
+        "patchSetId": 67
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a53868f0_35ee4aa3",
       "range": {
         "startLine": 44,
         "startChar": 1,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d798acfc_b5c0e168",
+        "filename": "tools/unicode_comparison/go/extract_info/main.go",
+        "patchSetId": 67
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a88a723_70b2ff8c",
+      "range": {
+        "startLine": 85,
+        "startChar": 2,
+        "endLine": 85,
+        "endChar": 13
+      },
+      "revId": "ea2fe5d8dd36897245a72fe59f8f568949a1aa06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4b2de34_0098e3d4",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-09-19T12:29:51Z",
       "side": 1,
       "message": "By moving these helpers into their own package, you will now need to export them (change their name to be uppercase) and then import import them and refer to them like `helpers.Check`",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 10
+      },
+      "revId": "ea2fe5d8dd36897245a72fe59f8f568949a1aa06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54714ed4_5531166b",
+        "filename": "tools/unicode_comparison/go/helpers/helpers.go",
+        "patchSetId": 67
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4b2de34_0098e3d4",
       "range": {
         "startLine": 14,
         "startChar": 5,

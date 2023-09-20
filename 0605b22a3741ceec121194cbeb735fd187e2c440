@@ -2080,6 +2080,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c18a0be4_c7f63270",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8d06c40_955dd126",
+      "range": {
+        "startLine": 171,
+        "startChar": 26,
+        "endLine": 171,
+        "endChar": 27
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7169027_4640cb0f",
@@ -2291,6 +2315,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6660a3ac_62593bdc",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a391cb7_c64c275e",
+      "range": {
+        "startLine": 504,
+        "startChar": 1,
+        "endLine": 504,
+        "endChar": 11
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df5bdec0_22ef2d8a",
@@ -2352,6 +2400,30 @@
       "side": 1,
       "message": "```\nvar deltaGraphemes Ratio\ndeltaGraphemes, delta.Data.Missing.Graphemes \u003d compareLines(expected.Graphemes, actual.Graphemes, true, true)\n```",
       "parentUuid": "70cb82be_ae078cf4",
+      "range": {
+        "startLine": 591,
+        "startChar": 25,
+        "endLine": 591,
+        "endChar": 29
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d63b8b4_7383733c",
+        "filename": "tools/unicode_comparison/go/generate_table.go",
+        "patchSetId": 55
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e3f832d_6d7f42ac",
       "range": {
         "startLine": 591,
         "startChar": 25,
@@ -3326,6 +3398,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0afd7ae2_9f9b06b1",
+        "filename": "tools/unicode_comparison/html/index.html",
+        "patchSetId": 55
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8c3fbbc_f1ce05fb",
+      "range": {
+        "startLine": 18,
+        "startChar": 61,
+        "endLine": 18,
+        "endChar": 66
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bc575ca_7a99c56e",
@@ -3349,6 +3445,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5b36f9c_b050dd98",
+        "filename": "tools/unicode_comparison/html/scripts.html",
+        "patchSetId": 55
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bc575ca_7a99c56e",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 58
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "744b1401_874cb368",
@@ -3362,6 +3482,30 @@
       "writtenOn": "2023-09-13T17:04:05Z",
       "side": 1,
       "message": "If this was the only thing you need JQuery for, you could use https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector or\nhttps://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll\n\nand drop the dependency on JQuery",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 3
+      },
+      "revId": "0605b22a3741ceec121194cbeb735fd187e2c440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5379f09_7bbd7e47",
+        "filename": "tools/unicode_comparison/html/scripts.html",
+        "patchSetId": 55
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-09-20T20:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "744b1401_874cb368",
       "range": {
         "startLine": 43,
         "startChar": 2,
