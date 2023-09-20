@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdec3421_c75b9204",
+        "filename": "src/gpu/graphite/AtlasProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-20T14:17:06Z",
+      "side": 1,
+      "message": "The SoftwarePathRenderer uses A8 because it\u0027s only doing uploads, but won\u0027t it still fail to create a TextureProxy here in Dawn?",
+      "range": {
+        "startLine": 46,
+        "startChar": 31,
+        "endLine": 46,
+        "endChar": 42
+      },
+      "revId": "5eb553dad57dc0a75468ce521dc3d883b42321fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10bcfacf_f506bc8d",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-20T14:17:06Z",
+      "side": 1,
+      "message": "\"Return a TextureProxy with the given dimensions and color type?\"",
+      "range": {
+        "startLine": 46,
+        "startChar": 17,
+        "endLine": 46,
+        "endChar": 24
+      },
+      "revId": "5eb553dad57dc0a75468ce521dc3d883b42321fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
