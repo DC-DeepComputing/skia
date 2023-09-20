@@ -22,6 +22,30 @@
       },
       "revId": "3097970aac8bc0de0abc46b2f7cf1a8b72190cb7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98316f69_91300d38",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-20T00:01:46Z",
+      "side": 1,
+      "message": "The Ganesh vs Graphite distinction is done via an enum in the C++ version:\nhttps://osscs.corp.google.com/skia/skia/+/main:tests/SkSLTest.cpp;l\u003d241;drc\u003d8aafaa3e4320343662ec525065fc4f5798af5257\n\nThe unit test name is `SkSL##name##_Ganesh` which gives that prefix/suffix but we only pass `#name` to the `test_ganesh` helper (same for Graphite).\n\nErrors are usually because I guessed the GL_RENDERER name wrong, or I scoped the test too tightly. The scopes aren\u0027t a perfect 1:1 mapping from go, since a lot of things are expressed slightly differently, e.g. `!b.extraConfig(\"Vulkan\")` is often used to mean OpenGL, but it could also match/disable in ANGLE or Metal, etc.",
+      "parentUuid": "71508049_e2b5dbc2",
+      "range": {
+        "startLine": 418,
+        "startChar": 34,
+        "endLine": 418,
+        "endChar": 64
+      },
+      "revId": "3097970aac8bc0de0abc46b2f7cf1a8b72190cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
