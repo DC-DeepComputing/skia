@@ -301,6 +301,8 @@ void DrawContext::snapPathAtlasDispatches(Recorder* recorder) {
         SkASSERT(fPendingDraws->hasCoverageMaskDraws());
         fDispatchGroups.push_back(std::move(dispatchGroup));
     }
+
+    // TODO: Transfer ownership of the vello scene and reused buffers to the Recording
     fComputePathAtlas->reset();
 }
 
