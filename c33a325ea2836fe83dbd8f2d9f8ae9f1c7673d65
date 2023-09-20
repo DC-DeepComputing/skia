@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b14212f_1f2d1a13",
+        "filename": "gm/workingspace.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-20T15:55:16Z",
+      "side": 1,
+      "message": "Can we see if the canvas has a recordingContext but that recordingContext isn\u0027t a directContext ?",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 63
+      },
+      "revId": "c33a325ea2836fe83dbd8f2d9f8ae9f1c7673d65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
