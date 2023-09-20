@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2160462_6eeebb28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-20T20:57:41Z",
+      "side": 1,
+      "message": "Yes. That being said, that\u0027s what all the caching is for. The reality is that there are currently five or so different iterators and on a sane system (not Android) that\u0027s all we will create. We are creating a new one to return each time (they have mutable state, so cannot share them) which is why there is the language check, but it will usually be a clone of one in the cache (which is a \"new\" but that\u0027s about it). The reality is that outside of a few tests I\u0027ve never seen anyone change the language in a single shaping call.\n\nThat being said, we could also do somewhat better and set a language/break iterator pair on the shaper itself to have a cache of one iterator on the shaper object itself, so that multiple calls to the same shaper with the same language cache use the same one. However, that does mean holding onto the break iterator, I\u0027m not sure how big that is.",
+      "parentUuid": "9bad101c_d82285d7",
+      "revId": "9ec0815bd8772ec82489c6d8f0f1abc60e32da13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "286c0f73_3c19eb77",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-09-20T20:08:44Z",
       "side": 1,
       "message": "Will this ever be the empty string? If not, we could get rid of `needIteratorInit`, right? (Or just initialize `currentLanguage` to something like `\"\u003cINVALID\u003e\"`)?",
+      "range": {
+        "startLine": 1006,
+        "startChar": 56,
+        "endLine": 1006,
+        "endChar": 82
+      },
+      "revId": "9ec0815bd8772ec82489c6d8f0f1abc60e32da13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0c7131_136101c0",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-20T20:57:41Z",
+      "side": 1,
+      "message": "Yeah, unfortunately there is nothing preventing this from being the empty string (or any other value for that matter).",
+      "parentUuid": "286c0f73_3c19eb77",
       "range": {
         "startLine": 1006,
         "startChar": 56,
