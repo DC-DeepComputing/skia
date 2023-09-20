@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dcd2bf5_eeadc451",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-20T15:21:39Z",
+      "side": 1,
+      "message": "So, for `ResourceProvider::deleteBackendTexture` we invalidate the BackendTexture by reassigning it to a new/blank one, prohibiting us from declaring it as const. Should I keep this as-is or explore a different way to invalidate the BackendTexture?",
+      "parentUuid": "f743831d_d6195252",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd206d57_43fe6bce",
         "filename": "tools/gpu/BackendTextureImageFactory.cpp",
         "patchSetId": 11
@@ -54,6 +78,30 @@
       "writtenOn": "2023-09-19T20:31:46Z",
       "side": 1,
       "message": "we shouldn\u0027t need this cast here.",
+      "range": {
+        "startLine": 100,
+        "startChar": 15,
+        "endLine": 100,
+        "endChar": 31
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccb7517f_50afc411",
+        "filename": "tools/gpu/BackendTextureImageFactory.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-20T15:21:39Z",
+      "side": 1,
+      "message": "Yep, you\u0027re totally right, thanks",
+      "parentUuid": "bd206d57_43fe6bce",
       "range": {
         "startLine": 100,
         "startChar": 15,
