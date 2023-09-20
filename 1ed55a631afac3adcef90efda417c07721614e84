@@ -50,6 +50,24 @@
       "message": "We have some clients who are building for tvOS, and Ganesh supports iOS/tvOS 10, so we\u0027ll need to put these in @available blocks just for that case (rasterSampleCount isn\u0027t available in tvOS until 11).",
       "revId": "1ed55a631afac3adcef90efda417c07721614e84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa1bb5b5_7e23d600",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19324
+      },
+      "writtenOn": "2023-09-20T23:27:12Z",
+      "side": 1,
+      "message": "Oh wow. Sorry, didn’t think that I had to handle the case of going back that far. Will revise.",
+      "parentUuid": "113a7aa0_69f7a4b3",
+      "revId": "1ed55a631afac3adcef90efda417c07721614e84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
