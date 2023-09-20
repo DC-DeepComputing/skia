@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86433df2_de8d5ec2",
+        "filename": "src/gpu/graphite/AtlasProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-20T17:21:29Z",
+      "side": 1,
+      "message": "Good point, yes, the texture proxy will fail to instantiate later if format is A8 on Dawn. The software path renderer doesn\u0027t need a storage texture but one that can be sampled. It probably makes sense to add a parameter to this function to indicate the storage usage, assuming we want to continue using this pooling scheme here. Alternately we could have each PathAtlas create its textures directly.\n\nAlso, I don\u0027t think there is any usage validation during TextureProxy creation, so this won\u0027t fail right away but later while instantiating the texture. I think it makes sense to validate the usage when creating the TextureInfo that\u0027s used to initialize the proxy.\n\nI\u0027ll send a follow-up that makes those two changes.",
+      "parentUuid": "bdec3421_c75b9204",
+      "range": {
+        "startLine": 46,
+        "startChar": 31,
+        "endLine": 46,
+        "endChar": 42
+      },
+      "revId": "5eb553dad57dc0a75468ce521dc3d883b42321fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "10bcfacf_f506bc8d",
         "filename": "src/gpu/graphite/AtlasProvider.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-20T14:17:06Z",
       "side": 1,
       "message": "\"Return a TextureProxy with the given dimensions and color type?\"",
+      "range": {
+        "startLine": 46,
+        "startChar": 17,
+        "endLine": 46,
+        "endChar": 24
+      },
+      "revId": "5eb553dad57dc0a75468ce521dc3d883b42321fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b819e62a_eb5dc51f",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-20T17:21:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10bcfacf_f506bc8d",
       "range": {
         "startLine": 46,
         "startChar": 17,
