@@ -16,6 +16,63 @@
       "message": "PTAL. This gets it working in the core use case.",
       "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dcf29da_18d7bb46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-20T22:58:11Z",
+      "side": 1,
+      "message": "Overall looks good. I just added some thoughts on how to organize the atlas renderer selection logic.",
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6699ab58_ca66747f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-20T22:58:11Z",
+      "side": 1,
+      "message": "I think we can shorten this TODO comment a little bit. When I first wrote it I wasn\u0027t sure if the same render step would be used for CPU masks. Right now all PathAtlas types use the `CoverageMask` renderer so the comment doesn\u0027t add that much value.\n\nI would probably remove the whole TODO and shorten it to something like this:\n\n    // We currently always use a coverage mask renderer if a `PathAtlas` is\n    // selected.\n\nThis may of course change in the future (for example the sparse mask format we\u0027ve been considering for large paths will definitely require different shaders) but I think we can figure out how to wire that up when we get there.",
+      "range": {
+        "startLine": 1212,
+        "startChar": 0,
+        "endLine": 1216,
+        "endChar": 49
+      },
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e4807e2_e1315933",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-20T22:58:11Z",
+      "side": 1,
+      "message": "I think Michael\u0027s intention was to keep all rendering algorithm decisions in `Device::chooseRenderer`. I added `DrawContext::getOrCreatePathAtlas` because I needed to scope the ownership of PathAtlas\u0027es to be per Device/DrawContext due to their interactions with flushes when there are multiple Devices: https://skia-review.googlesource.com/c/skia/+/719316. `DrawContext` just happened to be a good place to store a `PathAtlas` as it seems to generally own \"pending recording data\" until tasks get snapped.\n\nI think we could evolve this to be less opinionated about which atlas gets selected. Maybe there should be methods such as `getComputePathAtlas`, `getSoftwarePathAtlas` (which can return nullptr if the particular atlas type is not supported) and the logic about which one to use remains in `Device::chooseRenderer`?",
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
