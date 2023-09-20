@@ -238,6 +238,38 @@ void PaintParams::handleDithering(const KeyContext& keyContext,
     }
 }
 
+void PaintParams::handleDstRead(const KeyContext& keyContext,
+                                PaintParamsKeyBuilder* builder,
+                                PipelineDataGatherer* gatherer) const {
+
+    if (fDstReadReq != DstReadRequirement::kNone) {
+        Compose(keyContext, builder, gatherer,
+                /* addInnerToKey= */ [&]() -> void {
+                    this->handleDithering(keyContext, builder, gatherer);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    switch(fDstReadReq) {
+                        case DstReadRequirement::kNone:
+                            break;
+                        case DstReadRequirement::kTextureCopy:
+                            [[fallthrough]];
+                        case DstReadRequirement::kTextureSample:
+                            SkASSERT(SkToBool(keyContext.dstTexture()));
+                            DstReadSampleBlock::BeginBlock(keyContext, builder, gatherer,
+                                                           keyContext.dstTexture(),
+                                                           keyContext.dstOffset());
+                            break;
+                        case DstReadRequirement::kFramebufferFetch:
+                            DstReadFetchBlock::BeginBlock(keyContext, builder, gatherer);
+                            break;
+                    }
+                    builder->endBlock();
+                });
+    } else {
+        this->handleDithering(keyContext, builder, gatherer);
+    }
+}
+
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
@@ -245,6 +277,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
     builder->endBlock();
 
+#if 0
     bool needsDstSample = fDstReadReq == DstReadRequirement::kTextureCopy ||
                           fDstReadReq == DstReadRequirement::kTextureSample;
     SkASSERT(needsDstSample == SkToBool(keyContext.dstTexture()));
@@ -270,6 +303,15 @@ void PaintParams::toKey(const KeyContext& keyContext,
                          builder,
                          gatherer,
                          fFinalBlender ? fFinalBlender.get() : &kDefaultBlender);
+        finalBlendMode = SkBlendMode::kSrc;
+    }
+#endif
+
+    this->handleDstRead(keyContext, builder, gatherer);
+
+    std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
+    if (fDstReadReq != DstReadRequirement::kNone) {
+        // In this case the blend will have been handled by shader-based blending with the dstRead.
         finalBlendMode = SkBlendMode::kSrc;
     }
 
