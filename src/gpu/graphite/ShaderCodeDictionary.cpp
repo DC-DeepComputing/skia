@@ -1400,8 +1400,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren
     };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPriorOutput] = {
-            "PassthroughShader",
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPassThrough] = {
+            "Passthrough",
             { },     // no uniforms
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
