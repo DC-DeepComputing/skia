@@ -525,19 +525,6 @@ void SkPictureRecord::onDrawPath(const SkPath& path, const SkPaint& paint) {
     this->validate(initialOffset, size);
 }
 
-void SkPictureRecord::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
-                                   const SkSamplingOptions& sampling, const SkPaint* paint) {
-    // op + paint_index + image_index + x + y
-    size_t size = 3 * kUInt32Size + 2 * sizeof(SkScalar) + SkSamplingPriv::FlatSize(sampling);
-    size_t initialOffset = this->addDraw(DRAW_IMAGE2, &size);
-    this->addPaintPtr(paint);
-    this->addImage(image);
-    this->addScalar(x);
-    this->addScalar(y);
-    this->addSampling(sampling);
-    this->validate(initialOffset, size);
-}
-
 void SkPictureRecord::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                        const SkSamplingOptions& sampling, const SkPaint* paint,
                                        SrcRectConstraint constraint) {

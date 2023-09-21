@@ -194,14 +194,6 @@ protected:
         fRecorder.getRecordingCanvas()->drawPoints(mode, count, pts, paint);
     }
 
-    void onDrawImage2(const SkImage* image,
-                      SkScalar dx,
-                      SkScalar dy,
-                      const SkSamplingOptions& sampling,
-                      const SkPaint* paint) override {
-        fRecorder.getRecordingCanvas()->drawImage(image, dx, dy, sampling, paint);
-    }
-
     void onDrawImageRect2(const SkImage* image,
                           const SkRect& src,
                           const SkRect& dst,

@@ -73,7 +73,7 @@ namespace SkRecords {
     M(ResetClip)                                                    \
     M(DrawArc)                                                      \
     M(DrawDrawable)                                                 \
-    M(DrawImage)                                                    \
+    M(DrawImage_deprecated)                                         \
     M(DrawImageLattice)                                             \
     M(DrawImageRect)                                                \
     M(DrawDRRect)                                                   \
@@ -251,7 +251,7 @@ RECORD(DrawDrawable, kDraw_Tag,
         Optional<SkMatrix> matrix;
         SkRect worstCaseBounds;
         int32_t index)
-RECORD(DrawImage, kDraw_Tag|kHasImage_Tag|kHasPaint_Tag,
+RECORD(DrawImage_deprecated, kDraw_Tag|kHasImage_Tag|kHasPaint_Tag,
         Optional<SkPaint> paint;
         sk_sp<const SkImage> image;
         SkScalar left;

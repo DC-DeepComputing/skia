@@ -189,8 +189,6 @@ protected:
     void onDrawPath(const SkPath&, const SkPaint&) override;
     void onDrawRegion(const SkRegion&, const SkPaint&) override;
 
-    void onDrawImage2(const SkImage*, SkScalar, SkScalar, const SkSamplingOptions&,
-                      const SkPaint*) override;
     void onDrawImageRect2(const SkImage*, const SkRect&, const SkRect&, const SkSamplingOptions&,
                           const SkPaint*, SrcRectConstraint) override;
     void onDrawImageLattice2(const SkImage*, const Lattice&, const SkRect&, SkFilterMode,

@@ -1355,14 +1355,6 @@ void Device::drawSpecial(SkSpecialImage* special,
                        DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter);
 }
 
-sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
-    return nullptr;
-}
-
-sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
-    return nullptr;
-}
-
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
 
