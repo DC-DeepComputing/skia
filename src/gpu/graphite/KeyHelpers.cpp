@@ -1008,34 +1008,37 @@ static void add_children_to_key(const KeyContext& keyContext,
 
     using ChildType = SkRuntimeEffect::ChildType;
 
+    KeyContextWithScope childContext(keyContext, KeyContext::Scope::kRuntimeEffect);
+
     for (size_t index = 0; index < children.size(); ++index) {
         const SkRuntimeEffect::ChildPtr& child = children[index];
         std::optional<ChildType> type = child.type();
         if (type == ChildType::kShader) {
-            AddToKey(keyContext, builder, gatherer, child.shader());
+            AddToKey(childContext, builder, gatherer, child.shader());
         } else if (type == ChildType::kColorFilter) {
-            AddToKey(keyContext, builder, gatherer, child.colorFilter());
+            AddToKey(childContext, builder, gatherer, child.colorFilter());
         } else if (type == ChildType::kBlender) {
-            AddToKey(keyContext, builder, gatherer, child.blender());
+            AddToKey(childContext, builder, gatherer, child.blender());
         } else {
             // We don't have a child effect. Substitute in a no-op effect.
             switch (childInfo[index].type) {
                 case ChildType::kShader:
                     // A missing shader returns transparent black
-                    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {0, 0, 0, 0});
+                    SolidColorShaderBlock::BeginBlock(
+                            childContext, builder, gatherer, {0, 0, 0, 0});
                     builder->endBlock();
                     break;
 
                 case ChildType::kColorFilter:
                     // A "passthrough" color filter returns the input color as-is.
-                    PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+                    PriorOutputBlock::BeginBlock(childContext, builder, gatherer);
                     builder->endBlock();
                     break;
 
                 case ChildType::kBlender:
                     // A "passthrough" blender performs `blend_src_over(src, dest)`.
                     BlendModeBlenderBlock::BeginBlock(
-                            keyContext, builder, gatherer, SkBlendMode::kSrcOver);
+                            childContext, builder, gatherer, SkBlendMode::kSrcOver);
                     builder->endBlock();
                     break;
             }
@@ -1497,7 +1500,7 @@ static void add_to_key(const KeyContext& keyContext,
                                                 keyContext.dstColorInfo().colorSpace(),
                                                 keyContext.dstColorInfo().alphaType());
 
-        if (imageToDraw->isAlphaOnly()) {
+        if (imageToDraw->isAlphaOnly() && keyContext.scope() != KeyContext::Scope::kRuntimeEffect) {
             Blend(keyContext, builder, gatherer,
                   /* addBlendToKey= */ [&] () -> void {
                       AddKnownModeBlend(keyContext, builder, gatherer, SkBlendMode::kDstIn);
