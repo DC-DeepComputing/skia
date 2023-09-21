@@ -167,6 +167,24 @@
       "parentUuid": "fd68c44a_4083c5d1",
       "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "025a7286_0aecf068",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T17:15:21Z",
+      "side": 1,
+      "message": "Actually I\u0027m not sure that will work unless I pass in Caps to the constructor of DrawContext. I\u0027ll try to work without it and see how it goes.",
+      "parentUuid": "ebcf0404_1977c4fe",
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
