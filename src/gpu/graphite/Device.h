@@ -156,9 +156,6 @@ public:
 private:
     class IntersectionTreeSet;
 
-    sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
-    sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;
-
     bool onReadPixels(const SkPixmap&, int x, int y) override;
 
     bool onWritePixels(const SkPixmap&, int x, int y) override;

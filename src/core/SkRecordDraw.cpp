@@ -126,7 +126,7 @@ template <> void Draw::draw(const ResetClip& r) {
 
 DRAW(DrawArc, drawArc(r.oval, r.startAngle, r.sweepAngle, r.useCenter, r.paint))
 DRAW(DrawDRRect, drawDRRect(r.outer, r.inner, r.paint))
-DRAW(DrawImage, drawImage(r.image.get(), r.left, r.top, r.sampling, r.paint))
+DRAW(DrawImage_deprecated, drawImage(r.image.get(), r.left, r.top, r.sampling, r.paint))
 
 template <> void Draw::draw(const DrawImageLattice& r) {
     SkCanvas::Lattice lattice;
@@ -418,7 +418,7 @@ private:
     Bounds bounds(const DrawDRRect& op) const {
         return this->adjustAndMap(op.outer.rect(), &op.paint);
     }
-    Bounds bounds(const DrawImage& op) const {
+    Bounds bounds(const DrawImage_deprecated& op) const {
         const SkImage* image = op.image.get();
         SkRect rect = SkRect::MakeXYWH(op.left, op.top, image->width(), image->height());
 

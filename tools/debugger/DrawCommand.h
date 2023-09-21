@@ -286,25 +286,6 @@ private:
     using INHERITED = DrawCommand;
 };
 
-class DrawImageCommand : public DrawCommand {
-public:
-    DrawImageCommand(const SkImage* image, SkScalar left, SkScalar top,
-                     const SkSamplingOptions&, const SkPaint* paint);
-    void execute(SkCanvas* canvas) const override;
-    bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
-    uint64_t imageId(UrlDataManager& udb) const;
-
-private:
-    sk_sp<const SkImage> fImage;
-    SkScalar             fLeft;
-    SkScalar             fTop;
-    SkSamplingOptions    fSampling;
-    SkTLazy<SkPaint>     fPaint;
-
-    using INHERITED = DrawCommand;
-};
-
 class DrawImageLatticeCommand : public DrawCommand {
 public:
     DrawImageLatticeCommand(const SkImage*           image,

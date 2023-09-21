@@ -132,14 +132,6 @@ void SkPaintFilterCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
     }
 }
 
-void SkPaintFilterCanvas::onDrawImage2(const SkImage* image, SkScalar left, SkScalar top,
-                                       const SkSamplingOptions& sampling, const SkPaint* paint) {
-    AutoPaintFilter apf(this, paint);
-    if (apf.shouldDraw()) {
-        this->SkNWayCanvas::onDrawImage2(image, left, top, sampling, &apf.paint());
-    }
-}
-
 void SkPaintFilterCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src,
                                            const SkRect& dst, const SkSamplingOptions& sampling,
                                            const SkPaint* paint, SrcRectConstraint constraint) {

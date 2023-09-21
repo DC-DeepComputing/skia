@@ -115,7 +115,7 @@ enum DrawType {
     MARK_CTM, // deprecated
     SET_M44,
 
-    DRAW_IMAGE2,
+    DRAW_IMAGE2, // not recorded on or after SkPicturePriv::kDeprecateOnDrawImage
     DRAW_IMAGE_RECT2,
     DRAW_IMAGE_LATTICE2,
     DRAW_EDGEAA_IMAGE_SET2,
