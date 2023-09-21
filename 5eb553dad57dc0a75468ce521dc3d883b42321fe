@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee67f7f_e3ce8947",
+        "filename": "src/gpu/graphite/AtlasProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T14:16:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8036b677_6ad04239",
+      "range": {
+        "startLine": 46,
+        "startChar": 31,
+        "endLine": 46,
+        "endChar": 42
+      },
+      "revId": "5eb553dad57dc0a75468ce521dc3d883b42321fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10bcfacf_f506bc8d",
