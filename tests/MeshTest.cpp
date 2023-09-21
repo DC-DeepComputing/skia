@@ -254,32 +254,68 @@ DEF_TEST(MeshSpec_Float4Color, reporter) {
                       kFloat4FS);
 }
 
-// We don't allow child effects in custom meshes currently.
-DEF_TEST(MeshSpec_InvalidGlobals, reporter) {
-    static constexpr const char* kBadGlobals[] {
-        "uniform shader myshader;"
+DEF_TEST(MeshSpec_AllowsChildEffect, reporter) {
+    static constexpr const char* kMissingChildEffects[] {
+        "uniform shader myshader;",
+        "uniform colorFilter mycolorfilter;",
+        "uniform blender myblender;"
     };
-    for (const auto& global : kBadGlobals) {
-        SkString badVS = kValidVS;
-        badVS.prepend(global);
-        if (!check_for_failure(reporter,
+
+    for (const auto& global : kMissingChildEffects) {
+        SkString validVSWithChild{global};
+        validVSWithChild.append(kValidVS);
+
+        SkString validFSWithChild{global};
+        validFSWithChild.append(kValidFSes[0]);
+
+        if (!check_for_success(reporter,
                                kValidAttrs,
                                kValidStride,
                                kValidVaryings,
-                               badVS,
+                               validVSWithChild,
                                kValidFSes[0])) {
             return;
         }
-    }
-    for (const auto& global : kBadGlobals) {
-        SkString badFS = kValidFSes[0];
-        badFS.prepend(global);
-        if (!check_for_failure(reporter,
+
+        if (!check_for_success(reporter,
                                kValidAttrs,
                                kValidStride,
                                kValidVaryings,
                                kValidVS,
-                               badFS)) {
+                               validFSWithChild)) {
+            return;
+        }
+
+        if (!check_for_success(reporter,
+                               kValidAttrs,
+                               kValidStride,
+                               kValidVaryings,
+                               validVSWithChild,
+                               validFSWithChild)) {
+            return;
+        }
+    }
+}
+
+DEF_TEST(MeshSpec_RejectsMismatchedChildEffect, reporter) {
+    for (std::pair mismatchedTypes : {std::pair{"shader", "colorFilter"},
+                                      std::pair{"shader", "blender"},
+                                      std::pair{"colorFilter", "shader"},
+                                      std::pair{"colorFilter", "blender"},
+                                      std::pair{"blender", "shader"},
+                                      std::pair{"blender", "colorFilter"}}) {
+        SkString vsWithChild = SkStringPrintf("uniform %s child_effect;", mismatchedTypes.first);
+        vsWithChild.append(kValidVS);
+
+        SkString fsWithChild = SkStringPrintf("uniform %s child_effect;", mismatchedTypes.second);
+        fsWithChild.append(kValidFSes[0]);
+
+        if (!check_for_failure(reporter,
+                               kValidAttrs,
+                               kValidStride,
+                               kValidVaryings,
+                               vsWithChild,
+                               fsWithChild)) {
             return;
         }
     }
@@ -382,17 +418,17 @@ DEF_TEST(MeshSpec_ValidUniforms, reporter) {
 
             // A shared uniform after an unshared fragment uniform
             {
-                     {
+                    {
                             "uniform float3x3 m;",
-                     },
-                     {
-                             "uniform int2     i2;",
-                             "uniform float3x3 m;",
-                     },
-                     {
+                    },
+                    {
+                            "uniform int2     i2;",
+                            "uniform float3x3 m;",
+                    },
+                    {
                             make_uni(Type::kFloat3x3, "m" ,  0, kVS|kFS),
                             make_uni(Type::kInt2    , "i2", 36, kFS    )
-                     }
+                    }
             },
 
             // A shared uniform before an unshared fragment uniform
