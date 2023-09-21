@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59271e92_0a47a516",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-09-21T14:45:39Z",
+      "side": 1,
+      "message": "Let\u0027s update DEPS as follows as well, either in this or a separate change.\n\n```\n   # googlefonts_testdata CIPD package version\n   # https://chrome-infra-packages.appspot.com/p/chromium/third_party/googlefonts_testdata/\n-  \u0027googlefonts_testdata_version\u0027: \u0027version:20230409\u0027,\n+  \u0027googlefonts_testdata_version\u0027: \u0027version:20230913\u0027,\n }\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 38
+      },
+      "revId": "aabea35ba7cc71c92b833f384e66675082eb3937",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
