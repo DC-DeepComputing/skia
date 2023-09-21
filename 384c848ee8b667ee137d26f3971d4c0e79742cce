@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b51d078f_bb45867b",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-21T13:57:56Z",
+      "side": 1,
+      "message": "This is ugly, but I think it\u0027s the only way to get the input (paint) color into the working space, which matters if you wrap an alpha-only image shader in a working-color-space shader.",
+      "revId": "384c848ee8b667ee137d26f3971d4c0e79742cce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a83866_5f83492b",
+        "filename": "src/gpu/graphite/KeyContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-21T13:57:56Z",
+      "side": 1,
+      "message": "Similar (but simpler) fix for Graphite - we just transform the paint color directly to the working space.",
+      "revId": "384c848ee8b667ee137d26f3971d4c0e79742cce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
