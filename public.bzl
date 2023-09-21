@@ -1815,6 +1815,7 @@ CODEC_SRCS_LIMITED = [
     "src/codec/SkColorPalette.h",
     "src/codec/SkEncodedInfo.cpp",
     "src/codec/SkFrameHolder.h",
+    "src/codec/SkImageGenerator_FromEncoded.cpp",
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegCodec.h",
     "src/codec/SkJpegDecoderMgr.cpp",
