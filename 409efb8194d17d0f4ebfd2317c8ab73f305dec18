@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2a6a03_e174baa9",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-21T14:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f1a2424_a0db453c",
+      "range": {
+        "startLine": 156,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 18
+      },
+      "revId": "409efb8194d17d0f4ebfd2317c8ab73f305dec18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59331726_d3d226e5",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-21T14:00:20Z",
       "side": 1,
       "message": "nit: AddDstReadBlock. We are sometimes inconsistent about which form, but I think dst is more prevalent.",
+      "range": {
+        "startLine": 112,
+        "startChar": 5,
+        "endLine": 112,
+        "endChar": 21
+      },
+      "revId": "409efb8194d17d0f4ebfd2317c8ab73f305dec18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3042d01f_1dff2cfb",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-09-21T14:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59331726_d3d226e5",
       "range": {
         "startLine": 112,
         "startChar": 5,
