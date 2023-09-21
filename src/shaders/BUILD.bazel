@@ -54,7 +54,10 @@ skia_filegroup(
         ":shader_srcs",
         "//src/shaders/gradients:srcs",
     ],
-    visibility = ["//src:__pkg__"],
+    visibility = [
+        "//src:__pkg__",
+        "//src/core:__pkg__",
+    ],
 )
 
 skia_filegroup(
@@ -63,5 +66,8 @@ skia_filegroup(
         ":shader_hdrs",
         "//src/shaders/gradients:private_hdrs",
     ],
-    visibility = ["//src:__pkg__"],
+    visibility = [
+        "//src:__pkg__",
+        "//src/core:__pkg__",
+    ],
 )
