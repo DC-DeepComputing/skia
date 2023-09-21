@@ -255,7 +255,7 @@ static void test_float4_color(skiatest::Reporter* r) {
 }
 
 // We don't allow child effects in custom meshes currently.
-static void test_bad_globals(skiatest::Reporter* r) {
+static void test_missing_child_effect(skiatest::Reporter* r) {
     static constexpr const char* kBadGlobals[] {
         "uniform shader myshader;"
     };
@@ -382,17 +382,17 @@ static void test_good_uniforms(skiatest::Reporter* r) {
 
             // A shared uniform after an unshared fragment uniform
             {
-                     {
+                    {
                             "uniform float3x3 m;",
-                     },
-                     {
-                             "uniform int2     i2;",
-                             "uniform float3x3 m;",
-                     },
-                     {
+                    },
+                    {
+                            "uniform int2     i2;",
+                            "uniform float3x3 m;",
+                    },
+                    {
                             make_uni(Type::kFloat3x3, "m" ,  0, kVS|kFS),
                             make_uni(Type::kInt2    , "i2", 36, kFS    )
-                     }
+                    }
             },
 
             // A shared uniform before an unshared fragment uniform
@@ -826,11 +826,10 @@ static void test_empty_varying_name(skiatest::Reporter* r) {
 }
 
 DEF_TEST(MeshSpec, reporter) {
-    struct X {};
     test_good(reporter);
     test_bad_sig(reporter);
     test_float4_color(reporter);
-    test_bad_globals(reporter);
+    test_missing_child_effect(reporter);
     test_good_uniforms(reporter);
     test_bad_uniforms(reporter);
     test_no_main(reporter);
@@ -849,7 +848,6 @@ DEF_TEST(MeshSpec, reporter) {
     test_empty_attribute_name(reporter);
     test_empty_varying_name(reporter);
 }
-
 
 DEF_TEST(MeshSpecVaryingPassthrough, reporter) {
     static const Attribute kAttributes[]{

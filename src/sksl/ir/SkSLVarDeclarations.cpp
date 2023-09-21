@@ -183,10 +183,6 @@ void VarDeclaration::ErrorCheck(const Context& context,
         context.fErrors->error(pos, "variables of type '" + baseType->displayName() +
                                     "' must be uniform");
     }
-    if (baseType->isEffectChild() && (context.fConfig->fKind == ProgramKind::kMeshVertex ||
-                                      context.fConfig->fKind == ProgramKind::kMeshFragment)) {
-        context.fErrors->error(pos, "effects are not permitted in custom mesh shaders");
-    }
     if (baseType->isOrContainsAtomic()) {
         // An atomic variable (or a struct or an array that contains an atomic member) must be
         // either:
