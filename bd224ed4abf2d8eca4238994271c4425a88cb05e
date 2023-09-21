@@ -149,6 +149,24 @@
       "parentUuid": "1be2e313_b1ad2302",
       "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebcf0404_1977c4fe",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T17:01:17Z",
+      "side": 1,
+      "message": "WDYT about having a method on DrawContext that returns a set of flags saying which pathAtlases are supported? That way we could query what\u0027s available without the side effect of creating an atlas that we might not use.",
+      "parentUuid": "fd68c44a_4083c5d1",
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
