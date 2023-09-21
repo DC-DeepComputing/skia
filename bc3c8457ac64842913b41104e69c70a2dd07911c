@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd329937_73fcb3a3",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T01:23:43Z",
+      "side": 1,
+      "message": "This is a slight improvement over before because now it checks the quad relative to the xtraTransform.",
+      "range": {
+        "startLine": 681,
+        "startChar": 16,
+        "endLine": 683,
+        "endChar": 57
+      },
+      "revId": "bc3c8457ac64842913b41104e69c70a2dd07911c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f06f8ed_1383e507",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T01:23:43Z",
+      "side": 1,
+      "message": "This is also an improvement because we can take the device-space bounds and any extra transform, vs. mapping the device clip bounds back into layer space for a rect test. This will mostly matter in a follow-up CL that draws filter results to the parent Device for layer restoration.\n\nWe want to avoid adding the clip, and also pushing the clip stack if we can help it. This was making a dent in motionmark-focus timings.",
+      "range": {
+        "startLine": 1058,
+        "startChar": 0,
+        "endLine": 1058,
+        "endChar": 82
+      },
+      "revId": "bc3c8457ac64842913b41104e69c70a2dd07911c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
