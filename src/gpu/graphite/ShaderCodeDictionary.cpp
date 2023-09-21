@@ -1549,7 +1549,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kLocalMatrixShaderName,
             GenerateDefaultExpression,
             GenerateLocalMatrixPreamble,
-            kNumLocalMatrixShaderChildren
+            kNumLocalMatrixShaderChildren //$$
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             "ImageShader",
@@ -1589,7 +1589,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kCoordClampShaderName,
             GenerateDefaultExpression,
             GenerateCoordClampPreamble,
-            kNumCoordClampShaderChildren
+            kNumCoordClampShaderChildren //$$
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDitherShader] = {
             "DitherShader",
@@ -1661,7 +1661,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             "BlendShader",
             GenerateDefaultExpression,
             GenerateBlendShaderPreamble,
-            kNumBlendShaderChildren
+            kNumBlendShaderChildren  //$$
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCoeffBlender] = {
             "CoeffBlender",
@@ -1723,7 +1723,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kComposeName,
             GenerateDefaultExpression,
             GenerateNestedChildrenPreamble,
-            kNumComposeChildren
+            kNumComposeChildren  //$$
     };
 
     // Fixed-function blend mode snippets are all the same, their functionality is entirely defined
