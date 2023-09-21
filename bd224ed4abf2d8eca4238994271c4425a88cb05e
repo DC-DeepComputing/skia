@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ebc1396_c002184f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T18:55:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6699ab58_ca66747f",
+      "range": {
+        "startLine": 1212,
+        "startChar": 0,
+        "endLine": 1216,
+        "endChar": 49
+      },
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3cf8b45_e3b42345",
@@ -88,6 +112,30 @@
       "writtenOn": "2023-09-21T14:03:57Z",
       "side": 1,
       "message": "I don\u0027t think `choooseRenderer` can handle this logic, due to timeline of when we need the atlas vs. just the Renderer but if we take Arman\u0027s suggestion to query specific types of atlases up front in `drawGeometry` we would have more information about what\u0027s being rendered.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 95
+      },
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8628567_caa39a40",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T18:55:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3cf8b45_e3b42345",
       "range": {
         "startLine": 135,
         "startChar": 0,
@@ -201,6 +249,24 @@
       "side": 1,
       "message": "I think it might make sense for AtlasProvider to be the source of truth for supported path atlases, and it already takes a `Recorder` in its constructor so it can setup the flags there. Device could always query AtlasProvider directly and the DrawContext methods could continue to serve lazy initialization (using the same flags).",
       "parentUuid": "ebcf0404_1977c4fe",
+      "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "234d98fa_24944c7c",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T18:55:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66dcdc26_4bf6d95e",
       "revId": "bd224ed4abf2d8eca4238994271c4425a88cb05e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bffedac3_19fb17c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-21T18:55:11Z",
+      "side": 1,
+      "message": "Done, PTAL. I\u0027ve disabled the software renderer for now until Arman\u0027s changes make their way through, since it may not work with Dawn due to the storage format issues.",
+      "revId": "cacafe547fc538f6eb3889146450b035d0e72b08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
