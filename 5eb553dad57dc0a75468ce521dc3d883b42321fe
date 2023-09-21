@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69afdb63_8f4ecf8e",
+        "filename": "src/gpu/graphite/AtlasProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-09-21T18:13:08Z",
+      "side": 1,
+      "message": "I uploaded https://skia-review.googlesource.com/c/skia/+/758638 which will allow SoftwarePathAtlas to use A8 on Dawn.",
+      "parentUuid": "0ee67f7f_e3ce8947",
+      "range": {
+        "startLine": 46,
+        "startChar": 31,
+        "endLine": 46,
+        "endChar": 42
+      },
+      "revId": "5eb553dad57dc0a75468ce521dc3d883b42321fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10bcfacf_f506bc8d",
