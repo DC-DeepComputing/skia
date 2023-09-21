@@ -104,6 +104,24 @@
       "parentUuid": "eba88c8d_5d8a86cf",
       "revId": "1ed55a631afac3adcef90efda417c07721614e84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89c0d22a_74d9fc4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19324
+      },
+      "writtenOn": "2023-09-21T16:57:12Z",
+      "side": 1,
+      "message": "PTAL. I went with `@available(tvOS 11, *)` as this is available on iOS 8 and macOS 10.11, both of which AFAIK you require.",
+      "parentUuid": "a3cfdc88_548792a7",
+      "revId": "1ed55a631afac3adcef90efda417c07721614e84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
