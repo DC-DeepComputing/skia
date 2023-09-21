@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd1dbf3e_e054ddaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-21T13:28:30Z",
+      "side": 1,
+      "message": "Going to wait until G3 is more robust",
+      "revId": "8d72db97b999dbf83fb6e2ea0f0e6de5ad5f0a3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
