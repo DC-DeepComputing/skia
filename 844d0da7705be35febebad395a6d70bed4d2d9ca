@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f7a572_fc634d7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-21T02:15:19Z",
+      "side": 1,
+      "message": "As noticed by a skia-discuss reader: https://groups.google.com/g/skia-discuss/c/BTHT64Wxm98/m/Fi6teAYTAwAJ?utm_medium\u003demail\u0026utm_source\u003dfooter",
+      "revId": "844d0da7705be35febebad395a6d70bed4d2d9ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
