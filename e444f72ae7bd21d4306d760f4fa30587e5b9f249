@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e133794_c7ee5567",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-21T19:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d3cfb96_13a79494",
+      "range": {
+        "startLine": 829,
+        "startChar": 20,
+        "endLine": 829,
+        "endChar": 21
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16448a6e_a315a301",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-09-21T18:59:04Z",
       "side": 1,
       "message": "I\u0027ve had several bugs where these sorts of `makeWith` functions are called on a null SkShader and we then crash later on within the wrapping shader object that\u0027s not null. It\u0027s weird but we could return `base` if `base` is null. Or we handle that logic in a `Make` function that we delegate to?",
+      "range": {
+        "startLine": 56,
+        "startChar": 43,
+        "endLine": 56,
+        "endChar": 47
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "462c1d25_26c13279",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-21T19:27:51Z",
+      "side": 1,
+      "message": "Hmm. Yeah, that is unfortunate. I feel like if we want to make that change, we ought to do it to all of these? (eg, makeWithColorFilter, directly above, as well)? Perhaps in a follow-up?\n\nActually - I\u0027m just going to put an assert in here, so we at least trigger the failure up front.",
+      "parentUuid": "16448a6e_a315a301",
       "range": {
         "startLine": 56,
         "startChar": 43,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64aeb232_d4f79a99",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-21T19:27:51Z",
+      "side": 1,
+      "message": "I debated about this one (and I could probably go either way). Our actual pattern for color-spaces is that a null src means sRGB. A null dst means \"same as source\" (in other words, no color management). The working color space here is somewhat ambiguous. You could interpret is as \"this is the new source color space for this shader\", so nullptr -\u003e sRGB would make sense. You could also interpret it to mean \"pretend that we drew this thing to a new destination with this color space before drawing it to the real destination\", which is closer to how it really operates, and in which case leaving nullptr as-is is closer than using sRGB.\n\nOne of the big uses for this feature *is* to run certain filters in definite sRGB, but I also assume any customer that knows they want that is going to be explicit about it. Overall, I\u0027m tempted to leave it like this.",
+      "parentUuid": "25da3608_4398fbcf",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 29
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30e31e1a_4c896495",
         "filename": "src/shaders/SkWorkingColorSpaceShader.cpp",
         "patchSetId": 10
@@ -100,6 +172,30 @@
       "writtenOn": "2023-09-21T18:59:04Z",
       "side": 1,
       "message": "nit: line up",
+      "range": {
+        "startLine": 31,
+        "startChar": 20,
+        "endLine": 31,
+        "endChar": 21
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29e21cd2_79401ea4",
+        "filename": "src/shaders/SkWorkingColorSpaceShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-21T19:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30e31e1a_4c896495",
       "range": {
         "startLine": 31,
         "startChar": 20,
