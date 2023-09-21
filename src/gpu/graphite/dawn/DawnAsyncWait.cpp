@@ -43,7 +43,7 @@ bool DawnAsyncWait::yieldAndCheck() const {
 #ifdef __EMSCRIPTEN__
     asyncSleep();
 #else
-    fDevice.Tick();
+    fDevice.GetAdapter().GetInstance().ProcessEvents();
 #endif  // __EMSCRIPTEN__
     return fSignaled.load();
 }
