@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8393793_206f7baa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T18:59:04Z",
+      "side": 1,
+      "message": "lgtm pending nits",
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d3cfb96_13a79494",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T18:59:04Z",
+      "side": 1,
+      "message": "nit: line up this equal with the one for `working`",
+      "range": {
+        "startLine": 829,
+        "startChar": 20,
+        "endLine": 829,
+        "endChar": 21
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16448a6e_a315a301",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T18:59:04Z",
+      "side": 1,
+      "message": "I\u0027ve had several bugs where these sorts of `makeWith` functions are called on a null SkShader and we then crash later on within the wrapping shader object that\u0027s not null. It\u0027s weird but we could return `base` if `base` is null. Or we handle that logic in a `Make` function that we delegate to?",
+      "range": {
+        "startLine": 56,
+        "startChar": 43,
+        "endLine": 56,
+        "endChar": 47
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25da3608_4398fbcf",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T18:59:04Z",
+      "side": 1,
+      "message": "If `workingSpace` is null, should it instead be assumed to be sRGB? That matches our conventions on other CS inputs. It\u0027s probably frequently the same as being the dst color space but could be useful to ensure you\u0027re in sRGB going to a wider gamut.",
+      "range": {
+        "startLine": 58,
+        "startChar": 25,
+        "endLine": 58,
+        "endChar": 29
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30e31e1a_4c896495",
+        "filename": "src/shaders/SkWorkingColorSpaceShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-21T18:59:04Z",
+      "side": 1,
+      "message": "nit: line up",
+      "range": {
+        "startLine": 31,
+        "startChar": 20,
+        "endLine": 31,
+        "endChar": 21
+      },
+      "revId": "e444f72ae7bd21d4306d760f4fa30587e5b9f249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
