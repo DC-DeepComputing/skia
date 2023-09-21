@@ -103,6 +103,7 @@ public:
     };
 
     using Uniform = SkRuntimeEffect::Uniform;
+    using Child = SkRuntimeEffect::Child;
 
     ~SkMeshSpecification();
 
@@ -167,8 +168,16 @@ public:
      */
     SkSpan<const Uniform> uniforms() const { return SkSpan(fUniforms); }
 
+    /**
+     * Provides basic info about individual children: names, indices and runtime effect type.
+     */
+    SkSpan<const Child> children() const { return SkSpan(fChildren); }
+
     /** Returns pointer to the named uniform variable's description, or nullptr if not found. */
     const Uniform* findUniform(std::string_view name) const;
+
+    /** Returns pointer to the named child's description, or nullptr if not found. */
+    const Child* findChild(std::string_view name) const;
 
     /** Returns pointer to the named attribute, or nullptr if not found. */
     const Attribute* findAttribute(std::string_view name) const;
@@ -201,6 +210,7 @@ private:
                         int passthroughLocalCoordsVaryingIndex,
                         uint32_t deadVaryingMask,
                         std::vector<Uniform> uniforms,
+                        std::vector<Child> children,
                         std::unique_ptr<const SkSL::Program>,
                         std::unique_ptr<const SkSL::Program>,
                         ColorType,
@@ -216,6 +226,7 @@ private:
     const std::vector<Attribute>               fAttributes;
     const std::vector<Varying>                 fVaryings;
     const std::vector<Uniform>                 fUniforms;
+    const std::vector<Child>                   fChildren;
     const std::unique_ptr<const SkSL::Program> fVS;
     const std::unique_ptr<const SkSL::Program> fFS;
     const size_t                               fStride;
@@ -299,8 +310,8 @@ public:
 
     /**
      * Creates a non-indexed SkMesh. The returned SkMesh can be tested for validity using
-     * SkMesh::isValid(). An invalid mesh simply fails to draws if passed to SkCanvas::drawMesh().
-     * If the mesh is invalid the returned string give contain the reason for the failure (e.g. the
+     * SkMesh::isValid(). An invalid mesh simply fails to draw if passed to SkCanvas::drawMesh().
+     * If the mesh is invalid, the returned string will contain the reason for the failure (e.g. the
      * vertex buffer was null or uniform data too small).
      */
     static Result Make(sk_sp<SkMeshSpecification>,
@@ -314,7 +325,7 @@ public:
     /**
      * Creates an indexed SkMesh. The returned SkMesh can be tested for validity using
      * SkMesh::isValid(). A invalid mesh simply fails to draw if passed to SkCanvas::drawMesh().
-     * If the mesh is invalid the returned string give contain the reason for the failure (e.g. the
+     * If the mesh is invalid, the returned string will contain the reason for the failure (e.g. the
      * index buffer was null or uniform data too small).
      */
     static Result MakeIndexed(sk_sp<SkMeshSpecification>,
@@ -353,6 +364,17 @@ public:
     bool isValid() const;
 
 private:
+    // TODO(b/40045302): support child shaders (work-in-progress)
+    using ChildPtr = SkRuntimeEffect::ChildPtr;
+    static Result Make(sk_sp<SkMeshSpecification>,
+                       Mode,
+                       sk_sp<VertexBuffer>,
+                       size_t vertexCount,
+                       size_t vertexOffset,
+                       sk_sp<const SkData> uniforms,
+                       SkSpan<ChildPtr> children,
+                       const SkRect& bounds);
+
     std::tuple<bool, SkString> validate() const;
 
     sk_sp<SkMeshSpecification> fSpec;
@@ -361,6 +383,7 @@ private:
     sk_sp<IndexBuffer>  fIB;
 
     sk_sp<const SkData> fUniforms;
+    SkSpan<ChildPtr> fChildren;
 
     size_t fVOffset = 0;  // Must be a multiple of spec->stride()
     size_t fVCount  = 0;

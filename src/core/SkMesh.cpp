@@ -64,18 +64,26 @@ using VertexBuffer = SkMesh::VertexBuffer;
 #define RETURN_SUCCESS return std::make_tuple(true, SkString{})
 
 using Uniform = SkMeshSpecification::Uniform;
+using Child = SkMeshSpecification::Child;
 
 static std::vector<Uniform>::iterator find_uniform(std::vector<Uniform>& uniforms,
                                                    std::string_view name) {
     return std::find_if(uniforms.begin(), uniforms.end(),
-                        [name](const SkMeshSpecification::Uniform& u) { return u.name == name; });
+                        [name](const Uniform& u) { return u.name == name; });
 }
 
-static std::tuple<bool, SkString>
-gather_uniforms_and_check_for_main(const SkSL::Program& program,
-                                   std::vector<Uniform>* uniforms,
-                                   SkMeshSpecification::Uniform::Flags stage,
-                                   size_t* offset) {
+static std::vector<Child>::iterator find_child(std::vector<Child>& children,
+                                               std::string_view name) {
+    return std::find_if(children.begin(), children.end(),
+                        [name](const Child& u) { return u.name == name; });
+}
+
+static std::tuple<bool, SkString> gather_uniform_child_data_and_check_for_main(
+        const SkSL::Program& program,
+        std::vector<Uniform>* uniforms,
+        std::vector<Child>* children,
+        SkMeshSpecification::Uniform::Flags stage,
+        size_t* offset) {
     bool foundMain = false;
     for (const SkSL::ProgramElement* elem : program.elements()) {
         if (elem->is<SkSL::FunctionDefinition>()) {
@@ -111,6 +119,20 @@ gather_uniforms_and_check_for_main(const SkSL::Program& program,
                                                       (int)iter->name.size(), iter->name.data())};
                     }
                     (*iter).flags |= stage;
+                }
+            }
+            if (var.type().isEffectChild()) {
+                auto iter = find_child(*children, var.name());
+                if (iter == children->end()) {
+                    children->push_back(SkRuntimeEffectPriv::VarAsChild(var, children->size()));
+                } else {
+                    // Check that the two declarations are equivalent
+                    auto child = SkRuntimeEffectPriv::VarAsChild(var, children->size());
+                    if (child.type != iter->type) {
+                        return {false, SkStringPrintf("Child %.*s declared with different types"
+                                                      " in vertex and fragment shaders.",
+                                                      (int)iter->name.size(), iter->name.data())};
+                    }
                 }
             }
         }
@@ -486,6 +508,7 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
     }
 
     std::vector<Uniform> uniforms;
+    std::vector<Child> children;
     size_t offset = 0;
 
     SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
@@ -504,9 +527,10 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
         RETURN_FAILURE("VS: %s", compiler.errorText().c_str());
     }
 
-    if (auto [result, error] = gather_uniforms_and_check_for_main(
+    if (auto [result, error] = gather_uniform_child_data_and_check_for_main(
                 *vsProgram,
                 &uniforms,
+                &children,
                 SkMeshSpecification::Uniform::Flags::kVertex_Flag,
                 &offset);
         !result) {
@@ -526,9 +550,10 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
         RETURN_FAILURE("FS: %s", compiler.errorText().c_str());
     }
 
-    if (auto [result, error] = gather_uniforms_and_check_for_main(
+    if (auto [result, error] = gather_uniform_child_data_and_check_for_main(
                 *fsProgram,
                 &uniforms,
+                &children,
                 SkMeshSpecification::Uniform::Flags::kFragment_Flag,
                 &offset);
         !result) {
@@ -567,6 +592,7 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
                                                                passthroughLocalCoordsVaryingIndex,
                                                                deadVaryingMask,
                                                                std::move(uniforms),
+                                                               std::move(children),
                                                                std::move(vsProgram),
                                                                std::move(fsProgram),
                                                                ct,
@@ -584,6 +610,7 @@ SkMeshSpecification::SkMeshSpecification(
         int                                  passthroughLocalCoordsVaryingIndex,
         uint32_t                             deadVaryingMask,
         std::vector<Uniform>                 uniforms,
+        std::vector<Child>                   children,
         std::unique_ptr<const SkSL::Program> vs,
         std::unique_ptr<const SkSL::Program> fs,
         ColorType                            ct,
@@ -592,6 +619,7 @@ SkMeshSpecification::SkMeshSpecification(
         : fAttributes(attributes.begin(), attributes.end())
         , fVaryings(varyings.begin(), varyings.end())
         , fUniforms(std::move(uniforms))
+        , fChildren(std::move(children))
         , fVS(std::move(vs))
         , fFS(std::move(fs))
         , fStride(stride)
@@ -626,24 +654,39 @@ size_t SkMeshSpecification::uniformSize() const {
 }
 
 const Uniform* SkMeshSpecification::findUniform(std::string_view name) const {
-    auto iter = std::find_if(fUniforms.begin(), fUniforms.end(), [name] (const Uniform& u) {
-        return u.name == name;
-    });
-    return iter == fUniforms.end() ? nullptr : &(*iter);
+    for (const Uniform& uniform : fUniforms) {
+        if (uniform.name == name) {
+            return &uniform;
+        }
+    }
+    return nullptr;
+}
+
+const Child* SkMeshSpecification::findChild(std::string_view name) const {
+    for (const Child& child : fChildren) {
+        if (child.name == name) {
+            return &child;
+        }
+    }
+    return nullptr;
 }
 
 const Attribute* SkMeshSpecification::findAttribute(std::string_view name) const {
-    auto iter = std::find_if(fAttributes.begin(), fAttributes.end(), [name](const Attribute& a) {
-        return name.compare(a.name.c_str()) == 0;
-    });
-    return iter == fAttributes.end() ? nullptr : &(*iter);
+    for (const Attribute& attr : fAttributes) {
+        if (name == attr.name.c_str()) {
+            return &attr;
+        }
+    }
+    return nullptr;
 }
 
 const Varying* SkMeshSpecification::findVarying(std::string_view name) const {
-    auto iter = std::find_if(fVaryings.begin(), fVaryings.end(), [name](const Varying& v) {
-        return name.compare(v.name.c_str()) == 0;
-    });
-    return iter == fVaryings.end() ? nullptr : &(*iter);
+    for (const Varying& varying : fVaryings) {
+        if (name == varying.name.c_str()) {
+            return &varying;
+        }
+    }
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -664,6 +707,24 @@ SkMesh::Result SkMesh::Make(sk_sp<SkMeshSpecification> spec,
                             size_t vertexOffset,
                             sk_sp<const SkData> uniforms,
                             const SkRect& bounds) {
+    return Make(std::move(spec),
+                mode,
+                std::move(vb),
+                vertexCount,
+                vertexOffset,
+                std::move(uniforms),
+                /*children=*/{},
+                bounds);
+}
+
+SkMesh::Result SkMesh::Make(sk_sp<SkMeshSpecification> spec,
+                            Mode mode,
+                            sk_sp<VertexBuffer> vb,
+                            size_t vertexCount,
+                            size_t vertexOffset,
+                            sk_sp<const SkData> uniforms,
+                            SkSpan<ChildPtr> children,
+                            const SkRect& bounds) {
     SkMesh mesh;
     mesh.fSpec     = std::move(spec);
     mesh.fMode     = mode;
@@ -671,6 +732,7 @@ SkMesh::Result SkMesh::Make(sk_sp<SkMeshSpecification> spec,
     mesh.fUniforms = std::move(uniforms);
     mesh.fVCount   = vertexCount;
     mesh.fVOffset  = vertexOffset;
+    mesh.fChildren = children;
     mesh.fBounds   = bounds;
     auto [valid, msg] = mesh.validate();
     if (!valid) {
