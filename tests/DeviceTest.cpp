@@ -21,6 +21,7 @@
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/Device.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 
@@ -29,11 +30,20 @@ struct GrContextOptions;
 class DeviceTestingAccess {
 public:
     static sk_sp<SkSpecialImage> MakeSpecial(SkDevice* dev, const SkBitmap& bm) {
-        return dev->makeSpecial(bm);
+        auto img = SkImages::RasterFromBitmap(bm);
+        return MakeSpecial(dev, img.get());
     }
 
     static sk_sp<SkSpecialImage> MakeSpecial(SkDevice* dev, SkImage* img) {
-        return dev->makeSpecial(img);
+        SkIRect subset = SkIRect::MakeSize(img->dimensions());
+        if (dev->asGaneshDevice()) {
+            return SkSpecialImages::MakeFromTextureImage(dev->recordingContext(), subset,
+                                                         sk_ref_sp(img), dev->surfaceProps());
+        } else if (dev->asGraphiteDevice()) {
+            return nullptr; // No test for graphite yet
+        } else {
+            return SkSpecialImages::MakeFromRaster(subset, sk_ref_sp(img), dev->surfaceProps());
+        }
     }
 
     static sk_sp<SkSpecialImage> SnapSpecial(SkDevice* dev) {

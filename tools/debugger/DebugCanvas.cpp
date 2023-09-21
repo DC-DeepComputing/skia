@@ -451,14 +451,6 @@ void DebugCanvas::onDrawAnnotation(const SkRect& rect, const char key[], SkData*
     this->addDrawCommand(new DrawAnnotationCommand(rect, key, sk_ref_sp(value)));
 }
 
-void DebugCanvas::onDrawImage2(const SkImage*           image,
-                               SkScalar                 left,
-                               SkScalar                 top,
-                               const SkSamplingOptions& sampling,
-                               const SkPaint*           paint) {
-    this->addDrawCommand(new DrawImageCommand(image, left, top, sampling, paint));
-}
-
 void DebugCanvas::onDrawImageLattice2(const SkImage* image,
                                       const Lattice& lattice,
                                       const SkRect&  dst,
@@ -659,10 +651,6 @@ std::map<int, std::vector<int>> DebugCanvas::getImageIdToCommandMap(UrlDataManag
         int imageIndex = -1;
         // this is not an exaustive list of where images can be used, they show up in paints too.
         switch (command->getOpType()) {
-            case DrawCommand::OpType::kDrawImage_OpType: {
-                imageIndex = static_cast<const DrawImageCommand*>(command)->imageId(udm);
-                break;
-            }
             case DrawCommand::OpType::kDrawImageRect_OpType: {
                 imageIndex = static_cast<const DrawImageRectCommand*>(command)->imageId(udm);
                 break;

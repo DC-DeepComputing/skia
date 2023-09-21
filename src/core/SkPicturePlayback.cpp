@@ -430,6 +430,11 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
                               paint);
         } break;
         case DRAW_IMAGE2: {
+            if (!reader->validate(!reader->isVersionLT(SkPicturePriv::kDeprecateOnDrawImage))) {
+                // If we got here, we have a new SKP that somehow has a DRAW_IMAGE2 record, which
+                // shouldn't happen.
+                return;
+            }
             const SkPaint* paint = fPictureData->optionalPaint(reader);
             const SkImage* image = fPictureData->getImage(reader);
             SkPoint loc;

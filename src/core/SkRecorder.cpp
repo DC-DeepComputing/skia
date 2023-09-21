@@ -221,11 +221,6 @@ void SkRecorder::onDrawPath(const SkPath& path, const SkPaint& paint) {
     this->append<SkRecords::DrawPath>(paint, path);
 }
 
-void SkRecorder::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
-                              const SkSamplingOptions& sampling, const SkPaint* paint) {
-    this->append<SkRecords::DrawImage>(this->copy(paint), sk_ref_sp(image), x, y, sampling);
-}
-
 void SkRecorder::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                   const SkSamplingOptions& sampling, const SkPaint* paint,
                                   SrcRectConstraint constraint) {

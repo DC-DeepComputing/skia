@@ -170,11 +170,6 @@ void SkOverdrawCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
     fList[0]->onDrawPath(path, fPaint);
 }
 
-void SkOverdrawCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
-                                    const SkSamplingOptions&, const SkPaint*) {
-    fList[0]->onDrawRect(SkRect::MakeXYWH(x, y, image->width(), image->height()), fPaint);
-}
-
 void SkOverdrawCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                         const SkSamplingOptions&, const SkPaint*, SrcRectConstraint) {
     fList[0]->onDrawRect(dst, fPaint);

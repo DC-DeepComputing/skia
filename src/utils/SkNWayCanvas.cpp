@@ -280,14 +280,6 @@ void SkNWayCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
     }
 }
 
-void SkNWayCanvas::onDrawImage2(const SkImage* image, SkScalar left, SkScalar top,
-                                const SkSamplingOptions& sampling, const SkPaint* paint) {
-    Iter iter(fList);
-    while (iter.next()) {
-        iter->drawImage(image, left, top, sampling, paint);
-    }
-}
-
 void SkNWayCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                     const SkSamplingOptions& sampling, const SkPaint* paint,
                                     SrcRectConstraint constraint) {

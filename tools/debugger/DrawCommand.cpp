@@ -1189,69 +1189,6 @@ void DrawAnnotationCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlData
 
 ////
 
-DrawImageCommand::DrawImageCommand(const SkImage*           image,
-                                   SkScalar                 left,
-                                   SkScalar                 top,
-                                   const SkSamplingOptions& sampling,
-                                   const SkPaint*           paint)
-        : INHERITED(kDrawImage_OpType)
-        , fImage(SkRef(image))
-        , fLeft(left)
-        , fTop(top)
-        , fSampling(sampling)
-        , fPaint(paint) {}
-
-void DrawImageCommand::execute(SkCanvas* canvas) const {
-    canvas->drawImage(fImage.get(), fLeft, fTop, fSampling, fPaint.getMaybeNull());
-}
-
-bool DrawImageCommand::render(SkCanvas* canvas) const {
-    SkAutoCanvasRestore acr(canvas, true);
-    canvas->clear(0xFFFFFFFF);
-
-    xlate_and_scale_to_bounds(
-            canvas,
-            SkRect::MakeXYWH(
-                    fLeft, fTop, SkIntToScalar(fImage->width()), SkIntToScalar(fImage->height())));
-    this->execute(canvas);
-    return true;
-}
-
-uint64_t DrawImageCommand::imageId(UrlDataManager& udm) const {
-    return udm.lookupImage(fImage.get());
-}
-
-void DrawImageCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const {
-    INHERITED::toJSON(writer, urlDataManager);
-    flatten(*fImage, writer, urlDataManager);
-    writer.appendName(DEBUGCANVAS_ATTRIBUTE_COORDS);
-    MakeJsonPoint(writer, fLeft, fTop);
-    if (fPaint.isValid()) {
-        writer.appendName(DEBUGCANVAS_ATTRIBUTE_PAINT);
-        MakeJsonPaint(writer, *fPaint, urlDataManager);
-    }
-    writer.appendName(DEBUGCANVAS_ATTRIBUTE_SAMPLING);
-    MakeJsonSampling(writer, fSampling);
-
-    writer.appendU32(DEBUGCANVAS_ATTRIBUTE_UNIQUE_ID, fImage->uniqueID());
-    writer.appendS32(DEBUGCANVAS_ATTRIBUTE_WIDTH, fImage->width());
-    writer.appendS32(DEBUGCANVAS_ATTRIBUTE_HEIGHT, fImage->height());
-    switch (fImage->alphaType()) {
-        case kOpaque_SkAlphaType:
-            writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_OPAQUE);
-            break;
-        case kPremul_SkAlphaType:
-            writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_PREMUL);
-            break;
-        case kUnpremul_SkAlphaType:
-            writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_UNPREMUL);
-            break;
-        default:
-            writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_UNKNOWN);
-            break;
-    }
-}
-
 DrawImageLatticeCommand::DrawImageLatticeCommand(const SkImage*           image,
                                                  const SkCanvas::Lattice& lattice,
                                                  const SkRect&            dst,
