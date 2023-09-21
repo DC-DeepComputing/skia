@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bd6c6e9_fd7df32f",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-09-21T12:25:56Z",
+      "side": 1,
+      "message": "So say we were just working directly with a real GPU texture and we want to call delete on it. For example think of a VkImage which is just an opaque handle. We pass the VkImage into the vkDestroyImage. After the call the VkImage handle itself still holds a \"real\" value, but it is just not allowed to be used anymore. The driver doesn\u0027t reset the VkImage handle itself. So I don\u0027t think it is unreasonable to not be invaliding the BackendTextures if we\u0027re trying to mimic how real GPU calls work.\n\nNow invalidating may be a \"helper\" to clients to make sure they don\u0027t use it again. But at the same time nothing stops the client from making a copy of the BackendTexture before calling delete. Then we\u0027d invalidate one version of the BackendTexture but the copy would still think it has a valid object. Maybe it all the internal objects were actually shared pointers to the same object that we could invalidate globally.\n\nI think in the end it makes most sense to trust the client to use the texture correctly and not invalidate on deletion.",
+      "parentUuid": "bfc70e23_6e6351d0",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd206d57_43fe6bce",
         "filename": "tools/gpu/BackendTextureImageFactory.cpp",
         "patchSetId": 11
