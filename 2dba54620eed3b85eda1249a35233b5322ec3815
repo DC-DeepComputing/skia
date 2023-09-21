@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c15b779c_ecf50ff4",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-21T13:54:14Z",
+      "side": 1,
+      "message": "Looks like the Go code was relying on a substring match",
+      "range": {
+        "startLine": 365,
+        "startChar": 52,
+        "endLine": 365,
+        "endChar": 55
+      },
+      "revId": "2dba54620eed3b85eda1249a35233b5322ec3815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
