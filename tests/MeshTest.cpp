@@ -382,17 +382,17 @@ static void test_good_uniforms(skiatest::Reporter* r) {
 
             // A shared uniform after an unshared fragment uniform
             {
-                     {
+                    {
                             "uniform float3x3 m;",
-                     },
-                     {
-                             "uniform int2     i2;",
-                             "uniform float3x3 m;",
-                     },
-                     {
+                    },
+                    {
+                            "uniform int2     i2;",
+                            "uniform float3x3 m;",
+                    },
+                    {
                             make_uni(Type::kFloat3x3, "m" ,  0, kVS|kFS),
                             make_uni(Type::kInt2    , "i2", 36, kFS    )
-                     }
+                    }
             },
 
             // A shared uniform before an unshared fragment uniform
