@@ -76,6 +76,8 @@ public:
 
     bool supportsInlineUniformBlocks() const { return fSupportsInlineUniformBlocks; }
 
+    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+
     uint32_t maxVertexAttributes() const {
         return fMaxVertexAttributes;
     }
