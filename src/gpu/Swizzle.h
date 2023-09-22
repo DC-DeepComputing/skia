@@ -60,6 +60,7 @@ public:
     static constexpr Swizzle BGRA() { return Swizzle("bgra"); }
     static constexpr Swizzle RRRA() { return Swizzle("rrra"); }
     static constexpr Swizzle RGB1() { return Swizzle("rgb1"); }
+    static constexpr Swizzle _000R() { return Swizzle("000r"); }
 
     using sk_is_trivially_relocatable = std::true_type;
 
