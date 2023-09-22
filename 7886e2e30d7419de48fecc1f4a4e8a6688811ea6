@@ -16,6 +16,24 @@
       "message": "This would create an observable (but pointless) difference in Android:\n\nhttps://developer.android.com/reference/android/graphics/MeshSpecification\n\n`MeshSpecification#make` would begin accepting mesh fragment programs that include `uniform shader`. However, those mesh specifications would not be usable; as soon as you called `Mesh#make` you\u0027d get roughly the same error as before.\n\nI\u0027m not sure if this is the kind of thing you would want to guard against. The docs for `MeshSpecification` list a bunch of program limits but actually don\u0027t specify anything about child effects one way or another.",
       "revId": "7886e2e30d7419de48fecc1f4a4e8a6688811ea6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70dcc45e_1f885dff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-09-22T21:24:42Z",
+      "side": 1,
+      "message": "As long as it\u0027s clearly documented when new features are available I think that\u0027s fine.\n\nWorst case it becomes a big enough list to turn into a table like we did for https://developer.android.com/topic/performance/hardware-accel#drawing-support",
+      "parentUuid": "9fb5ee22_badf2780",
+      "revId": "7886e2e30d7419de48fecc1f4a4e8a6688811ea6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
