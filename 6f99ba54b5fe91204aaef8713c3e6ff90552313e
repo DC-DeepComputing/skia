@@ -16,6 +16,24 @@
       "message": "Seems like we\u0027re eventually going to need some way to gate this feature, for Android rollout? (eg, Android is going to want to expose this in a way that\u0027s dependent on the targeted API version, or similar?). So if you\u0027re developing on a newer device, but want to write code that works on older phones, we\u0027ll need to be able to properly reject mesh code with uniform shaders?",
       "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2faa5b7_45a97cdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-09-22T18:18:16Z",
+      "side": 1,
+      "message": "we usually only gate behavior changes not new features. It\u0027s not entirely clear to me which category this falls into",
+      "parentUuid": "537cfe8c_e4f10324",
+      "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
