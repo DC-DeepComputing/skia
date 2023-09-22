@@ -8,9 +8,10 @@
 #include "src/sksl/tracing/SkSLDebugTracePlayer.h"
 
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
+#include "src/sksl/tracing/SkSLTraceTypes.h"
 
-#include <limits.h>
 #include <algorithm>
+#include <climits>
 #include <utility>
 
 #ifdef SKSL_ENABLE_TRACING
