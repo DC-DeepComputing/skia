@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b44e3271_9c8ca52e",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-22T15:39:05Z",
+      "side": 1,
+      "message": "Since I\u0027m here, I\u0027m not so sure about the name `RasterTestData`. Most of Skia is about rastering things, from the name I would expect this to provide a bunch of bitmaps. Internally it appears that `FontTestDataBasePath` is already used, so maybe more like `TestFontDataProvider` or something? I realize this also provides more than just that and could in theory also provide a collection of fonts as well, but that\u0027s even more specific than just `Font` and way more specific than `Raster`.",
+      "revId": "ac7974c260af2a78335b9ca73513f42f56742882",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30d38709_015adc57",
+        "filename": "tools/flags/CommonFlagsFontTestData.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-22T15:39:05Z",
+      "side": 1,
+      "message": "Is there a good reason to put this in CommonFlags and spread the definition and use all over the place? I ask because `tools/Resources.cpp` is a very similar setup which just defines the `resourcePath` flag right inline because it isn\u0027t really a \"common flag\" it\u0027s only used by `Resources.cpp` and nothing else. `RasterTestData.cpp` seems to be a lot like `Resources.cpp` in that `RasterTestData.cpp` should be the only place that knows anything about the flag or where to find the data and then provides the data.",
+      "revId": "ac7974c260af2a78335b9ca73513f42f56742882",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
