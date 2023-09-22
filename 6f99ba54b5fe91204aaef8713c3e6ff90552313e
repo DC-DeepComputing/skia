@@ -34,6 +34,24 @@
       "parentUuid": "537cfe8c_e4f10324",
       "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb0fe6c4_d1c01c22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-22T18:54:50Z",
+      "side": 1,
+      "message": "I don\u0027t think the older API version will have a way to pass child shaders into the mesh creation, so it will fail naturally. That is, if the program specifies a `uniform shader foo`, but the call to `SkMesh::Make` doesn\u0027t pass any children, that will generate an error. And the `SkMesh::Make` call that takes children won\u0027t be accessible from the older Android API.\n\nUnless I misunderstand the concern?",
+      "parentUuid": "d2faa5b7_45a97cdb",
+      "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
