@@ -33,6 +33,23 @@
       "message": "Kevin, looks like there are still two Linux failures, log excerpt:\n\n```\n  File \"/b/s/w/ir/recipe_bundle/skia/infra/bots/recipes/test.py\", line 173, in RunSteps\n    test_steps(api)\n  File \"/b/s/w/ir/recipe_bundle/skia/infra/bots/recipes/test.py\", line 147, in test_steps\n    if \u0027Fontations\u0027 in api.vars.builder_cfg.get(\u0027extra_config\u0027):\nTypeError(\u0027argument of type \u0027NoneType\u0027 is not iterable\u0027)\n```",
       "revId": "c6fec359850c793fed49f3af8337d634bbb46bf6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd7dd465_3491fec2",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 2311,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-09-22T12:01:42Z",
+      "side": 1,
+      "message": "Nit: Duplicate line.",
+      "revId": "c6fec359850c793fed49f3af8337d634bbb46bf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
