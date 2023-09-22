@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab6ea05_a3c1d784",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-22T16:36:51Z",
+      "side": 1,
+      "message": "My largest concern at the moment is building the opts correctly. The rest of it seems more or less fine or changeable in the future if we don\u0027t like it.",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "013b1085_5e36332e",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-22T16:36:51Z",
+      "side": 1,
+      "message": "Why are these listed here? You cannot usefully just build these (unless the target is explicitly already pose ssse3 or hsw). Same with other `_opts_` in here.",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf3722f0_30e3f30f",
+        "filename": "src/opts/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-22T16:36:51Z",
+      "side": 1,
+      "message": "Ugh... I can\u0027t even reason about this (and the the empty `textual_headers` in the new `:hsw`). It would take me all day. If they\u0027re not in `textual_headers` then (at least in g3 with their weird module system) each of the headers will get pre-compiled the first time they are used. But there are rules about how they are compiled when cached which makes this difficult to reason about. I mean, the issue here is that we\u0027re building a separate version of Skia in general for a different architecture than what we\u0027re actually targeting, but we\u0027re shoving into the same binary as the Skia for the \"base\" architecture. (We\u0027re really creating a fat binary, but doing so ourselves to avoid being super fat.)",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
