@@ -92015,12 +92015,14 @@
         "src/sksl/generated/.*"
       ]
     },
+    "Build-Mac-Clang-arm64-Release-iOS": {},
     "Build-Mac-Clang-arm64-Release-iOS_Graphite_Metal": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
         "src/sksl/generated/.*"
       ]
     },
+    "Build-Mac-Clang-arm64-Release-iOS_Metal": {},
     "Build-Mac-Clang-x86_64-Debug-Graphite_Dawn": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
