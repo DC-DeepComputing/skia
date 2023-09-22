@@ -16,6 +16,24 @@
       "message": "Kevin, this GM would need similar access to the `googlefonts_testdata` CIPD. Is this covered by the existing dm runner changes - in other words, would `RasterTestData` pick up the command line path override for generating gold results as well?",
       "revId": "599d0d6bcf8acb2b9a239556149c2bdf52a471de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7769848_a0fd6a69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-22T14:17:50Z",
+      "side": 1,
+      "message": "Yes, DM handles both gms and unit tests, so I would expect https://skia-review.googlesource.com/c/skia/+/758001 to make these tests work fine as well.",
+      "parentUuid": "06db594a_ac2bfffa",
+      "revId": "599d0d6bcf8acb2b9a239556149c2bdf52a471de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
