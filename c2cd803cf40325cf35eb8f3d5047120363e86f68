@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91cd2640_6526423c",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-22T17:14:36Z",
+      "side": 1,
+      "message": "Ah, sorry. I misunderstood the issue - yeah if the build file requires that they be compiled identically by all translation units, then it won\u0027t work.",
+      "parentUuid": "f488d4a6_d855eae8",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf3722f0_30e3f30f",
         "filename": "src/opts/BUILD.bazel",
         "patchSetId": 13
