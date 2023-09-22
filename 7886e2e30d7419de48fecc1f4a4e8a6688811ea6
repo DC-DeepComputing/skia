@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fb5ee22_badf2780",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-22T21:14:27Z",
+      "side": 1,
+      "message": "This would create an observable (but pointless) difference in Android:\n\nhttps://developer.android.com/reference/android/graphics/MeshSpecification\n\n`MeshSpecification#make` would begin accepting mesh fragment programs that include `uniform shader`. However, those mesh specifications would not be usable; as soon as you called `Mesh#make` you\u0027d get roughly the same error as before.\n\nI\u0027m not sure if this is the kind of thing you would want to guard against. The docs for `MeshSpecification` list a bunch of program limits but actually don\u0027t specify anything about child effects one way or another.",
+      "revId": "7886e2e30d7419de48fecc1f4a4e8a6688811ea6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
