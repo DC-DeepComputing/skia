@@ -34,6 +34,24 @@
       "parentUuid": "9fb5ee22_badf2780",
       "revId": "7886e2e30d7419de48fecc1f4a4e8a6688811ea6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cea0dba_2de34b5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-22T21:26:02Z",
+      "side": 1,
+      "message": "This could be handled at the Android level. At older API levels, you could identify and reject mesh specifications that have child effects by checking `!myMeshSpecification.children().empty()`.",
+      "parentUuid": "9fb5ee22_badf2780",
+      "revId": "7886e2e30d7419de48fecc1f4a4e8a6688811ea6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
