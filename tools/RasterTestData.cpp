@@ -39,7 +39,6 @@ RasterTestDataIterator::RasterTestDataIterator(const std::string fontFilterRegex
                                                const std::string langFilterRegexp)
         : fFontFilter(fontFilterRegexp), fLangFilter(langFilterRegexp) {
     SkString testDataLocation = prefixWithTestDataPath(SkString(kTestDataJsonFilename));
-    SkDebugf("Loading json from %s\n", testDataLocation.c_str());
     sk_sp<SkData> jsonTestData = SkData::MakeFromFileName(testDataLocation.c_str());
     SkASSERTF(jsonTestData && jsonTestData->size(),
               "Unable to access font test metadata at location %s, check bin/fetch-fonts-testdata.",
