@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c4d36e0_f3e9b5bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-22T19:23:10Z",
+      "side": 1,
+      "message": "I forgot an empty filegroup is an error in some cases.",
+      "revId": "569d4528eb5070f232b279faf21bcef907ed49de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
