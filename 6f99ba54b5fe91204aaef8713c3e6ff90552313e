@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "537cfe8c_e4f10324",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-22T18:10:50Z",
+      "side": 1,
+      "message": "Seems like we\u0027re eventually going to need some way to gate this feature, for Android rollout? (eg, Android is going to want to expose this in a way that\u0027s dependent on the targeted API version, or similar?). So if you\u0027re developing on a newer device, but want to write code that works on older phones, we\u0027ll need to be able to properly reject mesh code with uniform shaders?",
+      "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
