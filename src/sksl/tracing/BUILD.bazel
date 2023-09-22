@@ -47,8 +47,37 @@ skia_filegroup(
     name = "private_hdrs",
     srcs = [
         "SkSLDebugTracePriv.h",
+        "SkSLTraceTypes.h",
         ":enabled_hdrs",
         ":skopts_hdrs",
+    ],
+    visibility = ["//src/sksl:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_priv_hdrs",
+    srcs = [
+        "SkSLDebugTracePriv.h",
+        "SkSLTraceHook.h",
+        "SkSLTraceTypes.h",
+    ],
+    visibility = ["//src/sksl:__pkg__"],
+)
+
+skia_filegroup(
+    name = "opts_srcs",
+    srcs = [
+        "SkSLTraceHook.h",
+        "SkSLTraceTypes.h",
+    ],
+    visibility = ["//src/opts:__pkg__"],
+)
+
+skia_filegroup(
+    name = "core_srcs",
+    srcs = [
+        "SkSLDebugTracePriv.cpp",
+        "SkSLTraceHook.cpp",
     ],
     visibility = ["//src/sksl:__pkg__"],
 )

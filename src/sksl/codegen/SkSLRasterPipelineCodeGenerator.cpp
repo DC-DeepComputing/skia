@@ -64,6 +64,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
+#include "src/sksl/tracing/SkSLTraceTypes.h"
 #include "src/sksl/transform/SkSLTransform.h"
 
 #include <algorithm>

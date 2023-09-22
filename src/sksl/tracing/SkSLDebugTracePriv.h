@@ -13,6 +13,7 @@
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
+#include "src/sksl/tracing/SkSLTraceTypes.h"
 
 #include <cstdint>
 #include <memory>
@@ -23,18 +24,6 @@ class SkStream;
 class SkWStream;
 
 namespace SkSL {
-
-struct TraceInfo {
-    enum class Op {
-        kLine,  /** data: line number, (unused) */
-        kVar,   /** data: slot, value */
-        kEnter, /** data: function index, (unused) */
-        kExit,  /** data: function index, (unused) */
-        kScope, /** data: scope delta, (unused) */
-    };
-    Op op;
-    int32_t data[2];
-};
 
 struct SlotDebugInfo {
     /** The full name of this variable (without component), e.g. `myArray[3].myStruct.myVector` */
@@ -52,11 +41,6 @@ struct SlotDebugInfo {
     Position                pos = {};
     /** If this slot holds a function's return value, contains 1; if not, -1. */
     int                     fnReturnValue = -1;
-};
-
-struct FunctionDebugInfo {
-    /** Full function declaration: `float myFunction(half4 color)`) */
-    std::string             name;
 };
 
 class DebugTracePriv : public DebugTrace {

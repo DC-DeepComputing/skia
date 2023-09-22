@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
+#include "src/sksl/tracing/SkSLTraceTypes.h"
 
 namespace SkSL {
 

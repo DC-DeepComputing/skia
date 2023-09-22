@@ -20,6 +20,7 @@
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
+#include "src/sksl/tracing/SkSLTraceTypes.h"
 #include "src/utils/SkBitSet.h"
 
 #if !defined(SKSL_STANDALONE)
