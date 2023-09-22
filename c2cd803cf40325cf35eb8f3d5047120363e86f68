@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f488d4a6_d855eae8",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-22T17:09:52Z",
+      "side": 1,
+      "message": "How so? This file `SkBitmapProcState_opts_ssse3.cpp` does a `#define SK_OPTS_TARGET SK_OPTS_TARGET_SSSE3` and then includes a bunch of files which will change based on that. But then that list includes must be marked as textual headers since they will be compiled differently by different files (unless this is the only file in which they are included, in which case we should no longer set the define and that should all be inlined). I see no way to cleanly build this file in this list.",
+      "parentUuid": "2d926c58_4dca8dc0",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf3722f0_30e3f30f",
         "filename": "src/opts/BUILD.bazel",
         "patchSetId": 13
