@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc0c2ca_65bf2c4f",
+        "filename": "tests/sksl/mesh/MeshFragment.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-09-22T14:58:15Z",
+      "side": 1,
+      "message": "nit: whitespace (I think)",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "2dcda76c8d8abccbf5f2746529ebfd6647c998c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83cce490_0d8627dc",
+        "filename": "tests/sksl/mesh/MeshVertex.stage",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-09-22T14:58:15Z",
+      "side": 1,
+      "message": "nit: whitespace here (and below) too.",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 19
+      },
+      "revId": "2dcda76c8d8abccbf5f2746529ebfd6647c998c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
