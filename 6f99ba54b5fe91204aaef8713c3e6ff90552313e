@@ -52,6 +52,24 @@
       "parentUuid": "d2faa5b7_45a97cdb",
       "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94b7c97e_6512ba14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-22T18:56:27Z",
+      "side": 1,
+      "message": "Ah, no. You\u0027re right - I was forgetting that the API to even access this feature was going to be inaccessible without targeting the newer API level, so we should be okay.",
+      "parentUuid": "cb0fe6c4_d1c01c22",
+      "revId": "6f99ba54b5fe91204aaef8713c3e6ff90552313e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
