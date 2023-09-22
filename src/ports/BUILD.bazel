@@ -216,11 +216,6 @@ skia_filegroup(
     srcs = ["SkGlobalInitialization_default.cpp"],
 )
 
-skia_filegroup(
-    name = "image_generator",
-    srcs = ["SkImageGenerator_skia.cpp"],  # TODO(kjlubick) add select() if necessary
-)
-
 # In own group to prevent exporting to *.gni files.
 skia_filegroup(
     name = "osfile_platform",
@@ -269,7 +264,6 @@ skia_filegroup(
         ":fontmgr",
         ":fontmgr_factory",
         ":global_init",
-        ":image_generator",
         ":load_dynamic_library",
         ":malloc",
         ":osfile",
