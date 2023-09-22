@@ -88,16 +88,23 @@ static bool check_for_failure(skiatest::Reporter*     reporter,
                               size_t                  stride,
                               SkSpan<const Varying>   varyings,
                               const SkString&         vs,
-                              const SkString&         fs) {
+                              const SkString&         fs,
+                              const char*             expectedErrorSubstring = nullptr) {
     auto [spec, error] = SkMeshSpecification::Make(attributes, stride, varyings, vs, fs);
-    SkString description;
-    if (!spec) {
-        return true;
+    if (spec) {
+        ERRORF(reporter,
+               "Expected to fail but succeeded:\n%s",
+               make_description(attributes, stride, varyings, vs, fs).c_str());
+        return false;
     }
-    ERRORF(reporter,
-           "Expected to fail but succeeded:\n%s",
-           make_description(attributes, stride, varyings, vs, fs).c_str());
-    return false;
+    if (expectedErrorSubstring && !error.contains(expectedErrorSubstring)) {
+        ERRORF(reporter,
+               "    Expected: %s\n"
+               "Actual error: %s\n",
+               expectedErrorSubstring, error.c_str());
+        return false;
+    }
+    return true;
 }
 
 static bool check_for_success(skiatest::Reporter*         reporter,
@@ -254,32 +261,59 @@ DEF_TEST(MeshSpec_Float4Color, reporter) {
                       kFloat4FS);
 }
 
-// We don't allow child effects in custom meshes currently.
-DEF_TEST(MeshSpec_InvalidGlobals, reporter) {
-    static constexpr const char* kBadGlobals[] {
-        "uniform shader myshader;"
+DEF_TEST(MeshSpec_DisallowsChildEffectInVertex, reporter) {
+    static constexpr const char* kChildEffects[] {
+        "uniform shader myshader;",
+        "uniform colorFilter mycolorfilter;",
+        "uniform blender myblender;"
     };
-    for (const auto& global : kBadGlobals) {
-        SkString badVS = kValidVS;
-        badVS.prepend(global);
+
+    for (const auto& global : kChildEffects) {
+        SkString vsWithChild{global};
+        vsWithChild.append(kValidVS);
+
+        SkString fsWithChild{global};
+        fsWithChild.append(kValidFSes[0]);
+
         if (!check_for_failure(reporter,
                                kValidAttrs,
                                kValidStride,
                                kValidVaryings,
-                               badVS,
-                               kValidFSes[0])) {
+                               vsWithChild,
+                               kValidFSes[0],
+                               "effects are not permitted in mesh vertex shaders")) {
+            return;
+        }
+
+        if (!check_for_failure(reporter,
+                               kValidAttrs,
+                               kValidStride,
+                               kValidVaryings,
+                               vsWithChild,
+                               fsWithChild,
+                               "effects are not permitted in mesh vertex shaders")) {
             return;
         }
     }
-    for (const auto& global : kBadGlobals) {
-        SkString badFS = kValidFSes[0];
-        badFS.prepend(global);
-        if (!check_for_failure(reporter,
+}
+
+DEF_TEST(MeshSpec_AllowsChildEffectInFragment, reporter) {
+    static constexpr const char* kChildEffects[] {
+        "uniform shader myshader;",
+        "uniform colorFilter mycolorfilter; uniform shader myshader;",
+        "uniform shader myshader; uniform blender myblender; uniform colorFilter mycolorfilter;"
+    };
+
+    for (const auto& global : kChildEffects) {
+        SkString fsWithChild{global};
+        fsWithChild.append(kValidFSes[0]);
+
+        if (!check_for_success(reporter,
                                kValidAttrs,
                                kValidStride,
                                kValidVaryings,
                                kValidVS,
-                               badFS)) {
+                               fsWithChild)) {
             return;
         }
     }
