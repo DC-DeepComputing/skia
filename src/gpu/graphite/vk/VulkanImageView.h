@@ -10,6 +10,7 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 
 namespace skgpu::graphite {
 
@@ -32,7 +33,8 @@ public:
                                                        VkImage image,
                                                        VkFormat format,
                                                        Usage usage,
-                                                       uint32_t miplevels);
+                                                       uint32_t miplevels,
+                                                       const VulkanYcbcrConversionInfo& ycbcrInfo);
     ~VulkanImageView();
 
     VkImageView imageView() const { return fImageView; }
@@ -45,7 +47,7 @@ private:
     const VulkanSharedContext* fSharedContext;
     VkImageView  fImageView;
     Usage fUsage;
-    // TODO: track associated SamplerYcbcrConversion
+    sk_sp<VulkanSamplerYcbcrConversion> fYcbcrConversionInfo;
 };
 
 }  // namespace skgpu::graphite

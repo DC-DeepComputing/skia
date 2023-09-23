@@ -23,6 +23,7 @@
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
+#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -245,6 +246,32 @@ sk_sp<VulkanFramebuffer> VulkanResourceProvider::createFramebuffer(
     framebufferInfo.height = height;
     framebufferInfo.layers = 1;
     return VulkanFramebuffer::Make(context, framebufferInfo);
+}
+
+sk_sp<VulkanSamplerYcbcrConversion>
+        VulkanResourceProvider::findOrCreateCompatibleSamplerYcbcrConversion(
+                const VulkanYcbcrConversionInfo& ycbcrInfo) {
+
+    auto ycbcrConversionKey = VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
+            this->vulkanSharedContext(), ycbcrInfo);
+    Resource* existingYcbcrConversion =
+            fResourceCache->findAndRefResource(ycbcrConversionKey, skgpu::Budgeted::kNo);
+
+    if (existingYcbcrConversion) {
+        return sk_sp<VulkanSamplerYcbcrConversion>(
+                static_cast<VulkanSamplerYcbcrConversion*>(existingYcbcrConversion));
+    } else {
+        auto newYcbcrConversion =
+                VulkanSamplerYcbcrConversion::Make(this->vulkanSharedContext(), ycbcrInfo);
+        SkASSERT(newYcbcrConversion);
+        newYcbcrConversion->setKey(ycbcrConversionKey);
+        fResourceCache->insertResource(newYcbcrConversion.get());
+    }
+    auto ycbcrConversion =
+            fResourceCache->findAndRefResource(ycbcrConversionKey, skgpu::Budgeted::kNo);
+    return ycbcrConversion ? sk_sp<VulkanSamplerYcbcrConversion>(
+                                    static_cast<VulkanSamplerYcbcrConversion*>(ycbcrConversion))
+                           : nullptr;
 }
 
 } // namespace skgpu::graphite
