@@ -67,7 +67,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckSingleUniform, r, CtsEnforcement::kNextRele
             mgr.write(type, kFloats);
             mgr.doneWithExpectedUniforms();
             REPORTER_ASSERT(r, mgr.size() > 0);
-            mgr.reset();
+            mgr.reset1();
         }
     }
 }
@@ -98,7 +98,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckFloatEncoding, r, CtsEnforcement::kNextRele
             REPORTER_ASSERT(r, 0 == memcmp(validData, uniformData.data(), vecLength * elementSize),
                             "Layout: %d - Type: %s float encoding failed",
                             (int)layout, SkSLTypeString(type));
-            mgr.reset();
+            mgr.reset1();
         }
     }
 }
@@ -128,7 +128,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckIntEncoding, r, CtsEnforcement::kNextReleas
             REPORTER_ASSERT(r, 0 == memcmp(validData, uniformData.data(), vecLength * elementSize),
                             "Layout: %d - Type: %s int encoding failed",
                             (int)layout, SkSLTypeString(type));
-            mgr.reset();
+            mgr.reset1();
         }
     }
 }
@@ -160,7 +160,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckScalarVectorPacking, r, CtsEnforcement::kNe
             REPORTER_ASSERT(r, uniformData.size() == elementSize * effectiveVecLength * 3,
                             "Layout: %d - Type: %s tight packing failed",
                             (int)layout, SkSLTypeString(type));
-            mgr.reset();
+            mgr.reset1();
         }
     }
 }
@@ -200,7 +200,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckMatrixPacking, r, CtsEnforcement::kNextRele
             REPORTER_ASSERT(r, uniformData.size() == elementSize * numElements * 3,
                             "Layout: %d - Type: %s matrix packing failed",
                             (int)layout, SkSLTypeString(type));
-            mgr.reset();
+            mgr.reset1();
         }
     }
 }
@@ -298,7 +298,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingScalarVector, r, CtsEnforcement::kNe
                 } else {
                     ERRORF(r, "Unexpected element sizes: %zu %zu", elementSize1, elementSize2);
                 }
-                mgr.reset();
+                mgr.reset1();
             }
         }
     }
@@ -417,7 +417,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingVectorMatrix, r, CtsEnforcement::kNe
                                     "Types: %s, %s vector-matrix padding test failed",
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 }
-                mgr.reset();
+                mgr.reset1();
             }
         }
     }
@@ -550,7 +550,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingMatrixVector, r, CtsEnforcement::kNe
                                     "Types: %s, %s matrix-vector padding test failed",
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 }
-                mgr.reset();
+                mgr.reset1();
             }
         }
     }
@@ -624,7 +624,7 @@ DEF_GRAPHITE_TEST(UniformManagerMetalArrayLayout, r, CtsEnforcement::kNextReleas
                         "array test %d for type %s failed - expected size: %zu, actual size: %zu",
                         (int)i, SkSLTypeString(arrayType), expectedSize, uniformData.size());
 
-        mgr.reset();
+        mgr.reset1();
     }
 }
 
@@ -696,7 +696,7 @@ DEF_GRAPHITE_TEST(UniformManagerStd431ArrayLayout, r, CtsEnforcement::kNextRelea
                         "array test %d for type %s failed - expected size: %zu, actual size: %zu",
                         (int)i, SkSLTypeString(arrayType), expectedSize, uniformData.size());
 
-        mgr.reset();
+        mgr.reset1();
     }
 }
 
@@ -774,7 +774,7 @@ DEF_GRAPHITE_TEST(UniformManagerStd140ArrayLayout, r, CtsEnforcement::kNextRelea
                         "array test %d for type %s failed - expected size: %zu, actual size: %zu",
                         (int)i, SkSLTypeString(arrayType), expectedSize, uniformData.size());
 
-        mgr.reset();
+        mgr.reset1();
     }
 }
 
@@ -804,7 +804,7 @@ DEF_GRAPHITE_TEST(UniformManagerStd140MatrixLayoutContents, r, CtsEnforcement::k
                             "Incorrect %s element %zu - expected %f, got %f",
                             SkSLTypeString(type), i, expected, el);
         }
-        mgr.reset();
+        mgr.reset1();
     }
 
     // float3x3, half3x3
@@ -828,7 +828,7 @@ DEF_GRAPHITE_TEST(UniformManagerStd140MatrixLayoutContents, r, CtsEnforcement::k
                             "Incorrect %s element %zu - expected %f, got %f",
                             SkSLTypeString(type), i, expected, el);
         }
-        mgr.reset();
+        mgr.reset1();
     }
 }
 
@@ -859,7 +859,7 @@ DEF_GRAPHITE_TEST(UniformManagerStd430MatrixLayoutContents, r, CtsEnforcement::k
                             "Incorrect %s element %zu - expected %f, got %f",
                             SkSLTypeString(type), i, expected, el);
         }
-        mgr.reset();
+        mgr.reset1();
     }
 
     // float3x3, half3x3
@@ -883,6 +883,6 @@ DEF_GRAPHITE_TEST(UniformManagerStd430MatrixLayoutContents, r, CtsEnforcement::k
                             "Incorrect %s element %zu - expected %f, got %f",
                             SkSLTypeString(type), i, expected, el);
         }
-        mgr.reset();
+        mgr.reset1();
     }
 }

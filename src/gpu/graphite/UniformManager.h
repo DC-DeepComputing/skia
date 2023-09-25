@@ -67,7 +67,7 @@ public:
     size_t size() const { return fStorage.size(); }
 
     void resetWithNewLayout(Layout);
-    void reset();
+    void reset1();
 
     // Write a single instance of `type` from the data block referenced by `src`.
     void write(SkSLType type, const void* src);
@@ -81,6 +81,7 @@ public:
 
     void write(const SkM44&);
     void write(const SkPMColor4f&);
+    void writePaintColor(const SkPMColor4f&);
     void write(const SkRect&);
     void write(const SkV2&);
     void write(const SkV4&);
