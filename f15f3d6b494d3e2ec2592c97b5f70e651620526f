@@ -16,6 +16,24 @@
       "message": "I assume the error has to do with the multiple resolutions of `TRUE`? I\u0027m surprised this compiles at all ... we allow variables to shadow functions?",
       "revId": "f15f3d6b494d3e2ec2592c97b5f70e651620526f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "623f72f7_3bc0051f",
+        "filename": "resources/sksl/shared/TernaryOneZeroOptimization.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-25T15:20:13Z",
+      "side": 1,
+      "message": "Yes, we allow variables to shadow functions, and you would be surprised how often people do it. Variables named `max` or `sign` or `distance` or `length` all over :) \n\nThis particular line can just be removed; it was a holdover from when I was reducing the fuzzer output to a test case. The \"function call\" aspect wasn\u0027t relevant, it was just how the fuzzer managed to find it.",
+      "parentUuid": "02e31d6f_1d43e9df",
+      "revId": "f15f3d6b494d3e2ec2592c97b5f70e651620526f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
