@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a30e21e_4c707302",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-25T17:32:43Z",
+      "side": 1,
+      "message": "Sending this CL to both of you - not sure who has more availability or stake here. Please TAL. Thanks :)",
+      "revId": "3e501b625377cc90a27ee376390d9e9d4e106f3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3084617_a8050732",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-25T17:32:43Z",
+      "side": 1,
+      "message": "Nit: Is there a better way to handle this line overflow?",
+      "range": {
+        "startLine": 120,
+        "startChar": 16,
+        "endLine": 120,
+        "endChar": 112
+      },
+      "revId": "3e501b625377cc90a27ee376390d9e9d4e106f3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

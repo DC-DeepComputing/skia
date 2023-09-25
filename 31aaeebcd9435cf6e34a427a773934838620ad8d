@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "777a757a_626bd2cc",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-25T17:32:43Z",
+      "side": 1,
+      "message": "Is this file the best place for sharing these utilities / structs b/w ganesh and graphite? Also, if we will always be internally determining the ycbcr conversion information and not accepting that from clients in the form of this struct, it may make more sense to move this to `include/private/gpu/vk/VulkanTypesPriv.h`. LMKWYT.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 22
+      },
+      "revId": "31aaeebcd9435cf6e34a427a773934838620ad8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
