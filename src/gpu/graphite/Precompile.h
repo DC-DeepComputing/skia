@@ -62,10 +62,10 @@ protected:
     // In general, derived classes should use AddToKey to select the desired child option from
     // a vector and then have it added to the key with its reduced/nested child option.
     template<typename T>
-    static void AddToKey(const KeyContext&,
-                         PaintParamsKeyBuilder*,
-                         const std::vector<sk_sp<T>>& options,
-                         int desiredOption);
+    static void AddToKeyPC(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           const std::vector<sk_sp<T>>& options,
+                           int desiredOption);
 
 private:
     friend class PaintOptions;
@@ -95,7 +95,7 @@ std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>
 }
 
 template<typename T>
-void PrecompileBase::AddToKey(const KeyContext& keyContext,
+void PrecompileBase::AddToKeyPC(const KeyContext& keyContext,
                               PaintParamsKeyBuilder* builder,
                               const std::vector<sk_sp<T>>& options,
                               int desiredOption) {

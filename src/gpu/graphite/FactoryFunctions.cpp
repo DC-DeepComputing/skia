@@ -168,8 +168,8 @@ private:
             desiredBlendCombination -= fBlenderIndex;
         }
 
-        AddToKey<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
-        AddToKey<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
+        AddToKeyPC<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
+        AddToKeyPC<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
 
         if (desiredBlendCombination == fPorterDuffIndex) {
             CoeffBlenderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
@@ -180,8 +180,8 @@ private:
                                               SkBlendMode::kOverlay); // the blendmode is unused
             builder->endBlock();
         } else {
-            AddToKey<PrecompileBlender>(keyContext, builder, fRuntimeBlendEffects,
-                                        desiredBlendCombination);
+            AddToKeyPC<PrecompileBlender>(keyContext, builder, fRuntimeBlendEffects,
+                                          desiredBlendCombination);
         }
 
         builder->endBlock();  // BlendShaderBlock or RuntimeEffectBlock
