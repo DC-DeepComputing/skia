@@ -389,7 +389,7 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
         fCastReturnsToHalf = false;
     }
 
-    fCallbacks->defineFunction(this->functionDeclaration(decl).c_str(),
+    fCallbacks->defineFunction1(this->functionDeclaration(decl).c_str(),
                                body.fBuffer.str().c_str(),
                                decl.isMain());
 
