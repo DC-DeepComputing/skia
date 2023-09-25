@@ -622,12 +622,19 @@ void add_children_to_key(const KeyContext& keyContext,
         } else {
             SkASSERT(curCombo == 0);
 
+            //$$
             // We don't have a child effect. Substitute in a no-op effect.
             switch (childInfo[index].type) {
                 case ChildType::kShader:
+                    // A missing shader returns transparent black
+                    SolidColorShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                                      {0, 0, 0, 0});
+                    builder->endBlock();
+                    break;
+
                 case ChildType::kColorFilter:
                     // A "passthrough" shader returns the input color as-is.
-                    PriorOutputBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr);
+                    PassThroughBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr);
                     builder->endBlock();
                     break;
 
