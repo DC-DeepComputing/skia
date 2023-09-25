@@ -119,6 +119,31 @@ void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 namespace {
 
+void add_paint_color_uniform_data(const ShaderCodeDictionary* dict,
+                                  const SkPMColor4f& premulColor,
+                                  PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kPaintColorShader)
+    gatherer->writePaintColor(premulColor);
+}
+
+} // anonymous namespace
+
+void PaintColorBlock::BeginBlock(const KeyContext& keyContext,
+                                 PaintParamsKeyBuilder* builder,
+                                 PipelineDataGatherer* gatherer) {
+    if (gatherer) {
+        auto dict = keyContext.dict();
+
+        add_paint_color_uniform_data(dict, keyContext.paintColor(), gatherer);
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kPaintColorShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
 void add_dst_read_sample_uniform_data(const ShaderCodeDictionary* dict,
                                       PipelineDataGatherer* gatherer,
                                       sk_sp<TextureProxy> dstTexture,
