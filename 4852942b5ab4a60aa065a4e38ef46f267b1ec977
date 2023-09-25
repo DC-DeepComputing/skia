@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63659452_af7d0ab7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-09-25T14:14:33Z",
+      "side": 1,
+      "message": "RS LGTM, thanks for the fix.",
+      "revId": "4852942b5ab4a60aa065a4e38ef46f267b1ec977",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
