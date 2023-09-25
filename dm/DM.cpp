@@ -39,6 +39,7 @@
 #include "tools/HashAndEncode.h"
 #include "tools/ProcStats.h"
 #include "tools/Resources.h"
+#include "tools/TestFontDataProvider.h"
 #include "tools/ToolUtils.h"
 #include "tools/flags/CommonFlags.h"
 #include "tools/flags/CommonFlagsConfig.h"
@@ -1598,6 +1599,8 @@ int main(int argc, char** argv) {
 
     CommonFlags::SetDefaultFontMgr();
     CommonFlags::SetAnalyticAA();
+
+    TestFontDataProvider::SetFontTestDataDirectory();
 
     gSkForceRasterPipelineBlitter     = FLAGS_forceRasterPipelineHP || FLAGS_forceRasterPipeline;
     gForceHighPrecisionRasterPipeline = FLAGS_forceRasterPipelineHP;
