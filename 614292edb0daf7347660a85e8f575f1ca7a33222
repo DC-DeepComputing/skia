@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3869945_f2d5e1b5",
+        "filename": "tools/TestFontDataProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-25T12:27:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9326a6f3_a0b93b13",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 22
+      },
+      "revId": "614292edb0daf7347660a85e8f575f1ca7a33222",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9680c88_ddca657d",
@@ -54,6 +78,24 @@
       "writtenOn": "2023-09-25T12:19:22Z",
       "side": 1,
       "message": "Remove this file?",
+      "revId": "614292edb0daf7347660a85e8f575f1ca7a33222",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3cdd832_8ce6db84",
+        "filename": "tools/flags/CommonFlagsFontTestData.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-25T12:27:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9680c88_ddca657d",
       "revId": "614292edb0daf7347660a85e8f575f1ca7a33222",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
