@@ -70,6 +70,24 @@
       "parentUuid": "3ef37ab9_c101c0b2",
       "revId": "f15f3d6b494d3e2ec2592c97b5f70e651620526f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "844a86ab_f6e35882",
+        "filename": "resources/sksl/shared/TernaryOneZeroOptimization.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-25T15:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "caee0153_b37a0ae1",
+      "revId": "f15f3d6b494d3e2ec2592c97b5f70e651620526f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
