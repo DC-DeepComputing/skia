@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81894b5c_d4c54356",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20264
+      },
+      "writtenOn": "2023-09-25T09:01:29Z",
+      "side": 1,
+      "message": "In the process of using skia in wasm (not canvaskit,skia as third-party), I found that skia does not support compressed textures in webgl backend.\nAfter researching webgl extension parameters, I made some changes to skia to fix this unsupported feature.",
+      "revId": "b7357210bd6282dcf096f412026de8032f61280e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
