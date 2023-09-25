@@ -10,7 +10,6 @@ IMAGEFILTERS_FILES = [
     "SkColorFilterImageFilter.cpp",
     "SkComposeImageFilter.cpp",
     "SkCropImageFilter.cpp",
-    "SkCropImageFilter.h",
     "SkDisplacementMapImageFilter.cpp",
     "SkDropShadowImageFilter.cpp",
     "SkImageImageFilter.cpp",
