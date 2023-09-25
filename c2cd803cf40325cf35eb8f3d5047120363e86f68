@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0812d33_5d1cfe33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-25T17:58:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bf68813_396ca41e",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "013b1085_5e36332e",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Ah, sorry. I misunderstood the issue - yeah if the build file requires that they be compiled identically by all translation units, then it won\u0027t work.",
       "parentUuid": "f488d4a6_d855eae8",
+      "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88bfa610_401ababf",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-25T17:58:37Z",
+      "side": 1,
+      "message": "I think I have the right files listed as textual headers now.",
+      "parentUuid": "91cd2640_6526423c",
       "revId": "c2cd803cf40325cf35eb8f3d5047120363e86f68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
