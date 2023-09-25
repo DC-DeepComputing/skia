@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "781d264f_d7b5f025",
+        "filename": "include/private/SkFloatingPoint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 19509
+      },
+      "writtenOn": "2023-09-25T14:51:46Z",
+      "side": 1,
+      "message": "Hi,\n\nI saw this call show up in a profile. Is there a reason why you don\u0027t just call lrintf()? It\u0027s single-instruction on most relevant platforms, and will give you the right rounding (at least if “right” is the current rounding mode) for negative values and halfway-between as well, instead of always biasing upwards.\n\n(Unfortunately, on glibc it won\u0027t be inlined without -fno-math-errno, but neither will floorf)",
+      "revId": "b9019a730de4349d82c49289f35846369dd80bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
