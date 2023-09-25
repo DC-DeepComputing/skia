@@ -618,6 +618,7 @@ skia_gpu_gl_private = [
   "$_src/gpu/ganesh/gl/GrGLContext.cpp",
   "$_src/gpu/ganesh/gl/GrGLContext.h",
   "$_src/gpu/ganesh/gl/GrGLDefines.h",
+  "$_src/gpu/ganesh/gl/GrGLDirectContext.cpp",
   "$_src/gpu/ganesh/gl/GrGLExtensions.cpp",
   "$_src/gpu/ganesh/gl/GrGLGLSL.cpp",
   "$_src/gpu/ganesh/gl/GrGLGLSL.h",
