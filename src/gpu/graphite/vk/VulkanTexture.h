@@ -22,6 +22,7 @@ namespace skgpu::graphite {
 
 class VulkanSharedContext;
 class VulkanCommandBuffer;
+class VulkanResourceProvider;
 
 class VulkanTexture : public Texture {
 public:
@@ -36,12 +37,14 @@ public:
                             const TextureInfo&,
                             CreatedImageInfo* outInfo);
 
-    static sk_sp<Texture> Make(const VulkanSharedContext*,
+    static sk_sp<Texture> Make(const VulkanResourceProvider*,
+                               const VulkanSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&,
                                skgpu::Budgeted);
 
-    static sk_sp<Texture> MakeWrapped(const VulkanSharedContext*,
+    static sk_sp<Texture> MakeWrapped(const VulkanResourceProvider*,
+                                      const VulkanSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
                                       sk_sp<MutableTextureStateRef>,
@@ -78,7 +81,8 @@ public:
     static VkAccessFlags LayoutToSrcAccessMask(const VkImageLayout layout);
 
 private:
-    VulkanTexture(const VulkanSharedContext* sharedContext,
+    VulkanTexture(const VulkanResourceProvider*,
+                  const VulkanSharedContext* sharedContext,
                   SkISize dimensions,
                   const TextureInfo& info,
                   sk_sp<MutableTextureStateRef>,
@@ -91,6 +95,9 @@ private:
 
     VkImage fImage;
     VulkanAlloc fMemoryAlloc;
+    // Hold on to a pointer to the resource provider such that this VulkanTexture can request
+    // YCbCR sampler conversions for ImageViews as needed
+    const VulkanResourceProvider* fResourceProvider;
 
     mutable skia_private::STArray<2, std::unique_ptr<const VulkanImageView>> fImageViews;
 };
