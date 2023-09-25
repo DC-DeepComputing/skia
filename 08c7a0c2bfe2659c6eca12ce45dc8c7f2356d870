@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8748332_e393769a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-25T19:05:04Z",
+      "side": 1,
+      "message": "Completely missed this myself during review. With this change, Software works fine with Dawn.",
+      "revId": "08c7a0c2bfe2659c6eca12ce45dc8c7f2356d870",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
