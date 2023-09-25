@@ -606,6 +606,11 @@ void UniformManager::write(const SkPMColor4f& color) {
     this->write(kType, &color);
 }
 
+void UniformManager::writePaintColor(const SkPMColor4f& color) {
+    static constexpr SkSLType kType = SkSLType::kFloat4;
+    this->write(kType, &color);
+}
+
 void UniformManager::write(const SkRect& rect) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
     this->write(kType, &rect);
