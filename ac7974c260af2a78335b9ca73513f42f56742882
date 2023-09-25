@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b6e438b_3659a3d5",
+        "filename": "tools/RasterTestData.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-25T12:05:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b44e3271_9c8ca52e",
+      "revId": "ac7974c260af2a78335b9ca73513f42f56742882",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30d38709_015adc57",
@@ -83,6 +101,24 @@
       "writtenOn": "2023-09-25T08:54:50Z",
       "side": 1,
       "message": "Flag moved out of `CommonFlags` to `TestFontDataProvider` impl in\nhttps://skia-review.googlesource.com/c/skia/+/759916/1..2",
+      "parentUuid": "30d38709_015adc57",
+      "revId": "ac7974c260af2a78335b9ca73513f42f56742882",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "351d0c54_cb322114",
+        "filename": "tools/flags/CommonFlagsFontTestData.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-25T12:05:07Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "30d38709_015adc57",
       "revId": "ac7974c260af2a78335b9ca73513f42f56742882",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
