@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bab1899a_08bc4646",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-09-25T15:12:12Z",
+      "side": 1,
+      "message": "Chrome pushed their min target up to MacOS 14 and was seeing some warnings due to deprecated methods. We should never call those methods on newer OSes with the original code, but hopefully this CL will de-confuse the compiler.",
+      "revId": "34f42bbdcf7d17ecda3e8122128c77a12a7bf05e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
