@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "069325aa_3817bc82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-25T18:37:36Z",
+      "side": 1,
+      "message": "So the Dawn and VkDeps rollers currently need to both roll at the same time because they cannot roll independently. Also, a header Dawn needs appears to have been moved from vulkan-tools to vulkan-utility-libraries.",
+      "revId": "a4bb513702e711c4fd06c5fe15a338097720990b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
