@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8222b8_31c332dd",
+        "filename": "relnotes/directcontext_gl.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-25T15:27:13Z",
+      "side": 1,
+      "message": "`GrDirectContexts::`",
+      "range": {
+        "startLine": 1,
+        "startChar": 48,
+        "endLine": 1,
+        "endChar": 64
+      },
+      "revId": "9d8707e3d5707058105a748a0029e5b79359f39f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
