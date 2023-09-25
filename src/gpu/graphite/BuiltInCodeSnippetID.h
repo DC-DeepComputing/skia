@@ -18,8 +18,8 @@ enum class BuiltInCodeSnippetID : int32_t {
     // magenta.
     kError,
 
-    // Snippet that passes through prior stage output
-    kPriorOutput,
+    // Snippet that just returns its input
+    kPassThrough,
 
     // SkShader code snippets
     kSolidColorShader,
