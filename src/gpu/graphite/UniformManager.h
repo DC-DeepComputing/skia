@@ -81,6 +81,7 @@ public:
 
     void write(const SkM44&);
     void write(const SkPMColor4f&);
+    void writePaintColor(const SkPMColor4f&);
     void write(const SkRect&);
     void write(const SkV2&);
     void write(const SkV4&);

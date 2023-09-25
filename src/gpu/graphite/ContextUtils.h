@@ -83,15 +83,26 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 
-std::string EmitPaintParamsUniforms(int bufferID,
+class Deduper {
+public:
+    bool alreadySeen() const { return fSeenIt; }
+    void seenIt() { fSeenIt = true;}
+
+    bool fSeenIt = false;
+};
+
+std::string EmitPaintParamsUniforms(Deduper*,
+                                    int bufferID,
                                     const char* name,
                                     const Layout layout,
                                     SkSpan<const ShaderNode*> nodes);
-std::string EmitRenderStepUniforms(int bufferID,
+std::string EmitRenderStepUniforms(Deduper*,
+                                   int bufferID,
                                    const char* name,
                                    const Layout layout,
                                    SkSpan<const Uniform> uniforms);
-std::string EmitPaintParamsStorageBuffer(int bufferID,
+std::string EmitPaintParamsStorageBuffer(Deduper*,
+                                         int bufferID,
                                          const char* bufferTypePrefix,
                                          const char* bufferNamePrefix,
                                          SkSpan<const ShaderNode*> nodes);
