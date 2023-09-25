@@ -137,7 +137,8 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     return true;
 }
 
-sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
+sk_sp<Texture> VulkanTexture::Make(const VulkanResourceProvider* resourceProvider,
+                                   const VulkanSharedContext* sharedContext,
                                    SkISize dimensions,
                                    const TextureInfo& info,
                                    skgpu::Budgeted budgeted) {
@@ -145,7 +146,8 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
     if (!MakeVkImage(sharedContext, dimensions, info, &imageInfo)) {
         return nullptr;
     }
-    return sk_sp<Texture>(new VulkanTexture(sharedContext,
+    return sk_sp<Texture>(new VulkanTexture(resourceProvider,
+                                            sharedContext,
                                             dimensions,
                                             info,
                                             std::move(imageInfo.fMutableState),
@@ -155,13 +157,15 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
                                             budgeted));
 }
 
-sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedContext,
+sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanResourceProvider* resourceProvider,
+                                          const VulkanSharedContext* sharedContext,
                                           SkISize dimensions,
                                           const TextureInfo& info,
                                           sk_sp<MutableTextureStateRef> mutableState,
                                           VkImage image,
                                           const VulkanAlloc& alloc) {
-    return sk_sp<Texture>(new VulkanTexture(sharedContext,
+    return sk_sp<Texture>(new VulkanTexture(resourceProvider,
+                                            sharedContext,
                                             dimensions,
                                             info,
                                             std::move(mutableState),
@@ -286,7 +290,8 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
     this->mutableState()->setQueueFamilyIndex(newQueueFamilyIndex);
 }
 
-VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
+VulkanTexture::VulkanTexture(const VulkanResourceProvider* resourceProvider,
+                             const VulkanSharedContext* sharedContext,
                              SkISize dimensions,
                              const TextureInfo& info,
                              sk_sp<MutableTextureStateRef> mutableState,
@@ -296,7 +301,8 @@ VulkanTexture::VulkanTexture(const VulkanSharedContext* sharedContext,
                              skgpu::Budgeted budgeted)
         : Texture(sharedContext, dimensions, info, std::move(mutableState), ownership, budgeted)
         , fImage(image)
-        , fMemoryAlloc(alloc) {}
+        , fMemoryAlloc(alloc)
+        , fResourceProvider(resourceProvider) {}
 
 void VulkanTexture::freeGpuData() {
     // Need to delete any ImageViews first
@@ -388,11 +394,13 @@ const VulkanImageView* VulkanTexture::getImageView(VulkanImageView::Usage usage)
                     ? SkMipmap::ComputeLevelCount(this->dimensions().width(),
                                                   this->dimensions().height()) + 1
                     : 1;
-    auto imageView = VulkanImageView::Make(sharedContext,
+    auto imageView = VulkanImageView::Make(fResourceProvider,
+                                           sharedContext,
                                            fImage,
                                            vkTexInfo.fFormat,
                                            usage,
-                                           miplevels);
+                                           miplevels,
+                                           vkTexInfo.fYcbcrConversionInfo);
     return fImageViews.push_back(std::move(imageView)).get();
 }
 

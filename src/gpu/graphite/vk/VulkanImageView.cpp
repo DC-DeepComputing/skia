@@ -8,17 +8,38 @@
 #include "src/gpu/graphite/vk/VulkanImageView.h"
 
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 namespace skgpu::graphite {
 
-std::unique_ptr<const VulkanImageView> VulkanImageView::Make(const VulkanSharedContext* sharedCtx,
-                                                             VkImage image,
-                                                             VkFormat format,
-                                                             Usage usage,
-                                                             uint32_t miplevels) {
+std::unique_ptr<const VulkanImageView> VulkanImageView::Make(
+        const VulkanResourceProvider* resourceProvider,
+        const VulkanSharedContext* sharedCtx,
+        VkImage image,
+        VkFormat format,
+        Usage usage,
+        uint32_t miplevels,
+        const VulkanYcbcrConversionInfo& ycbcrInfo) {
+
     void* pNext = nullptr;
-    // TODO: add SamplerYcbcrConversion setup
+    VkSamplerYcbcrConversionInfo conversionInfo;
+    sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
+
+    if (ycbcrInfo.isValid()) {
+        SkASSERT(sharedCtx->vulkanCaps().supportsYcbcrConversion() && format == ycbcrInfo.fFormat);
+
+        ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(ycbcrInfo);
+        if (!ycbcrConversion) {
+            return nullptr;
+        }
+
+        conversionInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_INFO;
+        conversionInfo.pNext = nullptr;
+        conversionInfo.conversion = ycbcrConversion->ycbcrConversion();
+        pNext = &conversionInfo;
+    }
 
     VkImageView imageView;
     // Create the VkImageView
@@ -73,10 +94,11 @@ VulkanImageView::VulkanImageView(const VulkanSharedContext* sharedContext,
     , fUsage(usage) {}
 
 VulkanImageView::~VulkanImageView() {
+    if (fYcbcrConversionInfo) {
+        fYcbcrConversionInfo->unref();
+    }
     VULKAN_CALL(fSharedContext->interface(),
                 DestroyImageView(fSharedContext->device(), fImageView, nullptr));
-
-    // TODO: unref SamplerYcbcrConversion
 }
 
 }  // namespace skgpu::graphite
