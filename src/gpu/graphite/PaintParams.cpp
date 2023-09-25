@@ -187,7 +187,7 @@ void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
     if (fShader) {
-        AddToKey(keyContext, keyBuilder, gatherer, fShader.get());
+        AddToKeyS(keyContext, keyBuilder, gatherer, fShader.get());
     } else {
         SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
                                           keyContext.paintColor());
@@ -305,6 +305,8 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
     }
 }
 
+
+//$$
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
