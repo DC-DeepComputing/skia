@@ -47638,7 +47638,7 @@
       "cipd_packages": [
         {
           "name": "chromium/third_party/googlefonts_testdata",
-          "path": "skia/third_party/externals/googlefonts_testdata",
+          "path": "googlefonts_testdata",
           "version": "version:20230913"
         },
         {
@@ -58145,7 +58145,7 @@
       "cipd_packages": [
         {
           "name": "chromium/third_party/googlefonts_testdata",
-          "path": "skia/third_party/externals/googlefonts_testdata",
+          "path": "googlefonts_testdata",
           "version": "version:20230913"
         },
         {
