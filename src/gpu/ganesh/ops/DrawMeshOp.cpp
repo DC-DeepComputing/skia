@@ -177,7 +177,7 @@ private:
 
             std::string getMainName() override { return fMainName; }
 
-            void defineFunction(const char* decl, const char* body, bool isMain) override {
+            void defineFunction1(const char* decl, const char* body, bool isMain) override {
                 fBuilder->emitFunction(decl, body);
             }
 
