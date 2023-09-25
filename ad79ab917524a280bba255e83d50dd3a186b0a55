@@ -16,6 +16,52 @@
       "message": "This will need to be staged into chrome, but their layout tests seemed fine.",
       "revId": "ad79ab917524a280bba255e83d50dd3a186b0a55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a225a9f_27e66bd2",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-25T17:34:48Z",
+      "side": 1,
+      "message": "`..._colorfilter`",
+      "range": {
+        "startLine": 642,
+        "startChar": 26,
+        "endLine": 642,
+        "endChar": 52
+      },
+      "revId": "ad79ab917524a280bba255e83d50dd3a186b0a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e90d07a_43aab48d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-25T17:34:48Z",
+      "side": 1,
+      "message": "Ick. Can we file a bug to fix the lifetime management on this? (We should just return `sk_sp`).",
+      "range": {
+        "startLine": 743,
+        "startChar": 41,
+        "endLine": 743,
+        "endChar": 60
+      },
+      "revId": "ad79ab917524a280bba255e83d50dd3a186b0a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
