@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ad8655_ddbf0f78",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-09-26T15:01:47Z",
+      "side": 1,
+      "message": "That makes sense to me. Changed\nIf we align and want to provide an invalidation helper (I can post in the gpu chat maybe, Rob/Michael may have an opinion on this), I can add that in another CL.",
+      "parentUuid": "9bd6c6e9_fd7df32f",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "876a2ba707bf5b997f94f2086e2e898d3b8e47df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd206d57_43fe6bce",
