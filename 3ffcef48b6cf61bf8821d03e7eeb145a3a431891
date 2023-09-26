@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9491eb1_634a03c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-26T15:49:53Z",
+      "side": 1,
+      "message": "Now that it\u0027s used everywhere, I don\u0027t htink there\u0027s any harm in making it public API. I also want to be able to use it in chrome SkiaRenderer to clean up some old hacks, and it seems useful for SVGs implementing separate filter-region and primitive sub-regions.",
+      "revId": "3ffcef48b6cf61bf8821d03e7eeb145a3a431891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
