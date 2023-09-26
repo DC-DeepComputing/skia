@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad0ac99_7b535322",
+        "filename": "modules/bentleyottmann/include/QuadraticCrossings.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-26T19:58:10Z",
+      "side": 1,
+      "message": "Given that quadratic has other meanings for curves, maybe a different name to make it clear that this just refers to the run-time/exhaustive nature, rather than the geometry involved? `crossings_brute_force` or `crossings_exhaustive` ?",
+      "range": {
+        "startLine": 19,
+        "startChar": 34,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "d1997de36f0d7261daa3c761cfbeb61f9429cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8058a1ec_6649750c",
+        "filename": "modules/bentleyottmann/src/QuadraticCrossings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-26T19:58:10Z",
+      "side": 1,
+      "message": "nit: This is slightly inconsistent with the comment in the header. \"A return value of nullopt means that the data are out of range. ... you could divide all your points by 2, and try again\". That\u0027s not going to help if there is only one segment. Seems like it would be better to just return the empty vector in this case, as the data isn\u0027t malformed (in the \"too large\" sense), and there are definitely no intersections?",
+      "revId": "d1997de36f0d7261daa3c761cfbeb61f9429cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
