@@ -515,7 +515,7 @@ bool SkXmpImpl::getContainerGainmapLocation(size_t* outOffset, size_t* outSize) 
 }
 
 // Return true if the specified XMP metadata identifies this image as an HDR gainmap.
-bool SkXmpImpl::getGainmapInfoHDRGainMap(SkGainmapInfo* info) const {
+bool SkXmpImpl::getGainmapInfoHDRGainMap(SkGainmapInfo* outInfo) const {
     // Find a node that matches the requested namespaces and URIs.
     const char* namespaces[2] = {nullptr, nullptr};
     const char* uris[2] = {"http://ns.apple.com/pixeldatainfo/1.0/",
@@ -543,22 +543,46 @@ bool SkXmpImpl::getGainmapInfoHDRGainMap(SkGainmapInfo* info) const {
         SkCodecPrintf("Did not find HDRGainMapVersion.\n");
         return false;
     }
-    if (version != 65536) {
-        SkCodecPrintf("HDRGainMapVersion was not 65536.\n");
-        return false;
-    }
 
+    SkGainmapInfo info;
+    info.fGainmapRatioMin = {1.f, 1.f, 1.f, 1.f};
+    info.fGainmapRatioMax = {1.f, 1.f, 1.f, 1.f};
+    info.fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
+    info.fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
+    info.fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
+    info.fDisplayRatioSdr = 1.f;
+    info.fDisplayRatioHdr = 1.f;
+    info.fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
+    switch (version) {
+        case (1 << 16): {
+            const float kRatioMax = sk_float_exp(1.f);
+            info.fGainmapRatioMax = {kRatioMax, kRatioMax, kRatioMax, 1.f};
+            info.fDisplayRatioHdr = kRatioMax;
+            break;
+        }
+        case (1 << 17): {
+            float headroom = 0.f;
+            if (!get_attr_float(dom, node, hdrGainMapPrefix, "HDRGainMapHeadroom", &headroom)) {
+                SkCodecPrintf("Did not find HDRGainMapHeadroom.\n");
+                return false;
+            }
+            // See derivation at:
+            // https://docs.google.com/document/d/1iUpYAThVV_FuDdeiO3t0vnlfoA1ryq0WfGS9FuydwKc/edit?
+            // resourcekey=0-GI0-rq8PSkIIyPaJ_Sbm0w
+            float log2_headroom = sk_float_log(headroom) / sk_float_log(2.f);
+            float gamma = 0.529f + 0.004f * headroom + 0.063f * log2_headroom;
+            info.fGainmapRatioMax = {headroom, headroom, headroom, 1.f};
+            info.fGainmapGamma = {1.f / gamma, 1.f / gamma, 1.f / gamma, 1.f};
+            info.fDisplayRatioHdr = headroom;
+            break;
+        }
+        default:
+            SkCodecPrintf("Unknown HDRGainMapVersion version %d.\n", version);
+            return false;
+    }
     // This node will often have StoredFormat and NativeFormat children that have inner text that
     // specifies the integer 'L008' (also known as kCVPixelFormatType_OneComponent8).
-    const float kRatioMax = sk_float_exp(1.f);
-    info->fGainmapRatioMin = {1.f, 1.f, 1.f, 1.f};
-    info->fGainmapRatioMax = {kRatioMax, kRatioMax, kRatioMax, 1.f};
-    info->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
-    info->fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
-    info->fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
-    info->fDisplayRatioSdr = 1.f;
-    info->fDisplayRatioHdr = kRatioMax;
-    info->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
+    *outInfo = info;
     return true;
 }
 
