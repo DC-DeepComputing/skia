@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdd254b2_714c72c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-26T14:31:33Z",
+      "side": 1,
+      "message": "Still need to sort out why the Mac comparisons seems to be horizontally shifted by one pixel and the diffs appear too large.",
+      "revId": "1331180029cb72ef2cc2ec0dc31f6be98ab84ef0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
