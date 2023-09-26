@@ -22,6 +22,30 @@
       },
       "revId": "09a7fc364e5881a74d677bc04a8bb2bdb1735ef5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2702f3_7217af99",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-09-26T16:28:22Z",
+      "side": 1,
+      "message": "Thanks, fixed.",
+      "parentUuid": "351a94ca_417b0de7",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 580,
+        "endChar": 64
+      },
+      "revId": "09a7fc364e5881a74d677bc04a8bb2bdb1735ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
