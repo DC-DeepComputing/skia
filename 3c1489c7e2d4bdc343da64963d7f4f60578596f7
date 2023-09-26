@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02608907_3c895e1a",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1977,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-26T13:27:36Z",
+      "side": 0,
+      "message": "FYI: The need for this in every build was removed in https://skia-review.googlesource.com/c/skia/+/503016\n\n(I hope)",
+      "revId": "3c1489c7e2d4bdc343da64963d7f4f60578596f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
