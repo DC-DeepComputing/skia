@@ -17,6 +17,12 @@
 #include <cstring>
 #include <limits>
 
+#ifdef __SSE2__
+#include <immintrin.h>
+#elif defined(__ARM_NEON__)
+#include <arm_neon.h>
+#endif
+
 inline constexpr float SK_FloatSqrt2 = 1.41421356f;
 inline constexpr float SK_FloatPI    = 3.14159265f;
 inline constexpr double SK_DoublePI  = 3.14159265358979323846264338327950288;
@@ -65,6 +71,28 @@ static inline bool sk_floats_are_finite(float a, float b) {
 }
 
 static inline bool sk_floats_are_finite(const float array[], int count) {
+#if defined(__SSE2__) || defined(__ARM_NEON__)
+    // Vectorized fast path. (We assume count is a compile-time constant.)
+    if (count >= 4) {
+        float prod __attribute__((vector_size(16))) = {0.0f};
+        float x __attribute__((vector_size(16)));
+        for (int i = 0; i < (count & ~3); i += 4) {
+            memcpy(&x, array + i, sizeof(x));
+            prod *= x;
+        }
+        if (count & 3) {
+            memcpy(&x, array + count - 4, sizeof(x));
+            prod *= x;
+        }
+        // At this point, all elements in prod will either be NaN or 0
+#ifdef __SSE2__
+        return _mm_movemask_ps(prod != prod) == 0;
+#else
+        return vaddvq_f32(prod) == 0;
+#endif
+    }
+#endif
+
     float prod = 0;
     for (int i = 0; i < count; ++i) {
         prod *= array[i];
