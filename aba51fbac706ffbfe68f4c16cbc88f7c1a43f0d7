@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7020bb06_8ed77e13",
+        "filename": "include/core/BUILD.bazel",
+        "patchSetId": 15
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-26T18:37:20Z",
+      "side": 1,
+      "message": "As pointed out by the G3 roll attempt, I don\u0027t see where this filegroup is ever used, even though `src/core:legacy_draw_looper` (the source filegroup) is.\n\nThat `filegroups` don\u0027t have `deps` (as `source_sets` in gn do) is absolutely disastrous and makes me doubt the suitability of bazel as whole (and reinforces my opinion that bazel is a nice dependency tracker, it would be nice if someone could write a build system on top of it). The fact that `//include/effects:public_hdrs` contains `SkBlurDrawLooper.h` in its list but no mention anywhere that it depends on this `legacy_draw_looper` target is completely unmaintainable.\n\nThis is a general issue that has been allowed to slide while we try to piece together a way to create a bazel build. But this is rapidly becoming an issue that needs to be addressed. We cannot have a build where we burry a bunch of filegroups in sub directories but then the upper levels need to magically know what their dependencies are. At that point there is no reason to have the filegroups in subdirectories at all because it\u0027s all just a big ball of mud and the \"abstraction\" is not providing any positive value but is simply hiding the cost of the missing information.",
+      "revId": "aba51fbac706ffbfe68f4c16cbc88f7c1a43f0d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
