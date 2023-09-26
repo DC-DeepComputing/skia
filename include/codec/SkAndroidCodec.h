@@ -263,22 +263,26 @@ public:
 
     SkCodec* codec() const { return fCodec.get(); }
 
+    // TODO: Remove this function when Android no longer uses it.
+    bool getAndroidGainmap(SkGainmapInfo* outInfo,
+                           std::unique_ptr<SkStream>* outGainmapImageStream);
+
     /**
      *  Retrieve the gainmap for an image.
      *
-     *  @param outInfo                On success, this is populated with the parameters for
-     *                                rendering this gainmap. This parameter must be non-nullptr.
+     *  @param outInfo               On success, this is populated with the parameters for
+     *                               rendering this gainmap. This parameter must be non-nullptr.
      *
-     *  @param outGainmapImageStream  On success, this is populated with a stream from which the
-     *                                gainmap image may be decoded. This parameter is optional, and
-     *                                may be set to nullptr.
+     *  @param outGainmapImageCodec  On success, this is populated with a codec from which the
+     *                               gainmap image may be decoded. This parameter is optional, and
+     *                               may be set to nullptr.
      *
-     *  @return                       If this has a gainmap image and that gainmap image was
-     *                                successfully extracted then return true. Otherwise return
-     *                                false.
+     *  @return                      If this has a gainmap image and that gainmap image was
+     *                               successfully extracted then return true. Otherwise return
+     *                               false.
      */
-    bool getAndroidGainmap(SkGainmapInfo* outInfo,
-                           std::unique_ptr<SkStream>* outGainmapImageStream);
+    bool getAndroidGainmapCodec(SkGainmapInfo* outInfo,
+                                std::unique_ptr<SkCodec>* outGainmapImageCodec);
 
 protected:
     SkAndroidCodec(SkCodec*);
