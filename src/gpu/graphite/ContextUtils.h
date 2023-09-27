@@ -27,6 +27,7 @@ namespace skgpu::graphite {
 
 class ComputeStep;
 enum class Coverage;
+class Deduper;
 class DrawParams;
 enum class DstReadRequirement;
 class GraphicsPipelineDesc;
@@ -83,7 +84,8 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
 
 std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 
-std::string EmitPaintParamsUniforms(int bufferID,
+std::string EmitPaintParamsUniforms(Deduper*,
+                                    int bufferID,
                                     const char* name,
                                     const Layout layout,
                                     SkSpan<const ShaderNode*> nodes);
@@ -91,7 +93,8 @@ std::string EmitRenderStepUniforms(int bufferID,
                                    const char* name,
                                    const Layout layout,
                                    SkSpan<const Uniform> uniforms);
-std::string EmitPaintParamsStorageBuffer(int bufferID,
+std::string EmitPaintParamsStorageBuffer(Deduper*,
+                                         int bufferID,
                                          const char* bufferTypePrefix,
                                          const char* bufferNamePrefix,
                                          SkSpan<const ShaderNode*> nodes);
