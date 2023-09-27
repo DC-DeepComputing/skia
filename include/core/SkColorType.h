@@ -38,7 +38,7 @@ enum SkColorType : int {
                                //   in 64-bit word
     kRGBA_F32_SkColorType,     //!< pixel using C float for red, green, blue, alpha; in 128-bit word
 
-    // The following 6 colortypes are just for reading from - not for rendering to
+    // The following 6 colortypes are just four reading from - not for rendering to
     kR8G8_unorm_SkColorType,         //!< pixel with a uint8_t for red and green
 
     kA16_float_SkColorType,          //!< pixel with a half float for alpha
