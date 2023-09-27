@@ -48,7 +48,8 @@ public:
                const SkColorInfo&,
                const SkColor4f& paintColor,
                sk_sp<TextureProxy> dstTexture,
-               SkIPoint dstOffset);
+               SkIPoint dstOffset,
+               bool foo);
 
     KeyContext(const KeyContext&);
 
@@ -69,7 +70,7 @@ public:
     // Offset within dstTexture to the top-left corner of the area that needs to be read.
     SkIPoint dstOffset() const { return fDstOffset; }
 
-    const SkPMColor4f& paintColor() const { return fPaintColor; }
+    const SkPMColor4f& paintColor1() const { return fPaintColor1; }
 
     enum class Scope {
         kDefault,
@@ -85,7 +86,7 @@ protected:
     ShaderCodeDictionary* fDictionary;
     RuntimeEffectDictionary* fRTEffectDict;
     SkColorInfo fDstColorInfo;
-    SkPMColor4f fPaintColor = SK_PMColor4fBLACK;
+    SkPMColor4f fPaintColor1 = SK_PMColor4fBLACK;
     Scope fScope = Scope::kDefault;
 
 private:
@@ -117,8 +118,12 @@ private:
 class KeyContextWithColorInfo : public KeyContext {
 public:
     KeyContextWithColorInfo(const KeyContext& other, const SkColorInfo& info) : KeyContext(other) {
-        SkASSERT(fPaintColor.isOpaque());
-        SkColorSpaceXformSteps(fDstColorInfo, info).apply(fPaintColor.vec());
+        SkPMColor4f tmp = fPaintColor1;
+        tmp.fA = 1.0f;
+        SkColorSpaceXformSteps(fDstColorInfo, info).apply(tmp.vec());
+        fPaintColor1.fR = tmp.fR;
+        fPaintColor1.fG = tmp.fG;
+        fPaintColor1.fB = tmp.fB;
         fDstColorInfo = info;
     }
 
