@@ -77,6 +77,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3d89c13_27264c9f",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-27T14:39:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06e32fde_feb69dc7",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca768f68_fbe8543c",
@@ -102,6 +126,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0d2adc7_a04d8168",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-27T14:39:15Z",
+      "side": 1,
+      "message": "The intention of the test is to regression test the antialiasing differences. At larger font sizes, they are less visible or striking - so I prefer to keep the font size at a level where antialiasing is needed. At the same time, we believe the current level of antialiasing differences between FT and Fontations+Skia is acceptable. We will have that evaluated by type specialists in Google Fonts. So the tests ensure we notice if there is a change in antialiasing behavior. They\u0027re not unimportant - if they become too large or too noticeable, they would become blocking.",
+      "parentUuid": "ca768f68_fbe8543c",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f233ac4f_5aa3c234",
         "filename": "gm/fontations_ft_compare.cpp",
         "patchSetId": 9
@@ -113,6 +161,30 @@
       "writtenOn": "2023-09-27T12:16:14Z",
       "side": 1,
       "message": "nit: add a comment reminding the reader that this is creating two diffs between the two bitmaps, one that indicates the magnitude of the difference (outBitmap) and another for a boolean difference (whiteBitmap).\n\nConsider renaming the output variables to more closely align with those goals. (e.g. gradientDiffBitmap, absDiffBitmap ?)",
+      "range": {
+        "startLine": 31,
+        "startChar": 5,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea1aaca1_524df65f",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-27T14:39:15Z",
+      "side": 1,
+      "message": "Comment added, arguments renamed to hopefully provide more claritz.",
+      "parentUuid": "f233ac4f_5aa3c234",
       "range": {
         "startLine": 31,
         "startChar": 5,
