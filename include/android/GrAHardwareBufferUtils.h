@@ -24,11 +24,6 @@ namespace GrAHardwareBufferUtils {
 
 SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat);
 
-#if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
-GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
-                                 uint32_t bufferFormat, bool requireKnownFormat);
-#endif
-
 GrBackendFormat GetGLBackendFormat(GrDirectContext* dContext, uint32_t bufferFormat,
                                    bool requireKnownFormat);
 GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
@@ -60,18 +55,6 @@ typedef void (*UpdateImageProc)(TexImageCtx, GrDirectContext*);
  *                          attachment
  * @return                  valid GrBackendTexture object on success
  */
-#if !defined(SK_DISABLE_LEGACY_ANDROID_HW_UTILS)
-GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
-                                    int width, int height,
-                                    DeleteImageProc* deleteProc,
-                                    UpdateImageProc* updateProc,
-                                    TexImageCtx* imageCtx,
-                                    bool isProtectedContent,
-                                    const GrBackendFormat& backendFormat,
-                                    bool isRenderable,
-                                    bool fromAndroidWindow = false);
-#endif
-
 GrBackendTexture MakeGLBackendTexture(GrDirectContext* dContext,
                                       AHardwareBuffer* hardwareBuffer,
                                       int width, int height,
