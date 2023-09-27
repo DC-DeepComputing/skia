@@ -129,8 +129,6 @@ private:
     // width/height, so there should be no change to any clip information.
     void replaceBitmapBackendForRasterSurface(const SkBitmap&);
 
-    SkImageFilterCache* getImageFilterCache() override;
-
     void onClipShader(sk_sp<SkShader>) override;
 
     void onDrawGlyphRunList(SkCanvas*,

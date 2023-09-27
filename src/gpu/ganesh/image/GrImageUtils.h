@@ -132,13 +132,14 @@ SkYUVAPixmapInfo::SupportedDataTypes SupportedTextureFormats(const GrImageContex
 }  // namespace skgpu::ganesh
 
 namespace skif {
-class Context;
-struct ContextInfo;
-struct Functors;
-Functors MakeGaneshFunctors(GrRecordingContext* context, GrSurfaceOrigin origin);
-Context MakeGaneshContext(GrRecordingContext* context,
-                          GrSurfaceOrigin origin,
-                          const ContextInfo& info);
+
+class Backend;
+
+sk_sp<Backend> MakeGaneshBackend(sk_sp<GrRecordingContext> context,
+                                 GrSurfaceOrigin origin,
+                                 const SkSurfaceProps& surfaceProps,
+                                 SkColorType colorType);
+
 }  // namespace skif
 
 #endif

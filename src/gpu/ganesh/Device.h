@@ -332,9 +332,8 @@ private:
     bool onWritePixels(const SkPixmap&, int, int) override;
     bool onAccessPixels(SkPixmap*) override;
 
-    skif::Context createContext(const skif::ContextInfo& ctxInfo) const override;
-
-    SkImageFilterCache* getImageFilterCache() override;
+    sk_sp<skif::Backend> createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
+                                                     SkColorType colorType) const override;
 
     void onClipShader(sk_sp<SkShader> shader) override {
         fClip.clipShader(std::move(shader));

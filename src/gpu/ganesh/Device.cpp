@@ -796,8 +796,10 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool path
                                          paint, this->localToDevice(), shape);
 }
 
-skif::Context Device::createContext(const skif::ContextInfo& ctxInfo) const {
-    return skif::MakeGaneshContext(fContext.get(), fSurfaceDrawContext->origin(), ctxInfo);
+sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
+                                                         SkColorType colorType) const {
+    return skif::MakeGaneshBackend(
+            fContext, fSurfaceDrawContext->origin(), surfaceProps, colorType);
 }
 
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap& bitmap) {
@@ -1380,13 +1382,6 @@ sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& info, const SkSurfacePro
                                     &props,
                                     /* shouldCreateWithMips= */ false,
                                     isProtected);
-}
-
-SkImageFilterCache* Device::getImageFilterCache() {
-    ASSERT_SINGLE_OWNER
-    // We always return a transient cache, so it is freed after each
-    // filter traversal.
-    return SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
