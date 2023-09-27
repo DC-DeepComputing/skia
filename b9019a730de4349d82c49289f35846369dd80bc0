@@ -16,6 +16,24 @@
       "message": "Hi,\n\nI saw this call show up in a profile. Is there a reason why you don\u0027t just call lrintf()? It\u0027s single-instruction on most relevant platforms, and will give you the right rounding (at least if “right” is the current rounding mode) for negative values and halfway-between as well, instead of always biasing upwards.\n\n(Unfortunately, on glibc it won\u0027t be inlined without -fno-math-errno, but neither will floorf)",
       "revId": "b9019a730de4349d82c49289f35846369dd80bc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aee2b85_895200b1",
+        "filename": "include/private/SkFloatingPoint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-09-27T14:12:04Z",
+      "side": 1,
+      "message": "If you change it to lrintf, do you see performance improvements in your profiles?\n\nI don\u0027t recall all of the options I looked into, but I thought I went through a number of ways of rounding. My main concern with lrintf is that it is dependent on the current rounding mode",
+      "parentUuid": "781d264f_d7b5f025",
+      "revId": "b9019a730de4349d82c49289f35846369dd80bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
