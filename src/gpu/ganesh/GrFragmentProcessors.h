@@ -74,14 +74,6 @@ std::unique_ptr<GrFragmentProcessor> Make(const SkShader*,
                                           const GrFPArgs&,
                                           const SkShaders::MatrixRec&);
 
-// TODO(kjlubick, brianosman) remove this after all related effects have been migrated
-GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
-                          const char* name,
-                          sk_sp<const SkData> uniforms,
-                          std::unique_ptr<GrFragmentProcessor> inputFP,
-                          std::unique_ptr<GrFragmentProcessor> destColorFP,
-                          SkSpan<const SkRuntimeEffect::ChildPtr> children,
-                          const GrFPArgs& childArgs);
 }  // namespace GrFragmentProcessors
 
 #endif
