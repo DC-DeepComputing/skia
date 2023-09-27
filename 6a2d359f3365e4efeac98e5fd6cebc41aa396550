@@ -34,6 +34,29 @@
       "parentUuid": "2616e968_20761a1a",
       "revId": "6a2d359f3365e4efeac98e5fd6cebc41aa396550",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c243b84_3718bf55",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-27T14:56:05Z",
+      "side": 1,
+      "message": "I think you\u0027ll need to undo this file\u0027s changes as well (?)",
+      "range": {
+        "startLine": 19,
+        "startChar": 9,
+        "endLine": 19,
+        "endChar": 29
+      },
+      "revId": "6a2d359f3365e4efeac98e5fd6cebc41aa396550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
