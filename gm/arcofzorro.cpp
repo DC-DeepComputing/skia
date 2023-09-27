@@ -11,14 +11,17 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkVertices.h"
 #include "src/base/SkRandom.h"
+
 
 namespace skiagm {
 
 // This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
-// the 'drawArc' code near a singularly of its processing (i.e., near the
+// the 'drawArc' code near a singularity of its processing (i.e., near the
 // edge of one of its underlying quads).
 class ArcOfZorroGM : public GM {
 public:
@@ -29,50 +32,20 @@ public:
 protected:
     SkString getName() const override { return SkString("arcofzorro"); }
 
-    SkISize getISize() override { return SkISize::Make(1000, 1000); }
+    SkISize getISize() override { return SkISize::Make(128, 128); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
-
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
 
         SkPaint p;
 
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
+//        p.setShader(SkShaders::Color(SK_ColorRED));
+        p.setColor({0.0f, 0.0f, 1.0f, 0.75f});
 
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
+//        auto verts = make_vertices(SkRect::MakeWH(128, 128), SK_ColorGREEN);
 
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
+//        canvas->drawVertices(verts, SkBlendMode::kPlus, p);
 
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        canvas->drawRect(SkRect::MakeWH(128, 129), p);
     }
 
 private:

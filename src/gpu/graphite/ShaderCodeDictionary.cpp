@@ -43,7 +43,13 @@ std::string get_mangled_uniform_name(const ShaderInfo& shaderInfo,
                                      const Uniform& uniform,
                                      int manglingSuffix) {
     std::string result;
-    result = uniform.name() + std::string("_") + std::to_string(manglingSuffix);
+
+    if (uniform.deduplicate()) {
+        // Due to deduplication there will only be one of these
+        result = uniform.name() + std::string("_") + "10000";
+    } else {
+        result = uniform.name() + std::string("_") + std::to_string(manglingSuffix);
+    }
     if (shaderInfo.ssboIndex()) {
         result = EmitStorageBufferAccess("fs", shaderInfo.ssboIndex(), result.c_str());
     }
@@ -233,13 +239,16 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     // API-independent ones.
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     if (step->numUniforms() > 0) {
+        Deduper deduper;
         preamble += EmitRenderStepUniforms(
-                /*bufferID=*/1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
+                &deduper, /*bufferID=*/1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
     }
+    Deduper deduper;
     if (this->ssboIndex()) {
-        preamble += EmitPaintParamsStorageBuffer(/*bufferID=*/2, "FS", "fs", fRootNodes);
+        preamble += EmitPaintParamsStorageBuffer(&deduper, /*bufferID=*/2, "FS", "fs", fRootNodes);
     } else {
         preamble += EmitPaintParamsUniforms(
+                &deduper,
                 /*bufferID=*/2,
                 "FS",
                 useStorageBuffers ? bindingReqs.fStorageBufferLayout
@@ -770,6 +779,11 @@ static constexpr Uniform kSolidShaderUniforms[] = {
 };
 
 static constexpr char kSolidShaderName[] = "sk_solid_shader";
+
+//--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPaintColorUniforms[] = {
+        { "paintColor", SkSLType::kFloat4, Uniform::kNonArray, Uniform::Deduplicate::kYes }
+};
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kLocalMatrixShaderUniforms[] = {
@@ -1413,6 +1427,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSolidColorShader] = {
             "SolidColor",
             SkSpan(kSolidShaderUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kSolidShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPaintColorShader] = {
+            "PaintColor",
+            SkSpan(kPaintColorUniforms),
             SnippetRequirementFlags::kNone,
             { },     // no samplers
             kSolidShaderName,

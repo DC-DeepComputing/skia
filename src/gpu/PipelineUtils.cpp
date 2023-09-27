@@ -34,7 +34,7 @@ static bool sksl_to_backend(SkSL::Compiler* compiler,
 #if defined(SK_PRINT_SKSL_SHADERS)
     const bool kPrintSkSL = true;
 #else
-    const bool kPrintSkSL = false;
+    const bool kPrintSkSL = true;
 #endif
 #if defined(SK_PRINT_NATIVE_SHADERS)
     const bool printBackendSL = (backendLabel != nullptr);

@@ -113,7 +113,8 @@ std::string get_uniform_header(int bufferID, const char* name) {
     return result;
 }
 
-std::string get_uniforms(Layout layout,
+std::string get_uniforms(Deduper* deduper,
+                         Layout layout,
                          SkSpan<const Uniform> uniforms,
                          int* offset,
                          int manglingSuffix) {
@@ -121,44 +122,64 @@ std::string get_uniforms(Layout layout,
     UniformOffsetCalculator offsetter(layout, *offset);
 
     for (const Uniform& u : uniforms) {
+        if (u.deduplicate() && deduper->alreadySeen()) {
+            SkDebugf("Normal Path: skipping instance of %s\n", u.name());
+            continue;
+        }
+
+        deduper->markAsSeen();
+
+        std::string name;
+        if (u.deduplicate()) {
+            SkSL::String::appendf(&name, "%s_10000", u.name());
+        } else {
+            if (manglingSuffix >= 0) {
+                SkSL::String::appendf(&name, "%s_%d", u.name(), manglingSuffix);
+            } else {
+                SkSL::String::appendf(&name, "%s", u.name());
+            }
+        }
+
+        SkDebugf("Normal Path: first sight of %s -> %s\n", u.name(), name.c_str());
+
         SkSL::String::appendf(&result,
                               "    layout(offset=%zu) %s %s",
                               offsetter.advanceOffset(u.type(), u.count()),
                               SkSLTypeString(u.type()),
-                              u.name());
-        if (manglingSuffix >= 0) {
-            result.append("_");
-            result.append(std::to_string(manglingSuffix));
-        }
+                              name.c_str());
         if (u.count()) {
             result.append("[");
             result.append(std::to_string(u.count()));
             result.append("]");
         }
-        result.append(";\n");
+        result.append(";");
+        if (u.deduplicate()) {
+            result.append("    // deduplicated");
+        }
+        result.append("\n");
     }
 
     *offset = offsetter.size();
     return result;
 }
 
-std::string get_node_uniforms(Layout layout, const ShaderNode* node, int* offset) {
+std::string get_node_uniforms(Deduper* deduper, Layout layout, const ShaderNode* node, int* offset) {
     std::string result;
     SkSpan<const Uniform> uniforms = node->entry()->fUniforms;
 
     if (!uniforms.empty()) {
         SkSL::String::appendf(&result, "// %d - %s uniforms\n",
                               node->keyIndex(), node->entry()->fName);
-        result += get_uniforms(layout, uniforms, offset, node->keyIndex());
+        result += get_uniforms(deduper, layout, uniforms, offset, node->keyIndex());
     }
 
     for (const ShaderNode* child : node->children()) {
-        result += get_node_uniforms(layout, child, offset);
+        result += get_node_uniforms(deduper, layout, child, offset);
     }
     return result;
 }
 
-std::string get_node_ssbo_fields(const ShaderNode* node) {
+std::string get_node_ssbo_fields(Deduper* deduper, const ShaderNode* node) {
     std::string result;
     SkSpan<const Uniform> uniforms = node->entry()->fUniforms;
 
@@ -167,18 +188,39 @@ std::string get_node_ssbo_fields(const ShaderNode* node) {
                               node->keyIndex(), node->entry()->fName);
 
         for (const Uniform& u : uniforms) {
+            if (u.deduplicate() && deduper->alreadySeen()) {
+                SkDebugf("SSBO Path: skipping instance of %s\n", u.name());
+                continue;
+            }
+
+            deduper->markAsSeen();
+
+            std::string name;
+            if (u.deduplicate()) {
+                SkSL::String::appendf(&name, "%s_10000", u.name());
+            } else {
+                SkSL::String::appendf(&name, "%s_%d", u.name(), node->keyIndex());
+            }
+
+            SkDebugf("SSBO Path: first sight of %s -> %s\n", u.name(), name.c_str());
+
             SkSL::String::appendf(
-                    &result, "    %s %s_%d", SkSLTypeString(u.type()), u.name(), node->keyIndex());
+                    &result, "    %s %s", SkSLTypeString(u.type()), name.c_str());
             if (u.count()) {
                 SkSL::String::appendf(&result, "[%u]", u.count());
             }
-            result.append(";\n");
+            result.append(";");
+            if (u.deduplicate()) {
+                result.append("     // deduplicated");
+            }
+            result.append("\n");
         }
     }
 
     for (const ShaderNode* child : node->children()) {
-        result += get_node_ssbo_fields(child);
+        result += get_node_ssbo_fields(deduper, child);
     }
+    SkDebugf("get_node_ssbo_fields: %s\n", result.c_str());
     return result;
 }
 
@@ -207,7 +249,8 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
 
 }  // anonymous namespace
 
-std::string EmitPaintParamsUniforms(int bufferID,
+std::string EmitPaintParamsUniforms(Deduper* deduper,
+                                    int bufferID,
                                     const char* name,
                                     const Layout layout,
                                     SkSpan<const ShaderNode*> nodes) {
@@ -215,27 +258,29 @@ std::string EmitPaintParamsUniforms(int bufferID,
 
     std::string result = get_uniform_header(bufferID, name);
     for (const ShaderNode* n : nodes) {
-        result += get_node_uniforms(layout, n, &offset);
+        result += get_node_uniforms(deduper, layout, n, &offset);
     }
     result.append("};\n\n");
 
     return result;
 }
 
-std::string EmitRenderStepUniforms(int bufferID,
+std::string EmitRenderStepUniforms(Deduper* deduper,
+                                   int bufferID,
                                    const char* name,
                                    const Layout layout,
                                    SkSpan<const Uniform> uniforms) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, name);
-    result += get_uniforms(layout, uniforms, &offset, -1);
+    result += get_uniforms(deduper, layout, uniforms, &offset, -1);
     result.append("};\n\n");
 
     return result;
 }
 
 std::string EmitPaintParamsStorageBuffer(
+        Deduper* deduper,
         int bufferID,
         const char* bufferTypePrefix,
         const char* bufferNamePrefix,
@@ -244,7 +289,7 @@ std::string EmitPaintParamsStorageBuffer(
     std::string result;
     SkSL::String::appendf(&result, "struct %sUniformData {\n", bufferTypePrefix);
     for (const ShaderNode* n : nodes) {
-        result += get_node_ssbo_fields(n);
+        result += get_node_ssbo_fields(deduper, n);
     }
     result.append("};\n\n");
 
@@ -378,12 +423,13 @@ std::string BuildVertexSkSL(const ResourceBindingRequirements& bindingReqs,
         sksl += emit_attributes(step->vertexAttributes(), step->instanceAttributes());
     }
 
+    Deduper deduper;
     // Uniforms needed by RenderStep
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     // TODO: replace hard-coded bufferID with the backend's renderstep uniform-buffer index.
     if (step->numUniforms() > 0) {
         sksl += EmitRenderStepUniforms(
-                1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
+                &deduper, 1, "Step", bindingReqs.fUniformBufferLayout, step->uniforms());
     }
 
     // Varyings needed by RenderStep
