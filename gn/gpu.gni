@@ -768,6 +768,7 @@ skia_gpu_vk_chromium_public =
 skia_gpu_vk_private = [
   "$_include/private/gpu/ganesh/GrVkTypesPriv.h",
   "$_src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+  "$_src/gpu/ck/VulkanAHardwareBufferUtils.h",
   "$_src/gpu/ganesh/vk/GrVkBackendSurface.cpp",
   "$_src/gpu/ganesh/vk/GrVkBackendSurfacePriv.h",
   "$_src/gpu/ganesh/vk/GrVkBuffer.cpp",
