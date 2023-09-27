@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bfb1972_250715b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-27T12:17:59Z",
+      "side": 1,
+      "message": "Added a few more BazelTest targets to verify the change to tools/BUILD.bazel",
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06e32fde_feb69dc7",
