@@ -59,6 +59,18 @@ protected:
     uint32_t fOffset = 0;
 };
 
+// This is a very narrow deduper that only collapses references to the paint color. If a more
+// general system is required it could be expanded to take uniform names and hash them.
+class Deduper {
+public:
+    bool alreadySeen() const { return fSeenIt; }
+    void markAsSeen() { fSeenIt = true;}
+    void reset() { fSeenIt = false; }
+
+private:
+    bool fSeenIt = false;
+};
+
 class UniformManager : public UniformOffsetCalculator {
 public:
     UniformManager(Layout layout) : UniformOffsetCalculator(layout, /*startingOffset=*/0) {}
@@ -81,6 +93,7 @@ public:
 
     void write(const SkM44&);
     void write(const SkPMColor4f&);
+    void writePaintColor(const SkPMColor4f&);
     void write(const SkRect&);
     void write(const SkV2&);
     void write(const SkV4&);
@@ -114,6 +127,7 @@ private:
     // overloads which correctly abstract the array vs non-array semantics.
     void writeInternal(SkSLType type, unsigned int count, const void* src);
 
+    Deduper fDeduper;
 #ifdef SK_DEBUG
     SkSpan<const Uniform> fExpectedUniforms;
     int fExpectedUniformIndex = 0;
