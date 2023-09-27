@@ -63,6 +63,30 @@
       },
       "revId": "76bbebe91d8fed41b3001cbc395479da2db80c43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a75e2419_1db42fd7",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 19649
+      },
+      "writtenOn": "2023-09-27T17:54:33Z",
+      "side": 1,
+      "message": "Ah my bad, I missed step 2 \"Linearize the gain map by inverting the gain map gamma using the Rec.709 transfer function.\" Your derivation looks good on the surface.\n\nI\u0027m also learning unrelated interesting things, so thanks:\n\u003e On macOS, the Rec. 709 transfer function is a  𝛾\u003d1.961  curve",
+      "parentUuid": "cead9a75_f1959b72",
+      "range": {
+        "startLine": 573,
+        "startChar": 0,
+        "endLine": 573,
+        "endChar": 78
+      },
+      "revId": "76bbebe91d8fed41b3001cbc395479da2db80c43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
