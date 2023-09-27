@@ -530,6 +530,7 @@ void UniformManager::reset() {
     fOffset = 0;
     fReqAlignment = 0;
     fStorage.clear();
+    fDeduper.reset();
 }
 
 void UniformManager::checkReset() const {
@@ -603,6 +604,19 @@ void UniformManager::write(const SkM44& mat) {
 
 void UniformManager::write(const SkPMColor4f& color) {
     static constexpr SkSLType kType = SkSLType::kFloat4;
+    this->write(kType, &color);
+}
+
+void UniformManager::writePaintColor(const SkPMColor4f& color) {
+    static constexpr SkSLType kType = SkSLType::kFloat4;
+
+    SkASSERT(fExpectedUniforms[fExpectedUniformIndex].deduplicate());
+    if (fDeduper.alreadySeen()) {
+        this->checkExpected(kType, 1);
+        return;
+    }
+
+    fDeduper.markAsSeen();
     this->write(kType, &color);
 }
 
