@@ -36,11 +36,15 @@ public:
     inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
     inline static constexpr unsigned int kNumUniformBuffers = 3;
 
-    inline static const DescriptorData kIntrinsicUniformDescriptor  =
+    inline static const DescriptorData kIntrinsicInlineUniformDescriptor  =
             {DescriptorType::kInlineUniform,
              // For inline uniform descriptors, the descriptor count field is actually the number of
              // bytes to allocate for descriptors given this type.
              /*count=*/sizeof(float) * 4,
+             VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
+    inline static const DescriptorData kIntrinsicUniformBufferDescriptor  =
+            {DescriptorType::kUniformBuffer,
+             /*count=*/1,
              VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
     inline static const DescriptorData kRenderStepUniformDescriptor =
             {DescriptorType::kUniformBuffer,

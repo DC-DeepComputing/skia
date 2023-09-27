@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 
 #include "include/private/base/SkTArray.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 namespace skgpu::graphite {
@@ -46,9 +47,11 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
     }
 
     VkDescriptorPoolInlineUniformBlockCreateInfoEXT inlineUniformInfo;
-    inlineUniformInfo.sType =
-            VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_INLINE_UNIFORM_BLOCK_CREATE_INFO_EXT;
-    inlineUniformInfo.pNext = nullptr;
+    if (context->caps()->supportsInlineUniformBlocks()) {
+        inlineUniformInfo.sType =
+                VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_INLINE_UNIFORM_BLOCK_CREATE_INFO_EXT;
+        inlineUniformInfo.pNext = nullptr;
+    }
 
     VkDescriptorPoolCreateInfo createInfo;
     memset(&createInfo, 0, sizeof(VkDescriptorPoolCreateInfo));
