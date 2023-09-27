@@ -16,6 +16,24 @@
       "message": "Removed the bazel build changes for now, as discussed in the previous CL. So this can only be built with GN until we sort out conditional SkJSON build support in the Bazel build. Still LGTY?",
       "revId": "6a2d359f3365e4efeac98e5fd6cebc41aa396550",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d186847_517803d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-27T14:54:16Z",
+      "side": 1,
+      "message": "Yes, I can address that after this lands. I think I have an idea or two how.",
+      "parentUuid": "2616e968_20761a1a",
+      "revId": "6a2d359f3365e4efeac98e5fd6cebc41aa396550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
