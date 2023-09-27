@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -103,7 +104,6 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
     // When making a new command buffer, we automatically begin the command buffer
     this->begin();
     // Each command buffer will have an intrinsic uniform buffer, so create & store that buffer
-    // TODO: Look into implementing this with a push constant or an inline uniform block
     fIntrinsicUniformBuffer = resourceProvider->createBuffer(4 * sizeof(float),
                                                              BufferType::kUniform,
                                                              AccessPattern::kHostVisible);
@@ -399,6 +399,32 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
         }
     }
 
+    // Vulkan's framebuffer space has (0, 0) at the top left. This agrees with
+    // Skia's device coords. However, in NDC (-1, -1) is the bottom left. So we flip
+    // the origin here (assuming all surfaces we have are TopLeft origin).
+    const float x = viewport.fLeft - fReplayTranslation.x();
+    const float y =  viewport.fTop - fReplayTranslation.y();
+    float invTwoW = 2.f / viewport.width();
+    float invTwoH = 2.f / viewport.height();
+    fIntrinsicConstant[0] = invTwoW;
+    fIntrinsicConstant[1] = invTwoH;
+    fIntrinsicConstant[2] = -1.f - x * invTwoW;
+    fIntrinsicConstant[3] = -1.f - y * invTwoH;
+
+    // If inline uniform blocks are not supported, we need to write the intrinsic constant to a
+    // uniform buffer prior to beginning the render pass.
+    if (!fSharedContext->vulkanCaps().supportsInlineUniformBlocks()) {
+        // TODO: Verify whether using vkCmdUpdateBuffer is slower than using a transfer buffer
+        // even for small sizes on Qualcomm devices. If so, use a transfer buffer here instead.
+        auto intrinsicUniformBuffer = static_cast<VulkanBuffer*>(fIntrinsicUniformBuffer.get());
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdUpdateBuffer(fPrimaryCommandBuffer,
+                                    intrinsicUniformBuffer->vkBuffer(),
+                                    /*dstOffset=*/0,
+                                    sizeof(float) * 4,
+                                    (const uint32_t*)&fIntrinsicConstant));
+    }
+
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
     }
@@ -416,7 +442,6 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                /*firstViewport=*/0,
                                /*viewportCount=*/1,
                                &vkViewport));
-    fCurrentViewport = viewport;
 
     for (const auto& drawPass : drawPasses) {
         this->addDrawPass(drawPass.get());
@@ -705,7 +730,14 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
             {fIntrinsicUniformBuffer.get(), /*size_t offset=*/0};
     STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-    descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformDescriptor);
+
+    const VulkanCaps& vulkanCaps =
+            static_cast<const VulkanSharedContext*>(fSharedContext)->vulkanCaps();
+    if (vulkanCaps.supportsInlineUniformBlocks()) {
+        descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicInlineUniformDescriptor);
+    } else {
+        descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+    }
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
             fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
         descriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
@@ -721,8 +753,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
         SKGPU_LOG_E("Unable to find or create descriptor set");
         return;
     }
-    static uint64_t maxUniformBufferRange = static_cast<const VulkanSharedContext*>(
-            fSharedContext)->vulkanCaps().maxUniformBufferRange();
+
+    static uint64_t maxUniformBufferRange = vulkanCaps.maxUniformBufferRange();
     float rtAdjust[4];
 
     for (int i = 0; i < descriptors.size(); i++) {
@@ -737,7 +769,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             bufferInfo.buffer = vulkanBuffer->vkBuffer();
             bufferInfo.offset = fUniformBuffersToBind[descriptorBindingIndex].fOffset;
             bufferInfo.range = clamp_ubo_binding_size(bufferInfo.offset, vulkanBuffer->size(),
-                                                        maxUniformBufferRange);
+                                                      maxUniformBufferRange);
 
             VkWriteDescriptorSet writeInfo;
             VkWriteDescriptorSetInlineUniformBlockEXT writeInlineUniform;
@@ -745,18 +777,6 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             // Perform special setup for intrinsic uniform when appropriate.
             if (descriptors.at(i).type == DescriptorType::kInlineUniform) {
-                // Vulkan's framebuffer space has (0, 0) at the top left. This agrees with
-                // Skia's device coords. However, in NDC (-1, -1) is the bottom left. So we flip
-                // the origin here (assuming all surfaces we have are TopLeft origin).
-                const float x = fCurrentViewport.x() - fReplayTranslation.x();
-                const float y = fCurrentViewport.y() - fReplayTranslation.y();
-                float invTwoW = 2.f / fCurrentViewport.width();
-                float invTwoH = 2.f / fCurrentViewport.height();
-                rtAdjust[0] = invTwoW;
-                rtAdjust[1] = invTwoH;
-                rtAdjust[2] = -1.f - x * invTwoW;
-                rtAdjust[3] = -1.f - y * invTwoH;
-
                 writeInlineUniform.sType =
                         VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_INLINE_UNIFORM_BLOCK_EXT;
                 writeInlineUniform.pNext = nullptr;
