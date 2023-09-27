@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06e32fde_feb69dc7",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-27T12:16:14Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca768f68_fbe8543c",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-27T12:16:14Z",
+      "side": 1,
+      "message": "Suggestion: if the goal is to closely observe the differences between the two systems, would a larger font size help with that more? Or are the differences subtle anti-aliasing things which are unimportant?",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f233ac4f_5aa3c234",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-27T12:16:14Z",
+      "side": 1,
+      "message": "nit: add a comment reminding the reader that this is creating two diffs between the two bitmaps, one that indicates the magnitude of the difference (outBitmap) and another for a boolean difference (whiteBitmap).\n\nConsider renaming the output variables to more closely align with those goals. (e.g. gradientDiffBitmap, absDiffBitmap ?)",
+      "range": {
+        "startLine": 31,
+        "startChar": 5,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
