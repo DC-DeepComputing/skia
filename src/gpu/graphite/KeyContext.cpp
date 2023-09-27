@@ -17,7 +17,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkColorInfo& dstColorInfo,
                        const SkColor4f& paintColor,
                        sk_sp<TextureProxy> dstTexture,
-                       SkIPoint dstOffset)
+                       SkIPoint dstOffset,
+                       bool foo)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
@@ -27,7 +28,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fDstOffset(dstOffset) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
     fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
-    fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
+    fPaintColor1 = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
+    fPaintColor1.fA = paintColor.fA;
 }
 
 KeyContext::KeyContext(const KeyContext& other)
@@ -37,7 +39,7 @@ KeyContext::KeyContext(const KeyContext& other)
         , fDictionary(other.fDictionary)
         , fRTEffectDict(other.fRTEffectDict)
         , fDstColorInfo(other.fDstColorInfo)
-        , fPaintColor(other.fPaintColor)
+        , fPaintColor1(other.fPaintColor1)
         , fCaps(other.fCaps)
         , fDstTexture(other.fDstTexture)
         , fDstOffset(other.fDstOffset) {}
