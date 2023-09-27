@@ -841,7 +841,6 @@ std::tuple<bool, SkString> SkMesh::validate() const {
         if (sm.add(isize, fIOffset) > ib->size()) {
             FAIL_MESH_VALIDATE("The index buffer offset and index count reads beyond the end of the"
                                " index buffer.");
-
         }
         // If we allow 32 bit indices then this should enforce 4 byte alignment in that case.
         if (!SkIsAlign2(fIOffset)) {
