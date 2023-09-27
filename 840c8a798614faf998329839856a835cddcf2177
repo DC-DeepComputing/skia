@@ -193,6 +193,30 @@
       },
       "revId": "840c8a798614faf998329839856a835cddcf2177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b4737f0_82e8ee79",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-27T14:47:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea1aaca1_524df65f",
+      "range": {
+        "startLine": 31,
+        "startChar": 5,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
