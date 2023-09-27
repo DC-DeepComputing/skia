@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "beccb6a0_6b7e25d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-09-27T14:20:39Z",
+      "side": 1,
+      "message": "Yes, looks like the build failures are about SkJson conditional compilation again - which is not complete in the Bazel build.",
+      "parentUuid": "1cf7c224_689b16b5",
+      "revId": "840c8a798614faf998329839856a835cddcf2177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06e32fde_feb69dc7",
