@@ -18,7 +18,7 @@
 namespace skiagm {
 
 // This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
-// the 'drawArc' code near a singularly of its processing (i.e., near the
+// the 'drawArc' code near a singularity of its processing (i.e., near the
 // edge of one of its underlying quads).
 class ArcOfZorroGM : public GM {
 public:
@@ -54,22 +54,22 @@ protected:
             canvas->restore();
 
             switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
+                case 0:
+                    xOffset += 10;
+                    if (xOffset >= 700) {
+                        direction = 1;
+                    }
+                    break;
+                case 1:
+                    xOffset -= 10;
+                    yOffset += 10;
+                    if (xOffset < 50) {
+                        direction = 2;
+                    }
+                    break;
+                case 2:
+                    xOffset += 10;
+                    break;
             }
         }
 
