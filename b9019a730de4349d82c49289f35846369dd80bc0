@@ -34,6 +34,24 @@
       "parentUuid": "781d264f_d7b5f025",
       "revId": "b9019a730de4349d82c49289f35846369dd80bc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edd0c82f_d80c1d70",
+        "filename": "include/private/SkFloatingPoint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 19509
+      },
+      "writtenOn": "2023-09-27T14:19:48Z",
+      "side": 1,
+      "message": "Nothing ever changes the current rounding mode, really :-) If you do, so many things break down. (The compiler also generally constant-folds expressions assuming the default mode, so you wouldn\u0027t even match that anymore.) And yes, the generated code improves with lrintf (especially now that we compile with -fno-math-errno). Whether it has an actual impact on a larger benchmark I cannot say for sure.\n\nAlso, of course, this trick (casting to higher precision) doesn\u0027t work if you want to round a double.",
+      "parentUuid": "9aee2b85_895200b1",
+      "revId": "b9019a730de4349d82c49289f35846369dd80bc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
