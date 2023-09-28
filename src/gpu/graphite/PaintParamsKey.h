@@ -131,6 +131,12 @@ public:
     void checkReset();
 #endif
 
+    // Helper to add blocks w/o uniforms or data to the key
+    void addBlock(BuiltInCodeSnippetID id) {
+        this->beginBlock(id);
+        this->endBlock();
+    }
+
 private:
     friend class AutoLockBuilderAsKey; // for lockAsKey() and unlock()
 
