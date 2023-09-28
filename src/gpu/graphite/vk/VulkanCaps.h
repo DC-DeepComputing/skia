@@ -83,6 +83,10 @@ public:
 
     uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
 
+    VkPhysicalDeviceMemoryProperties2 physicalDeviceMemoryProperties2() const {
+        return fPhysicalDeviceMemoryProperties2;
+    }
+
 private:
     enum VkVendor {
         kAMD_VkVendor             = 4098,
@@ -209,6 +213,7 @@ private:
 
     uint32_t fMaxVertexAttributes;
     uint64_t fMaxUniformBufferRange;
+    VkPhysicalDeviceMemoryProperties2 fPhysicalDeviceMemoryProperties2;
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
