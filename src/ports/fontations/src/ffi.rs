@@ -191,6 +191,32 @@ fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
     }
 }
 
+use crate::ffi::{ColrV0GlyphLayerRange, ColrV0Layer};
+
+fn colrv0_layer_range(font_ref: &BridgeFontRef, glyph_id: u16) -> ColrV0GlyphLayerRange {
+    font_ref
+        .with_font(|f| {
+            let layer_range = f.colr().ok()?.v0_base_glyph(GlyphId::new(glyph_id)).ok()?;
+            layer_range.map(|r| ColrV0GlyphLayerRange {
+                has_v0_layers: true,
+                start_index: r.start,
+                end_index: r.end,
+            })
+        })
+        .unwrap_or_default()
+}
+
+fn colrv0_glyph_layer(
+    font_ref: &BridgeFontRef,
+    layer_index: usize,
+    out_layer: &mut ColrV0Layer,
+) -> bool {
+    font_ref.with_font(|f| {
+        // TODO: Fill out_layer.
+        f.colr().ok()?.v0_layer(layer_index).ok()
+    }).is_some()
+}
+
 /// Implements the behavior expected for `SkTypeface::getTableData`, compare
 /// documentation for this method and the FreeType implementation in Skia.
 /// * If the target data array is empty, do not copy any data into it, but
@@ -375,6 +401,18 @@ mod ffi {
         has_overlaps: bool,
     }
 
+    #[derive(Default)]
+    struct ColrV0GlyphLayerRange {
+        has_v0_layers: bool,
+        start_index: usize,
+        end_index: usize,
+    }
+
+    struct ColrV0Layer {
+        glyph_id: u16,
+        palette_index: u16,
+    }
+
     extern "Rust" {
 
         type BridgeFontRef<'a>;
@@ -412,6 +450,13 @@ mod ffi {
         fn num_glyphs(font_ref: &BridgeFontRef) -> u16;
         fn family_name(font_ref: &BridgeFontRef) -> String;
         fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool;
+
+        fn colrv0_layer_range(font_ref: &BridgeFontRef, glyph_id: u16) -> ColrV0GlyphLayerRange;
+        fn colrv0_glyph_layer(
+            font_ref: &BridgeFontRef,
+            layer_index: usize,
+            out_layer: &mut ColrV0Layer,
+        ) -> bool;
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
