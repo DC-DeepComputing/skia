@@ -16,6 +16,24 @@
       "message": "Does this need to be defined out here? Can it be local to emitTextureSamplersForFPs?",
       "revId": "d09a4318d6aacfbaa1b1b48198fc6bc2906bb0fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5848a27a_e55398bf",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-28T19:01:41Z",
+      "side": 1,
+      "message": "As it stands in this CL, it could, but in DrawMeshOp I will need to call it more than once. Keeping track of the `sampleIndex` will make sure we don\u0027t emit the same variable name twice.",
+      "parentUuid": "e6202643_ac952175",
+      "revId": "d09a4318d6aacfbaa1b1b48198fc6bc2906bb0fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
