@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3049ffcb_1e50ee9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-28T17:58:25Z",
+      "side": 1,
+      "message": "If you haven\u0027t already taken a look into what\u0027s going on with Windows I can take a look later.",
+      "revId": "0f1b759156a1373475c875b6d8f374903e36b10b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fe4129b_5f9b4f69",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-09-28T17:08:33Z",
       "side": 1,
       "message": "Lifted from SkShaper_HarfBuzz (HB_SCRIPT_UNKNOWN).  Is there a more platform-agnostic option?",
+      "range": {
+        "startLine": 320,
+        "startChar": 36,
+        "endLine": 320,
+        "endChar": 74
+      },
+      "revId": "0f1b759156a1373475c875b6d8f374903e36b10b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2a6ca90_c78e2063",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-09-28T17:58:25Z",
+      "side": 1,
+      "message": "I think this is probably the right script to use if you don\u0027t know which script to use. This script is defined to not be mapped so you should always end up with whatever the default script for the selected language.",
+      "parentUuid": "4fe4129b_5f9b4f69",
       "range": {
         "startLine": 320,
         "startChar": 36,
