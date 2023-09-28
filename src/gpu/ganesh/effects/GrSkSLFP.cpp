@@ -125,7 +125,7 @@ public:
                 return std::string(fArgs.fFragBuilder->getMangledFunctionName(name).c_str());
             }
 
-            void defineFunction(const char* decl, const char* body, bool isMain) override {
+            void defineFunction1(const char* decl, const char* body, bool isMain) override {
                 if (isMain) {
                     fArgs.fFragBuilder->codeAppend(body);
                 } else {
