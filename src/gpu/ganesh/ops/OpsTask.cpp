@@ -908,7 +908,9 @@ void OpsTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
         alloc->addInterval(fDeferredProxies[i], 0, 0, GrResourceAllocator::ActualUse::kNo);
     }
 
-    GrSurfaceProxy* targetProxy = this->target(0);
+    GrSurfaceProxy* targetSurface = this->target(0);
+    SkASSERT(targetSurface);
+    GrRenderTargetProxy* targetProxy = targetSurface->asRenderTargetProxy();
 
     // Add the interval for all the writes to this OpsTasks's target
     if (fOpChains.size()) {
@@ -925,10 +927,14 @@ void OpsTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
         alloc->incOps();
     }
 
-    auto gather = [alloc SkDEBUGCODE(, this)](GrSurfaceProxy* p, skgpu::Mipmapped) {
+    bool wrapsVkSecondaryCB = targetProxy->wrapsVkSecondaryCB();
+
+    auto gather = [alloc, wrapsVkSecondaryCB SkDEBUGCODE(, this)](GrSurfaceProxy* p,
+                                                                  skgpu::Mipmapped) {
+        constexpr unsigned int kInfiniteEndValue = std::numeric_limits<unsigned int>::max();
         alloc->addInterval(p,
                            alloc->curOp(),
-                           alloc->curOp(),
+                           wrapsVkSecondaryCB ? kInfiniteEndValue : alloc->curOp(),
                            GrResourceAllocator::ActualUse::kYes
                            SkDEBUGCODE(, this->target(0) == p));
     };
