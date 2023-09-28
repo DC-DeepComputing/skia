@@ -65,6 +65,84 @@ GrAHardwareBufferImageGenerator::~GrAHardwareBufferImageGenerator() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+static GrBackendFormat get_backend_format(GrDirectContext* dContext,
+                                          AHardwareBuffer* hardwareBuffer,
+                                          uint32_t bufferFormat,
+                                          bool requireKnownFormat) {
+    GrBackendApi backend = dContext->backend();
+
+    if (backend == GrBackendApi::kOpenGL) {
+// TODO(kjlubick) Can we remove these #ifdefs? If not all the time, then we'll probably need to
+// make SkImages::DeferredFromAHardwareBuffer have a version for GL and for Vulkan or have
+// something (on GrDirectContextPriv?) that lets us defer to a backend-specific version
+#ifdef SK_GL
+        return GrAHardwareBufferUtils::GetGLBackendFormat(
+                dContext, bufferFormat, requireKnownFormat);
+#else   // SK_GL
+        return GrBackendFormat();
+#endif  // SK_GL
+    } else if (backend == GrBackendApi::kVulkan) {
+#ifdef SK_VULKAN
+        return GrAHardwareBufferUtils::GetVulkanBackendFormat(
+                dContext, hardwareBuffer, bufferFormat, requireKnownFormat);
+#else   // SK_VULKAN
+        return GrBackendFormat();
+#endif  // SK_VULKAN
+    }
+    return GrBackendFormat();
+}
+
+static GrBackendTexture make_backend_texture(GrDirectContext* dContext,
+                                             AHardwareBuffer* hardwareBuffer,
+                                             int width,
+                                             int height,
+                                             GrAHardwareBufferUtils::DeleteImageProc* deleteProc,
+                                             GrAHardwareBufferUtils::UpdateImageProc* updateProc,
+                                             GrAHardwareBufferUtils::TexImageCtx* imageCtx,
+                                             bool isProtectedContent,
+                                             const GrBackendFormat& backendFormat,
+                                             bool isRenderable,
+                                             bool fromAndroidWindow) {
+    SkASSERT(dContext);
+    if (!dContext || dContext->abandoned()) {
+        return GrBackendTexture();
+    }
+
+    if (GrBackendApi::kOpenGL == dContext->backend()) {
+#ifdef SK_GL
+        return GrAHardwareBufferUtils::MakeGLBackendTexture(dContext,
+                                                            hardwareBuffer,
+                                                            width,
+                                                            height,
+                                                            deleteProc,
+                                                            updateProc,
+                                                            imageCtx,
+                                                            isProtectedContent,
+                                                            backendFormat,
+                                                            isRenderable);
+#else
+        return GrBackendTexture();
+#endif  // SK_GL
+    } else {
+        SkASSERT(GrBackendApi::kVulkan == dContext->backend());
+#ifdef SK_VULKAN
+        return GrAHardwareBufferUtils::MakeVulkanBackendTexture(dContext,
+                                                                hardwareBuffer,
+                                                                width,
+                                                                height,
+                                                                deleteProc,
+                                                                updateProc,
+                                                                imageCtx,
+                                                                isProtectedContent,
+                                                                backendFormat,
+                                                                isRenderable,
+                                                                fromAndroidWindow);
+#else
+        return GrBackendTexture();
+#endif  // SK_VULKAN
+    }
+}
+
 GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext* context) {
     if (context->abandoned()) {
         return {};
@@ -75,10 +153,8 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
         return {};
     }
 
-    GrBackendFormat backendFormat = GrAHardwareBufferUtils::GetBackendFormat(direct,
-                                                                             fHardwareBuffer,
-                                                                             fBufferFormat,
-                                                                             false);
+    GrBackendFormat backendFormat =
+            get_backend_format(direct, fHardwareBuffer, fBufferFormat, false);
 
     GrColorType grColorType = SkColorTypeToGrColorType(this->getInfo().colorType());
 
@@ -120,8 +196,7 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
                 GrAHardwareBufferUtils::TexImageCtx texImageCtx = nullptr;
 
                 bool isProtected = desc.fProtected == GrProtected::kYes;
-                GrBackendTexture backendTex =
-                        GrAHardwareBufferUtils::MakeBackendTexture(direct,
+                GrBackendTexture backendTex = make_backend_texture(direct,
                                                                    buffer.get(),
                                                                    desc.fDimensions.width(),
                                                                    desc.fDimensions.height(),
