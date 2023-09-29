@@ -34,7 +34,8 @@ public:
                RuntimeEffectDictionary* rtEffectDict,
                const SkColorInfo& dstColorInfo,
                sk_sp<TextureProxy> dstTexture,
-               SkIPoint dstOffset)
+               SkIPoint dstOffset,
+               bool foo)
             : fDictionary(dict)
             , fRTEffectDict(rtEffectDict)
             , fDstColorInfo(dstColorInfo)
@@ -48,7 +49,8 @@ public:
                const SkColorInfo&,
                const SkColor4f& paintColor,
                sk_sp<TextureProxy> dstTexture,
-               SkIPoint dstOffset);
+               SkIPoint dstOffset,
+               bool foo);
 
     KeyContext(const KeyContext&);
 

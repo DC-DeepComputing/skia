@@ -17,7 +17,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkColorInfo& dstColorInfo,
                        const SkColor4f& paintColor,
                        sk_sp<TextureProxy> dstTexture,
-                       SkIPoint dstOffset)
+                       SkIPoint dstOffset,
+                       bool foo)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
