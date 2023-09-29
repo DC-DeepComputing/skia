@@ -53,7 +53,7 @@ enum class DstColorType {
  * as parent-child relationships.
  */
 
-struct PriorOutputBlock {
+struct PassThroughBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*);
