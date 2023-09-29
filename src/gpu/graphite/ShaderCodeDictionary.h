@@ -76,7 +76,8 @@ struct ShaderSnippet {
     struct Args {
         std::string fPriorStageOutput;
         std::string fBlenderDstColor;
-        std::string fFragCoord;
+        std::string fFragCoord1;
+        bool fFoo1;
     };
     using GenerateExpressionForSnippetFn = std::string (*)(const ShaderInfo& shaderInfo,
                                                            const ShaderNode*,

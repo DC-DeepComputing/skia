@@ -84,10 +84,10 @@ namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
 
-void PriorOutputBlock::BeginBlock(const KeyContext& keyContext,
+void PassThroughBlock::BeginBlock(const KeyContext& keyContext,
                                   PaintParamsKeyBuilder* builder,
                                   PipelineDataGatherer* gatherer) {
-    builder->beginBlock(BuiltInCodeSnippetID::kPriorOutput);
+    builder->beginBlock(BuiltInCodeSnippetID::kPassThrough);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -690,7 +690,8 @@ void DitherShaderBlock::BeginBlock(const KeyContext& keyContext,
         if (!proxy) {
             SKGPU_LOG_W("Couldn't create dither shader's LUT");
 
-            PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+            // DitherShaders only occur w/in a Compose block - safe
+            PassThroughBlock::BeginBlock(keyContext, builder, gatherer);
             return;
         }
 
@@ -864,8 +865,11 @@ void TableColorFilterBlock::BeginBlock(const KeyContext& keyContext,
 
     if (gatherer) {
         if (!data.fTextureProxy) {
+            SKGPU_LOG_W("Couldn't create TableColorFilter's table");
+
+            // Colorfilters only appear in a Compose Block or in a
             // We're dropping the color filter here!
-            PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+            PassThroughBlock::BeginBlock(keyContext, builder, gatherer);
             return;
         }
 
@@ -927,7 +931,7 @@ void AddBlendModeColorFilter(const KeyContext& keyContext,
               builder->endBlock();
           },
           /* addDstToKey= */ [&]() -> void {
-              PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+              PassThroughBlock::BeginBlock(keyContext, builder, gatherer);
               builder->endBlock();
           });
 }
@@ -1000,7 +1004,7 @@ static void add_to_key(const KeyContext& keyContext,
     AddModeBlend(keyContext, builder, gatherer, blender->mode());
 }
 
-static void add_children_to_key(const KeyContext& keyContext,
+static void add_children_to_key_rt(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
                                 SkSpan<const SkRuntimeEffect::ChildPtr> children,
@@ -1021,6 +1025,8 @@ static void add_children_to_key(const KeyContext& keyContext,
         } else if (type == ChildType::kBlender) {
             AddToKey(childContext, builder, gatherer, child.blender());
         } else {
+
+            //$$
             // We don't have a child effect. Substitute in a no-op effect.
             switch (childInfo[index].type) {
                 case ChildType::kShader:
@@ -1032,7 +1038,7 @@ static void add_children_to_key(const KeyContext& keyContext,
 
                 case ChildType::kColorFilter:
                     // A "passthrough" color filter returns the input color as-is.
-                    PriorOutputBlock::BeginBlock(childContext, builder, gatherer);
+                    PassThroughBlock::BeginBlock(childContext, builder, gatherer);
                     builder->endBlock();
                     break;
 
@@ -1062,7 +1068,7 @@ static void add_to_key(const KeyContext& keyContext,
     RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
                                    { effect, std::move(uniforms) });
 
-    add_children_to_key(keyContext, builder, gatherer,
+    add_children_to_key_rt(keyContext, builder, gatherer,
                         blender->children(), effect->children());
 
     builder->endBlock();
@@ -1168,7 +1174,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {effect, std::move(uniforms)});
 
-    add_children_to_key(keyContext, builder, gatherer,
+    add_children_to_key_rt(keyContext, builder, gatherer,
                         filter->children(), effect->children());
 
     builder->endBlock();
@@ -1186,7 +1192,7 @@ static void add_to_key(const KeyContext& keyContext,
         SKGPU_LOG_W("Couldn't create TableColorFilter's table");
 
         // Return the input color as-is.
-        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+        PassThroughBlock::BeginBlock(keyContext, builder, gatherer);
         builder->endBlock();
         return;
     }
@@ -1253,7 +1259,7 @@ void AddToKey(const KeyContext& keyContext,
     switch (as_CFB(filter)->type()) {
     case SkColorFilterBase::Type::kNoop:
         // Return the input color as-is.
-        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+        PassThroughBlock::BeginBlock(keyContext, builder, gatherer);
         builder->endBlock();
         return;
 #define M(type)                                                        \
@@ -1707,7 +1713,7 @@ static void add_to_key(const KeyContext& keyContext,
     RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
                                    {effect, std::move(uniforms)});
 
-    add_children_to_key(keyContext, builder, gatherer,
+    add_children_to_key_rt(keyContext, builder, gatherer,
                         shader->children(), effect->children());
 
     builder->endBlock();
