@@ -34,6 +34,47 @@
       "parentUuid": "a14d57da_40d54cb0",
       "revId": "041f08d51e4533523a6d49e5c15b192e19111fee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95f4e870_de222239",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-29T17:48:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "30703c0e_a5614505",
+      "revId": "041f08d51e4533523a6d49e5c15b192e19111fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adf3b18b_8a90752c",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-29T17:48:47Z",
+      "side": 1,
+      "message": "two very small nits: \n- avoid calling `hasLength` twice since it is virtual\n- since the function is named `RemainingLengthIsBelow`, the comparisons is more natural as `remainingBytes \u003c X` instead of the flipped-but-equivalent `X \u003e remainingBytes`.\n\n```\n    if (stream-\u003ehasLength()) {\n        if (stream-\u003ehasPosition()) {\n            size_t remainingBytes \u003d stream-\u003egetLength() - stream-\u003egetPosition();\n            return remainingBytes \u003c len;\n        }\n        // We don\u0027t know the position, but we can still return true if the\n        // stream\u0027s entire length is shorter than the requested length.\n        return stream-\u003egetLength() \u003c len;\n    }\n    return false;\n```",
+      "range": {
+        "startLine": 982,
+        "startChar": 0,
+        "endLine": 988,
+        "endChar": 0
+      },
+      "revId": "041f08d51e4533523a6d49e5c15b192e19111fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
