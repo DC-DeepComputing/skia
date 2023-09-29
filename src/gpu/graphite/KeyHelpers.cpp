@@ -734,6 +734,7 @@ void DitherShaderBlock::BeginBlock(const KeyContext& keyContext,
         if (!proxy) {
             SKGPU_LOG_W("Couldn't create dither shader's LUT");
 
+            // DitherShaders only occur w/in a Compose block - safe
             PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
             return;
         }
@@ -908,6 +909,9 @@ void TableColorFilterBlock::BeginBlock(const KeyContext& keyContext,
 
     if (gatherer) {
         if (!data.fTextureProxy) {
+            SKGPU_LOG_W("Couldn't create TableColorFilter's table");
+
+            // Colorfilters only appear in a Compose Block or in a
             // We're dropping the color filter here!
             PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
             return;
