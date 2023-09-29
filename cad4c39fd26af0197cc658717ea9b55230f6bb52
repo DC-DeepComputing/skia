@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea251919_e07dd514",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-29T14:41:19Z",
+      "side": 1,
+      "message": "Naming issues aside, I\u0027d use `kRuntimeEffect` here. That will ensure that mesh shaders get the same \"raw\" sampling behavior from alpha-only image shaders, rather than the strange tinting-by-input-color.",
+      "range": {
+        "startLine": 183,
+        "startChar": 73,
+        "endLine": 183,
+        "endChar": 81
+      },
+      "revId": "cad4c39fd26af0197cc658717ea9b55230f6bb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
