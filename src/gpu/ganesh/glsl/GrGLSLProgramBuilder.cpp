@@ -503,8 +503,14 @@ void GrGLSLProgramBuilder::addRTFlipUniform(const char* name) {
                                                     nullptr);
 }
 
-bool GrGLSLProgramBuilder::fragmentProcessorHasCoordsParam(const GrFragmentProcessor* fp) {
-    return fFPCoordsMap[fp].hasCoordsParam;
+bool GrGLSLProgramBuilder::fragmentProcessorHasCoordsParam(const GrFragmentProcessor* fp) const {
+    auto iter = fFPCoordsMap.find(fp);
+    if (iter != fFPCoordsMap.end()) {
+        return iter->second.hasCoordsParam;
+    }
+    // If the fragment processor does not exist in our map, its transforms could not possibly have
+    // been lifted, so coordinates must be passed in.
+    return true;
 }
 
 void GrGLSLProgramBuilder::finalizeShaders() {
