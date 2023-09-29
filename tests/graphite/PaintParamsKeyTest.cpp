@@ -654,7 +654,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
                                     rtDict.get(),
                                     ci,
                                     /* dstTexture= */ nullptr,
-                                    /* dstOffset= */ {0, 0});
+                                    /* dstOffset= */ {0, 0},
+                                    false /*$$*/);
 
     sk_sp<TextureProxy> fakeDstTexture = TextureProxy::Make(recorder->priv().caps(),
                                                             SkISize::Make(1, 1),

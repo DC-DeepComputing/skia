@@ -1419,7 +1419,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPriorOutput] = {
-            "PassthroughShader",
+            "Passthrough",
             { },     // no uniforms
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers

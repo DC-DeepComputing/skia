@@ -42,7 +42,7 @@ ExtractPaintData(Recorder* recorder,
     gatherer->resetWithNewLayout(layout);
 
     KeyContext keyContext(
-            recorder, local2Dev, targetColorInfo, p.color(), std::move(dstTexture), dstOffset);
+            recorder, local2Dev, targetColorInfo, p.color(), std::move(dstTexture), dstOffset, true /*$$*/);
     p.toKey(keyContext, builder, gatherer);
 
     UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
