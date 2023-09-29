@@ -16,6 +16,24 @@
       "message": "I don\u0027t think this is correct. This implements \"length is below\", not \"_remaining_ length is below\".\n\nIf you don\u0027t know the position within the stream, I don\u0027t think that means you can assume the position is zero...?",
       "revId": "041f08d51e4533523a6d49e5c15b192e19111fee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30703c0e_a5614505",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-09-29T17:22:23Z",
+      "side": 1,
+      "message": "If we request 1000 bytes from a stream that only has 500 total bytes in it, this will (properly) return true, allowing us to bail out. We can bail out regardless of where in the stream we are.\n\nThis function was designed to return true if we know for certain we don\u0027t have enough bytes to honor the request, and return false if we know we do or we are not sure.\n\n```\n// If the stream supports identifying the current position and total length, this returns\n// true if there are not enough bytes in the stream to fulfill a read of the given length.\n// Otherwise, it returns false.\n// False does *not* mean a read will succeed of the given length, but true means we are\n// certain it will fail.\n```",
+      "parentUuid": "a14d57da_40d54cb0",
+      "revId": "041f08d51e4533523a6d49e5c15b192e19111fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
