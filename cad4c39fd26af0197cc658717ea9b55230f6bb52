@@ -22,6 +22,30 @@
       },
       "revId": "cad4c39fd26af0197cc658717ea9b55230f6bb52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09946d5_9bc09f61",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-29T14:43:34Z",
+      "side": 1,
+      "message": "The shader passed in isn\u0027t likely to be a runtime effect, it is more likely to be a basic texture effect or something along those lines. I am not sure which behavior would be least surprising. I am happy to change this though.",
+      "parentUuid": "ea251919_e07dd514",
+      "range": {
+        "startLine": 183,
+        "startChar": 73,
+        "endLine": 183,
+        "endChar": 81
+      },
+      "revId": "cad4c39fd26af0197cc658717ea9b55230f6bb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
