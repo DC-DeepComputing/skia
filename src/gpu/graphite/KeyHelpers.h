@@ -295,9 +295,11 @@ struct CoeffBlenderBlock {
                            SkSpan<const float> coeffs);
 };
 
+#if 0
 struct PrimitiveColorBlock {
     static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
 };
+#endif
 
 struct ComposeBlock {
     static void BeginBlock(const KeyContext&,
@@ -342,11 +344,13 @@ struct TableColorFilterBlock {
                            const TableColorFilterData&);
 };
 
+#if 0
 struct GaussianColorFilterBlock {
     static void BeginBlock(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*);
 };
+#endif
 
 struct ColorSpaceTransformBlock {
     struct ColorSpaceTransformData {

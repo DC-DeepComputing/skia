@@ -175,8 +175,9 @@ void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
                   this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
               },
               /* addDstToKey= */ [&]() -> void {
-                  PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
-                  keyBuilder->endBlock();
+                  keyBuilder->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
+//                  PrimitiveColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+//                  keyBuilder->endBlock();
               });
     } else {
         this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
@@ -354,8 +355,10 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     SkASSERT(finalBlendMode);
     BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
-    keyBuilder->beginBlock(fixedFuncBlendModeID);
-    keyBuilder->endBlock();
+
+    keyBuilder->addBlock(fixedFuncBlendModeID);
+//    keyBuilder->beginBlock(fixedFuncBlendModeID);
+//    keyBuilder->endBlock();
 }
 
 void PaintOptions::buildCombinations(

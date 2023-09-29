@@ -786,6 +786,7 @@ void CoeffBlenderBlock::BeginBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
+#if 0
 void PrimitiveColorBlock::BeginBlock(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* builder,
                                      PipelineDataGatherer* gatherer) {
@@ -795,6 +796,7 @@ void PrimitiveColorBlock::BeginBlock(const KeyContext& keyContext,
 
     builder->beginBlock(BuiltInCodeSnippetID::kPrimitiveColor);
 }
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -834,12 +836,14 @@ void MatrixColorFilterBlock::BeginBlock(const KeyContext& keyContext,
     builder->beginBlock(BuiltInCodeSnippetID::kMatrixColorFilter);
 }
 
+#if 0
 //--------------------------------------------------------------------------------------------------
 void GaussianColorFilterBlock::BeginBlock(const KeyContext& keyContext,
                                           PaintParamsKeyBuilder* builder,
                                           PipelineDataGatherer* gatherer) {
     builder->beginBlock(BuiltInCodeSnippetID::kGaussianColorFilter);
 }
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -1138,8 +1142,9 @@ static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkGaussianColorFilter*) {
-    GaussianColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
-    builder->endBlock();
+    builder->addBlock(BuiltInCodeSnippetID::kGaussianColorFilter);
+//    GaussianColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
+//    builder->endBlock();
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1351,8 +1356,7 @@ static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkEmptyShader*) {
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-    builder->endBlock();
+    builder->addBlock(BuiltInCodeSnippetID::kError);
 }
 
 static void add_yuv_image_to_key(const KeyContext& keyContext,
@@ -1457,9 +1461,10 @@ static void add_to_key(const KeyContext& keyContext,
                                                           shader->image().get(),
                                                           shader->sampling());
     if (!imageToDraw) {
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                          kErrorColor);
-        builder->endBlock();
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+//        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+//                                          kErrorColor);
+//        builder->endBlock();
         return;
     }
     if (as_IB(imageToDraw)->isYUVA()) {
@@ -1588,8 +1593,9 @@ static void add_to_key(const KeyContext& keyContext,
     if (!result) {
         SKGPU_LOG_W("Couldn't invert totalMatrix for PerlinNoiseShader");
 
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-        builder->endBlock();
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+//        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+//        builder->endBlock();
         return;
     }
 
@@ -1606,8 +1612,9 @@ static void add_to_key(const KeyContext& keyContext,
     if (!perm || !noise) {
         SKGPU_LOG_W("Couldn't create tables for PerlinNoiseShader");
 
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-        builder->endBlock();
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+        //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+        //builder->endBlock();
         return;
     }
 
@@ -1663,8 +1670,9 @@ static void add_to_key(const KeyContext& keyContext,
                                                        caps->maxTextureSize(),
                                                        props);
     if (!info.success) {
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-        builder->endBlock();
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+        //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+        //builder->endBlock();
         return;
     }
 
@@ -1675,8 +1683,9 @@ static void add_to_key(const KeyContext& keyContext,
             SkSurfaces::RenderTarget(recorder, info.imageInfo, skgpu::Mipmapped::kNo, &info.props),
             shader->picture().get());
     if (!img) {
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-        builder->endBlock();
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+        //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+        //builder->endBlock();
         return;
     }
 
@@ -1684,8 +1693,9 @@ static void add_to_key(const KeyContext& keyContext,
     sk_sp<SkShader> imgShader = img->makeShader(shader->tileModeX(), shader->tileModeY(),
                                                 SkSamplingOptions(shader->filter()), &shaderLM);
     if (!imgShader) {
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-        builder->endBlock();
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+        //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+        //builder->endBlock();
         return;
     }
 
@@ -1718,16 +1728,18 @@ static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkTransformShader* shader) {
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-    builder->endBlock();
+    builder->addBlock(BuiltInCodeSnippetID::kError);
+    //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+    //builder->endBlock();
 }
 
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkTriColorShader* shader) {
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-    builder->endBlock();
+    builder->addBlock(BuiltInCodeSnippetID::kError);
+    //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+    //builder->endBlock();
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1874,8 +1886,9 @@ static void add_gradient_to_key(const KeyContext& keyContext,
             if (colorsAndOffsetsBitmap.empty()) {
                 SKGPU_LOG_W("Couldn't create GradientShader's color and offset bitmap");
 
-                SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-                builder->endBlock();
+                builder->addBlock(BuiltInCodeSnippetID::kError);
+                //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+                //builder->endBlock();
                 return;
             }
             shader->setCachedBitmap(colorsAndOffsetsBitmap);
@@ -1885,8 +1898,9 @@ static void add_gradient_to_key(const KeyContext& keyContext,
         if (!proxy) {
             SKGPU_LOG_W("Couldn't create GradientShader's color and offset bitmap proxy");
 
-            SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-            builder->endBlock();
+            builder->addBlock(BuiltInCodeSnippetID::kError);
+            //SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+            //builder->endBlock();
             return;
         }
     }
