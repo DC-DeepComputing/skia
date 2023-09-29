@@ -17,8 +17,10 @@
 #include "src/gpu/DitherUtils.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Uniform.h"
 #include "src/shaders/SkShaderBase.h"
 
@@ -183,6 +185,42 @@ void AddDstReadBlock(const KeyContext& keyContext,
     }
 }
 
+
+namespace {
+
+void add_dither_uniform_data(const ShaderCodeDictionary* dict,
+                             const DitherShaderBlock::DitherData& ditherData,
+                             PipelineDataGatherer* gatherer) {
+    //VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDitherShader)
+
+    gatherer->writeHalf(ditherData.fRange);
+}
+
+} // anonymous namespace
+
+void AddDitherBlock(const KeyContext& keyContext,
+                    PaintParamsKeyBuilder* builder,
+                    PipelineDataGatherer* gatherer,
+                    SkColorType ct) {
+
+    sk_sp<TextureProxy> proxy;
+    if (gatherer) {
+        static const SkBitmap gLUT = skgpu::MakeDitherLUT();
+
+        proxy = RecorderPriv::CreateCachedProxy(keyContext.recorder(), gLUT);
+        if (!proxy) {
+            SKGPU_LOG_W("Couldn't create dither shader's LUT");
+            builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+            return;
+        }
+    }
+
+    DitherShaderBlock::DitherData data(skgpu::DitherRangeForConfig(ct), std::move(proxy));
+
+    DitherShaderBlock::BeginBlock(keyContext, builder, gatherer, data);
+    builder->endBlock();
+}
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
@@ -269,10 +307,7 @@ void PaintParams::handleDithering(const KeyContext& keyContext,
                     this->handleColorFilter(keyContext, builder, gatherer);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    DitherShaderBlock::DitherData data(skgpu::DitherRangeForConfig(ct));
-
-                    DitherShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
-                    builder->endBlock();
+                    AddDitherBlock(keyContext, builder, gatherer, ct);
                 });
     } else
 #endif
