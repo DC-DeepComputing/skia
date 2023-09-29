@@ -46,6 +46,30 @@
       },
       "revId": "cad4c39fd26af0197cc658717ea9b55230f6bb52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a271a30d_c25e4547",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-09-29T14:52:12Z",
+      "side": 1,
+      "message": "Right. But the parent (root) \"feels\" like a runtime effect, in that it\u0027s written with SkSL in the same way. From that position, I figure it makes sense to behave like a runtime-shader, even though it\u0027s technically not.\n\neg: The user will have some SkSL code that reads from a child shader, which might be an alpha-only image shader. 1) I think it makes the most sense for that to just return the contents of the image as-is. 2) The idea of tinting by \"input color\" gets even more nebulous in this context, where the code is running in the GP\u0027s context -- I don\u0027t even know what the input color would be, honestly.",
+      "parentUuid": "e09946d5_9bc09f61",
+      "range": {
+        "startLine": 183,
+        "startChar": 73,
+        "endLine": 183,
+        "endChar": 81
+      },
+      "revId": "cad4c39fd26af0197cc658717ea9b55230f6bb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
