@@ -168,7 +168,7 @@ void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
               /* addBlendToKey= */ [&] () -> void {
                   // TODO: Support runtime blenders for primitive blending in the precompile API.
                   // In the meantime, assume for now that we're using kSrcOver here.
-                  AddToKey(keyContext, keyBuilder, gatherer,
+                  AddToKeyB(keyContext, keyBuilder, gatherer,
                            SkBlender::Mode(SkBlendMode::kSrcOver).get());
               },
               /* addSrcToKey= */ [&]() -> void {

@@ -26,7 +26,7 @@ namespace PipelineStage {
 
         virtual std::string getMainName() { return "main"; }
         virtual std::string getMangledName(const char* name) { return name; }
-        virtual void   defineFunction(const char* declaration, const char* body, bool isMain) = 0;
+        virtual void   defineFunction1(const char* declaration, const char* body, bool isMain) = 0;
         virtual void   declareFunction(const char* declaration) = 0;
         virtual void   defineStruct(const char* definition) = 0;
         virtual void   declareGlobal(const char* declaration) = 0;

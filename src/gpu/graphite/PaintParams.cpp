@@ -187,7 +187,7 @@ void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
     if (fShader) {
-        AddToKey(keyContext, keyBuilder, gatherer, fShader.get());
+        AddToKeyS(keyContext, keyBuilder, gatherer, fShader.get());
     } else {
         SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
                                           keyContext.paintColor());
@@ -206,7 +206,7 @@ void PaintParams::handlePrimitiveColor(const KeyContext& keyContext,
     if (fPrimitiveBlender) {
         Blend(keyContext, keyBuilder, gatherer,
               /* addBlendToKey= */ [&] () -> void {
-                  AddToKey(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get());
+                  AddToKeyB(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get());
               },
               /* addSrcToKey= */ [&]() -> void {
                   this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
@@ -251,7 +251,7 @@ void PaintParams::handleColorFilter(const KeyContext& keyContext,
                     this->handlePaintAlpha(keyContext, builder, gatherer);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    AddToKey(keyContext, builder, gatherer, fColorFilter.get());
+                    AddToKeyCF(keyContext, builder, gatherer, fColorFilter.get());
                 });
     } else {
         this->handlePaintAlpha(keyContext, builder, gatherer);
@@ -289,7 +289,7 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
         Blend(keyContext, builder, gatherer,
               /* addBlendToKey= */ [&] () -> void {
                   if (fFinalBlender) {
-                      AddToKey(keyContext, builder, gatherer, fFinalBlender.get());
+                      AddToKeyB(keyContext, builder, gatherer, fFinalBlender.get());
                   } else {
                       AddKnownModeBlend(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
                   }
