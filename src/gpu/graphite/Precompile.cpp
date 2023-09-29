@@ -251,10 +251,7 @@ void PaintOption::handleDithering(const KeyContext& keyContext,
                     this->handleColorFilter(keyContext, builder, gatherer);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    DitherShaderBlock::DitherData data(skgpu::DitherRangeForConfig(ct));
-
-                    DitherShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
-                    builder->endBlock();
+                    AddDitherBlock(keyContext, builder, gatherer, ct);
                 });
     } else
 #endif
