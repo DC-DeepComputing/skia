@@ -142,11 +142,16 @@ void AddKnownModeBlend(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        SkBlendMode bm) {
-    auto coeffs = skgpu::GetPorterDuffBlendConstants(bm);
-    SkASSERT(!coeffs.empty());
+//    auto coeffs = skgpu::GetPorterDuffBlendConstants(bm);
+//    SkASSERT(!coeffs.empty());
 
-    CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, coeffs);
-    builder->endBlock();
+//    CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, coeffs);
+//    builder->endBlock();
+
+    SkASSERT(bm <= SkBlendMode::kLastCoeffMode);
+    BuiltInCodeSnippetID id = static_cast<BuiltInCodeSnippetID>(kFixedFunctionBlendModeIDOffset + (int) bm);
+
+    builder->addBlock(id);
 }
 
 void AddModeBlend(const KeyContext& keyContext,

@@ -1737,7 +1737,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
                 { },     // no uniforms
                 SnippetRequirementFlags::kNone,
                 { },     // no samplers
-                "",  // fixed function blending doesn't use static SkSL
+                skgpu::BlendFuncName(static_cast<SkBlendMode>(i)),
                 GenerateFixedFunctionBlenderExpression,
                 GenerateDefaultPreamble,
                 kNoChildren
