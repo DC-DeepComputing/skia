@@ -297,7 +297,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
                           rtEffectDict.get(),
                           ci,
                           /* dstTexture= */ nullptr,
-                          /* dstOffset= */ {0, 0});
+                          /* dstOffset= */ {0, 0},
+                          false /*$$*/);
 
     empty_test(keyContext, reporter);
     no_shader_option_test(keyContext, reporter);

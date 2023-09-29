@@ -10,7 +10,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//bazel:gcs_mirror.bzl", "gcs_mirror_url")
 
-def c_plus_plus_deps(ws = "@"):
+def c_plus_plus_deps(ws = "@skia"):
     """A list of native Bazel git rules to download third party git repositories
 
        These are in the order they appear in //DEPS.
@@ -29,7 +29,7 @@ def c_plus_plus_deps(ws = "@"):
     new_git_repository(
         name = "dawn",
         build_file = ws + "//bazel/external/dawn:BUILD.bazel",
-        commit = "1ec4835ca75d777a294587d50cb6640dcc6bd740",
+        commit = "a42cebae4e42103c82ca58e5abdc2ba9fcffae84",
         remote = "https://dawn.googlesource.com/dawn.git",
     )
 
@@ -172,14 +172,14 @@ def c_plus_plus_deps(ws = "@"):
 
     git_repository(
         name = "spirv_tools",
-        commit = "27673a054447e37810a38e7ce8d35a0a88af4a75",
+        commit = "1bc0e6f59abc3c9cd75f93baef47e9612a448045",
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git",
     )
 
     new_git_repository(
         name = "vello",
         build_file = ws + "//bazel/external/vello:BUILD.bazel",
-        commit = "443539891c4c1eb3ca4ed891d251cbf4097c9a9c",
+        commit = "ee3a076b291d206c361431cc841407adf265c692",
         remote = "https://skia.googlesource.com/external/github.com/linebender/vello.git",
     )
 
@@ -193,14 +193,14 @@ def c_plus_plus_deps(ws = "@"):
     new_git_repository(
         name = "vulkan_tools",
         build_file = ws + "//bazel/external/vulkan_tools:BUILD.bazel",
-        commit = "04b4832c8790c32ea15523f4adb219a04a6adbc7",
+        commit = "576f3286e10ca0c98fc481787b27e229bd61ac8f",
         remote = "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools",
     )
 
     new_git_repository(
         name = "vulkan_utility_libraries",
         build_file = ws + "//bazel/external/vulkan_utility_libraries:BUILD.bazel",
-        commit = "fb09bb3bc4e27a1f9dd2d9db735296340d817a03",
+        commit = "8486ee700e2b2ce47fbbf7394ce8afe7f023f338",
         remote = "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries",
     )
 
@@ -226,5 +226,16 @@ def bazel_deps():
         urls = gcs_mirror_url(
             sha256 = "c6966ec828da198c5d9adbaa94c05e3a1c7f21bd012a0b29ba8ddbccb2c93b0d",
             url = "https://github.com/bazelbuild/bazel-skylib/releases/download/1.1.1/bazel-skylib-1.1.1.tar.gz",
+        ),
+    )
+
+    maybe(
+        http_archive,
+        name = "bazel_toolchains",
+        sha256 = "e52789d4e89c3e2dc0e3446a9684626a626b6bec3fde787d70bae37c6ebcc47f",
+        strip_prefix = "bazel-toolchains-5.1.1",
+        urls = gcs_mirror_url(
+            sha256 = "e52789d4e89c3e2dc0e3446a9684626a626b6bec3fde787d70bae37c6ebcc47f",
+            url = "https://github.com/bazelbuild/bazel-toolchains/archive/refs/tags/v5.1.1.tar.gz",
         ),
     )

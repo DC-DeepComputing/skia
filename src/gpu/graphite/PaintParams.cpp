@@ -223,6 +223,18 @@ void PaintParams::handlePrimitiveColor(const KeyContext& keyContext,
 void PaintParams::handlePaintAlpha(const KeyContext& keyContext,
                                    PaintParamsKeyBuilder* keyBuilder,
                                    PipelineDataGatherer* gatherer) const {
+
+    if (!fShader && !fPrimitiveBlender) {
+        SkPMColor4f paintColor = PaintParams::Color4fPrepForDst(this->fColor,
+                                                                keyContext.dstColorInfo()).premul();
+
+        // If there is no shader and no primitive blending the input to the colorFilter stage
+        // is just the premultiplied paint color.
+        SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer, paintColor);
+        keyBuilder->endBlock();
+        return;
+    }
+
     if (fColor.fA != 1.0f) {
         Blend(keyContext, keyBuilder, gatherer,
               /* addBlendToKey= */ [&] () -> void {
