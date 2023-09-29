@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33343a26_fdde62fe",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-09-29T18:50:23Z",
+      "side": 1,
+      "message": "(Minor fix on top of http://review.skia.org/761597 that landed earlier today. `useSampleCoords` was too broad.)",
+      "range": {
+        "startLine": 510,
+        "startChar": 62,
+        "endLine": 510,
+        "endChar": 70
+      },
+      "revId": "a921360cf17ac17ffee394e88e6b102a37e83ee5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
