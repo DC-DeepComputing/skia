@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9843b6bf_b16f9e9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-09-30T15:54:56Z",
+      "side": 1,
+      "message": "Latest PS includes a fix for the Win bots (graceful BiDi iter fallback when SkUnicode fails to initialize).",
+      "revId": "a1a2cf9a38553ff90598f054f7ccc5acb9ae4692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db29f45c_23bdb992",
+        "filename": "modules/skshaper/src/SkShaper.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-09-30T15:54:56Z",
+      "side": 1,
+      "message": "The fallback could also be implemented in client code, but this seems in line with the other generic factories.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 9
+      },
+      "revId": "a1a2cf9a38553ff90598f054f7ccc5acb9ae4692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
