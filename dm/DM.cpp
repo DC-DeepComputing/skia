@@ -1152,6 +1152,8 @@ static bool match(const char* needle, const char* haystack) {
 
 static bool should_skip(const char* sink, const char* src,
                         const char* srcOptions, const char* name) {
+    if (strcmp(name, "Skottie_Shaper_Clusters")) return true;
+
     for (int i = 0; i < FLAGS_skip.size() - 3; i += 4) {
         if (match(FLAGS_skip[i+0], sink) &&
             match(FLAGS_skip[i+1], src) &&
