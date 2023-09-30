@@ -37,6 +37,7 @@ std::unique_ptr<SkShaper> SkShaper::Make(sk_sp<SkFontMgr> fontmgr) {
         return shaper;
     }
 #endif
+    SkDebugf("*** Shaper: PRIMITIVE!\n");
     return SkShaper::MakePrimitive();
 }
 

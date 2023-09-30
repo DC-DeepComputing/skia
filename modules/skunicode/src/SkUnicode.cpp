@@ -15,6 +15,7 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
     std::unique_ptr<SkUnicode> unicode;
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
     unicode = SkUnicode::MakeIcuBasedUnicode();
+    SkDebugf("*** MakeIcuBasedUnicode: %p\n", unicode.get());
     if (unicode) {
         return unicode;
     }
