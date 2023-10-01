@@ -25,6 +25,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/core/SkValidationUtils.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
@@ -251,6 +252,8 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     if (context.cache() && context.cache()->get(key, &result)) {
         return result;
     }
+
+    TRACE_COUNTER1("skia", "imagefilter", 1);
 
     result = this->onFilterImage(context);
 
