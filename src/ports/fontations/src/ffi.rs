@@ -191,6 +191,36 @@ fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
     }
 }
 
+use crate::ffi::{ColrV0GlyphLayerRange, ColrV0Layer};
+
+fn colrv0_layer_range(font_ref: &BridgeFontRef, glyph_id: u16) -> ColrV0GlyphLayerRange {
+    font_ref
+        .with_font(|f| {
+            let layer_range = f.colr().ok()?.v0_base_glyph(GlyphId::new(glyph_id)).ok()?;
+            layer_range.map(|r| ColrV0GlyphLayerRange {
+                has_v0_layers: true,
+                start_index: r.start,
+                end_index: r.end,
+            })
+        })
+        .unwrap_or_default()
+}
+
+fn colrv0_glyph_layer(
+    font_ref: &BridgeFontRef,
+    layer_index: usize,
+    out_layer: &mut ColrV0Layer,
+) -> bool {
+    match font_ref.with_font(|f| f.colr().ok()?.v0_layer(layer_index).ok()) {
+        Some(t) => {
+            out_layer.glyph_id = t.0.to_u16();
+            out_layer.palette_index = t.1;
+            true
+        }
+        _ => false,
+    }
+}
+
 /// Implements the behavior expected for `SkTypeface::getTableData`, compare
 /// documentation for this method and the FreeType implementation in Skia.
 /// * If the target data array is empty, do not copy any data into it, but
@@ -375,6 +405,22 @@ mod ffi {
         has_overlaps: bool,
     }
 
+    #[derive(Default)]
+    /// Information on whether COLRv0 glyph coverage exists for a
+    /// certain glyph and if yes, which layers need to be drawn.
+    struct ColrV0GlyphLayerRange {
+        has_v0_layers: bool,
+        start_index: usize,
+        end_index: usize,
+    }
+
+    /// Representation of a COLRv0 layer consisting of glyph id
+    /// and palette index.
+    struct ColrV0Layer {
+        glyph_id: u16,
+        palette_index: u16,
+    }
+
     extern "Rust" {
 
         type BridgeFontRef<'a>;
@@ -412,6 +458,30 @@ mod ffi {
         fn num_glyphs(font_ref: &BridgeFontRef) -> u16;
         fn family_name(font_ref: &BridgeFontRef) -> String;
         fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool;
+
+        /// Provides information on whether the specified glyph can be drawn
+        /// as a COLRv0 colored glyph.
+        ///
+        /// # Arguments
+        ///
+        /// * `font_ref` - font instance as created with `make_font_ref`
+        /// * `glyph_id` - glyph id of the glyph to check for COLRv0 coverage for
+        ///
+        /// # Returns
+        ///
+        /// `ColrV0GlyphLayerRange` - struct containing information on whether COLRv0
+        /// coverage exists, and if yes, start and end layer index.
+        fn colrv0_layer_range(font_ref: &BridgeFontRef, glyph_id: u16) -> ColrV0GlyphLayerRange;
+
+        /// Provides access to COLRv0 layers in the COLR table.
+        /// Using a layer index between start and end index
+        /// retrieved with [colrv0_layer_range], use this method
+        /// to retrieve glyph id and palette index of a specific layer.
+        fn colrv0_glyph_layer(
+            font_ref: &BridgeFontRef,
+            layer_index: usize,
+            out_layer: &mut ColrV0Layer,
+        ) -> bool;
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
