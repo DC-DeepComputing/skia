@@ -16,6 +16,29 @@
       "message": "Hi Michael, PTAL. Thanks",
       "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ed8753a_73366754",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-02T17:49:28Z",
+      "side": 1,
+      "message": "Can you go into this a bit more? Is this takinga dvantage of an internal Dawn D3D decision, i.e. if the buffer isn\u0027t exactly 256 byte aligned it will use an internal buffer that\u0027s slower than the constant buffer. So if we increase the size to fill the constant buffer we get the faster choice of implementation in Dawn?",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 30,
+        "endChar": 74
+      },
+      "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
