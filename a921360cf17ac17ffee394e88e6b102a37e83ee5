@@ -46,6 +46,30 @@
       },
       "revId": "a921360cf17ac17ffee394e88e6b102a37e83ee5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8a09767_8963a805",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-02T14:50:09Z",
+      "side": 1,
+      "message": "Actually, I got it right the first time 😖\nThis stuff is very fiddly.\nGoing to bring this back to `useSampleCoords`.",
+      "parentUuid": "06078d1b_37b2e2e7",
+      "range": {
+        "startLine": 510,
+        "startChar": 62,
+        "endLine": 510,
+        "endChar": 70
+      },
+      "revId": "a921360cf17ac17ffee394e88e6b102a37e83ee5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
