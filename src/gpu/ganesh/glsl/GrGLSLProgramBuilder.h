@@ -85,6 +85,9 @@ public:
                                    GrFragmentProcessor::ProgramImpl& impl,
                                    int* samplerIndex);
 
+    /** Adds the SkSL function that implements an FP assuming its children are already written. */
+    void writeFPFunction(const GrFragmentProcessor& fp, GrFragmentProcessor::ProgramImpl& impl);
+
     /**
      * Returns a function-call invocation of `fp` in string form, passing the appropriate
      * combination of `inputColor`, `destColor` and `fLocalCoordsVar` for the FP.
@@ -164,8 +167,6 @@ private:
     /** Recursive step to write out children FPs' functions before parent's. */
     void writeChildFPFunctions(const GrFragmentProcessor& fp,
                                GrFragmentProcessor::ProgramImpl& impl);
-    /** Adds the SkSL function that implements an FP assuming its children are already written. */
-    void writeFPFunction(const GrFragmentProcessor& fp, GrFragmentProcessor::ProgramImpl& impl);
     bool emitAndInstallXferProc(const SkString& colorIn, const SkString& coverageIn);
     SamplerHandle emitSampler(const GrBackendFormat&, GrSamplerState, const skgpu::Swizzle&,
                               const char* name);
