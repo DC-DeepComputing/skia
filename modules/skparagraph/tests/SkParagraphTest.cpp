@@ -7910,5 +7910,6 @@ UNIX_ONLY_TEST(SkParagraph_EndWithLineSeparator, reporter) {
             REPORTER_ASSERT(reporter, info == nullptr);
         }
     });
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, visitedCount == 3);
 }
