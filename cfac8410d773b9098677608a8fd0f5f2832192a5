@@ -22,6 +22,30 @@
       },
       "revId": "cfac8410d773b9098677608a8fd0f5f2832192a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50cbaeb9_3683620c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-02T18:19:27Z",
+      "side": 1,
+      "message": "Yeah. I pushed this idea way down my list when I was recently going through old to-do lists. It\u0027s nice in theory, but I think accepting RP as part of core is probably the only tenable situation right now (though the blitters *can* be elided).",
+      "parentUuid": "a1b91319_e89d8c8f",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 52
+      },
+      "revId": "cfac8410d773b9098677608a8fd0f5f2832192a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
