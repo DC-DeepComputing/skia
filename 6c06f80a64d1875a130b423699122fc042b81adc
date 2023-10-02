@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65bd8024_7c3cc56e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T19:43:25Z",
+      "side": 1,
+      "message": "Any good motivation for this? As not entirely functional as it is, there are people out there (like actual software that people actually pay for) using it to do interesting things. Since the actual upkeep cost has been rather minimal of late, it seems like there should be some justification for canning it, other than just to add another entry to \"Killed by Google\".",
+      "revId": "6c06f80a64d1875a130b423699122fc042b81adc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
