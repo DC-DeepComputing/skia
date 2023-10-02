@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "939118b4_be6f281a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:06Z",
+      "side": 1,
+      "message": "I agree",
+      "range": {
+        "startLine": 15,
+        "startChar": 151,
+        "endLine": 15,
+        "endChar": 160
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c21b5cdb_d5e35d7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:06Z",
+      "side": 1,
+      "message": "BazelGMRunner",
+      "range": {
+        "startLine": 17,
+        "startChar": 46,
+        "endLine": 17,
+        "endChar": 60
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a74ba632_4edd3cdc",
+        "filename": "tools/testrunners/surface_manager/RasterSurfaceManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:06Z",
+      "side": 1,
+      "message": "nit: omit the name here to indicate it is unused.",
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a271eb12_b70c84fb",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:06Z",
+      "side": 1,
+      "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2699144a_4a89c624",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:06Z",
+      "side": 1,
+      "message": "I would prefer to not have some magic default value. If it needs to be set, let\u0027s make it explicit in all call sites.",
+      "range": {
+        "startLine": 38,
+        "startChar": 91,
+        "endLine": 38,
+        "endChar": 98
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33060eb3_8a518b2c",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:06Z",
+      "side": 1,
+      "message": "When looking at the follow-on CL, I don\u0027t see why this needs to live on the SurfaceManager and not in the BenchmarkTarget subclasses. Is there some other use intended for this getter?",
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
