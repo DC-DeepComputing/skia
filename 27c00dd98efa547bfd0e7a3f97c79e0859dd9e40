@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89fb26ca_6ab4fe32",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T20:25:36Z",
+      "side": 1,
+      "message": "So it looks like the mip code is actually fine. It does end the lifetime of the SkImages it creates before the SkData goes out of scope. And I suppose Chromium is already hosed, but it would be nice to set things up so it didn\u0027t need to be.",
+      "parentUuid": "f98e1db7_99bb27f1",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a67fc8d6_310faa65",
         "filename": "tools/ToolUtils.h",
         "patchSetId": 6
