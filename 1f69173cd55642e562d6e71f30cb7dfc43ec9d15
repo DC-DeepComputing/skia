@@ -110,6 +110,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b52e701b_2d1cddaf",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:46Z",
+      "side": 1,
+      "message": "Will be changed to use config",
+      "parentUuid": "2699144a_4a89c624",
+      "range": {
+        "startLine": 38,
+        "startChar": 91,
+        "endLine": 38,
+        "endChar": 98
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33060eb3_8a518b2c",
@@ -123,6 +147,24 @@
       "writtenOn": "2023-10-02T20:38:06Z",
       "side": 1,
       "message": "When looking at the follow-on CL, I don\u0027t see why this needs to live on the SurfaceManager and not in the BenchmarkTarget subclasses. Is there some other use intended for this getter?",
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c82f8b3_3270a39d",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:38:46Z",
+      "side": 1,
+      "message": "Will be changed to use config",
+      "parentUuid": "33060eb3_8a518b2c",
       "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
