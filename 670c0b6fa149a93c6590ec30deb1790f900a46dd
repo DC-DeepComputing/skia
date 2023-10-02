@@ -16,6 +16,75 @@
       "message": "friendly bump :)",
       "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "200babb2_b1ff9659",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:18:19Z",
+      "side": 1,
+      "message": "Do we not just directly map UBOs? Generally it is a waste of power to upload uniforms every frame via a transfer buffer that we copy to a UBO",
+      "range": {
+        "startLine": 87,
+        "startChar": 25,
+        "endLine": 87,
+        "endChar": 95
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ab12b2_3a9c179e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:18:19Z",
+      "side": 1,
+      "message": "Why does this need to be a data member? Also can we just fill it out inside the if block?",
+      "range": {
+        "startLine": 409,
+        "startChar": 4,
+        "endLine": 409,
+        "endChar": 22
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc740808_afef95fb",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:18:19Z",
+      "side": 1,
+      "message": "Why are we always adding this to the pools createInfo? Wouldn\u0027t we only need this when making a pool specific for inline uniforms? Like if the pool didn\u0027t have any inline uniforms we should need this.\n\nAlso this struct is used to tell the pool how many bindings for inline uniforms are supported. But we aren\u0027t even setting the maxInlineUniformBlockBindings field on the struct. How is this every working?\n\nIf we are now adding support for just using UBOs do we want to continue supporting this extension at all? Do we think it is adding value in terms of performance/memory for the extra complexity?",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
