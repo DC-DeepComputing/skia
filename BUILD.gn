@@ -1243,13 +1243,6 @@ optional("pdf") {
   }
 }
 
-optional("xps") {
-  enabled = skia_use_xps && is_win
-  public_defines = [ "SK_SUPPORT_XPS" ]
-  public = skia_xps_public
-  sources = skia_xps_sources
-}
-
 optional("png_decode") {
   enabled = skia_use_libpng_decode
   public_defines = [ "SK_CODEC_DECODES_PNG" ]
@@ -1466,7 +1459,6 @@ skia_component("skia") {
     ":pdf",
     ":png_encode",
     ":webp_encode",
-    ":xps",
   ]
 
   deps = [
