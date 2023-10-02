@@ -35,6 +35,7 @@ var deps = map[string]depConfig{
 	"freetype":              {needsBazelFile: true},
 	"harfbuzz":              {needsBazelFile: true},
 	"icu":                   {needsBazelFile: true},
+	"icu4x":                 {needsBazelFile: true},
 	"imgui":                 {needsBazelFile: true},
 	"libavif":               {needsBazelFile: true},
 	"libgav1":               {needsBazelFile: true},
