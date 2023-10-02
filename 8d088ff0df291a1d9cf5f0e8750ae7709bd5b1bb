@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62db1a30_40035e8e",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-02T18:13:41Z",
+      "side": 1,
+      "message": "I was a bit concerned about runtime effects colliding with the name and feeding the first mangled name back out would require more plumbing. I\u0027ve gone with renaming the uniform from \"paintColor\" to \"paintColorSingleton\" and removed the \"_deduped\" suffixes.",
+      "parentUuid": "a435d7c8_9d475a15",
+      "range": {
+        "startLine": 49,
+        "startChar": 31,
+        "endLine": 49,
+        "endChar": 62
+      },
+      "revId": "8d088ff0df291a1d9cf5f0e8750ae7709bd5b1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e347ba80_3751de5e",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6adb98e5_706a803d",
+        "filename": "src/gpu/graphite/Uniform.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-02T18:13:41Z",
+      "side": 1,
+      "message": "Well, if we\u0027re really going for the maximally reduced case, we could call it IsPaintColor",
+      "parentUuid": "e347ba80_3751de5e",
+      "range": {
+        "startLine": 26,
+        "startChar": 15,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "8d088ff0df291a1d9cf5f0e8750ae7709bd5b1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14ea3e57_a460a8ea",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 26
@@ -60,6 +108,30 @@
       "writtenOn": "2023-10-02T14:37:18Z",
       "side": 1,
       "message": "Since this is only used for the paint color uniform, and is mostly just a boolean for now, I\u0027d simplify down to `bool fWrotePaintColor`. When we get to handling colorspace xforms or anything else, we can figure out the types that make the most sense. As-is, this makes me think it\u0027s able to de-dupe all uniforms or something similarly powerful.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 21
+      },
+      "revId": "8d088ff0df291a1d9cf5f0e8750ae7709bd5b1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "841bb154_90313b2e",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-02T18:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14ea3e57_a460a8ea",
       "range": {
         "startLine": 130,
         "startChar": 0,
