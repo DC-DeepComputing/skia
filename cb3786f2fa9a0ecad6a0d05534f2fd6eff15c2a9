@@ -16,6 +16,24 @@
       "message": "This seems fine, but it seems odd not to start with palette access? This returns palette indexes, but at the moment it appears the user can\u0027t even determine how big a palette (in the font data) is, nor the palettes that are defined in the font?",
       "revId": "cb3786f2fa9a0ecad6a0d05534f2fd6eff15c2a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46c7681a_d943fc18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-10-02T14:18:47Z",
+      "side": 1,
+      "message": "Ok, I\u0027ll add palette retrieval. The `read-fonts` crate should contain provide the required access already.",
+      "parentUuid": "b24b7d14_0b209cca",
+      "revId": "cb3786f2fa9a0ecad6a0d05534f2fd6eff15c2a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
