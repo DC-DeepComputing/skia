@@ -33,6 +33,23 @@
       "message": "Also, if you want to remove its use from Chromium, that would need to be a Chromium side change.",
       "revId": "6c06f80a64d1875a130b423699122fc042b81adc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c25ab17_fc55e892",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-10-02T21:04:09Z",
+      "side": 1,
+      "message": "My (previous) motivation was to find if any of Skia\u0027s call-sites using PathOps were unneeded. XPS and PDF are two (FreeType_common and Typeface_fontations are the other two) modulo sites in modules/\n\nI have found the call-site in Chrome, and it seems insignificant, but ...\n\nI have no other reasons to remove it (I wasn\u0027t aware of any uses outside of chrome\u0027s) so I won\u0027t push for this.",
+      "revId": "6c06f80a64d1875a130b423699122fc042b81adc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
