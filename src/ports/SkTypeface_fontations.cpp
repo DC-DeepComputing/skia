@@ -8,7 +8,6 @@
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkStream.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/ports/SkTypeface_fontations.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"

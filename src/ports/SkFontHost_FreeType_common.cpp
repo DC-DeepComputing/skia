@@ -17,7 +17,6 @@
 #include "include/core/SkOpenTypeSVGDecoder.h"
 #include "include/core/SkPath.h"
 #include "include/effects/SkGradientShader.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkFDot6.h"
