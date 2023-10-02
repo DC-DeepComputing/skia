@@ -73,7 +73,7 @@ public:
                     const Transform& localToDevice,
                     const Geometry& geometry,
                     const Clip& clip,
-                    DrawOrder ordering,
+                    const DrawOrder& ordering,
                     const PaintParams* paint,
                     const StrokeStyle* stroke);
 
@@ -94,7 +94,7 @@ private:
         std::optional<PaintParams> fPaintParams; // Not present implies depth-only draw
 
         Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
-             const Clip& clip, DrawOrder order, const PaintParams* paint,
+             const Clip& clip, const DrawOrder& order, const PaintParams* paint,
              const StrokeStyle* stroke)
                 : fRenderer(renderer)
                 , fDrawParams(transform, geometry, clip, order, stroke)
@@ -105,7 +105,7 @@ private:
     const Transform& deduplicateTransform(const Transform&);
 
     SkTBlockList<Transform, 16> fTransforms;
-    SkTBlockList<Draw, 16>      fDraws;
+    SkTBlockList<Draw, 32>      fDraws;
 
     // Running total of RenderSteps for all draws, assuming nothing is culled
     int fRenderStepCount;

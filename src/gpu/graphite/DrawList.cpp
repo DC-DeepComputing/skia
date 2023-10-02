@@ -26,7 +26,7 @@ void DrawList::recordDraw(const Renderer* renderer,
                           const Transform& localToDevice,
                           const Geometry& geometry,
                           const Clip& clip,
-                          DrawOrder ordering,
+                          const DrawOrder& ordering,
                           const PaintParams* paint,
                           const StrokeStyle* stroke) {
     SkASSERT(localToDevice.valid());
@@ -34,10 +34,18 @@ void DrawList::recordDraw(const Renderer* renderer,
     SkASSERT(!(renderer->depthStencilFlags() & DepthStencilFlags::kStencil) ||
              ordering.stencilIndex() != DrawOrder::kUnassigned);
 
-    // TODO: Add validation that the renderer's expected shape type and stroke params match provided
+    auto count = fDraws.count();
+    if (count == 32) {
+        fDraws.reserve(10000);
+    } else if (count == 10000) {
+        fDraws.reserve(15000);
+    } else if (count == 15000) {
+        fDraws.reserve(20000);
+    }
 
-    fDraws.push_back({renderer, this->deduplicateTransform(localToDevice),
-                      geometry, clip, ordering, paint, stroke});
+    // TODO: Add validation that the renderer's expected shape type and stroke params match provided
+    fDraws.emplace_back(renderer, this->deduplicateTransform(localToDevice),
+                        geometry, clip, ordering, paint, stroke);
     fRenderStepCount += renderer->numRenderSteps();
 
 #if defined(SK_DEBUG)

@@ -101,7 +101,7 @@ public:
     DrawParams(const Transform& transform,
                const Geometry& geometry,
                const Clip& clip,
-               DrawOrder drawOrder,
+               const DrawOrder& drawOrder,
                const StrokeStyle* stroke)
             : fTransform(transform)
             , fGeometry(geometry)

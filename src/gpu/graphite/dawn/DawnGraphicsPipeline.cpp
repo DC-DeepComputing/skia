@@ -386,8 +386,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     }
 
     // Pipeline layout
+    std::array<wgpu::BindGroupLayout, 2> groupLayouts;
     {
-        std::array<wgpu::BindGroupLayout, 2> groupLayouts;
         {
             std::array<wgpu::BindGroupLayoutEntry, 3> entries;
             entries[0].binding = kIntrinsicUniformBufferIndex;
@@ -601,6 +601,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
             new DawnGraphicsPipeline(sharedContext,
                                      pipelineInfoPtr,
                                      std::move(asyncArg.pipeline),
+                                     std::move(groupLayouts),
                                      step->primitiveType(),
                                      depthStencilSettings.fStencilReferenceValue,
                                      !step->uniforms().empty(),
@@ -610,12 +611,14 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 DawnGraphicsPipeline::DawnGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                                            PipelineInfo* pipelineInfo,
                                            wgpu::RenderPipeline renderPipeline,
+                                           std::array<wgpu::BindGroupLayout, 2> groupLayouts,
                                            PrimitiveType primitiveType,
                                            uint32_t refValue,
                                            bool hasStepUniforms,
                                            bool hasFragment)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fRenderPipeline(std::move(renderPipeline))
+        , fGroupLayouts(std::move(groupLayouts))
         , fPrimitiveType(primitiveType)
         , fStencilReferenceValue(refValue)
         , fHasStepUniforms(hasStepUniforms)
@@ -628,5 +631,10 @@ void DawnGraphicsPipeline::freeGpuData() {
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     return fRenderPipeline;
 }
+
+const wgpu::BindGroupLayout& DawnGraphicsPipeline::dawnGroupLayout(size_t index) const {
+    return fGroupLayouts[index];
+}
+
 
 } // namespace skgpu::graphite
