@@ -77,28 +77,27 @@ public:
                   const SkStrokeRec& style,
                   CoverageMaskShape::MaskInfo* outMaskInfo);
 
+    //***** update comment
     // Clear all scheduled atlas draws and free up atlas allocations. After this call the atlas can
     // be considered cleared and available for new shape insertions. However this method does not
     // have any bearing on the contents of the atlas texture itself, which may be in use by GPU
     // commands that are in-flight or yet to be submitted.
-    void reset();
+    virtual void reset() = 0;
 
     // Returns a pointer to the atlas texture. Initializes a texture proxy if necessary. Returns
     // nullptr if a texture can not be created.
-    const TextureProxy* getTexture(Recorder*);
+    virtual const TextureProxy* getTexture(Recorder*) = 0;
 
-    uint32_t width() const { return static_cast<uint32_t>(fRectanizer.width()); }
-    uint32_t height() const { return static_cast<uint32_t>(fRectanizer.height()); }
+    uint32_t width() const { return fWidth; }
+    uint32_t height() const { return fHeight; }
 
 protected:
-    const TextureProxy* texture() const { return fTexture.get(); }
-
+    virtual bool addRect(Recorder* recorder, skvx::float2 atlasSize, SkIPoint16* pos) = 0;
     virtual void onAddShape(const Shape&,
                             const Transform& transform,
                             const Rect& atlasBounds,
                             skvx::int2 deviceOffset,
                             const SkStrokeRec&) = 0;
-    virtual void onReset() = 0;
 
     struct MaskFormat {
         SkColorType fColorType = kUnknown_SkColorType;
@@ -106,20 +105,8 @@ protected:
     };
     virtual MaskFormat coverageMaskFormat(const Caps*) const = 0;
 
-private:
-    bool initializeTextureIfNeeded(Recorder*);
-
-    skgpu::RectanizerSkyline fRectanizer;
-
-    // A PathAtlas lazily requests a texture from the AtlasProvider when the first shape gets added
-    // to it and references the same texture for the duration of its lifetime. A reference to this
-    // texture is stored here, which is used by AtlasShapeRenderStep when encoding the render pass.
-    //
-    // TODO: Rather than permanently assigning a texture we may want PathAtlases to request one from
-    // a pool on demand while encoding a dispatch. Currently all PathAtlases reference the same
-    // TextureProxy and the RenderStep can reference it easily via the PathAtlas. We may want to
-    // revise how a RenderStep obtains the correct texture if we move to a pooled approach.
-    sk_sp<TextureProxy> fTexture;
+    uint32_t fWidth;
+    uint32_t fHeight;
 };
 
 class DispatchGroup;
@@ -140,8 +127,29 @@ public:
     ComputePathAtlas();
     virtual std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const = 0;
 
+    const TextureProxy* getTexture(Recorder*) override;
+
+    void reset() override;
+
 protected:
+    bool addRect(Recorder* recorder, skvx::float2 atlasSize, SkIPoint16* pos) override;
     MaskFormat coverageMaskFormat(const Caps*) const override;
+
+private:
+    const TextureProxy* texture() const { return fTexture.get(); }
+    bool initializeTextureIfNeeded(Recorder*);
+
+    skgpu::RectanizerSkyline fRectanizer;
+
+    // A PathAtlas lazily requests a texture from the AtlasProvider when the first shape gets added
+    // to it and references the same texture for the duration of its lifetime. A reference to this
+    // texture is stored here, which is used by AtlasShapeRenderStep when encoding the render pass.
+    //
+    // TODO: Rather than permanently assigning a texture we may want PathAtlases to request one from
+    // a pool on demand while encoding a dispatch. Currently all PathAtlases reference the same
+    // TextureProxy and the RenderStep can reference it easily via the PathAtlas. We may want to
+    // revise how a RenderStep obtains the correct texture if we move to a pooled approach.
+    sk_sp<TextureProxy> fTexture;
 };
 
 #ifdef SK_ENABLE_VELLO_SHADERS

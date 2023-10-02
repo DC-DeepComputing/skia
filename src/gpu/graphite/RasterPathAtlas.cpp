@@ -8,11 +8,14 @@
 #include "src/gpu/graphite/RasterPathAtlas.h"
 
 #include "include/core/SkColorSpace.h"
+#include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkBlitter_A8.h"
 #include "src/core/SkDrawBase.h"
 #include "src/core/SkRasterClip.h"
+#include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
@@ -25,7 +28,9 @@ constexpr uint16_t kAtlasDim = 4096;
 
 }  // namespace
 
-RasterPathAtlas::RasterPathAtlas() : PathAtlas(kAtlasDim, kAtlasDim) {}
+RasterPathAtlas::RasterPathAtlas()
+    : PathAtlas(kAtlasDim, kAtlasDim)
+    , fRectanizer(fWidth, fHeight) {}
 
 void RasterPathAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     // build an upload for the dirty rect and record it
@@ -44,6 +49,35 @@ void RasterPathAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
 
         // TODO: Keep using this texture until full and cache the results, then get a new one.
     }
+}
+
+const TextureProxy* RasterPathAtlas::getTexture(Recorder* recorder) {
+    if (!this->initializeTextureIfNeeded(recorder)) {
+        SKGPU_LOG_E("Failed to instantiate an atlas texture");
+    }
+    return fTexture.get();
+}
+
+bool RasterPathAtlas::initializeTextureIfNeeded(Recorder* recorder) {
+    if (!fTexture) {
+        const MaskFormat maskFormat = this->coverageMaskFormat(recorder->priv().caps());
+        fTexture =
+                recorder->priv().atlasProvider()->getAtlasTexture(recorder,
+                                                                  this->width(),
+                                                                  this->height(),
+                                                                  maskFormat.fColorType,
+                                                                  maskFormat.requiresStorageUsage);
+    }
+    return fTexture != nullptr;
+}
+
+bool RasterPathAtlas::addRect(Recorder* recorder, skvx::float2 atlasSize, SkIPoint16* pos) {
+    if (!this->initializeTextureIfNeeded(recorder)) {
+        SKGPU_LOG_E("Failed to instantiate an atlas texture");
+        return false;
+    }
+
+    return fRectanizer.addRect(atlasSize.x(), atlasSize.y(), pos);
 }
 
 void RasterPathAtlas::onAddShape(const Shape& shape,
@@ -100,7 +134,9 @@ void RasterPathAtlas::onAddShape(const Shape& shape,
     // TODO: cache shape data and texture used
 }
 
-void RasterPathAtlas::onReset() {
+void RasterPathAtlas::reset() {
+    fRectanizer.reset();
+
     // clear backing data for next pass
     fDirtyRect.setEmpty();
     fPixels.erase(0);
