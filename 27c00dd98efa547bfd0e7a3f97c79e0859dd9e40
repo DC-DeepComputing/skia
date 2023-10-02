@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "803f354b_f73771ff",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:34:39Z",
+      "side": 1,
+      "message": "I\u0027m not ready to make our GN build use this yet. I would need to make sure clients don\u0027t depend on this (but I know some do).",
+      "parentUuid": "4b44fa23_0d4edd2a",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8cd46e2_dc1156b1",
@@ -102,6 +120,30 @@
       "writtenOn": "2023-10-02T18:54:15Z",
       "side": 1,
       "message": "f?",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 7
+      },
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1595d71c_a23eaf15",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:34:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a67fc8d6_310faa65",
       "range": {
         "startLine": 34,
         "startChar": 6,
