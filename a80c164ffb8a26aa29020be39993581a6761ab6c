@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc91d260_a18f5176",
+        "filename": "modules/skshaper/src/SkShaper.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T13:58:20Z",
+      "side": 0,
+      "message": "If the issue is that this is failing on the bots, we really need to get that fixed. That there isn\u0027t a test for that is a bit frightening.",
+      "revId": "a80c164ffb8a26aa29020be39993581a6761ab6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
