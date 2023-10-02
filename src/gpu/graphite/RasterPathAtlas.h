@@ -8,6 +8,10 @@
 #ifndef skgpu_graphite_RasterPathAtlas_DEFINED
 #define skgpu_graphite_RasterPathAtlas_DEFINED
 
+#include "include/private/base/SkTArray.h"
+#include "src/base/SkTInternalLList.h"
+#include "src/core/SkTHash.h"
+#include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/PathAtlas.h"
 
 namespace skgpu::graphite {
@@ -42,19 +46,32 @@ protected:
                                 SkIPoint16* pos) override;
 
 private:
-    const TextureProxy* texture() const { return fTexture.get(); }
-    bool initializeTextureIfNeeded(Recorder*);
+//    const TextureProxy* texture() const { return fTexture.get(); }
+//    bool initializeTextureIfNeeded(Recorder*);
 
-    skgpu::RectanizerSkyline fRectanizer;
     SkAutoPixmapStorage fPixels;
     SkIRect fDirtyRect;
 
-    // RasterPathAtlas lazily requests a texture from the AtlasProvider when the first shape gets
-    // added to it and references the same texture for the duration of its lifetime. A reference to
-    // this texture is stored here, which is used by AtlasShapeRenderStep when encoding the render
-    // pass.
+    struct Page {
+        SK_DECLARE_INTERNAL_LLIST_INTERFACE(Page);
+//        Page() {}
+
+        sk_sp<TextureProxy> fTexture;
+        skgpu::RectanizerSkyline fRectanizer;
+        skia_private::THashSet<skgpu::UniqueKey> fCachedShapes;
+    };
+
+    static constexpr int kMaxPages = 4;
+    // LRU list of Pages (MRU at head - LRU at tail)
+    SkTInternalLList<Page> fPageList;
+    // Allocated array of pages (backing data for list)
+    skia_private::TArray<Page> fPageArray;
+
+    // A PathAtlas lazily requests a texture from the AtlasProvider when the first shape gets added
+    // to it and references the same texture for the duration of its lifetime. A reference to this
+    // texture is stored here, which is used by AtlasShapeRenderStep when encoding the render pass.
+    //
     // TODO: Store list of TextureProxys and Rectanizers that can be used to cache shapes instead.
-    sk_sp<TextureProxy> fTexture;
 };
 
 }  // namespace skgpu::graphite
