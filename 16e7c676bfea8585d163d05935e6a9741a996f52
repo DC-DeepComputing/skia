@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c84619e5_caee7cef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-02T11:38:26Z",
+      "side": 1,
+      "message": "This can\u0027t land in this form (because I need to synchronize with the Chromium repo) but I wanted to get some agreement on the general direction.\n\n- Does this direction feel reasonable to you?\n- Should I rename it to just SkTiff.cpp/h, and move some of SkCodecPriv (the endian stuff) into there?\n- Would you prefer that I directly go for putting SkExif.h in include/private?\n- Should I avoid using std::unique_ptr for SkTiffImageFileDirectory (to avoid malloc-ing on this path entirely)?",
+      "revId": "16e7c676bfea8585d163d05935e6a9741a996f52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
