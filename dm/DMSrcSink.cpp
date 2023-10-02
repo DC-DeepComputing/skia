@@ -68,7 +68,6 @@
 #include "tools/gpu/MemoryCache.h"
 
 #if defined(SK_BUILD_FOR_WIN)
-    #include "include/docs/SkXPSDocument.h"
     #include "src/utils/win/SkAutoCoInitialize.h"
     #include "src/utils/win/SkHRESULT.h"
     #include "src/utils/win/SkTScopedComPtr.h"
@@ -1973,39 +1972,6 @@ Result PDFSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-XPSSink::XPSSink() {}
-
-#if defined(SK_SUPPORT_XPS)
-static SkTScopedComPtr<IXpsOMObjectFactory> make_xps_factory() {
-    IXpsOMObjectFactory* factory;
-    HRN(CoCreateInstance(CLSID_XpsOMObjectFactory,
-                         nullptr,
-                         CLSCTX_INPROC_SERVER,
-                         IID_PPV_ARGS(&factory)));
-    return SkTScopedComPtr<IXpsOMObjectFactory>(factory);
-}
-
-Result XPSSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const {
-    SkAutoCoInitialize com;
-    if (!com.succeeded()) {
-        return Result::Fatal("Could not initialize COM.");
-    }
-    SkTScopedComPtr<IXpsOMObjectFactory> factory = make_xps_factory();
-    if (!factory) {
-        return Result::Fatal("Failed to create XPS Factory.");
-    }
-    auto doc = SkXPS::MakeDocument(dst, factory.get());
-    if (!doc) {
-        return Result::Fatal("SkXPS::MakeDocument() returned nullptr");
-    }
-    return draw_skdocument(src, doc.get(), dst);
-}
-#else
-Result XPSSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const {
-    return Result::Fatal("XPS not supported on this platform.");
-}
-#endif
 
 static SkSerialProcs serial_procs_using_png() {
     static SkSerialProcs procs;
