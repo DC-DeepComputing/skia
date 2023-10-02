@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1b91319_e89d8c8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-02T14:06:31Z",
+      "side": 1,
+      "message": "Unfortunately there are some things that will just break if you do this. `onFilterColor4f` is probably the biggest offender; this evaluates a color filter and always uses the CPU. A color filter can be arbitrarily complicated: a runtime color filter could call out to a shader or blender, and those could do the same, etc.\n\n@brianosman@google.com",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 52
+      },
+      "revId": "cfac8410d773b9098677608a8fd0f5f2832192a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
