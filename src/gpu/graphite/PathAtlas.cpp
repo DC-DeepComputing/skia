@@ -33,7 +33,7 @@ constexpr uint16_t kComputeAtlasDim = 4096;
 
 }  // namespace
 
-PathAtlas::PathAtlas(uint32_t width, uint32_t height) : fRectanizer(width, height) {}
+PathAtlas::PathAtlas(uint32_t width, uint32_t height) : fWidth(width), fHeight(height) {}
 
 PathAtlas::~PathAtlas() = default;
 
@@ -46,11 +46,6 @@ bool PathAtlas::addShape(Recorder* recorder,
     SkASSERT(out);
     SkASSERT(!transformedShapeBounds.isEmptyNegativeOrNaN());
 
-    if (!this->initializeTextureIfNeeded(recorder)) {
-        SKGPU_LOG_E("Failed to instantiate an atlas texture");
-        return false;
-    }
-
     // Round out the shape bounds to preserve any fractional offset so that it is present in the
     // translation that we use when deriving the atlas-space transform later.
     Rect maskBounds = transformedShapeBounds.makeRoundOut();
@@ -61,7 +56,7 @@ bool PathAtlas::addShape(Recorder* recorder,
     skvx::float2 maskSize = maskBounds.size();
     skvx::float2 atlasSize = maskSize + 2;
     SkIPoint16 pos;
-    if (!fRectanizer.addRect(atlasSize.x(), atlasSize.y(), &pos)) {
+    if (!this->addRect(recorder, atlasSize, &pos)) {
         return false;
     }
 
@@ -77,19 +72,24 @@ bool PathAtlas::addShape(Recorder* recorder,
     return true;
 }
 
-void PathAtlas::reset() {
-    fRectanizer.reset();
-    this->onReset();
+///////////////////////////////////////////////////////////////////////////////////////
+
+ComputePathAtlas::ComputePathAtlas()
+    : PathAtlas(kComputeAtlasDim, kComputeAtlasDim)
+    , fRectanizer(fWidth, fHeight) {}
+
+PathAtlas::MaskFormat ComputePathAtlas::coverageMaskFormat(const Caps* caps) const {
+    return {ComputeShaderCoverageMaskTargetFormat(caps), /*requiresStorageUsage=*/true};
 }
 
-const TextureProxy* PathAtlas::getTexture(Recorder* recorder) {
+const TextureProxy* ComputePathAtlas::getTexture(Recorder* recorder) {
     if (!this->initializeTextureIfNeeded(recorder)) {
         SKGPU_LOG_E("Failed to instantiate an atlas texture");
     }
     return fTexture.get();
 }
 
-bool PathAtlas::initializeTextureIfNeeded(Recorder* recorder) {
+bool ComputePathAtlas::initializeTextureIfNeeded(Recorder* recorder) {
     if (!fTexture) {
         const MaskFormat maskFormat = this->coverageMaskFormat(recorder->priv().caps());
         fTexture =
@@ -102,12 +102,17 @@ bool PathAtlas::initializeTextureIfNeeded(Recorder* recorder) {
     return fTexture != nullptr;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////
+bool ComputePathAtlas::addRect(Recorder* recorder, skvx::float2 atlasSize, SkIPoint16* pos) {
+    if (!this->initializeTextureIfNeeded(recorder)) {
+        SKGPU_LOG_E("Failed to instantiate an atlas texture");
+        return false;
+    }
 
-ComputePathAtlas::ComputePathAtlas() : PathAtlas(kComputeAtlasDim, kComputeAtlasDim) {}
+    return fRectanizer.addRect(atlasSize.x(), atlasSize.y(), pos);
+}
 
-PathAtlas::MaskFormat ComputePathAtlas::coverageMaskFormat(const Caps* caps) const {
-    return {ComputeShaderCoverageMaskTargetFormat(caps), /*requiresStorageUsage=*/true};
+void ComputePathAtlas::reset() {
+    fRectanizer.reset();
 }
 
 #ifdef SK_ENABLE_VELLO_SHADERS
