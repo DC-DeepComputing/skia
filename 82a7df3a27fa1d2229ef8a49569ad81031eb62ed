@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8f59298_31d6869d",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-02T17:06:43Z",
+      "side": 1,
+      "message": "That sgtm but I would prefer to do that in a separate CL.",
+      "parentUuid": "039b5147_3358c5b4",
+      "range": {
+        "startLine": 631,
+        "startChar": 43,
+        "endLine": 631,
+        "endChar": 53
+      },
+      "revId": "82a7df3a27fa1d2229ef8a49569ad81031eb62ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70b8ec66_12664f60",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-02T14:43:51Z",
       "side": 1,
       "message": "nit: \"Couldn\u0027t covert ImageShader\u0027s image to a Graphite-backed image\"?",
+      "range": {
+        "startLine": 1423,
+        "startChar": 21,
+        "endLine": 1423,
+        "endChar": 80
+      },
+      "revId": "82a7df3a27fa1d2229ef8a49569ad81031eb62ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be4db2de_47226ff1",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1423,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-02T17:06:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70b8ec66_12664f60",
       "range": {
         "startLine": 1423,
         "startChar": 21,
@@ -60,6 +108,30 @@
       "writtenOn": "2023-10-02T14:43:51Z",
       "side": 1,
       "message": "I think we got rid of data in keys, so this can just be \"Helper to add blocks that don\u0027t have children\"",
+      "range": {
+        "startLine": 134,
+        "startChar": 32,
+        "endLine": 134,
+        "endChar": 36
+      },
+      "revId": "82a7df3a27fa1d2229ef8a49569ad81031eb62ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96316d24_60fc639a",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-02T17:06:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98cfe18e_a63f284c",
       "range": {
         "startLine": 134,
         "startChar": 32,
