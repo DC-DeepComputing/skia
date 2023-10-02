@@ -88,6 +88,9 @@ DECODE_JPEG_FILES = [
     "SkJpegCodec.h",
     "SkJpegDecoderMgr.cpp",
     "SkJpegDecoderMgr.h",
+    "SkExif.cpp",
+    "SkImageFileDirectory.cpp",
+    "SkImageFileDirectory.h",
     "SkJpegSourceMgr.cpp",
     "SkJpegSourceMgr.h",
     "SkJpegUtility.cpp",
@@ -149,9 +152,12 @@ split_srcs_and_hdrs(
 
 DECODE_WEBP_FILES = [
     "SkEncodedInfo.cpp",
+    "SkExif.cpp",
     "SkParseEncodedOrigin.cpp",
     "SkParseEncodedOrigin.h",
     "SkScalingCodec.h",
+    "SkImageFileDirectory.cpp",
+    "SkImageFileDirectory.h",
     "SkWebpCodec.cpp",
     "SkWebpCodec.h",
 ]
