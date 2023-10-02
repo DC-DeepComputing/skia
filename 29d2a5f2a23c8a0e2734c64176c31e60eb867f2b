@@ -39,6 +39,30 @@
       },
       "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b49af6_8ca62a39",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-10-02T17:55:27Z",
+      "side": 1,
+      "message": "For this case, dawn will allocate a 256 bytes constant buffer instead of 4*sizeof(float) buffer. Because d3d11 doesn\u0027t allow partial update the constant buffer, so when graphite updates 4*sizeo(float) of the constant buffer, dawn have to allocate a 256 bytes internal buffer from system memory, and copy data to the new allocated internal buffer, and then update the 256 bytes constant buffer with the internal buffer. \n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/d3d11/BufferD3D11.cpp;l\u003d542;drc\u003d641d3b47c0dcd3fc1231ebf0b31722e0a9299b1d?q\u003dBufferD3D11.cpp\u0026ss\u003dchromium",
+      "parentUuid": "2ed8753a_73366754",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 30,
+        "endChar": 74
+      },
+      "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
