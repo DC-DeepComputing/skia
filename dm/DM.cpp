@@ -1061,7 +1061,6 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
         SINK("skp",         SKPSink);
         SINK("svg",         SVGSink);
         SINK("null",        NullSink);
-        SINK("xps",         XPSSink);
         SINK("pdfa",        PDFSink, true,  SK_ScalarDefaultRasterDPI);
         SINK("pdf300",      PDFSink, false, 300);
         SINK("jsdebug",     DebugSink);

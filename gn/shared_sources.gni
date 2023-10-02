@@ -15,7 +15,6 @@ import("pdf.gni")
 import("sksl.gni")
 import("utils.gni")
 import("xml.gni")
-import("xps.gni")
 skia_opts = {
   hsw_sources = hsw
 }

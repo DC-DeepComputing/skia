@@ -111,7 +111,6 @@ SKIA_PUBLIC_HDRS = [
     "include/core/SkYUVAInfo.h",
     "include/core/SkYUVAPixmaps.h",
     "include/docs/SkPDFDocument.h",
-    "include/docs/SkXPSDocument.h",
     "include/effects/Sk1DPathEffect.h",
     "include/effects/Sk2DPathEffect.h",
     "include/effects/SkBlenders.h",
@@ -1754,9 +1753,6 @@ BASE_SRCS_ALL = [
     "src/utils/SkShadowTessellator.h",
     "src/utils/SkShadowUtils.cpp",
     "src/utils/SkTextUtils.cpp",
-    "src/xps/SkXPSDevice.cpp",
-    "src/xps/SkXPSDevice.h",
-    "src/xps/SkXPSDocument.cpp",
 ]
 
 ENCODE_SRCS = [
