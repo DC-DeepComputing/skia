@@ -155,7 +155,7 @@ void PaintOption::addPaintColorToKey(const KeyContext& keyContext,
     if (fShader.first) {
         fShader.first->priv().addToKey(keyContext, fShader.second, builder);
     } else {
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {1, 0, 0, 1});
+        RGBPaintColorBlock::BeginBlock(keyContext, builder, gatherer);
         builder->endBlock();
     }
 }
@@ -195,8 +195,7 @@ void PaintOption::handlePaintAlpha(const KeyContext& keyContext,
                   this->handlePrimitiveColor(keyContext, keyBuilder, gatherer);
               },
               /* addDstToKey= */ [&]() -> void {
-                  SolidColorShaderBlock::BeginBlock(keyContext, keyBuilder, gatherer,
-                                                    {0, 0, 0, 0.5f});
+                  AlphaOnlyPaintColorBlock::BeginBlock(keyContext, keyBuilder, gatherer);
                   keyBuilder->endBlock();
               });
     } else {
