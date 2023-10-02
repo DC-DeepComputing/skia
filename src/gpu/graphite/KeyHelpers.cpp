@@ -494,56 +494,40 @@ ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
     SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
 }
 
-void ImageShaderBlock::BeginBlock(const KeyContext& keyContext,
-                                  PaintParamsKeyBuilder* builder,
-                                  PipelineDataGatherer* gatherer,
-                                  const ImageData* imgData) {
-    SkASSERT(!gatherer == !imgData);
+void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
+                                PaintParamsKeyBuilder* builder,
+                                PipelineDataGatherer* gatherer,
+                                const ImageData& imgData) {
 
     // TODO: allow through lazy proxies
-    if (gatherer && !imgData->fTextureProxy) {
+    if (gatherer && !imgData.fTextureProxy) {
         // TODO: At some point the pre-compile path should also be creating a texture
         // proxy (i.e., we can remove the 'gatherer' in the above test).
         SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+        builder->endBlock();
         return;
     }
 
     auto dict = keyContext.dict();
     if (gatherer) {
-        gatherer->add(imgData->fSampling,
-                      imgData->fTileModes,
-                      imgData->fTextureProxy);
+        gatherer->add(imgData.fSampling,
+                      imgData.fTileModes,
+                      imgData.fTextureProxy);
 
-        add_image_uniform_data(dict, *imgData, gatherer);
+        if (imgData.fSampling.useCubic) {
+            add_cubic_image_uniform_data(dict, imgData, gatherer);
+        } else {
+            add_image_uniform_data(dict, imgData, gatherer);
+        }
     }
 
-    builder->beginBlock(BuiltInCodeSnippetID::kImageShader);
-}
-
-void ImageShaderBlock::BeginCubicBlock(const KeyContext& keyContext,
-                                       PaintParamsKeyBuilder* builder,
-                                       PipelineDataGatherer* gatherer,
-                                       const ImageData* imgData) {
-    SkASSERT(!gatherer == !imgData);
-
-    // TODO: allow through lazy proxies
-    if (gatherer && !imgData->fTextureProxy) {
-        // TODO: At some point the pre-compile path should also be creating a texture
-        // proxy (i.e., we can remove the 'gatherer' in the above test).
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
-        return;
+    if (imgData.fSampling.useCubic) {
+        builder->beginBlock(BuiltInCodeSnippetID::kCubicImageShader);
+        builder->endBlock();
+    } else {
+        builder->beginBlock(BuiltInCodeSnippetID::kImageShader);
+        builder->endBlock();
     }
-
-    auto dict = keyContext.dict();
-    if (gatherer) {
-        gatherer->add(imgData->fSampling,
-                      imgData->fTileModes,
-                      imgData->fTextureProxy);
-
-        add_cubic_image_uniform_data(dict, *imgData, gatherer);
-    }
-
-    builder->beginBlock(BuiltInCodeSnippetID::kCubicImageShader);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -590,10 +574,10 @@ YUVImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
     SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
 }
 
-void YUVImageShaderBlock::BeginBlock(const KeyContext& keyContext,
-                                     PaintParamsKeyBuilder* builder,
-                                     PipelineDataGatherer* gatherer,
-                                     const ImageData* imgData) {
+void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
+                                   PaintParamsKeyBuilder* builder,
+                                   PipelineDataGatherer* gatherer,
+                                   const ImageData* imgData) {
     SkASSERT(!gatherer == !imgData);
 
     // TODO: allow through lazy proxies
@@ -1367,8 +1351,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
 
     LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, &lmShaderData);
 
-        YUVImageShaderBlock::BeginBlock(newContext, builder, gatherer, &imgData);
-        builder->endBlock();
+        YUVImageShaderBlock::AddBlock(newContext, builder, gatherer, &imgData);
 
     builder->endBlock();
 }
@@ -1434,12 +1417,7 @@ static void add_to_key(const KeyContext& keyContext,
     imgData.fReadSwizzle = swizzle_class_to_read_enum(readSwizzle);
 
     auto addImageSampling = [&]() -> void {
-        if (imgData.fSampling.useCubic) {
-            ImageShaderBlock::BeginCubicBlock(keyContext, builder, gatherer, &imgData);
-        } else {
-            ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
-        }
-        builder->endBlock();
+        ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
     };
 
     if (!shader->isRaw()) {
