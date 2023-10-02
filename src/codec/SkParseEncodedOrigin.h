@@ -14,6 +14,6 @@
  * If |data| is an EXIF tag representing an SkEncodedOrigin, return true and set |out|
  * appropriately. Otherwise return false.
  */
-bool SkParseEncodedOrigin(const uint8_t* data, size_t data_length, SkEncodedOrigin* out);
+bool SkParseEncodedOrigin(const void* data, size_t data_length, SkEncodedOrigin* out);
 
 #endif // SkParseEncodedOrigin_DEFINED
