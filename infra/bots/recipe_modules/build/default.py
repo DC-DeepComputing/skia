@@ -270,6 +270,9 @@ def compile_fn(api, checkout_root, out_dir):
   elif configuration != 'OptimizeForSize':
     args.update({
       'skia_use_client_icu': 'true',
+      # Currently bazelisk is not available for all BUILD tasks
+      # Once it's changed we can uncomment the next line
+      #'skia_use_icu4x': 'true',
       # Enable after fixing MSVC host and xSAN host toolchains.
       #'skia_use_libgrapheme': 'true',
     })
