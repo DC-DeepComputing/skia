@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0292856_0cd48e13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-02T23:16:45Z",
+      "side": 1,
+      "message": "lgtm % nits. I also added the Vello try jobs to the CL to test the ComputePathAtlas changes.",
+      "revId": "6d3a6e3ed7419c64493d3ad0a2768ad0899485a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac61c6ae_fbb50176",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-02T23:16:45Z",
+      "side": 1,
+      "message": "nit: fit within 100 cols",
+      "range": {
+        "startLine": 128,
+        "startChar": 100,
+        "endLine": 128,
+        "endChar": 102
+      },
+      "revId": "6d3a6e3ed7419c64493d3ad0a2768ad0899485a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80ca4e8a_22fcbc0b",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-02T23:16:45Z",
+      "side": 1,
+      "message": "It\u0027s probably no longer necessary for `coverageMaskFormat` to be a virtual method since texture creation is now delegated to the subclasses. I think you could remove `coverageMaskFormat()` and have `initializeTextureIfNeeded` just pick the format here and call `getAtlasTexture` with `/*requiresStorageUsage\u003d*/false`, without the indirection.\n\nSimilarly for ComputePathAtlas but that should pass `/*requiresStorageUsage\u003d*/true`.",
+      "range": {
+        "startLine": 56,
+        "startChar": 7,
+        "endLine": 56,
+        "endChar": 88
+      },
+      "revId": "6d3a6e3ed7419c64493d3ad0a2768ad0899485a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
