@@ -1,5 +1,5 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup", "split_srcs_and_hdrs")
 load("//bazel:flags.bzl", "selects")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup", "split_srcs_and_hdrs")
 
 licenses(["notice"])
 
@@ -166,6 +166,7 @@ skia_filegroup(
 skia_filegroup(
     name = "core_srcs",
     srcs = [
+        "SkBase64.cpp",
         "SkCustomTypeface.cpp",
         "SkDashPath.cpp",
         "SkEventTracer.cpp",

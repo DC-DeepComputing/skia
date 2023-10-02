@@ -85,6 +85,54 @@ def skia_cpu_tests(
         tests = test_targets,
     )
 
+def skia_tests(
+        name,
+        tests,
+        deps,
+        resources = [],
+        tags = None):
+    """Defines tests that should run only with --config=cpu
+
+    This macro will create one cc_test_with_flags rule for each file in tests.
+    These tests are configured to use the BazelTestRunner and actually run all tests
+    (e.g. those defined with DEF_TEST) in the file if no GPU backend has been specified,
+    that is, the bazel test command was invoked with --config=cpu (see buildrc for this
+    definition).
+
+    Args:
+        name: The name of the test_suite that groups these tests together.
+        tests: A list of strings, corresponding to C++ files with one or more DEF_TEST (see Test.h).
+        deps: A list of labels corresponding to cc_library targets which this test needs to work.
+              This typically includes some Skia modules and maybe some test utils.
+        resources: A label corresponding to a file_group target that has any skia resource files
+                   (e.g. images, fonts) needed to run these tests. Resources change infrequently,
+                   so it's not super important that this be a precise list.
+        tags: Added to all the generated test targets
+    """
+    test_targets = []
+    if not tags:
+        tags = []
+    for filename in tests:
+        new_target = name + "_" + filename[:-4]  # trim .cpp
+        test_targets.append(new_target)
+        native.cc_test(
+            name = new_target,
+            size = "small",
+            srcs = [
+                "BazelTestRunner.cpp",
+                filename,
+            ],
+            deps = deps,
+            data = resources,
+            tags = tags,
+        )
+
+    # https://bazel.build/reference/be/general#test_suite
+    native.test_suite(
+        name = name,
+        tests = test_targets,
+    )
+
 def skia_ganesh_tests(
         name,
         tests,
