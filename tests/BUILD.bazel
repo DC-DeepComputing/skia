@@ -1,6 +1,6 @@
-load("//bazel:skia_rules.bzl", "skia_cc_library")
 load("//bazel:flags.bzl", "bool_flag", "selects")
-load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
+load("//bazel:skia_rules.bzl", "skia_cc_library")
+load(":android_unit_test.bzl", "android_unit_test")
 load(
     ":testgroups.bzl",
     "CODEC_TESTS",
@@ -11,7 +11,7 @@ load(
     "PATHOPS_TESTS",
     "PDF_TESTS",
 )
-load(":android_unit_test.bzl", "android_unit_test")
+load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
 
 skia_cc_library(
     name = "tests_base",
@@ -415,5 +415,44 @@ test_suite(
         ":svg_tests",
         # TODO(https://crbug.com/skia/14342): Rust test does not build in RBE-environment.
         #":fontations_tests",
+    ],
+)
+
+cc_library(
+    name = "tests_base2",
+    testonly = True,
+    srcs = [
+        "CtsEnforcement.cpp",
+        "Test.cpp",
+        "TestHarness.cpp",
+        "//tools:registry_hdrs",
+        "//tools/flags",
+    ],
+    hdrs = [
+        "CodecPriv.h",
+        "CtsEnforcement.h",
+        "FakeStreams.h",
+        "RecordTestUtils.h",
+        "Test.h",
+        "TestHarness.h",
+        "//tools/fonts:test_empty_typeface",
+    ],
+    deps = [
+        "//:core",
+        "//src/base",
+    ],
+)
+
+cc_test(
+    name = "cpu_tests2",
+    srcs = [
+        "AAClipTest.cpp",
+        "BazelTestRunner.cpp",
+    ],
+    deps = [
+        ":tests_base2",
+        "//:core",
+        "//:default_font_manager_empty",  # FIXME(kjlubick)
+        "//:default_malloc",
     ],
 )
