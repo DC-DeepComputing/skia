@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b44fa23_0d4edd2a",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T18:54:15Z",
+      "side": 1,
+      "message": "Should this also be set in the gn build at the same time?",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8cd46e2_dc1156b1",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T18:54:15Z",
+      "side": 1,
+      "message": "So to playback existing skps, DM or whatever could set the proc to a wrapper around  SkImages::DeferredFromEncodedData. It seems awkward that the image proc and DeferredFromEncodedData don\u0027t have the same signature and the user needs a wrapper. I suppose the idea is that the SkImage returned could just keep a reference to the data, but the use in `add_mipmaps` makes doing that very iffy.",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a67fc8d6_310faa65",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T18:54:15Z",
+      "side": 1,
+      "message": "f?",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 7
+      },
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
