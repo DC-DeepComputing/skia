@@ -1,0 +1,13 @@
+# This file seems to be needed only for bazel's dependency pinning to figure out
+# declared dependencies, actual build rules are in BUILD.bazel.
+
+[package]
+name = "icu4x_deps"
+edition = "2021"
+version = "0.1.0"
+
+[dependencies]
+icu_capi_staticlib = { git = "https://github.com/unicode-org/icu4x.git", rev = "f06b4bcb3c672087b9f6c7c804cb70d91d55424a" }
+
+[lib]
+crate-type = ["staticlib"]
