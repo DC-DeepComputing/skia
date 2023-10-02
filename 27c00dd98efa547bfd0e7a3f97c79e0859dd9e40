@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8ab4cf3_9bd47228",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T19:39:48Z",
+      "side": 1,
+      "message": "I guess what I\u0027m getting at is that (at least API wise, though the mipmap deserialization code may be buggy with respect to this at the moment) is that `deserialize_image` takes and SkData and so can move it on through to `DeferredFromEncodedData`. However, the deserialize proc cannot call `DeferredFromEncodedData` without making a copy of the data since it takes a pointer and a length. There is no way for it to turn that into a sharable SkData without making a copy. Now, this may have already been an issue, because I assume that the deserialize proc usually needs to call out to the image decoders? I don\u0027t understand what the ownership rules of this data actually are here, so it is difficult to tell if it\u0027s actually possible for the user to write valid code to write an image proc to do this.",
+      "parentUuid": "b8cd46e2_dc1156b1",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a67fc8d6_310faa65",
         "filename": "tools/ToolUtils.h",
         "patchSetId": 6
