@@ -158,7 +158,7 @@ std::string get_node_uniforms(Layout layout, const ShaderNode* node, int* offset
     return result;
 }
 
-std::string get_node_ssbo_fields(const ShaderNode* node) {
+std::string get_node_ssbo_fields(const ShaderNode* node, int* count) {
     std::string result;
     SkSpan<const Uniform> uniforms = node->entry()->fUniforms;
 
@@ -176,8 +176,10 @@ std::string get_node_ssbo_fields(const ShaderNode* node) {
         }
     }
 
+    *count += uniforms.size();
+
     for (const ShaderNode* child : node->children()) {
-        result += get_node_ssbo_fields(child);
+        result += get_node_ssbo_fields(child, count);
     }
     return result;
 }
@@ -219,6 +221,11 @@ std::string EmitPaintParamsUniforms(int bufferID,
     }
     result.append("};\n\n");
 
+    if (!offset) {
+        // No uniforms were added
+        return {};
+    }
+
     return result;
 }
 
@@ -241,12 +248,18 @@ std::string EmitPaintParamsStorageBuffer(
         const char* bufferNamePrefix,
         SkSpan<const ShaderNode*> nodes) {
 
+    int count = 0;
     std::string result;
     SkSL::String::appendf(&result, "struct %sUniformData {\n", bufferTypePrefix);
     for (const ShaderNode* n : nodes) {
-        result += get_node_ssbo_fields(n);
+        result += get_node_ssbo_fields(n, &count);
     }
     result.append("};\n\n");
+
+    if (!count) {
+        // No uniforms were added
+        return {};
+    }
 
     SkSL::String::appendf(&result,
                           "layout (binding=%d) buffer %sUniforms {\n"
