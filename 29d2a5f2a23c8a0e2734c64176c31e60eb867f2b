@@ -63,6 +63,53 @@
       },
       "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7effa86_8101457d",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-02T20:55:41Z",
+      "side": 1,
+      "message": "Thank you for the context, but I am hesitant to want to have this logic in the Dawn backend for Graphite. This feels like backend details are leaking out of Dawn, particularly when it seems the real limiting factor is D3D11 and not D3D12 or vulkan running on windows.\n\nIt would be better if Dawn had a way to report these sorts of alignment requirements, or that the D3D11 buffer code either held on to a 256 byte buffer that it could copy into to avoid re-allocating, or that its just on the stack instead of as a std::vector.\n\nCopying 256 bytes hopefully isn\u0027t the part that\u0027s showing up in profiles.",
+      "parentUuid": "e5b49af6_8ca62a39",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 30,
+        "endChar": 74
+      },
+      "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8beeb770_3c0f107d",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-02T20:55:41Z",
+      "side": 1,
+      "message": "Does this leave the rest of `rtAdjust` with uninitialized data?",
+      "range": {
+        "startLine": 622,
+        "startChar": 0,
+        "endLine": 622,
+        "endChar": 98
+      },
+      "revId": "29d2a5f2a23c8a0e2734c64176c31e60eb867f2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
