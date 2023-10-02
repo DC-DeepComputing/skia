@@ -175,6 +175,7 @@ skia_filegroup(
         "SkShadowTessellator.cpp",
         "SkShadowTessellator.h",
         "SkShadowUtils.cpp",
+        "SkBase64.cpp",
     ],
     visibility = ["//src/core:__pkg__"],
 )

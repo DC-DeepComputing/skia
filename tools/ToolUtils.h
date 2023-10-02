@@ -8,7 +8,6 @@
 #ifndef ToolUtils_DEFINED
 #define ToolUtils_DEFINED
 
-#include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
@@ -32,7 +31,7 @@
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Recorder.h"
-#endif
+#endiff
 
 #include <functional>
 
