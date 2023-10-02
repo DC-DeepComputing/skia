@@ -24,7 +24,15 @@
 namespace skgpu::graphite {
 
 namespace {
+
+#if defined(_WIN32)
+// D3D constant buffers must be 256 bytes aligned, and D3D11 doesn't allow partially updating the
+// constant buffers, so using 256 bytes aligned IntrinsicConstant buffer to avoid using 256 bytes
+// aligned internal buffers during executing dawn's WriteBuffer() command.
+using IntrinsicConstant = float[64];
+#else
 using IntrinsicConstant = float[4];
+#endif
 
 uint64_t clamp_ubo_binding_size(uint64_t offset, uint64_t bufferSize) {
     // Dawn's limit
@@ -522,7 +530,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     }
 
     wgpu::BindGroupDescriptor desc;
-    desc.layout = fActiveGraphicsPipeline->dawnRenderPipeline().GetBindGroupLayout(
+    desc.layout = fActiveGraphicsPipeline->dawnGroupLayout(
             DawnGraphicsPipeline::kTextureBindGroupIndex);
     desc.entryCount = entries.size();
     desc.entries = entries.data();
@@ -578,7 +586,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
         }
 
         wgpu::BindGroupDescriptor desc;
-        desc.layout = fActiveGraphicsPipeline->dawnRenderPipeline().GetBindGroupLayout(
+        desc.layout = fActiveGraphicsPipeline->dawnGroupLayout(
                 DawnGraphicsPipeline::kUniformBufferBindGroupIndex);
         desc.entryCount = numBuffers;
         desc.entries = entries.data();
@@ -772,7 +780,7 @@ void DawnCommandBuffer::bindDispatchResources(const DispatchGroup& group,
     }
 
     wgpu::BindGroupDescriptor desc;
-    desc.layout = fActiveComputePipeline->dawnComputePipeline().GetBindGroupLayout(0);
+    desc.layout = fActiveComputePipeline->dawnGroupLayout();
     desc.entryCount = entries.size();
     desc.entries = entries.data();
 
