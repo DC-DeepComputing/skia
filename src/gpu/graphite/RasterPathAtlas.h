@@ -20,7 +20,7 @@ namespace skgpu::graphite {
  *
  * After a successful call to `recordUploads()`, the client is free to call `reset()` and start
  * adding new shapes for a future atlas render.
- * TODO: We should cache Shapes for future frames to avoid the cost of software rendering.
+ * TODO: We should cache Shapes for future frames to avoid the cost of raster pipeline rendering.
  */
 class RasterPathAtlas : public PathAtlas {
 public:
@@ -28,17 +28,33 @@ public:
     ~RasterPathAtlas() override {}
     void recordUploads(DrawContext*, Recorder*);
 
+    void reset() override;
+
 protected:
     void onAddShape(const Shape&,
                     const Transform& transform,
                     const Rect& atlasBounds,
                     skvx::int2 deviceOffset,
                     const SkStrokeRec&) override;
-    void onReset() override;
     MaskFormat coverageMaskFormat(const Caps*) const override;
+    const TextureProxy* addRect(Recorder* recorder,
+                                skvx::float2 atlasSize,
+                                SkIPoint16* pos) override;
 
+private:
+    const TextureProxy* texture() const { return fTexture.get(); }
+    bool initializeTextureIfNeeded(Recorder*);
+
+    skgpu::RectanizerSkyline fRectanizer;
     SkAutoPixmapStorage fPixels;
     SkIRect fDirtyRect;
+
+    // RasterPathAtlas lazily requests a texture from the AtlasProvider when the first shape gets
+    // added to it and references the same texture for the duration of its lifetime. A reference to
+    // this texture is stored here, which is used by AtlasShapeRenderStep when encoding the render
+    // pass.
+    // TODO: Store list of TextureProxys and Rectanizers that can be used to cache shapes instead.
+    sk_sp<TextureProxy> fTexture;
 };
 
 }  // namespace skgpu::graphite
