@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80702ca7_15eb01a3",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-02T20:35:24Z",
+      "side": 1,
+      "message": "Note this is just the buffet build, not the (deprecated) other Bazel build.",
+      "parentUuid": "803f354b_f73771ff",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8cd46e2_dc1156b1",
