@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3fb765_77647b97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-10-02T13:37:45Z",
+      "side": 1,
+      "message": "Looks like SkFontHost_FreeType_common does need the header.",
+      "revId": "73731b8b015039d0fc62560765d20ed0f58732b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
