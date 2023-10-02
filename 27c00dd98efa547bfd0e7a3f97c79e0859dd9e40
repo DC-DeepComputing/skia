@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f98e1db7_99bb27f1",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-02T20:14:31Z",
+      "side": 1,
+      "message": "Yeah, this is already an issue because all the Chromium deserial procs all just `SkData::MakeWithoutCopy` on the data passed and then call the decoders with that SkData, even though they don\u0027t own the data. `MakeWithoutCopy` was (and is documented) to be used only with global data (where there is no allocation to free) and when you really know that the SkData cannot outlive the underlying data. All deserial procs in Chromium violate this and have ownership issues.",
+      "parentUuid": "c8ab4cf3_9bd47228",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a67fc8d6_310faa65",
         "filename": "tools/ToolUtils.h",
         "patchSetId": 6
