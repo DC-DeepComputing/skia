@@ -16,6 +16,138 @@
       "message": "friendly bump :^)",
       "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e59d04_d7d7d5a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "I assume there will also be some follow on CL to make VulkanSamplers that have a ycbcr sampler on them as well?",
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9597eb8e_a6d105a7",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "you don\u0027t need to set this `\u003d nullptr`. An sk_sp default ctor sets itself to nullptr",
+      "range": {
+        "startLine": 28,
+        "startChar": 55,
+        "endLine": 28,
+        "endChar": 65
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8588fff_20779ce3",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "Does this need to be stored somewhere? Right now it goes out of scope at the end of the function call",
+      "range": {
+        "startLine": 28,
+        "startChar": 40,
+        "endLine": 28,
+        "endChar": 55
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "046e082c_54d75f96",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "You don\u0027t need the else here since the if has a return",
+      "range": {
+        "startLine": 291,
+        "startChar": 5,
+        "endLine": 291,
+        "endChar": 12
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c7b287b_91d89acd",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "Why are we looking this up again after we just made it above?",
+      "range": {
+        "startLine": 298,
+        "startChar": 3,
+        "endLine": 299,
+        "endChar": 89
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0fa78c_e4be6fcf",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "Why not just create the ycbcr sampler from the start? We know it will be need for every view created and that would avoid us needing to do cache lookup more than once per texture",
+      "range": {
+        "startLine": 98,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 52
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

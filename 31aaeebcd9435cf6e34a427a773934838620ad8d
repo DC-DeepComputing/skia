@@ -22,6 +22,30 @@
       },
       "revId": "31aaeebcd9435cf6e34a427a773934838620ad8d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "687f7324_81cbcfa4",
+        "filename": "include/gpu/vk/VulkanTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-02T20:44:33Z",
+      "side": 1,
+      "message": "So VulkanYcbcrConversionInfo has to be public as clients need to make one to create the backend textures.\n\nThe setup_sampler_ycbcr_conversion_info should be moved internally to where it is used. Since it is used by both Ganesh and Graphite I would consider moving it as a helper function in VulkanUtilsPriv.h",
+      "parentUuid": "777a757a_626bd2cc",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 22
+      },
+      "revId": "31aaeebcd9435cf6e34a427a773934838620ad8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
