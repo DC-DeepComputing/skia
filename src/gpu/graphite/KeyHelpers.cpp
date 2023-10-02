@@ -95,10 +95,10 @@ void add_solid_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
-void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
-                                       PaintParamsKeyBuilder* builder,
-                                       PipelineDataGatherer* gatherer,
-                                       const SkPMColor4f& premulColor) {
+void SolidColorShaderBlock::AddBlock(const KeyContext& keyContext,
+                                     PaintParamsKeyBuilder* builder,
+                                     PipelineDataGatherer* gatherer,
+                                     const SkPMColor4f& premulColor) {
     if (gatherer) {
         auto dict = keyContext.dict();
 
@@ -106,6 +106,7 @@ void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
     }
 
     builder->beginBlock(BuiltInCodeSnippetID::kSolidColorShader);
+    builder->endBlock();
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -874,8 +875,7 @@ void AddBlendModeColorFilter(const KeyContext& keyContext,
               builder->endBlock();
           },
           /* addSrcToKey= */ [&]() -> void {
-              SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, srcColor);
-              builder->endBlock();
+              SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, srcColor);
           },
           /* addDstToKey= */ [&]() -> void {
               builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
@@ -976,9 +976,7 @@ static void add_children_to_key(const KeyContext& keyContext,
             switch (childInfo[index].type) {
                 case ChildType::kShader:
                     // A missing shader returns transparent black
-                    SolidColorShaderBlock::BeginBlock(
-                            childContext, builder, gatherer, {0, 0, 0, 0});
-                    builder->endBlock();
+                    SolidColorShaderBlock::AddBlock(childContext, builder, gatherer, {0, 0, 0, 0});
                     break;
 
                 case ChildType::kColorFilter:
@@ -1240,9 +1238,8 @@ static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkCTMShader*) {
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
     // TODO(michaelludwig) implement this when clipShader() is implemented
-    builder->endBlock();
+    SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, kErrorColor);
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1251,9 +1248,8 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkColorShader* shader) {
     SkASSERT(shader);
 
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                      SkColor4f::FromColor(shader->color()).premul());
-    builder->endBlock();
+    SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer,
+                                    SkColor4f::FromColor(shader->color()).premul());
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1262,8 +1258,7 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkColor4Shader* shader) {
     SkASSERT(shader);
 
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, shader->color().premul());
-    builder->endBlock();
+    SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, shader->color().premul());
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1455,9 +1450,8 @@ static void add_to_key(const KeyContext& keyContext,
                   },
                   /* addSrcToKey= */ addImageSampling,
                   /* addDstToKey= */ [&]() -> void {
-                      SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                                        keyContext.paintColor());
-                      builder->endBlock();
+                      SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer,
+                                                      keyContext.paintColor());
                   });
             return;
         }
