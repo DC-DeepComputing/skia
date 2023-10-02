@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47803a23_3015ae24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-10-02T13:34:15Z",
+      "side": 1,
+      "message": "GNI exporter not happy, you prolly need to remove this: https://github.com/google/skia/blob/e72023890373c2cf39e403b07e5a799d266d110a/bazel/exporter_tool/main.go#L250",
+      "revId": "724c2f7b1469700dbe7de84de58d95a543516fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
