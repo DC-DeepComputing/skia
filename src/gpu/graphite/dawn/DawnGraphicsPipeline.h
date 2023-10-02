@@ -62,12 +62,14 @@ public:
     PrimitiveType primitiveType() const { return fPrimitiveType; }
     bool hasStepUniforms() const { return fHasStepUniforms; }
     bool hasFragment() const { return fHasFragment; }
-    const wgpu::RenderPipeline& dawnRenderPipeline() const;
+    const wgpu::RenderPipeline& dawnRenderPipeline() const { return fRenderPipeline; }
+    const std::array<wgpu::BindGroupLayout, 2>& dawnGroupLayouts() const { return fGroupLayouts; }
 
 private:
     DawnGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                          PipelineInfo* pipelineInfo,
                          wgpu::RenderPipeline renderPipeline,
+                         std::array<wgpu::BindGroupLayout, 2> groupLayouts,
                          PrimitiveType primitiveType,
                          uint32_t refValue,
                          bool hasStepUniforms,
@@ -76,6 +78,7 @@ private:
     void freeGpuData() override;
 
     wgpu::RenderPipeline fRenderPipeline;
+    std::array<wgpu::BindGroupLayout, 2> fGroupLayouts;
     const PrimitiveType fPrimitiveType;
     const uint32_t fStencilReferenceValue;
     const bool fHasStepUniforms;
