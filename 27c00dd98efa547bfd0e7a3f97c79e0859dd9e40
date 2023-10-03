@@ -143,6 +143,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1edded91_2b9c6507",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T12:58:24Z",
+      "side": 1,
+      "message": "I added a new SkDeserialProc option as you suggested. I can update the places in Chromium after it lands and rolls in.",
+      "parentUuid": "4d5860bd_ddd24148",
+      "revId": "27c00dd98efa547bfd0e7a3f97c79e0859dd9e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a67fc8d6_310faa65",
