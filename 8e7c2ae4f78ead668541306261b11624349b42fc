@@ -16,6 +16,24 @@
       "message": "Surprise review from the future. It turns out this is still \"used\" by pathkit. Specifically, it is used to create the expectations like `modules/pathkit/tests/PathOpsSimplify.json` for tests like `modules/pathkit/tests/pathops.spec.js`.\n\nThe reality is that this was (and is) a build tool for pathkit tests. The way this should have been expressed in the build would be for the pathkit test target to depend on this target which was deleted here, then used that as a build tool to produce the .json files, then used those generated .json files in the pathkit tests. Unfortunately the generated .json files were just checked in instead, not making it very obvious what this was here for.\n\nIn any event, I was just in the middle of making a change to fix Simplify to fix issues in PDF [0] and am now looking into pathkit expectations.\n\n[0] https://skia-review.googlesource.com/c/skia/+/717860/3",
       "revId": "8e7c2ae4f78ead668541306261b11624349b42fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00abbc34_0d4440ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T22:39:32Z",
+      "side": 1,
+      "message": "Do we need to revive this?",
+      "parentUuid": "f2ea9561_eb0ee358",
+      "revId": "8e7c2ae4f78ead668541306261b11624349b42fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
