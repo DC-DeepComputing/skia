@@ -191,6 +191,90 @@ fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
     }
 }
 
+use crate::ffi::{ColrV0GlyphLayerRange, ColrV0Layer};
+
+fn num_palettes(font_ref: &BridgeFontRef) -> u16 {
+    font_ref
+        .with_font(|f| {
+            let cpal = f.cpal().ok()?;
+            Some(cpal.num_palettes())
+        })
+        .unwrap_or_default()
+}
+
+fn num_palette_entries(font_ref: &BridgeFontRef) -> u16 {
+    font_ref
+        .with_font(|f| {
+            let cpal = f.cpal().ok()?;
+            Some(cpal.num_palette_entries())
+        })
+        .unwrap_or_default()
+}
+
+fn palette_colors(font_ref: &BridgeFontRef, palette_index: u16, colors: &mut [u32]) -> bool {
+    let num_entries: usize = num_palette_entries(font_ref).into();
+    if colors.len() == 0 || num_entries != colors.len() {
+        return false;
+    }
+
+    font_ref
+        .with_font(|f| {
+            let cpal_table = f.cpal().ok()?;
+
+            let start_index =
+                usize::from(cpal_table.color_record_indices()[usize::from(palette_index)].get());
+
+            cpal_table
+                .color_records_array()
+                .and_then(|color_records| match color_records {
+                    Ok(records) => {
+                        for (&(mut target_color), color) in colors
+                            .iter()
+                            .zip(records[start_index..start_index + num_entries].iter())
+                        {
+                            target_color = u32::from_be_bytes([
+                                color.alpha(),
+                                color.red(),
+                                color.green(),
+                                color.blue(),
+                            ]);
+                        }
+                        Some(true)
+                    }
+                    _ => None,
+                })
+        })
+        .unwrap_or_default()
+}
+
+fn colrv0_layer_range(font_ref: &BridgeFontRef, glyph_id: u16) -> ColrV0GlyphLayerRange {
+    font_ref
+        .with_font(|f| {
+            let layer_range = f.colr().ok()?.v0_base_glyph(GlyphId::new(glyph_id)).ok()?;
+            layer_range.map(|r| ColrV0GlyphLayerRange {
+                has_v0_layers: true,
+                start_index: r.start,
+                end_index: r.end,
+            })
+        })
+        .unwrap_or_default()
+}
+
+fn colrv0_glyph_layer(
+    font_ref: &BridgeFontRef,
+    layer_index: usize,
+    out_layer: &mut ColrV0Layer,
+) -> bool {
+    match font_ref.with_font(|f| f.colr().ok()?.v0_layer(layer_index).ok()) {
+        Some(t) => {
+            out_layer.glyph_id = t.0.to_u16();
+            out_layer.palette_index = t.1;
+            true
+        }
+        _ => false,
+    }
+}
+
 /// Implements the behavior expected for `SkTypeface::getTableData`, compare
 /// documentation for this method and the FreeType implementation in Skia.
 /// * If the target data array is empty, do not copy any data into it, but
@@ -375,6 +459,22 @@ mod ffi {
         has_overlaps: bool,
     }
 
+    #[derive(Default)]
+    /// Information on whether COLRv0 glyph coverage exists for a
+    /// certain glyph and if yes, which layers need to be drawn.
+    struct ColrV0GlyphLayerRange {
+        has_v0_layers: bool,
+        start_index: usize,
+        end_index: usize,
+    }
+
+    /// Representation of a COLRv0 layer consisting of glyph id
+    /// and palette index.
+    struct ColrV0Layer {
+        glyph_id: u16,
+        palette_index: u16,
+    }
+
     extern "Rust" {
 
         type BridgeFontRef<'a>;
@@ -412,6 +512,38 @@ mod ffi {
         fn num_glyphs(font_ref: &BridgeFontRef) -> u16;
         fn family_name(font_ref: &BridgeFontRef) -> String;
         fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool;
+
+        fn num_palettes(font_ref: &BridgeFontRef) -> u16;
+        fn num_palette_entries(font_ref: &BridgeFontRef) -> u16;
+        /// Copies into `colors` slice `SkColor`-compatible uint32_t ARGB color values for a specified `palette_index`.
+        /// # Returns
+        /// `true` on success, `false` on failure.
+        fn palette_colors(font_ref: &BridgeFontRef, palette_index: u16, colors: &mut [u32])
+            -> bool;
+
+        /// Provides information on whether the specified glyph can be drawn
+        /// as a COLRv0 colored glyph.
+        ///
+        /// # Arguments
+        ///
+        /// * `font_ref` - font instance as created with `make_font_ref`
+        /// * `glyph_id` - glyph id of the glyph to check for COLRv0 coverage for
+        ///
+        /// # Returns
+        ///
+        /// `ColrV0GlyphLayerRange` - struct containing information on whether COLRv0
+        /// coverage exists, and if yes, start and end layer index.
+        fn colrv0_layer_range(font_ref: &BridgeFontRef, glyph_id: u16) -> ColrV0GlyphLayerRange;
+
+        /// Provides access to COLRv0 layers in the COLR table.
+        /// Using a layer index between start and end index
+        /// retrieved with [colrv0_layer_range], use this method
+        /// to retrieve glyph id and palette index of a specific layer.
+        fn colrv0_glyph_layer(
+            font_ref: &BridgeFontRef,
+            layer_index: usize,
+            out_layer: &mut ColrV0Layer,
+        ) -> bool;
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
@@ -477,5 +609,16 @@ mod ffi {
         ) -> bool;
         fn size(self: Pin<&AxisWrapper>) -> usize;
 
+    }
+}
+
+/// Test function to exercise COLRv0 functions.
+/// Run using `$ bazel test -c dbg --sandbox_base=/dev/shm --with_fontations //src/ports/fontations:test_colrv0`
+#[cfg(test)]
+mod test {
+    use super::ffi;
+    #[test]
+    fn test_colrv0() {
+        assert_eq!("Hi Rust", "Yo Rust");
     }
 }
