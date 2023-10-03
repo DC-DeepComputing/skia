@@ -1,0 +1,418 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c32d845a_58da87cc",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Regardless of how nanobench currently works, I don\u0027t think we should have PNG outputs when benchmarking. What value does it have?",
+      "range": {
+        "startLine": 41,
+        "startChar": 67,
+        "endLine": 41,
+        "endChar": 70
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e94c2a7_7a7b4354",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "builder is very old terminology. Prefer \"traces\" or \"benchmark\"",
+      "range": {
+        "startLine": 57,
+        "startChar": 86,
+        "endLine": 57,
+        "endChar": 93
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6f2c8f5_a29a102b",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Is this the data that is ingested by perf? If so, make that explicit.",
+      "range": {
+        "startLine": 63,
+        "startChar": 41,
+        "endLine": 63,
+        "endChar": 48
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b940865e_46e982b8",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Why is this nonstatic?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 12
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1aba775_363206aa",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we define loops here and declare it in other files it might need use? It feels a bit strange to declare a flag here in main and define it elsewhere.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 11
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5d9a819_a2fb5e50",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "What do options mean to perf? Last I checked, perf does not support optional keys",
+      "range": {
+        "startLine": 350,
+        "startChar": 15,
+        "endLine": 350,
+        "endChar": 22
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3eb806fe_8a048a58",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "I know it\u0027s legal to have ++ operators inside of other things, but I would prefer they be their own operation so it\u0027s easier to reason about.",
+      "range": {
+        "startLine": 382,
+        "startChar": 16,
+        "endLine": 382,
+        "endChar": 22
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6e60ba_d3e4cf74",
+        "filename": "bench/benchmark_target/BenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "We shouldn\u0027t have to declare this in the same file we define, right?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 11
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f35c0ab_6cec2eb7",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Don\u0027t declare constants in headers unless needed in other files. Move these to the .cpp file if possible.",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f9c291_98759072",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "I think this needs an `#include \u003cmemory\u003e`",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96cf2fd4_ae1983d5",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Should this be \u003ccstdint\u003e and/or \u003ccstdef\u003e ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 19
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00249352_94970ebf",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "This declare seems to be in the wrong spot - I would expect it to be outside the class, up near the other flags.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "262a3507_129622b5",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "This declare seems to be in the wrong spot - I would expect it to be outside the class, up near the other flags.",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 19
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e02330_2ea6d89d",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee9df103_6303e0c9",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "We should really make this an enum class",
+      "range": {
+        "startLine": 106,
+        "startChar": 71,
+        "endLine": 106,
+        "endChar": 92
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8afa5c1_5ecba3c2",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "As of M93, GrContextOptions::fReduceOpsTaskSplitting has a default value of enabled (true). However, CommonFlagsGpu continues to set the default value to false. This means our bazel tests are not identical to the GN tests. Do you know if we need to update our GN tests to be more closely aligned to the default?\n\nDo you know when this flag should or should not have an effect?",
+      "range": {
+        "startLine": 74,
+        "startChar": 54,
+        "endLine": 74,
+        "endChar": 70
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8695431d_098ad95b",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "gles_msaa4\n\ngles_mssa8",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 76,
+        "endChar": 50
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac75100a_edc06e49",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "According to the release notes, the default value of this is on.\n\nMaybe we don\u0027t need this as an explicit option anymore?",
+      "range": {
+        "startLine": 89,
+        "startChar": 25,
+        "endLine": 89,
+        "endChar": 48
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

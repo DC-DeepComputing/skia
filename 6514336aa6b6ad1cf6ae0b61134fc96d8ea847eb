@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "853046c7_14501091",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "I would suggest not making too many more test targets because all of these will need to be ported to the buffet build.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 18
+      },
+      "revId": "6514336aa6b6ad1cf6ae0b61134fc96d8ea847eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bfb742d_de210d66",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:14:32Z",
+      "side": 1,
+      "message": "Is the plan to turn one benchmark file into one Bazel target like we are doing for unit tests (and gms?)",
+      "range": {
+        "startLine": 51,
+        "startChar": 9,
+        "endLine": 51,
+        "endChar": 22
+      },
+      "revId": "6514336aa6b6ad1cf6ae0b61134fc96d8ea847eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
