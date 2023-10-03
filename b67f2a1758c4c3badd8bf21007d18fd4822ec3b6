@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "475d7dcc_88ac59cf",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T14:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e28d591b_db9d75b6",
+      "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cd9ca55_e4a0b1dd",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69c8320f_1bf16d4d",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T14:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cd9ca55_e4a0b1dd",
+      "range": {
+        "startLine": 53,
+        "startChar": 30,
+        "endLine": 53,
+        "endChar": 35
+      },
+      "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f527c34_d47f9a06",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-10-03T13:51:05Z",
       "side": 1,
       "message": "If we\u0027re introducing a new function callback, do we want to pass the alphaType too? It seems we need to do so for the user to correctly emulate the existing behavior?",
+      "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82b11de0_c172a53c",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T14:37:44Z",
+      "side": 1,
+      "message": "Good idea. Done.",
+      "parentUuid": "3f527c34_d47f9a06",
       "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
