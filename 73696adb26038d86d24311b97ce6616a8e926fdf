@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62231c12_573a5aae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-03T15:35:53Z",
+      "side": 1,
+      "message": "Looks fine to me. It seems Brian should probably take a look and make sure the whole alphaType thing is what is intended and there isn\u0027t anything else that should change there.",
+      "revId": "73696adb26038d86d24311b97ce6616a8e926fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
