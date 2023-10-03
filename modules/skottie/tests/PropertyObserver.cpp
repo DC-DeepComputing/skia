@@ -337,7 +337,6 @@ DEF_TEST(Skottie_Props, reporter) {
     skottie::TextPropertyValue text_prop({
       test_typeface,
       SkString("inline_text"),
-      SkString(),
       100,
       0, 100,
       0,
