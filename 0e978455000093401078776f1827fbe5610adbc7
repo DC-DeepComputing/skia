@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2970666_985d7669",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-10-03T14:17:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6f73650_e43747ae",
+      "range": {
+        "startLine": 28,
+        "startChar": 81,
+        "endLine": 28,
+        "endChar": 82
+      },
+      "revId": "0e978455000093401078776f1827fbe5610adbc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32d8a551_8b38add2",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4466fb7f_752366f2",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-10-03T14:17:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32d8a551_8b38add2",
+      "range": {
+        "startLine": 66,
+        "startChar": 10,
+        "endLine": 66,
+        "endChar": 46
+      },
+      "revId": "0e978455000093401078776f1827fbe5610adbc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59c00fde_1f8926cf",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-10-02T21:01:31Z",
       "side": 1,
       "message": "Maybe have this be a constant declared near the bind group index constants?",
+      "range": {
+        "startLine": 81,
+        "startChar": 38,
+        "endLine": 81,
+        "endChar": 39
+      },
+      "revId": "0e978455000093401078776f1827fbe5610adbc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26a4805a_a0fc7eeb",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-10-03T14:17:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59c00fde_1f8926cf",
       "range": {
         "startLine": 81,
         "startChar": 38,
