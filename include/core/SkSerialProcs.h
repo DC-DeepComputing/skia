@@ -48,10 +48,12 @@ using SkDeserialPictureProc = sk_sp<SkPicture> (*)(const void* data, size_t leng
  *
  *  This will also be used to decode the internal mipmap layers that are saved on some images.
  *
- *  Note that unlike SkDeserialPictureProc and SkDeserialTypefaceProc, return nullptr from this
- *  does not indicate failure, but is a signal for Skia to take its default action.
+ * Clients should only set one of these, and preferably the SkDeserialImageFromDataProc
+ * version to avoid an extra copy of the data. Clients who use SkDeserialImageProc must
+ * make a copy of any data it needs, since it will go away after serialization ends.
  */
 using SkDeserialImageProc = sk_sp<SkImage> (*)(const void* data, size_t length, void* ctx);
+using SkDeserialImageFromDataProc = sk_sp<SkImage> (*)(sk_sp<SkData>data, void* ctx);
 
 /**
  * Slugs are currently only deserializable with a GPU backend. Clients will not be able to
@@ -78,22 +80,23 @@ struct SK_API SkSerialProcs {
 };
 
 struct SK_API SkDeserialProcs {
-    SkDeserialPictureProc   fPictureProc = nullptr;
-    void*                   fPictureCtx = nullptr;
+    SkDeserialPictureProc        fPictureProc = nullptr;
+    void*                        fPictureCtx = nullptr;
 
-    SkDeserialImageProc     fImageProc = nullptr;
-    void*                   fImageCtx = nullptr;
+    SkDeserialImageProc          fImageProc = nullptr;
+    SkDeserialImageFromDataProc  fImageDataProc = nullptr;
+    void*                        fImageCtx = nullptr;
 
-    SkSlugProc              fSlugProc = nullptr;
-    void*                   fSlugCtx = nullptr;
+    SkSlugProc                   fSlugProc = nullptr;
+    void*                        fSlugCtx = nullptr;
 
-    SkDeserialTypefaceProc  fTypefaceProc = nullptr;
-    void*                   fTypefaceCtx = nullptr;
+    SkDeserialTypefaceProc       fTypefaceProc = nullptr;
+    void*                        fTypefaceCtx = nullptr;
 
     // This looks like a flag, but it could be considered a proc as well (one that takes no
     // parameters and returns a bool). Given that there are only two valid implementations of that
     // proc, we just insert the bool directly.
-    bool                    fAllowSkSL = true;
+    bool                         fAllowSkSL = true;
 };
 
 #endif
