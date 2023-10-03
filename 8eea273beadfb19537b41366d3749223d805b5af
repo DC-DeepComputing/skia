@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d153340_f669891c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19124
+      },
+      "writtenOn": "2023-10-03T03:20:51Z",
+      "side": 1,
+      "message": "Skia m119 Branching CLs, Kindly approve when you get a chance!",
+      "revId": "8eea273beadfb19537b41366d3749223d805b5af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
