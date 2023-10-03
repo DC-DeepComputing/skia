@@ -37,19 +37,14 @@ public:
     inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     inline static const DescriptorData kIntrinsicUniformDescriptor  =
-            {DescriptorType::kInlineUniform,
-             // For inline uniform descriptors, the descriptor count field is actually the number of
-             // bytes to allocate for descriptors given this type.
-             /*count=*/sizeof(float) * 4,
-             VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
+            { DescriptorType::kUniformBuffer, /*count=*/1,
+              VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex };
     inline static const DescriptorData kRenderStepUniformDescriptor =
-            {DescriptorType::kUniformBuffer,
-             /*count=*/1,
-             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex};
+            { DescriptorType::kUniformBuffer, /*count=*/1,
+              VulkanGraphicsPipeline::kRenderStepUniformBufferIndex};
     inline static const DescriptorData kPaintUniformDescriptor      =
-            {DescriptorType::kUniformBuffer,
-             /*count=*/1,
-             VulkanGraphicsPipeline::kPaintUniformBufferIndex};
+            { DescriptorType::kUniformBuffer, /*count=*/1,
+              VulkanGraphicsPipeline::kPaintUniformBufferIndex     };
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
     // 0 and all texture/samplers to be in binding 1.
@@ -81,9 +76,10 @@ public:
         return fPipeline;
     }
 
-    bool hasFragment() const { return fHasFragment; }
-    bool hasStepUniforms() const { return fHasStepUniforms; }
+    bool hasFragment()       const { return fHasFragment;        }
+    bool hasStepUniforms()   const { return fHasStepUniforms;    }
     int numTextureSamplers() const { return fNumTextureSamplers; }
+    bool usePushConstants()  const { return fUsePushConstants;   }
 
 private:
     VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
@@ -92,7 +88,8 @@ private:
                            VkPipeline,
                            bool hasFragment,
                            bool hasStepUniforms,
-                           int numTextureSamplers);
+                           int numTextureSamplers,
+                           bool usePushConstants);
 
     void freeGpuData() override;
 
@@ -101,6 +98,7 @@ private:
     bool fHasFragment = false;
     bool fHasStepUniforms = false;
     int fNumTextureSamplers = 0;
+    bool fUsePushConstants = false;
 };
 
 } // namespace skgpu::graphite

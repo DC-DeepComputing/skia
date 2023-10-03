@@ -441,12 +441,15 @@ static void setup_shader_stage_info(VkShaderStageFlagBits stage,
 static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedContext,
                                               bool hasStepUniforms,
                                               bool hasFragment,
-                                              int numTextureSamplers) {
+                                              int numTextureSamplers,
+                                              bool usePushConstants) {
     // Determine descriptor set layouts based upon the number of uniform buffers & texture/samplers.
     skia_private::STArray<2, VkDescriptorSetLayout> setLayouts;
     skia_private::STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData>
             uniformDescriptors;
-    uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformDescriptor);
+    if (!usePushConstants) {
+        uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformDescriptor);
+    }
     if (hasStepUniforms) {
         uniformDescriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
     }
@@ -479,6 +482,12 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
         }
     }
 
+    VkPushConstantRange pushConstantRange;
+    if (usePushConstants) {
+        pushConstantRange.offset = 0;
+        pushConstantRange.size = sizeof(float) * 4;
+        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    }
     VkPipelineLayoutCreateInfo layoutCreateInfo;
     memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
     layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -486,9 +495,8 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     layoutCreateInfo.flags = 0;
     layoutCreateInfo.setLayoutCount = setLayouts.size();
     layoutCreateInfo.pSetLayouts = setLayouts.begin();
-    // TODO: Add support for push constants.
-    layoutCreateInfo.pushConstantRangeCount = 0;
-    layoutCreateInfo.pPushConstantRanges = nullptr;
+    layoutCreateInfo.pushConstantRangeCount = usePushConstants ? 1 : 0;
+    layoutCreateInfo.pPushConstantRanges = usePushConstants ? &pushConstantRange : nullptr;
 
     VkResult result;
     VkPipelineLayout layout;
@@ -546,9 +554,12 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         sk_sp<VulkanRenderPass> compatibleRenderPass,
         VkPipelineCache pipelineCache) {
 
+    bool usePushConstants = sharedContext->vulkanCaps().maxPushConstantSize() > kPushConstantSize;
+
     SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
-    settings.fForceNoRTFlip = true; // TODO: Confirm
+    settings.fForceNoRTFlip = true;
+    settings.fUsePushConstants = usePushConstants;
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
     const RenderStep* step =
@@ -655,10 +666,12 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                 &pipelineShaderStages[1]);
     }
 
+    // Set up a push constant range for rtAdjust. Confirm values here.
     VkPipelineLayout pipelineLayout = setup_pipeline_layout(sharedContext,
                                                             !step->uniforms().empty(),
                                                             hasFragment,
-                                                            fsSkSLInfo.fNumTexturesAndSamplers);
+                                                            fsSkSLInfo.fNumTexturesAndSamplers,
+                                                            usePushConstants);
     if (pipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, vsModule, fsModule);
         return nullptr;
@@ -733,7 +746,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        vkPipeline,
                                        hasFragment,
                                        !step->uniforms().empty(),
-                                       fsSkSLInfo.fNumTexturesAndSamplers));
+                                       fsSkSLInfo.fNumTexturesAndSamplers,
+                                       usePushConstants));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
@@ -742,13 +756,17 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedCont
                                                VkPipeline pipeline,
                                                bool hasFragment,
                                                bool hasStepUniforms,
-                                               int numTextureSamplers)
+                                               int numTextureSamplers,
+                                               bool usePushConstants)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
         , fHasFragment(hasFragment)
         , fHasStepUniforms(hasStepUniforms)
-        , fNumTextureSamplers(numTextureSamplers) {}
+        , fNumTextureSamplers(numTextureSamplers)
+        , fUsePushConstants(usePushConstants) {
+
+}
 
 void VulkanGraphicsPipeline::freeGpuData() {
     auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());

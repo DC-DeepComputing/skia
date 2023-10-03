@@ -61,7 +61,14 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     fRequiredStorageBufferAlignment =  physDevProperties.limits.minStorageBufferOffsetAlignment;
     fRequiredTransferBufferAlignment = 4;
 
-    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
+    // Adreno devices don't support push constants well
+    if (!physDevProperties.vendorID == kQualcomm_VkVendor) {
+        fMaxPushConstantSize = std::min(physDevProperties.limits.maxPushConstantsSize,
+                                        (uint32_t)INT_MAX);
+        fUsePushConstants = fMaxPushConstantSize >= VulkanCaps::kPushConstantSize;
+    }
+
+    fResourceBindingReqs.fUniformBufferLayout = fUsePushConstants ? Layout::kStd140;
     // TODO(skia:14639): We cannot use std430 layout for SSBOs until SkSL gracefully handles
     // implicit array stride.
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd140;
@@ -109,11 +116,6 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
         fMaxVertexAttributes = physDevProperties.limits.maxVertexInputAttributes;
     }
     fMaxUniformBufferRange = physDevProperties.limits.maxUniformBufferRange;
-    // TODO: Add support for using regular uniform buffers or push constants to store intrinsic
-    // constant information. For now, require inline uniform support.
-    fSupportsInlineUniformBlocks =
-            extensions->hasExtension(VK_EXT_INLINE_UNIFORM_BLOCK_EXTENSION_NAME, 1);
-    SkASSERT(fSupportsInlineUniformBlocks);
 
     this->finishInitialization(contextOptions);
 }
