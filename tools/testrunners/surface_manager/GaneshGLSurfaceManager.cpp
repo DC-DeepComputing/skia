@@ -46,28 +46,47 @@ private:
     sk_sp<SkSurface> fSurface;
 };
 
+std::unique_ptr<SurfaceManager> withGLESConfig(std::string config,
+                                               int width,
+                                               int height,
+                                               GrContextOptions grContextOptions) {
+    auto contextFactory = std::make_unique<sk_gpu_test::GrContextFactory>(grContextOptions);
+    sk_gpu_test::ContextInfo contextInfo = contextFactory.get()->getContextInfo(
+            skgpu::ContextType::kGLES, sk_gpu_test::GrContextFactory::ContextOverrides::kNone);
+    GrDirectContext* context = contextInfo.directContext();
+    SkASSERT_RELEASE(context);
+
+    SkColorInfo colorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+    SkImageInfo info = SkImageInfo::Make({width, height}, colorInfo);
+    SkSurfaceProps props(/* flags= */ 0, kRGB_H_SkPixelGeometry);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
+            context, skgpu::Budgeted::kNo, info, /* sampleCount= */ 1, &props);
+    SkASSERT_RELEASE(surface);
+
+    return std::make_unique<GaneshGLSurfaceManager>(
+            std::move(contextFactory), contextInfo, context, surface, config, colorInfo);
+}
+
 std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
                                                            int width,
                                                            int height,
                                                            GrContextOptions* grContextOptions) {
     if (config == "gles") {
-        auto contextFactory = std::make_unique<sk_gpu_test::GrContextFactory>(
-                grContextOptions ? *grContextOptions : GrContextOptions());
-        sk_gpu_test::ContextInfo contextInfo = contextFactory.get()->getContextInfo(
-                skgpu::ContextType::kGLES, sk_gpu_test::GrContextFactory::ContextOverrides::kNone);
-        GrDirectContext* context = contextInfo.directContext();
-        SkASSERT_RELEASE(context);
+        return withGLESConfig(config, width, height, *grContextOptions);
+    }
+    if (config == "gles_internalMultisampleCount_4") {
+        grContextOptions->fInternalMultisampleCount = 4;
+        return withGLESConfig(config, width, height, *grContextOptions);
+    }
+    if (config == "gles_internalMultisampleCount_8") {
+        grContextOptions->fInternalMultisampleCount = 8;
+        return withGLESConfig(config, width, height, *grContextOptions);
 
-        SkColorInfo colorInfo(
-                kRGBA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
-        SkImageInfo info = SkImageInfo::Make({width, height}, colorInfo);
-        SkSurfaceProps props(/* flags= */ 0, kRGB_H_SkPixelGeometry);
-        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
-                context, skgpu::Budgeted::kNo, info, /* sampleCount= */ 1, &props);
-        SkASSERT_RELEASE(surface);
-
-        return std::make_unique<GaneshGLSurfaceManager>(
-                std::move(contextFactory), contextInfo, context, surface, config, colorInfo);
+    }
+    if (config == "gles_internalMultisampleCount_8_noReduceOpsTaskSplitting") {
+        grContextOptions->fInternalMultisampleCount = 8;
+        grContextOptions->fReduceOpsTaskSplitting = GrContextOptions::Enable::kYes;
+        return withGLESConfig(config, width, height, *grContextOptions);
     }
     return nullptr;
 }
