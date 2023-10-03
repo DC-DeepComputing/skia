@@ -109,11 +109,10 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
         fMaxVertexAttributes = physDevProperties.limits.maxVertexInputAttributes;
     }
     fMaxUniformBufferRange = physDevProperties.limits.maxUniformBufferRange;
-    // TODO: Add support for using regular uniform buffers or push constants to store intrinsic
-    // constant information. For now, require inline uniform support.
+    // TODO: Add support for push constants rather than having to use a uniform buffer
+    // when we do not have inline uniform support
     fSupportsInlineUniformBlocks =
             extensions->hasExtension(VK_EXT_INLINE_UNIFORM_BLOCK_EXTENSION_NAME, 1);
-    SkASSERT(fSupportsInlineUniformBlocks);
 
     this->finishInitialization(contextOptions);
 }
