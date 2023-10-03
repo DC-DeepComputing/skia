@@ -33,6 +33,24 @@
       "message": "Which CQ try jobs are actually removed? I only see formatting changes",
       "revId": "3151c6bd12fdfded345b8bca249e21d7b02cb23e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faca1d39_ea4f64b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T14:38:45Z",
+      "side": 1,
+      "message": "Marking question as unresolved.",
+      "parentUuid": "f46de96c_627986f9",
+      "revId": "3151c6bd12fdfded345b8bca249e21d7b02cb23e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
