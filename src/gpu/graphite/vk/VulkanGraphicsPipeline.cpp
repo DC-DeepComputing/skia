@@ -740,13 +740,13 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedCont
                                                PipelineInfo* pipelineInfo,
                                                VkPipelineLayout pipelineLayout,
                                                VkPipeline pipeline,
-                                               bool hasFragment,
+                                               bool hasFragmentUniforms,
                                                bool hasStepUniforms,
                                                int numTextureSamplers)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
-        , fHasFragment(hasFragment)
+        , fHasFragmentUniforms(hasFragmentUniforms)
         , fHasStepUniforms(hasStepUniforms)
         , fNumTextureSamplers(numTextureSamplers) {}
 

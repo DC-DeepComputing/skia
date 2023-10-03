@@ -409,6 +409,7 @@ void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexedInstanced: {
+                SkDebugf("drawIndexedInstanced\n");
                 auto draw = static_cast<DrawPassCommands::DrawIndexedInstanced*>(cmdPtr);
                 this->drawIndexedInstanced(draw->fType,
                                            draw->fBaseIndex,
@@ -533,6 +534,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
 }
 
 void DawnCommandBuffer::syncUniformBuffers() {
+    SkDebugf("syncUniformBuffers\n");
     if (fBoundUniformBuffersDirty) {
         fBoundUniformBuffersDirty = false;
         std::array<wgpu::BindGroupEntry, 3> entries;
@@ -561,9 +563,12 @@ void DawnCommandBuffer::syncUniformBuffers() {
             ++numBuffers;
         }
 
-        if (fActiveGraphicsPipeline->hasFragment() &&
+        if (fActiveGraphicsPipeline->hasFragmentUniforms() &&
             fBoundUniformBuffers[DawnGraphicsPipeline::kPaintUniformBufferIndex]) {
             auto boundBuffer = fBoundUniformBuffers[DawnGraphicsPipeline::kPaintUniformBufferIndex];
+
+            SkDebugf("boundBuffer: %p - has uniforms: %d\n", boundBuffer,
+                     fActiveGraphicsPipeline->hasFragmentUniforms());
 
             entries[numBuffers].binding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
             entries[numBuffers].buffer = boundBuffer->dawnBuffer();
@@ -695,6 +700,7 @@ void DawnCommandBuffer::drawIndexedInstanced(PrimitiveType type,
                                              unsigned int baseVertex,
                                              unsigned int baseInstance,
                                              unsigned int instanceCount) {
+    SkDebugf("here\n");
     SkASSERT(fActiveRenderPassEncoder);
     SkASSERT(fActiveGraphicsPipeline->primitiveType() == type);
 

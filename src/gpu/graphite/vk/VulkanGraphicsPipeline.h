@@ -81,7 +81,7 @@ public:
         return fPipeline;
     }
 
-    bool hasFragment() const { return fHasFragment; }
+    bool hasFragmentUniforms() const { return fHasFragmentUniforms; }
     bool hasStepUniforms() const { return fHasStepUniforms; }
     int numTextureSamplers() const { return fNumTextureSamplers; }
 
@@ -98,7 +98,7 @@ private:
 
     VkPipelineLayout fPipelineLayout = VK_NULL_HANDLE;
     VkPipeline fPipeline = VK_NULL_HANDLE;
-    bool fHasFragment = false;
+    bool fHasFragmentUniforms = false;
     bool fHasStepUniforms = false;
     int fNumTextureSamplers = 0;
 };

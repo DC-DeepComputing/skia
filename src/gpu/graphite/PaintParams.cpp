@@ -329,9 +329,6 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    // TODO: figure out how we can omit this block when the Paint's color isn't used.
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
-    builder->endBlock();
 
     this->handleDstRead(keyContext, builder, gatherer);
 
