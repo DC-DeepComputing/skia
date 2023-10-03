@@ -110,6 +110,30 @@
       },
       "revId": "6e0aee64f01dd242ea7fcbc3bf9003dafcff84d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63ab04b0_4955e7f3",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T18:17:29Z",
+      "side": 1,
+      "message": "I keep inflating ContextInfo with ContextOptions",
+      "parentUuid": "45372558_31c33280",
+      "range": {
+        "startLine": 60,
+        "startChar": 38,
+        "endLine": 60,
+        "endChar": 58
+      },
+      "revId": "6e0aee64f01dd242ea7fcbc3bf9003dafcff84d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
