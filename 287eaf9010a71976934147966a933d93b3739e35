@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a82f04f5_91f28675",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-10-03T16:13:35Z",
+      "side": 1,
+      "message": "I\u0027d recommend `records.get(start_index..start_index + num_entries)?` to avoid panics if the range is out of bounds. The call to `iter` should be unnecessary.",
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5809d48e_2d8d3d55",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 8
@@ -14,6 +31,30 @@
       "writtenOn": "2023-10-03T16:00:44Z",
       "side": 1,
       "message": "```\nINFO: From Compiling Rust staticlib bridge_rust_side (1 files):\nwarning: variable `target_color` is assigned to, but never used\n   --\u003e src/ports/fontations/src/ffi.rs:231:36\n    |\n231 |                         for (\u0026(mut target_color), color) in colors\n    |                                    ^^^^^^^^^^^^\n    |\n    \u003d note: consider using `_target_color` instead\n    \u003d note: `#[warn(unused_variables)]` on by default\n\nwarning: value assigned to `target_color` is never read\n   --\u003e src/ports/fontations/src/ffi.rs:235:29\n    |\n235 | ...                   target_color \u003d u32::from_be_bytes([\n    |                       ^^^^^^^^^^^^\n    |\n    \u003d help: maybe it is overwritten before being read?\n    \u003d note: `#[warn(unused_assignments)]` on by default\n```",
+      "range": {
+        "startLine": 235,
+        "startChar": 28,
+        "endLine": 235,
+        "endChar": 40
+      },
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c2509b3_c4eac275",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-10-03T16:13:35Z",
+      "side": 1,
+      "message": "I believe this should be `for (target_color, color) in colors.iter_mut().zip(...` and then `*target_color \u003d ...`",
+      "parentUuid": "5809d48e_2d8d3d55",
       "range": {
         "startLine": 235,
         "startChar": 28,
