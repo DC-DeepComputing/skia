@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e28d591b_db9d75b6",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-03T13:51:05Z",
+      "side": 1,
+      "message": "Really, clients should set both of these. Skia\u0027s not really guaranteeing that it will create an SkData copy and call the new one, just that if Skia does create an SkData copy it will attempt to call the new one. By accident we always do create an SkData copy at the moment, but that\u0027s an implementation detail resulting from a current awkward requirement from Chromium and not really due to anything sane.",
+      "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cd9ca55_e4a0b1dd",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-03T13:51:05Z",
+      "side": 1,
+      "message": "\"needs after the proc finishes\"\n\nIf the user does know that it will just do a decode or whatever greedily right there in the proc and not keep any reference to the data, then `SkDeserialImageProc` is more optimal since it means no copy needs to be made (Skia is always making a copy right now, but it doesn\u0027t actually always need to do so, it\u0027s something of an implementation issue).",
+      "range": {
+        "startLine": 53,
+        "startChar": 30,
+        "endLine": 53,
+        "endChar": 35
+      },
+      "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f527c34_d47f9a06",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-03T13:51:05Z",
+      "side": 1,
+      "message": "If we\u0027re introducing a new function callback, do we want to pass the alphaType too? It seems we need to do so for the user to correctly emulate the existing behavior?",
+      "revId": "b67f2a1758c4c3badd8bf21007d18fd4822ec3b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
