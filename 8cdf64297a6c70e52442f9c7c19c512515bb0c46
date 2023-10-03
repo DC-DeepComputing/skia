@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "375df16d_948cbcd2",
+        "filename": "bench/Benchmark.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-03T19:32:19Z",
+      "side": 1,
+      "message": "Bikeshed: maybe `shouldLoop`? \"Require\" implies that the test won\u0027t work if the loop count is 1, but this is really about tuning.",
+      "range": {
+        "startLine": 63,
+        "startChar": 17,
+        "endLine": 63,
+        "endChar": 32
+      },
+      "revId": "8cdf64297a6c70e52442f9c7c19c512515bb0c46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
