@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5809d48e_2d8d3d55",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-03T16:00:44Z",
+      "side": 1,
+      "message": "```\nINFO: From Compiling Rust staticlib bridge_rust_side (1 files):\nwarning: variable `target_color` is assigned to, but never used\n   --\u003e src/ports/fontations/src/ffi.rs:231:36\n    |\n231 |                         for (\u0026(mut target_color), color) in colors\n    |                                    ^^^^^^^^^^^^\n    |\n    \u003d note: consider using `_target_color` instead\n    \u003d note: `#[warn(unused_variables)]` on by default\n\nwarning: value assigned to `target_color` is never read\n   --\u003e src/ports/fontations/src/ffi.rs:235:29\n    |\n235 | ...                   target_color \u003d u32::from_be_bytes([\n    |                       ^^^^^^^^^^^^\n    |\n    \u003d help: maybe it is overwritten before being read?\n    \u003d note: `#[warn(unused_assignments)]` on by default\n```",
+      "range": {
+        "startLine": 235,
+        "startChar": 28,
+        "endLine": 235,
+        "endChar": 40
+      },
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
