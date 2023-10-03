@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "088d2ba5_926e6d4b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T17:13:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c21b5cdb_d5e35d7e",
+      "range": {
+        "startLine": 17,
+        "startChar": 46,
+        "endLine": 17,
+        "endChar": 60
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a74ba632_4edd3cdc",
@@ -64,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43de3a48_809cf11f",
+        "filename": "tools/testrunners/surface_manager/RasterSurfaceManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T17:13:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a74ba632_4edd3cdc",
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a271eb12_b70c84fb",
@@ -77,6 +119,30 @@
       "writtenOn": "2023-10-02T20:38:06Z",
       "side": 1,
       "message": "nit: LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "1f69173cd55642e562d6e71f30cb7dfc43ec9d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c9d39a1_f6e3cf6b",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T17:13:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a271eb12_b70c84fb",
       "range": {
         "startLine": 2,
         "startChar": 25,

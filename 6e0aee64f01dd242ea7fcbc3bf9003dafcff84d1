@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "798aeb6e_1b24e82c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T17:13:03Z",
+      "side": 1,
+      "message": "Note that I broke this CL into two to keep the diffs easier to read:\n\n- The ancestor CL https://skia-review.googlesource.com/c/skia/+/761765 moves `//gm/surface_manager` to `//tools/testrunners/surface_manager`\n- This CL adds the SurfaceOptions struct.",
+      "revId": "6e0aee64f01dd242ea7fcbc3bf9003dafcff84d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
