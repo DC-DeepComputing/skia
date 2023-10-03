@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5466b0a_2724a600",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T18:07:48Z",
+      "side": 1,
+      "message": "Done. I didn\u0027t know `nullptr` was a valid `std::function` value.",
+      "parentUuid": "d5a653a1_c759a66f",
+      "range": {
+        "startLine": 33,
+        "startChar": 68,
+        "endLine": 33,
+        "endChar": 92
+      },
+      "revId": "6e0aee64f01dd242ea7fcbc3bf9003dafcff84d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d4f3e51_b5699ca0",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-10-03T17:38:22Z",
       "side": 1,
       "message": "Does my previous comment still stand? Do we really need to have this be a getter on surface manager or can the Benchmark class keep track of it separately?",
+      "range": {
+        "startLine": 60,
+        "startChar": 38,
+        "endLine": 60,
+        "endChar": 58
+      },
+      "revId": "6e0aee64f01dd242ea7fcbc3bf9003dafcff84d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45372558_31c33280",
+        "filename": "tools/testrunners/surface_manager/SurfaceManager.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T18:07:48Z",
+      "side": 1,
+      "message": "The `ContextInfo` is an intermediate result that is created before the `SkSurface` is instantiated, see https://skia-review.googlesource.com/c/skia/+/761882/13/tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp#56. Because it is an intermediate result, there is currently no way to get it from outside the `SurfaceManager` instance.\n\nI don\u0027t think there is a way to recover the `ContextInfo` from an `SkSurface`.\n\nHere is an example use of `SurfaceManager::getGaneshContextInfo()` from the follow-up CL: https://skia-review.googlesource.com/c/skia/+/762118/9/bench/benchmark_target/GaneshBenchmarkTarget.cpp#64",
+      "parentUuid": "3d4f3e51_b5699ca0",
       "range": {
         "startLine": 60,
         "startChar": 38,
