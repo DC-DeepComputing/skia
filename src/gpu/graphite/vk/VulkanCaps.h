@@ -74,12 +74,9 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
-    bool supportsInlineUniformBlocks() const { return fSupportsInlineUniformBlocks; }
-
-    uint32_t maxVertexAttributes() const {
-        return fMaxVertexAttributes;
-    }
+    uint32_t maxVertexAttributes()   const { return fMaxVertexAttributes;   }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
+    uint32_t maxPushConstantSize()   const { return fMaxPushConstantSize;   }
 
     uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
 
@@ -92,6 +89,8 @@ private:
         kNvidia_VkVendor          = 4318,
         kQualcomm_VkVendor        = 20803,
     };
+
+    static constexpr unsigned int kPushConstantSize = sizeof(float) * 4;
 
     void init(const skgpu::VulkanInterface*,
               VkPhysicalDevice,
@@ -207,16 +206,17 @@ private:
     DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat);
     const DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat) const;
 
-    uint32_t fMaxVertexAttributes;
-    uint64_t fMaxUniformBufferRange;
+    uint32_t fMaxVertexAttributes   = 0;
+    uint64_t fMaxUniformBufferRange = 0;
+    uint32_t fMaxPushConstantSize   = 0;
 
     // Various bools to define whether certain Vulkan features are supported.
-    bool fSupportsMemorylessAttachments = false;
-    bool fSupportsYcbcrConversion = false; // TODO: Determine & assign real value.
-    bool fShouldAlwaysUseDedicatedImageMemory = false;
-    bool fGpuOnlyBuffersMorePerformant = false;
+    bool fSupportsMemorylessAttachments        = false;
+    bool fSupportsYcbcrConversion              = false; // TODO: Determine & assign real value.
+    bool fShouldAlwaysUseDedicatedImageMemory  = false;
+    bool fGpuOnlyBuffersMorePerformant         = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
-    bool fSupportsInlineUniformBlocks = false;
+    bool fUsePushConstants                     = false;
 };
 
 } // namespace skgpu::graphite
