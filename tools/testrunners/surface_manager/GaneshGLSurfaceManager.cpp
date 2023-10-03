@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "gm/surface_manager/SurfaceManager.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkSurface.h"
@@ -14,6 +13,7 @@
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/base/SkAssert.h"
 #include "tools/gpu/GrContextFactory.h"
+#include "tools/testrunners/surface_manager/SurfaceManager.h"
 
 #include <string>
 
