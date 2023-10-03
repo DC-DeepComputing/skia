@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4233330b_9e6db3aa",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T15:21:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "108a5f2b_8f7a31b4",
+      "range": {
+        "startLine": 58,
+        "startChar": 33,
+        "endLine": 58,
+        "endChar": 43
+      },
+      "revId": "3d916fe1d8804cf48d6fdb9643dcdc32d4e4205c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12caf636_bcf9c5c2",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-03T15:02:22Z",
       "side": 1,
       "message": "Hmmm, seems like maybe this should be `else if (dProcs.fImageProc)`? If the user implements both and the image data isn\u0027t recognized or is bad it will need to spend the time to reject it twice, or even make a copy this second time in order to reject the data again.",
+      "range": {
+        "startLine": 344,
+        "startChar": 4,
+        "endLine": 344,
+        "endChar": 36
+      },
+      "revId": "3d916fe1d8804cf48d6fdb9643dcdc32d4e4205c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0804363c_db42446f",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T15:21:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12caf636_bcf9c5c2",
       "range": {
         "startLine": 344,
         "startChar": 4,
