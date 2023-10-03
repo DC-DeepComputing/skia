@@ -22,6 +22,23 @@
       },
       "revId": "287eaf9010a71976934147966a933d93b3739e35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f4cb6ac_c769d922",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-03T16:01:53Z",
+      "side": 1,
+      "message": "Might want to wrap this line at ~100.",
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
