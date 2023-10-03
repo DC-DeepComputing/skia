@@ -117,6 +117,11 @@ solutions = [
 			patchBaseRev := skiaRev
 			cmd = append(cmd, "--patch_ref", fmt.Sprintf("%s@%s:%s", patchRepoURL, patchBaseRev, patchRef))
 		}
+		fmt.Println("HERE HERE HERE")
+		fmt.Println(cmd)
+		if _, err := exec.RunCwd(ctx, checkoutRoot, []string{"sleep", "10800"}); err != nil {
+			return err
+		}
 		if _, err := exec.RunCwd(ctx, checkoutRoot, cmd...); err != nil {
 			return err
 		}
