@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e4beb62_74e30d88",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-03T19:29:35Z",
+      "side": 1,
+      "message": "This works to just get the texture proxy but is a little odd.",
+      "range": {
+        "startLine": 108,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 51
+      },
+      "revId": "e63fe7db784f0edcd6c9a59c6b77dae7d17f84fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
