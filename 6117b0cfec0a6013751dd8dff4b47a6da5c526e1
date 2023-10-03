@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "628aebc4_e4d0bf2e",
+        "filename": "gen_compile_flags_txt_linux_amd64.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T14:48:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c46325e_66dd5d7a",
+      "range": {
+        "startLine": 1,
+        "startChar": 8,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "6117b0cfec0a6013751dd8dff4b47a6da5c526e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e2e8dda_f108bac6",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-03T12:31:32Z",
       "side": 1,
       "message": "Does this run the system clang++ binary?",
+      "range": {
+        "startLine": 11,
+        "startChar": 9,
+        "endLine": 11,
+        "endChar": 14
+      },
+      "revId": "6117b0cfec0a6013751dd8dff4b47a6da5c526e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3104f4c5_87b0a2e7",
+        "filename": "gen_compile_flags_txt_linux_amd64.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T14:48:48Z",
+      "side": 1,
+      "message": "Deleted - leftover from earlier iteration.",
+      "parentUuid": "9e2e8dda_f108bac6",
       "range": {
         "startLine": 11,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6044a0e9_a4943eff",
+        "filename": "gen_compile_flags_txt_linux_amd64.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T14:48:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8e89612_11cdab9b",
+      "range": {
+        "startLine": 47,
+        "startChar": 12,
+        "endLine": 47,
+        "endChar": 16
+      },
+      "revId": "6117b0cfec0a6013751dd8dff4b47a6da5c526e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9e5964d_f30473c1",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-03T12:31:32Z",
       "side": 1,
       "message": "What is this for? https://bazel.build/rules/lib/fragments/cpp doesn\u0027t tell me much",
+      "range": {
+        "startLine": 73,
+        "startChar": 18,
+        "endLine": 73,
+        "endChar": 21
+      },
+      "revId": "6117b0cfec0a6013751dd8dff4b47a6da5c526e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63da63fc_a11ce740",
+        "filename": "gen_compile_flags_txt_linux_amd64.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T14:48:48Z",
+      "side": 1,
+      "message": "Deleted - leftover from earlier iteration.",
+      "parentUuid": "b9e5964d_f30473c1",
       "range": {
         "startLine": 73,
         "startChar": 18,

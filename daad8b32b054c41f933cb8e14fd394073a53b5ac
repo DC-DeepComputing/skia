@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17b560ba_eceebd57",
+        "filename": "bazel/gen_compile_flags_txt_linux_amd64.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-03T14:48:48Z",
+      "side": 1,
+      "message": "Kevin: Can you think of anything else I should take into account?",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 0
+      },
+      "revId": "daad8b32b054c41f933cb8e14fd394073a53b5ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
