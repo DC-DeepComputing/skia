@@ -11,8 +11,32 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/gpu/GrContextOptions.h"
+#include "include/gpu/graphite/ContextOptions.h"
+#include "include/private/gpu/graphite/ContextOptionsPriv.h"
 
 namespace skwindow {
+
+struct GraphiteContextOptions {
+    GraphiteContextOptions() {
+        fOptions.fOptionsPriv = &fPriv;
+    }
+
+    GraphiteContextOptions(const GraphiteContextOptions& other)
+        : fOptions(other.fOptions)
+        , fPriv(other.fPriv) {
+        fOptions.fOptionsPriv = &fPriv;
+    }
+
+    GraphiteContextOptions& operator=(const GraphiteContextOptions& other) {
+        fOptions = other.fOptions;
+        fPriv = other.fPriv;
+        fOptions.fOptionsPriv = &fPriv;
+        return *this;
+    }
+
+    skgpu::graphite::ContextOptions     fOptions;
+    skgpu::graphite::ContextOptionsPriv fPriv;
+};
 
 struct DisplayParams {
     DisplayParams()
@@ -26,15 +50,16 @@ struct DisplayParams {
         , fCreateProtectedNativeBackend(false)
     {}
 
-    SkColorType         fColorType;
-    sk_sp<SkColorSpace> fColorSpace;
-    int                 fMSAASampleCount;
-    GrContextOptions    fGrContextOptions;
-    SkSurfaceProps      fSurfaceProps;
-    bool                fDisableVsync;
-    bool                fDelayDrawableAcquisition;
-    bool                fEnableBinaryArchive;
-    bool                fCreateProtectedNativeBackend = false;
+    SkColorType            fColorType;
+    sk_sp<SkColorSpace>    fColorSpace;
+    int                    fMSAASampleCount;
+    GrContextOptions       fGrContextOptions;
+    GraphiteContextOptions fGraphiteContextOptions;
+    SkSurfaceProps         fSurfaceProps;
+    bool                   fDisableVsync;
+    bool                   fDelayDrawableAcquisition;
+    bool                   fEnableBinaryArchive;
+    bool                   fCreateProtectedNativeBackend = false;
 };
 
 }  // namespace skwindow

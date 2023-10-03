@@ -1206,6 +1206,27 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         return {renderers->analyticRRect(), nullptr};
     }
 
+    // Path rendering options. For now the strategy is very simple and not optimal:
+    // I. Use tessellation if MSAA is required for an effect.
+    // II: otherwise:
+    //    1. Always use compute AA if supported unless it was excluded by ContextOptions.
+    //    2. Use CPU raster AA if hardware MSAA is disabled or it was explicitly requested by
+    //       ContextOptions.
+    //    3. Otherwise use tessellation.
+    bool forceRasterAA = false, forceTessellation = false;
+#if defined(GRAPHITE_TEST_UTILS)
+    switch (fRecorder->priv().caps()->requestedPathRendererStrategy()) {
+        case PathRendererStrategy::kRasterAA:
+            forceRasterAA = true;
+            break;
+        case PathRendererStrategy::kHardwareMSAA:
+            forceTessellation = true;
+            break;
+        default:
+            break;
+    }
+#endif
+
     PathAtlas* pathAtlas = nullptr;
     // Prefer compute atlas draws if supported. This currently implicitly filters out clip draws as
     // they require MSAA. Eventually we may want to route clip shapes to the atlas as well but not
@@ -1213,14 +1234,16 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     // TODO(b/285195175): There may be reasons to prefer tessellation, e.g. if the shape is large
     // and hardware MSAA looks acceptable.
     AtlasProvider* atlasProvider = fRecorder->priv().atlasProvider();
-    if (atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kCompute)) {
+    if (atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kCompute) &&
+        !forceTessellation && !forceRasterAA) {
         // TODO: vello can't do correct strokes yet. Maybe this shouldn't get selected for stroke
         // renders until all stroke styles are supported?
         pathAtlas = fDC->getComputePathAtlas(fRecorder);
     // Only use CPU rendered paths when multisampling is disabled
     // TODO: enable other uses of the software path renderer
-    } else if (fRecorder->priv().caps()->defaultMSAASamplesCount() <= 1 &&
-               atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kRaster)) {
+    } else if (atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kRaster) &&
+               !forceTessellation &&
+               (forceRasterAA || fRecorder->priv().caps()->defaultMSAASamplesCount() <= 1)) {
         pathAtlas = fDC->getRasterPathAtlas(fRecorder);
     }
     // We currently always use a coverage mask renderer if a `PathAtlas` is selected.
