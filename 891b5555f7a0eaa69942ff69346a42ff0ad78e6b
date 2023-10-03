@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81c3daae_94434173",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-03T17:49:58Z",
+      "side": 1,
+      "message": "Just cleanup that I noticed while trying to understand how the code worked. This is equivalent (assuming the call is idempotent), just avoids a redundant call.",
+      "range": {
+        "startLine": 94,
+        "startChar": 43,
+        "endLine": 94,
+        "endChar": 50
+      },
+      "revId": "891b5555f7a0eaa69942ff69346a42ff0ad78e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
