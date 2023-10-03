@@ -2144,7 +2144,7 @@ STAGE(hsl_to_rgb, NoCtx) {
     F h = r,
       s = g,
       l = b,
-      c = (1.0f - abs_(2.0f * l - 1)) * s;
+      c = (1.0f - abs_(2.0f * l - 1)) * clamp_01_(s);
 
     auto hue_to_rgb = [&](F hue) {
         F q = clamp_01_(abs_(fract(hue) * 6.0f - 3.0f) - 1.0f);
