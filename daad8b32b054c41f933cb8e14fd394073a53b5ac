@@ -22,6 +22,30 @@
       },
       "revId": "daad8b32b054c41f933cb8e14fd394073a53b5ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a93efb66_ed49bded",
+        "filename": "bazel/gen_compile_flags_txt_linux_amd64.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-03T14:57:41Z",
+      "side": 1,
+      "message": "I\u0027m hopeful that the defines and local_defines will become less important and maybe go away in the buffet build.\n\nGood enough for now, I think.",
+      "parentUuid": "17b560ba_eceebd57",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 0
+      },
+      "revId": "daad8b32b054c41f933cb8e14fd394073a53b5ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
