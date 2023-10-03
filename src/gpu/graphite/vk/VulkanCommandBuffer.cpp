@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -103,7 +104,6 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
     // When making a new command buffer, we automatically begin the command buffer
     this->begin();
     // Each command buffer will have an intrinsic uniform buffer, so create & store that buffer
-    // TODO: Look into implementing this with a push constant or an inline uniform block
     fIntrinsicUniformBuffer = resourceProvider->createBuffer(4 * sizeof(float),
                                                              BufferType::kUniform,
                                                              AccessPattern::kHostVisible);
@@ -403,6 +403,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
         return false;
     }
 
+    fCurrentViewport = viewport;
     VkViewport vkViewport = {
         viewport.fLeft,
         viewport.fTop,
@@ -416,7 +417,6 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                /*firstViewport=*/0,
                                /*viewportCount=*/1,
                                &vkViewport));
-    fCurrentViewport = viewport;
 
     for (const auto& drawPass : drawPasses) {
         this->addDrawPass(drawPass.get());
@@ -705,7 +705,36 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
             {fIntrinsicUniformBuffer.get(), /*size_t offset=*/0};
     STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-    descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformDescriptor);
+
+    const VulkanCaps& vulkanCaps =
+            static_cast<const VulkanSharedContext*>(fSharedContext)->vulkanCaps();
+
+    SkASSERT(fActive);
+    if (!fActiveGraphicsPipeline) {
+        SKGPU_LOG_E("Attempted to bind uniforms with no active graphics pipeline");
+        return;
+    }
+    if (fActiveGraphicsPipeline->usePushConstants()) {
+        const float x = fCurrentViewport.fLeft - fReplayTranslation.x();
+        const float y = fCurrentViewport.fTop  - fReplayTranslation.y();
+        float invTwoW = 2.f / fCurrentViewport.width();
+        float invTwoH = 2.f / fCurrentViewport.height();
+        float rtAdjust[4] = {invTwoW, invTwoH, -1.f - x * invTwoW, -1.f - y * invTwoH};
+
+        // TODO: Confirm offset, shader stage values. Assert offset, size are multiples of 4.
+        // SkToBool([val] & 0x3);
+        SkASSERT(sizeof(rtAdjust) == VulkanGraphicsPipeline::kPushConstantSize);
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdPushConstants(fPrimaryCommandBuffer,
+                                     fActiveGraphicsPipeline->layout(),
+                                     VK_SHADER_STAGE_VERTEX_BIT,
+                                     /*offset=*/0,
+                                     VulkanGraphicsPipeline::kPushConstantSize,
+                                     &rtAdjust));
+    } else {
+        descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformDescriptor);
+    }
+
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
             fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
         descriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
@@ -721,9 +750,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
         SKGPU_LOG_E("Unable to find or create descriptor set");
         return;
     }
-    static uint64_t maxUniformBufferRange = static_cast<const VulkanSharedContext*>(
-            fSharedContext)->vulkanCaps().maxUniformBufferRange();
-    float rtAdjust[4];
+
+    static uint64_t maxUniformBufferRange = vulkanCaps.maxUniformBufferRange();
 
     for (int i = 0; i < descriptors.size(); i++) {
         int descriptorBindingIndex = descriptors.at(i).bindingIndex;
@@ -737,36 +765,12 @@ void VulkanCommandBuffer::bindUniformBuffers() {
             bufferInfo.buffer = vulkanBuffer->vkBuffer();
             bufferInfo.offset = fUniformBuffersToBind[descriptorBindingIndex].fOffset;
             bufferInfo.range = clamp_ubo_binding_size(bufferInfo.offset, vulkanBuffer->size(),
-                                                        maxUniformBufferRange);
+                                                      maxUniformBufferRange);
 
             VkWriteDescriptorSet writeInfo;
-            VkWriteDescriptorSetInlineUniformBlockEXT writeInlineUniform;
             memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
             writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            // Perform special setup for intrinsic uniform when appropriate.
-            if (descriptors.at(i).type == DescriptorType::kInlineUniform) {
-                // Vulkan's framebuffer space has (0, 0) at the top left. This agrees with
-                // Skia's device coords. However, in NDC (-1, -1) is the bottom left. So we flip
-                // the origin here (assuming all surfaces we have are TopLeft origin).
-                const float x = fCurrentViewport.x() - fReplayTranslation.x();
-                const float y = fCurrentViewport.y() - fReplayTranslation.y();
-                float invTwoW = 2.f / fCurrentViewport.width();
-                float invTwoH = 2.f / fCurrentViewport.height();
-                rtAdjust[0] = invTwoW;
-                rtAdjust[1] = invTwoH;
-                rtAdjust[2] = -1.f - x * invTwoW;
-                rtAdjust[3] = -1.f - y * invTwoH;
-
-                writeInlineUniform.sType =
-                        VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_INLINE_UNIFORM_BLOCK_EXT;
-                writeInlineUniform.pNext = nullptr;
-                writeInlineUniform.dataSize = fIntrinsicUniformBuffer->size();
-                writeInlineUniform.pData = &rtAdjust;
-
-                writeInfo.pNext = &writeInlineUniform;
-            } else {
-                writeInfo.pNext = nullptr;
-            }
+            writeInfo.pNext = nullptr;
             writeInfo.dstSet = *set->descriptorSet();
             writeInfo.dstBinding = descriptorBindingIndex;
             writeInfo.dstArrayElement = 0;
