@@ -710,8 +710,8 @@ public:
         return backend == kNonRendering_Backend;
     }
 
-    int calculateLoops(int defaultLoops) const override {
-        return 1;
+    bool requiresLooping() const override {
+        return true;
     }
 
     void onPreDraw(SkCanvas*) override {
