@@ -417,6 +417,7 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexedInstanced: {
+                SkDebugf("Mtl:: drawIndexedInstanced\n");
                 auto draw = static_cast<DrawPassCommands::DrawIndexedInstanced*>(cmdPtr);
                 this->drawIndexedInstanced(draw->fType,
                                            draw->fBaseIndex,
