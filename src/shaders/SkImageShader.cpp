@@ -373,6 +373,52 @@ sk_sp<SkShader> SkMakeBitmapShaderForPaint(const SkPaint& paint, const SkBitmap&
     return s;
 }
 
+SkRect SkModifyPaintAndDstForDrawImageRect(const SkImage* image,
+                                           const SkSamplingOptions& sampling,
+                                           SkRect src,
+                                           SkRect dst,
+                                           bool strictSrcSubset,
+                                           SkPaint* paint) {
+    SkASSERT(image);
+    SkRect imgBounds = SkRect::Make(image->bounds());
+
+    SkASSERT(src.isFinite() && dst.isFinite() && dst.isSorted());
+    SkMatrix localMatrix = SkMatrix::RectToRect(src, dst);
+    if (!imgBounds.contains(src)) {
+        if (!src.intersect(imgBounds)) {
+            return SkRect::MakeEmpty(); // Nothing to draw for this entry
+        }
+        // Update dst to match smaller src
+        dst = localMatrix.mapRect(src);
+    }
+
+    bool imageIsAlphaOnly = SkColorTypeIsAlphaOnly(image->colorType());
+
+    sk_sp<SkShader> imgShader;
+    if (strictSrcSubset) {
+        imgShader = SkImageShader::MakeSubset(sk_ref_sp(image), src,
+                                              SkTileMode::kClamp, SkTileMode::kClamp,
+                                              sampling, &localMatrix);
+    } else {
+        imgShader = image->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
+                                      sampling, &localMatrix);
+    }
+    if (!imgShader) {
+        return SkRect::MakeEmpty();
+    }
+    if (imageIsAlphaOnly && paint->getShader()) {
+        // Compose the image shader with the paint's shader. Alpha images+shaders should output the
+        // texture's alpha multiplied by the shader's color. DstIn (d*sa) will achieve this with
+        // the source image and dst shader (MakeBlend takes dst first, src second).
+        imgShader = SkShaders::Blend(SkBlendMode::kDstIn, paint->refShader(), std::move(imgShader));
+    }
+
+    paint->setStyle(SkPaint::kFill_Style);
+    paint->setShader(std::move(imgShader));
+    paint->setPathEffect(nullptr);  // neither drawImageRect does not support path effects
+    return dst;
+}
+
 void SkShaderBase::RegisterFlattenables() { SK_REGISTER_FLATTENABLE(SkImageShader); }
 
 namespace {
