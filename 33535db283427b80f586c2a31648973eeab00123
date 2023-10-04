@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74dec1ae_416b1f37",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-04T19:49:00Z",
+      "side": 1,
+      "message": "Good question. I guess \"hardware MSAA\" here is a placeholder for \"tessellation\" since I wanted a way to force non-atlas rendering. Should I rename it as such?\n\nIn single-sample aliased mode, the \"default\" strategy might tessellate in some cases. Viewer currently doesn\u0027t have working a \"MSAA sample count\" UI for Graphite so maybe this strategy becomes \"tessellate only\" and the sample count is adjusted via a different toggle? We\u0027ll also have a `kCompute16xMSAA` strategy eventually and I\u0027m not sure if that should be adjustable using the the \"MSAA sample count\" buttons.",
+      "parentUuid": "cfda7724_3e570553",
+      "range": {
+        "startLine": 829,
+        "startChar": 35,
+        "endLine": 829,
+        "endChar": 48
+      },
+      "revId": "33535db283427b80f586c2a31648973eeab00123",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8d4ec98_a2f640f7",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 5
