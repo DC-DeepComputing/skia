@@ -33,6 +33,23 @@
       "message": "PTAL,A",
       "revId": "591e6d6a09ff61e9230af468f7598f5bd3ba22c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea068cec_48f30da6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T14:27:59Z",
+      "side": 1,
+      "message": "One question -- while the CL makes sense, it\u0027s not clear how the assigned bug is related to it. Is this the correct bug?",
+      "revId": "591e6d6a09ff61e9230af468f7598f5bd3ba22c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
