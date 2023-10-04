@@ -710,16 +710,16 @@ void BlendShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
-void BlendModeBlenderBlock::BeginBlock(const KeyContext& keyContext,
-                                       PaintParamsKeyBuilder* builder,
-                                       PipelineDataGatherer* gatherer,
-                                       SkBlendMode blendMode) {
+void BlendModeBlenderBlock::AddBlock(const KeyContext& keyContext,
+                                     PaintParamsKeyBuilder* builder,
+                                     PipelineDataGatherer* gatherer,
+                                     SkBlendMode blendMode) {
     if (gatherer) {
         VALIDATE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kBlendModeBlender)
         gatherer->write(SkTo<int>(blendMode));
     }
 
-    builder->beginBlock(BuiltInCodeSnippetID::kBlendModeBlender);
+    builder->addBlock(BuiltInCodeSnippetID::kBlendModeBlender);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -849,8 +849,7 @@ void AddBlendModeColorFilter(const KeyContext& keyContext,
               // rather than allowing it to sometimes call 'blend_porter_duff'. This reduces
               // the number of shader combinations and allows the pre-compilation system to more
               // easily match the rendering path.
-              BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, bm);
-              builder->endBlock();
+              BlendModeBlenderBlock::AddBlock(keyContext, builder, gatherer, bm);
           },
           /* addSrcToKey= */ [&]() -> void {
               SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, srcColor);
@@ -964,9 +963,7 @@ static void add_children_to_key(const KeyContext& keyContext,
 
                 case ChildType::kBlender:
                     // A "passthrough" blender performs `blend_src_over(src, dest)`.
-                    BlendModeBlenderBlock::BeginBlock(
-                            childContext, builder, gatherer, SkBlendMode::kSrcOver);
-                    builder->endBlock();
+                    AddKnownModeBlend(childContext, builder, gatherer, SkBlendMode::kSrcOver);
                     break;
             }
         }
