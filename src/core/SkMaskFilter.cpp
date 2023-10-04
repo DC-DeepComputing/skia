@@ -46,6 +46,10 @@ bool SkMaskFilterBase::asABlur(BlurRec*) const {
     return false;
 }
 
+sk_sp<SkImageFilter> SkMaskFilterBase::asImageFilter(const SkMatrix& ctm) const {
+    return nullptr;
+}
+
 static SkMask extractMaskSubset(const SkMask& src, SkIRect bounds, int32_t newX, int32_t newY) {
     SkASSERT(src.fBounds.contains(bounds));
 
