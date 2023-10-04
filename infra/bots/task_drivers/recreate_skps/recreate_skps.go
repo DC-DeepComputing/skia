@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	//"time"
 
 	"go.skia.org/infra/go/depot_tools"
 	"go.skia.org/infra/go/exec"
@@ -117,6 +118,10 @@ solutions = [
 			patchBaseRev := skiaRev
 			cmd = append(cmd, "--patch_ref", fmt.Sprintf("%s@%s:%s", patchRepoURL, patchBaseRev, patchRef))
 		}
+		fmt.Println("HERE HERE HERE")
+		fmt.Println(cmd)
+		fmt.Println("SLEEPING NOW")
+		// time.Sleep(10800 * time.Second)
 		if _, err := exec.RunCwd(ctx, checkoutRoot, cmd...); err != nil {
 			return err
 		}
@@ -195,6 +200,7 @@ func main() {
 
 	// Check out depot_tools at the exact revision expected by tests (defined in recipes.cfg), and
 	// make it available to tests by by adding it to the PATH.
+	// CHEKCOUT depot_tools at head. to see what happens.
 	var depotToolsDir string
 	if err := td.Do(ctx, td.Props("Check out depot_tools"), func(ctx context.Context) error {
 		var err error
@@ -203,6 +209,21 @@ func main() {
 	}); err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	// Hack warning: Sync depot tools to HEAD because of unknown problems syncing chrome due to
+	// submodules. This was way easier to do then to try to update recipes which has not been
+	// updated in years.
+	depotToolsUpdateCommand := &exec.Command{
+		Name: filepath.Join(depotToolsDir, "update_depot_tools"),
+		Dir:  skiaDir,
+		Env: []string{
+			fmt.Sprintf("PATH=%s:%s", os.Getenv("PATH"), depotToolsDir),
+		},
+	}
+	if err := exec.Run(ctx, depotToolsUpdateCommand); err != nil {
+		td.Fatal(ctx, err)
+	}
+
 	ctx = td.WithEnv(ctx, []string{"PATH=%(PATH)s:" + depotToolsDir})
 
 	// Sync Chrome.
