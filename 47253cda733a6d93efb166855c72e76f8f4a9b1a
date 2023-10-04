@@ -34,6 +34,24 @@
       "parentUuid": "e594db26_d23e4c86",
       "revId": "47253cda733a6d93efb166855c72e76f8f4a9b1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c0d64e_72a6bd9b",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-04T00:42:26Z",
+      "side": 1,
+      "message": "I believe this is now solved (as of Patchset 3) by doing the existing convexity test and then (if it is convex) testing for the path being trivial (all contours have zero area) and returning the empty path if it is.",
+      "parentUuid": "d05ebe74_fd9c225f",
+      "revId": "47253cda733a6d93efb166855c72e76f8f4a9b1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
