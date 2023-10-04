@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "324a62d4_bd00cbf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-04T19:17:28Z",
+      "side": 1,
+      "message": "As a follow-up, I could see having a helper that does a Compose, a templated inner child action, and then adds the colorspace block for the outer child. This gets most use cases for color space transforms, except for the working-format nested-compose where the inner compose needs the colorspace transform to happen as the inner child. Maybe that\u0027s just a pre-transform or a post-transform option?",
+      "revId": "91a668fe5679653dedc4d00f8285b2f0995f1985",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
