@@ -45,14 +45,19 @@ public:
     PathAtlas(uint32_t width, uint32_t height);
     virtual ~PathAtlas();
 
+    using MaskAndOrigin = std::pair<CoverageMaskShape::MaskInfo, SkIPoint>;
+
     /**
      * Searches the atlas for a slot that can fit a coverage mask for a clipped shape with the given
      * bounds in device coordinates and submits the mask to be drawn into the found atlas region.
      *
-     * Returns false if a the shape cannot fit in the atlas. Otherwise, returns true and populates
-     * `outAtlasBounds` with the atlas-space boundaries of the mask region.
+     * Returns an empty result if a the shape cannot fit in the atlas. Otherwise, returns the
+     * MaskInfo for sampling the eventually-rendered coverage mask and the device-space origin the
+     * mask should be drawn at (e.g. its recorded draw should be an integer translation matrix)
      *
      * The bounds of the atlas entry is laid out with a 1 pixel outset from the given dimensions.
+     * This allows the mask to be sampled safely with linear filtering without worrying about HW
+     * filtering accessing pixels from other entries.
      *
      * `shape` will be drawn after applying the linear components (scale, rotation, skew) of the
      * provided `localToDevice` transform. This is done by  translating the shape by the inverse of
@@ -70,12 +75,11 @@ public:
      * This method lazily creates a TextureProxy that can be referenced by tasks that want to sample
      * the atlas.
      */
-    bool addShape(Recorder*,
-                  const Rect& transformedShapeBounds,
-                  const Shape& shape,
-                  const Transform& localToDevice,
-                  const SkStrokeRec& style,
-                  CoverageMaskShape::MaskInfo* outMaskInfo);
+    std::optional<MaskAndOrigin> addShape(Recorder*,
+                                          const Rect& transformedShapeBounds,
+                                          const Shape& shape,
+                                          const Transform& localToDevice,
+                                          const SkStrokeRec& style);
 
     // Clear all scheduled atlas draws and free up atlas allocations. After this call the atlas can
     // be considered cleared and available for new shape insertions. However this method does not
@@ -93,13 +97,6 @@ public:
 protected:
     const TextureProxy* texture() const { return fTexture.get(); }
 
-    virtual void onAddShape(const Shape&,
-                            const Transform& transform,
-                            const Rect& atlasBounds,
-                            skvx::int2 deviceOffset,
-                            const SkStrokeRec&) = 0;
-    virtual void onReset() = 0;
-
     struct MaskFormat {
         SkColorType fColorType = kUnknown_SkColorType;
         bool requiresStorageUsage = false;
@@ -108,6 +105,18 @@ protected:
 
 private:
     bool initializeTextureIfNeeded(Recorder*);
+
+    /**
+     * Record necessary operations to draw the Shape into the atlas, clipped to the provided
+     * 'atlasBounds'. The 'transform' will transform the shape such that the desired portion of its
+     * geometry overlaps with 'atlasBounds'. The 1px padding between atlas entries is accounted for
+     * externally to this function.
+    */
+    virtual void onAddShape(const Shape&,
+                            const Transform& transform,
+                            const Rect& atlasBounds,
+                            const SkStrokeRec&) = 0;
+    virtual void onReset() = 0;
 
     skgpu::RectanizerSkyline fRectanizer;
 
@@ -155,8 +164,7 @@ public:
     std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const override;
 
 private:
-    void onAddShape(
-            const Shape&, const Transform&, const Rect&, skvx::int2, const SkStrokeRec&) override;
+    void onAddShape(const Shape&, const Transform&, const Rect&, const SkStrokeRec&) override;
     void onReset() override {
         fScene.reset();
         fOccuppiedWidth = fOccuppiedHeight = 0;
@@ -189,11 +197,8 @@ public:
     void recordUploads(DrawContext*, Recorder*);
 
 protected:
-    void onAddShape(const Shape&,
-                    const Transform& transform,
-                    const Rect& atlasBounds,
-                    skvx::int2 deviceOffset,
-                    const SkStrokeRec&) override;
+    void onAddShape(const Shape&, const Transform&, const Rect&, const SkStrokeRec&) override;
+
     void onReset() override;
     MaskFormat coverageMaskFormat(const Caps*) const override;
 
