@@ -117,8 +117,14 @@ private:
 class KeyContextWithColorInfo : public KeyContext {
 public:
     KeyContextWithColorInfo(const KeyContext& other, const SkColorInfo& info) : KeyContext(other) {
-        SkASSERT(fPaintColor.isOpaque());
-        SkColorSpaceXformSteps(fDstColorInfo, info).apply(fPaintColor.vec());
+        // We want to keep fPaintColor's alpha value but replace the RGB with values in the new
+        // color space
+        SkPMColor4f tmp = fPaintColor;
+        tmp.fA = 1.0f;
+        SkColorSpaceXformSteps(fDstColorInfo, info).apply(tmp.vec());
+        fPaintColor.fR = tmp.fR;
+        fPaintColor.fG = tmp.fG;
+        fPaintColor.fB = tmp.fB;
         fDstColorInfo = info;
     }
 
