@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "309d3d99_f9c02dd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "In addition to addressing your feedback, I made several changes in this patchset with a focus on simplicity and clarity, notably:\n\n- I removed the magic value from `--loops` indicating loop auto-tuning, and made that into its own `--autoTuneLoops` boolean flag.\n- I renamed some flags and rewrote their descriptions.\n- I added better flag validation.\n- I replaced `BenchmarkTarget::estimateNumRequiredLoops()` with `BenchmarkTarget::autoTuneLoops()`, and extracted the benchmark warmup behavior of `GaneshBenchmarkTarget::estimateNumRequiredLoops()` into a new virtual `warmUp()` method that must be implemented by all `BenchmarkTarget` subclasses.\n- I deleted some `BenchmarkTarget` methods that are no longer needed or that implemented behaviors that could be moved to `BazelBenchmarkRunner.cpp`.",
+      "revId": "6514336aa6b6ad1cf6ae0b61134fc96d8ea847eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "853046c7_14501091",
@@ -24,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b0107b_5d188eac",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Ack, I won\u0027t add any more targets.",
+      "parentUuid": "853046c7_14501091",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 18
+      },
+      "revId": "6514336aa6b6ad1cf6ae0b61134fc96d8ea847eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bfb742d_de210d66",
@@ -37,6 +78,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "Is the plan to turn one benchmark file into one Bazel target like we are doing for unit tests (and gms?)",
+      "range": {
+        "startLine": 51,
+        "startChar": 9,
+        "endLine": 51,
+        "endChar": 22
+      },
+      "revId": "6514336aa6b6ad1cf6ae0b61134fc96d8ea847eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24cc4952_43f184db",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "In principle we would group them based on whether they are GPU-only or CPU-only like we do with GMs and unit tests.",
+      "parentUuid": "0bfb742d_de210d66",
       "range": {
         "startLine": 51,
         "startChar": 9,

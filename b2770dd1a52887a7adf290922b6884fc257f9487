@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7058c371_3c59a109",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "It\u0027s useful during debugging. I\u0027ve examined the output PNGs multiple times while working on this CL as a quick correctness check. I added a flag to gate this behavior, defaulting to not writing PNGs to disk.",
+      "parentUuid": "c32d845a_58da87cc",
+      "range": {
+        "startLine": 41,
+        "startChar": 67,
+        "endLine": 41,
+        "endChar": 70
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e94c2a7_7a7b4354",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "builder is very old terminology. Prefer \"traces\" or \"benchmark\"",
+      "range": {
+        "startLine": 57,
+        "startChar": 86,
+        "endLine": 57,
+        "endChar": 93
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf0e52c_d2dea948",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done. I copied this flag from nanobench verbatim.",
+      "parentUuid": "0e94c2a7_7a7b4354",
       "range": {
         "startLine": 57,
         "startChar": 86,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "747c217f_84a7d1f0",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6f2c8f5_a29a102b",
+      "range": {
+        "startLine": 63,
+        "startChar": 41,
+        "endLine": 63,
+        "endChar": 48
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b940865e_46e982b8",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e737259_f723e52d",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "This flag is nonstatic because it\u0027s used elsewhere: https://skia-review.googlesource.com/c/skia/+/762118/9/bench/benchmark_target/RasterBenchmarkTarget.cpp#26.",
+      "parentUuid": "b940865e_46e982b8",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 12
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1aba775_363206aa",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "Shouldn\u0027t we define loops here and declare it in other files it might need use? It feels a bit strange to declare a flag here in main and define it elsewhere.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 11
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30c8f53c_5fdd801f",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1aba775_363206aa",
       "range": {
         "startLine": 67,
         "startChar": 0,
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a5df68e_ba49fd81",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Here is where these come from:\n\nhttps://skia.googlesource.com/skia/+/a063eaeaf1e09e4d6f42e0f44a5723622a46d21c/bench/nanobench.cpp#1565\n\nI\u0027m not sure if these options any effect in https://perf.skia.org, or if they are surfaced in the UI. Maybe these are included in the JSON for self documentation purposes? I\u0027ll investigate tomorrow.",
+      "parentUuid": "f5d9a819_a2fb5e50",
+      "range": {
+        "startLine": 350,
+        "startChar": 15,
+        "endLine": 350,
+        "endChar": 22
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3eb806fe_8a048a58",
         "filename": "bench/BazelBenchmarkRunner.cpp",
         "patchSetId": 9
@@ -152,6 +296,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "I know it\u0027s legal to have ++ operators inside of other things, but I would prefer they be their own operation so it\u0027s easier to reason about.",
+      "range": {
+        "startLine": 382,
+        "startChar": 16,
+        "endLine": 382,
+        "endChar": 22
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b33eb4b_eebb4398",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3eb806fe_8a048a58",
       "range": {
         "startLine": 382,
         "startChar": 16,
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a4dea16_4b3cb1e7",
+        "filename": "bench/benchmark_target/BenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db6e60ba_d3e4cf74",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 11
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f35c0ab_6cec2eb7",
@@ -198,6 +390,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "Don\u0027t declare constants in headers unless needed in other files. Move these to the .cpp file if possible.",
+      "range": {
+        "startLine": 14,
+        "startChar": 7,
+        "endLine": 14,
+        "endChar": 16
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ca8156a_26d900f6",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f35c0ab_6cec2eb7",
       "range": {
         "startLine": 14,
         "startChar": 7,
@@ -231,6 +447,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "352619ad_db78ccbb",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Added the include. It works without it because it gets `\u003cmemory\u003e` transitively from another include.",
+      "parentUuid": "49f9c291_98759072",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96cf2fd4_ae1983d5",
@@ -244,6 +484,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "Should this be \u003ccstdint\u003e and/or \u003ccstdef\u003e ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 19
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "723bd1f2_11a1a96b",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "It provides `PRIu64`, which is needed here: https://skia-review.googlesource.com/c/skia/+/762118/10/bench/benchmark_target/RasterBenchmarkTarget.cpp#27.\n\nNeither `\u003ccstdint\u003e` nor `\u003ccstddef\u003e` provide `PRIu64`, unfortunately.\n\nNote that this was duplicated from BazelBenchmarkRunner.cpp and I\u0027ve since deleted it here, but it remains in the aforementioned file.",
+      "parentUuid": "96cf2fd4_ae1983d5",
       "range": {
         "startLine": 13,
         "startChar": 10,
@@ -277,6 +541,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9677d7aa_27c9983e",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00249352_94970ebf",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "262a3507_129622b5",
@@ -300,6 +588,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae34b5a4_6b7ff280",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "262a3507_129622b5",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 19
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79e02330_2ea6d89d",
@@ -313,6 +625,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "nit: indentation",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdb12c35_9e2d7775",
+        "filename": "bench/benchmark_target/RasterBenchmarkTarget.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79e02330_2ea6d89d",
       "range": {
         "startLine": 46,
         "startChar": 0,
@@ -371,6 +707,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96831c03_3947bae5",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "I do not know whether the Bazel tests need to align with the GN tests in that fashion, or what the effect of this flag should be. I will ask the Skia folks.",
+      "parentUuid": "a8afa5c1_5ecba3c2",
+      "range": {
+        "startLine": 74,
+        "startChar": 54,
+        "endLine": 74,
+        "endChar": 70
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8695431d_098ad95b",
         "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
         "patchSetId": 9
@@ -382,6 +742,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "gles_msaa4\n\ngles_mssa8",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 76,
+        "endChar": 50
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb91cac4_680204ba",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8695431d_098ad95b",
       "range": {
         "startLine": 76,
         "startChar": 24,
@@ -405,6 +789,30 @@
       "writtenOn": "2023-10-03T18:14:32Z",
       "side": 1,
       "message": "According to the release notes, the default value of this is on.\n\nMaybe we don\u0027t need this as an explicit option anymore?",
+      "range": {
+        "startLine": 89,
+        "startChar": 25,
+        "endLine": 89,
+        "endChar": 48
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4990ecf6_1dfe57da",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T01:37:22Z",
+      "side": 1,
+      "message": "Probably not. This also means the existing GN benchmarks that set that flag explicitly could probably be simplified. Maybe we can remove `FLAGS_dontReduceOpsTaskSplitting` from `nanobench.cpp`: https://skia.googlesource.com/skia/+/a063eaeaf1e09e4d6f42e0f44a5723622a46d21c/tools/flags/CommonFlagsGpu.cpp#40.\n\nI\u0027ll ask tomorrow.",
+      "parentUuid": "ac75100a_edc06e49",
       "range": {
         "startLine": 89,
         "startChar": 25,
