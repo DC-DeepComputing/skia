@@ -46,6 +46,30 @@
       },
       "revId": "052327feeeb5f8bea10846ae789b32a5f2e542a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ce0d796_e1389391",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-04T15:31:32Z",
+      "side": 1,
+      "message": "Gotcha. Please just copy his subject line, it is much less confusing\n\n\u003e Disable `__google_cxa_guard_acquire` on Windows as it is POSIX specific.",
+      "parentUuid": "4b21e1fc_f43e8ccc",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "052327feeeb5f8bea10846ae789b32a5f2e542a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
