@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd8177b6_86c90dd9",
+        "filename": "gm/mesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1478,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-04T20:29:55Z",
+      "side": 1,
+      "message": "nit: instead of using magic numbers here could we make a local enum to pass into the ctor?",
+      "range": {
+        "startLine": 1478,
+        "startChar": 36,
+        "endLine": 1478,
+        "endChar": 37
+      },
+      "revId": "32d2a2da2c32ad1c0915743902d36d4869963745",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
