@@ -85,6 +85,30 @@
       },
       "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24bbb3e_7300f5d0",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T14:37:02Z",
+      "side": 1,
+      "message": "Greg and I discussed this offline. My opinion is that inline uniforms were a reasonable stopgap to get things rendering quickly, but we should probably switch to UBOs for the main implementation, and then push constants where they make sense. Then we can use that as a base to see if inline uniforms gain us anything in terms of perf or power usage.",
+      "parentUuid": "dc740808_afef95fb",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
