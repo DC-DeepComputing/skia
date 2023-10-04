@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd20fc3_e87bd958",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-04T22:08:05Z",
+      "side": 1,
+      "message": "I changed this to `kTessellation` which is agnostic of MSAA sample count. I\u0027m sure this will evolve over time but for I think this is good enough for testing purposes for now.",
+      "parentUuid": "74dec1ae_416b1f37",
+      "range": {
+        "startLine": 829,
+        "startChar": 35,
+        "endLine": 829,
+        "endChar": 48
+      },
+      "revId": "33535db283427b80f586c2a31648973eeab00123",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8d4ec98_a2f640f7",
@@ -61,6 +85,30 @@
       "writtenOn": "2023-10-04T19:25:36Z",
       "side": 1,
       "message": "If the path renderer strategy is MSAA (vs. default), should we bypass this?\n\nI suppose as-is, it\u0027s consistent with the other atlas strategies that *do* want to keep using the other analytic techniques. For now I think it\u0027s fine like this, but I\u0027ve wondered about another strategy where simple shapes are just interpreted as paths. That\u0027s maybe orthogonal to path renderer strategy in some ways (but not in other ways when thinking about atlas packing, etc.)",
+      "range": {
+        "startLine": 1206,
+        "startChar": 24,
+        "endLine": 1206,
+        "endChar": 39
+      },
+      "revId": "33535db283427b80f586c2a31648973eeab00123",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6600ed12_978b44c4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-04T22:08:05Z",
+      "side": 1,
+      "message": "At first I was thinking of simple shapes as being orthogonal to path renderer strategy but I think it makes sense to bypass this for the current non-default strategies. I went ahead and made that change.\n\nCurrently each strategy is focused on one method. Practically we may want to add other combination strategies too (like \"analytic rrect for simple shapes + compute AA on small paths + tessellate rest\", etc).",
+      "parentUuid": "e8d4ec98_a2f640f7",
       "range": {
         "startLine": 1206,
         "startChar": 24,
