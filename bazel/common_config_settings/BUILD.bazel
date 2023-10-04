@@ -180,7 +180,7 @@ string_flag_with_values(
         "custom_embedded_fontmgr",
         # Allows the construction of an SkFontMgr which returns empty fonts.
         "custom_empty_fontmgr",
-        "fontconfig_fontmgr",
+        "   ",
         # Deprecated, do not use.
         "fci_fontmgr",
     ],
