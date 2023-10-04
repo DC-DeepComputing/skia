@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "242e0f21_08451483",
+        "filename": "src/gpu/graphite/Uniform.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-04T19:18:55Z",
+      "side": 1,
+      "message": "Yeah, that seems okay with me, given the other sources of brittleness with uniform names coming in from runtime effects.",
+      "parentUuid": "6adb98e5_706a803d",
+      "range": {
+        "startLine": 26,
+        "startChar": 15,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "8d088ff0df291a1d9cf5f0e8750ae7709bd5b1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14ea3e57_a460a8ea",
