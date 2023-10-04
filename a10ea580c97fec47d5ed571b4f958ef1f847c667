@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a377517_2629fa62",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T20:41:01Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to -- we should always have an mru page. If it\u0027s null then something seriously went wrong in the constructor. But maybe there should be a way to verify that addRect() has been called first. I\u0027ll think about that.",
+      "parentUuid": "d2da2712_b7ed358c",
+      "range": {
+        "startLine": 113,
+        "startChar": 3,
+        "endLine": 113,
+        "endChar": 18
+      },
+      "revId": "a10ea580c97fec47d5ed571b4f958ef1f847c667",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ffbbb8c5_f00a9af2",
         "filename": "src/gpu/graphite/RasterPathAtlas.h",
         "patchSetId": 8
@@ -71,6 +95,30 @@
       "writtenOn": "2023-10-04T20:09:23Z",
       "side": 1,
       "message": "If `kMaxPages` will be small and known at compile time, why not store them by value without the indirection, perhaps even as a `Page fPages[kMaxPages]`?",
+      "range": {
+        "startLine": 75,
+        "startChar": 5,
+        "endLine": 75,
+        "endChar": 56
+      },
+      "revId": "a10ea580c97fec47d5ed571b4f958ef1f847c667",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3694309_43df3256",
+        "filename": "src/gpu/graphite/RasterPathAtlas.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T20:41:01Z",
+      "side": 1,
+      "message": "The problem is that Rectanizer needs the width and height for its constructor, and that means that Page can\u0027t have a default constructor. And I\u0027m not sure if I want to have a constant width and height across all the Pages. I suppose one solution would be to construct the Rectanizer at a default size and then have a way to reset it to a different size.",
+      "parentUuid": "ffbbb8c5_f00a9af2",
       "range": {
         "startLine": 75,
         "startChar": 5,
