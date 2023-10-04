@@ -1,0 +1,22 @@
+{
+   "key": {},
+   "max_rss_MB": 266,
+   "results": [
+      {
+         "key": {
+            "name": "clockwise",
+            "config": "vk",
+            "source_type": "gm"
+         },
+         "options": {
+            "ext": "png",
+            "gamut": "untagged",
+            "transfer_fn": "untagged",
+            "color_type": "RGBA_8888",
+            "alpha_type": "Premul",
+            "color_depth": "8888"
+         },
+         "md5": "41b2e2e1c80a65516c0b6098fe6432fc"
+      }
+   ]
+}

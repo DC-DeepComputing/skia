@@ -169,12 +169,6 @@ void VulkanBuffer::freeGpuData() {
         fMapPtr = nullptr;
     }
 
-    // TODO: If this is a uniform buffer, we must clean up the descriptor set.
-    //if (fUniformDescriptorSet) {
-    //    fUniformDescriptorSet->recycle();
-    //    fUniformDescriptorSet = nullptr;
-    //}
-
     const VulkanSharedContext* sharedContext =
             static_cast<const VulkanSharedContext*>(this->sharedContext());
     SkASSERT(fBuffer);
