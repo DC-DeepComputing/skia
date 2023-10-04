@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c12c57c3_9e7e597c",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-04T14:11:08Z",
+      "side": 1,
+      "message": "Maybe this is better to use std::tuple to return a int loops and a bool if things are ok https://en.cppreference.com/w/cpp/utility/tuple\n\nWe\u0027ve been using tuples more in more modern APIs",
+      "range": {
+        "startLine": 39,
+        "startChar": 12,
+        "endLine": 39,
+        "endChar": 16
+      },
+      "revId": "301b7e1b658f620dd4699cff9759cf9e9ee98f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23bdd2d5_1c790e91",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-04T14:11:08Z",
+      "side": 1,
+      "message": "nit: maybe setupGLESSurface ? Starting the function with \"with\" is a bit off but I cannot quite articulate why.",
+      "range": {
+        "startLine": 76,
+        "startChar": 15,
+        "endLine": 76,
+        "endChar": 29
+      },
+      "revId": "301b7e1b658f620dd4699cff9759cf9e9ee98f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
