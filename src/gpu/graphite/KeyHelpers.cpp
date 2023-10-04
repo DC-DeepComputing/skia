@@ -810,11 +810,11 @@ namespace {
 
 void add_color_space_xform_uniform_data(
         const ShaderCodeDictionary* dict,
-        const ColorSpaceTransformBlock::ColorSpaceTransformData* data,
+        const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
         PipelineDataGatherer* gatherer) {
 
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformColorFilter)
-    add_color_space_uniforms(data->fSteps, gatherer);
+    add_color_space_uniforms(data.fSteps, gatherer);
 }
 
 }  // anonymous namespace
@@ -825,14 +825,14 @@ ColorSpaceTransformBlock::ColorSpaceTransformData::ColorSpaceTransformData(const
                                                                            SkAlphaType dstAT)
         : fSteps(src, srcAT, dst, dstAT) {}
 
-void ColorSpaceTransformBlock::BeginBlock(const KeyContext& keyContext,
-                                          PaintParamsKeyBuilder* builder,
-                                          PipelineDataGatherer* gatherer,
-                                          const ColorSpaceTransformData* data) {
+void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
+                                        PaintParamsKeyBuilder* builder,
+                                        PipelineDataGatherer* gatherer,
+                                        const ColorSpaceTransformData& data) {
     if (gatherer) {
         add_color_space_xform_uniform_data(keyContext.dict(), data, gatherer);
     }
-    builder->beginBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
+    builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1041,8 +1041,7 @@ static void add_to_key(const KeyContext& keyContext,
     constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
     ColorSpaceTransformBlock::ColorSpaceTransformData data(
             filter->src().get(), kAlphaType, filter->dst().get(), kAlphaType);
-    ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
-    builder->endBlock();
+    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1149,9 +1148,8 @@ static void add_to_key(const KeyContext& keyContext,
                             // Innermost (inner of inner compose)
                             ColorSpaceTransformBlock::ColorSpaceTransformData data1(
                                     dstCS.get(), dstAT, workingCS.get(), workingAT);
-                            ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer,
-                                                                 &data1);
-                            builder->endBlock();
+                            ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer,
+                                                               data1);
                         },
                         /* addOuterToKey= */ [&]() -> void {
                             // Middle (outer of inner compose)
@@ -1162,8 +1160,7 @@ static void add_to_key(const KeyContext& keyContext,
                 // Outermost (outer of outer compose)
                 ColorSpaceTransformBlock::ColorSpaceTransformData data2(
                         workingCS.get(), workingAT, dstCS.get(), dstAT);
-                ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data2);
-                builder->endBlock();
+                ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data2);
             });
 }
 
@@ -1660,8 +1657,7 @@ static void add_to_key(const KeyContext& keyContext,
         /* addOuterToKey= */ [&]() -> void {
             ColorSpaceTransformBlock::ColorSpaceTransformData data(
                     workingCS.get(), dstAT, dstCS.get(), dstAT);
-            ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
-            builder->endBlock();
+            ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
         });
 }
 
@@ -1752,8 +1748,7 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
                 builder->endBlock();
             },
             /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
-                builder->endBlock();
+                ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
             });
 }
 
