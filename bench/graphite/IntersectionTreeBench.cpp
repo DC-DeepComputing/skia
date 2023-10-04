@@ -10,7 +10,7 @@
 #include "src/base/SkMathPriv.h"
 #include "src/base/SkRandom.h"
 #include "src/gpu/graphite/geom/IntersectionTree.h"
-#include "tools/ToolUtils.h"
+#include "tools/PathExtractor.h"
 #include "tools/flags/CommandLineFlags.h"
 
 using namespace skia_private;
@@ -126,9 +126,9 @@ private:
         if (FLAGS_intersectionTreeFile.isEmpty()) {
             return;
         }
-        ToolUtils::sniff_paths(FLAGS_intersectionTreeFile[0], [&](const SkMatrix& matrix,
-                                                                  const SkPath& path,
-                                                                  const SkPaint& paint) {
+        ToolUtils::ExtractPaths(FLAGS_intersectionTreeFile[0], [&](const SkMatrix& matrix,
+                                                                   const SkPath& path,
+                                                                   const SkPaint& paint) {
             if (paint.getStyle() == SkPaint::kStroke_Style) {
                 return;  // Goes to stroker.
             }
