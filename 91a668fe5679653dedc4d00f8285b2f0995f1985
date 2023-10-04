@@ -16,6 +16,29 @@
       "message": "As a follow-up, I could see having a helper that does a Compose, a templated inner child action, and then adds the colorspace block for the outer child. This gets most use cases for color space transforms, except for the working-format nested-compose where the inner compose needs the colorspace transform to happen as the inner child. Maybe that\u0027s just a pre-transform or a post-transform option?",
       "revId": "91a668fe5679653dedc4d00f8285b2f0995f1985",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f79c5e49_077c57dd",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-04T20:20:47Z",
+      "side": 1,
+      "message": "nit: maybe have all the arguments on the line below, or otherwise split up all of them on to new lines as opposed to having `keyContext` and `builder` be on the same line but the gatherer value and `data` being on separate ones.\nlike\n```\nColorSpaceTransformBlock::AddBlock(\n        keyContext, builder, /* gatherer\u003d */ nullptr, data);\n```\nor\n```\nColorSpaceTransformBlock::AddBlock(keyContext,\n                                   builder,\n                                   /* gatherer\u003d */ nullptr,\n                                   data);\n```",
+      "range": {
+        "startLine": 333,
+        "startChar": 56,
+        "endLine": 335,
+        "endChar": 61
+      },
+      "revId": "91a668fe5679653dedc4d00f8285b2f0995f1985",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
