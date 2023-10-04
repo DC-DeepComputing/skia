@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f384d03c_59aa9488",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-04T20:15:44Z",
+      "side": 1,
+      "message": "nit: align the indent here",
+      "range": {
+        "startLine": 728,
+        "startChar": 33,
+        "endLine": 730,
+        "endChar": 38
+      },
+      "revId": "3f67110e47cbcd10ca138f9324895e98dffaa3b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
