@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"go.skia.org/infra/go/depot_tools"
 	"go.skia.org/infra/go/exec"
@@ -117,6 +118,10 @@ solutions = [
 			patchBaseRev := skiaRev
 			cmd = append(cmd, "--patch_ref", fmt.Sprintf("%s@%s:%s", patchRepoURL, patchBaseRev, patchRef))
 		}
+		fmt.Println("HERE HERE HERE")
+		fmt.Println(cmd)
+		fmt.Println("SLEEPING NOW")
+		time.Sleep(10800 * time.Second)
 		if _, err := exec.RunCwd(ctx, checkoutRoot, cmd...); err != nil {
 			return err
 		}
