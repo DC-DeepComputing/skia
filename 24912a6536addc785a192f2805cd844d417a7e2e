@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9a7f3e4_a71e8200",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-04T13:36:04Z",
+      "side": 1,
+      "message": "It looks like a lot of rather bad auto formatting happened here which is both unfortunate and irrelevant to this change.",
+      "range": {
+        "startLine": 123,
+        "startChar": 14,
+        "endLine": 123,
+        "endChar": 22
+      },
+      "revId": "24912a6536addc785a192f2805cd844d417a7e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a33e42_109a5689",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-04T13:36:04Z",
+      "side": 1,
+      "message": "Like wtf happened to this newline?",
+      "range": {
+        "startLine": 290,
+        "startChar": 44,
+        "endLine": 290,
+        "endChar": 45
+      },
+      "revId": "24912a6536addc785a192f2805cd844d417a7e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
