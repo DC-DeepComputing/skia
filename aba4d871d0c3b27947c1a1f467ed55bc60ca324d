@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce58118_7e72faca",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1218,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T17:04:36Z",
+      "side": 1,
+      "message": "ComputeAnalyticAA isn\u0027t a case here, nor does it seem to be used below -- is that intentional?",
+      "range": {
+        "startLine": 1218,
+        "startChar": 4,
+        "endLine": 1218,
+        "endChar": 10
+      },
+      "revId": "aba4d871d0c3b27947c1a1f467ed55bc60ca324d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
