@@ -10,8 +10,7 @@ version = "0.1.0"
 read-fonts = "0.11"
 font-types = "0.4"
 skrifa = "0.10"
-cxx = "1.0.107"
 
-[lib]
-name = "fontations_ffi"
-path = "src/ffi.rs"
+[[bin]]
+name = "ports_test_bin"
+path = "src/main.rs"
