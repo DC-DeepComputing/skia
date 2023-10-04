@@ -68,6 +68,24 @@
       "parentUuid": "ea068cec_48f30da6",
       "revId": "591e6d6a09ff61e9230af468f7598f5bd3ba22c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3d1d70a_3ddbca1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T18:54:52Z",
+      "side": 1,
+      "message": "Ok, I think this patch should still land -- I agree it seems like a hole we should fill.",
+      "parentUuid": "44d63970_6c4065f9",
+      "revId": "591e6d6a09ff61e9230af468f7598f5bd3ba22c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
