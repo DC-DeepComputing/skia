@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "068efe29_e3041ee8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1241,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-04T22:21:01Z",
+      "side": 1,
+      "message": "Jim: I moved the MSAA sample count check into a comment so that raster AA is disabled unless it was specifically requested. This should match the behavior that you had originally intended by returning false from `isAvailable`.",
+      "revId": "22f7b6b1037cf9b54f2605836c15d9f39e6f7ad3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
