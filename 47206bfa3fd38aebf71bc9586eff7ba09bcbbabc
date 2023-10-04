@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0c8642b_3350506b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-04T13:09:59Z",
+      "side": 1,
+      "message": "@cbrokaw@google.com, if you have any suggestions how to un-nest this, or make this more compact in terms of error handling, your feedback is most appreciated. I managed to at least not manually write `Some`... `None` too often, this looked worse before.",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 10
+      },
+      "revId": "47206bfa3fd38aebf71bc9586eff7ba09bcbbabc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb2b0387_a55f8f14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-04T13:09:59Z",
+      "side": 1,
+      "message": "PTAL again, this should be ready for review now. Extensive tests for both CPAL and COLRv0 functionality added.\n\nFYI @moonira@google.com - we may want to do things like computing the union bounding box of all COLRv0 layers on the Rust side as well and provide a function for it. We\u0027ll look at that when we get there. \n\nWe could also consider defining a joint callback interface for COLRv0 and COLRv1 drawing, as COLRv0 drawing is equivalent to drawing `PaintColrLayer` with `PaintGlyph` + `PaintSolid`.",
+      "revId": "91a55a6babe4b3c65272a6ab9ce2706dece10a3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

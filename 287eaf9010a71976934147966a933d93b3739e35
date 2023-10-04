@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86327eac_2e3c59f6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-04T13:09:59Z",
+      "side": 1,
+      "message": "Thanks, using `.get()` now, which IMO then needs an `.unwrap_or_default()` to get to the \"right\" iter. An `intoIter()` on the `Option()` returned from `.get()` would be a single-unit Iterator just producing the contents of the `Some()` content of the `Option`.",
+      "parentUuid": "a82f04f5_91f28675",
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5809d48e_2d8d3d55",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 8
@@ -82,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff1ce3a0_361ffa4e",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-04T13:09:59Z",
+      "side": 1,
+      "message": "Thanks for your patience, yes, I am learning :)",
+      "parentUuid": "9c2509b3_c4eac275",
+      "range": {
+        "startLine": 235,
+        "startChar": 28,
+        "endLine": 235,
+        "endChar": 40
+      },
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f4cb6ac_c769d922",
@@ -95,6 +137,24 @@
       "writtenOn": "2023-10-03T16:01:53Z",
       "side": 1,
       "message": "Might want to wrap this line at ~100.",
+      "revId": "287eaf9010a71976934147966a933d93b3739e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d2c5939_5dd618d3",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-04T13:09:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f4cb6ac_c769d922",
       "revId": "287eaf9010a71976934147966a933d93b3739e35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
