@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8f015f1_4fe50edc",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-04T18:04:19Z",
+      "side": 1,
+      "message": "A struct seems a bit heavy handed. IIRC, you can do something like `auto {first, second} \u003d thingThatReturnsATuple())` which feels more ergonomic.",
+      "parentUuid": "ed3ce155_e9965183",
+      "range": {
+        "startLine": 39,
+        "startChar": 12,
+        "endLine": 39,
+        "endChar": 16
+      },
+      "revId": "301b7e1b658f620dd4699cff9759cf9e9ee98f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "23bdd2d5_1c790e91",
         "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
         "patchSetId": 11
