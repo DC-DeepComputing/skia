@@ -285,6 +285,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "452af58c_135ffa66",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T18:00:53Z",
+      "side": 1,
+      "message": "Joe believes the \"options\" object was dropped by Perf.\n\nI also realized that Perf understands two JSON file formats:\n\n- A standard format, apparently used by all Perf clients except nanobench: https://skia.googlesource.com/buildbot/+/e12f70e0a3249af6dd7754d55958ee64a22e0957/perf/go/ingest/format/format.go#168\n\n- A legacy format used exclusively by nanobench: https://skia.googlesource.com/buildbot/+/e12f70e0a3249af6dd7754d55958ee64a22e0957/perf/go/ingest/format/leagacyformat.go#26\n\nAs per this patchset, `BazelBenchmarkRunner.cpp` emits JSON in the legacy format, but I suspect we\u0027ll want to migrate to the standard format. I\u0027m awaiting Joe\u0027s confirmation.",
+      "parentUuid": "1a5df68e_ba49fd81",
+      "range": {
+        "startLine": 350,
+        "startChar": 15,
+        "endLine": 350,
+        "endChar": 22
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3eb806fe_8a048a58",
         "filename": "bench/BazelBenchmarkRunner.cpp",
         "patchSetId": 9
@@ -729,6 +753,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7af789db_63b8edac",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T18:00:53Z",
+      "side": 1,
+      "message": "Summary of our chat: We both got confused by the negated flag name \"dontReduceOpsTaskSplitting\", and `CommonFlagsGpu` sets the default value to `kYes`, in line with the M93 change.\n\nResolving.",
+      "parentUuid": "96831c03_3947bae5",
+      "range": {
+        "startLine": 74,
+        "startChar": 54,
+        "endLine": 74,
+        "endChar": 70
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8695431d_098ad95b",
@@ -813,6 +861,30 @@
       "side": 1,
       "message": "Probably not. This also means the existing GN benchmarks that set that flag explicitly could probably be simplified. Maybe we can remove `FLAGS_dontReduceOpsTaskSplitting` from `nanobench.cpp`: https://skia.googlesource.com/skia/+/a063eaeaf1e09e4d6f42e0f44a5723622a46d21c/tools/flags/CommonFlagsGpu.cpp#40.\n\nI\u0027ll ask tomorrow.",
       "parentUuid": "ac75100a_edc06e49",
+      "range": {
+        "startLine": 89,
+        "startChar": 25,
+        "endLine": 89,
+        "endChar": 48
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2cd6820_3296034c",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T18:00:53Z",
+      "side": 1,
+      "message": "Resolving as per our chat, with the caveat that I made a mistake on line 89 and `grContextOptions.fReduceOpsTaskSplitting` should actually be set to `GrContextOptions::Enable::kYes` when under a \"..._noReduceOpsTaskSplitting\" surface config.",
+      "parentUuid": "4990ecf6_1dfe57da",
       "range": {
         "startLine": 89,
         "startChar": 25,

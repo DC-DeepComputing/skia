@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed3ce155_e9965183",
+        "filename": "bench/benchmark_target/BenchmarkTarget.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T18:00:53Z",
+      "side": 1,
+      "message": "I have a vague memory from a previous CL where we decided to use a struct rather than a `std::tuple` because `myStruct.foo` and `myStruct.bar` read nicer than `std::get\u003c0\u003e(myTuple)` and `std::get\u003c1\u003e(myTuple)`. WDYT?",
+      "parentUuid": "c12c57c3_9e7e597c",
+      "range": {
+        "startLine": 39,
+        "startChar": 12,
+        "endLine": 39,
+        "endChar": 16
+      },
+      "revId": "301b7e1b658f620dd4699cff9759cf9e9ee98f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "23bdd2d5_1c790e91",
         "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-04T14:11:08Z",
       "side": 1,
       "message": "nit: maybe setupGLESSurface ? Starting the function with \"with\" is a bit off but I cannot quite articulate why.",
+      "range": {
+        "startLine": 76,
+        "startChar": 15,
+        "endLine": 76,
+        "endChar": 29
+      },
+      "revId": "301b7e1b658f620dd4699cff9759cf9e9ee98f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a3a05f8_c4ee5923",
+        "filename": "tools/testrunners/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T18:00:53Z",
+      "side": 1,
+      "message": "Renamed to `makeGLESSurfaceManager`.",
+      "parentUuid": "23bdd2d5_1c790e91",
       "range": {
         "startLine": 76,
         "startChar": 15,
