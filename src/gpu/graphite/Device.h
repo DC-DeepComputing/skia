@@ -80,6 +80,8 @@ public:
     TextureProxy* target();
     TextureProxyView readSurfaceView() const;
 
+    bool useDrawCoverageMaskForMaskFilters() const override { return true; }
+
     // Clipping
     void pushClipStack() override { fClip.save(); }
     void popClipStack() override { fClip.restore(); }
@@ -152,6 +154,8 @@ public:
 
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice,
                      const SkSamplingOptions&, const SkPaint&) override;
+    void drawCoverageMask(const SkSpecialImage*, const SkMatrix& localToDevice,
+                          const SkSamplingOptions&, const SkPaint&) override;
 
 private:
     class IntersectionTreeSet;
