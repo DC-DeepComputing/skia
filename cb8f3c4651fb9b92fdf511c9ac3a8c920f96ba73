@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b952f3c_356eb58d",
+        "filename": "tools/window/mac/GraphiteDawnMetalWindowContext_mac.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-04T14:38:46Z",
+      "side": 1,
+      "message": "You can remove this comment if you want -- we don\u0027t support 10.12 or lower any more.",
+      "range": {
+        "startLine": 66,
+        "startChar": 48,
+        "endLine": 66,
+        "endChar": 89
+      },
+      "revId": "cb8f3c4651fb9b92fdf511c9ac3a8c920f96ba73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
