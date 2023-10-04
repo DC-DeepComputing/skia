@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82d6e073_8c81c898",
+        "filename": "src/pathops/SkPathOpsSimplify.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-04T00:48:37Z",
+      "side": 1,
+      "message": "Should comment that this algorithm of testing the cross product of the previous and current vector could be way more numerically stable, but this matches what the `Convexicator` class does for consistency.",
+      "revId": "647648bbff750e1fab1312837a58d97aa911c648",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
