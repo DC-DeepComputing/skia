@@ -331,6 +331,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3679510f_338dd8a8",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-04T18:46:44Z",
+      "side": 1,
+      "message": "I\u0027ll land this CL as-is and I\u0027ll migrate to using the new Perf JSON format in a follow-up CL.",
+      "parentUuid": "6a477c55_220e59d3",
+      "range": {
+        "startLine": 350,
+        "startChar": 15,
+        "endLine": 350,
+        "endChar": 22
+      },
+      "revId": "b2770dd1a52887a7adf290922b6884fc257f9487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3eb806fe_8a048a58",
