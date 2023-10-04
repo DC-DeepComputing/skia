@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1ef9131_9fba0ec8",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "// In this case a preexisting interval can be made non-reuseable if it is later sampled into a secondary command buffer.\n\n?",
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3636b7ef_5ef597c8",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "gpu texture ?",
+      "range": {
+        "startLine": 98,
+        "startChar": 37,
+        "endLine": 98,
+        "endChar": 45
+      },
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae5d400_92a25f47",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "a register ?",
+      "range": {
+        "startLine": 98,
+        "startChar": 57,
+        "endLine": 98,
+        "endChar": 70
+      },
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c10baf2_fc99d005",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "or later reuses will overwrite earlier ones. ?",
+      "range": {
+        "startLine": 101,
+        "startChar": 87,
+        "endLine": 101,
+        "endChar": 97
+      },
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "473007cf_7f346b23",
+        "filename": "src/gpu/ganesh/GrResourceAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "later ?",
+      "range": {
+        "startLine": 101,
+        "startChar": 32,
+        "endLine": 101,
+        "endChar": 38
+      },
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d2150e3_256c56ee",
+        "filename": "tests/VkDrawableTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "to not ?",
+      "range": {
+        "startLine": 178,
+        "startChar": 43,
+        "endLine": 178,
+        "endChar": 47
+      },
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4288cce_43c9659d",
+        "filename": "tests/VkDrawableTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-04T18:23:11Z",
+      "side": 1,
+      "message": "thinks ?",
+      "range": {
+        "startLine": 319,
+        "startChar": 27,
+        "endLine": 319,
+        "endChar": 33
+      },
+      "revId": "bbf41eeee287f38562f9dadd43b4b91cf2811a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
