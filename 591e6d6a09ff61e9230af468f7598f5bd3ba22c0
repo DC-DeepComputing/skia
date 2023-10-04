@@ -50,6 +50,24 @@
       "message": "One question -- while the CL makes sense, it\u0027s not clear how the assigned bug is related to it. Is this the correct bug?",
       "revId": "591e6d6a09ff61e9230af468f7598f5bd3ba22c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44d63970_6c4065f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21374
+      },
+      "writtenOn": "2023-10-04T18:46:55Z",
+      "side": 1,
+      "message": "I was testing this bug with an Intel GPU, and noticed that everything works fine when I turn off GrTessellationPathRenderer. So, I first thought this was a bug related to incorrect GPU detection in WebGL.\n\nHowever, when I repeated the test using an AMD GPU, the bug still appeared. So, it looks like this bug is about GrTessellationPathRenderer, not about detecting the GPU.\n\nAlthough I still believe there may be a separate bug concerning GPU detection in WebGL(and I will remove assigned bug in commit message), feel free to close this patch if you want. :)",
+      "parentUuid": "ea068cec_48f30da6",
+      "revId": "591e6d6a09ff61e9230af468f7598f5bd3ba22c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
