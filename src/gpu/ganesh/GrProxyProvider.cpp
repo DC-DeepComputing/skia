@@ -304,13 +304,15 @@ sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bit
         }
         if (mipmapped == skgpu::Mipmapped::kYes && bitmap.fMips) {
             copyBitmap.fMips = sk_sp<SkMipmap>(SkMipmap::Build(copyBitmap.pixmap(),
-                                                               nullptr,
-                                                               false));
-            for (int i = 0; i < copyBitmap.fMips->countLevels(); ++i) {
-                SkMipmap::Level src, dst;
-                bitmap.fMips->getLevel(i, &src);
-                copyBitmap.fMips->getLevel(i, &dst);
-                src.fPixmap.readPixels(dst.fPixmap);
+                                                               /* factoryProc= */ nullptr,
+                                                               /* computeContents= */ false));
+            if (copyBitmap.fMips) {
+                for (int i = 0; i < copyBitmap.fMips->countLevels(); ++i) {
+                    SkMipmap::Level src, dst;
+                    bitmap.fMips->getLevel(i, &src);
+                    copyBitmap.fMips->getLevel(i, &dst);
+                    src.fPixmap.readPixels(dst.fPixmap);
+                }
             }
         }
         copyBitmap.setImmutable();
@@ -399,7 +401,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
 
     sk_sp<SkMipmap> mipmaps = bitmap.fMips;
     if (!mipmaps) {
-        mipmaps.reset(SkMipmap::Build(bitmap.pixmap(), nullptr));
+        mipmaps.reset(SkMipmap::Build(bitmap.pixmap(), /* factoryProc= */ nullptr));
         if (!mipmaps) {
             return nullptr;
         }

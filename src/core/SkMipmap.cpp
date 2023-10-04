@@ -582,7 +582,12 @@ SkMipmap* SkMipmap::Build(const SkPixmap& src, SkDiscardableFactoryProc fact,
         }
         mipmap = new SkMipmap(storageSize, dm);
     } else {
-        mipmap = new SkMipmap(sk_malloc_throw(storageSize), storageSize);
+        void* tmp = sk_malloc_canfail(storageSize);
+        if (!tmp) {
+            return nullptr;
+        }
+
+        mipmap = new SkMipmap(tmp, storageSize);
     }
 
     // init
