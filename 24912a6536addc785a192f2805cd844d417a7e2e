@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04bfd49_1579bab7",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-04T13:40:14Z",
+      "side": 1,
+      "message": "Oups, none of this is relevant indeed, I must have accidentally triggered auto formatting on this file, like I do in the rust files, and then submitted that. That\u0027s reset now.",
+      "parentUuid": "e9a7f3e4_a71e8200",
+      "range": {
+        "startLine": 123,
+        "startChar": 14,
+        "endLine": 123,
+        "endChar": 22
+      },
+      "revId": "24912a6536addc785a192f2805cd844d417a7e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4a33e42_109a5689",
