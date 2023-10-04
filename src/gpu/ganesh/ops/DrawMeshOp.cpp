@@ -89,6 +89,13 @@ public:
             SkMeshSpecificationPriv::ColorType::kNone) {
             b->add32(GrColorSpaceXform::XformKey(fColorSpaceXform.get()), "colorspace xform key");
         }
+        for (const std::unique_ptr<GrFragmentProcessor>& fp : fChildren) {
+            if (fp) {
+                fp->addToKey(caps, b);
+            } else {
+                b->addBool(false, "null effect");
+            }
+        }
     }
 
     std::unique_ptr<ProgramImpl> makeProgramImpl(const GrShaderCaps&) const override {
