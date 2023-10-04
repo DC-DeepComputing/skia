@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5abb423_36c8a6f2",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-04T18:21:38Z",
+      "side": 1,
+      "message": "Ah, I see, more like how we handle blend constants. I now memcpy the calculated rtadjust value directly into the ptr to mapped memory at the beginning of each render pass.\n\nAlso, as an FYI, I deleted some old comments while I\u0027m messing with this file.",
+      "parentUuid": "200babb2_b1ff9659",
+      "range": {
+        "startLine": 87,
+        "startChar": 25,
+        "endLine": 87,
+        "endChar": 95
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3ab12b2_3a9c179e",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-10-02T20:18:19Z",
       "side": 1,
       "message": "Why does this need to be a data member? Also can we just fill it out inside the if block?",
+      "range": {
+        "startLine": 409,
+        "startChar": 4,
+        "endLine": 409,
+        "endChar": 22
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "003b80cd_bc05ded5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-04T18:21:38Z",
+      "side": 1,
+      "message": "Ah, I actually should be referencing it for setting `writeInlineUniform.pData` later on when we bind uniforms (after the renderpass has already started, and we no longer have access to the viewport). That\u0027s why I had made it a data member. Anyhow, not relevant anymore now that we aren\u0027t using inline uniforms.",
+      "parentUuid": "b3ab12b2_3a9c179e",
       "range": {
         "startLine": 409,
         "startChar": 4,
@@ -100,6 +148,30 @@
       "writtenOn": "2023-10-04T14:37:02Z",
       "side": 1,
       "message": "Greg and I discussed this offline. My opinion is that inline uniforms were a reasonable stopgap to get things rendering quickly, but we should probably switch to UBOs for the main implementation, and then push constants where they make sense. Then we can use that as a base to see if inline uniforms gain us anything in terms of perf or power usage.",
+      "parentUuid": "dc740808_afef95fb",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "670c0b6fa149a93c6590ec30deb1790f900a46dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6997fe99_efa43de7",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-04T18:21:38Z",
+      "side": 1,
+      "message": "Yep, I\u0027m in agreement after chatting with Greg yesterday. Removed inline uniform support for now",
       "parentUuid": "dc740808_afef95fb",
       "range": {
         "startLine": 53,

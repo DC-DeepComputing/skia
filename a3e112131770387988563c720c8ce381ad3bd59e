@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ce59fd_435b59f5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-04T18:21:38Z",
+      "side": 1,
+      "message": "I wanted to get yalls opinions on this - how often do we expect the viewport to be changing between different renderpasses? Would it make sense to cache the latest rtAdjust value or SkRect information to determine whether we actually need to update here, similar to how we handle the blend constants?",
+      "range": {
+        "startLine": 415,
+        "startChar": 3,
+        "endLine": 416,
+        "endChar": 97
+      },
+      "revId": "a3e112131770387988563c720c8ce381ad3bd59e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
