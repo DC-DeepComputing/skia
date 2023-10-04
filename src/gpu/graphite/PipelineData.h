@@ -106,6 +106,7 @@ public:
     const TextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 
     void write(const SkM44& mat) { fUniformManager.write(mat); }
+    void write(const SkMatrix& mat) { fUniformManager.write(mat); }
     void write(const SkPMColor4f& premulColor) { fUniformManager.write(premulColor); }
     void write(const SkRect& rect) { fUniformManager.write(rect); }
     void write(const SkV2& v) { fUniformManager.write(v); }
