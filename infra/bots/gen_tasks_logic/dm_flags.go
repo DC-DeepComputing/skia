@@ -1069,6 +1069,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels")
 	}
 
+	if b.matchGpu("Adreno[56]") && b.extraConfig("Vulkan") {
+		skip(ALL, "gm", ALL, "mesh_with_image")
+		skip(ALL, "gm", ALL, "mesh_with_paint_color")
+		skip(ALL, "gm", ALL, "mesh_with_paint_image")
+    }
+
 	if b.matchGpu("Mali400") {
 		skip(ALL, "tests", ALL, "BlendRequiringDstReadWithLargeCoordinates")
 		skip(ALL, "tests", ALL, "SkSLCross")  // despite the name, it's not in SkSLTest.cpp
