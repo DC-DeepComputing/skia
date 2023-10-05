@@ -22,6 +22,30 @@
       },
       "revId": "deedc75f49bbb527abf72445fe19a049e2806ece",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8982f432_c004e79d",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-05T14:39:23Z",
+      "side": 1,
+      "message": "`fFPCoordsMap` contains a list of the FPs which passed through `collectTransforms`/`liftTransforms`. \n\nConsider the case of an `fp` which did not exist in the `fFPCoordsMap` and also doesn\u0027t use sample coords. This processor would reach the bottommost `else` block. At this point we would do `fFPCoordsMap[\u0026fp].coordsVarying`, which would synthesize a new empty entry in the map (not the intent) and the following switch is doomed to fail.\n\nPreviously, `writeFPFunction` was only called by `emitRootFragProc` and it was safe to assume that `fFPCoordsMap` contained the passed-in `fp`, so this case wouldn\u0027t occur in practice.\n\nThis is no longer a safe assumption since we are calling `writeFPFunction` from the MeshGP now as well, and its `fp`s didn\u0027t participate in transform-lifting.\n\nSorry if this explanation is complex--I ended up rewriting it a few times since there are a lot of moving pieces.",
+      "parentUuid": "f8b4d138_4a336e71",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 72
+      },
+      "revId": "deedc75f49bbb527abf72445fe19a049e2806ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
