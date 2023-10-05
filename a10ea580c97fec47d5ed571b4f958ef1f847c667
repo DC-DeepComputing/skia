@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b33acdbe_f32566c5",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-05T13:41:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a377517_2629fa62",
+      "range": {
+        "startLine": 113,
+        "startChar": 3,
+        "endLine": 113,
+        "endChar": 18
+      },
+      "revId": "a10ea580c97fec47d5ed571b4f958ef1f847c667",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffbbb8c5_f00a9af2",
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "The problem is that Rectanizer needs the width and height for its constructor, and that means that Page can\u0027t have a default constructor. And I\u0027m not sure if I want to have a constant width and height across all the Pages. I suppose one solution would be to construct the Rectanizer at a default size and then have a way to reset it to a different size.",
       "parentUuid": "ffbbb8c5_f00a9af2",
+      "range": {
+        "startLine": 75,
+        "startChar": 5,
+        "endLine": 75,
+        "endChar": 56
+      },
+      "revId": "a10ea580c97fec47d5ed571b4f958ef1f847c667",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d52f0b5_a07596c9",
+        "filename": "src/gpu/graphite/RasterPathAtlas.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-05T13:41:13Z",
+      "side": 1,
+      "message": "Ok, I\u0027ve set the Rectanizer up to have a fixed size, particularly since PathAtlas has a fixed size. We\u0027ll probably want to adjust this later based on contextOptions.",
+      "parentUuid": "f3694309_43df3256",
       "range": {
         "startLine": 75,
         "startChar": 5,
