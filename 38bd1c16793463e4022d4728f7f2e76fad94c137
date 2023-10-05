@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ebfbcaf_0398834f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T14:13:38Z",
+      "side": 1,
+      "message": "The plan is still to remove this from our public API. See https://github.com/flutter/engine/pull/46543",
+      "revId": "38bd1c16793463e4022d4728f7f2e76fad94c137",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
