@@ -10,7 +10,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkRandom.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
-#include "tools/ToolUtils.h"
+#include "tools/PathExtractor.h"
 #include "tools/flags/CommandLineFlags.h"
 
 using namespace skia_private;
@@ -136,9 +136,9 @@ private:
             return;
         }
         SkRect fileBounds = SkRect::MakeEmpty();
-        ToolUtils::sniff_paths(FLAGS_boundsManagerFile[0], [&](const SkMatrix& matrix,
-                                                               const SkPath& path,
-                                                               const SkPaint& paint) {
+        ToolUtils::ExtractPaths(FLAGS_boundsManagerFile[0], [&](const SkMatrix& matrix,
+                                                                const SkPath& path,
+                                                                const SkPaint& paint) {
             if (!paint.canComputeFastBounds() || path.isInverseFillType()) {
                 // These would pessimistically cover the entire canvas, but we don't have enough
                 // info in the benchmark to handle that, so just skip these draws.
