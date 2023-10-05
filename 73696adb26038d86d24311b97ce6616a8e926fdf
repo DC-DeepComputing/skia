@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a941521_20cdb10c",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-05T15:09:01Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s urgent, but yeah - having the non-lifetime portions of the signature match up eventually would be nice.",
+      "parentUuid": "0d537b88_9fbaac93",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 66
+      },
+      "revId": "73696adb26038d86d24311b97ce6616a8e926fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45cfa457_d5c2abff",
