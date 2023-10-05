@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "068db591_79e2733b",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T12:52:20Z",
+      "side": 1,
+      "message": "bot, although I\u0027d prefer to use machine or host",
+      "range": {
+        "startLine": 57,
+        "startChar": 43,
+        "endLine": 57,
+        "endChar": 46
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab8b2a19_25bd7e16",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T12:52:20Z",
+      "side": 1,
+      "message": "dangling comment",
+      "range": {
+        "startLine": 228,
+        "startChar": 57,
+        "endLine": 228,
+        "endChar": 59
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41cce36d_7487325a",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T12:52:20Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 238,
+        "startChar": 19,
+        "endLine": 238,
+        "endChar": 25
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e818918_83fe7549",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T12:52:20Z",
+      "side": 1,
+      "message": "The fact that we have \"name\" and \"test\" is a bit confusing to me. Why not use \"benchmark\" instead of name?",
+      "range": {
+        "startLine": 664,
+        "startChar": 22,
+        "endLine": 664,
+        "endChar": 26
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34f04a54_e5705325",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T12:52:20Z",
+      "side": 1,
+      "message": "I\u0027m not sure the value of the uniqueName() in the benchmark - it defaults to just the name for everything except SKPAnimationBench and SKPBench. IMO, we get rid of it so there\u0027s just one name.\n\nWith that out of the way, should we just put width and height as their own keys? or a combined key \"dimensions\"? Do all benchmarks have these dimensions? If not, can we omit ones that have 0,0 for them to avoid clutter?",
+      "range": {
+        "startLine": 670,
+        "startChar": 59,
+        "endLine": 670,
+        "endChar": 72
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ace098e_c018636d",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T12:52:20Z",
+      "side": 1,
+      "message": "This indentation looks a bit odd. Is this what clang-format did?",
+      "range": {
+        "startLine": 729,
+        "startChar": 0,
+        "endLine": 729,
+        "endChar": 28
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
