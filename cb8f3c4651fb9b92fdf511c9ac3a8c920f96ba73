@@ -46,6 +46,30 @@
       },
       "revId": "cb8f3c4651fb9b92fdf511c9ac3a8c920f96ba73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b2d548_8d24e416",
+        "filename": "tools/window/mac/GraphiteDawnMetalWindowContext_mac.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-05T17:27:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8088038d_db5f7fdb",
+      "range": {
+        "startLine": 66,
+        "startChar": 48,
+        "endLine": 66,
+        "endChar": 89
+      },
+      "revId": "cb8f3c4651fb9b92fdf511c9ac3a8c920f96ba73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
