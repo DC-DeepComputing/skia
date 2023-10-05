@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e50dd58f_3885ec61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-05T18:51:54Z",
+      "side": 1,
+      "message": "This makes sense, kRect is the bounds before the sin*kRippleSize is added to the coordinates, so it won\u0027t contain the final vertices. Depending on how the provided bounds are consumed by Ganesh and the clip stack, this could lead to no clipping (if we think the clip is wide-open so don\u0027t do anything) or we incorporate the incorrect bounds with the scissor and then we do clip the vertices.",
+      "revId": "8a47e4c7197fd45bdcca2e59141a3657e01dc83b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
