@@ -39,7 +39,6 @@ protected:
     void onAddShape(const Shape&,
                     const Transform& transform,
                     const Rect& atlasBounds,
-                    skvx::int2 deviceOffset,
                     const SkStrokeRec&) override;
     const TextureProxy* addRect(Recorder* recorder,
                                 skvx::float2 atlasSize,

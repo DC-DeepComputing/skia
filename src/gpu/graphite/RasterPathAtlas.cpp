@@ -88,7 +88,6 @@ const TextureProxy* RasterPathAtlas::addRect(Recorder* recorder,
 void RasterPathAtlas::onAddShape(const Shape& shape,
                                  const Transform& transform,
                                  const Rect& atlasBounds,
-                                 skvx::int2 deviceOffset,
                                  const SkStrokeRec& strokeRec) {
     // TODO: look up shape and use cached texture
     // Need to push this up into addShape() somehow
@@ -120,11 +119,6 @@ void RasterPathAtlas::onAddShape(const Shape& shape,
     strokeRec.applyToPaint(&paint);
 
     SkMatrix translatedMatrix = SkMatrix(transform);
-    // The atlas transform of the shape is the linear-components (scale, rotation, skew) of
-    // `localToDevice` translated by the top-left offset of `atlasBounds`, accounting for the 1
-    // pixel-wide border we added earlier, so that the shape is correctly centered.
-    translatedMatrix.postTranslate(atlasBounds.x() + 1 - deviceOffset.x(),
-                                   atlasBounds.y() + 1 - deviceOffset.y());
     draw.fCTM = &translatedMatrix;
     SkPath path = shape.asPath();
     if (path.isInverseFillType()) {

@@ -19,18 +19,20 @@ CoverageMaskRenderStep::CoverageMaskRenderStep()
         : RenderStep("CoverageMaskRenderStep",
                      "",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2},
+                     /*uniforms=*/{{"maskToDeviceRemainder", SkSLType::kFloat3x3},
+                                   {"atlasSizeInv", SkSLType::kFloat2},
                                    {"isInverted", SkSLType::kInt}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
                      /*vertexAttrs=*/{},
                      /*instanceAttrs=*/
                      {{"drawBounds"  , VertexAttribType::kFloat4 , SkSLType::kFloat4},  // ltrb
-                      {"deviceOrigin", VertexAttribType::kInt2, SkSLType::kInt2},
+                      {"deviceOrigin", VertexAttribType::kFloat2, SkSLType::kFloat2},
                       {"uvOrigin"    , VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"maskSize"    , VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"depth"     , VertexAttribType::kFloat, SkSLType::kFloat},
                       {"ssboIndex" , VertexAttribType::kInt  , SkSLType::kInt},
+                      // deviceToLocal matrix for producing local coords for shader evaluation
                       {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                       {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
                       {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}},
@@ -48,7 +50,7 @@ std::string CoverageMaskRenderStep::vertexSkSL() const {
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = coverage_mask_vertex_fn("
                     "float2(sk_VertexID >> 1, sk_VertexID & 1), atlasSizeInv, "
-                    "drawBounds, float2(deviceOrigin), float2(uvOrigin), "
+                    "drawBounds, float2(deviceOrigin), maskToDeviceRemainder, float2(uvOrigin), "
                     "float2(maskSize), depth, float3x3(mat0, mat1, mat2), "
                     "maskBounds, textureCoords, stepLocalCoords);\n";
 }
@@ -86,28 +88,44 @@ void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
     // A quad is a 4-vertex instance. The coordinates are derived from the vertex IDs.
     DrawWriter::Instances instances(*dw, {}, {}, 4);
 
+    // The device origin is the integer translation extracted from the mask-to-device matrix so
+    // that the remaining matrix uniform has less variance between draws.
+    const auto& maskToDevice = params.transform().matrix();
+    skvx::float2 deviceOrigin = {sk_float_floor(maskToDevice.rc(0, 3)),
+                                 sk_float_floor(maskToDevice.rc(1, 3))};
+
+    // relative to mask space (device origin and mask-to-device remainder must be applied in shader)
+    skvx::float4 drawBounds;
     skvx::half2 maskSize, uvOrigin;
-    skvx::int2 deviceOrigin;
     if (params.clip().transformedShapeBounds().isEmptyNegativeOrNaN()) {
         // If the mask shape is clipped out then this must be an inverse fill. There is no mask to
         // sample but we still need to paint the fill region that excludes the mask shape. Signal
         // this by setting the mask size to 0.
         SkASSERT(coverageMask.inverted());
         maskSize = uvOrigin = 0;
-        deviceOrigin = 0;
     } else {
-        // `maskSize` and `deviceOrigin` correspond to the mask bounds (transformed shape bounds
-        // expanded by a 1-pixel border for AA). `uvOrigin` is positioned to include the additional
-        // 1-pixel border between atlas entries (which corresponds to their clip bounds and should
-        // contain 0).
-        maskSize     = coverageMask.maskSize();
-        deviceOrigin = coverageMask.deviceOrigin();
-        uvOrigin     = coverageMask.textureOrigin();
+        // `maskSize` correspond to the mask subset to access for the draw. It's assumed that the
+        // texture origin has already been adjusted to take into account any padding between atlas
+        // entries.
+        maskSize = coverageMask.maskSize();
+        uvOrigin = coverageMask.textureOrigin();
+    }
+
+    if (coverageMask.inverted()) {
+        // Only mask filters trigger complex transforms, and they are never inverse filled. Since
+        // we know this is an inverted mask, then we can exactly map the draw's clip bounds to mask
+        // space so that the clip is fully covered.
+        SkASSERT(maskToDevice == SkM44::Translate(deviceOrigin.x(), deviceOrigin.y()));
+        drawBounds = params.clip().drawBounds().makeOffset(-deviceOrigin).ltrb();
+    } else {
+        // If we aren't inverted, then the mask bounds define the draw bounds, and they should not
+        // be empty (or the draw should have been discarded earlier).
+        SkASSERT(maskSize.x() > 0 && maskSize.y() > 0);
+        drawBounds = coverageMask.bounds().ltrb();
     }
 
     const SkM44& m = coverageMask.deviceToLocal();
-    instances.append(1) << params.clip().drawBounds().ltrb()     // drawBounds
-                        << deviceOrigin << uvOrigin << maskSize
+    instances.append(1) << drawBounds << deviceOrigin << uvOrigin << maskSize
                         << params.order().depthAsFloat() << ssboIndex
                         << m.rc(0,0) << m.rc(1,0) << m.rc(3,0)   // mat0
                         << m.rc(0,1) << m.rc(1,1) << m.rc(3,1)   // mat1
@@ -123,6 +141,16 @@ void CoverageMaskRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(proxy);
 
     // write uniforms
+
+    // Most coverage masks are aligned with the device pixels, so the params' transform is an
+    // integer translation matrix. This translation is extracted as an instance attribute so that
+    // the remaining transform has a much lower frequency of changing (only complex-transformed
+    // mask filters).
+    SkMatrix maskToDevice = params.transform().matrix().asM33();
+    maskToDevice.postTranslate(-sk_float_floor(maskToDevice.getTranslateX()),
+                               -sk_float_floor(maskToDevice.getTranslateY()));
+    gatherer->write(maskToDevice);
+
     SkV2 atlasSizeInv = {1.f / proxy->dimensions().width(), 1.f / proxy->dimensions().height()};
     gatherer->write(atlasSizeInv);
     gatherer->write(int(coverageMask.inverted()));
