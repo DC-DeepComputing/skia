@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16a8dcee_74e0f403",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-05T20:34:16Z",
+      "side": 1,
+      "message": "nit: looks like this could fit on the line above",
+      "range": {
+        "startLine": 489,
+        "startChar": 40,
+        "endLine": 489,
+        "endChar": 65
+      },
+      "revId": "666890b0014a28eb282e86197a49b6a822e412a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc9a2b0_067c5e3f",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1504,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-05T20:34:16Z",
+      "side": 1,
+      "message": "nit: rm indent",
+      "range": {
+        "startLine": 1504,
+        "startChar": 8,
+        "endLine": 1504,
+        "endChar": 12
+      },
+      "revId": "666890b0014a28eb282e86197a49b6a822e412a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dbaf812_e6436b54",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-05T20:34:16Z",
+      "side": 1,
+      "message": "nit: looks like this could fit on the line above",
+      "range": {
+        "startLine": 175,
+        "startChar": 41,
+        "endLine": 175,
+        "endChar": 65
+      },
+      "revId": "666890b0014a28eb282e86197a49b6a822e412a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
