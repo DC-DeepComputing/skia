@@ -27,6 +27,7 @@ namespace skgpu::graphite {
 
 class ComputeStep;
 enum class Coverage;
+class Deduper;
 class DrawParams;
 enum class DstReadRequirement;
 class GraphicsPipelineDesc;

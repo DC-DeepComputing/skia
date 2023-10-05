@@ -59,6 +59,18 @@ protected:
     uint32_t fOffset = 0;
 };
 
+// This is a very narrow deduper that only collapses references to the paint color. If a more
+// general system is required it could be expanded to take uniform names and hash them.
+class Deduper {
+public:
+    bool alreadySeen() const { return fSeenIt; }
+    void markAsSeen() { fSeenIt = true;}
+    void reset() { fSeenIt = false; }
+
+private:
+    bool fSeenIt = false;
+};
+
 class UniformManager : public UniformOffsetCalculator {
 public:
     UniformManager(Layout layout) : UniformOffsetCalculator(layout, /*startingOffset=*/0) {}
