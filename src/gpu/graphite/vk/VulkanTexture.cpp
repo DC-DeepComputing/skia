@@ -392,7 +392,8 @@ const VulkanImageView* VulkanTexture::getImageView(VulkanImageView::Usage usage)
                                            fImage,
                                            vkTexInfo.fFormat,
                                            usage,
-                                           miplevels);
+                                           miplevels,
+                                           vkTexInfo.fYcbcrConversionInfo);
     return fImageViews.push_back(std::move(imageView)).get();
 }
 
