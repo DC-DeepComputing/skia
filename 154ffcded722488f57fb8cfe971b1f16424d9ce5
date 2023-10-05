@@ -22,6 +22,30 @@
       },
       "revId": "154ffcded722488f57fb8cfe971b1f16424d9ce5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "232d70b7_e12f0bdb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-05T18:45:59Z",
+      "side": 1,
+      "message": "Ah, good point. I decided to create a private helper to handle this (similar to Dawn\u0027s `preprocessViewport`) which is now called whenever we begin a new renderpass. \n\n`createTrackedRtAdjustUbo` now handles calculating the `rtadjust` value, requesting a buffer from the resource provider, writing the value into the buffer, and recording that uniform so it can be bound. I tested this out on some image filter GMs which have multiple renderpasses w/ different viewports within one cmd buffer and I observed different values as expected.",
+      "parentUuid": "823fb534_d5782b5e",
+      "range": {
+        "startLine": 417,
+        "startChar": 18,
+        "endLine": 417,
+        "endChar": 49
+      },
+      "revId": "154ffcded722488f57fb8cfe971b1f16424d9ce5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
