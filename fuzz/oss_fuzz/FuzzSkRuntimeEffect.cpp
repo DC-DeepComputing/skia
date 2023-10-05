@@ -18,7 +18,7 @@
 using namespace skia_private;
 
 /**
- * The fuzzer treats the input bytes as an SkSL program. The requested number of uniforms and
+ * The fuzzer treats the input bytes as an SkSL shader program. The requested number of uniforms and
  * children are automatically synthesized to match the program's needs.
  *
  * We fuzz twice, with two different settings for inlining in the SkSL compiler. By default, the
