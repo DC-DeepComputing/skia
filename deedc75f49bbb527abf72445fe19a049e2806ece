@@ -46,6 +46,30 @@
       },
       "revId": "deedc75f49bbb527abf72445fe19a049e2806ece",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1361e42_a85775f8",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-05T14:42:23Z",
+      "side": 1,
+      "message": "\u003e but now we\u0027ll do \"nothing\" through this whole if-else chain\n\nRight, if there are no coords, we don\u0027t want a coord parameter in the function signature; doing nothing here is the intent. And we never wanted to alter the coords map here; at this point it\u0027s meant to be fully-baked. I think this was just written this way because `myMap[]` is so much more convenient than `myMap.find`.",
+      "parentUuid": "8982f432_c004e79d",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 72
+      },
+      "revId": "deedc75f49bbb527abf72445fe19a049e2806ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
