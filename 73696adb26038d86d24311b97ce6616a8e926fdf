@@ -16,6 +16,52 @@
       "message": "Looks fine to me. It seems Brian should probably take a look and make sure the whole alphaType thing is what is intended and there isn\u0027t anything else that should change there.",
       "revId": "73696adb26038d86d24311b97ce6616a8e926fdf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d25b125_cca2f09d",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-05T14:54:22Z",
+      "side": 1,
+      "message": "I know that the old signature is pre-existing, but it\u0027s strange to me that only the new signature includes the SkAlphaType information? Are we planning on keeping both procs around?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 66
+      },
+      "revId": "73696adb26038d86d24311b97ce6616a8e926fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45cfa457_d5c2abff",
+        "filename": "src/codec/SkImageGenerator_FromEncoded.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-05T14:54:22Z",
+      "side": 1,
+      "message": "nit: `encoded-\u003eisEmpty()`",
+      "range": {
+        "startLine": 53,
+        "startChar": 30,
+        "endLine": 53,
+        "endChar": 50
+      },
+      "revId": "73696adb26038d86d24311b97ce6616a8e926fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
