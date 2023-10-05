@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "321c95ff_219c641e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-05T01:09:58Z",
+      "side": 1,
+      "message": "The chrome and g3 reds are infra flakes, none of the changes for this reland should impact them, and they were fine on the last land.\n\nThe prior android failures were not actually related to the last land, so nothing had to be done. This fixes an invalid assert assumption for document-based devices (the source FilterResult can be falsy when snapSpecial() isn\u0027t implemented). This adds the staging guard to Skia\u0027s flutter_defines.gni for convenience. \n\nI\u0027ll see if we can get the flutter tests updated w/o having to go through the entire GN arg definition rigamarole, but this will let chromium+graphite move forward.",
+      "revId": "ffc197e2bf46b2ab6cd00cee744af611958330b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
