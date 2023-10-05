@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8b4d138_4a336e71",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-05T14:21:13Z",
+      "side": 1,
+      "message": "I don\u0027t remember how the coord map works, so I\u0027m struggling to reason about this part of the change. It seems like the behavior is *almost* identical, but not quite. The only difference is if we don\u0027t find the FP in the map, and it returns false for `usesSampleCoords` - previously, that would send us into the else block below, but now we\u0027ll do \"nothing\" through this whole if-else chain? What\u0027s the significance of that arrangement?",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 72
+      },
+      "revId": "deedc75f49bbb527abf72445fe19a049e2806ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
