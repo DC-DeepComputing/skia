@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33f8e562_bb029153",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-10-05T14:49:42Z",
+      "side": 1,
+      "message": "Added a suggestion for decreasing the nesting and avoiding silent failure. Otherwise, LGTM!",
+      "revId": "708fc7360f7d4d5b7c95569cfe0e085f98b76774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

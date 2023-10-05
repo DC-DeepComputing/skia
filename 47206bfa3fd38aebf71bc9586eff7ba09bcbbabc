@@ -22,6 +22,30 @@
       },
       "revId": "47206bfa3fd38aebf71bc9586eff7ba09bcbbabc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067e111f_c1694137",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-10-05T14:49:42Z",
+      "side": 1,
+      "message": "To decrease the nesting, I\u0027d just grab the color_records array directly with some question mark chaining:\n```\nlet color_records \u003d cpal_table.color_records_array()?.ok()?;\n```\nThen `color_records.get(..)` can use `?` instead of `.unwrap_or_default()` which will also fail with an error rather than silently leaving the colors uninitialized.",
+      "parentUuid": "c0c8642b_3350506b",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 10
+      },
+      "revId": "47206bfa3fd38aebf71bc9586eff7ba09bcbbabc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
