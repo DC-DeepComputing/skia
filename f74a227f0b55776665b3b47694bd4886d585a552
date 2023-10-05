@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "f74a227f0b55776665b3b47694bd4886d585a552",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dfec8a2_a0506a06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-05T19:56:45Z",
+      "side": 1,
+      "message": "lgtm % one nit",
+      "revId": "f74a227f0b55776665b3b47694bd4886d585a552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae3546f9_89b085ef",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-05T19:56:45Z",
+      "side": 1,
+      "message": "nit: `outPos` to match `outMaskInfo` above (also makes it explicit that this is an out param).",
+      "range": {
+        "startLine": 89,
+        "startChar": 56,
+        "endLine": 89,
+        "endChar": 59
+      },
+      "revId": "f74a227f0b55776665b3b47694bd4886d585a552",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
