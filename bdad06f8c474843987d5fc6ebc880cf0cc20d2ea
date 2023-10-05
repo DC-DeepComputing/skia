@@ -16,6 +16,24 @@
       "message": "I understand why one would want to split out image encoding and gpu, but I\u0027m not so sure why this one is split out? It\u0027s fine, but if there is a reason it isn\u0027t immediately obvious, so should probably go in the commit comment.\n\nIt appears to be because of the implementation dependence on SVG? I\u0027ve never seen these files before, but it is really odd that the picture and svg stuff is mixed up like this. Seems like an actual cleanup of that may be warranted?\n\nI suppose I don\u0027t understand how splitting this out like this makes it easier to modularize, since I think what is needed is for the svg specific parts of this to go in a different file and target, have the generic a picture parts in a target which optionally depends on the svg bits? Or the tools would just depend on SVG and just drop the ifdef? If so why not do that here?\n\nAnyhow, some explanation of the plan would be useful in the commit message.",
       "revId": "bdad06f8c474843987d5fc6ebc880cf0cc20d2ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96d2bd59_d5e799d2",
+        "filename": "tools/PathExtractor.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-05T15:52:58Z",
+      "side": 1,
+      "message": "Fair point on the SVG part - not sure if that functionality is needed. I asked Michael about the use of sniffing paths in Graphite.\n\nThe use of the finding paths in BisectSlide is a bit harder to ask about - it was added here with little context https://github.com/google/skia/commit/2d18f41858382fff91688a6318bc39cb22233f7e",
+      "parentUuid": "f0c8c9bf_67b75ce7",
+      "revId": "bdad06f8c474843987d5fc6ebc880cf0cc20d2ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
