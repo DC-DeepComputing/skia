@@ -174,16 +174,16 @@ void add_dst_read_sample_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
-void DstReadSampleBlock::BeginBlock(const KeyContext& keyContext,
-                                    PaintParamsKeyBuilder* builder,
-                                    PipelineDataGatherer* gatherer,
-                                    sk_sp<TextureProxy> dstTexture,
-                                    SkIPoint dstOffset) {
+void DstReadSampleBlock::AddBlock(const KeyContext& keyContext,
+                                  PaintParamsKeyBuilder* builder,
+                                  PipelineDataGatherer* gatherer,
+                                  sk_sp<TextureProxy> dstTexture,
+                                  SkIPoint dstOffset) {
     if (gatherer) {
         add_dst_read_sample_uniform_data(
                 keyContext.dict(), gatherer, std::move(dstTexture), dstOffset);
     }
-    builder->beginBlock(BuiltInCodeSnippetID::kDstReadSample);
+    builder->addBlock(BuiltInCodeSnippetID::kDstReadSample);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -351,10 +351,10 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
     }
 }
 
-void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
-                                      PaintParamsKeyBuilder *builder,
-                                      PipelineDataGatherer* gatherer,
-                                      const GradientData& gradData) {
+void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
+                                    PaintParamsKeyBuilder *builder,
+                                    PipelineDataGatherer* gatherer,
+                                    const GradientData& gradData) {
     auto dict = keyContext.dict();
 
     if (gradData.fNumStops > GradientData::kNumInternalStorageStops && gatherer) {
@@ -409,7 +409,7 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
             break;
     }
 
-    builder->beginBlock(codeSnippetID);
+    builder->addBlock(codeSnippetID);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1780,12 +1780,11 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
             intermediateCS, intermediateAlphaType, dstColorSpace, dstColorInfo.alphaType());
 
     // The gradient block and colorSpace conversion block need to be combined
-    // (via the compose block) so that the localMatrix block can treat them as
+    // (via the Compose block) so that the localMatrix block can treat them as
     // one child.
     Compose(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, gradData);
-                builder->endBlock();
+                GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
             },
             /* addOuterToKey= */ [&]() -> void {
                 ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);

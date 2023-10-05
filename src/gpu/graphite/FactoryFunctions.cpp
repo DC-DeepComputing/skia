@@ -323,9 +323,8 @@ private:
         // TODO: we may need SkLocalMatrixShader-wrapped versions too
         Compose(keyContext, builder, /* gatherer= */ nullptr,
                 /* addInnerToKey= */ [&]() -> void {
-                    GradientShaderBlocks::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
-                                                     gradData);
-                    builder->endBlock();
+                    GradientShaderBlocks::AddBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                                   gradData);
                 },
                 /* addOuterToKey= */  [&]() -> void {
                     ColorSpaceTransformBlock::AddBlock(keyContext,
