@@ -174,16 +174,16 @@ void add_dst_read_sample_uniform_data(const ShaderCodeDictionary* dict,
 
 } // anonymous namespace
 
-void DstReadSampleBlock::BeginBlock(const KeyContext& keyContext,
-                                    PaintParamsKeyBuilder* builder,
-                                    PipelineDataGatherer* gatherer,
-                                    sk_sp<TextureProxy> dstTexture,
-                                    SkIPoint dstOffset) {
+void DstReadSampleBlock::AddBlock(const KeyContext& keyContext,
+                                  PaintParamsKeyBuilder* builder,
+                                  PipelineDataGatherer* gatherer,
+                                  sk_sp<TextureProxy> dstTexture,
+                                  SkIPoint dstOffset) {
     if (gatherer) {
         add_dst_read_sample_uniform_data(
                 keyContext.dict(), gatherer, std::move(dstTexture), dstOffset);
     }
-    builder->beginBlock(BuiltInCodeSnippetID::kDstReadSample);
+    builder->addBlock(BuiltInCodeSnippetID::kDstReadSample);
 }
 
 //--------------------------------------------------------------------------------------------------

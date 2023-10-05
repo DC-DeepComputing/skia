@@ -54,11 +54,11 @@ enum class DstColorType {
  */
 
 struct DstReadSampleBlock {
-    static void BeginBlock(const KeyContext&,
-                           PaintParamsKeyBuilder*,
-                           PipelineDataGatherer*,
-                           sk_sp<TextureProxy> dst,
-                           SkIPoint dstOffset);
+    static void AddBlock(const KeyContext&,
+                         PaintParamsKeyBuilder*,
+                         PipelineDataGatherer*,
+                         sk_sp<TextureProxy> dst,
+                         SkIPoint dstOffset);
 };
 
 struct SolidColorShaderBlock {
