@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26bbacd0_a731f067",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-05T19:45:30Z",
+      "side": 1,
+      "message": "Generally agree. I think it\u0027s probably less confusing to stick to Swarming terminology when referring to Swarming infrastructure such as these pages.",
+      "parentUuid": "068db591_79e2733b",
+      "range": {
+        "startLine": 57,
+        "startChar": 43,
+        "endLine": 57,
+        "endChar": 46
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab8b2a19_25bd7e16",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-05T12:52:20Z",
       "side": 1,
       "message": "dangling comment",
+      "range": {
+        "startLine": 228,
+        "startChar": 57,
+        "endLine": 228,
+        "endChar": 59
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c3b61e_49c03d70",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-05T19:45:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab8b2a19_25bd7e16",
       "range": {
         "startLine": 228,
         "startChar": 57,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31298881_6e02c97c",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-05T19:45:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41cce36d_7487325a",
+      "range": {
+        "startLine": 238,
+        "startChar": 19,
+        "endLine": 238,
+        "endChar": 25
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e818918_83fe7549",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-05T12:52:20Z",
       "side": 1,
       "message": "The fact that we have \"name\" and \"test\" is a bit confusing to me. Why not use \"benchmark\" instead of name?",
+      "range": {
+        "startLine": 664,
+        "startChar": 22,
+        "endLine": 664,
+        "endChar": 26
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "507fbe97_6126c48f",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-05T19:45:30Z",
+      "side": 1,
+      "message": "Dropping \"test\" (rationale in the below comment).\n\nI think \"benchmark\" is a bit ambiguous because we have benchmark names and benchmark types. Also, setting \"name\" to the return value of `getName()` seems more natural to me than setting \"benchmark\" to `getName()`.",
+      "parentUuid": "8e818918_83fe7549",
       "range": {
         "startLine": 664,
         "startChar": 22,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29584768_b3e7311d",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-05T19:45:30Z",
+      "side": 1,
+      "message": "You\u0027re right, it makes more sense to make a trace ID unique by expressing the width, height, scale, etc. as their own keys rather than by generating a unique test name from them.\n\nAlso, having both a \"name\" and a \"test\" key is confusing.\n\nDropping \"test\" and adding keys \"width\" and \"height\".\n\nI left a note to also add \"scale\" and whatever else is necessary when we add support for `SKPBench` and `SKPAnimationBench`.\n\nThere is some value in keeping `Benchmark::getUniqueName()` around in that it can disambiguate log messages. But that\u0027s a separate issue which we can discuss and tackle independently.",
+      "parentUuid": "34f04a54_e5705325",
+      "range": {
+        "startLine": 670,
+        "startChar": 59,
+        "endLine": 670,
+        "endChar": 72
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ace098e_c018636d",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-10-05T12:52:20Z",
       "side": 1,
       "message": "This indentation looks a bit odd. Is this what clang-format did?",
+      "range": {
+        "startLine": 729,
+        "startChar": 0,
+        "endLine": 729,
+        "endChar": 28
+      },
+      "revId": "47af5aed5a7a3a6b305820d692b79f0336dc0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5ef5253_8c490255",
+        "filename": "bench/BazelBenchmarkRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-05T19:45:30Z",
+      "side": 1,
+      "message": "Yes, it\u0027s what `clang-format` did. I agree that it looks excessively indented.",
+      "parentUuid": "2ace098e_c018636d",
       "range": {
         "startLine": 729,
         "startChar": 0,
