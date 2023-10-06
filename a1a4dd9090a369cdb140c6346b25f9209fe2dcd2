@@ -22,6 +22,30 @@
       },
       "revId": "a1a4dd9090a369cdb140c6346b25f9209fe2dcd2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a6d4bf9_21540732",
+        "filename": "fuzz/oss_fuzz/FuzzSkRuntimeColorFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-06T19:01:23Z",
+      "side": 1,
+      "message": "Good thought. I hadn\u0027t considered that, but I agree with your assessment--we\u0027ll do an `onFilterColor4f` which runs the program once, then fill the 4x4 canvas with the result color. For a fuzz test this is all the coverage we would need.",
+      "parentUuid": "070a50bb_0dc72f2a",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "a1a4dd9090a369cdb140c6346b25f9209fe2dcd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
