@@ -36,3 +36,25 @@ skia_filegroup(
         "//tools:__subpackages__",
     ],
 )
+
+skia_filegroup(
+    name = "flags_hdrs",
+    testonly = True,
+    srcs = [
+        "CommandLineFlags.h",
+    ],
+    visibility = [
+        "//tests:__subpackages__",
+    ],
+)
+
+skia_filegroup(
+    name = "flags_srcs",
+    testonly = True,
+    srcs = [
+        "CommandLineFlags.cpp",
+    ],
+    visibility = [
+        "//tests:__subpackages__",
+    ],
+)
