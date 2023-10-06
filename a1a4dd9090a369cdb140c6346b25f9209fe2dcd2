@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "070a50bb_0dc72f2a",
+        "filename": "fuzz/oss_fuzz/FuzzSkRuntimeColorFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-06T18:59:55Z",
+      "side": 1,
+      "message": "This is interesting, because we\u0027ll do the paint optimization thing (apply the color-filter to RED). I guess that\u0027s okay, because the mechanism of doing so is ultimately the same code as if we left it on the paint and had a non-trivial shader?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "a1a4dd9090a369cdb140c6346b25f9209fe2dcd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
