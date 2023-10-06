@@ -11,7 +11,12 @@ load(
     "PATHOPS_TESTS",
     "PDF_TESTS",
 )
-load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
+load(
+    ":testgroups2.bzl",
+    "CORE_TESTS",
+    "RECORD_TESTS",
+)
+load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests", "skia_tests")
 
 skia_cc_library(
     name = "tests_base",
@@ -414,5 +419,62 @@ test_suite(
         ":svg_tests",
         # TODO(https://crbug.com/skia/14342): Rust test does not build in RBE-environment.
         #":fontations_tests",
+    ],
+)
+
+skia_cc_library(
+    name = "tests_base2",
+    testonly = True,
+    srcs = [
+        "CtsEnforcement.cpp",
+        "Test.cpp",
+        "TestHarness.cpp",
+        "//tools:Registry.h",
+        "//tools:ResourceFactory.h",
+        "//tools:Resources.cpp",
+        "//tools:SkMetaData.cpp",
+        "//tools:SkMetaData.h",
+        "//tools:ToolUtils.cpp",
+        "//tools/flags:flags_srcs",
+        "//tools/fonts:test_font_manager_srcs",
+    ],
+    hdrs = [
+        "CtsEnforcement.h",
+        "Test.h",
+        "TestHarness.h",
+        "//tools:Resources.h",
+        "//tools:ToolUtils.h",
+        "//tools/flags:flags_hdrs",
+        "//tools/fonts:test_empty_typeface",
+    ],
+    textual_hdrs = [
+        "//tools/fonts:test_fonts",
+    ],
+    deps = [
+        "//:core",
+        "//src/base",
+    ],
+)
+
+skia_tests(
+    name = "core_tests",
+    tests = CORE_TESTS,
+    deps = [
+        ":tests_base2",
+        "//:core",
+        "//:default_font_manager_empty",  # FIXME(kjlubick)
+        "//:default_malloc",
+    ],
+)
+
+skia_tests(
+    name = "record_tests",
+    extra_srcs = ["RecordTestUtils.h"],
+    tests = RECORD_TESTS,
+    deps = [
+        ":tests_base2",
+        "//:core",
+        "//:default_font_manager_empty",
+        "//:default_malloc",
     ],
 )
