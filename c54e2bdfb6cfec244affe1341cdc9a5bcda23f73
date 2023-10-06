@@ -16,6 +16,24 @@
       "message": "You\u0027re going to add guards to this CL, right?",
       "revId": "c54e2bdfb6cfec244affe1341cdc9a5bcda23f73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d407f1b_1c9126ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-06T17:22:39Z",
+      "side": 1,
+      "message": "I\u0027m not sure yet. I added a bit of code here to preserve the winding, and that may be enough. First I\u0027ll land the Simplify change and then take a look at this one.",
+      "parentUuid": "44eed493_9d840039",
+      "revId": "c54e2bdfb6cfec244affe1341cdc9a5bcda23f73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
