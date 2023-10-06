@@ -16,6 +16,24 @@
       "message": "Leon,\n\nthe iwyu bot is failing but the failure seems to be because it\u0027s not sync\u0027ing to the update DEPS. any idea how to fix it?",
       "revId": "b31eea0459ce89355a87d2348f07d3e1c158266d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39fe606_02f5dccf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2023-10-06T21:08:32Z",
+      "side": 1,
+      "message": "Actually, i missed updating `deps.bzl`. The bots are passing now.",
+      "parentUuid": "baa2ac54_debee553",
+      "revId": "b31eea0459ce89355a87d2348f07d3e1c158266d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
