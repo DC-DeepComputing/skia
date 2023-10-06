@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6980a339_d1ce7ce0",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-06T21:35:00Z",
+      "side": 1,
+      "message": "Nit: Consider `linux_rbe_tests` for the more conventional `_tests` suffix and for consistency with the Bazel \"build\" and \"test\" verbs.",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 27
+      },
+      "revId": "4934f62da7710986bc89728cbfb2e25b370627fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd0fb8c2_2ab10d40",
+        "filename": "tests/testgroups.bzl",
+        "patchSetId": 10
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-06T21:35:00Z",
+      "side": 1,
+      "message": "Does this mean these tests need both the \"core\" and \"codec\" modules of the buffet build? If so, consider making the convention explicit in the docstring at the top of this file.",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 16
+      },
+      "revId": "4934f62da7710986bc89728cbfb2e25b370627fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0710f807_1809f4bf",
+        "filename": "tests/tests.bzl",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-06T21:35:00Z",
+      "side": 1,
+      "message": "Uber nit: From what I\u0027ve seen, it\u0027s conventional to indent these with 4 spaces. IMO it generalizes better to long argument names, which are sometimes necessary. Either way, we should aim to be consistent across our .bzl files.",
+      "range": {
+        "startLine": 22,
+        "startChar": 8,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "4934f62da7710986bc89728cbfb2e25b370627fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
