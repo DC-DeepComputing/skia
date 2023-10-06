@@ -46,6 +46,30 @@
       },
       "revId": "47206bfa3fd38aebf71bc9586eff7ba09bcbbabc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d0eaf9_9c95eb70",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-10-06T08:45:31Z",
+      "side": 1,
+      "message": "Love it, thanks. Yes, I need to remember that the question mark operator works on `Result` and `Option` - and it\u0027s great that it can be used inside the `.zip()` function. Coming from C++ it\u0027s somewhat counter-intuitive to have an \"implicit return\" in there.",
+      "parentUuid": "067e111f_c1694137",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 10
+      },
+      "revId": "47206bfa3fd38aebf71bc9586eff7ba09bcbbabc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
