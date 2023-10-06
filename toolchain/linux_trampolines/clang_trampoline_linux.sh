@@ -120,6 +120,7 @@ supported_files_or_dirs=(
   "tools/EncodeUtils.cpp"
   "tools/GpuToolUtils.cpp"
   "tools/SvgPathExtractor.cpp"
+  "tools/Resources.cpp"
   "tools/ToolUtils.cpp"
 
   # See //bazel/generate_cpp_files_for_headers.bzl and //include/BUILD.bazel for more.
