@@ -93,6 +93,7 @@ static void fuzz_region_set_path(sk_sp<SkData>);
 static void fuzz_skdescriptor_deserialize(sk_sp<SkData>);
 static void fuzz_skmeshspecification(sk_sp<SkData>);
 static void fuzz_skp(sk_sp<SkData>);
+static void fuzz_skruntimeblender(sk_sp<SkData>);
 static void fuzz_skruntimecolorfilter(sk_sp<SkData>);
 static void fuzz_skruntimeeffect(sk_sp<SkData>);
 static void fuzz_sksl2glsl(sk_sp<SkData>);
@@ -244,6 +245,10 @@ static int fuzz_file(SkString path, SkString type) {
     }
     if (type.equals("skp")) {
         fuzz_skp(bytes);
+        return 0;
+    }
+    if (type.equals("skruntimeblender")) {
+        fuzz_skruntimeblender(bytes);
         return 0;
     }
     if (type.equals("skruntimecolorfilter")) {
@@ -789,6 +794,16 @@ bool FuzzSkMeshSpecification(sk_sp<SkData> bytes);
 static void fuzz_skmeshspecification(sk_sp<SkData> bytes) {
     FuzzSkMeshSpecification(bytes);
     SkDebugf("[terminated] SkMeshSpecification::Make didn't crash!\n");
+}
+
+bool FuzzSkRuntimeBlender(sk_sp<SkData> bytes);
+
+static void fuzz_skruntimeblender(sk_sp<SkData> bytes) {
+    if (FuzzSkRuntimeBlender(bytes)) {
+        SkDebugf("[terminated] Success! Compiled and executed SkSL blender.\n");
+    } else {
+        SkDebugf("[terminated] Could not compile or execute SkSL blender.\n");
+    }
 }
 
 bool FuzzSkRuntimeColorFilter(sk_sp<SkData> bytes);
