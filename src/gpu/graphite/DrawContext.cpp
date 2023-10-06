@@ -270,7 +270,6 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
     if (fRasterPathAtlas) {
         fRasterPathAtlas->recordUploads(this, recorder);
-        fRasterPathAtlas->reset();
     }
 
     if (!fPendingUploads || fPendingUploads->size() == 0) {
