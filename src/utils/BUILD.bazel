@@ -168,6 +168,7 @@ skia_filegroup(
 skia_filegroup(
     name = "core_srcs",
     srcs = [
+        "SkBase64.cpp",
         "SkCustomTypeface.cpp",
         "SkDashPath.cpp",
         "SkEventTracer.cpp",
