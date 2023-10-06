@@ -84,7 +84,9 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     // We may not always get a mappable buffer for non-dynamic access buffers. Thus we set the
     // transfer dst usage bit in case we need to do a copy to write data. It doesn't really hurt
     // to set this extra usage flag, but we could narrow the scope of buffers we set it on more than
-    // just not dynamic.
+    // just not dynamic. Additionally, the copy dst bit is required for intrinsic constant UBOs when
+    // inline uniform blocks are not supported. We indiscriminately set this flag for all UBOs for
+    // simplicity.
     if (!requiresMappable) {
         bufInfo.usage |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
     }
@@ -168,12 +170,6 @@ void VulkanBuffer::freeGpuData() {
         this->internalUnmap(0, this->size());
         fMapPtr = nullptr;
     }
-
-    // TODO: If this is a uniform buffer, we must clean up the descriptor set.
-    //if (fUniformDescriptorSet) {
-    //    fUniformDescriptorSet->recycle();
-    //    fUniformDescriptorSet = nullptr;
-    //}
 
     const VulkanSharedContext* sharedContext =
             static_cast<const VulkanSharedContext*>(this->sharedContext());

@@ -250,6 +250,40 @@ BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureI
     return fResourceProvider->createBackendTexture(dimensions, info);
 }
 
+#ifdef SK_BUILD_FOR_ANDROID
+TextureInfo Recorder::getTextureInfoFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer,
+                                                        uint32_t bufferFormat,
+                                                        bool requireKnownFormat,
+                                                        bool isRenderable,
+                                                        bool isProtectedContent,
+                                                        bool fromAndroidWindow) const {
+    if (fSharedContext->backend() != BackendApi::kVulkan) {
+        SKGPU_LOG_W("Importing an AHardwareBuffer is only supported with the Vulkan backend.");
+    } else {
+         return fResourceProvider->getTextureInfoFromAHardwareBuffer(hardwareBuffer,
+                                                                     bufferFormat,
+                                                                     requireKnownFormat,
+                                                                     isRenderable,
+                                                                     isProtectedContent,
+                                                                     fromAndroidWindow);
+    }
+    return {};
+}
+
+BackendTexture Recorder::createBackendTexture(AHardwareBuffer* hardwareBuffer,
+                                              int width, int height,
+                                              const TextureInfo& backendTextureInfo) const {
+    if (fSharedContext->backend() != BackendApi::kVulkan) {
+        SKGPU_LOG_W("Importing an AHardwareBuffer is only supported with the Vulkan backend.");
+    } else {
+        return fResourceProvider->createBackendTexture(hardwareBuffer, width, height,
+                                                       backendTextureInfo);
+    }
+    return {};
+}
+
+#endif // SK_BUILD_FOR_ANDROID
+
 bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
                                     const SkPixmap srcData[],
                                     int numLevels) {
