@@ -27,6 +27,10 @@ namespace skgpu::graphite {
  */
 class Shape {
 public:
+    // Keys for paths may be extracted from the path data for small paths. Clients aren't supposed
+    // to have to worry about this. This value is exposed for unit tests.
+    inline static constexpr int kMaxKeyFromDataVerbCnt = 10;
+
     enum class Type : uint8_t {
         kEmpty, kLine, kRect, kRRect, kPath
     };
@@ -149,6 +153,23 @@ public:
         this->setType(Type::kEmpty);
         fInverted = false;
     }
+
+    /**
+     * Gets the size of the key for the shape represented by this Shape.
+     * A negative value is returned if the shape has no key (shouldn't be cached).
+     */
+    int keySize() const;
+
+    bool hasKey() const { return this->keySize() >= 0; }
+
+    /**
+     * Writes keySize() bytes into the provided pointer. Assumes that there is enough
+     * space allocated for the key and that keySize() does not return a negative value
+     * for this shape.
+     */
+    void writeKey(uint32_t* key) const;
+
+    uint32_t stateKey() const;
 
 private:
     void setType(Type type) {
