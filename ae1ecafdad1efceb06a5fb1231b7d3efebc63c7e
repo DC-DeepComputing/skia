@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f164209a_0bbbb801",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-09T17:21:31Z",
+      "side": 1,
+      "message": "It is a open interval. Horizontal lines are always handled as largest slop.",
+      "parentUuid": "9943f0cf_8f446e8f",
+      "range": {
+        "startLine": 40,
+        "startChar": 22,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "ae1ecafdad1efceb06a5fb1231b7d3efebc63c7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4f08957_93f1608b",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-09T16:06:38Z",
       "side": 1,
       "message": "nit: spelling",
+      "range": {
+        "startLine": 203,
+        "startChar": 83,
+        "endLine": 203,
+        "endChar": 87
+      },
+      "revId": "ae1ecafdad1efceb06a5fb1231b7d3efebc63c7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb1d741d_3b878369",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-09T17:21:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4f08957_93f1608b",
       "range": {
         "startLine": 203,
         "startChar": 83,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6665511_1ea0b4cf",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-09T17:21:31Z",
+      "side": 1,
+      "message": "You are right. It didn\u0027t matter because now they are both negative, and also don\u0027t need a sign correction. I switch the code to always be positive.",
+      "parentUuid": "d6db8a6a_f8f97caf",
+      "range": {
+        "startLine": 205,
+        "startChar": 59,
+        "endLine": 205,
+        "endChar": 67
+      },
+      "revId": "ae1ecafdad1efceb06a5fb1231b7d3efebc63c7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0fa49c2_367a3b56",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-09T16:06:38Z",
       "side": 1,
       "message": "Don\u0027t you need to pre-convert these to S64, to avoid overflow?",
+      "range": {
+        "startLine": 210,
+        "startChar": 18,
+        "endLine": 210,
+        "endChar": 39
+      },
+      "revId": "ae1ecafdad1efceb06a5fb1231b7d3efebc63c7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2528b15c_116ca0f7",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-09T17:21:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0fa49c2_367a3b56",
       "range": {
         "startLine": 210,
         "startChar": 18,
