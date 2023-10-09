@@ -106,10 +106,10 @@ cc_defaults {
     target: {
       android: {
         srcs: [
-          "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.cpp",
+          "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.cpp",
         ],
         local_include_dirs: [
-          "third_party/vulkanmemoryallocator/",
+          "src/gpu/vk/vulkanmemoryallocator",
           "vma_android/include",
         ],
       },
