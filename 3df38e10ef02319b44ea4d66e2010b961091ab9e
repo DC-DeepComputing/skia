@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74f5e215_13f31a9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-09T21:53:58Z",
+      "side": 1,
+      "message": "Looks good to me overall. I\u0027ll LGTM once you take a look at Nicolette\u0027s comment and some minor questions from me.",
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a39fa55e_4a0ea231",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-09T21:53:58Z",
+      "side": 1,
+      "message": "Does HWUI implement its own path cache outside of Skia? I\u0027m interested in learning more about this behavior on Android.",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 120,
+        "endChar": 37
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c4f7be2_7798cad6",
@@ -37,6 +77,63 @@
         "endLine": 139,
         "endChar": 38
       },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b66fd980_5f8737d0",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-09T21:53:58Z",
+      "side": 1,
+      "message": "nit: Maybe rename as `path_key_size` ?",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 27
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88f1835f_a1367987",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-09T21:53:58Z",
+      "side": 1,
+      "message": "Are you planning to add unit tests for this? If not, consider moving this to the anonymous namespace in the source file.\n\nDo you know how this number was derived and are there any pointers that you can link to in a comment? (I see that this is the same as `GrStyledShape::kMaxKeyFromDataVerbCnt` which doesn\u0027t explain how this was derived either - though IWBN to have an explanation if possible).",
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c03a2442_f3cee5f6",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-09T21:53:58Z",
+      "side": 1,
+      "message": "Should `stateKey()` be private? What does \"state\" mean in this context?",
       "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
