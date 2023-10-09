@@ -22,6 +22,30 @@
       },
       "revId": "50fd20f4042519578b668fbace1c1fbfc0398345",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63737311_c897cbb8",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-09T15:01:37Z",
+      "side": 1,
+      "message": "We\u0027re trying to indent the addition of children.",
+      "parentUuid": "fcc7a320_8e74a0ef",
+      "range": {
+        "startLine": 376,
+        "startChar": 8,
+        "endLine": 376,
+        "endChar": 12
+      },
+      "revId": "50fd20f4042519578b668fbace1c1fbfc0398345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
