@@ -16,6 +16,29 @@
       "message": "PTAL.",
       "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c4f7be2_7798cad6",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-09T20:27:13Z",
+      "side": 1,
+      "message": "I may be getting lost in the syntax sauce, but should this be `\u003c\u003c` ?",
+      "range": {
+        "startLine": 139,
+        "startChar": 36,
+        "endLine": 139,
+        "endChar": 38
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
