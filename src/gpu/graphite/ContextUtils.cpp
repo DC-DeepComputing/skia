@@ -28,7 +28,7 @@
 namespace skgpu::graphite {
 
 std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*>
-ExtractPaintData(Recorder* recorder,
+ExtractPaintData1(Recorder* recorder,
                  PipelineDataGatherer* gatherer,
                  PaintParamsKeyBuilder* builder,
                  const Layout layout,
@@ -43,7 +43,7 @@ ExtractPaintData(Recorder* recorder,
 
     KeyContext keyContext(
             recorder, local2Dev, targetColorInfo, p.color(), std::move(dstTexture), dstOffset);
-    p.toKey(keyContext, builder, gatherer);
+    p.toKey1(keyContext, builder, gatherer);
 
     UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
     const UniformDataBlock* uniforms = nullptr;

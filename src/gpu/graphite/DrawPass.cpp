@@ -525,7 +525,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                             ? dst
                             : nullptr;
             std::tie(shaderID, shadingUniforms, paintTextures) =
-                    ExtractPaintData(recorder,
+                    ExtractPaintData1(recorder,
                                      &gatherer,
                                      &builder,
                                      shadingUniformLayout,
