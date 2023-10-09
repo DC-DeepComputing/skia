@@ -16,6 +16,23 @@
       "message": "Leaving as -1 until Mattias has the option of snagging authorship with an edit to the description.",
       "revId": "89c97c43899ca83871443c749848304394fb6e75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6967d6e2_762db910",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-09T15:20:22Z",
+      "side": 1,
+      "message": "Mattias doesn\u0027t have permission to claim ownership by editing the commit message, and is fine with submitting as-is (author credit in description.)",
+      "revId": "89c97c43899ca83871443c749848304394fb6e75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
