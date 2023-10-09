@@ -79,9 +79,12 @@ private:
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(Page);
     };
 
-    static constexpr int kMaxPages = 1;  // TODO: pick value - 4?
+    void makeMRU(Page*);
+
+    static constexpr int kMaxPages = 2;
+    typedef SkTInternalLList<Page> PageList;
     // LRU list of Pages (MRU at head - LRU at tail)
-    SkTInternalLList<Page> fPageList;
+    PageList fPageList;
     // Allocated array of pages (backing data for list)
     Page fPageArray[kMaxPages];
 };
