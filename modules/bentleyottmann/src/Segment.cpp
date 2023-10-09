@@ -184,4 +184,38 @@ bool lessThanAt(const Segment& s0, const Segment& s1, int32_t y) {
 
     return s0Factor < s1Factor;
 }
+
+int compareSlopes(const Segment& s0, const Segment& s1) {
+    Point s0Delta = s0.upper() - s0.lower(),
+          s1Delta = s1.upper() - s1.lower();
+
+    // Handle the horizontal cases to avoid dealing with infinities.
+    if (s0Delta.y == 0 || s1Delta.y == 0) {
+        if (s0Delta.y != 0) {
+            return -1;
+        } else if (s1Delta.y != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    // Compare s0Delta.x / s0Delta.y ? s1Delta.x / s1Delta.y. I used the alternate slop form for
+    // two reasons.
+    // * no change of sign - since the delta ys are always positive, then I don't need to worry
+    //                       about the change in sign with the cross-multiply.
+    // * proper slope ordering - the slope monotonically increases from the smallest along the
+    //                           negative x-axis increasing counterclockwise to the largest along
+    //                           the positive x-axis.
+    int64_t lhs = s0Delta.x * s1Delta.y,
+            rhs = s1Delta.x * s0Delta.y;
+
+    if (lhs < rhs) {
+        return -1;
+    } else if (lhs > rhs) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 }  // namespace bentleyottmann
