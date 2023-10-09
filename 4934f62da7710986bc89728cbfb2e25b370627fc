@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d07cc1_f1d3f472",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-09T12:19:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6980a339_d1ce7ce0",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 27
+      },
+      "revId": "4934f62da7710986bc89728cbfb2e25b370627fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd0fb8c2_2ab10d40",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5490bd15_bfdc342f",
+        "filename": "tests/testgroups.bzl",
+        "patchSetId": 10
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-09T12:19:57Z",
+      "side": 1,
+      "message": "Most of these lists are not used yet, and I have not yet settled on a convention.\n\nFor example, these are \"core\" tests that also happen to need some codec things and I\u0027m not quite sure yet what the best home for these is.",
+      "parentUuid": "bd0fb8c2_2ab10d40",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 16
+      },
+      "revId": "4934f62da7710986bc89728cbfb2e25b370627fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0710f807_1809f4bf",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-10-06T21:35:00Z",
       "side": 1,
       "message": "Uber nit: From what I\u0027ve seen, it\u0027s conventional to indent these with 4 spaces. IMO it generalizes better to long argument names, which are sometimes necessary. Either way, we should aim to be consistent across our .bzl files.",
+      "range": {
+        "startLine": 22,
+        "startChar": 8,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "4934f62da7710986bc89728cbfb2e25b370627fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27441826_9dd0dfe8",
+        "filename": "tests/tests.bzl",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-09T12:19:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0710f807_1809f4bf",
       "range": {
         "startLine": 22,
         "startChar": 8,
