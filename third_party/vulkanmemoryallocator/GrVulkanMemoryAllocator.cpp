@@ -23,6 +23,8 @@
 #include <windows.h>
 #endif
 
+#include <cstdio>
+
 #include <vulkan/vulkan_core.h>
 #include "GrVulkanMemoryAllocator.h"
 
