@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46eb69c6_f18eb64d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-10-10T14:57:28Z",
+      "side": 1,
+      "message": "LGTM but I don\u0027t have review privileges",
+      "revId": "11618d6e64aecf889d114baa7f72d25b2d85e900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
