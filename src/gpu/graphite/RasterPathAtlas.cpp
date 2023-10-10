@@ -251,6 +251,7 @@ void RasterPathAtlas::reset() {
         // clear backing data for next pass
         mru->fDirtyRect.setEmpty();
         mru->fPixels.erase(0);
+        mru->fCachedShapes.reset();
         mru->fNeedsReset = false;
     }
 }
