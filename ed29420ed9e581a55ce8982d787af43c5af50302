@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf51c5de_d1b8137b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T19:33:04Z",
+      "side": 1,
+      "message": "Not sure how to abandon this -- it\u0027s not needed any more.",
+      "revId": "ed29420ed9e581a55ce8982d787af43c5af50302",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
