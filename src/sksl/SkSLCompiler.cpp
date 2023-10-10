@@ -17,6 +17,7 @@
 #include "src/sksl/SkSLOutputStream.h"
 #include "src/sksl/SkSLParser.h"
 #include "src/sksl/SkSLPool.h"
+#include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLStringStream.h"
@@ -659,7 +660,7 @@ bool Compiler::toWGSL(Program& program, std::string* out) {
 
 #endif // defined(SKSL_STANDALONE) || defined(SK_GANESH) || defined(SK_GRAPHITE)
 
-void Compiler::handleError(std::string_view msg, Position pos) {
+void Compiler::handleError(std::string_view msg, const Position& pos) {
     fErrorText += "error: ";
     bool printLocation = false;
     std::string_view src = this->errorReporter().source();

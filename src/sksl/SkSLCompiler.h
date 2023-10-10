@@ -12,7 +12,6 @@
 #include "include/core/SkTypes.h"
 #include "src/sksl/SkSLContext.h"  // IWYU pragma: keep
 #include "src/sksl/SkSLErrorReporter.h"
-#include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
 
 #include <array>
@@ -47,6 +46,7 @@ namespace SkSL {
 class Expression;
 class Inliner;
 class OutputStream;
+class Position;
 class ProgramUsage;
 class SymbolTable;
 enum class ProgramKind : int8_t;
@@ -149,7 +149,7 @@ public:
 
     bool toWGSL(Program& program, std::string* out);
 
-    void handleError(std::string_view msg, Position pos);
+    void handleError(std::string_view msg, const Position& pos);
 
     std::string errorText(bool showCount = true);
 
@@ -192,7 +192,7 @@ private:
         CompilerErrorReporter(Compiler* compiler)
             : fCompiler(*compiler) {}
 
-        void handleError(std::string_view msg, Position pos) override {
+        void handleError(std::string_view msg, const Position& pos) override {
             fCompiler.handleError(msg, pos);
         }
 
