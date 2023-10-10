@@ -125,7 +125,7 @@ private:
     static void SetInstance(std::unique_ptr<ThreadContext>);
 
     class DefaultErrorReporter : public ErrorReporter {
-        void handleError(std::string_view msg, Position pos) override;
+        void handleError(std::string_view msg, const Position& pos) override;
     };
 
     void setupSymbolTable();

@@ -13,7 +13,7 @@
 
 namespace SkSL {
 
-void ErrorReporter::error(Position position, std::string_view msg) {
+void ErrorReporter::error(const Position& position, std::string_view msg) {
     if (skstd::contains(msg, Compiler::POISON_TAG)) {
         // Don't report errors on poison values.
         return;
@@ -22,7 +22,7 @@ void ErrorReporter::error(Position position, std::string_view msg) {
     this->handleError(msg, position);
 }
 
-void TestingOnly_AbortErrorReporter::handleError(std::string_view msg, Position pos) {
+void TestingOnly_AbortErrorReporter::handleError(std::string_view msg, const Position&) {
     SK_ABORT("%.*s", (int)msg.length(), msg.data());
 }
 
