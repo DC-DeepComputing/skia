@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "25feebc8_0564de68",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-10T16:42:16Z",
+      "side": 1,
+      "message": "Got it. I got confused for a minute since it sounded like this was trying to match the \"current\" HWUI behavior. Maybe it would be more clear in the past tense (`s/doesn\u0027t/didn\u0027t/`).",
+      "parentUuid": "0417cc9e_f71d3757",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 120,
+        "endChar": 37
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c4f7be2_7798cad6",
         "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
         "patchSetId": 7
@@ -166,6 +190,30 @@
       "side": 1,
       "message": "It\u0027s the size of path_key_from_data, which is the key generated from the path data.",
       "parentUuid": "b66fd980_5f8737d0",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 27
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b578e2fd_40d134e7",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-10T16:42:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "649a7003_98574a11",
       "range": {
         "startLine": 91,
         "startChar": 4,
