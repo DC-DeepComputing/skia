@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba55881_c40fffc6",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T17:21:03Z",
+      "side": 1,
+      "message": "Updated comment.",
+      "parentUuid": "25feebc8_0564de68",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 120,
+        "endChar": 37
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c4f7be2_7798cad6",
