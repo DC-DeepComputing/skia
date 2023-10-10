@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22cd18a8_64822e58",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 2166,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-10T13:25:04Z",
+      "side": 1,
+      "message": "^\nG3 roll broken",
+      "range": {
+        "startLine": 2166,
+        "startChar": 38,
+        "endLine": 2166,
+        "endChar": 39
+      },
+      "revId": "ea839690b97d34e9e24b4237dd0a1522073d8591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
