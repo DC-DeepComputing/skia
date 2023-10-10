@@ -25,7 +25,7 @@ public:
 
     virtual ~ErrorReporter() {}
 
-    void error(Position position, std::string_view msg);
+    void error(const Position& position, std::string_view msg);
 
     std::string_view source() const { return fSource; }
 
@@ -43,7 +43,7 @@ protected:
     /**
      * Called when an error is reported.
      */
-    virtual void handleError(std::string_view msg, Position position) = 0;
+    virtual void handleError(std::string_view msg, const Position& position) = 0;
 
 private:
     Position position(int offset) const;
@@ -57,7 +57,7 @@ private:
  */
 class TestingOnly_AbortErrorReporter : public ErrorReporter {
 public:
-    void handleError(std::string_view msg, Position pos) override;
+    void handleError(std::string_view msg, const Position& pos) override;
 };
 
 } // namespace SkSL

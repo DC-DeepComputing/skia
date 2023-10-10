@@ -172,7 +172,7 @@ public:
 private:
     class ForwardingErrorReporter : public ErrorReporter {
     public:
-        void handleError(std::string_view msg, Position pos) override {
+        void handleError(std::string_view msg, const Position& pos) override {
             fErrors.push_back({std::string(msg), pos});
         }
 

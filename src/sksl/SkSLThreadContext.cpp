@@ -106,7 +106,7 @@ void ThreadContext::ReportError(std::string_view msg, Position pos) {
     GetErrorReporter().error(pos, msg);
 }
 
-void ThreadContext::DefaultErrorReporter::handleError(std::string_view msg, Position pos) {
+void ThreadContext::DefaultErrorReporter::handleError(std::string_view msg, const Position&) {
     SK_ABORT("error: %.*s\nNo SkSL error reporter configured, treating this as a fatal error\n",
              (int)msg.length(), msg.data());
 }

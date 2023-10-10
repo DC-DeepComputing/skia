@@ -149,7 +149,7 @@ public:
 
     bool toWGSL(Program& program, std::string* out);
 
-    void handleError(std::string_view msg, Position pos);
+    void handleError(std::string_view msg, const Position& pos);
 
     std::string errorText(bool showCount = true);
 
@@ -192,7 +192,7 @@ private:
         CompilerErrorReporter(Compiler* compiler)
             : fCompiler(*compiler) {}
 
-        void handleError(std::string_view msg, Position pos) override {
+        void handleError(std::string_view msg, const Position& pos) override {
             fCompiler.handleError(msg, pos);
         }
 
