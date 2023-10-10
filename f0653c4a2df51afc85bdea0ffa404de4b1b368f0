@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39dbae7e_731d0788",
+        "filename": "tests/sksl/wgsl/TernaryThenShortCircuit.wgsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-10T15:40:10Z",
+      "side": 0,
+      "message": "This file was removed at http://review.skia.org/754018\n\nBut then accidentally re-added a few hours later in CL http://review.skia.org/753568",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "f0653c4a2df51afc85bdea0ffa404de4b1b368f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
