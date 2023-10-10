@@ -276,7 +276,9 @@ VkResult VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory& memory
 VkResult VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory& memoryHandle,
                                                     VkDeviceSize offset, VkDeviceSize size) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    SkDebugf("\n fetching allocation \n");
     const VmaAllocation allocation = (VmaAllocation)memoryHandle;
+    SkDebugf("\n fetched an allocation \n");
     return vmaInvalidateAllocation(fAllocator, allocation, offset, size);
 }
 
