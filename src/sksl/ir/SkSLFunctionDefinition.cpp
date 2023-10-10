@@ -351,4 +351,16 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
     return std::make_unique<FunctionDefinition>(pos, &function, builtin, std::move(body));
 }
 
+std::unique_ptr<ProgramElement> FunctionDefinition::clone() const {
+    return std::make_unique<FunctionDefinition>(fPosition,
+                                                &this->declaration(),
+                                                /*builtin=*/false,
+                                                this->body()->clone());
+}
+
+const SymbolTable* FunctionDefinition::parameterSymbolTable() const {
+    return fBody->is<Block>() ? fBody->as<Block>().symbolTable()->fParent.get()
+                              : nullptr;
+}
+
 }  // namespace SkSL
