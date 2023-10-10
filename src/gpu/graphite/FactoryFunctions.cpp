@@ -453,6 +453,7 @@ sk_sp<PrecompileMaskFilter> PrecompileMaskFilters::Blur() {
 }
 
 //--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 class PrecompileBlendModeColorFilter : public PrecompileColorFilter {
 public:
     PrecompileBlendModeColorFilter() {}
@@ -498,6 +499,45 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::HSLAMatrix() {
     return sk_make_sp<PrecompileMatrixColorFilter>();
 }
 
+//--------------------------------------------------------------------------------------------------
+class PrecompileMatrixColorFilter : public PrecompileColorFilter {
+public:
+    PrecompileMatrixColorFilter() {}
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  int desiredCombination,
+                  PaintParamsKeyBuilder* builder) const override {
+        SkASSERT(desiredCombination == 0);
+
+        MatrixColorFilterBlock::AddBlock(keyContext, builder, /* gatherer= */ nullptr,
+                /* matrixCFData= */ nullptr);
+    }
+};
+
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::ColorSpaceXform() {
+
+}
+
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Compose(sk_sp<PrecompileColorFilter> inner,
+                                                             sk_sp<PrecompileColorFilter> outer) {
+
+}
+
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Gaussian() {
+
+}
+
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Table() {
+
+}
+
+sk_sp<PrecompileColorFilter> PrecompileColorFiltersWithWorkingFormat(
+        sk_sp<PrecompileColorFilter> child) {
+
+}
+
+//--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 // TODO: need to figure out how we're going to decompose ImageFilters
 sk_sp<PrecompileImageFilter> PrecompileImageFilters::Blur() {

@@ -85,6 +85,19 @@ public:
 
     // TODO: Compose, LinearToSRGBGamma/SRGBToLinearGamma, Lerp, Table(ARGB), Lighting
 
+    static sk_sp<PrecompileColorFilter> ColorSpaceXform();
+
+    // TODO: this is usually accessed via SkColorFilter::makeComposed. For the precompile
+    // system we may need this version to allow combinations of children.
+    static sk_sp<PrecompileColorFilter> Compose(sk_sp<PrecompileColorFilter> inner,
+                                                sk_sp<PrecompileColorFilter> outer);
+
+    static sk_sp<PrecompileColorFilter> Gaussian();
+
+    static sk_sp<PrecompileColorFilter> Table();
+
+    static sk_sp<PrecompileColorFilter> WithWorkingFormat(sk_sp<PrecompileColorFilter> child);
+
 private:
     PrecompileColorFilters() = delete;
 };

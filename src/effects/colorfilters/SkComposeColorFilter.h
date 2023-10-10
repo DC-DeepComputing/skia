@@ -34,7 +34,7 @@ private:
     friend void ::SkRegisterComposeColorFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkComposeColorFilter)
 
-    SkComposeColorFilter(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner);
+    SkComposeColorFilter(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner, bool);
 
     sk_sp<SkColorFilterBase> fOuter;
     sk_sp<SkColorFilterBase> fInner;
