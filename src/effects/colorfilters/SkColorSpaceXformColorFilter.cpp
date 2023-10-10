@@ -25,7 +25,7 @@
 #include <utility>
 
 SkColorSpaceXformColorFilter::SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> src,
-                                                           sk_sp<SkColorSpace> dst)
+                                                           sk_sp<SkColorSpace> dst, bool)
         : fSrc(std::move(src))
         , fDst(std::move(dst))
         , fSteps(  // We handle premul/unpremul separately, so here just always upm->upm.
@@ -76,24 +76,24 @@ sk_sp<SkFlattenable> SkColorSpaceXformColorFilter::CreateProc(SkReadBuffer& buff
         }
     }
     return sk_sp<SkFlattenable>(
-            new SkColorSpaceXformColorFilter(std::move(colorSpaces[0]), std::move(colorSpaces[1])));
+            new SkColorSpaceXformColorFilter(std::move(colorSpaces[0]), std::move(colorSpaces[1]), true));
 }
 
 sk_sp<SkColorFilter> SkColorFilters::LinearToSRGBGamma() {
     static SkNoDestructor<SkColorSpaceXformColorFilter> gSingleton(SkColorSpace::MakeSRGBLinear(),
-                                                                   SkColorSpace::MakeSRGB());
+                                                                   SkColorSpace::MakeSRGB(), true);
     return sk_ref_sp(gSingleton.get());
 }
 
 sk_sp<SkColorFilter> SkColorFilters::SRGBToLinearGamma() {
     static SkNoDestructor<SkColorSpaceXformColorFilter> gSingleton(SkColorSpace::MakeSRGB(),
-                                                                   SkColorSpace::MakeSRGBLinear());
+                                                                   SkColorSpace::MakeSRGBLinear(), true);
     return sk_ref_sp(gSingleton.get());
 }
 
 sk_sp<SkColorFilter> SkColorFilterPriv::MakeColorSpaceXform(sk_sp<SkColorSpace> src,
                                                             sk_sp<SkColorSpace> dst) {
-    return sk_make_sp<SkColorSpaceXformColorFilter>(std::move(src), std::move(dst));
+    return sk_make_sp<SkColorSpaceXformColorFilter>(std::move(src), std::move(dst), true);
 }
 
 void SkRegisterSkColorSpaceXformColorFilterFlattenable() {
