@@ -60,6 +60,7 @@ void GraphiteMetalWindowContext::initializeContext() {
     fDisplayParams.fGraphiteContextOptions.fOptions.fDisableCachedGlyphUploads = true;
     // Needed to make synchronous readPixels work:
     fDisplayParams.fGraphiteContextOptions.fPriv.fStoreContextRefInRecorder = true;
+    fDisplayParams.fGraphiteContextOptions.fPriv.fPathRendererStrategy = skgpu::graphite::PathRendererStrategy::kRasterAA;
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeMetal(
             backendContext, fDisplayParams.fGraphiteContextOptions.fOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
