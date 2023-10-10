@@ -139,14 +139,17 @@ using PrecompileChildOptions = SkSpan<const PrecompileChildPtr>;
 // makeBlender
 sk_sp<PrecompileShader> MakePrecompileShader(
         sk_sp<SkRuntimeEffect> effect,
+        sk_sp<SkData> uniforms,
         SkSpan<const PrecompileChildOptions> childOptions = {});
 
 sk_sp<PrecompileColorFilter> MakePrecompileColorFilter(
         sk_sp<SkRuntimeEffect> effect,
+        sk_sp<SkData> uniforms,
         SkSpan<const PrecompileChildOptions> childOptions = {});
 
 sk_sp<PrecompileBlender> MakePrecompileBlender(
         sk_sp<SkRuntimeEffect> effect,
+        sk_sp<SkData> uniforms,
         SkSpan<const PrecompileChildOptions> childOptions = {});
 
 } // namespace skgpu::graphite
