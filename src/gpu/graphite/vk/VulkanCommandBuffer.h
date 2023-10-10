@@ -91,7 +91,6 @@ private:
     void bindUniformBuffers();
     void syncDescriptorSets();
 
-    // TODO: Populate the following methods to handle the possible commands in a draw pass.
     void bindGraphicsPipeline(const GraphicsPipeline*);
     void setBlendConstants(float* blendConstants);
     void bindDrawBuffers(const BindBufferInfo& vertices,
@@ -157,6 +156,11 @@ private:
                          void* barrier);
     void submitPipelineBarriers(bool forSelfDependency = false);
 
+    // Helper to create a uniform buffer and populate it with an rtAdjust value based on the
+    // viewport of a render pass. The cmd buffer will track this resource and thus manage its
+    // lifetime.
+    void createTrackedRtAdjustUbo(const SkRect& viewport);
+
     VkCommandPool fPool;
     VkCommandBuffer fPrimaryCommandBuffer;
     const VulkanSharedContext* fSharedContext;
@@ -193,9 +197,6 @@ private:
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
     int fNumTextureSamplers = 0;
-    // Store the current viewport so we can calculate rtAdjust when it is time to populate / bind
-    // the intrinsic uniform buffer.
-    SkRect fCurrentViewport;
 
     VkBuffer fBoundInputBuffers[VulkanGraphicsPipeline::kNumInputBuffers];
     size_t fBoundInputBufferOffsets[VulkanGraphicsPipeline::kNumInputBuffers];
