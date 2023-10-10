@@ -659,7 +659,7 @@ bool Compiler::toWGSL(Program& program, std::string* out) {
 
 #endif // defined(SKSL_STANDALONE) || defined(SK_GANESH) || defined(SK_GRAPHITE)
 
-void Compiler::handleError(std::string_view msg, Position pos) {
+void Compiler::handleError(std::string_view msg, const Position& pos) {
     fErrorText += "error: ";
     bool printLocation = false;
     std::string_view src = this->errorReporter().source();

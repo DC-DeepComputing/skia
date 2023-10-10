@@ -15,7 +15,7 @@ namespace SkSL {
 // We can use a no-op error reporter to silently ignore errors.
 class NoOpErrorReporter : public ErrorReporter {
 public:
-    void handleError(std::string_view, Position) override {}
+    void handleError(std::string_view, const Position&) override {}
 };
 
 } // namespace SkSL
