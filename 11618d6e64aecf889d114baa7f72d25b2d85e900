@@ -16,6 +16,23 @@
       "message": "LGTM but I don\u0027t have review privileges",
       "revId": "11618d6e64aecf889d114baa7f72d25b2d85e900",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e39bb142_f3f4a027",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-10-10T14:58:17Z",
+      "side": 1,
+      "message": "looks like peng doesn\u0027t have review vote either.",
+      "revId": "11618d6e64aecf889d114baa7f72d25b2d85e900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
