@@ -16,6 +16,24 @@
       "message": "This can\u0027t land in this form (because I need to synchronize with the Chromium repo) but I wanted to get some agreement on the general direction.\n\n- Does this direction feel reasonable to you?\n- Should I rename it to just SkTiff.cpp/h, and move some of SkCodecPriv (the endian stuff) into there?\n- Would you prefer that I directly go for putting SkExif.h in include/private?\n- Should I avoid using std::unique_ptr for SkTiffImageFileDirectory (to avoid malloc-ing on this path entirely)?",
       "revId": "16e7c676bfea8585d163d05935e6a9741a996f52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88f526d9_ce40e528",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "\u003e This can\u0027t land in this form (because I need to synchronize with the Chromium repo) but I wanted to get some agreement on the general direction.\n\u003e \n\u003e - Does this direction feel reasonable to you?\n\nSharing more code sgtm! I don\u0027t have strong opinions about the details, though.\n\n\u003e - Should I rename it to just SkTiff.cpp/h\n\nYou mean `SkTiffImageFileDirectory`? You\u0027re more familiar with this stuff than I am; why would you choose one over the other?\n\n\u003e - and move some of SkCodecPriv (the endian stuff) into there?\n\nI think the endian stuff is used in other files as well? I might leave that to a potential separate CL.\n\n\u003e - Would you prefer that I directly go for putting SkExif.h in include/private?\n\nI\u0027ll defer to @brianosman@google.com for questions around API/directory structure.\n\n\u003e - Should I avoid using std::unique_ptr for SkTiffImageFileDirectory (to avoid malloc-ing on this path entirely)?\n\nWill this path be critical enough that we should worry about malloc? The object is pretty small, fwiw. If you avoid malloc, you\u0027ll need to follow some other pattern, e.g.\n- pass in an uninitialized `SkTiffImageFileDirectory` and return success (meaning the fields can no longer be constant)\n- have an `fValid` member\n\nUnless you think malloc is critical here, I would lean towards the current implementation, which is cleaner to use.",
+      "parentUuid": "c84619e5_caee7cef",
+      "revId": "16e7c676bfea8585d163d05935e6a9741a996f52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

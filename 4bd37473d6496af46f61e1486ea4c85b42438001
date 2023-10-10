@@ -16,6 +16,195 @@
       "message": "ping (on this \u0026 the previous)",
       "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ed330f_69c9aaf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "Sorry for the delay! I\u0027ve been sick for a while, but am finally feeling (mostly) better and catching up.",
+      "parentUuid": "fafbf7e2_6215f430",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e962e1b9_7ca297eb",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "Why define this to `printf`? I would think `SkDebugf` would be better, if we want to override it. (Does this just affect `SkTiffImageFileDirectory` calls? Or `SkCodecPrintf`s elsewhere?)",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e42537e_5d76e698",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "I think you need a `return nullptr` in here. (Can a test verify this?)",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98dab6b6_abbf5019",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "I don\u0027t think you use this `stream` anywhere?",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc4da176_8f8129a1",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "nit: I think these variables can be `const`.",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a50a1aad_25e61cd7",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "nit: Why did you create this temporary?",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "378057e0_139c7034",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "nit: I think normally we wouldn\u0027t make the parameter `const`, and then you\u0027d `std::move` it here. Maybe you want to reduce the refcount churn in the case where `validate_ifd` fails?",
+      "range": {
+        "startLine": 145,
+        "startChar": 41,
+        "endLine": 145,
+        "endChar": 45
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ff2be68_12d1e0f0",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure you can do this with `data` being `const`?",
+      "range": {
+        "startLine": 153,
+        "startChar": 16,
+        "endLine": 153,
+        "endChar": 25
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "463eb084_8cc01c56",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "nit: I think these variables can be `const`?",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ba636fe_fa253368",
+        "filename": "src/codec/SkTiffImageFileDirectory.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-10T17:24:34Z",
+      "side": 1,
+      "message": "Why is the smart pointer `const`?",
+      "range": {
+        "startLine": 35,
+        "startChar": 68,
+        "endLine": 35,
+        "endChar": 73
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
