@@ -19,7 +19,7 @@ struct SkStageRec;
 
 class SkColorSpaceXformColorFilter final : public SkColorFilterBase {
 public:
-    SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> src, sk_sp<SkColorSpace> dst);
+    SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> src, sk_sp<SkColorSpace> dst, bool);
 
     bool appendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
 
