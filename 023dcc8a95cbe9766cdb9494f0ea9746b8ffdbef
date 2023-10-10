@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d9d248f_2be808ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-10T15:45:11Z",
+      "side": 1,
+      "message": "I would rather have SkSLErrorReporter.h just include SkSLPosition.h. Is there a reason not to?\n\nI agree that the performance impact is likely not a concern, but practically speaking SkSLPosition is used almost everywhere and it\u0027s tiny. And it feels like bad practice to pass around a 32-bit int as a 64-bit pointer (even though, I\u0027m sure you\u0027re right, it\u0027s not going to be a measurable hit)",
+      "revId": "023dcc8a95cbe9766cdb9494f0ea9746b8ffdbef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
