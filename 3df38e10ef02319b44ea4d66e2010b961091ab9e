@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0417cc9e_f71d3757",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T15:55:56Z",
+      "side": 1,
+      "message": "I think this is based on old Android behavior, when they weren\u0027t using Skia. In general pre-Skia HWUI cared less about pixel-perfect text and paths, and so could take some shortcuts like this. So we\u0027re just trying to match it.",
+      "parentUuid": "a39fa55e_4a0ea231",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 120,
+        "endChar": 37
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c4f7be2_7798cad6",
         "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
         "patchSetId": 7
@@ -71,6 +95,30 @@
       "writtenOn": "2023-10-09T20:27:13Z",
       "side": 1,
       "message": "I may be getting lost in the syntax sauce, but should this be `\u003c\u003c` ?",
+      "range": {
+        "startLine": 139,
+        "startChar": 36,
+        "endLine": 139,
+        "endChar": 38
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c72cb9_cdb66ec1",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T15:55:56Z",
+      "side": 1,
+      "message": "This is correct. fracX and fracY are created by \u0026-ing with 0x0000FF00, so one needs to shift down a byte. Added a comment.",
+      "parentUuid": "8c4f7be2_7798cad6",
       "range": {
         "startLine": 139,
         "startChar": 36,
@@ -106,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "649a7003_98574a11",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T15:55:56Z",
+      "side": 1,
+      "message": "It\u0027s the size of path_key_from_data, which is the key generated from the path data.",
+      "parentUuid": "b66fd980_5f8737d0",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 27
+      },
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88f1835f_a1367987",
         "filename": "src/gpu/graphite/geom/Shape.h",
         "patchSetId": 7
@@ -117,6 +189,24 @@
       "writtenOn": "2023-10-09T21:53:58Z",
       "side": 1,
       "message": "Are you planning to add unit tests for this? If not, consider moving this to the anonymous namespace in the source file.\n\nDo you know how this number was derived and are there any pointers that you can link to in a comment? (I see that this is the same as `GrStyledShape::kMaxKeyFromDataVerbCnt` which doesn\u0027t explain how this was derived either - though IWBN to have an explanation if possible).",
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4921e42b_7aa738a9",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T15:55:56Z",
+      "side": 1,
+      "message": "I don\u0027t see any Ganesh unit tests using it, so moved to cpp file.\n\nIt sounds like this comes from Android -- there were some small paths being recreated each frame and so storing the path data rather than the genID makes it more likely to get a hit. From people here the guess is that 10 was the max number of verbs that triggered that bug. I\u0027ve updated the comment.",
+      "parentUuid": "88f1835f_a1367987",
       "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -134,6 +224,24 @@
       "writtenOn": "2023-10-09T21:53:58Z",
       "side": 1,
       "message": "Should `stateKey()` be private? What does \"state\" mean in this context?",
+      "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a27b0b3_16cba01c",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-10T15:55:56Z",
+      "side": 1,
+      "message": "Moved to private and added comment.",
+      "parentUuid": "c03a2442_f3cee5f6",
       "revId": "3df38e10ef02319b44ea4d66e2010b961091ab9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
