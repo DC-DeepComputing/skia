@@ -15,7 +15,7 @@
 #include <utility>
 struct SkStageRec;
 
-SkComposeColorFilter::SkComposeColorFilter(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner)
+SkComposeColorFilter::SkComposeColorFilter(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner, bool)
         : fOuter(as_CFB_sp(std::move(outer))), fInner(as_CFB_sp(std::move(inner))) {}
 
 bool SkComposeColorFilter::onIsAlphaUnchanged() const {
@@ -47,7 +47,7 @@ sk_sp<SkColorFilter> SkColorFilter::makeComposed(sk_sp<SkColorFilter> inner) con
         return sk_ref_sp(this);
     }
 
-    return sk_sp<SkColorFilter>(new SkComposeColorFilter(sk_ref_sp(this), std::move(inner)));
+    return sk_sp<SkColorFilter>(new SkComposeColorFilter(sk_ref_sp(this), std::move(inner), true));
 }
 
 void SkRegisterComposeColorFilterFlattenable() { SK_REGISTER_FLATTENABLE(SkComposeColorFilter); }
