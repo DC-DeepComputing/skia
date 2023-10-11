@@ -21,6 +21,7 @@
 namespace SkSL {
 
 class Context;
+class SymbolTable;
 
 /**
  * A function definition (a declaration plus an associated block of code).
@@ -29,12 +30,14 @@ class FunctionDefinition final : public ProgramElement {
 public:
     inline static constexpr Kind kIRNodeKind = Kind::kFunction;
 
-    FunctionDefinition(Position pos, const FunctionDeclaration* declaration, bool builtin,
+    FunctionDefinition(Position pos,
+                       const FunctionDeclaration* declaration,
+                       bool builtin,
                        std::unique_ptr<Statement> body)
-        : INHERITED(pos, kIRNodeKind)
-        , fDeclaration(declaration)
-        , fBuiltin(builtin)
-        , fBody(std::move(body)) {}
+            : INHERITED(pos, kIRNodeKind)
+            , fDeclaration(declaration)
+            , fBuiltin(builtin)
+            , fBody(std::move(body)) {}
 
     /**
      * Coerces `return` statements to the return type of the function, and reports errors in the
@@ -69,10 +72,9 @@ public:
         return fBody;
     }
 
-    std::unique_ptr<ProgramElement> clone() const override {
-        return std::make_unique<FunctionDefinition>(fPosition, &this->declaration(),
-                                                    /*builtin=*/false, this->body()->clone());
-    }
+    const SymbolTable* parameterSymbolTable() const;
+
+    std::unique_ptr<ProgramElement> clone() const override;
 
     std::string description() const override {
         return this->declaration().description() + " " + this->body()->description();
