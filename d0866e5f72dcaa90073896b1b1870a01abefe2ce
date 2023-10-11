@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d62be70_5ed4870c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T18:59:29Z",
+      "side": 1,
+      "message": "I\u0027ve added staging for g3 here: https://critique.corp.google.com/cl/572625629, and staging for chrome here: https://chromium-review.googlesource.com/c/chromium/src/+/4932224.\n\nI\u0027ve added staging guards around the change from \u003cPS9. \n\nThe underlying root cause for the chrome legacy tiling failures will be addressed in a chrome-side change to SkiaRenderer now that I know what the issue is and it\u0027s not a bug with this change itself. Since I have to stage for layout tests anyways, there\u0027s no reason to block on landing this.\n\nI\u0027m hoping that the android canary is a flake, since the unit test that\u0027s failing appears to swizzle RGB to RBG and does not involve image filters or saveLayer in any way, but will keep investigating.",
+      "revId": "d0866e5f72dcaa90073896b1b1870a01abefe2ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
