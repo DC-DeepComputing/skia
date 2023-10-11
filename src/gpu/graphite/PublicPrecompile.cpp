@@ -89,6 +89,9 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
     KeyContext keyContext(
             caps, dict, rtEffectDict.get(), ci, /* dstTexture= */ nullptr, /* dstOffset= */ {0, 0});
 
+    // Since the precompilation path's uniforms aren't used the exact layout doesn't matter
+    PipelineDataGatherer gatherer(Layout::kMetal);
+
     // TODO: we need iterate over a broader set of TextureInfos here. Perhaps, allow the client
     // to pass in colorType, mipmapping and protection.
     TextureInfo info = caps->getDefaultSampledTextureInfo(ci.colorType(),
@@ -138,6 +141,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
     for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
         options.priv().buildCombinations(
             keyContext,
+            &gatherer,
             /* addPrimitiveBlender= */ false,
             coverage,
              [&](UniquePaintParamsID uniqueID) {
@@ -153,6 +157,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
         for (Coverage coverage : {Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD}) {
             options.priv().buildCombinations(
                 keyContext,
+                &gatherer,
                 /* addPrimitiveBlender= */ true,
                 coverage,
                 [&](UniquePaintParamsID uniqueID) {
