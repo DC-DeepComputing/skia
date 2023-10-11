@@ -288,7 +288,7 @@ static bool submit_to_queue(const VulkanInterface* interface,
 bool VulkanCommandBuffer::submit(VkQueue queue) {
     this->end();
 
-    auto interface = fSharedContext->interface();
+    auto interifce = fSharedContext->interface();
     auto device = fSharedContext->device();
     VkResult err;
 
