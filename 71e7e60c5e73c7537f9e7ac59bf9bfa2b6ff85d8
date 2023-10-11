@@ -94,6 +94,30 @@
       },
       "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c82aa7_15002073",
+        "filename": "resources/sksl/errors/RedeclareBuiltinVariables.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-11T19:50:03Z",
+      "side": 1,
+      "message": "I think it was launched a month or two ago, but it\u0027s been underwhelming. I tried to use it for another CL, and the author reported that you could only apply one fix. Doing so immediately created a new patch-set, and the other suggestions were then disabled as not being applicable to the latest PS.",
+      "parentUuid": "93d9f60f_b390d973",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
