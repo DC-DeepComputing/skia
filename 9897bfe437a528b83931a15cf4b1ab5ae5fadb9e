@@ -39,6 +39,30 @@
       },
       "revId": "9897bfe437a528b83931a15cf4b1ab5ae5fadb9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e4f257_d6b1461a",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-11T13:36:11Z",
+      "side": 1,
+      "message": "Makes sense. In the interest of not rebaselining everything I\u0027ll do this in the multitexture CL.",
+      "parentUuid": "e8982737_b58347dc",
+      "range": {
+        "startLine": 47,
+        "startChar": 14,
+        "endLine": 47,
+        "endChar": 27
+      },
+      "revId": "9897bfe437a528b83931a15cf4b1ab5ae5fadb9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
