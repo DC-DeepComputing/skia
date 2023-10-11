@@ -33,6 +33,23 @@
       "message": "Looks like I need to disable the Dawn side too",
       "revId": "dd2010e7be298d1d426fb8183946f4131cf6f1b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "148f7037_b6ce1db9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2023-10-11T11:54:33Z",
+      "side": 1,
+      "message": "LGTM, it should fix the Dawn roll in Skia.",
+      "revId": "dd2010e7be298d1d426fb8183946f4131cf6f1b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
