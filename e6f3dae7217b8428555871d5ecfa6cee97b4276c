@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bbc5ddc_a40d39af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-11T17:11:20Z",
+      "side": 1,
+      "message": "Does this warrant updating the release notes to call attention to the new behavior? Also, I\u0027m not sure if it\u0027s gerrit, but the commit message seems weirdly formatted (no big deal, just a nit)",
+      "revId": "e6f3dae7217b8428555871d5ecfa6cee97b4276c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
