@@ -118,6 +118,30 @@
       },
       "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06784ef8_3e2170a0",
+        "filename": "resources/sksl/errors/RedeclareBuiltinVariables.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-11T19:51:38Z",
+      "side": 1,
+      "message": "Well, it sounds like they\u0027ve still got some work to do, since even one fix wasn\u0027t working for me.",
+      "parentUuid": "44c82aa7_15002073",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
