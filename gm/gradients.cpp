@@ -1258,3 +1258,58 @@ DEF_SIMPLE_GM_BG(gradients_color_space_many_stops, canvas, 500, 500, SK_ColorGRA
 
     canvas->drawRect(SkRect::MakeXYWH(0, 0, 500, 500), p);
 }
+
+DEF_SIMPLE_GM_BG(gradients_powerless_hue, canvas, 210, 355, SK_ColorWHITE) {
+    struct Config {
+        SkColor4f fColor;
+    };
+    static const Config kConfigs[] = {
+            {SkColors::kWhite},
+            {{0.99f, 0.99f, 1.0f, 1.0f}},  // White, with blue hue
+            {SkColors::kBlack},
+            {{0, 0, 0.01f, 1.0f}},  // Black, with blue hue
+
+            {SkColors::kTransparent},
+            {{0, 0, 0.01f, 0}},  // Black with blue hue
+            {{0, 0, 1, 0}},
+            {{1, 1, 1, 0}},
+            {{0.99f, 0.99f, 1.0f, 0.0f}},  // White with blue hue
+    };
+
+    SkPoint pts[] = {{0, 0}, {200, 0}};
+
+    SkGradientShader::Interpolation interpolation;
+    interpolation.fColorSpace = SkGradientShader::Interpolation::ColorSpace::kOKLCH;
+    SkGradientShader::Interpolation premulInterpolation = interpolation;
+    premulInterpolation.fInPremul = SkGradientShader::Interpolation::InPremul::kYes;
+
+    canvas->translate(5, 5);
+
+    for (const Config& config : kConfigs) {
+        SkColor4f colors[] = {config.fColor, SkColors::kBlue};
+        SkPaint p;
+        p.setShader(SkGradientShader::MakeLinear(pts,
+                                                 colors,
+                                                 SkColorSpace::MakeSRGB(),
+                                                 nullptr,
+                                                 2,
+                                                 SkTileMode::kClamp,
+                                                 interpolation,
+                                                 nullptr));
+        canvas->drawRect({0, 0, 200, 20}, p);
+        canvas->translate(0, 25);
+
+        if (config.fColor.fA == 0.0f) {
+            p.setShader(SkGradientShader::MakeLinear(pts,
+                                                     colors,
+                                                     SkColorSpace::MakeSRGB(),
+                                                     nullptr,
+                                                     2,
+                                                     SkTileMode::kClamp,
+                                                     premulInterpolation,
+                                                     nullptr));
+            canvas->drawRect({0, 0, 200, 20}, p);
+            canvas->translate(0, 25);
+        }
+    }
+}
