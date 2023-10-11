@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b772f6f_2e9788d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T17:41:23Z",
+      "side": 1,
+      "message": "Will need Rob\u0027s vote for the public API change to size (although constexpr seems reasonable to me).",
+      "revId": "56a7c09be68945787dec6eff782c688a030768b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "899d6cee_f218d679",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T17:41:23Z",
+      "side": 1,
+      "message": "Maybe add a comment that we need the non-hw size to be larger than kSubset so that AddBlock detects shader-based tiling.",
+      "range": {
+        "startLine": 282,
+        "startChar": 8,
+        "endLine": 282,
+        "endChar": 78
+      },
+      "revId": "56a7c09be68945787dec6eff782c688a030768b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
