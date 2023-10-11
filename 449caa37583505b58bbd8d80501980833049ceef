@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b6ef2fc_7cb2e8a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-11T13:06:04Z",
+      "side": 1,
+      "message": "This is slightly annoying, but makes sense. For the ones that appear throughout the repo, I could see us creating a forwarding header (as we\u0027ve done for other \"fixup\" requirements in the past), like SkWebGpu.h - that way we only need the annotation in one spot?",
+      "revId": "449caa37583505b58bbd8d80501980833049ceef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
