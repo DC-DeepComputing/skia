@@ -16,6 +16,24 @@
       "message": "I have to say I don\u0027t love calling this \"sample_image_with_swizzle\", since sample_image below also takes in a swizzle. I would actually prefer to call both functions \"sample_image\" since SkSL seems to support function overloading.",
       "revId": "ec962e2dc3014ab0ba5ee97142d2d6a7a84e9156",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9213eca_8458cb56",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T18:13:38Z",
+      "side": 1,
+      "message": "That seems reasonable to me, you could also rename the original `sample_image` to something like `$sample_image_subset`?",
+      "parentUuid": "dea54b2b_a2f8259e",
+      "revId": "ec962e2dc3014ab0ba5ee97142d2d6a7a84e9156",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
