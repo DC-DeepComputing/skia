@@ -1056,6 +1056,8 @@ void AddToKey(const KeyContext& keyContext,
     SkUNREACHABLE;
 }
 
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
 static SkPMColor4f map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace* dst) {
     SkPMColor4f color = {c.fR, c.fG, c.fB, c.fA};
     SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, kPremul_SkAlphaType).apply(color.vec());
@@ -1080,9 +1082,9 @@ static void add_to_key(const KeyContext& keyContext,
     SkASSERT(filter);
 
     constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
-    ColorSpaceTransformBlock::ColorSpaceTransformData data(
-            filter->src().get(), kAlphaType, filter->dst().get(), kAlphaType);
-    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
+    ColorSpaceTransformBlock::ColorSpaceTransformData csData(filter->src().get(), kAlphaType,
+                                                             filter->dst().get(), kAlphaType);
+    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, csData);
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1090,6 +1092,8 @@ static void add_to_key(const KeyContext& keyContext,
                        PipelineDataGatherer* gatherer,
                        const SkComposeColorFilter* filter) {
     SkASSERT(filter);
+
+    SkASSERT(filter->inner() && filter->outer());
 
     Compose(keyContext, keyBuilder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
@@ -1192,6 +1196,8 @@ static void add_to_key(const KeyContext& keyContext,
                         },
                         /* addOuterToKey= */ [&]() -> void {
                             // Middle (outer of inner compose)
+
+                            SkASSERT(filter->child());
                             AddToKey(workingContext, builder, gatherer, filter->child().get());
                         });
             },

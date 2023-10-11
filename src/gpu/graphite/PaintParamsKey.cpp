@@ -42,6 +42,23 @@ void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
 
 void PaintParamsKeyBuilder::popStack() {
     SkASSERT(!fStack.empty());
+
+    if (fStack.back().fNumActualChildren != fStack.back().fNumExpectedChildren) {
+        for (auto s : fStack) {
+            const char* name = "unknown";
+
+            auto entry = fDict->getEntry(s.fCodeSnippetID);
+            if (entry) {
+                name = entry->fStaticFunctionName;
+            }
+
+            SkDebugf("id: %d %s expected: %d actual: %d\n",
+                     s.fCodeSnippetID, name,
+                     s.fNumExpectedChildren,
+                     s.fNumActualChildren);
+        }
+    }
+
     SkASSERT(fStack.back().fNumActualChildren == fStack.back().fNumExpectedChildren);
     fStack.pop_back();
 }
