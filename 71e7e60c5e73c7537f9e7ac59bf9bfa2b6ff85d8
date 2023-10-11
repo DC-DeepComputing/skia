@@ -70,6 +70,30 @@
       },
       "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93d9f60f_b390d973",
+        "filename": "resources/sksl/errors/RedeclareBuiltinVariables.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-11T18:58:19Z",
+      "side": 1,
+      "message": "Hmm... it didn\u0027t actually seem to apply the fix though.",
+      "parentUuid": "671b0929_efdfff8f",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
