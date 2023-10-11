@@ -268,7 +268,7 @@ public:
 
 private:
     int numIntrinsicCombinations() const override {
-        return 2; // cubic and non-cubic sampling
+        return 3;  // hardware-tiled, shader-tiled and cubic sampling
     }
 
     void addToKey(const KeyContext& keyContext,
@@ -277,11 +277,16 @@ private:
         static constexpr SkSamplingOptions kDefaultCubicSampling(SkCubicResampler::Mitchell());
         static constexpr SkSamplingOptions kDefaultSampling;
 
-        ImageShaderBlock::ImageData imgData(desiredCombination > 0 ? kDefaultCubicSampling
-                                                                   : kDefaultSampling,
+        static constexpr SkRect kSubset = SkRect::MakeWH(1.0f, 1.0f);
+        static constexpr SkSize kHwTileableSize = SkSize::Make(1.0f, 1.0f);
+        static constexpr SkSize kNonHwTileableSize = SkSize::Make(2.0f, 2.0f);
+
+        ImageShaderBlock::ImageData imgData(desiredCombination == 2 ? kDefaultCubicSampling
+                                                                    : kDefaultSampling,
                                             SkTileMode::kClamp, SkTileMode::kClamp,
-                                            SkRect::MakeEmpty(), SkRect::MakeEmpty(),
-                                            ReadSwizzle::kRGBA);
+                                            desiredCombination == 1 ? kHwTileableSize
+                                                                    : kNonHwTileableSize,
+                                            kSubset, ReadSwizzle::kRGBA);
 
         ImageShaderBlock::AddBlock(keyContext, builder, /* gatherer= */ nullptr, imgData);
     }
