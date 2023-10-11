@@ -34,6 +34,24 @@
       "parentUuid": "dea54b2b_a2f8259e",
       "revId": "ec962e2dc3014ab0ba5ee97142d2d6a7a84e9156",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a96f7916_5b91e10e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-11T18:23:16Z",
+      "side": 1,
+      "message": "Ah, I like sample_image_subset best.",
+      "parentUuid": "b9213eca_8458cb56",
+      "revId": "ec962e2dc3014ab0ba5ee97142d2d6a7a84e9156",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
