@@ -16,6 +16,24 @@
       "message": "This is slightly annoying, but makes sense. For the ones that appear throughout the repo, I could see us creating a forwarding header (as we\u0027ve done for other \"fixup\" requirements in the past), like SkWebGpu.h - that way we only need the annotation in one spot?",
       "revId": "449caa37583505b58bbd8d80501980833049ceef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6285c691_ba88962c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-11T13:28:32Z",
+      "side": 1,
+      "message": "Yeah, that would be a means to avoid repeating ourselves a lot if necessary.\n\nOr, use \u003c\u003e for all third_party imports if we can (since the re-write regex just looks for quotes).",
+      "parentUuid": "9b6ef2fc_7cb2e8a4",
+      "revId": "449caa37583505b58bbd8d80501980833049ceef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
