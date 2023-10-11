@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d09c2f8_9b6ea661",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-11T19:29:57Z",
+      "side": 1,
+      "message": "This change doesn\u0027t seem to affect any of the final output, but previously, parameter variables were being treated as dead (fVarExists \u003d\u003d false) in the ProgramUsage. Just something I noticed while in the debugger.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 0
+      },
+      "revId": "bc456a3c4fb481409bcc6c92189c6ad9e7380a3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
