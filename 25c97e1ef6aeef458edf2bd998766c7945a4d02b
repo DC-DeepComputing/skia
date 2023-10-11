@@ -22,6 +22,76 @@
       },
       "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41aaab21_1891c51d",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T17:36:07Z",
+      "side": 1,
+      "message": "The indent is to show `fWrapped` is nested within the LocalMatrixShaderBlock\u0027s begin and end.",
+      "parentUuid": "c59848f0_27ddb8ca",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 12
+      },
+      "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a125708a_6986c387",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T17:36:07Z",
+      "side": 1,
+      "message": "We should add a bug and TODO that this should be determined by Caps, although I suppose maybe it doesn\u0027t actually matter what the layout is since we are discarding the gatherer\u0027s contents.\n\nGiven that, we should just add a comment that the layout for gathering uniforms does not change the paint key.",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 53
+      },
+      "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d9f08aa_ebeae0ae",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T17:36:07Z",
+      "side": 1,
+      "message": "similar comment about the chosen layout.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 50
+      },
+      "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
