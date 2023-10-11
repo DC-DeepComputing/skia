@@ -74,29 +74,31 @@ namespace {
 // out of scope.
 class ScopedOutputMarkedContentTags {
 public:
-    ScopedOutputMarkedContentTags(int nodeId, SkPDFDocument* document, SkDynamicMemoryWStream* out)
+    ScopedOutputMarkedContentTags(int nodeId, SkPoint point, SkPDFDocument* document,
+                                  SkDynamicMemoryWStream* out)
         : fOut(out)
-        , fMarkId(-1) {
-        if (nodeId) {
-            fMarkId = document->createMarkIdForNodeId(nodeId);
-        }
-
-        if (fMarkId != -1) {
+        , fMark(nodeId ? document->createMarkIdForNodeId(nodeId, point) : SkPDFTagTree::Mark())
+    {
+        if (fMark) {
             fOut->writeText("/P <</MCID ");
-            fOut->writeDecAsText(fMarkId);
+            fOut->writeDecAsText(fMark.id());
             fOut->writeText(" >>BDC\n");
         }
     }
 
+    explicit operator bool() const { return bool(fMark); }
+
+    SkPoint& point() { return fMark.point(); }
+
     ~ScopedOutputMarkedContentTags() {
-        if (fMarkId != -1) {
+        if (fMark) {
             fOut->writeText("EMC\n");
         }
     }
 
 private:
     SkDynamicMemoryWStream* fOut;
-    int fMarkId;
+    SkPDFTagTree::Mark fMark;
 };
 
 }  // namespace
@@ -874,7 +876,21 @@ void SkPDFDevice::internalDrawGlyphRun(
     out->writeText("BT\n");
     SK_AT_SCOPE_EXIT(out->writeText("ET\n"));
 
-    ScopedOutputMarkedContentTags mark(fNodeId, fDocument, out);
+    // Destinations are in absolute coordinates.
+    // The glyphs bounds need to go through the localToDevice first, so do that here as well.
+    SkMatrix pageXform = this->deviceToGlobal().asM33();
+    pageXform.postConcat(fDocument->currentPageTransform());
+
+    // A first approximation, updated when drawing glyphs.
+    // This is not a good approximation because glyphs may be clipped out.
+    // Need the mark to have a page but invalid point until something is actually drawn.
+    // Or does it even make sense to add a mark until the first thing is actually drawn?
+    SkPoint location = glyphRun.positions().front() + offset;
+    this->localToDevice().mapPoints(&location, 1);
+    pageXform.mapPoints(&location, 1);
+
+    ScopedOutputMarkedContentTags mark(fNodeId, location, fDocument, out);
+    fDocument->addNodeTitle(fNodeId, SkString(glyphRun.text().data(), glyphRun.text().size()));
 
     const int numGlyphs = typeface->countGlyphs();
 
@@ -951,6 +967,11 @@ void SkPDFDevice::internalDrawGlyphRun(
             font->noteGlyphUsage(gid);
             SkGlyphID encodedGlyph = font->glyphToPDFFontEncoding(gid);
             SkScalar advance = advanceScale * glyphs[index]->advanceX();
+            if (mark) {
+                SkRect absoluteGlyphBounds = pageXform.mapRect(glyphBounds);
+                mark.point().fX = std::min(absoluteGlyphBounds.fLeft  , mark.point().fX);
+                mark.point().fY = std::max(absoluteGlyphBounds.fBottom, mark.point().fY); // PDF top
+            }
             glyphPositioner.writeGlyph(encodedGlyph, advance, xy);
         }
     }
@@ -981,7 +1002,14 @@ void SkPDFDevice::drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) {
 }
 
 void SkPDFDevice::drawFormXObject(SkPDFIndirectReference xObject, SkDynamicMemoryWStream* content) {
-    ScopedOutputMarkedContentTags mark(fNodeId, fDocument, content);
+    // Destinations are in absolute coordinates.
+    SkMatrix pageXform = this->deviceToGlobal().asM33();
+    pageXform.postConcat(fDocument->currentPageTransform());
+    pageXform.preConcat(this->localToDevice());
+    // TODO: Need to concat the matrix on the ScopedContentEntry in effect.
+    // TODO: Need to use entire bounding box and not just a point.
+
+    ScopedOutputMarkedContentTags mark(fNodeId, pageXform.mapPoint({0,0}), fDocument, content);
 
     SkASSERT(xObject);
     SkPDFWriteResourceName(content, SkPDFResourceType::kXObject,
