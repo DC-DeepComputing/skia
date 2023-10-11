@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c3f2ec4_9517d79e",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-11T19:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a125708a_6986c387",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 53
+      },
+      "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d9f08aa_ebeae0ae",
@@ -84,6 +108,30 @@
       "writtenOn": "2023-10-11T17:36:07Z",
       "side": 1,
       "message": "similar comment about the chosen layout.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 50
+      },
+      "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc23b73e_3037be7b",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-10-11T19:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d9f08aa_ebeae0ae",
       "range": {
         "startLine": 92,
         "startChar": 0,
