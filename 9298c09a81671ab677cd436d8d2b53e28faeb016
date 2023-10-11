@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8244c6d7_25168dcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2023-10-11T12:03:22Z",
+      "side": 1,
+      "message": "Note, even with this fix, I get the build error:\n\n```\nninja: error: obj/third_party/externals/dawn/src/dawn/native/webgpu_dawn_static.ninja:12: multiple rules generate obj/BUILD_DIR/gen/third_party/externals/dawn/src/dawn/native/libwebgpu_dawn.webgpu_dawn_native_proc.o\n```\n\nI\u0027ve confirmed that my changes to `BUILD.gn` aren\u0027t to blame, so we need to figure out the another breakage.",
+      "revId": "9298c09a81671ab677cd436d8d2b53e28faeb016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
