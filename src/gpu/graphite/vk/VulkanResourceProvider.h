@@ -64,6 +64,13 @@ private:
 
     friend class VulkanCommandBuffer;
     VkPipelineCache fPipelineCache = VK_NULL_HANDLE;
+
+    // Each render pass will need buffer space to record rtAdjust information. To minimize costly
+    // allocation calls and searching of the resource cache, we find & store a uniform buffer upon
+    // resource provider creation. This way, render passes across all command buffers can simply
+    // update the value within this buffer as needed.
+    sk_sp<Buffer> fIntrinsicUniformBuffer;
+    static constexpr size_t kIntrinsicConstantSize = sizeof(float) * 4;
 };
 
 } // namespace skgpu::graphite
