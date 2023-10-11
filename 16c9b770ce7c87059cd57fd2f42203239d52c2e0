@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb1c3d5e_ce9c438e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-11T18:48:57Z",
+      "side": 1,
+      "message": "As discussed offline - updated such that the rsrc provider controls intrinsic uniform buffer lifetime; upon beginning each new render pass we use CmdUpdateBuffer to update the contents",
+      "revId": "16c9b770ce7c87059cd57fd2f42203239d52c2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01a98ade_5771132b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-11T18:48:57Z",
+      "side": 1,
+      "message": "This relies upon the fact that VulkanCommandBuffer is a friend class to VulkanResourceProvider. I don\u0027t foresee that changing, but still wanted to get your thoughts on directly referencing that member attribute as opposed to creating some methods to interact with it.",
+      "range": {
+        "startLine": 385,
+        "startChar": 0,
+        "endLine": 386,
+        "endChar": 89
+      },
+      "revId": "16c9b770ce7c87059cd57fd2f42203239d52c2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
