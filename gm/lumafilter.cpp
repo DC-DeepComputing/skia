@@ -195,6 +195,6 @@ DEF_SIMPLE_GM(AlternateLuma, canvas, 384,128) {
     paint.setColorFilter(SkColorFilterPriv::WithWorkingFormat(std::move(filter),
                                                               &SkNamedTransferFn::kLinear,
                                                               &SkNamedGamut::kXYZ,
-                                                              &unpremul));
+                                                              &unpremul, true));
     canvas->drawImage(img, 0,0, SkFilterMode::kNearest, &paint);
 }

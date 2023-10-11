@@ -128,7 +128,7 @@ DEF_TEST(WorkingFormatFilterFlags, r) {
         cf = SkColorFilterPriv::WithWorkingFormat(std::move(cf),
                                                   &SkNamedTransferFn::kLinear,
                                                   &SkNamedGamut::kDisplayP3,
-                                                  &unpremul);
+                                                  &unpremul, true);
         REPORTER_ASSERT(r, cf->isAlphaUnchanged());
     }
 
@@ -144,7 +144,7 @@ DEF_TEST(WorkingFormatFilterFlags, r) {
         cf = SkColorFilterPriv::WithWorkingFormat(std::move(cf),
                                                   &SkNamedTransferFn::kLinear,
                                                   &SkNamedGamut::kDisplayP3,
-                                                  &unpremul);
+                                                  &unpremul, true);
         REPORTER_ASSERT(r, !cf->isAlphaUnchanged());
     }
 }

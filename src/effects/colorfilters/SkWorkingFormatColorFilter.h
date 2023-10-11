@@ -25,7 +25,7 @@ public:
     SkWorkingFormatColorFilter(sk_sp<SkColorFilter> child,
                                const skcms_TransferFunction* tf,
                                const skcms_Matrix3x3* gamut,
-                               const SkAlphaType* at);
+                               const SkAlphaType* at, bool);
 
     sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS, SkAlphaType* at) const;
 

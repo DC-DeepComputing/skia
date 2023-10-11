@@ -72,5 +72,5 @@ sk_sp<SkColorFilter> SkColorFilter::makeWithWorkingColorSpace(
     workingSpace->transferFn(&tf);
     workingSpace->toXYZD50(&toXYZ);
     const SkAlphaType* kOriginalAlphaType = nullptr;
-    return SkColorFilterPriv::WithWorkingFormat(sk_ref_sp(base), &tf, &toXYZ, kOriginalAlphaType);
+    return SkColorFilterPriv::WithWorkingFormat(sk_ref_sp(base), &tf, &toXYZ, kOriginalAlphaType, false);
 }

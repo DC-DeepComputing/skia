@@ -91,5 +91,5 @@ sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& conf
     SkAlphaType          unpremul = kUnpremul_SkAlphaType;
     return SkColorFilterPriv::WithWorkingFormat(
             effect->makeColorFilter(SkData::MakeWithCopy(&uniforms,sizeof(uniforms))),
-            &linear, nullptr/*use dst gamut*/, &unpremul);
+            &linear, nullptr/*use dst gamut*/, &unpremul, true);
 }

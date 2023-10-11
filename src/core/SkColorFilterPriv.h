@@ -28,7 +28,7 @@ public:
     static sk_sp<SkColorFilter> WithWorkingFormat(sk_sp<SkColorFilter> child,
                                                   const skcms_TransferFunction* tf,
                                                   const skcms_Matrix3x3* gamut,
-                                                  const SkAlphaType* at);
+                                                  const SkAlphaType* at, bool);
 };
 
 #endif

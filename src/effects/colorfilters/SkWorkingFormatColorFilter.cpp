@@ -27,7 +27,7 @@
 SkWorkingFormatColorFilter::SkWorkingFormatColorFilter(sk_sp<SkColorFilter> child,
                                                        const skcms_TransferFunction* tf,
                                                        const skcms_Matrix3x3* gamut,
-                                                       const SkAlphaType* at) {
+                                                       const SkAlphaType* at, bool) {
     fChild = std::move(child);
     if (tf) {
         fTF = *tf;
@@ -156,14 +156,14 @@ sk_sp<SkFlattenable> SkWorkingFormatColorFilter::CreateProc(SkReadBuffer& buffer
     return SkColorFilterPriv::WithWorkingFormat(std::move(child),
                                                 useDstTF ? nullptr : &tf,
                                                 useDstGamut ? nullptr : &gamut,
-                                                useDstAT ? nullptr : &at);
+                                                useDstAT ? nullptr : &at, true);
 }
 
 sk_sp<SkColorFilter> SkColorFilterPriv::WithWorkingFormat(sk_sp<SkColorFilter> child,
                                                           const skcms_TransferFunction* tf,
                                                           const skcms_Matrix3x3* gamut,
-                                                          const SkAlphaType* at) {
-    return sk_make_sp<SkWorkingFormatColorFilter>(std::move(child), tf, gamut, at);
+                                                          const SkAlphaType* at, bool) {
+    return sk_make_sp<SkWorkingFormatColorFilter>(std::move(child), tf, gamut, at, true);
 }
 
 void SkRegisterWorkingFormatColorFilterFlattenable() {
