@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9678aff_73ddeba4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-11T15:51:08Z",
+      "side": 1,
+      "message": "Rob explained the rectanizer to me and this LGTM besides one small suggestion",
+      "revId": "60d034a610559c5abbb7d4c37fe64dc2746e342a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ff3f75_f90b66f5",
+        "filename": "src/gpu/graphite/RasterPathAtlas.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-11T15:51:08Z",
+      "side": 1,
+      "message": "Why was 2 the decided value? Maybe add a comment as to how this was selected",
+      "range": {
+        "startLine": 86,
+        "startChar": 36,
+        "endLine": 86,
+        "endChar": 39
+      },
+      "revId": "60d034a610559c5abbb7d4c37fe64dc2746e342a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
