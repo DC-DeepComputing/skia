@@ -22,6 +22,30 @@
       },
       "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f578ebd_10518e7c",
+        "filename": "resources/sksl/errors/RedeclareBuiltinVariables.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-11T18:56:15Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "443f615c_4bc9e8b7",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "71e7e60c5e73c7537f9e7ac59bf9bfa2b6ff85d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
