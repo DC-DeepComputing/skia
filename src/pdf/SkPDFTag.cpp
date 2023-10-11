@@ -37,12 +37,14 @@ struct SkPDFTagNode {
     SkPDFTagNode* fChildren = nullptr;
     size_t fChildCount = 0;
     struct MarkedContentInfo {
+        SkPoint fPoint;
         unsigned fPageIndex;
         int fMarkId;
     };
     TArray<MarkedContentInfo> fMarkedContent;
     int fNodeId;
     SkString fTypeString;
+    SkString fTitle;
     SkString fAlt;
     SkString fLang;
     SkPDFIndirectReference fRef;
@@ -161,13 +163,21 @@ void SkPDFTagTree::init(SkPDF::StructureElementNode* node) {
     }
 }
 
-int SkPDFTagTree::createMarkIdForNodeId(int nodeId, unsigned pageIndex) {
+int SkPDFTagTree::Mark::id() {
+    return fNode ? fNode->fMarkedContent[fMarkIndex].fMarkId : -1;
+}
+
+SkPoint& SkPDFTagTree::Mark::point() {
+    return fNode->fMarkedContent[fMarkIndex].fPoint;
+}
+
+auto SkPDFTagTree::createMarkIdForNodeId(int nodeId, unsigned pageIndex, SkPoint point) -> Mark {
     if (!fRoot) {
-        return -1;
+        return Mark();
     }
     SkPDFTagNode** tagPtr = fNodeMap.find(nodeId);
     if (!tagPtr) {
-        return -1;
+        return Mark();
     }
     SkPDFTagNode* tag = *tagPtr;
     SkASSERT(tag);
@@ -176,9 +186,9 @@ int SkPDFTagTree::createMarkIdForNodeId(int nodeId, unsigned pageIndex) {
     }
     TArray<SkPDFTagNode*>& pageMarks = fMarksPerPage[pageIndex];
     int markId = pageMarks.size();
-    tag->fMarkedContent.push_back({pageIndex, markId});
+    tag->fMarkedContent.push_back({point, pageIndex, markId});
     pageMarks.push_back(tag);
-    return markId;
+    return Mark(tag, tag->fMarkedContent.size() - 1);
 }
 
 int SkPDFTagTree::createStructParentKeyForNodeId(int nodeId, unsigned pageIndex) {
@@ -287,6 +297,22 @@ void SkPDFTagTree::addNodeAnnotation(int nodeId, SkPDFIndirectReference annotati
     tag->fAnnotations.push_back(annotationInfo);
 }
 
+void SkPDFTagTree::addNodeTitle(int nodeId, SkString title) {
+    if (!fRoot) {
+        return;
+    }
+    SkPDFTagNode** tagPtr = fNodeMap.find(nodeId);
+    if (!tagPtr) {
+        return;
+    }
+    SkPDFTagNode* tag = *tagPtr;
+    SkASSERT(tag);
+
+    if (tag->fTitle.isEmpty()) {
+        tag->fTitle = std::move(title);
+    }
+}
+
 SkPDFIndirectReference SkPDFTagTree::makeStructTreeRoot(SkPDFDocument* doc) {
     if (!fRoot || can_discard(fRoot)) {
         return SkPDFIndirectReference();
@@ -371,4 +397,106 @@ SkPDFIndirectReference SkPDFTagTree::makeStructTreeRoot(SkPDFDocument* doc) {
     }
 
     return doc->emit(structTreeRoot, ref);
+}
+
+/* Returns the total number of descendents in the outline. */
+static int32_t emit_outline_entry(SkPDFDocument* const doc, SkPDFTagNode* const node,
+                                  SkPDFIndirectReference const parentRef,
+                                  SkPDFIndirectReference const prevSiblingRef,
+                                  SkPDFIndirectReference const selfRef,
+                                  SkPDFIndirectReference const nextSiblingRef) {
+    // Emit any child entries.
+    SkSpan<SkPDFTagNode> children(node->fChildren, node->fChildCount);
+    int32_t descendentCount = 0;
+    STArray<20, SkPDFIndirectReference> childRefs;
+    for (auto&& child : children) {
+        if (can_discard(&child)) {
+            continue;
+        }
+        childRefs.emplace_back(doc->reserveRef());
+        ++descendentCount;
+    }
+    int childRefsIndex = 0;
+    SkPDFIndirectReference prevChildRef; // Starts out as "none".
+    childRefs.emplace_back(); // Put an extra "none" on the end for the last "next".
+    for (auto&& child : children) {
+        if (can_discard(&child)) {
+            continue;
+        }
+        SkPDFIndirectReference currChildRef = childRefs[childRefsIndex];
+        SkPDFIndirectReference nextChildRef = childRefs[childRefsIndex+1];
+        descendentCount += emit_outline_entry(doc, &child, selfRef,
+                                              prevChildRef, currChildRef, nextChildRef);
+        prevChildRef = currChildRef;
+        ++childRefsIndex;
+    }
+    childRefs.pop_back(); // Remove the "none" on the end.
+
+    // Emit self entry.
+    SkPDFDict entry;
+    if (!node->fTitle.isEmpty()) {
+        entry.insertTextString("Title", node->fTitle);
+    } else if (!node->fAlt.isEmpty()) {
+        entry.insertTextString("Title", node->fAlt);
+    } else {
+        entry.insertTextString("Title", node->fTypeString);
+    }
+    // When drawing record the position of the marks and pick one as the destination.
+    if (!node->fMarkedContent.empty()) {
+        // The uppermost/leftmost point on the earliest page.
+        SkPDFTagNode::MarkedContentInfo const& earliestMark = *std::min_element(
+            node->fMarkedContent.begin(), node->fMarkedContent.end(),
+            [](const SkPDFTagNode::MarkedContentInfo& a, const SkPDFTagNode::MarkedContentInfo& b) {
+                return (a.fPageIndex < b.fPageIndex) || (a.fPageIndex == b.fPageIndex && (
+                       (a.fPoint.y() > b.fPoint.y()) || (a.fPoint.y() == b.fPoint.y() && (
+                       (a.fPoint.x() < b.fPoint.x())))));
+            }
+        );
+
+        auto destination = SkPDFMakeArray();
+        destination->appendRef(doc->getPage(earliestMark.fPageIndex));
+        destination->appendName("XYZ");
+        destination->appendScalar(earliestMark.fPoint.x());
+        destination->appendScalar(earliestMark.fPoint.y());
+        destination->appendInt(0);
+        entry.insertObject("Dest", std::move(destination));
+    } else {
+        // TODO: take the uppermost/leftmost point on the earliest page of any child.
+    }
+    if (node->fRef) {
+        entry.insertRef("SE", node->fRef);
+    }
+    entry.insertRef("Parent", parentRef);
+    if (prevSiblingRef) {
+        entry.insertRef("Prev", prevSiblingRef);
+    }
+    if (nextSiblingRef) {
+        entry.insertRef("Next", nextSiblingRef);
+    }
+    if (!childRefs.empty()) {
+        entry.insertRef("First", childRefs.front());
+        entry.insertRef("Last", childRefs.back());
+        entry.insertInt("Count", descendentCount);
+    }
+    doc->emit(entry, selfRef);
+    return descendentCount;
+}
+
+SkPDFIndirectReference SkPDFTagTree::makeOutline(SkPDFDocument* doc) {
+    if (!fRoot || can_discard(fRoot)) {
+        return SkPDFIndirectReference();
+    }
+
+    SkPDFIndirectReference outlineRef = doc->reserveRef();
+    SkPDFDict outline("Outlines");
+
+    SkPDFIndirectReference entryRef = doc->reserveRef();
+    SkPDFIndirectReference none;
+    int32_t descendentCount = emit_outline_entry(doc, fRoot, outlineRef, none, entryRef, none);
+
+    outline.insertRef("First", entryRef);
+    outline.insertRef("Last", entryRef);
+    outline.insertInt("Count", descendentCount);
+
+    return doc->emit(outline, outlineRef);
 }
