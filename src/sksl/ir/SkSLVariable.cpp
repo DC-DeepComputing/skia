@@ -192,8 +192,8 @@ Variable::ScratchVariable Variable::MakeScratchVariable(const Context& context,
         type = &type->scalarTypeForLiteral();
     }
 
-    // Out-parameters aren't supported.
-    SkASSERT(!(modifierFlags & ModifierFlag::kOut));
+    // Strip off in/out flags.
+    modifierFlags &= ~(ModifierFlag::kIn | ModifierFlag::kOut);
 
     // Provide our new variable with a unique name, and add it to our symbol table.
     const std::string* name =
