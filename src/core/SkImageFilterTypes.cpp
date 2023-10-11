@@ -1450,7 +1450,7 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     // should be incorporated into the image that's sampled by the blur effect (modulo biasing edge
     // pixels somehow for very large clamp blurs).
     auto [image, origin] = fInputs[0].fImage.resolve(fContext, sampleBounds);
-    if (!image) {
+        if (!image) {
         return {};
     }
 
