@@ -527,8 +527,12 @@ const SkMatrix& SkPDFDocument::currentPageTransform() const {
     return fPageDevice->initialTransform();
 }
 
-int SkPDFDocument::createMarkIdForNodeId(int nodeId) {
-    return fTagTree.createMarkIdForNodeId(nodeId, SkToUInt(this->currentPageIndex()));
+SkPDFTagTree::Mark SkPDFDocument::createMarkIdForNodeId(int nodeId, SkPoint p) {
+    return fTagTree.createMarkIdForNodeId(nodeId, SkToUInt(this->currentPageIndex()), p);
+}
+
+void SkPDFDocument::addNodeTitle(int nodeId, SkString title) {
+    fTagTree.addNodeTitle(nodeId, std::move(title));
 }
 
 int SkPDFDocument::createStructParentKeyForNodeId(int nodeId) {
@@ -594,6 +598,10 @@ void SkPDFDocument::onClose(SkWStream* stream) {
         markInfo->insertBool("Marked", true);
         docCatalog->insertObject("MarkInfo", std::move(markInfo));
         docCatalog->insertRef("StructTreeRoot", root);
+
+        if (SkPDFIndirectReference outline = fTagTree.makeOutline(this)) {
+            docCatalog->insertRef("Outlines", outline);
+        }
     }
 
     auto docCatalogRef = this->emit(*docCatalog);
