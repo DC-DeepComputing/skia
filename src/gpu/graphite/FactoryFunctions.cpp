@@ -280,7 +280,8 @@ private:
         ImageShaderBlock::ImageData imgData(desiredCombination > 0 ? kDefaultCubicSampling
                                                                    : kDefaultSampling,
                                             SkTileMode::kClamp, SkTileMode::kClamp,
-                                            SkRect::MakeEmpty(), ReadSwizzle::kRGBA);
+                                            SkRect::MakeEmpty(), SkRect::MakeEmpty(),
+                                            ReadSwizzle::kRGBA);
 
         ImageShaderBlock::AddBlock(keyContext, builder, /* gatherer= */ nullptr, imgData);
     }
