@@ -153,6 +153,11 @@ $pure float $tile(int tileMode, float f, float low, float high) {
     }
 }
 
+$pure half4 $sample_image_with_swizzle(float2 pos, float2 imgSize, int readSwizzle, sampler2D s) {
+    half4 color = sample(s, pos / imgSize);
+    return $apply_swizzle(readSwizzle, color);
+}
+
 $pure half4 $sample_image(float2 pos,
                           float2 imgSize,
                           float4 subset,
@@ -189,8 +194,7 @@ $pure half4 $sample_image(float2 pos,
         insetClamp = float4(subset.xy + $kLinearInset, subset.zw - $kLinearInset);
     }
     float2 clampedPos = clamp(pos, insetClamp.xy, insetClamp.zw);
-    half4 color = sample(s, clampedPos / imgSize);
-    color = $apply_swizzle(readSwizzle, color);
+    half4 color = $sample_image_with_swizzle(clampedPos, imgSize, readSwizzle, s);
 
     if (filterMode == $kFilterModeLinear) {
         // Remember the amount the coord moved for clamping. This is used to implement shader-based
@@ -210,17 +214,17 @@ $pure half4 $sample_image(float2 pos,
             half4 extraColorY;
             if (sampleExtraX) {
                 extraCoordX = error.x > 0 ? insetClamp.x : insetClamp.z;
-                extraColorX = sample(s, float2(extraCoordX, clampedPos.y) / imgSize);
-                extraColorX = $apply_swizzle(readSwizzle, extraColorX);
+                extraColorX = $sample_image_with_swizzle(float2(extraCoordX, clampedPos.y),
+                                                         imgSize, readSwizzle, s);
             }
             if (sampleExtraY) {
                 extraCoordY = error.y > 0 ? insetClamp.y : insetClamp.w;
-                extraColorY = sample(s, float2(clampedPos.x, extraCoordY) / imgSize);
-                extraColorY = $apply_swizzle(readSwizzle, extraColorY);
+                extraColorY = $sample_image_with_swizzle(float2(clampedPos.x, extraCoordY),
+                                                         imgSize, readSwizzle, s);
             }
             if (sampleExtraX && sampleExtraY) {
-                half4 extraColorXY = sample(s, float2(extraCoordX, extraCoordY) / imgSize);
-                extraColorXY = $apply_swizzle(readSwizzle, extraColorXY);
+                half4 extraColorXY = $sample_image_with_swizzle(float2(extraCoordX, extraCoordY),
+                                                                imgSize, readSwizzle, s);
                 color = mix(mix(color, extraColorX, absError.x),
                             mix(extraColorY, extraColorXY, absError.x),
                             absError.y);
@@ -311,6 +315,20 @@ $pure half4 sk_cubic_image_shader(float2 coords,
                                   sampler2D s) {
     half4 sampleColor = $cubic_filter_image(coords, imgSize, subset, tileModeX, tileModeY,
                                             cubicCoeffs, readSwizzle, s);
+    return sk_color_space_transform(sampleColor, csXformFlags, csXformSrcKind,
+                                    csXformGamutTransform, csXformDstKind, csXformCoeffs);
+}
+
+$pure half4 sk_hw_image_shader(float2 coords,
+                               float2 imgSize,
+                               int readSwizzle,
+                               int csXformFlags,
+                               int csXformSrcKind,
+                               half3x3 csXformGamutTransform,
+                               int csXformDstKind,
+                               half4x4 csXformCoeffs,
+                               sampler2D s) {
+    half4 sampleColor = $sample_image_with_swizzle(coords, imgSize, readSwizzle, s);
     return sk_color_space_transform(sampleColor, csXformFlags, csXformSrcKind,
                                     csXformGamutTransform, csXformDstKind, csXformCoeffs);
 }
