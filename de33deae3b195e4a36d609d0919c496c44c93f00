@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76fa2ebd_a0c469b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-11T20:53:04Z",
+      "side": 1,
+      "message": "This does not actually depend on parent drawImageRect() CL, but is in the chain for children that depend on both changes.",
+      "revId": "de33deae3b195e4a36d609d0919c496c44c93f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
