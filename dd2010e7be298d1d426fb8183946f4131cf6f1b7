@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13949481_de15efc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2023-10-11T10:43:19Z",
+      "side": 1,
+      "message": "Note: This should unblock the autoroller",
+      "revId": "dd2010e7be298d1d426fb8183946f4131cf6f1b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
