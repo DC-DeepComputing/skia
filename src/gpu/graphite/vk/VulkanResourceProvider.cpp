@@ -73,7 +73,15 @@ VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID,
                                                size_t resourceBudget)
-        : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget) {}
+        : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget) {
+    // Establish a uniform buffer that can be updated across multiple render passes and cmd buffers
+    size_t alignedIntrinsicConstantSize =
+            std::max(kIntrinsicConstantSize,
+                     this->vulkanSharedContext()->vulkanCaps().requiredUniformBufferAlignment());
+    fIntrinsicUniformBuffer = this->findOrCreateBuffer(alignedIntrinsicConstantSize,
+                                                       BufferType::kUniform,
+                                                       AccessPattern::kHostVisible);
+}
 
 VulkanResourceProvider::~VulkanResourceProvider() {
     if (fPipelineCache != VK_NULL_HANDLE) {
