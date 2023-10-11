@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12b4e3da_1de8c028",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-11T11:38:31Z",
+      "side": 1,
+      "message": "With this, the tiger SVGs run reasonably fast on an M1.",
+      "revId": "0e9a709a76bc482c4b0331f47f8191bf7797fa46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
