@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c59848f0_27ddb8ca",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-11T15:23:39Z",
+      "side": 1,
+      "message": "nit: remove indent",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 12
+      },
+      "revId": "25c97e1ef6aeef458edf2bd998766c7945a4d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
