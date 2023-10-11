@@ -50,7 +50,6 @@ skia_tests(
         ":tests_base",
         "//:core",
         "//:default_font_manager_empty",
-        "//:default_malloc",
     ],
 )
 
@@ -62,7 +61,6 @@ skia_tests(
         ":tests_base",
         "//:core",
         "//:default_font_manager_empty",
-        "//:default_malloc",
     ],
 )
 
