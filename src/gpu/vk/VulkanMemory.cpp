@@ -135,7 +135,7 @@ void VulkanMemory::FlushMappedAlloc(VulkanMemoryAllocator* allocator,
                                     VkDeviceSize offset,
                                     VkDeviceSize size,
                                     const std::function<CheckResult>& checkResult) {
-    if (alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
+    if (allocator && alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
         SkASSERT(offset == 0);
         SkASSERT(size <= alloc.fSize);
         SkASSERT(alloc.fBackendMemory);
@@ -149,12 +149,14 @@ void VulkanMemory::InvalidateMappedAlloc(VulkanMemoryAllocator* allocator,
                                          VkDeviceSize offset,
                                          VkDeviceSize size,
                                          const std::function<CheckResult>& checkResult) {
-    if (alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
+    if (allocator && alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
         SkASSERT(offset == 0);
         SkASSERT(size <= alloc.fSize);
         SkASSERT(alloc.fBackendMemory);
         VkResult result = allocator->invalidateMemory(alloc.fBackendMemory, offset, size);
+        SkDebugf("\n result from invalidating memory is: %d", result);
         checkResult(result);
+        SkDebugf("\n checkresult didn't kill us \n");
     }
 }
 
