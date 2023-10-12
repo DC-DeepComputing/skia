@@ -325,7 +325,21 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    this->handleDstRead(keyContext, builder, gatherer);
+
+    std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
+
+    if (fDstReadReq == DstReadRequirement::kNone &&
+        finalBlendMode.has_value() &&
+        *finalBlendMode <= SkBlendMode::kLastCoeffMode) {
+        // hardware blending!
+    }
+
+
+    std::optional<SkBlendMode> PaintParams::asFinalBlendMode() const {
+        return fFinalBlender ? as_BB(fFinalBlender)->asBlendMode()
+                             : SkBlendMode::kSrcOver;
+    }
+
 
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
     if (fDstReadReq != DstReadRequirement::kNone) {
@@ -337,6 +351,13 @@ void PaintParams::toKey(const KeyContext& keyContext,
     SkASSERT(finalBlendMode);
     BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
+
+    if (finalBlendMode <= SkBlendMode::kLastCoeffMode) {
+        AddKnownModeBlend(keyContext, builder, gatherer, *finalBlendMode);
+    }
+
+
+    this->handleDstRead(keyContext, builder, gatherer);
 
     builder->addBlock(fixedFuncBlendModeID);
 }
