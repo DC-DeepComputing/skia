@@ -33,6 +33,24 @@
       "message": "With this preserving the winding, it looks like this can land without changing any existing user PDF tests.",
       "revId": "25daedb6fc86e20c10fd2f0c2e0a749102c5bb52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d664c711_35690728",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-12T13:16:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "97949e62_b986afb8",
+      "revId": "25daedb6fc86e20c10fd2f0c2e0a749102c5bb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
