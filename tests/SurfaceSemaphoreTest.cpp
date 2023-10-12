@@ -42,6 +42,7 @@
 #include "include/gpu/gl/GrGLFunctions.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/GrGLTypes.h"
+#include "src/gpu/ganesh/gl/GrGLBackendSemaphore.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #endif
@@ -287,7 +288,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
     if (GrBackendApi::kOpenGL == ctxInfo.backend()) {
         GrGLGpu* gpu = static_cast<GrGLGpu*>(ctx->priv().getGpu());
         const GrGLInterface* interface = gpu->glInterface();
-        GrGLsync sync = semaphore.glSync();
+        GrGLsync sync = GrBackendSemaphores::GetGLSync(semaphore);
         REPORTER_ASSERT(reporter, sync);
         bool result;
         GR_GL_CALL_RET(interface, result, IsSync(sync));
