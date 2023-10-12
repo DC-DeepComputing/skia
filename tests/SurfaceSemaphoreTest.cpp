@@ -42,6 +42,7 @@
 #include "include/gpu/gl/GrGLFunctions.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/GrGLTypes.h"
+#include "src/gpu/ganesh/gl/GrGLBackendSemaphore.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #endif
@@ -260,6 +261,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
+    SkDebugf("alpha\n");
     auto ctx = ctxInfo.directContext();
     if (!ctx->priv().caps()->semaphoreSupport()) {
         return;
@@ -273,30 +275,39 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
 
     // Flush surface once without semaphores to make sure there is no pending IO for it.
     ctx->flushAndSubmit(mainSurface.get(), GrSyncCpu::kNo);
-
+    SkDebugf("beta\n");
     GrBackendSemaphore semaphore;
     GrFlushInfo flushInfo;
     flushInfo.fNumSemaphores = 1;
     flushInfo.fSignalSemaphores = &semaphore;
+    SkDebugf("gamma\n");
     GrSemaphoresSubmitted submitted =
             ctx->flush(mainSurface.get(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
     REPORTER_ASSERT(reporter, GrSemaphoresSubmitted::kYes == submitted);
+    SkDebugf("delta\n");
     ctx->submit();
+    SkDebugf("epsilon\n");
 
 #ifdef SK_GL
+    SkDebugf("zeta\n");
     if (GrBackendApi::kOpenGL == ctxInfo.backend()) {
+        SkDebugf("iota\n");
         GrGLGpu* gpu = static_cast<GrGLGpu*>(ctx->priv().getGpu());
         const GrGLInterface* interface = gpu->glInterface();
-        GrGLsync sync = semaphore.glSync();
+        GrGLsync sync = GrBackendSemaphores::GetGLSync(semaphore);
+        SkDebugf("kappa\n");
         REPORTER_ASSERT(reporter, sync);
         bool result;
         GR_GL_CALL_RET(interface, result, IsSync(sync));
         REPORTER_ASSERT(reporter, result);
+        SkDebugf("lambda\n");
     }
 #endif
 
 #ifdef SK_VULKAN
+    SkDebugf("mu\n");
     if (GrBackendApi::kVulkan == ctxInfo.backend()) {
+        SkDebugf("nu\n");
         GrVkGpu* gpu = static_cast<GrVkGpu*>(ctx->priv().getGpu());
         const skgpu::VulkanInterface* interface = gpu->vkInterface();
         VkDevice device = gpu->device();
@@ -365,4 +376,5 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
         }
     }
 #endif
+    SkDebugf("omega\n");
 }

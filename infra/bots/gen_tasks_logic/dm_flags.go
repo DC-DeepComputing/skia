@@ -1365,6 +1365,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		args = append(args, "--failFlushTimeCallbacks")
 	}
 
+	if b.extraConfig("Direct3D") { // FIXME(kjlubick)
+		args = append(args, "--match", "EmptySurfaceSemaphoreTest")
+	}
+
 	// Finalize the DM flags and properties.
 	b.recipeProp("dm_flags", marshalJson(args))
 	b.recipeProp("dm_properties", marshalJson(properties))

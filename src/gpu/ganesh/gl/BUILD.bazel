@@ -24,6 +24,8 @@ CORE_FILES = [
     "GrGLDirectContext.cpp",
     "GrGLExtensions.cpp",
     "GrGLBackendSurface.cpp",
+    "GrGLBackendSemaphore.cpp",
+    "GrGLBackendSemaphore.h",
     "GrGLBackendSurfacePriv.h",
     "GrGLGLSL.cpp",
     "GrGLGLSL.h",
