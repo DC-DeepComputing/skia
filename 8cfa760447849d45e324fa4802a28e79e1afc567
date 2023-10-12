@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cc85df3_019485a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-12T14:49:09Z",
+      "side": 1,
+      "message": "They will need to be able to make GL GrBackendSemaphores. It was just the case when signaling they need to give us unitialized ones since we create the sync when we insert it into the gpu. But if a client wants us to wait on a semaphore/sync they will have the object and will need to be able to make a GrBackendSemaphore with it.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
