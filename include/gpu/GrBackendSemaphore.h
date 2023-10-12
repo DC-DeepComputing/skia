@@ -29,10 +29,10 @@
  */
 class GrBackendSemaphore {
 public:
-    // For convenience we just set the backend here to OpenGL. The GrBackendSemaphore cannot be used
-    // until either init* is called, which will set the appropriate GrBackend.
+    // The GrBackendSemaphore cannot be used until either init* is called, which will set the
+    // appropriate GrBackend.
     GrBackendSemaphore()
-            : fBackend(GrBackendApi::kOpenGL), fGLSync(nullptr), fIsInitialized(false) {}
+            : fBackend(GrBackendApi::kUnsupported), fGLSync(nullptr), fIsInitialized(false) {}
 
 #ifdef SK_DIRECT3D
     // We only need to specify these if Direct3D is enabled, because it requires special copy
