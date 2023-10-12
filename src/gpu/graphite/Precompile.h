@@ -89,6 +89,10 @@ template<typename T>
 std::pair<sk_sp<T>, int> PrecompileBase::SelectOption(const std::vector<sk_sp<T>>& options,
                                                       int desiredOption) {
     for (const sk_sp<T>& option : options) {
+        if (!option) {
+            continue;
+        }
+
         if (desiredOption < option->numCombinations()) {
             return { option, desiredOption };
         }
@@ -131,6 +135,8 @@ public:
 class PrecompileColorFilter : public PrecompileBase {
 public:
     PrecompileColorFilter() : PrecompileBase(Type::kColorFilter) {}
+
+    sk_sp<PrecompileColorFilter> makeComposed(sk_sp<PrecompileColorFilter> inner) const;
 };
 
 class PrecompileImageFilter : public PrecompileBase {

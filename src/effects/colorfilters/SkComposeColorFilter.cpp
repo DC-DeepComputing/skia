@@ -16,7 +16,9 @@
 struct SkStageRec;
 
 SkComposeColorFilter::SkComposeColorFilter(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner)
-        : fOuter(as_CFB_sp(std::move(outer))), fInner(as_CFB_sp(std::move(inner))) {}
+        : fOuter(as_CFB_sp(std::move(outer))), fInner(as_CFB_sp(std::move(inner))) {
+    SkASSERT(fOuter && fInner);
+}
 
 bool SkComposeColorFilter::onIsAlphaUnchanged() const {
     // Can only claim alphaunchanged support if both our proxys do.
