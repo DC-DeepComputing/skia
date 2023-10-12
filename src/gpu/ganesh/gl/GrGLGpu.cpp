@@ -17,7 +17,6 @@
 #include "include/core/SkTextureCompressionType.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
@@ -58,6 +57,7 @@
 #include "src/gpu/ganesh/GrUtil.h"
 #include "src/gpu/ganesh/GrWindowRectangles.h"
 #include "src/gpu/ganesh/gl/GrGLAttachment.h"
+#include "src/gpu/ganesh/gl/GrGLBackendSemaphore.h"
 #include "src/gpu/ganesh/gl/GrGLBackendSurfacePriv.h"
 #include "src/gpu/ganesh/gl/GrGLBuffer.h"
 #include "src/gpu/ganesh/gl/GrGLOpsRenderPass.h"
@@ -4331,7 +4331,7 @@ std::unique_ptr<GrSemaphore> GrGLGpu::wrapBackendSemaphore(const GrBackendSemaph
                                                            GrSemaphoreWrapType /* wrapType */,
                                                            GrWrapOwnership ownership) {
     SkASSERT(this->caps()->semaphoreSupport());
-    return GrGLSemaphore::MakeWrapped(this, semaphore.glSync(), ownership);
+    return GrGLSemaphore::MakeWrapped(this, GrBackendSemaphores::GetGLSync(semaphore), ownership);
 }
 
 void GrGLGpu::insertSemaphore(GrSemaphore* semaphore) {
