@@ -10,6 +10,7 @@
 
 #include "src/base/SkTInternalLList.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/AtlasTypes.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/PathAtlas.h"
 
@@ -31,14 +32,6 @@ public:
     ~RasterPathAtlas() override {}
     void recordUploads(DrawContext*, Recorder*);
 
-    // Clear all scheduled atlas draws and free up atlas allocations, if necessary. After this call
-    // the atlas can be considered cleared and available for new shape insertions. However this
-    // method does not have any bearing on the contents of any atlas textures themselves, which may
-    // be in use by GPU commands that are in-flight or yet to be submitted.
-    // TODO: can probably remove this once caching is working, or only use it for the LRU page
-    // when out of space
-    void reset();
-
 protected:
     const TextureProxy* onAddShape(Recorder* recorder,
                                    const Shape&,
@@ -56,7 +49,7 @@ private:
     static constexpr int kDefaultAtlasDim = 4096;
 
     struct Page {
-        bool initializeTextureIfNeeded(Recorder* recorder);
+        bool initializeTextureIfNeeded(Recorder* recorder, uint16_t identifier);
 
         // A Page lazily requests a texture from the AtlasProvider when the first shape gets added
         // to it and references the same texture for the duration of its lifetime. A reference to
@@ -74,14 +67,30 @@ private:
             uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
         };
         skia_private::THashMap<skgpu::UniqueKey, skvx::half2, UniqueKeyHash> fCachedShapes;
-        bool fNeedsReset = false;
+
+        AtlasToken fLastUsed = AtlasToken::InvalidToken();
+
+        uint16_t fIdentifier;
 
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(Page);
     };
 
-    static constexpr int kMaxPages = 1;  // TODO: pick value - 4?
+    void setLastUsed(Page*, Recorder*);
+    // Clear all scheduled atlas draws and free up atlas allocations, if necessary. After this call
+    // the atlas can be considered cleared and available for new shape insertions. However this
+    // method does not have any bearing on the contents of any atlas textures themselves, which may
+    // be in use by GPU commands that are in-flight or yet to be submitted.
+    // TODO: can probably remove this once caching is working, or only use it for the LRU page
+    // when out of space
+    void reset(Page*);
+
+    // Moving from one cached page to two gives improved results on some of our more complex SKPs.
+    // Any higher uses more memory seemly without much of an overall perf gain. More investigation
+    // will have to be done to tune this value.
+    static constexpr int kMaxPages = 1;
+    typedef SkTInternalLList<Page> PageList;
     // LRU list of Pages (MRU at head - LRU at tail)
-    SkTInternalLList<Page> fPageList;
+    PageList fPageList;
     // Allocated array of pages (backing data for list)
     Page fPageArray[kMaxPages];
 };

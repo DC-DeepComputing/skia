@@ -264,7 +264,6 @@ sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
     RasterPathAtlas* rasterPathAtlas = recorder->priv().atlasProvider()->getRasterPathAtlas();
     if (rasterPathAtlas) {
         rasterPathAtlas->recordUploads(this, recorder);
-        rasterPathAtlas->reset();
     }
 
     if (!fPendingUploads || fPendingUploads->size() == 0) {
