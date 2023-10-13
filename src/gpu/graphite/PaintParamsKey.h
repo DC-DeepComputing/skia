@@ -50,13 +50,10 @@ public:
     // than the returned key.
     PaintParamsKey clone(SkArenaAlloc*) const;
 
-    // Converts the key into a forest of ShaderNode trees. If the key is valid this will return at
-    // least one root node. If the key contains unknown shader snippet IDs, returns an empty span.
+    // Converts the key into a ShaderNode tree. If the key is valid this will return a
+    // non-null root node. If the key contains unknown shader snippet IDs, returns nullptr.
     // All shader nodes, and the returned span's backing data, are owned by the provided arena.
-    // TODO: Strengthen PaintParams key generation so we can assume there's only ever one root node
-    // representing the final blend (either a shader blend (with 2 children: main effect & dst) or
-    // a fixed function blend (with 1 child being the main effect)).
-    SkSpan<const ShaderNode*> getRootNodes(const ShaderCodeDictionary*, SkArenaAlloc*) const;
+    const ShaderNode* getRootNode(const ShaderCodeDictionary*, SkArenaAlloc*) const;
 
 #if defined(GRAPHITE_TEST_UTILS)
     // Converts the key to a structured list of snippet names for debugging purposes.

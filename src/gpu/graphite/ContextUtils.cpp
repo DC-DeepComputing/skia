@@ -245,15 +245,13 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
                                     const Layout layout,
-                                    SkSpan<const ShaderNode*> nodes,
+                                    const ShaderNode* root,
                                     int* numUniforms,
                                     bool* wrotePaintColor) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, name);
-    for (const ShaderNode* n : nodes) {
-        result += get_node_uniforms(layout, n, &offset, numUniforms, wrotePaintColor);
-    }
+    result += get_node_uniforms(layout, root, &offset, numUniforms, wrotePaintColor);
     result.append("};\n\n");
 
     if (!*numUniforms) {
@@ -277,19 +275,16 @@ std::string EmitRenderStepUniforms(int bufferID,
     return result;
 }
 
-std::string EmitPaintParamsStorageBuffer(
-        int bufferID,
-        const char* bufferTypePrefix,
-        const char* bufferNamePrefix,
-        SkSpan<const ShaderNode*> nodes,
-        int* numUniforms,
-        bool* wrotePaintColor) {
+std::string EmitPaintParamsStorageBuffer(int bufferID,
+                                         const char* bufferTypePrefix,
+                                         const char* bufferNamePrefix,
+                                         const ShaderNode* root,
+                                         int* numUniforms,
+                                         bool* wrotePaintColor) {
 
     std::string result;
     SkSL::String::appendf(&result, "struct %sUniformData {\n", bufferTypePrefix);
-    for (const ShaderNode* n : nodes) {
-        result += get_node_ssbo_fields(n, numUniforms, wrotePaintColor);
-    }
+    result += get_node_ssbo_fields(root, numUniforms, wrotePaintColor);
     result.append("};\n\n");
 
     if (!*numUniforms) {
@@ -315,13 +310,9 @@ std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
 }
 
 std::string EmitTexturesAndSamplers(const ResourceBindingRequirements& bindingReqs,
-                                    SkSpan<const ShaderNode*> nodes,
+                                    const ShaderNode* root,
                                     int* binding) {
-    std::string result;
-    for (const ShaderNode* n : nodes) {
-        result += get_node_texture_samplers(bindingReqs, n, binding);
-    }
-    return result;
+    return get_node_texture_samplers(bindingReqs, root, binding);
 }
 
 std::string EmitSamplerLayout(const ResourceBindingRequirements& bindingReqs, int* binding) {
@@ -476,7 +467,7 @@ FragSkSLInfo BuildFragmentSkSL(const Caps* caps,
     FragSkSLInfo result;
 
     const char* shadingSsboIndexVar = useStorageBuffers ? "shadingSsboIndexVar" : nullptr;
-    ShaderInfo shaderInfo(paintID, dict, rteDict, shadingSsboIndexVar);
+    ShaderInfo shaderInfo(caps, paintID, dict, rteDict, shadingSsboIndexVar);
 
     // Extra RenderStep uniforms are always backed by a UBO. Uniforms for the PaintParams are either
     // UBO or SSBO backed based on `useStorageBuffers`.

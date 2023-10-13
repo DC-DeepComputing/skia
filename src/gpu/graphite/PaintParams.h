@@ -81,7 +81,7 @@ private:
     void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
     void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
     void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleDstRead(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+//    void handleDstRead(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
@@ -112,10 +112,14 @@ void AddKnownModeBlend(const KeyContext&,
                        SkBlendMode);
 // Add a blend mode node for an SkBlendMode that can vary
 void AddModeBlend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, SkBlendMode);
+
+#if 0
 void AddDstReadBlock(const KeyContext&,
                      PaintParamsKeyBuilder*,
                      PipelineDataGatherer*,
                      DstReadRequirement);
+#endif
+
 void AddDitherBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, SkColorType);
 
 } // namespace skgpu::graphite

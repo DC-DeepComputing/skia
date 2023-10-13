@@ -88,27 +88,24 @@ std::string emit_glue_code_for_entry(const ShaderInfo& shaderInfo,
 
 // Walk the node tree and generate all preambles, accumulating into 'preamble'.
 void emit_preambles(const ShaderInfo& shaderInfo,
-                    SkSpan<const ShaderNode*> nodes,
+                    const ShaderNode* node,
                     std::string treeLabel,
                     std::string* preamble) {
-    for (int i = 0; i < SkTo<int>(nodes.size()); ++i) {
-        const ShaderNode* node = nodes[i];
-        std::string nodeLabel = std::to_string(i);
+    for (int j = 0; j < node->numChildren(); ++j) {
+        std::string nodeLabel = std::to_string(j);
         std::string nextLabel = treeLabel.empty() ? nodeLabel
                                                   : (treeLabel + "<-" + nodeLabel);
 
-        if (node->numChildren() > 0) {
-            emit_preambles(shaderInfo, node->children(), nextLabel, preamble);
-        }
+        emit_preambles(shaderInfo, node->child(j), nextLabel, preamble);
+    }
 
-        std::string nodePreamble = node->entry()->fPreambleGenerator(shaderInfo, node);
-        if (!nodePreamble.empty()) {
-            SkSL::String::appendf(preamble,
-                                "// [%d]   %s: %s\n"
-                                "%s\n",
-                                node->keyIndex(), nextLabel.c_str(), node->entry()->fName,
-                                nodePreamble.c_str());
-        }
+    std::string nodePreamble = node->entry()->fPreambleGenerator(shaderInfo, node);
+    if (!nodePreamble.empty()) {
+        SkSL::String::appendf(preamble,
+                            "// [%d]   %s: %s\n"
+                            "%s\n",
+                            node->keyIndex(), "foo", node->entry()->fName,
+                            nodePreamble.c_str());
     }
 }
 
@@ -145,7 +142,8 @@ static constexpr skgpu::BlendInfo gBlendTable[kNumCoeffModes] = {
 //--------------------------------------------------------------------------------------------------
 // ShaderInfo
 
-ShaderInfo::ShaderInfo(UniquePaintParamsID id,
+ShaderInfo::ShaderInfo(const Caps* caps,
+                       UniquePaintParamsID id,
                        const ShaderCodeDictionary* dict,
                        const RuntimeEffectDictionary* rteDict,
                        const char* ssboIndex)
@@ -155,29 +153,31 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
     PaintParamsKey key = dict->lookup(id);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
 
-    fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
-    // Aggregate snippet requirements across root nodes and look for fixed-function blend IDs in
-    // the root to initialize the HW blend info.
-    SkDEBUGCODE(bool fixedFuncBlendFound = false;)
-    for (const ShaderNode* root : fRootNodes) {
-        // TODO: This is brittle as it relies on PaintParams::toKey() putting the final fixed
-        // function blend block at the root level. This can be improved with more structure to the
-        // key creation.
-        if (root->codeSnippetId() < kBuiltInCodeSnippetIDCount &&
-            root->codeSnippetId() >= kFixedFunctionBlendModeIDOffset) {
-            SkASSERT(root->numChildren() == 0);
-            // This should occur at most once
-            SkASSERT(!fixedFuncBlendFound);
-            SkDEBUGCODE(fixedFuncBlendFound = true;)
+    fRootNode = key.getRootNode(dict, &fShaderNodeAlloc);
+    if (fRootNode) {
+        SkASSERT(fRootNode->codeSnippetId() == static_cast<int>(BuiltInCodeSnippetID::kRoot));
+        SkASSERT(fRootNode->numChildren() == 2);
 
-            fBlendMode = static_cast<SkBlendMode>(root->codeSnippetId() -
+        const ShaderNode* blendChild = fRootNode->child(0);
+
+        if (blendChild->codeSnippetId() < kBuiltInCodeSnippetIDCount &&
+            blendChild->codeSnippetId() >= kFixedFunctionBlendModeIDOffset) {
+
+            fBlendMode = static_cast<SkBlendMode>(blendChild->codeSnippetId() -
                                                   kFixedFunctionBlendModeIDOffset);
-            SkASSERT(static_cast<int>(fBlendMode) >= 0 &&
-                     fBlendMode <= SkBlendMode::kLastCoeffMode);
-            fBlendInfo = gBlendTable[static_cast<int>(fBlendMode)];
         } else {
-            fSnippetRequirementFlags |= root->requiredFlags();
+            fBlendMode = SkBlendMode::kSrc;
+            fDstReadReq = caps->getDstReadRequirement();
+            fFoo = blendChild;
+            fSnippetRequirementFlags |= SnippetRequirementFlags::kSurfaceColor;
         }
+
+        SkASSERT(static_cast<int>(fBlendMode) >= 0 && fBlendMode <= SkBlendMode::kLastCoeffMode);
+        fBlendInfo = gBlendTable[static_cast<int>(fBlendMode)];
+
+        const ShaderNode* shadingChild = fRootNode->child(1);
+        fSnippetRequirementFlags |= shadingChild->requiredFlags();
+        fRootNode = shadingChild;
     }
 }
 
@@ -210,6 +210,38 @@ void append_color_output(std::string* mainBody,
             SkUNREACHABLE;
             break;
     }
+}
+
+void emit_dst_read_preamble(DstReadRequirement dstReadReq, std::string* preamble) {
+    switch(dstReadReq) {
+        case DstReadRequirement::kNone:
+            break;
+        case DstReadRequirement::kTextureCopy:
+            [[fallthrough]];
+        case DstReadRequirement::kTextureSample:
+            *preamble += "half4 surfaceColor;";  // we save off the original dstRead color to combine w/ coverage
+            *preamble += "half4 dst_read_texture_sample(float4 coords, sampler2D dstSampler) {";
+            *preamble += "surfaceColor = sample(dstSampler, (sk_FragCoord.xy - coords.xy) * coords.zw);";
+            *preamble += "return surfaceColor;";
+            *preamble += "}";
+            break;
+        case DstReadRequirement::kFramebufferFetch:
+            *preamble += "half4 surfaceColor;";  // we save off the original dstRead color to combine w/ coverage
+            *preamble += "half4 dst_read_fb_fetch() {";
+            *preamble += "surfaceColor = sk_LastFragColor;";
+            *preamble += "return surfaceColor;";
+            *preamble += "}";
+            break;
+    }
+}
+
+std::string bar(const ResourceBindingRequirements& bindingReqs, int* binding) {
+    std::string result("// dstRead sampler\n");
+
+    result += EmitSamplerLayout(bindingReqs, binding);
+    SkSL::String::appendf(&result, " sampler2D dstSampler;\n");
+
+    return result;
 }
 
 // The current, incomplete, model for shader construction is:
@@ -246,7 +278,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
 
     bool wrotePaintColor = false;
     if (this->ssboIndex()) {
-        preamble += EmitPaintParamsStorageBuffer(/*bufferID=*/2, "FS", "fs", fRootNodes,
+        preamble += EmitPaintParamsStorageBuffer(/*bufferID=*/2, "FS", "fs", fRootNode,
                                                  numPaintUniforms,
                                                  &wrotePaintColor);
     } else {
@@ -255,17 +287,19 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
                 "FS",
                 useStorageBuffers ? bindingReqs.fStorageBufferLayout
                                   : bindingReqs.fUniformBufferLayout,
-                fRootNodes,
+                fRootNode,
                 numPaintUniforms,
                 &wrotePaintColor);
     }
 
     {
         int binding = 0;
-        preamble += EmitTexturesAndSamplers(bindingReqs, fRootNodes, &binding);
+        preamble += EmitTexturesAndSamplers(bindingReqs, fRootNode, &binding);
         if (step->hasTextures()) {
             preamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
         }
+
+        preamble += bar(bindingReqs, &binding);
 
         // Report back to the caller how many textures and samplers are used.
         if (numTexturesAndSamplersUsed) {
@@ -282,7 +316,12 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     // Emit preamble declarations and helper functions required for snippets. In the default case
     // this adds functions that bind a node's specific mangled uniforms to the snippet's
     // implementation in the SkSL modules.
-    emit_preambles(*this, fRootNodes, /*treeLabel=*/"", &preamble);
+    emit_preambles(*this, fRootNode, /*treeLabel=*/"", &preamble);
+
+    emit_dst_read_preamble(fDstReadReq, &preamble);
+    if (fFoo) {
+        emit_preambles(*this, fFoo, /* treeLabel= */ "", &preamble);
+    }
 
     std::string mainBody = "void main() {";
     // Set initial color. This will typically be optimized out by SkSL in favor of the paint
@@ -300,14 +339,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
     ShaderSnippet::Args args = {"initialColor",
                                 kUnusedDstColor,
                                 this->needsLocalCoords() ? "localCoordsVar" : kUnusedLocalCoords};
-    for (const ShaderNode* node : fRootNodes) {
-        // This exclusion of the final Blend can be removed once we've resolved the final
-        // blend parenting issue w/in the key
-        if (node->codeSnippetId() >= kBuiltInCodeSnippetIDCount ||
-            node->codeSnippetId() < kFixedFunctionBlendModeIDOffset) {
-            args.fPriorStageOutput = emit_glue_code_for_entry(*this, node, args, &mainBody);
-        }
-    }
+    args.fPriorStageOutput = emit_glue_code_for_entry(*this, fRootNode, args, &mainBody);
 
     if (writeSwizzle != Swizzle::RGBA()) {
         SkSL::String::appendf(&mainBody, "%s = %s.%s;", args.fPriorStageOutput.c_str(),
@@ -578,6 +610,7 @@ std::string GenerateDefaultPreamble(const ShaderInfo& shaderInfo,
     }
 }
 
+#if 0
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kDstReadSampleUniforms[] = {
         { "dstTextureCoords", SkSLType::kFloat4 },
@@ -640,6 +673,7 @@ std::string GenerateDstReadFetchPreamble(const ShaderInfo& shaderInfo, const Sha
             "}",
             helperFnName.c_str());
 }
+#endif
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kFourStopGradient = 4;
@@ -1750,6 +1784,18 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kNoChildren
     };
 
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRoot] = {
+            "Root",
+            { },                // no uniforms
+            SnippetRequirementFlags::kNone,
+            { },                // no samplers
+            "root",  // no static sksl
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+
+#if 0
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDstReadSample] = {
             "DstReadSample",
             SkSpan(kDstReadSampleUniforms),
@@ -1770,6 +1816,8 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDstReadFetchPreamble,
             kNoChildren
     };
+#endif
+
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
             "Compose",
             { },     // no uniforms

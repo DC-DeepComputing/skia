@@ -277,6 +277,10 @@ struct BlendShaderBlock {
     static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
 };
 
+struct RootBlock {
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
+};
+
 struct BlendModeBlenderBlock {
     static void AddBlock(const KeyContext&,
                          PaintParamsKeyBuilder*,

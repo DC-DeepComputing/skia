@@ -62,9 +62,12 @@ enum class BuiltInCodeSnippetID : int32_t {
     // Emits special variable holding the primitiveColor emitted by a RenderStep
     kPrimitiveColor,
 
+    // Special block that only ever appears at the root of the shaderkey
+    kRoot,
+
     // Dest Read code snippets
-    kDstReadSample,
-    kDstReadFetch,
+//    kDstReadSample,
+//    kDstReadFetch,
 
     kCompose,
 
