@@ -22,6 +22,30 @@
       },
       "revId": "2085364284849f8ea313678dfeedd3c615259d41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd3efcc4_cca4d517",
+        "filename": "src/gpu/ganesh/effects/GrModulateAtlasCoverageEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-13T18:36:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "691cc185_1327965e",
+      "range": {
+        "startLine": 91,
+        "startChar": 12,
+        "endLine": 91,
+        "endChar": 17
+      },
+      "revId": "2085364284849f8ea313678dfeedd3c615259d41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
