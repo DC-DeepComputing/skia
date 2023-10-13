@@ -722,6 +722,9 @@ public:
         }
         if (!fInText) {
             fContent->writeText("<");
+            if (fPDFFont->multiByteGlyphs()) {
+                fContent->writeText("FEFF");
+            }
             fInText = true;
         }
         if (fPDFFont->multiByteGlyphs()) {
