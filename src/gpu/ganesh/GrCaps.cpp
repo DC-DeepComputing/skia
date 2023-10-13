@@ -50,6 +50,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fSupportsAHardwareBufferImages = false;
     fFenceSyncSupport = false;
     fSemaphoreSupport = false;
+    fSignalSemaphoreSupport = false;
     fCrossContextTextureSupport = false;
     fHalfFloatVertexAttributeSupport = false;
     fDynamicStateArrayGeometryProcessorTextureSupport = false;
@@ -235,6 +236,7 @@ void GrCaps::dumpJSON(SkJSONWriter* writer) const {
     writer->appendBool("Supports importing AHardwareBuffers", fSupportsAHardwareBufferImages);
     writer->appendBool("Fence sync support", fFenceSyncSupport);
     writer->appendBool("Semaphore support", fSemaphoreSupport);
+    writer->appendBool("Signal Semaphore support", fSignalSemaphoreSupport);
     writer->appendBool("Cross context texture support", fCrossContextTextureSupport);
     writer->appendBool("Half float vertex attribute support", fHalfFloatVertexAttributeSupport);
     writer->appendBool("Specify GeometryProcessor textures as a dynamic state array",
