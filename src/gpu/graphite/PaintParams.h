@@ -38,11 +38,11 @@ public:
                 sk_sp<SkBlender> primitiveBlender,
                 DstReadRequirement dstReadReq,
                 bool skipColorXform,
-                bool dither);
+                bool dither, bool );
     explicit PaintParams(const SkPaint&,
                          sk_sp<SkBlender> primitiveBlender,
                          DstReadRequirement dstReadReq,
-                         bool skipColorXform);
+                         bool skipColorXform, bool);
 
     PaintParams(const PaintParams&);
     ~PaintParams();

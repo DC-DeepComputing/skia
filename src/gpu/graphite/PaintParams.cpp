@@ -24,6 +24,11 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/shaders/SkShaderBase.h"
 
+#include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/Precompile.h"
+#include "src/gpu/graphite/Renderer.h"
+
+
 namespace skgpu::graphite {
 
 namespace {
@@ -57,7 +62,8 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkBlender> primitiveBlender,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform,
-                         bool dither)
+                         bool dither,
+                         bool foo)
         : fColor(color)
         , fFinalBlender(std::move(finalBlender))
         , fShader(std::move(shader))
@@ -70,7 +76,8 @@ PaintParams::PaintParams(const SkColor4f& color,
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
                          DstReadRequirement dstReadReq,
-                         bool skipColorXform)
+                         bool skipColorXform,
+                         bool foo)
         : fColor(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
@@ -322,9 +329,45 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
     }
 }
 
+
+DstReadRequirement get_dst_read_req2(const Caps* caps,
+                                    Coverage rendererCoverage,
+                                    PrecompileBlender* blender) {
+    if (blender) {
+        return GetDstReadRequirement(caps, blender->asBlendMode(), rendererCoverage);
+    }
+    return GetDstReadRequirement(caps, SkBlendMode::kSrcOver, rendererCoverage);
+}
+
+DstReadRequirement foo(const Caps* caps, Coverage rendererCoverage, const SkPaint& paint) {
+    DstReadRequirement dstReadReq = DstReadRequirement::kNone;
+    const SkBlenderBase* blender = as_BB(paint.getBlender());
+    const std::optional<SkBlendMode> blendMode = blender ? blender->asBlendMode()
+                                                         : SkBlendMode::kSrcOver;
+    dstReadReq = GetDstReadRequirement(caps, blendMode, rendererCoverage);
+    return dstReadReq;
+}
+
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
+
+    std::optional<SkBlendMode> finalBlendMode = fFinalBlender ? as_BB(fFinalBlender)->asBlendMode()
+                                                              : SkBlendMode::kSrcOver;
+
+    // Currently, any blending above kLastCoeffMode triggers dstReads
+    SkASSERT(!finalBlendMode || *finalBlendMode <= SkBlendMode::kLastCoeffMode);
+
+    if (fDstReadReq == DstReadRequirement::kNone &&
+        finalBlendMode.has_value() &&
+        *finalBlendMode <= SkBlendMode::kLastCoeffMode) {
+        // hardware blending!
+        AddKnownModeBlend(keyContext, builder, gatherer, *finalBlendMode);
+    }
+
+
+
+#if 0
     this->handleDstRead(keyContext, builder, gatherer);
 
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
@@ -339,6 +382,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     builder->addBlock(fixedFuncBlendModeID);
+#endif
 }
 
 } // namespace skgpu::graphite
