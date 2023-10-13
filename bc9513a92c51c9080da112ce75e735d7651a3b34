@@ -22,6 +22,30 @@
       },
       "revId": "bc9513a92c51c9080da112ce75e735d7651a3b34",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bdcba90_d792daf7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1143,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-13T19:00:22Z",
+      "side": 1,
+      "message": "`rsqrt` returns 1/sqrt. `rcp` is reciprocal, so `rcp(sqrt(x))` also returns the reciprocal of the square root.",
+      "parentUuid": "5f1eb433_5ed4379d",
+      "range": {
+        "startLine": 1143,
+        "startChar": 44,
+        "endLine": 1143,
+        "endChar": 49
+      },
+      "revId": "bc9513a92c51c9080da112ce75e735d7651a3b34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
