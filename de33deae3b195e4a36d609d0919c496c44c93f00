@@ -39,6 +39,30 @@
       },
       "revId": "de33deae3b195e4a36d609d0919c496c44c93f00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6517c5d9_eab56673",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-13T15:12:28Z",
+      "side": 1,
+      "message": "Revised the comment.",
+      "parentUuid": "59992622_e9443381",
+      "range": {
+        "startLine": 271,
+        "startChar": 66,
+        "endLine": 271,
+        "endChar": 95
+      },
+      "revId": "de33deae3b195e4a36d609d0919c496c44c93f00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
