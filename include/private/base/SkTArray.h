@@ -596,16 +596,21 @@ private:
     }
 
     void checkRealloc(int delta, double growthFactor) {
-        // This constant needs to be declared in the function where it is used to work around
-        // MSVC's persnickety nature about template definitions.
         SkASSERT(delta >= 0);
         SkASSERT(fSize >= 0);
         SkASSERT(fCapacity >= 0);
 
-        // Return if there are enough remaining allocated elements to satisfy the request.
-        if (this->capacity() - fSize >= delta) {
-            return;
+        // Check if there are enough remaining allocated elements to satisfy the request.
+        if (this->capacity() - fSize < delta) {
+            // Looks like we need to reallocate.
+            this->reallocComplete(this->reallocPrepare(delta, growthFactor));
         }
+    }
+
+    SkSpan<std::byte> reallocPrepare(int delta, double growthFactor) {
+        SkASSERT(delta >= 0);
+        SkASSERT(fSize >= 0);
+        SkASSERT(fCapacity >= 0);
 
         // Don't overflow fSize or size_t later in the memory allocation. Overflowing memory
         // allocation really only applies to fSizes on 32-bit machines; on 64-bit machines this
@@ -616,14 +621,15 @@ private:
         }
         const int newCount = fSize + delta;
 
-        SkSpan<std::byte> allocation = Allocate(newCount, growthFactor);
+        return Allocate(newCount, growthFactor);
+    }
 
+    void reallocComplete(SkSpan<std::byte> allocation) {
         this->move(TCast(allocation.data()));
         if (fOwnMemory) {
             sk_free(fData);
         }
         this->setDataFromBytes(allocation);
-        SkASSERT(this->capacity() >= newCount);
         SkASSERT(fData != nullptr);
     }
 
