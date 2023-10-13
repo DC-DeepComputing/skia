@@ -118,6 +118,30 @@
       },
       "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef72db81_10c2cd14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-13T18:37:28Z",
+      "side": 1,
+      "message": "this new cap also affects waits. What about simply `fBackendSemaphoreSupport`",
+      "parentUuid": "c3e38bc3_dbf9b2ba",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
