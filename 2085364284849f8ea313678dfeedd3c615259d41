@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691cc185_1327965e",
+        "filename": "src/gpu/ganesh/effects/GrModulateAtlasCoverageEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-13T18:33:57Z",
+      "side": 1,
+      "message": "`const auto\u0026` (consider making it a _const_ reference)\n\nauto will inherit the const for free but the C++ style guide encourages spelling it out.",
+      "range": {
+        "startLine": 91,
+        "startChar": 12,
+        "endLine": 91,
+        "endChar": 17
+      },
+      "revId": "2085364284849f8ea313678dfeedd3c615259d41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
