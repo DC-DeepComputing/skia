@@ -94,6 +94,30 @@
       },
       "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3e38bc3_dbf9b2ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-13T18:31:45Z",
+      "side": 1,
+      "message": "Added new GrCap entry for this instead. WDYT?",
+      "parentUuid": "25be2efb_17c48b9b",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
