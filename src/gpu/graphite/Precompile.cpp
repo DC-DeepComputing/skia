@@ -113,7 +113,8 @@ public:
                 const std::pair<sk_sp<PrecompileColorFilter>, int>& colorFilter,
                 bool hasPrimitiveBlender,
                 DstReadRequirement dstReadReq,
-                bool dither)
+                bool dither,
+                bool foo)
         : fOpaquePaintColor(opaquePaintColor)
         , fFinalBlender(finalBlender)
         , fShader(shader)
@@ -269,6 +270,7 @@ void PaintOption::handleDithering(const KeyContext& keyContext,
 void PaintOption::handleDstRead(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer) const {
+#if 0
     if (fDstReadReq != DstReadRequirement::kNone) {
         Blend(keyContext, builder, gatherer,
                 /* addBlendToKey= */ [&] () -> void {
@@ -288,6 +290,9 @@ void PaintOption::handleDstRead(const KeyContext& keyContext,
     } else {
         this->handleDithering(keyContext, builder, gatherer);
     }
+#endif
+
+    this->handleDithering(keyContext, builder, gatherer);
 }
 
 void PaintOption::toKey(const KeyContext& keyContext,
@@ -337,7 +342,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                                                     desiredColorFilterCombination),
                        addPrimitiveBlender,
                        dstReadReq,
-                       fDither);
+                       fDither, true /*$$*/);
 
     option.toKey(keyContext, keyBuilder, gatherer);
 

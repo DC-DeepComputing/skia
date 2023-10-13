@@ -24,6 +24,11 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/shaders/SkShaderBase.h"
 
+#include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/Precompile.h"
+#include "src/gpu/graphite/Renderer.h"
+
+
 namespace skgpu::graphite {
 
 namespace {
@@ -57,7 +62,8 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkBlender> primitiveBlender,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform,
-                         bool dither)
+                         bool dither,
+                         bool foo)
         : fColor(color)
         , fFinalBlender(std::move(finalBlender))
         , fShader(std::move(shader))
@@ -70,7 +76,8 @@ PaintParams::PaintParams(const SkColor4f& color,
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
                          DstReadRequirement dstReadReq,
-                         bool skipColorXform)
+                         bool skipColorXform,
+                         bool foo)
         : fColor(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
@@ -160,6 +167,7 @@ void AddModeBlend(const KeyContext& keyContext,
     }
 }
 
+#if 0
 void AddDstReadBlock(const KeyContext& keyContext,
                      PaintParamsKeyBuilder* builder,
                      PipelineDataGatherer* gatherer,
@@ -179,6 +187,7 @@ void AddDstReadBlock(const KeyContext& keyContext,
             break;
     }
 }
+#endif
 
 void AddDitherBlock(const KeyContext& keyContext,
                     PaintParamsKeyBuilder* builder,
@@ -299,6 +308,7 @@ void PaintParams::handleDithering(const KeyContext& keyContext,
     }
 }
 
+#if 0
 void PaintParams::handleDstRead(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer) const {
@@ -321,10 +331,55 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
         this->handleDithering(keyContext, builder, gatherer);
     }
 }
+#endif
+
+#if 0
+DstReadRequirement get_dst_read_req2(const Caps* caps,
+                                    Coverage rendererCoverage,
+                                    PrecompileBlender* blender) {
+    if (blender) {
+        return GetDstReadRequirement(caps, blender->asBlendMode(), rendererCoverage);
+    }
+    return GetDstReadRequirement(caps, SkBlendMode::kSrcOver, rendererCoverage);
+}
+
+DstReadRequirement foo(const Caps* caps, Coverage rendererCoverage, const SkPaint& paint) {
+    DstReadRequirement dstReadReq = DstReadRequirement::kNone;
+    const SkBlenderBase* blender = as_BB(paint.getBlender());
+    const std::optional<SkBlendMode> blendMode = blender ? blender->asBlendMode()
+                                                         : SkBlendMode::kSrcOver;
+    dstReadReq = GetDstReadRequirement(caps, blendMode, rendererCoverage);
+    return dstReadReq;
+}
+#endif
 
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
+
+    RootBlock::BeginBlock(keyContext, builder, gatherer);
+
+        // can we remove fDstReadReq as a member variable?
+        if (fDstReadReq == DstReadRequirement::kNone) {
+            std::optional<SkBlendMode> finalBlendMode = fFinalBlender
+                                                            ? as_BB(fFinalBlender)->asBlendMode()
+                                                            : SkBlendMode::kSrcOver;
+
+            // Currently, any blending above kLastCoeffMode triggers dstReads. Some Porter Duff
+            // blend mode can also trigger dstReads if dual source blending isn't supported.
+            SkASSERT(finalBlendMode.has_value() && *finalBlendMode <= SkBlendMode::kLastCoeffMode);
+
+            // hardware blending!
+            AddKnownModeBlend(keyContext, builder, gatherer, *finalBlendMode);
+        } else {
+            AddToKey(keyContext, builder, gatherer, fFinalBlender.get());
+        }
+
+        this->handleDithering(keyContext, builder, gatherer);
+
+    builder->endBlock();  // RootBlock
+
+#if 0
     this->handleDstRead(keyContext, builder, gatherer);
 
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
@@ -339,6 +394,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     builder->addBlock(fixedFuncBlendModeID);
+#endif
 }
 
 } // namespace skgpu::graphite
