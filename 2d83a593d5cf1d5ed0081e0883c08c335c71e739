@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddc60c6b_f4dd266c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-13T18:31:30Z",
+      "side": 1,
+      "message": "I had forgotten to add Mac-Clang-x86_64-Debug so I added one for both Graphite_Dawn_Vello and Graphite_Metal_Vello.",
+      "revId": "2d83a593d5cf1d5ed0081e0883c08c335c71e739",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
