@@ -12,6 +12,11 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "chromium_hdrs",
+    srcs = ["SkMultiPictureDocument.h"],
+)
+
+skia_filegroup(
     name = "public_hdrs",
     srcs = select({
         "//src/pdf:enable_pdf_backend_true": ["SkPDFDocument.h"],
