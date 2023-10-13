@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d70af81f_f7214c1f",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-13T15:59:59Z",
+      "side": 1,
+      "message": "For this guess to make sense, need to add `offset`.",
+      "revId": "333344842273dcdd067ef60ad6b91c0153f2340c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac1409b6_43060f5c",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-13T15:59:59Z",
+      "side": 1,
+      "message": "This isn\u0027t a great guess, particularly in the case of clipping. The mark\u0027s location should be on this page but the point on the page unknown until the first glyph is actually drawn. In fact, it may make sense to delay actually creating a mark until a glyph is drawn (until then there is no \"mark\" and all the glyphs may be clipped out).",
+      "revId": "333344842273dcdd067ef60ad6b91c0153f2340c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "855bf7f3_30fcd0ca",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-13T15:59:59Z",
+      "side": 1,
+      "message": "Need the real point here, would need to run this through the graphics state object for this draw (the matrix on the `ScopedContentEntry` in effect when this is called).",
+      "range": {
+        "startLine": 1007,
+        "startChar": 67,
+        "endLine": 1007,
+        "endChar": 72
+      },
+      "revId": "333344842273dcdd067ef60ad6b91c0153f2340c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
