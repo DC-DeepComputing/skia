@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bc36997_c52fe520",
+        "filename": "include/docs/SkMultiPictureDocument.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-13T15:14:09Z",
+      "side": 1,
+      "message": "It\u0027s still used, unfortunately. For Android to use it properly though I looks like it directly includes `tools/SkSharingProc.h`.",
+      "parentUuid": "4edb5c8d_69373699",
+      "range": {
+        "startLine": 35,
+        "startChar": 30,
+        "endLine": 35,
+        "endChar": 87
+      },
+      "revId": "0506c5c5891716e9bf7bac12a9fca6bd41fec65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e00adf7b_ce0c5fb5",
         "filename": "include/docs/SkMultiPictureDocument.h",
         "patchSetId": 4
