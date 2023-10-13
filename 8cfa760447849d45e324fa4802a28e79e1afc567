@@ -46,6 +46,30 @@
       },
       "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "028e71a7_624b4fcc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-13T17:56:18Z",
+      "side": 1,
+      "message": "PTAL - I disabled this in GrGLCaps. AFAICT, fSemaphoreSupport only enabled or disabled if GrBackendSemaphores could be used. Please verify this.",
+      "parentUuid": "3d70f6bb_ae3b9902",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
