@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f082e535_f03868ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-10-13T15:03:56Z",
+      "side": 1,
+      "message": "Oh, I think I need another +1 after touching CHANGELOG.",
+      "revId": "242190671caca6691670147b5fd292bf8811f04d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
