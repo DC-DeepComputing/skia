@@ -752,20 +752,23 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fMultiDrawType = MultiDrawType::kNone;
     }
 
+    // We do not support GrBackendSemaphore for GL backends because the clients cannot really make
+    // GrGLSync objects ahead of time without talking to the GPU.
+    fSemaphoreSupport = false;
     // We prefer GL sync objects but also support NV_fence_sync. The former can be
     // used to implements GrFence and GrSemaphore. The latter only implements GrFence.
     // TODO: support CHROMIUM_sync_point and maybe KHR_fence_sync
     if (GR_IS_GR_WEBGL(standard)) {
         // Only in WebGL 2.0
-        fSemaphoreSupport = fFenceSyncSupport = version >= GR_GL_VER(2, 0);
+        fFenceSyncSupport = version >= GR_GL_VER(2, 0);
         fFenceType = FenceType::kSyncObject;
     } else if (GR_IS_GR_GL(standard) &&
                (version >= GR_GL_VER(3, 2) || ctxInfo.hasExtension("GL_ARB_sync"))) {
-        fSemaphoreSupport = fFenceSyncSupport = true;
+        fFenceSyncSupport = true;
         fFenceType = FenceType::kSyncObject;
     } else if (GR_IS_GR_GL_ES(standard) &&
                (version >= GR_GL_VER(3, 0) || ctxInfo.hasExtension("GL_APPLE_sync"))) {
-        fSemaphoreSupport = fFenceSyncSupport = true;
+        fFenceSyncSupport = true;
         fFenceType = FenceType::kSyncObject;
     } else if (ctxInfo.hasExtension("GL_NV_fence")) {
         // This extension can exist in GL and GL ES. We have it last because we prefer the
@@ -775,7 +778,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     }
 
     // Safely moving textures between contexts requires semaphores.
-    fCrossContextTextureSupport = fSemaphoreSupport;
+    fCrossContextTextureSupport = fFenceSyncSupport;
 
     // Half float vertex attributes requires GL3 or ES3
     // It can also work with OES_VERTEX_HALF_FLOAT, but that requires a different enum.
