@@ -9,8 +9,11 @@
 #define GrGLSemaphore_DEFINED
 
 #include "include/gpu/GrBackendSemaphore.h"
+#include "include/gpu/gl/GrGLTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrSemaphore.h"
+
+#include <memory>
 
 class GrGLGpu;
 
@@ -35,9 +38,7 @@ public:
     void setSync(const GrGLsync& sync) { fSync = sync; }
 
     GrBackendSemaphore backendSemaphore() const override {
-        GrBackendSemaphore backendSemaphore;
-        backendSemaphore.initGL(fSync);
-        return backendSemaphore;
+        SK_ABORT("GrBackendSemaphores are unsupported in GL");
     }
 
 private:
