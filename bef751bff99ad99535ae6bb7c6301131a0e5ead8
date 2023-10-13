@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4808713f_c30d8c6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-10-13T14:44:00Z",
+      "side": 1,
+      "message": "Add updates to CHANGELOG.md as well",
+      "revId": "bef751bff99ad99535ae6bb7c6301131a0e5ead8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fb60898_bff9cc89",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 1068,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-10-13T14:44:00Z",
+      "side": 1,
+      "message": "Note:\nNew APIs surfaced don\u0027t become available to the web player unless we roll them out here: https://skia-review.googlesource.com/c/skia/+/765258\n\nand dep on them here (infra repo): https://skia-review.googlesource.com/c/buildbot/+/763317/7/package.json",
+      "revId": "bef751bff99ad99535ae6bb7c6301131a0e5ead8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
