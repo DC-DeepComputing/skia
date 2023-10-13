@@ -113,7 +113,8 @@ public:
                 const std::pair<sk_sp<PrecompileColorFilter>, int>& colorFilter,
                 bool hasPrimitiveBlender,
                 DstReadRequirement dstReadReq,
-                bool dither)
+                bool dither,
+                bool foo)
         : fOpaquePaintColor(opaquePaintColor)
         , fFinalBlender(finalBlender)
         , fShader(shader)
@@ -337,7 +338,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                                                     desiredColorFilterCombination),
                        addPrimitiveBlender,
                        dstReadReq,
-                       fDither);
+                       fDither, true /*$$*/);
 
     option.toKey(keyContext, keyBuilder, gatherer);
 

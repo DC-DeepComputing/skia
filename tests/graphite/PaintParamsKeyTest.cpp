@@ -736,7 +736,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
                                 PaintParams(paint,
                                             std::move(primitiveBlender),
                                             dstReadReq,
-                                            /* skipColorXform= */ false),
+                                            /* skipColorXform= */ false,
+                                            false /*$$*/),
                                 curDst, fakeDstOffset, ci);
 
                         std::vector<UniquePaintParamsID> precompileIDs;
