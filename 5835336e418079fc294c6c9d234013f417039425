@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "017f397d_72c002a6",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-13T14:11:08Z",
+      "side": 1,
+      "message": "We will need to return a ref here. The ResourceProvider is owned by the Recorder which could go away before the Recording/CommandBuffer complete on a different thread. So the CommandBuffer will need to hold a ref to this buffer.",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 50
+      },
+      "revId": "5835336e418079fc294c6c9d234013f417039425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
