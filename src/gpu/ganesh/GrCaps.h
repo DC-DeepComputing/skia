@@ -401,7 +401,7 @@ public:
     /** Supports using GrFence. */
     bool fenceSyncSupport() const { return fFenceSyncSupport; }
 
-    /** Supports using GrSemaphore. */
+    /** Supports using GrBackendSemaphore as "signal" semaphores. See also GrFlushInfo. */
     bool semaphoreSupport() const { return fSemaphoreSupport; }
 
     bool crossContextTextureSupport() const { return fCrossContextTextureSupport; }
