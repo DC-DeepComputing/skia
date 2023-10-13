@@ -908,7 +908,7 @@ sk_sp<SkSpecialImage> cpu_blur(const skif::Context& ctx,
 }  // namespace
 
 skif::FilterResult SkBlurImageFilter::onFilterImage(const skif::Context& ctx) const {
-    const bool gpuBacked = ctx.backend()->isBlurSupported();
+    const bool gpuBacked = SkToBool(ctx.backend()->getBlurEngine());
 
     skif::Context inputCtx = ctx.withNewDesiredOutput(
             this->kernelBounds(ctx.mapping(), ctx.desiredOutput(), gpuBacked));
