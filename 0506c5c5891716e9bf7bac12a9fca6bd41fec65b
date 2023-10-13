@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3127e8a_072ff67a",
+        "filename": "include/docs/SkMultiPictureDocument.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-13T15:17:17Z",
+      "side": 1,
+      "message": "https://cs.android.com/android/platform/superproject/main/+/main:frameworks/native/libs/renderengine/skia/debug/SkiaCapture.h;l\u003d25;drc\u003d8e0ef682d36f4902482aa0c2797f33a50fce0926\n\nhttps://cs.android.com/android/platform/superproject/main/+/main:frameworks/native/libs/renderengine/skia/debug/SkiaCapture.cpp;l\u003d198;drc\u003d8e0ef682d36f4902482aa0c2797f33a50fce0926\n\nThis is yet another instance of \"how does one serialize images\"?",
+      "parentUuid": "9bc36997_c52fe520",
+      "range": {
+        "startLine": 35,
+        "startChar": 30,
+        "endLine": 35,
+        "endChar": 87
+      },
+      "revId": "0506c5c5891716e9bf7bac12a9fca6bd41fec65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e00adf7b_ce0c5fb5",
         "filename": "include/docs/SkMultiPictureDocument.h",
         "patchSetId": 4
