@@ -711,6 +711,18 @@ $pure float2 $conical_grad_layout(float2 point0Param,
     }
 }
 
+//half4 surfaceColor;
+
+//$pure half4 dst_read_texture_sample(float4 coords, sampler2D dstSampler) {
+//    surfaceColor = sample(dstSampler, (sk_FragCoord.xy - coords.xy) * coords.zw);
+//    return surfaceColor;"
+//}
+
+//$pure half4 dst_read_fb_fetch() {
+//   surfaceColor = sk_LastFragColor;
+//   return surfaceColor;
+//}
+
 $pure half4 sk_linear_grad_4_shader(float2 coords,
                                     float4 colorsParam[4],
                                     float4 offsetsParam,
