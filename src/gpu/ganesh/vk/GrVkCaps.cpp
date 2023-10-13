@@ -61,6 +61,7 @@ GrVkCaps::GrVkCaps(const GrContextOptions& contextOptions,
 
     fSemaphoreSupport = true;   // always available in Vulkan
     fFenceSyncSupport = true;   // always available in Vulkan
+    fSignalSemaphoreSupport = true;
     fCrossContextTextureSupport = true;
     fHalfFloatVertexAttributeSupport = true;
 
