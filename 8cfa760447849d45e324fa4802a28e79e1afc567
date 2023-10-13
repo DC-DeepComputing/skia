@@ -70,6 +70,30 @@
       },
       "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25be2efb_17c48b9b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-13T18:17:19Z",
+      "side": 1,
+      "message": "We also use semaphores for CrosContextImages and RegenerateMipmaps. Thus both look at the fSemaphoreSupport cap, but they only work with GrSemaphore and not GrBackendSemaphore. So I think we need to keep setting the cap.",
+      "parentUuid": "028e71a7_624b4fcc",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "8cfa760447849d45e324fa4802a28e79e1afc567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

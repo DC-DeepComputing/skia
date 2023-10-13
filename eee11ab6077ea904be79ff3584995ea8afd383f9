@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a948edf7_7277c761",
+        "filename": "src/gpu/ganesh/gl/GrGLSemaphore.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-13T18:17:19Z",
+      "side": 1,
+      "message": "Can we remove this factory?",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 33,
+        "endChar": 5
+      },
+      "revId": "eee11ab6077ea904be79ff3584995ea8afd383f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
