@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "988dd924f22a3e8b08503a12848b5edac97cb77f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e3e647_1c9d6f4e",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-14T20:31:17Z",
+      "side": 1,
+      "message": "you\u0027ll need sk_sp\u003cSkMipmap\u003e() here. Or you could do mipmaps.reset(...)",
+      "range": {
+        "startLine": 342,
+        "startChar": 39,
+        "endLine": 342,
+        "endChar": 45
+      },
+      "revId": "988dd924f22a3e8b08503a12848b5edac97cb77f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
