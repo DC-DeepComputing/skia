@@ -339,7 +339,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
         texels[0].fRowBytes = bmpToUpload.rowBytes();
     } else {
         mipmaps = SkToBool(mipmapsIn) ? mipmapsIn
-                                      : sk_ref_sp(SkMipmap::Build(bmpToUpload.pixmap(), nullptr));
+                                      : sk_sp(SkMipmap::Build(bmpToUpload.pixmap(), nullptr));
         if (!mipmaps) {
             return {};
         }
