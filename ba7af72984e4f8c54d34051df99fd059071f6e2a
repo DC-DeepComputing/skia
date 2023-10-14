@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "451f8600_dd32d983",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21494
+      },
+      "writtenOn": "2023-10-14T03:55:29Z",
+      "side": 1,
+      "message": "While I am for this direction / purpose of change, I think this specific way going about it is somewhat lacking. Using environment variable this way effectively implements a secret handshake. I would prefer that it is done via adding a command-line switch, with suitable default one way or the other, and that the command-line switch itself is self-documented if you supplied the wrong arguments, or suggested usage being shown when invoked with \"--help\", etc. I just think using environment variables this way is poor design.",
+      "revId": "ba7af72984e4f8c54d34051df99fd059071f6e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
