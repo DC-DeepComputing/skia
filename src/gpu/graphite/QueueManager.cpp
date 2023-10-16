@@ -82,6 +82,12 @@ bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* contex
         }
     }
 
+    // If the recording doesn't have any uploads we can note its ID now in case of failure
+    if (!info.fRecording->priv().hasUploadTasks()) {
+        fLastAddedRecordingIDs.set(info.fRecording->priv().recorderID(),
+                                   info.fRecording->priv().uniqueID());
+    }
+
     if (info.fTargetSurface &&
         !static_cast<const SkSurface_Base*>(info.fTargetSurface)->isGraphiteBacked()) {
         if (callback) {

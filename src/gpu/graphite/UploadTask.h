@@ -147,6 +147,8 @@ public:
 
     bool addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    bool isUploadTask() override { return true; }
+
 private:
     UploadTask(std::vector<UploadInstance>);
     UploadTask(UploadInstance);
