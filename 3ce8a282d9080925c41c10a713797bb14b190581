@@ -40,6 +40,30 @@
       },
       "revId": "3ce8a282d9080925c41c10a713797bb14b190581",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb99522e_fddbebbb",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-16T22:14:16Z",
+      "side": 1,
+      "message": "It\u0027s a modernization rule. Ideally we should almost never need to use vanilla new and delete when we can use unique_ptr equivalents directly. https://clang.llvm.org/extra/clang-tidy/checks/modernize/make-unique.html",
+      "parentUuid": "3ff5ae52_2af20a3d",
+      "range": {
+        "startLine": 328,
+        "startChar": 37,
+        "endLine": 328,
+        "endChar": 48
+      },
+      "revId": "3ce8a282d9080925c41c10a713797bb14b190581",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
