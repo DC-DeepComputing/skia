@@ -32,6 +32,15 @@ public:
 
     bool hasTasks() const { return !fTasks.empty(); }
 
+    bool hasUploadTasks() const {
+        for (sk_sp<Task> t : fTasks) {
+            if (t->isUploadTask()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 protected:
 private:
     std::vector<sk_sp<Task>> fTasks;

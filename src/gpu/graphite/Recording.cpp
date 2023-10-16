@@ -173,6 +173,10 @@ void RecordingPriv::addTask(sk_sp<Task> task) {
     fRecording->fGraph->prepend(std::move(task));
 }
 
+bool RecordingPriv::hasUploadTasks() const {
+    return fRecording->fGraph->hasUploadTasks();
+}
+
 #if defined(GRAPHITE_TEST_UTILS)
 bool RecordingPriv::isTargetProxyInstantiated() const {
     return fRecording->fTargetProxyData->lazyProxy()->isInstantiated();
