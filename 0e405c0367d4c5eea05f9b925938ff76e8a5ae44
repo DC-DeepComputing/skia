@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c895148e_12a1d941",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-16T18:16:58Z",
+      "side": 1,
+      "message": "An alternative might be to add a bool to the Recording that\u0027s set when it\u0027s snapped, so we don\u0027t have to iterate through all the Tasks every time. I don\u0027t have a good sense of how many are in an average Recording though.",
+      "revId": "0e405c0367d4c5eea05f9b925938ff76e8a5ae44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
