@@ -167,6 +167,7 @@ def compile_fn(api, checkout_root, out_dir):
     env['PATH'] = '%s:%%(PATH)s' % (clang_linux + '/bin')
     # Increase ClangTidy code coverage by enabling features.
     args.update({
+      'skia_enable_dawn':              'true',
       'skia_enable_fontmgr_empty':     'true',
       'skia_enable_graphite':          'true',
       'skia_enable_pdf':               'true',
