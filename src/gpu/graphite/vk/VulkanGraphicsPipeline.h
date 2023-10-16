@@ -40,15 +40,15 @@ public:
             {DescriptorType::kInlineUniform,
              // For inline uniform descriptors, the descriptor count field is actually the number of
              // bytes to allocate for descriptors given this type.
-             /*count=*/sizeof(float) * 4,
+             /*descCount=*/sizeof(float) * 4,
              VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
     inline static const DescriptorData kRenderStepUniformDescriptor =
             {DescriptorType::kUniformBuffer,
-             /*count=*/1,
+             /*descCount=*/1,
              VulkanGraphicsPipeline::kRenderStepUniformBufferIndex};
     inline static const DescriptorData kPaintUniformDescriptor      =
             {DescriptorType::kUniformBuffer,
-             /*count=*/1,
+             /*descCount=*/1,
              VulkanGraphicsPipeline::kPaintUniformBufferIndex};
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
