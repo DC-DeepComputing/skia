@@ -22,6 +22,30 @@
       },
       "revId": "6bd883778bb2ef6be9754d4adb300cc0b50950bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0791ddc0_bd753214",
+        "filename": "tools/testrunners/benchmark/BazelBenchmarkTestRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-16T21:37:51Z",
+      "side": 1,
+      "message": "\u003eWhich Bazel targets are those?\n\nRight now, none. This design with two flags gives us the flexibility to set some keys in the BUILD file, and to let the task driver set some other keys.\n\nAs an alternative we could decide that we don\u0027t set any keys at all in BUILD files, and we could delegate that responsibility to `BazelBenchmarkTestRunner.cpp` if/when necessary. Under this alternative, only one flag would remain (named `--key`), and it would be for exclusive use by the task driver.\n\nIf you like this alternative, I\u0027ll revert the changes in this file. The other changes in this CL would remain because we still need to pipe through the `--key` flag set by the task driver to the C++ binary running on the device under test.\n\nNote that the piping is also necessary if one wants to run an Android test locally via `bazel test` with additional arguments specified via the `--test_arg` Bazel flag.\n\nWDYT?",
+      "parentUuid": "a792a489_43f3d3cf",
+      "range": {
+        "startLine": 57,
+        "startChar": 76,
+        "endLine": 57,
+        "endChar": 90
+      },
+      "revId": "6bd883778bb2ef6be9754d4adb300cc0b50950bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
