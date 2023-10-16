@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18f815d2_a61729a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-16T20:54:13Z",
+      "side": 1,
+      "message": "Note that turning off the default SkFontMgr makes SkTypeface::MakeDefault, SkTypeface::MakeFromName, SkTypeface::MakeFromFile, SkTypeface:: MakeFromStream, SkTypeface::MakeFromData all useless. Not sure if you want to (or will need to) put all that behind ifdefs at the same time.",
+      "revId": "6c20eebb2a50389c8a7f8295c4433ebd7fd239b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
