@@ -22,6 +22,30 @@
       },
       "revId": "2f582a1bbfe0efc014f8928d1949ef9be62e146d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d73ae0b_e000c6dc",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-16T15:21:22Z",
+      "side": 1,
+      "message": "It is just a template expansion, but it\u0027s possible that the template expands to the exact same code and the linker could dedupe it. Or it could shake things up from an inlining perspective. Let\u0027s see what happens.",
+      "parentUuid": "c8a312fd_030ddd01",
+      "range": {
+        "startLine": 206,
+        "startChar": 25,
+        "endLine": 206,
+        "endChar": 40
+      },
+      "revId": "2f582a1bbfe0efc014f8928d1949ef9be62e146d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
