@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1992324a_af836ced",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-16T19:51:43Z",
+      "side": 1,
+      "message": "I\u0027m fine with most of this, but one must read https://quuxplusone.github.io/blog/2018/12/15/autorefref-always-works/ and the related links on that page.",
+      "revId": "5a1e807b1d5a05af02acc80e71ff26b3e27c84d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78b261e6_f189c290",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-16T19:51:43Z",
+      "side": 1,
+      "message": "I can see why this is wanted, and is probably a good replacement for both the existing flags here. As such, this should be named something like `SK_FREETYPE_MININUM_RUNTIME_VERSION_IS_BUILD_VERSION`.",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 47
+      },
+      "revId": "5a1e807b1d5a05af02acc80e71ff26b3e27c84d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
