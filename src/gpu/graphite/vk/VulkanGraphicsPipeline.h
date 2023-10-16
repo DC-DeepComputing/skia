@@ -38,15 +38,15 @@ public:
 
     inline static const DescriptorData kIntrinsicUniformBufferDescriptor = {
             DescriptorType::kUniformBuffer,
-            /*count=*/1,
+            /*descCount=*/1,
             VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
     inline static const DescriptorData kRenderStepUniformDescriptor = {
             DescriptorType::kUniformBuffer,
-            /*count=*/1,
+            /*descCount=*/1,
             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex};
     inline static const DescriptorData kPaintUniformDescriptor = {
             DescriptorType::kUniformBuffer,
-            /*count=*/1,
+            /*descCount=*/1,
             VulkanGraphicsPipeline::kPaintUniformBufferIndex};
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
