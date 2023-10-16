@@ -189,8 +189,16 @@ public:
      * only remains valid until the next call that adds or removes elements.
      */
     T& push_back() {
-        void* newT = this->push_back_raw(1);
-        return *new (newT) T;
+        T* newT;
+        if (this->capacity() > fSize) SK_LIKELY {
+            // Construct the element in place.
+            newT = new (fData + fSize) T;
+        } else {
+            newT = this->growAndPushDefault(1);
+        }
+
+        fSize += 1;
+        return *newT;
     }
 
     /**
@@ -617,6 +625,17 @@ private:
         void* ptr = fData + fSize;
         fSize += n;
         return ptr;
+    }
+
+    SK_ALWAYS_INLINE T* growAndPushDefault(int n) {
+        SkSpan<std::byte> buffer = this->preallocateNewData(n, kGrowing);
+        T* newT = TCast(buffer.data()) + fSize;
+        for (int index = 0; index < n; ++index) {
+            new (newT + index) T;
+        }
+        this->installDataAndUpdateCapacity(buffer);
+
+        return newT;
     }
 
     template <typename U>
