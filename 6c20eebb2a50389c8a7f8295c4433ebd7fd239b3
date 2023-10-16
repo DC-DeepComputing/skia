@@ -34,6 +34,23 @@
       "parentUuid": "18f815d2_a61729a3",
       "revId": "6c20eebb2a50389c8a7f8295c4433ebd7fd239b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d09b6be_a64e3565",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-16T20:57:10Z",
+      "side": 1,
+      "message": "Also, it will end up changing the behavior of SkFont and it\u0027s handling of nullptr SkTypeface. See https://skia-review.googlesource.com/c/skia/+/225717 for a past attempt.",
+      "revId": "6c20eebb2a50389c8a7f8295c4433ebd7fd239b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
