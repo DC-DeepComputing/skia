@@ -12,8 +12,8 @@
 namespace bentleyottmann {
 
 struct Segment {
-    const Point p0;
-    const Point p1;
+    Point p0;
+    Point p1;
 
     // Y is larger going down the y-axis.
     // Get the higher point. It will be left most for horizontal segment.
@@ -23,6 +23,15 @@ struct Segment {
     Point lower() const;
 
     std::tuple<int32_t, int32_t, int32_t, int32_t> bounds() const;
+};
+
+bool operator==(const Segment& s0, const Segment& s1);
+bool operator<(const Segment& s0, const Segment& s1);
+
+struct Crossing {
+    Segment s0;
+    Segment s1;
+    Point crossing;
 };
 
 bool no_intersection_by_bounding_box(const Segment& s0, const Segment& s1);
