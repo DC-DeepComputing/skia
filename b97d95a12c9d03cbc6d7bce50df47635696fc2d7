@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96b7ffad_c9f9c5ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-16T22:21:52Z",
+      "side": 1,
+      "message": "Sorry, I invalidated the +1 with rebase shenanigans",
+      "revId": "b97d95a12c9d03cbc6d7bce50df47635696fc2d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
