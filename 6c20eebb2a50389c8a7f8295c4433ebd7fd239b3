@@ -16,6 +16,24 @@
       "message": "Note that turning off the default SkFontMgr makes SkTypeface::MakeDefault, SkTypeface::MakeFromName, SkTypeface::MakeFromFile, SkTypeface:: MakeFromStream, SkTypeface::MakeFromData all useless. Not sure if you want to (or will need to) put all that behind ifdefs at the same time.",
       "revId": "6c20eebb2a50389c8a7f8295c4433ebd7fd239b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8692054a_656bcb0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-16T20:56:21Z",
+      "side": 1,
+      "message": "I was planning to put the dependent Skia APIs behind #ifdefs as I found them and added \"new\" or shim versions.",
+      "parentUuid": "18f815d2_a61729a3",
+      "revId": "6c20eebb2a50389c8a7f8295c4433ebd7fd239b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
