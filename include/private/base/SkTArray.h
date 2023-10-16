@@ -233,11 +233,22 @@ public:
     }
 
     /**
-     *  Construct a new T at the back of this array.
+     *  Constructs a new T at the back of this array, returning it by reference.
      */
     template<class... Args> T& emplace_back(Args&&... args) {
-        void* newT = this->push_back_raw(1);
-        return *new (newT) T(std::forward<Args>(args)...);
+        T* newT;
+        if (this->capacity() > fSize) SK_LIKELY {
+            // Emplace the new element in directly.
+            newT = new (fData + fSize) T(std::forward<Args>(args)...);
+        } else {
+            // Allocate more space, then emplate the element into our buffer.
+            SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
+            newT = new (TCast(buffer.data()) + fSize) T(std::forward<Args>(args)...);
+            this->installDataAndUpdateCapacity(buffer);
+        }
+
+        fSize += 1;
+        return *newT;
     }
 
     /**
