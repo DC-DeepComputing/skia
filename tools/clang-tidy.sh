@@ -24,7 +24,7 @@ while [ "$1" ]; do
 done
 
 if [ "$src" ] && [[ "$src" != *"third_party"* ]] && [[ "$src" != *"vulkanmemoryallocator"* ]]; then
-    clang-tidy -quiet -header-filter='.*' -warnings-as-errors='*' $src -- $args
+    clang-tidy -header-filter='.*' -warnings-as-errors='*' -system-headers $src -- $args
 fi
 exec clang++ $args
 
