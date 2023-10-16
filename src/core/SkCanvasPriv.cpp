@@ -11,13 +11,17 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkImageFilter.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkAutoMalloc.h"
+#include "src/core/SkDevice.h"
+#include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/core/SkWriter32.h"
@@ -113,11 +117,32 @@ void SkCanvasPriv::GetDstClipAndMatrixCounts(const SkCanvas::ImageSetEntry set[]
 }
 
 // Attempts to convert an image filter to its equivalent color filter, which if possible, modifies
-// the paint to compose the image filter's color filter into the paint's color filter slot.
-// Returns true if the paint has been modified.
-// Requires the paint to have an image filter and the copy-on-write be initialized.
+// the paint to compose the image filter's color filter into the paint's color filter slot. Returns
+// true if the paint has been modified. Requires the paint to have an image filter.
 bool SkCanvasPriv::ImageToColorFilter(SkPaint* paint) {
     SkASSERT(SkToBool(paint) && paint->getImageFilter());
+
+    // An image filter logically runs after any mask filter and the src-over blending against the layer's
+    // transparent black initial content. Moving the image filter (as a color filter) into the
+    // color filter slot causes it to run before the mask filter or blending.
+    //
+    // Src-over blending
+    // against transparent black is a no-op, so skipping the layer and drawing the output of the
+    // color filter-image filter with the original blender is valid.
+    //
+    // If there's also a mask filter on
+    // the paint, it will operate on an alpha-only layer that's then shaded with the paint's effects.
+    // Moving the CF-IF into the paint's color filter slot will mean that the CF-IF operates on the
+    // output of the original CF *before* it's combined with the coverage value. Under normal
+    // circumstances the CF-IF evaluates the color after coverage has been multiplied into the
+    // alpha channel.
+    //
+    // Some color filters may behave the same, e.g. cf(color)*coverage == cf(color*coverage), but
+    // that's hard to detect so we disable the optimization when both image filters and mask filters
+    // are present.
+    if (paint->getMaskFilter()) {
+        return false;
+    }
 
     SkColorFilter* imgCFPtr;
     if (!paint->getImageFilter()->asAColorFilter(&imgCFPtr)) {
@@ -155,7 +180,7 @@ AutoLayerForImageFilter::AutoLayerForImageFilter(SkCanvas* canvas,
                                                  const SkRect* rawBounds)
             : fPaint(paint)
             , fCanvas(canvas)
-            , fTempLayerForImageFilter(false) {
+            , fTempLayersForFilters(0) {
     SkDEBUGCODE(fSaveCount = canvas->getSaveCount();)
 
     if (fPaint.getImageFilter() && !SkCanvasPriv::ImageToColorFilter(&fPaint)) {
@@ -170,22 +195,72 @@ AutoLayerForImageFilter::AutoLayerForImageFilter(SkCanvas* canvas,
         fPaint.setBlendMode(SkBlendMode::kSrcOver);
 
         SkRect storage;
+        const SkRect* imageFilterLayerContentBounds = nullptr;
         if (rawBounds && fPaint.canComputeFastBounds()) {
-            // Make rawBounds include all paint outsets except for those due to image filters.
-            // At this point, fPaint's image filter has been moved to 'restorePaint'.
+            // The content bounds will include all paint outsets except for those due to image
+            // filters. At this point, fPaint's image filter has been moved to 'restorePaint' but it
+            // will account for the bounds of the mask filter.
             SkASSERT(!fPaint.getImageFilter());
-            rawBounds = &fPaint.computeFastBounds(*rawBounds, &storage);
+            imageFilterLayerContentBounds = &fPaint.computeFastBounds(*rawBounds, &storage);
         }
 
         canvas->fSaveCount += 1;
-        (void)canvas->internalSaveLayer(SkCanvas::SaveLayerRec(rawBounds, &restorePaint),
+        (void)canvas->internalSaveLayer(SkCanvas::SaveLayerRec(imageFilterLayerContentBounds,
+                                                               &restorePaint),
                                         SkCanvas::kFullLayer_SaveLayerStrategy);
-        fTempLayerForImageFilter = true;
+        fTempLayersForFilters += 1;
+    }
+
+    if (fPaint.getMaskFilter() &&
+        SkCanvasPriv::TopDevice(canvas)->useDrawCoverageMaskForMaskFilters()) {
+
+        sk_sp<SkImageFilter> maskFilterAsImageFilter =
+                as_MFB(fPaint.getMaskFilter())->asImageFilter(canvas->getTotalMatrix());
+        if (!maskFilterAsImageFilter) {
+            // This is a legacy mask filter that can be handled by raster and Ganesh directly, but
+            // will be ignored by Graphite. Return now, leaving the paint with the mask filter
+            // so that the underlying SkDevice can handle it if it will.
+            return;
+        }
+
+        // The draw paint becomes an opaque src-over paint, and the restore paint inherits the
+        // shader, colorfilter, and blend mode (which will be kSrcOver if there was a prior image
+        // filter that is handling the blend with its own layer).
+        SkPaint restorePaint;
+        restorePaint.setColor4f(fPaint.getColor4f());
+        restorePaint.setShader(fPaint.refShader());
+        restorePaint.setColorFilter(fPaint.refColorFilter());
+        restorePaint.setBlender(fPaint.refBlender());
+        restorePaint.setImageFilter(maskFilterAsImageFilter);
+
+        // Remove all shading effects from the "working" paint so that the layer's alpha channel
+        // will correspond to the coverage.
+        fPaint.setColor4f(SkColors::kWhite);
+        fPaint.setShader(nullptr);
+        fPaint.setColorFilter(nullptr);
+        fPaint.setMaskFilter(nullptr);
+        fPaint.setBlendMode(SkBlendMode::kSrcOver);
+
+        SkRect storage;
+        const SkRect* maskFilterLayerContentBounds = nullptr;
+        if (rawBounds && fPaint.canComputeFastBounds()) {
+            // The content bounds will include all paint outsets except for those due to image+mask
+            // filters. At this point, all filters should have been stripped from 'fPaint'.
+            SkASSERT(!fPaint.getImageFilter() && !fPaint.getMaskFilter());
+            maskFilterLayerContentBounds = &fPaint.computeFastBounds(*rawBounds, &storage);
+        }
+
+        canvas->fSaveCount += 1;
+        (void)canvas->internalSaveLayer(SkCanvas::SaveLayerRec(maskFilterLayerContentBounds,
+                                                               &restorePaint),
+                                        SkCanvas::kFullLayer_SaveLayerStrategy,
+                                        /*coverageOnly=*/true);
+        fTempLayersForFilters += 1;
     }
 }
 
 AutoLayerForImageFilter::~AutoLayerForImageFilter() {
-    if (fTempLayerForImageFilter) {
+    for (int i = 0; i < fTempLayersForFilters; ++i) {
         fCanvas->fSaveCount -= 1;
         fCanvas->internalRestore();
     }

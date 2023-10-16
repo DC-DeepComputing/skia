@@ -110,19 +110,45 @@ public:
 constexpr int kMaxPictureOpsToUnrollInsteadOfRef = 1;
 
 /**
- *  We implement ImageFilters for a given draw by creating a layer, then applying the
- *  imagefilter to the pixels of that layer (its backing surface/image), and then
- *  we call restore() to xfer that layer to the main canvas.
+ *  We implement ImageFilters and MaskFilters for a given draw by creating a layer, then applying
+ *  the filter to the pixels of that layer (its backing surface/image), and then we call restore()
+ *  to blend that layer to the main canvas.
  *
- *  1. SaveLayer (with a paint containing the current imagefilter and xfermode)
+ *  If the paint has neither an image filter nor a mask filter, there will be no layer and paint()
+ *  returns the original without modification.
+ *
+ *  If the paint has an image filter but no mask filter, this will:
+ *  1. SaveLayer (with a paint containing the current imagefilter and blender)
  *  2. Generate the src pixels:
- *      Remove the imagefilter and the xfermode from the paint that we (AutoDrawLooper)
+ *      Remove the imagefilter and the blender from the paint that we (AutoLayerForImageFilter)
  *      return (fPaint). We then draw the primitive (using srcover) into a cleared
  *      buffer/surface.
  *  3. Restore the layer created in #1
  *      The imagefilter is passed the buffer/surface from the layer (now filled with the
  *      src pixels of the primitive). It returns a new "filtered" buffer, which we
  *      draw onto the previous layer using the xfermode from the original paint.
+ *
+ * If the paint has a mask filter, but no image filter, this will:
+ * 1. SaveLayer (with a paint containing the current shader, colorfilter, color, and blender) and
+ *      with an alpha-only color type.
+ *      The mask filter is converted to an equivalent image filter for the layer's restore paint.
+ * 2. Generate the src pixels:
+ *      The paint we return will inherit the original style, stroke width, join, cap, and path
+ *      effect but will otherwise be an opaque, solid-color paint to ensure that the rendered
+ *      primitive's coverage is the only source of alpha in the layer's pixels.
+ * 3. Restore the layer created in #1 with a special flag to use Device::drawCoverageMask
+ *      The layer's alpha values are processed by the imagefilter representation of the mask filter
+ *      and then drawn to the main canvas using drawCoverageMask() and the shading-only paint that
+ *      was created in #1.
+ *
+ * NOTE: This works by assuming all sources of color and shading are represented by the SkPaint.
+ * Operations like drawImageRect must convert to an equivalent drawRect call if there's a mask
+ * filter, or otherwise ensure there are no mask filters (e.g. drawAtlas).
+ *
+ * When the original paint has both an image filter and a mask filter, this will create two
+ * internal layers and perform two restores when finished. This actually creates one fewer offscreen
+ * passes compared to directly composing the mask filter's output with an SkImageFilters::Shader
+ * node and passing that into the rest of the image filter.
  */
 class AutoLayerForImageFilter {
 public:
@@ -147,7 +173,7 @@ public:
 private:
     SkPaint         fPaint;
     SkCanvas*       fCanvas;
-    bool            fTempLayerForImageFilter;
+    int             fTempLayersForFilters;
 
     SkDEBUGCODE(int fSaveCount;)
 };
