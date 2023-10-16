@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a6473fd_cfea59a5",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-16T14:48:53Z",
+      "side": 1,
+      "message": "Copying from chat for reference, we discovered that (at least) Android will want this `constexpr` removed. Thanks again! 😊",
+      "revId": "7820546449d711cf71cb9996fc178ea96b9e408a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
