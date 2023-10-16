@@ -199,14 +199,11 @@ public:
      */
     T& push_back(const T& t) {
         T* newT;
-        if (this->capacity() - fSize >= 1) SK_LIKELY {
+        if (this->capacity() > fSize) SK_LIKELY {
             // Copy over the element directly.
             newT = new (fData + fSize) T(t);
         } else {
-            // Allocate more space, then copy-construct the element into our buffer.
-            SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
-            newT = new (TCast(buffer.data()) + fSize) T(t);
-            this->installDataAndUpdateCapacity(buffer);
+            newT = this->growAndPushBack(t);
         }
 
         fSize += 1;
@@ -218,14 +215,11 @@ public:
      */
     T& push_back(T&& t) {
         T* newT;
-        if (this->capacity() - fSize >= 1) SK_LIKELY {
+        if (this->capacity() > fSize) SK_LIKELY {
             // Move over the element directly.
             newT = new (fData + fSize) T(std::move(t));
         } else {
-            // Allocate more space, then move-construct the element into our buffer.
-            SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
-            newT = new (TCast(buffer.data()) + fSize) T(std::move(t));
-            this->installDataAndUpdateCapacity(buffer);
+            newT = this->growAndPushBack(std::move(t));
         }
 
         fSize += 1;
@@ -615,6 +609,15 @@ private:
         void* ptr = fData + fSize;
         fSize += n;
         return ptr;
+    }
+
+    template <typename U>
+    T* growAndPushBack(U&& t) {
+        SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
+        T* newT = new (TCast(buffer.data()) + fSize) T(std::forward<U>(t));
+        this->installDataAndUpdateCapacity(buffer);
+
+        return newT;
     }
 
     void checkRealloc(int delta, double growthFactor) {
