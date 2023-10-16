@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceb860cf_d8221f1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-16T20:08:17Z",
+      "side": 1,
+      "message": "It\u0027s a modernization rule. Ideally we should almost never need to use vanilla new and delete when we can use unique_ptr equivalents directly. https://clang.llvm.org/extra/clang-tidy/checks/modernize/make-unique.html",
+      "tag": "mailMessageId\u003d\u003cCANBPXuAohbvBwhGbu6wfVCt_uBbKa+kmG8dFdL7RPMrP8R2W2g@mail.gmail.com\u003e",
+      "revId": "3ce8a282d9080925c41c10a713797bb14b190581",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ff5ae52_2af20a3d",
