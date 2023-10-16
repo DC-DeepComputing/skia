@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ff5ae52_2af20a3d",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-16T19:59:19Z",
+      "side": 1,
+      "message": "For my own curiosity, why is this better?",
+      "range": {
+        "startLine": 328,
+        "startChar": 37,
+        "endLine": 328,
+        "endChar": 48
+      },
+      "revId": "3ce8a282d9080925c41c10a713797bb14b190581",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
