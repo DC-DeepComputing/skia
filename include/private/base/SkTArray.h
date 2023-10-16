@@ -235,10 +235,7 @@ public:
             // Emplace the new element in directly.
             newT = new (fData + fSize) T(std::forward<Args>(args)...);
         } else {
-            // Allocate more space, then emplate the element into our buffer.
-            SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
-            newT = new (TCast(buffer.data()) + fSize) T(std::forward<Args>(args)...);
-            this->installDataAndUpdateCapacity(buffer);
+            newT = this->growAndEmplaceBack(std::forward<Args>(args)...);
         }
 
         fSize += 1;
@@ -626,6 +623,15 @@ private:
     SK_ALWAYS_INLINE T* growAndPushBack(U&& t) {
         SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
         T* newT = new (TCast(buffer.data()) + fSize) T(std::forward<U>(t));
+        this->installDataAndUpdateCapacity(buffer);
+
+        return newT;
+    }
+
+    template <typename... Args>
+    SK_ALWAYS_INLINE T* growAndEmplaceBack(Args&&... args) {
+        SkSpan<std::byte> buffer = this->preallocateNewData(/*delta=*/1, kGrowing);
+        T* newT = new (TCast(buffer.data()) + fSize) T(std::forward<Args>(args)...);
         this->installDataAndUpdateCapacity(buffer);
 
         return newT;
