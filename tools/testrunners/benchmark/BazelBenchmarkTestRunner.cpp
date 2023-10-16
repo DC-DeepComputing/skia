@@ -28,7 +28,6 @@
 
 #include <cinttypes>
 
-// TODO(lovisolo): Should this be mandatory?
 // TODO(lovisolo): Should we check that this is a valid Git hash?
 static DEFINE_string(
         gitHash,
@@ -49,6 +48,17 @@ static DEFINE_string(key,
                      "",
                      "Space-separated key/value pairs common to all benchmarks. These will be "
                      "included in the results.json output file, which can be ingested by Perf.");
+
+static DEFINE_string(
+        taskDriverKey,
+        "",
+        "Additional space-separated key/value pairs determined by the task driver running this "
+        "binary, if applicable. To provide a key/value pair via this flag is functionally "
+        "equivalent to providing it via --key. This flag exists because some Bazel targets set "
+        "flag --key to a fixed set of key/value pairs, and if a task driver tried to pass "
+        "additional key/value pairs by invoking Bazel with e.g. "
+        "\"--test_args=--key --test_args=foo_key --test_args=foo_value\", it would override the "
+        "original set of key/value pairs instead of augmenting it.");
 
 static DEFINE_string(
         links,
@@ -188,6 +198,7 @@ static void validate_flags(bool isBazelTest) {
     validate_string_flag_single_value("--issue", FLAGS_issue);
     validate_string_flag_single_value("--patchset", FLAGS_patchset);
     validate_string_flag_even("--key", FLAGS_key);
+    validate_string_flag_even("--taskDriverKey", FLAGS_taskDriverKey);
     validate_string_flag_even("--links", FLAGS_links);
 
     if (!isBazelTest) {
@@ -601,16 +612,19 @@ int main(int argc, char** argv) {
         jsonWriter.addChangelistInfo(FLAGS_issue[0], FLAGS_patchset[0]);
     }
 
-    // Keys.
-    std::map<std::string, std::string> keys = {
-            // Add a key that nanobench will never use in order to avoid accidentally polluting an
-            // existing trace.
+    // Key.
+    std::map<std::string, std::string> keyValuePairs = {
+            // Add a key/value pair that nanobench will never use in order to avoid accidentally
+            // polluting an existing trace.
             {"build_system", "bazel"},
     };
     for (int i = 1; i < FLAGS_key.size(); i += 2) {
-        keys[FLAGS_key[i - 1]] = FLAGS_key[i];
+        keyValuePairs[FLAGS_key[i - 1]] = FLAGS_key[i];
     }
-    jsonWriter.addKey(keys);
+    for (int i = 1; i < FLAGS_taskDriverKey.size(); i += 2) {
+        keyValuePairs[FLAGS_taskDriverKey[i - 1]] = FLAGS_taskDriverKey[i];
+    }
+    jsonWriter.addKey(keyValuePairs);
 
     // Links.
     if (FLAGS_links.size()) {
