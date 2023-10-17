@@ -22,6 +22,30 @@
       },
       "revId": "c308502f451b4f39b77ce81fdbb1a42955c63deb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00247c93_daacc910",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-17T19:29:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fdab5f9_b7d509a8",
+      "range": {
+        "startLine": 81,
+        "startChar": 57,
+        "endLine": 81,
+        "endChar": 85
+      },
+      "revId": "c308502f451b4f39b77ce81fdbb1a42955c63deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
