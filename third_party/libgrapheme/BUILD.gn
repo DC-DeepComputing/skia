@@ -19,8 +19,8 @@ config("c99") {
 }
 
 copy("copy_unicode_data") {
-  unicode_tools_dir = "../../third_party/externals/unicodetools/unicodetools/data/ucd/$UNICODE_VERSION"
-  external_data_dir = "../../third_party/externals/libgrapheme/data/"
+  unicode_tools_dir =
+      "../externals/unicodetools/unicodetools/data/ucd/$UNICODE_VERSION"
   sources = [
     "$unicode_tools_dir/BidiBrackets.txt",
     "$unicode_tools_dir/BidiCharacterTest.txt",
@@ -41,55 +41,55 @@ copy("copy_unicode_data") {
     "$unicode_tools_dir/emoji/emoji-data.txt",
     "$unicode_tools_dir/extracted/DerivedBidiClass.txt",
   ]
-  output_dir = rebase_path(external_data_dir, root_out_dir)
-  outputs = [ "$root_out_dir/$output_dir/{{source_file_part}}" ]
+  outputs =
+      [ "$root_gen_dir/third_party/libgrapheme/data/{{source_file_part}}" ]
 }
 
 template("compile_tool") {
   executable(target_name) {
-    deps = [ ":copy_unicode_data" ]
     forward_variables_from(invoker, "*", [ "deps" ])
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }
     configs += [ ":c99" ]
-    lib_dirs = [ "../../third_party/externals/libgrapheme/gen" ]
-    sources += [ "../../third_party/externals/libgrapheme/gen/util.c" ]
+    sources += [ "../externals/libgrapheme/gen/util.c" ]
   }
 }
 
 compile_tool("bidirectional") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/bidirectional.c" ]
+  sources = [ "../externals/libgrapheme/gen/bidirectional.c" ]
 }
 
 compile_tool("case") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/case.c" ]
+  sources = [ "../externals/libgrapheme/gen/case.c" ]
 }
 
 compile_tool("character") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/character.c" ]
+  sources = [ "../externals/libgrapheme/gen/character.c" ]
 }
 
 compile_tool("line") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/line.c" ]
+  sources = [ "../externals/libgrapheme/gen/line.c" ]
 }
 
 compile_tool("sentence") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/sentence.c" ]
+  sources = [ "../externals/libgrapheme/gen/sentence.c" ]
 }
 
 compile_tool("word") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/word.c" ]
+  sources = [ "../externals/libgrapheme/gen/word.c" ]
 }
 
 # Run an executable that will produce a header
 action_foreach("generate_headers") {
   script = "generate_headers.py"
-  root_dir = rebase_path(root_out_dir, "")
+  cmd_dir = rebase_path(root_out_dir)
   args = [
-    "$root_dir/{{source_name_part}}",
-    "../../third_party/externals/libgrapheme/gen/{{source_name_part}}.h",
-    "../../third_party/externals/libgrapheme/",
+    "$cmd_dir/{{source_name_part}}",
+    rebase_path(
+        "$root_gen_dir/third_party/libgrapheme/gen/{{source_name_part}}.h",
+        root_build_dir),
+    rebase_path("$root_gen_dir/third_party/libgrapheme", root_build_dir),
   ]
   _src = "../externals/libgrapheme/gen"
   sources = [
@@ -100,16 +100,21 @@ action_foreach("generate_headers") {
     "$_src/sentence.c",
     "$_src/word.c",
   ]
-  output_dir = rebase_path(_src, root_out_dir)
-  outputs = [ "$root_out_dir/$output_dir/{{source_name_part}}.h" ]
+  outputs =
+      [ "$root_gen_dir/third_party/libgrapheme/gen/{{source_name_part}}.h" ]
   deps = [
     ":bidirectional",
     ":case",
     ":character",
+    ":copy_unicode_data",
     ":line",
     ":sentence",
     ":word",
   ]
+}
+
+config("headers_config") {
+  include_dirs = [ "$root_gen_dir/third_party/libgrapheme/gen" ]
 }
 
 source_set("headers") {
@@ -123,7 +128,10 @@ third_party("libgrapheme") {
   public_include_dirs = [ "../externals/libgrapheme" ]
   _src = "../externals/libgrapheme/src"
 
-  configs = [ ":c99" ]
+  configs = [
+    ":c99",
+    ":headers_config(//gn/toolchain:$host_toolchain)",
+  ]
 
   sources = [
     "$_src/bidirectional.c",
@@ -136,5 +144,5 @@ third_party("libgrapheme") {
     "$_src/word.c",
   ]
 
-  deps = [ ":headers" ]
+  deps = [ ":headers(//gn/toolchain:$host_toolchain)" ]
 }
