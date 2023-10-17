@@ -2149,6 +2149,7 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 	"experimental_bazel_test_client": {"//experimental/bazel_test/client:client_lib", ""},
 	"cpu_gms":                        {"//gm:cpu_gm_tests", ""},
 	"hello_bazel_world_test":         {"//gm:hello_bazel_world_test", ""},
+	"cpu_8888_benchmark_test":        {"//bench:cpu_8888_test", ""},
 
 	// Note: these paths are relative to the WORKSPACE in //example/external_client
 	"path_combiner": {"//:path_combiner", ""},
@@ -2178,7 +2179,7 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 
 	// Android tests that run on a device. We store the //bazel-bin/tests directory into CAS for use
 	// by subsequent CI tasks.
-	"hello_bazel_world_android_test":  {"//gm:hello_bazel_world_android_test", "gm"},
+	"hello_bazel_world_android_test": {"//gm:hello_bazel_world_android_test", "gm"},
 }
 
 // bazelBuild adds a task which builds the specified single-target label (//foo:bar) or
@@ -2280,6 +2281,9 @@ func (b *jobBuilder) bazelTest() {
 	if taskdriverName == "gm" {
 		taskdriverName = "bazel_test_gm"
 	}
+	if taskdriverName == "benchmark" {
+		taskdriverName = "bazel_test_benchmark"
+	}
 
 	b.addTask(b.Name, func(b *taskBuilder) {
 		cmd := []string{"./" + taskdriverName,
@@ -2362,6 +2366,16 @@ func (b *jobBuilder) bazelTest() {
 				"--patchset_order="+specs.PLACEHOLDER_PATCHSET,
 				"--tryjob_id="+specs.PLACEHOLDER_BUILDBUCKET_BUILD_ID)
 			b.cipd(CIPD_PKGS_GOLDCTL)
+
+		case "bazel_test_benchmark":
+			cmd = append(cmd,
+				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_config="+config,
+				"--bazel_cache_dir="+bazelCacheDir,
+				"--git_commit="+specs.PLACEHOLDER_REVISION,
+				"--changelist_id="+specs.PLACEHOLDER_ISSUE,
+				"--patchset_order="+specs.PLACEHOLDER_PATCHSET,
+				"--tryjob_id="+specs.PLACEHOLDER_BUILDBUCKET_BUILD_ID)
 
 		case "external_client":
 			cmd = append(cmd,
