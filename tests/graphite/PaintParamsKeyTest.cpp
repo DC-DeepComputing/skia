@@ -90,6 +90,7 @@ enum class ColorFilterType {
     kCompose,
     kGaussian,
     kHSLAMatrix,
+    kLerp,
     kLighting,
     kLinearToSRGB,
     kMatrix,
@@ -533,6 +534,19 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_rt_colorfil
     return { nullptr, nullptr };
 }
 
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_lerp_colorfilter(
+        SkRandom* rand) {
+
+    auto [dst, dstO] = create_random_colorfilter(rand);
+    auto [src, srcO] = create_random_colorfilter(rand);
+
+    sk_sp<SkColorFilter> cf = SkColorFilters::Lerp(0.5f, std::move(dst), std::move(src));
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Lerp({ dstO }, { srcO });
+
+    return { cf, o };
+}
+
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_lighting_colorfilter() {
     // TODO: the lighting color filter factory special cases when nothing is added and converts it
     // to a blendmode color filter
@@ -622,6 +636,84 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_workingform
     return { std::move(cf), std::move(o) };
 }
 
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorSpace_colorfilter(
+        SkRandom* rand) {
+    sk_sp<SkColorFilter> cf = SkColorFilterPriv::MakeColorSpaceXform(random_colorspace(rand),
+                                                                     random_colorspace(rand));
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::ColorSpaceXform();
+
+    return { cf, o };
+}
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_linear_to_srgb_colorfilter() {
+    sk_sp<SkColorFilter> cf = SkColorFilterPriv::MakeColorSpaceXform(SkColorSpace::MakeSRGBLinear(),
+                                                                     SkColorSpace::MakeSRGB());
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::ColorSpaceXform();
+
+    return { cf, o };
+}
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_srgb_to_linear_colorfilter() {
+    sk_sp<SkColorFilter> cf = SkColorFilterPriv::MakeColorSpaceXform(SkColorSpace::MakeSRGB(),
+                                                                     SkColorSpace::MakeSRGBLinear());
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::ColorSpaceXform();
+
+    return { cf, o };
+}
+
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_compose_colorfilter(
+        SkRandom* rand) {
+    auto [outerCF, outerO] = create_random_colorfilter(rand);
+    auto [innerCF, innerO] = create_random_colorfilter(rand);
+
+    sk_sp<SkColorFilter> cf = SkColorFilters::Compose(std::move(outerCF), std::move(innerCF));
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Compose({ outerO }, { innerO });
+
+    return { cf, o };
+}
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_gaussian_colorfilter() {
+    sk_sp<SkColorFilter> cf = SkColorFilterPriv::MakeGaussian();
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Gaussian();
+
+    return { cf, o };
+}
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_table_colorfilter() {
+    static constexpr uint8_t kTable[256] = { 0 };
+
+    sk_sp<SkColorFilter> cf = SkColorFilters::Table(kTable);
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Table();
+
+    return { cf, o };
+}
+
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_workingformat_colorfilter(
+        SkRandom* rand) {
+    auto [childCF, childO] = create_random_colorfilter(rand);
+
+    if (!childCF) {
+        return { nullptr, nullptr };
+    }
+
+    SkASSERT(childCF && childO);
+
+    SkAlphaType unpremul = kUnpremul_SkAlphaType;
+    sk_sp<SkColorFilter> cf = SkColorFilterPriv::WithWorkingFormat(childCF,
+                                                                   &random_xfer_function(rand),
+                                                                   &random_gamut(rand),
+                                                                   &unpremul);
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::WithWorkingFormat({ childO });
+
+    return { cf, o };
+}
+
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_hsla_matrix_colorfilter() {
     sk_sp<SkColorFilter> cf = SkColorFilters::HSLAMatrix(
             SkColorMatrix::RGBtoYUV(SkYUVColorSpace::kJPEG_Full_SkYUVColorSpace));
@@ -647,6 +739,8 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorfilter
             return create_gaussian_colorfilter();
         case ColorFilterType::kHSLAMatrix:
             return create_hsla_matrix_colorfilter();
+        case ColorFilterType::kLerp:
+            return create_lerp_colorfilter(rand);
         case ColorFilterType::kLighting:
             return create_lighting_colorfilter();
         case ColorFilterType::kLinearToSRGB:
@@ -795,7 +889,7 @@ void check_draw(skiatest::Reporter* reporter,
 } // anonymous namespace
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
 // PaintParamsKey:
@@ -884,6 +978,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
             ColorFilterType::kCompose,
             ColorFilterType::kGaussian,
             ColorFilterType::kHSLAMatrix,
+            ColorFilterType::kLerp,
             ColorFilterType::kLighting,
             ColorFilterType::kLinearToSRGB,
             ColorFilterType::kRuntime,

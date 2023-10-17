@@ -566,7 +566,7 @@ private:
         } else if (!outer) {
             inner->priv().addToKey(keyContext, builder, gatherer, innerChildOptions);
         } else {
-            Compose(keyContext, builder, gatherer,
+            Compose(keyContext, builder, /* gatherer= */ nullptr,
                     /* addInnerToKey= */ [&]() -> void {
                         inner->priv().addToKey(keyContext, builder, gatherer, innerChildOptions);
                     },
@@ -634,6 +634,109 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::Matrix() {
 
 sk_sp<PrecompileColorFilter> PrecompileColorFilters::HSLAMatrix() {
     return sk_make_sp<PrecompileMatrixColorFilter>();
+}
+
+//--------------------------------------------------------------------------------------------------
+class PrecompileLerpColorFilter : public PrecompileColorFilter {
+public:
+    PrecompileLerpColorFilter(SkSpan<const sk_sp<PrecompileColorFilter>> dstOptions,
+                              SkSpan<const sk_sp<PrecompileColorFilter>> srcOptions)
+            : fDstOptions(dstOptions.begin(), dstOptions.end())
+            , fSrcOptions(srcOptions.begin(), srcOptions.end()) {
+
+        fNumDstCombos = 0;
+        for (auto dstOption : fDstOptions) {
+            fNumDstCombos += dstOption ? dstOption->numCombinations() : 1;
+        }
+
+        fNumSrcCombos = 0;
+        for (auto srcOption : fSrcOptions) {
+            fNumSrcCombos += srcOption ? srcOption->numCombinations() : 1;
+        }
+    }
+
+private:
+    int numChildCombinations() const override { return fNumDstCombos * fNumSrcCombos; }
+
+    void addToKey(const KeyContext& keyContext,
+                  int desiredCombination,
+                  PaintParamsKeyBuilder* builder) const override {
+        SkASSERT(desiredCombination < this->numCombinations());
+
+        const int desiredDstCombination = desiredCombination % fNumDstCombos;
+        int remainingCombinations = desiredCombination / fNumDstCombos;
+
+        const int desiredSrcCombination = remainingCombinations % fNumSrcCombos;
+        remainingCombinations /= fNumSrcCombos;
+
+        SkASSERT(!remainingCombinations);
+
+        sk_sp<PrecompileColorFilter> src, dst;
+        int srcChildOptions, dstChildOptions;
+
+        std::tie(dst, dstChildOptions) = SelectOption<PrecompileColorFilter>(
+                fDstOptions, desiredDstCombination);
+        std::tie(src, srcChildOptions) = SelectOption<PrecompileColorFilter>(
+                fSrcOptions, desiredSrcCombination);
+
+        if (!src && !dst) {
+            // A "passthrough" color filter returns the input color as-is.
+            builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+        } else {
+
+
+            const PrecompileChildPtr childOptions[] = { srcO, dstO };
+
+            sk_sp<PrecompileColorFilter> o = MakePrecompileColorFilter(sk_ref_sp(sComboEffect),
+                                                                       { childOptions });
+        } else if (!src) {
+            dst->priv().addToKey(keyContext, dstChildOptions, builder);
+        } else if (!dst) {
+            src->priv().addToKey(keyContext, srcChildOptions, builder);
+        } else {
+            Compose(keyContext, builder, /* gatherer= */ nullptr,
+                    /* addInnerToKey= */ [&]() -> void {
+                        src->priv().addToKey(keyContext, srcChildOptions, builder);
+                    },
+                    /* addOuterToKey= */ [&]() -> void {
+                        dst->priv().addToKey(keyContext, dstChildOptions, builder);
+                    });
+        }
+    }
+
+    std::vector<sk_sp<PrecompileColorFilter>> fDstOptions;
+    std::vector<sk_sp<PrecompileColorFilter>> fSrcOptions;
+
+    int fNumDstCombos;
+    int fNumSrcCombos;
+};
+
+sk_sp<PrecompileColorFilter> PrecompileColorFilters::Lerp(
+        SkSpan<const sk_sp<PrecompileColorFilter>> dstOptions,
+        SkSpan<const sk_sp<PrecompileColorFilter>> srcOptions) {
+
+    if (dstOptions.empty() && srcOptions.empty()) {
+        return nullptr;
+    }
+
+    static SkRuntimeEffect* sComboEffect = SkMakeRuntimeEffect(
+            SkRuntimeEffect::MakeForColorFilter,
+            "uniform colorFilter cf0;"
+            "uniform colorFilter cf1;"
+            "uniform half weight;"
+            "half4 main(half4 color) {"
+                "return mix(cf0.eval(color), cf1.eval(color), weight);"
+            "}"
+    );
+
+    std::vector<
+
+    return MakePrecompileColorFilter(sk_ref_sp(sComboEffect), )
+    return sk_make_sp<PrecompileLerpColorFilter>(dstOptions, srcOptions);
+
+#if 0
+
+#endif
 }
 
 //--------------------------------------------------------------------------------------------------
