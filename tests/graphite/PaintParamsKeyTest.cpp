@@ -90,6 +90,7 @@ enum class ColorFilterType {
     kCompose,
     kGaussian,
     kHSLAMatrix,
+    kLerp,
     kLighting,
     kLinearToSRGB,
     kMatrix,
@@ -533,6 +534,19 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_rt_colorfil
     return { nullptr, nullptr };
 }
 
+std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_lerp_colorfilter(
+        SkRandom* rand) {
+
+    auto [dst, dstO] = create_random_colorfilter(rand);
+    auto [src, srcO] = create_random_colorfilter(rand);
+
+    sk_sp<SkColorFilter> cf = SkColorFilters::Lerp(0.5f, std::move(dst), std::move(src));
+
+    sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Lerp({ dstO }, { srcO });
+
+    return { cf, o };
+}
+
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_lighting_colorfilter() {
     // TODO: the lighting color filter factory special cases when nothing is added and converts it
     // to a blendmode color filter
@@ -647,6 +661,8 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_colorfilter
             return create_gaussian_colorfilter();
         case ColorFilterType::kHSLAMatrix:
             return create_hsla_matrix_colorfilter();
+        case ColorFilterType::kLerp:
+            return create_lerp_colorfilter(rand);
         case ColorFilterType::kLighting:
             return create_lighting_colorfilter();
         case ColorFilterType::kLinearToSRGB:
@@ -795,7 +811,7 @@ void check_draw(skiatest::Reporter* reporter,
 } // anonymous namespace
 
 // Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
+#define EXPANDED_SET 1
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
 // PaintParamsKey:
@@ -884,6 +900,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
             ColorFilterType::kCompose,
             ColorFilterType::kGaussian,
             ColorFilterType::kHSLAMatrix,
+            ColorFilterType::kLerp,
             ColorFilterType::kLighting,
             ColorFilterType::kLinearToSRGB,
             ColorFilterType::kRuntime,
