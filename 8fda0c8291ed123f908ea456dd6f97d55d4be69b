@@ -16,6 +16,23 @@
       "message": "John, can you take this review?",
       "revId": "8fda0c8291ed123f908ea456dd6f97d55d4be69b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ec7248_229d519d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-17T19:28:57Z",
+      "side": 1,
+      "message": "Thanks for catching this typo!",
+      "revId": "8fda0c8291ed123f908ea456dd6f97d55d4be69b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
