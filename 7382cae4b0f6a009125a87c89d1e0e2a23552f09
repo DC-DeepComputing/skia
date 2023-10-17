@@ -51,6 +51,42 @@
       "parentUuid": "1ab78306_70f0c7c1",
       "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0798919a_f3ce48bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-17T20:37:30Z",
+      "side": 1,
+      "message": "My thought was somewhere in between this and the current CL -- you still call `add` but within that use the isUploadTask virtual to check to see if the new Task is an upload, and set the bool at that point.",
+      "parentUuid": "3956f32d_b6631cee",
+      "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ec54338_0df6bbf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-17T20:37:30Z",
+      "side": 1,
+      "message": "The second solution seems a little squirrelly to me -- while we can add a check to UploadInstance::addCommand to skip any uploads with invalid proxies, what happens to any future uploads that were depending on the skipped one? I suppose practically in this case it doesn\u0027t matter because we should have an instantiated proxy for the text atlas, but that just feels like it\u0027s introducing a potential future bug. Also we\u0027d have to rewrite RecordingPriv::addCommands and TaskGraph::addCommands to not bail on the first failure.\n\nI think the real solution is the first one: put the atlas on the Context and have each Recording playback upload glyphs to it dynamically. \n\nI am curious how often promise images fail -- is this something where we need to significantly rewrite our code to protect against it, or it is a bug on the client side?",
+      "parentUuid": "2696f6c0_3eeed5fa",
+      "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
