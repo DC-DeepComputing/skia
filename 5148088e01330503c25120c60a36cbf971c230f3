@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b989c9b6_158ea410",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T15:55:14Z",
+      "side": 1,
+      "message": "Seems this was at least partially taking a very long time on the `mandoline` gm. This gm is purposefully creating paths with lots of verbs.",
+      "revId": "5148088e01330503c25120c60a36cbf971c230f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
