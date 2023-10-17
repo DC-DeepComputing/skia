@@ -36,6 +36,8 @@ public:
     // Returns true on success; false on failure.
     virtual bool addCommands(Context*, CommandBuffer*, ReplayTargetData) = 0;
 
+    virtual bool isUploadTask() { return false; }
+
 protected:
     Task();
 

@@ -32,9 +32,12 @@ public:
 
     bool hasTasks() const { return !fTasks.empty(); }
 
+    bool hasUploadTasks() const { return fHasUploads; }
+
 protected:
 private:
     std::vector<sk_sp<Task>> fTasks;
+    bool fHasUploads = false;
 };
 
 } // namespace skgpu::graphite

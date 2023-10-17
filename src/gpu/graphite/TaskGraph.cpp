@@ -15,6 +15,7 @@ TaskGraph::~TaskGraph() {}
 
 void TaskGraph::add(sk_sp<Task> task) {
     fTasks.emplace_back(std::move(task));
+    fHasUploads = fHasUploads || task->isUploadTask();
 }
 
 void TaskGraph::prepend(sk_sp<Task> task) {

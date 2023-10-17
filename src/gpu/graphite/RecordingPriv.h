@@ -33,6 +33,7 @@ public:
 
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }
+    bool hasUploadTasks() const;
 
 #if defined(GRAPHITE_TEST_UTILS)
     bool isTargetProxyInstantiated() const;
