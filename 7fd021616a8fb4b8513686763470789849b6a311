@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fb19d9c_4c885ffc",
+        "filename": "modules/bentleyottmann/include/EventQueueInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-17T19:56:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f36125b_4975deff",
+      "range": {
+        "startLine": 35,
+        "startChar": 36,
+        "endLine": 35,
+        "endChar": 42
+      },
+      "revId": "7fd021616a8fb4b8513686763470789849b6a311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bef4f796_5fb5c7cb",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "683711c5_0ddd12df",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-17T19:56:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bef4f796_5fb5c7cb",
+      "revId": "7fd021616a8fb4b8513686763470789849b6a311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22261584_144844da",
@@ -71,6 +113,24 @@
       "writtenOn": "2023-10-17T18:51:33Z",
       "side": 1,
       "message": "nit: weird indent",
+      "revId": "7fd021616a8fb4b8513686763470789849b6a311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f7e9db_7160a8db",
+        "filename": "modules/bentleyottmann/src/EventQueue.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-17T19:56:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22261584_144844da",
       "revId": "7fd021616a8fb4b8513686763470789849b6a311",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
