@@ -148,9 +148,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
     return tex;
 }
 
-sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingOptions& smplOptions,
-                                                               SkTileMode xTileMode,
-                                                               SkTileMode yTileMode) {
+sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc& samplerDesc) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     GraphiteResourceKey key;
@@ -172,10 +170,10 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
 
         GraphiteResourceKey::Builder builder(&key, kType, 1, Shareable::kYes);
         uint32_t myKey =
-        (static_cast<uint32_t>(xTileMode) << kTileModeXShift) |
-                     (static_cast<uint32_t>(yTileMode) << kTileModeYShift) |
-                     (static_cast<uint32_t>(smplOptions.filter) << kFilterModeShift) |
-                     (static_cast<uint32_t>(smplOptions.mipmap) << kMipmapModeShift);
+                (static_cast<uint32_t>(samplerDesc.tileModeX()) << kTileModeXShift)               |
+                (static_cast<uint32_t>(samplerDesc.tileModeY()) << kTileModeYShift)               |
+                (static_cast<uint32_t>(samplerDesc.samplingOptions().filter) << kFilterModeShift) |
+                (static_cast<uint32_t>(samplerDesc.samplingOptions().mipmap) << kMipmapModeShift);
         builder[0] = myKey;
     }
 
@@ -183,7 +181,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
     if (Resource* resource = fResourceCache->findAndRefResource(key, budgeted)) {
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
-    sk_sp<Sampler> sampler = this->createSampler(smplOptions, xTileMode, yTileMode);
+    sk_sp<Sampler> sampler = this->createSampler(samplerDesc);
     if (!sampler) {
         return nullptr;
     }

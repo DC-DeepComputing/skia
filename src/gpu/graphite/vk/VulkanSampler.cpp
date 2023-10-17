@@ -33,15 +33,14 @@ static VkSamplerAddressMode tile_mode_to_vk_sampler_address(SkTileMode tileMode)
 }
 
 sk_sp<VulkanSampler> VulkanSampler::Make(const VulkanSharedContext* sharedContext,
-                                         const SkSamplingOptions& samplingOptions,
-                                         SkTileMode xTileMode,
-                                         SkTileMode yTileMode) {
+                                         const SamplerDesc& samplerDesc) {
     VkSamplerCreateInfo samplerInfo;
     memset(&samplerInfo, 0, sizeof(VkSamplerCreateInfo));
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
     samplerInfo.pNext = nullptr;
     samplerInfo.flags = 0;
 
+    const auto& samplingOptions = samplerDesc.samplingOptions();
     VkFilter minMagFilter = [&] {
         switch (samplingOptions.filter) {
             case SkFilterMode::kNearest: return VK_FILTER_NEAREST;
@@ -65,8 +64,8 @@ sk_sp<VulkanSampler> VulkanSampler::Make(const VulkanSharedContext* sharedContex
     samplerInfo.magFilter = minMagFilter;
     samplerInfo.minFilter = minMagFilter;
     samplerInfo.mipmapMode = mipmapMode;
-    samplerInfo.addressModeU = tile_mode_to_vk_sampler_address(xTileMode);
-    samplerInfo.addressModeV = tile_mode_to_vk_sampler_address(yTileMode);
+    samplerInfo.addressModeU = tile_mode_to_vk_sampler_address(samplerDesc.tileModeX());
+    samplerInfo.addressModeV = tile_mode_to_vk_sampler_address(samplerDesc.tileModeY());
     samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     samplerInfo.mipLodBias = 0;
     samplerInfo.anisotropyEnable = VK_FALSE;

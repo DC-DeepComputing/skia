@@ -216,10 +216,11 @@ sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
     return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
-                                                   SkTileMode xTileMode,
-                                                   SkTileMode yTileMode) {
-    return DawnSampler::Make(this->dawnSharedContext(), options, xTileMode, yTileMode);
+sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
+    return DawnSampler::Make(this->dawnSharedContext(),
+                             samplerDesc.samplerOptions(),
+                             samplerDesc.tileModeX(),
+                             samplerDesc.tileModeY());
 }
 
 BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,

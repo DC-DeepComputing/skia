@@ -20,18 +20,14 @@ namespace skgpu::graphite {
 
     class VulkanSampler : public Sampler {
 public:
-    static sk_sp<VulkanSampler> Make(const VulkanSharedContext*,
-                                     const SkSamplingOptions& samplingOptions,
-                                     SkTileMode xTileMode,
-                                     SkTileMode yTileMode);
+    static sk_sp<VulkanSampler> Make(const VulkanSharedContext*, const SamplerDesc& samplerDesc);
 
     ~VulkanSampler() override {}
 
     VkSampler vkSampler() const { return fSampler; }
 
 private:
-    VulkanSampler(const VulkanSharedContext*,
-                  VkSampler);
+    VulkanSampler(const VulkanSharedContext*, VkSampler);
 
     void freeGpuData() override;
 
