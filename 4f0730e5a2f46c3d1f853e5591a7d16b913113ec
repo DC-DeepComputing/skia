@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e0be6cd_6f5ff021",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-17T21:08:54Z",
+      "side": 1,
+      "message": "I added Vello build jobs as a sanity check. LGTM otherwise.",
+      "revId": "4f0730e5a2f46c3d1f853e5591a7d16b913113ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
