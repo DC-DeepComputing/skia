@@ -195,6 +195,11 @@ def compile_fn(api, checkout_root, out_dir):
       'skia_enable_optimize_size': 'true',
       'skia_use_jpeg_gainmaps': 'false',
     })
+  if configuration != 'OptimizeForSize':
+    args.update({
+      'skia_use_client_icu':  'true',
+      'skia_use_libgrapheme': 'true',
+    })
 
   if 'Exceptions' in extra_tokens:
     extra_cflags.append('/EHsc')
