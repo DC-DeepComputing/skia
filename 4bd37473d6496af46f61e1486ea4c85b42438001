@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "312f91a5_d6096c3c",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Sorry, this was debugging code that I should have deleted :(",
+      "parentUuid": "e962e1b9_7ca297eb",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e42537e_5d76e698",
         "filename": "src/codec/SkJpegMultiPicture.cpp",
         "patchSetId": 14
@@ -66,6 +84,24 @@
       "writtenOn": "2023-10-10T17:24:34Z",
       "side": 1,
       "message": "I think you need a `return nullptr` in here. (Can a test verify this?)",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb75daa4_3017456d",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Added a test that crashes when we don\u0027t `return nullptr` here (and also stresses the other paths).",
+      "parentUuid": "3e42537e_5d76e698",
       "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -89,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f43dfcd4_3c04f08a",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Removed (my first draft of this patch continued to use the stream from this point forward).",
+      "parentUuid": "98dab6b6_abbf5019",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc4da176_8f8129a1",
         "filename": "src/codec/SkJpegMultiPicture.cpp",
         "patchSetId": 14
@@ -100,6 +154,24 @@
       "writtenOn": "2023-10-10T17:24:34Z",
       "side": 1,
       "message": "nit: I think these variables can be `const`.",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70595d53_978b2937",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc4da176_8f8129a1",
       "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +195,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e00732e_afc89c31",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Symmetry with `outNumEntries` and some vague idea of not mixing \"write output of function\" with \"parse data\". Maybe it doesn\u0027t help readability. Removed.",
+      "parentUuid": "a50a1aad_25e61cd7",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "378057e0_139c7034",
         "filename": "src/codec/SkTiffImageFileDirectory.cpp",
         "patchSetId": 14
@@ -134,6 +224,30 @@
       "writtenOn": "2023-10-10T17:24:34Z",
       "side": 1,
       "message": "nit: I think normally we wouldn\u0027t make the parameter `const`, and then you\u0027d `std::move` it here. Maybe you want to reduce the refcount churn in the case where `validate_ifd` fails?",
+      "range": {
+        "startLine": 145,
+        "startChar": 41,
+        "endLine": 145,
+        "endChar": 45
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "126a55f3_a8efab29",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "378057e0_139c7034",
       "range": {
         "startLine": 145,
         "startChar": 41,
@@ -169,6 +283,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e229dfd_7baefaa2",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "YEah, that\u0027s a bit surprising that that works.",
+      "parentUuid": "0ff2be68_12d1e0f0",
+      "range": {
+        "startLine": 153,
+        "startChar": 16,
+        "endLine": 153,
+        "endChar": 25
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "463eb084_8cc01c56",
         "filename": "src/codec/SkTiffImageFileDirectory.cpp",
         "patchSetId": 14
@@ -180,6 +318,24 @@
       "writtenOn": "2023-10-10T17:24:34Z",
       "side": 1,
       "message": "nit: I think these variables can be `const`?",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a4e6c7b_f93d768b",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "463eb084_8cc01c56",
       "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -197,6 +353,30 @@
       "writtenOn": "2023-10-10T17:24:34Z",
       "side": 1,
       "message": "Why is the smart pointer `const`?",
+      "range": {
+        "startLine": 35,
+        "startChar": 68,
+        "endLine": 35,
+        "endChar": 73
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c853ad82_2a4d7a3b",
+        "filename": "src/codec/SkTiffImageFileDirectory.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "0ba636fe_fa253368",
       "range": {
         "startLine": 35,
         "startChar": 68,

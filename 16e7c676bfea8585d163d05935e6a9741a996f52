@@ -34,6 +34,24 @@
       "parentUuid": "c84619e5_caee7cef",
       "revId": "16e7c676bfea8585d163d05935e6a9741a996f52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f80578_5b1a1a2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "\u003e Renaming to SkTiff\n\nThe only functionality of the file now is the Tiff IFD. I was thinking that we may consolidate more TIFF functionality into the file (like [this](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkRawCodec.cpp;l\u003d553;drc\u003d2cfc8fc3ba549613d5db4b6a6b9f0e98e995bcdb)).\n\nI\u0027ve renamed it to SkTiffUtility, anticipating more stuff being added.\n\nI now see that the piex library does similar things... maybe one day one of these can eat the other. (I would very much like to have a mini JPEG metadata parsing library, which would probably depend on an even-more-mini TIFF parsing library).\n\n\u003e SkExif\n\nI\u0027ve gone ahead and included that in this patch.\n\n\u003e unique_ptr\n\nYeah, it\u0027s not a critical path, so I\u0027ve stuck with the malloc.",
+      "parentUuid": "88f526d9_ce40e528",
+      "revId": "16e7c676bfea8585d163d05935e6a9741a996f52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c1e8891_4941031b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-17T10:43:11Z",
+      "side": 1,
+      "message": "Thanks! I\u0027ve updated the patch (and its parent patch).",
+      "revId": "eb7c5fbc3995b29e58251e1863b126539ccee270",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
