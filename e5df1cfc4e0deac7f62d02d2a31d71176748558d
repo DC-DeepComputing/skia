@@ -16,6 +16,24 @@
       "message": "This CL is fine and gets us compiling again. But it still leaves us in a world we don\u0027t want to be in. Specifically we don\u0027t want to use #defines in our code to know when we\u0027re using a library/feature or not (well things like which OS is still fine). So the skia vello stuff will need to be its own library a client depends on. Then they\u0027ll include some public vello header and call some one time register vello path renderer call to let us know we can use that path renderer.\n\nBut all this is a larger change in Skia that should block this change, just pointing to how we need to structure things soon.",
       "revId": "e5df1cfc4e0deac7f62d02d2a31d71176748558d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d72cfb6_edaa66e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-17T21:23:13Z",
+      "side": 1,
+      "message": "I consider the conditional compilation as temporary until the vello target is integrated into the Chromium GN build. I\u0027d like the VelloRenderer to always be built as part of graphite assuming that\u0027s OK (though maybe it makes sense to modularize things when targeting platforms where it won\u0027t be used).\n\nI\u0027m confused about the vello code being its own library though. Skia has other examples of conditionally defined features that aren\u0027t just backend specific that are driven by gn args. Is the goal to separate out all such features as separate libraries?\n\nIt would take some work to decouple the vello-based rendering algorithm from Graphite if we intend for them to be entirely separate. It\u0027s certainly doable but we should talk about the concrete goals so we can plan accordingly.",
+      "parentUuid": "077a2b19_a20d5440",
+      "revId": "e5df1cfc4e0deac7f62d02d2a31d71176748558d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
