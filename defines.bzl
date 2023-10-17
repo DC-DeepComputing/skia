@@ -7,6 +7,8 @@ load("//bazel:skia_rules.bzl", "select_multi")
 
 GENERAL_DEFINES = [
     "SK_GAMMA_APPLY_TO_A8",
+    #"SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT",
+    "SK_DISABLE_LEGACY_DEFAULT_TYPEFACE",
 ] + select({
     "//bazel/common_config_settings:debug_build": [
         "SK_DEBUG",
