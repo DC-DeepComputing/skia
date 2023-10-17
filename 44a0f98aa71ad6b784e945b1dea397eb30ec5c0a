@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8743c2c5_e79a31ec",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-17T18:51:33Z",
+      "side": 0,
+      "message": "Why did this change? I didn\u0027t see any mutation of these elsewhere in the CL?",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "44a0f98aa71ad6b784e945b1dea397eb30ec5c0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
