@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84528da0_e4479f94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T16:35:51Z",
+      "side": 1,
+      "message": "ctory",
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152a8a47_c76c3cde",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T16:35:51Z",
+      "side": 1,
+      "message": "I don\u0027t think there is any reason to add these, just have the user call `mgr-\u003ematchFamilyStyle` or `mgr-\u003elegacyMakeTypeface` or whatever.",
+      "range": {
+        "startLine": 135,
+        "startChar": 29,
+        "endLine": 135,
+        "endChar": 41
+      },
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7420de1_09df062e",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T16:35:51Z",
+      "side": 1,
+      "message": "Unfortunately the term \"fallback\" with fonts means finding a fallback font for glyph coverage, which makes this name a bit misleading, even though it is accurate. This SkFontMgr is used as a kind of default factory function for data if the requested factory isn\u0027t present (which can lead to rendering issues, should probably be a warning about that somewhere) and is used if the data wasn\u0027t embedded (just go lookup the font by name, which generally also is broken and should be at least a warning).\n\nSo in the end this SkFontMgr can only produce incorrect results. The idea is that if the factory function isn\u0027t present then we should just return an empty typeface which draws nothing (and possibly tell the user that they have an invalid picture) but if you pass in this extra SkFontMgr then we will instead try desperately to find something that might match as a kind of last ditch effort to make something work (and maybe this SkFontMgr knows something about the serialization and can look up the right thing by name anyway if the user provides it).\n\nSo the right name for this might be `desperationFontMgr`. Any time it is used you will probably get the wrong glyphs drawn (and if they\u0027re right it is totally by accident). But sometimes drawing something or getting lucky while debugging is better than drawing nothing at all.",
+      "range": {
+        "startLine": 356,
+        "startChar": 81,
+        "endLine": 356,
+        "endChar": 89
+      },
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a4d739_9f037ba9",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T16:35:51Z",
+      "side": 1,
+      "message": "Need to either pass the `fallbackMgr` or (better) just call `fallbackMgr-\u003elegacyMakeTypeface`. And also put it behind an `if (fallbackMgr)`. Return empty typeface otherwise.",
+      "range": {
+        "startLine": 383,
+        "startChar": 73,
+        "endLine": 383,
+        "endChar": 75
+      },
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
