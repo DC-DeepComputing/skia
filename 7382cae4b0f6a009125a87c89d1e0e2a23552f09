@@ -33,6 +33,24 @@
       "message": "Though on a higher level this is a very partial bandaid fix. What is the plan to handle Recordings that fail that do have uploads?",
       "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2696f6c0_3eeed5fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-17T19:46:22Z",
+      "side": 1,
+      "message": "I think there\u0027d be a couple of options, with different trade offs.\n\nOne of the ideas that was tossed around as the long term fix for the upload performance issue was to move the upload tracking entirely to the context thread so that the glyph plots always reflected the exact state of the texture. We\u0027d be moving more work to the context thread, but in many other ways it simplifies things. I think it makes this situation go away assuming we have a fast way to diff between glyphs required and glyphs available.\n\nAnother idea would be that maybe based on the failure reason, we still actually run the uploads? That would also have the benefit of any images that were created where the Recording had their upload task would still have valid data. Right now it\u0027s pretty reasonable to re-generate a Recording that is just draw commands, but trying to re-include the upload tasks for an image that was already made (and maybe stored in a client cache) gets trickier for the client to track.",
+      "parentUuid": "1ab78306_70f0c7c1",
+      "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
