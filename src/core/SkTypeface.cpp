@@ -146,6 +146,7 @@ SkFontStyle SkTypeface::FromOldStyle(Style oldStyle) {
 }
 
 SkTypeface* SkTypeface::GetDefaultTypeface(Style style) {
+#if !defined(SK_DEFAULT_TYPEFACE_IS_EMPTY)
     static SkOnce once[4];
     static sk_sp<SkTypeface> defaults[4];
 
@@ -156,16 +157,30 @@ SkTypeface* SkTypeface::GetDefaultTypeface(Style style) {
         defaults[style] = t ? t : SkEmptyTypeface::Make();
     });
     return defaults[style].get();
+#else
+    static sk_sp<SkTypeface> empty = SkEmptyTypeface::Make();
+    return empty.get();
+#endif  // !defined(SK_DEFAULT_TYPEFACE_IS_EMPTY)
 }
 
+#if !defined(SK_DISABLE_LEGACY_DEFAULT_TYPEFACE)
 sk_sp<SkTypeface> SkTypeface::MakeDefault() {
     return sk_ref_sp(GetDefaultTypeface());
 }
+#endif
+
+sk_sp<SkTypeface> SkTypeface::MakeEmpty() {
+    return SkEmptyTypeface::Make();
+}
 
 uint32_t SkTypeface::UniqueID(const SkTypeface* face) {
+#if !defined(SK_DISABLE_LEGACY_DEFAULT_TYPEFACE)
     if (nullptr == face) {
         face = GetDefaultTypeface();
     }
+#else
+    SkASSERT(face);
+#endif
     return face->uniqueID();
 }
 
@@ -204,8 +219,10 @@ namespace {
 
 }  // namespace
 
+#if !defined(SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT)
 sk_sp<SkTypeface> SkTypeface::MakeFromName(const char name[],
                                            SkFontStyle fontStyle) {
+#if !defined(SK_DISABLE_LEGACY_DEFAULT_TYPEFACE)
     if (nullptr == name && (fontStyle.slant() == SkFontStyle::kItalic_Slant ||
                             fontStyle.slant() == SkFontStyle::kUpright_Slant) &&
                            (fontStyle.weight() == SkFontStyle::kBold_Weight ||
@@ -216,10 +233,27 @@ sk_sp<SkTypeface> SkTypeface::MakeFromName(const char name[],
             (fontStyle.weight() == SkFontStyle::kBold_Weight ? SkTypeface::kBold :
                                                                SkTypeface::kNormal))));
     }
-    return SkFontMgr::RefDefault()->legacyMakeTypeface(name, fontStyle);
+#endif  // #if !defined(SK_DISABLE_LEGACY_DEFAULT_TYPEFACE)
+    return MakeFromName(name, fontStyle, SkFontMgr::RefDefault());
+}
+#endif  // !defined(SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT)
+
+sk_sp<SkTypeface> SkTypeface::MakeFromName(const char name[],
+                                           SkFontStyle fontStyle,
+                                           sk_sp<SkFontMgr> mgr) {
+    SkASSERT(mgr);
+    return mgr->legacyMakeTypeface(name, fontStyle);
 }
 
+#if !defined(SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT)
 sk_sp<SkTypeface> SkTypeface::MakeFromStream(std::unique_ptr<SkStreamAsset> stream, int index) {
+    return MakeFromStream(std::move(stream), index, SkFontMgr::RefDefault());
+}
+#endif
+
+sk_sp<SkTypeface> SkTypeface::MakeFromStream(std::unique_ptr<SkStreamAsset> stream, int index,
+                                             sk_sp<SkFontMgr> mgr) {
+    SkASSERT(mgr);
     if (!stream) {
         return nullptr;
     }
@@ -234,18 +268,32 @@ sk_sp<SkTypeface> SkTypeface::MakeFromStream(std::unique_ptr<SkStreamAsset> stre
         }
     }
 #endif
-    return SkFontMgr::RefDefault()->makeFromStream(std::move(stream), index);
+    return mgr->makeFromStream(std::move(stream), index);
 }
 
+#if !defined(SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT)
 sk_sp<SkTypeface> SkTypeface::MakeFromData(sk_sp<SkData> data, int index) {
+    return MakeFromData(std::move(data), index, SkFontMgr::RefDefault());
+}
+#endif
+
+sk_sp<SkTypeface> SkTypeface::MakeFromData(sk_sp<SkData> data, int index, sk_sp<SkFontMgr> mgr) {
+    SkASSERT(mgr);
     if (!data) {
         return nullptr;
     }
-    return SkFontMgr::RefDefault()->makeFromData(std::move(data), index);
+    return mgr->makeFromData(std::move(data), index);
 }
 
+#if !defined(SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT)
 sk_sp<SkTypeface> SkTypeface::MakeFromFile(const char path[], int index) {
-    return SkFontMgr::RefDefault()->makeFromFile(path, index);
+    return MakeFromFile(path, index, SkFontMgr::RefDefault());
+}
+#endif
+
+sk_sp<SkTypeface> SkTypeface::MakeFromFile(const char path[], int index, sk_sp<SkFontMgr> mgr) {
+    SkASSERT(mgr);
+    return mgr->makeFromFile(path, index);
 }
 
 sk_sp<SkTypeface> SkTypeface::makeClone(const SkFontArguments& args) const {
@@ -299,7 +347,13 @@ sk_sp<SkData> SkTypeface::serialize(SerializeBehavior behavior) const {
     return stream.detachAsData();
 }
 
+#if !defined(SK_DISABLE_LEGACY_FONTMGR_REFDEFAULT)
 sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream) {
+    return MakeDeserialize(stream, SkFontMgr::RefDefault());
+}
+#endif
+
+sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream, sk_sp<SkFontMgr> fallbackMgr) {
     SkFontDescriptor desc;
     if (!SkFontDescriptor::Deserialize(stream, &desc)) {
         return nullptr;
@@ -317,11 +371,12 @@ sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream) {
                  (id >> 24) & 0xFF, (id >> 16) & 0xFF, (id >> 8) & 0xFF, (id >> 0) & 0xFF,
                  desc.getFamilyName());
 
-        sk_sp<SkFontMgr> defaultFm = SkFontMgr::RefDefault();
-        sk_sp<SkTypeface> typeface = defaultFm->makeFromStream(desc.detachStream(),
-                                                               desc.getFontArguments());
-        if (typeface) {
-            return typeface;
+        if (fallbackMgr) {
+            sk_sp<SkTypeface> typeface = fallbackMgr->makeFromStream(desc.detachStream(),
+                                                                     desc.getFontArguments());
+            if (typeface) {
+                return typeface;
+            }
         }
     }
 
