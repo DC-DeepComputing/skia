@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c06d5e19_0a112d5c",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-17T22:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "152a8a47_c76c3cde",
+      "range": {
+        "startLine": 135,
+        "startChar": 29,
+        "endLine": 135,
+        "endChar": 41
+      },
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7420de1_09df062e",
@@ -112,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4f56595_d9d76aad",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-17T22:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72b58314_88f32eb2",
+      "range": {
+        "startLine": 356,
+        "startChar": 81,
+        "endLine": 356,
+        "endChar": 89
+      },
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4a4d739_9f037ba9",
@@ -125,6 +173,30 @@
       "writtenOn": "2023-10-17T16:35:51Z",
       "side": 1,
       "message": "Need to either pass the `fallbackMgr` or (better) just call `fallbackMgr-\u003elegacyMakeTypeface`. And also put it behind an `if (fallbackMgr)`. Return empty typeface otherwise.",
+      "range": {
+        "startLine": 383,
+        "startChar": 73,
+        "endLine": 383,
+        "endChar": 75
+      },
+      "revId": "1534517c850d5e22a6137ec23c326b2b72169ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53cd3738_35d44887",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-17T22:52:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4a4d739_9f037ba9",
       "range": {
         "startLine": 383,
         "startChar": 73,
