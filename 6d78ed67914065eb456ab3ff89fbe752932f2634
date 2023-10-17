@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a210b59_cc347b4c",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-17T19:08:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccbdbfb9_84c8b8b9",
+      "range": {
+        "startLine": 232,
+        "startChar": 13,
+        "endLine": 232,
+        "endChar": 18
+      },
+      "revId": "6d78ed67914065eb456ab3ff89fbe752932f2634",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9260a52b_df36adc0",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-17T18:44:43Z",
       "side": 1,
       "message": "With this call, you probably don\u0027t need growAndPushBack. growAndPushBack is just a single argument version of growAndEmplaceBack.",
+      "range": {
+        "startLine": 632,
+        "startChar": 24,
+        "endLine": 632,
+        "endChar": 42
+      },
+      "revId": "6d78ed67914065eb456ab3ff89fbe752932f2634",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48db51f8_69922e46",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-17T19:08:13Z",
+      "side": 1,
+      "message": "Done; you\u0027re right, this worked. I wonder if there is a subtle reason why the standard library has a different `emplace_back_slow_path` and `push_back_slow_path`--the only difference between the two that I can see is the `...` just like in our code.",
+      "parentUuid": "9260a52b_df36adc0",
       "range": {
         "startLine": 632,
         "startChar": 24,
