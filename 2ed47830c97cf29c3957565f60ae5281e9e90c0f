@@ -16,6 +16,24 @@
       "message": "So eventually if someone passes a SkFont with a nullptr SkTypeface then it just won\u0027t draw any glyphs (the \"default\" would be `SkEmptyTypeface`).",
       "revId": "2ed47830c97cf29c3957565f60ae5281e9e90c0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca28e5ee_640c4e00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-17T12:27:29Z",
+      "side": 1,
+      "message": "Correct. We might add some asserts in that case, since it is probably unintended.",
+      "parentUuid": "8399c28b_8793f95a",
+      "revId": "2ed47830c97cf29c3957565f60ae5281e9e90c0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
