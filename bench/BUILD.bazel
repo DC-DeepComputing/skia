@@ -69,13 +69,6 @@ cc_test_with_flags(
         "--surfaceConfig",
         "8888",
         "--autoTuneLoops",
-        "--writePNGs",  # For debugging only. We don't want this in CI.
-        # Example keys. For CI tasks, these should be set by the task driver.
-        "--key",
-        "key-1",
-        "value-1",
-        "key-2",
-        "value-2",
     ],
     set_flags = {
         "include_encoder": [
