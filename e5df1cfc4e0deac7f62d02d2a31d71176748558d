@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "077a2b19_a20d5440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-17T19:25:51Z",
+      "side": 1,
+      "message": "This CL is fine and gets us compiling again. But it still leaves us in a world we don\u0027t want to be in. Specifically we don\u0027t want to use #defines in our code to know when we\u0027re using a library/feature or not (well things like which OS is still fine). So the skia vello stuff will need to be its own library a client depends on. Then they\u0027ll include some public vello header and call some one time register vello path renderer call to let us know we can use that path renderer.\n\nBut all this is a larger change in Skia that should block this change, just pointing to how we need to structure things soon.",
+      "revId": "e5df1cfc4e0deac7f62d02d2a31d71176748558d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
