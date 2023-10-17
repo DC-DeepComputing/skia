@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f8a6c5_9369b12e",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T18:50:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d70af81f_f7214c1f",
+      "revId": "333344842273dcdd067ef60ad6b91c0153f2340c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac1409b6_43060f5c",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a8a17f_37803c68",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T18:50:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac1409b6_43060f5c",
+      "revId": "333344842273dcdd067ef60ad6b91c0153f2340c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "855bf7f3_30fcd0ca",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-10-13T15:59:59Z",
       "side": 1,
       "message": "Need the real point here, would need to run this through the graphics state object for this draw (the matrix on the `ScopedContentEntry` in effect when this is called).",
+      "range": {
+        "startLine": 1007,
+        "startChar": 67,
+        "endLine": 1007,
+        "endChar": 72
+      },
+      "revId": "333344842273dcdd067ef60ad6b91c0153f2340c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1ca8c35_ac71d47b",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1007,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-17T18:50:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "855bf7f3_30fcd0ca",
       "range": {
         "startLine": 1007,
         "startChar": 67,
