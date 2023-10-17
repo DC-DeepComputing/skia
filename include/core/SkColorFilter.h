@@ -82,7 +82,8 @@ private:
 
 class SK_API SkColorFilters {
 public:
-    static sk_sp<SkColorFilter> Compose(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner) {
+    static sk_sp<SkColorFilter> Compose(const sk_sp<SkColorFilter>& outer,
+                                        const sk_sp<SkColorFilter>& inner) {
         return outer ? outer->makeComposed(inner) : inner;
     }
 

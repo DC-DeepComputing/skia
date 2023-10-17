@@ -178,9 +178,9 @@ public:
 
 struct FontBlock {
     FontBlock(uint32_t count, sk_sp<FontChain> fontChain)
-        : type(BlockType::kFontChain)
-        , charCount(count)
-        , chain(fontChain) { }
+            : type(BlockType::kFontChain)
+            , charCount(count)
+            , chain(std::move(fontChain)) { }
     FontBlock() : FontBlock(0, nullptr) { }
     FontBlock(FontBlock& block) {
         this->type = block.type;
@@ -198,11 +198,14 @@ struct FontBlock {
 };
 
 struct ResolvedFontBlock {
-    ResolvedFontBlock(TextRange textRange, sk_sp<SkTypeface> typeface, SkScalar size, SkFontStyle fontStyle)
-        : textRange(textRange)
-        , typeface(typeface)
-        , size(size)
-        , style(fontStyle) { }
+    ResolvedFontBlock(TextRange textRange,
+                      sk_sp<SkTypeface> typeface,
+                      SkScalar size,
+                      SkFontStyle fontStyle)
+            : textRange(textRange)
+            , typeface(std::move(typeface))
+            , size(size)
+            , style(fontStyle) {}
 
     TextRange textRange;
     sk_sp<SkTypeface> typeface;

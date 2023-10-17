@@ -140,9 +140,8 @@ protected:
 class EditableText : public DynamicText {
 public:
     EditableText(std::u16string text, SkPoint offset, SkSize size, SkSpan<FontBlock> fontBlocks, SkSpan<DecoratedBlock> decorations, TextDirection textDirection, TextAlign textAlign)
-        : DynamicText(text, offset, size, fontBlocks, decorations, textDirection, textAlign)
-        , fSelection(std::make_unique<Selection>(DEFAULT_SELECTION_COLOR)) {
-    }
+        : DynamicText(std::move(text), offset, size, fontBlocks, decorations, textDirection, textAlign)
+        , fSelection(std::make_unique<Selection>(DEFAULT_SELECTION_COLOR)) {}
 
     bool isEmpty() { return fText.empty(); }
 
