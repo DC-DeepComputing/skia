@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fdab5f9_b7d509a8",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-17T19:11:53Z",
+      "side": 1,
+      "message": "Update operation count?",
+      "range": {
+        "startLine": 81,
+        "startChar": 57,
+        "endLine": 81,
+        "endChar": 85
+      },
+      "revId": "c308502f451b4f39b77ce81fdbb1a42955c63deb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
