@@ -381,6 +381,8 @@ void SurfaceDrawContext::drawPaint(const GrClip* clip,
             return;
         }
         SkIRect bounds = SkIRect::MakeSize(this->asSurfaceProxy()->dimensions());
+        SkDebugf("fill pixels with LM: %d %d %d %d\n", bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+        localMatrix.dump();
         this->fillPixelsWithLocalMatrix(clip, std::move(paint), bounds, localMatrix);
     }
 }
@@ -556,6 +558,12 @@ void SurfaceDrawContext::drawFilledQuad(const GrClip* clip,
 
     QuadOptimization opt = this->attemptQuadOptimization(clip, ss, quad, &paint);
     if (opt >= QuadOptimization::kClipApplied) {
+        SkDebugf("draw filled quad with opt = %d\n", (int) opt);
+        SkDebugf("surface dimensions = %dx%d\n", this->width(), this->height());
+        for (int i = 0; i < 4; ++i) {
+            SkDebugf("%d = (%f, %f) -> (%f, %f)\n", i, quad->fLocal.x(i), quad->fLocal.y(i),
+                    quad->fDevice.x(i), quad->fDevice.y(i));
+        }
         // These optimizations require caller to add an op themselves
         const GrClip* finalClip = opt == QuadOptimization::kClipApplied ? nullptr : clip;
         // The quad being drawn requires AA if any of its edges requires AA
@@ -573,6 +581,8 @@ void SurfaceDrawContext::drawFilledQuad(const GrClip* clip,
         }
         this->addDrawOp(finalClip, FillRectOp::Make(fContext, std::move(paint), aaType,
                                                     quad, ss));
+    } else {
+        SkDebugf("optimization handled draw: %d\n", (int) opt);
     }
     // All other optimization levels were completely handled inside attempt(), so no extra op needed
 }

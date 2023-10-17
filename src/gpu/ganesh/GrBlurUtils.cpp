@@ -2671,6 +2671,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
                        SkIRect::MakeXYWH(sRCol, sBRow, 1, 1));
         cheapDownscale(SkIRect::MakeXYWH(0, dh + 1, 1, 1), SkIRect::MakeXYWH(sLCol, sBRow, 1, 1));
     }
+
     srcView = rescaledSDC->readSurfaceView();
     // Drop the contexts so we don't hold the proxies longer than necessary.
     rescaledSDC.reset();

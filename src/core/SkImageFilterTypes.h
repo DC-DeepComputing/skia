@@ -35,6 +35,7 @@ class FilterResultTestAccess;  // for testing
 class SkBitmap;
 class SkBlender;
 class SkBlurEngine;
+class SkColorSpace;
 class SkDevice;
 class SkImage;
 class SkImageFilter;
@@ -621,6 +622,7 @@ private:
 };
 
 class Context; // Forward declare for FilterResult
+class Backend;
 
 // A FilterResult represents a lazy image anchored in the "layer" coordinate space of the current
 // image filtering context. It's named Filter*Result* since most instances represent the output of
@@ -800,7 +802,9 @@ private:
     // top-left corner. 'dstBounds' is intersected with 'fLayerBounds' unless 'preserveTransparency'
     // is true.
     std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
-    resolve(const Context& ctx, LayerSpace<SkIRect> dstBounds,
+    resolve(const Backend* backend,
+            const SkColorSpace* colorSpace,
+            LayerSpace<SkIRect> dstBounds,
             bool preserveTransparency=false) const;
 
     enum class BoundsAnalysis : int {
@@ -833,6 +837,18 @@ private:
                                    /*blendAffectsTransparentBlack=*/false);
     }
 
+    // FIXME does returning the origin make sense? What coordinate space is it in actually?
+    // should we instead return the transform to undo things? how does that transform and this origin
+    // relate to the output size of the blur?
+    //
+    // Really, I think the returned origin should be the location of the image's top left pixel in
+    // the original layer space, since that's where it's anchored. And then we can scale up the
+    // image dimensions back to layer space to get the effective layer bounds of the rescaled image.
+    //
+    // From there, we can figure out how to adjust and place the target output bounds at the low
+    // res blur invocation AND figure out what output bounds to set at the very end.
+    FilterResult rescale(const Context& ctx, const LayerSpace<SkSize>& scale) const;
+
     // Draw directly to the device, which draws the same image as produced by resolve() but can be
     // useful if multiple operations need to be performed on the canvas.
     //
@@ -844,7 +860,8 @@ private:
     // If 'blender' is null, the filter result is drawn with src-over blending. If it's not, it will
     // be drawn using the given 'blender', filling the device's current clip when the blend
     // modifies transparent black.
-    void draw(const Context& ctx,
+    void draw(const Backend* backend,
+              const SkColorSpace* colorSpace,
               SkDevice* device,
               bool preserveDeviceState,
               const SkBlender* blender=nullptr) const;
@@ -852,14 +869,15 @@ private:
     // Returns the FilterResult as a shader, ideally without resolving to an axis-aligned image.
     // 'xtraSampling' is the sampling that any parent shader applies to the FilterResult.
     // 'sampleBounds' is the bounding box of coords the shader will be evaluated at by any parent.
-    sk_sp<SkShader> asShader(const Context& ctx,
+    sk_sp<SkShader> asShader(const Backend* backend,
+                             const SkColorSpace* colorSpace,
                              const SkSamplingOptions& xtraSampling,
                              SkEnumBitMask<ShaderFlags> flags,
                              const LayerSpace<SkIRect>& sampleBounds) const;
 
     // Safely updates fTileMode, doing nothing if the FilterResult is empty. Updates the layer
-    // bounds to the context's desired output if the tilemode is not decal.
-    void updateTileMode(const Context& ctx, SkTileMode tileMode);
+    // bounds to the output bounds if the tilemode is not decal.
+    void updateTileMode(SkTileMode tileMode, const LayerSpace<SkIRect>& outputBounds);
 
     // The effective image of a FilterResult is 'fImage' sampled by 'fSamplingOptions' and
     // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform',

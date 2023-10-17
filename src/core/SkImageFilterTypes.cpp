@@ -296,25 +296,23 @@ sk_sp<SkShader> apply_decal(
 // is unavailable on SkDevice). A given AutoSurface should only rely on one access API.
 // Usage:
 //
-//     AutoSurface surface{ctx, dstBounds, renderInParameterSpace}; // if true, concats layer matrix
+//     AutoSurface surface{backend, colorSpace, dstBounds};
 //     if (surface) {
 //         surface->drawFoo(...);
 //     }
 //     return surface.snap(); // Automatically handles failed allocations
+//
+// The returned canvas or device are set up to have local coordinates match the layer space. If
+// local coordinates should match parameter space, just concatenate the mapping's layer matrix to
+// the canvas's CTM.
 class AutoSurface {
 public:
-    AutoSurface(const Context& ctx,
+    AutoSurface(const Backend* backend,
+                const SkColorSpace* colorSpace,
                 const LayerSpace<SkIRect>& dstBounds,
-                bool renderInParameterSpace,
                 const SkSurfaceProps* props = nullptr)
             : fDstBounds(dstBounds) {
-        // We don't intersect by ctx.desiredOutput() and only use the Context to make the surface.
-        // It is assumed the caller has already accounted for the desired output, or it's a
-        // situation where the desired output shouldn't apply (e.g. this surface will be transformed
-        // to align with the actual desired output via FilterResult metadata).
-        auto device = ctx.backend()->makeDevice(SkISize(dstBounds.size()),
-                                                ctx.refColorSpace(),
-                                                props);
+        auto device = backend->makeDevice(SkISize(dstBounds.size()), sk_ref_sp(colorSpace), props);
         if (!device) {
             return;
         }
@@ -328,10 +326,6 @@ public:
         // The device functor may have provided an approx-fit backing surface so clip to the
         // expected dst bounds.
         fCanvas->clipIRect(SkIRect(fDstBounds));
-
-        if (renderInParameterSpace) {
-            fCanvas->concat(SkMatrix(ctx.mapping().layerMatrix()));
-        }
     }
 
     explicit operator bool() const { return fCanvas.has_value(); }
@@ -649,14 +643,14 @@ bool LayerSpace<SkMatrix>::inverseMapRect(const LayerSpace<SkIRect>& rect,
 // FilterResult
 
 sk_sp<SkSpecialImage> FilterResult::imageAndOffset(const Context& ctx, SkIPoint* offset) const {
-    auto [image, origin] = this->resolve(ctx, fLayerBounds);
+    auto [image, origin] = this->resolve(ctx.backend(), ctx.colorSpace(), fLayerBounds);
     *offset = SkIPoint(origin);
     return image;
 }
 
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>FilterResult::imageAndOffset(
         const Context& ctx) const {
-    return this->resolve(ctx, fLayerBounds);
+    return this->resolve(ctx.backend(), ctx.colorSpace(), fLayerBounds);
 }
 
 SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
@@ -718,11 +712,11 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
     return analysis;
 }
 
-void FilterResult::updateTileMode(const Context& ctx, SkTileMode tileMode) {
+void FilterResult::updateTileMode(SkTileMode tileMode, const LayerSpace<SkIRect>& outputBounds) {
     if (fImage) {
         fTileMode = tileMode;
         if (tileMode != SkTileMode::kDecal) {
-            fLayerBounds = ctx.desiredOutput();
+            fLayerBounds = outputBounds;
         }
     }
 }
@@ -819,7 +813,7 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
         // new image if there's a color filter. As such, we have to preserve the current color
         // filter on the new FilterResult.
         restrictedOutput.fColorFilter = fColorFilter;
-        restrictedOutput.updateTileMode(ctx, tileMode);
+        restrictedOutput.updateTileMode(tileMode, ctx.desiredOutput());
         return restrictedOutput;
     } else if (tileMode == SkTileMode::kDecal) {
         // A decal crop can always be applied as the final operation by adjusting layer bounds, and
@@ -831,8 +825,9 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
     } else {
         // There is a non-trivial transform to the image data that must be applied before the
         // non-decal tilemode is meant to be applied to the axis-aligned 'crop'.
-        FilterResult tiled = this->resolve(ctx, fittedCrop, true);
-        tiled.updateTileMode(ctx, tileMode);
+        FilterResult tiled = this->resolve(ctx.backend(), ctx.colorSpace(), fittedCrop,
+                                           /*preserveTransparency=*/true);
+        tiled.updateTileMode(tileMode, ctx.desiredOutput());
         return tiled;
     }
 }
@@ -855,11 +850,11 @@ FilterResult FilterResult::applyColorFilter(const Context& ctx,
             // The current image's intersection with the desired output is fully transparent, but
             // the new color filter converts that into a non-transparent color. The desired output
             // is filled with this color, but use a 1x1 surface and clamp tiling.
-            AutoSurface surface{ctx,
+            AutoSurface surface{ctx.backend(),
+                                ctx.colorSpace(),
                                 LayerSpace<SkIRect>{SkIRect::MakeXYWH(ctx.desiredOutput().left(),
                                                                       ctx.desiredOutput().top(),
-                                                                      1, 1)},
-                                /*renderInParameterSpace=*/false};
+                                                                      1, 1)}};
             if (surface) {
                 SkPaint paint;
                 paint.setColor4f(SkColors::kTransparent, /*colorSpace=*/nullptr);
@@ -867,7 +862,7 @@ FilterResult FilterResult::applyColorFilter(const Context& ctx,
                 surface->drawPaint(paint);
             }
             FilterResult solidColor = surface.snap();
-            solidColor.updateTileMode(ctx, SkTileMode::kClamp);
+            solidColor.updateTileMode(SkTileMode::kClamp, ctx.desiredOutput());
             return solidColor;
         }
 
@@ -877,10 +872,12 @@ FilterResult FilterResult::applyColorFilter(const Context& ctx,
             // image to avoid losing the effect of the current 'fLayerBounds'.
             newLayerBounds.outset(LayerSpace<SkISize>({1, 1}));
             SkAssertResult(newLayerBounds.intersect(ctx.desiredOutput()));
-            FilterResult filtered = this->resolve(ctx, newLayerBounds,
+            FilterResult filtered = this->resolve(ctx.backend(),
+                                                  ctx.colorSpace(),
+                                                  newLayerBounds,
                                                   /*preserveTransparency=*/true);
             filtered.fColorFilter = std::move(colorFilter);
-            filtered.updateTileMode(ctx, SkTileMode::kClamp);
+            filtered.updateTileMode(SkTileMode::kClamp, ctx.desiredOutput());
             return filtered;
         }
 
@@ -998,7 +995,7 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
         // correctly evaluated. 'nextSampling' will always be 'sampling'.
         LayerSpace<SkIRect> tightBounds;
         if (transform.inverseMapRect(ctx.desiredOutput(), &tightBounds)) {
-            transformed = this->resolve(ctx, tightBounds);
+            transformed = this->resolve(ctx.backend(), ctx.colorSpace(), tightBounds);
         }
 
         if (!transformed.fImage) {
@@ -1024,7 +1021,8 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
 }
 
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
-        const Context& ctx,
+        const Backend* backend,
+        const SkColorSpace* colorSpace,
         LayerSpace<SkIRect> dstBounds,
         bool preserveTransparency) const {
     // The layer bounds is the final clip, so it can always be used to restrict 'dstBounds'. Even
@@ -1035,6 +1033,8 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
     }
 
     // If we have any extra effect to apply, there's no point in trying to extract a subset.
+    // For now we ignore color-space mismatches since the sampled image will be converted to the
+    // final color space before applying any effects once we actually have to render it.
     const bool subsetCompatible = !fColorFilter &&
                                   fTileMode == SkTileMode::kDecal &&
                                   !preserveTransparency;
@@ -1048,19 +1048,20 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
 
     // Don't use context properties to avoid DMSAA on internal stages of filter evaluation.
     SkSurfaceProps props = {};
-    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/false, &props};
+    AutoSurface surface{backend, colorSpace, dstBounds, &props};
     if (surface) {
-        this->draw(ctx, surface.device(), /*preserveDeviceState=*/false);
+        this->draw(backend, colorSpace, surface.device(), /*preserveDeviceState=*/false);
     }
     return surface.snap();
 }
 
 void FilterResult::draw(const Context& ctx, SkDevice* target, const SkBlender* blender) const {
     SkAutoDeviceTransformRestore adtr{target, ctx.mapping().layerToDevice()};
-    this->draw(ctx, target, /*preserveDeviceState=*/true, blender);
+    this->draw(ctx.backend(), ctx.colorSpace(), target, /*preserveDeviceState=*/true, blender);
 }
 
-void FilterResult::draw(const Context& ctx,
+void FilterResult::draw(const Backend* backend,
+                        const SkColorSpace* colorSpace,
                         SkDevice* device,
                         bool preserveDeviceState,
                         const SkBlender* blender) const {
@@ -1112,8 +1113,8 @@ void FilterResult::draw(const Context& ctx,
                 return;
             }
             // Regardless of the scenario, the end result is that it's in layer space.
-            FilterResult clipped = this->resolve(ctx, dstBounds);
-            clipped.draw(ctx, device, preserveDeviceState, blender);
+            FilterResult clipped = this->resolve(backend, colorSpace, dstBounds);
+            clipped.draw(backend, colorSpace, device, preserveDeviceState, blender);
             return;
         }
         // Otherwise we can apply the layer bounds as a clip to avoid an intermediate render pass
@@ -1171,7 +1172,8 @@ void FilterResult::draw(const Context& ctx,
     }
 }
 
-sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
+sk_sp<SkShader> FilterResult::asShader(const Backend* backend,
+                                       const SkColorSpace* colorSpace,
                                        const SkSamplingOptions& xtraSampling,
                                        SkEnumBitMask<ShaderFlags> flags,
                                        const LayerSpace<SkIRect>& sampleBounds) const {
@@ -1191,7 +1193,7 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
     const bool needsResolve =
             // Deferred calculations on the input would be repeated with each sample
             (flags & ShaderFlags::kSampledRepeatedly &&
-             (fColorFilter || !SkColorSpace::Equals(fImage->getColorSpace(), ctx.colorSpace()))) ||
+             (fColorFilter || !SkColorSpace::Equals(fImage->getColorSpace(), colorSpace))) ||
             // The deferred sampling options can't be merged with the one requested
             !compatible_sampling(fSamplingOptions, currentXformIsInteger,
                                  &sampling, nextXformIsInteger) ||
@@ -1204,22 +1206,27 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
         sampling = {};
     }
 
+    SkDebugf("as-shader, needs resolve %d, sampling filter = %d\n", needsResolve, (int) sampling.filter);
+
     sk_sp<SkShader> shader;
     if (needsResolve) {
         // The resolve takes care of fTransform (sans origin), fTileMode, fColorFilter, and
         // fLayerBounds
-        auto [pixels, origin] = this->resolve(ctx, fLayerBounds);
+        auto [pixels, origin] = this->resolve(backend, colorSpace, fLayerBounds);
         if (pixels) {
             shader = pixels->asShader(SkTileMode::kDecal, sampling,
                                       SkMatrix::Translate(origin.x(), origin.y()));
+            SkDebugf("resolved shader with kdecal\n");
         }
     } else {
         // Since we didn't need to resolve, we know the content being sampled isn't cropped by
         // fLayerBounds. fTransform and fColorFilter are handled in the shader directly.
         if (fTileMode == SkTileMode::kDecal) {
             shader = apply_decal(fTransform, fImage, sampleBounds, sampling);
+            SkDebugf("deferred shader with kdecal\n");
         } else {
             shader = fImage->asShader(fTileMode, sampling, SkMatrix(fTransform));
+            SkDebugf("deferred shader with %d\n", (int) fTileMode);
         }
 
         if (shader && fColorFilter) {
@@ -1246,8 +1253,9 @@ FilterResult FilterResult::MakeFromPicture(const Context& ctx,
     // for layers that are still axis-aligned?
     SkSurfaceProps props = ctx.backend()->surfaceProps()
                                          .cloneWithPixelGeometry(kUnknown_SkPixelGeometry);
-    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/true, &props};
+    AutoSurface surface{ctx.backend(), ctx.colorSpace(), dstBounds, &props};
     if (surface) {
+        surface->concat(ctx.mapping().layerMatrix());
         surface->clipRect(SkRect(cullRect));
         surface->drawPicture(std::move(pic));
     }
@@ -1258,8 +1266,10 @@ FilterResult FilterResult::MakeFromShader(const Context& ctx,
                                           sk_sp<SkShader> shader,
                                           bool dither) {
     SkASSERT(shader);
-    AutoSurface surface{ctx, ctx.desiredOutput(), /*renderInParameterSpace=*/true};
+    AutoSurface surface{ctx.backend(), ctx.colorSpace(), ctx.desiredOutput()};
     if (surface) {
+        surface->concat(ctx.mapping().layerMatrix());
+
         SkPaint paint;
         paint.setShader(shader);
         paint.setDither(dither);
@@ -1297,8 +1307,10 @@ FilterResult FilterResult::MakeFromImage(const Context& ctx,
         return {};
     }
 
-    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/true};
+    AutoSurface surface{ctx.backend(), ctx.colorSpace(), dstBounds};
     if (surface) {
+        surface->concat(ctx.mapping().layerMatrix());
+
         SkPaint paint;
         paint.setAntiAlias(true);
         surface->drawImageRect(std::move(image), srcRect, SkRect(dstRect), sampling, &paint,
@@ -1336,7 +1348,8 @@ SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
         // Assume the input shader will be evaluated once per pixel in the output unless otherwise
         // specified when the FilterResult was added to the builder.
         auto sampleBounds = input.fSampleBounds ? *input.fSampleBounds : outputBounds;
-        auto shader = input.fImage.asShader(fContext,
+        auto shader = input.fImage.asShader(fContext.backend(),
+                                            fContext.colorSpace(),
                                             input.fSampling,
                                             input.fFlags | xtraFlags,
                                             sampleBounds);
@@ -1369,8 +1382,12 @@ FilterResult FilterResult::Builder::drawShader(sk_sp<SkShader> shader,
         return {};
     }
 
-    AutoSurface surface{fContext, outputBounds, evaluateInParameterSpace};
+    AutoSurface surface{fContext.backend(), fContext.colorSpace(), outputBounds};
     if (surface) {
+        if (evaluateInParameterSpace) {
+            surface->concat(fContext.mapping().layerMatrix());
+        }
+
         SkPaint paint;
         paint.setShader(std::move(shader));
         surface->drawPaint(paint);
@@ -1394,17 +1411,167 @@ FilterResult FilterResult::Builder::merge() {
             [this](int i) { return fInputs[i].fImage.layerBounds(); });
     const auto outputBounds = this->outputBounds(mergedBounds);
 
-    AutoSurface surface{fContext, outputBounds, /*renderInParameterSpace=*/false};
+    AutoSurface surface{fContext.backend(), fContext.colorSpace(), outputBounds};
     if (surface) {
         for (const SampledFilterResult& input : fInputs) {
             SkASSERT(!input.fSampleBounds.has_value() &&
                      input.fSampling == kDefaultSampling &&
                      input.fFlags == ShaderFlags::kNone);
-            input.fImage.draw(fContext, surface.device(), /*preserveDeviceState=*/true);
+            input.fImage.draw(fContext.backend(), fContext.colorSpace(), surface.device(),
+                              /*preserveDeviceState=*/true);
         }
     }
     return surface.snap();
 }
+
+FilterResult FilterResult::rescale(const Context& ctx,
+                                   const LayerSpace<SkSize>& scale) const {
+    if (!fImage || ctx.desiredOutput().isEmpty()) {
+        return {};
+    }
+
+    SkEnumBitMask<BoundsAnalysis> analysis = this->analyzeBounds(ctx.desiredOutput());
+
+    // If a transparency-affecting color filter is visible but we otherwise determine we can rescale
+    // a tighter bounds, we need to include 1px of padding to store the result of the modified
+    // transparent border.
+    const bool needsCFPadding = (analysis & BoundsAnalysis::kEffectsVisible) &&
+                                fTileMode == SkTileMode::kDecal &&
+                                fColorFilter &&
+                                as_CFB(fColorFilter)->affectsTransparentBlack();
+    bool deferredTiling = false;
+
+    LayerSpace<SkIRect> srcRect;
+    LayerSpace<SkIPoint> origin;
+    if (analysis & BoundsAnalysis::kLayerCropVisible) {
+        // The layering needs to be resolved, presumably we need the full layer bounds to preserve
+        // effects, or the layer bounds are already tighter than the base image.
+        srcRect = fLayerBounds;
+    } else if (!is_nearly_integer_translation(fTransform, &origin)) {
+        // The transform will need to be applied on the first rescale step, so use the mapped image
+        // bounds (possibly with CF padding) if it's decal (if we knew the edge pixels were solid
+        // colors, we could do this for clamp too, but if they aren't solid, then deferring the tile
+        // mode to be post-transform would show a kink in the clamped edge pixels).
+        if (fTileMode == SkTileMode::kDecal) {
+            srcRect = fTransform.mapRect(LayerSpace<SkIRect>(fImage->dimensions()));
+            if (needsCFPadding) {
+                srcRect.outset(LayerSpace<SkISize>({1, 1}));
+            }
+            deferredTiling = true;
+        } else {
+            srcRect = fLayerBounds;
+        }
+    } else {
+        // The image is aligned with layer space so we will defer tiling to after the rescale.
+        // This is particularly advantageous when downscaling for large blurs where the desired out
+        // bounds are much bigger than the content due to the sigma outsetting.
+        srcRect = LayerSpace<SkIRect>(SkIRect::MakeXYWH(origin.x(), origin.y(),
+                                                        fImage->width(), fImage->height()));
+        if (needsCFPadding) {
+            srcRect.outset(LayerSpace<SkISize>({1, 1}));
+        }
+        deferredTiling = true;
+    }
+
+    // If tiling isn't being deferred (e.g. applied on first rescale step), or it's decal and clamp,
+    // we can restrict the src by what will eventually be visible.
+    if (!deferredTiling || fTileMode == SkTileMode::kDecal || fTileMode == SkTileMode::kClamp) {
+        if (!srcRect.intersect(ctx.desiredOutput())) {
+            return {};
+        }
+    }
+
+    // To avoid incurring error from rounding up the dimensions at every step, the logical size of
+    // the image is tracked in floats through the whole process; rounding to integers is only done
+    // to produce a conservative pixel buffer and clamp-tiling is used so that partially covered
+    // pixels are filled with the un-weighted color.
+    LayerSpace<SkRect> srcF{srcRect};
+    const auto dstPixelSize = LayerSpace<SkSize>({srcF.width() * scale.width(),
+                                                  srcF.height() * scale.height()}).ceil();
+    bool xAxisDone = srcRect.width() == dstPixelSize.width();
+    bool yAxisDone = srcRect.height() == dstPixelSize.height();
+    // FIXME: If x aqnd y are done AND we dont' have any extra effects, then we shouldn't do the loop
+    // because we want to just return the input as-is (posisblye subset...)
+    FilterResult result = *this;
+    // Take one iteration to resolve any transform or color filter, even if the scale factor isn't
+    // changing.
+    bool firstPass = true;
+    while(firstPass || (!xAxisDone && !yAxisDone)) {
+        float sx = xAxisDone ? 1.f : std::max(0.5f, srcRect.width() * scale.width() / srcF.width());
+        float sy = yAxisDone ? 1.f : std::max(0.5f, srcRect.height()*scale.height() / srcF.height());
+
+        // Almost equivalent to mapping srcF by a scale matrix but is guaranteed to keep the top and
+        // left edges at 0.
+        LayerSpace<SkRect> dstF{SkRect::MakeWH(srcF.width() * sx, srcF.height() * sy)};
+        LayerSpace<SkMatrix> scaleXform = LayerSpace<SkMatrix>::RectToRect(srcF, dstF);
+
+        SkDebugf("scale pass (%f, %f) from [%f %f %f %f] to [%f %f %f %f]\n",
+            sx, sy, srcF.left(), srcF.top(), srcF.right(), srcF.bottom(),
+            dstF.left(), dstF.top(), dstF.right(), dstF.bottom());
+
+        SkDebugf("source image layer bounds = %d %d %d %d\n", fLayerBounds.left(), fLayerBounds.top(),
+            fLayerBounds.right(), fLayerBounds.bottom());
+        SkDebugf("source image dim = %d %d\n", fImage->width(), fImage->height());
+
+        LayerSpace<SkIRect> dst = deferredTiling || !firstPass ? dstF.roundOut() : dstF.roundIn();
+        // SkASSERT(dst.width() == sk_float_ceil2int(dstF.width()) &&
+        //          dst.height() == sk_float_ceil2int(dstF.height()));
+        xAxisDone = dst.width() == dstPixelSize.width();
+        yAxisDone = dst.height() == dstPixelSize.height();
+        if (fTileMode == SkTileMode::kClamp) { // FIXME decal too?
+            // Add a 1px border on axes that are being scaled so that the edge values are preserved
+            // at lower resolutions (i.e. do not accumulate internal pixel values).
+            // dst.outset(LayerSpace<SkISize>({xAxisDone ? 0 : 1, yAxisDone ? 0 : 1}));
+        }
+
+        SkDebugf("dst buffer = %d %d %d %d\n", dst.left(), dst.top(), dst.right(), dst.bottom());
+
+        AutoSurface surface{ctx.backend(), ctx.colorSpace(), dst};
+        if (surface) {
+            // Fill all of surface (to include any padded edge pixels) with 'scaleXform' as the CTM.
+            surface->concat(SkMatrix(scaleXform));
+
+            LayerSpace<SkIRect> sampleBounds;
+            SkAssertResult(scaleXform.inverseMapRect(dst, &sampleBounds));
+            SkDebugf("sample bounds = %d %d %d %d\n", sampleBounds.left(), sampleBounds.top(), sampleBounds.right(), sampleBounds.bottom());
+
+            // Make sure to use clamp tiling so we don't introduce transparency or other errors
+            // in the lower resolution output
+            if (deferredTiling || !firstPass) {
+                // result.updateTileMode(SkTileMode::kClamp, sampleBounds);
+            }
+            SkPaint paint;
+            paint.setShader(result.asShader(ctx.backend(), ctx.colorSpace(), kDefaultSampling,
+                                            ShaderFlags::kNonTrivialSampling, sampleBounds));
+            surface->drawPaint(paint);
+        } else {
+            // Rescaling can't complete, no sense in downscaling non-existent data
+            return {};
+        }
+
+        result = surface.snap();
+        srcF = dstF;
+        firstPass = false;
+        // break;
+    }
+
+    // Add inverse scale transform to bring the final image size (now held in 'srcF') back to
+    // original layer space (still held in 'srcRect').
+    result.fTransform.postConcat(LayerSpace<SkMatrix>::RectToRect(srcF, LayerSpace<SkRect>{srcRect}));
+    result.fLayerBounds = fLayerBounds;
+    if (deferredTiling) {
+        // Update 'result's tile mode to match the original tile mode, or kClamp if an original
+        // decal tilemode + CF was resolved into a padded image.
+        result.fTileMode = needsCFPadding ? SkTileMode::kClamp : fTileMode;
+    }
+
+    return result;
+}
+
+// The following code uses "PixelSpace" as an alias to refer to the LayerSpace of the low-res
+// input image and blurred output to differentiate values for the original and final layer space
+template <typename T>
+using PixelSpace = LayerSpace<T>;
 
 FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     SkASSERT(fInputs.size() == 1);
@@ -1414,26 +1581,20 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     const SkBlurEngine* blurEngine = fContext.backend()->getBlurEngine();
     SkASSERT(blurEngine);
 
-    // TODO: All tilemodes are applied right now in resolve() so query with just kDecal
+    // FIXME: What happens if we do a rescale that does not defer the tile mode so we are in the
+    // decal case?
     const SkBlurEngine::Algorithm* algorithm = blurEngine->findAlgorithm(
-            SkSize(sigma), SkTileMode::kDecal, fContext.backend()->colorType());
+            SkSize(sigma), fInputs[0].fImage.tileMode(), fContext.backend()->colorType());
     if (!algorithm) {
         return {};
     }
 
-    // TODO: Move resizing logic out of GrBlurUtils into this function
-    SkASSERT(sigma.width() <= algorithm->maxSigma() && sigma.height() <= algorithm->maxSigma());
-
     // TODO: De-duplicate this logic between SkBlurImageFilter, here, and skgpu::BlurUtils.
-    skif::LayerSpace<SkISize> radii =
+    LayerSpace<SkISize> radii =
             LayerSpace<SkSize>({3.f*sigma.width(), 3.f*sigma.height()}).ceil();
     auto maxOutput = fInputs[0].fImage.layerBounds();
     maxOutput.outset(radii);
 
-    // TODO: If the input image is periodic, the output that's calculated can be the original image
-    // size and then have the layer bounds and tilemode of the output image apply the tile again.
-    // Similarly, a clamped blur can be restricted to a radius-outset buffer of the image bounds
-    // (vs. layer bounds) and rendered with clamp tiling.
     const auto outputBounds = this->outputBounds(maxOutput);
     if (outputBounds.isEmpty()) {
         return {};
@@ -1445,33 +1606,58 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     auto sampleBounds = outputBounds;
     sampleBounds.outset(radii);
 
-    // TODO: If the blur implementation requires downsampling, we should incorporate any deferred
-    // transform and colorfilter to the first rescale step instead of generating a full resolution
-    // simple image first.
-    // TODO: The presence of a non-decal tilemode should not force resolving to a simple image; it
-    // should be incorporated into the image that's sampled by the blur effect (modulo biasing edge
-    // pixels somehow for very large clamp blurs).
-    // TODO: resolve() doesn't actually guarantee that the returned image has the same color space
-    // as the Context, but probably should since the blur algorithm operates in the color space of
-    // the input image.
-    auto [image, origin] = fInputs[0].fImage.resolve(fContext, sampleBounds);
-    if (!image) {
-        return {};
+    // if ((true)) {
+    //     return fInputs[0].fImage;
+    // }
+
+    float sx = std::min(1.f, algorithm->maxSigma() / sigma.width());
+    float sy = std::min(1.f, algorithm->maxSigma() / sigma.height());
+    // For identity scale factors, this rescale() is a no-op when possible, but otherwise it will
+    // also handle resolving any color filters or transform similar to a resolve() except that it
+    // can defer the tile mode.
+    auto lowResImage = fInputs[0].fImage.rescale(
+            fContext.withNewDesiredOutput(sampleBounds), LayerSpace<SkSize>({sx, sy}));
+    // if ((true)) {
+    //     return lowResImage.applyCrop(fContext, outputBounds, SkTileMode::kDecal);
+    // }
+
+    // Map 'outputBounds' into the low-res image's pixel space to determine the low-res output
+    // from the blur engine.
+    PixelSpace<SkSize> lowResSigma{{std::min(algorithm->maxSigma(), sigma.width()),
+                                    std::min(algorithm->maxSigma(), sigma.height())}};
+    PixelSpace<SkIRect> lowResMaxOutput{SkISize{lowResImage.fImage->width(),
+                                                lowResImage.fImage->height()}};
+
+    PixelSpace<SkIRect> srcRelativeOutput;
+    if (lowResImage.tileMode() == SkTileMode::kRepeat ||
+        lowResImage.tileMode() == SkTileMode::kMirror) {
+        // The periodic tiling was deferred when down-sampling; we can further defer it to after the
+        // blur. The low-res output is 1-to-1 with the low res image.
+        srcRelativeOutput = lowResMaxOutput;
+    } else {
+        // For decal and clamp tiling, the blurred image stops being interesting outside the radii
+        // outset, so redo the max output analysis with the 'outputBounds' mapped into pixel space.
+        SkAssertResult(lowResImage.fTransform.inverseMapRect(outputBounds, &srcRelativeOutput));
+        lowResMaxOutput.outset(PixelSpace<SkSize>({3.f * lowResSigma.width(),
+                                                   3.f * lowResSigma.height()}).ceil());
+        if (!srcRelativeOutput.intersect(lowResMaxOutput)) {
+            return {};
+        }
     }
 
-    // TODO: Can blur() take advantage of AutoSurface? Right now the GPU functions are responsible
-    // for creating their own target surfaces.
-    auto srcRelativeOutput = outputBounds;
-    srcRelativeOutput.offset(-origin);
-    image = algorithm->blur(SkSize(sigma),
-                            image,
-                            SkIRect::MakeSize(image->dimensions()),
-                            SkTileMode::kDecal,
+    sk_sp<SkSpecialImage> lowResBlurResult =
+            algorithm->blur(SkSize(lowResSigma),
+                            lowResImage.refImage(),
+                            SkIRect::MakeSize(lowResImage.fImage->dimensions()),
+                            lowResImage.tileMode(),
                             SkIRect(srcRelativeOutput));
 
-    // TODO: Allow the blur functor to provide an upscaling transform that is applied to the
-    // FilterResult so that a render pass can possibly be elided if this is the final operation.
-    return {image, outputBounds.topLeft()};
+    FilterResult result{std::move(lowResBlurResult), srcRelativeOutput.topLeft()};
+    result.fTransform.postConcat(lowResImage.fTransform);
+    result.fLayerBounds = outputBounds;
+    result.fTileMode = lowResImage.tileMode();
+
+    return result;
 }
 
 } // end namespace skif

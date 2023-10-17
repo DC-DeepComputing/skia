@@ -137,6 +137,7 @@ DEF_SIMPLE_GM(BlurBigSigma, canvas, 1024, 1024) {
 
     p.setImageFilter(SkImageFilters::Blur(500, 500, nullptr));
 
+    SkDebugf("drawRect 700x800\n");
     canvas->drawRect(SkRect::MakeWH(700, 800), p);
 }
 

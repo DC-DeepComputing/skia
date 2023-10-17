@@ -199,6 +199,12 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
                      x.fShaderSubset.fB, y.fShaderSubset.fB};
     fShaderClamp = {x.fShaderClamp.fA, y.fShaderClamp.fA,
                     x.fShaderClamp.fB, y.fShaderClamp.fB};
+
+    SkDebugf("texture effect shader mode %d, subset %f %f, clamp %f %f\n"
+             "                           %d, subset %f %f, clamp %f %f\n",
+             (int) x.fShaderMode, x.fShaderSubset.fA, x.fShaderSubset.fB, x.fShaderClamp.fA, x.fShaderClamp.fB,
+             (int) y.fShaderMode, y.fShaderSubset.fA, y.fShaderSubset.fB, y.fShaderClamp.fA, y.fShaderClamp.fB);
+
     std::copy_n(border, 4, fBorder);
 }
 

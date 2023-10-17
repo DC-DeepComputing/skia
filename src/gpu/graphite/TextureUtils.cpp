@@ -176,117 +176,45 @@ sk_sp<SkSpecialImage> blur_impl(skgpu::graphite::Recorder* recorder,
                                 SkIRect dstRect,
                                 sk_sp<SkColorSpace> outCS,
                                 const SkSurfaceProps& outProps) {
-    // See if we can do a blur on the original resolution image
-    if (sigma.width() <= skgpu::kMaxLinearBlurSigma &&
-        sigma.height() <= skgpu::kMaxLinearBlurSigma) {
-        int radiusX = skgpu::BlurSigmaRadius(sigma.width());
-        int radiusY = skgpu::BlurSigmaRadius(sigma.height());
-        const int kernelArea = skgpu::BlurKernelWidth(radiusX) * skgpu::BlurKernelWidth(radiusY);
-        if (kernelArea <= skgpu::kMaxBlurSamples && radiusX > 0 && radiusY > 0) {
-            // Use a single-pass 2D kernel if it fits and isn't just 1D already
-            return blur_2d(recorder, sigma, {radiusX, radiusY}, std::move(input), srcRect, tileMode,
-                           dstRect, std::move(outCS), outProps);
-        } else {
-            // Use two passes of a 1D kernel (one per axis).
-            if (radiusX > 0) {
-                SkIRect intermediateDstRect = dstRect;
-                if (radiusY > 0) {
-                    // Outset the output size of dstRect by the radius required for the next Y pass
-                    intermediateDstRect.outset(0, radiusY);
-                    if (!intermediateDstRect.intersect(srcRect.makeOutset(radiusX, radiusY))) {
-                        return nullptr;
-                    }
-                }
+    SkASSERT(sigma.width() <= skgpu::kMaxLinearBlurSigma &&
+             sigma.height() <= skgpu::kMaxLinearBlurSigma);
 
-                input = blur_1d(recorder, sigma.width(), radiusX, {1.f, 0.f},
-                                std::move(input), srcRect, tileMode, intermediateDstRect,
-                                outCS, outProps);
-                if (!input) {
+    int radiusX = skgpu::BlurSigmaRadius(sigma.width());
+    int radiusY = skgpu::BlurSigmaRadius(sigma.height());
+    // TODO: Should we just have two different SkBlurEngine::Algorithms here?
+    const int kernelArea = skgpu::BlurKernelWidth(radiusX) * skgpu::BlurKernelWidth(radiusY);
+    if (kernelArea <= skgpu::kMaxBlurSamples && radiusX > 0 && radiusY > 0) {
+        // Use a single-pass 2D kernel if it fits and isn't just 1D already
+        return blur_2d(recorder, sigma, {radiusX, radiusY}, std::move(input), srcRect, tileMode,
+                        dstRect, std::move(outCS), outProps);
+    } else {
+        // Use two passes of a 1D kernel (one per axis).
+        if (radiusX > 0) {
+            SkIRect intermediateDstRect = dstRect;
+            if (radiusY > 0) {
+                // Outset the output size of dstRect by the radius required for the next Y pass
+                intermediateDstRect.outset(0, radiusY);
+                if (!intermediateDstRect.intersect(srcRect.makeOutset(radiusX, radiusY))) {
                     return nullptr;
                 }
-                srcRect = SkIRect::MakeWH(input->width(), input->height());
-                dstRect.offset(-intermediateDstRect.left(), -intermediateDstRect.top());
             }
 
-            if (radiusY > 0) {
-                input = blur_1d(recorder, sigma.height(), radiusY, {0.f, 1.f},
-                                std::move(input), srcRect, tileMode, dstRect, outCS, outProps);
+            input = blur_1d(recorder, sigma.width(), radiusX, {1.f, 0.f},
+                            std::move(input), srcRect, tileMode, intermediateDstRect,
+                            outCS, outProps);
+            if (!input) {
+                return nullptr;
             }
-
-            return input;
-        }
-    } else {
-        // Rescale the source image, blur that with a reduced sigma, and then upscale back to the
-        // dstRect dimensions.
-        // TODO(b/294102201): Share rescaling logic with GrBlurUtils::GaussianBlur.
-        float sx = sigma.width() > skgpu::kMaxLinearBlurSigma
-                ? (skgpu::kMaxLinearBlurSigma / sigma.width()) : 1.f;
-        float sy = sigma.height() > skgpu::kMaxLinearBlurSigma
-                ? (skgpu::kMaxLinearBlurSigma / sigma.height()) : 1.f;
-
-        int targetSrcWidth = sk_float_ceil2int(srcRect.width() * sx);
-        int targetSrcHeight = sk_float_ceil2int(srcRect.height() * sy);
-
-        auto inputImage = input->asImage();
-        // TODO(b/288902559): Support approx fit backings for the target of a rescale
-        // TODO(b/294102201): Be smarter about downscaling when there are actual tilemodes to apply
-        // to the image.
-        auto scaledInput = skgpu::graphite::RescaleImage(
-                recorder,
-                inputImage.get(),
-                srcRect.makeOffset(input->subset().topLeft()),
-                inputImage->imageInfo().makeWH(targetSrcWidth, targetSrcHeight),
-                SkImage::RescaleGamma::kLinear,
-                SkImage::RescaleMode::kRepeatedLinear);
-        if (!scaledInput) {
-            return nullptr;
+            srcRect = SkIRect::MakeWH(input->width(), input->height());
+            dstRect.offset(-intermediateDstRect.left(), -intermediateDstRect.top());
         }
 
-        // Calculate a scaled dstRect to match (0,0,targetSrcWidth,targetSrcHeight) as srcRect.
-        SkIRect targetDstRect = SkRect::MakeXYWH((dstRect.left() - srcRect.left()) * sx,
-                                                 (dstRect.top() - srcRect.top()) * sy,
-                                                 dstRect.width()*sx,
-                                                 dstRect.height()*sy).roundOut();
-        SkIRect targetSrcRect = SkIRect::MakeWH(targetSrcWidth, targetSrcHeight);
-        // Blur with pinned sigmas. If the sigma was less than the max, that axis of the image was
-        // not scaled so we can use the original. If it was greater than the max, the scale factor
-        // should have taken it the max supported sigma (ignoring the effect of rounding out the
-        // source bounds).
-        auto scaledOutput = blur_impl(
-                recorder,
-                {std::min(sigma.width(), skgpu::kMaxLinearBlurSigma),
-                 std::min(sigma.height(), skgpu::kMaxLinearBlurSigma)},
-                SkSpecialImages::MakeGraphite(recorder,
-                                              targetSrcRect,
-                                              std::move(scaledInput),
-                                              outProps),
-                targetSrcRect,
-                tileMode,
-                targetDstRect,
-                outCS,
-                outProps);
-        if (!scaledOutput) {
-            return nullptr;
+        if (radiusY > 0) {
+            input = blur_1d(recorder, sigma.height(), radiusY, {0.f, 1.f},
+                            std::move(input), srcRect, tileMode, dstRect, outCS, outProps);
         }
 
-        // TODO: Pass out the upscaling transform for skif::FilterResult to hold on to.
-        auto scaledOutputImage = scaledOutput->asImage();
-        auto outputImage = skgpu::graphite::RescaleImage(
-                recorder,
-                scaledOutputImage.get(),
-                scaledOutput->subset(),
-                scaledOutputImage->imageInfo().makeWH(dstRect.width(), dstRect.height()),
-                SkImage::RescaleGamma::kLinear,
-                SkImage::RescaleMode::kLinear);
-        if (!outputImage) {
-            return nullptr;
-        }
-
-        SkIRect outputDstRect = outputImage->bounds();
-        return SkSpecialImages::MakeGraphite(recorder,
-                                             outputDstRect,
-                                             std::move(outputImage),
-                                             outProps);
+        return input;
     }
 }
 
@@ -777,9 +705,7 @@ public:
 
     // SkBlurEngine::Algorithm
     float maxSigma() const override {
-        // TODO: When FilterResult handles rescaling externally, change this to
-        // skgpu::kMaxLinearBlurSigma.
-        return SK_ScalarInfinity;
+        return skgpu::kMaxLinearBlurSigma;
     }
 
     sk_sp<SkSpecialImage> blur(SkSize sigma,
