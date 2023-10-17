@@ -19,8 +19,8 @@ config("c99") {
 }
 
 copy("copy_unicode_data") {
-  unicode_tools_dir = "../../third_party/externals/unicodetools/unicodetools/data/ucd/$UNICODE_VERSION"
-  external_data_dir = "../../third_party/externals/libgrapheme/data/"
+  unicode_tools_dir = "../externals/unicodetools/unicodetools/data/ucd/$UNICODE_VERSION"
+  external_data_dir = "../externals/libgrapheme/data/"
   sources = [
     "$unicode_tools_dir/BidiBrackets.txt",
     "$unicode_tools_dir/BidiCharacterTest.txt",
@@ -53,33 +53,33 @@ template("compile_tool") {
       deps += invoker.deps
     }
     configs += [ ":c99" ]
-    lib_dirs = [ "../../third_party/externals/libgrapheme/gen" ]
-    sources += [ "../../third_party/externals/libgrapheme/gen/util.c" ]
+    lib_dirs = [ "../externals/libgrapheme/gen" ]
+    sources += [ "../externals/libgrapheme/gen/util.c" ]
   }
 }
 
 compile_tool("bidirectional") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/bidirectional.c" ]
+  sources = [ "../externals/libgrapheme/gen/bidirectional.c" ]
 }
 
 compile_tool("case") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/case.c" ]
+  sources = [ "../externals/libgrapheme/gen/case.c" ]
 }
 
 compile_tool("character") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/character.c" ]
+  sources = [ "../externals/libgrapheme/gen/character.c" ]
 }
 
 compile_tool("line") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/line.c" ]
+  sources = [ "../externals/libgrapheme/gen/line.c" ]
 }
 
 compile_tool("sentence") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/sentence.c" ]
+  sources = [ "../externals/libgrapheme/gen/sentence.c" ]
 }
 
 compile_tool("word") {
-  sources = [ "../../third_party/externals/libgrapheme/gen/word.c" ]
+  sources = [ "../externals/libgrapheme/gen/word.c" ]
 }
 
 # Run an executable that will produce a header
@@ -88,8 +88,8 @@ action_foreach("generate_headers") {
   root_dir = rebase_path(root_out_dir, "")
   args = [
     "$root_dir/{{source_name_part}}",
-    "../../third_party/externals/libgrapheme/gen/{{source_name_part}}.h",
-    "../../third_party/externals/libgrapheme/",
+    rebase_path("../externals/libgrapheme/gen/{{source_name_part}}.h", root_build_dir),
+    rebase_path("../externals/libgrapheme/", root_build_dir),
   ]
   _src = "../externals/libgrapheme/gen"
   sources = [
