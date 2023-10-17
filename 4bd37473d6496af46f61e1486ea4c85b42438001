@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2ca95fe_8b7c1ad2",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-17T17:21:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "312f91a5_d6096c3c",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e42537e_5d76e698",
@@ -106,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c101f9c_84a4781a",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-17T17:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb75daa4_3017456d",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98dab6b6_abbf5019",
@@ -137,6 +173,24 @@
       "side": 1,
       "message": "Removed (my first draft of this patch continued to use the stream from this point forward).",
       "parentUuid": "98dab6b6_abbf5019",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7d8d34a_f12e0afe",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-17T17:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f43dfcd4_3c04f08a",
       "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -207,6 +261,24 @@
       "side": 1,
       "message": "Symmetry with `outNumEntries` and some vague idea of not mixing \"write output of function\" with \"parse data\". Maybe it doesn\u0027t help readability. Removed.",
       "parentUuid": "a50a1aad_25e61cd7",
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44532f3c_f13ace0a",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-17T17:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e00732e_afc89c31",
       "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -329,6 +401,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ebf766d_2c66f6bc",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-17T17:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5146103_c6a3cccf",
+      "range": {
+        "startLine": 153,
+        "startChar": 16,
+        "endLine": 153,
+        "endChar": 25
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "463eb084_8cc01c56",
@@ -401,6 +497,30 @@
       "side": 1,
       "message": "Removed.",
       "parentUuid": "0ba636fe_fa253368",
+      "range": {
+        "startLine": 35,
+        "startChar": 68,
+        "endLine": 35,
+        "endChar": 73
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82d6535d_5ed37783",
+        "filename": "src/codec/SkTiffImageFileDirectory.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-17T17:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c853ad82_2a4d7a3b",
       "range": {
         "startLine": 35,
         "startChar": 68,
