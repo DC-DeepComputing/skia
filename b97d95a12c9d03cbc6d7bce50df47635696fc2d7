@@ -16,6 +16,24 @@
       "message": "Sorry, I invalidated the +1 with rebase shenanigans",
       "revId": "b97d95a12c9d03cbc6d7bce50df47635696fc2d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "618d77d6_89d4e430",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-17T17:43:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96b7ffad_c9f9c5ec",
+      "revId": "b97d95a12c9d03cbc6d7bce50df47635696fc2d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
