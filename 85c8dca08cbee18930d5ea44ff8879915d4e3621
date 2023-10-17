@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38004a86_a226f29a",
+        "filename": "tools/gpu/BackendTextureImageFactory.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-17T19:08:53Z",
+      "side": 0,
+      "message": "This line breaks linking, and everything works fine when removed. (Also discussed with Nicolette, and we think this line was added accidentally.)",
+      "revId": "85c8dca08cbee18930d5ea44ff8879915d4e3621",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

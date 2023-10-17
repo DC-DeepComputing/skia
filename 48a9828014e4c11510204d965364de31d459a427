@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4ab2bc_99d8be45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-17T19:08:53Z",
+      "side": 1,
+      "message": "Canary is still running, but looking OK so far, sending this out now to give more time for review. A few tests failed locally on Pixel 7a, so hopefully those same ones should fail on the emulator. I\u0027ll update this CL with `CtsEnforcement:kSkip` to exclude whatever fails on the emulator, then we can re-enable them later.",
+      "revId": "48a9828014e4c11510204d965364de31d459a427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32efbdc9_2fa7bedb",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-10-17T16:58:48Z",
       "side": 1,
       "message": "I think this means we\u0027ll always be building Graphite, even if we aren\u0027t using it? What effect does this have on the size of Skia?\n\nI suspect they\u0027ll want us to put this behind a flag, but I don\u0027t currently have ideas on what this would look like.",
+      "revId": "48a9828014e4c11510204d965364de31d459a427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1abdf517_3b5e1c46",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-17T19:08:53Z",
+      "side": 1,
+      "message": "This file should just apply to SkQP, but I think you\u0027re right we\u0027ll need to be cautious about code size (`bloaty`?) when adding Graphite to RenderEngine though.",
+      "parentUuid": "32efbdc9_2fa7bedb",
       "revId": "48a9828014e4c11510204d965364de31d459a427",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
