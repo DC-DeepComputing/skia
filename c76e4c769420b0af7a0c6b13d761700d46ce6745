@@ -16,6 +16,24 @@
       "message": "At various points here we\u0027re changing sk_sp parameters to references, which feels odd. Should we leave the sk_sp parameters alone? If we want to pass sk_sps around without refing them, would passing raw pointers make more sense?",
       "revId": "c76e4c769420b0af7a0c6b13d761700d46ce6745",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d48a5b2_f08de79c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-17T18:57:22Z",
+      "side": 1,
+      "message": "I agree that in new from-scratch code, you should rarely if ever need `const sk_sp\u003cT\u003e\u0026`. However, we have a lot of existing code that passes `sk_sp` by value when it didn\u0027t necessarily need to, and this is very costly. It requires a null check, two calls to `fetch_add` (one each for `ref` and `unref`), an `if` check on the refcount during the unref, and possibly a call to `internal_dispose` (though this probably won\u0027t happen in practice when passing the `sk_sp`, the compiler doesn\u0027t know this). That\u0027s a _lot_ of code, compared to passing the address of the object and possibly incurring one extra dereference through a pointer. \n\nWe could revisit these later and attempt to downgrade them into raw pointers. This does affect call sites though, and could be a significantly more gnarly refactor. These `const\u0026` refactors are just automated cleanups and don\u0027t require a lot of thought or rework of surrounding code, so it seems like an easy win. Plus, it allows us to turn on the ClangTidy warning so we don\u0027t backslide and introduce new problem code.",
+      "parentUuid": "11decd23_5e086af7",
+      "revId": "c76e4c769420b0af7a0c6b13d761700d46ce6745",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
