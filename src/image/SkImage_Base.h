@@ -174,7 +174,7 @@ public:
     virtual sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const = 0;
 
     // on failure, returns nullptr
-    // NOLINTNEXTLINE(performance-unnecessary-value-param)
+    // NOLINT(performance-unnecessary-value-param)
     virtual sk_sp<SkImage> onMakeWithMipmaps(sk_sp<SkMipmap>) const {
         return nullptr;
     }
