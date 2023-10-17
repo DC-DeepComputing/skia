@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3956f32d_b6631cee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-17T19:33:55Z",
+      "side": 1,
+      "message": "I guess an alternative to this virtual is that when we snap an upload task in Recorder or the Device, we call `addUpload` instead of just `add`. Then in Recorder it just sets a bit tracking that an upload task was added.\n\nThe advantage of this is that we don\u0027t have too loop over every task to check if its an upload. The disadvantage is that it is more fragile in that we need to make sure everywhere we add an upload knows to make the correct `addUpload` call.\n\nI don\u0027t really feel strongly one way or the other, just wanted to bring up an alternative for discussion.",
+      "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
