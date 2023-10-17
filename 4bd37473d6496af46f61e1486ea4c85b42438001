@@ -307,6 +307,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5146103_c6a3cccf",
+        "filename": "src/codec/SkTiffImageFileDirectory.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-17T13:24:59Z",
+      "side": 1,
+      "message": "I suspect this simply produced a `const sk_sp\u003cSkData\u003e\u0026\u0026` (universal reference), which then failed to match against `sk_sp`\u0027s move-constructor, so we were actually copy-constructing (ie, doing the ref-release dance).",
+      "parentUuid": "5e229dfd_7baefaa2",
+      "range": {
+        "startLine": 153,
+        "startChar": 16,
+        "endLine": 153,
+        "endChar": 25
+      },
+      "revId": "4bd37473d6496af46f61e1486ea4c85b42438001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "463eb084_8cc01c56",
         "filename": "src/codec/SkTiffImageFileDirectory.cpp",
         "patchSetId": 14
