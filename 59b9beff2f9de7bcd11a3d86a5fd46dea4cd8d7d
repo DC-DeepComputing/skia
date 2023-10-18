@@ -70,6 +70,30 @@
       },
       "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4dfc71d_2a259d05",
+        "filename": "fuzz/oss_fuzz/FuzzColorspace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-18T14:31:50Z",
+      "side": 1,
+      "message": "https://storage.googleapis.com/oss-fuzz-coverage/skia/reports/20231017/linux/src/skia/fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp.html\nShows us which lines of code are run. I presume lines that are optimized out will show no coverage, but I could be wrong.",
+      "parentUuid": "0eebebbc_c1580903",
+      "range": {
+        "startLine": 34,
+        "startChar": 56,
+        "endLine": 34,
+        "endChar": 64
+      },
+      "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
