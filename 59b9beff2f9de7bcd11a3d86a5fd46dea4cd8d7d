@@ -22,6 +22,30 @@
       },
       "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57ec0947_668f3f75",
+        "filename": "fuzz/oss_fuzz/FuzzColorspace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-18T14:27:41Z",
+      "side": 1,
+      "message": "Maybe. We\u0027ll see via fuzz coverage.",
+      "parentUuid": "b20e8bb5_835a2d49",
+      "range": {
+        "startLine": 34,
+        "startChar": 56,
+        "endLine": 34,
+        "endChar": 64
+      },
+      "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
