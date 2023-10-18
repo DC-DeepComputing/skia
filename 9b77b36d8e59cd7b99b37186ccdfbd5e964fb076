@@ -56,6 +56,52 @@
       },
       "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c454f45_6f0dad64",
+        "filename": "sh.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T13:59:08Z",
+      "side": 1,
+      "message": "We don\u0027t want to update this script every time your version number changes...?",
+      "range": {
+        "startLine": 15,
+        "startChar": 37,
+        "endLine": 15,
+        "endChar": 77
+      },
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cc39e6_c0e36623",
+        "filename": "sh.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T13:59:08Z",
+      "side": 1,
+      "message": "This should not hardcode everything",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 27
+      },
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
