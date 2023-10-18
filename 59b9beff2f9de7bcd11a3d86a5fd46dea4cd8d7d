@@ -46,6 +46,30 @@
       },
       "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eebebbc_c1580903",
+        "filename": "fuzz/oss_fuzz/FuzzColorspace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T14:28:35Z",
+      "side": 1,
+      "message": "I\u0027m not sure what you mean--how will fuzz coverage show that? (Not important, just curious)",
+      "parentUuid": "57ec0947_668f3f75",
+      "range": {
+        "startLine": 34,
+        "startChar": 56,
+        "endLine": 34,
+        "endChar": 64
+      },
+      "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
