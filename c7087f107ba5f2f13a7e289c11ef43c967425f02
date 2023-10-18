@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b7dd628_694d613b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-18T16:50:25Z",
+      "side": 1,
+      "message": "We\u0027re going to be okay with this on CPU? (Where we didn\u0027t ever run/support A8 image filters before)?",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 70
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4339f072_dcdb716b",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-18T16:50:25Z",
+      "side": 1,
+      "message": "nit: line length",
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec740066_5f65b287",
+        "filename": "src/core/SkCanvasPriv.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-18T16:50:25Z",
+      "side": 1,
+      "message": "nit: Bunch of weird wrapping here (some lines too long, others cut short)?",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 19
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
