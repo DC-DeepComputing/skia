@@ -87,7 +87,7 @@ std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
 std::string EmitPaintParamsUniforms(int bufferID,
                                     const char* name,
                                     const Layout layout,
-                                    SkSpan<const ShaderNode*> nodes,
+                                    const ShaderNode* root,
                                     int* numPaintUniforms,
                                     bool* wrotePaintColor);
 std::string EmitRenderStepUniforms(int bufferID,
@@ -97,14 +97,14 @@ std::string EmitRenderStepUniforms(int bufferID,
 std::string EmitPaintParamsStorageBuffer(int bufferID,
                                          const char* bufferTypePrefix,
                                          const char* bufferNamePrefix,
-                                         SkSpan<const ShaderNode*> nodes,
+                                         const ShaderNode* root,
                                          int* numPaintUniforms,
                                          bool* wrotePaintColor);
 std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
                                     const char* ssboIndex,
                                     const char* uniformName);
 std::string EmitTexturesAndSamplers(const ResourceBindingRequirements&,
-                                    SkSpan<const ShaderNode*> nodes,
+                                    const ShaderNode* root,
                                     int* binding);
 std::string EmitSamplerLayout(const ResourceBindingRequirements&, int* binding);
 std::string EmitVaryings(const RenderStep* step,

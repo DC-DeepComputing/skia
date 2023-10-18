@@ -12,6 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "src/base/SkArenaAlloc.h"
 
 namespace skgpu::graphite {
 
