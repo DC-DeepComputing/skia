@@ -46,6 +46,30 @@
       },
       "revId": "8b9c45e0fb284de96f60f21538d3add6be19ce20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3132cfc_1b7f50dd",
+        "filename": "fuzz/FuzzEncoders.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T14:46:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b739b18b_2243c846",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "8b9c45e0fb284de96f60f21538d3add6be19ce20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
