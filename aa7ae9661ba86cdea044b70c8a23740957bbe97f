@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cbec6bb_7a01978f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-18T17:06:27Z",
+      "side": 1,
+      "message": "Sorry, I set up the build rules wrong (I didn\u0027t realize we don\u0027t need to stage changes to Chromium anymore!). This fixes things by moving Exif to codecs core.",
+      "revId": "aa7ae9661ba86cdea044b70c8a23740957bbe97f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
