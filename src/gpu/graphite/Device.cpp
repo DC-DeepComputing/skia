@@ -1195,8 +1195,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         return {renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords()), nullptr};
     } else if (geometry.isEdgeAAQuad()) {
         SkASSERT(!requireMSAA && style.isFillStyle());
-        // handled by the same system as rects and round rects
-        return {renderers->analyticRRect(), nullptr};
+        // handled by specialized system, simplified from rects and round rects
+        return {renderers->perEdgeAAQuad(), nullptr};
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
         return {nullptr, nullptr};
@@ -1218,7 +1218,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     const Shape& shape = geometry.shape();
     // We can't use this renderer if we require MSAA for an effect (i.e. clipping or stroke+fill).
     if (!requireMSAA && is_simple_shape(shape, type) &&
-        strategy == PathRendererStrategy::kDefault) {
+        (strategy == PathRendererStrategy::kDefault ||
+         strategy == PathRendererStrategy::kRasterAA)) {
         return {renderers->analyticRRect(), nullptr};
     }
 
