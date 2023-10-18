@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22971d95_c6b21b80",
+        "filename": "fuzz/FuzzEncoders.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T00:45:01Z",
+      "side": 1,
+      "message": "I think this is dead code, but I\u0027m not 100% sure. I didn\u0027t want to spend too much time trying to figure it out.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "8b9c45e0fb284de96f60f21538d3add6be19ce20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
