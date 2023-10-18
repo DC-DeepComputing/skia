@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65afcf7b_3f44dbf5",
+        "filename": "src/core/SkColorSpace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T15:31:49Z",
+      "side": 1,
+      "message": "Would we ever actually get a larger-than-normal buffer? Seems like it might be safest to reject strange-looking/extra-large buffers. (But this is just preserving existing behavior.)",
+      "range": {
+        "startLine": 278,
+        "startChar": 15,
+        "endLine": 278,
+        "endChar": 16
+      },
+      "revId": "491f5fd153359cf0fd7790e7e9bbc418b1e802ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ed82fdf_5f7f6f44",
+        "filename": "src/core/SkColorSpace.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T15:31:49Z",
+      "side": 1,
+      "message": "Should we reject buffers that don\u0027t pass `SkScalarsAreFinite`?",
+      "range": {
+        "startLine": 283,
+        "startChar": 4,
+        "endLine": 283,
+        "endChar": 10
+      },
+      "revId": "491f5fd153359cf0fd7790e7e9bbc418b1e802ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
