@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b17c2fb2_3772f10f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-18T17:11:05Z",
+      "side": 1,
+      "message": "I have a goal/bug (b/40042849) to have CPU run image filters on every color type. Ignoring blur, all other image filters are either primitive operations (tracking metadata or manipulate SkSpecialImage), or are runtime effects (going through RP), or are drawing operations (going through RP) so they should be ready to go to handle alpha-only image filtering on the CPU.\n\nBefore we start taking this approach to mask filters on the CPU, the blur engine work for image filtering will need to be finished. The kN32-only blur SIMD implementation will be moved out of SkBlurImageFilter and into a blur engine impl that can be chosen for kRGBA8 or kBGRA8 color types. The similar mask filter SIMD implementation will be moved out of SkMaskBlurFilter and chosen for kA8 color types. Both of these algorithms have accuracy issues when sigma \u003c 2, so the there will also be a runtime-effect blur engine implementation (using the runtime effects currently in skgpu::BlurUtils but moved to core). On small sigmas or any other color type, the shader blur engine will be used so it should then go through RP+sksl.\n\nThe mask filter auto-layer will always just use the kA8 color type, so blur mask filters should always be routed to the same code that currently processes image-based SkMasks. The more analytic forms of SkMask will be captured by direct calls to new functions on SkDevice to draw blurred rects and rounded rects. I don\u0027t plan on moving ganesh or raster backends over to this new auto-system until the fast path is also in place for Graphite. But since graphite has no mask filtering right now, putting everything through image-based filtering is an improvement.",
+      "parentUuid": "0b7dd628_694d613b",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 70
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4339f072_dcdb716b",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 5
