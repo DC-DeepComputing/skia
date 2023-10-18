@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aaa78301_1271759e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T14:11:53Z",
+      "side": 1,
+      "message": "When building Chrome, we can still use `ninja` and `autoninja` normally, and don\u0027t need to manually make calls to initialize reclient. GN does it for us. Can we have Skia work this way?",
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5ce725d_9b4115fb",
         "filename": "sh.sh",
         "patchSetId": 6
