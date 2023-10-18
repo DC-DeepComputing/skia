@@ -827,8 +827,12 @@ skia_cc_library(
         "//include/effects:core_hdrs",
         "//include/sksl:core_hdrs",
         "//include/utils:core_hdrs",
+        "//include/ports:core_hdrs",
     ],
     features = ["layering_check"],
+    defines = [
+        "SK_DISABLE_LEGACY_FONTMGR_FACTORY",
+    ],
     local_defines = [
         "SK_SLUG_DISABLE_LEGACY_DESERIALIZE",
         "SK_DISABLE_LEGACY_PNG_WRITEBUFFER",
