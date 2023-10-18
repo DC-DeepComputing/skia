@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f42e041_5e14324f",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T14:02:52Z",
+      "side": 1,
+      "message": "tiny tiny nit: there are two spaces",
+      "range": {
+        "startLine": 200,
+        "startChar": 28,
+        "endLine": 200,
+        "endChar": 30
+      },
+      "revId": "9118a41d84c8ca918f247b02269ab128afcabac6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
