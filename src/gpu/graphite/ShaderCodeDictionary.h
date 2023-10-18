@@ -25,6 +25,8 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#include "src/gpu/graphite/Caps.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -132,12 +134,12 @@ public:
                SkSpan<const ShaderNode*> children,
                int codeID,
                int keyIndex)
-            : fEntry(snippet)
+            : fEntry1(snippet)
             , fChildren(children)
             , fCodeID(codeID)
-            , fKeyIndex(keyIndex)
+            , fKeyIndex2(keyIndex)
             , fRequiredFlags(snippet->fSnippetRequirementFlags) {
-        SkASSERT(children.size() == (size_t) fEntry->fNumChildren);
+        SkASSERT(children.size() == (size_t) fEntry1->fNumChildren);
         // TODO: RuntimeEffects can actually mask off requirements if they invoke a child with
         // explicit arguments.
         for (const ShaderNode* child : children) {
@@ -146,21 +148,21 @@ public:
     }
 
     int32_t codeSnippetId() const { return fCodeID; }
-    int32_t keyIndex() const { return fKeyIndex; }
-    const ShaderSnippet* entry() const { return fEntry; }
+    int32_t keyIndex2() const { return fKeyIndex2; }
+    const ShaderSnippet* entry1() const { return fEntry1; }
 
     SkEnumBitMask<SnippetRequirementFlags> requiredFlags() const { return fRequiredFlags; }
 
-    int numChildren() const { return fEntry->fNumChildren; }
+    int numChildren() const { return fEntry1->fNumChildren; }
     SkSpan<const ShaderNode*> children() const { return fChildren; }
     const ShaderNode* child(int childIndex) const { return fChildren[childIndex]; }
 
 private:
-    const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
+    const ShaderSnippet* fEntry1; // Owned by the ShaderCodeDictionary
     SkSpan<const ShaderNode*> fChildren; // Owned by the ShaderInfo's arena
 
     int32_t fCodeID;
-    int32_t fKeyIndex; // index back to PaintParamsKey, unique across nodes within a ShaderInfo
+    int32_t fKeyIndex2; // index back to PaintParamsKey, unique across nodes within a ShaderInfo
 
     SkEnumBitMask<SnippetRequirementFlags> fRequiredFlags;
 };
@@ -171,7 +173,8 @@ private:
 // logic required for all rendering in Graphite).
 class ShaderInfo {
 public:
-    ShaderInfo(UniquePaintParamsID id,
+    ShaderInfo(const Caps* caps,
+               UniquePaintParamsID id,
                const ShaderCodeDictionary* dict,
                const RuntimeEffectDictionary* rteDict,
                const char* ssboIndex);
@@ -206,9 +209,7 @@ private:
     // De-compressed shader tree from a PaintParamsKey with accumulated blend info and requirements.
     // The blendInfo doesn't contribute to the program's SkSL but contains the fixed-function state
     // required to function correctly, which the program's caller is responsible for configuring.
-    // TODO: There should really only be one root node representing the final blend, which has a
-    // child defining how the src color is calculated.
-    SkSpan<const ShaderNode*> fRootNodes;
+    const ShaderNode* fRootNode;
     SkBlendMode fBlendMode = SkBlendMode::kClear;
     skgpu::BlendInfo fBlendInfo;
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
