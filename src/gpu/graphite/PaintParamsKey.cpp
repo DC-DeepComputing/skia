@@ -83,29 +83,14 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
     return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
 }
 
-SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
-                                                       SkArenaAlloc* arena) const {
-    // TODO: Once the PaintParamsKey creation is organized to represent a single tree starting at
-    // the final blend, there will only be a single root node and this can be simplified.
-    // For now, we don't know how many roots there are, so collect them into a local array before
-    // copying into the arena.
-    const int keySize = SkTo<int>(fData.size());
-
-    // Normal PaintParams creation will have up to 7 roots for the different stages.
-    STArray<7, const ShaderNode*> roots;
+const ShaderNode* PaintParamsKey::getRootNode(const ShaderCodeDictionary* dict,
+                                              SkArenaAlloc* arena) const {
     int currentIndex = 0;
-    while (currentIndex < keySize) {
-        const ShaderNode* root = this->createNode(dict, &currentIndex, arena);
-        if (!root) {
-            return {}; // a bad key
-        }
-        roots.push_back(root);
-    }
+    const ShaderNode* root = this->createNode(dict, &currentIndex, arena);
+    SkASSERT(!root || root->codeSnippetId() == static_cast<int>(BuiltInCodeSnippetID::kRoot));
 
-    // Copy the accumulated roots into a span stored in the arena
-    const ShaderNode** rootSpan = arena->makeArray<const ShaderNode*>(roots.size());
-    memcpy(rootSpan, roots.data(), roots.size_bytes());
-    return SkSpan(rootSpan, roots.size());
+    SkASSERT(currentIndex == SkTo<int>(fData.size()));
+    return root;
 }
 
 #if defined(GRAPHITE_TEST_UTILS)
