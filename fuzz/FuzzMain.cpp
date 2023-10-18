@@ -408,10 +408,10 @@ static void fuzz_svg_dom(sk_sp<SkData> bytes){
 }
 #endif
 
-void FuzzCOLRv1(sk_sp<SkData> bytes);
+void FuzzCOLRv1(const uint8_t* data, size_t size);
 
-static void fuzz_colrv1(sk_sp<SkData> bytes) {
-    FuzzCOLRv1(bytes);
+static void fuzz_colrv1(sk_sp<SkData> data) {
+    FuzzCOLRv1(data->bytes(), data->size());
     SkDebugf("[terminated] Done COLRv1!\n");
 }
 
@@ -436,11 +436,11 @@ static void print_api_names(){
     }
 }
 
-static void fuzz_api(sk_sp<SkData> bytes, SkString name) {
+static void fuzz_api(sk_sp<SkData> data, SkString name) {
     for (const Fuzzable& fuzzable : sk_tools::Registry<Fuzzable>::Range()) {
         if (name.equals(fuzzable.name)) {
             SkDebugf("Fuzzing %s...\n", fuzzable.name);
-            Fuzz fuzz(std::move(bytes));
+            Fuzz fuzz(data->bytes(), data->size());
             fuzzable.fn(&fuzz);
             SkDebugf("[terminated] Success!\n");
             return;
@@ -458,44 +458,43 @@ static void dump_png(SkBitmap bitmap) {
     }
 }
 
-bool FuzzAnimatedImage(sk_sp<SkData> bytes);
+bool FuzzAnimatedImage(const uint8_t *data, size_t size);
 
-static void fuzz_animated_img(sk_sp<SkData> bytes) {
-    if (FuzzAnimatedImage(bytes)) {
+static void fuzz_animated_img(sk_sp<SkData> data) {
+    if (FuzzAnimatedImage(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success from decoding/drawing animated image!\n");
         return;
     }
     SkDebugf("[terminated] Could not decode or draw animated image.\n");
 }
 
-bool FuzzImageDecode(sk_sp<SkData> bytes);
+bool FuzzImageDecode(const uint8_t *data, size_t size);
 
-static void fuzz_image_decode(sk_sp<SkData> bytes) {
-    if (FuzzImageDecode(bytes)) {
+static void fuzz_image_decode(sk_sp<SkData> data) {
+    if (FuzzImageDecode(data->bytes(), data->size())) {
          SkDebugf("[terminated] Success from decoding/drawing image!\n");
          return;
     }
     SkDebugf("[terminated] Could not decode or draw image.\n");
 }
 
-bool FuzzIncrementalImageDecode(sk_sp<SkData> bytes);
+bool FuzzIncrementalImageDecode(const uint8_t *data, size_t size);
 
-static void fuzz_image_decode_incremental(sk_sp<SkData> bytes) {
-    if (FuzzIncrementalImageDecode(bytes)) {
+static void fuzz_image_decode_incremental(sk_sp<SkData> data) {
+    if (FuzzIncrementalImageDecode(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success using incremental decode!\n");
         return;
     }
     SkDebugf("[terminated] Could not incrementally decode and image.\n");
 }
 
-bool FuzzAndroidCodec(sk_sp<SkData> bytes, uint8_t sampleSize);
+bool FuzzAndroidCodec(const uint8_t *fuzzData, size_t fuzzSize, uint8_t sampleSize);
 
-static void fuzz_android_codec(sk_sp<SkData> bytes) {
-    Fuzz fuzz(bytes);
+static void fuzz_android_codec(sk_sp<SkData> data) {
+    Fuzz fuzz(data->bytes(), data->size());
     uint8_t sampleSize;
     fuzz.nextRange(&sampleSize, 1, 64);
-    bytes = SkData::MakeSubset(bytes.get(), 1, bytes->size() - 1);
-    if (FuzzAndroidCodec(bytes, sampleSize)) {
+    if (FuzzAndroidCodec(fuzz.remainingData(), fuzz.remainingSize(), sampleSize)) {
         SkDebugf("[terminated] Success on Android Codec sampleSize=%u!\n", sampleSize);
         return;
     }
@@ -741,9 +740,9 @@ static void fuzz_img(sk_sp<SkData> bytes, uint8_t scale, uint8_t mode) {
     dump_png(bitmap);
 }
 
-void FuzzSKP(sk_sp<SkData> bytes);
-static void fuzz_skp(sk_sp<SkData> bytes) {
-    FuzzSKP(bytes);
+void FuzzSKP(const uint8_t *data, size_t size);
+static void fuzz_skp(sk_sp<SkData> data) {
+    FuzzSKP(data->bytes(), data->size());
     SkDebugf("[terminated] Finished SKP\n");
 }
 
@@ -756,137 +755,135 @@ static void fuzz_color_deserialize(sk_sp<SkData> bytes) {
     SkDebugf("[terminated] Success! deserialized Colorspace.\n");
 }
 
-void FuzzPathDeserialize(SkReadBuffer& buf);
+void FuzzPathDeserialize(const uint8_t *data, size_t size);
 
-static void fuzz_path_deserialize(sk_sp<SkData> bytes) {
-    SkReadBuffer buf(bytes->data(), bytes->size());
-    FuzzPathDeserialize(buf);
+static void fuzz_path_deserialize(sk_sp<SkData> data) {
+    FuzzPathDeserialize(data->bytes(), data->size());
     SkDebugf("[terminated] path_deserialize didn't crash!\n");
 }
 
-bool FuzzRegionDeserialize(sk_sp<SkData> bytes);
+bool FuzzRegionDeserialize(const uint8_t *data, size_t size);
 
-static void fuzz_region_deserialize(sk_sp<SkData> bytes) {
-    if (!FuzzRegionDeserialize(bytes)) {
+static void fuzz_region_deserialize(sk_sp<SkData> data) {
+    if (!FuzzRegionDeserialize(data->bytes(), data->size())) {
         SkDebugf("[terminated] Couldn't initialize SkRegion.\n");
         return;
     }
     SkDebugf("[terminated] Success! Initialized SkRegion.\n");
 }
 
-void FuzzTextBlobDeserialize(SkReadBuffer& buf);
+void FuzzTextBlobDeserialize(const uint8_t *data, size_t size);
 
-static void fuzz_textblob_deserialize(sk_sp<SkData> bytes) {
-    SkReadBuffer buf(bytes->data(), bytes->size());
-    FuzzTextBlobDeserialize(buf);
+static void fuzz_textblob_deserialize(sk_sp<SkData> data) {
+    FuzzTextBlobDeserialize(data->bytes(), data->size());
     SkDebugf("[terminated] textblob didn't crash!\n");
 }
 
 void FuzzRegionSetPath(Fuzz* fuzz);
 
-static void fuzz_region_set_path(sk_sp<SkData> bytes) {
-    Fuzz fuzz(bytes);
+static void fuzz_region_set_path(sk_sp<SkData> data) {
+    Fuzz fuzz(data->bytes(), data->size());
     FuzzRegionSetPath(&fuzz);
     SkDebugf("[terminated] region_set_path didn't crash!\n");
 }
 
-void FuzzImageFilterDeserialize(sk_sp<SkData> bytes);
+void FuzzImageFilterDeserialize(const uint8_t *data, size_t size);
 
-static void fuzz_filter_fuzz(sk_sp<SkData> bytes) {
-    FuzzImageFilterDeserialize(bytes);
+static void fuzz_filter_fuzz(sk_sp<SkData> data) {
+    FuzzImageFilterDeserialize(data->bytes(), data->size());
     SkDebugf("[terminated] filter_fuzz didn't crash!\n");
 }
 
-bool FuzzSkMeshSpecification(sk_sp<SkData> bytes);
+bool FuzzSkMeshSpecification(const uint8_t *fuzzData, size_t fuzzSize);
 
-static void fuzz_skmeshspecification(sk_sp<SkData> bytes) {
-    FuzzSkMeshSpecification(bytes);
+static void fuzz_skmeshspecification(sk_sp<SkData> data) {
+    FuzzSkMeshSpecification(data->bytes(), data->size());
     SkDebugf("[terminated] SkMeshSpecification::Make didn't crash!\n");
 }
 
-bool FuzzSkRuntimeBlender(sk_sp<SkData> bytes);
+bool FuzzSkRuntimeBlender(const uint8_t *data, size_t size);
 
-static void fuzz_skruntimeblender(sk_sp<SkData> bytes) {
-    if (FuzzSkRuntimeBlender(bytes)) {
+static void fuzz_skruntimeblender(sk_sp<SkData> data) {
+    if (FuzzSkRuntimeBlender(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled and executed SkSL blender.\n");
     } else {
         SkDebugf("[terminated] Could not compile or execute SkSL blender.\n");
     }
 }
 
-bool FuzzSkRuntimeColorFilter(sk_sp<SkData> bytes);
+bool FuzzSkRuntimeColorFilter(const uint8_t *data, size_t size);
 
-static void fuzz_skruntimecolorfilter(sk_sp<SkData> bytes) {
-    if (FuzzSkRuntimeColorFilter(bytes)) {
+static void fuzz_skruntimecolorfilter(sk_sp<SkData> data) {
+    if (FuzzSkRuntimeColorFilter(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled and executed SkSL color filter.\n");
     } else {
         SkDebugf("[terminated] Could not compile or execute SkSL color filter.\n");
     }
 }
 
-bool FuzzSkRuntimeEffect(sk_sp<SkData> bytes);
+bool FuzzSkRuntimeEffect(const uint8_t *data, size_t size);
 
-static void fuzz_skruntimeeffect(sk_sp<SkData> bytes) {
-    if (FuzzSkRuntimeEffect(bytes)) {
+static void fuzz_skruntimeeffect(sk_sp<SkData> data) {
+    if (FuzzSkRuntimeEffect(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled and executed SkSL shader.\n");
     } else {
         SkDebugf("[terminated] Could not compile or execute SkSL shader.\n");
     }
 }
 
-bool FuzzSKSL2GLSL(sk_sp<SkData> bytes);
+bool FuzzSKSL2GLSL(const uint8_t *data, size_t size);
 
-static void fuzz_sksl2glsl(sk_sp<SkData> bytes) {
-    if (FuzzSKSL2GLSL(bytes)) {
+static void fuzz_sksl2glsl(sk_sp<SkData> data) {
+    if (FuzzSKSL2GLSL(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled input to GLSL.\n");
     } else {
         SkDebugf("[terminated] Could not compile input to GLSL.\n");
     }
 }
 
-bool FuzzSKSL2Metal(sk_sp<SkData> bytes);
+bool FuzzSKSL2Metal(const uint8_t *data, size_t size);
 
-static void fuzz_sksl2metal(sk_sp<SkData> bytes) {
-    if (FuzzSKSL2Metal(bytes)) {
+static void fuzz_sksl2metal(sk_sp<SkData> data) {
+    if (FuzzSKSL2Metal(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled input to Metal.\n");
     } else {
         SkDebugf("[terminated] Could not compile input to Metal.\n");
     }
 }
 
-bool FuzzSKSL2Pipeline(sk_sp<SkData> bytes);
+bool FuzzSKSL2Pipeline(const uint8_t *data, size_t size);
 
-static void fuzz_sksl2pipeline(sk_sp<SkData> bytes) {
-    if (FuzzSKSL2Pipeline(bytes)) {
+static void fuzz_sksl2pipeline(sk_sp<SkData> data) {
+    if (FuzzSKSL2Pipeline(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled input to pipeline stage.\n");
     } else {
         SkDebugf("[terminated] Could not compile input to pipeline stage.\n");
     }
 }
 
-bool FuzzSKSL2SPIRV(sk_sp<SkData> bytes);
+bool FuzzSKSL2SPIRV(const uint8_t *data, size_t size);
 
-static void fuzz_sksl2spirv(sk_sp<SkData> bytes) {
-    if (FuzzSKSL2SPIRV(bytes)) {
+static void fuzz_sksl2spirv(sk_sp<SkData> data) {
+    if (FuzzSKSL2SPIRV(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled input to SPIR-V.\n");
     } else {
         SkDebugf("[terminated] Could not compile input to SPIR-V.\n");
     }
 }
 
-bool FuzzSKSL2WGSL(sk_sp<SkData> bytes);
+bool FuzzSKSL2WGSL(const uint8_t *data, size_t size);
 
-static void fuzz_sksl2wgsl(sk_sp<SkData> bytes) {
-    if (FuzzSKSL2WGSL(bytes)) {
+static void fuzz_sksl2wgsl(sk_sp<SkData> data) {
+    if (FuzzSKSL2WGSL(data->bytes(), data->size())) {
         SkDebugf("[terminated] Success! Compiled input to WGSL.\n");
     } else {
         SkDebugf("[terminated] Could not compile input to WGSL.\n");
     }
 }
 
-void FuzzSkDescriptorDeserialize(sk_sp<SkData> bytes);
+void FuzzSkDescriptorDeserialize(const uint8_t *data, size_t size);
 
-static void fuzz_skdescriptor_deserialize(sk_sp<SkData> bytes) {
-    FuzzSkDescriptorDeserialize(bytes);
+static void fuzz_skdescriptor_deserialize(sk_sp<SkData> data) {
+    FuzzSkDescriptorDeserialize(data->bytes(), data->size());
     SkDebugf("[terminated] Did not crash while deserializing an SkDescriptor.\n");
 }
