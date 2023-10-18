@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bffc4717_7542eb3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-18T13:30:27Z",
+      "side": 1,
+      "message": "Story so far: our MSVC toolchain doesn\u0027t support cross compiling (building for host), our xSAN bots don\u0027t support cross compiling (building for host), and when libgrapheme is built for Windows it appears to segfault.\n\nFor the time being I think this will just add `skia_use_client_icu` and libgrapheme can be dealt with later (though the change to it\u0027s BUILD here needs to be checked in because it does fix a lot of issues).",
+      "revId": "57e441b0622775e3c534573c4a0b201bb05c32df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
