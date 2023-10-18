@@ -804,7 +804,7 @@ void check_draw(skiatest::Reporter* reporter,
 //
 // TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
-                                   CtsEnforcement::kNextRelease) {
+                                   CtsEnforcement::kNever) {
     auto recorder = context->makeRecorder();
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
