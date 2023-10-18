@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4e073f7_6e15aff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T13:57:48Z",
+      "side": 1,
+      "message": "Is this intended to be a script that users run, or an example that teaches users how to set up?\n\nIt seems to be a mix of both things.",
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5ce725d_9b4115fb",
         "filename": "sh.sh",
         "patchSetId": 6
