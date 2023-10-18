@@ -1,0 +1,118 @@
+// Copyright 2023 Google LLC
+//
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+package common
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
+	"sort"
+
+	"go.skia.org/infra/go/gcs"
+	"go.skia.org/infra/go/now"
+	"go.skia.org/infra/go/skerr"
+	"go.skia.org/infra/go/util"
+	"go.skia.org/infra/task_driver/go/lib/os_steps"
+	"go.skia.org/infra/task_driver/go/td"
+)
+
+// The name of the file produced by the C++ test that we should upload to Perf.
+const resultsJSON = "results.json"
+
+// ComputeBenchmarkTestRunnerKeyFlag returns the --key flag as expected by BazelBenchmarkTestRunner.cpp with the
+// information that should be determined by the task driver, such as OS/architecture, device under
+// test, etc.
+func ComputeBenchmarkTestRunnerKeyFlag() []string {
+	keyValuePairs := ComputeTaskSpecificGoldAndPerfKeyValuePairs()
+
+	// Sort keys for determinism.
+	var keys []string
+	for key := range keyValuePairs {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	flag := []string{"--key"}
+	for _, key := range keys {
+		flag = append(flag, key, keyValuePairs[key])
+	}
+
+	return flag
+}
+
+type UploadToPerfArgs struct {
+	GCSClient gcs.GCSClient
+
+	GitCommit string
+	TaskName  string
+	TaskID    string
+}
+
+func UploadToPerf(ctx context.Context, utpArgs UploadToPerfArgs, outputsZIPOrDir string) error {
+	// Were there any undeclared test outputs?
+	fileInfo, err := os.Stat(outputsZIPOrDir)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return td.Do(ctx, td.Props("Test did not produce an undeclared test outputs ZIP file or directory; nothing to upload to Perf"), func(ctx context.Context) error {
+				return nil
+			})
+		} else {
+			return skerr.Wrap(err)
+		}
+	}
+
+	// If the undeclared outputs ZIP file or directory is a ZIP file, extract it.
+	outputsDir := ""
+	if fileInfo.IsDir() {
+		outputsDir = outputsZIPOrDir
+	} else {
+		var err error
+		outputsDir, err = ExtractOutputsZip(ctx, outputsZIPOrDir)
+		if err != nil {
+			return skerr.Wrap(err)
+		}
+		defer util.RemoveAll(outputsDir)
+	}
+
+	// Get path to the results.json file that we will upload to Perf.
+	resultsJSONPath := filepath.Join(outputsDir, resultsJSON)
+	fileInfo, err = os_steps.Stat(ctx, resultsJSONPath)
+	if err != nil {
+		return skerr.Wrap(err)
+	}
+	if fileInfo.IsDir() {
+		return skerr.Fmt("file %q is a directory", resultsJSONPath)
+	}
+
+	resultsJSONBytes, err := os.ReadFile(resultsJSONPath)
+	if err != nil {
+		return skerr.Wrapf(err, "while reading %q", resultsJSONPath)
+	}
+
+	// DO NOT SUBMIT
+	fmt.Printf("%s\n", string(resultsJSONBytes))
+
+	gcsPath := computePerfJSONFileGCSPath(ctx, utpArgs.GitCommit, utpArgs.TaskName, utpArgs.TaskID)
+	gcsURL := fmt.Sprintf("gs://%s/%s", utpArgs.GCSClient.Bucket(), gcsPath)
+	return td.Do(ctx, td.Props(fmt.Sprintf("Upload %s", gcsURL)), func(ctx context.Context) error {
+		if err := utpArgs.GCSClient.SetFileContents(ctx, gcsPath, gcs.FILE_WRITE_OPTS_TEXT, resultsJSONBytes); err != nil {
+			return skerr.Wrapf(err, "while uploading %q", gcsURL)
+		}
+		return nil
+	})
+}
+
+// Based on
+// https://skia.googlesource.com/skia/+/5096ed4deb06171700c74273b685713bec0ae597/infra/bots/task_drivers/codesize/codesize.go#504
+// and
+// https://skia.googlesource.com/skia/+/5096ed4deb06171700c74273b685713bec0ae597/infra/bots/task_drivers/codesize/codesize.go#517.
+func computePerfJSONFileGCSPath(ctx context.Context, gitCommit, taskName, taskID string) string {
+	timePrefix := now.Now(ctx).UTC().Format("2006/01/02/15") // YYYY/MM/DD/HH.
+	// Example: nano-json-v1/2022/01/31/01/033ccea12c0949d0f712471bfcb4ed6daf69aaff/BazelTest-Foo-Bar/results_CkPp9ElAaEXyYWNHpXHU.json.
+	return fmt.Sprintf("nano-json-v1/%s/%s/%s/results_%s.json", timePrefix, gitCommit, taskName, taskID)
+}

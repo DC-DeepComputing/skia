@@ -28,12 +28,10 @@
 
 #include <cinttypes>
 
-// TODO(lovisolo): Should this be mandatory?
-// TODO(lovisolo): Should we check that this is a valid Git hash?
-static DEFINE_string(
-        gitHash,
-        "",
-        "Git hash to include in the results.json output file, which can be ingested by Perf.");
+static DEFINE_string(gitHash,
+                     "",
+                     "Git hash to include in the results.json output file, which can be ingested "
+                     "by Perf. Required.");
 
 static DEFINE_string(issue,
                      "",
@@ -183,6 +181,9 @@ static void validate_flags_exactly_one(std::map<std::string, bool> flags) {
 }
 
 static void validate_flags(bool isBazelTest) {
+    // The Perf ingestion service will reject any JSON files that do not specify a Git hash.
+    validate_string_flag_nonempty("--gitHash", FLAGS_gitHash);
+
     validate_flags_all_or_none(
             {{"--issue", FLAGS_issue.size() > 0}, {"--patchset", FLAGS_patchset.size() > 0}});
     validate_string_flag_single_value("--issue", FLAGS_issue);
