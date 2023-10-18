@@ -43,34 +43,36 @@ void DebugLayerManager::setCommand(int nodeId, int frame, int command) {
   }
 }
 
-void DebugLayerManager::storeSkPicture(int nodeId, int frame, sk_sp<SkPicture> picture,
-    SkIRect dirty) {
-  const LayerKey k = {frame, nodeId};
+void DebugLayerManager::storeSkPicture(int nodeId,
+                                       int frame,
+                                       const sk_sp<SkPicture>& picture,
+                                       SkIRect dirty) {
+    const LayerKey k = {frame, nodeId};
 
-  // Make debug canvas using bounds from SkPicture. This will be equal to whatever width and
-  // height were passed into SkPictureRecorder::beginRecording(w, h) which is the layer bounds.
-  const auto& layerBounds = picture->cullRect().roundOut();
-  auto debugCanvas = std::make_unique<DebugCanvas>(layerBounds);
-  // Must be set or they end up undefined due to cosmic rays, bad luck, etc.
-  debugCanvas->setOverdrawViz(false);
-  debugCanvas->setDrawGpuOpBounds(false);
-  debugCanvas->setClipVizColor(SK_ColorTRANSPARENT);
-  // Setting this allows a layer to contain another layer. TODO(nifong): write a test for this.
-  debugCanvas->setLayerManagerAndFrame(this, frame);
-  // Only draw picture to the debug canvas once.
-  debugCanvas->drawPicture(picture);
-  int numCommands = debugCanvas->getSize();
+    // Make debug canvas using bounds from SkPicture. This will be equal to whatever width and
+    // height were passed into SkPictureRecorder::beginRecording(w, h) which is the layer bounds.
+    const auto& layerBounds = picture->cullRect().roundOut();
+    auto debugCanvas = std::make_unique<DebugCanvas>(layerBounds);
+    // Must be set or they end up undefined due to cosmic rays, bad luck, etc.
+    debugCanvas->setOverdrawViz(false);
+    debugCanvas->setDrawGpuOpBounds(false);
+    debugCanvas->setClipVizColor(SK_ColorTRANSPARENT);
+    // Setting this allows a layer to contain another layer. TODO(nifong): write a test for this.
+    debugCanvas->setLayerManagerAndFrame(this, frame);
+    // Only draw picture to the debug canvas once.
+    debugCanvas->drawPicture(picture);
+    int numCommands = debugCanvas->getSize();
 
-  DrawEvent event = {
-    frame == 0 || dirty==layerBounds,            // fullRedraw
-    nullptr,                                      // image
-    std::move(debugCanvas),                       // debugCanvas
-    numCommands-1,                                // command
-    {layerBounds.width(), layerBounds.height()},  // layerBounds
-  };
+    DrawEvent event = {
+            frame == 0 || dirty == layerBounds,           // fullRedraw
+            nullptr,                                      // image
+            std::move(debugCanvas),                       // debugCanvas
+            numCommands - 1,                              // command
+            {layerBounds.width(), layerBounds.height()},  // layerBounds
+    };
 
-  fDraws.set(k, std::move(event));
-  keys.push_back(k);
+    fDraws.set(k, std::move(event));
+    keys.push_back(k);
 }
 
 void DebugLayerManager::drawLayerEventTo(SkSurface* surface, const int nodeId, const int frame) {
