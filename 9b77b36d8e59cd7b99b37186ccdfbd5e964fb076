@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "416a39b0_c5b91b7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-18T11:52:18Z",
+      "side": 1,
+      "message": "I don\u0027t understand completely what the script is doing, but it seems like a useful resource.",
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ce725d_9b4115fb",
+        "filename": "sh.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-18T11:52:18Z",
+      "side": 1,
+      "message": "I would like this script to not live at the Skia root (maybe in the tools subdirectory ?) and I would like the filename to be more descriptive than \"sh\" (maybe build_with_reclient.sh ?)",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
