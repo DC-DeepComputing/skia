@@ -13,11 +13,11 @@
 
 #if defined(SK_ENABLE_SVG)
 
-void FuzzSVG(sk_sp<SkData> bytes) {
+void FuzzSVG(const uint8_t *data, size_t size) {
     uint8_t w = 100;
     uint8_t h = 200;
 
-    SkMemoryStream stream(bytes);
+    SkMemoryStream stream(data, size);
     sk_sp<SkSVGDOM> dom = SkSVGDOM::MakeFromStream(stream);
     if (!dom) {
         return;
@@ -39,8 +39,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (size > 30000) {
         return 0;
     }
-    auto bytes = SkData::MakeWithoutCopy(data, size);
-    FuzzSVG(bytes);
+    FuzzSVG(data, size);
     return 0;
 }
 #endif

@@ -12,9 +12,9 @@
 #include "include/core/SkSurface.h"
 #include "src/core/SkRegionPriv.h"
 
-bool FuzzRegionDeserialize(sk_sp<SkData> bytes) {
+bool FuzzRegionDeserialize(const uint8_t *data, size_t size) {
     SkRegion region;
-    if (!region.readFromMemory(bytes->data(), bytes->size())) {
+    if (!region.readFromMemory(data, size)) {
         return false;
     }
     region.computeRegionComplexity();
@@ -41,8 +41,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (size > 512) {
         return 0;
     }
-    auto bytes = SkData::MakeWithoutCopy(data, size);
-    FuzzRegionDeserialize(bytes);
+    FuzzRegionDeserialize(data, size);
     return 0;
 }
 #endif
