@@ -110,6 +110,30 @@
       },
       "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b49fe782_00387ae3",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-18T11:58:52Z",
+      "side": 1,
+      "message": "I believe this is the right answer. At this point all we want to ensure is that the client tries to play them back in the right order. Since we have to bail on Recordings once one part of the add operation fails (e.g., a bad promise image), we can deal with those failure cases individually.",
+      "parentUuid": "9de11e10_e7b8ab5e",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 86,
+        "endChar": 52
+      },
+      "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
