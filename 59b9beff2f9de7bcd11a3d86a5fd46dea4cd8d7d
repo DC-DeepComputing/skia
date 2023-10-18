@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20e8bb5_835a2d49",
+        "filename": "fuzz/oss_fuzz/FuzzColorspace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-18T13:46:28Z",
+      "side": 1,
+      "message": "TBH I expect the compiler will recognize that `i` can never be 5 here.",
+      "range": {
+        "startLine": 34,
+        "startChar": 56,
+        "endLine": 34,
+        "endChar": 64
+      },
+      "revId": "59b9beff2f9de7bcd11a3d86a5fd46dea4cd8d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
