@@ -134,6 +134,30 @@
       },
       "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e007bb_3ae5de33",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-18T16:11:41Z",
+      "side": 1,
+      "message": "That seems reasonable to me, any failure cases that cause rendering artifacts (if the failed Recording did have uploads a future Recording required) will be much less impactful than the current failure mode, too.",
+      "parentUuid": "b49fe782_00387ae3",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 86,
+        "endChar": 52
+      },
+      "revId": "7382cae4b0f6a009125a87c89d1e0e2a23552f09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
