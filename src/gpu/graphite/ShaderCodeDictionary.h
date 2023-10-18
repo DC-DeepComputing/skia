@@ -25,6 +25,8 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#include "src/gpu/graphite/Caps.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -155,6 +157,8 @@ public:
     SkSpan<const ShaderNode*> children() const { return fChildren; }
     const ShaderNode* child(int childIndex) const { return fChildren[childIndex]; }
 
+    void dump(int indent = 0) const;
+
 private:
     const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
     SkSpan<const ShaderNode*> fChildren; // Owned by the ShaderInfo's arena
@@ -171,7 +175,8 @@ private:
 // logic required for all rendering in Graphite).
 class ShaderInfo {
 public:
-    ShaderInfo(UniquePaintParamsID id,
+    ShaderInfo(const Caps* caps,
+               UniquePaintParamsID id,
                const ShaderCodeDictionary* dict,
                const RuntimeEffectDictionary* rteDict,
                const char* ssboIndex);
@@ -196,6 +201,8 @@ public:
                        int* numPaintUniforms,
                        Swizzle writeSwizzle);
 
+    void dump() const { fRootNode->dump(); }
+
 private:
     // All shader nodes and arrays of children pointers are held in this arena
     SkArenaAlloc fShaderNodeAlloc{256};
@@ -206,9 +213,7 @@ private:
     // De-compressed shader tree from a PaintParamsKey with accumulated blend info and requirements.
     // The blendInfo doesn't contribute to the program's SkSL but contains the fixed-function state
     // required to function correctly, which the program's caller is responsible for configuring.
-    // TODO: There should really only be one root node representing the final blend, which has a
-    // child defining how the src color is calculated.
-    SkSpan<const ShaderNode*> fRootNodes;
+    const ShaderNode* fRootNode;
     SkBlendMode fBlendMode = SkBlendMode::kClear;
     skgpu::BlendInfo fBlendInfo;
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
