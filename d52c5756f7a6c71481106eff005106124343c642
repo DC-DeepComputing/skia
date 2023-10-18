@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6426fb5a_81111d28",
+        "filename": "tests/testgroups.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-18T20:18:32Z",
+      "side": 1,
+      "message": "These tests will need to be fixed to not break when the default fontmgr returned is null/empty. Will do in a future CL.",
+      "range": {
+        "startLine": 160,
+        "startChar": 5,
+        "endLine": 160,
+        "endChar": 24
+      },
+      "revId": "d52c5756f7a6c71481106eff005106124343c642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
