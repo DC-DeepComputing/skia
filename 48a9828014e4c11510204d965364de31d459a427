@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38769fea_6c9ce32c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-18T17:36:20Z",
+      "side": 1,
+      "message": "I didn\u0027t meant to send this draft, since I didn\u0027t end up asking for review yesterday. 😐 Also, I meant `kNever`.",
+      "parentUuid": "2f4ab2bc_99d8be45",
+      "revId": "48a9828014e4c11510204d965364de31d459a427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32efbdc9_2fa7bedb",
