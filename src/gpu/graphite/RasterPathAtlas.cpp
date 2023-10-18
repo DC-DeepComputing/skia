@@ -80,7 +80,7 @@ bool RasterPathAtlas::Page::initializeTextureIfNeeded(Recorder* recorder, uint16
     return fTexture != nullptr;
 }
 
-void RasterPathAtlas::makeMRU(Page* page) {
+void RasterPathAtlas::makeMRU(Page* page,) {
     if (fPageList.head() == page) {
         return;
     }
