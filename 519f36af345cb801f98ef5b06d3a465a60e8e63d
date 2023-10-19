@@ -16,6 +16,29 @@
       "message": "The latest Android canary is still wrapping up other tests, but it appears to have completed its `CtsSkQPTestCases` test mapping run successfully! (And Graphite tests are listed as expected, see `test_mapping/presubmit-avd`, non-coverage version)",
       "revId": "519f36af345cb801f98ef5b06d3a465a60e8e63d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17438df_629625cd",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-19T15:23:44Z",
+      "side": 1,
+      "message": "Do we only want to enable this when using graphite? Not sure how we currently do or do not handle ganesh- and graphite-dependent skqp defines...",
+      "range": {
+        "startLine": 684,
+        "startChar": 18,
+        "endLine": 684,
+        "endChar": 37
+      },
+      "revId": "519f36af345cb801f98ef5b06d3a465a60e8e63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
