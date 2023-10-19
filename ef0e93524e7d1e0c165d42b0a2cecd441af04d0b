@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff32086_341a418d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-19T14:35:42Z",
+      "side": 1,
+      "message": "Feels like you could make the uniform `1/imgSize` so this could be a multiply? Divides-per-pixel are way more expensive than multiplies.",
+      "range": {
+        "startLine": 157,
+        "startChar": 28,
+        "endLine": 157,
+        "endChar": 41
+      },
+      "revId": "ef0e93524e7d1e0c165d42b0a2cecd441af04d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
