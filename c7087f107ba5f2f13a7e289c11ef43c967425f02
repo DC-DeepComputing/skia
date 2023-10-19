@@ -91,6 +91,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1966715_ce1e7454",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-19T15:46:49Z",
+      "side": 1,
+      "message": "Is it important enough to assert this on release builds, too?",
+      "range": {
+        "startLine": 1271,
+        "startChar": 7,
+        "endLine": 1271,
+        "endChar": 32
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec740066_5f65b287",
         "filename": "src/core/SkCanvasPriv.cpp",
         "patchSetId": 5
@@ -125,6 +148,75 @@
       "writtenOn": "2023-10-19T14:51:51Z",
       "side": 1,
       "message": "Just need to migrate dithering here, I think?",
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a13527a_76e59f33",
+        "filename": "src/core/SkCanvasPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-19T15:46:49Z",
+      "side": 1,
+      "message": "I\u0027m all for good code documentation, but WDYT about having private internal methods or static helpers to encapsulate the different code paths here? Like `imageFilterLayer`, `maskFilterLayer`, `imageAndMaskFilterLayer` (which could end up simply calling the other two and performing any additional logic).. That could allow you to break up the documentation on a per-case basis and logically chunk up the method body.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 59
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54440299_64b03c1e",
+        "filename": "src/core/SkCanvasPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-19T15:46:49Z",
+      "side": 1,
+      "message": "If this is handling image and mask filters, could we edit the name like how you did for `fTempLatersForImageFilters` -\u003e `fTempLatersForFilters` ? `AutoLayerForFilters`, perhaps?",
+      "range": {
+        "startLine": 153,
+        "startChar": 6,
+        "endLine": 153,
+        "endChar": 29
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c54e4c7_91ecabfd",
+        "filename": "src/core/SkMaskFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-19T15:46:49Z",
+      "side": 1,
+      "message": "Will other mask filter derivatives return something non-null here? I\u0027m not immediately clear on why this is useful.",
+      "range": {
+        "startLine": 50,
+        "startChar": 39,
+        "endLine": 50,
+        "endChar": 52
+      },
       "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
