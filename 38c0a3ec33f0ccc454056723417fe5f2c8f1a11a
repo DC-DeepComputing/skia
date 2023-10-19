@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89a7fbb0_89307c68",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "I\u0027ve updated the task definition and task driver so that compilation takes place on RBE, and test execution takes place on a bare-metal Skolo Linux machine.",
+      "parentUuid": "c5a083b3_326a3630",
+      "range": {
+        "startLine": 35,
+        "startChar": 56,
+        "endLine": 35,
+        "endChar": 65
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28d1ab11_b5e226c1",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-19T11:42:39Z",
       "side": 1,
       "message": "Is jobs relevant since we aren\u0027t using RBE? Or do we use RBE for compilation still?",
+      "range": {
+        "startLine": 149,
+        "startChar": 5,
+        "endLine": 149,
+        "endChar": 9
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d00e372_dca6084e",
+        "filename": "infra/bots/task_drivers/bazel_test_benchmark/bazel_test_benchmark.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "\u003eIs jobs relevant since we aren\u0027t using RBE?\n\nThis is used for compilation on RBE, assuming the passed in config is `linux_rbe` or similar. The number of jobs was copied from other Bazel task drivers.\n\n\u003eOr do we use RBE for compilation still?\n\nGood point. We can use RBE for compilation and run the compiled test locally (e.g. on a Skolo Linux machine) by passing `--strategy\u003dTestRunner\u003dlocal`. \n\nI added `--strategy\u003dTestRunner\u003dlocal` to this task driver under the assumption that we will always want to run benchmarks on bare-metal machines rather than on GCE VMs. This also implies the task driver must run on a bare-metal machine, so I\u0027ve updated my sample CI task to run on a Skolo Linux machine.\n\nAs an alternative to the `--strategy` Bazel flag, I tried tagging the test with `no-remote`, but somehow it still gets executed on RBE.",
+      "parentUuid": "28d1ab11_b5e226c1",
       "range": {
         "startLine": 149,
         "startChar": 5,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e9513f9_4578a0fb",
+        "filename": "infra/bots/task_drivers/bazel_test_benchmark/bazel_test_benchmark_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "Fair enough, we don\u0027t want to over-specify our unit tests.",
+      "parentUuid": "9bba5a2c_59230373",
+      "range": {
+        "startLine": 53,
+        "startChar": 50,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0e9e12d_edf364c2",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-19T11:42:39Z",
       "side": 1,
       "message": "I presume we set this to a non-UTC timezone to make sure we convert things back into UTC for upload? Please add a comment explaining *why* we do it.",
+      "range": {
+        "startLine": 63,
+        "startChar": 66,
+        "endLine": 63,
+        "endChar": 75
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf147f4_bbe8f96c",
+        "filename": "infra/bots/task_drivers/bazel_test_benchmark/bazel_test_benchmark_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0e9e12d_edf364c2",
       "range": {
         "startLine": 63,
         "startChar": 66,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b863d3b_cc81d10d",
+        "filename": "infra/bots/task_drivers/common/perf_steps.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1395d88a_0d72ddc1",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 8
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74cfc0c6_15abf2e6",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-10-19T11:42:39Z",
       "side": 1,
       "message": "nit: include resultsJSONPath in the error context",
+      "range": {
+        "startLine": 117,
+        "startChar": 20,
+        "endLine": 117,
+        "endChar": 23
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63ed2dec_206a957f",
+        "filename": "infra/bots/task_drivers/common/perf_steps.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74cfc0c6_15abf2e6",
       "range": {
         "startLine": 117,
         "startChar": 20,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72d1976f_6d1c0ae2",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd3f9b5b_f35cff9e",
+      "range": {
+        "startLine": 45,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 7
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37e4aa0b_a0938212",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32c2cac2_d3bb4d69",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "My goal here is to make it explicit to the reader that these aren\u0027t called, even if the test would still work without these due to the panic you mentioned.",
+      "parentUuid": "37e4aa0b_a0938212",
+      "range": {
+        "startLine": 98,
+        "startChar": 13,
+        "endLine": 98,
+        "endChar": 28
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4208464a_a363b497",
@@ -198,6 +390,30 @@
       "writtenOn": "2023-10-19T11:42:39Z",
       "side": 1,
       "message": "There are too many if statements in this test. Make two different tests please, one with zip and one without the zip.\n\nSame for TestUploadToPerf_Success",
+      "range": {
+        "startLine": 141,
+        "startChar": 3,
+        "endLine": 141,
+        "endChar": 5
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e823e348_ea5c1164",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-19T21:44:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4208464a_a363b497",
       "range": {
         "startLine": 141,
         "startChar": 3,
