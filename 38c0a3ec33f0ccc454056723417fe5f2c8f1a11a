@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5a083b3_326a3630",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "Of note: this seems to imply that we are running the benchmark tests *on* an RBE instance, which is not very useful data since those are VMs.\n\nWe should be only running benchmarks on bare metal machines for reliable results.",
+      "range": {
+        "startLine": 35,
+        "startChar": 56,
+        "endLine": 35,
+        "endChar": 65
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28d1ab11_b5e226c1",
+        "filename": "infra/bots/task_drivers/bazel_test_benchmark/bazel_test_benchmark.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "Is jobs relevant since we aren\u0027t using RBE? Or do we use RBE for compilation still?",
+      "range": {
+        "startLine": 149,
+        "startChar": 5,
+        "endLine": 149,
+        "endChar": 9
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bba5a2c_59230373",
+        "filename": "infra/bots/task_drivers/bazel_test_benchmark/bazel_test_benchmark_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "Be careful not to use Once() too many times - it can make the test unnecessarily brittle. I don\u0027t think we care if we change the code to ask for Bucket more than once in the future (and I wouldn\u0027t want to have to change the test).\n\nHowever for uploading, *that* Once() is fine because we don\u0027t want to accidentally be uploading the file more than once.",
+      "range": {
+        "startLine": 53,
+        "startChar": 50,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0e9e12d_edf364c2",
+        "filename": "infra/bots/task_drivers/bazel_test_benchmark/bazel_test_benchmark_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "I presume we set this to a non-UTC timezone to make sure we convert things back into UTC for upload? Please add a comment explaining *why* we do it.",
+      "range": {
+        "startLine": 63,
+        "startChar": 66,
+        "endLine": 63,
+        "endChar": 75
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1395d88a_0d72ddc1",
+        "filename": "infra/bots/task_drivers/common/perf_steps.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "Try to make sure your inline comments don\u0027t repeat what the code is saying. If you think you need comments, it should be *why* the code is needed.\ngo/comments#reasons\n\nI don\u0027t think any of the comments on line 39, 42, 46, or 55 are adding much value.",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 8
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74cfc0c6_15abf2e6",
+        "filename": "infra/bots/task_drivers/common/perf_steps.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "nit: include resultsJSONPath in the error context",
+      "range": {
+        "startLine": 117,
+        "startChar": 20,
+        "endLine": 117,
+        "endChar": 23
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd3f9b5b_f35cff9e",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "nit: for readability, put these like \n```\n\"--key\", \n\"arch\", \"x86_64\",\n\"os\", \"linux\",\n\"--gitHash\", \"ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99\",\n...\n```\nThat is, group up related or position dependent flags.",
+      "range": {
+        "startLine": 45,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 7
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e4aa0b_a0938212",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "I don\u0027t think you need these, the mock client will panic if these are called because they weren\u0027t set, right?",
+      "range": {
+        "startLine": 98,
+        "startChar": 13,
+        "endLine": 98,
+        "endChar": 28
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4208464a_a363b497",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T11:42:39Z",
+      "side": 1,
+      "message": "There are too many if statements in this test. Make two different tests please, one with zip and one without the zip.\n\nSame for TestUploadToPerf_Success",
+      "range": {
+        "startLine": 141,
+        "startChar": 3,
+        "endLine": 141,
+        "endChar": 5
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
