@@ -27,6 +27,7 @@
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkImageFilters.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <string.h>
 #include <initializer_list>
@@ -75,8 +76,8 @@ protected:
         const char* text;
     } emojiFont;
     void onOnceBeforeDraw() override {
-        emojiFont.typeface = ToolUtils::emoji_typeface();
-        emojiFont.text     = ToolUtils::emoji_sample_text();
+        emojiFont.typeface = ToolUtils::EmojiTypeface();
+        emojiFont.text     = ToolUtils::EmojiSampleText();
     }
 
     SkString getName() const override { return SkString("coloremoji"); }
