@@ -455,6 +455,9 @@ void AtlasTextOp::createDrawForGeneratedGlyphs(GrMeshDrawTarget* target,
 }
 
 GrOp::CombineResult AtlasTextOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) {
+    return CombineResult::kCannotCombine;
+
+#if 0
     auto that = t->cast<AtlasTextOp>();
 
     if (fDFGPFlags != that->fDFGPFlags ||
@@ -503,6 +506,7 @@ GrOp::CombineResult AtlasTextOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, con
     this->addGeometry(that->fHead);
     that->fHead = nullptr;
     return CombineResult::kMerged;
+#endif
 }
 
 #if !defined(SK_DISABLE_SDF_TEXT)
