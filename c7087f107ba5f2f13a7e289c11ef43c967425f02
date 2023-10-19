@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "228d52b4_62e6b602",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-19T14:51:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b17c2fb2_3772f10f",
+      "range": {
+        "startLine": 9,
+        "startChar": 59,
+        "endLine": 9,
+        "endChar": 70
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4339f072_dcdb716b",
@@ -84,6 +108,23 @@
         "endLine": 142,
         "endChar": 19
       },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b592903_9dc36789",
+        "filename": "src/core/SkCanvasPriv.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-19T14:51:51Z",
+      "side": 1,
+      "message": "Just need to migrate dithering here, I think?",
       "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
