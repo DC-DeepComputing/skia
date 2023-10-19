@@ -146,7 +146,7 @@ SkFontStyle SkTypeface::FromOldStyle(Style oldStyle) {
 }
 
 SkTypeface* SkTypeface::GetDefaultTypeface(Style style) {
-#if !defined(SK_DEFAULT_TYPEFACE_IS_EMPTY)
+//#if !defined(SK_DEFAULT_TYPEFACE_IS_EMPTY)
     static SkOnce once[4];
     static sk_sp<SkTypeface> defaults[4];
 
@@ -157,10 +157,10 @@ SkTypeface* SkTypeface::GetDefaultTypeface(Style style) {
         defaults[style] = t ? t : SkEmptyTypeface::Make();
     });
     return defaults[style].get();
-#else
-    static sk_sp<SkTypeface> empty = SkEmptyTypeface::Make();
-    return empty.get();
-#endif  // !defined(SK_DEFAULT_TYPEFACE_IS_EMPTY)
+// #else
+//     static sk_sp<SkTypeface> empty = SkEmptyTypeface::Make();
+//     return empty.get();
+// #endif  // !defined(SK_DEFAULT_TYPEFACE_IS_EMPTY)
 }
 
 #if !defined(SK_DISABLE_LEGACY_DEFAULT_TYPEFACE)
