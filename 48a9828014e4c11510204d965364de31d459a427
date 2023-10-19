@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5b11755_95b4d18a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-19T14:46:57Z",
+      "side": 1,
+      "message": "Wait, is this ready for review?",
+      "parentUuid": "38769fea_6c9ce32c",
+      "revId": "48a9828014e4c11510204d965364de31d459a427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32efbdc9_2fa7bedb",
         "filename": "gn/skqp_gn_args.py",
         "patchSetId": 4
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "This file should just apply to SkQP, but I think you\u0027re right we\u0027ll need to be cautious about code size (`bloaty`?) when adding Graphite to RenderEngine though.",
       "parentUuid": "32efbdc9_2fa7bedb",
+      "revId": "48a9828014e4c11510204d965364de31d459a427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a63b31_52e9ff16",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-19T14:46:57Z",
+      "side": 1,
+      "message": "Oh, right! I totally forgot that this version of SkQP builds its own Skia, rather than using any of the versions used on the system. As discussed yesterday, SkQP needs a lot of cleanup. I\u0027ve filed a bug:\n\nhttp://b/306374080 Clean up SkQP",
+      "parentUuid": "1abdf517_3b5e1c46",
       "revId": "48a9828014e4c11510204d965364de31d459a427",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
