@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82eb4c57_3a8f0ea5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-19T16:12:18Z",
+      "side": 1,
+      "message": "So the gold images are actually a result of me tweaking the z values in the text vertex functions as a drive-by, which made me realize that the GMs are having z-fighting issues 😞",
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
