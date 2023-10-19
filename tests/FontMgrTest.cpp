@@ -22,6 +22,7 @@
 #include "src/core/SkScalerContext.h"
 #include "tests/Test.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -35,9 +36,8 @@ class SkFontDescriptor;
 DECLARE_bool(verboseFontMgr)
 
 DEF_TEST(FontMgr_Font, reporter) {
-    SkFont font(nullptr, 24);
+    SkFont font(ToolUtils::DefaultPortableTypeface(), 24);
 
-    //REPORTER_ASSERT(reporter, SkTypeface::GetDefaultTypeface() == font.getTypeface());
     REPORTER_ASSERT(reporter, 24 == font.getSize());
     REPORTER_ASSERT(reporter, 1 == font.getScaleX());
     REPORTER_ASSERT(reporter, 0 == font.getSkewX());

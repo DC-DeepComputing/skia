@@ -575,8 +575,7 @@ static void TestTypefaceSerialization(skiatest::Reporter* reporter, sk_sp<SkType
         DumpTypeface(*cloneTypeface).c_str());
 }
 DEF_TEST(Serialization_Typeface, reporter) {
-    SkFont font;
-    TestTypefaceSerialization(reporter, font.refTypefaceOrDefault());
+    TestTypefaceSerialization(reporter, ToolUtils::DefaultPortableTypeface());
     TestTypefaceSerialization(reporter, ToolUtils::SampleUserTypeface());
 }
 
@@ -941,8 +940,7 @@ DEF_TEST(WriteBuffer_storage, reporter) {
 }
 
 DEF_TEST(WriteBuffer_external_memory_textblob, reporter) {
-    SkFont font;
-    font.setTypeface(SkTypeface::MakeDefault());
+    SkFont font = ToolUtils::DefaultPortableFont();
 
     SkTextBlobBuilder builder;
     int glyph_count = 5;

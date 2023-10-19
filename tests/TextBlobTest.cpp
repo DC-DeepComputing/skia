@@ -464,7 +464,7 @@ DEF_TEST(TextBlob_MakeAsDrawText, reporter) {
 }
 
 DEF_TEST(TextBlob_iter, reporter) {
-    sk_sp<SkTypeface> tf = SkTypeface::MakeFromName(nullptr, SkFontStyle::BoldItalic());
+    sk_sp<SkTypeface> tf = ToolUtils::CreatePortableTypeface(nullptr, SkFontStyle::BoldItalic());
 
     SkTextBlobBuilder builder;
     add_run(&builder, "Hello", 10, 20, nullptr);
@@ -495,7 +495,7 @@ DEF_TEST(TextBlob_iter, reporter) {
 }
 
 DEF_TEST(TextBlob_getIntercepts, reporter) {
-    SkFont font;
+    SkFont font = ToolUtils::DefaultPortableFont();
     font.setSize(16);
 
     SkPoint lowPos[1] = { SkPoint::Make(0, 5) };
