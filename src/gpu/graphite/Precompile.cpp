@@ -144,7 +144,7 @@ private:
     void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
     void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
     void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleDstRead(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+//    void handleDstRead(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     bool shouldDither(SkColorType dstCT) const;
 
@@ -275,6 +275,7 @@ void PaintOption::handleDithering(const KeyContext& keyContext,
     }
 }
 
+#if 0
 void PaintOption::handleDstRead(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer) const {
@@ -298,11 +299,34 @@ void PaintOption::handleDstRead(const KeyContext& keyContext,
         this->handleDithering(keyContext, builder, gatherer);
     }
 }
+#endif
 
 void PaintOption::toKey(const KeyContext& keyContext,
-                        PaintParamsKeyBuilder* keyBuilder,
+                        PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
-    this->handleDstRead(keyContext, keyBuilder, gatherer);
+
+    RootBlock::BeginBlock(keyContext, builder, gatherer);
+
+        this->handleDithering(keyContext, builder, gatherer);
+
+        // can we remove fDstReadReq as a member variable?
+        if (fDstReadReq == DstReadRequirement::kNone) {
+            std::optional<SkBlendMode> finalBlendMode = fFinalBlender.first
+                                                            ? fFinalBlender.first->asBlendMode()
+                                                            : SkBlendMode::kSrcOver;
+
+            // Currently, any blending above kLastCoeffMode triggers dstReads. Some Porter Duff
+            // blend mode can also trigger dstReads if dual source blending isn't supported.
+            SkASSERT(finalBlendMode.has_value() && *finalBlendMode <= SkBlendMode::kLastCoeffMode);
+
+            // hardware blending!
+            AddKnownModeBlend(keyContext, builder, gatherer, *finalBlendMode);
+        } else {
+            fFinalBlender.first->priv().addToKey(keyContext, builder, gatherer,
+                                                 fFinalBlender.second);
+        }
+
+    builder->endBlock();  // RootBlock
 }
 
 void PaintOptions::createKey(const KeyContext& keyContext,

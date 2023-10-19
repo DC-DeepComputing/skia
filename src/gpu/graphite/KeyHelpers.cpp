@@ -142,6 +142,7 @@ void AlphaOnlyPaintColorBlock::AddBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
+#if 0
 namespace {
 
 void add_dst_read_sample_uniform_data(const ShaderCodeDictionary* dict,
@@ -171,6 +172,7 @@ void DstReadSampleBlock::AddBlock(const KeyContext& keyContext,
 
     builder->addBlock(BuiltInCodeSnippetID::kDstReadSample);
 }
+#endif
 
 //--------------------------------------------------------------------------------------------------
 
@@ -721,6 +723,14 @@ void BlendShaderBlock::BeginBlock(const KeyContext& keyContext,
     VALIDATE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kBlendShader)
 
     builder->beginBlock(BuiltInCodeSnippetID::kBlendShader);
+}
+
+void RootBlock::BeginBlock(const KeyContext& keyContext,
+                           PaintParamsKeyBuilder* builder,
+                           PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kRoot)
+
+    builder->beginBlock(BuiltInCodeSnippetID::kRoot);
 }
 
 //--------------------------------------------------------------------------------------------------

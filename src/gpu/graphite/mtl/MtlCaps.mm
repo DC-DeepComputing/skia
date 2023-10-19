@@ -306,6 +306,8 @@ void MtlCaps::initShaderCaps() {
         }
     }
 
+    shaderCaps->fFBFetchSupport = false;
+
     shaderCaps->fIntegerSupport = true;
     shaderCaps->fNonsquareMatrixSupport = true;
     shaderCaps->fInverseHyperbolicSupport = true;

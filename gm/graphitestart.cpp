@@ -127,11 +127,13 @@ void draw_gradient_tile(SkCanvas* canvas, SkRect clipRect) {
         canvas->scale(0.5f, 0.5f);
         canvas->drawRect(r, p);
 
+#if 1
         canvas->save();
             canvas->concat(SkMatrix::RotateDeg(90, {64, 64}));
             canvas->translate(128, 0);
             canvas->drawRect(r, p);
         canvas->restore();
+#endif
     canvas->restore();
 }
 
@@ -275,15 +277,18 @@ protected:
 
         const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
+#if 1
         canvas->save();
         canvas->clipRRect(SkRRect::MakeRectXY(clipRect, 32.f, 32.f), true);
 
+
         // Upper-left corner
         draw_image_shader_tile(canvas, SkRect::MakeXYWH(0, 0, kTileWidth, kTileHeight));
-
+#endif
         // Upper-middle tile
         draw_gradient_tile(canvas, SkRect::MakeXYWH(kTileWidth, 0, kTileWidth, kTileHeight));
 
+#if 1
         // Upper-right corner
         draw_colorfilter_swatches(canvas, SkRect::MakeXYWH(2*kTileWidth, 0,
                                                            kTileWidth, kTileWidth));
@@ -357,6 +362,7 @@ protected:
                 canvas->drawRect(kTile.makeInset(15, 25), circlePaint);
             canvas->restore();
         }
+#endif
     }
 
 private:

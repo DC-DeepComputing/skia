@@ -27,6 +27,7 @@
 #include <string.h>
 #include <utility>
 
+#if 0
 using namespace skia_private;
 
 static void getGlyphPositions(const SkFont& font, const uint16_t glyphs[],
@@ -444,3 +445,4 @@ DEF_SIMPLE_GM(typeface_styling, canvas, 710, 360) {
         canvas->translate(100, 0);
     }
 }
+#endif
