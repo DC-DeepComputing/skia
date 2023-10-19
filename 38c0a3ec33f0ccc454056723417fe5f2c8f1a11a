@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "610645d9_0334464e",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T21:49:49Z",
+      "side": 1,
+      "message": "Excellent!",
+      "parentUuid": "89a7fbb0_89307c68",
+      "range": {
+        "startLine": 35,
+        "startChar": 56,
+        "endLine": 35,
+        "endChar": 65
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28d1ab11_b5e226c1",
@@ -367,6 +391,30 @@
       "side": 1,
       "message": "My goal here is to make it explicit to the reader that these aren\u0027t called, even if the test would still work without these due to the panic you mentioned.",
       "parentUuid": "37e4aa0b_a0938212",
+      "range": {
+        "startLine": 98,
+        "startChar": 13,
+        "endLine": 98,
+        "endChar": 28
+      },
+      "revId": "38c0a3ec33f0ccc454056723417fe5f2c8f1a11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01b8367e_cec56e28",
+        "filename": "infra/bots/task_drivers/common/perf_steps_test.go",
+        "patchSetId": 17
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T21:49:49Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "32c2cac2_d3bb4d69",
       "range": {
         "startLine": 98,
         "startChar": 13,
