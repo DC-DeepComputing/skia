@@ -16,6 +16,24 @@
       "message": "Doesn\u0027t look like anyone is using it...",
       "revId": "526d458993bd80649454bd57f781d9140421de8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b23062_5dc87d74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-19T15:35:00Z",
+      "side": 1,
+      "message": "Correct. I removed the only external usage I could find in https://chromium-review.googlesource.com/c/chromium/src/+/4947191",
+      "parentUuid": "ea1b0586_52710923",
+      "revId": "526d458993bd80649454bd57f781d9140421de8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
