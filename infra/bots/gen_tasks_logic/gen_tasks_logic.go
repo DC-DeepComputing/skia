@@ -427,8 +427,9 @@ func GenTasks(cfg *Config) {
 			"skia/third_party",
 			"skia/tools",
 			// needed for tests
-			"skia/gm", // Needed to run GMs with Bazel.
-			"skia/gn", // some Python scripts still live here
+			"skia/bench", // Needed to run benchmark tests with Bazel.
+			"skia/gm",    // Needed to run GMs with Bazel.
+			"skia/gn",    // some Python scripts still live here
 			"skia/resources",
 			"skia/package.json",
 			"skia/package-lock.json",
@@ -2149,6 +2150,7 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 	"experimental_bazel_test_client": {"//experimental/bazel_test/client:client_lib", ""},
 	"cpu_gms":                        {"//gm:cpu_gm_tests", ""},
 	"hello_bazel_world_test":         {"//gm:hello_bazel_world_test", ""},
+	"cpu_8888_benchmark_test":        {"//bench:cpu_8888_test", ""},
 
 	// Note: these paths are relative to the WORKSPACE in //example/external_client
 	"path_combiner": {"//:path_combiner", ""},
@@ -2178,7 +2180,7 @@ var shorthandToLabel = map[string]labelAndSavedOutputDir{
 
 	// Android tests that run on a device. We store the //bazel-bin/tests directory into CAS for use
 	// by subsequent CI tasks.
-	"hello_bazel_world_android_test":  {"//gm:hello_bazel_world_android_test", "gm"},
+	"hello_bazel_world_android_test": {"//gm:hello_bazel_world_android_test", "gm"},
 }
 
 // bazelBuild adds a task which builds the specified single-target label (//foo:bar) or
@@ -2280,6 +2282,9 @@ func (b *jobBuilder) bazelTest() {
 	if taskdriverName == "gm" {
 		taskdriverName = "bazel_test_gm"
 	}
+	if taskdriverName == "benchmark" {
+		taskdriverName = "bazel_test_benchmark"
+	}
 
 	b.addTask(b.Name, func(b *taskBuilder) {
 		cmd := []string{"./" + taskdriverName,
@@ -2363,6 +2368,15 @@ func (b *jobBuilder) bazelTest() {
 				"--tryjob_id="+specs.PLACEHOLDER_BUILDBUCKET_BUILD_ID)
 			b.cipd(CIPD_PKGS_GOLDCTL)
 
+		case "bazel_test_benchmark":
+			cmd = append(cmd,
+				"--bazel_label="+labelAndSavedOutputDir.label,
+				"--bazel_config="+config,
+				"--bazel_cache_dir="+bazelCacheDir,
+				"--git_commit="+specs.PLACEHOLDER_REVISION,
+				"--changelist_id="+specs.PLACEHOLDER_ISSUE,
+				"--patchset_order="+specs.PLACEHOLDER_PATCHSET)
+
 		case "external_client":
 			cmd = append(cmd,
 				"--bazel_label="+labelAndSavedOutputDir.label,
@@ -2424,6 +2438,23 @@ func (b *jobBuilder) bazelTest() {
 				"os:Android",
 				fmt.Sprintf("device_type:%s", deviceType),
 				fmt.Sprintf("device_os:%s", deviceOS),
+				fmt.Sprintf("pool:%s", b.cfg.Pool),
+			)
+		} else if taskdriverName == "bazel_test_benchmark" {
+			// Chosen on 2023-10-19 based on the following criteria:
+			//
+			// - Linux.
+			// - Bare-metal machine as opposed to a GCE VM.
+			// - High capacity: 18 machines with 1357.3% "Percent of Optimistic Estimate" as per
+			//   https://status.skia.org/capacity at the time of writing.
+			//
+			// The above criteria is good enough for a few sample CI tasks, but we will probably want to
+			// be more specific moving forward.
+			b.dimension(
+				// Modeled after "Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All". See
+				// https://skia.googlesource.com/skia/+/b540ed3ba8e78066b7788cc408d16a42fbff250a/infra/bots/tasks.json.
+				"cpu:x86-64-i7-9750H",
+				"os:Debian-11.5",
 				fmt.Sprintf("pool:%s", b.cfg.Pool),
 			)
 		} else {

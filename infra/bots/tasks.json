@@ -50,6 +50,11 @@
         "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64"
       ]
     },
+    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64": {
+      "tasks": [
+        "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64"
+      ]
+    },
     "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "tasks": [
         "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64"
@@ -4045,6 +4050,45 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./bazel_test_benchmark",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64",
+        "--workdir=.",
+        "--bazel_label=//bench:cpu_8888_test",
+        "--bazel_config=linux_rbe",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--git_commit=<(REVISION)",
+        "--changelist_id=<(ISSUE)",
+        "--patchset_order=<(PATCHSET)"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-i7-9750H",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -93003,6 +93047,7 @@
         "skia/tests",
         "skia/third_party",
         "skia/tools",
+        "skia/bench",
         "skia/gm",
         "skia/gn",
         "skia/resources",
@@ -93288,6 +93333,9 @@
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {},
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
+    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64": {
+      "experimental": true
+    },
     "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
