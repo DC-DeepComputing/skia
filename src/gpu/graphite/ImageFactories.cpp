@@ -259,7 +259,7 @@ sk_sp<SkImage> SubsetTextureFrom(skgpu::graphite::Recorder* recorder,
 }
 
 sk_sp<SkImage> MakeWithFilter(skgpu::graphite::Recorder* recorder,
-                              sk_sp<SkImage> src,
+                              const sk_sp<SkImage>& src,
                               const SkImageFilter* filter,
                               const SkIRect& subset,
                               const SkIRect& clipBounds,
@@ -271,7 +271,7 @@ sk_sp<SkImage> MakeWithFilter(skgpu::graphite::Recorder* recorder,
 
     sk_sp<skif::Backend> backend = skif::MakeGraphiteBackend(recorder, {}, src->colorType());
     return as_IFB(filter)->makeImageWithFilter(std::move(backend),
-                                               std::move(src),
+                                               src,
                                                subset,
                                                clipBounds,
                                                outSubset,

@@ -160,22 +160,22 @@ public:
 
     // Color filter SkSL requires an entry point that looks like:
     //     vec4 main(vec4 inColor) { ... }
-    static Result MakeForColorFilter(SkString sksl, const Options&);
-    static Result MakeForColorFilter(SkString sksl) {
+    static Result MakeForColorFilter(const SkString& sksl, const Options&);
+    static Result MakeForColorFilter(const SkString& sksl) {
         return MakeForColorFilter(std::move(sksl), Options{});
     }
 
     // Shader SkSL requires an entry point that looks like:
     //     vec4 main(vec2 inCoords) { ... }
-    static Result MakeForShader(SkString sksl, const Options&);
-    static Result MakeForShader(SkString sksl) {
+    static Result MakeForShader(const SkString& sksl, const Options&);
+    static Result MakeForShader(const SkString& sksl) {
         return MakeForShader(std::move(sksl), Options{});
     }
 
     // Blend SkSL requires an entry point that looks like:
     //     vec4 main(vec4 srcColor, vec4 dstColor) { ... }
-    static Result MakeForBlender(SkString sksl, const Options&);
-    static Result MakeForBlender(SkString sksl) {
+    static Result MakeForBlender(const SkString& sksl, const Options&);
+    static Result MakeForBlender(const SkString& sksl) {
         return MakeForBlender(std::move(sksl), Options{});
     }
 
@@ -239,7 +239,7 @@ public:
         sk_sp<SkShader> shader;
         sk_sp<SkSL::DebugTrace> debugTrace;
     };
-    static TracedShader MakeTraced(sk_sp<SkShader> shader, const SkIPoint& traceCoord);
+    static TracedShader MakeTraced(const sk_sp<SkShader>& shader, const SkIPoint& traceCoord);
 
     // Returns the SkSL source of the runtime effect shader.
     const std::string& source() const;
@@ -288,7 +288,9 @@ private:
 
     sk_sp<SkRuntimeEffect> makeUnoptimizedClone();
 
-    static Result MakeFromSource(SkString sksl, const Options& options, SkSL::ProgramKind kind);
+    static Result MakeFromSource(const SkString& sksl,
+                                 const Options& options,
+                                 SkSL::ProgramKind kind);
 
     static Result MakeInternal(std::unique_ptr<SkSL::Program> program,
                                const Options& options,

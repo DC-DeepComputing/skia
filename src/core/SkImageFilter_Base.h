@@ -41,7 +41,7 @@ public:
      * for implementing the SkImages::MakeWithFilter API calls.
      */
     sk_sp<SkImage> makeImageWithFilter(sk_sp<skif::Backend> backend,
-                                       sk_sp<SkImage> src,
+                                       const sk_sp<SkImage>& src,
                                        const SkIRect& subset,
                                        const SkIRect& clipBounds,
                                        SkIRect* outSubset,

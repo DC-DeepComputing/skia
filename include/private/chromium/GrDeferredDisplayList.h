@@ -113,7 +113,7 @@ namespace skgpu::ganesh {
 SK_API bool DrawDDL(SkSurface*,
                     sk_sp<const GrDeferredDisplayList> ddl);
 
-SK_API bool DrawDDL(sk_sp<SkSurface>,
+SK_API bool DrawDDL(const sk_sp<SkSurface>&,
                     sk_sp<const GrDeferredDisplayList> ddl);
 }
 

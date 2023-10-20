@@ -17,7 +17,7 @@ namespace skgpu {
     fFunctions.f##name =                                    \
             reinterpret_cast<PFN_vk##name##suffix>(getProc("vk" #name #suffix, instance, device))
 
-VulkanInterface::VulkanInterface(VulkanGetProc getProc,
+VulkanInterface::VulkanInterface(const VulkanGetProc& getProc,
                                  VkInstance instance,
                                  VkDevice device,
                                  uint32_t instanceVersion,

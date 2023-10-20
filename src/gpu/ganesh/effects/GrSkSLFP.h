@@ -120,7 +120,7 @@ public:
     static std::unique_ptr<GrSkSLFP> MakeWithData(
             sk_sp<SkRuntimeEffect> effect,
             const char* name,
-            sk_sp<SkColorSpace> dstColorSpace,
+            const sk_sp<SkColorSpace>& dstColorSpace,
             std::unique_ptr<GrFragmentProcessor> inputFP,
             std::unique_ptr<GrFragmentProcessor> destColorFP,
             const sk_sp<const SkData>& uniforms,

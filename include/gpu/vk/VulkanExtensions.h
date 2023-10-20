@@ -22,7 +22,7 @@ class SK_API VulkanExtensions {
 public:
     VulkanExtensions() {}
 
-    void init(VulkanGetProc, VkInstance, VkPhysicalDevice,
+    void init(const VulkanGetProc&, VkInstance, VkPhysicalDevice,
               uint32_t instanceExtensionCount, const char* const* instanceExtensions,
               uint32_t deviceExtensionCount, const char* const* deviceExtensions);
 

@@ -269,7 +269,7 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
 }
 
 sk_sp<SkImage> SkImageFilter_Base::makeImageWithFilter(sk_sp<skif::Backend> backend,
-                                                       sk_sp<SkImage> src,
+                                                       const sk_sp<SkImage>& src,
                                                        const SkIRect& subset,
                                                        const SkIRect& clipBounds,
                                                        SkIRect* outSubset,

@@ -283,13 +283,14 @@ void SkA8_Blitter::blitMask(const SkMask& mask, const SkIRect& clip) {
 
 //////////////////
 
-SkBlitter* SkA8Blitter_Choose(const SkPixmap& dst,
-                              const SkMatrix& ctm,
-                              const SkPaint& paint,
-                              SkArenaAlloc* alloc,
-                              bool drawCoverage,
-                              sk_sp<SkShader> clipShader,
-                              const SkSurfaceProps&) {
+SkBlitter* SkA8Blitter_Choose(
+        const SkPixmap& dst,
+        const SkMatrix& ctm,
+        const SkPaint& paint,
+        SkArenaAlloc* alloc,
+        bool drawCoverage,
+        sk_sp<SkShader> clipShader, // NOLINT(performance-unnecessary-value-param)
+        const SkSurfaceProps&) {
     if (dst.colorType() != SkColorType::kAlpha_8_SkColorType) {
         return nullptr;
     }

@@ -51,9 +51,9 @@ public:
     bool onSoftkey(const SkString& softkey);
 
     void addCommand(SkUnichar c, const char* group, const char* description,
-                    std::function<void(void)> function);
+                    const std::function<void()>& function);
     void addCommand(skui::Key k, const char* keyName, const char* group, const char* description,
-                    std::function<void(void)> function);
+                    const std::function<void()>& function);
 
     void drawHelp(SkCanvas* canvas);
 
@@ -67,7 +67,7 @@ private:
         };
 
         Command(SkUnichar c, const char* group, const char* description,
-                std::function<void(void)> function)
+                const std::function<void()>& function)
             : fType(kChar_CommandType)
             , fChar(c)
             , fKeyName(' ' == c ? SkString("Space") : SkStringPrintf("%c", c))
@@ -76,7 +76,7 @@ private:
             , fFunction(function) {}
 
         Command(skui::Key k, const char* keyName, const char* group, const char* description,
-                std::function<void(void)> function)
+                const std::function<void()>& function)
             : fType(kKey_CommandType)
             , fKey(k)
             , fKeyName(keyName)

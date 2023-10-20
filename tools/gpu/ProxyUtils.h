@@ -26,7 +26,7 @@ GrTextureProxy* GetTextureImageProxy(SkImage*, GrRecordingContext*);
 GrSurfaceProxyView MakeTextureProxyViewFromData(GrDirectContext*,
                                                 GrRenderable,
                                                 GrSurfaceOrigin,
-                                                GrCPixmap pixmap);
+                                                const GrCPixmap& pixmap);
 
 #if defined(SK_GANESH)
 GrProgramInfo* CreateProgramInfo(const GrCaps*,

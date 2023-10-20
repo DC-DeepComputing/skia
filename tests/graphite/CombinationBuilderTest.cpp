@@ -163,7 +163,7 @@ void big_test(const KeyContext& keyContext,
 template <typename T>
 std::vector<sk_sp<T>> create_runtime_combos(
         skiatest::Reporter* reporter,
-        SkRuntimeEffect::Result effectFactory(SkString),
+        SkRuntimeEffect::Result effectFactory(const SkString&),
         sk_sp<T> precompileFactory(sk_sp<SkRuntimeEffect>,
                                    SkSpan<const PrecompileChildOptions> childOptions),
         const char* redCode,

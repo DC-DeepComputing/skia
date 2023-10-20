@@ -228,9 +228,10 @@ bool Read(SkStreamSeekable* src,
 }
 }  // namespace SkMultiPictureDocument
 
-sk_sp<SkDocument> SkMakeMultiPictureDocument(SkWStream* wStream, const SkSerialProcs* procs,
-    std::function<void(const SkPicture*)> onEndPage) {
-    return SkMultiPictureDocument::Make(wStream, procs, onEndPage);
+sk_sp<SkDocument> SkMakeMultiPictureDocument(SkWStream* wStream,
+                                             const SkSerialProcs* procs,
+                                             std::function<void(const SkPicture*)> onEndPage) {
+    return SkMultiPictureDocument::Make(wStream, procs, std::move(onEndPage));
 }
 
 int SkMultiPictureDocumentReadPageCount(SkStreamSeekable* src) {

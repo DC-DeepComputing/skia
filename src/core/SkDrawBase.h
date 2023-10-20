@@ -108,14 +108,13 @@ public:
     static RectType ComputeRectType(const SkRect&, const SkPaint&, const SkMatrix&,
                                     SkPoint* strokeSize);
 
-    using BlitterChooser = SkBlitter* (const SkPixmap& dst,
-                                       const SkMatrix& ctm,
-                                       const SkPaint&,
-                                       SkArenaAlloc*,
-                                       bool drawCoverage,
-                                       sk_sp<SkShader> clipShader,
-                                       const SkSurfaceProps&);
-
+    using BlitterChooser = SkBlitter*(const SkPixmap& dst,
+                                      const SkMatrix& ctm,
+                                      const SkPaint&,
+                                      SkArenaAlloc*,
+                                      bool drawCoverage,
+                                      sk_sp<SkShader> clipShader,
+                                      const SkSurfaceProps&);
 
 private:
     // not supported

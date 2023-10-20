@@ -320,7 +320,7 @@ SK_API sk_sp<SkImage> SubsetTextureFrom(skgpu::graphite::Recorder* recorder,
     @return            filtered SkImage, or nullptr
 */
 SK_API sk_sp<SkImage> MakeWithFilter(skgpu::graphite::Recorder* recorder,
-                                     sk_sp<SkImage> src,
+                                     const sk_sp<SkImage>& src,
                                      const SkImageFilter* filter,
                                      const SkIRect& subset,
                                      const SkIRect& clipBounds,

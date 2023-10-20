@@ -56,12 +56,12 @@ namespace {
 
 class SkBlurImageFilter final : public SkImageFilter_Base {
 public:
-    SkBlurImageFilter(SkSize sigma, sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1)
+    SkBlurImageFilter(SkSize sigma, sk_sp<SkImageFilter> const* input)
+            : SkImageFilter_Base(input, 1)
             , fSigma{sigma} {}
 
-    SkBlurImageFilter(SkSize sigma, SkTileMode legacyTileMode, sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1)
+    SkBlurImageFilter(SkSize sigma, SkTileMode legacyTileMode, sk_sp<SkImageFilter> const* input)
+            : SkImageFilter_Base(input, 1)
             , fSigma(sigma)
             , fLegacyTileMode(legacyTileMode) {}
 
@@ -116,7 +116,7 @@ sk_sp<SkImageFilter> SkImageFilters::Blur(
 
     // Temporarily allow tiling with no crop rect
     if (tileMode != SkTileMode::kDecal && !cropRect) {
-        return sk_make_sp<SkBlurImageFilter>(SkSize{sigmaX, sigmaY}, tileMode, std::move(input));
+        return sk_make_sp<SkBlurImageFilter>(SkSize{sigmaX, sigmaY}, tileMode, &input);
     }
 
     // The 'tileMode' behavior is not well-defined if there is no crop. We only apply it if
@@ -129,7 +129,7 @@ sk_sp<SkImageFilter> SkImageFilters::Blur(
         filter = SkImageFilters::Crop(*cropRect, tileMode, std::move(filter));
     }
 
-    filter = sk_make_sp<SkBlurImageFilter>(SkSize{sigmaX, sigmaY}, std::move(filter));
+    filter = sk_make_sp<SkBlurImageFilter>(SkSize{sigmaX, sigmaY}, &filter);
     if (cropRect) {
         // But regardless of the tileMode, the output is always decal cropped
         filter = SkImageFilters::Crop(*cropRect, SkTileMode::kDecal, std::move(filter));

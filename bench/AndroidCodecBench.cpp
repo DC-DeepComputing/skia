@@ -12,10 +12,9 @@
 #include "src/core/SkOSFile.h"
 #include "tools/flags/CommandLineFlags.h"
 
-AndroidCodecBench::AndroidCodecBench(SkString baseName, SkData* encoded, int sampleSize)
-    : fData(SkRef(encoded))
-    , fSampleSize(sampleSize)
-{
+AndroidCodecBench::AndroidCodecBench(const SkString& baseName, SkData* encoded, int sampleSize)
+        : fData(SkRef(encoded))
+        , fSampleSize(sampleSize) {
     // Parse filename and the color type to give the benchmark a useful name
     fName.printf("AndroidCodec_%s_SampleSize%d", baseName.c_str(), sampleSize);
 }

@@ -21,7 +21,7 @@
 class AndroidCodecBench : public Benchmark {
 public:
     // Calls encoded->ref()
-    AndroidCodecBench(SkString basename, SkData* encoded, int sampleSize);
+    AndroidCodecBench(const SkString& basename, SkData* encoded, int sampleSize);
 
 protected:
     const char* onGetName() override;

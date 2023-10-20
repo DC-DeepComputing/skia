@@ -101,7 +101,7 @@ private:
             return fSurface->makeImageSnapshot();
         }
 
-        void uploadRasterSurface(sk_sp<SkSurface> rasterSurface) {
+        void uploadRasterSurface(const sk_sp<SkSurface>& rasterSurface) {
             SkPixmap pixmap;
             rasterSurface->peekPixels(&pixmap);
             fSurface->writePixels(pixmap, 0, 0);
