@@ -152,7 +152,8 @@ private:
     void finishLine();
 
     // Helpers to declare a pipeline stage IO parameter declaration.
-    void writePipelineIODeclaration(const Layout& layout,
+    void writePipelineIODeclaration(const Variable* var,
+                                    const Layout& layout,
                                     const Type& type,
                                     std::string_view name,
                                     Delimiter delimiter);
