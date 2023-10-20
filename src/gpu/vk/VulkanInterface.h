@@ -39,7 +39,7 @@ private:
     using INHERITED = SkRefCnt;
 
 public:
-    VulkanInterface(VulkanGetProc getProc,
+    VulkanInterface(const VulkanGetProc& getProc,
                     VkInstance instance,
                     VkDevice device,
                     uint32_t instanceVersion,

@@ -260,7 +260,7 @@ const SkSL::RP::Program* SkRuntimeEffect::getRPProgram(SkSL::DebugTracePriv* deb
 
 SkSpan<const float> SkRuntimeEffectPriv::UniformsAsSpan(
         SkSpan<const SkRuntimeEffect::Uniform> uniforms,
-        sk_sp<const SkData> originalData,
+        const sk_sp<const SkData>& originalData,
         bool alwaysCopyIntoAlloc,
         const SkColorSpace* destColorSpace,
         SkArenaAlloc* alloc) {
@@ -465,7 +465,7 @@ SkSL::ProgramSettings SkRuntimeEffect::MakeSettings(const Options& options) {
 // in the IR generator would provide better errors messages (with locations).
 #define RETURN_FAILURE(...) return Result{nullptr, SkStringPrintf(__VA_ARGS__)}
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(SkString sksl,
+SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(const SkString& sksl,
                                                         const Options& options,
                                                         SkSL::ProgramKind kind) {
     SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
@@ -654,7 +654,8 @@ sk_sp<SkRuntimeEffect> SkRuntimeEffect::makeUnoptimizedClone() {
     return result.effect;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(SkString sksl, const Options& options) {
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(const SkString& sksl,
+                                                            const Options& options) {
     auto programKind = options.allowPrivateAccess ? SkSL::ProgramKind::kPrivateRuntimeColorFilter
                                                   : SkSL::ProgramKind::kRuntimeColorFilter;
     auto result = MakeFromSource(std::move(sksl), options, programKind);
@@ -662,7 +663,8 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(SkString sksl, const
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(SkString sksl, const Options& options) {
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(const SkString& sksl,
+                                                       const Options& options) {
     auto programKind = options.allowPrivateAccess ? SkSL::ProgramKind::kPrivateRuntimeShader
                                                   : SkSL::ProgramKind::kRuntimeShader;
     auto result = MakeFromSource(std::move(sksl), options, programKind);
@@ -670,7 +672,8 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(SkString sksl, const Opti
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(SkString sksl, const Options& options) {
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(const SkString& sksl,
+                                                        const Options& options) {
     auto programKind = options.allowPrivateAccess ? SkSL::ProgramKind::kPrivateRuntimeBlender
                                                   : SkSL::ProgramKind::kRuntimeBlender;
     auto result = MakeFromSource(std::move(sksl), options, programKind);
@@ -679,7 +682,7 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(SkString sksl, const Opt
 }
 
 sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString sksl, const SkRuntimeEffect::Options&),
+        SkRuntimeEffect::Result (*make)(const SkString& sksl, const SkRuntimeEffect::Options&),
         SkString sksl) {
     static SkNoDestructor<SkMutex> mutex;
     static SkNoDestructor<SkLRUCache<uint64_t, sk_sp<SkRuntimeEffect>>> cache(11 /*arbitrary*/);
@@ -898,7 +901,7 @@ sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<const SkData> uniforms,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkRuntimeEffect::TracedShader SkRuntimeEffect::MakeTraced(sk_sp<SkShader> shader,
+SkRuntimeEffect::TracedShader SkRuntimeEffect::MakeTraced(const sk_sp<SkShader>& shader,
                                                           const SkIPoint& traceCoord) {
     SkRuntimeEffect* effect = as_SB(shader)->asRuntimeEffect();
     if (!effect) {

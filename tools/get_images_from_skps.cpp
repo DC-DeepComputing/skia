@@ -50,7 +50,7 @@ struct Sniffer {
     std::string skpName;
 
     Sniffer(std::string name) {
-        skpName = name;
+        skpName = std::move(name);
     }
 
     void sniff(const void* ptr, size_t len) {

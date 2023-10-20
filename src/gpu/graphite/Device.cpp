@@ -243,7 +243,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 }
 
 sk_sp<Device> Device::Make(Recorder* recorder,
-                           sk_sp<TextureProxy> target,
+                           const sk_sp<TextureProxy>& target,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
@@ -760,7 +760,7 @@ sktext::gpu::AtlasDrawDelegate Device::atlasDelegate() {
                const SkPaint& paint,
                sk_sp<SkRefCnt> subRunStorage,
                sktext::gpu::RendererData rendererData) {
-        this->drawAtlasSubRun(subRun, drawOrigin, paint, subRunStorage, rendererData);
+        this->drawAtlasSubRun(subRun, drawOrigin, paint, std::move(subRunStorage), rendererData);
     };
 }
 

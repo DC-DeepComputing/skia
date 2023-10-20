@@ -37,20 +37,20 @@ static void make_bm(SkBitmap* bm) {
     *bm->getAddr32(1, 1) = colorsPM[3];
 }
 
-static SkScalar draw_bm(SkCanvas* canvas, sk_sp<SkImage> img, SkScalar x, SkScalar y,
+static SkScalar draw_bm(SkCanvas* canvas, const sk_sp<SkImage>& img, SkScalar x, SkScalar y,
                         const SkSamplingOptions& sampling, SkPaint* paint) {
     canvas->drawImage(img, x, y, sampling, paint);
     return SkIntToScalar(img->width()) * 5/4;
 }
 
-static SkScalar draw_set(SkCanvas* c, sk_sp<SkImage> img, SkScalar x, SkPaint* p) {
+static SkScalar draw_set(SkCanvas* c, const sk_sp<SkImage>& img, SkScalar x, SkPaint* p) {
     x += draw_bm(c, img, x, 0, SkSamplingOptions(), p);
     x += draw_bm(c, img, x, 0, SkSamplingOptions(SkFilterMode::kLinear), p);
     p->setDither(true);
     return x + draw_bm(c, img, x, 0, SkSamplingOptions(SkFilterMode::kLinear), p);
 }
 
-static SkScalar draw_row(SkCanvas* canvas, sk_sp<SkImage> img) {
+static SkScalar draw_row(SkCanvas* canvas, const sk_sp<SkImage>& img) {
     SkAutoCanvasRestore acr(canvas, true);
 
     SkPaint paint;

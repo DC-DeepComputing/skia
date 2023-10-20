@@ -56,7 +56,7 @@ GrTextureProxy* GetTextureImageProxy(SkImage* image, GrRecordingContext* rContex
 GrSurfaceProxyView MakeTextureProxyViewFromData(GrDirectContext* dContext,
                                                 GrRenderable renderable,
                                                 GrSurfaceOrigin origin,
-                                                GrCPixmap pixmap) {
+                                                const GrCPixmap& pixmap) {
     if (dContext->abandoned()) {
         return {};
     }

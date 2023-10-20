@@ -41,7 +41,9 @@ class SGSlide : public ClickHandlerSlide {
         return nullptr;
     }
 
-    void appendNode(sk_sp<sksg::Draw> d, sk_sp<sksg::GeometryNode> g, sk_sp<sksg::PaintNode> p) {
+    void appendNode(const sk_sp<sksg::Draw>& d,
+                    const sk_sp<sksg::GeometryNode>& g,
+                    const sk_sp<sksg::PaintNode>& p) {
         fGroup->addChild(d);
         auto sc = fSideCar.append();
         sc->fDraw  = d.get();

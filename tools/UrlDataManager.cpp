@@ -14,7 +14,7 @@ bool operator==(const SkData& a, const SkData& b) {
     return a.equals(&b);
 }
 
-UrlDataManager::UrlDataManager(SkString rootUrl) : fRootUrl(rootUrl), fDataId(0) {}
+UrlDataManager::UrlDataManager(SkString rootUrl) : fRootUrl(std::move(rootUrl)) {}
 
 SkString UrlDataManager::addData(SkData* data, const char* contentType) {
     UrlData* urlData = fCache.find(*data);

@@ -30,7 +30,7 @@ public:
     /**
      *  Serialize to a buffer.
      */
-    static void Flatten(const sk_sp<const SkPicture> , SkWriteBuffer& buffer);
+    static void Flatten(const sk_sp<const SkPicture>&, SkWriteBuffer& buffer);
 
     // Returns NULL if this is not an SkBigPicture.
     static const SkBigPicture* AsSkBigPicture(const sk_sp<const SkPicture>& picture) {

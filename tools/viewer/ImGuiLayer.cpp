@@ -130,7 +130,7 @@ bool ImGuiLayer::onMouseWheel(float delta, int, int, skui::ModifierKey modifiers
 
 void ImGuiLayer::skiaWidget(const ImVec2& size, SkiaWidgetFunc func) {
     intptr_t funcIndex = fSkiaWidgetFuncs.size();
-    fSkiaWidgetFuncs.push_back(func);
+    fSkiaWidgetFuncs.push_back(std::move(func));
     ImGui::Image((ImTextureID)funcIndex, size);
 }
 

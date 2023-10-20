@@ -33,7 +33,7 @@ inline bool extension_compare(const VulkanExtensions::Info& a, const VulkanExten
 }
 }  // namespace
 
-void VulkanExtensions::init(VulkanGetProc getProc,
+void VulkanExtensions::init(const VulkanGetProc& getProc,
                             VkInstance instance,
                             VkPhysicalDevice physDev,
                             uint32_t instanceExtensionCount,

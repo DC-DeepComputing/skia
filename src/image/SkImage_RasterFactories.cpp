@@ -97,7 +97,7 @@ sk_sp<SkImage> RasterFromData(const SkImageInfo& info, sk_sp<SkData> data, size_
     return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
 }
 
-sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
+sk_sp<SkImage> MakeWithFilter(const sk_sp<SkImage>& src,
                               const SkImageFilter* filter,
                               const SkIRect& subset,
                               const SkIRect& clipBounds,

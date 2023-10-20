@@ -504,7 +504,7 @@ public:
             return {};
         }
 
-        auto [debugShader, debugTrace] = SkRuntimeEffect::MakeTraced(std::move(shader), traceCoord);
+        auto [debugShader, debugTrace] = SkRuntimeEffect::MakeTraced(shader, traceCoord);
 
         SkCanvas* canvas = fSurface->getCanvas();
         SkPaint paint;
@@ -520,7 +520,7 @@ public:
     }
 
     void test(GrColor expected, const PreTestFn& preTestCallback = nullptr) {
-        this->test({expected, expected, expected, expected}, std::move(preTestCallback));
+        this->test({expected, expected, expected, expected}, preTestCallback);
     }
 
 private:
@@ -578,7 +578,7 @@ public:
     }
 
     void test(GrColor expected, const PreTestFn& preTestCallback = nullptr) {
-        this->test({expected, expected, expected, expected}, std::move(preTestCallback));
+        this->test({expected, expected, expected, expected}, preTestCallback);
     }
 
 private:

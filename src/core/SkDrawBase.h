@@ -116,7 +116,6 @@ public:
                                        sk_sp<SkShader> clipShader,
                                        const SkSurfaceProps&);
 
-
 private:
     // not supported
     void paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const override;

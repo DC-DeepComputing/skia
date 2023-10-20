@@ -419,7 +419,7 @@ sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
 }
 
 sk_sp<SkImage> MakeWithFilter(GrRecordingContext* rContext,
-                              sk_sp<SkImage> src,
+                              const sk_sp<SkImage>& src,
                               const SkImageFilter* filter,
                               const SkIRect& subset,
                               const SkIRect& clipBounds,
@@ -438,7 +438,7 @@ sk_sp<SkImage> MakeWithFilter(GrRecordingContext* rContext,
     sk_sp<skif::Backend> backend =
             skif::MakeGaneshBackend(sk_ref_sp(rContext), origin, {}, src->colorType());
     return as_IFB(filter)->makeImageWithFilter(std::move(backend),
-                                               std::move(src),
+                                               src,
                                                subset,
                                                clipBounds,
                                                outSubset,

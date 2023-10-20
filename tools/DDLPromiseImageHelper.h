@@ -33,7 +33,7 @@ class SkTaskGroup;
 // it drops all of its refs (via "reset").
 class PromiseImageCallbackContext : public SkRefCnt {
 public:
-    PromiseImageCallbackContext(GrDirectContext* direct, GrBackendFormat backendFormat)
+    PromiseImageCallbackContext(GrDirectContext* direct, const GrBackendFormat& backendFormat)
             : fContext(direct)
             , fBackendFormat(backendFormat) {}
 
@@ -164,7 +164,7 @@ private:
 
         void setCallbackContext(int index, sk_sp<PromiseImageCallbackContext> callbackContext) {
             SkASSERT(index >= 0 && index < (this->isYUV() ? SkYUVAInfo::kMaxPlanes : 1));
-            fCallbackContexts[index] = callbackContext;
+            fCallbackContexts[index] = std::move(callbackContext);
         }
         PromiseImageCallbackContext* callbackContext(int index) const {
             SkASSERT(index >= 0 && index < (this->isYUV() ? SkYUVAInfo::kMaxPlanes : 1));

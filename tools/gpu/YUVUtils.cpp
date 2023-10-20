@@ -241,7 +241,7 @@ sk_sp<SkImage> LazyYUVImage::refImage(skgpu::graphite::Recorder* recorder, Type 
 
 bool LazyYUVImage::reset(sk_sp<SkData> data, skgpu::Mipmapped mipmapped, sk_sp<SkColorSpace> cs) {
     fMipmapped = mipmapped;
-    auto codec = SkCodecImageGenerator::MakeFromEncodedCodec(data);
+    auto codec = SkCodecImageGenerator::MakeFromEncodedCodec(std::move(data));
     if (!codec) {
         return false;
     }

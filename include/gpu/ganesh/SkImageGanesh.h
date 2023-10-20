@@ -349,7 +349,7 @@ SK_API sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
     @return            filtered SkImage, or nullptr
 */
 SK_API sk_sp<SkImage> MakeWithFilter(GrRecordingContext* context,
-                                     sk_sp<SkImage> src,
+                                     const sk_sp<SkImage>& src,
                                      const SkImageFilter* filter,
                                      const SkIRect& subset,
                                      const SkIRect& clipBounds,

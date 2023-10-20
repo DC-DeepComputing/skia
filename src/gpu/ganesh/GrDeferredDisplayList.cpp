@@ -70,11 +70,11 @@ bool DrawDDL(SkSurface* surface, sk_sp<const GrDeferredDisplayList> ddl) {
         return false;
     }
     auto gs = static_cast<SkSurface_Ganesh*>(surface);
-    return gs->draw(ddl);
+    return gs->draw(std::move(ddl));
 }
 
-bool DrawDDL(sk_sp<SkSurface> surface, sk_sp<const GrDeferredDisplayList> ddl) {
-    return DrawDDL(surface.get(), ddl);
+bool DrawDDL(const sk_sp<SkSurface>& surface, sk_sp<const GrDeferredDisplayList> ddl) {
+    return DrawDDL(surface.get(), std::move(ddl));
 }
 
 }

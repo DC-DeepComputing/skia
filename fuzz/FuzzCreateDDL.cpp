@@ -181,8 +181,8 @@ static sk_sp<SkSurface> make_surface(Fuzz* fuzz, GrDirectContext* dContext, cons
     return surface;
 }
 
-static bool draw_ddl(sk_sp<SkSurface> surface, sk_sp<const GrDeferredDisplayList> ddl) {
-    return skgpu::ganesh::DrawDDL(std::move(surface), std::move(ddl));
+static bool draw_ddl(const sk_sp<SkSurface>& surface, sk_sp<const GrDeferredDisplayList> ddl) {
+    return skgpu::ganesh::DrawDDL(surface, std::move(ddl));
 }
 
 using SurfaceAndChar = std::tuple<sk_sp<SkSurface>, GrSurfaceCharacterization>;

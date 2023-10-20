@@ -95,7 +95,7 @@ private:
     SkString fRootUrl;
     SkTDynamicHash<UrlData, SkData, LookupTrait> fCache;
     SkTDynamicHash<UrlData, SkString, ReverseLookupTrait> fUrlLookup;
-    uint32_t fDataId;
+    uint32_t fDataId = 0;
     std::unordered_map<const SkImage*, int> imageMap;
 };
 
