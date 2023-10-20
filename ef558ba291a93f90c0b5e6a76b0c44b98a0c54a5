@@ -104,6 +104,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c3c6e41_5117efdd",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-20T06:13:23Z",
+      "side": 1,
+      "message": "\u003e Without the (1, 1) offset, won\u0027t this remove the padding on the top and left edges of the mask bounds so that the shapes are no longer centered in their plot?\n\u003e \n\u003e I suppose if all shapes get shifted by the same amount then that leaves a 2px border between each mask along the right and bottom edges of the plots so maybe it doesn\u0027t make a difference but previously the shapes were centered.\n\nI see now that `Rectanizer::addPaddedRect` returns a position that incorporates this offset, so this should be correct. Never mind!",
+      "parentUuid": "0b8b49b5_d26e05ec",
+      "range": {
+        "startLine": 213,
+        "startChar": 3,
+        "endLine": 213,
+        "endChar": 67
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97ddbf45_838cf7d8",
