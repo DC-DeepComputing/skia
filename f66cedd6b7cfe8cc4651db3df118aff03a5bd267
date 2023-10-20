@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84441054_f540a310",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-20T21:29:06Z",
+      "side": 1,
+      "message": "LGTM with mostly a much of comments about future work. It may be worth adding them as TODO\u0027s in code or better yet making bugs to remind ourselves to look back at them. In general I just think there is a lot of cleanup and polishing to do in terms of how we handle buffer barriers.",
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c238d1a_535c048b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-20T21:29:06Z",
+      "side": 1,
+      "message": "TODO for future CL: I think we should clean up and remove this param. I don\u0027t think we\u0027d ever pass in anything besides false here.",
+      "range": {
+        "startLine": 396,
+        "startChar": 78,
+        "endLine": 396,
+        "endChar": 85
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75459fba_cc17326e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-20T21:29:06Z",
+      "side": 1,
+      "message": "This is fine for now, but looking through the code I think we should be setting buffer accesses in many more places. For example, when we actually use a buffer for  uniforms in general we don\u0027t are not setting anything. If we did do that then I don\u0027t think we would need this call here and instead rely on where we bind/use the buffer. Though in that world we\u0027d need to make sure we\u0027re passing in the right stage Vertex vs Fragment depending on buffers usage.",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 408,
+        "endChar": 90
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "732f69ce_1a72a74e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-20T21:29:06Z",
+      "side": 1,
+      "message": "my gut says this call here is actually probably not needed as the barriers will get submitted before the start of the render pass it is used in. But doesn\u0027t really hurt much leaving as is.",
+      "range": {
+        "startLine": 409,
+        "startChar": 10,
+        "endLine": 409,
+        "endChar": 32
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
