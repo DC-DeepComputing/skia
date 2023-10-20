@@ -387,12 +387,21 @@ void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
     fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
             {intrinsicUniformBuffer.get(), /*offset=*/0};
 
+    auto intrinsicVulkanBuffer = static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get());
+    intrinsicVulkanBuffer->setBufferAccess(
+            this, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, false);
+    this->submitPipelineBarriers();
+
     VULKAN_CALL(fSharedContext->interface(), CmdUpdateBuffer(
             fPrimaryCommandBuffer,
-            static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get())->vkBuffer(),
+            intrinsicVulkanBuffer->vkBuffer(),
             /*dstOffset=*/0,
             VulkanResourceProvider::kIntrinsicConstantSize,
             &rtAdjust));
+
+    intrinsicVulkanBuffer->setBufferAccess(
+            this, VK_ACCESS_UNIFORM_READ_BIT, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, false);
+    this->submitPipelineBarriers();
     this->trackResource(std::move(intrinsicUniformBuffer));
 }
 
