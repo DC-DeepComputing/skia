@@ -1845,7 +1845,7 @@ DEF_TEST(ImageFilterMakeWithFilter, reporter) {
         return SkSurfaces::Raster(info);
     };
 
-    auto raster = [](sk_sp<SkImage> src,
+    auto raster = [](const sk_sp<SkImage>& src,
                      const SkImageFilter* filter,
                      const SkIRect& subset,
                      const SkIRect& clipBounds,
@@ -1874,7 +1874,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Ganesh,
                 rContext, skgpu::Budgeted::kNo, info, 0, kTestSurfaceOrigin, nullptr);
     };
 
-    auto ganesh = [rContext](sk_sp<SkImage> src,
+    auto ganesh = [rContext](const sk_sp<SkImage>& src,
                              const SkImageFilter* filter,
                              const SkIRect& subset,
                              const SkIRect& clipBounds,
@@ -1906,7 +1906,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Graphite,
         return SkSurfaces::RenderTarget(r, info);
     };
 
-    auto graphite = [r = recorder.get()](sk_sp<SkImage> src,
+    auto graphite = [r = recorder.get()](const sk_sp<SkImage>& src,
                                          const SkImageFilter* filter,
                                          const SkIRect& subset,
                                          const SkIRect& clipBounds,

@@ -32,7 +32,7 @@ void run_test(skiatest::Reporter* reporter,
               SkISize surfaceSize,
               SkISize recordingSize,
               SkISize replayOffset,
-              DrawCallback draw,
+              const DrawCallback& draw,
               const std::vector<Expectation>& expectations) {
     const SkImageInfo surfaceImageInfo = SkImageInfo::Make(
             surfaceSize, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);

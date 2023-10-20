@@ -304,7 +304,7 @@ static void check_cubic_type(skiatest::Reporter* reporter,
     }
 }
 
-static void check_cubic_around_rect(std::string name, skiatest::Reporter* reporter,
+static void check_cubic_around_rect(const std::string& name, skiatest::Reporter* reporter,
                                     float x1, float y1, float x2, float y2,
                                     bool undefined = false) {
     skiatest::ReporterContext subtest(reporter, name);
@@ -668,7 +668,7 @@ DEF_TEST(Geometry, reporter) {
     test_chop_at_midtangent(reporter);
 }
 
-static void testChopMonoCubicAtY(skiatest::Reporter* reporter, std::string name,
+static void testChopMonoCubicAtY(skiatest::Reporter* reporter, const std::string& name,
                                  SkSpan<const SkPoint> curveInputs, SkScalar yToChopAt,
                                  SkSpan<const SkPoint> expectedOutputs) {
     skiatest::ReporterContext subtest(reporter, name);
@@ -823,7 +823,7 @@ DEF_TEST(GeometryChopMonoCubicAtY_OutOfRangeReturnFalse, reporter) {
     REPORTER_ASSERT(reporter, !SkChopMonoCubicAtY(inputs, 20, outputs));
 }
 
-static void testChopMonoCubicAtX(skiatest::Reporter* reporter, std::string name,
+static void testChopMonoCubicAtX(skiatest::Reporter* reporter, const std::string& name,
                                  SkSpan<const SkPoint> curveInputs, SkScalar xToChopAt,
                                  SkSpan<const SkPoint> expectedOutputs) {
     skiatest::ReporterContext subtest(reporter, name);

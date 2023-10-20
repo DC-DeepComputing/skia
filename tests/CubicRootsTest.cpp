@@ -19,7 +19,7 @@
 #include <iterator>
 #include <string>
 
-static void testCubicRootsReal(skiatest::Reporter* reporter, std::string name,
+static void testCubicRootsReal(skiatest::Reporter* reporter, const std::string& name,
                                double A, double B, double C, double D,
                                SkSpan<const double> expectedRoots,
                                bool skipPathops = false,
@@ -287,7 +287,7 @@ DEF_TEST(CubicRootsReal_NonFiniteNumbers, reporter) {
     }
 }
 
-static void testCubicValidT(skiatest::Reporter* reporter, std::string name,
+static void testCubicValidT(skiatest::Reporter* reporter, const std::string& name,
                             double A, double B, double C, double D,
                             SkSpan<const double> expectedRoots) {
     skiatest::ReporterContext subtest(reporter, name);

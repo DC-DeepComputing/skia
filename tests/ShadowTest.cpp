@@ -30,7 +30,7 @@ enum ExpectVerts {
     kDo_ExpectVerts
 };
 
-void check_result(skiatest::Reporter* reporter, sk_sp<SkVertices> verts,
+void check_result(skiatest::Reporter* reporter, const sk_sp<SkVertices>& verts,
                   ExpectVerts expectVerts, bool expectSuccess) {
     if (expectSuccess != SkToBool(verts)) {
         ERRORF(reporter, "Expected shadow tessellation to %s but it did not.",

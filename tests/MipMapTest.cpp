@@ -227,7 +227,7 @@ DEF_TEST(MipMap_F16, reporter) {
     sk_sp<SkMipmap> mipmap(SkMipmap::Build(bmp, nullptr));
 }
 
-static void fill_in_mips(SkMipmapBuilder* builder, sk_sp<SkImage> img) {
+static void fill_in_mips(SkMipmapBuilder* builder, const sk_sp<SkImage>& img) {
     int count = builder->countLevels();
     for (int i = 0; i < count; ++i) {
         SkPixmap pm = builder->level(i);
@@ -258,7 +258,7 @@ DEF_TEST(image_mip_factory, reporter) {
 // Ensure we can't attach mips that don't "match" the image
 //
 DEF_TEST(image_mip_mismatch, reporter) {
-    auto check_fails = [reporter](sk_sp<SkImage> img, const SkImageInfo& info) {
+    auto check_fails = [reporter](const sk_sp<SkImage>& img, const SkImageInfo& info) {
         SkMipmapBuilder builder(info);
         fill_in_mips(&builder, img);
         auto img2 = builder.attachTo(img);

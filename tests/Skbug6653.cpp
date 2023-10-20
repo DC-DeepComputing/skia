@@ -29,7 +29,7 @@
 class GrRecordingContext;
 struct GrContextOptions;
 
-static SkBitmap read_pixels(sk_sp<SkSurface> surface, SkColor initColor) {
+static SkBitmap read_pixels(const sk_sp<SkSurface>& surface, SkColor initColor) {
     SkBitmap bmp;
     bmp.allocN32Pixels(surface->width(), surface->height());
     bmp.eraseColor(initColor);

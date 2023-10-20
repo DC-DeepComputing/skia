@@ -34,10 +34,11 @@
 #include "tools/ToolUtils.h"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 // Covers rects, ovals, paths, images, text
-static void draw_basic(SkCanvas* canvas, int seed, sk_sp<SkImage> image) {
+static void draw_basic(SkCanvas* canvas, int seed, const sk_sp<SkImage>& image) {
     canvas->drawColor(SK_ColorWHITE);
 
     SkPaint paint;
@@ -80,8 +81,11 @@ static void draw_basic(SkCanvas* canvas, int seed, sk_sp<SkImage> image) {
 }
 
 // Covers all of the above and drawing nested sub-pictures.
-static void draw_advanced(SkCanvas* canvas, int seed, sk_sp<SkImage> image, sk_sp<SkPicture> sub) {
-    draw_basic(canvas, seed, image);
+static void draw_advanced(SkCanvas* canvas,
+                          int seed,
+                          const sk_sp<SkImage>& image,
+                          const sk_sp<SkPicture>& sub) {
+    draw_basic(canvas, seed, std::move(image));
 
     // Use subpicture twice in different places
     canvas->drawPicture(sub);

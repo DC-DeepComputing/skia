@@ -526,7 +526,7 @@ DEF_TEST(TypefaceCache, reporter) {
     REPORTER_ASSERT(reporter, t1->unique());
 }
 
-static void check_serialize_behaviors(sk_sp<SkTypeface> tf, skiatest::Reporter* reporter) {
+static void check_serialize_behaviors(const sk_sp<SkTypeface>& tf, skiatest::Reporter* reporter) {
     if (!tf) {
         return;
     }

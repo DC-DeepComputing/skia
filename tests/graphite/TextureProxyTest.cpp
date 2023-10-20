@@ -203,7 +203,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteLazyTextureInvalidDimensions, reporte
                                    CtsEnforcement::kNextRelease) {
     class FulfillContext {
     public:
-        FulfillContext(BackendTexture backendTexture) : fBackendTexture(backendTexture) {}
+        FulfillContext(const BackendTexture& backendTexture) : fBackendTexture(backendTexture) {}
 
         static std::tuple<BackendTexture, void*> Fulfill(void* ctx) {
             FulfillContext* self = reinterpret_cast<FulfillContext*>(ctx);

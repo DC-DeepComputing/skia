@@ -461,7 +461,7 @@ private:
     static GrSurfaceProxyView CreateViewOnCpu(GrRecordingContext*, int wh, Stats*);
     static bool FillInViewOnGpu(GrDirectContext*, int wh, Stats*,
                                 const GrSurfaceProxyView& lazyView,
-                                sk_sp<GrThreadSafeCache::Trampoline>);
+                                const sk_sp<GrThreadSafeCache::Trampoline>&);
 
     Stats fStats;
     GrDirectContext* fDContext = nullptr;
@@ -703,7 +703,7 @@ GrSurfaceProxyView TestHelper::CreateViewOnCpu(GrRecordingContext* rContext,
 
 bool TestHelper::FillInViewOnGpu(GrDirectContext* dContext, int wh, Stats* stats,
                                  const GrSurfaceProxyView& lazyView,
-                                 sk_sp<GrThreadSafeCache::Trampoline> trampoline) {
+                                 const sk_sp<GrThreadSafeCache::Trampoline>& trampoline) {
     std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> sdc = new_SDC(dContext, wh);
 
     GrPaint paint;
