@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a2a0571_554428c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-20T21:32:36Z",
+      "side": 1,
+      "message": "Actually no lgtm yet. Looks like AccessMaskToPipelineSrcStageFlags call doesn\u0027t handle uniforms correctly that could have been used in the vertex stage. I think we just need to update that call to allow vertex or fragment (since I don\u0027t think we currently have a way to track which specifically it was used in).",
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c238d1a_535c048b",
