@@ -16,6 +16,115 @@
       "message": "So the gold images are actually a result of me tweaking the z values in the text vertex functions as a drive-by, which made me realize that the GMs are having z-fighting issues 😞",
       "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "168f111e_1010d6f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-20T05:43:29Z",
+      "side": 1,
+      "message": "Overall the CL looks good to me, though I don\u0027t fully understand yet how the inverse fills will work out. I added the Vello test jobs to the tryjob list and they have some minor compilation errors (you currently have to add them manually since they aren\u0027t enabled on the CQ yet - this is a good reminder for me to enable them).\n\nI\u0027d like to wait and see Gold diffs for the images on Graphite_Dawn_Vello and Graphite_Metal_Vello before approving.",
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d75288f_6e958994",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-20T05:43:29Z",
+      "side": 1,
+      "message": "nit: This is fine but consider `std::nullopt` which is a bit more explicit",
+      "range": {
+        "startLine": 72,
+        "startChar": 15,
+        "endLine": 72,
+        "endChar": 17
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37a66b7e_13ef73bd",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-20T05:43:29Z",
+      "side": 1,
+      "message": "I think this should be `maskSize`.",
+      "range": {
+        "startLine": 181,
+        "startChar": 13,
+        "endLine": 181,
+        "endChar": 22
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b8b49b5_d26e05ec",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-20T05:43:29Z",
+      "side": 1,
+      "message": "Without the (1, 1) offset, won\u0027t this remove the padding on the top and left edges of the mask bounds so that the shapes are no longer centered in their plot?\n\nI suppose if all shapes get shifted by the same amount then that leaves a 2px border between each mask along the right and bottom edges of the plots so maybe it doesn\u0027t make a difference but previously the shapes were centered.",
+      "range": {
+        "startLine": 213,
+        "startChar": 3,
+        "endLine": 213,
+        "endChar": 67
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97ddbf45_838cf7d8",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-20T05:43:29Z",
+      "side": 1,
+      "message": "What\u0027s the motivation for this change? Please document it.",
+      "range": {
+        "startLine": 939,
+        "startChar": 36,
+        "endLine": 939,
+        "endChar": 52
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
