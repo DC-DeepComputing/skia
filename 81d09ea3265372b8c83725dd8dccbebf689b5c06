@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56cabf83_12d9f2e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-20T13:44:38Z",
+      "side": 1,
+      "message": "Do we think this is something that should live in Graphite or we should put directly into Dawn? Part of the argument for using Dawn was so that all workarounds could just live in Dawn and we wouldn\u0027t need to know about it.\n\nOn a side note if we do have this change here, it looks like we\u0027re trying to recompile on every backend even though this is a mac specific bug. Should we make a cap in DawnCaps that\u0027s like shouldAllowRetriesOnCompiles() and then only return true there if we are using Metal on non-arm macs?",
+      "revId": "81d09ea3265372b8c83725dd8dccbebf689b5c06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
