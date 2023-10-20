@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
+#include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
@@ -78,7 +79,22 @@ wgpu::RenderPipeline create_blit_render_pipeline(const wgpu::Device& device,
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
-    return device.CreateRenderPipeline(&descriptor);
+    auto errorChecker = std::make_unique<DawnErrorChecker>(device);
+    auto pipeline = device.CreateRenderPipeline(&descriptor);
+    auto errors = errorChecker->popErrorScopes();
+    if (errors & DawnErrorType::kInternal) {
+        // TODO(chromium:1486172): Metal compiler might encounter internal error. Retry creating
+        // the pipeline again.
+        errorChecker = std::make_unique<DawnErrorChecker>(device);
+        pipeline = device.CreateRenderPipeline(&descriptor);
+        errors = errorChecker->popErrorScopes();
+    }
+
+    if (errors != DawnErrorType::kNoError) {
+        return nullptr;
+    }
+
+    return pipeline;
 }
 }  // namespace
 
