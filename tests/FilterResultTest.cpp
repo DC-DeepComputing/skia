@@ -706,7 +706,7 @@ class TestCase {
 public:
     TestCase(TestRunner& runner, std::string name)
             : fRunner(runner)
-            , fName(name)
+            , fName(std::move(name))
             , fSourceBounds(LayerSpace<SkIRect>::Empty())
             , fDesiredOutput(LayerSpace<SkIRect>::Empty()) {}
 

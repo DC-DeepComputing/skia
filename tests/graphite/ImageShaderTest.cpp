@@ -36,7 +36,7 @@ void test_draw(skiatest::Reporter* reporter,
                SkRect dstRect,
                SkTileMode tileMode,
                SkSamplingOptions samplingOptions,
-               std::vector<Expectation> expectations) {
+               const std::vector<Expectation>& expectations) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             recorder.get(),

@@ -145,8 +145,8 @@ static void run_test(GrDirectContext*,
                      skiatest::Reporter*,
                      const std::unique_ptr<skgpu::ganesh::SurfaceDrawContext>&,
                      const SkBitmap& gold,
-                     std::function<void(DrawMeshHelper*)> prepareFn,
-                     std::function<void(DrawMeshHelper*)> executeFn);
+                     const std::function<void(DrawMeshHelper*)>& prepareFn,
+                     const std::function<void(DrawMeshHelper*)>& executeFn);
 
 #ifdef WRITE_PNG_CONTEXT_TYPE
 static bool IsContextTypeForOutputPNGs(skgpu::ContextType type) {
@@ -451,16 +451,16 @@ public:
     DEFINE_OP_CLASS_ID
 
     static GrOp::Owner Make(GrRecordingContext* rContext,
-                            std::function<void(DrawMeshHelper*)> prepareFn,
-                            std::function<void(DrawMeshHelper*)> executeFn) {
+                            const std::function<void(DrawMeshHelper*)>& prepareFn,
+                            const std::function<void(DrawMeshHelper*)>& executeFn) {
         return GrOp::Make<MeshTestOp>(rContext, prepareFn, executeFn);
     }
 
 private:
     friend class GrOp;  // for ctor
 
-    MeshTestOp(std::function<void(DrawMeshHelper*)> prepareFn,
-               std::function<void(DrawMeshHelper*)> executeFn)
+    MeshTestOp(const std::function<void(DrawMeshHelper*)>& prepareFn,
+               const std::function<void(DrawMeshHelper*)>& executeFn)
             : INHERITED(ClassID()), fPrepareFn(prepareFn), fExecuteFn(executeFn) {
         this->setBounds(
                 SkRect::MakeIWH(kImageWidth, kImageHeight), HasAABloat::kNo, IsHairline::kNo);
@@ -640,8 +640,8 @@ static void run_test(GrDirectContext* dContext,
                      skiatest::Reporter* reporter,
                      const std::unique_ptr<skgpu::ganesh::SurfaceDrawContext>& sdc,
                      const SkBitmap& gold,
-                     std::function<void(DrawMeshHelper*)> prepareFn,
-                     std::function<void(DrawMeshHelper*)> executeFn) {
+                     const std::function<void(DrawMeshHelper*)>& prepareFn,
+                     const std::function<void(DrawMeshHelper*)>& executeFn) {
     const int w = gold.width(), h = gold.height();
     const uint32_t* goldPx = reinterpret_cast<const uint32_t*>(gold.getPixels());
     if (h != sdc->height() || w != sdc->width()) {

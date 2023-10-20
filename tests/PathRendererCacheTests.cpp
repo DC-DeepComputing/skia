@@ -101,7 +101,7 @@ static void test_path(
         int expected,
         bool checkListeners,
         GrAAType aaType = GrAAType::kNone,
-        GrStyle style = GrStyle(SkStrokeRec::kFill_InitStyle)) {
+        const GrStyle& style = GrStyle(SkStrokeRec::kFill_InitStyle)) {
     sk_sp<GrDirectContext> dContext = GrDirectContext::MakeMock(nullptr);
     // The cache needs to be big enough that nothing gets flushed, or our expectations can be wrong
     dContext->setResourceCacheLimit(8000000);
@@ -185,7 +185,7 @@ DEF_GANESH_TEST(TriangulatingPathRendererCacheTest,
     paint.setStrokeWidth(1);
     GrStyle style(paint);
     test_path(reporter, create_concave_path, createPR, kExpectedResources, false, GrAAType::kNone,
-              std::move(style));
+              style);
 }
 #endif
 
@@ -212,5 +212,5 @@ DEF_GANESH_TEST(SoftwarePathRendererCacheTest,
     paint.setStrokeWidth(1);
     GrStyle style(paint);
     test_path(reporter, create_concave_path, createPR, kExpectedResources, true,
-              GrAAType::kCoverage, std::move(style));
+              GrAAType::kCoverage, style);
 }

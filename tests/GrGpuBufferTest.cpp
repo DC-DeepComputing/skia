@@ -250,7 +250,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
                                 kDynamic_GrAccessPattern);
     };
 
-    auto create_vertex_buffer = [&](sk_sp<GrGpuBuffer> srcBuffer,
+    auto create_vertex_buffer = [&](const sk_sp<GrGpuBuffer>& srcBuffer,
                                     int srcBaseVertex,
                                     int vbBaseVertex,
                                     bool useTask,

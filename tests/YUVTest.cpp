@@ -156,7 +156,7 @@ SkYUVAPixmaps decode_yuva(skiatest::Reporter* r, std::unique_ptr<SkStream> strea
     return result;
 }
 
-static void verify_same(skiatest::Reporter* r, const SkYUVAPixmaps a, const SkYUVAPixmaps& b) {
+static void verify_same(skiatest::Reporter* r, const SkYUVAPixmaps& a, const SkYUVAPixmaps& b) {
     REPORTER_ASSERT(r, a.yuvaInfo() == b.yuvaInfo());
     REPORTER_ASSERT(r, a.numPlanes() == b.numPlanes());
     for (int plane = 0; plane < a.numPlanes(); ++plane) {
