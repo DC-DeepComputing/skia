@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe49bc2_79f032eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-20T16:35:16Z",
+      "side": 1,
+      "message": "Looks like no surprises in Google3.",
+      "revId": "5ce4aa77607749799e7b06468b8d8ce07a002ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
