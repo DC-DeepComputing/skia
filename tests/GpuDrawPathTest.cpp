@@ -28,6 +28,7 @@
 #include "tests/CtsEnforcement.h"
 
 #include <initializer_list>
+#include <utility>
 
 struct GrContextOptions;
 
@@ -58,7 +59,7 @@ static void fill_and_stroke(SkCanvas* canvas, const SkPath& p1, const SkPath& p2
                             sk_sp<SkPathEffect> effect) {
     SkPaint paint;
     paint.setAntiAlias(true);
-    paint.setPathEffect(effect);
+    paint.setPathEffect(std::move(effect));
 
     canvas->drawPath(p1, paint);
     canvas->drawPath(p2, paint);

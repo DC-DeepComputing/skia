@@ -472,7 +472,7 @@ public:
         return fBuilder->child(name);
     }
 
-    void test(std::array<GrColor, 4> expected, PreTestFn preTestCallback = nullptr) {
+    void test(std::array<GrColor, 4> expected, const PreTestFn& preTestCallback = nullptr) {
         auto shader = fBuilder->makeShader();
         if (!shader) {
             ERRORF(fReporter, "Effect didn't produce a shader");
@@ -519,8 +519,8 @@ public:
         return std::string(static_cast<const char*>(streamData->data()), streamData->size());
     }
 
-    void test(GrColor expected, PreTestFn preTestCallback = nullptr) {
-        this->test({expected, expected, expected, expected}, preTestCallback);
+    void test(GrColor expected, const PreTestFn& preTestCallback = nullptr) {
+        this->test({expected, expected, expected, expected}, std::move(preTestCallback));
     }
 
 private:
@@ -560,7 +560,7 @@ public:
         return fBuilder->child(name);
     }
 
-    void test(std::array<GrColor, 4> expected, PreTestFn preTestCallback = nullptr) {
+    void test(std::array<GrColor, 4> expected, const PreTestFn& preTestCallback = nullptr) {
         auto blender = fBuilder->makeBlender();
         if (!blender) {
             ERRORF(fReporter, "Effect didn't produce a blender");
@@ -577,8 +577,8 @@ public:
         verify_2x2_surface_results(fReporter, fBuilder->effect(), fSurface.get(), expected);
     }
 
-    void test(GrColor expected, PreTestFn preTestCallback = nullptr) {
-        this->test({expected, expected, expected, expected}, preTestCallback);
+    void test(GrColor expected, const PreTestFn& preTestCallback = nullptr) {
+        this->test({expected, expected, expected, expected}, std::move(preTestCallback));
     }
 
 private:

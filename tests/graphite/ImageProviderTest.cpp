@@ -38,7 +38,7 @@ constexpr SkColor4f kBaseImageColor = SkColors::kYellow;
 constexpr SkColor4f kFirstMipLevelColor = SkColors::kRed;
 constexpr SkColor4f kBackgroundColor = SkColors::kBlue;
 
-sk_sp<SkImage> create_and_attach_mipmaps(sk_sp<SkImage> img) {
+sk_sp<SkImage> create_and_attach_mipmaps(const sk_sp<SkImage>& img) {
     constexpr SkColor4f mipLevelColors[] = {
             kFirstMipLevelColor,
             SkColors::kGreen,

@@ -60,6 +60,7 @@
 #include <regex>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #if defined(SK_GRAPHITE)
@@ -163,7 +164,7 @@ static SkBitmap bitmap_from_shader(skiatest::Reporter* r,
                                    SkSurface* surface,
                                    sk_sp<SkRuntimeEffect> effect) {
 
-    SkRuntimeShaderBuilder builder(effect);
+    SkRuntimeShaderBuilder builder(std::move(effect));
     for (const UniformData& data : kUniformData) {
         SkRuntimeShaderBuilder::BuilderUniform uniform = builder.uniform(data.name);
         if (uniform.fVar) {

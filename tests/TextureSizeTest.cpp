@@ -37,7 +37,7 @@ struct GrContextOptions;
 namespace {
 
 void run_test(skiatest::Reporter* reporter, bool testMipmaps,
-              std::function<sk_sp<SkImage>(SkImage*, skgpu::Mipmapped)> convert2gpu) {
+              const std::function<sk_sp<SkImage>(SkImage*, skgpu::Mipmapped)>& convert2gpu) {
 
     for (auto mm : { skgpu::Mipmapped::kYes, skgpu::Mipmapped::kNo }) {
         if (!testMipmaps && mm == skgpu::Mipmapped::kYes) {

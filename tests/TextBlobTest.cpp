@@ -36,6 +36,7 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <utility>
 
 using namespace skia_private;
 
@@ -373,7 +374,7 @@ static void add_run(SkTextBlobBuilder* builder, const char text[], SkScalar x, S
     font.setEdging(SkFont::Edging::kAntiAlias);
     font.setSubpixel(true);
     font.setSize(16);
-    font.setTypeface(tf);
+    font.setTypeface(std::move(tf));
 
     int glyphCount = font.countText(text, strlen(text), SkTextEncoding::kUTF8);
 

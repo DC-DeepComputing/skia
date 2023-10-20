@@ -921,7 +921,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SurfaceClear_Gpu, reporter, ctxInfo, CtsEnforceme
 }
 
 static void test_surface_draw_partially(
-    skiatest::Reporter* reporter, sk_sp<SkSurface> surface, SkColor origColor) {
+    skiatest::Reporter* reporter, const sk_sp<SkSurface>& surface, SkColor origColor) {
     const int kW = surface->width();
     const int kH = surface->height();
     SkPaint paint;

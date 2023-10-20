@@ -23,7 +23,7 @@ namespace skgpu::graphite {
 
 namespace {
 
-using DrawFn = void (*)(sk_sp<SkImage>, SkCanvas*, SkRect /*srcRect*/, SkRect /*dstRect*/);
+using DrawFn = void (*)(const sk_sp<SkImage>&, SkCanvas*, SkRect /*srcRect*/, SkRect /*dstRect*/);
 
 constexpr SkColor4f kTopColor = SkColors::kRed;
 constexpr SkColor4f kBottomColor = SkColors::kBlue;
@@ -134,11 +134,11 @@ void test_draw_fn(skiatest::Reporter* reporter,
     }
 }
 
-void draw_image(sk_sp<SkImage> image,
+void draw_image(const sk_sp<SkImage>& image,
                 SkCanvas* canvas,
                 SkRect srcRect,
                 SkRect dstRect) {
-    canvas->drawImageRect(image,
+    canvas->drawImageRect(std::move(image),
                           srcRect,
                           dstRect,
                           SkSamplingOptions(),
@@ -146,19 +146,18 @@ void draw_image(sk_sp<SkImage> image,
                           SkCanvas::kStrict_SrcRectConstraint);
 }
 
-void draw_image_with_shader(sk_sp<SkImage> image,
+void draw_image_with_shader(const sk_sp<SkImage>& image,
                             SkCanvas* canvas,
                             SkRect srcRect,
                             SkRect dstRect) {
     SkPaint p;
     SkMatrix srcToDst = SkMatrix::RectToRect(srcRect, dstRect);
-    p.setShader(SkImageShader::MakeSubset(
-                std::move(image),
-                srcRect,
-                SkTileMode::kClamp,
-                SkTileMode::kClamp,
-                SkSamplingOptions(),
-                &srcToDst));
+    p.setShader(SkImageShader::MakeSubset(std::move(image),
+                                          srcRect,
+                                          SkTileMode::kClamp,
+                                          SkTileMode::kClamp,
+                                          SkSamplingOptions(),
+                                          &srcToDst));
     canvas->drawRect(dstRect, p);
 }
 

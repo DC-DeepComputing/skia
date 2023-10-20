@@ -86,7 +86,7 @@ sk_sp<SkImage> create_image(GrDirectContext* dContext, const GrBackendTexture& b
 // Draw the compressed backend texture (wrapped in an SkImage) into an RGBA surface, attempting
 // to access all the mipMap levels.
 static void check_compressed_mipmaps(GrRecordingContext* rContext,
-                                     sk_sp<SkImage> img,
+                                     const sk_sp<SkImage>& img,
                                      SkTextureCompressionType compressionType,
                                      const SkColor4f expectedColors[6],
                                      skgpu::Mipmapped mipmapped,
@@ -146,7 +146,7 @@ static void check_compressed_mipmaps(GrRecordingContext* rContext,
 }
 
 // Verify that we can readback from a compressed texture
-static void check_readback(GrDirectContext* dContext, sk_sp<SkImage> img,
+static void check_readback(GrDirectContext* dContext, const sk_sp<SkImage>& img,
                            SkTextureCompressionType compressionType,
                            const SkColor4f& expectedColor,
                            skiatest::Reporter* reporter, const char* label) {
@@ -177,7 +177,7 @@ static void check_readback(GrDirectContext* dContext, sk_sp<SkImage> img,
 static void test_compressed_color_init(
         GrDirectContext* dContext,
         skiatest::Reporter* reporter,
-        std::function<GrBackendTexture(GrDirectContext*, const SkColor4f&, skgpu::Mipmapped)>
+        const std::function<GrBackendTexture(GrDirectContext*, const SkColor4f&, skgpu::Mipmapped)>&
                 create,
         const SkColor4f& color,
         SkTextureCompressionType compression,
@@ -254,8 +254,8 @@ static std::unique_ptr<const char[]> make_compressed_data(SkTextureCompressionTy
 static void test_compressed_data_init(
         GrDirectContext* dContext,
         skiatest::Reporter* reporter,
-        std::function<GrBackendTexture(
-                GrDirectContext*, const char* data, size_t dataSize, skgpu::Mipmapped)> create,
+        const std::function<GrBackendTexture(
+                GrDirectContext*, const char* data, size_t dataSize, skgpu::Mipmapped)>& create,
         SkTextureCompressionType compression,
         skgpu::Mipmapped mipmapped) {
     SkColor4f expectedColors[6] = {

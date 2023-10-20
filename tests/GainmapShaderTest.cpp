@@ -6,6 +6,7 @@
  */
 
 #include <cmath>
+#include <utility>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -37,12 +38,12 @@ static sk_sp<SkImage> make_1x1_image(
         SkColor4f imageColor,
         sk_sp<SkColorSpace> imageColorColorSpace = SkColorSpace::MakeSRGBLinear()) {
     SkImageInfo bmInfo =
-            SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, imageAlphaType, imageColorSpace);
+            SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, imageAlphaType, std::move(imageColorSpace));
     SkBitmap bm;
     bm.allocPixels(bmInfo);
 
     SkImageInfo writePixelsInfo = SkImageInfo::Make(
-            1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, imageColorColorSpace);
+            1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, std::move(imageColorColorSpace));
     SkPixmap writePixelsPixmap(writePixelsInfo, &imageColor, writePixelsInfo.minRowBytes());
     bm.writePixels(writePixelsPixmap, 0, 0);
     return SkImages::RasterFromBitmap(bm);
@@ -62,11 +63,11 @@ static SkGainmapInfo simple_gainmap_info(float hdrRatioMax) {
 
 // Draw using a gainmap to a canvas with the specified HDR to SDR ratio and the specified color
 // space. Return the result as unpremultiplied sRGB linear.
-static SkColor4f draw_1x1_gainmap(sk_sp<SkImage> baseImage,
-                                  sk_sp<SkImage> gainmapImage,
+static SkColor4f draw_1x1_gainmap(const sk_sp<SkImage>& baseImage,
+                                  const sk_sp<SkImage>& gainmapImage,
                                   const SkGainmapInfo& gainmapInfo,
                                   float dstRatio,
-                                  sk_sp<SkColorSpace> dstColorSpace = SkColorSpace::MakeSRGB()) {
+                                  const sk_sp<SkColorSpace>& dstColorSpace = SkColorSpace::MakeSRGB()) {
     constexpr auto kRect = SkRect::MakeWH(1.f, 1.f);
     SkImageInfo canvasInfo =
             SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kPremul_SkAlphaType, dstColorSpace);

@@ -62,6 +62,7 @@
 #include <initializer_list>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 using namespace skia_private;
@@ -160,7 +161,7 @@ private:
 
 sk_sp<SkTextBlob> buildTextBlob(sk_sp<SkTypeface> tf, int glyphCount, int textSize = 1) {
     SkFont font;
-    font.setTypeface(tf);
+    font.setTypeface(std::move(tf));
     font.setHinting(SkFontHinting::kNormal);
     font.setSize(textSize);
     font.setEdging(SkFont::Edging::kAntiAlias);
@@ -211,7 +212,7 @@ SkSurfaceProps FindSurfaceProps(GrRecordingContext* rContext) {
     return surface->props();
 }
 
-SkBitmap RasterBlob(sk_sp<SkTextBlob> blob, int width, int height, const SkPaint& paint,
+SkBitmap RasterBlob(const sk_sp<SkTextBlob>& blob, int width, int height, const SkPaint& paint,
                     GrRecordingContext* rContext, const SkMatrix* matrix = nullptr,
                     SkScalar x = 0) {
     auto surface = MakeSurface(width, height, rContext);
@@ -225,7 +226,7 @@ SkBitmap RasterBlob(sk_sp<SkTextBlob> blob, int width, int height, const SkPaint
     return bitmap;
 }
 
-SkBitmap RasterBlobThroughSlug(sk_sp<SkTextBlob> blob, int width, int height, const SkPaint& paint,
+SkBitmap RasterBlobThroughSlug(const sk_sp<SkTextBlob>& blob, int width, int height, const SkPaint& paint,
                                GrRecordingContext* rContext, const SkMatrix* matrix = nullptr,
                                SkScalar x = 0) {
     auto surface = MakeSurface(width, height, rContext);
@@ -241,7 +242,7 @@ SkBitmap RasterBlobThroughSlug(sk_sp<SkTextBlob> blob, int width, int height, co
     return bitmap;
 }
 
-SkBitmap RasterSlug(sk_sp<Slug> slug, int width, int height, const SkPaint& paint,
+SkBitmap RasterSlug(const sk_sp<Slug>& slug, int width, int height, const SkPaint& paint,
                     GrRecordingContext* rContext, const SkMatrix* matrix = nullptr,
                     SkScalar x = 0) {
     auto surface = MakeSurface(width, height, rContext);
@@ -703,7 +704,7 @@ sk_sp<SkTextBlob> make_blob_causing_fallback(
     font.setSubpixel(true);
     font.setSize(96);
     font.setHinting(SkFontHinting::kNormal);
-    font.setTypeface(targetTf);
+    font.setTypeface(std::move(targetTf));
 
     REPORTER_ASSERT(reporter,
             !SkStrikeSpec::ShouldDrawAsPath(SkPaint(), font, SkMatrix::I()));
@@ -918,7 +919,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_CacheMissReporting,
 sk_sp<SkTextBlob> MakeEmojiBlob(sk_sp<SkTypeface> serverTf, SkScalar textSize,
                                 sk_sp<SkTypeface> clientTf = nullptr) {
     SkFont font;
-    font.setTypeface(serverTf);
+    font.setTypeface(std::move(serverTf));
     font.setSize(textSize);
 
     const char* text = ToolUtils::EmojiSampleText();
@@ -987,7 +988,7 @@ class SkRemoteGlyphCacheTest {
                                             sk_sp<SkTypeface> serverTf, bool asPaths, SkScalar textSize,
                                             sk_sp<SkTypeface> clientTf = nullptr) {
         SkFont font;
-        font.setTypeface(serverTf);
+        font.setTypeface(std::move(serverTf));
         font.setSize(textSize);
 
         const char* text = "Hel lo";
