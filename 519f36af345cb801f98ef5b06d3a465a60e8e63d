@@ -63,6 +63,30 @@
       },
       "revId": "519f36af345cb801f98ef5b06d3a465a60e8e63d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2699fab7_187fc969",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-20T21:13:45Z",
+      "side": 1,
+      "message": "Internal discussion seems to be leaning towards \"test all the things all the time\", so always running Graphite tests in SkQP seems good IIUC.\n\n(That might also mean we could drop the `#ifdef SK_GRAPHITE` guards, but part of me kinda likes having them around for ease of use? I.e. if someone wants to disable Graphite in SkQP during local debugging? IDK, open to either way, though I see we also still have `SK_GL` and `SK_VULKAN` checks in SkQP.)",
+      "parentUuid": "32181586_21bcd7dd",
+      "range": {
+        "startLine": 684,
+        "startChar": 18,
+        "endLine": 684,
+        "endChar": 37
+      },
+      "revId": "519f36af345cb801f98ef5b06d3a465a60e8e63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
