@@ -16,6 +16,24 @@
       "message": "I really wish there were a better solution for `sk_sp` here. Note that there are open bugs about that rule contradicting other guidelines: https://www.mail-archive.com/llvm-bugs@lists.llvm.org/msg69102.html\n\nFor `sk_sp`, my take is that passing by value with `std::move` throughout would be even faster/better, followed by passing `const\u0026`, then passing by value. (The value is just a single pointer so it fits in a register ... passing by `const\u0026` essentially adds a level of indirection for no gain)?\n\nAlas, I don\u0027t think the clang-tidy rules are smart enough to be able to disambiguate... we could allow-list `sk_sp` (https://stackoverflow.com/a/70497291), but I think it would then let us get away with non-moved values? (Or maybe other rules would catch that mistake?)",
       "revId": "a094b0486dc47c72501121759e28795d71be7f5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55bfa60b_a5d7225c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-20T14:35:16Z",
+      "side": 1,
+      "message": "It\u0027s counterintuitive but godbolt has led me to the conclusion that `const sk_sp\u003cT\u003e\u0026` is almost always better.\n\nhttps://godbolt.org/z/bzs1nhqhE",
+      "parentUuid": "0dd647d5_2422e585",
+      "revId": "a094b0486dc47c72501121759e28795d71be7f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
