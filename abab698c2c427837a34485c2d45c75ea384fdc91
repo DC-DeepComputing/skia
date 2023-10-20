@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60209736_30dc379a",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-20T21:03:29Z",
+      "side": 1,
+      "message": "We should maybe talk about more a more elegant way to do this some time (rather than adding only specific dst access masks as we encounter them to trigger memory barrier creation).",
+      "range": {
+        "startLine": 235,
+        "startChar": 4,
+        "endLine": 235,
+        "endChar": 57
+      },
+      "revId": "abab698c2c427837a34485c2d45c75ea384fdc91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8812f34e_01c61c66",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-20T21:03:29Z",
+      "side": 1,
+      "message": "I kept this as `sk_sp\u003cBuffer\u003e` in VulkanResourceProvider and cast it to `VulkanBuffer` here for local usage, but I could alternatively cast the `Buffer` to a `VulkanBuffer` and wrap it in an sk_sp upon vk resource provider construction (kinda clunky though) or within the `refIntrinsicConstantBuffer` getter. LMKWYT",
+      "range": {
+        "startLine": 386,
+        "startChar": 3,
+        "endLine": 386,
+        "endChar": 96
+      },
+      "revId": "abab698c2c427837a34485c2d45c75ea384fdc91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
