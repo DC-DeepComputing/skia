@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c54731_a08d96f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-20T15:46:15Z",
+      "side": 1,
+      "message": "PTAL. I left support for storing inversion in the key because I wanted to be explicit about it and not trip up someone in the future who might assume it\u0027s there.",
+      "revId": "f7f3618dcf9ffb1b06cb37d6eb645d9ca0f48d61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
