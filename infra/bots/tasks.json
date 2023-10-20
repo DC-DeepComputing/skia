@@ -93510,6 +93510,18 @@
         "dm/.+"
       ]
     },
+    "Test-Mac13-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Graphite_Dawn_Vello": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*",
+        "src/sksl/generated/.*"
+      ]
+    },
+    "Test-Mac13-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Graphite_Metal_Vello": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*",
+        "src/sksl/generated/.*"
+      ]
+    },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan": {},
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan": {},
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All": {},
