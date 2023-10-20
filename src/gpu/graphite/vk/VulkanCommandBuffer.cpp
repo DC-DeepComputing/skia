@@ -383,16 +383,30 @@ void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
     const float rtAdjust[4] = {invTwoW, invTwoH, -1.f - x * invTwoW, -1.f - y * invTwoH};
 
     auto intrinsicUniformBuffer = fResourceProvider->refIntrinsicConstantBuffer();
+    const auto intrinsicVulkanBuffer = static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get());
+    SkASSERT(intrinsicVulkanBuffer);
 
     fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
             {intrinsicUniformBuffer.get(), /*offset=*/0};
 
+    // Per the spec, vkCmdUpdateBuffer is treated as a “transfer" operation for the purposes of
+    // synchronization barriers. Ensure this write operation occurs after any previous read
+    // operations and without clobbering any other write operations on the same memory in the cache.
+    intrinsicVulkanBuffer->setBufferAccess(
+            this, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, false);
+    this->submitPipelineBarriers();
+
     VULKAN_CALL(fSharedContext->interface(), CmdUpdateBuffer(
             fPrimaryCommandBuffer,
-            static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get())->vkBuffer(),
+            intrinsicVulkanBuffer->vkBuffer(),
             /*dstOffset=*/0,
             VulkanResourceProvider::kIntrinsicConstantSize,
             &rtAdjust));
+
+    // Ensure the buffer update is completed and made visible before reading
+    intrinsicVulkanBuffer->setBufferAccess(
+            this, VK_ACCESS_UNIFORM_READ_BIT, VK_PIPELINE_STAGE_VERTEX_SHADER_BIT, false);
+    this->submitPipelineBarriers();
     this->trackResource(std::move(intrinsicUniformBuffer));
 }
 

@@ -135,17 +135,6 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         return nullptr;
     }
 
-    // TODO: If this is a uniform buffer, we must set up a descriptor set.
-    // const GrVkDescriptorSet* uniformDescSet = nullptr;
-    // if (bufferType == kUniform::kUniform) {
-    //     uniformDescSet = make_uniform_desc_set(gpu, buffer, size);
-    //     if (!uniformDescSet) {
-    //         VK_CALL(gpu, DestroyBuffer(gpu->device(), buffer, nullptr));
-    //         skgpu::VulkanMemory::FreeBufferMemory(allocator, alloc);
-    //         return nullptr;
-    //     }
-    // }
-
     return sk_sp<Buffer>(new VulkanBuffer(
             sharedContext, size, type, accessPattern, std::move(buffer), alloc, bufInfo.usage));
 }
@@ -244,7 +233,9 @@ void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
                                    VkPipelineStageFlags dstStageMask,
                                    bool byRegion) const {
     // TODO: fill out other cases where we need a barrier
-    if (dstAccessMask == VK_ACCESS_HOST_READ_BIT) {
+    if (dstAccessMask == VK_ACCESS_HOST_READ_BIT      ||
+        dstAccessMask == VK_ACCESS_TRANSFER_WRITE_BIT ||
+        dstAccessMask == VK_ACCESS_UNIFORM_READ_BIT) {
         VkPipelineStageFlags srcStageMask =
             VulkanBuffer::AccessMaskToPipelineSrcStageFlags(fCurrentAccessMask);
 
