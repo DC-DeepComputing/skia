@@ -16,6 +16,24 @@
       "message": "Do we think this is something that should live in Graphite or we should put directly into Dawn? Part of the argument for using Dawn was so that all workarounds could just live in Dawn and we wouldn\u0027t need to know about it.\n\nOn a side note if we do have this change here, it looks like we\u0027re trying to recompile on every backend even though this is a mac specific bug. Should we make a cap in DawnCaps that\u0027s like shouldAllowRetriesOnCompiles() and then only return true there if we are using Metal on non-arm macs?",
       "revId": "81d09ea3265372b8c83725dd8dccbebf689b5c06",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a872435b_60bfa4a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-20T14:19:42Z",
+      "side": 1,
+      "message": "Ok I think it\u0027s valid point to do the retry in Dawn (Metal) only.\n\nI have changed this CL slightly. There is no retry anymore. Instead I only added error checking code to the pipeline creation so that if there is failure we will return a null pipeline object. This will let graphite\u0027s frontend know that creating render pass has failed [1].\n\nCurrently we didn\u0027t do that because Dawn will return a pipeline object regardless of whether there is error or not. Dawn then report an error to chrome via callbacks and chrome would crash.\n\nThis CL at least helps propagate the error properly without crashing. And hopefully we have a mechanism to gracefully recover from this \u0026 in the next redraw, the BlitWithDraw pipeline would be successfully created.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/dawn/DawnCommandBuffer.cpp;drc\u003d995b81fdc1f69b06db6ea1eb23b6c8f6d88f924b;l\u003d315",
+      "parentUuid": "56cabf83_12d9f2e0",
+      "revId": "81d09ea3265372b8c83725dd8dccbebf689b5c06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
