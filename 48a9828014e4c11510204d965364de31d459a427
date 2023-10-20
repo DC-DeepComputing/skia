@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c10b0bf_7978c995",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-20T16:11:05Z",
+      "side": 1,
+      "message": "Yep! Ignore my confusing phrasing -- I meant I didn\u0027t mean to send that comment from Oct 17, but this is ready for review.",
+      "parentUuid": "d5b11755_95b4d18a",
+      "revId": "48a9828014e4c11510204d965364de31d459a427",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32efbdc9_2fa7bedb",

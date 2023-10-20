@@ -39,6 +39,30 @@
       },
       "revId": "519f36af345cb801f98ef5b06d3a465a60e8e63d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32181586_21bcd7dd",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-20T16:11:05Z",
+      "side": 1,
+      "message": "Right now this CL will always build SkQP with Graphite (`gn/skqp_gn_args.py`), so always defining `GRAPHITE_TEST_UTILS` here aligns with that. Whether or not we want to always build SkQP with Graphite is a fair question, but I lean towards saying yes I think we should, but interested in hearing thoughts. I started a thread about this in chat.",
+      "parentUuid": "d17438df_629625cd",
+      "range": {
+        "startLine": 684,
+        "startChar": 18,
+        "endLine": 684,
+        "endChar": 37
+      },
+      "revId": "519f36af345cb801f98ef5b06d3a465a60e8e63d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
