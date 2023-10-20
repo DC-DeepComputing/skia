@@ -237,7 +237,7 @@ SK_API sk_sp<SkImage> RasterFromData(const SkImageInfo& info,
     @param offset      storage for returned SkImage translation
     @return            filtered SkImage, or nullptr
 */
-SK_API sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
+SK_API sk_sp<SkImage> MakeWithFilter(const sk_sp<SkImage>& src,
                                      const SkImageFilter* filter,
                                      const SkIRect& subset,
                                      const SkIRect& clipBounds,

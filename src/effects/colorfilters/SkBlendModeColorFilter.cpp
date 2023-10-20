@@ -87,7 +87,7 @@ bool SkBlendModeColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOp
 ///////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkColorFilter> SkColorFilters::Blend(const SkColor4f& color,
-                                           sk_sp<SkColorSpace> colorSpace,
+                                           const sk_sp<SkColorSpace>& colorSpace,
                                            SkBlendMode mode) {
     if (!SkIsValidMode(mode)) {
         return nullptr;

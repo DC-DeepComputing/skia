@@ -163,7 +163,6 @@ static constexpr UniformData kUniformData[] = {
 static SkBitmap bitmap_from_shader(skiatest::Reporter* r,
                                    SkSurface* surface,
                                    sk_sp<SkRuntimeEffect> effect) {
-
     SkRuntimeShaderBuilder builder(std::move(effect));
     for (const UniformData& data : kUniformData) {
         SkRuntimeShaderBuilder::BuilderUniform uniform = builder.uniform(data.name);

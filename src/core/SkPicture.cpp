@@ -311,7 +311,7 @@ void SkPicture::serialize(SkWStream* stream, const SkSerialProcs* procsPtr,
     }
 }
 
-void SkPicturePriv::Flatten(const sk_sp<const SkPicture> picture, SkWriteBuffer& buffer) {
+void SkPicturePriv::Flatten(const sk_sp<const SkPicture>& picture, SkWriteBuffer& buffer) {
     SkPictInfo info = picture->createHeader();
     std::unique_ptr<SkPictureData> data(picture->backport());
 

@@ -161,7 +161,7 @@ public:
     SkTileMode getTileMode() const { return fTileMode; }
 
     const SkBitmap& cachedBitmap() const { return fColorsAndOffsetsBitmap; }
-    void setCachedBitmap(SkBitmap b) const { fColorsAndOffsetsBitmap = b; }
+    void setCachedBitmap(SkBitmap b) const { fColorsAndOffsetsBitmap = std::move(b); }
 
 private:
     // When the number of stops exceeds Graphite's uniform-based limit the colors and offsets

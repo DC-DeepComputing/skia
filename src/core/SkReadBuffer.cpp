@@ -361,7 +361,7 @@ static sk_sp<SkImage> deserialize_image(sk_sp<SkData> data, SkDeserialProcs dPro
 #endif
 }
 
-static sk_sp<SkImage> add_mipmaps(sk_sp<SkImage> img, sk_sp<SkData> data,
+static sk_sp<SkImage> add_mipmaps(sk_sp<SkImage> img, const SkData* data,
                                   SkDeserialProcs dProcs, std::optional<SkAlphaType> alphaType) {
     SkMipmapBuilder builder(img->imageInfo());
 
@@ -441,7 +441,7 @@ sk_sp<SkImage> SkReadBuffer::readImage() {
             return nullptr;
         }
         if (image) {
-            image = add_mipmaps(image, std::move(data), fProcs, alphaType);
+            image = add_mipmaps(image, data.get(), fProcs, alphaType);
         }
     }
     return image ? image : MakeEmptyImage(1, 1);

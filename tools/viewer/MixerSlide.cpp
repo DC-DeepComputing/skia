@@ -70,7 +70,10 @@ protected:
     }
 
 private:
-    void dodraw(SkCanvas* canvas, sk_sp<SkColorFilter> cf0, sk_sp<SkColorFilter> cf1, float gap) {
+    void dodraw(SkCanvas* canvas,
+                const sk_sp<SkColorFilter>& cf0,
+                const sk_sp<SkColorFilter>& cf1,
+                float gap) {
         SkPaint paint;
         paint.setColorFilter(cf0);
         canvas->drawImage(fImg, 0, 0, SkSamplingOptions(), &paint);

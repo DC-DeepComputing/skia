@@ -205,9 +205,9 @@ bool SkRasterClip::op(sk_sp<SkShader> sh) {
     AUTO_RASTERCLIP_VALIDATE(*this);
 
     if (!fShader) {
-        fShader = sh;
+        fShader = std::move(sh);
     } else {
-        fShader = SkShaders::Blend(SkBlendMode::kSrcIn, sh, fShader);
+        fShader = SkShaders::Blend(SkBlendMode::kSrcIn, std::move(sh), fShader);
     }
     return !this->isEmpty();
 }

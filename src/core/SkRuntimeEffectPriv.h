@@ -111,7 +111,7 @@ public:
                                                  const SkColorSpace* dstCS);
     static SkSpan<const float> UniformsAsSpan(
         SkSpan<const SkRuntimeEffect::Uniform> uniforms,
-        sk_sp<const SkData> originalData,
+        const sk_sp<const SkData>& originalData,
         bool alwaysCopyIntoAlloc,
         const SkColorSpace* destColorSpace,
         SkArenaAlloc* alloc);
@@ -135,11 +135,11 @@ public:
 // keeping these APIs private means users will not be forced into our cache or cache policy.
 
 sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString sksl, const SkRuntimeEffect::Options&),
+        SkRuntimeEffect::Result (*make)(const SkString& sksl, const SkRuntimeEffect::Options&),
         SkString sksl);
 
 inline sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&),
+        SkRuntimeEffect::Result (*make)(const SkString&, const SkRuntimeEffect::Options&),
         const char* sksl) {
     return SkMakeCachedRuntimeEffect(make, SkString{sksl});
 }
@@ -148,7 +148,7 @@ inline sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
 // caching. Used when the caller will cache the result in a static variable. Ownership is passed to
 // the caller; the effect will be leaked if it the pointer is not stored or explicitly deleted.
 inline SkRuntimeEffect* SkMakeRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&),
+        SkRuntimeEffect::Result (*make)(const SkString&, const SkRuntimeEffect::Options&),
         const char* sksl,
         SkRuntimeEffect::Options options = SkRuntimeEffect::Options{}) {
 #if defined(SK_DEBUG)

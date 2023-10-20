@@ -148,7 +148,7 @@ public:
 
 class StaticSkp : public SkpProducer {
 public:
-    StaticSkp(sk_sp<SkPicture> skp) : fSkp(skp) {}
+    StaticSkp(sk_sp<SkPicture> skp) : fSkp(std::move(skp)) {}
 
     int drawAndFlushAndSync(GrDirectContext* context,
                             SkSurface* surface,
@@ -254,7 +254,7 @@ static void ddl_sample(GrDirectContext* dContext, DDLTileHelper* tiles, GpuSync&
 
 static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
                               GrDirectContext* dContext,
-                              sk_sp<SkSurface> dstSurface,
+                              const sk_sp<SkSurface>& dstSurface,
                               SkPicture* inputPicture,
                               std::vector<Sample>* samples) {
     using clock = std::chrono::high_resolution_clock;
@@ -345,7 +345,7 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
 }
 
 static void run_benchmark(GrDirectContext* context,
-                          sk_sp<SkSurface> surface,
+                          const sk_sp<SkSurface>& surface,
                           SkpProducer* skpp,
                           std::vector<Sample>* samples) {
     using clock = std::chrono::high_resolution_clock;
@@ -381,7 +381,7 @@ static void run_benchmark(GrDirectContext* context,
 
 static void run_gpu_time_benchmark(sk_gpu_test::GpuTimer* gpuTimer,
                                    GrDirectContext* context,
-                                   sk_sp<SkSurface> surface,
+                                   const sk_sp<SkSurface>& surface,
                                    const SkPicture* skp,
                                    std::vector<Sample>* samples) {
     using sk_gpu_test::PlatformTimerQuery;

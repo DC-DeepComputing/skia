@@ -76,12 +76,12 @@ bool CommandSet::onSoftkey(const SkString& softkey) {
 }
 
 void CommandSet::addCommand(SkUnichar c, const char* group, const char* description,
-                            std::function<void(void)> function) {
+                            const std::function<void()>& function) {
     fCommands.push_back(Command(c, group, description, function));
 }
 
 void CommandSet::addCommand(skui::Key k, const char* keyName, const char* group,
-                            const char* description, std::function<void(void)> function) {
+                            const char* description, const std::function<void()>& function) {
     fCommands.push_back(Command(k, keyName, group, description, function));
 }
 

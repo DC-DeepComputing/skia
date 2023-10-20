@@ -49,7 +49,7 @@ public:
                               const SkSurfaceProps&,
                               bool addInitialClear);
     static sk_sp<Device> Make(Recorder*,
-                              sk_sp<TextureProxy>,
+                              const sk_sp<TextureProxy>&,
                               const SkColorInfo&,
                               const SkSurfaceProps&,
                               bool addInitialClear);

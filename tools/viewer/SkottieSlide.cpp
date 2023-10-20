@@ -390,15 +390,16 @@ private:
     void addColorSlot(SkString slotID) {
         auto c = fSlotManager->getColorSlot(slotID);
         SkColor4f color4f = SkColor4f::FromColor(*c);
-        fColorSlots.push_back(std::make_pair(slotID, color4f.array()));
+        fColorSlots.push_back(std::make_pair(std::move(slotID), color4f.array()));
     }
 
     void addScalarSlot(SkString slotID) {
-        fScalarSlots.push_back(std::make_pair(slotID, *fSlotManager->getScalarSlot(slotID)));
+        fScalarSlots.push_back(std::make_pair(std::move(slotID),
+                                              *fSlotManager->getScalarSlot(slotID)));
     }
 
     void addVec2Slot(SkString slotID) {
-        fVec2Slots.push_back(std::make_pair(slotID, *fSlotManager->getVec2Slot(slotID)));
+        fVec2Slots.push_back(std::make_pair(std::move(slotID), *fSlotManager->getVec2Slot(slotID)));
     }
 
     void addTextSlot(SkString slotID) {
@@ -406,11 +407,11 @@ private:
         SkString s = fSlotManager->getTextSlot(slotID)->fText;
         std::copy(s.data(), s.data() + s.size(), textSource.data());
         TextSlotData data = {textSource, fTypefaceList[0]};
-        fTextStringSlots.push_back(std::make_pair(slotID, data));
+        fTextStringSlots.push_back(std::make_pair(std::move(slotID), data));
     }
 
     void addImageSlot(SkString slotID) {
-        fImageSlots.push_back(std::make_pair(slotID, fResList[0].data()));
+        fImageSlots.push_back(std::make_pair(std::move(slotID), fResList[0].data()));
     }
 
     void prepareImageAssetList(const char* dirname) {

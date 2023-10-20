@@ -860,7 +860,7 @@ static sk_sp<SkData> base64_string_to_data(const std::string& s) {
     return decodedData;
 }
 
-static std::vector<sk_sp<SkImage>> find_data_uri_images(sk_sp<SkData> data) {
+static std::vector<sk_sp<SkImage>> find_data_uri_images(const sk_sp<SkData>& data) {
     std::string str(reinterpret_cast<const char*>(data->data()), data->size());
     std::regex re("data:image/png;base64,([a-zA-Z0-9+/=]+)");
     std::sregex_iterator images_begin(str.begin(), str.end(), re);
@@ -994,7 +994,7 @@ void Viewer::initSlides() {
         }
     }
 
-    auto orderBySlideName = [](sk_sp<Slide> a, sk_sp<Slide> b) {
+    auto orderBySlideName = [](const sk_sp<Slide>& a, const sk_sp<Slide>& b) {
         return SK_strcasecmp(a->getName().c_str(), b->getName().c_str()) < 0;
     };
     std::sort(fSlides.begin() + firstGM, fSlides.end(), orderBySlideName);
@@ -2701,8 +2701,8 @@ void Viewer::drawImGui() {
                     fCachedShaders.clear();
 
                     if (ctx) {
-                        fPersistentCache.foreach([this](sk_sp<const SkData> key,
-                                                        sk_sp<SkData> data,
+                        fPersistentCache.foreach([this](const sk_sp<const SkData>& key,
+                                                        const sk_sp<SkData>& data,
                                                         const SkString& description,
                                                         int hitCount) {
                             CachedShader& entry(fCachedShaders.push_back());
