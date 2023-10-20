@@ -1135,12 +1135,11 @@ SI U16 to_half(F f) {
 #endif
 }
 
-#if defined(SK_IMPROVE_RASTER_PIPELINE_PRECISION) && (defined(JUMPER_IS_SCALAR) || \
-                                                      defined(JUMPER_IS_SSE2))
+#if defined(JUMPER_IS_SCALAR) || defined(JUMPER_IS_SSE2)
     // In scalar and SSE2 mode, we always use precise math so we can have more predictable results.
     // Chrome will use the SSE2 implementation when --disable-skia-runtime-opts is set. (b/40042946)
     SI F rcp_fast(F v) { return rcp_precise(v); }
-    SI F rsqrt(F v)    { return rcp_precise(sqrt_(v)); }
+    SI F rsqrt(F v) { return rcp_precise(sqrt_(v)); }
 #else
     SI F rcp_fast(F v) { return rcp_approx(v); }
     SI F rsqrt(F v)    { return rsqrt_approx(v); }
