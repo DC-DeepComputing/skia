@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e0cac4_02510288",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-20T13:48:49Z",
+      "side": 1,
+      "message": "intersects the horizontal sweep line?",
+      "range": {
+        "startLine": 208,
+        "startChar": 31,
+        "endLine": 208,
+        "endChar": 49
+      },
+      "revId": "3bcba0d25def7bd2681c1f48fa3b153a028f6bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
