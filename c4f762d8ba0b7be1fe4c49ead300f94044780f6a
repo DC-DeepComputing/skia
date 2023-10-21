@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8255d8ac_ba6929b7",
+        "filename": "include/private/chromium/GrVkSecondaryCBDrawContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5700
+      },
+      "writtenOn": "2023-10-21T01:39:42Z",
+      "side": 1,
+      "message": "```suggestion\n        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT and VK_PIPELINE_STAGE_TRANSFER_BIT. If this\n```",
+      "revId": "c4f762d8ba0b7be1fe4c49ead300f94044780f6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
