@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30d831a3_87781d92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-21T18:28:49Z",
+      "side": 1,
+      "message": "I think this is an overall great improvement to the structure of this RenderStep. This lgtm, assuming the Vello tests still pasts once the issues in the parent CL get fixed.",
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75297155_ef409e37",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-21T18:28:49Z",
+      "side": 1,
+      "message": "I think this comment needs to get updated to say \"mask-space\".",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 31
+      },
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74e73c14_147f354f",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-21T18:28:49Z",
+      "side": 1,
+      "message": "Clever!",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 115,
+        "endChar": 56
+      },
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "643b4532_840af58f",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-21T18:28:49Z",
+      "side": 1,
+      "message": "If the transform above is causing z-fighting issues, should this just be left as `depth` until that gets resolved?",
+      "range": {
+        "startLine": 931,
+        "startChar": 33,
+        "endLine": 931,
+        "endChar": 51
+      },
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
