@@ -69,4 +69,8 @@ std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
                                                                       resourceBudget));
 }
 
+uint32_t DawnSharedContext::allocateBufferSerial() {
+    return mBufferSerialAllocator.allocateSerial();
+}
+
 } // namespace skgpu::graphite

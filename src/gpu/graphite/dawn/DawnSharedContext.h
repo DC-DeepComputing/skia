@@ -12,6 +12,7 @@
 
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
+#include "src/gpu/graphite/dawn/DawnResourceWithSerial.h"
 
 namespace skgpu::graphite {
 
@@ -31,6 +32,8 @@ public:
     const wgpu::Device& device() const { return fDevice; }
     const wgpu::Queue& queue() const { return fQueue; }
     const wgpu::ShaderModule& noopFragment() const { return fNoopFragment; }
+
+    uint32_t allocateBufferSerial();
 private:
     DawnSharedContext(const DawnBackendContext&,
                       std::unique_ptr<const DawnCaps> caps,
@@ -41,6 +44,8 @@ private:
     // A noop fragment shader, it is used to workaround dawn a validation error(dawn doesn't allow
     // a pipeline with a color attachment but without a fragment shader).
     wgpu::ShaderModule fNoopFragment;
+
+    DawnResourceSerialAllocator mBufferSerialAllocator;
 };
 
 } // namespace skgpu::graphite

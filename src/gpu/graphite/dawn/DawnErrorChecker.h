@@ -22,6 +22,9 @@ enum class DawnErrorType : uint32_t {
 };
 SK_MAKE_BITMASK_OPS(DawnErrorType);
 
+constexpr SkEnumBitMask<DawnErrorType> kAllDawnErrorTypes =
+        DawnErrorType::kValidation | DawnErrorType::kOutOfMemory | DawnErrorType::kInternal;
+
 // DawnErrorChecker immediately pushes error scopes for all known Dawn error filter types
 // (Validation, OutOfMemory, Internal) upon construction and detects any errors that are
 // reported within those scopes. Errors can be detected synchronously by either
@@ -32,7 +35,8 @@ SK_MAKE_BITMASK_OPS(DawnErrorType);
 //
 class DawnErrorChecker {
 public:
-    explicit DawnErrorChecker(const wgpu::Device& device);
+    explicit DawnErrorChecker(const wgpu::Device& device,
+                              SkEnumBitMask<DawnErrorType> fatalErrors = DawnErrorType::kNoError);
     ~DawnErrorChecker();
 
     SkEnumBitMask<DawnErrorType> popErrorScopes();
@@ -40,6 +44,9 @@ public:
 private:
     bool fArmed = true;
     wgpu::Device fDevice;
+
+    // List of errors to treat as fatal error.
+    const SkEnumBitMask<DawnErrorType> fFatalErrors;
 };
 
 }  // namespace skgpu::graphite

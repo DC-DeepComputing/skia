@@ -27,10 +27,11 @@ static const char* kBufferTypeNames[kBufferTypeCount] = {
 };
 #endif
 
-sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
-                               size_t size,
-                               BufferType type,
-                               AccessPattern) {
+sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
+                                   uint32_t serial,
+                                   size_t size,
+                                   BufferType type,
+                                   AccessPattern) {
     if (size <= 0) {
         return nullptr;
     }
@@ -82,15 +83,15 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         return {};
     }
 
-    return sk_sp<Buffer>(new DawnBuffer(sharedContext,
-                                        size,
-                                        std::move(buffer)));
+    return sk_sp<DawnBuffer>(new DawnBuffer(sharedContext, serial, size, std::move(buffer)));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
+                       uint32_t serial,
                        size_t size,
                        wgpu::Buffer buffer)
         : Buffer(sharedContext, size)
+        , DawnResourceWithSerial(serial)
         , fBuffer(std::move(buffer)) {}
 
 void DawnBuffer::onMap() {
