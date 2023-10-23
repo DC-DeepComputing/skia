@@ -13,6 +13,7 @@
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
@@ -73,6 +74,44 @@ static const Expression* make_splat_from_arguments(const Type& type, const Expre
     }
 
     return splatExpression;
+}
+
+static const Expression* make_diagonal_matrix_from_arguments(const Type& type,
+                                                             const ExpressionArray& args) {
+    // If the type isn't a matrix, it can't be a diagonal matrix.
+    if (!type.isMatrix()) {
+        return nullptr;
+    }
+    const Expression* diagonal = nullptr;
+    int index = 0;
+    for (int c = 0; c < type.columns(); ++c) {
+        for (int r = 0; r < type.rows(); ++r, ++index) {
+            // All arguments must be scalars.
+            const Expression* expr = args[index].get();
+            if (!expr->type().isScalar()) {
+                return nullptr;
+            }
+            // On the first iteration, just remember the expression we encountered.
+            if (index == 0) {
+                diagonal = expr;
+                continue;
+            }
+            if (c == r) {
+                // We are on the diagonal; this expression should match the diagonal-value. (Note
+                // that IsSameExpressionTree will always reject an Expression with side effects.)
+                if (!Analysis::IsSameExpressionTree(*expr, *diagonal)) {
+                    return nullptr;
+                }
+            } else {
+                // We are not on the diagonal; this expression should be zero.
+                std::optional<double> value = expr->getConstantValue(0);
+                if (value != 0.0) {
+                    return nullptr;
+                }
+            }
+        }
+    }
+    return diagonal;
 }
 
 std::unique_ptr<Expression> ConstructorCompound::Make(const Context& context,
@@ -150,6 +189,10 @@ std::unique_ptr<Expression> ConstructorCompound::Make(const Context& context,
         // Reduce compound constructors to splats where possible.
         if (const Expression* splat = make_splat_from_arguments(type, args)) {
             return ConstructorSplat::Make(context, pos, type, splat->clone());
+        }
+        // Reduce compound constructors to diagonal matrices where possible.
+        if (const Expression* diagonal = make_diagonal_matrix_from_arguments(type, args)) {
+            return ConstructorDiagonalMatrix::Make(context, pos, type, diagonal->clone());
         }
     }
 
