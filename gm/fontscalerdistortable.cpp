@@ -23,6 +23,7 @@
 #include "tools/Resources.h"
 #include "tools/SkMetaData.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <string.h>
 #include <memory>
@@ -79,9 +80,11 @@ private:
             //SkTypeface::MakeFromName(".SF NS", SkFontStyle()), wght, 100.0f, 900.0f
         };
 
-        if (fInfo.distortable) {
-            fVariationSliders = ToolUtils::VariationSliders(fInfo.distortable.get());
+        if (!fInfo.distortable) {
+            fInfo.distortable = ToolUtils::DefaultPortableTypeface();
         }
+        SkASSERT(fInfo.distortable);
+        fVariationSliders = ToolUtils::VariationSliders(fInfo.distortable.get());
     }
 
     inline static constexpr int rows = 2;

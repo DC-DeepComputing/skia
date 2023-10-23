@@ -24,6 +24,7 @@
 #include "include/private/base/SkTemplates.h"
 #include "src/core/SkFontPriv.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <string.h>
 #include <utility>
@@ -119,7 +120,7 @@ protected:
     SkISize getISize() override { return SkISize::Make(640, 480); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkFont font;
+        SkFont font = ToolUtils::DefaultPortableFont();
         font.setSize(30);
 
         const char* text = fApplyKerning ? "Type AWAY" : "Hamburgefons";
@@ -400,9 +401,10 @@ DEF_SIMPLE_GM_CAN_FAIL(typefacerendering_pfb, canvas, errMsg, 640, 840) {
 // Exercise different paint styles and embolden, and compare with strokeandfill patheffect
 DEF_SIMPLE_GM(typeface_styling, canvas, 710, 360) {
     sk_sp<SkTypeface> face = MakeResourceAsTypeface("fonts/Roboto-Regular.ttf");
-    SkFont font;
-    font.setTypeface(face);
-    font.setSize(100);
+    if (!face) {
+        face = ToolUtils::DefaultPortableTypeface();
+    }
+    SkFont font(face, 100);
     font.setEdging(SkFont::Edging::kAntiAlias);
 
     uint16_t glyphs[1] = { font.unicharToGlyph('A') };
