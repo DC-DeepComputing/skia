@@ -10,6 +10,7 @@
 
 #include <memory>
 
+#include "include/core/SkSpan.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLOperator.h"
 
@@ -33,10 +34,18 @@ public:
     static bool GetConstantInt(const Expression& value, SKSL_INT* out);
 
     /**
+     * If `value` has a known constant value that fits in the `out` span, returns true and stores
+     * the value into `out`. Otherwise, returns false.
+     */
+    static bool GetConstantValues(const Expression& value, SkSpan<double> out);
+
+    /**
      * If `value` is a literal or const scalar variable with a known value, returns true and stores
      * the value in `out`. Otherwise, returns false.
      */
-    static bool GetConstantValue(const Expression& value, double* out);
+    static bool GetConstantValue(const Expression& value, double* out) {
+        return GetConstantValues(value, SkSpan(out, 1));
+    }
 
     /**
      * If the expression is a const variable with a known compile-time-constant value, returns that

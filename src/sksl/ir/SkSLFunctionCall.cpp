@@ -43,6 +43,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <iterator>
 #include <optional>
 #include <string_view>
 
@@ -625,11 +626,10 @@ std::unique_ptr<Expression> evaluate_refract(const Context& context,
 }  // namespace
 }  // namespace Intrinsics
 
-static void extract_matrix(const Expression* expr, float mat[16]) {
-    size_t numSlots = expr->type().slotCount();
-    for (size_t index = 0; index < numSlots; ++index) {
-        mat[index] = *expr->getConstantValue(index);
-    }
+static void extract_matrix(const Expression* expr, float floatMatrix[16]) {
+    double matrix[16];
+    SkAssertResult(ConstantFolder::GetConstantValues(*expr, matrix));
+    std::copy(std::begin(matrix), std::end(matrix), floatMatrix);
 }
 
 static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& context,
