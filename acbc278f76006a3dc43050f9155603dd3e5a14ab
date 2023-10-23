@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eca4bdcf_38fbe8ab",
+        "filename": "src/sksl/ir/SkSLPrefixExpression.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-23T16:27:17Z",
+      "side": 0,
+      "message": "This should always have happened at Make time; imagine a scenario where ~ is applied to a constant/literal-value argument which is then inlined.",
+      "range": {
+        "startLine": 240,
+        "startChar": 12,
+        "endLine": 246,
+        "endChar": 13
+      },
+      "revId": "acbc278f76006a3dc43050f9155603dd3e5a14ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
