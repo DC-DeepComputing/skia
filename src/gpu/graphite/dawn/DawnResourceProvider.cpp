@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/private/base/SkAlign.h"
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
@@ -21,6 +22,10 @@
 namespace skgpu::graphite {
 
 namespace {
+
+constexpr int kBufferBindingSizeAlignment = 16;
+constexpr int kMaxNumberOfCachedBindGroups = 32;
+
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
     wgslDesc.code = source;
@@ -87,13 +92,55 @@ wgpu::RenderPipeline create_blit_render_pipeline(const wgpu::Device& device,
 
     return pipeline;
 }
+
+UniqueKey make_ubo_bind_group_key(const DawnGraphicsPipeline* pipeline,
+                                  const std::array<const DawnBuffer*, 3>& boundBuffers) {
+    static const UniqueKey::Domain kBufferBindGroupDomain = UniqueKey::GenerateDomain();
+
+    UniqueKey uniqueKey;
+    {
+        // Each entry in the bind group needs 2 uint32_t in the key:
+        //  - buffer's serial number: 32 bits.
+        //  - buffer's binding size: 32 bits.
+        // We need total of 3 entries in the uniform buffer bind group.
+        // Unused entries will be assigned zero values.
+        UniqueKey::Builder builder(&uniqueKey,
+                                   kBufferBindGroupDomain,
+                                   6,
+                                   "GraphicsPipelineBufferBindGroup");
+
+        builder[0] = boundBuffers[0]->uniqueID().asUInt();
+        builder[1] = sizeof(DawnGraphicsPipeline::IntrinsicConstant);
+
+        if (boundBuffers[1] && pipeline->stepUniformsTotalBytes()) {
+            builder[2] = boundBuffers[1]->uniqueID().asUInt();
+            builder[3] = pipeline->stepUniformsTotalBytes();
+        }
+        else {
+            builder[2] = builder[3] = 0;
+        }
+
+        if (boundBuffers[2] && pipeline->paintUniformsTotalBytes()) {
+            builder[4] = boundBuffers[2]->uniqueID().asUInt();
+            builder[5] = pipeline->paintUniformsTotalBytes();
+        }
+        else {
+            builder[4] = builder[5] = 0;
+        }
+
+        builder.finish();
+    }
+
+    return uniqueKey;
+}
 }  // namespace
 
 DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
                                            SingleOwner* singleOwner,
                                            uint32_t recorderID,
                                            size_t resourceBudget)
-        : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget) {}
+        : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
+        , fUniformBufferBindGroupCache(kMaxNumberOfCachedBindGroups) {}
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
@@ -221,7 +268,16 @@ sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
                                                  AccessPattern accessPattern) {
-    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern);
+    return createDawnBuffer(size, type, accessPattern);
+}
+
+sk_sp<DawnBuffer> DawnResourceProvider::createDawnBuffer(size_t size,
+                                                         BufferType type,
+                                                         AccessPattern accessPattern) {
+    return DawnBuffer::Make(this->dawnSharedContext(),
+                            size,
+                            type,
+                            accessPattern);
 }
 
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
@@ -252,8 +308,8 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     wgpu::Texture::Acquire(texture.getDawnTexturePtr());
 }
 
-const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
-    return static_cast<const DawnSharedContext*>(fSharedContext);
+DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
+    return static_cast<DawnSharedContext*>(fSharedContext);
 }
 
 const wgpu::BindGroupLayout& DawnResourceProvider::getOrCreateUniformBuffersBindGroupLayout() {
@@ -291,6 +347,70 @@ const wgpu::BindGroupLayout& DawnResourceProvider::getOrCreateUniformBuffersBind
             this->dawnSharedContext()->device().CreateBindGroupLayout(&groupLayoutDesc);
 
     return fUniformBuffersBindGroupLayout;
+}
+
+const wgpu::Buffer& DawnResourceProvider::getOrCreateNullBuffer() {
+    if (!fNullBuffer) {
+        fNullBuffer = DawnBuffer::Make(this->dawnSharedContext(),
+                                       /*size=*/1,
+                                       BufferType::kUniform,
+                                       AccessPattern::kGpuOnly,
+                                       "Null Buffer");
+    }
+
+    return fNullBuffer->dawnBuffer();
+}
+
+const wgpu::BindGroup& DawnResourceProvider::getOrCreateUniformBuffersBindGroup(
+        const DawnGraphicsPipeline* pipeline,
+        const std::array<const DawnBuffer*, 3>& boundBuffers) {
+    auto key = make_ubo_bind_group_key(pipeline, boundBuffers);
+    auto* existingBindGroup = fUniformBufferBindGroupCache.find(key);
+    if (existingBindGroup) {
+        // cache hit.
+        return *existingBindGroup;
+    }
+
+    // Translate to wgpu::BindGroupDescriptor
+    std::array<wgpu::BindGroupEntry, 3> entries;
+    entries[0].binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+    entries[0].offset = 0;
+    entries[0].buffer = boundBuffers[0]->dawnBuffer();
+    entries[0].size = wgpu::kWholeSize;
+
+    // Render step uniform buffer:
+    entries[1].binding = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+    entries[1].offset = 0;
+    if (boundBuffers[1] && pipeline->stepUniformsTotalBytes()) {
+        entries[1].buffer = boundBuffers[1]->dawnBuffer();
+        entries[1].size =
+                SkAlignTo(pipeline->stepUniformsTotalBytes(), kBufferBindingSizeAlignment);
+    } else {
+        entries[1].buffer = this->getOrCreateNullBuffer();
+        entries[1].size = wgpu::kWholeSize;
+    }
+
+    // Paint uniform buffer:
+    entries[2].binding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+    entries[2].offset = 0;
+    if (boundBuffers[2] && pipeline->paintUniformsTotalBytes()) {
+        entries[2].buffer = boundBuffers[2]->dawnBuffer();
+        entries[2].size =
+                SkAlignTo(pipeline->paintUniformsTotalBytes(), kBufferBindingSizeAlignment);
+    } else {
+        entries[2].buffer = this->getOrCreateNullBuffer();
+        entries[2].size = wgpu::kWholeSize;
+    }
+
+    wgpu::BindGroupDescriptor desc;
+    desc.layout = this->getOrCreateUniformBuffersBindGroupLayout();
+    desc.entryCount = entries.size();
+    desc.entries = entries.data();
+
+    const auto& device = this->dawnSharedContext()->device();
+    auto bindGroup = device.CreateBindGroup(&desc);
+
+    return *fUniformBufferBindGroupCache.insert(key, bindGroup);
 }
 
 } // namespace skgpu::graphite

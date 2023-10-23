@@ -8,13 +8,16 @@
 #ifndef skgpu_graphite_DawnResourceProvider_DEFINED
 #define skgpu_graphite_DawnResourceProvider_DEFINED
 
+#include "src/core/SkLRUCache.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 
 namespace skgpu::graphite {
 
+class DawnGraphicsPipeline;
 class DawnSharedContext;
 class DawnTexture;
+class DawnBuffer;
 
 class DawnResourceProvider final : public ResourceProvider {
 public:
@@ -31,7 +34,14 @@ public:
 
     wgpu::RenderPipeline findOrCreateBlitWithDrawPipeline(const RenderPassDesc& renderPassDesc);
 
+    sk_sp<DawnBuffer> createDawnBuffer(size_t size, BufferType type, AccessPattern);
+
     const wgpu::BindGroupLayout& getOrCreateUniformBuffersBindGroupLayout();
+
+    const wgpu::BindGroup& getOrCreateUniformBuffersBindGroup(
+            const DawnGraphicsPipeline* pipeline,
+            const std::array<const DawnBuffer*, 3>& boundBuffers);
+
 private:
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const GraphicsPipelineDesc&,
@@ -48,11 +58,22 @@ private:
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(const BackendTexture&) override;
 
-    const DawnSharedContext* dawnSharedContext() const;
+    const wgpu::Buffer& getOrCreateNullBuffer();
+
+    DawnSharedContext* dawnSharedContext() const;
 
     skia_private::THashMap<uint64_t, wgpu::RenderPipeline> fBlitWithDrawPipelines;
 
     wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
+
+    sk_sp<DawnBuffer> fNullBuffer;
+
+    struct UniqueKeyHash {
+        uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+    };
+
+    using BufferBindGroupCache = SkLRUCache<UniqueKey, wgpu::BindGroup, UniqueKeyHash>;
+    BufferBindGroupCache fUniformBufferBindGroupCache;
 };
 
 } // namespace skgpu::graphite
