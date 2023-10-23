@@ -1,0 +1,10 @@
+These files were first generated from Dawn on 2023-10-23. Skia internally relies
+on Dawn extended webgpu headers for native operation. The public Skia interface
+only relies on the webgpu headers. Thus, when Skia is compiling itself
+(i.e. when SKIA_IMPLEMTATION is true) these extended headers are used and when
+compiling a client file that includes a Skia header the public webgpu header is used.
+This behavior is controlled in include/private/dawn/SkiaWebGpuCpp.h.
+
+The generated Dawn webgpu headers were modified to remove the error message that is issued
+when compiling with Emscripten. webgpu_cpp.h was modified to include the other two headers by their
+full path from the skia root.
