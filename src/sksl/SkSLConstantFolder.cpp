@@ -27,6 +27,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <float.h>
 #include <limits>
@@ -331,12 +332,21 @@ bool ConstantFolder::GetConstantInt(const Expression& value, SKSL_INT* out) {
     return true;
 }
 
-bool ConstantFolder::GetConstantValue(const Expression& value, double* out) {
+bool ConstantFolder::GetConstantValues(const Expression& value, SkSpan<double> out) {
     const Expression* expr = GetConstantValueForVariable(value);
-    if (!expr->is<Literal>()) {
+    size_t numSlots = expr->type().slotCount();
+    if (numSlots > out.size()) {
+        // The passed-in span is too small.
         return false;
     }
-    *out = expr->as<Literal>().value();
+    for (size_t index = 0; index < numSlots; ++index) {
+        if (std::optional<double> valueForSlot = expr->getConstantValue(index)) {
+            out[index] = *valueForSlot;
+        } else {
+            // The passed-in expression is not constant.
+            return false;
+        }
+    }
     return true;
 }
 
