@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe5878f_94ed3d19",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-23T20:13:59Z",
+      "side": 1,
+      "message": "I feel like the Pipeline isn\u0027t a great place to be storing this cache and this would make more sense to be on the DawnResourceProvider. In those model we end up with a different cache on every pipeline. I would assume we\u0027d want to use bind group objects across different pipelines? But maybe the need to pass in the uniform buffer size makes that difficult to do?\n\nLooks like the only thing we need from the Pipeline here are the two UniformTotalBytes. Could we just query those off of the pipeline and pass those into a call on the ResourceCache?",
+      "range": {
+        "startLine": 681,
+        "startChar": 38,
+        "endLine": 681,
+        "endChar": 61
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
