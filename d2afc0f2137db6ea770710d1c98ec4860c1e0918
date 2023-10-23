@@ -16,6 +16,24 @@
       "message": "I have a few minor suggestions if we keep this, but I first want to start of a higher level discussion.\n\nWhat do we think of the having the tracking of using dynamic buffers be a higher level thing that lives above the backends? Is there anything for us to gain up in the shared Graphite code to know that we\u0027re using dynamic offsets? Or does it make any of the code added in this CL simpler? Obviously the backends would be \"simpler\" as they would just be told a binding is dynamic and be given the offset. In this world would we still pass the backends both a normal binding offset and dynamic offset? Does this only make sense if we decide to make bind groups themselves be a higher level abstraction, so that we\u0027re also telling the backends which bind group to bind?\n\nI see the benefits of both approaches so just wanted to at least get a little discussion about which direction we want to head first.",
       "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d6e8644_961d0082",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-23T20:40:41Z",
+      "side": 1,
+      "message": "I think making BindGroup as higher level abstraction would work. It makes backends\u0027 code simpler. And dynamic offsets are also supported in Vulkan.\n\nHowever doing so will require major refactoring in different backends. For example we will need to implement code to translate BindGroup to metal\u0027s flat bindings (or Argument buffer) in metal backend. Whereas with the current approach, only Dawn backend needs to change.\n\nDo you prefer this \"high level BindGroup\" approach? One thing I\u0027m not sure is how good is high level layer\u0027s caching compare to backend specific caching. For example, backend might know some info that helps reduce the hash key\u0027s size. How about we implement this in Dawn first and extend to higher level layer in future patch. I saw vulkan already has some kinds of descriptor set caching. Or do you think it\u0027s possible for the high level layer to pre-create bind groups without the need for runtime caching?",
+      "parentUuid": "dbd069ef_47cb40ac",
+      "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
