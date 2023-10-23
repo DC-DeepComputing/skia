@@ -87,7 +87,7 @@ func main() {
 		commandArgs:    *commandArgs,
 		commandWorkDir: filepath.Join(wd, *commandWorkDir),
 	}
-	if testKind == gmTest {
+	if testKind == benchmarkTest || testKind == gmTest {
 		tdArgs.undeclaredOutputsDir, err = os_steps.TempDir(ctx, "", "test-undeclared-outputs-dir-*")
 		if err != nil {
 			td.Fatal(ctx, err)
@@ -123,7 +123,7 @@ type taskDriverArgs struct {
 func run(ctx context.Context, tdArgs taskDriverArgs) error {
 	// GM tests require an output directory in which to store any PNGs produced.
 	var env []string
-	if tdArgs.testKind == gmTest {
+	if tdArgs.testKind == benchmarkTest || tdArgs.testKind == gmTest {
 		env = append(env, fmt.Sprintf("TEST_UNDECLARED_OUTPUTS_DIR=%s", tdArgs.undeclaredOutputsDir))
 	}
 
@@ -139,6 +139,13 @@ func run(ctx context.Context, tdArgs taskDriverArgs) error {
 	_, err := sk_exec.RunCommand(ctx, runCmd)
 	if err != nil {
 		return skerr.Wrap(err)
+	}
+
+	if tdArgs.testKind == benchmarkTest {
+		// TODO(lovisolo): Implement.
+		return td.Do(ctx, td.Props("TODO: Upload to Perf"), func(ctx context.Context) error {
+			return nil
+		})
 	}
 
 	if tdArgs.testKind == gmTest {
