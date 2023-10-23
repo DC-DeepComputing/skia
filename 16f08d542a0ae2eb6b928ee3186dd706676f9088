@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddb80355_6d38d73a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T16:17:43Z",
+      "side": 1,
+      "message": "I\u0027m not sure this is the correct logic because it\u0027s not checking inverted-ness (SkPath::isEmpty() is based on verbcount/pointcount but not fill type). Empty geometry with a stroke is also meant to produce caps.\n\nThe ClipStack should have logic for checking for draws that don\u0027t produce coverage: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/ClipStack_graphite.cpp;drc\u003d205b728a862371a90c4d65bcfa528060466fa49b;l\u003d1133\n\nI don\u0027t know exactly what would cause that to fail, but if it\u0027s inverse-fill or style related, we probably need to fix the Shape key function, or check for the empty-mask inverse logic earlier in the addShape() logic?",
+      "range": {
+        "startLine": 848,
+        "startChar": 8,
+        "endLine": 848,
+        "endChar": 92
+      },
+      "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
