@@ -15,6 +15,7 @@ namespace skgpu::graphite {
 
 class DawnSharedContext;
 class DawnTexture;
+class DawnBuffer;
 
 class DawnResourceProvider final : public ResourceProvider {
 public:
@@ -31,6 +32,7 @@ public:
 
     wgpu::RenderPipeline findOrCreateBlitWithDrawPipeline(const RenderPassDesc& renderPassDesc);
 
+    sk_sp<DawnBuffer> createDawnBuffer(size_t size, BufferType type, AccessPattern);
 private:
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const GraphicsPipelineDesc&,
@@ -47,7 +49,7 @@ private:
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(const BackendTexture&) override;
 
-    const DawnSharedContext* dawnSharedContext() const;
+    DawnSharedContext* dawnSharedContext() const;
 
     skia_private::THashMap<uint64_t, wgpu::RenderPipeline> fBlitWithDrawPipelines;
 };

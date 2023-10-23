@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 
-#include "include/private/base/SkAlign.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -26,8 +25,6 @@ namespace skgpu::graphite {
 
 namespace {
 using IntrinsicConstant = float[4];
-
-constexpr int kBufferBindingSizeAlignment = 16;
 }  // namespace
 
 std::unique_ptr<DawnCommandBuffer> DawnCommandBuffer::Make(const DawnSharedContext* sharedContext,
@@ -539,13 +536,12 @@ void DawnCommandBuffer::syncUniformBuffers() {
         fBoundUniformBuffersDirty = false;
 
         std::array<uint32_t, 3> dynamicOffsets;
-        std::array<wgpu::BindGroupEntry, 3> entries;
-        uint32_t numBuffers = 0;
+        DawnGraphicsPipeline::BufferBindGroupDesc cacheDesc;
+        uint32_t& numBuffers = cacheDesc.fNumEntries;
 
-        entries[numBuffers].binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
-        entries[numBuffers].buffer = fIntrinsicConstantBuffer;
-        entries[numBuffers].offset = 0;
-        entries[numBuffers].size = sizeof(IntrinsicConstant);
+        cacheDesc.fEntries[numBuffers].bindingIndex =
+                DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+        cacheDesc.fEntries[numBuffers].buffer = fIntrinsicConstantBuffer.get();
         dynamicOffsets[numBuffers] = 0;
 
         ++numBuffers;
@@ -555,18 +551,9 @@ void DawnCommandBuffer::syncUniformBuffers() {
             auto boundBuffer =
                     fBoundUniformBuffers[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
 
-            entries[numBuffers].binding = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
-            entries[numBuffers].buffer = boundBuffer->dawnBuffer();
-            entries[numBuffers].offset = 0;
-            // Dynamic offset only needs to be known when we call SetBindGroup().
-            // However, binding size needs to be known when we create the BindGroup. And we have to
-            // make sure when SetBindGroup() is called, the dynamic offset + binding size won't
-            // result in out of bound access.
-            // kWholeSize is not useful here because it relies on static offset passed to
-            // BindGroupEntry when we create the BindGroup. It doesn't take into account the dynamic
-            // offset.
-            entries[numBuffers].size = SkAlignTo(fActiveGraphicsPipeline->stepUniformsTotalBytes(),
-                                                 kBufferBindingSizeAlignment);
+            cacheDesc.fEntries[numBuffers].bindingIndex =
+                    DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+            cacheDesc.fEntries[numBuffers].buffer = boundBuffer;
 
             dynamicOffsets[numBuffers] =
                     fBoundUniformBufferOffsets[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
@@ -578,11 +565,9 @@ void DawnCommandBuffer::syncUniformBuffers() {
             fBoundUniformBuffers[DawnGraphicsPipeline::kPaintUniformBufferIndex]) {
             auto boundBuffer = fBoundUniformBuffers[DawnGraphicsPipeline::kPaintUniformBufferIndex];
 
-            entries[numBuffers].binding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
-            entries[numBuffers].buffer = boundBuffer->dawnBuffer();
-            entries[numBuffers].offset = 0;
-            entries[numBuffers].size = SkAlignTo(fActiveGraphicsPipeline->paintUniformsTotalBytes(),
-                                                 kBufferBindingSizeAlignment);
+            cacheDesc.fEntries[numBuffers].bindingIndex =
+                    DawnGraphicsPipeline::kPaintUniformBufferIndex;
+            cacheDesc.fEntries[numBuffers].buffer = boundBuffer;
 
             dynamicOffsets[numBuffers] =
                     fBoundUniformBufferOffsets[DawnGraphicsPipeline::kPaintUniformBufferIndex];
@@ -590,13 +575,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
             ++numBuffers;
         }
 
-        wgpu::BindGroupDescriptor desc;
-        const auto& groupLayouts = fActiveGraphicsPipeline->dawnGroupLayouts();
-        desc.layout = groupLayouts[DawnGraphicsPipeline::kUniformBufferBindGroupIndex];
-        desc.entryCount = numBuffers;
-        desc.entries = entries.data();
-
-        auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+        auto bindGroup = fActiveGraphicsPipeline->getOrCreateUboBindGroup(cacheDesc);
 
         fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kUniformBufferBindGroupIndex,
                                               bindGroup,
@@ -630,14 +609,8 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
     const IntrinsicConstant rtAdjust = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
 
     if (!fIntrinsicConstantBuffer) {
-        wgpu::BufferDescriptor desc;
-#if defined(SK_DEBUG)
-        desc.label = "CommandBufferIntrinsicConstant";
-#endif
-        desc.usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::Uniform;
-        desc.size = sizeof(IntrinsicConstant);
-        desc.mappedAtCreation = false;
-        fIntrinsicConstantBuffer = fSharedContext->device().CreateBuffer(&desc);
+        fIntrinsicConstantBuffer = fResourceProvider->createDawnBuffer(
+                sizeof(IntrinsicConstant), BufferType::kUniform, AccessPattern::kGpuOnly);
         SkASSERT(fIntrinsicConstantBuffer);
     }
 
@@ -649,7 +622,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
     SkASSERT(!fActiveRenderPassEncoder);
     SkASSERT(!fActiveComputePassEncoder);
 
-    fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer,
+    fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer->dawnBuffer(),
                                 0,
                                 reinterpret_cast<const uint8_t*>(rtAdjust),
                                 sizeof(rtAdjust));
