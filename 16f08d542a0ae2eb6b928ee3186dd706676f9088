@@ -46,6 +46,30 @@
       },
       "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f68cf02_6f7a1d29",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T16:30:45Z",
+      "side": 1,
+      "message": "This check is occurring before we get to the clip stack, right now.\n\nThe intended behavior for atlases and inverse fills is that the mask bounds hold the clipped bounds of the base path, or an empty bounds if the path is clipped out; then no atlas entry is made but a draw is still recorded that has enough attributes set that force it to sample from texel (0,0) of the atlas, which is 0 transparency that\u0027s then inverted in the fragment shader to be the full coverage you\u0027d expect.\n\nThere could be a bug in the clip stack\u0027s checks for empty coverage that is allowing an empty path through, but since the atlases are set to draw the non-inverse filled version of the path, that seems like a more likely place for a mismatch between the coverage of the final draw and what is drawn into the atlas. For inverse-filled empty paths, the PathAtlas can skip that when it skips an empty mask (but that may already be what\u0027s happening). \n\nFor stroked empty paths, we will have a mask bounds that can be non-empty because of the stroke radius. Given this scenario, I think the right fix is to adjust the assert and/or key logic here https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/geom/Shape.cpp;bpv\u003d1;bpt\u003d1;l\u003d114?q\u003dShape.cpp\u0026ss\u003dchromium\u0026gsn\u003dwrite_path_key_from_data\u0026gs\u003dKYTHE%3A%2F%2Fkythe%3A%2F%2Fchromium.googlesource.com%2Fcodesearch%2Fchromium%2Fsrc%2F%2Fmain%3Flang%3Dc%252B%252B%3Fpath%3Dthird_party%2Fskia%2Fsrc%2Fgpu%2Fgraphite%2Fgeom%2FShape.cpp%23b_I4boYUtTa5H1SaP-ssuJwLE0zC7J-bAqmKpTRX1-o to allow for empty paths.",
+      "parentUuid": "5e5efa72_5654f392",
+      "range": {
+        "startLine": 848,
+        "startChar": 8,
+        "endLine": 848,
+        "endChar": 92
+      },
+      "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
