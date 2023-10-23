@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57879dc4_715888fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:49:12Z",
+      "side": 1,
+      "message": "Other than fixing the comment, the latest patchset switches CoverageMaskRenderStep to use the GREATER depth test since it shouldn\u0027t produce self-intersections within the same canvas draw that require multiple FS evaluations.",
+      "revId": "1e652f1c2fbbdba9775cb0571c62314596c1e20f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

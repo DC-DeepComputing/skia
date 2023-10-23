@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6e50c8b_8905a416",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:49:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75297155_ef409e37",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 31
+      },
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74e73c14_147f354f",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f455ccc7_96b721b3",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:49:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "74e73c14_147f354f",
+      "range": {
+        "startLine": 114,
+        "startChar": 8,
+        "endLine": 115,
+        "endChar": 56
+      },
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "643b4532_840af58f",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-10-21T18:28:49Z",
       "side": 1,
       "message": "If the transform above is causing z-fighting issues, should this just be left as `depth` until that gets resolved?",
+      "range": {
+        "startLine": 931,
+        "startChar": 33,
+        "endLine": 931,
+        "endChar": 51
+      },
+      "revId": "4d2e43c18fb4825f408286f17484e39adf7b5a85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2dc0a8f_96911b1b",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:49:12Z",
+      "side": 1,
+      "message": "See comments in https://skia-review.googlesource.com/c/skia/+/769897, but the z-fighting was only really an issue with glyph subruns because of adjacent glyphs in the same subrun having floating point error confusing GEQUAL depth tests.\n\nCoverageMaskRenderStep actually should be using GREATER since there\u0027s only ever one 2-triangle strip per logical draw that doesn\u0027t have self intersections. It needs depth*w (w \u003d\u003d drawCoords.z in this case) to write a constant value to the depth attachment. Previously it didn\u0027t need to because W was hard-coded to 1.",
+      "parentUuid": "643b4532_840af58f",
       "range": {
         "startLine": 931,
         "startChar": 33,
