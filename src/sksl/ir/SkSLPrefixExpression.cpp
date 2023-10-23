@@ -72,7 +72,7 @@ static std::unique_ptr<Expression> simplify_negation(const Context& context,
                                                                                pos,
                                                                                *ctor.argument())) {
                     return ConstructorDiagonalMatrix::Make(context, pos, ctor.type(),
-                            std::move(simplified));
+                                                           std::move(simplified));
                 }
             }
             break;
@@ -94,7 +94,7 @@ static std::unique_ptr<Expression> simplify_negation(const Context& context,
             if (Analysis::IsCompileTimeConstant(*value)) {
                 const ConstructorCompound& ctor = value->as<ConstructorCompound>();
                 return ConstructorCompound::Make(context, pos, ctor.type(),
-                        negate_operands(context, pos, ctor.arguments()));
+                                                 negate_operands(context, pos, ctor.arguments()));
             }
             break;
 
@@ -115,7 +115,7 @@ static ExpressionArray negate_operands(const Context& context,
             replacement.push_back(std::move(simplified));
         } else {
             replacement.push_back(std::make_unique<PrefixExpression>(pos, Operator::Kind::MINUS,
-                    expr->clone()));
+                                                                     expr->clone()));
         }
     }
     return replacement;
@@ -129,7 +129,7 @@ static std::unique_ptr<Expression> negate_operand(const Context& context,
         return simplified;
     }
 
-    // No simplified form; convert expression to Prefix(TK_MINUS, expression).
+    // No simplified form; convert expression to Prefix(MINUS, expression).
     return std::make_unique<PrefixExpression>(pos, Operator::Kind::MINUS, std::move(value));
 }
 
@@ -176,12 +176,64 @@ static std::unique_ptr<Expression> logical_not_operand(const Context& context,
             break;
     }
 
-    // No simplified form; convert expression to Prefix(TK_LOGICALNOT, expression).
+    // No simplified form; convert expression to Prefix(LOGICALNOT, expression).
     return std::make_unique<PrefixExpression>(pos, Operator::Kind::LOGICALNOT, std::move(operand));
 }
 
-std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Position pos,
-        Operator op, std::unique_ptr<Expression> base) {
+static std::unique_ptr<Expression> bitwise_not_elements(const Context& context,
+                                                        Position pos,
+                                                        const Expression& expr) {
+    SkASSERT(expr.type().componentType().isInteger());
+
+    double values[16];
+    int numSlots = expr.type().slotCount();
+    for (int index = 0; index < numSlots; ++index) {
+        if (std::optional<double> slotValue = expr.getConstantValue(index)) {
+            values[index] = ~static_cast<SKSL_INT>(*slotValue);
+        } else {
+            // There's a non-constant element; we can't simplify this expression.
+            return nullptr;
+        }
+    }
+    return ConstructorCompound::MakeFromConstants(context, pos, expr.type(), values);
+}
+
+static std::unique_ptr<Expression> bitwise_not_operand(const Context& context,
+                                                       Position pos,
+                                                       std::unique_ptr<Expression> operand) {
+    const Expression* value = ConstantFolder::GetConstantValueForVariable(*operand);(*operand);
+
+    switch (value->kind()) {
+        case Expression::Kind::kLiteral:
+        case Expression::Kind::kConstructorSplat:
+        case Expression::Kind::kConstructorCompound:
+            // Convert ~vecN(1, 2, ...) to vecN(~1, ~2, ...).
+            if (std::unique_ptr<Expression> expr = bitwise_not_elements(context, pos, *value)) {
+                return expr;
+            }
+            break;
+
+        case Expression::Kind::kPrefix: {
+            // Convert `~(~expression)` into `expression`.
+            PrefixExpression& prefix = operand->as<PrefixExpression>();
+            if (prefix.getOperator().kind() == Operator::Kind::BITWISENOT) {
+                prefix.operand()->fPosition = pos;
+                return std::move(prefix.operand());
+            }
+            break;
+        }
+        default:
+            break;
+    }
+
+    // No simplified form; convert expression to Prefix(BITWISENOT, expression).
+    return std::make_unique<PrefixExpression>(pos, Operator::Kind::BITWISENOT, std::move(operand));
+}
+
+std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context,
+                                                      Position pos,
+                                                      Operator op,
+                                                      std::unique_ptr<Expression> base) {
     const Type& baseType = base->type();
     switch (op.kind()) {
         case Operator::Kind::PLUS:
@@ -237,13 +289,6 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
                                        "' cannot operate on '" + baseType.displayName() + "'");
                 return nullptr;
             }
-            if (baseType.isLiteral()) {
-                // The expression `~123` is no longer a literal; coerce to the actual type.
-                base = baseType.scalarTypeForLiteral().coerceExpression(std::move(base), context);
-                if (!base) {
-                    return nullptr;
-                }
-            }
             break;
 
         default:
@@ -255,36 +300,43 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
     return result;
 }
 
-std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, Position pos,
-        Operator op, std::unique_ptr<Expression> base) {
+std::unique_ptr<Expression> PrefixExpression::Make(const Context& context,
+                                                   Position pos,
+                                                   Operator op,
+                                                   std::unique_ptr<Expression> base) {
+    const Type& baseType = base->type();
     switch (op.kind()) {
         case Operator::Kind::PLUS:
-            SkASSERT(!base->type().isArray());
-            SkASSERT(base->type().componentType().isNumber());
+            SkASSERT(!baseType.isArray());
+            SkASSERT(baseType.componentType().isNumber());
             base->fPosition = pos;
             return base;
 
         case Operator::Kind::MINUS:
-            SkASSERT(!base->type().isArray());
-            SkASSERT(base->type().componentType().isNumber());
+            SkASSERT(!baseType.isArray());
+            SkASSERT(baseType.componentType().isNumber());
             return negate_operand(context, pos, std::move(base));
 
         case Operator::Kind::LOGICALNOT:
-            SkASSERT(base->type().isBoolean());
+            SkASSERT(baseType.isBoolean());
             return logical_not_operand(context, pos, std::move(base));
 
         case Operator::Kind::PLUSPLUS:
         case Operator::Kind::MINUSMINUS:
-            SkASSERT(base->type().isNumber());
+            SkASSERT(baseType.isNumber());
             SkASSERT(Analysis::IsAssignable(*base));
             break;
 
         case Operator::Kind::BITWISENOT:
             SkASSERT(!context.fConfig->strictES2Mode());
-            SkASSERT(!base->type().isArray());
-            SkASSERT(base->type().componentType().isInteger());
-            SkASSERT(!base->type().isLiteral());
-            break;
+            SkASSERT(!baseType.isArray());
+            SkASSERT(baseType.componentType().isInteger());
+            if (baseType.isLiteral()) {
+                // The expression `~123` is no longer a literal; coerce to the actual type.
+                base = baseType.scalarTypeForLiteral().coerceExpression(std::move(base), context);
+                SkASSERT(base);
+            }
+            return bitwise_not_operand(context, pos, std::move(base));
 
         default:
             SkDEBUGFAILF("unsupported prefix operator: %s", op.operatorName());
