@@ -16,6 +16,24 @@
       "message": "I haven\u0027t dug into the details yet, but I like the general idea of the CL. Do you think it is possible to break this into two separate CLs. The first one just switches to using dynamic bindings and then the second adds caching of the bind groups. Without reading the details yet, it feels like those are two independent changes (that do work well together) that can be reviewed separately.",
       "revId": "5566450f9ca2885c8d8a821e694b72acea1e1074",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5e122d2_945ed152",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-23T19:12:04Z",
+      "side": 1,
+      "message": "Done. I split this into two CLs. PTAL at the other CL first.",
+      "parentUuid": "ac50d467_cd10cfca",
+      "revId": "5566450f9ca2885c8d8a821e694b72acea1e1074",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
