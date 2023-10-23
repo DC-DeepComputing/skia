@@ -22,6 +22,30 @@
       },
       "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e5efa72_5654f392",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-23T16:24:27Z",
+      "side": 1,
+      "message": "The drawing caps on empty paths of just moveTos I forgot about, but I thought inverted fills would be captured completely in clipping logic. Does the clipping code still call into drawGeometry here but then adds the inverting of coverage logic to the shader itself?",
+      "parentUuid": "ddb80355_6d38d73a",
+      "range": {
+        "startLine": 848,
+        "startChar": 8,
+        "endLine": 848,
+        "endChar": 92
+      },
+      "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
