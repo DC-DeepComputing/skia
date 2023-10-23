@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e391f2fe_f6620be2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-23T19:46:24Z",
+      "side": 1,
+      "message": "In RasterPathAtlas::onAddShape, we first call `bool hasKey \u003d shape.hasKey();`. With this CL, in the empty path case this will be false and we\u0027ll avoid using the cache.",
+      "revId": "c5bc63d3c3c4abb0368b8b0ecd2c316e12385703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
