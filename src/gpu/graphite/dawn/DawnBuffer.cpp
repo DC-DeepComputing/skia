@@ -27,10 +27,25 @@ static const char* kBufferTypeNames[kBufferTypeCount] = {
 };
 #endif
 
-sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
-                               size_t size,
-                               BufferType type,
-                               AccessPattern) {
+sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
+                                   uint32_t serial,
+                                   size_t size,
+                                   BufferType type,
+                                   AccessPattern accessPattern) {
+    return DawnBuffer::Make(sharedContext,
+                            serial,
+                            size,
+                            type,
+                            accessPattern,
+                            kBufferTypeNames[static_cast<int>(type)]);
+}
+
+sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
+                                   uint32_t serial,
+                                   size_t size,
+                                   BufferType type,
+                                   AccessPattern,
+                                   const char* label) {
     if (size <= 0) {
         return nullptr;
     }
@@ -69,7 +84,7 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
 
     wgpu::BufferDescriptor desc;
 #ifdef SK_DEBUG
-    desc.label = kBufferTypeNames[static_cast<int>(type)];
+    desc.label = label;
 #endif
     desc.usage = usage;
     desc.size  = size;
@@ -82,15 +97,15 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         return {};
     }
 
-    return sk_sp<Buffer>(new DawnBuffer(sharedContext,
-                                        size,
-                                        std::move(buffer)));
+    return sk_sp<DawnBuffer>(new DawnBuffer(sharedContext, serial, size, std::move(buffer)));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
+                       uint32_t serial,
                        size_t size,
                        wgpu::Buffer buffer)
         : Buffer(sharedContext, size)
+        , DawnResourceWithSerial(serial)
         , fBuffer(std::move(buffer)) {}
 
 void DawnBuffer::onMap() {

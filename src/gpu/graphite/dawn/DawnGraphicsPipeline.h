@@ -31,6 +31,7 @@ namespace skgpu::graphite {
 class Attribute;
 class Context;
 class GraphicsPipelineDesc;
+class DawnBuffer;
 class DawnResourceProvider;
 class DawnSharedContext;
 struct DepthStencilSettings;
@@ -51,6 +52,8 @@ public:
     inline static constexpr unsigned int kVertexBufferIndex = 0;
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumVertexBuffers = 2;
+
+    using IntrinsicConstant = float[4];
 
     static sk_sp<DawnGraphicsPipeline> Make(const DawnSharedContext* sharedContext,
                                             DawnResourceProvider* resourceProvider,
