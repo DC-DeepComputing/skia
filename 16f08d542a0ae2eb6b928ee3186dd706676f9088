@@ -118,6 +118,30 @@
       },
       "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cca714a_45dad4e6",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-23T17:55:19Z",
+      "side": 1,
+      "message": "Yeah, I considered the stroke case and thought this would work because there were no points, but as I said forgot about inversion.\n\nI\u0027ll put together a CL to remove this and modify the key for now.",
+      "parentUuid": "d1cd90be_add23a62",
+      "range": {
+        "startLine": 848,
+        "startChar": 8,
+        "endLine": 848,
+        "endChar": 92
+      },
+      "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
