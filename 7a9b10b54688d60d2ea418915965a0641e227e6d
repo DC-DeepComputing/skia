@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86a36f22_908bde78",
+        "filename": "resources/sksl/folding/IntFoldingES3.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-23T16:24:42Z",
+      "side": 1,
+      "message": "A pleasant surprise--these two lines can be folded away to nothing when the inliner runs! I separately verified that it\u0027s generating the code and then optimizing it out. Love it when a plan comes together.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 42
+      },
+      "revId": "7a9b10b54688d60d2ea418915965a0641e227e6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
