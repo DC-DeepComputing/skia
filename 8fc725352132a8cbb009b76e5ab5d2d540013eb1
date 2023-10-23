@@ -16,6 +16,24 @@
       "message": "`SkASSERT(numSlots \u003c\u003d std::size(values));` ?",
       "revId": "8fc725352132a8cbb009b76e5ab5d2d540013eb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5ae1f57_5468ef22",
+        "filename": "src/sksl/ir/SkSLPrefixExpression.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-23T21:46:28Z",
+      "side": 1,
+      "message": "I\u0027ll go one further and just return null if it happens. It\u0027s not possible right now but I\u0027d rather be safe than sorry, and not simplifying an expression is harmless.",
+      "parentUuid": "0198587e_bbcf745c",
+      "revId": "8fc725352132a8cbb009b76e5ab5d2d540013eb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

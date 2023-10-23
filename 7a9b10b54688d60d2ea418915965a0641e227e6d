@@ -22,6 +22,30 @@
       },
       "revId": "7a9b10b54688d60d2ea418915965a0641e227e6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "249bac04_3b2dba1a",
+        "filename": "resources/sksl/folding/IntFoldingES3.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-23T21:46:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "86a36f22_908bde78",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 42
+      },
+      "revId": "7a9b10b54688d60d2ea418915965a0641e227e6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
