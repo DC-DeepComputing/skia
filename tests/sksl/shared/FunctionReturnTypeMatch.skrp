@@ -141,7 +141,7 @@ merge_condition_mask           CondMask = $204 & $205
 branch_if_no_lanes_active      branch_if_no_lanes_active +15 (label 17 at #96)
 copy_4_immutables_unmasked     $186..189 = i14..17 [0x40400000 (3.0), 0, 0, 0]
 copy_4_immutables_unmasked     $190..193 = i18..21 [0x40400000 (3.0), 0, 0, 0]
-copy_immutable_unmasked        $194 = i22 [0x40400000 (3.0)]
+copy_constant                  $194 = 0x40400000 (3.0)
 branch_if_no_lanes_active      branch_if_no_lanes_active +4 (label 26 at #89)
 copy_constant                  $195 = 0
 copy_constant                  $196 = 0x40400000 (3.0)
@@ -245,7 +245,7 @@ merge_condition_mask           CondMask = $112 & $113
 branch_if_no_lanes_active      branch_if_no_lanes_active +15 (label 10 at #200)
 copy_4_immutables_unmasked     $94..97 = i14..17 [0x40400000 (3.0), 0, 0, 0]
 copy_4_immutables_unmasked     $98..101 = i18..21 [0x40400000 (3.0), 0, 0, 0]
-copy_immutable_unmasked        $102 = i22 [0x40400000 (3.0)]
+copy_constant                  $102 = 0x40400000 (3.0)
 branch_if_no_lanes_active      branch_if_no_lanes_active +4 (label 33 at #193)
 copy_constant                  $103 = 0
 copy_constant                  $104 = 0x40400000 (3.0)
