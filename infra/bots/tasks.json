@@ -10,6 +10,11 @@
         "BazelBuild-all_tests-release-linux_x64"
       ]
     },
+    "BazelBuild-android_math_test-pixel_5-linux_x64": {
+      "tasks": [
+        "BazelBuild-android_math_test-pixel_5-linux_x64"
+      ]
+    },
     "BazelBuild-base-enforce_iwyu-linux_x64": {
       "tasks": [
         "BazelBuild-base-enforce_iwyu-linux_x64"
@@ -28,6 +33,11 @@
     "BazelBuild-example_hello_world_vulkan-release-linux_x64": {
       "tasks": [
         "BazelBuild-example_hello_world_vulkan-release-linux_x64"
+      ]
+    },
+    "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64": {
+      "tasks": [
+        "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64"
       ]
     },
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
@@ -88,6 +98,16 @@
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
       "tasks": [
         "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64"
+      ]
+    },
+    "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64": {
+      "tasks": [
+        "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64"
+      ]
+    },
+    "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64": {
+      "tasks": [
+        "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64"
       ]
     },
     "BazelTest-toolchain_layering_check-experimental_bazel_test_client-release-linux_x64": {
@@ -3717,6 +3737,55 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+    "BazelBuild-android_math_test-pixel_5-linux_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazel_build_task_driver",
+          "path": "bazel_build_task_driver",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "bazel_build_task_driver/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-android_math_test-pixel_5-linux_x64",
+        "--bazel_label=//tests:android_math_test",
+        "--bazel_config=pixel_5",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=.",
+        "--out_path=bazel_output",
+        "--saved_output_dir=tests",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "BazelBuild-base-enforce_iwyu-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -3887,6 +3956,55 @@
       },
       "idempotent": true,
       "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazel_build_task_driver",
+          "path": "bazel_build_task_driver",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "bazel_build_task_driver/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64",
+        "--bazel_label=//gm:hello_bazel_world_android_test",
+        "--bazel_config=pixel_5",
+        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--workdir=.",
+        "--out_path=bazel_output",
+        "--saved_output_dir=gm",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_toplevel",
+        "--bazel_arg=--adb_platform=linux_arm64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
@@ -4466,6 +4584,71 @@
           "bazelisk_linux_amd64"
         ]
       },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/tools/goldctl/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:9f6c2de25cce548433f4d0301bbde675a65a2f95"
+        }
+      ],
+      "command": [
+        "./bazel_test_precompiled",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64",
+        "--workdir=.",
+        "--command=bazel_output/gm/hello_bazel_world_android_test",
+        "--command_workdir=bazel_output/gm/hello_bazel_world_android_test.runfiles/skia",
+        "--kind=gm",
+        "--bazel_label=//gm:hello_bazel_world_android_test",
+        "--goldctl_path=./cipd_bin_packages/goldctl",
+        "--git_commit=<(REVISION)",
+        "--changelist_id=<(ISSUE)",
+        "--patchset_order=<(PATCHSET)",
+        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)"
+      ],
+      "dependencies": [
+        "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64",
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64"
+      ],
+      "dimensions": [
+        "os:Android",
+        "device_type:redfin",
+        "device_os:SP2A.220305.012",
+        "pool:Skia"
+      ],
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64": {
+      "casSpec": "bazel",
+      "command": [
+        "./bazel_test_precompiled",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64",
+        "--workdir=.",
+        "--command=bazel_output/tests/android_math_test",
+        "--command_workdir=bazel_output/tests/android_math_test.runfiles/skia",
+        "--kind=unit"
+      ],
+      "dependencies": [
+        "BazelBuild-android_math_test-pixel_5-linux_x64",
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64"
+      ],
+      "dimensions": [
+        "os:Android",
+        "device_type:redfin",
+        "device_os:SP2A.220305.012",
+        "pool:Skia"
+      ],
       "idempotent": true,
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
@@ -27310,6 +27493,35 @@
         "skia/infra/bots/build_task_drivers.sh",
         "${ISOLATED_OUTDIR}",
         "linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "idempotent": true
+    },
+    "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64": {
+      "casSpec": "task-drivers",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "/bin/bash",
+        "skia/infra/bots/build_task_drivers.sh",
+        "${ISOLATED_OUTDIR}",
+        "linux_arm64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -93350,6 +93562,12 @@
       "experimental": true
     },
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
+      "experimental": true
+    },
+    "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64": {
+      "experimental": true
+    },
+    "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64": {
       "experimental": true
     },
     "Build-Debian10-Clang-arm-Debug-Android": {},
