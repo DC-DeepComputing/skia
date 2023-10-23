@@ -18,7 +18,6 @@
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
-#include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
@@ -74,6 +73,7 @@ static std::unique_ptr<Expression> simplify_negation(const Context& context,
     const Expression* value = ConstantFolder::GetConstantValueForVariable(originalExpr);
     switch (value->kind()) {
         case Expression::Kind::kLiteral:
+        case Expression::Kind::kConstructorDiagonalMatrix:
         case Expression::Kind::kConstructorSplat:
         case Expression::Kind::kConstructorCompound: {
             // Convert `-vecN(literal, ...)` into `vecN(-literal, ...)`.
@@ -97,19 +97,6 @@ static std::unique_ptr<Expression> simplify_negation(const Context& context,
                 const ConstructorArray& ctor = value->as<ConstructorArray>();
                 return ConstructorArray::Make(context, pos, ctor.type(),
                                               negate_operands(context, pos, ctor.arguments()));
-            }
-            break;
-
-        case Expression::Kind::kConstructorDiagonalMatrix:
-            // Convert `-matrix(literal)` into `matrix(-literal)`.
-            if (Analysis::IsCompileTimeConstant(*value)) {
-                const ConstructorDiagonalMatrix& ctor = value->as<ConstructorDiagonalMatrix>();
-                if (std::unique_ptr<Expression> simplified = simplify_negation(context,
-                                                                               pos,
-                                                                               *ctor.argument())) {
-                    return ConstructorDiagonalMatrix::Make(context, pos, ctor.type(),
-                                                           std::move(simplified));
-                }
             }
             break;
 
