@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92e85af7_9966830e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-23T16:56:14Z",
+      "side": 1,
+      "message": "Friendly bump -- the last canary passed, but starting another just in case there are new Graphite tests to validate.",
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
