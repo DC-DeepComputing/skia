@@ -22,6 +22,30 @@
       },
       "revId": "d897725abb3f9b60bec7124157aa0a1a02bde11a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5033512_ec63727a",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 21579
+      },
+      "writtenOn": "2023-10-23T16:47:02Z",
+      "side": 1,
+      "message": "Good suggestion, Greg. The specificity improves upon the original comment I drafted. I have also updated the associated bug to figure out how to resolve the ODR violation for the SkiaVulkanCalculator.",
+      "parentUuid": "41108cdb_31fafbd3",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 38,
+        "endChar": 20
+      },
+      "revId": "d897725abb3f9b60bec7124157aa0a1a02bde11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
