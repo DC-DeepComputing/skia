@@ -8,7 +8,7 @@
 #define GraphiteDawnWindowContext_DEFINED
 
 #include "tools/window/WindowContext.h"
-#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
+#include "include/private/gpu/dawn/SkiaWebGpuCpp.h"
 #include "dawn/native/DawnNative.h"
 
 namespace skwindow::internal {
