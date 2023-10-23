@@ -22,6 +22,30 @@
       },
       "revId": "3da4c3367105a0860df18212104628a177329e94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b77a5b02_bbe94e19",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-23T20:52:22Z",
+      "side": 1,
+      "message": "The bind groups can be used across different pipelines. However it will need to be compatible with the pipeline\u0027s bind group layout. The layout is one parameter used to create the bind group. Currently we create a separate bind group layout for each pipeline. So storing the cached bind group per pipeline helps avoid using the bind group layout as a cache key\u0027s component helping reducing the key\u0027s size.\n\nDawn actually caches the bind group layouts internally, so creating group layouts with same descriptor twice might return the same object. However Dawn doesn\u0027t provide API to know that it is cached. We will need an additional hash table in order to know that. So if we want to store the cache inside DawnResourceProvider, we will need to include the bind group layout as part of the key.\n\nOne thing about caching bind groups at high level layer is that we will also need high level abstraction of the bind group layouts.",
+      "parentUuid": "1fe5878f_94ed3d19",
+      "range": {
+        "startLine": 681,
+        "startChar": 38,
+        "endLine": 681,
+        "endChar": 61
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
