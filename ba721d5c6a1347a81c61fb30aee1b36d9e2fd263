@@ -46,6 +46,30 @@
       },
       "revId": "ba721d5c6a1347a81c61fb30aee1b36d9e2fd263",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d4fc651_b045349e",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-23T16:03:54Z",
+      "side": 1,
+      "message": "Would you please move it to include/private/chromium then? That will make it easier for us to appease both GN check and our Bazel builds.",
+      "parentUuid": "c927c4c9_2e0d7b48",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 22
+      },
+      "revId": "ba721d5c6a1347a81c61fb30aee1b36d9e2fd263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
