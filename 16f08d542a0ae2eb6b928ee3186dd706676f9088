@@ -70,6 +70,30 @@
       },
       "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17c797f4_332e3943",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-23T17:03:53Z",
+      "side": 1,
+      "message": "I hadn\u0027t considered the inverse case -- changing the key might be right answer for now, but I think the real issue is that we shouldn\u0027t be getting into the PathAtlas at all for such a simple case. The code that\u0027s there that skips the atlas entry is just a work around for now.",
+      "parentUuid": "1f68cf02_6f7a1d29",
+      "range": {
+        "startLine": 848,
+        "startChar": 8,
+        "endLine": 848,
+        "endChar": 92
+      },
+      "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
