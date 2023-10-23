@@ -15,7 +15,7 @@
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 
-#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
+#include "include/private/gpu/dawn/SkiaWebGpuCpp.h"
 
 namespace skgpu::graphite {
 class ComputePipeline;

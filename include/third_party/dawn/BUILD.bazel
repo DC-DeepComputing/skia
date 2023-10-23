@@ -1,0 +1,18 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_cc_library(
+    name = "webgpu",
+    hdrs = [
+        "webgpu/webgpu_cpp.h",
+    ],
+    includes = ["."],
+    textual_hdrs = [
+        "webgpu/webgpu_cpp_chained_struct.h",
+        "webgpu/webgpu.h",
+    ],
+    visibility = ["//:__subpackages__"],
+)
