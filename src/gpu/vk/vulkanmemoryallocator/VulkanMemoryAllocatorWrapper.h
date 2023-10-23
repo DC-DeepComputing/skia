@@ -31,6 +31,11 @@
 #define VULKAN_H_
 #define GR_NEEDED_TO_DEFINE_VULKAN_H
 #endif
+// TODO: b/306154574 - Investigate whether it's possible to handle the
+// aforementioned preconditions while also allowing Skia to use the canonical
+// VMA without a wrapper. Inclusion of `vk_mem_alloc.h` causes an ODR violation.
+// The ODR violation redefines classes from the same header, so the problem is
+// ostensibly benign.
 #include "vk_mem_alloc.h"  // NO_G3_REWRITE
 #ifdef GR_NEEDED_TO_DEFINE_VULKAN_H
 #undef VULKAN_H_
