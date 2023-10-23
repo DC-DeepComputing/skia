@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd069ef_47cb40ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-23T20:03:00Z",
+      "side": 1,
+      "message": "I have a few minor suggestions if we keep this, but I first want to start of a higher level discussion.\n\nWhat do we think of the having the tracking of using dynamic buffers be a higher level thing that lives above the backends? Is there anything for us to gain up in the shared Graphite code to know that we\u0027re using dynamic offsets? Or does it make any of the code added in this CL simpler? Obviously the backends would be \"simpler\" as they would just be told a binding is dynamic and be given the offset. In this world would we still pass the backends both a normal binding offset and dynamic offset? Does this only make sense if we decide to make bind groups themselves be a higher level abstraction, so that we\u0027re also telling the backends which bind group to bind?\n\nI see the benefits of both approaches so just wanted to at least get a little discussion about which direction we want to head first.",
+      "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
