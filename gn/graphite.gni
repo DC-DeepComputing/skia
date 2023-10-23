@@ -237,6 +237,8 @@ skia_graphite_dawn_sources = [
   "$_src/dawn/DawnQueueManager.h",
   "$_src/dawn/DawnResourceProvider.cpp",
   "$_src/dawn/DawnResourceProvider.h",
+  "$_src/dawn/DawnResourceWithSerial.cpp",
+  "$_src/dawn/DawnResourceWithSerial.h",
   "$_src/dawn/DawnSampler.cpp",
   "$_src/dawn/DawnSampler.h",
   "$_src/dawn/DawnSharedContext.cpp",

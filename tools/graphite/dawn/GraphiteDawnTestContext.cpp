@@ -29,6 +29,7 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
     static constexpr const char* kToggles[] = {
         "allow_unsafe_apis",  // Needed for dual-source blending.
         "use_user_defined_labels_in_backend",
+        "skip_validation",
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
     togglesDesc.enabledToggleCount  = std::size(kToggles);
@@ -83,9 +84,11 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
 
     std::vector<wgpu::FeatureName> features;
     wgpu::Adapter adapter = sAdapter.Get();
+#if 0
     if (adapter.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled)) {
         features.push_back(wgpu::FeatureName::MSAARenderToSingleSampled);
     }
+#endif
     if (adapter.HasFeature(wgpu::FeatureName::TransientAttachments)) {
         features.push_back(wgpu::FeatureName::TransientAttachments);
     }
