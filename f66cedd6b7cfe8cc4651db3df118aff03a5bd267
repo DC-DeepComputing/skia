@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70ace9e8_d6913cf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-23T15:06:46Z",
+      "side": 1,
+      "message": "copying Jim for his opinion on a comment (tagged)",
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c238d1a_535c048b",
@@ -48,6 +65,30 @@
       "writtenOn": "2023-10-20T21:29:06Z",
       "side": 1,
       "message": "TODO for future CL: I think we should clean up and remove this param. I don\u0027t think we\u0027d ever pass in anything besides false here.",
+      "range": {
+        "startLine": 396,
+        "startChar": 78,
+        "endLine": 396,
+        "endChar": 85
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "423dd880_46bc27b6",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-23T15:06:46Z",
+      "side": 1,
+      "message": "Right, I do recall us talking about that. Copying @jvanverth@google.com so he can weigh in since he originally added the relevant TODO (https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/vk/VulkanBuffer.cpp#263). If he agrees I\u0027ll remove it either in this CL or another one.",
+      "parentUuid": "3c238d1a_535c048b",
       "range": {
         "startLine": 396,
         "startChar": 78,
