@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d802fadc_577e4cec",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:42:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d75288f_6e958994",
+      "range": {
+        "startLine": 72,
+        "startChar": 15,
+        "endLine": 72,
+        "endChar": 17
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37a66b7e_13ef73bd",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-10-20T05:43:29Z",
       "side": 1,
       "message": "I think this should be `maskSize`.",
+      "range": {
+        "startLine": 181,
+        "startChar": 13,
+        "endLine": 181,
+        "endChar": 22
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d09b3a_7299a81b",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:42:13Z",
+      "side": 1,
+      "message": "Oops! Thanks",
+      "parentUuid": "37a66b7e_13ef73bd",
       "range": {
         "startLine": 181,
         "startChar": 13,
@@ -141,6 +189,30 @@
       "writtenOn": "2023-10-20T05:43:29Z",
       "side": 1,
       "message": "What\u0027s the motivation for this change? Please document it.",
+      "range": {
+        "startLine": 939,
+        "startChar": 36,
+        "endLine": 939,
+        "endChar": 52
+      },
+      "revId": "ef558ba291a93f90c0b5e6a76b0c44b98a0c54a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5198f06e_7d9b40d8",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:42:13Z",
+      "side": 1,
+      "message": "See http://b/306501391 for more details, but given that this is a distinct issue and that it causes gold diffs, I\u0027ve pulled these changes out to their own CL.",
+      "parentUuid": "97ddbf45_838cf7d8",
       "range": {
         "startLine": 939,
         "startChar": 36,
