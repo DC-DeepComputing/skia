@@ -149,7 +149,7 @@ private:
     wgpu::Buffer fCurrentIndirectBuffer;
     size_t fCurrentIndirectBufferOffset = 0;
 
-    wgpu::Buffer fIntrinsicConstantBuffer;
+    sk_sp<DawnBuffer> fIntrinsicConstantBuffer;
     int fIntrinsicConstantBufferSlotsUsed = 0;
 
     const DawnGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
