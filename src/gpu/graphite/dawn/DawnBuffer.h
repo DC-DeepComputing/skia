@@ -8,10 +8,9 @@
 #ifndef skgpu_graphite_DawnBuffer_DEFINED
 #define skgpu_graphite_DawnBuffer_DEFINED
 
-#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
-
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
+#include "include/private/gpu/dawn/SkiaWebGpuCpp.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 

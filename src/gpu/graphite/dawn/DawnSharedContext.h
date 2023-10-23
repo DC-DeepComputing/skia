@@ -8,8 +8,7 @@
 #ifndef skgpu_graphite_DawnSharedContext_DEFINED
 #define skgpu_graphite_DawnSharedContext_DEFINED
 
-#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
-
+#include "include/private/gpu/dawn/SkiaWebGpuCpp.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 
