@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41108cdb_31fafbd3",
+        "filename": "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorWrapper.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-23T15:52:23Z",
+      "side": 1,
+      "message": "what is in those classes and functions can change based on what VMA defines are set before including the header. I\u0027m wondering if this comment should be more along the lines of\n```\nThis could cause an ODR issue if multiple users are including the same header and implementation but passing in different defines. If there will be uses of VMA outside of Skia, the client should instead tell Skia not to use VMA. Then they should wrap their own instance of VMA into an implementation of Skia\u0027s VulkanMemoryAllocator interface, and pass that object into context creation.\n```\n\nor something like that.",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 38,
+        "endChar": 20
+      },
+      "revId": "d897725abb3f9b60bec7124157aa0a1a02bde11a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
