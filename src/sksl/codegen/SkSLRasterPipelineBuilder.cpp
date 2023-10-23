@@ -1399,15 +1399,29 @@ Program::Program(TArray<Instruction> instrs,
 
 Program::~Program() = default;
 
+static bool immutable_data_is_splattable(float* immutablePtr, int numSlots) {
+    // If every value between `immutablePtr[0]` and `immutablePtr[numSlots]` is bit-identical, we
+    // can use a splat.
+    for (int index = 1; index < numSlots; ++index) {
+        if (sk_bit_cast<int32_t>(immutablePtr[0]) != sk_bit_cast<int32_t>(immutablePtr[index])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Program::appendCopy(TArray<Stage>* pipeline,
                          SkArenaAlloc* alloc,
+                         std::byte* basePtr,  // only used for immutable-value copies
                          ProgramOp baseStage,
                          SkRPOffset dst, int dstStride,
                          SkRPOffset src, int srcStride,
                          int numSlots) const {
     SkASSERT(numSlots >= 0);
     while (numSlots > 4) {
-        this->appendCopy(pipeline, alloc, baseStage,
+        // If we are appending a large copy, split it up into groups of four at a time.
+        this->appendCopy(pipeline, alloc, basePtr,
+                         baseStage,
                          dst, dstStride,
                          src, srcStride,
                          /*numSlots=*/4);
@@ -1416,8 +1430,23 @@ void Program::appendCopy(TArray<Stage>* pipeline,
         numSlots -= 4;
     }
 
+    SkASSERT(numSlots <= 4);
+
+    if (basePtr) {
+        // Look for immutable data that can be represented by a splat; splats are a tiny bit faster.
+        SkASSERT(srcStride == 1);
+        float* immutablePtr = reinterpret_cast<float*>(basePtr + src);
+        if (immutable_data_is_splattable(immutablePtr, numSlots)) {
+            auto stage = (ProgramOp)((int)ProgramOp::copy_constant + numSlots - 1);
+            SkRasterPipeline_ConstantCtx ctx;
+            ctx.dst = dst;
+            ctx.value = *immutablePtr;
+            pipeline->push_back({stage, SkRPCtxUtils::Pack(ctx, alloc)});
+            return;
+        }
+    }
+
     if (numSlots > 0) {
-        SkASSERT(numSlots <= 4);
         auto stage = (ProgramOp)((int)baseStage + numSlots - 1);
         SkRasterPipeline_BinaryOpCtx ctx;
         ctx.dst = dst;
@@ -1431,7 +1460,7 @@ void Program::appendCopySlotsUnmasked(TArray<Stage>* pipeline,
                                       SkRPOffset dst,
                                       SkRPOffset src,
                                       int numSlots) const {
-    this->appendCopy(pipeline, alloc,
+    this->appendCopy(pipeline, alloc, /*basePtr=*/nullptr,
                      ProgramOp::copy_slot_unmasked,
                      dst, SkOpts::raster_pipeline_highp_stride,
                      src, SkOpts::raster_pipeline_highp_stride,
@@ -1440,10 +1469,11 @@ void Program::appendCopySlotsUnmasked(TArray<Stage>* pipeline,
 
 void Program::appendCopyImmutableUnmasked(TArray<Stage>* pipeline,
                                           SkArenaAlloc* alloc,
+                                          std::byte* basePtr,
                                           SkRPOffset dst,
                                           SkRPOffset src,
                                           int numSlots) const {
-    this->appendCopy(pipeline, alloc,
+    this->appendCopy(pipeline, alloc, basePtr,
                      ProgramOp::copy_immutable_unmasked,
                      dst, SkOpts::raster_pipeline_highp_stride,
                      src, 1,
@@ -1455,7 +1485,7 @@ void Program::appendCopySlotsMasked(TArray<Stage>* pipeline,
                                     SkRPOffset dst,
                                     SkRPOffset src,
                                     int numSlots) const {
-    this->appendCopy(pipeline, alloc,
+    this->appendCopy(pipeline, alloc, /*basePtr=*/nullptr,
                      ProgramOp::copy_slot_masked,
                      dst, SkOpts::raster_pipeline_highp_stride,
                      src, SkOpts::raster_pipeline_highp_stride,
@@ -1923,8 +1953,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 break;
 
             case BuilderOp::copy_immutable_unmasked:
-                this->appendCopyImmutableUnmasked(pipeline,
-                                                  alloc,
+                this->appendCopyImmutableUnmasked(pipeline, alloc, basePtr,
                                                   OffsetFromBase(SlotA()),
                                                   OffsetFromBase(ImmutableB()),
                                                   inst.fImmA);
@@ -2029,7 +2058,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
             }
             case BuilderOp::push_immutable: {
                 float* dst = tempStackPtr;
-                this->appendCopyImmutableUnmasked(pipeline, alloc,
+                this->appendCopyImmutableUnmasked(pipeline, alloc, basePtr,
                                                   OffsetFromBase(dst),
                                                   OffsetFromBase(ImmutableA()),
                                                   inst.fImmA);
@@ -2158,10 +2187,10 @@ void Program::makeStages(TArray<Stage>* pipeline,
                     ctx.value = sk_bit_cast<float>(inst.fImmB);
                     void* ptr = SkRPCtxUtils::Pack(ctx, alloc);
                     switch (remaining) {
-                        case 1:  pipeline->push_back({ProgramOp::copy_constant,    ptr}); break;
-                        case 2:  pipeline->push_back({ProgramOp::splat_2_constants,ptr}); break;
-                        case 3:  pipeline->push_back({ProgramOp::splat_3_constants,ptr}); break;
-                        default: pipeline->push_back({ProgramOp::splat_4_constants,ptr}); break;
+                        case 1:  pipeline->push_back({ProgramOp::copy_constant,     ptr}); break;
+                        case 2:  pipeline->push_back({ProgramOp::splat_2_constants, ptr}); break;
+                        case 3:  pipeline->push_back({ProgramOp::splat_3_constants, ptr}); break;
+                        default: pipeline->push_back({ProgramOp::splat_4_constants, ptr}); break;
                     }
                     dst += 4 * N;
                 }
