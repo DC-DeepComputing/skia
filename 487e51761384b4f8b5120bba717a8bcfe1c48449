@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79a56926_b9458c36",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-23T22:04:37Z",
+      "side": 1,
+      "message": "This isn\u0027t necessary--we _never_ reference an immutable before its initial store--but it seemed safest to populate the immutables first, since we are checking their values in `immutable_data_is_splattable`, and the cost to do so is negligible.",
+      "range": {
+        "startLine": 1792,
+        "startChar": 0,
+        "endLine": 1797,
+        "endChar": 5
+      },
+      "revId": "487e51761384b4f8b5120bba717a8bcfe1c48449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
