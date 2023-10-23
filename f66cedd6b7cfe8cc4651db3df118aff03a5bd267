@@ -72,6 +72,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3aefff5f_5dd3291e",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-23T16:59:33Z",
+      "side": 1,
+      "message": "Just for my knowledge, what\u0027s the reason for this? Since we\u0027re overwriting memory it seems we\u0027d need a barrier once we want to consume the contents of the buffer, i.e., when we switch to HOST_READ.",
+      "range": {
+        "startLine": 237,
+        "startChar": 25,
+        "endLine": 237,
+        "endChar": 53
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c238d1a_535c048b",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 3
@@ -107,6 +130,30 @@
       "side": 1,
       "message": "Right, I do recall us talking about that. Copying @jvanverth@google.com so he can weigh in since he originally added the relevant TODO (https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/vk/VulkanBuffer.cpp#263). If he agrees I\u0027ll remove it either in this CL or another one.",
       "parentUuid": "3c238d1a_535c048b",
+      "range": {
+        "startLine": 396,
+        "startChar": 78,
+        "endLine": 396,
+        "endChar": 85
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69f1aef_78143b5b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-23T16:59:33Z",
+      "side": 1,
+      "message": "Fine by me -- I wasn\u0027t sure if it was needed or not.",
+      "parentUuid": "423dd880_46bc27b6",
       "range": {
         "startLine": 396,
         "startChar": 78,
