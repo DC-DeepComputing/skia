@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/ports/SkCFObject.h"
+#include "src/core/SkLRUCache.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
@@ -31,6 +32,7 @@ namespace skgpu::graphite {
 class Attribute;
 class Context;
 class GraphicsPipelineDesc;
+class DawnBuffer;
 class DawnResourceProvider;
 class DawnSharedContext;
 struct DepthStencilSettings;
@@ -52,6 +54,21 @@ public:
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumVertexBuffers = 2;
 
+    struct BufferBindGroupEntry {
+        bool operator!=(const BufferBindGroupEntry& rhs) const {
+            return buffer != rhs.buffer || bindingIndex != rhs.bindingIndex;
+        }
+        const DawnBuffer* buffer;
+        uint32_t bindingIndex;
+    };
+
+    struct BufferBindGroupDesc {
+        bool operator==(const BufferBindGroupDesc& rhs) const;
+
+        std::array<BufferBindGroupEntry, 3> fEntries;
+        uint32_t fNumEntries = 0;
+    };
+
     static sk_sp<DawnGraphicsPipeline> Make(const DawnSharedContext* sharedContext,
                                             SkSL::Compiler* compiler,
                                             const RuntimeEffectDictionary* runtimeDict,
@@ -62,12 +79,14 @@ public:
 
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
     PrimitiveType primitiveType() const { return fPrimitiveType; }
-    bool hasStepUniforms() const { return fHasStepUniforms; }
-    bool hasFragmentUniforms() const { return fHasFragmentUniforms; }
+    bool hasStepUniforms() const { return fRenderStepUniformsTotalBytes > 0; }
+    bool hasFragmentUniforms() const { return fPaintUniformsTotalBytes > 0; }
     const wgpu::RenderPipeline& dawnRenderPipeline() const;
 
     using BindGroupLayouts = std::array<wgpu::BindGroupLayout, kBindGroupCount>;
     const BindGroupLayouts& dawnGroupLayouts() const { return fGroupLayouts; }
+
+    wgpu::BindGroup getOrCreateUboBindGroup(const BufferBindGroupDesc& bindGroupDesc) const;
 
 private:
     using AsyncPipelineCreation = DawnAsyncResult<wgpu::RenderPipeline>;
@@ -78,8 +97,8 @@ private:
                          BindGroupLayouts groupLayouts,
                          PrimitiveType primitiveType,
                          uint32_t refValue,
-                         bool hasStepUniforms,
-                         bool hasFragmentUniforms);
+                         int stepUniformsTotalBytes,
+                         int paintUniformsTotalBytes);
 
     void freeGpuData() override;
 
@@ -87,8 +106,15 @@ private:
     BindGroupLayouts fGroupLayouts;
     const PrimitiveType fPrimitiveType;
     const uint32_t fStencilReferenceValue;
-    const bool fHasStepUniforms;
-    const bool fHasFragmentUniforms;
+    const int fRenderStepUniformsTotalBytes;
+    const int fPaintUniformsTotalBytes;
+
+    struct UniqueKeyHash {
+        uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+    };
+
+    using BufferBindGroupCache = SkLRUCache<UniqueKey, wgpu::BindGroup, UniqueKeyHash>;
+    std::unique_ptr<BufferBindGroupCache> fUniformBufferBindGroupCache;
 };
 
 } // namespace skgpu::graphite
