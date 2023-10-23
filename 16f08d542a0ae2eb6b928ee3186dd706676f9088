@@ -94,6 +94,30 @@
       },
       "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1cd90be_add23a62",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-23T17:37:49Z",
+      "side": 1,
+      "message": "Thinking about it a bit more, I don\u0027t think the empty stroke case applies here. A cap requires a moveTo/close() pair, so even though it\u0027s shape is \"empty\", there are a non-zero number of verbs and points.\n\nI agree that it would be nice to have empty-mask inverse fills handled outside the PathAtlas, and that should avoid this case too.",
+      "parentUuid": "17c797f4_332e3943",
+      "range": {
+        "startLine": 848,
+        "startChar": 8,
+        "endLine": 848,
+        "endChar": 92
+      },
+      "revId": "16f08d542a0ae2eb6b928ee3186dd706676f9088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
