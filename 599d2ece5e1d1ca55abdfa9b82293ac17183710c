@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5efd47e3_1d52a964",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-10-23T18:43:22Z",
+      "side": 1,
+      "message": "For obvious reasons, I don\u0027t have access to do a G3 Canary. I can\u0027t see the Android Canary failure, so I\u0027m not sure if that is related to the change or not. The Chromium Canary failures look unrelated. I am able to now build Graphite + WebGPU in an emscripten environment with this change.",
+      "revId": "599d2ece5e1d1ca55abdfa9b82293ac17183710c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
