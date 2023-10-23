@@ -13,21 +13,24 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/dawn/DawnResourceWithSerial.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
 
-class DawnBuffer : public Buffer {
+class DawnBuffer : public Buffer, public DawnResourceWithSerial {
 public:
-    static sk_sp<Buffer> Make(const DawnSharedContext*,
-                              size_t size,
-                              BufferType type,
-                              AccessPattern);
+    static sk_sp<DawnBuffer> Make(const DawnSharedContext*,
+                                  uint32_t serial,
+                                  size_t size,
+                                  BufferType type,
+                                  AccessPattern);
 
     const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
 
 private:
     DawnBuffer(const DawnSharedContext*,
+               uint32_t serial,
                size_t size,
                wgpu::Buffer);
 

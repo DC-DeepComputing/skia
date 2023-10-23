@@ -220,7 +220,17 @@ sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
                                                  AccessPattern accessPattern) {
-    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern);
+    return createDawnBuffer(size, type, accessPattern);
+}
+
+sk_sp<DawnBuffer> DawnResourceProvider::createDawnBuffer(size_t size,
+                                                         BufferType type,
+                                                         AccessPattern accessPattern) {
+    return DawnBuffer::Make(this->dawnSharedContext(),
+                            dawnSharedContext()->allocateBufferSerial(),
+                            size,
+                            type,
+                            accessPattern);
 }
 
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
@@ -251,8 +261,8 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
     wgpu::Texture::Acquire(texture.getDawnTexturePtr());
 }
 
-const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
-    return static_cast<const DawnSharedContext*>(fSharedContext);
+DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
+    return static_cast<DawnSharedContext*>(fSharedContext);
 }
 
 } // namespace skgpu::graphite
