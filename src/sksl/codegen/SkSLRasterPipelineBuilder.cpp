@@ -1759,6 +1759,13 @@ void Program::makeStages(TArray<Stage>* pipeline,
         return (SkRPOffset)((std::byte*)ptr - basePtr);
     };
 
+    // Copy all immutable values into the immutable slots.
+    for (const Instruction& inst : fInstructions) {
+        if (inst.fOp == BuilderOp::store_immutable_value) {
+            slots.immutable[inst.fSlotA] = sk_bit_cast<float>(inst.fImmA);
+        }
+    }
+
     // Write each BuilderOp to the pipeline array.
     pipeline->reserve_exact(pipeline->size() + fInstructions.size());
     for (const Instruction& inst : fInstructions) {
@@ -1827,11 +1834,10 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 pipeline->push_back({ProgramOp::store_device_xy01, SlotA()});
                 break;
 
-            case BuilderOp::store_immutable_value: {
-                float* dst = ImmutableA();
-                *dst = sk_bit_cast<float>(inst.fImmA);
+            case BuilderOp::store_immutable_value:
+                // The immutable slots were populated in an earlier pass.
                 break;
-            }
+
             case BuilderOp::load_src:
                 pipeline->push_back({ProgramOp::load_src, SlotA()});
                 break;
