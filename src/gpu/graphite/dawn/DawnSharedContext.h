@@ -31,6 +31,7 @@ public:
     const wgpu::Device& device() const { return fDevice; }
     const wgpu::Queue& queue() const { return fQueue; }
     const wgpu::ShaderModule& noopFragment() const { return fNoopFragment; }
+
 private:
     DawnSharedContext(const DawnBackendContext&,
                       std::unique_ptr<const DawnCaps> caps,
