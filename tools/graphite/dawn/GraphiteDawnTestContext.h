@@ -11,10 +11,10 @@
 #include "tools/graphite/GraphiteTestContext.h"
 
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
+#include "include/private/gpu/dawn/SkiaWebGpuCpp.h"
 
 #include <optional>
 
-#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 #include "dawn/native/DawnNative.h"
 
 namespace skiatest::graphite {
