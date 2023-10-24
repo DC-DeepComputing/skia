@@ -34,6 +34,24 @@
       "parentUuid": "dbd069ef_47cb40ac",
       "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d17ae1_09556ee6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T13:42:37Z",
+      "side": 1,
+      "message": "I would liken the current high-level abstraction to be assuming that bindings are light-weight and dynamic (e.g. Metal\u0027s setBufferOffset when the buffer itself isn\u0027t changing). This makes me think there isn\u0027t much benefit in having \"dynamic offsets\" at a higher-level w/o any high level concept of a bind group. \n\nGiven that Vulkan and Dawn have bind groups, and a bind group like abstraction is likely necessary to explore using Metal\u0027s argument buffers, I can see us moving in that direction. It would be a decent amount of work, though, so I also think it makes sense to have this go into the dawn backend now and when we have more time and the vulkan backend is more set, we can refactor.",
+      "parentUuid": "5d6e8644_961d0082",
+      "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
