@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "397e2465_f600df1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-10-24T14:14:18Z",
+      "side": 1,
+      "message": "I could not find a decent way to add a test for this bug. It\u0027s one time deal for each property (ellipsis, locale) and only appear in some cases (cache, probably). Also, I could reproduce it for one single font only and I don\u0027t think we should include this font into our testing, so I leave it as is.",
+      "revId": "26dd1de50d610f66292922a2c6349651620b5329",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
