@@ -24,7 +24,7 @@ DEF_TEST(SkStrikeCache_CachePurge, Reporter) {
     SkStrikeCache cache;
 
     sk_sp<SkTypeface> typeface =
-            ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Italic());
+            ToolUtils::CreateTestTypeface("serif", SkFontStyle::Italic());
 
     SkFont font;
     font.setEdging(SkFont::Edging::kAntiAlias);

@@ -128,7 +128,7 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
 
     SkDOM dom;
     SkPaint paint;
-    SkFont font = ToolUtils::DefaultPortableFont();
+    SkFont font = ToolUtils::DefaultFont();
     SkPoint offset = SkPoint::Make(10, 20);
 
     {
@@ -390,7 +390,7 @@ DEF_TEST(SVGDevice_ColorFilters, reporter) {
 
 DEF_TEST(SVGDevice_textpath, reporter) {
     SkDOM dom;
-    SkFont font = ToolUtils::DefaultPortableFont();
+    SkFont font = ToolUtils::DefaultFont();
     SkPaint paint;
 
     auto check_text = [&](uint32_t flags, bool expect_path) {

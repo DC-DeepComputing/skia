@@ -108,7 +108,7 @@ prepare_for_mask_drawing(
 
 DEF_TEST(SkStrikeMultiThread, Reporter) {
     sk_sp<SkTypeface> typeface =
-            ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Italic());
+            ToolUtils::CreateTestTypeface("serif", SkFontStyle::Italic());
     static constexpr int kThreadCount = 4;
 
     Barrier barrier{kThreadCount};

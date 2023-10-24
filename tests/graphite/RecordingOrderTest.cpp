@@ -59,7 +59,7 @@ bool run_test(skiatest::Reporter* reporter,
     SkPaint paint;
     paint.setAntiAlias(true);
 
-    SkFont font(ToolUtils::CreatePortableTypeface("serif", SkFontStyle()));
+    SkFont font(ToolUtils::CreateTestTypeface("serif", SkFontStyle()));
     font.setSubpixel(true);
     font.setSize(12);
 

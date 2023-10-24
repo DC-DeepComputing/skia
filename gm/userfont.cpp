@@ -17,6 +17,7 @@
 #include "include/utils/SkCustomTypeface.h"
 #include "src/core/SkFontPriv.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 
 static sk_sp<SkDrawable> make_drawable(const SkPath& path) {
     const auto bounds = path.computeTightBounds();
@@ -35,8 +36,9 @@ static sk_sp<SkDrawable> make_drawable(const SkPath& path) {
 
 static sk_sp<SkTypeface> make_tf() {
     SkCustomTypefaceBuilder builder;
-    SkFont font;
-    const float upem = SkFontPriv::GetTypefaceOrDefault(font)->getUnitsPerEm();
+    SkFont font = ToolUtils::DefaultPortableFont();
+    SkASSERT(font.getTypeface());
+    const float upem = font.getTypeface()->getUnitsPerEm();
 
     // request a big size, to improve precision at the fontscaler level
     font.setSize(upem);
@@ -50,7 +52,7 @@ static sk_sp<SkTypeface> make_tf() {
         font.getMetrics(&metrics);
         builder.setMetrics(metrics, 1.0f/upem);
     }
-    builder.setFontStyle(SkFontPriv::GetTypefaceOrDefault(font)->fontStyle());
+    builder.setFontStyle(font.getTypeface()->fontStyle());
 
     // Steal the first 128 chars from the default font
     for (SkGlyphID index = 0; index <= 127; ++index) {
@@ -120,6 +122,7 @@ public:
 
                 // shared baseline
                 if (tf == nullptr) {
+                    tf = ToolUtils::DefaultPortableTypeface();
                     paint.setColor(0xFFDDDDDD);
                     canvas->drawRect({0, y, 810, y+1}, paint);
                 }

@@ -40,7 +40,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_empty,
     auto canvas = surface->getCanvas();
 
     static const char* kText = " ";
-    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    auto typeface = ToolUtils::CreateTestTypeface("serif", SkFontStyle());
     SkFont font(typeface);
     size_t txtLen = strlen(kText);
     int glyphCount = font.countText(kText, txtLen, SkTextEncoding::kUTF8);

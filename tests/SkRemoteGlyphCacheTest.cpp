@@ -664,8 +664,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_DrawTextAsPath,
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setStrokeWidth(0);
+    SkFont font = ToolUtils::DefaultFont();
     REPORTER_ASSERT(reporter,
-            SkStrikeSpec::ShouldDrawAsPath(paint, SkFont(), SkMatrix::I()));
+            SkStrikeSpec::ShouldDrawAsPath(paint, font, SkMatrix::I()));
 
     // Server.
     auto serverTypeface = SkTypeface::MakeFromName("monospace", SkFontStyle());
@@ -1023,7 +1024,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_TypefaceWithPaths_Mask
     SkStrikeServer server(discardableManager.get());
     SkStrikeClient client(discardableManager, true);
 
-    auto serverTypeface = ToolUtils::DefaultPortableTypeface();
+    auto serverTypeface = ToolUtils::DefaultTypeface();
     const SkTypefaceID serverTypefaceID = serverTypeface->uniqueID();
 
     auto props = FindSurfaceProps(direct);
@@ -1082,7 +1083,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_TypefaceWithPaths_Path
     SkStrikeServer server(discardableManager.get());
     SkStrikeClient client(discardableManager, true);
 
-    auto serverTypeface = ToolUtils::DefaultPortableTypeface();
+    auto serverTypeface = ToolUtils::DefaultTypeface();
     const SkTypefaceID serverTypefaceID = serverTypeface->uniqueID();
 
     auto props = FindSurfaceProps(direct);

@@ -793,7 +793,7 @@ DEF_TEST(ImageFilterDrawTiled, reporter) {
 
     SkPaint textPaint;
     textPaint.setColor(SK_ColorWHITE);
-    SkFont font(ToolUtils::DefaultPortableTypeface(), height);
+    SkFont font(ToolUtils::DefaultTypeface(), height);
 
     const char* text = "ABC";
     const SkScalar yPos = SkIntToScalar(height);

@@ -24,6 +24,7 @@
 #include "include/private/base/SkTemplates.h"
 #include "src/core/SkFontPriv.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <string.h>
 #include <utility>
@@ -104,7 +105,7 @@ public:
 protected:
     void onOnceBeforeDraw() override {
         for (int i = 0; i < gStylesCount; i++) {
-            fFaces[i] = SkTypeface::MakeFromName(nullptr, gStyles[i]);
+            fFaces[i] = ToolUtils::CreatePortableTypeface(nullptr, gStyles[i]);
         }
     }
 
@@ -137,6 +138,7 @@ protected:
 
         SkPaint paint;
         for (int i = 0; i < gStylesCount; i++) {
+            SkASSERT(fFaces[i]);
             font.setTypeface(fFaces[i]);
             canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
             if (fApplyKerning) {
@@ -400,9 +402,10 @@ DEF_SIMPLE_GM_CAN_FAIL(typefacerendering_pfb, canvas, errMsg, 640, 840) {
 // Exercise different paint styles and embolden, and compare with strokeandfill patheffect
 DEF_SIMPLE_GM(typeface_styling, canvas, 710, 360) {
     sk_sp<SkTypeface> face = MakeResourceAsTypeface("fonts/Roboto-Regular.ttf");
-    SkFont font;
-    font.setTypeface(face);
-    font.setSize(100);
+    if (!face) {
+        face = ToolUtils::DefaultPortableTypeface();
+    }
+    SkFont font(face, 100);
     font.setEdging(SkFont::Edging::kAntiAlias);
 
     uint16_t glyphs[1] = { font.unicharToGlyph('A') };
