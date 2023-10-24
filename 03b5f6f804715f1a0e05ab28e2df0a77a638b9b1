@@ -134,6 +134,30 @@
       },
       "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc37cefa_e10bc539",
+        "filename": "tests/sksl/intrinsics/MaxFloat.skrp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-24T13:56:16Z",
+      "side": 1,
+      "message": "Yeah, this was really just an observation. I doubt it\u0027s worth the complexity of hoisting that logic.",
+      "parentUuid": "63578a97_0243129b",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 55
+      },
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
