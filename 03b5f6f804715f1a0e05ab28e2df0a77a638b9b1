@@ -92,6 +92,30 @@
       },
       "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63578a97_0243129b",
+        "filename": "tests/sksl/intrinsics/MaxFloat.skrp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T13:53:47Z",
+      "side": 1,
+      "message": "This is definitely an opportunity, but I\u0027m not sure how to fix it today. This is almost certainly a mix of `push_immutable` and `push_constant` ops. Detecting that they are the same would require rewriting `push_immutable` into splats much earlier in the process, and doing that without pessimizing other code is tricky. It might require a separate pass over the BuilderOp stream, which I have been reluctant to do (since I\u0027m lacking a compelling use case--if I could do the same level of dead-stripping that SkVM had, I would definitely want it)",
+      "parentUuid": "7d5d53ac_bd116fb1",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 55
+      },
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
