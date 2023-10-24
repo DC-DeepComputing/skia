@@ -180,6 +180,24 @@
       "parentUuid": "db450c78_4549d654",
       "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2abbf220_b27961cb",
+        "filename": "modules/bentleyottmann/src/SweepLine.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-24T19:57:03Z",
+      "side": 1,
+      "message": "Did you mean that `leftOfInsertion` could be `.begin()`? My concern was that if `rightOfInsertion` could ever be `.begin()`, then we\u0027re subtracting one to get `leftOfInsertion`, which is going to produce an out-of-bounds iterator?\n\nBut if we add the bounds check on input coordinates, then I think I can rationalize that `lower_bound` will never return `.begin()` in this case. If so, it does seem worth it to add the assert before we do the subtraction.",
+      "parentUuid": "8fe7bca8_b6f31cc6",
+      "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
