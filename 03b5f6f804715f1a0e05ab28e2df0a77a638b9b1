@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37e67f6f_9d72f911",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T13:56:14Z",
+      "side": 1,
+      "message": "`while (numSlots \u003e 4)` will stop at 4, not 0.",
+      "parentUuid": "23806e18_5c0e7cdc",
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d5d53ac_bd116fb1",
         "filename": "tests/sksl/intrinsics/MaxFloat.skrp",
         "patchSetId": 7
