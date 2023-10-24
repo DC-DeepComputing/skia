@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "efc7b117_cb511e0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-24T14:43:49Z",
+      "side": 1,
+      "message": "I\u0027m not really sure what to do yet about the \"universal APK\" version.\n\nI thought you could build and run as an executable? If not, I should at least get that part working. (Doesn\u0027t need to hold up this CL, though.)",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 41
+      },
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "92e85af7_9966830e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
@@ -14,6 +37,23 @@
       "writtenOn": "2023-10-23T16:56:14Z",
       "side": 1,
       "message": "Friendly bump -- the last canary passed, but starting another just in case there are new Graphite tests to validate.",
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db564ecd_c0c2ed0c",
+        "filename": "tools/skqp/src/skqp_GpuTestProcs.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-24T14:43:49Z",
+      "side": 1,
+      "message": "I\u0027d love it if we could share more code here. Maybe this should be a templated function? I don\u0027t know whether it\u0027s worth doing, but perhaps worth considering.",
       "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
