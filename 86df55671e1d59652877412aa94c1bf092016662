@@ -70,6 +70,30 @@
       },
       "revId": "86df55671e1d59652877412aa94c1bf092016662",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24ff2858_1d5bb5a4",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-24T20:14:57Z",
+      "side": 0,
+      "message": "Because an existing segment has points p0 and p1 that are const and immutable. For example, when using remove_if shifts elements down using operator\u003d(Segment\u0026\u0026) on an existing Segment that has immutable Points because the points are const. We could make an operator\u003d(Segment\u0026\u0026) that works around the the const of the field p0 and p1 fields, but isn\u0027t that just removing the const with more steps?",
+      "parentUuid": "ced626e5_b2dfb62f",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 9
+      },
+      "revId": "86df55671e1d59652877412aa94c1bf092016662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
