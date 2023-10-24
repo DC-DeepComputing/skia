@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928d6d4d_d83f984a",
+        "filename": "gn/codec.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T23:54:21Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 21,
+        "startChar": 19,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "fc735abc2cd3a66f454726bb648f959ed2f2ae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc7a5d8e_62ecef48",
+        "filename": "gn/codec.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T23:54:21Z",
+      "side": 1,
+      "message": "This file is listed twice in BUILD.bazel, so it gets included here twice as well. Intentional?",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 37
+      },
+      "revId": "fc735abc2cd3a66f454726bb648f959ed2f2ae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
