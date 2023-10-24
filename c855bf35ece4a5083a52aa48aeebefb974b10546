@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8d9b007_5d19cea4",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 2277,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-24T21:29:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7810ec6b_f3af9f50",
+      "range": {
+        "startLine": 2277,
+        "startChar": 30,
+        "endLine": 2277,
+        "endChar": 31
+      },
+      "revId": "c855bf35ece4a5083a52aa48aeebefb974b10546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c5ca7ac_4b186826",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-24T12:08:33Z",
       "side": 1,
       "message": "Same comment about the equals sign",
+      "range": {
+        "startLine": 102,
+        "startChar": 14,
+        "endLine": 102,
+        "endChar": 15
+      },
+      "revId": "c855bf35ece4a5083a52aa48aeebefb974b10546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "009eafb7_91c0755f",
+        "filename": "infra/bots/task_drivers/bazel_test_precompiled/bazel_test_precompiled.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-10-24T21:29:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c5ca7ac_4b186826",
       "range": {
         "startLine": 102,
         "startChar": 14,
