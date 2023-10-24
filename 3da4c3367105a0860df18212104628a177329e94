@@ -46,6 +46,30 @@
       },
       "revId": "3da4c3367105a0860df18212104628a177329e94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecb6cf73_aefdc9e6",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-24T13:47:14Z",
+      "side": 1,
+      "message": "In Dawn does a pipeline just have a single bind group layout that has all the bind group entries for the whole pipeline? Like in Ganesh Vulkan we do cache DescriptorSets but don\u0027t need to worry about the full PipelineLayout. The reason is we decided that in all PipelineLayouts DescriptorSet 0 will contain the uniform buffers, and every pipeline uses the same number of uniform buffers (or at least has bindings for them even if unused). In that world it doesn\u0027t matter what the reset of the descriptor layout for a pipline is (e.g. number of samplers). So the reuse of these descriptors can be much broader across pipelines.\n\nMy quick scanning of the code does make me think that Dawn is setup similar. So to use the same model do we just need to make sure all pipelines use a similar uniform layout even with unused bindings?",
+      "parentUuid": "b77a5b02_bbe94e19",
+      "range": {
+        "startLine": 681,
+        "startChar": 38,
+        "endLine": 681,
+        "endChar": 61
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
