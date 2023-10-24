@@ -16,6 +16,24 @@
       "message": "You don\u0027t need to review the contents of every `skrp`, that\u0027s just golden output and it\u0027s pseudoassembly so it\u0027s not easy to follow.",
       "revId": "842dbb5385a479c3c05bb79073c223ed0b223cf3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e20cc28_842d2469",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-24T13:47:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "19fe1153_26e9ec3c",
+      "revId": "842dbb5385a479c3c05bb79073c223ed0b223cf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
