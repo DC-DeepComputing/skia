@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84147657_53be10d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-24T20:02:54Z",
+      "side": 1,
+      "message": "As discussed offline, added a TODO to use the vertex shader pipeline stage when a uniform is only used in the vertex shader (waiting on the fragment shader pipeline stage is synchronization overkill, but not necessarily incorrect). Please speak up if I misunderstood!",
+      "parentUuid": "dc677c3b_e9e02829",
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3aefff5f_5dd3291e",
         "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
         "patchSetId": 3
@@ -83,6 +101,30 @@
       "writtenOn": "2023-10-23T16:59:33Z",
       "side": 1,
       "message": "Just for my knowledge, what\u0027s the reason for this? Since we\u0027re overwriting memory it seems we\u0027d need a barrier once we want to consume the contents of the buffer, i.e., when we switch to HOST_READ.",
+      "range": {
+        "startLine": 237,
+        "startChar": 25,
+        "endLine": 237,
+        "endChar": 53
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f634d70_90678ede",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-24T20:02:54Z",
+      "side": 1,
+      "message": "Excellent question, and one which Greg helped me conceptualize (so Greg feel free to chime in with any corrections or additional info). \n\nThere are cases where we need memory barriers (in addition to execution order enforcement) with write access as the destination access type. For example, write-after-write operations. We have to enforce execution and memory order such that the second write call does not happen before the first, overwriting the data at that memory location in the incorrect order.\n\nIn this case, outside of a render pass, we are writing to an area of memory, reading from it as a uniform, writing to it again, so on and so forth. So a read-after-write situation (consuming buffer contents as you indicated), followed by a write-after-read (why we have this write flag as a dst access flag that requires a barrier inserted) situation. \n\nHere specifically, we need to ensure that the previous uniform read is completed prior to re-writing that data for a future read. The `VK_ACCESS_UNIFORM_READ_BIT` at `VK_PIPELINE_STAGE_VERTEX_SHADER_BIT` -\u003e `VK_ACCESS_TRANSFER_WRITE_BIT` at `VK_PIPELINE_STAGE_TRANSFER_BIT` barrier insertion can be observed when debugging in the `runtime_intrinsics` GMs prior to calling `vkCmdUpdateBuffer`.\n\nIf the buffer is newly-allocated, this is not a concern since no prior write commands are waiting to be executed. In that case, we end up with a memory barrier b/w `VK_ACCESS_NONE` at `VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT` and `VK_ACCESS_TRANSFER_WRITE_BIT` at `VK_PIPELINE_STAGE_TRANSFER_BIT` which essentially means \"wait on nothing to perform this transfer\" (see https://themaister.net/blog/2019/08/14/yet-another-blog-explaining-vulkan-synchronization/#:~:text\u003dA%20PRACTICAL%20TOP_OF_PIPE%20EXAMPLE).\n\nI also found this Vulkan synchronization validation guide to be useful: https://www.lunarg.com/wp-content/uploads/2021/01/Final_Guide-to-Vulkan-Synchronization-Validation_Jan_21.pdf",
+      "parentUuid": "3aefff5f_5dd3291e",
       "range": {
         "startLine": 237,
         "startChar": 25,
@@ -164,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "934911c4_ce83d931",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-24T20:02:54Z",
+      "side": 1,
+      "message": "Removed this param and now pass in false for byRegion when calling `pipelineBarrier(...)` from within `addBufferMemoryBarrier(...)`.",
+      "parentUuid": "d69f1aef_78143b5b",
+      "range": {
+        "startLine": 396,
+        "startChar": 78,
+        "endLine": 396,
+        "endChar": 85
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75459fba_cc17326e",
@@ -187,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbc2cbfd_6dc84f6b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-24T20:02:54Z",
+      "side": 1,
+      "message": "Yes, totally with you. As discussed offline, managing buffer accesses more as a whole can be a future change (and using that same management for uniform buffers). We also aligned on a future path forward for communicating stage information per descriptor. Added a TODO and bug #",
+      "parentUuid": "75459fba_cc17326e",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 408,
+        "endChar": 90
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "732f69ce_1a72a74e",
@@ -200,6 +290,30 @@
       "writtenOn": "2023-10-20T21:29:06Z",
       "side": 1,
       "message": "my gut says this call here is actually probably not needed as the barriers will get submitted before the start of the render pass it is used in. But doesn\u0027t really hurt much leaving as is.",
+      "range": {
+        "startLine": 409,
+        "startChar": 10,
+        "endLine": 409,
+        "endChar": 32
+      },
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c366717e_8597b062",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-24T20:02:54Z",
+      "side": 1,
+      "message": "I agree with you; removed",
+      "parentUuid": "732f69ce_1a72a74e",
       "range": {
         "startLine": 409,
         "startChar": 10,
