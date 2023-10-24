@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23806e18_5c0e7cdc",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-24T13:49:16Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it happen with any value that\u0027s zero mod 4?",
+      "parentUuid": "abbeae35_650d83c5",
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d5d53ac_bd116fb1",
         "filename": "tests/sksl/intrinsics/MaxFloat.skrp",
         "patchSetId": 7
