@@ -22,6 +22,30 @@
       },
       "revId": "86df55671e1d59652877412aa94c1bf092016662",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04b8a7e6_5822ebb0",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-24T15:10:52Z",
+      "side": 0,
+      "message": "This is because I\u0027m using routines from \u003calgorithm\u003e, and they need to be copiable. Now I can make copy constructors that handle const members, but I think both of us would feel dirty after.",
+      "parentUuid": "919cdadc_bf38fa77",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 9
+      },
+      "revId": "86df55671e1d59652877412aa94c1bf092016662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2849e55d_13994589",
+        "filename": "modules/bentleyottmann/src/SweepLine.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-24T15:10:52Z",
+      "side": 1,
+      "message": "I\u0027m going to add a pre-check on the input for all coordinates c s.t. -max \u003c c \u003c max. If it is not in bounds then, bentley-ottmann will fail. That way they can never interfere with the sentinels.",
+      "parentUuid": "14ed63e4_e35488f5",
+      "range": {
+        "startLine": 15,
+        "startChar": 46,
+        "endLine": 15,
+        "endChar": 82
+      },
+      "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8eec9ff_cd085bce",
@@ -54,6 +78,24 @@
       "writtenOn": "2023-10-24T14:18:40Z",
       "side": 1,
       "message": "I\u0027m guessing this will never (can\u0027t?) be called with an empty sweep line, but to be extra defensive, perhaps check that first and return? (Otherwise the loop is going to fail badly).",
+      "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c1f701_d59da06d",
+        "filename": "modules/bentleyottmann/src/SweepLine.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-24T15:10:52Z",
+      "side": 1,
+      "message": "The two sentinels in the sweep line ensure that it can never be empty.",
+      "parentUuid": "f8eec9ff_cd085bce",
       "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc256a3d_170e451f",
+        "filename": "modules/bentleyottmann/src/SweepLine.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-24T15:10:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d752e4ec_ebe77471",
+      "range": {
+        "startLine": 41,
+        "startChar": 37,
+        "endLine": 41,
+        "endChar": 45
+      },
+      "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db450c78_4549d654",
@@ -94,6 +160,24 @@
       "writtenOn": "2023-10-24T14:18:40Z",
       "side": 1,
       "message": "Assert that `rightOfInsertion !\u003d fSweepLine.begin()` here?",
+      "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fe7bca8_b6f31cc6",
+        "filename": "modules/bentleyottmann/src/SweepLine.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-24T15:10:52Z",
+      "side": 1,
+      "message": "No. It can be fSweepLine.begin(). That is the left most sentinel, and is designed to intersect with nothing.",
+      "parentUuid": "db450c78_4549d654",
       "revId": "24543d1be46e376fdd3447db09e1b27f49f43b43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
