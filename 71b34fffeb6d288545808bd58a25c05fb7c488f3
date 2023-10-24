@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d63a3319_466f1f8a",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T18:00:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "affdb520_3d7d6d5e",
+      "range": {
+        "startLine": 93,
+        "startChar": 57,
+        "endLine": 93,
+        "endChar": 66
+      },
+      "revId": "71b34fffeb6d288545808bd58a25c05fb7c488f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "688e4c59_c7a19fb5",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-10-24T15:37:54Z",
       "side": 1,
       "message": "Set constant for padding value? (and use as parameter to addPaddedRect)",
+      "range": {
+        "startLine": 263,
+        "startChar": 49,
+        "endLine": 263,
+        "endChar": 50
+      },
+      "revId": "71b34fffeb6d288545808bd58a25c05fb7c488f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b92f7e5b_933f1388",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T18:00:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "688e4c59_c7a19fb5",
       "range": {
         "startLine": 263,
         "startChar": 49,
