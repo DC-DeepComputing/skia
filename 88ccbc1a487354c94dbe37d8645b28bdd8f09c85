@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fd8c94ce_7c9cb29f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-24T15:06:06Z",
+      "side": 1,
+      "message": "I _think_ I was able to at least compile the simple binary executable, but I\u0027m not sure if I tried running it. I can double-check in a bit.",
+      "parentUuid": "efc7b117_cb511e0e",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 41
+      },
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "92e85af7_9966830e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
@@ -54,6 +78,24 @@
       "writtenOn": "2023-10-24T14:43:49Z",
       "side": 1,
       "message": "I\u0027d love it if we could share more code here. Maybe this should be a templated function? I don\u0027t know whether it\u0027s worth doing, but perhaps worth considering.",
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9a1541_7665577d",
+        "filename": "tools/skqp/src/skqp_GpuTestProcs.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-10-24T15:06:06Z",
+      "side": 1,
+      "message": "Share more code with the `RunWithGaneshTestContexts` function above, right? Or do you mean share more code with the functions in `dm`?",
+      "parentUuid": "db564ecd_c0c2ed0c",
       "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
