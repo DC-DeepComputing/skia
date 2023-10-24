@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d7d0c14_d4444140",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T19:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4339f072_dcdb716b",
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1966715_ce1e7454",
@@ -102,6 +120,30 @@
       "writtenOn": "2023-10-19T15:46:49Z",
       "side": 1,
       "message": "Is it important enough to assert this on release builds, too?",
+      "range": {
+        "startLine": 1271,
+        "startChar": 7,
+        "endLine": 1271,
+        "endChar": 32
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee0d4c7_65e1824d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T19:47:43Z",
+      "side": 1,
+      "message": "I don\u0027t think so, historically we haven\u0027t done release asserts for this sort of state-confirmation. And if somehow we were trying to intialize a coverage layer with the backdrop, we\u0027d just be drawing the prior alpha channel into it. This doesn\u0027t seem to be a disastrous scenario IMO.",
+      "parentUuid": "f1966715_ce1e7454",
       "range": {
         "startLine": 1271,
         "startChar": 7,
@@ -135,6 +177,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa95f81a_20fff8e7",
+        "filename": "src/core/SkCanvasPriv.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T19:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec740066_5f65b287",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 19
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b592903_9dc36789",
@@ -148,6 +214,24 @@
       "writtenOn": "2023-10-19T14:51:51Z",
       "side": 1,
       "message": "Just need to migrate dithering here, I think?",
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d3087da_568b267e",
+        "filename": "src/core/SkCanvasPriv.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T19:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b592903_9dc36789",
       "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -201,6 +285,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a188906_767ffca1",
+        "filename": "src/core/SkCanvasPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T19:47:43Z",
+      "side": 1,
+      "message": "I\u0027ve added separate functions for adding an image filter layer and a mask filter layer, which both call into a shared helper for adding the layer with a provided restore paint.\n\nLet me know what you think.",
+      "parentUuid": "15a2416d_bd4f7caf",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 59
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54440299_64b03c1e",
         "filename": "src/core/SkCanvasPriv.h",
         "patchSetId": 5
@@ -236,6 +344,30 @@
       "side": 1,
       "message": "I do want to rename everything over to `AutoLayerForFilters` but wasn\u0027t sure if that should wait until this new system is more well established.",
       "parentUuid": "54440299_64b03c1e",
+      "range": {
+        "startLine": 153,
+        "startChar": 6,
+        "endLine": 153,
+        "endChar": 29
+      },
+      "revId": "c7087f107ba5f2f13a7e289c11ef43c967425f02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19222a70_5baadaae",
+        "filename": "src/core/SkCanvasPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T19:47:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3a350d12_cbfd79e8",
       "range": {
         "startLine": 153,
         "startChar": 6,
