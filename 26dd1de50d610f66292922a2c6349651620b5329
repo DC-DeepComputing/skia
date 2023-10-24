@@ -16,6 +16,23 @@
       "message": "I could not find a decent way to add a test for this bug. It\u0027s one time deal for each property (ellipsis, locale) and only appear in some cases (cache, probably). Also, I could reproduce it for one single font only and I don\u0027t think we should include this font into our testing, so I leave it as is.",
       "revId": "26dd1de50d610f66292922a2c6349651620b5329",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b10219b4_aa578eca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-24T14:20:13Z",
+      "side": 1,
+      "message": "Good catch - in paragraph_bindings.cpp, we use the SkString constructor which takes the length w/o the null terminator\n\nhttps://github.com/google/skia/blob/86df55671e1d59652877412aa94c1bf092016662/modules/canvaskit/paragraph_bindings.cpp#L261",
+      "revId": "26dd1de50d610f66292922a2c6349651620b5329",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
