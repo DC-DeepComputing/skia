@@ -70,6 +70,47 @@
       },
       "revId": "ba721d5c6a1347a81c61fb30aee1b36d9e2fd263",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa265c5_95c03ffe",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-24T13:23:59Z",
+      "side": 1,
+      "message": "Will do.",
+      "parentUuid": "3d4fc651_b045349e",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 22
+      },
+      "revId": "ba721d5c6a1347a81c61fb30aee1b36d9e2fd263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d6c0507_d0752992",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-24T13:23:59Z",
+      "side": 1,
+      "message": "oops :(",
+      "revId": "ba721d5c6a1347a81c61fb30aee1b36d9e2fd263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
