@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc469e85_0ad1dead",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T21:09:27Z",
+      "side": 1,
+      "message": "The vello failures are inherited from the parent CL.\n\nThis CL doesn\u0027t do anything interesting until https://skia-review.googlesource.com/c/skia/+/762979 lands as well, which actually calls drawCoverageMask, but at that point blur mask filters in graphite will work.",
+      "revId": "d4f58cc3cf6c6cbf46223ea2d185c0b36c29ca2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
