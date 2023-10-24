@@ -94,6 +94,30 @@
       },
       "revId": "86df55671e1d59652877412aa94c1bf092016662",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e42351_f3606e43",
+        "filename": "modules/bentleyottmann/include/Segment.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-24T20:23:09Z",
+      "side": 0,
+      "message": "Ah - got it. No, that\u0027s fine as-is. I was thinking about simpler container requirements that just required copying for construction, etc. I forgot about remove_if and erase actually moving elements around.",
+      "parentUuid": "24ff2858_1d5bb5a4",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 9
+      },
+      "revId": "86df55671e1d59652877412aa94c1bf092016662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
