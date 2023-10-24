@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "abbeae35_650d83c5",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T13:47:05Z",
+      "side": 1,
+      "message": "I think you\u0027re right; if we ever ended up in a situation where someone called `appendCopyImmutableUnmasked` with a count of zero, we would generate bad code. I don\u0027t think that ever happens today but it should work. I\u0027ll fix.",
+      "parentUuid": "d7f36d8f_d2daaa04",
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d5d53ac_bd116fb1",
         "filename": "tests/sksl/intrinsics/MaxFloat.skrp",
         "patchSetId": 7
