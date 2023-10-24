@@ -214,6 +214,13 @@ private:
                                SkRPOffset src,
                                int numSlots) const;
 
+    bool replaceImmutableCopyWithSplat(skia_private::TArray<Stage>* pipeline,
+                                       SkArenaAlloc* alloc,
+                                       std::byte* basePtr,
+                                       SkRPOffset dst,
+                                       SkRPOffset src,
+                                       int numSlots) const;
+
     // Appends a single-slot single-input math operation to the pipeline. The op `stage` will
     // appended `numSlots` times, starting at position `dst` and advancing one slot for each
     // subsequent invocation.

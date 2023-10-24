@@ -1399,14 +1399,26 @@ Program::Program(TArray<Instruction> instrs,
 
 Program::~Program() = default;
 
-static bool immutable_data_is_splattable(float* immutablePtr, int numSlots) {
+bool Program::replaceImmutableCopyWithSplat(TArray<Stage>* pipeline,
+                                            SkArenaAlloc* alloc,
+                                            std::byte* basePtr,
+                                            SkRPOffset dst,
+                                            SkRPOffset src,
+                                            int numSlots) const {
     // If every value between `immutablePtr[0]` and `immutablePtr[numSlots]` is bit-identical, we
     // can use a splat.
+    float* immutablePtr = reinterpret_cast<float*>(basePtr + src);
     for (int index = 1; index < numSlots; ++index) {
         if (sk_bit_cast<int32_t>(immutablePtr[0]) != sk_bit_cast<int32_t>(immutablePtr[index])) {
             return false;
         }
     }
+
+    auto stage = (ProgramOp)((int)ProgramOp::copy_constant + numSlots - 1);
+    SkRasterPipeline_ConstantCtx ctx;
+    ctx.dst = dst;
+    ctx.value = *immutablePtr;
+    pipeline->push_back({stage, SkRPCtxUtils::Pack(ctx, alloc)});
     return true;
 }
 
@@ -1437,13 +1449,7 @@ void Program::appendCopy(TArray<Stage>* pipeline,
         // preferable, since splats are a tiny bit faster than regular copies.
         if (basePtr) {
             SkASSERT(srcStride == 1);
-            float* immutablePtr = reinterpret_cast<float*>(basePtr + src);
-            if (immutable_data_is_splattable(immutablePtr, numSlots)) {
-                auto stage = (ProgramOp)((int)ProgramOp::copy_constant + numSlots - 1);
-                SkRasterPipeline_ConstantCtx ctx;
-                ctx.dst = dst;
-                ctx.value = *immutablePtr;
-                pipeline->push_back({stage, SkRPCtxUtils::Pack(ctx, alloc)});
+            if (this->replaceImmutableCopyWithSplat(pipeline, alloc, basePtr, dst, src, numSlots)) {
                 return;
             }
         }
@@ -1475,10 +1481,21 @@ void Program::appendCopyImmutableUnmasked(TArray<Stage>* pipeline,
                                           SkRPOffset dst,
                                           SkRPOffset src,
                                           int numSlots) const {
+    // If the number of slots isn't divisible by four, we might be able to replace the start of the
+    // range with a splat, and be left with a divisible-by-four group. (The interior and end of the
+    // range will natually get similar checks.)
+    int remainderSlots = numSlots & 3;
+    if (remainderSlots && this->replaceImmutableCopyWithSplat(pipeline, alloc, basePtr, dst, src,
+                                                              remainderSlots)) {
+        dst += remainderSlots * SkOpts::raster_pipeline_highp_stride * sizeof(float);
+        src += remainderSlots *                                        sizeof(float);
+        numSlots -= remainderSlots;
+    }
+
     this->appendCopy(pipeline, alloc, basePtr,
                      ProgramOp::copy_immutable_unmasked,
                      dst, SkOpts::raster_pipeline_highp_stride,
-                     src, 1,
+                     src, /*srcStride=*/1,
                      numSlots);
 }
 
