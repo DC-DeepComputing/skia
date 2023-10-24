@@ -37,11 +37,12 @@ PathAtlas::PathAtlas(uint32_t width, uint32_t height) : fWidth(width), fHeight(h
 
 PathAtlas::~PathAtlas() = default;
 
-std::optional<CoverageMaskShape> PathAtlas::addShape(Recorder* recorder,
-                                                     const Rect& transformedShapeBounds,
-                                                     const Shape& shape,
-                                                     const Transform& localToDevice,
-                                                     const SkStrokeRec& style) {
+std::optional<PathAtlas::MaskAndOrigin> PathAtlas::addShape(
+        Recorder* recorder,
+        const Rect& transformedShapeBounds,
+        const Shape& shape,
+        const Transform& localToDevice,
+        const SkStrokeRec& style) {
     // It is possible for the transformed shape bounds to be fully clipped out while the draw still
     // produces coverage due to an inverse fill. In this case, don't render any mask;
     // CoverageMaskShapeRenderStep will automatically handle the simple fill. We'll handle this
@@ -54,10 +55,6 @@ std::optional<CoverageMaskShape> PathAtlas::addShape(Recorder* recorder,
     Rect maskBounds = transformedShapeBounds.makeRoundOut();
 
     CoverageMaskShape::MaskInfo maskInfo;
-    // TODO: fDeviceOrigin will be removed from MaskInfo when CoverageMaskRenderStep uses the
-    // DrawParam's local-to-device transform, at which point addShape() will return
-    // maskBounds.topLeft() separately.
-    maskInfo.fDeviceOrigin = skvx::cast<int32_t>(maskBounds.topLeft());
     // This size does *not* include any padding that the atlas may place around the mask. This size
     // represents the area the shape can actually modify.
     maskInfo.fMaskSize = emptyMask ? skvx::half2(0) : skvx::cast<uint16_t>(maskBounds.size());
@@ -72,7 +69,8 @@ std::optional<CoverageMaskShape> PathAtlas::addShape(Recorder* recorder,
         return std::nullopt;
     }
 
-    return CoverageMaskShape(shape, atlasProxy, localToDevice.inverse(), maskInfo);
+    return std::make_pair(CoverageMaskShape(shape, atlasProxy, localToDevice.inverse(), maskInfo),
+                          SkIPoint{(int) maskBounds.left(), (int) maskBounds.top()});
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
