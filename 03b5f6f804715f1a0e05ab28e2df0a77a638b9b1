@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "862be6f0_e51250b4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1421,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T15:02:35Z",
+      "side": 1,
+      "message": "I tried a simple version of this but it didn\u0027t find any wins over the entire test corpus. I\u0027m thinking it is not worth adding any complexity. http://review.skia.org/770396",
+      "parentUuid": "51a36302_fdc5a7b2",
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7f36d8f_d2daaa04",
