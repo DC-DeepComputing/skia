@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51a36302_fdc5a7b2",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1421,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-24T14:11:30Z",
+      "side": 1,
+      "message": "If the copy length is not a multiple of 4, and we have a splat opportunity at the beginning of the range that brings us to a multiple of 4, we should probably take it. That seems like an easy win. I\u0027ll explore that in a followup.",
+      "parentUuid": "7ab9537b_0674c24f",
+      "revId": "03b5f6f804715f1a0e05ab28e2df0a77a638b9b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7f36d8f_d2daaa04",
