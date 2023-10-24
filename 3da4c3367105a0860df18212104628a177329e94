@@ -70,6 +70,191 @@
       },
       "revId": "3da4c3367105a0860df18212104628a177329e94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8573dfe_cb594fec",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "I agree with Greg\u0027s initial thought that we should keep caching in the ResourceCache/ResourceProvider to be consistent with where everything else is accumulated.\n\nI feel less strongly about trying to reuse a BindGroup across pipelines, so we could keep the key small by using the resource unique ID of the GraphicsPipeline. Since the BindGroupLayout has concatenated the paint and the render step uniforms together, it\u0027s unlikely we\u0027d see reuse of BindGroups between different drawcalls that used the same SkPaint.\n\nHowever, where we could see reuse in BindGroups and layouts is when we make new pipelines because the RenderPassDesc changed but the paint and the renderstep are unchanged. In this case, if we have the `GraphicsPipelineDesc` available, it should be much closer to 1-to-1 with the bind group layout and is only 64-bits.",
+      "parentUuid": "ecb6cf73_aefdc9e6",
+      "range": {
+        "startLine": 681,
+        "startChar": 38,
+        "endLine": 681,
+        "endChar": 61
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f60e6d8f_bdcd10bf",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "nit: this-\u003edawnGroupLayouts()",
+      "range": {
+        "startLine": 719,
+        "startChar": 18,
+        "endLine": 719,
+        "endChar": 34
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bf00376_9beddb6e",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "Are `wgpu::BindGroup` objects ref-counted light weight objects? Or should we be returning a reference to the group that was stored in the cache?",
+      "range": {
+        "startLine": 724,
+        "startChar": 4,
+        "endLine": 724,
+        "endChar": 18
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e3b0e2a_2be20ff0",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "This could be simplified to be specific to the binding structure the base `GraphicsPipeline` expects and just stores 3 pointers to DawnBuffers for the intrinsic, renderstep, and paint uniforms.\n\nThis also means that the bind group key can be reduced to 3 unique IDs, since their order (assuming nulls are filled in with 0) encodes the bind index.",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 6
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc6b5dd_0352fae8",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to be a unique pointer if we are always going to have a cache, then we save on indirection.",
+      "range": {
+        "startLine": 117,
+        "startChar": 9,
+        "endLine": 117,
+        "endChar": 19
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928ca24c_228bc218",
+        "filename": "src/gpu/graphite/dawn/DawnResourceWithSerial.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "I\u0027m was a little surprised that the base Graphite class doesn\u0027t have a unique ID on it. While they have a GrResourceKey on them, I don\u0027t think that is the right place to track uniqueness since we want different Resources with the same key to be equivalent from a ResourceProvider POV.\n\nBut a unique ID seems generally useful IMO; right now we just do pointer comparisons for bindings in DrawPass because we know everything is kept alive throughout and don\u0027t have to worry about a new resource being allocated in the same memory location. Even so, an id lets us have a safer comparison here, and may be useful in the future.\n\n@Greg WDYT about just moving this to the base Resource?",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "978728ef_94c04806",
+        "filename": "src/gpu/graphite/dawn/DawnResourceWithSerial.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "style note: Skia has typically called this sort of sequence a unique ID",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 22
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e72c64_a64cb55e",
+        "filename": "src/gpu/graphite/dawn/DawnResourceWithSerial.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-24T14:25:56Z",
+      "side": 1,
+      "message": "We have historically just stashed these in the relevant CPP file as a static function, for instance: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkDrawable.cpp;drc\u003df437d01005173a284d1e9c592bd0c61360a6cad1;l\u003d22\n\nThe ID gets initialized internally then, instead of being an extra argument and would mean that we can keep the SharedContext more constant.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 2
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
