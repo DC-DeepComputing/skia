@@ -110,43 +110,11 @@ CanvasKit._extraInitializations.push(function() {
     return rv;
   };
 
-  // arguments should all be arrayBuffers or be an array of arrayBuffers.
-  CanvasKit.FontMgr.FromData = function() {
-    if (!arguments.length) {
-      Debug('Could not make FontMgr from no font sources');
-      return null;
-    }
-    var fonts = arguments;
-    if (fonts.length === 1 && Array.isArray(fonts[0])) {
-      fonts = arguments[0];
-    }
-    if (!fonts.length) {
-      Debug('Could not make FontMgr from no font sources');
-      return null;
-    }
-    var dPtrs = [];
-    var sizes = [];
-    for (var i = 0; i < fonts.length; i++) {
-      var data = new Uint8Array(fonts[i]);
-      var dptr = copy1dArray(data, 'HEAPU8');
-      dPtrs.push(dptr);
-      sizes.push(data.byteLength);
-    }
-    // Pointers are 32 bit unsigned ints
-    var datasPtr = copy1dArray(dPtrs, 'HEAPU32');
-    var sizesPtr = copy1dArray(sizes, 'HEAPU32');
-    var fm = CanvasKit.FontMgr._fromData(datasPtr, sizesPtr, fonts.length);
-    // The FontMgr has taken ownership of the bytes we allocated in the for loop.
-    CanvasKit._free(datasPtr);
-    CanvasKit._free(sizesPtr);
-    return fm;
-  };
-
-  CanvasKit.Typeface.MakeFreeTypeFaceFromData = function(fontData) {
+  CanvasKit.Typeface.MakeFreeTypefaceFromData = function(fontData) {
     var data = new Uint8Array(fontData);
 
     var fptr = copy1dArray(data, 'HEAPU8');
-    var font = CanvasKit.Typeface._MakeFreeTypeFaceFromData(fptr, data.byteLength);
+    var font = CanvasKit.Typeface._MakeFreeTypefaceFromData(fptr, data.byteLength);
     if (!font) {
       Debug('Could not decode font data');
       // We do not need to free the data since the C++ will do that for us

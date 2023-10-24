@@ -106,7 +106,7 @@
       CanvasAPI4(CanvasKit);
       CanvasAPI5(CanvasKit);
       CanvasAPI6(CanvasKit);
-      CanvasAPI7(CanvasKit);
+      //CanvasAPI7(CanvasKit);
       CanvasAPI8(CanvasKit);
     } else {
       console.log("Skipping CanvasAPI1 because it's not compiled in");
@@ -149,7 +149,7 @@
     }
 
     const paint = new CanvasKit.Paint();
-    const roboto = CanvasKit.Typeface.MakeFreeTypeFaceFromData(robotoData);
+    const roboto = CanvasKit.Typeface.MakeFreeTypefaceFromData(robotoData);
 
     const textPaint = new CanvasKit.Paint();
     textPaint.setColor(CanvasKit.RED);

@@ -4212,11 +4212,17 @@ export interface SlottableTextPropertyConstructor {
 
 export interface TypefaceFactory {
     /**
+     * By default, CanvasKit has a default monospace typeface compiled in so that text works out
+     * of the box. This returns that typeface if it is available, null otherwise.
+     */
+    GetDefault(): Typeface | null;
+
+    /**
      * Create a typeface using Freetype from the specified bytes and return it. CanvasKit supports
      * .ttf, .woff and .woff2 fonts. It returns null if the bytes cannot be decoded.
      * @param fontData
      */
-    MakeFreeTypeFaceFromData(fontData: ArrayBuffer): Typeface | null;
+    MakeFreeTypefaceFromData(fontData: ArrayBuffer): Typeface | null;
 }
 
 export interface TypefaceFontProviderFactory {

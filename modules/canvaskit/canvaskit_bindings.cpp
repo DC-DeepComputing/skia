@@ -109,6 +109,7 @@
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontTypes.h"
+#include "src/ports/SkFontHost_FreeType_common.h"
 #ifdef CK_INCLUDE_PARAGRAPH
 #include "modules/skparagraph/include/Paragraph.h"
 #endif // CK_INCLUDE_PARAGRAPH
@@ -120,10 +121,6 @@
 
 #if defined(CK_INCLUDE_RUNTIME_EFFECT) && defined(SKSL_ENABLE_TRACING)
 #include "include/sksl/SkSLDebugTrace.h"
-#endif
-
-#ifndef CK_NO_FONTS
-#include "include/ports/SkFontMgr_data.h"
 #endif
 
 #if GR_TEST_UTILS
@@ -1484,59 +1481,6 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("setEmbolden", &SkFont::setEmbolden)
         .function("setSubpixel", &SkFont::setSubpixel)
         .function("setTypeface", &SkFont::setTypeface, allow_raw_pointers());
-
-    class_<SkFontMgr>("FontMgr")
-        .smart_ptr<sk_sp<SkFontMgr>>("sk_sp<FontMgr>")
-        .class_function("_fromData", optional_override([](WASMPointerU32 dPtr,
-                                                          WASMPointerU32 sPtr,
-                                                          int numFonts)->sk_sp<SkFontMgr> {
-            auto datas = reinterpret_cast<const uint8_t**>(dPtr);
-            auto sizes = reinterpret_cast<const size_t*>(sPtr);
-
-            std::unique_ptr<sk_sp<SkData>[]> skdatas(new sk_sp<SkData>[numFonts]);
-            for (int i = 0; i < numFonts; ++i) {
-                skdatas[i] = SkData::MakeFromMalloc(datas[i], sizes[i]);
-            }
-
-            return SkFontMgr_New_Custom_Data(SkSpan(skdatas.get(), numFonts));
-        }), allow_raw_pointers())
-        .function("countFamilies", &SkFontMgr::countFamilies)
-        .function("getFamilyName", optional_override([](SkFontMgr& self, int index)->JSString {
-            if (index < 0 || index >= self.countFamilies()) {
-                return emscripten::val::null();
-            }
-            SkString s;
-            self.getFamilyName(index, &s);
-            return emscripten::val(s.c_str());
-        }))
-        .function("matchFamilyStyle", optional_override([](SkFontMgr& self, std::string name, emscripten::val jsFontStyle)->sk_sp<SkTypeface> {
-            auto weight = SkFontStyle::Weight(jsFontStyle["weight"].isUndefined() ? SkFontStyle::kNormal_Weight : jsFontStyle["weight"].as<int>());
-            auto width = SkFontStyle::Width(jsFontStyle["width"].isUndefined() ? SkFontStyle::kNormal_Width : jsFontStyle["width"].as<int>());
-            auto slant = SkFontStyle::Slant(jsFontStyle["slant"].isUndefined() ? SkFontStyle::kUpright_Slant : static_cast<SkFontStyle::Slant>(jsFontStyle["slant"].as<int>()));
-
-            SkFontStyle style(weight, width, slant);
-
-            return self.matchFamilyStyle(name.c_str(), style);
-    }), allow_raw_pointers())
-#ifdef SK_DEBUG
-        .function("dumpFamilies", optional_override([](SkFontMgr& self) {
-            int numFam = self.countFamilies();
-            SkDebugf("There are %d font families\n", numFam);
-            for (int i = 0 ; i< numFam; i++) {
-                SkString s;
-                self.getFamilyName(i, &s);
-                SkDebugf("\t%s\n", s.c_str());
-            }
-        }))
-#endif
-        .function("_makeTypefaceFromData", optional_override([](SkFontMgr& self,
-                                                WASMPointerU8 fPtr,
-                                                int flen)->sk_sp<SkTypeface> {
-        uint8_t* font = reinterpret_cast<uint8_t*>(fPtr);
-        sk_sp<SkData> fontData = SkData::MakeFromMalloc(font, flen);
-
-        return self.makeFromData(fontData);
-    }), allow_raw_pointers());
 #endif // CK_NO_FONTS
 
     class_<SkImage>("Image")
@@ -2332,12 +2276,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkTypeface>("Typeface")
         .smart_ptr<sk_sp<SkTypeface>>("sk_sp<Typeface>")
-        .class_function("_MakeFreeTypeFaceFromData", optional_override([](WASMPointerU8 fPtr,
-                                                int flen)->sk_sp<SkTypeface> {
+        .class_function("_MakeFreeTypefaceFromData", optional_override([](
+                    WASMPointerU8 fPtr, int flen)->sk_sp<SkTypeface> {
             uint8_t* font = reinterpret_cast<uint8_t*>(fPtr);
-            sk_sp<SkData> fontData = SkData::MakeFromMalloc(font, flen);
-
-            return SkFontMgr::RefDefault()->makeFromData(fontData);
+            std::unique_ptr<SkMemoryStream> stream(new SkMemoryStream());
+            stream->setMemoryOwned(font, flen);
+            return SkTypeface_FreeType::MakeFromStream(std::move(stream), SkFontArguments());
         }), allow_raw_pointers())
         .function("_getGlyphIDs", optional_override([](SkTypeface& self, WASMPointerU8 sptr,
                                                    size_t strLen, size_t expectedCodePoints,

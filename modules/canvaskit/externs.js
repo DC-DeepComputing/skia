@@ -449,18 +449,6 @@ var CanvasKit = {
     _getGlyphWidthBounds: function() {},
   },
 
-  FontMgr: {
-    // public API (from C++ and JS bindings)
-    FromData: function() {},
-    countFamilies: function() {},
-    getFamilyName: function() {},
-    matchFamilyStyle: function() {},
-
-    // private API
-    _makeTypefaceFromData: function() {},
-    _fromData: function() {},
-  },
-
   TypefaceFontProvider: {
     // public API (from C++ and JS bindings)
     Make: function() {},
@@ -800,11 +788,13 @@ var CanvasKit = {
   },
 
   Typeface: {
-    MakeFreeTypeFaceFromData: function() {},
+    GetDefault: function() {},
+    MakeFreeTypefaceFromData: function() {},
     prototype: {
       getGlyphIDs: function() {},
     },
-    _MakeFreeTypeFaceFromData: function() {},
+    _GetDefault: function() {},
+    _MakeFreeTypefaceFromData: function() {},
     _getGlyphIDs: function() {},
   },
 

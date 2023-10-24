@@ -76,10 +76,11 @@ function getTypeface(fontstr) {
 // null means use the default typeface (which is currently NotoMono)
 var fontCache = {
   'Noto Mono': {
-    '*': null, // is used if we have this font family, but not the right style/variant/weight
+     // is used if we have this font family, but not the right style/variant/weight
+    '*': CanvasKit.Typeface.GetDefault(),
   },
   'monospace': {
-    '*': null,
+    '*': CanvasKit.Typeface.GetDefault(),
   }
 };
 
@@ -105,7 +106,7 @@ function getFromFontCache(descriptors) {
             (descriptors['weight']  || 'normal');
   var fam = descriptors['family'];
   if (!fontCache[fam]) {
-    return null;
+    return CanvasKit.Typeface.GetDefault();
   }
   return fontCache[fam][key] || fontCache[fam]['*'];
 }
