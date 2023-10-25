@@ -16,6 +16,23 @@
       "message": "So if you look in Surface.h (as well SkSurfaceGanesh.h) we call the same function WrapBackendTexture. I think these should be name consistently. In the past Wrap has always been the word we\u0027ve used for this sort of thing so I have a bias to favoring that. I\u0027m also okay to call both this and the Surface version WrapTextureFrom to match the new style. If people really like Borrow I\u0027m also not against that.\n\nNow we will have to stage these renames behind a flag since they are already used in Chrome. So to do this we usually follow the model of:\n1) land a chrome change that defines a flag (e.g. SK_USED_LEGACY_GRAPHITE_TEXTURE_FACTORY_NAMES)\n2) Land a change in Skia where the old names are guarded by the flag.\n3) Make a Chrome CL to update all there call sets and remove the legacy flag define\n4) Remove old code from Skia",
       "revId": "dd030cc41fe244ce7e00e73a78c9571e0c70db2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9381ee6c_b7ef0cbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-25T18:52:26Z",
+      "side": 1,
+      "message": "nit: Add release notes for this public API change",
+      "revId": "dd030cc41fe244ce7e00e73a78c9571e0c70db2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
