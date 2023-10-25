@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce86e47b_aaf26d0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-25T16:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d5039b7_82399e70",
+      "range": {
+        "startLine": 12,
+        "startChar": 25,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "8df90ea85d8692e5694b8e01da0911e261ea6004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37e6c983_4ac25135",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5154231_b9d62759",
+        "filename": "src/gpu/graphite/geom/CoverageMaskShape.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-25T16:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37e6c983_4ac25135",
+      "range": {
+        "startLine": 34,
+        "startChar": 27,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "8df90ea85d8692e5694b8e01da0911e261ea6004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "227fd1d1_45105533",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-10-25T16:13:44Z",
       "side": 1,
       "message": "This attribute could use a comment. I wasn\u0027t sure if it was the multiplier for the unnormalized to normalized texture coords (which is gone, but I missed that point before).",
+      "range": {
+        "startLine": 50,
+        "startChar": 24,
+        "endLine": 50,
+        "endChar": 30
+      },
+      "revId": "8df90ea85d8692e5694b8e01da0911e261ea6004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd651a9d_3afcbfa7",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-25T16:21:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "227fd1d1_45105533",
       "range": {
         "startLine": 50,
         "startChar": 24,
