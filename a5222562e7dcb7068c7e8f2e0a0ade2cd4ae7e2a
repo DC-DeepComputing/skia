@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ab6a155_67df4aa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-25T15:20:08Z",
+      "side": 1,
+      "message": "Fixing `Transform_graphite.h` changed the fileset of the CL so it cleared all +1\u0027s, if you can take another quick look.",
+      "revId": "a5222562e7dcb7068c7e8f2e0a0ade2cd4ae7e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e5d0eac_e646008e",
+        "filename": "src/gpu/graphite/geom/Transform_graphite.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-25T15:20:08Z",
+      "side": 1,
+      "message": "This case was causing asserts in Transform\u0027s `\u003d\u003d` because we\u0027d have an identity matrix thinking it was `kSimpleRectStaysRect`.",
+      "range": {
+        "startLine": 57,
+        "startChar": 12,
+        "endLine": 59,
+        "endChar": 18
+      },
+      "revId": "a5222562e7dcb7068c7e8f2e0a0ade2cd4ae7e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
