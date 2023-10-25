@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0359178f_7833b9c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-25T16:22:50Z",
+      "side": 1,
+      "message": "I\u0027m not sure if it\u0027s related or even important since the images are Negative, but there\u0027s some new artifacts on the complexclip_aa GMs with this CL.",
+      "revId": "4b30881969fa7e9b1a9036d790c0c071c80414ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
