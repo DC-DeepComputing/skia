@@ -55,8 +55,9 @@ public:
 
     static inline Transform Translate(float x, float y) {
         if (SkScalarsAreFinite(x, y)) {
+            Type type = (x == 0.f && y == 0.f) ? Type::kIdentity : Type::kSimpleRectStaysRect;
             return Transform(SkM44::Translate(x, y), SkM44::Translate(-x, -y),
-                             Type::kSimpleRectStaysRect, {1.f, 1.f});
+                             type, {1.f, 1.f});
         } else {
             return Invalid();
         }

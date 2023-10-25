@@ -45,6 +45,8 @@ public:
     PathAtlas(uint32_t width, uint32_t height);
     virtual ~PathAtlas();
 
+    using MaskAndOrigin = std::pair<CoverageMaskShape, SkIPoint>;
+
     /**
      * Searches the atlas for a slot that can fit a coverage mask for a clipped shape with the given
      * bounds in device coordinates and submits the mask to be drawn into the found atlas region.
@@ -73,11 +75,11 @@ public:
      * The stroke-and-fill style is drawn as a single combined coverage mask containing the stroke
      * and the fill.
      */
-    std::optional<CoverageMaskShape> addShape(Recorder*,
-                                              const Rect& transformedShapeBounds,
-                                              const Shape& shape,
-                                              const Transform& localToDevice,
-                                              const SkStrokeRec& style);
+    std::optional<MaskAndOrigin> addShape(Recorder*,
+                                          const Rect& transformedShapeBounds,
+                                          const Shape& shape,
+                                          const Transform& localToDevice,
+                                          const SkStrokeRec& style);
 
     /**
      * Returns true if a path coverage mask with the given device-space bounds is sufficiently
