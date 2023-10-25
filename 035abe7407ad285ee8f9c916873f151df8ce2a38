@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30aa1b84_e8c7ad1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-25T15:48:55Z",
+      "side": 1,
+      "message": "In addition to these files, I would like to include modules/bentleyottmann/include/EventQueueInterface.h. How do I add it to IWYU?",
+      "revId": "035abe7407ad285ee8f9c916873f151df8ce2a38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
