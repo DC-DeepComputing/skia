@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8c50a4f_88cc3ad2",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-25T13:53:58Z",
+      "side": 1,
+      "message": "I\u0027ll add this in a followup, as discussed.",
+      "parentUuid": "8182a6c8_6ee6e141",
+      "range": {
+        "startLine": 22,
+        "startChar": 9,
+        "endLine": 22,
+        "endChar": 26
+      },
+      "revId": "fc735abc2cd3a66f454726bb648f959ed2f2ae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "541ad12f_1c04ba98",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bdc5571_f6c4f76a",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-25T13:53:58Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "541ad12f_1c04ba98",
+      "range": {
+        "startLine": 29,
+        "startChar": 21,
+        "endLine": 29,
+        "endChar": 30
+      },
+      "revId": "fc735abc2cd3a66f454726bb648f959ed2f2ae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "928d6d4d_d83f984a",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-10-24T23:54:21Z",
       "side": 1,
       "message": "^",
+      "range": {
+        "startLine": 21,
+        "startChar": 19,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "fc735abc2cd3a66f454726bb648f959ed2f2ae71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0943ec77_5a8203b6",
+        "filename": "gn/codec.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-25T13:53:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "928d6d4d_d83f984a",
       "range": {
         "startLine": 21,
         "startChar": 19,
