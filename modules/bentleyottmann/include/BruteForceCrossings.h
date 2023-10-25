@@ -5,10 +5,12 @@
 #define QuadraticCrossings_DEFINED
 
 #include "include/core/SkSpan.h"
-#include "modules/bentleyottmann/include/Point.h"
-#include "modules/bentleyottmann/include/Segment.h"
 
+#include <optional>
 #include <vector>
+
+namespace bentleyottmann { struct Crossing; }
+namespace bentleyottmann { struct Segment; }
 
 namespace bentleyottmann {
 // Takes in a list of segments, and returns intersection points found in the list of segments.
