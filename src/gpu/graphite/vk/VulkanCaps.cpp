@@ -50,6 +50,11 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     this->setDeviceName(physDevProperties.deviceName);
 #endif
 
+    fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
+    fPhysicalDeviceMemoryProperties2.pNext = nullptr;
+    VULKAN_CALL(vkInterface,
+                GetPhysicalDeviceMemoryProperties2(physDev, &fPhysicalDeviceMemoryProperties2));
+
     // Graphite requires Vulkan version 1.1 or later, which has protected support.
     fProtectedSupport = true;
 
@@ -109,6 +114,21 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
         fMaxVertexAttributes = physDevProperties.limits.maxVertexInputAttributes;
     }
     fMaxUniformBufferRange = physDevProperties.limits.maxUniformBufferRange;
+
+    // Determine whether the physical device supports ycbcr conversion.
+    VkPhysicalDeviceSamplerYcbcrConversionFeatures ycbcrConversionFeatures;
+    ycbcrConversionFeatures.sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
+    ycbcrConversionFeatures.pNext = nullptr;
+
+    VkPhysicalDeviceFeatures2 physicalDeviceFeatures;
+    physicalDeviceFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+    physicalDeviceFeatures.pNext = &ycbcrConversionFeatures;
+    VULKAN_CALL(vkInterface, GetPhysicalDeviceFeatures2(physDev, &physicalDeviceFeatures));
+
+    if (ycbcrConversionFeatures.samplerYcbcrConversion) {
+        fSupportsYcbcrConversion = true;
+    }
 
     this->finishInitialization(contextOptions);
 }
