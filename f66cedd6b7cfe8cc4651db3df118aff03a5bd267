@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ada8ad6_bb2dd04b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-25T17:52:57Z",
+      "side": 1,
+      "message": "Marking this as resolved seeing as Greg +1\u0027d.",
+      "parentUuid": "84147657_53be10d2",
+      "revId": "f66cedd6b7cfe8cc4651db3df118aff03a5bd267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3aefff5f_5dd3291e",
