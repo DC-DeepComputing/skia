@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changes
+ - `Typeface.MakeFreeTypeFaceFromData` is now `Typeface.MakeFreeTypefaceFromData` to be consistent
+   with the rest of the Skia library in the capitalization of the f in Typeface.
+
 ## [0.39.1] - 2023-10-12
 
 ### Fixed
@@ -286,7 +290,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.28.1] - 2021-06-28
 
 ### Added
- - `Typeface.MakeFreeTypeFaceFromData` as a more convenient way to create a Typeface from the bytes
+ - `Typeface.MakeFreeTypefaceFromData` as a more convenient way to create a Typeface from the bytes
    of a .ttf, .woff, or .woff2 file.
  - `Typeface.getGlyphIDs` - provides the same functionality as `Font.getGlyphIDs`.
 
@@ -299,7 +303,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - `Font.getGlyphIDs` had the wrong type for the third argument. It is now correctly a Uint16Array.
 
 ### Deprecated
- - `FontMgr.MakeTypefaceFromData` will be removed in favor of `Typeface.MakeFreeTypeFaceFromData`
+ - `FontMgr.MakeTypefaceFromData` will be removed in favor of `Typeface.MakeFreeTypefaceFromData`
  - `FontMgr.RefDefault` will be removed in an upcoming version. It's only real use was
    for `FontMgr.MakeTypefaceFromData`.
 
