@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2faa06a2_e3073f45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-25T16:13:44Z",
+      "side": 1,
+      "message": "Looks fine to me but defer to Arman for final judgement since he wrote the shader code.",
+      "revId": "a5222562e7dcb7068c7e8f2e0a0ade2cd4ae7e2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e5d0eac_e646008e",
