@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure if it\u0027s related or even important since the images are Negative, but there\u0027s some new artifacts on the complexclip_aa GMs with this CL.",
       "revId": "4b30881969fa7e9b1a9036d790c0c071c80414ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff3c397d_f75a2e22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-25T17:04:07Z",
+      "side": 1,
+      "message": "`complexclip_bw` and their \"invert\" variants also have the same artifact",
+      "parentUuid": "0359178f_7833b9c6",
+      "revId": "4b30881969fa7e9b1a9036d790c0c071c80414ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
