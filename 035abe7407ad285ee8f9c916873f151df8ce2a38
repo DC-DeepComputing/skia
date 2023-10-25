@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1e692e0_66164c99",
+        "filename": "modules/bentleyottmann/include/BentleyOttmann1.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-25T16:20:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc01f029_4ed0ff85",
+      "range": {
+        "startLine": 13,
+        "startChar": 27,
+        "endLine": 13,
+        "endChar": 33
+      },
+      "revId": "035abe7407ad285ee8f9c916873f151df8ce2a38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "108379bb_446a79cf",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e94885_5a4809ac",
+        "filename": "modules/bentleyottmann/include/BruteForceCrossings.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-25T16:20:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "108379bb_446a79cf",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 24
+      },
+      "revId": "035abe7407ad285ee8f9c916873f151df8ce2a38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bc22371_e4169866",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-10-25T15:50:58Z",
       "side": 1,
       "message": "nit: You could add:\n```\nstruct Point;\n```\nafter line 15 to accomplish this a bit more neatly.",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 24
+      },
+      "revId": "035abe7407ad285ee8f9c916873f151df8ce2a38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4690d94b_37c12513",
+        "filename": "modules/bentleyottmann/include/SweepLine.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-10-25T16:20:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bc22371_e4169866",
       "range": {
         "startLine": 13,
         "startChar": 10,
