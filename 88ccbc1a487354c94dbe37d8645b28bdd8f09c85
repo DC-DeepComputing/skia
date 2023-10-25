@@ -98,6 +98,24 @@
       "parentUuid": "db564ecd_c0c2ed0c",
       "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc0352a_7c4d4399",
+        "filename": "tools/skqp/src/skqp_GpuTestProcs.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-10-25T17:44:06Z",
+      "side": 1,
+      "message": "This function _looks_ very similar to the ganesh code if you squint, but it\u0027s not actually similar enough to be templated.",
+      "parentUuid": "de9a1541_7665577d",
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
