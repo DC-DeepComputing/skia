@@ -63,25 +63,25 @@ using GraphitePromiseTextureReleaseProc = void (*)(GraphitePromiseTextureRelease
                                BottomLeft
     @return                    created SkImage, or nullptr
 */
-SK_API sk_sp<SkImage> AdoptTextureFrom(skgpu::graphite::Recorder*,
-                                       const skgpu::graphite::BackendTexture&,
-                                       SkColorType colorType,
-                                       SkAlphaType alphaType,
-                                       sk_sp<SkColorSpace> colorSpace,
-                                       skgpu::Origin origin,
-                                       TextureReleaseProc = nullptr,
-                                       ReleaseContext = nullptr);
+SK_API sk_sp<SkImage> BorrowTextureFrom(skgpu::graphite::Recorder*,
+                                        const skgpu::graphite::BackendTexture&,
+                                        SkColorType colorType,
+                                        SkAlphaType alphaType,
+                                        sk_sp<SkColorSpace> colorSpace,
+                                        skgpu::Origin origin,
+                                        TextureReleaseProc = nullptr,
+                                        ReleaseContext = nullptr);
 
-SK_API sk_sp<SkImage> AdoptTextureFrom(skgpu::graphite::Recorder*,
-                                       const skgpu::graphite::BackendTexture&,
-                                       SkColorType colorType,
-                                       SkAlphaType alphaType,
-                                       sk_sp<SkColorSpace> colorSpace,
-                                       TextureReleaseProc = nullptr,
-                                       ReleaseContext = nullptr);
+SK_API sk_sp<SkImage> BorrowTextureFrom(skgpu::graphite::Recorder*,
+                                        const skgpu::graphite::BackendTexture&,
+                                        SkColorType colorType,
+                                        SkAlphaType alphaType,
+                                        sk_sp<SkColorSpace> colorSpace,
+                                        TextureReleaseProc = nullptr,
+                                        ReleaseContext = nullptr);
 
 /** Create a new SkImage that is very similar to an SkImage created by
-    AdoptTextureFrom. The difference is that the caller need not have created the
+    BorrowTextureFrom. The difference is that the caller need not have created the
     backend texture nor populated it with data when creating the image. Instead of passing a
     BackendTexture to the factory the client supplies a description of the texture consisting
     of dimensions, TextureInfo, SkColorInfo and Volatility.
