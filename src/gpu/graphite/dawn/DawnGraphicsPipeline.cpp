@@ -291,6 +291,13 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     const int numTexturesAndSamplers = fsSkSLInfo.fNumTexturesAndSamplers;
     const int numFragmentUniforms = fsSkSLInfo.fNumPaintUniforms;
 
+    bool isHDR = false;
+    {
+        const auto format = renderPassDesc.fColorAttachment.fTextureInfo.dawnTextureSpec().fFormat;
+        isHDR |= format == wgpu::TextureFormat::RGBA16Float;
+        isHDR |= format == wgpu::TextureFormat::RGB10A2Unorm;
+    }
+
     bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
         if (!SkSLToWGSL(compiler,
@@ -301,6 +308,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                         &fsInterface,
                         errorHandler)) {
             return {};
+        }
+        if (isHDR) {
+            fsCode = R"(
+            @fragment fn main() -> @location(0) vec4f {
+                return vec4f(1.0, 1.0, 1.0, 1.0);
+            })";
         }
         if (!DawnCompileWGSLShaderModule(sharedContext, fsCode, &fsModule, errorHandler)) {
             return {};
