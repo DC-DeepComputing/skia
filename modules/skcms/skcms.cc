@@ -2336,6 +2336,7 @@ typedef enum {
     Op_tf_r,
     Op_tf_g,
     Op_tf_b,
+    Op_tf_rgb,
     Op_tf_a,
 
     Op_pq_r,
@@ -2805,6 +2806,9 @@ bool skcms_TransformWithPalette(const void*             src,
             }
 
         } else if (srcProfile->has_trc && srcProfile->has_toXYZD50) {
+            *ops++ = Op_tf_rgb;
+            *args++ = &srcProfile->trc[0].parametric;
+            /*
             for (int i = 0; i < 3; i++) {
                 OpAndArg oa = select_curve_op(&srcProfile->trc[i], i);
                 if (oa.arg) {
@@ -2812,6 +2816,7 @@ bool skcms_TransformWithPalette(const void*             src,
                     *args++ = oa.arg;
                 }
             }
+            */
         } else {
             return false;
         }
@@ -2894,6 +2899,9 @@ bool skcms_TransformWithPalette(const void*             src,
             }
 
             // Encode back to dst RGB using its parametric transfer functions.
+            *ops++ = Op_tf_rgb;
+            *args++ = &dst_curves[0].parametric;
+            /*
             for (int i = 0; i < 3; i++) {
                 OpAndArg oa = select_curve_op(dst_curves+i, i);
                 if (oa.arg) {
@@ -2905,6 +2913,7 @@ bool skcms_TransformWithPalette(const void*             src,
                     *args++ = oa.arg;
                 }
             }
+            */
         }
     }
 
