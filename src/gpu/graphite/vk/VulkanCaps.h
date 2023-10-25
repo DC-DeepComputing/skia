@@ -74,12 +74,18 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
+    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+
     uint32_t maxVertexAttributes() const {
         return fMaxVertexAttributes;
     }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
 
     uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
+
+    VkPhysicalDeviceMemoryProperties2 physicalDeviceMemoryProperties2() const {
+        return fPhysicalDeviceMemoryProperties2;
+    }
 
 private:
     enum VkVendor {
@@ -207,10 +213,11 @@ private:
 
     uint32_t fMaxVertexAttributes;
     uint64_t fMaxUniformBufferRange;
+    VkPhysicalDeviceMemoryProperties2 fPhysicalDeviceMemoryProperties2;
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
-    bool fSupportsYcbcrConversion = false; // TODO: Determine & assign real value.
+    bool fSupportsYcbcrConversion = false;
     bool fShouldAlwaysUseDedicatedImageMemory = false;
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;

@@ -206,11 +206,13 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
         if (fMapPtr && readSize != 0) {
             // "Invalidate" here means make device writes visible to the host. That is, it makes
             // sure any GPU writes are finished in the range we might read from.
+            SkDebugf("\n about to invalidate memory... \n");
             skgpu::VulkanMemory::InvalidateMappedAlloc(allocator,
                                                        fAlloc,
                                                        readOffset,
                                                        readSize,
-                                                       nullptr);
+                                                       checkResult);
+            SkDebugf("\n memory invalided i guess bc we made it out... \n");
         }
     }
 }
@@ -222,7 +224,11 @@ void VulkanBuffer::internalUnmap(size_t flushOffset, size_t flushSize) {
     SkASSERT(fAlloc.fSize >= flushOffset + flushSize);
 
     auto allocator = this->vulkanSharedContext()->memoryAllocator();
-    skgpu::VulkanMemory::FlushMappedAlloc(allocator, fAlloc, flushOffset, flushSize, nullptr);
+    auto checkResult = [](VkResult result) {
+        return result == VK_SUCCESS;
+    };
+    skgpu::VulkanMemory::FlushMappedAlloc(allocator, fAlloc, flushOffset, flushSize,
+                                          checkResult);
     skgpu::VulkanMemory::UnmapAlloc(allocator, fAlloc);
 }
 
