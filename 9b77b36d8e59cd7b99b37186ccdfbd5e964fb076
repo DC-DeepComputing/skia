@@ -52,6 +52,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbf29478_5a8c058f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2023-10-25T09:12:05Z",
+      "side": 1,
+      "message": "That is mostly done by autoninja and gclient instead of GN.\nBut the logic for that is also tied with chromium\u0027s build.\n\nAs skia uses its own build config instead of cloning chromium\u0027s build dir and don\u0027t use gclient always, it is hard to make it work like chromium.\nIf you want that skia needs to copy related configs from chromium, but we\u0027d like to defer such tasks to skia folks.",
+      "parentUuid": "aaa78301_1271759e",
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cde0431c_78660e25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2023-10-25T09:12:05Z",
+      "side": 1,
+      "message": "I updated this to be a script that users run.",
+      "parentUuid": "c4e073f7_6e15aff8",
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5ce725d_9b4115fb",
@@ -99,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8c70fda_5aa1ac35",
+        "filename": "sh.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2023-10-25T09:12:05Z",
+      "side": 1,
+      "message": "I moved the script and made this script wrapper for actual build command.",
+      "parentUuid": "6ed9b078_d41588eb",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c454f45_6f0dad64",
@@ -122,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31d4f91d_bc0a02df",
+        "filename": "sh.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2023-10-25T09:12:05Z",
+      "side": 1,
+      "message": "Currently reclient doesn\u0027t provide how to update reclient automatically in\nhttps://docs.google.com/document/d/1CNbiiaXcwC3WmvethfBwlr-PBcQso_qmch-OydYkqCk/edit#heading\u003dh.edvy5mwqxo52\n\nYou can still ask reclient folks to update this like https://crrev.com/c/4956934 when they release new reclient.",
+      "parentUuid": "7c454f45_6f0dad64",
+      "range": {
+        "startLine": 15,
+        "startChar": 37,
+        "endLine": 15,
+        "endChar": 77
+      },
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6cc39e6_c0e36623",
@@ -135,6 +219,30 @@
       "writtenOn": "2023-10-18T13:59:08Z",
       "side": 1,
       "message": "This should not hardcode everything",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 27
+      },
+      "revId": "9b77b36d8e59cd7b99b37186ccdfbd5e964fb076",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00390b6e_33235d05",
+        "filename": "sh.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2023-10-25T09:12:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6cc39e6_c0e36623",
       "range": {
         "startLine": 79,
         "startChar": 0,
