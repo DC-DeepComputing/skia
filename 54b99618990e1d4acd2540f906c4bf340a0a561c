@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6130a77e_5f201d49",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 2813,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-25T19:05:26Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 2807,
+        "startChar": 0,
+        "endLine": 2813,
+        "endChar": 13
+      },
+      "revId": "54b99618990e1d4acd2540f906c4bf340a0a561c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724fb2b6_eb4c81a0",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 2906,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-25T19:05:26Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 2896,
+        "startChar": 0,
+        "endLine": 2906,
+        "endChar": 13
+      },
+      "revId": "54b99618990e1d4acd2540f906c4bf340a0a561c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
