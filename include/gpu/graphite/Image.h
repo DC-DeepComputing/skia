@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Image_DEFINED
 #define skgpu_graphite_Image_DEFINED
 
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
@@ -63,25 +64,48 @@ using GraphitePromiseTextureReleaseProc = void (*)(GraphitePromiseTextureRelease
                                BottomLeft
     @return                    created SkImage, or nullptr
 */
-SK_API sk_sp<SkImage> AdoptTextureFrom(skgpu::graphite::Recorder*,
-                                       const skgpu::graphite::BackendTexture&,
+SK_API sk_sp<SkImage> BorrowTextureFrom(skgpu::graphite::Recorder*,
+                                        const skgpu::graphite::BackendTexture&,
+                                        SkColorType colorType,
+                                        SkAlphaType alphaType,
+                                        sk_sp<SkColorSpace> colorSpace,
+                                        skgpu::Origin origin,
+                                        TextureReleaseProc = nullptr,
+                                        ReleaseContext = nullptr);
+
+SK_API sk_sp<SkImage> BorrowTextureFrom(skgpu::graphite::Recorder*,
+                                        const skgpu::graphite::BackendTexture&,
+                                        SkColorType colorType,
+                                        SkAlphaType alphaType,
+                                        sk_sp<SkColorSpace> colorSpace,
+                                        TextureReleaseProc = nullptr,
+                                        ReleaseContext = nullptr);
+
+#if !defined(SK_DISABLE_LEGACY_GRAPHITE_IMAGES)
+inline sk_sp<SkImage> AdoptTextureFrom(skgpu::graphite::Recorder* recorder,
+                                       const skgpu::graphite::BackendTexture& tex,
                                        SkColorType colorType,
                                        SkAlphaType alphaType,
                                        sk_sp<SkColorSpace> colorSpace,
                                        skgpu::Origin origin,
-                                       TextureReleaseProc = nullptr,
-                                       ReleaseContext = nullptr);
+                                       TextureReleaseProc trProc = nullptr,
+                                       ReleaseContext ctx = nullptr) {
+    return BorrowTextureFrom(recorder, tex, colorType, alphaType, colorSpace, origin, trProc, ctx);
+}
 
-SK_API sk_sp<SkImage> AdoptTextureFrom(skgpu::graphite::Recorder*,
-                                       const skgpu::graphite::BackendTexture&,
+inline sk_sp<SkImage> AdoptTextureFrom(skgpu::graphite::Recorder* recorder,
+                                       const skgpu::graphite::BackendTexture& tex,
                                        SkColorType colorType,
                                        SkAlphaType alphaType,
                                        sk_sp<SkColorSpace> colorSpace,
-                                       TextureReleaseProc = nullptr,
-                                       ReleaseContext = nullptr);
+                                       TextureReleaseProc trProc = nullptr,
+                                       ReleaseContext ctx = nullptr) {
+    return BorrowTextureFrom(recorder, tex, colorType, alphaType, colorSpace, trProc, ctx);
+}
+#endif
 
 /** Create a new SkImage that is very similar to an SkImage created by
-    AdoptTextureFrom. The difference is that the caller need not have created the
+    BorrowTextureFrom. The difference is that the caller need not have created the
     backend texture nor populated it with data when creating the image. Instead of passing a
     BackendTexture to the factory the client supplies a description of the texture consisting
     of dimensions, TextureInfo, SkColorInfo and Volatility.
