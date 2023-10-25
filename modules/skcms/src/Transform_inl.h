@@ -307,6 +307,13 @@ SI F apply_tf(const skcms_TransferFunction* tf, F x) {
     return bit_pun<F>(sign | bit_pun<U32>(v));
 }
 
+// Return tf(rgb).
+SI void apply_tf_rgb(const skcms_TransferFunction* tf, F &r, F &g, F &b) {
+    r = apply_tf(tf, r);
+    g = apply_tf(tf, g);
+    b = apply_tf(tf, b);
+}
+
 SI F apply_pq(const skcms_TransferFunction* tf, F x) {
     U32 bits = bit_pun<U32>(x),
         sign = bits & 0x80000000;
@@ -1103,6 +1110,8 @@ static void exec_ops(const Op* ops, const void** args,
                 g = (A + 128.0f) * (1/255.0f);
                 b = (B + 128.0f) * (1/255.0f);
             } break;
+
+            case Op_tf_rgb:{ apply_tf_rgb((const skcms_TransferFunction*)*args++, r, g, b); } break;
 
             case Op_tf_r:{ r = apply_tf((const skcms_TransferFunction*)*args++, r); } break;
             case Op_tf_g:{ g = apply_tf((const skcms_TransferFunction*)*args++, g); } break;

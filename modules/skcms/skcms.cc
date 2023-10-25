@@ -2336,6 +2336,7 @@ typedef enum {
     Op_tf_r,
     Op_tf_g,
     Op_tf_b,
+    Op_tf_rgb,
     Op_tf_a,
 
     Op_pq_r,
@@ -2711,9 +2712,7 @@ bool skcms_TransformWithPalette(const void*             src,
                                                         break;
         case skcms_PixelFormat_RGBA_8888_sRGB >> 1:
             *ops++ = Op_load_8888;
-            *ops++ = Op_tf_r;       *args++ = skcms_sRGB_TransferFunction();
-            *ops++ = Op_tf_g;       *args++ = skcms_sRGB_TransferFunction();
-            *ops++ = Op_tf_b;       *args++ = skcms_sRGB_TransferFunction();
+            *ops++ = Op_tf_rgb;     *args++ = skcms_sRGB_TransferFunction();
             break;
     }
     if (srcFmt == skcms_PixelFormat_RGB_hhh_Norm ||
@@ -2956,9 +2955,7 @@ bool skcms_TransformWithPalette(const void*             src,
         case skcms_PixelFormat_RGBA_ffff       >> 1: *ops++ = Op_store_ffff;       break;
 
         case skcms_PixelFormat_RGBA_8888_sRGB >> 1:
-            *ops++ = Op_tf_r;       *args++ = skcms_sRGB_Inverse_TransferFunction();
-            *ops++ = Op_tf_g;       *args++ = skcms_sRGB_Inverse_TransferFunction();
-            *ops++ = Op_tf_b;       *args++ = skcms_sRGB_Inverse_TransferFunction();
+            *ops++ = Op_tf_rgb;     *args++ = skcms_sRGB_Inverse_TransferFunction();
             *ops++ = Op_store_8888;
             break;
     }
