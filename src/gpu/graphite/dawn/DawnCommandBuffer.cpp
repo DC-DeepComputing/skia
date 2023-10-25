@@ -150,7 +150,9 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     wgpu::RenderPassDepthStencilAttachment wgpuDepthStencilAttachment;
 
     // Set up color attachment.
+#ifndef __EMSCRIPTEN__
     wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
+#endif
 
     auto& colorInfo = renderPassDesc.fColorAttachment;
     bool loadMSAAFromResolveExplicitly = false;
@@ -187,14 +189,23 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             // TODO: If the color resolve texture is read-only we can use a private (vs. memoryless)
             // msaa attachment that's coupled to the framebuffer and the StoreAndMultisampleResolve
             // action instead of loading as a draw.
-        } else if (renderPassDesc.fSampleCount > 1 && colorTexture->numSamples() == 1) {
-            // If render pass is multi sampled but the color attachment is single sampled, we need
-            // to activate multisampled render to single sampled feature for this render pass.
-            SkASSERT(fSharedContext->device().HasFeature(
-                    wgpu::FeatureName::MSAARenderToSingleSampled));
+        } else {
+            [[maybe_unused]] bool isMSAAToSingleSampled = renderPassDesc.fSampleCount > 1 &&
+                                                          colorTexture->numSamples() == 1;
+#ifdef __EMSCRIPTEN__
+            SkASSERT(!isMSAAToSingleSampled);
+#else
+            if (isMSAAToSingleSampled) {
+                // If render pass is multi sampled but the color attachment is single sampled, we
+                // need to activate multisampled render to single sampled feature for this render
+                // pass.
+                SkASSERT(fSharedContext->device().HasFeature(
+                        wgpu::FeatureName::MSAARenderToSingleSampled));
 
-            wgpuColorAttachment.nextInChain = &mssaRenderToSingleSampledDesc;
-            mssaRenderToSingleSampledDesc.implicitSampleCount = renderPassDesc.fSampleCount;
+                wgpuColorAttachment.nextInChain = &mssaRenderToSingleSampledDesc;
+                mssaRenderToSingleSampledDesc.implicitSampleCount = renderPassDesc.fSampleCount;
+            }
+#endif
         }
     }
 
@@ -646,10 +657,18 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
     SkASSERT(!fActiveRenderPassEncoder);
     SkASSERT(!fActiveComputePassEncoder);
 
+#ifdef __EMSCRIPTEN__
+    // TODO: Fix this. We need to manage a buffer that can hold values for all the passes.
+    fSharedContext->queue().WriteBuffer(fIntrinsicConstantBuffer,
+                                        0,
+                                        reinterpret_cast<const uint8_t*>(rtAdjust),
+                                        sizeof(rtAdjust));
+#else
     fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer,
                                 0,
                                 reinterpret_cast<const uint8_t*>(rtAdjust),
                                 sizeof(rtAdjust));
+#endif
 }
 
 void DawnCommandBuffer::setViewport(const SkRect& viewport) {
