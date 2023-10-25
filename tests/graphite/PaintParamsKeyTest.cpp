@@ -804,9 +804,8 @@ void check_draw(skiatest::Reporter* reporter,
 //    and via the pre-compilation system
 //
 // TODO: keep this as a smoke test but add a fuzzer that reuses all the helpers
-// TODO(b/306174708): enable in SkQP (if it's feasible)
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
-                                   CtsEnforcement::kNever) {
+                                   CtsEnforcement::kNextRelease) {
     auto recorder = context->makeRecorder();
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
