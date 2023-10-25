@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc9ac6a_1d994f54",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-25T17:53:51Z",
+      "side": 1,
+      "message": "It\u0027s this functionality that started this rabbit hole of \"unify all of the IDF parsers\" ...",
+      "revId": "c50152c32ed88e70831ce6a7b24d7aedd4ab0df2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

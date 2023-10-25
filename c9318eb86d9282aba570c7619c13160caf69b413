@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446e9b39_675e17d1",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-25T17:53:51Z",
+      "side": 1,
+      "message": "Post-landing feedback from the previous patch included moving this file to private/chromium. I started doing that but it added too much churn to this patch -- will do it separately in the next.",
+      "revId": "c9318eb86d9282aba570c7619c13160caf69b413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2025dc36_096bb10f",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-25T17:53:51Z",
+      "side": 1,
+      "message": "See the Chromium version of this [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/exif_reader.cc;l\u003d179;drc\u003df9cbaeeb4da576d3948cc50cd0f600bdc2fcdd67).\n\nOnce this rolls into Chrome (and I move the header to chromium/), we can remove that code.",
+      "revId": "c9318eb86d9282aba570c7619c13160caf69b413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26fd5674_2ba783e4",
+        "filename": "src/codec/SkTiffUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-25T17:53:51Z",
+      "side": 1,
+      "message": "The next-next patch in the sequence will clean up `get_endian_int` to have the more accurate name `get_endian_uint32` (so that I can fix the signed-ness of this function).",
+      "revId": "c9318eb86d9282aba570c7619c13160caf69b413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
