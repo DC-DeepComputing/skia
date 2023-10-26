@@ -16,6 +16,282 @@
       "message": "Sorry for the spam - this should now be in a stable spot for review.",
       "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "413e4452_b1ce5998",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "Do you need to forward declare this? Doesn\u0027t the full type come from the VulkanTypes.h include above? Also FWIW since VulkanTextureInfo includes a straight VulkanYcbcrConversionInfo, I don\u0027t think you would have been able to forward declare anyways. The compiler is going to need to know the full size of the object.",
+      "range": {
+        "startLine": 15,
+        "startChar": 7,
+        "endLine": 15,
+        "endChar": 32
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6def06de_ef1fa36f",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "I think you need to add this to VulkanTextureSpec as well. That is what is actually stored on the TextureInfo class. Not a VulkanTextureInfo.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 29
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "913b0e3a_1358dd04",
+        "filename": "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "same question here?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 1
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85f1cb36_f51498ab",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "why not `sharedContext-\u003echeckVkResult(result);` like the call above?",
+      "range": {
+        "startLine": 215,
+        "startChar": 16,
+        "endLine": 215,
+        "endChar": 35
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5a2ac69_df0891e5",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "The client should be passing us in the features they enabled. In Vulkan you first query the physical device for what features they support (like you\u0027re doing here). Then when you create the VkDevice you pass those Features back in. But you can disable any feature you don\u0027t want even if the physical device says it supports it. The features are on the VulkanBackendContext, we just haven\u0027t passed them into the creation of VulkanCaps yet.\n\nSee how we check for ycbcr support in Ganesh.",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 44
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9332e17_ea911ef8",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "std::move(samplerConversions))",
+      "range": {
+        "startLine": 87,
+        "startChar": 23,
+        "endLine": 87,
+        "endChar": 40
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c63f7bde_3fb81af7",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "These are sk_sp\u0027s you should never call ref or unref on an sk_sp.",
+      "range": {
+        "startLine": 89,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 36
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eefd3a5_7b89adb0",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 95,
+        "startChar": 26,
+        "endLine": 95,
+        "endChar": 31
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3b3520a_f6f559d3",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "In internal code you shouldn\u0027t need to do this. Since we\u0027re in a Vulkan file we know the TextureInfo is for Vulkan. So we can just directly call the private TextureInfo::vulkanTextureSpec() function.\n\nYou may need to add this class as another friend. Or better yet since we are already passing in the sharedContext and info into the Texture factory, we can just make this findOrCreate call in there.",
+      "range": {
+        "startLine": 139,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 49
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a585b1_c1cd9e65",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "Is all this part of this change? Seems like this is independent of this CL and should be in its own CL",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 22
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71828704_da8517b2",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "Why do we need to check all this now?",
+      "range": {
+        "startLine": 318,
+        "startChar": 8,
+        "endLine": 318,
+        "endChar": 76
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "855c8241_b77b294a",
+        "filename": "src/gpu/vk/VulkanMemory.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T20:49:45Z",
+      "side": 1,
+      "message": "same question as above about why we need this",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 31
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
