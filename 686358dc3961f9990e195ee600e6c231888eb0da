@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fef7ba8_559fb868",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T02:10:42Z",
+      "side": 1,
+      "message": "See https://skia-review.googlesource.com/c/skia/+/768356/9..10 for the bugfix changes to the gold diffs and to the inverse fill issues Arman spotted",
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f0e20a_22d920ca",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T02:10:42Z",
+      "side": 1,
+      "message": "W/o this padding addition, the bounds passed to the Vello render operation would not actually include the rightmost/bottom-most pixels that were expected to be zero-initialized by the clear. \n\nIf due to resetting the atlas, those padding pixels had previously been set to a non-zero value for an old mask entry, inverse fills would clamp to the wrong coverage value. After fixing this I could not reproduce the issues that Arman showed in chat.",
+      "range": {
+        "startLine": 190,
+        "startChar": 77,
+        "endLine": 190,
+        "endChar": 93
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed0f461_8bc65dc1",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T02:10:42Z",
+      "side": 1,
+      "message": "I\u0027ve pulled this out of RasterPathAtlas.cpp, where I\u0027d put it in an earlier patchset, since it turns out that VelloPathAtlas needs to refer to the padding a few times as well.",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 97,
+        "endChar": 43
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c945e1_4d481478",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T02:10:42Z",
+      "side": 1,
+      "message": "This fixes the banding that was showing up in the `complexclip` family of GMs. We need to clamp to the texel center of the padding to ensure we hit a 0 coverage value for inverse fills, vs. clamping to the boundary between a possibly-non-zero mask value and the padding.",
+      "range": {
+        "startLine": 124,
+        "startChar": 12,
+        "endLine": 124,
+        "endChar": 65
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfaea1d4_01be8242",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T02:10:42Z",
+      "side": 1,
+      "message": "This was a defensive choice thinking about the case when mask filter coverage masks enable linear filtering down the line.",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 61
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
