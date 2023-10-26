@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc5989ae_9bbdc23d",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-26T18:35:24Z",
+      "side": 1,
+      "message": "Nit: DrawAtlases (or DrawAtlas instances).",
+      "range": {
+        "startLine": 51,
+        "startChar": 80,
+        "endLine": 51,
+        "endChar": 81
+      },
+      "revId": "5880c3fc752a02e8508a9dae04d78c93bb764e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
