@@ -975,6 +975,10 @@ optional("gpu") {
   libs = []
   frameworks = []
 
+  if (is_android) {
+    sources += skia_gpu_android_private
+  }
+
   if (skia_use_gl) {
     public_defines += [ "SK_GL" ]
     if (is_android) {
@@ -986,6 +990,7 @@ optional("gpu") {
       # this lib is required to link against AHardwareBuffer
       if (defined(ndk_api) && ndk_api >= 26) {
         libs += [ "android" ]
+        sources += skia_android_gl_sources
       }
     } else if (skia_use_egl) {
       sources += [
@@ -1026,6 +1031,9 @@ optional("gpu") {
       } else {
         public_deps += [ "//src/graphics/lib/vulkan" ]
       }
+    }
+    if (is_android) {
+      sources += skia_gpu_vk_android_private
     }
   }
 
