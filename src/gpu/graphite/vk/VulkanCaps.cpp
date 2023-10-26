@@ -110,6 +110,21 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     }
     fMaxUniformBufferRange = physDevProperties.limits.maxUniformBufferRange;
 
+    // Determine whether the physical device supports ycbcr conversion.
+    VkPhysicalDeviceSamplerYcbcrConversionFeatures ycbcrConversionFeatures;
+    ycbcrConversionFeatures.sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
+    ycbcrConversionFeatures.pNext = nullptr;
+
+    VkPhysicalDeviceFeatures2 physicalDeviceFeatures;
+    physicalDeviceFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+    physicalDeviceFeatures.pNext = &ycbcrConversionFeatures;
+    VULKAN_CALL(vkInterface, GetPhysicalDeviceFeatures2(physDev, &physicalDeviceFeatures));
+
+    if (ycbcrConversionFeatures.samplerYcbcrConversion) {
+        fSupportsYcbcrConversion = true;
+    }
+
     this->finishInitialization(contextOptions);
 }
 
