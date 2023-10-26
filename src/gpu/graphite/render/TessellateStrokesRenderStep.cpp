@@ -52,14 +52,14 @@ using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountStrokes>,
 
 // The order of the attribute declarations must match the order used by
 // PatchWriter::emitPatchAttribs, i.e.:
-//     join << fanPoint << stroke << color << depth << curveType << ssboIndex
+//     join << fanPoint << stroke << color << depth << curveType << ssboIndices
 static constexpr Attribute kBaseAttributes[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
         {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
         {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt}};
+        {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr Attribute kAttributesWithCurveType[] = {
         {"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
@@ -68,7 +68,7 @@ static constexpr Attribute kAttributesWithCurveType[] = {
         {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
         {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
         {"curveType", VertexAttribType::kFloat, SkSLType::kFloat},
-        {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt}};
+        {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}};
 
 static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveType,
                                                            kBaseAttributes};
@@ -90,7 +90,11 @@ TessellateStrokesRenderStep::TessellateStrokesRenderStep(bool infinitySupport)
 
 TessellateStrokesRenderStep::~TessellateStrokesRenderStep() {}
 
-std::string TessellateStrokesRenderStep::vertexSkSL() const {
+std::string TessellateStrokesRenderStep::vertexSkSL(const char* ssboIndex) const {
+    std::string affineMatrix = this->GetUniformName("affineMatrix", ssboIndex);
+    std::string translate = this->GetUniformName("translate", ssboIndex);
+    std::string maxScale = this->GetUniformName("maxScale", ssboIndex);
+
     // TODO: Assumes vertex ID support for now, max edges must equal
     // skgpu::tess::FixedCountStrokes::kMaxEdges -> (2^14 - 1) -> 16383
     return SkSL::String::printf(
@@ -99,19 +103,23 @@ std::string TessellateStrokesRenderStep::vertexSkSL() const {
                 if ((sk_VertexID & 1) != 0) {
                     edgeID = -edgeID;
                 }
-                float2x2 affine = float2x2(affineMatrix.xy, affineMatrix.zw);
+                float2x2 affine = float2x2(%s.xy, %s.zw);
                 float4 devAndLocalCoords = tessellate_stroked_curve(
-                        edgeID, 16383, affine, translate, maxScale, p01, p23, prevPoint,
+                        edgeID, 16383, affine, %s, %s, p01, p23, prevPoint,
                         stroke, %s);
                 float4 devPosition = float4(devAndLocalCoords.xy, depth, 1.0);
                 stepLocalCoords = devAndLocalCoords.zw;
             )",
+            affineMatrix.c_str(),
+            affineMatrix.c_str(),
+            translate.c_str(),
+            maxScale.c_str(),
             fInfinitySupport ? "curve_type_using_inf_support(p23)" : "curveType");
 }
 
 void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                                                 const DrawParams& params,
-                                                int ssboIndex) const {
+                                                uint32_t ssboIndices) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountStrokes::PreallocCount(path.countVerbs());
@@ -126,7 +134,7 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                   kNullBinding,
                   patchReserveCount};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
-    writer.updateSsboIndexAttrib(ssboIndex);
+    writer.updateSsboIndexAttrib(ssboIndices);
 
     // The vector xform approximates how the control points are transformed by the shader to
     // more accurately compute how many *parametric* segments are needed.

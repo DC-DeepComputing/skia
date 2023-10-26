@@ -50,7 +50,7 @@ SDFTextRenderStep::SDFTextRenderStep(bool isLCD)
                       {"indexAndFlags", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"strikeToSourceScale", VertexAttribType::kFloat, SkSLType::kFloat},
                       {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt}},
+                      {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}},
                      /*varyings=*/
                      {{"unormTexCoords", SkSLType::kFloat2},
                       {"textureCoords", SkSLType::kFloat2},
@@ -60,22 +60,30 @@ SDFTextRenderStep::SDFTextRenderStep(bool isLCD)
 
 SDFTextRenderStep::~SDFTextRenderStep() {}
 
-std::string SDFTextRenderStep::vertexSkSL() const {
+std::string SDFTextRenderStep::vertexSkSL(const char* ssboIndex) const {
+    std::string subRunDeviceMatrix = this->GetUniformName("subRunDeviceMatrix", ssboIndex);
+    std::string deviceToLocal = this->GetUniformName("deviceToLocal", ssboIndex);
+    std::string atlasSizeInv = this->GetUniformName("atlasSizeInv", ssboIndex);
+
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
-    return "texIndex = half(indexAndFlags.x);"
-           "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
-                                               "subRunDeviceMatrix, "
-                                               "deviceToLocal, "
-                                               "atlasSizeInv, "
-                                               "float2(size), "
-                                               "float2(uvPos), "
-                                               "xyPos, "
-                                               "strikeToSourceScale, "
-                                               "depth, "
-                                               "textureCoords, "
-                                               "unormTexCoords, "
-                                               "stepLocalCoords);";
+    return SkSL::String::printf(
+            "texIndex = half(indexAndFlags.x);"
+            "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
+                                                "%s, "
+                                                "%s, "
+                                                "%s, "
+                                                "float2(size), "
+                                                "float2(uvPos), "
+                                                "xyPos, "
+                                                "strikeToSourceScale, "
+                                                "depth, "
+                                                "textureCoords, "
+                                                "unormTexCoords, "
+                                                "stepLocalCoords);",
+            subRunDeviceMatrix.c_str(),
+            deviceToLocal.c_str(),
+            atlasSizeInv.c_str());
 }
 
 std::string SDFTextRenderStep::texturesAndSamplersSkSL(
@@ -90,7 +98,9 @@ std::string SDFTextRenderStep::texturesAndSamplersSkSL(
     return result;
 }
 
-const char* SDFTextRenderStep::fragmentCoverageSkSL() const {
+std::string SDFTextRenderStep::fragmentCoverageSkSL(const char* ssboIndex) const {
+    std::string distAdjust = this->GetUniformName("distAdjust", ssboIndex);
+
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
     // the calling code) with the actual coverage splatted out into all four channels.
 
@@ -100,25 +110,27 @@ const char* SDFTextRenderStep::fragmentCoverageSkSL() const {
     // TODO: Need to add 565 support.
     // TODO: Need aliased and possibly sRGB support.
     static_assert(kNumSDFAtlasTextures == 4);
-    return "outputCoverage = sdf_text_coverage_fn(sample_indexed_atlas(textureCoords, "
-                                                                      "int(texIndex), "
-                                                                      "sdf_atlas_0, "
-                                                                      "sdf_atlas_1, "
-                                                                      "sdf_atlas_2, "
-                                                                      "sdf_atlas_3).r, "
-                                                 "half(distAdjust), "
-                                                 "unormTexCoords);";
+    return SkSL::String::printf(
+        "outputCoverage = sdf_text_coverage_fn(sample_indexed_atlas(textureCoords, "
+                                                                   "int(texIndex), "
+                                                                   "sdf_atlas_0, "
+                                                                   "sdf_atlas_1, "
+                                                                   "sdf_atlas_2, "
+                                                                   "sdf_atlas_3).r, "
+                                              "half(%s), "
+                                              "unormTexCoords);",
+        distAdjust.c_str());
 }
 
 void SDFTextRenderStep::writeVertices(DrawWriter* dw,
                                       const DrawParams& params,
-                                      int ssboIndex) const {
+                                      uint32_t ssboIndices) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     subRunData.subRun()->vertexFiller().fillInstanceData(dw,
                                                          subRunData.startGlyphIndex(),
                                                          subRunData.glyphCount(),
                                                          subRunData.subRun()->instanceFlags(),
-                                                         ssboIndex,
+                                                         ssboIndices,
                                                          subRunData.subRun()->glyphs(),
                                                          params.order().depthAsFloat());
 }

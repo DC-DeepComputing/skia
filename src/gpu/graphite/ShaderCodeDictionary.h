@@ -191,7 +191,8 @@ public:
 
     std::string toSkSL(const Caps* caps,
                        const RenderStep* step,
-                       const bool useStorageBuffers,
+                       bool useStepStorageBuffer,
+                       bool useShadingStorageBuffer,
                        int* numTexturesAndSamplersUsed,
                        int* numPaintUniforms,
                        Swizzle writeSwizzle);

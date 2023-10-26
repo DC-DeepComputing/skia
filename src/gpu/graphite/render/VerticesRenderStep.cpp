@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
+#include "src/sksl/SkSLString.h"
 
 namespace skgpu::graphite {
 
@@ -27,7 +28,7 @@ static constexpr Attribute kTexCoordAttr =
 static constexpr Attribute kColorAttr =
         {"vertColor", VertexAttribType::kUByte4_norm, SkSLType::kHalf4};
 static constexpr Attribute kSsboIndexAttr =
-        {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt};
+        {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt};
 
 static constexpr Attribute kAttributePositionOnly[] =
         {kPositionAttr, kSsboIndexAttr};
@@ -84,33 +85,44 @@ VerticesRenderStep::VerticesRenderStep(PrimitiveType type, bool hasColor, bool h
 
 VerticesRenderStep::~VerticesRenderStep() {}
 
-std::string VerticesRenderStep::vertexSkSL() const {
+std::string VerticesRenderStep::vertexSkSL(const char* ssboIndex) const {
+    std::string localToDevice = this->GetUniformName("localToDevice", ssboIndex);
+    std::string depth = this->GetUniformName("depth", ssboIndex);
+
     if (fHasColor && fHasTexCoords) {
-        return R"(
-            color = half4(vertColor.bgr * vertColor.a, vertColor.a);
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = texCoords;
-        )";
+        return SkSL::String::printf(R"(
+                    color = half4(vertColor.bgr * vertColor.a, vertColor.a);
+                    float4 devPosition = %s * float4(position, 0.0, 1.0);
+                    devPosition.z = %s;
+                    stepLocalCoords = texCoords;
+                )",
+                localToDevice.c_str(),
+                depth.c_str());
     } else if (fHasTexCoords) {
-        return R"(
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = texCoords;
-        )";
+        return SkSL::String::printf(R"(
+                    float4 devPosition = %s * float4(position, 0.0, 1.0);
+                    devPosition.z = %s;
+                    stepLocalCoords = texCoords;
+                )",
+                localToDevice.c_str(),
+                depth.c_str());
     } else if (fHasColor) {
-        return R"(
-            color = half4(vertColor.bgr * vertColor.a, vertColor.a);
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = position;
-        )";
+        return SkSL::String::printf(R"(
+                    color = half4(vertColor.bgr * vertColor.a, vertColor.a);
+                    float4 devPosition = %s * float4(position, 0.0, 1.0);
+                    devPosition.z = %s;
+                    stepLocalCoords = position;
+                )",
+                localToDevice.c_str(),
+                depth.c_str());
     } else {
-        return R"(
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = position;
-        )";
+        return SkSL::String::printf(R"(
+                    float4 devPosition = %s * float4(position, 0.0, 1.0);
+                    devPosition.z = %s;
+                    stepLocalCoords = position;
+                )",
+                localToDevice.c_str(),
+                depth.c_str());
     }
 }
 
@@ -124,7 +136,7 @@ const char* VerticesRenderStep::fragmentColorSkSL() const {
 
 void VerticesRenderStep::writeVertices(DrawWriter* writer,
                                        const DrawParams& params,
-                                       int ssboIndex) const {
+                                       uint32_t ssboIndices) const {
     SkVerticesPriv info(params.geometry().vertices()->priv());
     const int vertexCount = info.vertexCount();
     const int indexCount = info.indexCount();
@@ -156,19 +168,19 @@ void VerticesRenderStep::writeVertices(DrawWriter* writer,
                                                               : SK_ColorTRANSPARENT)
                         << VertexWriter::If(fHasTexCoords, texCoords ? texCoords[state.f0]
                                                                      : SkPoint{0.f, 0.f})
-                        << ssboIndex
+                        << ssboIndices
                         << positions[state.f1]
                         << VertexWriter::If(fHasColor, colors ? colors[state.f1]
                                                               : SK_ColorTRANSPARENT)
                         << VertexWriter::If(fHasTexCoords, texCoords ? texCoords[state.f1]
                                                                      : SkPoint{0.f, 0.f})
-                        << ssboIndex
+                        << ssboIndices
                         << positions[state.f2]
                         << VertexWriter::If(fHasColor, colors ? colors[state.f2]
                                                               : SK_ColorTRANSPARENT)
                         << VertexWriter::If(fHasTexCoords, texCoords ? texCoords[state.f2]
                                                                      : SkPoint{0.f, 0.f})
-                        << ssboIndex;
+                        << ssboIndices;
     }
 }
 

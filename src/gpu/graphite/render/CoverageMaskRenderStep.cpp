@@ -12,6 +12,7 @@
 #include "src/gpu/graphite/PathAtlas.h"
 #include "src/gpu/graphite/geom/CoverageMaskShape.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
+#include "src/sksl/SkSLString.h"
 
 namespace skgpu::graphite {
 
@@ -30,7 +31,7 @@ CoverageMaskRenderStep::CoverageMaskRenderStep()
                       {"uvOrigin"    , VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"maskSize"    , VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"depth"     , VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"ssboIndex" , VertexAttribType::kInt  , SkSLType::kInt},
+                      {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt},
                       {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                       {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
                       {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}},
@@ -43,14 +44,18 @@ CoverageMaskRenderStep::CoverageMaskRenderStep()
                       {"maskBounds"   , SkSLType::kFloat4},
                       {"textureCoords", SkSLType::kFloat2}}) {}
 
-std::string CoverageMaskRenderStep::vertexSkSL() const {
+std::string CoverageMaskRenderStep::vertexSkSL(const char* ssboIndex) const {
+    std::string atlasSizeInv = this->GetUniformName("atlasSizeInv", ssboIndex);
+
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
-    return "float4 devPosition = coverage_mask_vertex_fn("
-                    "float2(sk_VertexID >> 1, sk_VertexID & 1), atlasSizeInv, "
-                    "drawBounds, float2(deviceOrigin), float2(uvOrigin), "
-                    "float2(maskSize), depth, float3x3(mat0, mat1, mat2), "
-                    "maskBounds, textureCoords, stepLocalCoords);\n";
+    return SkSL::String::printf(
+            "float4 devPosition = coverage_mask_vertex_fn("
+                "float2(sk_VertexID >> 1, sk_VertexID & 1), %s, "
+                "drawBounds, float2(deviceOrigin), float2(uvOrigin), "
+                "float2(maskSize), depth, float3x3(mat0, mat1, mat2), "
+                "maskBounds, textureCoords, stepLocalCoords);\n",
+            atlasSizeInv.c_str());
 }
 
 std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
@@ -58,11 +63,14 @@ std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
     return EmitSamplerLayout(bindingReqs, nextBindingIndex) + " sampler2D pathAtlas;";
 }
 
-const char* CoverageMaskRenderStep::fragmentCoverageSkSL() const {
-    return R"(
-        half c = sample(pathAtlas, clamp(textureCoords, maskBounds.LT, maskBounds.RB)).r;
-        outputCoverage = half4(isInverted == 1 ? (1 - c) : c);
-    )";
+std::string CoverageMaskRenderStep::fragmentCoverageSkSL(const char* ssboIndex) const {
+    std::string isInverted = this->GetUniformName("isInverted", ssboIndex);
+
+    return SkSL::String::printf(R"(
+            half c = sample(pathAtlas, clamp(textureCoords, maskBounds.LT, maskBounds.RB)).r;
+            outputCoverage = half4(%s == 1 ? (1 - c) : c);
+        )",
+        isInverted.c_str());
 }
 
 float CoverageMaskRenderStep::boundsOutset(const Transform& localToDevice, const Rect&) const {
@@ -80,7 +88,7 @@ float CoverageMaskRenderStep::boundsOutset(const Transform& localToDevice, const
 
 void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
                                            const DrawParams& params,
-                                           int ssboIndex) const {
+                                           uint32_t ssboIndices) const {
     const CoverageMaskShape& coverageMask = params.geometry().coverageMaskShape();
 
     // A quad is a 4-vertex instance. The coordinates are derived from the vertex IDs.
@@ -108,7 +116,7 @@ void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
     const SkM44& m = coverageMask.deviceToLocal();
     instances.append(1) << params.clip().drawBounds().ltrb()     // drawBounds
                         << deviceOrigin << uvOrigin << maskSize
-                        << params.order().depthAsFloat() << ssboIndex
+                        << params.order().depthAsFloat() << ssboIndices
                         << m.rc(0,0) << m.rc(1,0) << m.rc(3,0)   // mat0
                         << m.rc(0,1) << m.rc(1,1) << m.rc(3,1)   // mat1
                         << m.rc(0,3) << m.rc(1,3) << m.rc(3,3);  // mat2

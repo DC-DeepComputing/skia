@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/Renderer.h"
 
+#include "src/gpu/graphite/ContextUtils.h"
+
 namespace skgpu::graphite {
 
 static uint32_t next_id() {
@@ -53,6 +55,14 @@ Coverage RenderStep::GetCoverage(SkEnumBitMask<Flags> flags) {
     return !(flags & Flags::kEmitsCoverage) ? Coverage::kNone
            : (flags & Flags::kLCDCoverage)  ? Coverage::kLCD
                                             : Coverage::kSingleChannel;
+}
+
+std::string RenderStep::GetUniformName(const char* uniformName, const char* ssboIndex) {
+    if (ssboIndex) {
+        return EmitStorageBufferAccess("step", ssboIndex, uniformName);
+    } else {
+        return uniformName;
+    }
 }
 
 float Renderer::boundsOutset(const Transform& localToDevice, const Rect& bounds) const {

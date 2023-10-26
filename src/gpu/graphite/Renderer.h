@@ -71,7 +71,7 @@ public:
     // The DrawWriter is configured with the vertex and instance strides of the RenderStep, and its
     // primitive type. The recorded draws will be executed with a graphics pipeline compatible with
     // this RenderStep.
-    virtual void writeVertices(DrawWriter*, const DrawParams&, int ssboIndex) const = 0;
+    virtual void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndices) const = 0;
 
     // Write out the uniform values (aligned for the layout), textures, and samplers. The uniform
     // values will be de-duplicated across all draws using the RenderStep before uploading to the
@@ -86,10 +86,13 @@ public:
     // The 'devPosition' variable's z must store the PaintDepth normalized to a float from [0, 1],
     // for each processed draw although the RenderStep can choose to upload it in any manner.
     //
+    // `ssboIndex`, if provided, is used to reference uniforms in the SkSL, assuming that they're
+    // contained in a storage buffer.
+    //
     // NOTE: The above contract is mainly so that the entire SkSL program can be created by just str
     // concatenating struct definitions generated from the RenderStep and paint Combination
     // and then including the function bodies returned here.
-    virtual std::string vertexSkSL() const = 0;
+    virtual std::string vertexSkSL(const char* ssboIndex) const = 0;
 
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
@@ -101,7 +104,10 @@ public:
     // When implemented the returned SkSL fragment should write its coverage into a
     // 'half4 outputCoverage' variable (defined in the calling code) with the actual
     // coverage splatted out into all four channels.
-    virtual const char* fragmentCoverageSkSL() const { return R"()"; }
+    //
+    // `ssboIndex`, if provided, is used to reference uniforms in the SkSL, assuming that they're
+    // contained in a storage buffer.
+    virtual std::string fragmentCoverageSkSL(const char* ssboIndex) const { return R"()"; }
 
     // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
     // is true. When implemented, the returned SkSL fragment should write its color into a
@@ -135,7 +141,15 @@ public:
     size_t numVertexAttributes()   const { return fVertexAttrs.size();   }
     size_t numInstanceAttributes() const { return fInstanceAttrs.size(); }
 
-    static const char* ssboIndex() { return "ssboIndex"; }
+    // Name of an attribute containing both render step and shading SSBO indices, if used.
+    static const char* ssboIndicesAttribute() { return "ssboIndices"; }
+
+    // Name of a varying to pass SSBO indices to fragment shader. Both render step and shading
+    // indices are passed, because render step uniforms are sometimes used for coverage.
+    static const char* ssboIndicesVarying() { return "ssboIndicesVar"; }
+
+    // Returns a reference to a uniform, indexing into a storage buffer if an index is provided.
+    static std::string GetUniformName(const char* uniformName, const char* ssboIndex);
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.

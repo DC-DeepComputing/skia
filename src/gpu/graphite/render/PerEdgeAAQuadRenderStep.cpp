@@ -442,7 +442,7 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferMana
 
                              // TODO: pack depth and ssboIndex into 32-bits
                              {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                             {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt},
+                             {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt},
 
                              {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                              {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
@@ -502,7 +502,7 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferMana
 
 PerEdgeAAQuadRenderStep::~PerEdgeAAQuadRenderStep() {}
 
-std::string PerEdgeAAQuadRenderStep::vertexSkSL() const {
+std::string PerEdgeAAQuadRenderStep::vertexSkSL(const char* ssboIndex) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = analytic_rrect_vertex_fn("
@@ -517,7 +517,7 @@ std::string PerEdgeAAQuadRenderStep::vertexSkSL() const {
                    "stepLocalCoords);\n";
 }
 
-const char* PerEdgeAAQuadRenderStep::fragmentCoverageSkSL() const {
+std::string PerEdgeAAQuadRenderStep::fragmentCoverageSkSL(const char* ssboIndex) const {
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
     // the calling code) with the actual coverage splatted out into all four channels.
     return "outputCoverage = analytic_rrect_coverage_fn(sk_FragCoord, "
@@ -535,8 +535,8 @@ float PerEdgeAAQuadRenderStep::boundsOutset(const Transform& localToDevice,
 }
 
 void PerEdgeAAQuadRenderStep::writeVertices(DrawWriter* writer,
-                                           const DrawParams& params,
-                                           int ssboIndex) const {
+                                            const DrawParams& params,
+                                            uint32_t ssboIndices) const {
     SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};
@@ -683,7 +683,7 @@ void PerEdgeAAQuadRenderStep::writeVertices(DrawWriter* writer,
                                                    : bounds.center();
     vw << center << centerWeight << aaRadius
        << params.order().depthAsFloat()
-       << ssboIndex
+       << ssboIndices
        << m.rc(0,0) << m.rc(1,0) << m.rc(3,0)  // mat0
        << m.rc(0,1) << m.rc(1,1) << m.rc(3,1)  // mat1
        << m.rc(0,3) << m.rc(1,3) << m.rc(3,3); // mat2
