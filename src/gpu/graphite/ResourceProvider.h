@@ -90,6 +90,18 @@ public:
     const SharedContext* sharedContext() { return fSharedContext; }
 #endif
 
+#ifdef SK_BUILD_FOR_ANDROID
+    virtual TextureInfo getTextureInfoFromAHardwareBuffer(AHardwareBuffer*,
+                                                  uint32_t bufferFormat,
+                                                  bool requireKnownFormat,
+                                                  bool isRenderable,
+                                                  bool isProtectedContent,
+                                                  bool fromAndroidWindow) const;
+    virtual BackendTexture createBackendTexture(AHardwareBuffer*,
+                                        int width, int height,
+                                        const TextureInfo& textureInfo) const;
+#endif
+
 protected:
     ResourceProvider(SharedContext* sharedContext,
                      SingleOwner* singleOwner,

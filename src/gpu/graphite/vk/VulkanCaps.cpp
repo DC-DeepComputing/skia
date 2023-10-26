@@ -50,6 +50,11 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     this->setDeviceName(physDevProperties.deviceName);
 #endif
 
+    fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
+    fPhysicalDeviceMemoryProperties2.pNext = nullptr;
+    VULKAN_CALL(vkInterface,
+                GetPhysicalDeviceMemoryProperties2(physDev, &fPhysicalDeviceMemoryProperties2));
+
     // Graphite requires Vulkan version 1.1 or later, which has protected support.
     fProtectedSupport = true;
 
@@ -1073,6 +1078,7 @@ const Caps::ColorTypeInfo* VulkanCaps::getColorTypeInfo(SkColorType ct,
                                                         const TextureInfo& textureInfo) const {
     VkFormat vkFormat = textureInfo.vulkanTextureSpec().fFormat;
     if (vkFormat == VK_FORMAT_UNDEFINED) {
+        SkDebugf("undef format\n");
         return nullptr;
     }
 

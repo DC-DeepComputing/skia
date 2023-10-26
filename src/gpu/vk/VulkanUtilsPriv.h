@@ -156,7 +156,6 @@ static constexpr bool VkFormatIsCompressed(VkFormat vkFormat) {
     SkUNREACHABLE;
 }
 
-
 static inline void SetupSamplerYcbcrConversionInfo(
         VkSamplerYcbcrConversionCreateInfo* outInfo,
         const VulkanYcbcrConversionInfo& conversionInfo) {
