@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f74eea_0f302d3f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-26T15:36:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "556f9e21_269f8de1",
+      "range": {
+        "startLine": 380,
+        "startChar": 42,
+        "endLine": 380,
+        "endChar": 44
+      },
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9481a51_0b8ebf06",
@@ -101,6 +125,30 @@
       "writtenOn": "2023-10-26T15:21:08Z",
       "side": 1,
       "message": "If we remove the spaces around the `+`, can we squeeze these onto one line each?",
+      "range": {
+        "startLine": 391,
+        "startChar": 26,
+        "endLine": 391,
+        "endChar": 30
+      },
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "345414bd_a9f2dd4c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-26T15:36:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9481a51_0b8ebf06",
       "range": {
         "startLine": 391,
         "startChar": 26,
