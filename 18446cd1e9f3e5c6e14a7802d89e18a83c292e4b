@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc953521_443c99f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T15:21:08Z",
+      "side": 1,
+      "message": "The other possibility I remembered for why adjusting this down to 16-bits is that we could pack the RenderStep SSBO index and the paint depth into 32-bits, and then the RenderStep could choose to have the paint SSBO index stored as a uniform.",
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81ab6cc6_715b9ab8",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T15:21:08Z",
+      "side": 1,
+      "message": "We should be able to reduce this to 16 now.  \n\nThat leaves 14 bits in the `fPipelineKey` and 13 bits in the `fUniformKey` that we can repurpose.",
+      "range": {
+        "startLine": 372,
+        "startChar": 42,
+        "endLine": 372,
+        "endChar": 44
+      },
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "556f9e21_269f8de1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T15:21:08Z",
+      "side": 1,
+      "message": "While this can be 17 for now, we should set it to 30 so that all 64 bits are assigned. Otherwise the padded bits are uninitialized and then sorting might get corrupted.",
+      "range": {
+        "startLine": 380,
+        "startChar": 42,
+        "endLine": 380,
+        "endChar": 44
+      },
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9481a51_0b8ebf06",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T15:21:08Z",
+      "side": 1,
+      "message": "If we remove the spaces around the `+`, can we squeeze these onto one line each?",
+      "range": {
+        "startLine": 391,
+        "startChar": 26,
+        "endLine": 391,
+        "endChar": 30
+      },
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
