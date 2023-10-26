@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b360e73_4dc5994d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T16:01:42Z",
+      "side": 1,
+      "message": "Oops, have to adjust the offsets of the geometry and shading uniforms to account for the `30` padding.",
+      "range": {
+        "startLine": 378,
+        "startChar": 46,
+        "endLine": 378,
+        "endChar": 48
+      },
+      "revId": "c0b3895d7962744fd9bd7db28aeacc43f8891f9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
