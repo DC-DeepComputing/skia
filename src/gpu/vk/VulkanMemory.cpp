@@ -30,6 +30,7 @@ bool VulkanMemory::AllocBufferMemory(VulkanMemoryAllocator* allocator,
         propFlags = VulkanMemoryAllocator::kNone_AllocationPropertyFlag;
     }
 
+    SkASSERT(allocator);
     VkResult result = allocator->allocateBufferMemory(buffer, usage, propFlags, &memory);
     if (!checkResult(result)) {
         return false;
@@ -40,6 +41,7 @@ bool VulkanMemory::AllocBufferMemory(VulkanMemoryAllocator* allocator,
 
 void VulkanMemory::FreeBufferMemory(VulkanMemoryAllocator* allocator, const VulkanAlloc& alloc) {
     SkASSERT(alloc.fBackendMemory);
+    SkASSERT(allocator);
     allocator->freeMemory(alloc.fBackendMemory);
 }
 
@@ -71,6 +73,7 @@ bool VulkanMemory::AllocImageMemory(VulkanMemoryAllocator* allocator,
         propFlags = propFlags | VulkanMemoryAllocator::kLazyAllocation_AllocationPropertyFlag;
     }
 
+    SkASSERT(allocator);
     VkResult result = allocator->allocateImageMemory(image, propFlags, &memory);
     if (!checkResult(result)) {
         return false;
@@ -83,6 +86,7 @@ bool VulkanMemory::AllocImageMemory(VulkanMemoryAllocator* allocator,
 void VulkanMemory::FreeImageMemory(VulkanMemoryAllocator* allocator,
                                    const VulkanAlloc& alloc) {
     SkASSERT(alloc.fBackendMemory);
+    SkASSERT(allocator);
     allocator->freeMemory(alloc.fBackendMemory);
 }
 
@@ -92,6 +96,7 @@ void* VulkanMemory::MapAlloc(VulkanMemoryAllocator* allocator,
     SkASSERT(VulkanAlloc::kMappable_Flag & alloc.fFlags);
     SkASSERT(alloc.fBackendMemory);
     void* mapPtr;
+    SkASSERT(allocator);
     VkResult result = allocator->mapMemory(alloc.fBackendMemory, &mapPtr);
     if (!checkResult(result)) {
         return nullptr;
@@ -102,6 +107,7 @@ void* VulkanMemory::MapAlloc(VulkanMemoryAllocator* allocator,
 void VulkanMemory::UnmapAlloc(VulkanMemoryAllocator* allocator,
                               const VulkanAlloc& alloc) {
     SkASSERT(alloc.fBackendMemory);
+    SkASSERT(allocator);
     allocator->unmapMemory(alloc.fBackendMemory);
 }
 
@@ -135,7 +141,7 @@ void VulkanMemory::FlushMappedAlloc(VulkanMemoryAllocator* allocator,
                                     VkDeviceSize offset,
                                     VkDeviceSize size,
                                     const std::function<CheckResult>& checkResult) {
-    if (alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
+    if (allocator && alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
         SkASSERT(offset == 0);
         SkASSERT(size <= alloc.fSize);
         SkASSERT(alloc.fBackendMemory);
@@ -149,7 +155,7 @@ void VulkanMemory::InvalidateMappedAlloc(VulkanMemoryAllocator* allocator,
                                          VkDeviceSize offset,
                                          VkDeviceSize size,
                                          const std::function<CheckResult>& checkResult) {
-    if (alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
+    if (allocator && alloc.fFlags & VulkanAlloc::kNoncoherent_Flag) {
         SkASSERT(offset == 0);
         SkASSERT(size <= alloc.fSize);
         SkASSERT(alloc.fBackendMemory);
