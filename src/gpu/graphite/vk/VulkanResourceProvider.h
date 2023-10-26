@@ -13,6 +13,13 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DescriptorTypes.h"
 
+#ifdef  SK_BUILD_FOR_ANDROID
+extern "C" {
+    typedef struct AHardwareBuffer AHardwareBuffer;
+}
+#include <android/hardware_buffer.h> // include in class file only?
+#endif
+
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
@@ -40,6 +47,19 @@ public:
 
     sk_sp<VulkanSamplerYcbcrConversion> findOrCreateCompatibleSamplerYcbcrConversion(
             const VulkanYcbcrConversionInfo& ycbcrInfo) const;
+
+#ifdef SK_BUILD_FOR_ANDROID
+    TextureInfo getTextureInfoFromAHardwareBuffer(AHardwareBuffer*,
+                                                  uint32_t bufferFormat,
+                                                  bool requireKnownFormat,
+                                                  bool isRenderable,
+                                                  bool isProtectedContent,
+                                                  bool fromAndroidWindow) const override;
+
+    BackendTexture createBackendTexture(AHardwareBuffer*,
+                                        int width, int height,
+                                        const TextureInfo& textureInfo) const override;
+#endif
 
 private:
     const VulkanSharedContext* vulkanSharedContext() const;

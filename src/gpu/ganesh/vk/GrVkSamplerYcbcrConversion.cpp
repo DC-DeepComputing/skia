@@ -18,7 +18,7 @@ GrVkSamplerYcbcrConversion* GrVkSamplerYcbcrConversion::Create(
     }
 
     VkSamplerYcbcrConversionCreateInfo ycbcrCreateInfo;
-    setup_sampler_ycbcr_conversion_info(&ycbcrCreateInfo, info);
+    SetupSamplerYcbcrConversionInfo(&ycbcrCreateInfo, info);
 
     VkSamplerYcbcrConversion conversion;
     VkResult result;

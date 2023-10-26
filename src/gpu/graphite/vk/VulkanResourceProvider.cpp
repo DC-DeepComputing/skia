@@ -29,6 +29,9 @@
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/sksl/SkSLCompiler.h"
+#ifdef  SK_BUILD_FOR_ANDROID // needed, or check in file?
+#include "include/gpu/vk/VulkanAHardwareBufferUtils.h"
+#endif
 
 namespace skgpu::graphite {
 
@@ -315,8 +318,10 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kVulkan);
 
-    skgpu::VulkanMemory::FreeImageMemory(
-            this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
+    if (texture.getMemoryAlloc() && texture.getMemoryAlloc()->fBackendMemory) {
+        skgpu::VulkanMemory::FreeImageMemory(
+                this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
+    }
 
     VULKAN_CALL(this->vulkanSharedContext()->interface(),
                 DestroyImage(this->vulkanSharedContext()->device(), texture.getVkImage(), nullptr));
@@ -348,5 +353,241 @@ sk_sp<VulkanSamplerYcbcrConversion>
 
     return ycbcrConversion;
 }
+
+#ifdef SK_BUILD_FOR_ANDROID
+TextureInfo VulkanResourceProvider::getTextureInfoFromAHardwareBuffer(
+        AHardwareBuffer* hardwareBuffer,
+        uint32_t bufferFormat,
+        bool requireKnownFormat,
+        bool isRenderable,
+        bool isProtectedContent,
+        bool fromAndroidWindow) const {
+    const VulkanSharedContext* vkContext = this->vulkanSharedContext();
+    VkDevice device = vkContext->device();
+
+    VkFormat format = get_vk_format_from_ahardwarebuffer_format(bufferFormat);
+    if (requireKnownFormat && format == VK_FORMAT_UNDEFINED) {
+        SkDebugf("Encountered unknown format, but require known format.\n");
+        return {};
+    }
+
+    VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
+    VulkanYcbcrConversionInfo ycbcrInfo;
+    // VK_FORMAT_UNDEFINED indicates we have an external-only format.
+    if (format == VK_FORMAT_UNDEFINED) {
+        VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
+        hwbFormatProps.sType =
+                VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_FORMAT_PROPERTIES_ANDROID;
+        hwbFormatProps.pNext = nullptr;
+        VkAndroidHardwareBufferPropertiesANDROID hwbProps;
+        hwbProps.sType = VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_PROPERTIES_ANDROID;
+        hwbProps.pNext = &hwbFormatProps;
+
+        VkResult result = VULKAN_CALL(vkContext->interface(),
+                                    GetAndroidHardwareBufferProperties(device,
+                                                                        hardwareBuffer,
+                                                                        &hwbProps));
+        if (result != VK_SUCCESS) {
+            SkDebugf("Failed to get AndroidHardwareBufferProperties\n");
+            return {};
+        }
+
+        get_ycbcr_conversion_info_from_format_props(hwbFormatProps, &ycbcrInfo);
+    } else {
+        usageFlags = usageFlags |
+                     VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+                     VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+        if (isRenderable) {
+            usageFlags = usageFlags | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        }
+    }
+
+    VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL; // TODO: Query for tiling?
+    VkImageCreateFlags imgCreateflags =
+            isProtectedContent ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+
+    // TODO: Determine VkImageAspectFlags. If the VkImage is a Ycbcr format, the client can select a
+    // plane. For now, use the default VK_IMAGE_ASPECT_COLOR_BIT.
+    VulkanTextureInfo vulkanTextureInfo {VK_SAMPLE_COUNT_1_BIT,
+                                         Mipmapped::kNo,
+                                         imgCreateflags,
+                                         format,
+                                         tiling,
+                                         usageFlags,
+                                         VK_SHARING_MODE_EXCLUSIVE,
+                                         VK_IMAGE_ASPECT_COLOR_BIT,
+                                         ycbcrInfo};
+    return {vulkanTextureInfo};
+}
+
+BackendTexture VulkanResourceProvider::createBackendTexture(
+        AHardwareBuffer* hardwareBuffer,
+        int width, int height,
+        const TextureInfo& textureInfo) const {
+    VulkanTextureInfo vkTexInfo;
+    if (!textureInfo.getVulkanTextureInfo(&vkTexInfo)) {
+        SKGPU_LOG_W("Failed to fetch Vulkan texture information");
+        return {};
+    }
+
+    const VulkanSharedContext* vkContext = this->vulkanSharedContext();
+    SkASSERT(!(vkTexInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) ||
+             fSharedContext->isProtected() == Protected::kYes);
+
+    VkDevice device = vkContext->device();
+
+    VkResult result;
+    VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
+    hwbFormatProps.sType = VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_FORMAT_PROPERTIES_ANDROID;
+    hwbFormatProps.pNext = nullptr;
+
+    VkAndroidHardwareBufferPropertiesANDROID hwbProps;
+    hwbProps.sType = VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_PROPERTIES_ANDROID;
+    hwbProps.pNext = &hwbFormatProps;
+
+    result = VULKAN_CALL(vkContext->interface(),
+                         GetAndroidHardwareBufferProperties(device, hardwareBuffer, &hwbProps));
+    if (result != VK_SUCCESS) {
+        return {};
+    }
+    if (hwbFormatProps.format != vkTexInfo.fFormat) {
+        SkDebugf("Queried format not consistent with expected format; got: %d, expected: %d",
+                 hwbFormatProps.format,
+                 vkTexInfo.fFormat);
+        return {};
+    }
+
+    VkExternalFormatANDROID externalFormat;
+    externalFormat.sType = VK_STRUCTURE_TYPE_EXTERNAL_FORMAT_ANDROID;
+    externalFormat.pNext = nullptr;
+    externalFormat.externalFormat = 0;  // If this is zero it is as if we aren't using this struct.
+
+    if (hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
+        SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures) &&
+                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_SRC_BIT & hwbFormatProps.formatFeatures) &&
+                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_DST_BIT & hwbFormatProps.formatFeatures));
+        SkASSERT(!vkTexInfo.fYcbcrConversionInfo.isValid());
+    } else {
+        // We have an external only format.
+        SkASSERT(vkTexInfo.fYcbcrConversionInfo.isValid());
+        SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures));
+        SkASSERT(vkTexInfo.fFormat == VK_FORMAT_UNDEFINED);
+        externalFormat.externalFormat = hwbFormatProps.externalFormat;
+    }
+
+    const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{
+            VK_STRUCTURE_TYPE_EXTERNAL_MEMORY_IMAGE_CREATE_INFO,                 // sType
+            &externalFormat,                                                     // pNext
+            VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID,  // handleTypes
+    };
+
+    const VkImageCreateInfo imageCreateInfo = {
+        VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,         // sType
+        &externalMemoryImageInfo,                    // pNext
+        vkTexInfo.fFlags,                            // VkImageCreateFlags
+        VK_IMAGE_TYPE_2D,                            // VkImageType
+        vkTexInfo.fFormat,                           // VkFormat
+        { (uint32_t)width, (uint32_t)height, 1 },    // VkExtent3D
+        1,                                           // mipLevels
+        1,                                           // arrayLayers
+        VK_SAMPLE_COUNT_1_BIT,                       // samples
+        vkTexInfo.fImageTiling,                      // VkImageTiling
+        vkTexInfo.fImageUsageFlags,                  // VkImageUsageFlags
+        vkTexInfo.fSharingMode,                      // VkSharingMode
+        0,                                           // queueFamilyCount
+        nullptr,                                     // pQueueFamilyIndices
+        VK_IMAGE_LAYOUT_UNDEFINED,                   // initialLayout
+    };
+
+    VkImage image;
+    result = VULKAN_CALL(vkContext->interface(),
+                         CreateImage(device, &imageCreateInfo, nullptr, &image));
+    if (result != VK_SUCCESS) {
+        return {};
+    }
+
+    uint32_t typeIndex = 0;
+    bool foundHeap = false;
+    VkPhysicalDeviceMemoryProperties2 phyDevMemProps =
+            vkContext->vulkanCaps().physicalDeviceMemoryProperties2();
+    uint32_t memTypeCnt = phyDevMemProps.memoryProperties.memoryTypeCount;
+    for (uint32_t i = 0; i < memTypeCnt && !foundHeap; ++i) {
+        if (hwbProps.memoryTypeBits & (1 << i)) {
+            const VkPhysicalDeviceMemoryProperties& pdmp = phyDevMemProps.memoryProperties;
+            uint32_t supportedFlags = pdmp.memoryTypes[i].propertyFlags &
+                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+            if (supportedFlags == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+                typeIndex = i;
+                foundHeap = true;
+            }
+        }
+    }
+
+    // Fallback to use any available memory type for AHB
+    //
+    // For external memory import, compatible memory types are decided by the Vulkan driver since
+    // the memory has been allocated externally. There are usually special requirements against
+    // external memory. e.g. AHB allocated with CPU R/W often usage bits is only importable for
+    // non-device-local heap on some AMD systems.
+    if (!foundHeap && hwbProps.memoryTypeBits) {
+        typeIndex = ffs(hwbProps.memoryTypeBits) - 1;
+        foundHeap = true;
+    }
+
+    if (!foundHeap) {
+        VULKAN_CALL(vkContext->interface(), DestroyImage(device, image, nullptr));
+        return {};
+    }
+
+    VkImportAndroidHardwareBufferInfoANDROID hwbImportInfo;
+    hwbImportInfo.sType = VK_STRUCTURE_TYPE_IMPORT_ANDROID_HARDWARE_BUFFER_INFO_ANDROID;
+    hwbImportInfo.pNext = nullptr;
+    hwbImportInfo.buffer = hardwareBuffer;
+
+    VkMemoryDedicatedAllocateInfo dedicatedAllocInfo;
+    dedicatedAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO;
+    dedicatedAllocInfo.pNext = &hwbImportInfo;
+    dedicatedAllocInfo.image = image;
+    dedicatedAllocInfo.buffer = VK_NULL_HANDLE;
+
+    VkMemoryAllocateInfo allocInfo = {
+        VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,      // sType
+        &dedicatedAllocInfo,                         // pNext
+        hwbProps.allocationSize,                     // allocationSize
+        typeIndex,                                   // memoryTypeIndex
+    };
+
+    VkDeviceMemory memory;
+    result = VULKAN_CALL(vkContext->interface(),
+                         AllocateMemory(device, &allocInfo, nullptr, &memory));
+    if (result != VK_SUCCESS) {
+        VULKAN_CALL(vkContext->interface(), DestroyImage(device, image, nullptr));
+        return {};
+    }
+
+    VkBindImageMemoryInfo bindImageInfo;
+    bindImageInfo.sType = VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_INFO;
+    bindImageInfo.pNext = nullptr;
+    bindImageInfo.image = image;
+    bindImageInfo.memory = memory;
+    bindImageInfo.memoryOffset = 0;
+
+    result = VULKAN_CALL(vkContext->interface(), BindImageMemory2(device, 1, &bindImageInfo));
+    if (result != VK_SUCCESS) {
+        VULKAN_CALL(vkContext->interface(), DestroyImage(device, image, nullptr));
+        VULKAN_CALL(vkContext->interface(), FreeMemory(device, memory, nullptr));
+        return {};
+    }
+
+    skgpu::VulkanAlloc alloc;
+    alloc.fMemory = memory;
+    alloc.fOffset = 0;
+    alloc.fSize = hwbProps.allocationSize;
+    alloc.fFlags = 0;
+
+    return {{width, height}, vkTexInfo, VK_IMAGE_LAYOUT_UNDEFINED, VK_QUEUE_FAMILY_EXTERNAL,
+             image, alloc};
+}
+#endif // SK_BUILD_FOR_ANDROID
 
 } // namespace skgpu::graphite

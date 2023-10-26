@@ -156,9 +156,10 @@ static constexpr bool VkFormatIsCompressed(VkFormat vkFormat) {
     SkUNREACHABLE;
 }
 
+static constexpr void SetupSamplerYcbcrConversionInfo(
+        VkSamplerYcbcrConversionCreateInfo* outInfo,
+        const VulkanYcbcrConversionInfo& conversionInfo) {
 
-static constexpr void setup_sampler_ycbcr_conversion_info(VkSamplerYcbcrConversionCreateInfo* outInfo,
-                                                const VulkanYcbcrConversionInfo& conversionInfo) {
 #ifdef SK_DEBUG
     const VkFormatFeatureFlags& featureFlags = conversionInfo.fFormatFeatures;
     if (conversionInfo.fXChromaOffset == VK_CHROMA_LOCATION_MIDPOINT ||

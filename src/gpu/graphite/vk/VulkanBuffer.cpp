@@ -199,7 +199,7 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
                                                        fAlloc,
                                                        readOffset,
                                                        readSize,
-                                                       nullptr);
+                                                       checkResult);
         }
     }
 }
@@ -211,7 +211,11 @@ void VulkanBuffer::internalUnmap(size_t flushOffset, size_t flushSize) {
     SkASSERT(fAlloc.fSize >= flushOffset + flushSize);
 
     auto allocator = this->vulkanSharedContext()->memoryAllocator();
-    skgpu::VulkanMemory::FlushMappedAlloc(allocator, fAlloc, flushOffset, flushSize, nullptr);
+    auto checkResult = [](VkResult result) {
+        return result == VK_SUCCESS;
+    };
+    skgpu::VulkanMemory::FlushMappedAlloc(allocator, fAlloc, flushOffset, flushSize,
+                                          checkResult);
     skgpu::VulkanMemory::UnmapAlloc(allocator, fAlloc);
 }
 

@@ -22,7 +22,7 @@ sk_sp<VulkanSamplerYcbcrConversion> VulkanSamplerYcbcrConversion::Make(
     }
 
     VkSamplerYcbcrConversionCreateInfo ycbcrCreateInfo;
-    setup_sampler_ycbcr_conversion_info(&ycbcrCreateInfo, conversionInfo);
+    SetupSamplerYcbcrConversionInfo(&ycbcrCreateInfo, conversionInfo);
 
     VkSamplerYcbcrConversion conversion;
     VkResult result;
