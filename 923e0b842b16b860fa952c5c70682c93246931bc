@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcaeee9e_549c98a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T15:08:03Z",
+      "side": 1,
+      "message": "PS 10 actually introduced a new bug. The vertex shader had been using the `maskBounds.LT` to convert the `maskCoords` variable (that was defined in the logical mask space) into the final atlas coordinate space. The maskBounds were already in the atlas coordinate space. Applying any inset or outset of 1/2px then shifted all of the texture sampling.\n\nBecause the texture coordinates and bounds have also already been normalized, it\u0027s tricky to just apply the inset/outset in the vertex shader after its used the top-left corner. I also didn\u0027t want to add an additional attribute to convey the texture origin.\n\nTo fix this, I adjusted how the maskToDevice matrix is decomposed. Previously it was post-applying the device origin translation. Now it calculates a translation that can be pre-applied. While this math is more complex, it means that the texture origin can be incorporated into the `deviceOrigin` instance attribute and both `drawBounds` and `maskBounds` are now uploaded in the same atlas coordinate space.\n\nThe new diff is PS9 to PS11.",
+      "revId": "923e0b842b16b860fa952c5c70682c93246931bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
