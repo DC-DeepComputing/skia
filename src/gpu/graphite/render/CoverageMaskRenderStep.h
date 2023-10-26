@@ -17,14 +17,14 @@ public:
     CoverageMaskRenderStep();
     ~CoverageMaskRenderStep() override = default;
 
-    std::string vertexSkSL() const override;
+    std::string vertexSkSL(const char* ssboIndex) const override;
     std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                         int* nextBindingIndex) const override;
-    const char* fragmentCoverageSkSL() const override;
+    std::string fragmentCoverageSkSL(const char* ssboIndex) const override;
 
     float boundsOutset(const Transform& localToDevice, const Rect& bounds) const override;
 
-    void writeVertices(DrawWriter*, const DrawParams&, int ssboIndex) const override;
+    void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndices) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
 };
 

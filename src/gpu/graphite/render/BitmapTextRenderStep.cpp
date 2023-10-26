@@ -51,7 +51,7 @@ BitmapTextRenderStep::BitmapTextRenderStep(bool isLCD)
                       {"indexAndFlags", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"strikeToSourceScale", VertexAttribType::kFloat, SkSLType::kFloat},
                       {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt}},
+                      {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt}},
                      /*varyings=*/
                      {{"textureCoords", SkSLType::kFloat2},
                       {"texIndex", SkSLType::kHalf},
@@ -59,24 +59,32 @@ BitmapTextRenderStep::BitmapTextRenderStep(bool isLCD)
 
 BitmapTextRenderStep::~BitmapTextRenderStep() {}
 
-std::string BitmapTextRenderStep::vertexSkSL() const {
+std::string BitmapTextRenderStep::vertexSkSL(const char* ssboIndex) const {
+    std::string subRunDeviceMatrix = this->GetUniformName("subRunDeviceMatrix", ssboIndex);
+    std::string deviceToLocal = this->GetUniformName("deviceToLocal", ssboIndex);
+    std::string atlasSizeInv = this->GetUniformName("atlasSizeInv", ssboIndex);
+
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
-    return "texIndex = half(indexAndFlags.x);"
-           "maskFormat = half(indexAndFlags.y);"
-           "float2 unormTexCoords;"
-           "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
-                                               "subRunDeviceMatrix, "
-                                               "deviceToLocal, "
-                                               "atlasSizeInv, "
-                                               "float2(size), "
-                                               "float2(uvPos), "
-                                               "xyPos, "
-                                               "strikeToSourceScale, "
-                                               "depth, "
-                                               "textureCoords, "
-                                               "unormTexCoords, "
-                                               "stepLocalCoords);";
+    return SkSL::String::printf(
+            "texIndex = half(indexAndFlags.x);"
+            "maskFormat = half(indexAndFlags.y);"
+            "float2 unormTexCoords;"
+            "float4 devPosition = text_vertex_fn(float2(sk_VertexID >> 1, sk_VertexID & 1), "
+                                                "%s, "
+                                                "%s, "
+                                                "%s, "
+                                                "float2(size), "
+                                                "float2(uvPos), "
+                                                "xyPos, "
+                                                "strikeToSourceScale, "
+                                                "depth, "
+                                                "textureCoords, "
+                                                "unormTexCoords, "
+                                                "stepLocalCoords);",
+            subRunDeviceMatrix.c_str(),
+            deviceToLocal.c_str(),
+            atlasSizeInv.c_str());
 }
 
 std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
@@ -91,7 +99,7 @@ std::string BitmapTextRenderStep::texturesAndSamplersSkSL(
     return result;
 }
 
-const char* BitmapTextRenderStep::fragmentCoverageSkSL() const {
+std::string BitmapTextRenderStep::fragmentCoverageSkSL(const char* ssboIndex) const {
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
     // the calling code) with the actual coverage splatted out into all four channels.
     static_assert(kNumTextAtlasTextures == 4);
@@ -106,14 +114,14 @@ const char* BitmapTextRenderStep::fragmentCoverageSkSL() const {
 
 void BitmapTextRenderStep::writeVertices(DrawWriter* dw,
                                          const DrawParams& params,
-                                         int ssboIndex) const {
+                                         uint32_t ssboIndices) const {
     const SubRunData& subRunData = params.geometry().subRunData();
 
     subRunData.subRun()->vertexFiller().fillInstanceData(dw,
                                                          subRunData.startGlyphIndex(),
                                                          subRunData.glyphCount(),
                                                          subRunData.subRun()->instanceFlags(),
-                                                         ssboIndex,
+                                                         ssboIndices,
                                                          subRunData.subRun()->glyphs(),
                                                          params.order().depthAsFloat());
 }
