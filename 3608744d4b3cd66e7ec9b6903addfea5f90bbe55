@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d5d511f9_1a6b5ccc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:08:26Z",
+      "side": 1,
+      "message": "As for the gms, for now it would probably be best for this CL if there weren\u0027t any new images in gold after running all the NativeFonts jobs. It would be much easier to reason about before trying to do any further clean up.",
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "660f94da_d8121425",
         "filename": "gm/typeface.cpp",
         "patchSetId": 7
