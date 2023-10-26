@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb90673_ca4a8be5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-26T14:36:56Z",
+      "side": 1,
+      "message": "Yes! I added a YCbCr sampler conversion sk_sp member attribute to the VulkanSampler class in this CL, but just pass in nullptr for now and have a TODO to pass in a real object. After discussing with Michael, I will have a follow-up CL to have the `SamplerDesc` struct in `ResourceTypes` have 4 int32s which backends can optionally populate. Vulkan will use those for YCbCr conversion info which can be incorporated into the paint key. I think it makes sense to have that chunk of work be in a different CL.",
+      "parentUuid": "95e59d04_d7d7d5a3",
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9597eb8e_a6d105a7",
@@ -81,6 +99,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d08d2c56_2b2c6460",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-26T14:36:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9597eb8e_a6d105a7",
+      "range": {
+        "startLine": 28,
+        "startChar": 55,
+        "endLine": 28,
+        "endChar": 65
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07a02525_45fa51a9",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-26T14:36:56Z",
+      "side": 1,
+      "message": "Yep that should be assigned to the member var - fixed",
+      "parentUuid": "e8588fff_20779ce3",
+      "range": {
+        "startLine": 28,
+        "startChar": 40,
+        "endLine": 28,
+        "endChar": 55
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "046e082c_54d75f96",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-10-02T20:44:33Z",
       "side": 1,
       "message": "You don\u0027t need the else here since the if has a return",
+      "range": {
+        "startLine": 291,
+        "startChar": 5,
+        "endLine": 291,
+        "endChar": 12
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f9ab29e_2c78b7c6",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-26T14:36:56Z",
+      "side": 1,
+      "message": "Yep, you\u0027re totally right. Removed the else block when it\u0027s not needed in a few other spots, too.",
+      "parentUuid": "046e082c_54d75f96",
       "range": {
         "startLine": 291,
         "startChar": 5,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dee9d8d8_0a3fb28d",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-26T14:36:56Z",
+      "side": 1,
+      "message": "My original logic had been as a means to verify it was successfully inserted into the cache and to fetch the first descriptor set created of many from within a loop, but yes, it\u0027s overkill. Fixed this up in two other methods as well.",
+      "parentUuid": "6c7b287b_91d89acd",
+      "range": {
+        "startLine": 298,
+        "startChar": 3,
+        "endLine": 299,
+        "endChar": 89
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d0fa78c_e4be6fcf",
@@ -140,6 +254,30 @@
       "writtenOn": "2023-10-02T20:44:33Z",
       "side": 1,
       "message": "Why not just create the ycbcr sampler from the start? We know it will be need for every view created and that would avoid us needing to do cache lookup more than once per texture",
+      "range": {
+        "startLine": 98,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 52
+      },
+      "revId": "9d0b1b48702c1ce4e58c6a3fe730e94540c0f1c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9f97354_f8fdae11",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-10-26T14:36:56Z",
+      "side": 1,
+      "message": "Ah, you\u0027re right - ycbcr sampler conversion info is only specific to the VulkanTexture and does not depend upon any information that is passed in at runtime for image view creation, so we can simply make one upon texture creation. \n\nAdded sk_sp\u003cVulkanSamplerYcbcrConversion\u003e member attribute to VulkanTexture (provided by rsrc provider upon creation) and VulkanImageView (for ref tracking).",
+      "parentUuid": "7d0fa78c_e4be6fcf",
       "range": {
         "startLine": 98,
         "startChar": 4,
