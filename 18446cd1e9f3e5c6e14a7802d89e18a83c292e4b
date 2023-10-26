@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20f21211_47ed63c8",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-26T15:22:00Z",
+      "side": 1,
+      "message": "Well I wrote that comment too soon, we can\u0027t actually reduce it to 16 until we have something that covers the padding :P.  But we do still have 27 bits for other purposes now.",
+      "parentUuid": "81ab6cc6_715b9ab8",
+      "range": {
+        "startLine": 372,
+        "startChar": 42,
+        "endLine": 372,
+        "endChar": 44
+      },
+      "revId": "18446cd1e9f3e5c6e14a7802d89e18a83c292e4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "556f9e21_269f8de1",
