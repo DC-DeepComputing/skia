@@ -16,6 +16,24 @@
       "message": "@egdaniel@google.com Can you help with the rationale for this CL?",
       "revId": "eebd469bf2cc9a3400f226aa7887e0230afb25a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b0a5b4_5beb01d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-26T15:06:50Z",
+      "side": 1,
+      "message": "\"Not every client, even when building Skia on Android, needs support for our various AHardwareBuffer utils. So splitting them out from the core GPU src\u0027s gives clients more options here. \n\nAdditionally, we have seen issues in Chrome (which doesn\u0027t use these files) compiling AHardwareBufferGL.cpp. The reason being is that we expect to statically access the EGL/GL functions in the file by setting the `*_PROTOTYPES` defines before including the EGL and GL headers. However, Chrome already includes these headers before Skia without the `*_PROTOTYPES` defines. Thus we end up with linker errors not being able to find the functions. On all our clients that do use these files this is not an issue since they also want static access to these functions. But it is possible we could run into a conflict down the road with a new client.\"",
+      "parentUuid": "47871037_8bd6d447",
+      "revId": "eebd469bf2cc9a3400f226aa7887e0230afb25a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
