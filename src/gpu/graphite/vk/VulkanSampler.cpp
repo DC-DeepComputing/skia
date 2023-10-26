@@ -14,9 +14,11 @@
 namespace skgpu::graphite {
 
 VulkanSampler::VulkanSampler(const VulkanSharedContext* sharedContext,
-                             VkSampler sampler)
+                             VkSampler sampler,
+                             sk_sp<VulkanSamplerYcbcrConversion> ycbcrSamplerConversion)
         : Sampler(sharedContext)
-        , fSampler(sampler) {}
+        , fSampler(sampler)
+        , fYcbcrConversion(std::move(ycbcrSamplerConversion)) {}
 
 static VkSamplerAddressMode tile_mode_to_vk_sampler_address(SkTileMode tileMode) {
     switch (tileMode) {
@@ -35,7 +37,8 @@ static VkSamplerAddressMode tile_mode_to_vk_sampler_address(SkTileMode tileMode)
 sk_sp<VulkanSampler> VulkanSampler::Make(const VulkanSharedContext* sharedContext,
                                          const SkSamplingOptions& samplingOptions,
                                          SkTileMode xTileMode,
-                                         SkTileMode yTileMode) {
+                                         SkTileMode yTileMode,
+                                         sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion) {
     VkSamplerCreateInfo samplerInfo;
     memset(&samplerInfo, 0, sizeof(VkSamplerCreateInfo));
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -83,9 +86,7 @@ sk_sp<VulkanSampler> VulkanSampler::Make(const VulkanSharedContext* sharedContex
     samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
     samplerInfo.unnormalizedCoordinates = VK_FALSE;
 
-    // TODO: add VkSamplerYcbcrConversion support
-    // When we add YCbCr support, we'll have to figure out how to key it, as currently
-    // the ResourceProvider only generates a key based on the samplingOptions and tileModes.
+    // TODO: Add YCbCr conversion information to graphite-level sampler key.
 
     VkSampler sampler;
     VkResult result;
@@ -95,7 +96,8 @@ sk_sp<VulkanSampler> VulkanSampler::Make(const VulkanSharedContext* sharedContex
         return nullptr;
     }
 
-    return sk_sp<VulkanSampler>(new VulkanSampler(sharedContext, sampler));
+    return sk_sp<VulkanSampler>(new VulkanSampler(sharedContext, sampler,
+                                                  std::move(ycbcrConversion)));
 }
 
 void VulkanSampler::freeGpuData() {
