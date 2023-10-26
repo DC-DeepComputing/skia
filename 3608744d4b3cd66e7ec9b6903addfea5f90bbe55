@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9064988_7487ec69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "In general, PortableTypeface should only be used in gms and when the text is a label (not logically part of the gm image under test). It can also be used if the intent really is to use the portable typefaces as a way to test something very specific (we don\u0027t think we would get code coverage testing with any native fonts), but this is pretty rare.\n\nIn general, I find it too easy to slap \"PortableFont\" onto things to try to make them more deterministic instead of getting real coverage and fixing issues. The reality is that no one sees any of those portable fonts but Skia developers, but a few billion people a day are looking at some of the default system fonts.\n\nI\u0027m sure I haven\u0027t quite reviewed all the uses here yet, will take another look later. Also, while Skia has pretty good test coverage, the organic way that coverage has grown turns into a lot of tests which don\u0027t seem to be covering much, but might be the one that covers some odd case, so it\u0027s really difficult to clean them up.",
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "660f94da_d8121425",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "Wow, the FreeType still support this. So this is really out of date now. This used to be used by Android for kerning, but I highly doubt this is used by anything anymore. And with HarfBuzz and whatnot there is very little reason for this to exist, especially now that most new fonts don\u0027t even have a kerning table which is separate from the shaping tables.\n\nI\u0027ll look into removing this.",
+      "range": {
+        "startLine": 74,
+        "startChar": 15,
+        "endLine": 74,
+        "endChar": 40
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcda2b18_eeae8971",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "`CreateTestTypeface`? I think this test wants to be able to be useful on NativeFont bots.\n\nOn the other hand... this gm doesn\u0027t seem very useful anymore, as there are many more gms that test styles better (`fontmgr_match`\u0027s `exploreFamily` bits) and the kerning bits a vestigial.\n\nTell you what, I\u0027ll let you land this part as-is and make this gm more or less not useful, and then I\u0027ll just delete it.",
+      "range": {
+        "startLine": 108,
+        "startChar": 35,
+        "endLine": 108,
+        "endChar": 57
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d06a720_0f0419c9",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "`DefaultFont`? Though, heh, this test is very silly in that it incremented `y` by the vertical advance of the default font and not the fonts actually being drawn.",
+      "range": {
+        "startLine": 124,
+        "startChar": 33,
+        "endLine": 124,
+        "endChar": 52
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834bead4_3b931c51",
+        "filename": "gm/userfont.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "`DefaultFont`? There\u0027s no real point in running this on just the portable font, as we control that to death and then this test isn\u0027t really as interesting.\n\nAlso, this test is structured very oddly. Really we want the output from this original base font, the output from the custom typeface created from it, then the output from the typeface after serializing and deserializing. I suppose this test skipped the middle one. But it is awkward that `make_tf` and its caller need to know about how to pick the original font. I would be a lot easier to follow if the caller picked the typeface and passed that in here, then used it later in the first call to `waterfall`. Then this would be much easier to follow.\n\nThat being said, it should be `DefaultFont` so we get some coverage of real non-sanitized paths from the system fonts.",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0216f11d_c7048a24",
+        "filename": "modules/skottie/tests/Shaper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "`DefaultTypeface`",
+      "range": {
+        "startLine": 68,
+        "startChar": 44,
+        "endLine": 68,
+        "endChar": 67
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03bf07fd_3ef8ebd0",
+        "filename": "modules/skshaper/tests/ShaperTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "`DefaultFont`, this is a test and should make sure it does something interesting on NativeFont tests and also just generally when running tests locally.",
+      "range": {
+        "startLine": 127,
+        "startChar": 29,
+        "endLine": 127,
+        "endChar": 48
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

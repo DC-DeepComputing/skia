@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "497b7367_92a0de67",
+        "filename": "gm/bigtext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T23:06:45Z",
+      "side": 1,
+      "message": "This sort of change just seems odd, since `MakeResourceAsTypeface` currently depends on the default fontmgr, it seems like it would need to take a fontmgr or directly know about some \"test fontmgr\" global.\n\nIn fact, `Resources` is really just a part of `ToolUtils` that knows about the test resource path. It might be best to make `MakeResourceAsTypeface` use `ToolUtils::TestFontMgr`.",
+      "revId": "d9672e16303556fd1ba913d835353fb9079884c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
