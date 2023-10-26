@@ -9,6 +9,7 @@
 #define skgpu_graphite_VulkanSampler_DEFINED
 
 #include "src/gpu/graphite/Sampler.h"
+#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 #include "include/core/SkRefCnt.h"
@@ -18,24 +19,25 @@ struct SkSamplingOptions;
 
 namespace skgpu::graphite {
 
-    class VulkanSampler : public Sampler {
+class VulkanSampler : public Sampler {
 public:
     static sk_sp<VulkanSampler> Make(const VulkanSharedContext*,
                                      const SkSamplingOptions& samplingOptions,
                                      SkTileMode xTileMode,
-                                     SkTileMode yTileMode);
+                                     SkTileMode yTileMode,
+                                     sk_sp<VulkanSamplerYcbcrConversion>);
 
     ~VulkanSampler() override {}
 
     VkSampler vkSampler() const { return fSampler; }
 
 private:
-    VulkanSampler(const VulkanSharedContext*,
-                  VkSampler);
+    VulkanSampler(const VulkanSharedContext*, VkSampler, sk_sp<VulkanSamplerYcbcrConversion>);
 
     void freeGpuData() override;
 
     VkSampler fSampler;
+    sk_sp<VulkanSamplerYcbcrConversion> fYcbcrConversion;
 };
 
 } // namepsace skgpu::graphite
