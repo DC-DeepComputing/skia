@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa6e9a2_df6e2ac0",
+        "filename": "modules/canvaskit/CHANGELOG.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-26T18:13:41Z",
+      "side": 1,
+      "message": "`MakeFreeTypeFaceFromData` was something of a packed term. It meant \"Make a FreeType SkTypeface from some data\". It appears the \"Type\" and \"Typeface\" got contracted even though that is a bit overly clever. However, the name `MakeFreeTypefaceFromData` doesn\u0027t make a lot of sense, since the \"Free\" is no longer part of \"FreeType\". Since the use of FreeType was already something of an implementation detail, and because the name is changing anyway, the \"Free\" can just be dropped and make this just `MakeTypefaceFromData`.",
+      "revId": "724bb817da2c0fd9bae22f5534e6b98f9b2ec71a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
