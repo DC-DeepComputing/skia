@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "096d502d_838a9710",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-26T19:15:51Z",
+      "side": 1,
+      "message": "This is a nit but I\u0027m not sure if it\u0027s useful to parameterize the \"Step\" buffer name prefix here. We only call this function here so we could just always write out \"StepUniformData\" in EmitRenderStepStorageBuffer. Same applies to EmitRenderStepUniforms, EmitPaintParamsStorageBuffer, \u0026 EmitPaintParamsUniforms.",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16202659_2ee55dc7",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-26T19:15:51Z",
+      "side": 1,
+      "message": "Previously we\u0027d always pass in fUniformBufferLayout here, because `ssboIndex() !\u003d null` was equivalent to `useStorageBuffers` (from logic in ContextUtils.cpp where we call toSkSL()).",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d343cdb7_a30df925",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-26T19:15:51Z",
+      "side": 1,
+      "message": "Should this comment be updated? For this change I haven\u0027t been thinking about packing depth + RenderStep ssbo index into an attribute and moving the shading ssbo index into a uniform, but I assume that\u0027s still on the table.",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
