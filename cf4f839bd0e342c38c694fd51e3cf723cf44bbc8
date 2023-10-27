@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9cd8cbe_d6c00400",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T20:03:00Z",
+      "side": 1,
+      "message": "Making sure I\u0027m interpreting the gold results correctly, it\u0027s expected that the 4 bottom rows of black-white gradients are identical?",
+      "revId": "cf4f839bd0e342c38c694fd51e3cf723cf44bbc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab62a77_a20776b6",
+        "filename": "gm/gradients.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1359,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T20:03:00Z",
+      "side": 1,
+      "message": "\"even when there isn\u0027t any hue in the other stops\"?",
+      "range": {
+        "startLine": 1358,
+        "startChar": 91,
+        "endLine": 1359,
+        "endChar": 25
+      },
+      "revId": "cf4f839bd0e342c38c694fd51e3cf723cf44bbc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
