@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c31f7e9_487eda80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T20:11:35Z",
+      "side": 1,
+      "message": "LGTM.\n\nThis does have me wondering how much of this logic we should lift out of the colorstop xformer, and just calculate a lot of this when the gradient is constructed?\n\nRight now the xformer is able to go all the way to the dst color space when we don\u0027t have to worry about interpolation spaces, but it seems like it\u0027d be pretty convenient to say that all the colors and stops are calculated and queryable by random access. Then onAppendStages, asFP, or add_to_key for graphite can just convert the colors to the dst space and that\u0027s it. WDYT?",
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83bacf35_b809a25a",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T20:11:35Z",
+      "side": 1,
+      "message": "Was this threshold visually determined?",
+      "range": {
+        "startLine": 645,
+        "startChar": 48,
+        "endLine": 645,
+        "endChar": 53
+      },
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033bbb12_0904d685",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T20:11:35Z",
+      "side": 1,
+      "message": "same question as above, assuming it was visual, that would explain why they are so different in magnitude from each other.",
+      "range": {
+        "startLine": 673,
+        "startChar": 48,
+        "endLine": 673,
+        "endChar": 52
+      },
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0b99e7c_8c78f88a",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T20:11:35Z",
+      "side": 1,
+      "message": "Maybe add a comment here that all interpolation color spaces--which the colors have already been converted to--that can have powerless hues store the hue in the red channel of SkPMColor4f?",
+      "range": {
+        "startLine": 794,
+        "startChar": 35,
+        "endLine": 794,
+        "endChar": 46
+      },
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
