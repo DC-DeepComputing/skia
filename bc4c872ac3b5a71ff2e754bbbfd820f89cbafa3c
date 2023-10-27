@@ -33,6 +33,24 @@
       "message": "Nit: alignment",
       "revId": "bc4c872ac3b5a71ff2e754bbbfd820f89cbafa3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b99fb75_3c17c581",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1390,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-27T13:20:34Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ll fix it in the next CL.",
+      "parentUuid": "110faa1f_2f458380",
+      "revId": "bc4c872ac3b5a71ff2e754bbbfd820f89cbafa3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
