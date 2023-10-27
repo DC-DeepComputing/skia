@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "507fa707_72a86ef1",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-27T16:51:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "06f0e20a_22d920ca",
+      "range": {
+        "startLine": 190,
+        "startChar": 77,
+        "endLine": 190,
+        "endChar": 93
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ed0f461_8bc65dc1",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-10-26T02:10:42Z",
       "side": 1,
       "message": "I\u0027ve pulled this out of RasterPathAtlas.cpp, where I\u0027d put it in an earlier patchset, since it turns out that VelloPathAtlas needs to refer to the padding a few times as well.",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 97,
+        "endChar": 43
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f9f23dd_2b7a0354",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-27T16:51:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ed0f461_8bc65dc1",
       "range": {
         "startLine": 97,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4cdc984_637e8ae2",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-27T16:51:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "23c945e1_4d481478",
+      "range": {
+        "startLine": 124,
+        "startChar": 12,
+        "endLine": 124,
+        "endChar": 65
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfaea1d4_01be8242",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-10-26T02:10:42Z",
       "side": 1,
       "message": "This was a defensive choice thinking about the case when mask filter coverage masks enable linear filtering down the line.",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 61
+      },
+      "revId": "686358dc3961f9990e195ee600e6c231888eb0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a5569cf_d246905b",
+        "filename": "src/gpu/graphite/render/CoverageMaskRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-27T16:51:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bfaea1d4_01be8242",
       "range": {
         "startLine": 140,
         "startChar": 8,
