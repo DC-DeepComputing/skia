@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3302ff3a_6480ab5d",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T21:04:31Z",
+      "side": 0,
+      "message": "`SkImageShader::MakeSubset` used to only be called from code internal to ganesh or graphite (as part of image filtering, where the images involved were already matching the backend).\n\nWith the auto-mask-filter path, MakeSubset is being called with raster images before graphite/ganesh have had a chance to upload them. This is fine, since only graphite uses the auto-mask-filter path for now, and the `appendStages` function for SkImageShader has an equivalent assert that makes sure we never try to use a subset image shader on a non-gpu backend.",
+      "range": {
+        "startLine": 346,
+        "startChar": 4,
+        "endLine": 346,
+        "endChar": 77
+      },
+      "revId": "ebb2a3d4699bfa656b47136b616d55b45d071c16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
