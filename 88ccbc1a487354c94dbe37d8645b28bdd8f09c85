@@ -116,6 +116,24 @@
       "parentUuid": "de9a1541_7665577d",
       "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2373dff_e4427425",
+        "filename": "tools/skqp/src/skqp_GpuTestProcs.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-27T14:47:59Z",
+      "side": 1,
+      "message": "Yeah, I was squinting. Sgtm.",
+      "parentUuid": "dbc0352a_7c4d4399",
+      "revId": "88ccbc1a487354c94dbe37d8645b28bdd8f09c85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
