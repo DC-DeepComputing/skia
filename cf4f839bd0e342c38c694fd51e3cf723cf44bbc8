@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84fab162_905daf4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-27T20:07:17Z",
+      "side": 1,
+      "message": "Yes - I originally anticipated that longer would look different, wrote a whole github comment about the spec being ambiguous, and then realized that I was totally wrong. Those should all look identical, and it would be pretty wild if we got them wrong.",
+      "parentUuid": "e9cd8cbe_d6c00400",
+      "revId": "cf4f839bd0e342c38c694fd51e3cf723cf44bbc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ab62a77_a20776b6",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-27T20:03:00Z",
       "side": 1,
       "message": "\"even when there isn\u0027t any hue in the other stops\"?",
+      "range": {
+        "startLine": 1358,
+        "startChar": 91,
+        "endLine": 1359,
+        "endChar": 25
+      },
+      "revId": "cf4f839bd0e342c38c694fd51e3cf723cf44bbc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2bfa0e_d343d0f4",
+        "filename": "gm/gradients.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1359,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-27T20:07:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ab62a77_a20776b6",
       "range": {
         "startLine": 1358,
         "startChar": 91,
