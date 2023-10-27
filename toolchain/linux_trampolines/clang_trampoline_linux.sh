@@ -138,7 +138,7 @@ excluded_files=(
 # "iwyu.cc:1977: Assertion failed: TODO(csilvers): for objc and clang lang extensions"
   "tests/SkVxTest.cpp"
   "src/base/SkHalf.cpp"
-  "src/core/SkMipmap.cpp"
+  "src/core/SkMipmapHQDownSampler.cpp"
   "src/core/SkMaskBlurFilter.cpp"
   "src/core/SkM44.cpp"
 )
