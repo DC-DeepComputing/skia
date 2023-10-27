@@ -52,6 +52,24 @@
       "parentUuid": "5d6e8644_961d0082",
       "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d8786f_e6573513",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-27T19:07:19Z",
+      "side": 1,
+      "message": "Thanks for the comments. I agree that \"dynamic offsets\" only make sense when they are used in conjunction with a BindGroup concept. The purpose of this CL is treating every uniform buffer\u0027s offset as dynamic in Dawn so that it won\u0027t be included in the BindGroup nor its cache key in the upcoming patch. And we can pass the offset directly to \"Bind\" commands similar to Metal\u0027s `set*Buffer:... offset:...` or `setBufferOffset:...`.\n\nIn future, if we go with the BindGroup implementation at higher level layer, I would prefer every offset being treated as dynamic instead of having special cases for \"static\" offsets. Because \"static\" offsets mean we would have to include them in the BindGroup\u0027s cache key. I\u0027m not sure it would help improve performance or increase the cache hit in any way.\n\nSo if it\u0027s ok to go forward with the Dawn specific implementation for now, do you have any other suggestion for this CL?\n\nThanks,",
+      "parentUuid": "66d17ae1_09556ee6",
+      "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
