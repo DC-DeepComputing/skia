@@ -16,6 +16,24 @@
       "message": "I would perhaps elaborate on the \"direct coverage mask\". Maybe explain that it is possible to select a coverage mask renderer for a regular shape below without entering this branch and that it is expected for the shape to get recorded as a CoverageMaskShape when that happens?",
       "revId": "776338023ecfe09802622330a4f530744314e420",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33431afe_2e88d0ed",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T19:54:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67f15775_fb416e7b",
+      "revId": "776338023ecfe09802622330a4f530744314e420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

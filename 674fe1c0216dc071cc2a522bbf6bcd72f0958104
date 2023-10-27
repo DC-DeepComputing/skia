@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e38276e6_8657c157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T19:54:13Z",
+      "side": 1,
+      "message": "Some of the behavior this relies on in SkCanvas is still blocked by a staging flag in chromium, so I\u0027ve added the staging flag around the `useCoverageMaskForMaskFilters` override so Graphite\u0027s device won\u0027t try to use drawCoverageMask until the staging has completed. This lets this change land and roll into chrome w/o being blocked by the other staging.\n\nWe will still see graphite render mask filters in our gold after this change.",
+      "revId": "674fe1c0216dc071cc2a522bbf6bcd72f0958104",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
