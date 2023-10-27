@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6691456_37afd073",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-27T19:14:44Z",
+      "side": 1,
+      "message": "I think Dawn also supports creating layout that is compatible with different pipelines even if the layout has more entries than what the pipeline needs. So creating a single layout for multiple pipelines sounds good to me.",
+      "parentUuid": "f8573dfe_cb594fec",
+      "range": {
+        "startLine": 681,
+        "startChar": 38,
+        "endLine": 681,
+        "endChar": 61
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f60e6d8f_bdcd10bf",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
         "patchSetId": 5
