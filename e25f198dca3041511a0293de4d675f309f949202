@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9288154f_cd303905",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-27T20:21:56Z",
+      "side": 1,
+      "message": "That\u0027s a good point. I had continued down the road of adding things to the xformer, because it was already doing the work of going to dest. But at this point, much of this work is independent of the destination color space, so we could hoist it. I\u0027ll probably look at that as a follow-up. (While doing this, I also wondered about getting rid of implicit positions entirely, but we do have CPU code that uses that as a simple signal for fast-path RP stages. We\u0027d probably want a bool to remember that the positions were uniformly spaced).",
+      "parentUuid": "3c31f7e9_487eda80",
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83bacf35_b809a25a",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-27T20:11:35Z",
       "side": 1,
       "message": "Was this threshold visually determined?",
+      "range": {
+        "startLine": 645,
+        "startChar": 48,
+        "endLine": 645,
+        "endChar": 53
+      },
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4758b21a_c8911e34",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-27T20:21:56Z",
+      "side": 1,
+      "message": "Done in the debugger, by looking at the chroma values from black and white, as well as the slightly-tinted versions used in the slide. LCH produces 0.0033 for white (and zero for black), and \u003e1 for the slightly tinted white.",
+      "parentUuid": "83bacf35_b809a25a",
       "range": {
         "startLine": 645,
         "startChar": 48,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3bfbba1_6111da0c",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-27T20:21:56Z",
+      "side": 1,
+      "message": "Yup. OKLCH produces 5e-8 for white (and something like 1e-4 for the slightly tinted white in the slide).",
+      "parentUuid": "033bbb12_0904d685",
+      "range": {
+        "startLine": 673,
+        "startChar": 48,
+        "endLine": 673,
+        "endChar": 52
+      },
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0b99e7c_8c78f88a",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-10-27T20:11:35Z",
       "side": 1,
       "message": "Maybe add a comment here that all interpolation color spaces--which the colors have already been converted to--that can have powerless hues store the hue in the red channel of SkPMColor4f?",
+      "range": {
+        "startLine": 794,
+        "startChar": 35,
+        "endLine": 794,
+        "endChar": 46
+      },
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "573cec19_5c8a4591",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-27T20:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0b99e7c_8c78f88a",
       "range": {
         "startLine": 794,
         "startChar": 35,
