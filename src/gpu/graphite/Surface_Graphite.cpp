@@ -168,17 +168,22 @@ bool validate_backend_texture(const Caps* caps,
     if (!texture.isValid() ||
         texture.dimensions().width() <= 0 ||
         texture.dimensions().height() <= 0) {
+        SkDebugf("dimensions bad\n");
         return false;
     }
 
     if (!SkColorInfoIsValid(info)) {
+        SkDebugf("colorinfo bad\n");
         return false;
     }
 
     if (!caps->isRenderable(texture.info())) {
+        SkDebugf("renderable bad\n");
         return false;
     }
-
+    if (!caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info())) {
+        SkDebugf("color type and texture info incompat\n");
+    }
     return caps->areColorTypeAndTextureInfoCompatible(info.colorType(), texture.info());
 }
 
