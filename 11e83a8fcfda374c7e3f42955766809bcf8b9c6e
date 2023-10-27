@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90996a6d_41eee420",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-27T13:45:24Z",
+      "side": 1,
+      "message": "I haven\u0027t looked at every yet, but looking at the changes to the REnderSteps gave me the idea that maybe in `ContextUtils`, when we\u0027re setting everything up in the main() functions for VS and FS stages, we just iterate over the uniforms that the step declared and create local variables that have the same names as the \"uniforms\" and extract them from the SSBO right there.\n\nThen the renderstep sksl shouldn\u0027t have to change, and we can rely on dead-code removal to get rid of variables that aren\u0027t used in a particular stage. WDYT?",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "096d502d_838a9710",
