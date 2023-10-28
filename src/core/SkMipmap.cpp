@@ -95,7 +95,8 @@ SkMipmap* SkMipmap::Build(const SkPixmap& src, SkDiscardableFactoryProc fact,
 
     std::unique_ptr<SkMipmapDownSampler> downsampler;
     if (computeContents) {
-        downsampler = SkMakeHQDownSampler(src);
+//        downsampler = SkMakeHQDownSampler(src);
+        downsampler = SkMakeRPDownSampler(src);
         if (!downsampler) {
             return nullptr;
         }
