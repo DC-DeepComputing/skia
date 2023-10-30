@@ -16,6 +16,24 @@
       "message": "Yeah, if we really want something to be very Skia-Skia build specific (and not to Skia builds in general) then it should probably go in `//gn/skia:default`, I think.",
       "revId": "8b86ad6692b8d5a53e4f5ee6c87dbca3cefc099b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97d97de6_075dbc37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T19:16:57Z",
+      "side": 1,
+      "message": "There are also a few small issues in some tests that are not on the CQ (e.g. CanvasKit and Vulkan), so this partial rollback will be helpful for Skia-Skia too.",
+      "parentUuid": "ec605005_8e02ed1a",
+      "revId": "8b86ad6692b8d5a53e4f5ee6c87dbca3cefc099b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
