@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "238104c2_a906358e",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-10-30T18:01:12Z",
+      "side": 1,
+      "message": "Not in this CL -- Separately we need to decide on some scheme for choosing\n-- compile time flag\n-- linker time decision\n-- runtime\n\nFor now, I\u0027d like to land as is -- so others can at least test this version (by uncommenting that line).",
+      "parentUuid": "7e320c25_ccb72052",
+      "revId": "369f2b554410ec713c9fed263a30301a138ef7dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02547733_15c5d790",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76df3824_3a6b6aaf",
+        "filename": "src/core/SkMipmapDrawDownSampler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-10-30T18:01:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "02547733_15c5d790",
+      "revId": "369f2b554410ec713c9fed263a30301a138ef7dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01e576bb_862d85ac",
@@ -65,6 +101,30 @@
       "writtenOn": "2023-10-30T12:50:50Z",
       "side": 1,
       "message": "nit: just return without a local?",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 16
+      },
+      "revId": "369f2b554410ec713c9fed263a30301a138ef7dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "618b353b_58d2716d",
+        "filename": "src/core/SkMipmapDrawDownSampler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-10-30T18:01:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01e576bb_862d85ac",
       "range": {
         "startLine": 57,
         "startChar": 9,
