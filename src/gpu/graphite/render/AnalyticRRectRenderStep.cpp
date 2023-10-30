@@ -450,7 +450,7 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferMana
 
                              // TODO: pack depth and ssboIndex into 32-bits
                              {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                             {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt},
+                             {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt},
 
                              {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                              {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
@@ -543,8 +543,8 @@ float AnalyticRRectRenderStep::boundsOutset(const Transform& localToDevice,
 }
 
 void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
-                                           const DrawParams& params,
-                                           int ssboIndex) const {
+                                            const DrawParams& params,
+                                            uint32_t ssboIndices) const {
     SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};
@@ -691,7 +691,7 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
                                                    : bounds.center();
     vw << center << centerWeight << aaRadius
        << params.order().depthAsFloat()
-       << ssboIndex
+       << ssboIndices
        << m.rc(0,0) << m.rc(1,0) << m.rc(3,0)  // mat0
        << m.rc(0,1) << m.rc(1,1) << m.rc(3,1)  // mat1
        << m.rc(0,3) << m.rc(1,3) << m.rc(3,3); // mat2

@@ -100,6 +100,13 @@ std::string EmitPaintParamsStorageBuffer(int bufferID,
                                          SkSpan<const ShaderNode*> nodes,
                                          int* numPaintUniforms,
                                          bool* wrotePaintColor);
+std::string EmitRenderStepStorageBuffer(int bufferID,
+                                        const char* bufferTypePrefix,
+                                        const char* bufferNamePrefix,
+                                        SkSpan<const Uniform> uniforms);
+std::string EmitUniformsFromStorageBuffer(const char* bufferNamePrefix,
+                                          const char* ssboIndex,
+                                          SkSpan<const Uniform>);
 std::string EmitStorageBufferAccess(const char* bufferNamePrefix,
                                     const char* ssboIndex,
                                     const char* uniformName);

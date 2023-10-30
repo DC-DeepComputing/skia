@@ -71,7 +71,7 @@ public:
     // The DrawWriter is configured with the vertex and instance strides of the RenderStep, and its
     // primitive type. The recorded draws will be executed with a graphics pipeline compatible with
     // this RenderStep.
-    virtual void writeVertices(DrawWriter*, const DrawParams&, int ssboIndex) const = 0;
+    virtual void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndices) const = 0;
 
     // Write out the uniform values (aligned for the layout), textures, and samplers. The uniform
     // values will be de-duplicated across all draws using the RenderStep before uploading to the
@@ -135,7 +135,12 @@ public:
     size_t numVertexAttributes()   const { return fVertexAttrs.size();   }
     size_t numInstanceAttributes() const { return fInstanceAttrs.size(); }
 
-    static const char* ssboIndex() { return "ssboIndex"; }
+    // Name of an attribute containing both render step and shading SSBO indices, if used.
+    static const char* ssboIndicesAttribute() { return "ssboIndices"; }
+
+    // Name of a varying to pass SSBO indices to fragment shader. Both render step and shading
+    // indices are passed, because render step uniforms are sometimes used for coverage.
+    static const char* ssboIndicesVarying() { return "ssboIndicesVar"; }
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.

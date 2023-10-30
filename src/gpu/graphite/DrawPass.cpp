@@ -470,12 +470,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     GraphicsPipelineCache pipelineCache;
 
     // Geometry uniforms are currently always UBO-backed.
+    const bool useStorageBuffers = recorder->priv().caps()->storageBufferPreferred();
     const ResourceBindingRequirements& bindingReqs =
             recorder->priv().caps()->resourceBindingRequirements();
-    Layout geometryUniformLayout = bindingReqs.fUniformBufferLayout;
-    UniformTracker geometryUniformTracker(/*useStorageBuffers=*/false);
+    Layout geometryUniformLayout =
+            useStorageBuffers ? bindingReqs.fStorageBufferLayout : bindingReqs.fUniformBufferLayout;
+    UniformTracker geometryUniformTracker(useStorageBuffers);
 
-    bool useStorageBuffers = recorder->priv().caps()->storageBufferPreferred();
     Layout shadingUniformLayout =
             useStorageBuffers ? bindingReqs.fStorageBufferLayout : bindingReqs.fUniformBufferLayout;
     UniformTracker shadingUniformTracker(useStorageBuffers);
@@ -633,7 +634,17 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
         }
 
-        renderStep.writeVertices(&drawWriter, draw.fDrawParams, key.shadingUniformIndex());
+        UniformCache::Index geometrySsboIndex =
+                (key.geometryUniformIndex() == UniformCache::kInvalidIndex)
+                        ? 0
+                        : key.geometryUniformIndex();
+        UniformCache::Index shadingSsboIndex =
+                (key.shadingUniformIndex() == UniformCache::kInvalidIndex)
+                        ? 0
+                        : key.shadingUniformIndex();
+        SkASSERT(geometrySsboIndex < 0x10000 && shadingSsboIndex < 0x10000);
+        uint32_t ssboIndices = (geometrySsboIndex << 16) | shadingSsboIndex;
+        renderStep.writeVertices(&drawWriter, draw.fDrawParams, ssboIndices);
     }
     // Finish recording draw calls for any collected data at the end of the loop
     drawWriter.flush();
