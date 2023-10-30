@@ -33,6 +33,69 @@
       "message": "post-weekend ping",
       "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07c8ed8_fc076236",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-30T21:19:20Z",
+      "side": 1,
+      "message": "Sorry for the delay!",
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d5a05a_67c4a383",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-30T21:19:20Z",
+      "side": 1,
+      "message": "This seems like an unrelated change. But it also feels like a bikeshed - I don\u0027t have any preference over which to use, except the one that we\u0027re already using (unless there\u0027s a strong reason to change it).\n\nLooking below, I guess you\u0027re being consistent with the other code...",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 5
+      },
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ed4d12_55872836",
+        "filename": "src/codec/SkExif.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-30T21:19:20Z",
+      "side": 1,
+      "message": "Love it.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 15
+      },
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

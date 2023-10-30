@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3339950_12afc2da",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-30T21:19:20Z",
+      "side": 1,
+      "message": "Do we expect that other clients (e.g. Android) might use any of this, too?",
+      "parentUuid": "446e9b39_675e17d1",
+      "revId": "c9318eb86d9282aba570c7619c13160caf69b413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2025dc36_096bb10f",
         "filename": "include/private/SkExif.h",
         "patchSetId": 1
