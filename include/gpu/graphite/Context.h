@@ -147,6 +147,11 @@ public:
      */
     size_t currentBudgetedBytes() const;
 
+    /**
+     * Does this context support protected content?
+     */
+    bool supportsProtectedContent() const;
+
     // Provides access to functions that aren't part of the public API.
     ContextPriv priv();
     const ContextPriv priv() const;  // NOLINT(readability-const-return-type)
