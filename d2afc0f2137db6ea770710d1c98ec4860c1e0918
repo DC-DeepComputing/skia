@@ -70,6 +70,29 @@
       "parentUuid": "66d17ae1_09556ee6",
       "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92bed79c_2ca5096f",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-30T20:08:05Z",
+      "side": 1,
+      "message": "I guess naming wise, i\u0027d either name this `renderStepUniformsTotalBytes` or make the call above also just be `uniformsTotalBytes`. I don\u0027t really have a preference for the name besides being consistent.",
+      "range": {
+        "startLine": 105,
+        "startChar": 40,
+        "endLine": 105,
+        "endChar": 58
+      },
+      "revId": "d2afc0f2137db6ea770710d1c98ec4860c1e0918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
