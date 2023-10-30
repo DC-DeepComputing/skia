@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54b5e62_15091cd5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-30T17:30:31Z",
+      "side": 1,
+      "message": "Looking at this again, the slight hiccup is the one you mentioned - when we interpolate in dst (legacy behavior), we pick dst as the \"intermediate\" space. We won\u0027t have that option up front, so we\u0027ll have to leave things in source (presumably). For all other modes, we pick intermediate like we do today, and apply all the other fixes.\n\nThen at the point that xformer happens today, we\u0027d have a second spot where transforms can happen, but that would only get invoked for legacy interpolation, to do the transform from src to dst. That\u0027s a little annoying, but still might be better overall?",
+      "parentUuid": "9288154f_cd303905",
+      "revId": "e25f198dca3041511a0293de4d675f309f949202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83bacf35_b809a25a",
