@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee416847_7e101713",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-30T17:15:29Z",
+      "side": 1,
+      "message": "If we really do want to try to guarantee the behavior of this comment then we would need to go around and actually ensure all the implementations actually do this (as well as any user implementations). On the other hand, we should also look at all the places in Skia that incorrectly currently rely on this behavior if we remove this.\n\nIn other words, this is somewhat a bug report more than a real CL. That being said, if this is at least removed there is at least less incorrect documentation.",
+      "revId": "e828014e345fbdc2dce25a51d2e16a73be4a7c49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
