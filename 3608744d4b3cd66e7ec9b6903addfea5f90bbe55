@@ -55,6 +55,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b34f5433_ba76a5aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T14:15:01Z",
+      "side": 1,
+      "message": "Looks like my Android change actually fixed a few negative svg gms (bold font works now).",
+      "parentUuid": "1678b5a1_62ae2c3b",
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "660f94da_d8121425",
         "filename": "gm/typeface.cpp",
         "patchSetId": 7
