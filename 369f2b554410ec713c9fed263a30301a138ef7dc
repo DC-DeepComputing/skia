@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7e320c25_ccb72052",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-10-30T12:50:50Z",
+      "side": 1,
+      "message": "I assume this will be selectable in some way?",
+      "revId": "369f2b554410ec713c9fed263a30301a138ef7dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02547733_15c5d790",
         "filename": "src/core/SkMipmapDrawDownSampler.cpp",
         "patchSetId": 7
@@ -31,6 +48,29 @@
       "writtenOn": "2023-10-30T12:48:30Z",
       "side": 1,
       "message": "FWIW - I think all color-types are (RP knows how to store to every color-type, so any checks related to this have been removed, AFAIK). Unpremul is \"supported\", although interestingly that\u0027s going to be less efficient (and now that I think about it, produce results that might be strange?)",
+      "revId": "369f2b554410ec713c9fed263a30301a138ef7dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01e576bb_862d85ac",
+        "filename": "src/core/SkMipmapDrawDownSampler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-10-30T12:50:50Z",
+      "side": 1,
+      "message": "nit: just return without a local?",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 16
+      },
       "revId": "369f2b554410ec713c9fed263a30301a138ef7dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
