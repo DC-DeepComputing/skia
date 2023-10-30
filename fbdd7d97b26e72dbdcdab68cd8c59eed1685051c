@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "138cc42c_24009253",
+        "filename": "include/core/SkSurfaceProps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8223
+      },
+      "writtenOn": "2023-10-30T10:46:20Z",
+      "side": 0,
+      "message": "Doesn\u0027t look used by Chromium any more:\nhttps://source.chromium.org/search?q\u003dkUseDistanceField\u0026ss\u003dchromium\u0026ssfr\u003d1",
+      "revId": "fbdd7d97b26e72dbdcdab68cd8c59eed1685051c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
