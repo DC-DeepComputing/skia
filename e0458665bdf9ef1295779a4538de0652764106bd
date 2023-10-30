@@ -16,6 +16,23 @@
       "message": "This adds more Exif tag support, and some tests.",
       "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdab6e62_6a22c42f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-10-30T14:08:14Z",
+      "side": 1,
+      "message": "post-weekend ping",
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
