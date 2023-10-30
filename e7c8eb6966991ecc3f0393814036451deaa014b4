@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "328087f0_90cc487a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Thanks for the comments -- I\u0027ll update in a follow-up CL as you suggested.",
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d26c2a98_e9e0bb51",
@@ -31,6 +48,30 @@
       "writtenOn": "2023-10-30T13:53:16Z",
       "side": 1,
       "message": "Since we get the local positions directly from the `xs` and the `ys`, we can drop this attribute.",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 19
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc5d4e14_29e8f469",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "I\u0027ll patch in a follow-up.",
+      "parentUuid": "d26c2a98_e9e0bb51",
       "range": {
         "startLine": 220,
         "startChar": 0,
@@ -64,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d38beb0_2988f4be",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8af9a7a0_b97d739e",
+      "range": {
+        "startLine": 291,
+        "startChar": 30,
+        "endLine": 291,
+        "endChar": 38
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d45bfe56_d5027b45",
@@ -77,6 +142,30 @@
       "writtenOn": "2023-10-30T13:53:16Z",
       "side": 1,
       "message": "See my other note, but I think it can just multiplied into `normal` at this point.",
+      "range": {
+        "startLine": 293,
+        "startChar": 29,
+        "endLine": 294,
+        "endChar": 64
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36b55501_b61179d4",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d45bfe56_d5027b45",
       "range": {
         "startLine": 293,
         "startChar": 29,
@@ -110,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edfc4169_bae83599",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "48c64212_a96ddbeb",
+      "range": {
+        "startLine": 298,
+        "startChar": 31,
+        "endLine": 298,
+        "endChar": 40
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b1a1842_39f35632",
@@ -123,6 +236,30 @@
       "writtenOn": "2023-10-30T13:53:16Z",
       "side": 1,
       "message": "unused now",
+      "range": {
+        "startLine": 302,
+        "startChar": 31,
+        "endLine": 302,
+        "endChar": 37
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c4ce12_f9dcf85c",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4b1a1842_39f35632",
       "range": {
         "startLine": 302,
         "startChar": 31,
@@ -158,6 +295,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de32d19c_8f45e46c",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "I\u0027m not sure it\u0027s worth tying it back to AnalyticRRect -- as you imply, the comment might get stale. Relatedly, I was thinking that for the ARRRenderStep (pirate graphics? but I digress) isRect case we would ignore the edgeFlags, since they\u0027d all be 1. So then xRadiiOrFlags could encode .x with \u003e 0 is filled, 0 is filled rect, \u003c 0 is stroked.",
+      "parentUuid": "85f5bc77_8bd5e0e9",
+      "range": {
+        "startLine": 410,
+        "startChar": 4,
+        "endLine": 411,
+        "endChar": 33
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e77a0d10_d1ebe904",
         "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
         "patchSetId": 9
@@ -169,6 +330,30 @@
       "writtenOn": "2023-10-30T13:53:16Z",
       "side": 1,
       "message": "nit: +1 now",
+      "range": {
+        "startLine": 414,
+        "startChar": 7,
+        "endLine": 414,
+        "endChar": 9
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5428a408_749e1866",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e77a0d10_d1ebe904",
       "range": {
         "startLine": 414,
         "startChar": 7,
@@ -202,6 +387,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8d52dd_1931379b",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "660dba14_6796c826",
+      "range": {
+        "startLine": 854,
+        "startChar": 0,
+        "endLine": 854,
+        "endChar": 48
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9f7dccb_2a4da7b1",
@@ -215,6 +424,30 @@
       "writtenOn": "2023-10-30T13:53:16Z",
       "side": 1,
       "message": "I\u0027m assuming these are pending cleanup in another round?",
+      "range": {
+        "startLine": 872,
+        "startChar": 4,
+        "endLine": 874,
+        "endChar": 77
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69a2f9b5_38dc729f",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Yes, once I update the frag shader these can go away.",
+      "parentUuid": "a9f7dccb_2a4da7b1",
       "range": {
         "startLine": 872,
         "startChar": 4,
@@ -248,6 +481,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65481e17_f36cce68",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30a180aa_75f83ccd",
+      "range": {
+        "startLine": 919,
+        "startChar": 0,
+        "endLine": 919,
+        "endChar": 79
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "325facbc_0d6c8cfb",
@@ -261,6 +518,30 @@
       "writtenOn": "2023-10-30T13:53:16Z",
       "side": 1,
       "message": "If we update this check to `edgeAANormal.x !\u003d 0 || edgeAANormal.ly !\u003d 0`, we can remove `normalScale` and just have the non-outset vertex have (0,0) for its normal.\n\nIn the general version, the non-outset vertices still needed normals so that they could be placed within a rounded corner, but that\u0027s all gone now.",
+      "range": {
+        "startLine": 947,
+        "startChar": 8,
+        "endLine": 947,
+        "endChar": 25
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19dff9f2_d26846de",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T14:32:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "325facbc_0d6c8cfb",
       "range": {
         "startLine": 947,
         "startChar": 8,
