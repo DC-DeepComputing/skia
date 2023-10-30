@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1678b5a1_62ae2c3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T12:25:12Z",
+      "side": 1,
+      "message": "I think I resolved the gms. I took a speculative guess for the SVG differences.",
+      "parentUuid": "d5d511f9_1a6b5ccc",
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "660f94da_d8121425",
@@ -71,6 +89,30 @@
       "writtenOn": "2023-10-26T23:06:45Z",
       "side": 1,
       "message": "`CreateTestTypeface`? I think this test wants to be able to be useful on NativeFont bots.\n\nOn the other hand... this gm doesn\u0027t seem very useful anymore, as there are many more gms that test styles better (`fontmgr_match`\u0027s `exploreFamily` bits) and the kerning bits a vestigial.\n\nTell you what, I\u0027ll let you land this part as-is and make this gm more or less not useful, and then I\u0027ll just delete it.",
+      "range": {
+        "startLine": 108,
+        "startChar": 35,
+        "endLine": 108,
+        "endChar": 57
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f16548ad_0fc8c994",
+        "filename": "gm/typeface.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T12:25:12Z",
+      "side": 1,
+      "message": "Added a TODO to delete",
+      "parentUuid": "bcda2b18_eeae8971",
       "range": {
         "startLine": 108,
         "startChar": 35,
@@ -127,6 +169,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa1dcc91_30250eb2",
+        "filename": "gm/userfont.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T12:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "834bead4_3b931c51",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0216f11d_c7048a24",
@@ -150,6 +216,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8586ba6_60140a09",
+        "filename": "modules/skottie/tests/Shaper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T12:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0216f11d_c7048a24",
+      "range": {
+        "startLine": 68,
+        "startChar": 44,
+        "endLine": 68,
+        "endChar": 67
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03bf07fd_3ef8ebd0",
@@ -163,6 +253,30 @@
       "writtenOn": "2023-10-26T23:06:45Z",
       "side": 1,
       "message": "`DefaultFont`, this is a test and should make sure it does something interesting on NativeFont tests and also just generally when running tests locally.",
+      "range": {
+        "startLine": 127,
+        "startChar": 29,
+        "endLine": 127,
+        "endChar": 48
+      },
+      "revId": "3608744d4b3cd66e7ec9b6903addfea5f90bbe55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a1528b1_9d8f3c3d",
+        "filename": "modules/skshaper/tests/ShaperTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-30T12:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03bf07fd_3ef8ebd0",
       "range": {
         "startLine": 127,
         "startChar": 29,
