@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec605005_8e02ed1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-10-30T19:13:01Z",
+      "side": 1,
+      "message": "Yeah, if we really want something to be very Skia-Skia build specific (and not to Skia builds in general) then it should probably go in `//gn/skia:default`, I think.",
+      "revId": "8b86ad6692b8d5a53e4f5ee6c87dbca3cefc099b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
