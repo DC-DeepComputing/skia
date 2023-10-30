@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60abb43f_18398499",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "Overall lgtm. There are some nits about updating comments and them some further cleanup we could do in the vertex shader. As-is I think those cleanups could go in a follow-up CL.",
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26c2a98_e9e0bb51",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "Since we get the local positions directly from the `xs` and the `ys`, we can drop this attribute.",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 19
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af9a7a0_b97d739e",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "unused now",
+      "range": {
+        "startLine": 291,
+        "startChar": 30,
+        "endLine": 291,
+        "endChar": 38
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45bfe56_d5027b45",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "See my other note, but I think it can just multiplied into `normal` at this point.",
+      "range": {
+        "startLine": 293,
+        "startChar": 29,
+        "endLine": 294,
+        "endChar": 64
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c64212_a96ddbeb",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "This attribute is a good candidate for packing into a smaller type too",
+      "range": {
+        "startLine": 298,
+        "startChar": 31,
+        "endLine": 298,
+        "endChar": 40
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b1a1842_39f35632",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "unused now",
+      "range": {
+        "startLine": 302,
+        "startChar": 31,
+        "endLine": 302,
+        "endChar": 37
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85f5bc77_8bd5e0e9",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "This case is gone now; not sure if it\u0027s worth tying it back to the filled rect case in AnalyticRRectRenderStep or if their similarities will further diverge?",
+      "range": {
+        "startLine": 410,
+        "startChar": 4,
+        "endLine": 411,
+        "endChar": 33
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e77a0d10_d1ebe904",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "nit: +1 now",
+      "range": {
+        "startLine": 414,
+        "startChar": 7,
+        "endLine": 414,
+        "endChar": 9
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "660dba14_6796c826",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "It looks like we can get rid of this?",
+      "range": {
+        "startLine": 854,
+        "startChar": 0,
+        "endLine": 854,
+        "endChar": 48
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9f7dccb_2a4da7b1",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "I\u0027m assuming these are pending cleanup in another round?",
+      "range": {
+        "startLine": 872,
+        "startChar": 4,
+        "endLine": 874,
+        "endChar": 77
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30a180aa_75f83ccd",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "This TODO is stale. I should have deleted it when I\u0027d done the aa flags in the general renderer.",
+      "range": {
+        "startLine": 919,
+        "startChar": 0,
+        "endLine": 919,
+        "endChar": 79
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "325facbc_0d6c8cfb",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-30T13:53:16Z",
+      "side": 1,
+      "message": "If we update this check to `edgeAANormal.x !\u003d 0 || edgeAANormal.ly !\u003d 0`, we can remove `normalScale` and just have the non-outset vertex have (0,0) for its normal.\n\nIn the general version, the non-outset vertices still needed normals so that they could be placed within a rounded corner, but that\u0027s all gone now.",
+      "range": {
+        "startLine": 947,
+        "startChar": 8,
+        "endLine": 947,
+        "endChar": 25
+      },
+      "revId": "e7c8eb6966991ecc3f0393814036451deaa014b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
