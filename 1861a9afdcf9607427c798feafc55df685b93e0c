@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbd7d457_68071d75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-30T16:03:08Z",
+      "side": 1,
+      "message": "The updates to the previous EdgeAAQuad CL. PTAL.",
+      "revId": "1861a9afdcf9607427c798feafc55df685b93e0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
