@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c86ab3e_44183637",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-30T19:22:00Z",
+      "side": 1,
+      "message": "I do like this better. Latest patchset takes this approach. We could also do this with paint uniforms, although they\u0027d have to be globals.",
+      "parentUuid": "90996a6d_41eee420",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "096d502d_838a9710",
