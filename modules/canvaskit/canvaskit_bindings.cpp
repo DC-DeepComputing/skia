@@ -134,7 +134,7 @@ struct SkEmbeddedResourceHeader { const SkEmbeddedResource* entries; int count; 
 extern "C" const SkEmbeddedResourceHeader SK_EMBEDDED_FONTS;
 #endif
 
-#if GR_TEST_UTILS
+#if defined(GR_TEST_UTILS)
 #error "This define should not be set, as it brings in test-only things and bloats codesize."
 #endif
 
@@ -2343,6 +2343,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("GetDefault", optional_override([]()->sk_sp<SkTypeface> {
 #if defined(CK_EMBED_FONT)
             if (SK_EMBEDDED_FONTS.count == 0) {
+                SkDebugf("No embedded font");
                 return nullptr;
             }
             static sk_sp<SkTypeface> default_face;
@@ -2354,6 +2355,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             });
             return default_face;
 #else
+            SkDebugf("No default font");
             return nullptr;
 #endif
         }), allow_raw_pointers())
