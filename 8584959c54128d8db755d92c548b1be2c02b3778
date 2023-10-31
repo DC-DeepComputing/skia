@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "143e713f_10e70633",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-10-31T17:53:17Z",
+      "side": 1,
+      "message": "The first implementation of SkUnicode API with ICU4X.",
+      "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8143bad1_8dad8233",
