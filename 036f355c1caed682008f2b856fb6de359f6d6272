@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81c345df_541764a8",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "259f7e99_bfa79e73",
+      "range": {
+        "startLine": 507,
+        "startChar": 53,
+        "endLine": 507,
+        "endChar": 54
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a319d2b6_98a1af40",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-31T16:52:16Z",
       "side": 1,
       "message": "I think I prefer just passing in `useStorageBuffers` to `toSkSL` and letting it apply the logic it needs to based on whether or not the RenderStep has uniforms or performs shading (or both).",
+      "range": {
+        "startLine": 548,
+        "startChar": 4,
+        "endLine": 549,
+        "endChar": 86
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6324d72_1d5235f5",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a319d2b6_98a1af40",
       "range": {
         "startLine": 548,
         "startChar": 4,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3016eaf_04a4f58a",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "It is used in various functions throughout ShaderCodeDictionary.cpp: https://crsrc.org/c/third_party/skia/src/gpu/graphite/ShaderCodeDictionary.cpp?q\u003dssboIndex. It should be possible to pipe it around from here but that might be more trouble than it\u0027s worth.",
+      "parentUuid": "e17019fd_2e4853aa",
+      "range": {
+        "startLine": 552,
+        "startChar": 50,
+        "endLine": 552,
+        "endChar": 66
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f2c73e9_6e171cb5",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 3
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-31T16:52:16Z",
       "side": 1,
       "message": "This is always the same as `shadingUniformLayout` now, lets just have a `uniformLayout` variable.",
+      "range": {
+        "startLine": 476,
+        "startChar": 11,
+        "endLine": 476,
+        "endChar": 32
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ecdb6bc_88574a3c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f2c73e9_6e171cb5",
       "range": {
         "startLine": 476,
         "startChar": 11,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e97e1e40_fb5a7f9b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "I\u0027m only seeing SkFitsInFixed: https://source.chromium.org/search?q\u003d%22SkFitsIn%22\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F",
+      "parentUuid": "b5c57b1c_d0a83753",
+      "range": {
+        "startLine": 645,
+        "startChar": 17,
+        "endLine": 645,
+        "endChar": 44
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa161066_2f8b9597",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 3
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3125cf27_d8c76e7f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "Yea I overlooked the naming here. Updated the parameter to \"emitShadingSsboIndicesVarying\". Could we be doing shading but not analytic coverage with uniforms? In that case I think it\u0027d make sense to keep the booleans separate. Then I think for the call to EmitVaryings, we can just pass useShadingStorageBuffer and assert \"if we\u0027re doing analytic coverage, then we\u0027re doing shading\".",
+      "parentUuid": "aa161066_2f8b9597",
+      "range": {
+        "startLine": 235,
+        "startChar": 72,
+        "endLine": 235,
+        "endChar": 95
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5792d14b_411c289d",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 3
@@ -152,6 +296,30 @@
       "writtenOn": "2023-10-31T16:52:16Z",
       "side": 1,
       "message": "Can these be kUShort2 instead of having to do the bit shifting in the shader and when writing instance data?\n\nYou could type this as `skvx::half2` (which is really an alias for Vec\u003cuint16_t, 2\u003e and we should add a new alias for ushort usage that shouldn\u0027t be interpreted as half floats). Or `std::array\u003cuint16_t, 2\u003e`, or std::pair\u003cuint16_t, uint16_t\u003e. Or have a POD-struct that names the fields so we know which index goes to what uniforms.",
+      "range": {
+        "startLine": 453,
+        "startChar": 63,
+        "endLine": 453,
+        "endChar": 68
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d290920_9d7fcff6",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-10-31T20:49:39Z",
+      "side": 1,
+      "message": "Added `skvx::ushort2`",
+      "parentUuid": "5792d14b_411c289d",
       "range": {
         "startLine": 453,
         "startChar": 63,
