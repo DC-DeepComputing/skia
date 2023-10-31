@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45c3e437_93b1efea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-10-31T16:53:54Z",
+      "side": 1,
+      "message": "Thanks for the cleanup! You\u0027ll need approval from someone in [this list](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/OWNERS) for any API changes, though.",
+      "revId": "966e2c0635a753ceeacaa975725d93add7708519",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
