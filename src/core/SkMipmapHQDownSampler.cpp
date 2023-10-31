@@ -433,7 +433,7 @@ void HQDownSampler::buildLevel(const SkPixmap& dst, const SkPixmap& src) {
 
 } // namespace
 
-std::unique_ptr<SkMipmapDownSampler> SkMakeHQDownSampler(const SkPixmap& root) {
+std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& root) {
     FilterProc* proc_1_2 = nullptr;
     FilterProc* proc_1_3 = nullptr;
     FilterProc* proc_2_1 = nullptr;
@@ -594,4 +594,3 @@ std::unique_ptr<SkMipmapDownSampler> SkMakeHQDownSampler(const SkPixmap& root) {
     sampler->proc_3_3 = proc_3_3;
     return sampler;
 }
-

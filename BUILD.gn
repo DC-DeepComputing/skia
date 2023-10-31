@@ -523,6 +523,16 @@ optional("fontmgr_win_gdi") {
   libs = [ "Gdi32.lib" ]
 }
 
+optional("mipmap_downsampler_hq") {
+  enabled = skia_use_mipmap_downsampler_hq
+  sources = [ "src/core/SkMipmapHQDownSampler.cpp" ]
+}
+
+optional("mipmap_downsampler_draw") {
+  enabled = skia_use_mipmap_downsampler_draw
+  sources = [ "src/core/SkMipmapDrawDownSampler.cpp" ]
+}
+
 if (skia_lex) {
   skia_executable("sksllex") {
     sources = [
