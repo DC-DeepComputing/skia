@@ -33,6 +33,24 @@
       "message": "How about: `SkRect bInset \u003d b.makeInset(tol);`, then use the inset rect in the distance equations?",
       "revId": "6138b1c718c8e4413aa8c27d75bcdba337614d53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d0425db_a2ee6d43",
+        "filename": "src/core/SkRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T14:34:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb6d1655_13b53060",
+      "revId": "6138b1c718c8e4413aa8c27d75bcdba337614d53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
