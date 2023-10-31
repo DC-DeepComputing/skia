@@ -16,6 +16,23 @@
       "message": "ptal",
       "revId": "cc2c36b1d66fc85074fcea390c661b0ebcc862d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d4ba1cd_4fe83bbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-10-31T19:26:33Z",
+      "side": 1,
+      "message": "I think this scheme is going to fail for all the clients that use our .gni files  (which is basically all of them). The default source lists won\u0027t have either implementation, so will fail at link time.\n\nProbably need to include the HQ downsampling in the default core source list. Then, if the flag is set, remove that (`sources -\u003d ...`) and add the other one.",
+      "revId": "cc2c36b1d66fc85074fcea390c661b0ebcc862d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
