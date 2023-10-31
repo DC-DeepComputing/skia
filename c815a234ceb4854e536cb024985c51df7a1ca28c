@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52036c16_4f47da1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-31T19:56:02Z",
+      "side": 1,
+      "message": "I think this is a nice change that simplifies the logic a lot.",
+      "revId": "c815a234ceb4854e536cb024985c51df7a1ca28c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b8f6c0d_2510c3fa",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-10-31T19:56:02Z",
+      "side": 1,
+      "message": "does dawn just force us to bind a valid buffer here vs using some \"unused\" value or leaving null?",
+      "range": {
+        "startLine": 572,
+        "startChar": 32,
+        "endLine": 572,
+        "endChar": 56
+      },
+      "revId": "c815a234ceb4854e536cb024985c51df7a1ca28c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
