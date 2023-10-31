@@ -22,6 +22,30 @@
       },
       "revId": "1616fc787771118c8b9d9a02cf7c8cd494b02c0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "728003a1_09b23932",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-10-31T19:31:13Z",
+      "side": 1,
+      "message": "That was deliberate so I didn\u0027t have to reformat everything that follows... I\u0027ll update in the frag shader CL.",
+      "parentUuid": "13eb78ca_086124cb",
+      "range": {
+        "startLine": 49,
+        "startChar": 83,
+        "endLine": 49,
+        "endChar": 86
+      },
+      "revId": "1616fc787771118c8b9d9a02cf7c8cd494b02c0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
