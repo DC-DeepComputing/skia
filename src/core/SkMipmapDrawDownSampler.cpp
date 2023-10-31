@@ -60,7 +60,6 @@ void DrawDownSampler::buildLevel(const SkPixmap& dst, const SkPixmap& src) {
 
 } // namespace
 
-std::unique_ptr<SkMipmapDownSampler> SkMakeDrawDownSampler(const SkPixmap& root) {
+std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& root) {
     return std::make_unique<DrawDownSampler>();
 }
-
