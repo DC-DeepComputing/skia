@@ -16,6 +16,86 @@
       "message": "PTAL",
       "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85cefd77_fcea528c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T17:45:53Z",
+      "side": 1,
+      "message": "lgtm, with only a few further simplifications possible (a follow-up is fine by me)",
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04c2edbc_28585b32",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T17:45:53Z",
+      "side": 1,
+      "message": "\"Device-space distance to LTRB edges of quad\"?",
+      "range": {
+        "startLine": 289,
+        "startChar": 32,
+        "endLine": 290,
+        "endChar": 66
+      },
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09a96371_99ce8377",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T17:45:53Z",
+      "side": 1,
+      "message": "If we add 1/2*abs(devPos.z) here, I think we also don\u0027t need to apply the bias in the fragment shader.",
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc22d3e1_a54da6d3",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T17:45:53Z",
+      "side": 1,
+      "message": "Since quads never use subpixel scale+biasing for the coverage equations, I think we can drop this entirely and assume scale\u003d1 and bias\u003d0.5 in the fragment shader.\n\nAlthough this would not be the desired case if we were sending filled rects through this code path, since we do want those to be adjusted for subpixel widths.",
+      "range": {
+        "startLine": 973,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 34
+      },
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
