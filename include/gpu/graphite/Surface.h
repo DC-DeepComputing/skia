@@ -76,6 +76,10 @@ SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
                                            SkColorType colorType,
                                            sk_sp<SkColorSpace> colorSpace,
                                            const SkSurfaceProps* props);
+
+SK_API skgpu::graphite::BackendTexture GetBackendTexture(SkSurface*/*,
+                                                         BackendHandleAccess access */);
+
 }  // namespace SkSurfaces
 
 #endif  // skgpu_graphite_Surface_DEFINED
