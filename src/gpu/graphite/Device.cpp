@@ -1152,8 +1152,13 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         return {renderers->coverageMask(), nullptr};
     } else if (geometry.isEdgeAAQuad()) {
         SkASSERT(!requireMSAA && style.isFillStyle());
+#if defined(SK_USE_PER_EDGE_AA_QUAD_RENDER_STEP)
         // handled by specialized system, simplified from rects and round rects
         return {renderers->perEdgeAAQuad(), nullptr};
+#else
+        // use general analytic roundrect system
+        return {renderers->analyticRRect(), nullptr};
+#endif
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
         return {nullptr, nullptr};

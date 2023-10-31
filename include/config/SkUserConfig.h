@@ -105,6 +105,11 @@
 //#define SK_NO_SANITIZE(A) __attribute__((no_sanitize(A)))
 //#define SK_TRIVIAL_ABI [[clang::trivial_abi]]
 
+/* When set, Graphite will use the PerEdgeAAQuadRenderStep for edge AA
+   quads, rather than the general AnalyticRRectRenderStep.
+*/
+#define SK_USE_PER_EDGE_AA_QUAD_RENDER_STEP
+
 /*
  * If compiling Skia as a DLL, public APIs should be exported. Skia will set
  * SK_API to something sensible for Clang and MSVC, but if clients need to
