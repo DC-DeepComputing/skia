@@ -1639,6 +1639,12 @@ skia_component("skia") {
     sources += [ "tools/SkSharingProc.cpp" ]
   }
 
+  if (skia_use_mipmap_downsampler_draw) {
+    sources += [ "src/core/SkMipmapDrawDownSampler.cpp" ]
+  } else {
+    sources += [ "src/core/SkMipmapHQDownSampler.cpp" ]
+  }
+
   # Overrides TRACE_EVENT0..2 macros (etc) to map to Perfetto's tracing macros.
   # Currently only supported in Android framework.
   if (skia_android_framework_use_perfetto) {
