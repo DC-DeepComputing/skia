@@ -21,6 +21,9 @@ public:
                        const wgpu::Device& device)
             : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(std::move(device)) {
         queueManager->dawnQueue().OnSubmittedWorkDone(
+#ifdef __EMSCRIPTEN__
+                /*signalValue=*/0,  // TODO: Does this value matter?
+#endif
                 [](WGPUQueueWorkDoneStatus, void* userData) {
                     auto asyncWaitPtr = static_cast<DawnAsyncWait*>(userData);
                     asyncWaitPtr->signal();

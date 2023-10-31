@@ -27,7 +27,23 @@ namespace skgpu::graphite {
 namespace {
 using IntrinsicConstant = float[4];
 
-constexpr int kBufferBindingSizeAlignment = 16;
+constexpr int kBufferBindingSizeAlignment   = 16;
+
+constexpr int kBufferBindingOffsetAlignment = 256;
+
+constexpr int kIntrinsicConstantAlignedSize = SkAlignTo(sizeof(IntrinsicConstant),
+                                                        kBufferBindingOffsetAlignment);
+
+#if defined(__EMSCRIPTEN__) || 1
+// When running in WASM there is not the in-band wgpu::Queue WriteBuffer command. When we use up
+// the slots in our intrinsic buffer we allocate a new one.
+constexpr int kNumSlotsForIntrinsicConstantBuffer = 8;
+#else
+// Dawn has an in-band WriteBuffer command so we can just keep overwriting the same slot. We signal
+// this with a value of 0.
+constexpr int kNumSlotsForIntrinsicConstantBuffer = 0;
+#endif
+
 }  // namespace
 
 std::unique_ptr<DawnCommandBuffer> DawnCommandBuffer::Make(const DawnSharedContext* sharedContext,
@@ -140,7 +156,9 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     wgpu::RenderPassDepthStencilAttachment wgpuDepthStencilAttachment;
 
     // Set up color attachment.
+#ifndef __EMSCRIPTEN__
     wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
+#endif
 
     auto& colorInfo = renderPassDesc.fColorAttachment;
     bool loadMSAAFromResolveExplicitly = false;
@@ -177,14 +195,23 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             // TODO: If the color resolve texture is read-only we can use a private (vs. memoryless)
             // msaa attachment that's coupled to the framebuffer and the StoreAndMultisampleResolve
             // action instead of loading as a draw.
-        } else if (renderPassDesc.fSampleCount > 1 && colorTexture->numSamples() == 1) {
-            // If render pass is multi sampled but the color attachment is single sampled, we need
-            // to activate multisampled render to single sampled feature for this render pass.
-            SkASSERT(fSharedContext->device().HasFeature(
-                    wgpu::FeatureName::MSAARenderToSingleSampled));
+        } else {
+            [[maybe_unused]] bool isMSAAToSingleSampled = renderPassDesc.fSampleCount > 1 &&
+                                                          colorTexture->numSamples() == 1;
+#ifdef __EMSCRIPTEN__
+            SkASSERT(!isMSAAToSingleSampled);
+#else
+            if (isMSAAToSingleSampled) {
+                // If render pass is multi sampled but the color attachment is single sampled, we
+                // need to activate multisampled render to single sampled feature for this render
+                // pass.
+                SkASSERT(fSharedContext->device().HasFeature(
+                        wgpu::FeatureName::MSAARenderToSingleSampled));
 
-            wgpuColorAttachment.nextInChain = &mssaRenderToSingleSampledDesc;
-            mssaRenderToSingleSampledDesc.implicitSampleCount = renderPassDesc.fSampleCount;
+                wgpuColorAttachment.nextInChain = &mssaRenderToSingleSampledDesc;
+                mssaRenderToSingleSampledDesc.implicitSampleCount = renderPassDesc.fSampleCount;
+            }
+#endif
         }
     }
 
@@ -541,12 +568,13 @@ void DawnCommandBuffer::syncUniformBuffers() {
         std::array<uint32_t, 3> dynamicOffsets;
         std::array<wgpu::BindGroupEntry, 3> entries;
         uint32_t numBuffers = 0;
+        uint activeIntrinsicBufferSlot = fIntrinsicConstantBufferSlotsUsed - 1;
 
         entries[numBuffers].binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
         entries[numBuffers].buffer = fIntrinsicConstantBuffer;
         entries[numBuffers].offset = 0;
         entries[numBuffers].size = sizeof(IntrinsicConstant);
-        dynamicOffsets[numBuffers] = 0;
+        dynamicOffsets[numBuffers] = activeIntrinsicBufferSlot*kIntrinsicConstantAlignedSize;
 
         ++numBuffers;
 
@@ -629,15 +657,28 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
     const float invTwoH = 2.f / viewport.height();
     const IntrinsicConstant rtAdjust = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
 
-    if (!fIntrinsicConstantBuffer) {
+    bool needNewBuffer = !fIntrinsicConstantBuffer;
+    if (!needNewBuffer && kNumSlotsForIntrinsicConstantBuffer > 0) {
+        SkASSERT(fIntrinsicConstantBuffer.GetSize() ==
+                 kIntrinsicConstantAlignedSize*kNumSlotsForIntrinsicConstantBuffer);
+        needNewBuffer = (fIntrinsicConstantBufferSlotsUsed == kNumSlotsForIntrinsicConstantBuffer);
+    }
+
+    if (needNewBuffer) {
         wgpu::BufferDescriptor desc;
 #if defined(SK_DEBUG)
         desc.label = "CommandBufferIntrinsicConstant";
 #endif
         desc.usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::Uniform;
-        desc.size = sizeof(IntrinsicConstant);
+
+        if constexpr (kNumSlotsForIntrinsicConstantBuffer > 1) {
+            desc.size = kIntrinsicConstantAlignedSize*kNumSlotsForIntrinsicConstantBuffer;
+        } else {
+            desc.size = sizeof(IntrinsicConstant);
+        }
         desc.mappedAtCreation = false;
         fIntrinsicConstantBuffer = fSharedContext->device().CreateBuffer(&desc);
+        fIntrinsicConstantBufferSlotsUsed = 0;
         SkASSERT(fIntrinsicConstantBuffer);
     }
 
@@ -649,10 +690,19 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
     SkASSERT(!fActiveRenderPassEncoder);
     SkASSERT(!fActiveComputePassEncoder);
 
-    fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer,
-                                0,
-                                reinterpret_cast<const uint8_t*>(rtAdjust),
-                                sizeof(rtAdjust));
+    if constexpr (kNumSlotsForIntrinsicConstantBuffer > 0) {
+        fSharedContext->queue().WriteBuffer(fIntrinsicConstantBuffer,
+                                            fIntrinsicConstantBufferSlotsUsed * kIntrinsicConstantAlignedSize,
+                                            reinterpret_cast<const uint8_t*>(rtAdjust),
+                                            sizeof(rtAdjust));
+        fIntrinsicConstantBufferSlotsUsed++;
+    } else {
+        fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer,
+                                    0,
+                                    reinterpret_cast<const uint8_t*>(rtAdjust),
+                                    sizeof(rtAdjust));
+        fIntrinsicConstantBufferSlotsUsed = 1;
+    }
 }
 
 void DawnCommandBuffer::setViewport(const SkRect& viewport) {
