@@ -54,6 +54,9 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
 // This returns the SkFontMgr that has been compiled in and configured (e.g. via CLI flag)
 sk_sp<SkFontMgr> TestFontMgr();
 
+// Must be called before the first call to TestFontMgr to have any effect.
+void UsePortableFontMgr();
+
 // This returns the default SkTypeface returned by the TestFontMgr(). If there was no default
 // Typeface, DefaultPortableTypeface() is returned instead.
 sk_sp<SkTypeface> DefaultTypeface();

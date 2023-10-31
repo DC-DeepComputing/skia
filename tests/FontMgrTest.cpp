@@ -77,14 +77,14 @@ DEF_TEST(FontMgr_AliasNames, reporter) {
     };
 
     for (size_t i = 0; i < std::size(inNames); ++i) {
-        sk_sp<SkTypeface> first(SkTypeface::MakeFromName(inNames[i], SkFontStyle()));
+        sk_sp<SkTypeface> first(ToolUtils::CreateTestTypeface(inNames[i], SkFontStyle()));
         if (nullptr == first.get()) {
             continue;
         }
         SkString firstName;
         first->getFamilyName(&firstName);
         for (int j = 0; j < 10; ++j) {
-            sk_sp<SkTypeface> face(SkTypeface::MakeFromName(inNames[i], SkFontStyle()));
+            sk_sp<SkTypeface> face(ToolUtils::CreateTestTypeface(inNames[i], SkFontStyle()));
 
             SkString name;
             face->getFamilyName(&name);
