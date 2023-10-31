@@ -569,12 +569,12 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixelsGraphite,
         auto factory = std::function<GraphiteSrcFactory<Image>>([&](
                 skgpu::graphite::Recorder* recorder,
                 const SkPixmap& src) {
-            Image image = sk_gpu_test::MakeBackendTextureImage(recorder,
-                                                               src,
-                                                               Mipmapped::kNo,
-                                                               renderable,
-                                                               skgpu::Origin::kTopLeft,
-                                                               skgpu::Protected::kNo);
+            sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage1(recorder,
+                                                                        src,
+                                                                        Mipmapped::kNo,
+                                                                        renderable,
+                                                                        skgpu::Origin::kTopLeft,
+                                                                        skgpu::Protected::kNo);
 
             std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
             skgpu::graphite::InsertRecordingInfo recordingInfo;
