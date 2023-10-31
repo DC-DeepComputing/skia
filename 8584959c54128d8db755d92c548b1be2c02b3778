@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8143bad1_8dad8233",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-10-31T17:49:02Z",
+      "side": 1,
+      "message": "I guess some of these are now Rust deps (with a compatible C++ FFI) so maybe this comment should reflect that (better check with Kevin first though).",
+      "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
