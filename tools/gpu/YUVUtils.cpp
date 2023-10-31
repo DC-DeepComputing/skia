@@ -398,7 +398,7 @@ bool LazyYUVImage::ensureYUVImage(Recorder* recorder, Type type) {
             sk_sp<sk_gpu_test::ManagedGraphiteTexture> mbets[SkYUVAInfo::kMaxPlanes];
             BackendTexture textures[SkYUVAInfo::kMaxPlanes];
             for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
-                mbets[i] = sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap(
+                mbets[i] = sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap1(
                         recorder,
                         fPixmaps.plane(i),
                         skgpu::Mipmapped::kNo,
@@ -439,7 +439,7 @@ bool LazyYUVImage::ensureYUVImage(Recorder* recorder, Type type) {
             sk_sp<SkImage> planeImgs[SkYUVAInfo::kMaxPlanes];
             for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
                 sk_sp<sk_gpu_test::ManagedGraphiteTexture> mbet =
-                        sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap(recorder,
+                        sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap1(recorder,
                                                                             fPixmaps.plane(i),
                                                                             skgpu::Mipmapped::kNo,
                                                                             skgpu::Renderable::kNo,

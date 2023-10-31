@@ -14,6 +14,9 @@
 #include "src/gpu/ganesh/GrGpu.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
+#include "include/gpu/graphite/Surface.h"
+//#include "src/gpu/graphite/Surface_Graphite.h"
+
 namespace sk_gpu_test {
 
 sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
@@ -104,5 +107,35 @@ sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
     auto ii = SkImageInfo::Make(dimensions, colorType, kPremul_SkAlphaType, std::move(colorSpace));
     return MakeBackendRenderTargetSurface(dContext, ii, origin, sampleCnt, isProtected, props);
 }
+
+#ifdef SK_GRAPHITE
+sk_sp<SkSurface> MakeBackendTextureSurface(skgpu::graphite::Recorder* recorder,
+                                           const SkImageInfo& ii,
+                                           skgpu::Origin origin,
+                                           int sampleCount,
+                                           skgpu::Mipmapped mipmapped,
+                                           skgpu::Protected isProtected,
+                                           const SkSurfaceProps* props) {
+    if (ii.alphaType() == kUnpremul_SkAlphaType) {
+        return nullptr;
+    }
+    sk_sp<ManagedGraphiteTexture> mbet = nullptr;
+//ManagedBackendTexture::MakeWithoutData(dContext,
+//                                                                               ii.width(),
+//                                                                               ii.height(),
+//                                                                               ii.colorType(),
+//                                                                               mipmapped,
+//                                                                               GrRenderable::kYes,
+//                                                                               isProtected);
+    if (!mbet) {
+        return nullptr;
+    }
+    return SkSurfaces::WrapBackendTexture(recorder,
+                                          mbet->texture(),
+                                          ii.colorType(),
+                                          ii.refColorSpace(),
+                                          props);
+}
+#endif  // SK_GRAPHITE
 
 }  // namespace sk_gpu_test
