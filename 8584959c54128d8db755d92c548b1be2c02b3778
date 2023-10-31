@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be61a677_b071b78f",
+        "filename": "DEPS",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-31T18:18:51Z",
+      "side": 1,
+      "message": "Did you file a bug like https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1467522 for this repo? If/when you do, please CC me on it.",
+      "range": {
+        "startLine": 43,
+        "startChar": 54,
+        "endLine": 43,
+        "endChar": 92
+      },
+      "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8143bad1_8dad8233",
         "filename": "bazel/deps_parser/deps_parser.go",
         "patchSetId": 8
@@ -31,6 +54,41 @@
       "writtenOn": "2023-10-31T17:49:02Z",
       "side": 1,
       "message": "I guess some of these are now Rust deps (with a compatible C++ FFI) so maybe this comment should reflect that (better check with Kevin first though).",
+      "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57f99b5_e54097b4",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-31T18:18:51Z",
+      "side": 1,
+      "message": "Yeah, we can update the docs",
+      "parentUuid": "8143bad1_8dad8233",
+      "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f09a85_9472a434",
+        "filename": "third_party/icu4x/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-10-31T18:18:51Z",
+      "side": 1,
+      "message": "We\u0027ve been putting these bazel files in //bazel/external, not //third_party",
       "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
