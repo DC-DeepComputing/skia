@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c3e25e1_3e40d869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T13:25:48Z",
+      "side": 1,
+      "message": "The DDL gold diffs are expected. Each DDL tile has a pre-restricted surface size, so the required backdrop is not necessarily available. \n\nWithout the changes to the SkCanvas to use `srcSubset` w/o intersecting the backdrop size for the desired output, it was dropping the clamp mode so was applying decal tiling and you could see the unfiltered backdrop creep in.  Now the clamp tiling is applied as expected given the construction of the DDL sink.\n\nIn general, DDL or the viewer tile mode interacts poorly with backdrop filters because the backing image is not guaranteed to be in the state that the GM author intended.",
+      "revId": "6138b1c718c8e4413aa8c27d75bcdba337614d53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
