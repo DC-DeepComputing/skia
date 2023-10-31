@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b88fb64f_ca0243d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19124
+      },
+      "writtenOn": "2023-10-31T04:51:39Z",
+      "side": 1,
+      "message": "Supported branches for m120",
+      "revId": "9319363aeca5537fabbc1857b425525d1f45f89b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
