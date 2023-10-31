@@ -208,8 +208,6 @@ CORE_FILES = [
     "SkMipmapAccessor.h",
     "SkMipmapBuilder.cpp",
     "SkMipmapBuilder.h",
-    "SkMipmapDrawDownSampler.cpp",
-    "SkMipmapHQDownSampler.cpp",
     "SkNextID.h",
     "SkOSFile.h",
     "SkOpts.cpp",
