@@ -39,6 +39,30 @@
       },
       "revId": "c815a234ceb4854e536cb024985c51df7a1ca28c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78274df7_d82162c5",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-10-31T20:13:27Z",
+      "side": 1,
+      "message": "I tried using null buffer for the unused entry but Dawn said that it expects a valid buffer bound as specified in the layout.",
+      "parentUuid": "1b8f6c0d_2510c3fa",
+      "range": {
+        "startLine": 572,
+        "startChar": 32,
+        "endLine": 572,
+        "endChar": 56
+      },
+      "revId": "c815a234ceb4854e536cb024985c51df7a1ca28c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
