@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada55e6c_70233179",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T16:52:16Z",
+      "side": 1,
+      "message": "Yeah, I agree it\u0027s not adding much.",
+      "parentUuid": "096d502d_838a9710",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "16202659_2ee55dc7",
@@ -83,6 +101,24 @@
       "writtenOn": "2023-10-26T19:15:51Z",
       "side": 1,
       "message": "Should this comment be updated? For this change I haven\u0027t been thinking about packing depth + RenderStep ssbo index into an attribute and moving the shading ssbo index into a uniform, but I assume that\u0027s still on the table.",
+      "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5572bebb_c46d091c",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-10-31T16:52:16Z",
+      "side": 1,
+      "message": "Yeah, I think it\u0027s still on the table",
+      "parentUuid": "d343cdb7_a30df925",
       "revId": "11e83a8fcfda374c7e3f42955766809bcf8b9c6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
