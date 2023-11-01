@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36865f47_37eab35d",
+        "filename": "src/core/SkMipmap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-01T18:59:17Z",
+      "side": 1,
+      "message": "I just heard from Kevin that this pattern might be problematic in g3, IFF the implementation selection is up to the client.  Something about link order and the factory caller not having and explicit dependency on the factory impl.\n\nProbably not an issue, at least for now, but something to keep in mind.",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
