@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c50adb_33c732c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-01T16:58:48Z",
+      "side": 1,
+      "message": "I\u0027m okay with this. If we want any of this as example code (eg, things like \"determine cursor position, advance by word\" etc...), I\u0027d suggest that we should just have unit tests that do those operations (with the self-contained snippets), and verify the results.",
+      "revId": "0ddefbeee5a3236a3a80da86d04058ba8a23f04b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
