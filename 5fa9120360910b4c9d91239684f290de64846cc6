@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a504f46_fd2d11e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-11-01T21:52:55Z",
+      "side": 1,
+      "message": "LGTM % Michael\u0027s suggestions.",
+      "revId": "5fa9120360910b4c9d91239684f290de64846cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd14351_2f3dc608",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 1391,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-11-01T21:52:55Z",
+      "side": 1,
+      "message": "That looks quite a bit simpler!",
+      "revId": "5fa9120360910b4c9d91239684f290de64846cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
