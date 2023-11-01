@@ -100,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5960d115_fa8f6c70",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-01T19:17:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d57f99b5_e54097b4",
+      "revId": "8584959c54128d8db755d92c548b1be2c02b3778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8f09a85_9472a434",
