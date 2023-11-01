@@ -284,6 +284,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd10dcda_9f55c85c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-01T14:20:08Z",
+      "side": 1,
+      "message": "Aha, and since we\u0027re casting anyways there\u0027s also SkTo which does the assert for us; using that now.",
+      "parentUuid": "103770f2_f95b1100",
+      "range": {
+        "startLine": 645,
+        "startChar": 17,
+        "endLine": 645,
+        "endChar": 44
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa161066_2f8b9597",
