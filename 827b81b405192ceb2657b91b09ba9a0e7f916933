@@ -16,6 +16,24 @@
       "message": "lgtm w/ the planned assert in EmitVaryings",
       "revId": "827b81b405192ceb2657b91b09ba9a0e7f916933",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f35fd8_f14df65a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-01T14:41:02Z",
+      "side": 1,
+      "message": "Ah, sorry, I\u0027d put this assert at the top of toSkSL. Does that seem too far removed our decision to base \"emitSsboIndicesVarying\" on just \"useShadingStorageBuffer\"? I thought it might make sense at least to put the assert at the call site of EmitVaryings if we\u0027re passing in an argument for emitSsboIndicesVarying, but since we pass in the step we could make the decision within EmitVaryings as well (though there would be some duplicated logic).",
+      "parentUuid": "6624580f_33ec1702",
+      "revId": "827b81b405192ceb2657b91b09ba9a0e7f916933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
