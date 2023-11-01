@@ -22,7 +22,7 @@ class Recorder;
 
 namespace SkSurfaces {
 /**
- * The 'asImage' and 'makeImageCopy' API/entry points are currently only available for
+ * The 'AsImage' and 'AsImageCopy' API/entry points are currently only available for
  * Graphite.
  *
  * In this API, SkSurface no longer supports copy-on-write behavior. Instead, when creating
@@ -76,6 +76,10 @@ SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
                                            SkColorType colorType,
                                            sk_sp<SkColorSpace> colorSpace,
                                            const SkSurfaceProps* props);
+
+SK_API skgpu::graphite::BackendTexture GetBackendTexture(SkSurface*/*,
+                                                         BackendHandleAccess access */);
+
 }  // namespace SkSurfaces
 
 #endif  // skgpu_graphite_Surface_DEFINED

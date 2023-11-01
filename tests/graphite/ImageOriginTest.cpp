@@ -47,7 +47,7 @@ void test_draw(skiatest::Reporter* reporter,
                  SkIRect::MakeLTRB(0, kHalfSize, kImageSize.width(), kImageSize.height()));
 
     auto managedTexture =
-            sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap(recorder.get(),
+            sk_gpu_test::ManagedGraphiteTexture::MakeFromPixmap1(recorder.get(),
                                                                 bitmap.pixmap(),
                                                                 skgpu::Mipmapped::kNo,
                                                                 skgpu::Renderable::kNo);
