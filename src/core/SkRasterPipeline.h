@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMacros.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
@@ -136,16 +137,23 @@ private:
     bool buildLowpPipeline(SkRasterPipelineStage* ip) const;
     void buildHighpPipeline(SkRasterPipelineStage* ip) const;
 
-    using StartPipelineFn = void(*)(size_t,size_t,size_t,size_t, SkRasterPipelineStage* program);
+    using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
+                                     SkRasterPipelineStage* program,
+                                     SkRasterPipeline_MemoryCtxPatch*, int, void*);
     StartPipelineFn buildPipeline(SkRasterPipelineStage*) const;
 
     void uncheckedAppend(SkRasterPipelineOp, void*);
     int stagesNeeded() const;
 
+    void addMemoryContext(SkRasterPipeline_MemoryCtx*, SkColorType, bool load, bool store);
+
     SkArenaAlloc*               fAlloc;
     SkRasterPipeline_RewindCtx* fRewindCtx;
     StageList*                  fStages;
     int                         fNumStages;
+
+    // TODO: Historgram analysis of patch-count distribution. I assume N=1 is by far most common
+    mutable skia_private::STArray<1, SkRasterPipeline_MemoryCtxPatch> fMemoryCtxPatches;
 };
 
 template <size_t bytes>

@@ -262,7 +262,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
         // here allows the color pipeline to still run in lowp (we'll use uniform_color, rather than
         // unbounded_uniform_color).
         colorPipeline->appendClampIfNormalized(dst.info());
-        colorPipeline->append(SkRasterPipelineOp::store_f32, &constantColorPtr);
+        colorPipeline->appendStore(kRGBA_F32_SkColorType, &constantColorPtr);
         colorPipeline->run(0,0,1,1);
         colorPipeline->reset();
         colorPipeline->appendConstantColor(alloc, constantColor);

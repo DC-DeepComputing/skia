@@ -26,6 +26,15 @@ struct SkRasterPipeline_MemoryCtx {
     int   stride;
 };
 
+struct SkRasterPipeline_MemoryCtxPatch {
+    SkRasterPipeline_MemoryCtx* context = nullptr;
+
+    void* backup = nullptr;
+    int bytesPerPixel = 0;
+    bool load = false;
+    bool store = false;
+};
+
 struct SkRasterPipeline_GatherCtx {
     const void* pixels;
     int         stride;
