@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c716d5e8_91d70266",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-01T15:08:30Z",
+      "side": 1,
+      "message": "Does this need to be declared in the header? Or can we just have it Resource.cpp?",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 37
+      },
+      "revId": "cdea884e48b69acedae888024083457ed2f43801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
