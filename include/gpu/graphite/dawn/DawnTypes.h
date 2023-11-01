@@ -19,18 +19,21 @@ struct DawnTextureInfo {
 
     // wgpu::TextureDescriptor properties
     wgpu::TextureFormat fFormat = wgpu::TextureFormat::Undefined;
-    wgpu::TextureUsage  fUsage = wgpu::TextureUsage::None;
+    wgpu::TextureUsage fUsage = wgpu::TextureUsage::None;
+    wgpu::TextureAspect fAspect = wgpu::TextureAspect::All;
 
     DawnTextureInfo() = default;
     DawnTextureInfo(const wgpu::Texture& texture);
     DawnTextureInfo(uint32_t sampleCount,
                     Mipmapped mipmapped,
                     wgpu::TextureFormat format,
-                    wgpu::TextureUsage usage)
+                    wgpu::TextureUsage usage,
+                    wgpu::TextureAspect aspect)
             : fSampleCount(sampleCount)
             , fMipmapped(mipmapped)
             , fFormat(format)
-            , fUsage(usage) {}
+            , fUsage(usage)
+            , fAspect(aspect) {}
 };
 
 } // namespace skgpu::graphite
