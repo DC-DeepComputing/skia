@@ -12,9 +12,11 @@
 #include "include/core/SkMatrix.h"
 #include "include/private/base/SkTemplates.h"
 #include "modules/skcms/skcms.h"
+#include "src/base/SkAutoMalloc.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkRasterPipelineOpContexts.h"
 
 #include <algorithm>
 #include <cstring>
@@ -51,6 +53,42 @@ void SkRasterPipeline::append(SkRasterPipelineOp op, void* ctx) {
 void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
     fStages = fAlloc->make<StageList>(StageList{fStages, op, ctx});
     fNumStages += 1;
+
+    switch (op) {
+        case Op::srcover_rgba_8888:
+            this->add_memory_context_patch((SkRasterPipeline_MemoryCtx*)ctx,
+                                           kRGBA_8888_SkColorType,
+                                           /*load=*/true, /*store=*/true);
+            break;
+
+        case Op::scale_u8:
+        case Op::lerp_u8:
+            this->add_memory_context_patch((SkRasterPipeline_MemoryCtx*)ctx,
+                                           kAlpha_8_SkColorType,
+                                           /*load=*/true, /*store=*/false);
+            break;
+
+        case Op::scale_565:
+        case Op::lerp_565:
+            this->add_memory_context_patch((SkRasterPipeline_MemoryCtx*)ctx,
+                                           kRGB_565_SkColorType,
+                                           /*load=*/true, /*store=*/false);
+            break;
+
+        case Op::emboss: {
+            SkRasterPipeline_EmbossCtx* embossCtx = (SkRasterPipeline_EmbossCtx*)ctx;
+            this->add_memory_context_patch(&embossCtx->add,
+                                           kAlpha_8_SkColorType,
+                                           /*load=*/true, /*store=*/false);
+            this->add_memory_context_patch(&embossCtx->mul,
+                                           kAlpha_8_SkColorType,
+                                           /*load=*/true, /*store=*/false);
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 void SkRasterPipeline::append(SkRasterPipelineOp op, uintptr_t ctx) {
     void* ptrCtx;
@@ -251,6 +289,9 @@ void SkRasterPipeline::appendLoad(SkColorType ct, const SkRasterPipeline_MemoryC
             this->appendTransferFunction(*skcms_sRGB_TransferFunction());
             break;
     }
+
+    this->add_memory_context_patch(const_cast<SkRasterPipeline_MemoryCtx*>(ctx),
+                                   ct, /*load=*/true, /*store=*/false);
 }
 
 void SkRasterPipeline::appendLoadDst(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
@@ -315,6 +356,9 @@ void SkRasterPipeline::appendLoadDst(SkColorType ct, const SkRasterPipeline_Memo
             this->append(Op::swap_src_dst);
             break;
     }
+
+    this->add_memory_context_patch(const_cast<SkRasterPipeline_MemoryCtx*>(ctx),
+                                   ct, /*load=*/true, /*store=*/false);
 }
 
 void SkRasterPipeline::appendStore(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
@@ -373,6 +417,9 @@ void SkRasterPipeline::appendStore(SkColorType ct, const SkRasterPipeline_Memory
             this->append(Op::store_8888, ctx);
             break;
     }
+
+    this->add_memory_context_patch(const_cast<SkRasterPipeline_MemoryCtx*>(ctx),
+                                   ct, /*load=*/false, /*store=*/true);
 }
 
 void SkRasterPipeline::appendTransferFunction(const skcms_TransferFunction& tf) {
@@ -471,6 +518,13 @@ int SkRasterPipeline::stagesNeeded() const {
     return stages;
 }
 
+// This is conservative: lowp pipelines can't operate on our largest color types, and highp
+// pipelines have a smaller stride than lowp. Regardless, we don't have a way to query "largest
+// color type supported for a particular type of pipeline", so we just take the max over everything.
+constexpr size_t kMaxScratchPerPatch =
+        std::max(SkRasterPipeline_kMaxStride_highp, SkRasterPipeline_kMaxStride) *
+        16 /*largest bytes-per-pixel value (for RGBA_F32)*/;
+
 void SkRasterPipeline::run(size_t x, size_t y, size_t w, size_t h) const {
     if (this->empty()) {
         return;
@@ -480,9 +534,11 @@ void SkRasterPipeline::run(size_t x, size_t y, size_t w, size_t h) const {
 
     // Best to not use fAlloc here... we can't bound how often run() will be called.
     AutoSTMalloc<32, SkRasterPipelineStage> program(stagesNeeded);
+    SkAutoSMalloc<kMaxScratchPerPatch> scratch(fMemoryCtxPatches.size() * kMaxScratchPerPatch);
 
     auto start_pipeline = this->buildPipeline(program.get() + stagesNeeded);
-    start_pipeline(x,y,x+w,y+h, program.get());
+    start_pipeline(x, y, x + w, y + h, program.get(),
+                   fMemoryCtxPatches.data(), fMemoryCtxPatches.size(), scratch.get());
 }
 
 std::function<void(size_t, size_t, size_t, size_t)> SkRasterPipeline::compile() const {
@@ -493,9 +549,58 @@ std::function<void(size_t, size_t, size_t, size_t)> SkRasterPipeline::compile() 
     int stagesNeeded = this->stagesNeeded();
 
     SkRasterPipelineStage* program = fAlloc->makeArray<SkRasterPipelineStage>(stagesNeeded);
+    SkMemoryCtxPatch* patches = fAlloc->makeArray<SkMemoryCtxPatch>(fMemoryCtxPatches.size());
+    memcpy(patches, fMemoryCtxPatches.data(), fMemoryCtxPatches.size_bytes());
+    int numPatches = fMemoryCtxPatches.size();
+    void* scratch = fAlloc->makeBytesAlignedTo(fMemoryCtxPatches.size() * kMaxScratchPerPatch, 16);
 
     auto start_pipeline = this->buildPipeline(program + stagesNeeded);
     return [=](size_t x, size_t y, size_t w, size_t h) {
-        start_pipeline(x,y,x+w,y+h, program);
+        start_pipeline(x, y, x + w, y + h, program, patches, numPatches, scratch);
     };
+}
+
+void SkRasterPipeline::add_memory_context_patch(SkRasterPipeline_MemoryCtx* ctx,
+                                                SkColorType ct,
+                                                bool load,
+                                                bool store) {
+    SkMemoryCtxPatch* patch = std::find_if(
+            fMemoryCtxPatches.begin(), fMemoryCtxPatches.end(), [=](const SkMemoryCtxPatch& p) {
+                return p.fMemoryCtx == ctx;
+            });
+    if (patch != fMemoryCtxPatches.end()) {
+        patch->fLoad = patch->fLoad || load;
+        patch->fStore = patch->fStore || store;
+        return;
+    }
+    fMemoryCtxPatches.push_back(SkMemoryCtxPatch{ctx,
+                                                 SkColorTypeBytesPerPixel(ct),
+                                                 /*fBackup=*/nullptr,
+                                                 /*fLoad=*/load,
+                                                 /*fStore=*/store});
+}
+
+void SkMemoryCtxPatch::patch(void* scratch, size_t dx, size_t dy, size_t tail) {
+    const ptrdiff_t offset = fBytesPerPixel * (dy * fMemoryCtx->stride + dx);
+    void* ctxData = SkTAddOffset<void>(fMemoryCtx->pixels, offset);
+    if (fLoad) {
+        memcpy(scratch, ctxData, fBytesPerPixel * tail);
+    }
+
+    SkASSERT(fBackup == nullptr);
+    void* scratchFakeBase = SkTAddOffset<void>(scratch, -offset);
+    fBackup = fMemoryCtx->pixels;
+    fMemoryCtx->pixels = scratchFakeBase;
+}
+
+void SkMemoryCtxPatch::restore(void* scratch , size_t dx, size_t dy, size_t tail) {
+    const ptrdiff_t offset = fBytesPerPixel * (dy * fMemoryCtx->stride + dx);
+    void* ctxData = SkTAddOffset<void>(fMemoryCtx->pixels, offset);
+    if (fStore) {
+        memcpy(ctxData, scratch, fBytesPerPixel * tail);
+    }
+
+    SkASSERT(fBackup != nullptr);
+    fMemoryCtx->pixels = fBackup;
+    fBackup = nullptr;
 }
