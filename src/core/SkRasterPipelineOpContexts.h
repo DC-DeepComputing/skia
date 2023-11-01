@@ -24,6 +24,12 @@ inline static constexpr int SkRasterPipeline_kMaxStride_highp = 8;
 struct SkRasterPipeline_MemoryCtx {
     void* pixels;
     int   stride;
+
+    // Additional fields are managed by SkRasterPipeline itself, for tail-pixel handling
+    int bytesPerPixel = 0;
+    void* backup = nullptr;
+    bool load = false;
+    bool store = false;
 };
 
 struct SkRasterPipeline_GatherCtx {

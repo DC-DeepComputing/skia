@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMacros.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
@@ -136,16 +137,22 @@ private:
     bool buildLowpPipeline(SkRasterPipelineStage* ip) const;
     void buildHighpPipeline(SkRasterPipelineStage* ip) const;
 
-    using StartPipelineFn = void(*)(size_t,size_t,size_t,size_t, SkRasterPipelineStage* program);
+    using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
+                                     SkRasterPipelineStage* program,
+                                     SkRasterPipeline_MemoryCtx**, int, void*);
     StartPipelineFn buildPipeline(SkRasterPipelineStage*) const;
 
     void uncheckedAppend(SkRasterPipelineOp, void*);
     int stagesNeeded() const;
 
+    void addMemoryContext(SkRasterPipeline_MemoryCtx*, SkColorType, bool load, bool store);
+
     SkArenaAlloc*               fAlloc;
     SkRasterPipeline_RewindCtx* fRewindCtx;
     StageList*                  fStages;
     int                         fNumStages;
+
+    mutable skia_private::STArray<2, SkRasterPipeline_MemoryCtx*> fMemoryCtxs;
 };
 
 template <size_t bytes>
