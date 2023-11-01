@@ -461,7 +461,7 @@ void TextLine::justify(SkScalar maxWidth) {
                     ++whitespacePatches;
                 }
                 whitespacePatch = !leadingWhitespaces;
-                whitespaceLen += cluster->width();
+                whitespaceLen += leadingWhitespaces ? 0 : cluster->width();
             } else if (cluster->isIdeographic()) {
                 // Whitespace break before and after
                 if (!whitespacePatch && index != 0) {
@@ -514,7 +514,7 @@ void TextLine::justify(SkScalar maxWidth) {
                 whitespacePatch = true;
                 --whitespacePatches;
             }
-            shift -= cluster->width();
+            shift -= leadingWhitespaces ? 0 : cluster->width();
         } else if (cluster->isIdeographic()) {
             if (!whitespacePatch && index != 0) {
                 shift += step;
