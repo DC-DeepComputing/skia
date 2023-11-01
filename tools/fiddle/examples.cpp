@@ -13,6 +13,7 @@ SkBitmap source;
 sk_sp<SkImage> image;
 double duration = 1.0;
 double frame = 1.0;
+sk_sp<SkFontMgr> fontMgr;
 
 int main() {
     constexpr int kImgCount = 7;
@@ -23,6 +24,7 @@ int main() {
         images[i] = SkImages::DeferredFromEncodedData(SkData::MakeFromFileName(path.c_str()));
         SkAssertResult(images[i] && images[i]->asLegacyBitmap(&bitmaps[i]));
     }
+    fontMgr = SkFontMgr_New_FontConfig(nullptr);
     for (const fiddle::Example& example : sk_tools::Registry<fiddle::Example>::Range()) {
         SkASSERT((unsigned)example.fImageIndex < (unsigned)kImgCount);
         image = images[example.fImageIndex];
