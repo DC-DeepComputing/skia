@@ -4376,26 +4376,13 @@ public:
         text_style.setColor(SK_ColorBLACK);
         ParagraphStyle paragraph_style;
         paragraph_style.setTextStyle(text_style);
-
-        auto test = [&](const char* text) {
-            ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
-            builder.pushStyle(text_style);
-            builder.addText(text);
-            auto paragraph = builder.Build();
-            paragraph->layout(this->size().width());
-            paragraph->paint(canvas, 0, 0);
-            if ((false)) {
-                SkDebugf("Paragraph '%s'\n", text);
-                auto impl = static_cast<ParagraphImpl*>(paragraph.get());
-                for (auto& run: impl->runs()) {
-                    SkString ff;
-                    run.font().getTypeface()->getFamilyName(&ff);
-                    SkDebugf("'%s': [%zu:%zu)\n", ff.c_str(), run.textRange().start, run.textRange().end);
-                }
-            }
-        };
-
-        test("​🇳​🇩🇮🇩⃢");
+        paragraph_style.setTextAlign(TextAlign::kJustify);
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText(u"\u3000\u3000哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈哈哈 哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈哈");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+        paragraph->paint(canvas, 0, 0);
     }
 };
 
