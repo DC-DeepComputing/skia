@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecf21ef9_83fab4cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-01T19:48:50Z",
+      "side": 1,
+      "message": "PTAL. With the direction of moving to SSBO, I am afraid the old way of calculating buffers\u0027 binding sizes for Dawn is no longer correct. So I moved the calculation to DrawPsss::writeUnforms and let it pass the info to the backend.",
+      "revId": "f0626ffd3c2257266ffd76f058462c73ce5753fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
