@@ -286,48 +286,12 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferMana
                              {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
                              {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}},
                      /*varyings=*/{
-                             // TODO: If the inverse transform is part of the draw's SSBO, we can
-                             // reconstruct the Jacobian in the fragment shader using the existing
-                             // local coordinates varying
-                             {"jacobian", SkSLType::kFloat4}, // float2x2
-                             // Distance to LTRB edges of unstroked shape. Depending on
-                             // 'perPixelControl' these will either be local or device-space values.
+                             // Distance to LTRB edges of unstroked shape.
+                             // These will be device-space values.
                              {"edgeDistances", SkSLType::kFloat4}, // distance to LTRB edges
-                             // TODO: These are constant for all fragments for a given instance,
-                             // could we store them in the draw's SSBO?
-                             {"xRadii", SkSLType::kFloat4},
-                             {"yRadii", SkSLType::kFloat4},
-                             // Matches the StrokeStyle struct (X is radius, Y < 0 is round join,
-                             // Y = 0 is bevel, Y > 0 is miter join).
-                             // TODO: These could easily be considered part of the draw's uniforms.
-                             {"strokeParams", SkSLType::kFloat2},
-                             // 'perPixelControl' is a tightly packed description of how to
-                             // evaluate the possible edges that influence coverage in a pixel.
-                             // The decision points and encoded values are spread across X and Y
-                             // so that they are consistent regardless of whether or not MSAA is
-                             // used and does not require centroid sampling.
-                             //
-                             // The signs of values are used to determine the type of coverage to
-                             // calculate in the fragment shader and depending on the state, extra
-                             // varying state is encoded in the fields:
-                             //  - A positive X value overrides all per-pixel coverage calculations
-                             //    and sets the pixel to full coverage. Y is ignored in this case.
-                             //  - A zero X value represents a solid interior shape.
-                             //  - X much less than 0 represents bidirectional coverage for a
-                             //    stroke, using a sufficiently negative value to avoid
-                             //    extrapolation from fill triangles. For actual shapes with
-                             //    bidirectional coverage, the fill triangles are zero area.
-                             //
-                             //  - Y much greater than 0 takes precedence over the latter two X
-                             //    rules and signals that 'edgeDistances' holds device-space values
-                             //    and does not require additional per-pixel calculations. The
-                             //    coverage scale is encoded as (1+scale*w) and the bias is
-                             //    reconstructed from that. X is always 0 for non-fill triangles
-                             //    since device-space edge distance is only used for solid interiors
-                             //  - Otherwise, any negative Y value represents an additional
-                             //    reduction in coverage due to a device-space outset. It is clamped
-                             //    below 0 to avoid adding coverage from extrapolation.
-                             {"perPixelControl", SkSLType::kFloat2},
+                             // The coverage scale is encoded as scale*w and the bias is
+                             // reconstructed from that.
+                             {"coverageScale", SkSLType::kFloat},
                      }) {
     // Initialize the static buffers we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. Since there should only
@@ -350,7 +314,7 @@ std::string PerEdgeAAQuadRenderStep::vertexSkSL() const {
                    "edgeFlags, quadXs, quadYs, depth, "
                    "float3x3(mat0, mat1, mat2), "
                    // Varyings
-                   "jacobian, edgeDistances, xRadii, yRadii, strokeParams, perPixelControl, "
+                   "edgeDistances, coverageScale, "
                    // Render Step
                    "stepLocalCoords);\n";
 }
@@ -359,12 +323,8 @@ const char* PerEdgeAAQuadRenderStep::fragmentCoverageSkSL() const {
     // The returned SkSL must write its coverage into a 'half4 outputCoverage' variable (defined in
     // the calling code) with the actual coverage splatted out into all four channels.
     return "outputCoverage = per_edge_aa_quad_coverage_fn(sk_FragCoord, "
-                                                          "jacobian, "
                                                           "edgeDistances, "
-                                                          "xRadii, "
-                                                          "yRadii, "
-                                                          "strokeParams, "
-                                                          "perPixelControl);";
+                                                          "coverageScale);";
 }
 
 float PerEdgeAAQuadRenderStep::boundsOutset(const Transform& localToDevice,

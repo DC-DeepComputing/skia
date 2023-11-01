@@ -1158,6 +1158,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
 #else
         // handled by specialized system, simplified from rects and round rects
         return {renderers->perEdgeAAQuad(), nullptr};
+
 #endif
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
