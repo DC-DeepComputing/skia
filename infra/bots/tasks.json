@@ -93672,6 +93672,21 @@
         "DEPS"
       ]
     },
+    "Build-Debian10-Clang-arm64-Debug-Android_Graphite_Vulkan": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*"
+      ]
+    },
+    "Build-Debian10-Clang-arm64-Release-Android_Graphite_Vulkan": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*"
+      ]
+    },
+    "Build-Debian10-Clang-x86-Debug-Android_Graphite_Vulkan": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*"
+      ]
+    },
     "Build-Debian10-Clang-x86_64-Debug": {},
     "Build-Debian10-Clang-x86_64-Debug-Graphite_Vulkan": {},
     "Build-Debian10-Clang-x86_64-Debug-Tidy": {},
