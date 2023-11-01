@@ -8,6 +8,7 @@
 #ifndef SkOpts_DEFINED
 #define SkOpts_DEFINED
 
+#include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpList.h"
 
 #include <cstddef>
@@ -56,6 +57,7 @@
  * be called as CPU instruction sets are typically super sets of older instruction sets
  */
 
+class SkMemoryCtxPatch;
 struct SkRasterPipelineStage;
 
 namespace SkOpts {
@@ -70,8 +72,10 @@ namespace SkOpts {
     extern StageFn ops_highp[kNumRasterPipelineHighpOps], just_return_highp;
     extern StageFn ops_lowp [kNumRasterPipelineLowpOps ], just_return_lowp;
 
-    extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*);
-    extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*);
+    extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
+                                        SkMemoryCtxPatch*, int, void*);
+    extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
+                                        SkMemoryCtxPatch*, int, void*);
 
     extern size_t raster_pipeline_lowp_stride;
     extern size_t raster_pipeline_highp_stride;

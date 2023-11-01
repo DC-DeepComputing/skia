@@ -9,8 +9,10 @@
 #define SkRasterPipeline_DEFINED
 
 #include "include/core/SkColor.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMacros.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
@@ -61,6 +63,26 @@ struct SkRasterPipelineStage {
     void* ctx;
 };
 SK_END_REQUIRE_DENSE
+
+class SkMemoryCtxPatch {
+public:
+    SkMemoryCtxPatch() = default;
+
+    SkMemoryCtxPatch(SkRasterPipeline_MemoryCtx* ctx, SkColorType ct, bool load, bool store)
+            : fMemoryCtx(ctx)
+            , fBytesPerPixel(SkColorTypeBytesPerPixel(ct))
+            , fLoad(load)
+            , fStore(store) {}
+
+    void patch(void* scratch, size_t dx, size_t dy, size_t tail);
+    void restore(void* scratch, size_t dx, size_t dy, size_t tail);
+
+    SkRasterPipeline_MemoryCtx* fMemoryCtx = nullptr;
+    int fBytesPerPixel = 0;
+    void* fBackup = nullptr;
+    bool fLoad = false;
+    bool fStore = false;
+};
 
 class SkRasterPipeline {
 public:
@@ -136,16 +158,22 @@ private:
     bool build_lowp_pipeline(SkRasterPipelineStage* ip) const;
     void build_highp_pipeline(SkRasterPipelineStage* ip) const;
 
-    using StartPipelineFn = void(*)(size_t,size_t,size_t,size_t, SkRasterPipelineStage* program);
+    using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
+                                     SkRasterPipelineStage* program,
+                                     SkMemoryCtxPatch*, int, void*);
     StartPipelineFn build_pipeline(SkRasterPipelineStage*) const;
 
     void unchecked_append(SkRasterPipelineOp, void*);
     int stages_needed() const;
 
+    void add_memory_context_patch(SkRasterPipeline_MemoryCtx*, SkColorType, bool load, bool store);
+
     SkArenaAlloc*               fAlloc;
     SkRasterPipeline_RewindCtx* fRewindCtx;
     StageList*                  fStages;
     int                         fNumStages;
+
+    mutable skia_private::STArray<2, SkMemoryCtxPatch> fMemoryCtxPatches;
 };
 
 template <size_t bytes>
