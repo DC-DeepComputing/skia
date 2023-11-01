@@ -9,6 +9,7 @@
 #include "dm/DMSrcSink.h"
 #include "include/codec/SkBmpDecoder.h"
 #include "include/codec/SkCodec.h"
+#include "include/codec/SkEncodedImageFormat.h"
 #include "include/codec/SkGifDecoder.h"
 #include "include/codec/SkIcoDecoder.h"
 #include "include/codec/SkJpegDecoder.h"
@@ -46,7 +47,6 @@
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
-#include "include/codec/SkEncodedImageFormat.h"
 
 #include <memory>
 #include <vector>
@@ -1572,7 +1572,6 @@ int main(int argc, char** argv) {
     setbuf(stdout, nullptr);
     setup_crash_handler();
 
-    CommonFlags::SetDefaultFontMgr();
     CommonFlags::SetAnalyticAA();
     skiatest::SetFontTestDataDirectory();
 
