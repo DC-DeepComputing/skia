@@ -8,6 +8,7 @@
 #ifndef SkRasterPipelineOpContexts_DEFINED
 #define SkRasterPipelineOpContexts_DEFINED
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 
@@ -20,10 +21,24 @@ namespace SkSL { class TraceHook; }
 inline static constexpr int SkRasterPipeline_kMaxStride = 16;
 inline static constexpr int SkRasterPipeline_kMaxStride_highp = 8;
 
+// How much space to allocate for each MemoryCtx scratch buffer, as part of tail-pixel handling.
+inline static constexpr size_t SkRasterPipeline_MaxScratchPerPatch =
+        std::max(SkRasterPipeline_kMaxStride_highp * 16,  // 16 == largest highp bpp (RGBA_F32)
+                 SkRasterPipeline_kMaxStride * 4);        // 4 == largest lowp bpp (RGBA_8888)
+
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct SkRasterPipeline_MemoryCtx {
     void* pixels;
     int   stride;
+};
+
+struct SkRasterPipeline_MemoryCtxPatch {
+    SkRasterPipeline_MemoryCtx* context = nullptr;
+
+    void* backup = nullptr;
+    int bytesPerPixel = 0;
+    bool load = false;
+    bool store = false;
 };
 
 struct SkRasterPipeline_GatherCtx {
