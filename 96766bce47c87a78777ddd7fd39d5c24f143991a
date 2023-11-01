@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0b0479_cf5de2f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-01T13:03:19Z",
+      "side": 1,
+      "message": "Ran the canary to ensure no web-tests would fail. Looks ok (the only failure was a patch issue, but the web-test bots all ran successfully).",
+      "revId": "96766bce47c87a78777ddd7fd39d5c24f143991a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
