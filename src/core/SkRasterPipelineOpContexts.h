@@ -8,6 +8,7 @@
 #ifndef SkRasterPipelineOpContexts_DEFINED
 #define SkRasterPipelineOpContexts_DEFINED
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 
@@ -20,10 +21,37 @@ namespace SkSL { class TraceHook; }
 inline static constexpr int SkRasterPipeline_kMaxStride = 16;
 inline static constexpr int SkRasterPipeline_kMaxStride_highp = 8;
 
+// How much space to allocate for each MemoryCtx scratch buffer, as part of tail-pixel handling.
+inline static constexpr size_t SkRasterPipeline_MaxScratchPerPatch =
+        std::max(SkRasterPipeline_kMaxStride_highp * 16,  // 16 == largest highp bpp (RGBA_F32)
+                 SkRasterPipeline_kMaxStride * 4);        // 4 == largest lowp bpp (RGBA_8888)
+
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct SkRasterPipeline_MemoryCtx {
     void* pixels;
     int   stride;
+};
+
+// Raster Pipeline typically processes N (4, 8, 16) pixels at a time, in SIMT fashion. To avoid
+// reading or writing past the end of any source or destination buffers hen we reach the "tail"
+// pixels in a row (width < N):
+//
+//   1) Source buffers have their tail contents copied to a scratch buffer that is at least N wide
+//   2) All buffers have their MemoryCtx patched, such that access to them (at the current scanline
+//      and x-offset) will land in the scratch buffer
+//   3) Pipeline is run as normal (with all memory access happening safely in the scratch buffers)
+//   4) Destination buffers have their tail contents copied back from the scratch buffer
+//   5) All buffers have their MemoryCtx un-patched
+//
+// To do all of this, the pipeline creates a MemoryCtxPatch for each unique MemoryCtx referenced by
+// the pipeline.
+struct SkRasterPipeline_MemoryCtxPatch {
+    SkRasterPipeline_MemoryCtx* context;
+
+    void* backup;       // Remembers context->pixels so we can restore it
+    int bytesPerPixel;
+    bool load;
+    bool store;
 };
 
 struct SkRasterPipeline_GatherCtx {
