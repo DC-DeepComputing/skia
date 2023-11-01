@@ -1188,13 +1188,15 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
                              std::byte* base, F,F,F,F, F,F,F,F);
 #endif
 
-static void start_pipeline(size_t dx, size_t dy,
-                           size_t xlimit, size_t ylimit,
-                           SkRasterPipelineStage* program) {
-    auto start = (Stage)program->fn;
-    const size_t x0 = dx;
-    std::byte* const base = nullptr;
-    for (; dy < ylimit; dy++) {
+    static void start_pipeline(size_t dx, size_t dy,
+                               size_t xlimit, size_t ylimit,
+                               SkRasterPipelineStage* program,
+                               const SkMemoryCtxPatch* patches,
+                               int numPatches, void* scratch) {
+        auto start = (Stage)program->fn;
+        const size_t x0 = dx;
+        std::byte* const base = nullptr;
+        for (; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
         Params params = { x0,dy,0,base, 0,0,0,0 };
         while (params.dx + N <= xlimit) {
@@ -1212,11 +1214,12 @@ static void start_pipeline(size_t dx, size_t dy,
             dx += N;
         }
         if (size_t tail = xlimit - dx) {
+            // TODO: Iterate over patches, swap the pointers out to point into scratch, copy data in/out
             start(tail,program,dx,dy,base, 0,0,0,0, 0,0,0,0);
         }
     #endif
     }
-}
+    }
 
 #if SK_HAS_MUSTTAIL
     #define JUMPER_MUSTTAIL [[clang::musttail]]

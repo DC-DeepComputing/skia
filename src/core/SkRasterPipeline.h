@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMacros.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
@@ -61,6 +62,12 @@ struct SkRasterPipelineStage {
     void* ctx;
 };
 SK_END_REQUIRE_DENSE
+
+struct SkMemoryCtxPatch {
+    SkRasterPipeline_MemoryCtx* memoryCtx;
+    bool load = false;
+    bool store = false;
+};
 
 class SkRasterPipeline {
 public:
@@ -136,7 +143,9 @@ private:
     bool build_lowp_pipeline(SkRasterPipelineStage* ip) const;
     void build_highp_pipeline(SkRasterPipelineStage* ip) const;
 
-    using StartPipelineFn = void(*)(size_t,size_t,size_t,size_t, SkRasterPipelineStage* program);
+    using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
+                                     SkRasterPipelineStage* program,
+                                     SkMemoryCtxPatch*, int, void*);
     StartPipelineFn build_pipeline(SkRasterPipelineStage*) const;
 
     void unchecked_append(SkRasterPipelineOp, void*);
@@ -146,6 +155,8 @@ private:
     SkRasterPipeline_RewindCtx* fRewindCtx;
     StageList*                  fStages;
     int                         fNumStages;
+
+    skia_private::STArray<2, SkMemoryCtxPatch> fMemoryCtxPatches;
 };
 
 template <size_t bytes>
