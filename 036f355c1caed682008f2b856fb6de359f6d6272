@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36ca615c_e1027c70",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-01T13:47:23Z",
+      "side": 1,
+      "message": "Okay, let\u0027s leave it as-is for now.",
+      "parentUuid": "d3016eaf_04a4f58a",
+      "range": {
+        "startLine": 552,
+        "startChar": 50,
+        "endLine": 552,
+        "endChar": 66
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f2c73e9_6e171cb5",
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "I\u0027m only seeing SkFitsInFixed: https://source.chromium.org/search?q\u003d%22SkFitsIn%22\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F",
       "parentUuid": "b5c57b1c_d0a83753",
+      "range": {
+        "startLine": 645,
+        "startChar": 17,
+        "endLine": 645,
+        "endChar": 44
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "103770f2_f95b1100",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-01T13:47:23Z",
+      "side": 1,
+      "message": "Sorry, I was remembering `SkTFitsIn`",
+      "parentUuid": "e97e1e40_fb5a7f9b",
       "range": {
         "startLine": 645,
         "startChar": 17,
