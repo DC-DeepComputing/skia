@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f63251d9_ea3abddc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-01T20:35:20Z",
+      "side": 1,
+      "message": "For now, the best thing to do is probably just have the Bazel build pick one of these and use it implicitly. We can add the ability to configure it via Bazel later only when G3 clients need to be able to configure it.",
+      "parentUuid": "4638bd79_cdd8bb1f",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36865f47_37eab35d",
