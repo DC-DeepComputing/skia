@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b579feb7_ae07d6aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-01T15:24:23Z",
+      "side": 1,
+      "message": "I don\u0027t have +1 permission. But lgtm.\nThanks for the change. It will be useful for caching.",
+      "revId": "cdea884e48b69acedae888024083457ed2f43801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c716d5e8_91d70266",
