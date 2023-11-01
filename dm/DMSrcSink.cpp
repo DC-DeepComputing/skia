@@ -66,6 +66,7 @@
 #include "tools/ToolUtils.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugCanvas.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/MemoryCache.h"
 
@@ -1334,6 +1335,7 @@ SVGSrc::SVGSrc(Path path)
                                                           /*predecode=*/true),
                   /*predecode=*/true);
     fDom = SkSVGDOM::Builder().setResourceProvider(std::move(rp))
+                              .setFontManager(ToolUtils::TestFontMgr())
                               .make(*stream);
     if (!fDom) {
         return;

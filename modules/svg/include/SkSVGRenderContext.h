@@ -138,7 +138,7 @@ public:
     }
 
     sk_sp<SkFontMgr> fontMgr() const {
-        return fFontMgr ? fFontMgr : SkFontMgr::RefDefault();
+        return fFontMgr ? fFontMgr : SkFontMgr::RefEmpty();
     }
 
     // Returns the translate/scale transformation required to map into the current OBB scope,
