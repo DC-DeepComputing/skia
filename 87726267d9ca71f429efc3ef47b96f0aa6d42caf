@@ -77,6 +77,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b9a07c5_f4640656",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-01T20:32:30Z",
+      "side": 1,
+      "message": "This is assuming scale\u003d1 and bias\u003d0.5?",
+      "parentUuid": "09a96371_99ce8377",
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc22d3e1_a54da6d3",
         "filename": "src/sksl/sksl_graphite_vert.sksl",
         "patchSetId": 1
@@ -88,6 +106,30 @@
       "writtenOn": "2023-10-31T17:45:53Z",
       "side": 1,
       "message": "Since quads never use subpixel scale+biasing for the coverage equations, I think we can drop this entirely and assume scale\u003d1 and bias\u003d0.5 in the fragment shader.\n\nAlthough this would not be the desired case if we were sending filled rects through this code path, since we do want those to be adjusted for subpixel widths.",
+      "range": {
+        "startLine": 973,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 34
+      },
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce4dfd56_020fc62c",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-01T20:32:30Z",
+      "side": 1,
+      "message": "The distinction isn\u0027t clear to me -- aren\u0027t filled rects just per-edge AA quads where the edges are all AA?",
+      "parentUuid": "bc22d3e1_a54da6d3",
       "range": {
         "startLine": 973,
         "startChar": 0,
