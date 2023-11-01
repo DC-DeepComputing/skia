@@ -320,7 +320,8 @@ sk_sp<ImageAsset> DataURIResourceProviderProxy::loadImageAsset(const char rpath[
 sk_sp<SkTypeface> DataURIResourceProviderProxy::loadTypeface(const char name[],
                                                              const char url[]) const {
     if (auto data = decode_datauri("data:font/", url)) {
-        return SkTypeface::MakeFromData(std::move(data));
+        return nullptr;
+        //return SkTypeface::MakeFromData(std::move(data));
     }
 
     return this->INHERITED::loadTypeface(name, url);
