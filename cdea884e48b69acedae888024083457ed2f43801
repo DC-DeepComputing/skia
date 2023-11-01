@@ -39,6 +39,30 @@
       },
       "revId": "cdea884e48b69acedae888024083457ed2f43801",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e86d608f_810ea5d6",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-01T15:34:06Z",
+      "side": 1,
+      "message": "I can move it to the cpp for now. In Ganesh we have proxies and GrGpuResources sharing sharing the ID pool and often connected via ID. So this is public so that proxy can also call it. I\u0027ll have to look more closely in the future as to why we need the uniqueIDs on proxies and if that is something we\u0027ll want in Graphite or not. But yeah for now I\u0027ll just update this to assume it is just for Resource.",
+      "parentUuid": "c716d5e8_91d70266",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 37
+      },
+      "revId": "cdea884e48b69acedae888024083457ed2f43801",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
