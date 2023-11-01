@@ -10,8 +10,10 @@
 
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMalloc.h"
+#include "include/private/base/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/base/SkUtils.h"  // unaligned_{load,store}
+#include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineContextUtils.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
@@ -1135,6 +1137,55 @@ SI U16 to_half(F f) {
 #endif
 }
 
+static void patch_memory_contexts(SkRasterPipeline_MemoryCtx** memoryCtxs, int numMemoryCtxs,
+                                  void* scratchBase, size_t dx, size_t dy, size_t tail) {
+    char* scratchPtr = (char*)scratchBase;
+
+    constexpr size_t kScratchPerMemoryCtx =
+        std::max(SkRasterPipeline_kMaxStride_highp, SkRasterPipeline_kMaxStride) *
+        16 /*largest bytes-per-pixel value (for RGBA_F32)*/;
+
+    for (int i = 0; i < numMemoryCtxs; ++i) {
+        SkRasterPipeline_MemoryCtx* ctx = memoryCtxs[i];
+        const ptrdiff_t offset = ctx->bytesPerPixel * (dy * ctx->stride + dx);
+        void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
+        if (ctx->load) {
+            memcpy(scratchPtr, ctxData, ctx->bytesPerPixel * tail);
+        }
+
+        SkASSERT(ctx->backup == nullptr);
+        void* scratchFakeBase = SkTAddOffset<void>(scratchPtr, -offset);
+        ctx->backup = ctx->pixels;
+        ctx->pixels = scratchFakeBase;
+
+        scratchPtr += kScratchPerMemoryCtx;
+    }
+}
+
+static void restore_memory_contexts(SkRasterPipeline_MemoryCtx** memoryCtxs, int numMemoryCtxs,
+                                    void* scratchBase, size_t dx, size_t dy, size_t tail) {
+    char* scratchPtr = (char*)scratchBase;
+
+    constexpr size_t kScratchPerMemoryCtx =
+        std::max(SkRasterPipeline_kMaxStride_highp, SkRasterPipeline_kMaxStride) *
+        16 /*largest bytes-per-pixel value (for RGBA_F32)*/;
+
+    for (int i = 0; i < numMemoryCtxs; ++i) {
+        SkRasterPipeline_MemoryCtx* ctx = memoryCtxs[i];
+        const ptrdiff_t offset = ctx->bytesPerPixel * (dy * ctx->stride + dx);
+        void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
+        if (ctx->store) {
+            memcpy(ctxData, scratchPtr, ctx->bytesPerPixel * tail);
+        }
+
+        SkASSERT(ctx->backup != nullptr);
+        ctx->pixels = ctx->backup;
+        ctx->backup = nullptr;
+
+        scratchPtr += kScratchPerMemoryCtx;
+    }
+}
+
 #if defined(JUMPER_IS_SCALAR) || defined(JUMPER_IS_SSE2)
     // In scalar and SSE2 mode, we always use precise math so we can have more predictable results.
     // Chrome will use the SSE2 implementation when --disable-skia-runtime-opts is set. (b/40042946)
@@ -1188,13 +1239,15 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
                              std::byte* base, F,F,F,F, F,F,F,F);
 #endif
 
-static void start_pipeline(size_t dx, size_t dy,
-                           size_t xlimit, size_t ylimit,
-                           SkRasterPipelineStage* program) {
-    auto start = (Stage)program->fn;
-    const size_t x0 = dx;
-    std::byte* const base = nullptr;
-    for (; dy < ylimit; dy++) {
+    static void start_pipeline(size_t dx, size_t dy,
+                               size_t xlimit, size_t ylimit,
+                               SkRasterPipelineStage* program,
+                               SkRasterPipeline_MemoryCtx** memoryCtxs, int numMemoryCtxs,
+                               void* scratch) {
+        auto start = (Stage)program->fn;
+        const size_t x0 = dx;
+        std::byte* const base = nullptr;
+        for (; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
         Params params = { x0,dy,0,base, 0,0,0,0 };
         while (params.dx + N <= xlimit) {
@@ -1202,8 +1255,10 @@ static void start_pipeline(size_t dx, size_t dy,
             params.dx += N;
         }
         if (size_t tail = xlimit - params.dx) {
+            patch_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, params.dx, dy, tail);
             params.tail = tail;
             start(&params,program, 0,0,0,0);
+            restore_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, params.dx, dy, tail);
         }
     #else
         dx = x0;
@@ -1212,11 +1267,13 @@ static void start_pipeline(size_t dx, size_t dy,
             dx += N;
         }
         if (size_t tail = xlimit - dx) {
+            patch_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, dx, dy, tail);
             start(tail,program,dx,dy,base, 0,0,0,0, 0,0,0,0);
+            restore_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, dx, dy, tail);
         }
     #endif
     }
-}
+    }
 
 #if SK_HAS_MUSTTAIL
     #define JUMPER_MUSTTAIL [[clang::musttail]]
@@ -4579,7 +4636,8 @@ namespace lowp {
     #undef M
     static void (*just_return)(void) = nullptr;
 
-    static void start_pipeline(size_t,size_t,size_t,size_t, SkRasterPipelineStage*) {}
+    static void start_pipeline(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
+                               SkMemoryCtxPatch*, int, void*) {}
 
 #else  // We are compiling vector code with Clang... let's make some lowp stages!
 
@@ -4621,9 +4679,11 @@ static constexpr size_t N = sizeof(U16) / sizeof(uint16_t);
                               U16 dr, U16 dg, U16 db, U16 da);
 #endif
 
-static void start_pipeline(const size_t x0,     const size_t y0,
-                           const size_t xlimit, const size_t ylimit,
-                           SkRasterPipelineStage* program) {
+static void start_pipeline(size_t x0,     size_t y0,
+                           size_t xlimit, size_t ylimit,
+                           SkRasterPipelineStage* program,
+                           SkRasterPipeline_MemoryCtx** memoryCtxs, int numMemoryCtxs,
+                           void* scratch) {
     auto start = (Stage)program->fn;
     for (size_t dy = y0; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
@@ -4632,8 +4692,10 @@ static void start_pipeline(const size_t x0,     const size_t y0,
             start(&params, program, 0,0,0,0);
         }
         if (size_t tail = xlimit - params.dx) {
+            patch_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, params.dx, dy, tail);
             params.tail = tail;
             start(&params, program, 0,0,0,0);
+            restore_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, params.dx, dy, tail);
         }
     #else
         size_t dx = x0;
@@ -4641,7 +4703,9 @@ static void start_pipeline(const size_t x0,     const size_t y0,
             start(   0, program, dx,dy, 0,0,0,0, 0,0,0,0);
         }
         if (size_t tail = xlimit - dx) {
+            patch_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, dx, dy, tail);
             start(tail, program, dx,dy, 0,0,0,0, 0,0,0,0);
+            restore_memory_contexts(memoryCtxs, numMemoryCtxs, scratch, dx, dy, tail);
         }
     #endif
     }
