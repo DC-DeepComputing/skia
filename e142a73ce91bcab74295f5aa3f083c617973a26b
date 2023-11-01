@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aacd1636_23c1b076",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-01T11:41:06Z",
+      "side": 1,
+      "message": "The way it was is easier to debug - usually we care about finding data from a specific commit, so having that be higher up the file path makes that task easier.",
+      "revId": "e142a73ce91bcab74295f5aa3f083c617973a26b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
