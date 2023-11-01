@@ -301,9 +301,10 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferMana
                              // stores center of rrect in local coords.
                              {"center", VertexAttribType::kFloat2, SkSLType::kFloat2},
 
-                             // TODO: pack depth and ssboIndex into 32-bits
+                             // TODO: pack depth and ssbo index into one 32-bit attribute, if we can
+                             // go without needing both render step and paint ssbo index attributes.
                              {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                             {"ssboIndex", VertexAttribType::kInt, SkSLType::kInt},
+                             {"ssboIndices", VertexAttribType::kUShort2, SkSLType::kUShort2},
 
                              {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                              {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
@@ -397,7 +398,7 @@ float PerEdgeAAQuadRenderStep::boundsOutset(const Transform& localToDevice,
 
 void PerEdgeAAQuadRenderStep::writeVertices(DrawWriter* writer,
                                            const DrawParams& params,
-                                           int ssboIndex) const {
+                                           skvx::ushort2 ssboIndices) const {
     SkASSERT(params.geometry().isEdgeAAQuad());
     const EdgeAAQuad& quad = params.geometry().edgeAAQuad();
 
@@ -430,7 +431,7 @@ void PerEdgeAAQuadRenderStep::writeVertices(DrawWriter* writer,
 
     vw << center
        << params.order().depthAsFloat()
-       << ssboIndex
+       << ssboIndices
        << m.rc(0,0) << m.rc(1,0) << m.rc(3,0)  // mat0
        << m.rc(0,1) << m.rc(1,1) << m.rc(3,1)  // mat1
        << m.rc(0,3) << m.rc(1,3) << m.rc(3,3); // mat2
