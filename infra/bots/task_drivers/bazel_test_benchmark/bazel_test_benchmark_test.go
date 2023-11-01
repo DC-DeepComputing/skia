@@ -54,7 +54,7 @@ func TestRun_Success(t *testing.T) {
 			gcsClient.On(
 				"SetFileContents",
 				infra_testutils.AnyContext,
-				"nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 				gcs.FILE_WRITE_OPTS_TEXT,
 				[]byte(resultsJSONFileContents)).
 				Return(nil).Once()
@@ -98,7 +98,7 @@ func TestRun_Success(t *testing.T) {
 				"Not extracting non-PNG / non-JSON file: some-plaintext.txt",
 				"Stat "+outputsZIPExtractionDir+"/results.json",
 				"Read "+outputsZIPExtractionDir+"/results.json",
-				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 				"Clean Bazel cache if disk space is too low",
 				"No need to clear the Bazel cache: free space on partition /mnt/pd0 is 20000000000 bytes, which is above the threshold of 15000000000 bytes",
 			)

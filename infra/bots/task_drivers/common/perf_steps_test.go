@@ -236,7 +236,7 @@ func TestUploadToPerf_OutputsZip_Success(t *testing.T) {
 			gcsClient.On(
 				"SetFileContents",
 				infra_testutils.AnyContext,
-				"nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 				gcs.FILE_WRITE_OPTS_TEXT,
 				[]byte(resultsJSONFileContents)).
 				Return(nil).Once()
@@ -268,7 +268,7 @@ func TestUploadToPerf_OutputsZip_Success(t *testing.T) {
 				"Not extracting non-PNG / non-JSON file: some-plaintext.txt",
 				"Stat "+outputsZIPExtractionDir+"/results.json",
 				"Read "+outputsZIPExtractionDir+"/results.json",
-				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 			)
 
 			gcsClient.AssertExpectations(t)
@@ -309,7 +309,7 @@ func TestUploadToPerf_OutputsDirectory_Success(t *testing.T) {
 			gcsClient.On(
 				"SetFileContents",
 				infra_testutils.AnyContext,
-				"nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 				gcs.FILE_WRITE_OPTS_TEXT,
 				[]byte(resultsJSONFileContents)).
 				Return(nil).Once()
@@ -331,7 +331,7 @@ func TestUploadToPerf_OutputsDirectory_Success(t *testing.T) {
 			testutils.AssertStepNames(t, res,
 				"Stat "+outputsDir+"/results.json",
 				"Read "+outputsDir+"/results.json",
-				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 			)
 
 			gcsClient.AssertExpectations(t)
