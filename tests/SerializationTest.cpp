@@ -448,7 +448,7 @@ static sk_sp<SkTypeface> makeDistortableWithNonDefaultAxes(skiatest::Reporter* r
     SkFontArguments params;
     params.setVariationDesignPosition({position, std::size(position)});
 
-    sk_sp<SkFontMgr> fm = SkFontMgr::RefDefault();
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
 
     sk_sp<SkTypeface> typeface = fm->makeFromStream(std::move(distortable), params);
     if (!typeface) {
@@ -468,7 +468,7 @@ static void TestPictureTypefaceSerialization(const SkSerialProcs* serial_procs,
                                              skiatest::Reporter* reporter) {
     {
         // Load typeface from file to test CreateFromFile with index.
-        auto typeface = MakeResourceAsTypeface("fonts/test.ttc", 1);
+        auto typeface = ToolUtils::CreateTypefaceFromResource("fonts/test.ttc", 1);
         if (!typeface) {
             INFOF(reporter, "Could not run fontstream test because test.ttc not found.");
         } else {

@@ -242,7 +242,7 @@ class DiffCanvasBench : public Benchmark {
         auto stream = fDataProvider();
         fDiscardableManager = sk_make_sp<DiscardableManager>();
         fServer.init(fDiscardableManager.get());
-        fTrace = SkTextBlobTrace::CreateBlobTrace(stream.get());
+        fTrace = SkTextBlobTrace::CreateBlobTrace(stream.get(), nullptr);
     }
 
 public:

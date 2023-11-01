@@ -25,6 +25,7 @@
 #include "src/utils/SkOSPath.h"
 #include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <cmath>
 #include <vector>
@@ -341,7 +342,7 @@ public:
         for(const auto& s : fTextStringSlots) {
             auto t = fSlotManager->getTextSlot(s.first);
             t->fText = SkString(s.second.source.data());
-            t->fTypeface = SkFontMgr::RefDefault()->matchFamilyStyle(s.second.font.c_str(),
+            t->fTypeface = ToolUtils::TestFontMgr()->matchFamilyStyle(s.second.font.c_str(),
                                                                      SkFontStyle());
             fSlotManager->setTextSlot(s.first, *t);
         }

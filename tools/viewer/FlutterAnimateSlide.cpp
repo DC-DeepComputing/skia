@@ -9,12 +9,14 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorPriv.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkTypeface.h"
 #include "src/base/SkRandom.h"
 #include "src/base/SkTime.h"
 #include "tools/timer/Timer.h"
 #include "tools/viewer/Slide.h"
+#include "tools/fonts/FontToolUtils.h"
 
 // Create an animation of a bunch of letters that rotate in place. This is intended to stress
 // the glyph atlas and test that we don't see corruption or bad slowdowns.
@@ -24,7 +26,7 @@ public:
 
 public:
     void load(SkScalar w, SkScalar h) override {
-        fTypeface = SkTypeface::MakeFromFile("/skimages/samplefont.ttf");
+        fTypeface = ToolUtils::TestFontMgr()->makeFromFile("/skimages/samplefont.ttf");
         initChars();
     }
 

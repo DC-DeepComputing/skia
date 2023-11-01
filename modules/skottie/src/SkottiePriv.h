@@ -242,7 +242,7 @@ private:
 
         const sk_sp<SkFontMgr>& get() {
             if (!fFontMgr) {
-                fFontMgr = SkFontMgr::RefDefault();
+                fFontMgr = SkFontMgr::RefEmpty(); // TODO(kjlubick)
                 SkASSERT(fFontMgr);
             }
             return fFontMgr;

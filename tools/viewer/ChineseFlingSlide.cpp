@@ -14,6 +14,7 @@
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/viewer/Slide.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #if defined(SK_GANESH)
 #include "include/gpu/GrDirectContext.h"
@@ -24,15 +25,15 @@ using MaskFormat = skgpu::MaskFormat;
 
 static sk_sp<SkTypeface> chinese_typeface() {
 #ifdef SK_BUILD_FOR_ANDROID
-    return MakeResourceAsTypeface("fonts/NotoSansCJK-Regular.ttc");
+    return ToolUtils::CreateTypefaceFromResource("fonts/NotoSansCJK-Regular.ttc");
 #elif defined(SK_BUILD_FOR_WIN)
-    return SkTypeface::MakeFromName("SimSun", SkFontStyle());
+    return ToolUtils::CreateTestTypeface("SimSun", SkFontStyle());
 #elif defined(SK_BUILD_FOR_MAC)
-    return SkTypeface::MakeFromName("Hiragino Sans GB W3", SkFontStyle());
+    return ToolUtils::CreateTestTypeface("Hiragino Sans GB W3", SkFontStyle());
 #elif defined(SK_BUILD_FOR_IOS)
-    return SkTypeface::MakeFromName("Hiragino Sans GB W3", SkFontStyle());
+    return ToolUtils::CreateTestTypeface("Hiragino Sans GB W3", SkFontStyle());
 #elif defined(SK_BUILD_FOR_UNIX)
-    return SkTypeface::MakeFromName("Noto Sans CJK SC", SkFontStyle());
+    return ToolUtils::CreateTestTypeface("Noto Sans CJK SC", SkFontStyle());
 #else
     return nullptr;
 #endif

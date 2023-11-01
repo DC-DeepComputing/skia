@@ -1,6 +1,7 @@
 // Copyright 2020 Google LLC.
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
+#include "tools/fiddle/fiddle_main.h"
 REG_FIDDLE_ANIMATED(SkPath_cubicTo_example_parametric_animated, 512, 512, false, 0, 3) {
 /*
         If the starting point is (x0, y0), then this curve is defined as the
@@ -75,8 +76,8 @@ void draw(SkCanvas* canvas) {
     SkPaint textPaint;
     textPaint.setColor(SkColorSetARGB(255, 0, 255, 0));
     textPaint.setAntiAlias(true);
-    sk_sp<SkFontMgr> mgr(SkFontMgr::RefDefault());
-    sk_sp<SkTypeface> face(mgr->matchFamilyStyle("DejaVu Sans Mono", SkFontStyle()));
+
+    sk_sp<SkTypeface> face(fontMgr->matchFamilyStyle("DejaVu Sans Mono", SkFontStyle()));
     canvas->drawString("a", a.x(),    a.y(), font, textPaint);
     canvas->drawString("b", b.x(),    b.y(), font, textPaint);
     canvas->drawString("c", c.x()-20, c.y(), font, textPaint);

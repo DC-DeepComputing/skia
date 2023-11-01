@@ -17,6 +17,7 @@
 #include "src/ports/SkFontConfigInterface_direct.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <fontconfig/fontconfig.h>
 #include <memory>
@@ -45,7 +46,7 @@ bool fontmgr_understands_ft_named_instance_bits() {
         return false;
     }
 
-    sk_sp<SkFontMgr> fm = SkFontMgr::RefDefault();
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
     SkFontArguments params;
     // The first named variation position in Distortable is 'Thin'.
     params.setCollectionIndex(0x00010000);

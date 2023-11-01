@@ -4,6 +4,8 @@
 #include "experimental/sktext/include/Text.h"
 #include "experimental/sktext/include/Types.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkFontMgr.h"
+#include "include/core/SkRefCnt.h"
 
 namespace skia {
 namespace text {
@@ -18,10 +20,12 @@ namespace text {
         SkPaint backgroundPaint;
     };
 
+    sk_sp<SkFontMgr> GetFontMgr();
+
     class TrivialFontChain : public FontChain {
     public:
         TrivialFontChain(const char* ff, SkScalar size, SkFontStyle fontStyle)
-                : fTypeface(sk_sp<SkTypeface>(SkFontMgr::RefDefault()->matchFamilyStyle(ff, SkFontStyle::Normal())))
+                : fTypeface(sk_sp<SkTypeface>(GetFontMgr()->matchFamilyStyle(ff, SkFontStyle::Normal())))
                 , fSize(size)
                 , fFontStyle(fontStyle) { }
         size_t count() const override { return (size_t)1; }
@@ -46,8 +50,7 @@ namespace text {
                 : fSize(size)
                 , fFontStyle(fontStyle) {
             for (auto& ff : ffs) {
-                auto typeface = SkFontMgr::RefDefault()->matchFamilyStyle(ff,
-                                                                          SkFontStyle::Normal());
+                auto typeface = GetFontMgr()->matchFamilyStyle(ff, SkFontStyle::Normal());
                 if (typeface != nullptr) {
                     fTypefaces.emplace_back(typeface);
                 }
