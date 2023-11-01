@@ -162,6 +162,7 @@
   {"name": "Build-Debian10-Clang-x86_64-Release-TSAN_Graphite_Vulkan"},
   {"name": "Build-Debian10-Clang-x86_64-Release-Vulkan"},
   {"name": "Build-Debian10-Clang-x86_64-Release-Wuffs"},
+  {"name": "Build-Debian10-EMCC-wasm-Debug-Graphite_Dawn"},
   {"name": "Build-Debian10-EMCC-asmjs-Debug-PathKit"},
   {"name": "Build-Debian10-EMCC-asmjs-Release-PathKit"},
   {"name": "Build-Debian10-EMCC-wasm-Debug-CanvasKit"},
