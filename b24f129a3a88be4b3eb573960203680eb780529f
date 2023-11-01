@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d8bdc3e_34c97bff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-01T20:50:37Z",
+      "side": 1,
+      "message": "On second thought, it\u0027s probably better to have both the GN and Bazel version *always* compile in the high quality one (as the default, for now), and add a way to set/override that sampler.\n\nThen, spin up a CL to turn the default to the low quality one, see which tests break. Update those clients to explicitly set the sampler to the high quality one.\n\nThen, we can make each of the sampler behaviors be a \"buffet entree\" with the default being a low-quality (or no-quality?) option to reduce code size if nothing was explicitly set.\n\nThis still makes it compile/link time configurable, but it\u0027s the client who has to make sure they are compiling and depending on \"core\" and \"hq_sampler\", without introducing a back-ref linking issue where Skia depends on something it trusts the client to depend against.",
+      "parentUuid": "f63251d9_ea3abddc",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
