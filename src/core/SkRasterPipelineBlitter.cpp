@@ -22,6 +22,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkMemset.h"
 #include "src/core/SkRasterPipeline.h"
+#include "src/core/SkRasterPipelineOpList.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/shaders/SkShaderBase.h"
 
