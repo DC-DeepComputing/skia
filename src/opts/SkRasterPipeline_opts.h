@@ -10,6 +10,8 @@
 
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMalloc.h"
+#include "include/private/base/SkSpan_impl.h"
+#include "include/private/base/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/base/SkUtils.h"  // unaligned_{load,store}
 #include "src/core/SkRasterPipeline.h"
@@ -1135,6 +1137,41 @@ SI U16 to_half(F f) {
 #endif
 }
 
+static void patch_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                                  size_t dx, size_t dy, size_t tail) {
+    for (SkRasterPipeline_MemoryCtxPatch& patch : memoryCtxPatches) {
+        SkRasterPipeline_MemoryCtx* ctx = patch.info.context;
+
+        const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
+        void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
+        if (patch.info.load) {
+            memcpy(patch.scratch, ctxData, patch.info.bytesPerPixel * tail);
+        }
+
+        SkASSERT(patch.backup == nullptr);
+        void* scratchFakeBase = SkTAddOffset<void>(patch.scratch, -offset);
+        patch.backup = ctx->pixels;
+        ctx->pixels = scratchFakeBase;
+    }
+}
+
+static void restore_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                                    size_t dx, size_t dy, size_t tail) {
+    for (SkRasterPipeline_MemoryCtxPatch& patch : memoryCtxPatches) {
+        SkRasterPipeline_MemoryCtx* ctx = patch.info.context;
+
+        SkASSERT(patch.backup != nullptr);
+        ctx->pixels = patch.backup;
+        patch.backup = nullptr;
+
+        const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
+        void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
+        if (patch.info.store) {
+            memcpy(ctxData, patch.scratch, patch.info.bytesPerPixel * tail);
+        }
+    }
+}
+
 #if defined(JUMPER_IS_SCALAR) || defined(JUMPER_IS_SSE2)
     // In scalar and SSE2 mode, we always use precise math so we can have more predictable results.
     // Chrome will use the SSE2 implementation when --disable-skia-runtime-opts is set. (b/40042946)
@@ -1190,7 +1227,8 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
 
 static void start_pipeline(size_t dx, size_t dy,
                            size_t xlimit, size_t ylimit,
-                           SkRasterPipelineStage* program) {
+                           SkRasterPipelineStage* program,
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches) {
     auto start = (Stage)program->fn;
     const size_t x0 = dx;
     std::byte* const base = nullptr;
@@ -1202,8 +1240,10 @@ static void start_pipeline(size_t dx, size_t dy,
             params.dx += N;
         }
         if (size_t tail = xlimit - params.dx) {
+            patch_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
             params.tail = tail;
             start(&params,program, 0,0,0,0);
+            restore_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
         }
     #else
         dx = x0;
@@ -1212,7 +1252,9 @@ static void start_pipeline(size_t dx, size_t dy,
             dx += N;
         }
         if (size_t tail = xlimit - dx) {
+            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
             start(tail,program,dx,dy,base, 0,0,0,0, 0,0,0,0);
+            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
         }
     #endif
     }
@@ -4568,7 +4610,8 @@ namespace lowp {
     #undef M
     static void (*just_return)(void) = nullptr;
 
-    static void start_pipeline(size_t,size_t,size_t,size_t, SkRasterPipelineStage*) {}
+    static void start_pipeline(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
+                               SkSpan<SkRasterPipeline_MemoryCtxPatch>) {}
 
 #else  // We are compiling vector code with Clang... let's make some lowp stages!
 
@@ -4610,9 +4653,10 @@ static constexpr size_t N = sizeof(U16) / sizeof(uint16_t);
                               U16 dr, U16 dg, U16 db, U16 da);
 #endif
 
-static void start_pipeline(const size_t x0,     const size_t y0,
-                           const size_t xlimit, const size_t ylimit,
-                           SkRasterPipelineStage* program) {
+static void start_pipeline(size_t x0,     size_t y0,
+                           size_t xlimit, size_t ylimit,
+                           SkRasterPipelineStage* program,
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches) {
     auto start = (Stage)program->fn;
     for (size_t dy = y0; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
@@ -4621,8 +4665,10 @@ static void start_pipeline(const size_t x0,     const size_t y0,
             start(&params, program, 0,0,0,0);
         }
         if (size_t tail = xlimit - params.dx) {
+            patch_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
             params.tail = tail;
             start(&params, program, 0,0,0,0);
+            restore_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
         }
     #else
         size_t dx = x0;
@@ -4630,7 +4676,9 @@ static void start_pipeline(const size_t x0,     const size_t y0,
             start(   0, program, dx,dy, 0,0,0,0, 0,0,0,0);
         }
         if (size_t tail = xlimit - dx) {
+            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
             start(tail, program, dx,dy, 0,0,0,0, 0,0,0,0);
+            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
         }
     #endif
     }
