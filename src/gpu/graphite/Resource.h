@@ -93,6 +93,25 @@ public:
     // aren't aware of additional padding or copies made by the driver.
     size_t gpuMemorySize() const { return fGpuMemorySize; }
 
+    class UniqueID {
+    public:
+        UniqueID() = default;
+
+        explicit UniqueID(uint32_t id) : fID(id) {}
+
+        uint32_t asUInt() const { return fID; }
+
+        bool operator==(const UniqueID& other) const { return fID == other.fID; }
+        bool operator!=(const UniqueID& other) const { return !(*this == other); }
+
+    private:
+        uint32_t fID = SK_InvalidUniqueID;
+    };
+
+    // Gets an id that is unique for this Resource object. It is static in that it does not change
+    // when the content of the Resource object changes. This will never return 0.
+    UniqueID uniqueID() const { return fUniqueID; }
+
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
     //
@@ -256,6 +275,8 @@ private:
     // Frees the object in the underlying 3D API.
     void internalDispose();
 
+    static uint32_t CreateUniqueID();
+
     // We need to guard calling unref on the usage and command buffer refs since they each could be
     // unreffed on different threads. This can lead to calling notifyARefIsZero twice with each
     // instance thinking there are no more refs left and both trying to delete the object.
@@ -303,6 +324,8 @@ private:
     // by the cache.
     uint32_t fTimestamp;
     skgpu::StdSteadyClock::time_point fLastAccess;
+
+    const UniqueID fUniqueID;
 
     // This is only used during validation checking. Lots of the validation code depends on a
     // resource being purgeable or not. However, purgeable itself just means having no refs. The
