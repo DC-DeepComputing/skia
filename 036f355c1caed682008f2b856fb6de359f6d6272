@@ -308,6 +308,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fecc74da_b44653f1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-01T14:35:53Z",
+      "side": 1,
+      "message": "Very nice",
+      "parentUuid": "bd10dcda_9f55c85c",
+      "range": {
+        "startLine": 645,
+        "startChar": 17,
+        "endLine": 645,
+        "endChar": 44
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa161066_2f8b9597",
@@ -345,6 +369,30 @@
       "side": 1,
       "message": "Yea I overlooked the naming here. Updated the parameter to \"emitShadingSsboIndicesVarying\". Could we be doing shading but not analytic coverage with uniforms? In that case I think it\u0027d make sense to keep the booleans separate. Then I think for the call to EmitVaryings, we can just pass useShadingStorageBuffer and assert \"if we\u0027re doing analytic coverage, then we\u0027re doing shading\".",
       "parentUuid": "aa161066_2f8b9597",
+      "range": {
+        "startLine": 235,
+        "startChar": 72,
+        "endLine": 235,
+        "endChar": 95
+      },
+      "revId": "036f355c1caed682008f2b856fb6de359f6d6272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8048cdf_b4df2e2f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-01T14:35:53Z",
+      "side": 1,
+      "message": "Sounds good.",
+      "parentUuid": "3125cf27_d8c76e7f",
       "range": {
         "startLine": 235,
         "startChar": 72,

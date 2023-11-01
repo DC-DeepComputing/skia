@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6624580f_33ec1702",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-01T14:35:53Z",
+      "side": 1,
+      "message": "lgtm w/ the planned assert in EmitVaryings",
+      "revId": "827b81b405192ceb2657b91b09ba9a0e7f916933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
