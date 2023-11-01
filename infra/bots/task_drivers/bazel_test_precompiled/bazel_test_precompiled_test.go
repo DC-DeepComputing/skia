@@ -251,7 +251,7 @@ func TestRun_BenchmarkTest_Success(t *testing.T) {
 			gcsClient.On(
 				"SetFileContents",
 				infra_testutils.AnyContext,
-				"nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 				gcs.FILE_WRITE_OPTS_TEXT,
 				[]byte(resultsJSONFileContents)).
 				Return(nil).Once()
@@ -282,7 +282,7 @@ func TestRun_BenchmarkTest_Success(t *testing.T) {
 				strings.Join(benchmarkInvocation, " "),
 				"Stat "+tdArgs.undeclaredOutputsDir+"/results.json",
 				"Read "+tdArgs.undeclaredOutputsDir+"/results.json",
-				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/BazelTest-Foo-Bar/results_1234567890.json",
+				"Upload gs://skia-perf/nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99/results_1234567890.json",
 			)
 
 			assert.Equal(t, "/path/to/workdir", commandCollector.Commands()[0].Dir)

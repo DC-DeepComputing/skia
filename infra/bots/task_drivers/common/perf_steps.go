@@ -134,6 +134,6 @@ func UploadToPerf(ctx context.Context, gcsClient gcs.GCSClient, benchmarkInfo Be
 // https://skia.googlesource.com/skia/+/5096ed4deb06171700c74273b685713bec0ae597/infra/bots/task_drivers/codesize/codesize.go#517.
 func computePerfJSONFileGCSPath(ctx context.Context, benchmarkInfo BenchmarkInfo) string {
 	timePrefix := now.Now(ctx).UTC().Format("2006/01/02/15") // YYYY/MM/DD/HH.
-	// Example: nano-json-v1/2022/01/31/01/033ccea12c0949d0f712471bfcb4ed6daf69aaff/BazelTest-Foo-Bar/results_CkPp9ElAaEXyYWNHpXHU.json.
-	return fmt.Sprintf("nano-json-v1/%s/%s/%s/results_%s.json", timePrefix, benchmarkInfo.GitCommit, benchmarkInfo.TaskName, benchmarkInfo.TaskID)
+	// Example: nano-json-v1/2022/01/31/01/BazelTest-Foo-Bar/033ccea12c0949d0f712471bfcb4ed6daf69aaff/results_CkPp9ElAaEXyYWNHpXHU.json.
+	return fmt.Sprintf("nano-json-v1/%s/%s/%s/results_%s.json", timePrefix, benchmarkInfo.TaskName, benchmarkInfo.GitCommit, benchmarkInfo.TaskID)
 }
