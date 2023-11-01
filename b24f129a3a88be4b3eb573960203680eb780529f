@@ -33,6 +33,24 @@
       "message": "I just heard from Kevin that this pattern might be problematic in g3, IFF the implementation selection is up to the client.  Something about link order and the factory caller not having and explicit dependency on the factory impl.\n\nProbably not an issue, at least for now, but something to keep in mind.",
       "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "063d2b18_c8b6c0fc",
+        "filename": "src/core/SkMipmap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-01T20:32:18Z",
+      "side": 1,
+      "message": "It\u0027s only a problem if it needs to be configurable by G3 clients. 😊\n\nIf it does, we\u0027ll need to make a function for clients to call to register a  MipMapDownSampler callback to be used instead of depending on Skia declaring a function (a hole) and trusting the client to happen to be depending on an implementation (a peg) since Skia \"needs\" to depend on the implementation provider (and it won\u0027t).",
+      "parentUuid": "36865f47_37eab35d",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
