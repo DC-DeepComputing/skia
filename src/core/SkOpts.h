@@ -57,6 +57,7 @@
  */
 
 struct SkRasterPipelineStage;
+struct SkRasterPipeline_MemoryCtx;
 
 namespace SkOpts {
     // Call to replace pointers to portable functions with pointers to CPU-specific functions.
@@ -70,8 +71,10 @@ namespace SkOpts {
     extern StageFn ops_highp[kNumRasterPipelineHighpOps], just_return_highp;
     extern StageFn ops_lowp [kNumRasterPipelineLowpOps ], just_return_lowp;
 
-    extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*);
-    extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*);
+    extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
+                                        SkRasterPipeline_MemoryCtx**, int, void*);
+    extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
+                                        SkRasterPipeline_MemoryCtx**, int, void*);
 
     extern size_t raster_pipeline_lowp_stride;
     extern size_t raster_pipeline_highp_stride;
