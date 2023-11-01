@@ -21,7 +21,8 @@ Resource::Resource(const SharedContext* sharedContext,
         , fCacheRefCnt(0)
         , fOwnership(ownership)
         , fGpuMemorySize(gpuMemorySize)
-        , fBudgeted(budgeted) {
+        , fBudgeted(budgeted)
+        , fUniqueID(CreateUniqueID() ){
     // If we don't own the resource that must mean its wrapped in a client object. Thus we should
     // not be budgeted
     SkASSERT(fOwnership == Ownership::kOwned || fBudgeted == skgpu::Budgeted::kNo);
@@ -75,6 +76,15 @@ bool Resource::isPurgeable() const {
     // will always be greater than 1 since we add one on insert and don't remove that ref until
     // the Resource is removed from the cache.
     return !(this->hasUsageRef() || this->hasCommandBufferRef());
+}
+
+uint32_t Resource::CreateUniqueID() {
+    static std::atomic<uint32_t> nextID{1};
+    uint32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+    } while (id == SK_InvalidUniqueID);
+    return id;
 }
 
 } // namespace skgpu::graphite
