@@ -778,7 +778,7 @@ void ShaperHarfBuzz::shape(const char* utf8, size_t utf8Bytes,
 
     std::unique_ptr<FontRunIterator> font(
                 MakeFontMgrRunIterator(utf8, utf8Bytes, srcFont,
-                                       fFontMgr ? fFontMgr : SkFontMgr::RefDefault()));
+                                       fFontMgr ? fFontMgr : SkFontMgr::RefEmpty()));
     if (!font) {
         return;
     }

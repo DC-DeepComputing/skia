@@ -12,7 +12,7 @@
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkPaint.h"
 #include "src/core/SkFontMgrPriv.h"
-#include "tools/fonts/TestFontMgr.h"
+#include "tools/fonts/FontToolUtils.h"
 
 void FuzzImageFilterDeserialize(const uint8_t *data, size_t size) {
     const int BitmapSize = 24;
@@ -44,7 +44,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (size > 10024) {
         return 0;
     }
-    gSkFontMgr_DefaultFactory = &ToolUtils::MakePortableFontMgr;
+    ToolUtils::UsePortableFontMgr();
     FuzzImageFilterDeserialize(data, size);
     return 0;
 }
