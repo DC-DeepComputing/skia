@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4638bd79_cdd8bb1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-11-01T20:26:59Z",
+      "side": 1,
+      "message": "Hi Kevin,\n\nWe need your help. This CL accomplishes its goal (allowing a particular impl for DownSampling) to be chosen at build-time ... in GN. We need your help making the corresponding mod for building through Bazel...",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36865f47_37eab35d",
