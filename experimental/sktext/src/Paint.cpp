@@ -6,6 +6,11 @@ using namespace skia_private;
 namespace skia {
 namespace text {
 
+    sk_sp<SkFontMgr> GetFontMgr() {
+        // TODO(kjlubick) either this should return a singleton or we should delete this entire module.
+        return SkFontMgr::RefEmpty();
+    }
+
     bool Paint::drawText(std::u16string text, SkCanvas* canvas, SkScalar x, SkScalar y) {
         SkPaint foregroundPaint(SkColors::kBlack);
         SkPaint backgroundPaint(SkColors::kWhite);

@@ -106,8 +106,8 @@ struct EditorLayer : public sk_app::Window::Layer {
     bool fMouseDown = false;
 
     void setFont() {
-        fEditor.setFont(SkFont(SkTypeface::MakeFromName(kTypefaces[fTypefaceIndex],
-                               SkFontStyle(kFontWeight, kFontWidth, kFontSlant)), fFontSize));
+        // fEditor.setFont(SkFont(SkTypeface::MakeFromName(kTypefaces[fTypefaceIndex],
+        //                        SkFontStyle(kFontWeight, kFontWidth, kFontSlant)), fFontSize));
     }
 
 

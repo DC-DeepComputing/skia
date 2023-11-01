@@ -1,6 +1,7 @@
 // Copyright 2020 Google LLC.
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
+#include "tools/fiddle/fiddle_main.h"
 REG_FIDDLE(count_verbs, 256, 256, false, 0) {
 #include "include/utils/SkTextUtils.h"
 
@@ -29,7 +30,7 @@ static void count_verbs(const SkPath& path, int counts[6]) {
 }
 
 void draw(SkCanvas* canvas) {
-    SkFont font(SkTypeface::MakeFromName("DejaVu Sans Mono", SkFontStyle()), 30);
+    SkFont font(fontMgr->matchFamilyStyle("DejaVu Sans Mono", SkFontStyle()), 30);
     SkPath path = make_path(font);
     int counts[6];
     count_verbs(path, counts);

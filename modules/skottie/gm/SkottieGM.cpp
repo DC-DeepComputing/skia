@@ -14,6 +14,7 @@
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <cmath>
 #include <vector>
@@ -27,7 +28,7 @@ static constexpr char kSkottieResource[] = "skottie/skottie_sample_webfont.json"
 class FakeWebFontProvider final : public skresources::ResourceProvider {
 public:
     FakeWebFontProvider()
-        : fTypeface(SkTypeface::MakeFromData(GetResourceAsData(kWebFontResource))) {}
+        : fTypeface(CreateTypefaceFromResource(kWebFontResource)) {}
 
     sk_sp<SkTypeface> loadTypeface(const char[], const char[]) const override {
         return fTypeface;

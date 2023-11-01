@@ -24,6 +24,7 @@
 #include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
 #include "tools/viewer/ClickHandlerSlide.h"
+#include "tools/fonts/FontToolUtils.h"
 
 namespace {
 
@@ -72,7 +73,7 @@ public:
     SBIXSlide() { fName = "SBIX"; }
 
     void load(SkScalar w, SkScalar h) override {
-        fFontMgr.emplace_back(SkFontMgr::RefDefault());
+        fFontMgr.emplace_back(ToolUtils::TestFontMgr());
         //fFontMgr.emplace_back(SkFontMgr_New_Custom_Empty());
         // GetResourceAsData may be backed by a read only file mapping.
         // For sanity always make a copy.
