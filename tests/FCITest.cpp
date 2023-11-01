@@ -100,7 +100,8 @@ DEF_TEST(FontConfigInterface_MatchStyleNamedInstance, reporter) {
             // Intentionally go through manually creating the typeface so that SkFontStyle is
             // derived from data inside the font, not from the FcPattern that is the FontConfig
             // match result, see https://crbug.com/skia/12881
-            sk_sp<SkTypeface> typeface(fciDirect->makeTypeface(resultIdentity).release());
+            sk_sp<SkTypeface> typeface(fciDirect->makeTypeface(resultIdentity,
+                                                               ToolUtils::TestFontMgr()).release());
 
             if (!typeface) {
                 ERRORF(reporter, "Could not instantiate typeface, FcVersion: %d", FcGetVersion());
