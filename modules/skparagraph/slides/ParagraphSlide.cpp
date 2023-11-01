@@ -4376,6 +4376,15 @@ public:
         text_style.setColor(SK_ColorBLACK);
         ParagraphStyle paragraph_style;
         paragraph_style.setTextStyle(text_style);
+<<<<<<< PATCH SET (0c3a5f Preserve leading whitespaces in justification)
+        paragraph_style.setTextAlign(TextAlign::kJustify);
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText(u"\u3000\u3000哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈哈哈 哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈 哈哈哈哈哈哈哈哈哈");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+        paragraph->paint(canvas, 0, 0);
+=======
 
         auto test = [&](const char* text) {
             ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
@@ -4396,6 +4405,7 @@ public:
         };
 
         test("​🇳​🇩🇮🇩⃢");
+>>>>>>> BASE      (e7b8d0 Roll vulkan-deps from 5f7e87250bc4 to d47ae2be2781 (2 revisi)
     }
 };
 
