@@ -16,6 +16,46 @@
       "message": "This LGTM. I just want Quyen whose worked a lot in the Dawn backend to scan it over to make sure things look okay as well (will hit the +1 later today regardless)",
       "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85b57823_64f3a748",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:24:06Z",
+      "side": 1,
+      "message": "nit: change to `CommandEncoder::WriteBuffer`",
+      "range": {
+        "startLine": 38,
+        "startChar": 63,
+        "endLine": 38,
+        "endChar": 68
+      },
+      "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a5ca7a3_4fe441d7",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:24:06Z",
+      "side": 1,
+      "message": "I think you have to make this offset aligned to 256. It is required by WebGPU/Dawn unfortunately.\n\nhttps://www.w3.org/TR/webgpu/#dom-supported-limits-minuniformbufferoffsetalignment",
+      "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
