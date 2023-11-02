@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b90734c0_61218f0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-11-02T15:43:25Z",
+      "side": 1,
+      "message": "Thanks, yeah I\u0027ve created a bug for tracking the BackendTextureView idea/plan and added it as TODO as part of DawnTextureInfo.",
+      "parentUuid": "c90b2d53_19c716a5",
+      "revId": "58eda3cc0d591d8246cc06d027a1c0348547af70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec5ce80e_228ee4cf",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-11-02T13:25:39Z",
       "side": 1,
       "message": "nit: line length on last parameter; in this case, we should drop all arguments to their own line, indented 8 spaces.",
+      "range": {
+        "startLine": 119,
+        "startChar": 69,
+        "endLine": 121,
+        "endChar": 104
+      },
+      "revId": "58eda3cc0d591d8246cc06d027a1c0348547af70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d75c38_a9ac4b4d",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-11-02T15:43:25Z",
+      "side": 1,
+      "message": "Ah, yes. Updated.",
+      "parentUuid": "ec5ce80e_228ee4cf",
       "range": {
         "startLine": 119,
         "startChar": 69,
