@@ -42,10 +42,11 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto rp = skresources::DataURIResourceProviderProxy::Make(
-                  skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
-                                                          /*predecode=*/true),
-                  /*predecode=*/true);
+            skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]), predecode),
+            predecode,
+            ToolUtils::TestFontMgr());
 
     auto svg_dom = SkSVGDOM::Builder()
                            .setFontManager(ToolUtils::TestFontMgr())
