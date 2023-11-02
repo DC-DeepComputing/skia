@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3abbef07_de052f09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T16:26:36Z",
+      "side": 1,
+      "message": "Awesome, codewise this looks good to me. Fingers crossed our intuition survives contact with real GPUs.",
+      "revId": "15cb2bdfff16fa13d4a4ae102a09505f81520591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
