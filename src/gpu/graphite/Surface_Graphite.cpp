@@ -120,7 +120,7 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
     return fDevice->recorder()->priv().caps()->capabilities();
 }
 
-TextureProxy* Surface::backingTextureProxy() { return fDevice->target(); }
+TextureProxy* Surface::backingTextureProxy() const { return fDevice->target(); }
 
 sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
                                        const SkImageInfo& info,
@@ -257,6 +257,18 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     }
 
     return sk_make_sp<Surface>(std::move(device));
+}
+
+BackendTexture GetBackendTexture(SkSurface* surface /*, BackendHandleAccess access */) {
+    if (!surface) {
+        return {};
+    }
+    SkSurface_Base* sb = asSB(surface);
+    if (!sb->isGraphiteBacked()) {
+        return {};
+    }
+//    return static_cast<Surface_Graphite*>(surface)->getBackendTexture(access);
+    return {};
 }
 
 }  // namespace SkSurfaces
