@@ -16,6 +16,52 @@
       "message": "PTAL. With the direction of moving to SSBO, I am afraid the old way of calculating buffers\u0027 binding sizes for Dawn is no longer correct. So I moved the calculation to DrawPsss::writeUnforms and let it pass the info to the backend.",
       "revId": "f0626ffd3c2257266ffd76f058462c73ce5753fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "390e212e_6aab8238",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T13:22:50Z",
+      "side": 1,
+      "message": "nit: In this case maybe just swap the then-else so we don\u0027t do the negation?",
+      "range": {
+        "startLine": 237,
+        "startChar": 17,
+        "endLine": 237,
+        "endChar": 35
+      },
+      "revId": "f0626ffd3c2257266ffd76f058462c73ce5753fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a90d6be3_ab033504",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T13:22:50Z",
+      "side": 1,
+      "message": "With this use case, the similarities with ClearBufferInfo and compute being able to take better advantage of knowing the binding size as well, I think we will want to consolidate all of these structs into `BindBufferInfo` and just store `fOffset` and `fSize` as `uint32_t`\u0027s to keep the size the same as before. \n\nI do not think we need 64-bits to represent a GPU buffer size or offset with the other content restrictions Graphite imposes.\n\nI\u0027m fine leaving this in for now, however, because I think it\u0027s a bit more work to keep the `fSize` valid for the dynamic vertex buffers that just discard that info right now. I created a bug to do this clean up, if you can add a `TODO(b/308933713): Add size to BindBufferInfo instead`?",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 30
+      },
+      "revId": "f0626ffd3c2257266ffd76f058462c73ce5753fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
