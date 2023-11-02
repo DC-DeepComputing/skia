@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkTraceMemoryDump.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
@@ -769,6 +770,14 @@ void Context::performDeferredCleanup(std::chrono::milliseconds msNotUsed) {
 size_t Context::currentBudgetedBytes() const {
     ASSERT_SINGLE_OWNER
     return fResourceProvider->getResourceCacheCurrentBudgetedBytes();
+}
+
+void Context::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
+    ASSERT_SINGLE_OWNER
+    fResourceProvider->dumpMemoryStatistics(traceMemoryDump);
+    // TODO: what is the graphite equivalent for the text blob cache.
+    //traceMemoryDump->dumpNumericValue("skia/gr_text_blob_cache", "size", "bytes",
+    //                                  this->getTextBlobRedrawCoordinator()->usedBytes());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
