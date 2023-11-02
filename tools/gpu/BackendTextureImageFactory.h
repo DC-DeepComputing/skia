@@ -60,7 +60,7 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext*,
 
 #ifdef SK_GRAPHITE
 /*
- * Graphite version of MakeBackendTextureImage
+ * Graphite versions of MakeBackendTextureImage
  */
 sk_sp<SkImage> MakeBackendTextureImage(skgpu::graphite::Recorder*,
                                        const SkPixmap&,
@@ -68,6 +68,15 @@ sk_sp<SkImage> MakeBackendTextureImage(skgpu::graphite::Recorder*,
                                        Renderable,
                                        Origin,
                                        Protected = Protected::kNo);
+
+sk_sp<SkImage> MakeBackendTextureImage2(skgpu::graphite::Recorder* recorder,
+                                       const SkImageInfo& info,
+                                       SkColor4f color,
+                                       skgpu::Mipmapped isMipmapped,
+                                       Renderable isRenderable,
+                                       Origin origin,
+                                       Protected isProtected);
+
 #endif  // SK_GRAPHITE
 
 }  // namespace sk_gpu_test

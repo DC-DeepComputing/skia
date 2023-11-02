@@ -21,6 +21,10 @@ class SkSurfaceProps;
 enum SkColorType : int;
 struct SkImageInfo;
 
+namespace skgpu::graphite {
+    class Recorder;
+}
+
 namespace sk_gpu_test {
 
 sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
@@ -57,6 +61,19 @@ sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext*,
                                                 sk_sp<SkColorSpace> = nullptr,
                                                 GrProtected = GrProtected::kNo,
                                                 const SkSurfaceProps* = nullptr);
+
+#ifdef SK_GRAPHITE
+/*
+ * Graphite version of MakeBackendTextureSurface
+ */
+sk_sp<SkSurface> MakeBackendTextureSurface(skgpu::graphite::Recorder*,
+                                           const SkImageInfo&,
+                                           skgpu::Origin,
+                                           skgpu::Mipmapped = skgpu::Mipmapped::kNo,
+                                           skgpu::Protected = skgpu::Protected::kNo,
+                                           const SkSurfaceProps* = nullptr);
+#endif  // SK_GRAPHITE
+
 }  // namespace sk_gpu_test
 
 #endif
