@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6498504_61f7daa0",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T16:21:06Z",
+      "side": 0,
+      "message": "sweet 😊",
+      "range": {
+        "startLine": 296,
+        "startChar": 29,
+        "endLine": 330,
+        "endChar": 68
+      },
+      "revId": "d56f1c9bfda707a64ebaeb8550a514cb930a7425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
