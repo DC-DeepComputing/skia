@@ -98,6 +98,24 @@
       "parentUuid": "1a5ca7a3_4fe441d7",
       "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a751b1f5_f9ca8ccc",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T15:04:55Z",
+      "side": 1,
+      "message": "ok thanks. I missed that. LGTM then.",
+      "parentUuid": "eaeebcff_5d8a7b88",
+      "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
