@@ -38,8 +38,10 @@ DEF_TEST(SkSLGLSLTestbed, r) {
     // Add in your SkSL here.
     test(r,
          R"__SkSL__(
-             void main() {
-                 sk_FragColor = half4(0);
-             }
+
+                a {} S;
+                struct S{} S[v];
+                S {} p[]
+
          )__SkSL__");
 }
