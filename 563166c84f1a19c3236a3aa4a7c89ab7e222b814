@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0976c87_1498f692",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-11-02T18:22:20Z",
+      "side": 1,
+      "message": "I think this highlights how problematic os.Chdir is.  Most of our other code prefers passing in a path.",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 24
+      },
+      "revId": "563166c84f1a19c3236a3aa4a7c89ab7e222b814",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
