@@ -10,6 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
+#include "include/private/gpu/vk/SkiaVulkan.h"
 
 namespace skgpu::graphite {
 
@@ -27,7 +28,8 @@ struct VulkanTextureSpec {
             , fImageTiling(info.fImageTiling)
             , fImageUsageFlags(info.fImageUsageFlags)
             , fSharingMode(info.fSharingMode)
-            , fAspectMask(info.fAspectMask) {}
+            , fAspectMask(info.fAspectMask)
+            , fYcbcrConversionInfo(info.fYcbcrConversionInfo) {}
 
     bool operator==(const VulkanTextureSpec& that) const {
         return fFlags == that.fFlags &&
@@ -35,7 +37,8 @@ struct VulkanTextureSpec {
                fImageTiling == that.fImageTiling &&
                fImageUsageFlags == that.fImageUsageFlags &&
                fSharingMode == that.fSharingMode &&
-               fAspectMask == that.fAspectMask;
+               fAspectMask == that.fAspectMask &&
+               fYcbcrConversionInfo == that.fYcbcrConversionInfo;
     }
 
     bool isCompatible(const VulkanTextureSpec& that) const {
@@ -45,7 +48,8 @@ struct VulkanTextureSpec {
                fImageTiling == that.fImageTiling &&
                fSharingMode == that.fSharingMode &&
                fAspectMask == that.fAspectMask &&
-               (fImageUsageFlags & that.fImageUsageFlags) == fImageUsageFlags;
+               (fImageUsageFlags & that.fImageUsageFlags) == fImageUsageFlags &&
+               fYcbcrConversionInfo == that.fYcbcrConversionInfo;
     }
 
     SkString toString() const {
@@ -60,13 +64,13 @@ struct VulkanTextureSpec {
                 fAspectMask);
     }
 
-    VkImageCreateFlags       fFlags;
-    VkFormat                 fFormat;
-    VkImageTiling            fImageTiling;
-    VkImageUsageFlags        fImageUsageFlags;
-    VkSharingMode            fSharingMode;
-    VkImageAspectFlags       fAspectMask;
-    // GrVkYcbcrConversionInfo  fYcbcrConversionInfo;
+    VkImageCreateFlags         fFlags;
+    VkFormat                   fFormat;
+    VkImageTiling              fImageTiling;
+    VkImageUsageFlags          fImageUsageFlags;
+    VkSharingMode              fSharingMode;
+    VkImageAspectFlags         fAspectMask;
+    VulkanYcbcrConversionInfo  fYcbcrConversionInfo;
 };
 
 VulkanTextureInfo VulkanTextureSpecToTextureInfo(const VulkanTextureSpec& vkSpec,

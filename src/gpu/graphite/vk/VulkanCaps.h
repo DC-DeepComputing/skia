@@ -74,6 +74,8 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
+    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+
     uint32_t maxVertexAttributes() const {
         return fMaxVertexAttributes;
     }
@@ -210,7 +212,7 @@ private:
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
-    bool fSupportsYcbcrConversion = false; // TODO: Determine & assign real value.
+    bool fSupportsYcbcrConversion = false;
     bool fShouldAlwaysUseDedicatedImageMemory = false;
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
