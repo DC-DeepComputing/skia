@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a4834b4_73c3cb59",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3277,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-02T14:57:29Z",
+      "side": 1,
+      "message": "/**\n * A \"trivial\" expression is one where we\u0027d feel comfortable cloning it multiple times in\n * the code, without worrying about incurring a performance penalty. Examples:\n * - true\n * - 3.14159265\n * - myIntVariable\n * - myColor.rgb\n * - myArray[123]\n * - myStruct.myField\n * - half4(0)\n *\n * Trivial-ness is stackable. Somewhat large expressions can occasionally make the cut:\n * - half4(myColor.a)\n * - myStruct.myArrayField[7].xzy\n */",
+      "parentUuid": "95447e7b_905558bf",
+      "range": {
+        "startLine": 3277,
+        "startChar": 18,
+        "endLine": 3277,
+        "endChar": 37
+      },
+      "revId": "07d3899585b5a7bf48620a1ba8be6d351d2ed304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5475a43_d7586f6f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-02T14:32:07Z",
       "side": 1,
       "message": "Do we want to consider ternaries that have trivial true/false expressions to also be trivial?",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 84,
+        "endChar": 8
+      },
+      "revId": "07d3899585b5a7bf48620a1ba8be6d351d2ed304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da9e699b_ac393bf5",
+        "filename": "tests/sksl/shared/TernarySideEffects.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-02T14:57:29Z",
+      "side": 1,
+      "message": "I\u0027m not sure what you are asking, could you explain?",
+      "parentUuid": "e5475a43_d7586f6f",
       "range": {
         "startLine": 84,
         "startChar": 7,

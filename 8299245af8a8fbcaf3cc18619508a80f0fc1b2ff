@@ -22,6 +22,30 @@
       },
       "revId": "8299245af8a8fbcaf3cc18619508a80f0fc1b2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fbd1ce4_3f070c9a",
+        "filename": "tests/sksl/shared/SampleLocations.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-02T14:57:29Z",
+      "side": 0,
+      "message": "Maybe, but this is hard to gauge for a compiler like ours since we don\u0027t really have a solid notion of \"the complexity of an expression\" at all. We only have very rough heuristics. If we really want to force a select to occur, it\u0027s easy to guide the compiler\u0027s hand:\n```\n   half4 x \u003d foo();\n   half4 y \u003d bar();\n   half4 z \u003d q ? x : y; //\u003c-- will always use select\n```",
+      "parentUuid": "223456e4_ecafb4b7",
+      "range": {
+        "startLine": 20,
+        "startChar": 28,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "8299245af8a8fbcaf3cc18619508a80f0fc1b2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
