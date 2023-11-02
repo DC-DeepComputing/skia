@@ -16,6 +16,29 @@
       "message": "Please take a look.",
       "revId": "58eda3cc0d591d8246cc06d027a1c0348547af70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec5ce80e_228ee4cf",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T13:25:39Z",
+      "side": 1,
+      "message": "nit: line length on last parameter; in this case, we should drop all arguments to their own line, indented 8 spaces.",
+      "range": {
+        "startLine": 119,
+        "startChar": 69,
+        "endLine": 121,
+        "endChar": 104
+      },
+      "revId": "58eda3cc0d591d8246cc06d027a1c0348547af70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
