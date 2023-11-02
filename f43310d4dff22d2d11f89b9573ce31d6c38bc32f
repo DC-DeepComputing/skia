@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7333cc8_fa9f0dad",
+        "filename": "modules/skcms/src/skcms_internals.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-02T23:22:42Z",
+      "side": 1,
+      "message": "I needed to change the name slightly, because two files named `skcms_internal.h` would trigger the \"Header filename is used more than once!\" error.",
+      "revId": "f43310d4dff22d2d11f89b9573ce31d6c38bc32f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
