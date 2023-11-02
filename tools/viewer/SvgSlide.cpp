@@ -32,10 +32,10 @@ void SvgSlide::load(SkScalar w, SkScalar h) {
         return;
     }
 
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto rp = skresources::DataURIResourceProviderProxy::Make(
-                  skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()),
-                                                          /*predecode=*/true),
-                  /*predecode=*/true);
+            skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()), predecode),
+            predecode, ToolUtils::TestFontMgr());
     fDom = SkSVGDOM::Builder()
                    .setFontManager(ToolUtils::TestFontMgr())
                    .setResourceProvider(std::move(rp))
