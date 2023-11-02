@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d759def9_2f7da8aa",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-02T14:53:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85b57823_64f3a748",
+      "range": {
+        "startLine": 38,
+        "startChar": 63,
+        "endLine": 38,
+        "endChar": 68
+      },
+      "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a5ca7a3_4fe441d7",
@@ -54,6 +78,24 @@
       "writtenOn": "2023-11-02T14:24:06Z",
       "side": 1,
       "message": "I think you have to make this offset aligned to 256. It is required by WebGPU/Dawn unfortunately.\n\nhttps://www.w3.org/TR/webgpu/#dom-supported-limits-minuniformbufferoffsetalignment",
+      "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaeebcff_5d8a7b88",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-02T14:53:20Z",
+      "side": 1,
+      "message": "Yep, it is. `kIntrinsicConstantAlignedSize` is defined to be `SkAlignTo(sizeof(IntrinsicConstant), kBufferBindingOffsetAlignment)` and `kBufferBindingOffsetAlignment` is 256:\nhttps://skia-review.googlesource.com/c/skia/+/770599/11/src/gpu/graphite/dawn/DawnCommandBuffer.cpp#32",
+      "parentUuid": "1a5ca7a3_4fe441d7",
       "revId": "10d5cc58c66637d29f0ebb10b2f2ee7a1127ab0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
