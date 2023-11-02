@@ -31,10 +31,10 @@ void SvgSlide::load(SkScalar w, SkScalar h) {
         return;
     }
 
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto rp = skresources::DataURIResourceProviderProxy::Make(
-                  skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()),
-                                                          /*predecode=*/true),
-                  /*predecode=*/true);
+            skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()), predecode),
+            predecode);
     fDom = SkSVGDOM::Builder().setResourceProvider(std::move(rp)).make(*stream);
     if (fDom) {
         fDom->setContainerSize(SkSize::Make(w, h));
