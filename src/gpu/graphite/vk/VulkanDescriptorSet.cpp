@@ -32,6 +32,7 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
                                               &dsAllocateInfo,
                                               &descSet));
     if (result != VK_SUCCESS) {
+        // Other sets may use the provided pool / layout, so we shouldn't destroy those here.
         return nullptr;
     }
     return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, descSet, pool));
