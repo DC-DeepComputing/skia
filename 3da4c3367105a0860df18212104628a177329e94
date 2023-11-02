@@ -143,6 +143,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5089070_752816d0",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:12:55Z",
+      "side": 1,
+      "message": "Done. Moved to DawnResourceProvider.",
+      "parentUuid": "f60e6d8f_bdcd10bf",
+      "range": {
+        "startLine": 719,
+        "startChar": 18,
+        "endLine": 719,
+        "endChar": 34
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bf00376_9beddb6e",
@@ -156,6 +180,30 @@
       "writtenOn": "2023-10-24T14:25:56Z",
       "side": 1,
       "message": "Are `wgpu::BindGroup` objects ref-counted light weight objects? Or should we be returning a reference to the group that was stored in the cache?",
+      "range": {
+        "startLine": 724,
+        "startChar": 4,
+        "endLine": 724,
+        "endChar": 18
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f86bae7_f933bc8d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:12:55Z",
+      "side": 1,
+      "message": "wgpu::BindGroup is a reference object, I think it is light weight enough. However, making this function return a const reference to `wgpu::BindGroup` might be better.\n\nNote: the function has been moved to DawnResourceProvider.cpp",
+      "parentUuid": "4bf00376_9beddb6e",
       "range": {
         "startLine": 724,
         "startChar": 4,
@@ -189,6 +237,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be467476_3d8f877d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:12:55Z",
+      "side": 1,
+      "message": "Done. Moved to DawnResourceProvider.",
+      "parentUuid": "7e3b0e2a_2be20ff0",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 6
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dc6b5dd_0352fae8",
@@ -202,6 +274,30 @@
       "writtenOn": "2023-10-24T14:25:56Z",
       "side": 1,
       "message": "This doesn\u0027t need to be a unique pointer if we are always going to have a cache, then we save on indirection.",
+      "range": {
+        "startLine": 117,
+        "startChar": 9,
+        "endLine": 117,
+        "endChar": 19
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "198badab_e86714e7",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:12:55Z",
+      "side": 1,
+      "message": "Done. Moved to DawnResourceProvider.",
+      "parentUuid": "5dc6b5dd_0352fae8",
       "range": {
         "startLine": 117,
         "startChar": 9,
@@ -258,6 +354,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e05d0d53_cd0b0b8a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceWithSerial.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:12:55Z",
+      "side": 1,
+      "message": "Not needed anymore.",
+      "parentUuid": "978728ef_94c04806",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 22
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2e72c64_a64cb55e",
@@ -271,6 +391,30 @@
       "writtenOn": "2023-10-24T14:25:56Z",
       "side": 1,
       "message": "We have historically just stashed these in the relevant CPP file as a static function, for instance: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkDrawable.cpp;drc\u003df437d01005173a284d1e9c592bd0c61360a6cad1;l\u003d22\n\nThe ID gets initialized internally then, instead of being an extra argument and would mean that we can keep the SharedContext more constant.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 2
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8809fa_f0194e10",
+        "filename": "src/gpu/graphite/dawn/DawnResourceWithSerial.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-02T14:12:55Z",
+      "side": 1,
+      "message": "Not needed anymore.",
+      "parentUuid": "b2e72c64_a64cb55e",
       "range": {
         "startLine": 35,
         "startChar": 0,
