@@ -107,20 +107,27 @@ void SymbolTable::addWithoutOwnership(Symbol* symbol) {
         }
     }
 
+    bool foundDuplicateSymbol = false;
+
     if (fAtModuleBoundary && fParent && fParent->lookup(key)) {
         // We are attempting to declare a symbol at global scope that already exists in a parent
         // module. This is a duplicate symbol and should be rejected.
+        foundDuplicateSymbol = true;
     } else {
         Symbol*& refInSymbolTable = fSymbols[key];
 
-        if (refInSymbolTable == nullptr) {
-            refInSymbolTable = symbol;
-            return;
+        if (refInSymbolTable != nullptr) {
+            foundDuplicateSymbol = true;
         }
+
+        refInSymbolTable = symbol;
     }
 
-    ThreadContext::ReportError("symbol '" + std::string(symbol->name()) + "' was already defined",
-                               symbol->fPosition);
+    if (foundDuplicateSymbol) {
+        ThreadContext::ReportError(
+                "symbol '" + std::string(symbol->name()) + "' was already defined",
+                symbol->fPosition);
+    }
 }
 
 void SymbolTable::injectWithoutOwnership(Symbol* symbol) {
