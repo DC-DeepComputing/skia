@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c90b2d53_19c716a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-02T13:38:49Z",
+      "side": 1,
+      "message": "This is fine for now as it unblocks the issue in Dawn. But I\u0027m not really a big fan of Aspect being part of the TextureInfo. The TextureInfo is meant to describe the properties of the actual texture and not how we use it. But I don\u0027t have any immediate time to work on the new View system, so for now I think this is okay.",
+      "revId": "58eda3cc0d591d8246cc06d027a1c0348547af70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec5ce80e_228ee4cf",
