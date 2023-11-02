@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8b969c4_4df1d6ed",
+        "filename": "include/ports/SkFontConfigInterface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-02T15:41:05Z",
+      "side": 1,
+      "message": "This is a bit heavy. What this really wants is a `sk_sp\u003cSkTypeface\u003e (*make)(std::unique_ptr\u003cSkStreamAsset\u003e, const SkFontArguments\u0026)`? Of course, that\u0027s kinda what this function was. This probably shouldn\u0027t even be a parameter to this function but a thing that is passed in to the constructor of the the `SkFontConfigInterface` instance. Which of course means not having the silly globals of this (`RefGlobal`, `SetGlobal`).\n\nIn other words, Chromium\u0027s `FontLoader::makeTypeface` should just use the `mgr` that would be passed here to just create the font. This `makeTypeface` would be pure virtual, and `SkFontConfigInterfaceDirect`\u0027s constructor should take a factory function to call to create typefaces from (just like eventually all of our SkFontMgr will need to be able to do for other reasons). Of course the issue with this is `SkFontConfigInterfaceDirect` is created as a global! Globals everywhere! Need to get all of that out into Chromium instead of being in Skia first before anything sane can happen.\n\nAnyhow, since nothing sane can happen anyway, this seems fine to me I guess.",
+      "range": {
+        "startLine": 104,
+        "startChar": 73,
+        "endLine": 104,
+        "endChar": 93
+      },
+      "revId": "dd839489a03514fa6172fa0c0367045a09f5e4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
