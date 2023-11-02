@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95447e7b_905558bf",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T14:32:07Z",
+      "side": 1,
+      "message": "Does `IsTrivialExpression` also incorporate not having side effects?",
+      "range": {
+        "startLine": 3277,
+        "startChar": 18,
+        "endLine": 3277,
+        "endChar": 37
+      },
+      "revId": "07d3899585b5a7bf48620a1ba8be6d351d2ed304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5475a43_d7586f6f",
+        "filename": "tests/sksl/shared/TernarySideEffects.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T14:32:07Z",
+      "side": 1,
+      "message": "Do we want to consider ternaries that have trivial true/false expressions to also be trivial?",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 84,
+        "endChar": 8
+      },
+      "revId": "07d3899585b5a7bf48620a1ba8be6d351d2ed304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

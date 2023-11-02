@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "223456e4_ecafb4b7",
+        "filename": "tests/sksl/shared/SampleLocations.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T14:32:07Z",
+      "side": 0,
+      "message": "This complicates the analysis pass, but something as minimal as 1-2 math operations seems like it\u0027d be worth doing w/o a branch.",
+      "range": {
+        "startLine": 20,
+        "startChar": 28,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "8299245af8a8fbcaf3cc18619508a80f0fc1b2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
