@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30e4744_40f8a582",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-02T16:17:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04c2edbc_28585b32",
+      "range": {
+        "startLine": 289,
+        "startChar": 32,
+        "endLine": 290,
+        "endChar": 66
+      },
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09a96371_99ce8377",
@@ -107,6 +131,24 @@
       "side": 1,
       "message": "Yep; as long as we\u0027re not stretching a subpixel-width shape out to 2px, we just need to shift the edge distance by 1/2 to map from [-.5,.5] about the original edge to [0,1].",
       "parentUuid": "7b9a07c5_f4640656",
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af1a4fcf_740fd467",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-02T16:17:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9873c42f_dfc7d259",
       "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -172,6 +214,30 @@
       "side": 1,
       "message": "In the original renderer, we often disabled subpixel scale+bias. There was this comment in AnalyticRRectRenderStep:\n\n    // Mixed edge AA shapes do not use subpixel scale+bias for coverage, since they tile\n    // to a large shape of unknown--but likely not subpixel--size. Triangles and quads do\n    // not use subpixel coverage since the scale+bias is not constant over the shape, but\n    // we can\u0027t evaluate per-fragment since we aren\u0027t passing down their arbitrary normals.\n\nIn the old renderer, a filled rect is a per-edge AA quad that happens to be rectangular with all edges on.  Regardless of draw source (drawRect or drawEdgeAAQuad), this type of shape would be allowed to use subpixel scale+bias to improve AA quality.\n\nIn ganesh there had been a bug where a pre-clipped quad (which then had mixed AA because SkiaRenderer would mark clipped edges as non-AA) was subpixel. Ganesh\u0027s FillRectOp would always apply the subpixel biasing and the drawn geometry would end up being more than 1/2px outset from the original coordinates, which then confused damage tracking higher up in chrome.\n\nWith this new renderer splitting up where drawEdgeQuad is handled vs. drawRect, a filled rect can trigger subpixel biasing while drawEdgeQuad will not. This seems more robust to me than what was present in the AnalyticRRectRenderStep logic in order to avoid the sort of damage tracking issue from Ganesh. The one downside is that drawImageRect currently routes to drawEdgeAAQuad solely to reuse the paint-\u003eimageshader logic so it ends up looking like a compositing API call, too. But it seems much rarer that someone is going to be drawing a subpixel image rect than it is drawing a subpixel simply-shaded rect or line.",
       "parentUuid": "ce4dfd56_020fc62c",
+      "range": {
+        "startLine": 973,
+        "startChar": 0,
+        "endLine": 973,
+        "endChar": 34
+      },
+      "revId": "87726267d9ca71f429efc3ef47b96f0aa6d42caf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c39f187_fb1d6370",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-02T16:17:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1807da47_52ebf0cd",
       "range": {
         "startLine": 973,
         "startChar": 0,
