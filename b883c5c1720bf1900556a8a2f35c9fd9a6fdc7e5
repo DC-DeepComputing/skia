@@ -16,6 +16,24 @@
       "message": "What about just adding `refInSymbolTable \u003d symbol;` here (between 119 and 120)? That removes the extra local state to reason about. It looks funny, because there are \"duplicate\" copies of the symbol overwriting logic on lines 117 and the new line, but the overall complexity seems lower (and it maintains the \"return early when we can\" property).",
       "revId": "b883c5c1720bf1900556a8a2f35c9fd9a6fdc7e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e61a6f70_fb77fba7",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-02T17:20:19Z",
+      "side": 0,
+      "message": "How do you feel about a swap? PTAL.",
+      "parentUuid": "0fcf50f7_41250c55",
+      "revId": "b883c5c1720bf1900556a8a2f35c9fd9a6fdc7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
