@@ -34,6 +34,24 @@
       "parentUuid": "0fcf50f7_41250c55",
       "revId": "b883c5c1720bf1900556a8a2f35c9fd9a6fdc7e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "838fd705_07a76306",
+        "filename": "src/sksl/ir/SkSLSymbolTable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-02T17:31:59Z",
+      "side": 0,
+      "message": "Yeah, that\u0027s fine too! I almost suggested it, in fact.",
+      "parentUuid": "e61a6f70_fb77fba7",
+      "revId": "b883c5c1720bf1900556a8a2f35c9fd9a6fdc7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
