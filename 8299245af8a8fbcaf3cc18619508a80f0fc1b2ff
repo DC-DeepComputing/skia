@@ -46,6 +46,30 @@
       },
       "revId": "8299245af8a8fbcaf3cc18619508a80f0fc1b2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eb82573_3fd389ee",
+        "filename": "tests/sksl/shared/SampleLocations.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T15:19:40Z",
+      "side": 0,
+      "message": "That is reasonable, and for something like selecting `offset` and `-offset`, they can just use select or mix directly instead of a ternary.",
+      "parentUuid": "3fbd1ce4_3f070c9a",
+      "range": {
+        "startLine": 20,
+        "startChar": 28,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "8299245af8a8fbcaf3cc18619508a80f0fc1b2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -93,6 +93,30 @@
       },
       "revId": "07d3899585b5a7bf48620a1ba8be6d351d2ed304",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b65c3643_69b7825b",
+        "filename": "tests/sksl/shared/TernarySideEffects.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-02T15:19:40Z",
+      "side": 1,
+      "message": "The source sksl for this test is along the lines of `(c ? (d ? e : f) : g)`, so the true branch of the outer ternary is either a ternary or a select, but that ternary or select has trivial expressions on either branch.\n\nThis comment was just wondering whether or not we were okay with the change in generated wgsl after this change. Given the definition of trivial it seems like we would not want a select to be repeated/cloned.",
+      "parentUuid": "da9e699b_ac393bf5",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 84,
+        "endChar": 8
+      },
+      "revId": "07d3899585b5a7bf48620a1ba8be6d351d2ed304",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
