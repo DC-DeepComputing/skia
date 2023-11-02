@@ -23,6 +23,7 @@
 #include "src/image/SkImage_Base.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <algorithm>
 #include <chrono>
@@ -458,12 +459,14 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto logger = sk_make_sp<Logger>();
-    auto     rp = skresources::CachingResourceProvider::Make(
-                    skresources::DataURIResourceProviderProxy::Make(
-                      skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
-                                                                /*predecode=*/true),
-                      /*predecode=*/true));
+    auto rp = skresources::CachingResourceProvider::Make(
+            skresources::DataURIResourceProviderProxy::Make(
+                    skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
+                                                            predecode),
+                    predecode,
+                    ToolUtils::TestFontMgr()));
     auto data   = SkData::MakeFromFileName(FLAGS_input[0]);
     auto precomp_interceptor =
             sk_make_sp<skottie_utils::ExternalAnimationPrecompInterceptor>(rp, "__");
