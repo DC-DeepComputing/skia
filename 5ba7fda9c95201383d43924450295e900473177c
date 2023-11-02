@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aba865a7_a41365d3",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-02T21:47:55Z",
+      "side": 1,
+      "message": "At the moment this just emits the structure element tree as the outline. However, this can be quite noisy and isn\u0027t a great outline. As a first attempt, it may be interesting to do this in two passes. The first to create the outline tree from the structure element tree by just using `H1`-`H6` nodes, accumulating their text into them and nesting them in order of appearance (many pages do not logically nest these at all). Then a second pass to actually output the outline tree, since both the previous and next nodes need to be known when writing out the data.",
+      "revId": "5ba7fda9c95201383d43924450295e900473177c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
