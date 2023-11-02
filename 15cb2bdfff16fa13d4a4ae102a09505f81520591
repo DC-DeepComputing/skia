@@ -16,6 +16,24 @@
       "message": "Awesome, codewise this looks good to me. Fingers crossed our intuition survives contact with real GPUs.",
       "revId": "15cb2bdfff16fa13d4a4ae102a09505f81520591",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6be27a50_b4fc0f9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-02T16:28:11Z",
+      "side": 1,
+      "message": "Even the most basic common-subexpression-elimination pass will deduplicate repeated negations/nots. This feels very very safe to me.",
+      "parentUuid": "3abbef07_de052f09",
+      "revId": "15cb2bdfff16fa13d4a4ae102a09505f81520591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
