@@ -289,9 +289,11 @@ void DawnCaps::initCaps(const wgpu::Device& device, const ContextOptions& option
     fTextureDataRowBytesAlignment = 256;
 
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
-    // TODO(skia:14639): We cannot use std430 layout for SSBOs until SkSL gracefully handles
-    // implicit array stride.
-    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd140;
+    // TODO(skia:14639): Using std430 for storage buffers is ok since WGSL follows the std430 like
+    // layouts everywhere except uniform buffers. For uniform buffers, the SkSL-WGSL generator will
+    // take care of stripping out any extra padding for all types except std140 unsized arrays which
+    // aren't used anyway and will be disallowed as function parameters.
+    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = true;
 
     // TODO: support storage buffer
