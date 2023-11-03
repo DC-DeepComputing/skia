@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "030faabc_70704955",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:15:47Z",
+      "side": 1,
+      "message": "Just curious, but why is the dumping of memory stats available on release builds, but for tracing and logging we have build flags to enable?",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 72
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04eb79b_275bab20",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:15:47Z",
+      "side": 1,
+      "message": "nit: Maybe remove these commented-out lines and just keep the TODO (/expand upon it)",
+      "range": {
+        "startLine": 374,
+        "startChar": 0,
+        "endLine": 375,
+        "endChar": 91
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6c9baa0_bc781a0e",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:15:47Z",
+      "side": 1,
+      "message": "Is part of the goal with using this name to align w/ the current format of memory dumping for ganesh? If so, would it make more sense for this base resource name to be defined in the trace memory dump file itself as opposed to separately by ganesh\u0027s and graphite\u0027s resource files? Just a consideration",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 58
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b8d4586_b7157439",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:15:47Z",
+      "side": 1,
+      "message": "Should this have its own TODO?\nalso nit: indentation",
+      "range": {
+        "startLine": 117,
+        "startChar": 3,
+        "endLine": 117,
+        "endChar": 96
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f913a67_f90feab3",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:15:47Z",
+      "side": 1,
+      "message": "`Resource`",
+      "range": {
+        "startLine": 141,
+        "startChar": 47,
+        "endLine": 141,
+        "endChar": 61
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
