@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f5fc98a_c4c14e32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-11-03T19:26:09Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4d5a05a_67c4a383",
@@ -65,6 +82,30 @@
       "writtenOn": "2023-10-30T21:19:20Z",
       "side": 1,
       "message": "This seems like an unrelated change. But it also feels like a bikeshed - I don\u0027t have any preference over which to use, except the one that we\u0027re already using (unless there\u0027s a strong reason to change it).\n\nLooking below, I guess you\u0027re being consistent with the other code...",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 5
+      },
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b380e3_757b8ac6",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-11-03T19:26:09Z",
+      "side": 1,
+      "message": "Yeah, it was just to match everything else.",
+      "parentUuid": "c4d5a05a_67c4a383",
       "range": {
         "startLine": 26,
         "startChar": 0,

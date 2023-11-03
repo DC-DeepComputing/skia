@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1da255d_006dd775",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-11-03T19:26:09Z",
+      "side": 1,
+      "message": "I would like them to, but I have no idea how they get at orientation metadata(!). Maybe I should ask.",
+      "parentUuid": "f3339950_12afc2da",
+      "revId": "c9318eb86d9282aba570c7619c13160caf69b413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2025dc36_096bb10f",
         "filename": "include/private/SkExif.h",
         "patchSetId": 1
