@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f213cd6_0bc39749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T18:54:59Z",
+      "side": 1,
+      "message": "good cleanups imo",
+      "revId": "75019817847d7e4822953bceefaa63710d2e2864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bdcb6a5_a191d42e",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T18:54:59Z",
+      "side": 1,
+      "message": "I think I prefer doing this destruction back in the caller. It is not obvious that by passing in the Layout to this factory call the caller would be giving up ownership.",
+      "range": {
+        "startLine": 66,
+        "startChar": 5,
+        "endLine": 67,
+        "endChar": 84
+      },
+      "revId": "75019817847d7e4822953bceefaa63710d2e2864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc1d36f_a9fee773",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T18:54:59Z",
+      "side": 1,
+      "message": "Looks like we could wrap this functionality in a lambda or helper function and use it both here and in the loop below.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 55
+      },
+      "revId": "75019817847d7e4822953bceefaa63710d2e2864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
