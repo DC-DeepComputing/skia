@@ -49,17 +49,6 @@ public:
     //  WGPUTexture. Thus the client must keep the WGPUTexture valid until
     //  they are no longer using the BackendTexture.
     BackendTexture(WGPUTexture texture);
-    // Create a BackendTexture from a WGPUTextureView. Texture dimensions and
-    // info have to be provided.
-    // Note:
-    //  - this method is for importing WGPUTextureView from wgpu::SwapChain only.
-    //  - The BackendTexture will not call retain or release on the passed in
-    //  WGPUTextureView. Thus the client must keep the WGPUTextureView valid
-    //  until they are no longer using the BackendTexture.
-    // DEPRECATED: Use API below for creating per plane TextureView.
-    BackendTexture(SkISize dimensions,
-                   const DawnTextureInfo& info,
-                   WGPUTextureView textureView);
     // Create a BackendTexture from a WGPUTexture. Texture dimensions, plane aspect and
     // info have to be provided.
     // Note:
@@ -108,7 +97,6 @@ public:
 
 #ifdef SK_DAWN
     WGPUTexture getDawnTexturePtr() const;
-    WGPUTextureView getDawnTextureViewPtr() const;
 #endif
 #ifdef SK_METAL
     CFTypeRef getMtlTexture() const;
@@ -139,10 +127,7 @@ private:
 
     union {
 #ifdef SK_DAWN
-        struct {
-            WGPUTexture fDawnTexture;
-            WGPUTextureView fDawnTextureView;
-        };
+        WGPUTexture fDawnTexture;
 #endif
 #ifdef SK_METAL
         CFTypeRef fMtlTexture;
