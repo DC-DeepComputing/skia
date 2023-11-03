@@ -1242,11 +1242,11 @@ static DEFINE_bool(useLottieGlyphPaths, false,
 SkottieSrc::SkottieSrc(Path path) : fPath(std::move(path)) {}
 
 Result SkottieSrc::draw(SkCanvas* canvas) const {
-    auto resource_provider =
-            skresources::DataURIResourceProviderProxy::Make(
-                skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()),
-                                                        /*predecode=*/true),
-                /*predecode=*/true);
+    auto predecode = skresources::ImageStrategy::kPreDecode;
+    auto resource_provider = skresources::DataURIResourceProviderProxy::Make(
+            skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()), predecode),
+            predecode,
+            ToolUtils::TestFontMgr());
 
     static constexpr char kInterceptPrefix[] = "__";
     auto precomp_interceptor =
@@ -1330,14 +1330,14 @@ SVGSrc::SVGSrc(Path path)
         return;
     }
 
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto rp = skresources::DataURIResourceProviderProxy::Make(
-                  skresources::FileResourceProvider::Make(SkOSPath::Dirname(path.c_str()),
-                                                          /*predecode=*/true),
-                  /*predecode=*/true);
-    fDom = SkSVGDOM::Builder()
-                   .setResourceProvider(std::move(rp))
-                   .setFontManager(ToolUtils::TestFontMgr())
-                   .make(*stream);
+            skresources::FileResourceProvider::Make(SkOSPath::Dirname(path.c_str()), predecode),
+            predecode,
+            ToolUtils::TestFontMgr());
+
+    fDom = SkSVGDOM::Builder().setResourceProvider(std::move(rp))
+                              .make(*stream);
     if (!fDom) {
         return;
     }
