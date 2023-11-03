@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7aa44fa0_7b6f9666",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T16:57:27Z",
+      "side": 1,
+      "message": "Tracing and logging could require making extra function calls at ever single trace/log call throughout our code. This can actually have a performance impact if the client is not using it. In this case, it is a call explicitly triggered by the client. If they never call this function there is near zero overhead.\n\nAs for release, this is often used by clients running release. For example on Android you can have a client dump out the gpu resources when trying to help debug an issue with an app. There device though will be running a release version. Same for Chrome and Chrome users.",
+      "parentUuid": "030faabc_70704955",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 72
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e04eb79b_275bab20",
         "filename": "src/gpu/graphite/Recorder.cpp",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-03T14:15:47Z",
       "side": 1,
       "message": "nit: Maybe remove these commented-out lines and just keep the TODO (/expand upon it)",
+      "range": {
+        "startLine": 374,
+        "startChar": 0,
+        "endLine": 375,
+        "endChar": 91
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e503b863_eb61d9c5",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T16:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e04eb79b_275bab20",
       "range": {
         "startLine": 374,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50f5e7ac_180282c3",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T16:57:27Z",
+      "side": 1,
+      "message": "Hmmm there is no required reason this has to match ganesh besides possibly making it easier for clients to share the same parsing code if they are looking for specific things in the naming. I don\u0027t this storing this prefix in SkTraceMemoryDump is the correct place this a client could use the same SkTraceMemoryDump for dumping multiple different parts of Skia\u0027s CPU/GPU memory (e.g. the skia/gr_text_blob_cache line I removed above).\n\nSo like each different use of memory dumping is going to add its own unique name here. I had considered changing this to \"skia/gpu/graphite_resources/resources_\" and ganesh to \"skia/gpu/ganesh_resources/resources_\", but I don\u0027t think clients will ever care about that differentiation.\n\nIn the end even though this and Ganesh are using the same name, I don\u0027t think logically they have to be the same or that there is much to gain saying that they are the same in code. So I\u0027m inclined to leave this as is, but happy to consider more if you think otherwise.",
+      "parentUuid": "d6c9baa0_bc781a0e",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 58
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b8d4586_b7157439",
         "filename": "src/gpu/graphite/Resource.cpp",
         "patchSetId": 1
@@ -83,6 +155,30 @@
       "writtenOn": "2023-11-03T14:15:47Z",
       "side": 1,
       "message": "Should this have its own TODO?\nalso nit: indentation",
+      "range": {
+        "startLine": 117,
+        "startChar": 3,
+        "endLine": 117,
+        "endChar": 96
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7487ce4_936b429f",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T16:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b8d4586_b7157439",
       "range": {
         "startLine": 117,
         "startChar": 3,
@@ -106,6 +202,30 @@
       "writtenOn": "2023-11-03T14:15:47Z",
       "side": 1,
       "message": "`Resource`",
+      "range": {
+        "startLine": 141,
+        "startChar": 47,
+        "endLine": 141,
+        "endChar": 61
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d57ba5f5_71a8577a",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T16:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f913a67_f90feab3",
       "range": {
         "startLine": 141,
         "startChar": 47,
