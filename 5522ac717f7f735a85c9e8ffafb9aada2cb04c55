@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aac9f9b6_6810afa3",
+        "filename": "tools/gpu/BackendTextureImageFactory.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:15:13Z",
+      "side": 1,
+      "message": "Just to confirm - we don\u0027t need to check for an unpremultiplied alpha type here like we did for the ganesh equivalent because SkBitmap \"handles\" that for us?",
+      "range": {
+        "startLine": 123,
+        "startChar": 7,
+        "endLine": 123,
+        "endChar": 48
+      },
+      "revId": "5522ac717f7f735a85c9e8ffafb9aada2cb04c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a62140dc_ed7f617b",
+        "filename": "tools/gpu/BackendTextureImageFactory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:15:13Z",
+      "side": 1,
+      "message": "nit: I think this is just copied from line 50, but the phrasing is kind of weird. maybe edit to say `Creates a solid color image` here and above or something similar?",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 46
+      },
+      "revId": "5522ac717f7f735a85c9e8ffafb9aada2cb04c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
