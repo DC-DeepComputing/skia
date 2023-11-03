@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4813028f_385d5aa4",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T17:04:20Z",
+      "side": 1,
+      "message": "The idea is that in a future CL `setLabel` will call a virtual `onSetLabel`. This virtual call will allow a backend to set a label directly on a real GPU object (e.g. see VK_EXT_debug_utils). If we didn\u0027t use `setLabel` here then the backend would need to manually call its special label API after creating the Resource. This just keeps all the calls to putting labels in one place.",
+      "parentUuid": "2aca0b0c_c6a48e88",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 26
+      },
+      "revId": "1c96361f3de6c4f34d0f96b3c8ba324c3c1f0e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "800bb5cf_352b98d3",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-03T14:23:32Z",
       "side": 1,
       "message": "`TestResource`",
+      "range": {
+        "startLine": 77,
+        "startChar": 35,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "1c96361f3de6c4f34d0f96b3c8ba324c3c1f0e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec20c30a_438c5aba",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T17:04:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "800bb5cf_352b98d3",
       "range": {
         "startLine": 77,
         "startChar": 35,
