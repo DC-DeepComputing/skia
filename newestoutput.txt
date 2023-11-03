@@ -1,0 +1,1907 @@
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #0 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #1 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #2 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #3 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #4 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #5 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #6 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #7 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #8 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia.gpu> bool skgpu::graphite::QueueManager::submitToGpu() #9 {
+[ 0] } bool skgpu::graphite::QueueManager::submitToGpu()
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #10 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #11 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] <skia> void SkCanvas::drawRect(const SkRect &, const SkPaint &) #12 {
+[ 0] } void SkCanvas::drawRect(const SkRect &, const SkPaint &)
+[ 0] <skia.gpu> void skgpu::graphite::Device::flushPendingWorkToRecorder() #13 {
+[ 1]  <skia.gpu> static std::unique_ptr<DrawPass> skgpu::graphite::DrawPass::Make(Recorder *, std::unique_ptr<DrawList>, sk_sp<TextureProxy>, const SkImageInfo &, std::pair<LoadOp, StoreOp>, std::array<float, 4>) draw count=1 #14 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #15 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #16 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #17 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #18 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+# pipelines value=1 #19
+# textures value=0 #20
+# commands value=5 #21
+[ 1]  } static std::unique_ptr<DrawPass> skgpu::graphite::DrawPass::Make(Recorder *, std::unique_ptr<DrawList>, sk_sp<TextureProxy>, const SkImageInfo &, std::pair<LoadOp, StoreOp>, std::array<float, 4>)
+sk_sp<Task> skgpu::graphite::DrawContext::snapRenderPassTask(Recorder *) # passes=1 #22
+[ 0] } void skgpu::graphite::Device::flushPendingWorkToRecorder()
+[ 0] <skia.gpu> std::unique_ptr<Recording> skgpu::graphite::Recorder::snap() #23 {
+[ 1]  <skia.gpu> void skgpu::graphite::Device::flushPendingWorkToRecorder() #24 {
+[ 1]  } void skgpu::graphite::Device::flushPendingWorkToRecorder()
+[ 1]  <skia.gpu> bool skgpu::graphite::TaskGraph::prepareResources(ResourceProvider *, const RuntimeEffectDictionary *) # tasks=1 #25 {
+[ 2]   <skia.gpu> bool skgpu::graphite::DrawPass::prepareResources(ResourceProvider *, const RuntimeEffectDictionary *, const RenderPassDesc &) #26 {
+[ 3]    <skia.shaders> createGraphicsPipeline #27 {
+[ 4]     <skia.shaders> SkSL::Compiler::convertProgram #28 {
+[ 4]     } SkSL::Compiler::convertProgram
+[ 4]     <skia.shaders> SkSL::Compiler::toSPIRV #29 {
+[ 4]     } SkSL::Compiler::toSPIRV
+[ 4]     <skia.shaders> InstallVkShaderModule #30 {
+[ 4]     } InstallVkShaderModule
+[ 4]     <skia.shaders> SkSL::Compiler::convertProgram #31 {
+[ 4]     } SkSL::Compiler::convertProgram
+[ 4]     <skia.shaders> SkSL::Compiler::toSPIRV #32 {
+[ 4]     } SkSL::Compiler::toSPIRV
+[ 4]     <skia.shaders> InstallVkShaderModule #33 {
+[ 4]     } InstallVkShaderModule
+[ 4]     <skia.shaders> VkCreateGraphicsPipeline #34 {
+[ 4]     } VkCreateGraphicsPipeline
+[ 3]    } createGraphicsPipeline
+[ 2]   } bool skgpu::graphite::DrawPass::prepareResources(ResourceProvider *, const RuntimeEffectDictionary *, const RenderPassDesc &)
+[ 1]  } bool skgpu::graphite::TaskGraph::prepareResources(ResourceProvider *, const RuntimeEffectDictionary *)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #35 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #36 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 0] } std::unique_ptr<Recording> skgpu::graphite::Recorder::snap()
+[ 0] <skia.gpu> bool skgpu::graphite::QueueManager::addRecording(const InsertRecordingInfo &, Context *) #37 {
+[ 1]  <skia.gpu> bool skgpu::graphite::TaskGraph::addCommands(Context *, CommandBuffer *, Task::ReplayTargetData) # tasks=1 #38 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #39 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 2]   <skia.gpu> bool skgpu::graphite::CommandBuffer::addRenderPass(const RenderPassDesc &, sk_sp<Texture>, sk_sp<Texture>, sk_sp<Texture>, SkRect, const DrawPassList &) #40 {
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #41 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #42 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #43 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #44 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #45 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #46 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #47 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #48 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #49 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #50 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #51 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #52 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #53 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #54 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #55 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #56 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #57 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #58 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #59 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #60 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #61 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #62 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #63 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #64 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #65 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #66 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #67 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #68 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #69 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #70 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #71 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #72 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #73 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #74 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #75 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #76 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #77 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #78 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #79 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #80 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #81 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #82 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #83 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #84 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #85 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #86 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #87 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #88 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #89 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #90 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #91 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #92 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #93 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #94 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #95 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #96 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #97 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #98 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #99 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #100 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #101 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #102 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #103 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #104 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #105 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #106 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #107 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #108 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #109 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #110 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #111 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #112 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #113 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #114 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #115 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #116 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #117 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #118 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #119 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #120 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #121 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #122 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #123 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #124 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #125 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #126 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #127 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #128 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #129 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #130 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #131 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #132 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #133 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #134 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #135 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #136 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #137 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #138 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #139 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #140 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #141 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #142 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #143 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #144 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #145 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #146 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #147 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #148 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #149 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #150 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #151 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #152 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #153 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #154 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #155 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #156 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #157 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #158 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #159 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #160 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #161 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #162 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #163 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #164 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #165 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #166 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #167 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #168 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #169 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #170 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #171 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #172 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #173 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #174 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #175 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #176 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #177 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #178 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #179 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #180 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #181 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #182 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #183 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #184 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #185 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #186 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #187 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #188 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #189 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #190 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #191 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #192 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #193 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #194 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #195 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #196 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #197 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #198 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #199 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #200 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #201 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #202 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #203 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #204 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #205 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #206 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #207 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #208 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #209 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #210 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #211 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #212 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #213 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #214 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #215 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #216 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #217 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #218 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #219 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #220 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #221 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #222 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #223 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #224 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #225 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #226 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #227 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #228 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #229 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #230 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #231 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #232 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #233 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #234 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #235 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #236 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #237 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #238 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #239 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #240 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #241 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #242 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #243 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #244 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #245 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #246 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #247 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #248 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #249 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #250 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #251 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #252 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #253 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #254 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #255 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #256 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #257 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #258 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #259 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #260 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #261 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #262 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #263 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #264 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #265 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #266 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #267 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #268 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #269 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #270 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #271 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #272 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #273 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #274 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #275 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #276 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #277 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #278 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #279 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #280 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #281 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #282 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #283 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #284 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #285 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #286 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #287 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #288 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #289 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #290 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #291 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #292 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #293 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #294 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #295 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #296 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #297 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #298 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #299 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #300 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #301 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #302 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #303 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #304 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #305 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #306 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #307 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #308 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #309 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #310 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #311 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #312 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #313 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #314 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #315 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #316 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #317 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #318 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #319 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #320 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #321 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #322 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #323 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #324 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #325 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #326 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #327 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #328 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #329 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #330 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #331 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #332 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #333 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #334 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #335 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #336 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #337 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #338 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #339 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #340 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #341 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #342 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #343 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #344 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #345 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #346 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #347 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #348 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #349 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #350 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #351 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #352 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #353 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #354 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #355 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #356 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #357 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #358 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #359 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #360 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #361 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #362 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #363 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #364 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #365 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #366 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #367 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #368 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #369 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #370 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #371 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #372 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #373 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #374 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #375 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #376 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #377 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #378 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #379 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #380 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #381 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #382 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #383 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #384 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #385 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #386 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #387 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #388 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #389 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #390 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #391 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #392 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #393 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #394 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #395 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #396 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #397 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #398 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #399 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #400 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #401 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #402 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #403 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #404 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #405 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #406 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #407 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #408 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #409 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #410 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #411 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #412 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #413 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #414 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #415 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #416 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #417 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #418 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #419 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #420 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #421 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #422 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #423 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #424 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #425 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #426 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #427 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #428 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #429 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #430 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #431 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #432 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #433 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #434 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #435 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #436 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #437 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #438 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #439 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #440 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #441 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #442 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #443 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #444 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #445 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #446 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #447 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #448 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #449 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #450 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #451 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #452 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #453 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #454 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #455 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #456 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #457 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #458 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #459 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #460 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #461 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #462 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #463 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #464 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #465 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #466 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #467 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #468 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #469 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #470 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #471 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #472 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #473 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #474 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #475 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #476 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #477 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #478 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #479 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #480 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #481 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #482 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #483 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #484 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #485 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #486 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #487 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #488 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #489 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #490 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #491 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #492 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #493 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #494 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #495 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #496 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #497 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #498 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #499 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #500 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #501 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #502 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #503 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #504 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #505 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #506 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #507 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #508 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #509 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #510 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #511 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #512 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #513 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #514 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #515 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #516 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #517 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #518 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #519 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #520 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #521 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #522 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #523 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #524 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #525 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #526 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #527 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #528 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #529 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #530 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #531 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #532 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #533 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #534 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #535 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #536 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #537 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #538 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #539 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #540 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #541 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #542 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #543 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #544 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #545 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #546 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #547 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #548 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #549 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 3]    <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #550 {
+[ 3]    } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 2]   } bool skgpu::graphite::CommandBuffer::addRenderPass(const RenderPassDesc &, sk_sp<Texture>, sk_sp<Texture>, sk_sp<Texture>, SkRect, const DrawPassList &)
+[ 1]  } bool skgpu::graphite::TaskGraph::addCommands(Context *, CommandBuffer *, Task::ReplayTargetData)
+[ 0] } bool skgpu::graphite::QueueManager::addRecording(const InsertRecordingInfo &, Context *)
+[ 0] <skia.gpu> void skgpu::graphite::Context::asyncReadPixels(const TextureProxy *, const SkImageInfo &, const SkColorInfo &, const SkIRect &, SkImage::ReadPixelsCallback *, SkImage::ReadPixelsContext) width=16, height=16 #551 {
+[ 1]  <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=1 #552 {
+[ 1]  } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #553 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 0] } void skgpu::graphite::Context::asyncReadPixels(const TextureProxy *, const SkImageInfo &, const SkColorInfo &, const SkIRect &, SkImage::ReadPixelsCallback *, SkImage::ReadPixelsContext)
+[ 0] <skia.gpu> bool skgpu::graphite::QueueManager::submitToGpu() #554 {
+[ 0] } bool skgpu::graphite::QueueManager::submitToGpu()
+[ 0] <skia.gpu> void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu) sync=true #555 {
+[ 1]  <skia.gpu> void skgpu::graphite::CommandBuffer::resetCommandBuffer() #556 {
+[ 2]   <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #557 {
+[ 2]   } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 1]  } void skgpu::graphite::CommandBuffer::resetCommandBuffer()
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #558 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #559 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 1]  <skia.gpu> void skgpu::graphite::CommandBuffer::resetCommandBuffer() #560 {
+[ 2]   <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #561 {
+[ 2]   } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 1]  } void skgpu::graphite::CommandBuffer::resetCommandBuffer()
+[ 0] } void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu)
+[ 0] <skia.gpu> void skgpu::graphite::Device::flushPendingWorkToRecorder() #562 {
+[ 0] } void skgpu::graphite::Device::flushPendingWorkToRecorder()
+[ 0] <skia.gpu> std::unique_ptr<Recording> skgpu::graphite::Recorder::snap() #563 {
+[ 1]  <skia.gpu> bool skgpu::graphite::TaskGraph::prepareResources(ResourceProvider *, const RuntimeEffectDictionary *) # tasks=0 #564 {
+[ 1]  } bool skgpu::graphite::TaskGraph::prepareResources(ResourceProvider *, const RuntimeEffectDictionary *)
+[ 0] } std::unique_ptr<Recording> skgpu::graphite::Recorder::snap()
+[ 0] <skia.gpu> bool skgpu::graphite::QueueManager::addRecording(const InsertRecordingInfo &, Context *) #565 {
+[ 1]  <skia.gpu> bool skgpu::graphite::TaskGraph::addCommands(Context *, CommandBuffer *, Task::ReplayTargetData) # tasks=0 #566 {
+[ 1]  } bool skgpu::graphite::TaskGraph::addCommands(Context *, CommandBuffer *, Task::ReplayTargetData)
+[ 0] } bool skgpu::graphite::QueueManager::addRecording(const InsertRecordingInfo &, Context *)
+[ 0] <skia.gpu> bool skgpu::graphite::QueueManager::submitToGpu() #567 {
+[ 0] } bool skgpu::graphite::QueueManager::submitToGpu()
+[ 0] <skia.gpu> void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu) sync=true #568 {
+[ 1]  <skia.gpu> void skgpu::graphite::CommandBuffer::resetCommandBuffer() #569 {
+[ 2]   <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #570 {
+[ 2]   } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 1]  } void skgpu::graphite::CommandBuffer::resetCommandBuffer()
+[ 0] } void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #571 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=4 #572 {
+[ 0] } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #573 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #574 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #575 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+void skgpu::graphite::ResourceCache::shutdown() #576
+[ 0] <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #577 {
+[ 0] } virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #578 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu) sync=true #579 {
+[ 0] } void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu)
+[ 0] <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #580 {
+[ 0] } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 0] <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #581 {
+[ 0] } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #582 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=6 #583 {
+[ 0] } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #584 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #585 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #586 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #587 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+void skgpu::graphite::ResourceCache::shutdown() #588
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #589 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 0] <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #590 {
+[ 0] } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+0 srcs * 1 sinks + 10 tests == 10 tasks
+[ 0] <test_ganesh> void skiatest::Test::ganesh(skiatest::Reporter *, const GrContextOptions &) const name="GrBackendTextureImag..." #591 {
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #592 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #593 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> SurfaceContext::copyScaled #594 {
+[ 1]  } SurfaceContext::copyScaled
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #595 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=0, free=268435456 #596
+skia budget used=341, free=268435115 #597
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #598 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #599 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> GrDrawingManager::flush #600 {
+[ 2]   <skia.gpu> bool GrGpu::copySurface(GrSurface *, const SkIRect &, GrSurface *, const SkIRect &, GrSamplerState::Filter) #601 {
+[ 2]   } bool GrGpu::copySurface(GrSurface *, const SkIRect &, GrSurface *, const SkIRect &, GrSamplerState::Filter)
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #602 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 1]  <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #603 {
+[ 2]   <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #604 {
+[ 3]    <skia.gpu> void GrVkCommandPool::releaseResources() #605 {
+[ 4]     <skia.gpu> void GrVkCommandBuffer::releaseResources() #606 {
+[ 5]      <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #607 {
+[ 6]       <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #608 {
+[ 6]       } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 5]      } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 5]      <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #609 {
+[ 6]       <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #610 {
+[ 6]       } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 5]      } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 5]      <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #611 {
+[ 6]       <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #612 {
+[ 6]       } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 5]      } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 4]     } void GrVkCommandBuffer::releaseResources()
+[ 3]    } void GrVkCommandPool::releaseResources()
+[ 2]   } void GrVkCommandPool::reset(GrVkGpu *)
+[ 1]  } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #613 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #614 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #615 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=341, free=268435115 #616
+skia budget used=0, free=268435456 #617
+[ 1]  <skia.gpu> void GrVkCommandPool::releaseResources() #618 {
+[ 2]   <skia.gpu> void GrVkCommandBuffer::releaseResources() #619 {
+[ 2]   } void GrVkCommandBuffer::releaseResources()
+[ 1]  } void GrVkCommandPool::releaseResources()
+[ 1]  <skia.gpu> void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const #620 {
+[ 1]  } void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const
+[ 1]  <skia.gpu> void GrVkCommandPool::releaseResources() #621 {
+[ 2]   <skia.gpu> void GrVkCommandBuffer::releaseResources() #622 {
+[ 2]   } void GrVkCommandBuffer::releaseResources()
+[ 1]  } void GrVkCommandPool::releaseResources()
+[ 1]  <skia.gpu> void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const #623 {
+[ 1]  } void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const
+[ 1]  <skia.gpu> GrDrawingManager::flush #624 {
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #625 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 0] } void skiatest::Test::ganesh(skiatest::Reporter *, const GrContextOptions &) const
+[ 0] <test_ganesh> void skiatest::Test::ganesh(skiatest::Reporter *, const GrContextOptions &) const name="ReplaceSurfaceBacken..." #626 {
+[ 1]  <skia.gpu> GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view) #627 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #628 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  } GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view)
+[ 1]  <skia.gpu> GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view) #629 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #630 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  } GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view)
+[ 1]  <skia.gpu> GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view) #631 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #632 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  } GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view)
+[ 1]  <skia> void SkCanvas::drawPaint(const SkPaint &) #633 {
+[ 2]   <skia.gpu> skgpu::ganesh::Device::drawPaint #634 {
+[ 3]    <skia.gpu> SurfaceDrawContext::drawFilledQuad #635 {
+[ 4]     <skia.gpu> SurfaceFillContext::clear #636 {
+[ 4]     } SurfaceFillContext::clear
+[ 3]    } SurfaceDrawContext::drawFilledQuad
+[ 2]   } skgpu::ganesh::Device::drawPaint
+[ 1]  } void SkCanvas::drawPaint(const SkPaint &)
+[ 1]  <skia> int SkCanvas::saveLayer(const SaveLayerRec &) #637 {
+[ 2]   <skia> void SkCanvas::internalSaveLayer(const SaveLayerRec &, SaveLayerStrategy, bool) #638 {
+[ 3]    <skia.gpu> skgpu::ganesh::Device::clearAll #639 {
+[ 4]     <skia.gpu> SurfaceFillContext::clear #640 {
+[ 4]     } SurfaceFillContext::clear
+[ 3]    } skgpu::ganesh::Device::clearAll
+[ 2]   } void SkCanvas::internalSaveLayer(const SaveLayerRec &, SaveLayerStrategy, bool)
+[ 1]  } int SkCanvas::saveLayer(const SaveLayerRec &)
+[ 1]  <skia.gpu> SurfaceFillContext::fillRectWithFP #641 {
+[ 1]  } SurfaceFillContext::fillRectWithFP
+[ 1]  <skia> void SkCanvas::drawRect(const SkRect &, const SkPaint &) #642 {
+[ 2]   <skia.gpu> skgpu::ganesh::Device::drawRect #643 {
+[ 3]    <skia.gpu> SurfaceDrawContext::drawRect #644 {
+[ 4]     <skia.gpu> SurfaceDrawContext::drawFilledQuad #645 {
+[ 5]      <skia.gpu> SurfaceDrawContext::addDrawOp #646 {
+[ 5]      } SurfaceDrawContext::addDrawOp
+[ 4]     } SurfaceDrawContext::drawFilledQuad
+[ 3]    } SurfaceDrawContext::drawRect
+[ 2]   } skgpu::ganesh::Device::drawRect
+[ 1]  } void SkCanvas::drawRect(const SkRect &, const SkPaint &)
+[ 1]  <skia.gpu> skgpu::ganesh::Device::drawDevice #647 {
+[ 2]   <skia.gpu> SurfaceDrawContext::drawTexturedQuad #648 {
+[ 3]    <skia.gpu> SurfaceDrawContext::addDrawOp #649 {
+[ 3]    } SurfaceDrawContext::addDrawOp
+[ 2]   } SurfaceDrawContext::drawTexturedQuad
+[ 1]  } skgpu::ganesh::Device::drawDevice
+[ 1]  <skia.gpu> SurfaceContext::readPixels #650 {
+[ 2]   <skia.gpu> GrDirectContextPriv::flushSurfaces #651 {
+[ 3]    <skia.gpu> GrDrawingManager::flush #652 {
+[ 4]     <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #653 {
+[ 4]     } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=0, free=268435456 #654
+skia budget used=1024, free=268434432 #655
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #656 {
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #657 {
+[ 5]      <skia.gpu> FillRectOp #658 {
+[ 6]       <skia.gpu> virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *) #659 {
+[ 7]        <skia.gpu> sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t, GrGpuBufferType, GrAccessPattern) #660 {
+[ 8]         <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #661 {
+[ 8]         } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=33792, free=268401664 #662
+[ 7]        } sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t, GrGpuBufferType, GrAccessPattern)
+[ 7]        <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #663 {
+[ 7]        } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 6]       } virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *)
+[ 5]      } FillRectOp
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #664 {
+[ 5]      <skia.gpu> FillRectOp #665 {
+[ 6]       <skia.gpu> virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *) #666 {
+[ 6]       } virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *)
+[ 5]      } FillRectOp
+[ 5]      <skia.gpu> TextureOp #667 {
+[ 6]       <skia.gpu> virtual void (anonymous namespace)::TextureOpImpl::onPrepareDraws(GrMeshDrawTarget *) #668 {
+[ 6]       } virtual void (anonymous namespace)::TextureOpImpl::onPrepareDraws(GrMeshDrawTarget *)
+[ 5]      } TextureOp
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+GrBufferAllocPool Unmapping Buffer percent_unwritten=0 #669
+[ 4]     <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #670 {
+[ 4]     } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #671 {
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #672 {
+[ 5]      <skia.gpu> FillRectOp #673 {
+[ 6]       <skia.shaders> GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool) #674 {
+[ 7]        <skia.shaders> CompileVkShaderModule #675 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #676 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #677 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #678 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CompileVkShaderModule #679 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #680 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #681 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #682 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CreateGraphicsPipeline #683 {
+[ 7]        } CreateGraphicsPipeline
+[ 6]       } GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool)
+[ 5]      } FillRectOp
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #684 {
+[ 5]      <skia.gpu> FillRectOp #685 {
+[ 6]       <skia.shaders> GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool) #686 {
+[ 7]        <skia.shaders> CompileVkShaderModule #687 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #688 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #689 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #690 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CompileVkShaderModule #691 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #692 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #693 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #694 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CreateGraphicsPipeline #695 {
+[ 7]        } CreateGraphicsPipeline
+[ 6]       } GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool)
+[ 5]      } FillRectOp
+[ 5]      <skia.gpu> TextureOp #696 {
+[ 6]       <skia.shaders> GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool) #697 {
+[ 7]        <skia.shaders> CompileVkShaderModule #698 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #699 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #700 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #701 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CompileVkShaderModule #702 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #703 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #704 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #705 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CreateGraphicsPipeline #706 {
+[ 7]        } CreateGraphicsPipeline
+[ 6]       } GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool)
+[ 5]      } TextureOp
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #707 {
+[ 4]     } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 3]    } GrDrawingManager::flush
+[ 2]   } GrDirectContextPriv::flushSurfaces
+[ 2]   <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #708 {
+[ 2]   } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 2]   <skia.gpu> bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t) #709 {
+[ 3]    <skia.gpu> sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t, GrGpuBufferType, GrAccessPattern) #710 {
+[ 4]     <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #711 {
+[ 4]     } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=37888, free=268397568 #712
+[ 3]    } sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t, GrGpuBufferType, GrAccessPattern)
+[ 3]    <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #713 {
+[ 4]     <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #714 {
+[ 5]      <skia.gpu> void GrVkCommandPool::releaseResources() #715 {
+[ 6]       <skia.gpu> void GrVkCommandBuffer::releaseResources() #716 {
+[ 6]       } void GrVkCommandBuffer::releaseResources()
+[ 5]      } void GrVkCommandPool::releaseResources()
+[ 4]     } void GrVkCommandPool::reset(GrVkGpu *)
+[ 4]     <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #717 {
+[ 5]      <skia.gpu> void GrVkCommandPool::releaseResources() #718 {
+[ 6]       <skia.gpu> void GrVkCommandBuffer::releaseResources() #719 {
+[ 6]       } void GrVkCommandBuffer::releaseResources()
+[ 5]      } void GrVkCommandPool::releaseResources()
+[ 4]     } void GrVkCommandPool::reset(GrVkGpu *)
+[ 3]    } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #720 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #721 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #722 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #723 {
+[ 3]    } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 2]   } bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t)
+[ 2]   <skia.gpu> bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool) #724 {
+[ 2]   } bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool)
+[ 1]  } SurfaceContext::readPixels
+[ 1]  <skia.gpu> SurfaceContext::readPixels #725 {
+[ 2]   <skia.gpu> GrDirectContextPriv::flushSurfaces #726 {
+[ 3]    <skia.gpu> GrDrawingManager::flush #727 {
+[ 3]    } GrDrawingManager::flush
+[ 2]   } GrDirectContextPriv::flushSurfaces
+[ 2]   <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #728 {
+[ 2]   } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 2]   <skia.gpu> bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t) #729 {
+[ 3]    <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #730 {
+[ 4]     <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #731 {
+[ 5]      <skia.gpu> void GrVkCommandPool::releaseResources() #732 {
+[ 6]       <skia.gpu> void GrVkCommandBuffer::releaseResources() #733 {
+[ 6]       } void GrVkCommandBuffer::releaseResources()
+[ 5]      } void GrVkCommandPool::releaseResources()
+[ 4]     } void GrVkCommandPool::reset(GrVkGpu *)
+[ 3]    } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #734 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #735 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #736 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #737 {
+[ 3]    } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 2]   } bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t)
+[ 2]   <skia.gpu> bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool) #738 {
+[ 2]   } bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool)
+[ 1]  } SurfaceContext::readPixels
+[ 1]  <skia.gpu> skgpu::ganesh::Device::clearAll #739 {
+[ 2]   <skia.gpu> SurfaceFillContext::clear #740 {
+[ 2]   } SurfaceFillContext::clear
+[ 1]  } skgpu::ganesh::Device::clearAll
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #741 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #742 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #743 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #744 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #745 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #746 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view) #747 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #748 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  } GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view)
+[ 1]  <skia.gpu> GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view) #749 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #750 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  } GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view)
+[ 1]  <skia.gpu> GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view) #751 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #752 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  } GrBackendTexture GrDirectContext::createBackendTexture(int, int, const GrBackendFormat &, skgpu::Mipmapped, GrRenderable, GrProtected, std::string_view)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #753 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=39488, free=268395968 #754
+[ 1]  <skia> void SkCanvas::drawPaint(const SkPaint &) #755 {
+[ 2]   <skia.gpu> skgpu::ganesh::Device::drawPaint #756 {
+[ 3]    <skia.gpu> SurfaceDrawContext::drawFilledQuad #757 {
+[ 4]     <skia.gpu> SurfaceFillContext::clear #758 {
+[ 4]     } SurfaceFillContext::clear
+[ 3]    } SurfaceDrawContext::drawFilledQuad
+[ 2]   } skgpu::ganesh::Device::drawPaint
+[ 1]  } void SkCanvas::drawPaint(const SkPaint &)
+[ 1]  <skia> int SkCanvas::saveLayer(const SaveLayerRec &) #759 {
+[ 2]   <skia> void SkCanvas::internalSaveLayer(const SaveLayerRec &, SaveLayerStrategy, bool) #760 {
+[ 3]    <skia.gpu> skgpu::ganesh::Device::clearAll #761 {
+[ 4]     <skia.gpu> SurfaceFillContext::clear #762 {
+[ 4]     } SurfaceFillContext::clear
+[ 3]    } skgpu::ganesh::Device::clearAll
+[ 2]   } void SkCanvas::internalSaveLayer(const SaveLayerRec &, SaveLayerStrategy, bool)
+[ 1]  } int SkCanvas::saveLayer(const SaveLayerRec &)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #763 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=41088, free=268394368 #764
+[ 1]  <skia.gpu> SurfaceFillContext::fillRectWithFP #765 {
+[ 1]  } SurfaceFillContext::fillRectWithFP
+[ 1]  <skia> void SkCanvas::drawRect(const SkRect &, const SkPaint &) #766 {
+[ 2]   <skia.gpu> skgpu::ganesh::Device::drawRect #767 {
+[ 3]    <skia.gpu> SurfaceDrawContext::drawRect #768 {
+[ 4]     <skia.gpu> SurfaceDrawContext::drawFilledQuad #769 {
+[ 5]      <skia.gpu> SurfaceDrawContext::addDrawOp #770 {
+[ 5]      } SurfaceDrawContext::addDrawOp
+[ 4]     } SurfaceDrawContext::drawFilledQuad
+[ 3]    } SurfaceDrawContext::drawRect
+[ 2]   } skgpu::ganesh::Device::drawRect
+[ 1]  } void SkCanvas::drawRect(const SkRect &, const SkPaint &)
+[ 1]  <skia.gpu> skgpu::ganesh::Device::drawDevice #771 {
+[ 2]   <skia.gpu> SurfaceDrawContext::drawTexturedQuad #772 {
+[ 3]    <skia.gpu> SurfaceDrawContext::addDrawOp #773 {
+[ 3]    } SurfaceDrawContext::addDrawOp
+[ 2]   } SurfaceDrawContext::drawTexturedQuad
+[ 1]  } skgpu::ganesh::Device::drawDevice
+[ 1]  <skia.gpu> SurfaceContext::readPixels #774 {
+[ 2]   <skia.gpu> GrDirectContextPriv::flushSurfaces #775 {
+[ 3]    <skia.gpu> GrDrawingManager::flush #776 {
+[ 4]     <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #777 {
+[ 4]     } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=41088, free=268394368 #778
+skia budget used=41488, free=268393968 #779
+[ 4]     <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #780 {
+[ 4]     } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=41488, free=268393968 #781
+[ 4]     <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #782 {
+[ 4]     } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=45584, free=268389872 #783
+skia budget used=46608, free=268388848 #784
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #785 {
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #786 {
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #787 {
+[ 5]      <skia.gpu> FillRectOp #788 {
+[ 6]       <skia.gpu> virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *) #789 {
+[ 7]        <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #790 {
+[ 7]        } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 6]       } virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *)
+[ 5]      } FillRectOp
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #791 {
+[ 5]      <skia.gpu> FillRectOp #792 {
+[ 6]       <skia.gpu> virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *) #793 {
+[ 6]       } virtual void (anonymous namespace)::FillRectOpImpl::onPrepareDraws(GrMeshDrawTarget *)
+[ 5]      } FillRectOp
+[ 5]      <skia.gpu> TextureOp #794 {
+[ 6]       <skia.gpu> virtual void (anonymous namespace)::TextureOpImpl::onPrepareDraws(GrMeshDrawTarget *) #795 {
+[ 6]       } virtual void (anonymous namespace)::TextureOpImpl::onPrepareDraws(GrMeshDrawTarget *)
+[ 5]      } TextureOp
+[ 4]     } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+GrBufferAllocPool Unmapping Buffer percent_unwritten=0 #796
+[ 4]     <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #797 {
+[ 4]     } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #798 {
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #799 {
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #800 {
+[ 5]      <skia.gpu> FillRectOp #801 {
+[ 6]       <skia.shaders> GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool) #802 {
+[ 7]        <skia.shaders> CompileVkShaderModule #803 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #804 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #805 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #806 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CompileVkShaderModule #807 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #808 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #809 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #810 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CreateGraphicsPipeline #811 {
+[ 7]        } CreateGraphicsPipeline
+[ 6]       } GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool)
+[ 5]      } FillRectOp
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #812 {
+[ 5]      <skia> bool GrVkMSAALoadManager::createMSAALoadProgram(GrVkGpu *) #813 {
+[ 6]       <skia.shaders> CompileVkShaderModule #814 {
+[ 7]        <skia.shaders> SkSL::Compiler::convertProgram #815 {
+[ 7]        } SkSL::Compiler::convertProgram
+[ 7]        <skia.shaders> SkSL::Compiler::toSPIRV #816 {
+[ 7]        } SkSL::Compiler::toSPIRV
+[ 7]        <skia.shaders> InstallVkShaderModule #817 {
+[ 7]        } InstallVkShaderModule
+[ 6]       } CompileVkShaderModule
+[ 6]       <skia.shaders> CompileVkShaderModule #818 {
+[ 7]        <skia.shaders> SkSL::Compiler::convertProgram #819 {
+[ 7]        } SkSL::Compiler::convertProgram
+[ 7]        <skia.shaders> SkSL::Compiler::toSPIRV #820 {
+[ 7]        } SkSL::Compiler::toSPIRV
+[ 7]        <skia.shaders> InstallVkShaderModule #821 {
+[ 7]        } InstallVkShaderModule
+[ 6]       } CompileVkShaderModule
+[ 5]      } bool GrVkMSAALoadManager::createMSAALoadProgram(GrVkGpu *)
+[ 5]      <skia.shaders> CreateGraphicsPipeline #822 {
+[ 5]      } CreateGraphicsPipeline
+[ 5]      <skia.gpu> sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t, GrGpuBufferType, GrAccessPattern) #823 {
+[ 6]       <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #824 {
+[ 6]       } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=46736, free=268388720 #825
+[ 5]      } sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t, GrGpuBufferType, GrAccessPattern)
+[ 5]      <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #826 {
+[ 5]      } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 5]      <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #827 {
+[ 5]      } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 5]      <skia.gpu> FillRectOp #828 {
+[ 6]       <skia.shaders> GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool) #829 {
+[ 7]        <skia.shaders> CompileVkShaderModule #830 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #831 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #832 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #833 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CompileVkShaderModule #834 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #835 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #836 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #837 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CreateGraphicsPipeline #838 {
+[ 7]        } CreateGraphicsPipeline
+[ 6]       } GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool)
+[ 5]      } FillRectOp
+[ 5]      <skia.gpu> TextureOp #839 {
+[ 6]       <skia.shaders> GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool) #840 {
+[ 7]        <skia.shaders> CompileVkShaderModule #841 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #842 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #843 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #844 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CompileVkShaderModule #845 {
+[ 8]         <skia.shaders> SkSL::Compiler::convertProgram #846 {
+[ 8]         } SkSL::Compiler::convertProgram
+[ 8]         <skia.shaders> SkSL::Compiler::toSPIRV #847 {
+[ 8]         } SkSL::Compiler::toSPIRV
+[ 8]         <skia.shaders> InstallVkShaderModule #848 {
+[ 8]         } InstallVkShaderModule
+[ 7]        } CompileVkShaderModule
+[ 7]        <skia.shaders> CreateGraphicsPipeline #849 {
+[ 7]        } CreateGraphicsPipeline
+[ 6]       } GrVkPipelineState *GrVkPipelineStateBuilder::finalize(const GrProgramDesc &, VkRenderPass, bool)
+[ 5]      } TextureOp
+[ 4]     } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 4]     <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #850 {
+[ 4]     } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 3]    } GrDrawingManager::flush
+[ 3]    <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #851 {
+[ 3]    } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 2]   } GrDirectContextPriv::flushSurfaces
+[ 2]   <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #852 {
+[ 2]   } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 2]   <skia.gpu> bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t) #853 {
+[ 3]    <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #854 {
+[ 4]     <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #855 {
+[ 5]      <skia.gpu> void GrVkCommandPool::releaseResources() #856 {
+[ 6]       <skia.gpu> void GrVkCommandBuffer::releaseResources() #857 {
+[ 6]       } void GrVkCommandBuffer::releaseResources()
+[ 5]      } void GrVkCommandPool::releaseResources()
+[ 4]     } void GrVkCommandPool::reset(GrVkGpu *)
+[ 4]     <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #858 {
+[ 5]      <skia.gpu> void GrVkCommandPool::releaseResources() #859 {
+[ 6]       <skia.gpu> void GrVkCommandBuffer::releaseResources() #860 {
+[ 6]       } void GrVkCommandBuffer::releaseResources()
+[ 5]      } void GrVkCommandPool::releaseResources()
+[ 4]     } void GrVkCommandPool::reset(GrVkGpu *)
+[ 3]    } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #861 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #862 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #863 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #864 {
+[ 3]    } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 2]   } bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t)
+[ 2]   <skia.gpu> bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool) #865 {
+[ 2]   } bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool)
+[ 1]  } SurfaceContext::readPixels
+[ 1]  <skia.gpu> SurfaceContext::readPixels #866 {
+[ 2]   <skia.gpu> GrDirectContextPriv::flushSurfaces #867 {
+[ 3]    <skia.gpu> GrDrawingManager::flush #868 {
+[ 3]    } GrDrawingManager::flush
+[ 2]   } GrDirectContextPriv::flushSurfaces
+[ 2]   <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #869 {
+[ 2]   } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 2]   <skia.gpu> bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t) #870 {
+[ 3]    <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #871 {
+[ 4]     <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #872 {
+[ 5]      <skia.gpu> void GrVkCommandPool::releaseResources() #873 {
+[ 6]       <skia.gpu> void GrVkCommandBuffer::releaseResources() #874 {
+[ 6]       } void GrVkCommandBuffer::releaseResources()
+[ 5]      } void GrVkCommandPool::releaseResources()
+[ 4]     } void GrVkCommandPool::reset(GrVkGpu *)
+[ 3]    } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #875 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #876 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::invalidateMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize) #877 {
+[ 3]    } virtual VkResult skgpu::VulkanAMDMemoryAllocator::flushMemory(const VulkanBackendMemory &, VkDeviceSize, VkDeviceSize)
+[ 3]    <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #878 {
+[ 3]    } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 2]   } bool GrGpu::readPixels(GrSurface *, SkIRect, GrColorType, GrColorType, void *, size_t)
+[ 2]   <skia.gpu> bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool) #879 {
+[ 2]   } bool GrConvertPixels(const GrPixmap &, const GrCPixmap &, bool)
+[ 1]  } SurfaceContext::readPixels
+[ 1]  <skia.gpu> skgpu::ganesh::Device::clearAll #880 {
+[ 2]   <skia.gpu> SurfaceFillContext::clear #881 {
+[ 2]   } SurfaceFillContext::clear
+[ 1]  } skgpu::ganesh::Device::clearAll
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #882 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #883 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #884 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #885 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> void GrDirectContext::deleteBackendTexture(const GrBackendTexture &) #886 {
+[ 2]   <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #887 {
+[ 2]   } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  } void GrDirectContext::deleteBackendTexture(const GrBackendTexture &)
+[ 1]  <skia.gpu> GrDrawingManager::flush #888 {
+[ 2]   <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #889 {
+[ 2]   } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+skia budget used=46736, free=268388720 #890
+skia budget used=47136, free=268388320 #891
+[ 2]   <skia.gpu> virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *) #892 {
+[ 2]   } virtual void skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)
+[ 2]   <skia.gpu> virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *) #893 {
+[ 2]   } virtual bool skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #894 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 1]  <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #895 {
+[ 2]   <skia.gpu> void GrVkCommandPool::reset(GrVkGpu *) #896 {
+[ 3]    <skia.gpu> void GrVkCommandPool::releaseResources() #897 {
+[ 4]     <skia.gpu> void GrVkCommandBuffer::releaseResources() #898 {
+[ 4]     } void GrVkCommandBuffer::releaseResources()
+[ 3]    } void GrVkCommandPool::releaseResources()
+[ 2]   } void GrVkCommandPool::reset(GrVkGpu *)
+[ 1]  } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 1]  <skia.gpu> GrDrawingManager::flush #899 {
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #900 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 1]  <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #901 {
+[ 1]  } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #902 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=45536, free=268389920 #903
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #904 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=45536, free=268389920 #905
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #906 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=45536, free=268389920 #907
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #908 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=45536, free=268389920 #909
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #910 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=41440, free=268394016 #911
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #912 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=41440, free=268394016 #913
+skia budget used=40416, free=268395040 #914
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #915 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=7648, free=268427808 #916
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #917 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=7520, free=268427936 #918
+skia budget used=7120, free=268428336 #919
+skia budget used=6096, free=268429360 #920
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #921 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=4496, free=268430960 #922
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #923 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+skia budget used=400, free=268435056 #924
+skia budget used=0, free=268435456 #925
+[ 1]  <skia.gpu> void GrVkCommandPool::releaseResources() #926 {
+[ 2]   <skia.gpu> void GrVkCommandBuffer::releaseResources() #927 {
+[ 2]   } void GrVkCommandBuffer::releaseResources()
+[ 1]  } void GrVkCommandPool::releaseResources()
+[ 1]  <skia.gpu> void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const #928 {
+[ 1]  } void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const
+[ 1]  <skia.gpu> void GrVkCommandPool::releaseResources() #929 {
+[ 2]   <skia.gpu> void GrVkCommandBuffer::releaseResources() #930 {
+[ 2]   } void GrVkCommandBuffer::releaseResources()
+[ 1]  } void GrVkCommandPool::releaseResources()
+[ 1]  <skia.gpu> void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const #931 {
+[ 1]  } void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const
+[ 1]  <skia.gpu> void GrVkCommandPool::releaseResources() #932 {
+[ 2]   <skia.gpu> void GrVkCommandBuffer::releaseResources() #933 {
+[ 2]   } void GrVkCommandBuffer::releaseResources()
+[ 1]  } void GrVkCommandPool::releaseResources()
+[ 1]  <skia.gpu> void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const #934 {
+[ 1]  } void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const
+[ 1]  <skia.gpu> GrDrawingManager::flush #935 {
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #936 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 0] } void skiatest::Test::ganesh(skiatest::Reporter *, const GrContextOptions &) const
+[ 0] <test_ganesh> void skiatest::Test::ganesh(skiatest::Reporter *, const GrContextOptions &) const name="makeBackendTexture" #937 {
+[ 1]  <skia.gpu> GrDrawingManager::flush #938 {
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #939 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 1]  <skia.gpu> bool GrVkGpu::submitCommandBuffer(SyncQueue) #940 {
+[ 1]  } bool GrVkGpu::submitCommandBuffer(SyncQueue)
+[ 1]  <skia.gpu> void GrVkCommandPool::releaseResources() #941 {
+[ 2]   <skia.gpu> void GrVkCommandBuffer::releaseResources() #942 {
+[ 2]   } void GrVkCommandBuffer::releaseResources()
+[ 1]  } void GrVkCommandPool::releaseResources()
+[ 1]  <skia.gpu> void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const #943 {
+[ 1]  } void GrVkCommandBuffer::freeGPUData(const GrGpu *, VkCommandPool) const
+[ 1]  <skia.gpu> GrDrawingManager::flush #944 {
+[ 2]   <skia.gpu> void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *) #945 {
+[ 2]   } void GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy *>, SkSurfaces::BackendSurfaceAccess, const GrFlushInfo &, const skgpu::MutableTextureState *)
+[ 1]  } GrDrawingManager::flush
+[ 0] } void skiatest::Test::ganesh(skiatest::Reporter *, const GrContextOptions &) const
+[ 0] <test_graphite> void skiatest::Test::graphite(skiatest::Reporter *, const skgpu::graphite::ContextOptions &) const name="VulkanBackendTexture..." #946 {
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #947 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #948 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #949 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #950 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #951 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **) #952 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::mapMemory(const VulkanBackendMemory &, void **)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &) #953 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::unmapMemory(const VulkanBackendMemory &)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #954 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #955 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> bool skgpu::graphite::QueueManager::submitToGpu() #956 {
+[ 1]  } bool skgpu::graphite::QueueManager::submitToGpu()
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *) #957 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer, BufferUsage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *) #958 {
+[ 1]  } virtual VkResult skgpu::VulkanAMDMemoryAllocator::allocateImageMemory(VkImage, uint32_t, skgpu::VulkanBackendMemory *)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #959 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+void skgpu::graphite::ResourceCache::shutdown() #960
+[ 1]  <skia.gpu> void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu) sync=true #961 {
+[ 2]   <skia.gpu> void skgpu::graphite::CommandBuffer::resetCommandBuffer() #962 {
+[ 3]    <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #963 {
+[ 3]    } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 2]   } void skgpu::graphite::CommandBuffer::resetCommandBuffer()
+[ 1]  } void skgpu::graphite::QueueManager::checkForFinishedWork(SyncToCpu)
+[ 1]  <skia.gpu> void skgpu::graphite::CommandBuffer::releaseResources() #964 {
+[ 1]  } void skgpu::graphite::CommandBuffer::releaseResources()
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #965 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  <skia.gpu.cache> void skgpu::graphite::ResourceCache::processReturnedResources() count=2 #966 {
+[ 1]  } void skgpu::graphite::ResourceCache::processReturnedResources()
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #967 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #968 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+void skgpu::graphite::ResourceCache::shutdown() #969
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #970 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+[ 1]  <skia.gpu> virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &) #971 {
+[ 1]  } virtual void skgpu::VulkanAMDMemoryAllocator::freeMemory(const VulkanBackendMemory &)
+
+Caught signal 6 [Aborted] (93MB RAM, peak 96MB), was running:
+	unit test  VulkanBackendTextureCopyVariableTest
+Likely culprit:
+	unit test  VulkanBackendTextureCopyVariableTest
