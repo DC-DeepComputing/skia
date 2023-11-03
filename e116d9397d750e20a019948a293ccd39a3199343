@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0666449_3f741c11",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "ugly, but fine for this unfortunately long naming.",
+      "parentUuid": "030e226a_001fa261",
+      "range": {
+        "startLine": 705,
+        "startChar": 0,
+        "endLine": 709,
+        "endChar": 22
+      },
+      "revId": "e116d9397d750e20a019948a293ccd39a3199343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a205aab0_713acf66",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-03T17:09:03Z",
       "side": 1,
       "message": "This is longer than I\u0027d typically want an inline function to be - alternatively, I could create a `VulkanUtilsPriv` namespace and add a .cpp file to define the body. LMKWYT",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "e116d9397d750e20a019948a293ccd39a3199343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25542495_b8d98f24",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to explicitly label this as inline.",
+      "parentUuid": "a205aab0_713acf66",
       "range": {
         "startLine": 188,
         "startChar": 0,

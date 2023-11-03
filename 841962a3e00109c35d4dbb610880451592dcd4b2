@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a86fc73_fd1bbbc7",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think you need this `,` or the next one.",
+      "range": {
+        "startLine": 303,
+        "startChar": 21,
+        "endLine": 303,
+        "endChar": 22
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2701273_e461f334",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "I feel like we need to think/talk about this a bit more. I think there are valid use cases where a client needs to give us the MemoryAlloc. I may actually think your previous version checking the backendMemory was more correct here.",
+      "range": {
+        "startLine": 302,
+        "startChar": 7,
+        "endLine": 303,
+        "endChar": 21
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b6da0f_43f90168",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "Nit (not caused by this CL): Random thought but if this is a query on BackendTexture I think it should have vulkan or vk in its name.",
+      "range": {
+        "startLine": 304,
+        "startChar": 17,
+        "endLine": 304,
+        "endChar": 31
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c3b79cb_44682186",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "Nit: we only use the `_` naming when its a static function local to a cpp file. For this shared thing it would be `GetExtensionFeatureStruct`",
+      "range": {
+        "startLine": 162,
+        "startChar": 24,
+        "endLine": 162,
+        "endChar": 52
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

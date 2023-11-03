@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "574aa2a3_dc8260bf",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "Correct, we don\u0027t need to query the physical device. We just trust the features the client tells us are enable.",
+      "parentUuid": "866febe4_8a906054",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 44
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9332e17_ea911ef8",
@@ -443,6 +467,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcb13031_28f6680e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "can\u0027t you get the VulkanResourceProvider off of the VulkanSharedContext which is already passed in?",
+      "parentUuid": "c8f6f524_640fd4f5",
+      "range": {
+        "startLine": 139,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 49
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44a585b1_c1cd9e65",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 19
@@ -525,6 +573,30 @@
       "side": 1,
       "message": "Good question - Because of this change (https://skia-review.googlesource.com/c/skia/+/754316 ;\nrelevant comment documentation: https://skia.googlesource.com/skia.git/+/refs/heads/main/include/gpu/graphite/BackendTexture.h#126) \nwhere Vulkan backend textures now have a VulkanAlloc member attribute which can have a real OR 0 handle to backend memory. \n\nIn the case where `VulkanAlloc`\u0027s `fBackendMemory` is \u003d 0, meaning the VkImage was already created and will be destroyed by the caller (example: `GraphiteVulkanWindowContext::createBuffers`), we should not attempt to free the image memory. The DestroyImage call should also be within this if statement, so I fixed that.\n\nIn the case of the `GraphiteVulkanWindowContext`, for example, the vkDestroySwapchainKHR command destroys the VkImage handles (https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/vkDestroySwapchainKHR.html), so we should not attempt to do so here.",
       "parentUuid": "71828704_da8517b2",
+      "range": {
+        "startLine": 318,
+        "startChar": 8,
+        "endLine": 318,
+        "endChar": 76
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2354b990_0b7435e6",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-03T19:55:22Z",
+      "side": 1,
+      "message": "Just to confirm this is something you\u0027re fixing and isn\u0027t directly caused by the changes in this CL.",
+      "parentUuid": "52dc896b_5f2584df",
       "range": {
         "startLine": 318,
         "startChar": 8,
