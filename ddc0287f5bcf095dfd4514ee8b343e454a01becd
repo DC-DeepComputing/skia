@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb11758_1698c316",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T21:26:41Z",
+      "side": 1,
+      "message": "If the pool is null, we should probably not continue to try and allocate descriptor sets from it below even in release builds. If more sets of the same layout are needed later, a new pool will be created at that time.",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 5
+      },
+      "revId": "ddc0287f5bcf095dfd4514ee8b343e454a01becd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

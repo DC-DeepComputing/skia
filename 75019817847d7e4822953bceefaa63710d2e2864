@@ -41,6 +41,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ad09fd8_1db3c915",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T21:26:41Z",
+      "side": 1,
+      "message": "The other option would be to comment above saying that typically the pool deletes the layout so we should clean it up there, but I can get behind your reasoning. Moved it outside!",
+      "parentUuid": "0bdcb6a5_a191d42e",
+      "range": {
+        "startLine": 66,
+        "startChar": 5,
+        "endLine": 67,
+        "endChar": 84
+      },
+      "revId": "75019817847d7e4822953bceefaa63710d2e2864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d51ed1f8_6cd85e27",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T21:26:41Z",
+      "side": 1,
+      "message": "Per an earlier discussion on a past CL, I believe VulkanDescriptorSets should be budgeted. My reasoning being that Skia owns the DescriptorSet resource (clients do not wrap this resource in their own object), we do not give clients a ref to it, and it lives within the resource cache - so it should count against our resource cache budget accordingly.\n\nObviously if we do not own a resource (as in it is wrapped, like wrapped textures), it should not count against our budget.\n\nBasically, IIUC, a resource should be budgeted if:\nA) it is owned by us,\nB) lives in the resource cache (either because it\u0027s not being used yet or it is but the resource is shareable),\nand C) does not give out a ref to the client (like for surfaces)\n\nListing out my rationale such that if my understanding is flawed it can be corrected for my knowledge! :)",
+      "range": {
+        "startLine": 44,
+        "startChar": 61,
+        "endLine": 44,
+        "endChar": 65
+      },
+      "revId": "75019817847d7e4822953bceefaa63710d2e2864",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fc1d36f_a9fee773",
