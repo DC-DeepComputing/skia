@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aca0b0c_c6a48e88",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:23:32Z",
+      "side": 1,
+      "message": "Question: Why call setLabel in the ctor body instead of doing `fLabel(label)`?",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 26
+      },
+      "revId": "1c96361f3de6c4f34d0f96b3c8ba324c3c1f0e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "800bb5cf_352b98d3",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T14:23:32Z",
+      "side": 1,
+      "message": "`TestResource`",
+      "range": {
+        "startLine": 77,
+        "startChar": 35,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "1c96361f3de6c4f34d0f96b3c8ba324c3c1f0e6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
