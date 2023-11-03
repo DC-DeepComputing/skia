@@ -370,8 +370,9 @@ size_t Recorder::currentBudgetedBytes() const {
 void Recorder::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     ASSERT_SINGLE_OWNER
     fResourceProvider->dumpMemoryStatistics(traceMemoryDump);
-    // TODO: What is the graphite equivalent for the text blob cache and how do we print out its
-    // used bytes here (see Ganesh implementation).
+    // TODO: what is the graphite equivalent for the text blob cache.
+    //traceMemoryDump->dumpNumericValue("skia/gr_text_blob_cache", "size", "bytes",
+    //                                  this->getTextBlobRedrawCoordinator()->usedBytes());
 }
 
 void RecorderPriv::add(sk_sp<Task> task) {
