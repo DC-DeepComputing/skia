@@ -11,6 +11,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
+#include "include/ports/SkFontMgr_empty.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/svg/include/SkSVGDOM.h"
 #include "src/utils/SkOSPath.h"
@@ -41,13 +42,17 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    // If necessary, clients should use a font manager that would load fonts from the system.
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Custom_Empty();
+
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto rp = skresources::DataURIResourceProviderProxy::Make(
-                  skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
-                                                          /*predecode=*/true),
-                  /*predecode=*/true);
+            skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]), predecode),
+            predecode,
+            fontMgr);
 
     auto svg_dom = SkSVGDOM::Builder()
-                        .setFontManager(SkFontMgr::RefDefault())
+                        .setFontManager(fontMgr)
                         .setResourceProvider(std::move(rp))
                         .make(in);
     if (!svg_dom) {
