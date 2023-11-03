@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27f45312_9ecfe96c",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 15
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-03T18:14:08Z",
+      "side": 1,
+      "message": "Initially icu4x didn\u0027t have reliable bidi so we used icu4c for that. Now it works fine.",
+      "parentUuid": "780141ce_73b5c2ae",
+      "revId": "dba3be909e9cee3206aba45214b04cb20a20a9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d35f9b69_b76a8f18",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-11-03T17:57:59Z",
       "side": 1,
       "message": "I don\u0027t see anything from `SkUnicode_icu_bidi.h` being used here?",
+      "revId": "dba3be909e9cee3206aba45214b04cb20a20a9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1d4583_cf1ef8f6",
+        "filename": "modules/skunicode/src/SkUnicode_icu4x.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-03T18:14:08Z",
+      "side": 1,
+      "message": "Same as above.",
+      "parentUuid": "d35f9b69_b76a8f18",
       "revId": "dba3be909e9cee3206aba45214b04cb20a20a9a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
