@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1ed9964_fdc4b7d4",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-11-03T20:37:48Z",
+      "side": 1,
+      "message": "Android has a variety of image decoding options\n- `android.graphics.ImageDecoder` reads it from Skia, and I think I saw that you updated the method it calls. (Note that there are some weird edge cases which are broken or unclear on the correct behavior, depending on whom you ask, like a DNG with an embedded JPEG and orientation metadata in one or both.)\n- `android.graphics.BitmapFactory` and `android.graphics.BitmapRegionDecoder` do *not* check the orientation metadata. Clients are recommended to use [`ExifInterface`](https://developer.android.com/reference/androidx/exifinterface/media/ExifInterface) (that\u0027s the AndroidX version, not the framework version.)\n- And there are other options I\u0027m less familiar with, like `android.media.MediaCodec`",
+      "parentUuid": "a1da255d_006dd775",
+      "revId": "c9318eb86d9282aba570c7619c13160caf69b413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2025dc36_096bb10f",
         "filename": "include/private/SkExif.h",
         "patchSetId": 1

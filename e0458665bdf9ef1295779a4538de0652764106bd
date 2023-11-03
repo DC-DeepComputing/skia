@@ -118,6 +118,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0b38b381_856a0bdf",
+        "filename": "include/private/SkExif.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-11-03T20:37:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15b380e3_757b8ac6",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 5
+      },
+      "revId": "e0458665bdf9ef1295779a4538de0652764106bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d9ed4d12_55872836",
         "filename": "src/codec/SkExif.cpp",
         "patchSetId": 3
