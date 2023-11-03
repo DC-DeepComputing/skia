@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "715adba8_73971d09",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Yes, now that that struct was moved, we don\u0027t need to fwd declare this. Removed",
+      "parentUuid": "413e4452_b1ce5998",
+      "range": {
+        "startLine": 15,
+        "startChar": 7,
+        "endLine": 15,
+        "endChar": 32
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6def06de_ef1fa36f",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-10-26T20:49:45Z",
       "side": 1,
       "message": "I think you need to add this to VulkanTextureSpec as well. That is what is actually stored on the TextureInfo class. Not a VulkanTextureInfo.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 29
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "479800e9_ab9d634a",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "It is already in `VulkanTextureSpec`. I added initialization of a `VulkanYcbcrConversionInfo` struct to the existing no-arg ctor, though.",
+      "parentUuid": "6def06de_ef1fa36f",
       "range": {
         "startLine": 41,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38f80e3b_60f28498",
+        "filename": "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "913b0e3a_1358dd04",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 1
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85f1cb36_f51498ab",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-10-26T20:49:45Z",
       "side": 1,
       "message": "why not `sharedContext-\u003echeckVkResult(result);` like the call above?",
+      "range": {
+        "startLine": 215,
+        "startChar": 16,
+        "endLine": 215,
+        "endChar": 35
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "068cc4c9_7a434173",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Fixed w/ rebase",
+      "parentUuid": "85f1cb36_f51498ab",
       "range": {
         "startLine": 215,
         "startChar": 16,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "866febe4_8a906054",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Ah, I see. Thank you for the explanation. I added piping for `VulkanSharedContext` to communicate `VulkanBackendContext`\u0027s physical device feature information provided by the client down into `VulkanCaps` creation. \n\nI also moved the `get_extension_feature_struct(...)` function from `GrVkCaps`--\u003e`VulkanUtilsPriv` so it can be shared b/w graphite and ganesh to query `VkPhysicalDeviceFeatures2` for extension feature structures. For now, graphite only uses it for YCbCr conversion info, but having that helper available should be beneficial later on as we want to query for more enabled Vulkan features within graphite.\n\nAlso, to be clear, \"In Vulkan you first query the physical device for what features they support (like you\u0027re doing here)\" - the client will be performing this query themselves (like we do when we set up our own internal features for testing in `VkTestUtils`) when creating a VkDevice before they pass that feature struct to us? We do not need to verify that a feature they enabled/requested is actually supported by the physical device we were provided and are using?",
+      "parentUuid": "b5a2ac69_df0891e5",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 44
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9332e17_ea911ef8",
@@ -146,6 +266,30 @@
       "writtenOn": "2023-10-26T20:49:45Z",
       "side": 1,
       "message": "std::move(samplerConversions))",
+      "range": {
+        "startLine": 87,
+        "startChar": 23,
+        "endLine": 87,
+        "endChar": 40
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7173d3e1_00490e29",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9332e17_ea911ef8",
       "range": {
         "startLine": 87,
         "startChar": 23,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0111b675_8bfa7338",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Done; yes, `SkRefCnt`\u0027s copy ctor handles incrementing the ref count with `SkSafeRef`.",
+      "parentUuid": "c63f7bde_3fb81af7",
+      "range": {
+        "startLine": 89,
+        "startChar": 12,
+        "endLine": 89,
+        "endChar": 36
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4eefd3a5_7b89adb0",
@@ -192,6 +360,30 @@
       "writtenOn": "2023-10-26T20:49:45Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 95,
+        "startChar": 26,
+        "endLine": 95,
+        "endChar": 31
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f98050_8665f660",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4eefd3a5_7b89adb0",
       "range": {
         "startLine": 95,
         "startChar": 26,
@@ -227,6 +419,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8f6f524_640fd4f5",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "1) Good point. It is done\n\n2) Yeah, that\u0027s a good idea. You envisioned the `findOrCreateCompatibleSamplerYcbcrConversion` method definition remaining within `VulkanResourceProvider` I assume? If so, then that means we now have to pass in a ptr to the rsrc provider into `VulkanTexture` for creating a [wrapped] texture. I don\u0027t hate that (it does keep the resource provider calls pretty clean and this way we do not have to add another friend), but just pointing it out. Incorporated it this way (and followed that structure for the beginning VulkanSampler changes and TODO comments); LMKWYT.",
+      "parentUuid": "b3b3520a_f6f559d3",
+      "range": {
+        "startLine": 139,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 49
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44a585b1_c1cd9e65",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 19
@@ -238,6 +454,30 @@
       "writtenOn": "2023-10-26T20:49:45Z",
       "side": 1,
       "message": "Is all this part of this change? Seems like this is independent of this CL and should be in its own CL",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 22
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18a00743_e2f180c1",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s a good point. Moved and iterated upon here: https://skia-review.googlesource.com/c/skia/+/773957",
+      "parentUuid": "44a585b1_c1cd9e65",
       "range": {
         "startLine": 212,
         "startChar": 0,
@@ -271,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52dc896b_5f2584df",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "Good question - Because of this change (https://skia-review.googlesource.com/c/skia/+/754316 ;\nrelevant comment documentation: https://skia.googlesource.com/skia.git/+/refs/heads/main/include/gpu/graphite/BackendTexture.h#126) \nwhere Vulkan backend textures now have a VulkanAlloc member attribute which can have a real OR 0 handle to backend memory. \n\nIn the case where `VulkanAlloc`\u0027s `fBackendMemory` is \u003d 0, meaning the VkImage was already created and will be destroyed by the caller (example: `GraphiteVulkanWindowContext::createBuffers`), we should not attempt to free the image memory. The DestroyImage call should also be within this if statement, so I fixed that.\n\nIn the case of the `GraphiteVulkanWindowContext`, for example, the vkDestroySwapchainKHR command destroys the VkImage handles (https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/vkDestroySwapchainKHR.html), so we should not attempt to do so here.",
+      "parentUuid": "71828704_da8517b2",
+      "range": {
+        "startLine": 318,
+        "startChar": 8,
+        "endLine": 318,
+        "endChar": 76
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "855c8241_b77b294a",
@@ -284,6 +548,30 @@
       "writtenOn": "2023-10-26T20:49:45Z",
       "side": 1,
       "message": "same question as above about why we need this",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 31
+      },
+      "revId": "e0bb9391d1b513f7c2a70b29b86fc2c1c71dfb2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "322118d6_7d8285fc",
+        "filename": "src/gpu/vk/VulkanMemory.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "No longer needed now that we handle checking for a real, mapped allocation within `onDeleteBackendTexture` which is a special case. FlushMappedAlloc should only be called when we have a mapped allocation anyhow, so that approach makes more sense. Removed",
+      "parentUuid": "855c8241_b77b294a",
       "range": {
         "startLine": 138,
         "startChar": 8,

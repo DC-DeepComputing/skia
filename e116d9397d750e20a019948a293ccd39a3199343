@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "030e226a_001fa261",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "With the added namespace, the formatting here got even funkier than before. Each line that didn\u0027t fit is indented by 8 spaces from the last, but calling your attention here to make sure that\u0027s the best option here or if I\u0027m missing something.",
+      "range": {
+        "startLine": 705,
+        "startChar": 0,
+        "endLine": 709,
+        "endChar": 22
+      },
+      "revId": "e116d9397d750e20a019948a293ccd39a3199343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a205aab0_713acf66",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "This is longer than I\u0027d typically want an inline function to be - alternatively, I could create a `VulkanUtilsPriv` namespace and add a .cpp file to define the body. LMKWYT",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "e116d9397d750e20a019948a293ccd39a3199343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

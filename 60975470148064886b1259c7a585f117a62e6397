@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abf8e20f_09622b84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "okay, took a big ol\u0027 stab at some of the comments and moved some of the independent changes to a different parent CL (some of those improvements/fixes are needed for Android). Please take another look! :D",
+      "revId": "60975470148064886b1259c7a585f117a62e6397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "223d5d0d_e9269727",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:09:03Z",
+      "side": 1,
+      "message": "We don\u0027t need to perform additional checks here like we did in ganesh for YCbCr API support because it is inherently inclulded in Vulkan 1.1+",
+      "range": {
+        "startLine": 121,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 69
+      },
+      "revId": "60975470148064886b1259c7a585f117a62e6397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
