@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a19afcb2_1a129555",
+        "filename": "modules/bentleyottmann/src/Segment.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-03T14:12:09Z",
+      "side": 1,
+      "message": "Maybe \"round(s)\" or something like that? Otherwise this is a little confusing.",
+      "range": {
+        "startLine": 290,
+        "startChar": 11,
+        "endLine": 290,
+        "endChar": 12
+      },
+      "revId": "f2acb7c0459c0eb8c72529a362e5db02409f02b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
