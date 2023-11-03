@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af576995_abf41a1f",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:22:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7aa44fa0_7b6f9666",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 72
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e04eb79b_275bab20",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Hmmm there is no required reason this has to match ganesh besides possibly making it easier for clients to share the same parsing code if they are looking for specific things in the naming. I don\u0027t this storing this prefix in SkTraceMemoryDump is the correct place this a client could use the same SkTraceMemoryDump for dumping multiple different parts of Skia\u0027s CPU/GPU memory (e.g. the skia/gr_text_blob_cache line I removed above).\n\nSo like each different use of memory dumping is going to add its own unique name here. I had considered changing this to \"skia/gpu/graphite_resources/resources_\" and ganesh to \"skia/gpu/ganesh_resources/resources_\", but I don\u0027t think clients will ever care about that differentiation.\n\nIn the end even though this and Ganesh are using the same name, I don\u0027t think logically they have to be the same or that there is much to gain saying that they are the same in code. So I\u0027m inclined to leave this as is, but happy to consider more if you think otherwise.",
       "parentUuid": "d6c9baa0_bc781a0e",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 58
+      },
+      "revId": "22583df30720996e0c99811939a65c1c1188afe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c14f7df_3b439e8d",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T17:22:35Z",
+      "side": 1,
+      "message": "No, SGTM, I also didn\u0027t see the value in that differentiation - I\u0027m good with this!",
+      "parentUuid": "50f5e7ac_180282c3",
       "range": {
         "startLine": 112,
         "startChar": 4,
