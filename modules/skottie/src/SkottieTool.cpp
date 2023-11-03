@@ -14,6 +14,7 @@
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/ports/SkFontMgr_empty.h"
 #include "include/private/base/SkTPin.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/utils/SkottieUtils.h"
@@ -458,12 +459,16 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Custom_Empty();
+
+    auto predecode = skresources::ImageStrategy::kPreDecode;
     auto logger = sk_make_sp<Logger>();
-    auto     rp = skresources::CachingResourceProvider::Make(
-                    skresources::DataURIResourceProviderProxy::Make(
-                      skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
-                                                                /*predecode=*/true),
-                      /*predecode=*/true));
+    auto rp = skresources::CachingResourceProvider::Make(
+            skresources::DataURIResourceProviderProxy::Make(
+                    skresources::FileResourceProvider::Make(SkOSPath::Dirname(FLAGS_input[0]),
+                                                            predecode),
+                    predecode,
+                    fontMgr));
     auto data   = SkData::MakeFromFileName(FLAGS_input[0]);
     auto precomp_interceptor =
             sk_make_sp<skottie_utils::ExternalAnimationPrecompInterceptor>(rp, "__");
