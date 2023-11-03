@@ -838,20 +838,16 @@ template <typename T> using V = T __attribute__((ext_vector_type(4)));
     }
     SI void load2(const uint16_t* ptr, size_t tail, U16* r, U16* g) {
         __m128i _01;
-        if (__builtin_expect(tail,0)) {
-            _01 = _mm_setzero_si128();
-            if (tail > 1) {
-                _01 = _mm_loadl_pd(_01, (const double*)ptr);            // r0 g0 r1 g1 00 00 00 00
-                if (tail > 2) {
-                  _01 = _mm_insert_epi16(_01, *(ptr+4), 4);             // r0 g0 r1 g1 r2 00 00 00
-                  _01 = _mm_insert_epi16(_01, *(ptr+5), 5);             // r0 g0 r1 g1 r2 g2 00 00
-                }
-            } else {
-                _01 = _mm_cvtsi32_si128(*(const uint32_t*)ptr);         // r0 g0 00 00 00 00 00 00
-            }
-        } else {
-            _01 = _mm_loadu_si128(((__m128i*)ptr) + 0);  // r0 g0 r1 g1 r2 g2 r3 g3
+        __builtin_assume(tail < 4);
+        if (__builtin_expect(tail, 0)) {
+            #pragma clang diagnostic ignored "-Walloca"
+            uint16_t* tailbits = (uint16_t*)alloca(16);
+            sk_bzero(tailbits, sizeof(tailbits));
+            memcpy(tailbits, ptr, tail * sizeof(uint16_t));
+            ptr = tailbits;
         }
+        _01 = _mm_loadu_si128(((__m128i*)ptr) + 0);  // r0 g0 r1 g1 r2 g2 r3 g3
+
         auto rg01_23 = _mm_shufflelo_epi16(_01, 0xD8);      // r0 r1 g0 g1 r2 g2 r3 g3
         auto rg      = _mm_shufflehi_epi16(rg01_23, 0xD8);  // r0 r1 g0 g1 r2 r3 g2 g3
 
@@ -1393,16 +1389,8 @@ SI V load(const T* src, size_t tail) {
 #if !defined(JUMPER_IS_SCALAR)
     __builtin_assume(tail < N);
     if (__builtin_expect(tail, 0)) {
-        V v{};  // Any inactive lanes are zeroed.
-        switch (tail) {
-            case 7: v[6] = src[6]; [[fallthrough]];
-            case 6: v[5] = src[5]; [[fallthrough]];
-            case 5: v[4] = src[4]; [[fallthrough]];
-            case 4: memcpy(&v, src, 4*sizeof(T)); break;
-            case 3: v[2] = src[2]; [[fallthrough]];
-            case 2: memcpy(&v, src, 2*sizeof(T)); break;
-            case 1: memcpy(&v, src, 1*sizeof(T)); break;
-        }
+        V v{};
+        memcpy(&v, src, tail * sizeof(T));
         return v;
     }
 #endif
@@ -1414,15 +1402,7 @@ SI void store(T* dst, V v, size_t tail) {
 #if !defined(JUMPER_IS_SCALAR)
     __builtin_assume(tail < N);
     if (__builtin_expect(tail, 0)) {
-        switch (tail) {
-            case 7: dst[6] = v[6]; [[fallthrough]];
-            case 6: dst[5] = v[5]; [[fallthrough]];
-            case 5: dst[4] = v[4]; [[fallthrough]];
-            case 4: memcpy(dst, &v, 4*sizeof(T)); break;
-            case 3: dst[2] = v[2]; [[fallthrough]];
-            case 2: memcpy(dst, &v, 2*sizeof(T)); break;
-            case 1: memcpy(dst, &v, 1*sizeof(T)); break;
-        }
+        memcpy(dst, &v, tail*sizeof(T));
         return;
     }
 #endif
