@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97553b99_e8787770",
+        "filename": "tools/gpu/ProtectedUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:26:21Z",
+      "side": 1,
+      "message": "note to self: why do we no lonfer need texturable flag",
+      "range": {
+        "startLine": 43,
+        "startChar": 39,
+        "endLine": 45,
+        "endChar": 60
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88e50742_f33ebb36",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:26:21Z",
+      "side": 1,
+      "message": "What was the rationale for creating a separate `tools/graphite/ProtectedUtils_Graphite.cpp` as opposed to using the existing `tools/gpu/ProtectedUtils.cpp` and wrapping these definitions in `#ifdef SK_GRAPHITE` like for the header? I\u0027m not opposed to this, but just wondering.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 26
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5af8ace7_d59f605d",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:26:21Z",
+      "side": 1,
+      "message": "Question for my knowledge: why do we choose to use `kRGB_H_SkPixelGeometry` for this surface?",
+      "range": {
+        "startLine": 25,
+        "startChar": 52,
+        "endLine": 25,
+        "endChar": 74
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01bd9af3_5d0c7080",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:26:21Z",
+      "side": 1,
+      "message": "Maybe a silly question, but why do we pass in `isProtected` to a method to create a protected surface or image? Shouldn\u0027t that always be true in this case? Or is this representing whether the backend texture itself is protected?",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 81
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19c19ee2_5ef5186a",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-03T04:26:21Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we use `Renderable` here instead of `GrRenderable`?",
+      "range": {
+        "startLine": 56,
+        "startChar": 64,
+        "endLine": 56,
+        "endChar": 76
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
