@@ -45,6 +45,23 @@
       },
       "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "565908e0_f0abd789",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-03T19:19:38Z",
+      "side": 1,
+      "message": "LGTM modulo Nicolette\u0027s question",
+      "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
