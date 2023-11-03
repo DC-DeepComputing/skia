@@ -62,6 +62,29 @@
       "message": "LGTM modulo Nicolette\u0027s question",
       "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da3d001c_35fcb4fa",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-11-03T20:27:35Z",
+      "side": 1,
+      "message": "drive-by nit: `maxGridSize\u003d0` probably also works as the default since the condition below for clamping is `maxGridSize \u003e 0`",
+      "range": {
+        "startLine": 139,
+        "startChar": 70,
+        "endLine": 139,
+        "endChar": 72
+      },
+      "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
