@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "780141ce_73b5c2ae",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 15
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-03T17:57:59Z",
+      "side": 1,
+      "message": "Does ICU4X not supply it\u0027s own bidi?",
+      "revId": "dba3be909e9cee3206aba45214b04cb20a20a9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d35f9b69_b76a8f18",
+        "filename": "modules/skunicode/src/SkUnicode_icu4x.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-03T17:57:59Z",
+      "side": 1,
+      "message": "I don\u0027t see anything from `SkUnicode_icu_bidi.h` being used here?",
+      "revId": "dba3be909e9cee3206aba45214b04cb20a20a9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
