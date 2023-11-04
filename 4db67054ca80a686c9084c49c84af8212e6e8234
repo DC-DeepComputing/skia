@@ -16,6 +16,23 @@
       "message": "PTAL\n\nMichael - overall\nArman - for the using std430 for storage buffers part (see the comment in DawnCaps.cpp)",
       "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27013291_b94f476c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-11-04T00:00:22Z",
+      "side": 1,
+      "message": "Quyen FYI",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
