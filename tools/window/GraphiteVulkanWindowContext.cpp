@@ -125,7 +125,7 @@ void GraphiteVulkanWindowContext::initializeContext() {
     // Needed to make synchronous readPixels work
     contextOptionsPriv.fStoreContextRefInRecorder = true;
     contextOptions.fOptionsPriv = &contextOptionsPriv;
-    fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan(backendContext, contextOptions);
+    fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan2(backendContext, contextOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
 
     fSurface = fCreateVkSurfaceFn(fInstance);

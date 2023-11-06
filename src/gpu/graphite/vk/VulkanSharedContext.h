@@ -26,7 +26,7 @@ class VulkanCaps;
 
 class VulkanSharedContext final : public SharedContext {
 public:
-    static sk_sp<SharedContext> Make(const VulkanBackendContext&, const ContextOptions&);
+    static sk_sp<SharedContext> Make1(const VulkanBackendContext&, const ContextOptions&);
     ~VulkanSharedContext() override;
 
     const VulkanCaps& vulkanCaps() const { return static_cast<const VulkanCaps&>(*this->caps()); }
