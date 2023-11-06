@@ -27,7 +27,7 @@ static constexpr int kDescriptorTypeCount = (int)(DescriptorType::kLast) + 1;
 
 struct DescriptorData {
     DescriptorData(DescriptorType descType, uint32_t descCount, int bindingIdx)
-            : type (descType), count (descCount), bindingIndex (bindingIdx) {}
+        : type (descType), count (descCount), bindingIndex (bindingIdx) {}
 
     DescriptorType type;
     uint32_t count;
