@@ -73,6 +73,16 @@ enum class AccessPattern : int {
 };
 
 /**
+ * Determines whether buffers are created already mapped to the CPU. Requries API support but if
+ * supported can be used with any AccessPattern. Premapped buffers may not be remappable once they
+ * are unmapped.
+ */
+enum class PremapBuffer : bool {
+    kNo = false,
+    kYes = true
+};
+
+/**
  * Determines whether the contents of a GPU buffer sub-allocation gets cleared to 0 before being
  * used in a GPU command submission.
  */

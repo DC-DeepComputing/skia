@@ -153,20 +153,20 @@ private:
     struct BufferInfo {
         BufferInfo(BufferType type, const Caps* caps);
 
-        bool createAndUpdateBindings(ResourceProvider*,
-                                     Context*,
-                                     QueueManager*,
-                                     GlobalCache*) const;
+        bool createTransferAndUpdateBindings(ResourceProvider*,
+                                             Context*,
+                                             QueueManager*,
+                                             GlobalCache*) const;
         void reset() {
             fData.clear();
-            fTotalRequiredBytes = 0;
+            fTotalRequiredTransferBytes = 0;
         }
 
         const BufferType fBufferType;
         const size_t     fAlignment;
 
         std::vector<CopyRange> fData;
-        size_t fTotalRequiredBytes;
+        size_t fTotalRequiredTransferBytes;
     };
 
     void* prepareStaticData(BufferInfo* info, size_t requiredBytes, BindBufferInfo* target);
@@ -176,6 +176,9 @@ private:
     // The source data that's copied into a final GPU-private buffer
     BufferInfo fVertexBufferInfo;
     BufferInfo fIndexBufferInfo;
+
+    bool fUsePremappedBuffers;
+    std::vector<sk_sp<Buffer>> fBuffersToUnmap;
 
     std::vector<sk_sp<Buffer>> fUsedBuffers;
 
