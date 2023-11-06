@@ -34,6 +34,24 @@
       "parentUuid": "a05259e0_4e29310b",
       "revId": "e0d0bcf147bf8f1679cf4ed3c79b0a6b90f5adb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b4f7a2_cc9f7ed5",
+        "filename": "gn/skia.gni",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-06T19:58:20Z",
+      "side": 1,
+      "message": "Apprently, infra team does not have bazelisk available for all BUILD tasks.It requires some work (unrelated to icu4x). I commented the fix for now. Could we postpone it until we have time to sort it out?",
+      "parentUuid": "7be702e5_6bee09d5",
+      "revId": "e0d0bcf147bf8f1679cf4ed3c79b0a6b90f5adb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
