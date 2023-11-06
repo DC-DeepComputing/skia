@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc79994_af208a77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21544
+      },
+      "writtenOn": "2023-11-06T07:48:55Z",
+      "side": 1,
+      "message": "Hi folks,\n\nthis script is an example that Takuto made as a courtesy and example code for you (in addition to the migration / user documentation that the reclient team wrote).\n\nYou\u0027ll have to take it from there and adapt it to your needs. Unfortunately due to our team\u0027s small size we can\u0027t handle the migration of Skia from Goma to reclient and provide you a fully supported, polished solution.\n\nOf course we and the reclient folks will answer any technical questions you might have.",
+      "revId": "bf6cdf402d63d0d8790f621c9851f6758af94838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e4e5460_7df174ad",
@@ -123,6 +140,30 @@
       "writtenOn": "2023-10-25T14:43:59Z",
       "side": 1,
       "message": "Is there any harm in leaving it running?",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 90
+      },
+      "revId": "bf6cdf402d63d0d8790f621c9851f6758af94838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e4f4bf6_8fdb16f1",
+        "filename": "tools/build_with_reclient.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 21544
+      },
+      "writtenOn": "2023-11-06T07:48:55Z",
+      "side": 1,
+      "message": "Yes, the lifecycle of the reproxy daemon is being treated as one singular build invocation, so if you don\u0027t shut it down after the build, or you reuse it for more than one build, any reported metrics will be wrong. It will also cause incorrect builds, as reproxy caches file metadata during a build, so it will not notice changed files if you reuse it.",
+      "parentUuid": "ec629040_01621073",
       "range": {
         "startLine": 85,
         "startChar": 0,
