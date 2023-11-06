@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b8ba1e9_ce01c078",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-11-06T18:13:50Z",
+      "side": 1,
+      "message": "Just bear in mind that the WGSL backend currently always generates an array member (including *sized* arrays) with a 16-byte stride even if the program only uses SSBOs and contains no uniform binding declaration. These are then always passed as a user-defined function argument following an element-wise copy (see https://paste.googleplex.com/6583555852337152).\n\nWe should keep the potential runtime cost of this in mind when declaring paint or RenderStep uniforms as arrays and probably consider alternatives.\n\nAlso I\u0027m not sure if `UniformManager`\u0027s layout logic currently agrees with the SkSL WGSL backend: I think it assumes that array elements always use a packed layout in std430 mode (see https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/UniformManager.cpp;l\u003d131?q\u003dUniformManager.h\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F). So the data for arrays in a SSBO block may not get laid out as expected when using std430.",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb4a58d7_d6950061",
@@ -31,6 +48,23 @@
       "writtenOn": "2023-11-04T00:00:22Z",
       "side": 1,
       "message": "Quyen FYI",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17444bf_2efb502e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-11-06T18:13:50Z",
+      "side": 1,
+      "message": "cc John regarding caution around arrays and std430 layout.",
       "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
