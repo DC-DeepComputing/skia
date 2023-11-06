@@ -21,7 +21,8 @@ static constexpr size_t kReusedBufferSize = 64 << 10;  // 64 KB
 UploadBufferManager::UploadBufferManager(ResourceProvider* resourceProvider,
                                          const Caps* caps)
         : fResourceProvider(resourceProvider)
-        , fMinAlignment(caps->requiredTransferBufferAlignment()) {}
+        , fMinAlignment(caps->requiredTransferBufferAlignment())
+        , fPremapBuffers(static_cast<PremapBuffer>(caps->canCreatePremappedBuffers())) {}
 
 UploadBufferManager::~UploadBufferManager() {}
 
@@ -35,8 +36,10 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
     requiredBytes = SkAlignTo(requiredBytes, requiredAlignment);
     if (requiredBytes > kReusedBufferSize) {
         // Create a dedicated buffer for this request.
-        sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(
-                requiredBytes, BufferType::kXferCpuToGpu, AccessPattern::kHostVisible);
+        sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(requiredBytes,
+                                                                     BufferType::kXferCpuToGpu,
+                                                                     AccessPattern::kHostVisible,
+                                                                     fPremapBuffers);
 
         BindBufferInfo bindInfo;
         bindInfo.fBuffer = buffer.get();
@@ -54,8 +57,10 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
     }
 
     if (!fReusedBuffer) {
-        fReusedBuffer = fResourceProvider->findOrCreateBuffer(
-                kReusedBufferSize, BufferType::kXferCpuToGpu, AccessPattern::kHostVisible);
+        fReusedBuffer = fResourceProvider->findOrCreateBuffer(kReusedBufferSize,
+                                                              BufferType::kXferCpuToGpu,
+                                                              AccessPattern::kHostVisible,
+                                                              fPremapBuffers);
         fReusedBufferOffset = 0;
         if (!fReusedBuffer) {
             return {UploadWriter(), BindBufferInfo()};

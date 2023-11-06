@@ -694,7 +694,7 @@ Context::PixelTransferResult Context::transferPixels(const TextureProxy* proxy,
                               SkColorTypeBytesPerPixel(supportedColorType) * srcRect.width());
     size_t size = SkAlignTo(rowBytes * srcRect.height(), caps->requiredTransferBufferAlignment());
     sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(
-            size, BufferType::kXferGpuToCpu, AccessPattern::kHostVisible);
+            size, BufferType::kXferGpuToCpu, AccessPattern::kHostVisible, PremapBuffer::kNo);
     if (!buffer) {
         return {};
     }
