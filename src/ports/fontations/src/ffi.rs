@@ -14,9 +14,7 @@ use skrifa::{
 };
 use std::pin::Pin;
 
-use crate::ffi::AxisWrapper;
-use crate::ffi::BridgeScalerMetrics;
-use crate::ffi::PathWrapper;
+use crate::ffi::{AxisWrapper, BridgeScalerMetrics, ColorPainter, PathWrapper};
 
 fn lookup_glyph_or_zero(font_ref: &BridgeFontRef, codepoint: u32) -> u16 {
     font_ref
@@ -406,6 +404,15 @@ fn resolve_into_normalized_coords(
     Box::new(bridge_normalized_coords)
 }
 
+fn draw_colr_glyph(
+    font_ref: &BridgeFontRef,
+    coords: &BridgeNormalizedCoords,
+    glyph_id: u16,
+    color_painter: Pin<&mut ColorPainter>,
+) -> bool {
+    false
+}
+
 struct BridgeFontRef<'a>(Option<FontRef<'a>>);
 
 impl<'a> BridgeFontRef<'a> {
@@ -575,6 +582,13 @@ mod ffi {
             design_coords: &[SkiaDesignCoordinate],
         ) -> Box<BridgeNormalizedCoords>;
 
+        fn draw_colr_glyph(
+            font_ref: &BridgeFontRef,
+            coords: &BridgeNormalizedCoords,
+            glyph_id: u16,
+            color_painter: Pin<&mut ColorPainter>,
+        ) -> bool;
+
     }
 
     unsafe extern "C++" {
@@ -614,6 +628,13 @@ mod ffi {
             hidden: bool,
         ) -> bool;
         fn size(self: Pin<&AxisWrapper>) -> usize;
+
+        type ColorPainter;
+
+        fn push_clip_glyph(self: Pin<&mut ColorPainter>, glyph_id: u16);
+        fn pop_clip(self: Pin<&mut ColorPainter>);
+
+        fn fill_solid(self: Pin<&mut ColorPainter>, palette_index: u16, alpha: f32);
 
     }
 }

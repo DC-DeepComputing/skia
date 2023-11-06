@@ -34,6 +34,25 @@ public:
     virtual size_t size() const = 0;
 };
 
+/** C++ pure virtual interface, exposed to Rust side for receiving COLRv0/COLRv1 drawing callback
+ * matching Skrifa's ColorPainter trait. */
+class ColorPainter {
+public:
+    virtual ~ColorPainter() = default;
+    virtual void push_transform(float xx, float xy, float yx, float yy, float dx, float dy);
+    virtual void pop_transform();
+    virtual void push_clip_glyph(uint16_t glyph_id);
+    virtual void pop_clip();
+
+    // Paint*Gradient equivalents:
+    virtual void fill_solid(uint16_t palette_index, float alpha);
+    // TODO gradients
+
+    // TODO: Enum? Use Skia numbers? Make them match with Fontations numbers?
+    virtual void push_layer(uint16_t compositeMode);
+    virtual void pop_layer();
+};
+
 }  // namespace fontations_ffi
 
 #endif

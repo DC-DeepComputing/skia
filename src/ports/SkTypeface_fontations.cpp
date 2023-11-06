@@ -7,6 +7,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/ports/SkTypeface_fontations.h"
@@ -286,6 +287,27 @@ protected:
         }
         *path = path->makeTransform(remainingMatrix);
         return true;
+    }
+
+    bool drawCOLRv1Glyph(const SkGlyph& glyph, SkSpan<SkColor> palette, SkCanvas* canvas) { return false; }
+
+    sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
+        // TODO: SkTypeface FreeType uses the ScalerContext extraBits to denote glyph type during
+        // the call to generateMetrics().
+
+        //         if (glyph.extraBits() == ScalerContextBits::COLRv0 ||
+        //     glyph.extraBits() == ScalerContextBits::COLRv1 ||
+        //     glyph.extraBits() == ScalerContextBits::SVG     )
+        // {
+        // SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
+        SkPictureRecorder recorder;
+        SkCanvas* recordingCanvas = recorder.beginRecording(SkRect::Make(glyph.mask().fBounds));
+        SkColor one_color[1] = {SK_ColorWHITE};
+        if (drawCOLRv1Glyph(glyph, one_color, recordingCanvas)) {
+            return recorder.finishRecordingAsDrawable();
+        }
+
+        return nullptr;
     }
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
