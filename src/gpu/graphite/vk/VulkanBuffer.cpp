@@ -202,6 +202,7 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
             };
             // "Invalidate" here means make device writes visible to the host. That is, it makes
             // sure any GPU writes are finished in the range we might read from.
+            SkDebugf("\n about to invalidate memory... \n");
             skgpu::VulkanMemory::InvalidateMappedAlloc(allocator,
                                                        fAlloc,
                                                        readOffset,

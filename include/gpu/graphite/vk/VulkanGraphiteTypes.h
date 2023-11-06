@@ -11,6 +11,10 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/vk/VulkanTypes.h"
 
+namespace skgpu {
+struct VulkanYcbcrConversionInfo;
+}
+
 namespace skgpu::graphite {
 
 struct VulkanTextureInfo {

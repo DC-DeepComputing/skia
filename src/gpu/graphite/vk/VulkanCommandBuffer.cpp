@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanFramebuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -127,24 +128,34 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     VULKAN_CALL_ERRCHECK(fSharedContext->interface(), ResetCommandPool(fSharedContext->device(),
                                                                        fPool,
                                                                        0));
+    SkDebugf("\n brkpnt1 \n");
     fActiveGraphicsPipeline = nullptr;
+    SkDebugf("\n brkpnt2 \n");
     fBindUniformBuffers = true;
+    SkDebugf("\n brkpnt3 \n");
     fBoundIndexBuffer = VK_NULL_HANDLE;
+    SkDebugf("\n brkpnt4 \n");
     fBoundIndexBufferOffset = 0;
     fBoundIndirectBuffer = VK_NULL_HANDLE;
+    SkDebugf("\n brkpnt5 \n");
     fBoundIndirectBufferOffset = 0;
     fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+    SkDebugf("\n brkpnt6 \n");
     fNumTextureSamplers = 0;
     fUniformBuffersToBind.fill({nullptr, 0});
+    SkDebugf("\n brkpnt7 \n");
     for (int i = 0; i < 4; ++i) {
         fCachedBlendConstant[i] = -1.0;
     }
+    SkDebugf("\n brkpnt7.5 \n");
     for (auto& boundInputBuffer : fBoundInputBuffers) {
         boundInputBuffer = VK_NULL_HANDLE;
     }
+    SkDebugf("\n brkpnt8 \n");
     for (auto& boundInputOffset : fBoundInputBufferOffsets) {
         boundInputOffset = 0;
     }
+    SkDebugf("\n brkpnt9 \n");
 }
 
 bool VulkanCommandBuffer::setNewCommandBufferResources() {
