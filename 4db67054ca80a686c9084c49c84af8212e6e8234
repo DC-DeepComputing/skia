@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6927728_fde0c99b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-11-06T21:34:34Z",
+      "side": 1,
+      "message": "`float4 colorsParam[4]` is special because it has the same layout in both Std140 and Std430 IIUC so maybe that\u0027s why it seems to work fine?",
+      "parentUuid": "0211603b_21d75624",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb4a58d7_d6950061",
