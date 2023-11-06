@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af9b78b0_66152092",
+        "filename": "tools/gpu/ProtectedUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:58:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9005d2e1_ec575398",
+      "range": {
+        "startLine": 43,
+        "startChar": 39,
+        "endLine": 45,
+        "endChar": 60
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88e50742_f33ebb36",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I\u0027m trying it out seeing if we want to do this everywhere. WDYT?",
       "parentUuid": "88e50742_f33ebb36",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 26
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc69558d_8f1c16fe",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:58:52Z",
+      "side": 1,
+      "message": "I am happy w/ it personally, just kind of weird to mix \u0026 match. But sometimes that\u0027s just how it\u0027s gotta be, at least for awhile.",
+      "parentUuid": "5e5f96ae_29261e29",
       "range": {
         "startLine": 19,
         "startChar": 0,
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "Basically we\u0027re going to exercise both the positive and negative cases in the test. Checking that when we ask for unprotected we\u0027re actually getting it. I guess a better name for the function would be CreateSurfaceWithExplicitProtectedness",
       "parentUuid": "01bd9af3_5d0c7080",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 81
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61309da4_1b3e138c",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:58:52Z",
+      "side": 1,
+      "message": "Ah, I see. Yeah, that or simply `CreateSurface` would be better, but it\u0027s likely not worth the API overhaul (since I imagine we want to keep the name of the function the same b/w graphite and ganesh). Maybe just add a comment above the method declaration? Something like `Create an SkSurface with explicit protectedness`, or `This can be used to request protected and unprotected SkSurfaces`",
+      "parentUuid": "7ac77a89_0f308477",
       "range": {
         "startLine": 31,
         "startChar": 70,
