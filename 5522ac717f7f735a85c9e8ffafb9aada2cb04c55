@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ccfbf1a_f82d4143",
+        "filename": "tools/gpu/BackendTextureImageFactory.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T15:42:13Z",
+      "side": 1,
+      "message": "Right - eraseColor will always treat the SkColor4f as premul and do what is necessary.",
+      "parentUuid": "aac9f9b6_6810afa3",
+      "range": {
+        "startLine": 123,
+        "startChar": 7,
+        "endLine": 123,
+        "endChar": 48
+      },
+      "revId": "5522ac717f7f735a85c9e8ffafb9aada2cb04c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a62140dc_ed7f617b",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-03T04:15:13Z",
       "side": 1,
       "message": "nit: I think this is just copied from line 50, but the phrasing is kind of weird. maybe edit to say `Creates a solid color image` here and above or something similar?",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 46
+      },
+      "revId": "5522ac717f7f735a85c9e8ffafb9aada2cb04c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de8a6993_215c7c1f",
+        "filename": "tools/gpu/BackendTextureImageFactory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T15:42:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a62140dc_ed7f617b",
       "range": {
         "startLine": 71,
         "startChar": 0,
