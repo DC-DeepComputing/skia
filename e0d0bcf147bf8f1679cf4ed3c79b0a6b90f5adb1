@@ -16,6 +16,24 @@
       "message": "Can we have this build on at least some bots with something like https://skia-review.googlesource.com/c/skia/+/767560/8/infra/bots/recipe_modules/build/default.py",
       "revId": "e0d0bcf147bf8f1679cf4ed3c79b0a6b90f5adb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be702e5_6bee09d5",
+        "filename": "gn/skia.gni",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-06T16:38:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a05259e0_4e29310b",
+      "revId": "e0d0bcf147bf8f1679cf4ed3c79b0a6b90f5adb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
