@@ -20,7 +20,7 @@ class Context;
 struct ContextOptions;
 
 namespace ContextFactory {
-SK_API std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext&, const ContextOptions&);
+SK_API std::unique_ptr<Context> MakeVulkan2(const VulkanBackendContext&, const ContextOptions&);
 } // namespace ContextFactory
 
 } // namespace skgpu::graphite

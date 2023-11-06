@@ -449,6 +449,7 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("VkTestUtils.cpp::setup_features failing\n");
             return false;
         }
     }
@@ -476,7 +477,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         return false;
     }
 
-    SkASSERT(skgpuCtx.fProtectedContext == skgpu::Protected(isProtected));
+    SkASSERT(skgpuCtx.fProtectedContext72 == skgpu::Protected(isProtected));
     ctx->fInstance = skgpuCtx.fInstance;
     ctx->fPhysicalDevice = skgpuCtx.fPhysicalDevice;
     ctx->fDevice = skgpuCtx.fDevice;
@@ -487,7 +488,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fDeviceFeatures2 = skgpuCtx.fDeviceFeatures2;
     ctx->fGetProc = skgpuCtx.fGetProc;
     ctx->fOwnsInstanceAndDevice = false;
-    ctx->fProtectedContext = skgpuCtx.fProtectedContext;
+    ctx->fProtectedContext7 = skgpuCtx.fProtectedContext72;
     return true;
 }
 
@@ -871,7 +872,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fVkExtensions = extensions;
     ctx->fDeviceFeatures2 = features;
     ctx->fGetProc = getProc;
-    ctx->fProtectedContext = skgpu::Protected(isProtected);
+    ctx->fProtectedContext72 = skgpu::Protected(isProtected);
 
     return true;
 }
