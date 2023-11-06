@@ -15,10 +15,6 @@
 
 #include <cinttypes>
 
-namespace skgpu {
-struct VulkanYcbcrConversionInfo;
-}
-
 namespace skgpu::graphite {
 
 class VulkanSharedContext;
