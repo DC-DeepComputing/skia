@@ -28,6 +28,14 @@ std::tuple<int32_t, int32_t, int32_t, int32_t> Segment::bounds() const {
     return std::make_tuple(l, t, r, b);
 }
 
+bool operator==(const Segment& s0, const Segment& s1) {
+    return s0.upper() == s1.upper() && s0.lower() == s1.lower();
+}
+
+bool operator<(const Segment& s0, const Segment& s1) {
+    return std::make_tuple(s0.upper(), s0.lower()) < std::make_tuple(s1.upper(), s1.lower());
+}
+
 bool no_intersection_by_bounding_box(const Segment& s0, const Segment& s1) {
     auto [left0, top0, right0, bottom0] = s0.bounds();
     auto [left1, top1, right1, bottom1] = s1.bounds();
@@ -158,7 +166,7 @@ std::optional<Point> intersect(const Segment& s0, const Segment& s1) {
 // and the same applies to the other side of the <?. Because y0 <= y1 and y2 <= y3, then the
 // differences of (y1 - y0) and (y3 - y2) are positive allowing us to multiply through without
 // worrying about sign changes.
-bool lessThanAt(const Segment& s0, const Segment& s1, int32_t y) {
+bool less_than_at(const Segment& s0, const Segment& s1, int32_t y) {
     auto [l0, t0, r0, b0] = s0.bounds();
     auto [l1, t1, r1, b1] = s1.bounds();
     SkASSERT(t0 <= y && y <= b0);
@@ -194,7 +202,122 @@ bool lessThanAt(const Segment& s0, const Segment& s1, int32_t y) {
     return s0Factor < s1Factor;
 }
 
-int compareSlopes(const Segment& s0, const Segment& s1) {
+bool point_less_than_segment_in_x(Point p, const Segment& segment) {
+    auto [l, t, r, b] = segment.bounds();
+
+    // Ensure that the segment intersects the horizontal sweep line
+    SkASSERT(t <= p.y && p.y <= b);
+
+    // Fast answers using bounding boxes.
+    if (p.x < l) {
+        return true;
+    } else if (p.x >= r) {
+        return false;
+    }
+
+    auto [x0, y0] = segment.upper();
+    auto [x1, y1] = segment.lower();
+    auto [x2, y2] = p;
+
+    // For a point and a segment the comparison is:
+    //    x2 < x0 + (y2 - y0)(x1 - x0) / (y1 - y0)
+    // becomes
+    //    (x2 - x0)(y1 - y0) < (x1 - x0)(y2 - y0)
+    // We don't need to worry about the signs changing in the cross multiply because (y1 - y0) is
+    // always positive. Manipulating a little further derives predicate 2 from "Robust Plane
+    // Sweep for Intersecting Segments" page 9.
+    //    0 < (x1 - x0)(y2 - y0) - (x2 - x0)(y1 - y0)
+    // becomes
+    //        | x1-x0   x2-x0 |
+    //   0 <  | y1-y0   y2-y0 |
+    return SkToS64(x2 - x0) * SkToS64(y1 - y0) < SkToS64(y2 - y0) * SkToS64(x1 - x0);
+}
+
+// The design of this function allows its use with std::lower_bound. lower_bound returns the
+// iterator to the first segment where rounded_point_less_than_segment_in_x_lower returns false.
+// Therefore, we want s(y) < (x - ½) to return true, then start returning false when s(y) ≥ (x - ½).
+bool rounded_point_less_than_segment_in_x_lower(const Segment& s, Point p) {
+    const auto [l, t, r, b] = s.bounds();
+    const auto [x, y] = p;
+
+    // Ensure that the segment intersects the horizontal sweep line
+    SkASSERT(t <= y && y <= b);
+
+    // In the comparisons below, x is really x - ½
+    if (r < x) {
+        // s is entirely < p.
+        return true;
+    } else if (x <= l) {
+        // s is entirely > p. This also handles vertical lines, so we don't have to handle them
+        // below.
+        return false;
+    }
+
+    const auto [x0, y0] = s.upper();
+    const auto [x1, y1] = s.lower();
+
+    // Horizontal - from the guards above we know that p is on s.
+    if (y0 == y1) {
+        return false;
+    }
+
+    // s is not horizontal or vertical.
+    SkASSERT(x0 != x1 && y0 != y1);
+
+    // Given the segment upper = (x0, y0) and lower = (x1, y1)
+    // x0 + (x1 - x0)(y - y0) / (y1 - y0) < x - ½
+    // (x1 - x0)(y - y0) / (y1 - y0) < x - x0 - ½
+    // Because (y1 - y0) is always positive we can multiply through the inequality without
+    // worrying about sign changes.
+    // (x1 - x0)(y - y0) < (x - x0 - ½)(y1 - y0)
+    // (x1 - x0)(y - y0) < ½(2x - 2x0 - 1)(y1 - y0)
+    // 2(x1 - x0)(y - y0) < (2(x - x0) - 1)(y1 - y0)
+    return 2 * SkToS64(x1 - x0) * SkToS64(y - y0) < (2 * SkToS64(x - x0) - 1) * SkToS64(y1 - y0);
+}
+
+// The design of this function allows use with std::lower_bound. lower_bound returns the iterator
+// to the first segment where rounded_point_less_than_segment_in_x_upper is false. This function
+// implements s(y) < (x + ½).
+bool rounded_point_less_than_segment_in_x_upper(const Segment& s, Point p) {
+    const auto [l, t, r, b] = s.bounds();
+    const auto [x, y] = p;
+
+    // Ensure that the segment intersects the horizontal sweep line
+    SkASSERT(t <= y && y <= b);
+
+    // In the comparisons below, x is really x + ½
+    if (r <= x) {
+        // s is entirely < p.
+        return true;
+    } else if (x < l) {
+        // s is entirely > p. This also handles vertical lines, so we don't have to handle them
+        // below.
+        return false;
+    }
+
+    const auto [x0, y0] = s.upper();
+    const auto [x1, y1] = s.lower();
+
+    // Horizontal - from the guards above we know that p is on s.
+    if (y0 == y1) {
+        return false;
+    }
+
+    // s is not horizontal or vertical.
+    SkASSERT(x0 != x1 && y0 != y1);
+
+    // Given the segment upper = (x0, y0) and lower = (x1, y1)
+    // x0 + (x1 - x0)(y - y0) / (y1 - y0) < x + ½
+    // (x1 - x0)(y - y0) / (y1 - y0) < x - x0 + ½
+    // Because (y1 - y0) is always positive we can multiply through the inequality without
+    // worrying about sign changes.
+    // (x1 - x0)(y - y0) < (x - x0 + ½)(y1 - y0)
+    // (x1 - x0)(y - y0) < ½(2x - 2x0 + 1)(y1 - y0)
+    // 2(x1 - x0)(y - y0) < (2(x - x0) + 1)(y1 - y0)
+    return 2 * SkToS64(x1 - x0) * SkToS64(y - y0) < (2 * SkToS64(x - x0) + 1) * SkToS64(y1 - y0);
+}
+
+int compare_slopes(const Segment& s0, const Segment& s1) {
     Point s0Delta = s0.lower() - s0.upper(),
           s1Delta = s1.lower() - s1.upper();
 
@@ -216,8 +339,8 @@ int compareSlopes(const Segment& s0, const Segment& s1) {
     // * proper slope ordering - the slope monotonically increases from the smallest along the
     //                           negative x-axis increasing counterclockwise to the largest along
     //                           the positive x-axis.
-    int64_t lhs = (int64_t)s0Delta.x * (int64_t)s1Delta.y,
-            rhs = (int64_t)s1Delta.x * (int64_t)s0Delta.y;
+    int64_t lhs = SkToS64(s0Delta.x) * SkToS64(s1Delta.y),
+            rhs = SkToS64(s1Delta.x) * SkToS64(s0Delta.y);
 
     if (lhs < rhs) {
         return -1;

@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
+#include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
@@ -78,7 +79,13 @@ wgpu::RenderPipeline create_blit_render_pipeline(const wgpu::Device& device,
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
-    return device.CreateRenderPipeline(&descriptor);
+    DawnErrorChecker errorChecker(device);
+    auto pipeline = device.CreateRenderPipeline(&descriptor);
+    if (errorChecker.popErrorScopes() != DawnErrorType::kNoError) {
+        return nullptr;
+    }
+
+    return pipeline;
 }
 }  // namespace
 
@@ -174,6 +181,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     dawnMsaaLoadTextureInfo.fSampleCount = 1;
     dawnMsaaLoadTextureInfo.fUsage |= wgpu::TextureUsage::TextureBinding;
 
+#if !defined(__EMSCRIPTEN__)
     // MSAA texture can be transient attachment (memoryless) but the load texture cannot be.
     // This is because the load texture will need to have its content retained between two passes
     // loading:
@@ -181,6 +189,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     // - 2nd pass: the actual render pass is started and the load texture is blitted to the MSAA
     // texture.
     dawnMsaaLoadTextureInfo.fUsage &= (~wgpu::TextureUsage::TransientAttachment);
+#endif
 
     auto texture = this->findOrCreateDiscardableMSAAAttachment(dimensions, dawnMsaaLoadTextureInfo);
 
@@ -193,6 +202,7 @@ sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
         const RenderPassDesc& renderPassDesc) {
     SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
     return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
+                                      this,
                                       &skslCompiler,
                                       runtimeDict,
                                       pipelineDesc,
@@ -246,6 +256,43 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
 
 const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
     return static_cast<const DawnSharedContext*>(fSharedContext);
+}
+
+const wgpu::BindGroupLayout& DawnResourceProvider::getOrCreateUniformBuffersBindGroupLayout() {
+    if (fUniformBuffersBindGroupLayout) {
+        return fUniformBuffersBindGroupLayout;
+    }
+
+    std::array<wgpu::BindGroupLayoutEntry, 3> entries;
+    entries[0].binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
+    entries[0].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
+    entries[0].buffer.type = wgpu::BufferBindingType::Uniform;
+    entries[0].buffer.hasDynamicOffset = true;
+    entries[0].buffer.minBindingSize = 0;
+
+    entries[1].binding = DawnGraphicsPipeline::kRenderStepUniformBufferIndex;
+    entries[1].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
+    entries[1].buffer.type = wgpu::BufferBindingType::Uniform;
+    entries[1].buffer.hasDynamicOffset = true;
+    entries[1].buffer.minBindingSize = 0;
+
+    entries[2].binding = DawnGraphicsPipeline::kPaintUniformBufferIndex;
+    entries[2].visibility = wgpu::ShaderStage::Fragment;
+    entries[2].buffer.type = wgpu::BufferBindingType::Uniform;
+    entries[2].buffer.hasDynamicOffset = true;
+    entries[2].buffer.minBindingSize = 0;
+
+    wgpu::BindGroupLayoutDescriptor groupLayoutDesc;
+#if defined(SK_DEBUG)
+    groupLayoutDesc.label = "Uniform buffers bind group layout";
+#endif
+
+    groupLayoutDesc.entryCount = entries.size();
+    groupLayoutDesc.entries = entries.data();
+    fUniformBuffersBindGroupLayout =
+            this->dawnSharedContext()->device().CreateBindGroupLayout(&groupLayoutDesc);
+
+    return fUniformBuffersBindGroupLayout;
 }
 
 } // namespace skgpu::graphite

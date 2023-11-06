@@ -118,6 +118,14 @@ BackendTexture::BackendTexture(SkISize dimensions,
         , fDawnTexture(nullptr)
         , fDawnTextureView(textureView) {}
 
+BackendTexture::BackendTexture(SkISize dimensions,
+                               const DawnTextureInfo& info,
+                               WGPUTexture texture)
+        : fDimensions(dimensions)
+        , fInfo(info)
+        , fDawnTexture(texture)
+        , fDawnTextureView(nullptr) {}
+
 WGPUTexture BackendTexture::getDawnTexturePtr() const {
     if (this->isValid() && this->backend() == BackendApi::kDawn) {
         return fDawnTexture;
@@ -134,12 +142,12 @@ WGPUTextureView BackendTexture::getDawnTextureViewPtr() const {
 #endif
 
 #ifdef SK_METAL
-BackendTexture::BackendTexture(SkISize dimensions, MtlHandle mtlTexture)
+BackendTexture::BackendTexture(SkISize dimensions, CFTypeRef mtlTexture)
         : fDimensions(dimensions)
         , fInfo(MtlTextureInfo(mtlTexture))
         , fMtlTexture(mtlTexture) {}
 
-MtlHandle BackendTexture::getMtlTexture() const {
+CFTypeRef BackendTexture::getMtlTexture() const {
     if (this->isValid() && this->backend() == BackendApi::kMetal) {
         return fMtlTexture;
     }

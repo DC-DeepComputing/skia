@@ -9,6 +9,7 @@
 #include "modules/skottie/include/TextShaper.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 using namespace skottie;
 
@@ -18,7 +19,7 @@ DEF_TEST(Skottie_Shaper_Clusters, r) {
     auto check_clusters = [](skiatest::Reporter* r, const SkString& text, Shaper::Flags flags,
                              const std::vector<size_t>& expected_clusters) {
         const Shaper::TextDesc desc = {
-            ToolUtils::create_portable_typeface("Serif", SkFontStyle()),
+            ToolUtils::CreatePortableTypeface("Serif", SkFontStyle()),
             18,
             0, 18,
             18,
@@ -64,7 +65,7 @@ DEF_TEST(Skottie_Shaper_Clusters, r) {
 }
 
 DEF_TEST(Skottie_Shaper_HAlign, reporter) {
-    auto typeface = SkTypeface::MakeDefault();
+    sk_sp<SkTypeface> typeface = ToolUtils::DefaultTypeface();
     REPORTER_ASSERT(reporter, typeface);
 
     static constexpr struct {
@@ -137,7 +138,7 @@ DEF_TEST(Skottie_Shaper_HAlign, reporter) {
 }
 
 DEF_TEST(Skottie_Shaper_VAlign, reporter) {
-    auto typeface = SkTypeface::MakeDefault();
+    sk_sp<SkTypeface> typeface = ToolUtils::DefaultTypeface();
     REPORTER_ASSERT(reporter, typeface);
 
     static constexpr struct {
@@ -211,7 +212,7 @@ DEF_TEST(Skottie_Shaper_VAlign, reporter) {
 
 DEF_TEST(Skottie_Shaper_FragmentGlyphs, reporter) {
     skottie::Shaper::TextDesc desc = {
-        SkTypeface::MakeDefault(),
+        ToolUtils::DefaultTypeface(),
         18,
         0, 18,
         18,
@@ -306,7 +307,7 @@ DEF_TEST(Skottie_Shaper_ExplicitFontMgr, reporter) {
     auto fontmgr = sk_make_sp<CountingFontMgr>();
 
     skottie::Shaper::TextDesc desc = {
-        ToolUtils::create_portable_typeface(),
+        ToolUtils::DefaultPortableTypeface(),
         18,
         0, 18,
         18,

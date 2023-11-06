@@ -32,6 +32,7 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
                                               &dsAllocateInfo,
                                               &descSet));
     if (result != VK_SUCCESS) {
+        // Other sets may use the provided pool / layout, so we shouldn't destroy those here.
         return nullptr;
     }
     return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, descSet, pool));
@@ -40,7 +41,7 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
 VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
                                          VkDescriptorSet set,
                                          sk_sp<VulkanDescriptorPool> pool)
-        : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
+        : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kYes, /*gpuMemorySize=*/0)
         , fDescSet (set)
         , fPool (pool) {
     fPool->ref();

@@ -56,14 +56,22 @@ public:
     //  - The BackendTexture will not call retain or release on the passed in
     //  WGPUTextureView. Thus the client must keep the WGPUTextureView valid
     //  until they are no longer using the BackendTexture.
+    // DEPRECATED: Use API below for creating per plane TextureView.
     BackendTexture(SkISize dimensions,
                    const DawnTextureInfo& info,
                    WGPUTextureView textureView);
+    // Create a BackendTexture from a WGPUTexture. Texture dimensions, plane aspect and
+    // info have to be provided.
+    // Note:
+    //  - The BackendTexture will not call retain or release on the passed in
+    //  WGPUTexture. Thus the client must keep the WGPUTexture valid
+    //  until they are no longer using the BackendTexture.
+    BackendTexture(SkISize dimensions, const DawnTextureInfo& info, WGPUTexture texture);
 #endif
 #ifdef SK_METAL
-    // The BackendTexture will not call retain or release on the passed in MtlHandle. Thus the
-    // client must keep the MtlHandle valid until they are no longer using the BackendTexture.
-    BackendTexture(SkISize dimensions, MtlHandle mtlTexture);
+    // The BackendTexture will not call retain or release on the passed in CFTypeRef. Thus the
+    // client must keep the CFTypeRef valid until they are no longer using the BackendTexture.
+    BackendTexture(SkISize dimensions, CFTypeRef mtlTexture);
 #endif
 
 #ifdef SK_VULKAN
@@ -103,7 +111,7 @@ public:
     WGPUTextureView getDawnTextureViewPtr() const;
 #endif
 #ifdef SK_METAL
-    MtlHandle getMtlTexture() const;
+    CFTypeRef getMtlTexture() const;
 #endif
 
 #ifdef SK_VULKAN
@@ -137,7 +145,7 @@ private:
         };
 #endif
 #ifdef SK_METAL
-        MtlHandle fMtlTexture;
+        CFTypeRef fMtlTexture;
 #endif
 #ifdef SK_VULKAN
         VkImage fVkImage = VK_NULL_HANDLE;
