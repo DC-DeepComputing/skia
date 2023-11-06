@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce57813_04c23948",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-06T15:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05467be2_12bcaee7",
+      "range": {
+        "startLine": 17,
+        "startChar": 36,
+        "endLine": 17,
+        "endChar": 41
+      },
+      "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7340c9e0_47e20d52",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-03T19:07:14Z",
       "side": 1,
       "message": "How about when using Dawn?",
+      "range": {
+        "startLine": 25,
+        "startChar": 21,
+        "endLine": 25,
+        "endChar": 26
+      },
+      "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cb7b208_102b5a93",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-06T15:21:38Z",
+      "side": 1,
+      "message": "I re-run the numbers, and on Arcs, `grmtl` went from about 5.6ms to 4.8ms and `grdawn` went from 7ms to 6.2ms. That works out to a ~14% improvement in grmtl and an ~11% improvement in grdawn.",
+      "parentUuid": "7340c9e0_47e20d52",
       "range": {
         "startLine": 25,
         "startChar": 21,
@@ -77,6 +125,30 @@
       "writtenOn": "2023-11-03T20:27:35Z",
       "side": 1,
       "message": "drive-by nit: `maxGridSize\u003d0` probably also works as the default since the condition below for clamping is `maxGridSize \u003e 0`",
+      "range": {
+        "startLine": 139,
+        "startChar": 70,
+        "endLine": 139,
+        "endChar": 72
+      },
+      "revId": "b6341cdac1670df1282441f5fd38f9aa999a70f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d739c15f_d6e4d555",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-06T15:21:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da3d001c_35fcb4fa",
       "range": {
         "startLine": 139,
         "startChar": 70,
