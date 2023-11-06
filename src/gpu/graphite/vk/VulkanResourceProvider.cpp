@@ -69,6 +69,21 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     return key;
 }
 
+sk_sp<VulkanDescriptorSet> add_new_desc_set_to_cache(const VulkanSharedContext* context,
+                                                     const sk_sp<VulkanDescriptorPool>& pool,
+                                                     VkDescriptorSetLayout layout,
+                                                     const GraphiteResourceKey& descSetKey,
+                                                     ResourceCache* resourceCache) {
+    sk_sp<VulkanDescriptorSet> descSet = VulkanDescriptorSet::Make(context, pool, layout);
+    if (!descSet) {
+        return nullptr;
+    }
+    descSet->setKey(descSetKey);
+    resourceCache->insertResource(descSet.get());
+
+    return descSet;
+}
+
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID,
@@ -174,7 +189,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     GraphiteResourceKey descSetKeys [VulkanDescriptorPool::kMaxNumSets];
     for (uint32_t i = 0; i < VulkanDescriptorPool::kMaxNumSets; i++) {
         GraphiteResourceKey key = build_desc_set_key(requestedDescriptors, i);
-        if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kNo)) {
+        if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes)) {
             // A non-null resource pointer indicates we have found an available descriptor set.
             return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
         }
@@ -184,46 +199,69 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     // If we did not find an existing avilable desc set, allocate sets with the appropriate layout
     // and add them to the cache.
     VkDescriptorSetLayout layout;
-    DescriptorDataToVkDescSetLayout(this->vulkanSharedContext(), requestedDescriptors, &layout);
+    const VulkanSharedContext* context = this->vulkanSharedContext();
+    DescriptorDataToVkDescSetLayout(context, requestedDescriptors, &layout);
     if (!layout) {
         return nullptr;
     }
-    auto pool = VulkanDescriptorPool::Make(this->vulkanSharedContext(),
-                                           requestedDescriptors,
-                                           layout);
-    SkASSERT(pool);
-
-    // Allocate the maximum number of sets so they can be easily accessed as needed from the cache.
-    for (int i = 0; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
-        auto descSet = VulkanDescriptorSet::Make(this->vulkanSharedContext(), pool, layout);
-        SkASSERT(descSet);
-        descSet->setKey(descSetKeys[i]);
-        fResourceCache->insertResource(descSet.get());
+    auto pool = VulkanDescriptorPool::Make(context, requestedDescriptors, layout);
+    if (!pool) {
+        VULKAN_CALL(context->interface(), DestroyDescriptorSetLayout(context->device(),
+                                                                     layout,
+                                                                     nullptr));
+        return nullptr;
     }
-    auto descSet = fResourceCache->findAndRefResource(descSetKeys[0], skgpu::Budgeted::kNo);
-    return descSet ? sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet))
-                   : nullptr;
+
+    // Start with allocating one descriptor set. If one cannot be successfully created, then we can
+    // return early before attempting to allocate more. Storing a ptr to the first set also
+    // allows us to return that later without having to perform a find operation on the cache once
+    // all the sets are added.
+    auto firstDescSet =
+            add_new_desc_set_to_cache(context, pool, layout, descSetKeys[0], fResourceCache.get());
+    if (!firstDescSet) {
+        // Once the VulkanDescriptorPool goes out of scope, its destructor will handle Vulkan
+        // pool & desc set layout cleanup.
+        return nullptr;
+    }
+
+    // Continue to allocate & cache the maximum number of sets so they can be easily accessed as
+    // they're needed.
+    for (int i = 1; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
+        auto descSet = add_new_desc_set_to_cache(
+                context, pool, layout, descSetKeys[i], fResourceCache.get());
+         // If any one set allocation fails, we have no reason to suspect subsequent ones will be
+         // successful, so break out of this loop prematurely. Do not destroy the set layout or
+         // pool, however, since by now it's guaranteed at least one set was allocated successfully
+         // and needs those Vulkan objects to stay alive. A failure here simply means less sets get
+         // added to the cache, which is not ideal, but doesn't break anything.
+        if (!descSet) {
+            SKGPU_LOG_W("Descriptor set allocation %d of %d was unsuccessful; no more sets will be"
+                        "allocated from this pool.", i, VulkanDescriptorPool::kMaxNumSets);
+            break;
+        }
+    }
+
+    return firstDescSet;
 }
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
     auto renderPassKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
-    Resource* existingRenderPass =
-            fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
-
-    if (existingRenderPass) {
-        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(existingRenderPass));
-    } else {
-        auto newRenderPass = VulkanRenderPass::MakeRenderPass(
-                this->vulkanSharedContext(), renderPassDesc, compatibleOnly);
-        SkASSERT(newRenderPass);
-        newRenderPass->setKey(renderPassKey);
-        fResourceCache->insertResource(newRenderPass.get());
+    if (Resource* resource =
+            fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes)) {
+        return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
 
-    auto renderPass = fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes);
-    return renderPass ? sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(renderPass))
-                      : nullptr;
+    auto renderPass = VulkanRenderPass::MakeRenderPass(this->vulkanSharedContext(), renderPassDesc,
+                                                       compatibleOnly);
+    if (!renderPass) {
+        return nullptr;
+    }
+
+    renderPass->setKey(renderPassKey);
+    fResourceCache->insertResource(renderPass.get());
+
+    return renderPass;
 }
 
 VkPipelineCache VulkanResourceProvider::pipelineCache() {
