@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0211603b_21d75624",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-06T21:29:58Z",
+      "side": 1,
+      "message": "\u003e In any case, Graphite seems to run fine both with Std140 and Std430 SSBOs - maybe because we don\u0027t have any cases where we pass arrays as function parameters?\n\nGradient code actually passes arrays fairly often. e.g.\n\n`$pure half4 $colorize_grad_4(float4 colorsParam[4], float4 offsetsParam, float2 t) {`",
+      "parentUuid": "8780efff_a924b684",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb4a58d7_d6950061",
