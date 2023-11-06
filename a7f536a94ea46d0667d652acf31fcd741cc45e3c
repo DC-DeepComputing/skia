@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9005d2e1_ec575398",
+        "filename": "tools/gpu/ProtectedUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T17:09:45Z",
+      "side": 1,
+      "message": "We probably will need to add the option at some point but BackendRenderTargets aren\u0027t as distinct a thing in Graphite.",
+      "parentUuid": "97553b99_e8787770",
+      "range": {
+        "startLine": 43,
+        "startChar": 39,
+        "endLine": 45,
+        "endChar": 60
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88e50742_f33ebb36",
         "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
         "patchSetId": 4
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e5f96ae_29261e29",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T17:09:45Z",
+      "side": 1,
+      "message": "I\u0027m trying it out seeing if we want to do this everywhere. WDYT?",
+      "parentUuid": "88e50742_f33ebb36",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 26
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5af8ace7_d59f605d",
         "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2023-11-03T04:26:21Z",
       "side": 1,
       "message": "Question for my knowledge: why do we choose to use `kRGB_H_SkPixelGeometry` for this surface?",
+      "range": {
+        "startLine": 25,
+        "startChar": 52,
+        "endLine": 25,
+        "endChar": 74
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "828529c4_6dcfc7fb",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T17:09:45Z",
+      "side": 1,
+      "message": "In this case it was just copy and paste. I\u0027ve removed it from here and the Ganesh version since the default surface props should be enough.",
+      "parentUuid": "5af8ace7_d59f605d",
       "range": {
         "startLine": 25,
         "startChar": 52,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ac77a89_0f308477",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T17:09:45Z",
+      "side": 1,
+      "message": "Basically we\u0027re going to exercise both the positive and negative cases in the test. Checking that when we ask for unprotected we\u0027re actually getting it. I guess a better name for the function would be CreateSurfaceWithExplicitProtectedness",
+      "parentUuid": "01bd9af3_5d0c7080",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 81
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "19c19ee2_5ef5186a",
         "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
         "patchSetId": 4
@@ -106,6 +202,30 @@
       "writtenOn": "2023-11-03T04:26:21Z",
       "side": 1,
       "message": "Shouldn\u0027t we use `Renderable` here instead of `GrRenderable`?",
+      "range": {
+        "startLine": 56,
+        "startChar": 64,
+        "endLine": 56,
+        "endChar": 76
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fda7fc1_7d1104ca",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-06T17:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19c19ee2_5ef5186a",
       "range": {
         "startLine": 56,
         "startChar": 64,
