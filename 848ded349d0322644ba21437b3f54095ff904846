@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc145373_a164697d",
+        "filename": "tests/DashPathEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-06T20:50:21Z",
+      "side": 1,
+      "message": "I think it would be best to put this into a Ganesh specific file. Then you can add the file to `ganesh_tests_sources` in gn.",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 22
+      },
+      "revId": "848ded349d0322644ba21437b3f54095ff904846",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
