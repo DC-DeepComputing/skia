@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0b8e7ca_ab89c927",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:05:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a86fc73_fd1bbbc7",
+      "range": {
+        "startLine": 303,
+        "startChar": 21,
+        "endLine": 303,
+        "endChar": 22
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17847b35_26257293",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:05:45Z",
+      "side": 1,
+      "message": "I think I see what you mean - it\u0027s more precise and correct to check the actual `fBackendMemory` as opposed to just checking if the entire `VulkanAlloc` member is `\u003d\u003d VulkanAlloc()`. It is possible that the texture\u0027s `VulkanAlloc !\u003d VulkanAlloc()` but its `fBackendMemory` is still 0 / invalid. \n\nChanged; please LMK if this is not what you were thinking!",
+      "parentUuid": "f2701273_e461f334",
+      "range": {
+        "startLine": 302,
+        "startChar": 7,
+        "endLine": 303,
+        "endChar": 21
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06b6da0f_43f90168",
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5cb518a_7fbeb34e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:05:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "06b6da0f_43f90168",
+      "range": {
+        "startLine": 304,
+        "startChar": 17,
+        "endLine": 304,
+        "endChar": 31
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c3b79cb_44682186",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-11-03T19:55:22Z",
       "side": 1,
       "message": "Nit: we only use the `_` naming when its a static function local to a cpp file. For this shared thing it would be `GetExtensionFeatureStruct`",
+      "range": {
+        "startLine": 162,
+        "startChar": 24,
+        "endLine": 162,
+        "endChar": 52
+      },
+      "revId": "841962a3e00109c35d4dbb610880451592dcd4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8cb1f96_050e5956",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:05:45Z",
+      "side": 1,
+      "message": "You\u0027re right, I did mean to change that. Thanks!",
+      "parentUuid": "2c3b79cb_44682186",
       "range": {
         "startLine": 162,
         "startChar": 24,

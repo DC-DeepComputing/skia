@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db1c75f_1931f740",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:05:45Z",
+      "side": 1,
+      "message": "Discussed w/ Greg offline, going to experiment w/ isolating the VulkanAlloc change and think about that aspect some more, but wanted to get the majority of these changes/comments out for review.",
+      "revId": "2a700d9ec4d23897e2191952fb47d701580964c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

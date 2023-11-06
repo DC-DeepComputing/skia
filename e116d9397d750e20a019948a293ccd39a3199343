@@ -93,6 +93,30 @@
       },
       "revId": "e116d9397d750e20a019948a293ccd39a3199343",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cd3eb57_d472daf8",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-06T19:05:45Z",
+      "side": 1,
+      "message": "If `inline` is removed, then I receive compilation warnings that `SetupSamplerYcbcrConversionInfo` is an unused function because it is not used in all translation units that include this header. IIUC, the warning is designed to catch declarations of unused functions, but we *do* use this function for some of the translation units.\n\n(relevant stackoverflow post: https://stackoverflow.com/questions/47542751/gcc-warns-about-unused-static-functions-but-not-static-inline-is-there-a-pract)\n\n`inline` can be used to get around this.\n\nThe other functions in this header do not provide that warning because they are `constexpr`. `constexpr` functions are implicitly `inline`. I think I originally had this function returning the `VkSamplerYcbcrConversionCreateInfo`, but now that the return type is `void`, we could theoretically simply make this function `constexpr` as well (C++14 defined `void` as a literal type). \n\nWe could keep it as simply `inline`, but `constexpr` tells the compiler that it *may* be able to perform this computation at compile time. So in theory, `constexpr` should open the door for more compiler optimizations.\n\nThat all being said - Nolan indicated that w/ the compiler and compiler flags that Android uses, we then get complaints about the `constexpr` specifier (https://skia-review.googlesource.com/c/skia/+/759558/comment/8a6473fd_cfea59a5/) because `non-constexpr constructor \u0027VkExternalFormatANDROID\u0027 cannot be used in a constant expression`. So if the `constexpr` specifier can never evaluate to a constant expression, then it wouldn\u0027t make sense to include it.\n\nSo in short, it might be best to keep `inline`.",
+      "parentUuid": "25542495_b8d98f24",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "e116d9397d750e20a019948a293ccd39a3199343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
