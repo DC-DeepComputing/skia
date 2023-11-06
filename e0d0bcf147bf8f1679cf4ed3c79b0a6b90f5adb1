@@ -52,6 +52,24 @@
       "parentUuid": "7be702e5_6bee09d5",
       "revId": "e0d0bcf147bf8f1679cf4ed3c79b0a6b90f5adb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efd24e79_69080571",
+        "filename": "gn/skia.gni",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-06T20:27:18Z",
+      "side": 1,
+      "message": "Hmmm... not ideal, but you could piggy back on Fontations ( https://skia.googlesource.com/skia/+/77aeee3b81a5792a1338a28b1a24dc6c1ebada58/infra/bots/recipe_modules/build/default.py#242 ). Or maybe limit to `linux_64` since that seems to always have bezel set up?\n\nIf it isn\u0027t being built by some bot then it must be assumed to be broken. I really don\u0027t want to land a whole component like this without something at least building it.",
+      "parentUuid": "f7b4f7a2_cc9f7ed5",
+      "revId": "e0d0bcf147bf8f1679cf4ed3c79b0a6b90f5adb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
