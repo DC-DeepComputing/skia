@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8780efff_a924b684",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-11-06T21:12:31Z",
+      "side": 1,
+      "message": "I guess the choice to use 16-byte stride for sized arrays was made for passing uniform address space arrays to functions without needing to unpack, but I think it\u0027s better to always use packed layouts for all array types and unpack from uniform buffer arrays when needed. That also matches the default WGSL semantics that everything except uniform address space uses packed layouts and only the uniform address space has the 16-byte aligned layout.\n\nIn any case, Graphite seems to run fine both with Std140 and Std430 SSBOs - maybe because we don\u0027t have any cases where we pass arrays as function parameters?",
+      "parentUuid": "0b8ba1e9_ce01c078",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb4a58d7_d6950061",
