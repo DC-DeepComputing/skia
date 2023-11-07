@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccd130e_5a82f665",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-07T16:02:47Z",
+      "side": 1,
+      "message": "This, and the helper above, shouldn\u0027t be in the skgpu::graphite namespace, but instead any anonymous namespace.\n\nAlso you can move this down to right above where it used.",
+      "range": {
+        "startLine": 72,
+        "startChar": 27,
+        "endLine": 72,
+        "endChar": 52
+      },
+      "revId": "7be0d8dfb2484b8c43d039ff7895720996fcef68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa4ce4f_bf009b9d",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-07T16:02:47Z",
+      "side": 1,
+      "message": "If the pool is taking ownership of the layout, I wonder if we should just not pass the layout into the various functions that are taking a pool. And instead just query the layout off of the pool",
+      "range": {
+        "startLine": 222,
+        "startChar": 11,
+        "endLine": 223,
+        "endChar": 42
+      },
+      "revId": "7be0d8dfb2484b8c43d039ff7895720996fcef68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76758ce8_ff02a0cf",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-07T16:02:47Z",
+      "side": 1,
+      "message": "Since pool is ref counted, I\u0027m not sure what this comment is adding here.",
+      "range": {
+        "startLine": 232,
+        "startChar": 12,
+        "endLine": 236,
+        "endChar": 78
+      },
+      "revId": "7be0d8dfb2484b8c43d039ff7895720996fcef68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b011d2bc_a684c527",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-07T16:02:47Z",
+      "side": 1,
+      "message": "You don\u0027t need to change anything in this CL. But I realized I hate that this returns a raw pointer and not an sk_sp. I get that it makes it easier to then wrap the object into an sk_sp of the subclass, but it seems against the philosophy of keeping all owned/reffed objects in sk_sp.",
+      "range": {
+        "startLine": 250,
+        "startChar": 8,
+        "endLine": 250,
+        "endChar": 16
+      },
+      "revId": "7be0d8dfb2484b8c43d039ff7895720996fcef68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
