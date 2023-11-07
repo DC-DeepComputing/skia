@@ -117,6 +117,30 @@
       },
       "revId": "e116d9397d750e20a019948a293ccd39a3199343",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "895e4509_923dfbae",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-07T18:04:23Z",
+      "side": 1,
+      "message": "Okay I think the best thing to do here then is to just declare the function here and then define it in a cpp file. I don\u0027t think we really need this to be inlined for any sort of performance reason (its only getting called in a large create call anyway so we\u0027re already slow).",
+      "parentUuid": "4cd3eb57_d472daf8",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "e116d9397d750e20a019948a293ccd39a3199343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
