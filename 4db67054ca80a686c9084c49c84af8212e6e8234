@@ -90,6 +90,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3317a35b_94ce57d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-07T02:07:10Z",
+      "side": 1,
+      "message": "Yes, I think all of our arrays right now are float4[N], so we don\u0027t have unsized arrays and they are already 16-byte aligned.\n\nJohn, do you know if there\u0027s an existing bug to remove the always-16-byte-aligned typing that sksl-wgsl imposes? It seems right now it\u0027s in the pessimistically-align everything world and it\u0027d be great if we can move towards the approach we\u0027ve discussed where we stick with packed std430 unless it\u0027s std140 UBOs that get copied into 430-aligned types when passed into functions?",
+      "parentUuid": "8e30bfa1_b89fa033",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb4a58d7_d6950061",
@@ -137,6 +155,23 @@
       "writtenOn": "2023-11-06T18:13:50Z",
       "side": 1,
       "message": "cc John regarding caution around arrays and std430 layout.",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1463a0f9_8ba5bf91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-07T02:07:10Z",
+      "side": 1,
+      "message": "Barring resolving the discussion about array alignment in sksl-\u003ewgsl generation, this all lgtm.",
       "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
