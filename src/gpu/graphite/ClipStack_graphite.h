@@ -270,7 +270,8 @@ private:
         int  oldestElementIndex()      const { return fOldestValidIndex;         }
         bool canBeUpdated()            const { return (fDeferredSaveCount == 0); }
 
-        Rect scissor(const Rect& deviceBounds, const Rect& drawBounds) const;
+        // Returns the scissor and whether or not the scissor restricts `drawBounds`.
+        std::pair<Rect, bool> scissor(const Rect& deviceBounds, const Rect& drawBounds) const;
 
         // Deferred save manipulation
         void pushSave() {

@@ -64,8 +64,14 @@ private:
 class Clip {
 public:
     Clip() = default;
-    Clip(const Rect& drawBounds, const Rect& shapeBounds, const SkIRect& scissor)
-            : fDrawBounds(drawBounds), fTransformedShapeBounds(shapeBounds), fScissor(scissor) {}
+    Clip(const Rect& drawBounds,
+         const Rect& shapeBounds,
+         const SkIRect& scissor,
+         bool scissorRestrictsDraw)
+            : fDrawBounds(drawBounds)
+            , fTransformedShapeBounds(shapeBounds)
+            , fScissor(scissor)
+            , fScissorRestrictsDraw(scissorRestrictsDraw) {}
 
     // Tight bounds of the draw, including any padding/outset for stroking and expansion due to
     // inverse fill and intersected with the scissor.
@@ -75,6 +81,11 @@ public:
     // draw to the device bounds. The scissor must contain drawBounds() and must already be
     // intersected with the device bounds.
     const SkIRect& scissor() const { return fScissor; }
+    bool scissorRestrictsDraw() const { return fScissorRestrictsDraw; }
+    bool isScissorCompatible(const SkIRect& scissor) const {
+        return fScissorRestrictsDraw ? (scissor == fScissor)
+                                     : scissor.containsNoEmptyCheck(fScissor);
+    }
 
     // Clipped bounds of the shape in device space, including any padding/outset for stroking,
     // intersected with the scissor and ignoring the fill rule. For a regular fill this is identical
@@ -89,6 +100,10 @@ private:
     Rect    fDrawBounds;
     Rect    fTransformedShapeBounds;
     SkIRect fScissor;
+
+    // If this is true, `fScissor` must be set exactly when converting to DrawCommands. If it is
+    // false, the active scissor does not need to be modified if it contains `fScissor`.
+    bool    fScissorRestrictsDraw;
 
     // TODO: If we add more complex analytic shapes for clipping, e.g. coverage rrect, it should
     // go here.

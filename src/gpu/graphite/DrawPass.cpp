@@ -597,21 +597,22 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
 
-        const bool pipelineChange = key.pipelineIndex() != lastPipeline;
-
-        const bool geomBindingChange    = geometryUniformTracker.setCurrentUniforms(
-                key.pipelineIndex(), key.geometryUniformIndex());
-        const bool shadingBindingChange  = shadingUniformTracker.setCurrentUniforms(
-                key.pipelineIndex(), key.shadingUniformIndex());
-        const bool textureBindingsChange = textureBindingTracker.setCurrentTextureBindings(
-                key.textureBindingIndex());
-        const SkIRect* newScissor        = draw.fDrawParams.clip().scissor() != lastScissor ?
-                &draw.fDrawParams.clip().scissor() : nullptr;
+        const bool pipelineChange        = key.pipelineIndex() != lastPipeline;
+        const bool geomBindingChange     =
+                geometryUniformTracker.setCurrentUniforms(key.pipelineIndex(),
+                                                          key.geometryUniformIndex());
+        const bool shadingBindingChange  =
+                shadingUniformTracker.setCurrentUniforms(key.pipelineIndex(),
+                                                         key.shadingUniformIndex());
+        const bool textureBindingsChange =
+                textureBindingTracker.setCurrentTextureBindings( key.textureBindingIndex());
+        const bool scissorRectChange     =
+                !draw.fDrawParams.clip().isScissorCompatible(lastScissor);
 
         const bool stateChange = geomBindingChange ||
                                  shadingBindingChange ||
                                  textureBindingsChange ||
-                                 SkToBool(newScissor);
+                                 scissorRectChange;
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
         // the previous state use the proper state.
@@ -639,9 +640,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             if (textureBindingsChange) {
                 textureBindingTracker.bindTextures(&drawPass->fCommandList);
             }
-            if (newScissor) {
-                drawPass->fCommandList.setScissor(*newScissor);
-                lastScissor = *newScissor;
+            if (scissorRectChange) {
+                lastScissor = draw.fDrawParams.clip().scissorRestrictsDraw() ? draw.fDrawParams.clip().scissor()
+                        :SkIRect::MakeSize(targetInfo.dimensions());
+                drawPass->fCommandList.setScissor(lastScissor);
             }
         }
 

@@ -372,8 +372,19 @@ void ClipStack::RawElement::drawClip(Device* device) {
         // draw directly.
         SkASSERT((fOp == SkClipOp::kDifference && !fShape.inverted()) ||
                  (fOp == SkClipOp::kIntersect && fShape.inverted()));
-        device->drawClipShape(
-                fLocalToDevice, fShape, Clip{drawBounds, drawBounds, scissor.asSkIRect()}, order);
+
+        // For difference ops, the depth buffer is modified with a regular fill, whose bounding
+        // box is fOuterBounds, scissor'ed to the bounds its using. This is equivalent to the logic
+        // used for regular draws. For intersect ops, the depth buffer is an inverse fill, which is
+        // always rendered with a CoverBoundsRenderStep. For inverse fills, the
+        // CoverBoundsRenderStep restricts itself to the scissor geometrically, so as long as the
+        // regular-fill stencil operations of its prior render steps are not restricted by the
+        // scissor, we can ignore the scissor state change too.
+        bool scissorRequired = !scissor.contains(fOuterBounds);
+        device->drawClipShape(fLocalToDevice,
+                              fShape,
+                              Clip{drawBounds, drawBounds, scissor.asSkIRect(), scissorRequired},
+                              order);
     }
 
     // After the clip shape is drawn, reset its state. If the clip element is being popped off the
@@ -653,7 +664,8 @@ ClipStack::ClipState ClipStack::SaveRecord::state() const {
     }
 }
 
-Rect ClipStack::SaveRecord::scissor(const Rect& deviceBounds, const Rect& drawBounds) const {
+std::pair<Rect, bool> ClipStack::SaveRecord::scissor(const Rect& deviceBounds,
+                                                     const Rect& drawBounds) const {
     // This should only be called when the clip stack actually has something non-trivial to evaluate
     // It is effectively a reduced version of Simplify() dealing only with device-space bounds and
     // returning the intersection results.
@@ -665,22 +677,18 @@ Rect ClipStack::SaveRecord::scissor(const Rect& deviceBounds, const Rect& drawBo
         // scissor. However, if the draw doesn't intersect the clip at all then it doesn't have any
         // visual effect and we can switch to the device bounds as the canonical scissor.
         if (!fOuterBounds.intersects(drawBounds)) {
-            return deviceBounds;
+            return {deviceBounds, /*scissorRestrictsDraw=*/true};
         } else {
             // This automatically detects the case where the draw is contained in inner bounds and
             // would be entirely clipped out.
-            return subtract(drawBounds, fInnerBounds, /*exact=*/true);
+            return {subtract(drawBounds, fInnerBounds, /*exact=*/true),
+                    /*scissorRestrictsDraw=*/true};
         }
     } else {
         // kIntersect nominally uses the save record's outer bounds as the scissor. However, if the
         // draw is contained entirely within those bounds, it doesn't have any visual effect so
         // switch to using the device bounds as the canonical scissor to minimize state changes.
-        if (fOuterBounds.contains(drawBounds)) {
-            return deviceBounds;
-        } else {
-            // This automatically detects the case where the draw does not intersect the clip.
-            return fOuterBounds;
-        }
+        return {fOuterBounds, /*scissorRestrictsDraw=*/!fOuterBounds.contains(drawBounds)};
     }
 }
 
@@ -1089,8 +1097,10 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       const SkStrokeRec& style,
                                       const Renderer& renderer,
                                       ClipStack::ElementList* outEffectiveElements) const {
-    static const Clip kClippedOut = {
-            Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty()};
+    static const Clip kClippedOut = {/*drawBounds=*/Rect::InfiniteInverted(),
+                                     /*transformedShapeBounds=*/Rect::InfiniteInverted(),
+                                     /*scissor=*/SkIRect::MakeEmpty(),
+                                     /*scissorRestrictsDraw=*/true};
 
     const SaveRecord& cs = this->currentSaveRecord();
     if (cs.state() == ClipState::kEmpty) {
@@ -1188,7 +1198,10 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         // Either the draw is off screen, so it's clipped out regardless of the state of the
         // SaveRecord, or there are no elements to apply to the draw. In both cases, 'drawBounds'
         // has the correct value, the scissor is the device bounds (ignored if clipped-out).
-        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect());
+        return Clip(drawBounds,
+                    transformedShapeBounds,
+                    deviceBounds.asSkIRect(),
+                    /*scissorRestrictsDraw=*/false);
     }
 
     // We don't evaluate Simplify() on the SaveRecord and the draw because a reduced version of
@@ -1197,15 +1210,30 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     //  - the draw's *scissored* bounds are empty, which happens when the draw was clipped out.
     //  - the scissored bounds are contained in our inner bounds, which happens if all we need to
     //    apply to the draw is the computed scissor rect.
+    auto [scissor, scissorRestrictsDraw] = cs.scissor(deviceBounds, drawBounds);
+
     // TODO: The Clip's scissor is defined in terms of integer pixel coords, but if we move to
     // clip plane distances in the vertex shader, it can be defined in terms of the original float
     // coordinates.
-    Rect scissor = cs.scissor(deviceBounds, drawBounds).makeRoundOut();
-    drawBounds.intersect(scissor);
-    transformedShapeBounds.intersect(scissor);
+    if (scissorRestrictsDraw) {
+        // There is a tension between trying to clip solely through a scissor, which is a state
+        // change that breaks draw batching, or touching more pixels in the surface and relying on
+        // a clip shape's depth test to perform the clipping.
+        // if (scissor.area() > 0.7f * drawBounds.area() || (scissor.area() + 128*128) >= drawBounds.area()) {
+        //     scissor = drawBounds.makeRoundOut();
+        //     scissorRestrictsDraw = false;
+        // } else {
+            scissor.roundOut();
+            drawBounds.intersect(scissor);
+            transformedShapeBounds.intersect(scissor);
+        // }
+    } else {
+        SkASSERT(scissor.contains(drawBounds) && scissor.contains(transformedShapeBounds));
+    }
+
     if (drawBounds.isEmptyNegativeOrNaN() || cs.innerBounds().contains(drawBounds)) {
         // Like above, in both cases drawBounds holds the right value.
-        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect());
+        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), scissorRestrictsDraw);
     }
 
     // If we made it here, the clip stack affects the draw in a complex way so iterate each element.
@@ -1241,7 +1269,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         }
     }
 
-    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect());
+    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), scissorRestrictsDraw);
 }
 
 CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,
