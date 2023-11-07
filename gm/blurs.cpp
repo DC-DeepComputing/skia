@@ -139,6 +139,14 @@ DEF_SIMPLE_GM(BlurBigSigma, canvas, 1024, 1024) {
     p.setImageFilter(SkImageFilters::Blur(500, 500, nullptr));
 
     canvas->drawRect(SkRect::MakeWH(700, 800), p);
+
+    SkPaint stroke;
+    stroke.setAntiAlias(false);
+    stroke.setStrokeWidth(0.f);
+    stroke.setStyle(SkPaint::kStroke_Style);
+    stroke.setColor(SK_ColorRED);
+
+    canvas->drawRect(SkRect::MakeWH(700, 800), stroke);
 }
 
 DEF_SIMPLE_GM(BlurSmallSigma, canvas, 512, 256) {

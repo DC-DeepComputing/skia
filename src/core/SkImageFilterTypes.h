@@ -35,6 +35,7 @@ class FilterResultTestAccess;  // for testing
 class SkBitmap;
 class SkBlender;
 class SkBlurEngine;
+class SkColorSpace;
 class SkDevice;
 class SkImage;
 class SkImageFilter;
@@ -394,6 +395,10 @@ public:
         return output;
     }
 
+    // Utility function to calculate the smallest relevant subset of this rect to fill `dstRect`
+    // given the provided tile mode.
+    LayerSpace<SkIRect> relevantSubset(const LayerSpace<SkIRect> dstRect, SkTileMode) const;
+
     // Parrot the SkIRect API while preserving coord space
     bool isEmpty() const { return fData.isEmpty64(); }
     bool contains(const LayerSpace<SkIRect>& r) const { return fData.contains(r.fData); }
@@ -621,6 +626,7 @@ private:
 };
 
 class Context; // Forward declare for FilterResult
+class Backend;
 
 // A FilterResult represents a lazy image anchored in the "layer" coordinate space of the current
 // image filtering context. It's named Filter*Result* since most instances represent the output of
@@ -800,7 +806,9 @@ private:
     // top-left corner. 'dstBounds' is intersected with 'fLayerBounds' unless 'preserveTransparency'
     // is true.
     std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
-    resolve(const Context& ctx, LayerSpace<SkIRect> dstBounds,
+    resolve(const Backend* backend,
+            const SkColorSpace* colorSpace,
+            LayerSpace<SkIRect> dstBounds,
             bool preserveTransparency=false) const;
 
     enum class BoundsAnalysis : int {
@@ -833,6 +841,12 @@ private:
                                    /*blendAffectsTransparentBlack=*/false);
     }
 
+    // Return an equivalent FilterResult such that its backing image dimensions have been reduced
+    // by the X and Y scale factors in 'scale' (assumed to be in [0, 1]). The returned FilterResult
+    // will have a transform that aligns it with the original FilterResult (i.e. a deferred upscale)
+    // and may also have a deferred tilemode.
+    FilterResult rescale(const Context& ctx, const LayerSpace<SkSize>& scale) const;
+
     // Draw directly to the device, which draws the same image as produced by resolve() but can be
     // useful if multiple operations need to be performed on the canvas.
     //
@@ -844,7 +858,8 @@ private:
     // If 'blender' is null, the filter result is drawn with src-over blending. If it's not, it will
     // be drawn using the given 'blender', filling the device's current clip when the blend
     // modifies transparent black.
-    void draw(const Context& ctx,
+    void draw(const Backend* backend,
+              const SkColorSpace* colorSpace,
               SkDevice* device,
               bool preserveDeviceState,
               const SkBlender* blender=nullptr) const;
@@ -852,14 +867,15 @@ private:
     // Returns the FilterResult as a shader, ideally without resolving to an axis-aligned image.
     // 'xtraSampling' is the sampling that any parent shader applies to the FilterResult.
     // 'sampleBounds' is the bounding box of coords the shader will be evaluated at by any parent.
-    sk_sp<SkShader> asShader(const Context& ctx,
+    sk_sp<SkShader> asShader(const Backend* backend,
+                             const SkColorSpace* colorSpace,
                              const SkSamplingOptions& xtraSampling,
                              SkEnumBitMask<ShaderFlags> flags,
                              const LayerSpace<SkIRect>& sampleBounds) const;
 
     // Safely updates fTileMode, doing nothing if the FilterResult is empty. Updates the layer
-    // bounds to the context's desired output if the tilemode is not decal.
-    void updateTileMode(const Context& ctx, SkTileMode tileMode);
+    // bounds to the output bounds if the tilemode is not decal.
+    void updateTileMode(SkTileMode tileMode, const LayerSpace<SkIRect>& outputBounds);
 
     // The effective image of a FilterResult is 'fImage' sampled by 'fSamplingOptions' and
     // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform',
