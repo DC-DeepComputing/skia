@@ -284,7 +284,8 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     SkASSERT(requiredBytes);
 
     // A transfer buffer is not necessary if the caller does not intend to upload CPU data to it.
-    bool useTransferBuffer = supportCpuUpload && !fCaps->drawBufferCanBeMapped();
+    bool useTransferBuffer = supportCpuUpload && !fCaps->drawBufferCanBeMapped() &&
+                             !fCaps->canCreatePremappedBuffers();
 
     if (info->fBuffer &&
         !can_fit(requiredBytes, info->fBuffer.get(), info->fOffset, info->fStartAlignment)) {
@@ -293,15 +294,21 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     }
 
     if (!info->fBuffer) {
+        PremapBuffer premap = PremapBuffer::kNo;
+        if (fCaps->canCreatePremappedBuffers()) {
+            premap = PremapBuffer::kYes;
+        }
         // This buffer can be GPU-only if
         //     a) the caller does not intend to ever upload CPU data to the buffer; or
-        //     b) CPU data will get uploaded to fBuffer only via a transfer buffer
-        AccessPattern accessPattern = (useTransferBuffer || !supportCpuUpload)
-                                              ? AccessPattern::kGpuOnly
-                                              : AccessPattern::kHostVisible;
+        //     b) CPU data will get uploaded to fBuffer only via a transfer buffer; or
+        //     c) a new pre-mapped buffer will be created.
+        AccessPattern accessPattern = AccessPattern::kHostVisible;
+        if (useTransferBuffer || !supportCpuUpload || premap == PremapBuffer::kYes) {
+            accessPattern = AccessPattern::kGpuOnly;
+        }
         size_t bufferSize = sufficient_block_size(requiredBytes, info->fBlockSize);
-        info->fBuffer =
-                fResourceProvider->findOrCreateBuffer(bufferSize, info->fType, accessPattern);
+        info->fBuffer = fResourceProvider->findOrCreateBuffer(
+                bufferSize, info->fType, accessPattern, premap);
         info->fOffset = 0;
         if (!info->fBuffer) {
             return {};
@@ -309,8 +316,11 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     }
 
     if (useTransferBuffer && !info->fTransferBuffer) {
-        info->fTransferBuffer = fResourceProvider->findOrCreateBuffer(
-                info->fBuffer->size(), BufferType::kXferCpuToGpu, AccessPattern::kHostVisible);
+        SkASSERT(!fCaps->canCreatePremappedBuffers());
+        info->fTransferBuffer = fResourceProvider->findOrCreateBuffer(info->fBuffer->size(),
+                                                                      BufferType::kXferCpuToGpu,
+                                                                      AccessPattern::kHostVisible,
+                                                                      PremapBuffer::kNo);
         SkASSERT(info->fBuffer->size() == info->fTransferBuffer->size());
         SkASSERT(info->fOffset == 0);
         if (!info->fTransferBuffer) {
@@ -338,13 +348,18 @@ StaticBufferManager::StaticBufferManager(ResourceProvider* resourceProvider,
         , fVertexBufferInfo(BufferType::kVertex, caps)
         , fIndexBufferInfo(BufferType::kIndex, caps)
         , fCurrentTransferBuffer(nullptr)
-        , fCurrentOffset(0) {}
+        , fCurrentOffset(0) {
+    fUsePremappedBuffers = caps->canCreatePremappedBuffers();
+}
+
 StaticBufferManager::~StaticBufferManager() = default;
+
+static bool use_transfer_buffer(const Caps* caps) { return !caps->canCreatePremappedBuffers(); }
 
 StaticBufferManager::BufferInfo::BufferInfo(BufferType type, const Caps* caps)
         : fBufferType(type)
-        , fAlignment(starting_alignment(type, /*useTransferBuffers=*/true, caps))
-        , fTotalRequiredBytes(0) {}
+        , fAlignment(starting_alignment(type, use_transfer_buffer(caps), caps))
+        , fTotalRequiredTransferBytes(0) {}
 
 VertexWriter StaticBufferManager::getVertexWriter(size_t size, BindBufferInfo* binding) {
     void* data = this->prepareStaticData(&fVertexBufferInfo, size, binding);
@@ -370,6 +385,18 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
     // the pair of buffer types involved (transfer cpu->gpu and either index or vertex). Copies
     // must also copy an aligned amount of bytes.
     size = SkAlignTo(size, info->fAlignment);
+
+    // When we have buffer premapping this is pretty simple: just create a premapped buffer and
+    // record it so it gets unmapped and cached in finalize.
+    if (fUsePremappedBuffers) {
+        auto buffer = fResourceProvider->findOrCreateBuffer(
+                size, info->fBufferType, AccessPattern::kGpuOnly, PremapBuffer::kYes);
+        target->fOffset = 0;
+        target->fBuffer = buffer.get();
+        fBuffersToUnmap.push_back(buffer);
+        return buffer->map();
+    }
+
     if (fCurrentTransferBuffer &&
         !can_fit(size, fCurrentTransferBuffer.get(), fCurrentOffset, info->fAlignment)) {
         fCurrentTransferBuffer->unmap();
@@ -377,8 +404,10 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
     }
     if (!fCurrentTransferBuffer) {
         size_t bufferSize = sufficient_block_size(size, kStaticTransferBufferSize);
-        fCurrentTransferBuffer = fResourceProvider->findOrCreateBuffer(
-                bufferSize, BufferType::kXferCpuToGpu, AccessPattern::kHostVisible);
+        fCurrentTransferBuffer = fResourceProvider->findOrCreateBuffer(bufferSize,
+                                                                       BufferType::kXferCpuToGpu,
+                                                                       AccessPattern::kHostVisible,
+                                                                       PremapBuffer::kNo);
         fCurrentOffset = 0;
     }
 
@@ -388,24 +417,25 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
     void* ptr = SkTAddOffset<void>(fCurrentTransferBuffer->map(),
                                    static_cast<ptrdiff_t>(fCurrentOffset));
     fCurrentOffset += size;
-    info->fTotalRequiredBytes += size;
+    info->fTotalRequiredTransferBytes += size;
     return ptr;
 }
 
-bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
+bool StaticBufferManager::BufferInfo::createTransferAndUpdateBindings(
         ResourceProvider* resourceProvider,
         Context* context,
         QueueManager* queueManager,
         GlobalCache* globalCache) const {
-    if (!fTotalRequiredBytes) {
+    if (!fTotalRequiredTransferBytes) {
         return true; // No buffer needed
     }
 
     sk_sp<Buffer> staticBuffer = resourceProvider->findOrCreateBuffer(
-            fTotalRequiredBytes, fBufferType, AccessPattern::kGpuOnly);
+            fTotalRequiredTransferBytes, fBufferType, AccessPattern::kGpuOnly, PremapBuffer::kNo);
     if (!staticBuffer) {
         SKGPU_LOG_E("Failed to create static buffer for type %d of size %zu bytes.\n",
-                    (int) fBufferType, fTotalRequiredBytes);
+                    (int) fBufferType,
+                    fTotalRequiredTransferBytes);
         return false;
     }
 
@@ -429,7 +459,7 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
         offset += data.fSize;
     }
 
-    SkASSERT(offset == fTotalRequiredBytes);
+    SkASSERT(offset == fTotalRequiredTransferBytes);
     globalCache->addStaticResource(std::move(staticBuffer));
     return true;
 }
@@ -437,24 +467,30 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
 StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context,
                                                                 QueueManager* queueManager,
                                                                 GlobalCache* globalCache) {
+    for (const auto& b : fBuffersToUnmap) {
+        b->unmap();
+        globalCache->addStaticResource(std::move(b));
+    }
+    fBuffersToUnmap.clear();
+
     // Used buffers were already unmapped, but we're also done with the current transfer buffer
     if (fCurrentTransferBuffer) {
         fCurrentTransferBuffer->unmap();
     }
 
-    const size_t totalRequiredBytes = fVertexBufferInfo.fTotalRequiredBytes +
-                                      fIndexBufferInfo.fTotalRequiredBytes;
-    SkASSERT(totalRequiredBytes <= kMaxStaticDataSize);
-    if (!totalRequiredBytes) {
+    const size_t totalRequiredTransferBytes = fVertexBufferInfo.fTotalRequiredTransferBytes +
+                                              fIndexBufferInfo.fTotalRequiredTransferBytes;
+    SkASSERT(totalRequiredTransferBytes <= kMaxStaticDataSize);
+    if (!totalRequiredTransferBytes) {
         return FinishResult::kNoWork;
     }
 
-    if (!fVertexBufferInfo.createAndUpdateBindings(fResourceProvider, context,
-                                                   queueManager, globalCache)) {
+    if (!fVertexBufferInfo.createTransferAndUpdateBindings(
+                fResourceProvider, context, queueManager, globalCache)) {
         return FinishResult::kFailure;
     }
-    if (!fIndexBufferInfo.createAndUpdateBindings(fResourceProvider, context,
-                                                  queueManager, globalCache)) {
+    if (!fIndexBufferInfo.createTransferAndUpdateBindings(
+                fResourceProvider, context, queueManager, globalCache)) {
         return FinishResult::kFailure;
     }
 

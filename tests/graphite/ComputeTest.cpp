@@ -48,8 +48,11 @@ sk_sp<Buffer> sync_buffer_to_cpu(Recorder* recorder, const Buffer* buffer) {
     }
 
     // The backend requires a transfer buffer for CPU read-back
-    auto xferBuffer = recorder->priv().resourceProvider()->findOrCreateBuffer(
-            buffer->size(), BufferType::kXferGpuToCpu, AccessPattern::kHostVisible);
+    auto xferBuffer =
+            recorder->priv().resourceProvider()->findOrCreateBuffer(buffer->size(),
+                                                                    BufferType::kXferGpuToCpu,
+                                                                    AccessPattern::kHostVisible,
+                                                                    PremapBuffer::kNo);
     SkASSERT(xferBuffer);
 
     recorder->priv().add(CopyBufferToBufferTask::Make(sk_ref_sp(buffer), xferBuffer));

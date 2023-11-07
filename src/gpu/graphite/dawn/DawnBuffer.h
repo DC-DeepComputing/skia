@@ -22,14 +22,16 @@ public:
     static sk_sp<Buffer> Make(const DawnSharedContext*,
                               size_t size,
                               BufferType type,
-                              AccessPattern);
+                              AccessPattern,
+                              PremapBuffer);
 
     const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
 
 private:
     DawnBuffer(const DawnSharedContext*,
                size_t size,
-               wgpu::Buffer);
+               wgpu::Buffer,
+               void* premapPtr);
 
     void onMap() override;
     void onUnmap() override;

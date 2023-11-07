@@ -30,7 +30,8 @@ static const char* kBufferTypeNames[kBufferTypeCount] = {
 sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                size_t size,
                                BufferType type,
-                               AccessPattern) {
+                               AccessPattern,
+                               PremapBuffer premap) {
     if (size <= 0) {
         return nullptr;
     }
@@ -73,25 +74,31 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
 #endif
     desc.usage = usage;
     desc.size  = size;
-    // For wgpu::Buffer can be mapped at creation time for the initial data uploading. we should use
-    // it for better performance?
-    desc.mappedAtCreation = false;
+    desc.mappedAtCreation = static_cast<bool>(premap);
 
     auto buffer = sharedContext->device().CreateBuffer(&desc);
     if (!buffer) {
         return {};
     }
 
-    return sk_sp<Buffer>(new DawnBuffer(sharedContext,
-                                        size,
-                                        std::move(buffer)));
+    void* premapPtr = nullptr;
+    if (desc.mappedAtCreation) {
+        SkASSERT(buffer.GetMapState() == wgpu::BufferMapState::Mapped);
+        premapPtr = buffer.GetMappedRange();
+        SkASSERT(premapPtr);
+    }
+
+    return sk_sp<Buffer>(new DawnBuffer(sharedContext, size, std::move(buffer), premapPtr));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                        size_t size,
-                       wgpu::Buffer buffer)
+                       wgpu::Buffer buffer,
+                       void* premapPtr)
         : Buffer(sharedContext, size)
-        , fBuffer(std::move(buffer)) {}
+        , fBuffer(std::move(buffer)) {
+    fMapPtr = premapPtr;
+}
 
 void DawnBuffer::onMap() {
     SkASSERT(fBuffer);
@@ -122,7 +129,6 @@ void DawnBuffer::onMap() {
 void DawnBuffer::onUnmap() {
     SkASSERT(fBuffer);
     SkASSERT(this->isMapped());
-    SkASSERT(fBuffer.GetUsage() & (wgpu::BufferUsage::MapRead | wgpu::BufferUsage::MapWrite));
 
     fBuffer.Unmap();
     fMapPtr = nullptr;

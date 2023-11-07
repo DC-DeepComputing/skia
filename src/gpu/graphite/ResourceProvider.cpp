@@ -195,7 +195,10 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
 
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
                                                    BufferType type,
-                                                   AccessPattern accessPattern) {
+                                                   AccessPattern accessPattern,
+                                                   PremapBuffer premap) {
+    SkASSERT(premap == PremapBuffer::kNo || fSharedContext->caps()->canCreatePremappedBuffers());
+
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
 #ifdef SK_DEBUG
@@ -216,7 +219,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
 #endif
 
     GraphiteResourceKey key;
-    {
+    if (premap == PremapBuffer::kNo) {
         // For the key we need ((sizeof(size_t) + (sizeof(uint32_t) - 1)) / (sizeof(uint32_t))
         // uint32_t's for the size and one uint32_t for the rest.
         static_assert(sizeof(uint32_t) == 4);
@@ -241,17 +244,22 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
         }
     }
 
-    skgpu::Budgeted budgeted = skgpu::Budgeted::kYes;
-    if (Resource* resource = fResourceCache->findAndRefResource(key, budgeted)) {
-        return sk_sp<Buffer>(static_cast<Buffer*>(resource));
+    if (key.isValid()) {
+        skgpu::Budgeted budgeted = skgpu::Budgeted::kYes;
+        if (Resource* resource = fResourceCache->findAndRefResource(key, budgeted)) {
+            return sk_sp<Buffer>(static_cast<Buffer*>(resource));
+        }
     }
-    auto buffer = this->createBuffer(size, type, accessPattern);
+
+    auto buffer = this->createBuffer(size, type, accessPattern, premap);
     if (!buffer) {
         return nullptr;
     }
 
-    buffer->setKey(key);
-    fResourceCache->insertResource(buffer.get());
+    if (key.isValid()) {
+        buffer->setKey(key);
+        fResourceCache->insertResource(buffer.get());
+    }
     return buffer;
 }
 
