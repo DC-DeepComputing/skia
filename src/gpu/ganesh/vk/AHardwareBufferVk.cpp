@@ -12,6 +12,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
+#include "include/gpu/vk/VulkanAHardwareBufferUtils.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
@@ -26,77 +27,48 @@ namespace GrAHardwareBufferUtils {
 GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffer* hardwareBuffer,
                                        uint32_t bufferFormat, bool requireKnownFormat) {
     GrBackendApi backend = dContext->backend();
-
     if (backend != GrBackendApi::kVulkan) {
         return GrBackendFormat();
     }
-    switch (bufferFormat) {
-        case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM:
-            return GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
-        case AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT:
-            return GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_SFLOAT);
-        case AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM:
-            return GrBackendFormats::MakeVk(VK_FORMAT_R5G6B5_UNORM_PACK16);
-        case AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM:
-            return GrBackendFormats::MakeVk(VK_FORMAT_A2B10G10R10_UNORM_PACK32);
-        case AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM:
-            return GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM);
-        case AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM:
-            return GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8_UNORM);
-#if __ANDROID_API__ >= 33
-        case AHARDWAREBUFFER_FORMAT_R8_UNORM:
-            return GrBackendFormats::MakeVk(VK_FORMAT_R8_UNORM);
-#endif
-        default: {
-            if (requireKnownFormat) {
-                return GrBackendFormat();
-            } else {
-                GrVkGpu* gpu = static_cast<GrVkGpu*>(dContext->priv().getGpu());
-                SkASSERT(gpu);
-                VkDevice device = gpu->device();
-
-                if (!gpu->vkCaps().supportsAndroidHWBExternalMemory()) {
-                    return GrBackendFormat();
-                }
-                VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
-                hwbFormatProps.sType =
-                        VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_FORMAT_PROPERTIES_ANDROID;
-                hwbFormatProps.pNext = nullptr;
-
-                VkAndroidHardwareBufferPropertiesANDROID hwbProps;
-                hwbProps.sType = VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_PROPERTIES_ANDROID;
-                hwbProps.pNext = &hwbFormatProps;
-
-                VkResult err = VK_CALL(GetAndroidHardwareBufferProperties(device,
-                                                                          hardwareBuffer,
-                                                                          &hwbProps));
-                if (VK_SUCCESS != err) {
-                    return GrBackendFormat();
-                }
-
-                if (hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
-                    return GrBackendFormat();
-                }
-
-                GrVkYcbcrConversionInfo ycbcrConversion;
-                ycbcrConversion.fYcbcrModel = hwbFormatProps.suggestedYcbcrModel;
-                ycbcrConversion.fYcbcrRange = hwbFormatProps.suggestedYcbcrRange;
-                ycbcrConversion.fXChromaOffset = hwbFormatProps.suggestedXChromaOffset;
-                ycbcrConversion.fYChromaOffset = hwbFormatProps.suggestedYChromaOffset;
-                ycbcrConversion.fForceExplicitReconstruction = VK_FALSE;
-                ycbcrConversion.fExternalFormat = hwbFormatProps.externalFormat;
-                ycbcrConversion.fFormatFeatures = hwbFormatProps.formatFeatures;
-                if (VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT &
-                    hwbFormatProps.formatFeatures) {
-                    ycbcrConversion.fChromaFilter = VK_FILTER_LINEAR;
-                } else {
-                    ycbcrConversion.fChromaFilter = VK_FILTER_NEAREST;
-                }
-
-                return GrBackendFormats::MakeVk(ycbcrConversion);
-            }
-        }
+    VkFormat vkFormat = skgpu::get_vk_format_from_ahardwarebuffer_format(bufferFormat);
+    if (vkFormat != VK_FORMAT_UNDEFINED) {
+        return GrBackendFormats::MakeVk(vkFormat);
+    } else if (requireKnownFormat) {
+        return GrBackendFormat();
     }
+
+    // Unknown AHardwareBuffer format.
+    GrVkGpu* gpu = static_cast<GrVkGpu*>(dContext->priv().getGpu());
+    SkASSERT(gpu);
+    VkDevice device = gpu->device();
+
+    if (!gpu->vkCaps().supportsAndroidHWBExternalMemory()) {
+        return GrBackendFormat();
+    }
+    VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
+    hwbFormatProps.sType =
+            VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_FORMAT_PROPERTIES_ANDROID;
+    hwbFormatProps.pNext = nullptr;
+
+    VkAndroidHardwareBufferPropertiesANDROID hwbProps;
+    hwbProps.sType = VK_STRUCTURE_TYPE_ANDROID_HARDWARE_BUFFER_PROPERTIES_ANDROID;
+    hwbProps.pNext = &hwbFormatProps;
+
+    VkResult err = VK_CALL(GetAndroidHardwareBufferProperties(device,
+                                                              hardwareBuffer,
+                                                              &hwbProps));
+    if (VK_SUCCESS != err) {
+        return GrBackendFormat();
+    }
+
+    if (hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
+        return GrBackendFormat();
+    }
+
+    GrVkYcbcrConversionInfo ycbcrConversion;
+    skgpu::get_ycbcr_conversion_info_from_format_props(hwbFormatProps, &ycbcrConversion);
+
+    return GrBackendFormats::MakeVk(ycbcrConversion);
 }
 
 class VulkanCleanupHelper {
