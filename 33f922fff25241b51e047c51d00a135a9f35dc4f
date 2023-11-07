@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a646a83_f800e16b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-07T01:17:18Z",
+      "side": 1,
+      "message": "NOTE: after _six_ retries, eventually the IWYU job just decided to succeed. I can\u0027t explain this. But I think this CL is still valid.",
+      "revId": "33f922fff25241b51e047c51d00a135a9f35dc4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
