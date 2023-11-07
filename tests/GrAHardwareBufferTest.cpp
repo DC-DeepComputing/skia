@@ -26,188 +26,82 @@
 #include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
+#include "tools/gpu/vk/AHardwareBufferTestUtils.h"
+
 #include <android/hardware_buffer.h>
 #include <cinttypes>
 
-static const int DEV_W = 16, DEV_H = 16;
+// There is no clean mapping from GrSurfaceOrigin to skgpu::Origin, so for now, just use a
+// switch statement so we can utilize AHwBuffer utilities shared b/w ganesh and graphite.
+namespace { // anonymous namespace
 
-static SkPMColor get_src_color(int x, int y) {
-    SkASSERT(x >= 0 && x < DEV_W);
-    SkASSERT(y >= 0 && y < DEV_H);
-
-    U8CPU r = x;
-    U8CPU g = y;
-    U8CPU b = 0xc;
-
-    U8CPU a = 0xff;
-    switch ((x+y) % 5) {
-        case 0:
-            a = 0xff;
-            break;
-        case 1:
-            a = 0x80;
-            break;
-        case 2:
-            a = 0xCC;
-            break;
-        case 4:
-            a = 0x01;
-            break;
-        case 3:
-            a = 0x00;
-            break;
-    }
-    a = 0xff;
-    return SkPremultiplyARGBInline(a, r, g, b);
-}
-
-static SkBitmap make_src_bitmap() {
-    static SkBitmap bmp;
-    if (bmp.isNull()) {
-        bmp.allocN32Pixels(DEV_W, DEV_H);
-        intptr_t pixels = reinterpret_cast<intptr_t>(bmp.getPixels());
-        for (int y = 0; y < DEV_H; ++y) {
-            for (int x = 0; x < DEV_W; ++x) {
-                SkPMColor* pixel = reinterpret_cast<SkPMColor*>(
-                        pixels + y * bmp.rowBytes() + x * bmp.bytesPerPixel());
-                *pixel = get_src_color(x, y);
-            }
+skgpu::Origin gr_surface_origin_to_skgpu_origin(GrSurfaceOrigin surfaceOrigin) {
+    switch (surfaceOrigin) {
+        case GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin: {
+            return skgpu::Origin::kTopLeft;
         }
-    }
-    return bmp;
-}
-
-static bool check_read(skiatest::Reporter* reporter, const SkBitmap& expectedBitmap,
-                       const SkBitmap& actualBitmap) {
-    bool result = true;
-    for (int y = 0; y < DEV_H && result; ++y) {
-        for (int x = 0; x < DEV_W && result; ++x) {
-            const uint32_t srcPixel = *expectedBitmap.getAddr32(x, y);
-            const uint32_t dstPixel = *actualBitmap.getAddr32(x, y);
-            if (srcPixel != dstPixel) {
-                ERRORF(reporter, "Expected readback pixel (%d, %d) value 0x%08x, got 0x%08x.",
-                       x, y,  srcPixel, dstPixel);
-                result = false;
-            }/* else {
-                SkDebugf("Got good pixel (%d, %d) value 0x%08x, got 0x%08x.\n",
-                       x, y,  srcPixel, dstPixel);
-            }*/
+        case GrSurfaceOrigin::kBottomLeft_GrSurfaceOrigin: {
+            return skgpu::Origin::kBottomLeft;
         }
+        default: { SkUNREACHABLE; }
     }
-    return result;
 }
 
-static void cleanup_resources(AHardwareBuffer* buffer) {
-    if (buffer) {
-        AHardwareBuffer_release(buffer);
-    }
-}
+} // anonymous namespace
 
 static void basic_draw_test_helper(skiatest::Reporter* reporter,
                                    const sk_gpu_test::ContextInfo& info,
                                    GrSurfaceOrigin surfaceOrigin) {
-
     auto context = info.directContext();
     if (!context->priv().caps()->supportsAHardwareBufferImages()) {
         return;
     }
 
+    // todo consolidate
+    // There is no clean mapping from GrSurfaceOrigin to skgpu::Origin, so for now, just use a
+    // switch statement so we can utilize AHwBuffer utilities shared b/w ganesh and graphite.
+
+
     ///////////////////////////////////////////////////////////////////////////
     // Setup SkBitmaps
     ///////////////////////////////////////////////////////////////////////////
-
-    const SkBitmap srcBitmap = make_src_bitmap();
-
+    const SkBitmap srcBitmap = MakeSrcBitmap();
     ///////////////////////////////////////////////////////////////////////////
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
-
     AHardwareBuffer* buffer = nullptr;
-
     AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE;
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
-        return;
-    }
-
-    // Get actual desc for allocated buffer so we know the stride for uploading cpu data.
-    AHardwareBuffer_describe(buffer, &hwbDesc);
-
-    uint32_t* bufferAddr;
-    if (AHardwareBuffer_lock(buffer, AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN, -1, nullptr,
-                             reinterpret_cast<void**>(&bufferAddr))) {
-        ERRORF(reporter, "Failed to lock hardware buffer");
-        cleanup_resources(buffer);
-        return;
-    }
-
-    int bbp = srcBitmap.bytesPerPixel();
-    uint32_t* src = (uint32_t*)srcBitmap.getPixels();
-    int nextLineStep = DEV_W;
-    if (surfaceOrigin == kBottomLeft_GrSurfaceOrigin) {
-        nextLineStep = -nextLineStep;
-        src += (DEV_H-1)*DEV_W;
-    }
-    uint32_t* dst = bufferAddr;
-    for (int y = 0; y < DEV_H; ++y) {
-        memcpy(dst, src, DEV_W * bbp);
-        src += nextLineStep;
-        dst += hwbDesc.stride;
-    }
-    AHardwareBuffer_unlock(buffer, nullptr);
-
+    SetupAHardwareBuffer(buffer, &hwbDesc, reporter);
     ///////////////////////////////////////////////////////////////////////////
     // Wrap AHardwareBuffer in SkImage
     ///////////////////////////////////////////////////////////////////////////
-
     sk_sp<SkImage> image = SkImages::DeferredFromAHardwareBuffer(
             buffer, kPremul_SkAlphaType, nullptr, surfaceOrigin);
     REPORTER_ASSERT(reporter, image);
-
     ///////////////////////////////////////////////////////////////////////////
     // Make a surface to draw into
     ///////////////////////////////////////////////////////////////////////////
-
     SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
                                               kPremul_SkAlphaType);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, imageInfo);
     REPORTER_ASSERT(reporter, surface);
-
     ///////////////////////////////////////////////////////////////////////////
     // Draw the AHardwareBuffer SkImage into surface
     ///////////////////////////////////////////////////////////////////////////
-
     surface->getCanvas()->drawImage(image, 0, 0);
-
     SkBitmap readbackBitmap;
     readbackBitmap.allocN32Pixels(DEV_W, DEV_H);
-
     REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
-    REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
-
+    REPORTER_ASSERT(reporter, CheckRead(srcBitmap, readbackBitmap, reporter));
     // Draw the image a second time to make sure we get the correct origin when we get the cached
     // proxy from the generator.
     surface->getCanvas()->drawImage(image, 0, 0);
     REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
-    REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
-
+    REPORTER_ASSERT(reporter, CheckRead(srcBitmap, readbackBitmap, reporter));
     image.reset();
-
-    cleanup_resources(buffer);
+    CleanupResources(buffer);
 }
+
 
 // Basic test to make sure we can import an AHardwareBuffer into an SkImage and draw it into a
 // surface.
@@ -228,44 +122,17 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
         return;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Setup SkBitmaps
-    ///////////////////////////////////////////////////////////////////////////
-
-    const SkBitmap srcBitmap = make_src_bitmap();
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Setup AHardwareBuffer
-    ///////////////////////////////////////////////////////////////////////////
+    const SkBitmap srcBitmap = MakeSrcBitmap();
 
     AHardwareBuffer* buffer = nullptr;
-
     AHardwareBuffer_Desc hwbDesc;
-    hwbDesc.width = DEV_W;
-    hwbDesc.height = DEV_H;
-    hwbDesc.layers = 1;
-    hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
-                    AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER |
-                    AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE |
-                    AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT;
-
-    hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used in the allocate
-    hwbDesc.stride = 0;
-    hwbDesc.rfu0= 0;
-    hwbDesc.rfu1= 0;
-
-    if (int error = AHardwareBuffer_allocate(&hwbDesc, &buffer)) {
-        ERRORF(reporter, "Failed to allocated hardware buffer, error: %d", error);
-        cleanup_resources(buffer);
-        return;
-    }
-
+    SetupAHardwareBuffer(buffer, &hwbDesc, reporter);
+//gr_surface_origin_to_skgpu_origin(surfaceOrigin),
     sk_sp<SkSurface> surface =
             SkSurfaces::WrapAndroidHardwareBuffer(context, buffer, surfaceOrigin, nullptr, nullptr);
     if (!surface) {
         ERRORF(reporter, "Failed to make SkSurface.");
-        cleanup_resources(buffer);
+        CleanupResources(buffer);
         return;
     }
 
@@ -275,9 +142,9 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     readbackBitmap.allocN32Pixels(DEV_W, DEV_H);
 
     REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
-    REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
+    REPORTER_ASSERT(reporter, CheckRead(srcBitmap, readbackBitmap, reporter));
 
-    cleanup_resources(buffer);
+    CleanupResources(buffer);
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.

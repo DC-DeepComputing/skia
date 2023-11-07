@@ -87,6 +87,9 @@ VulkanImageView::VulkanImageView(const VulkanSharedContext* sharedContext,
     , fYcbcrConversion(std::move(samplerConversion)) {}
 
 VulkanImageView::~VulkanImageView() {
+    if (fYcbcrConversion) {
+        fYcbcrConversion->unref();
+    }
     VULKAN_CALL(fSharedContext->interface(),
                 DestroyImageView(fSharedContext->device(), fImageView, nullptr));
 }
