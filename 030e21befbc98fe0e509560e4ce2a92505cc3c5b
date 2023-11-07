@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3385efa_263b0aaa",
+        "filename": "include/gpu/vk/GrVkBackendContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-07T20:00:45Z",
+      "side": 0,
+      "message": "Can\u0027t wait to see which clients were using the deprecated attributes! 😮\nLGTM.",
+      "range": {
+        "startLine": 51,
+        "startChar": 63,
+        "endLine": 51,
+        "endChar": 73
+      },
+      "revId": "030e21befbc98fe0e509560e4ce2a92505cc3c5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
