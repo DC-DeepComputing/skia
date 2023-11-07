@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "583f194c_e3b94a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-11-07T21:15:36Z",
+      "side": 1,
+      "message": "The code as checked in already always has both GN and Bazel build the high quality version. *this* CL is intended to find a way to do the set/override mechanism.\n\nI have a mechanism that seems to work for GN, but don\u0027t know how to create one for Bazel. What do you suggest for that?",
+      "parentUuid": "6d8bdc3e_34c97bff",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
