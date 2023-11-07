@@ -48,16 +48,10 @@ struct SK_API GrVkBackendContext {
     VkDevice                            fDevice = VK_NULL_HANDLE;
     VkQueue                             fQueue = VK_NULL_HANDLE;
     uint32_t                            fGraphicsQueueIndex = 0;
-    uint32_t                            fMinAPIVersion = 0; // Deprecated. Use fInstanceVersion
-                                                            // instead.
-    uint32_t                            fInstanceVersion = 0; // Deprecated. Use fMaxApiVersion
     // The max api version set here should match the value set in VkApplicationInfo::apiVersion when
     // then VkInstance was created.
     uint32_t                            fMaxAPIVersion = 0;
-    uint32_t                            fExtensions = 0; // Deprecated. Use fVkExtensions instead.
     const skgpu::VulkanExtensions*      fVkExtensions = nullptr;
-    uint32_t                            fFeatures = 0; // Deprecated. Use fDeviceFeatures[2]
-                                                       // instead.
     // The client can create their VkDevice with either a VkPhysicalDeviceFeatures or
     // VkPhysicalDeviceFeatures2 struct, thus we have to support taking both. The
     // VkPhysicalDeviceFeatures2 struct is needed so we know if the client enabled any extension
@@ -67,9 +61,6 @@ struct SK_API GrVkBackendContext {
     const VkPhysicalDeviceFeatures2*    fDeviceFeatures2 = nullptr;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;
     skgpu::VulkanGetProc                fGetProc = nullptr;
-    // This is deprecated and should be set to false. The client is responsible for managing the
-    // lifetime of the VkInstance and VkDevice objects.
-    bool                                fOwnsInstanceAndDevice = false;
     // Indicates that we are working with protected content and all CommandPool and Queue operations
     // should be done in a protected context.
     skgpu::Protected                    fProtectedContext = skgpu::Protected::kNo;

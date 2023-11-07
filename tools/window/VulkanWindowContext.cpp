@@ -92,7 +92,7 @@ void VulkanWindowContext::initializeContext() {
     uint32_t physDevVersion = physDeviceProperties.apiVersion;
 
     fInterface.reset(new skgpu::VulkanInterface(backendContext.fGetProc, fInstance, fDevice,
-                                                backendContext.fInstanceVersion, physDevVersion,
+                                                backendContext.fMaxAPIVersion, physDevVersion,
                                                 &extensions));
 
     GET_PROC(DestroyInstance);

@@ -18,14 +18,14 @@ class VulkanExtensions;
 
 // The VkBackendContext contains all of the base Vk objects needed by the skia Vulkan context.
 struct SK_API VulkanBackendContext {
-    VkInstance                       fInstance;
-    VkPhysicalDevice                 fPhysicalDevice;
-    VkDevice                         fDevice;
-    VkQueue                          fQueue;
-    uint32_t                         fGraphicsQueueIndex;
+    VkInstance                       fInstance = VK_NULL_HANDLE;
+    VkPhysicalDevice                 fPhysicalDevice = VK_NULL_HANDLE;
+    VkDevice                         fDevice = VK_NULL_HANDLE;
+    VkQueue                          fQueue = VK_NULL_HANDLE;
+    uint32_t                         fGraphicsQueueIndex = 0;
     // The max api version set here should match the value set in VkApplicationInfo::apiVersion when
     // then VkInstance was created.
-    uint32_t                         fMaxAPIVersion;
+    uint32_t                         fMaxAPIVersion = 0;
     const skgpu::VulkanExtensions*   fVkExtensions = nullptr;
     // The client can create their VkDevice with either a VkPhysicalDeviceFeatures or
     // VkPhysicalDeviceFeatures2 struct, thus we have to support taking both. The
@@ -34,11 +34,11 @@ struct SK_API VulkanBackendContext {
     // fDeviceFeatures and fDeviceFeatures2 are null we will assume no features are enabled.
     const VkPhysicalDeviceFeatures*  fDeviceFeatures = nullptr;
     const VkPhysicalDeviceFeatures2* fDeviceFeatures2 = nullptr;
-    // Optional. The client may provide an inplementation of a VulkanMemoryAllocator for Skia to use
+    // Optional. The client may provide an implementation of a VulkanMemoryAllocator for Skia to use
     // for allocating Vulkan resources that use VkDeviceMemory.
     sk_sp<VulkanMemoryAllocator>     fMemoryAllocator;
-    skgpu::VulkanGetProc             fGetProc;
-    Protected                        fProtectedContext;
+    skgpu::VulkanGetProc             fGetProc = nullptr;
+    Protected                        fProtectedContext = Protected::kNo;
 };
 
 } // namespace skgpu::graphite
