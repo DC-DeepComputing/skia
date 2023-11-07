@@ -121,14 +121,7 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
         }
     } else {
         skgpu::VulkanExtensions extensions;
-        // The only extension flag that may effect the vulkan backend is the swapchain extension. We
-        // need to know if this is enabled to know if we can transition to a present layout when
-        // flushing a surface.
-        if (backendContext.fExtensions & kKHR_swapchain_GrVkExtensionFlag) {
-            const char* swapChainExtName = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
-            extensions.init(backendContext.fGetProc, backendContext.fInstance,
-                            backendContext.fPhysicalDevice, 0, nullptr, 1, &swapChainExtName);
-        }
+
         interface.reset(new skgpu::VulkanInterface(backendContext.fGetProc,
                                                    backendContext.fInstance,
                                                    backendContext.fDevice,
@@ -155,25 +148,9 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
     } else {
         VkPhysicalDeviceFeatures2 features;
         memset(&features, 0, sizeof(VkPhysicalDeviceFeatures2));
-        features.pNext = nullptr;
-        if (backendContext.fFeatures & kGeometryShader_GrVkFeatureFlag) {
-            features.features.geometryShader = true;
-        }
-        if (backendContext.fFeatures & kDualSrcBlend_GrVkFeatureFlag) {
-            features.features.dualSrcBlend = true;
-        }
-        if (backendContext.fFeatures & kSampleRateShading_GrVkFeatureFlag) {
-            features.features.sampleRateShading = true;
-        }
+
         skgpu::VulkanExtensions extensions;
-        // The only extension flag that may effect the vulkan backend is the swapchain extension. We
-        // need to know if this is enabled to know if we can transition to a present layout when
-        // flushing a surface.
-        if (backendContext.fExtensions & kKHR_swapchain_GrVkExtensionFlag) {
-            const char* swapChainExtName = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
-            extensions.init(backendContext.fGetProc, backendContext.fInstance,
-                            backendContext.fPhysicalDevice, 0, nullptr, 1, &swapChainExtName);
-        }
+
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features, instanceVersion, physDevVersion, extensions,
                                 backendContext.fProtectedContext));
@@ -236,7 +213,6 @@ GrVkGpu::GrVkGpu(GrDirectContext* direct,
         , fStagingBufferManager(this)
         , fDisconnected(false)
         , fProtectedContext(backendContext.fProtectedContext) {
-    SkASSERT(!backendContext.fOwnsInstanceAndDevice);
     SkASSERT(fMemoryAllocator);
 
     this->initCapsAndCompiler(fVkCaps);

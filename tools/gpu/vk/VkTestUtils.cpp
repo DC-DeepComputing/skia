@@ -486,7 +486,6 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fVkExtensions = skgpuCtx.fVkExtensions;
     ctx->fDeviceFeatures2 = skgpuCtx.fDeviceFeatures2;
     ctx->fGetProc = skgpuCtx.fGetProc;
-    ctx->fOwnsInstanceAndDevice = false;
     ctx->fProtectedContext = skgpuCtx.fProtectedContext;
     return true;
 }
