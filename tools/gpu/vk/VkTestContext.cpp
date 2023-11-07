@@ -38,11 +38,15 @@ public:
                 return nullptr;
             }
 
+            const bool kFoo = false; /*$$*/
+
+            /**/
             extensions = new skgpu::VulkanExtensions();
             features = new VkPhysicalDeviceFeatures2;
             memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
             if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions,
-                                                     features, &debugCallback)) {
+                                                     features, &debugCallback, nullptr,
+                                                     sk_gpu_test::CanPresentFn(), kFoo)) {
                 sk_gpu_test::FreeVulkanFeaturesStructs(features);
                 delete features;
                 delete extensions;

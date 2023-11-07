@@ -29,11 +29,15 @@ std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
         return nullptr;
     }
 
+    const bool kIsProtected = false; /*$$*/
+
     extensions = new skgpu::VulkanExtensions();
     features = new VkPhysicalDeviceFeatures2;
     memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions,
-                                             features, &debugCallback)) {
+                                             features, &debugCallback, nullptr,
+                                             sk_gpu_test::CanPresentFn(),
+                                             kIsProtected)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(features);
         delete features;
         delete extensions;
@@ -98,7 +102,7 @@ std::unique_ptr<skgpu::graphite::Context> VulkanTestContext::makeContext(
     // Needed to make synchronous readPixels work
     revisedOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
 
-    return skgpu::graphite::ContextFactory::MakeVulkan(fVulkan, revisedOptions);
+    return skgpu::graphite::ContextFactory::MakeVulkan2(fVulkan, revisedOptions); /*$$$*/
 }
 
 }  // namespace skiatest::graphite
