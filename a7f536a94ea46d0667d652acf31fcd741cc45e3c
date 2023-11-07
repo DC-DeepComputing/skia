@@ -261,6 +261,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bf3b0d1_79b25150",
+        "filename": "tools/graphite/ProtectedUtils_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-07T13:36:56Z",
+      "side": 1,
+      "message": "Done - I added a bulk comment for all 4 factories (Ganesh/Graphite x Surface/Image)",
+      "parentUuid": "61309da4_1b3e138c",
+      "range": {
+        "startLine": 31,
+        "startChar": 70,
+        "endLine": 31,
+        "endChar": 81
+      },
+      "revId": "a7f536a94ea46d0667d652acf31fcd741cc45e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19c19ee2_5ef5186a",
