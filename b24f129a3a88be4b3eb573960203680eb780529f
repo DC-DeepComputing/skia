@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07e37f3f_f489fa63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-07T23:16:57Z",
+      "side": 1,
+      "message": "The mechanism I would suggest has a public header which can create the high quality one and a different header for the low quality one. Then, instead of it being a static function on `SkMipmap`, it would go in those headers, in the `SkMipmaps` namespace (or similar). Then `SkMipmap::Build` should be modified to take a `SkMipmapDownSampler` (it\u0027s fine to set a default until clients are migrated to always provide one).\n\nThat will should be \"Bazel-approved\" (and GN should be fine too).",
+      "parentUuid": "583f194c_e3b94a95",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
