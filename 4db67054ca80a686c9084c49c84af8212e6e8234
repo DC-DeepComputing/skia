@@ -108,6 +108,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f661388f_bc794340",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-07T15:52:34Z",
+      "side": 1,
+      "message": "Pretty sure there\u0027s no bug here. There\u0027s been a lot of discussion but I honestly am not sure what the final consensus is; I\u0027ve been only half paying attention since I\u0027m technically OOO yesterday and today. Feel free to cut one if you have a gameplan.",
+      "parentUuid": "3317a35b_94ce57d3",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb4a58d7_d6950061",
