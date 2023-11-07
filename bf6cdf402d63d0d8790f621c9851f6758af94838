@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2148b3b6_c01ae648",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5670
+      },
+      "writtenOn": "2023-11-07T06:10:32Z",
+      "side": 1,
+      "message": "For version change, see my comment in\nhttps://skia-review.googlesource.com/c/skia/+/767956/6/sh.sh#15\n\nFor now, reclient doesn\u0027t provide mechanism for automatic update. But I think you may ask reclient folks to set ref for current version when they update reclient and use that instead of version if that is convinient for you.\n\nAnyway, feel free to fork this CL and utilize http://go/foundry-x-getting-support if they need more help for your reclient usages.",
+      "parentUuid": "e358306e_206e2422",
+      "revId": "bf6cdf402d63d0d8790f621c9851f6758af94838",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e4e5460_7df174ad",
         "filename": "tools/build_with_reclient.sh",
         "patchSetId": 7
