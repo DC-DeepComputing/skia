@@ -141,6 +141,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5d18555_9f76fdad",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T23:06:11Z",
+      "side": 1,
+      "message": "not for this CL, but you know what might be interesting?\n\nRather than let `patch.backup` be null outside of patch/restore, we can put it to use. When we are setting up the patch-array clones, we can precalculate the pointer for `patch.bytesPerPixel * (dy * ctx-\u003estride + dx)` at the first scanline\u0027s tail and store that in `patch.backup`.\n\nThen on each scanline, we can just swap in `patch.backup` in patch, and on restore we can swap it back and add `ctx-\u003estride`.\n\nThis isn\u0027t a huge improvement but it\u0027s per-patch _and_ per-scanline so a 1000-scanline draw with two patches could save 4000 multiplies.",
+      "range": {
+        "startLine": 1147,
+        "startChar": 0,
+        "endLine": 1149,
+        "endChar": 0
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab38f8cd_9f8f76dc",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 18
