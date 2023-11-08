@@ -449,6 +449,7 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("VkTestUtils.cpp::setup_features - Protected content not supported\n");
             return false;
         }
     }
@@ -456,6 +457,24 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
     // If we want to disable any extension features do so here.
 }
 
+// TODO: remove once GrVkBackendContext is deprecated
+void ConvertBackendContext(const skgpu::VulkanBackendContext& newStyle,
+                           GrVkBackendContext* oldStyle) {
+    oldStyle->fInstance = newStyle.fInstance;
+    oldStyle->fPhysicalDevice = newStyle.fPhysicalDevice;
+    oldStyle->fDevice = newStyle.fDevice;
+    oldStyle->fQueue = newStyle.fQueue;
+    oldStyle->fGraphicsQueueIndex = newStyle.fGraphicsQueueIndex;
+    oldStyle->fMaxAPIVersion = newStyle.fMaxAPIVersion;
+    oldStyle->fVkExtensions = newStyle.fVkExtensions;
+    oldStyle->fDeviceFeatures = newStyle.fDeviceFeatures;
+    oldStyle->fDeviceFeatures2 = newStyle.fDeviceFeatures2;
+    oldStyle->fMemoryAllocator = newStyle.fMemoryAllocator;
+    oldStyle->fGetProc = newStyle.fGetProc;
+    oldStyle->fProtectedContext7 = newStyle.fProtectedContext72;
+}
+
+// TODO: remove once GrVkBackendContext is deprecated
 bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             GrVkBackendContext* ctx,
                             skgpu::VulkanExtensions* extensions,
@@ -476,18 +495,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         return false;
     }
 
-    SkASSERT(skgpuCtx.fProtectedContext == skgpu::Protected(isProtected));
-    ctx->fInstance = skgpuCtx.fInstance;
-    ctx->fPhysicalDevice = skgpuCtx.fPhysicalDevice;
-    ctx->fDevice = skgpuCtx.fDevice;
-    ctx->fQueue = skgpuCtx.fQueue;
-    ctx->fGraphicsQueueIndex = skgpuCtx.fGraphicsQueueIndex;
-    ctx->fMaxAPIVersion = skgpuCtx.fMaxAPIVersion;
-    ctx->fVkExtensions = skgpuCtx.fVkExtensions;
-    ctx->fDeviceFeatures2 = skgpuCtx.fDeviceFeatures2;
-    ctx->fGetProc = skgpuCtx.fGetProc;
-    ctx->fOwnsInstanceAndDevice = false;
-    ctx->fProtectedContext = skgpuCtx.fProtectedContext;
+    SkASSERT(skgpuCtx.fProtectedContext72 == skgpu::Protected(isProtected));
+
+    ConvertBackendContext(skgpuCtx, ctx);
     return true;
 }
 
@@ -499,6 +509,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
+
+    SkDebugf("CreateVkBackendContext: %s\n", isProtected ? "protected" : "unprotected");
+
     VkResult err;
 
     ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
@@ -871,7 +884,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fVkExtensions = extensions;
     ctx->fDeviceFeatures2 = features;
     ctx->fGetProc = getProc;
-    ctx->fProtectedContext = skgpu::Protected(isProtected);
+    ctx->fProtectedContext72 = skgpu::Protected(isProtected);
 
     return true;
 }
