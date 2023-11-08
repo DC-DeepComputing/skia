@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a4d588_6791c4c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-08T14:58:59Z",
+      "side": 1,
+      "message": "Can you copy me on the fuzzer issue? I don\u0027t appear to be able to look at it.",
+      "revId": "832b1822ab790d2581e6406939bb8a7ecf37de42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
