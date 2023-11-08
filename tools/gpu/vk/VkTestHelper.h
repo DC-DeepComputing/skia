@@ -18,6 +18,7 @@
 
 class GrDirectContext;
 class SkSurface;
+struct SkISize;
 
 #define DECLARE_VK_PROC(name) PFN_vk##name fVk##name
 
@@ -29,10 +30,12 @@ public:
         this->cleanup();
     }
 
-    bool isValid() const { return fDirectContext != nullptr; }
+    bool isValid() const { return fDirectContext1 != nullptr; }
 
-    GrDirectContext* directContext() { return fDirectContext.get(); }
+    sk_sp<SkSurface> createSurface(SkISize, bool textureable, bool isProtected);
+    void submitAndWaitForCompletion();
 
+    GrDirectContext* directContext1() { return fDirectContext1.get(); }
 
 private:
     VkTestHelper(bool isProtected) : fIsProtected(isProtected) {}
@@ -67,7 +70,7 @@ private:
     VkDebugReportCallbackEXT fDebugCallback = VK_NULL_HANDLE;
     PFN_vkDestroyDebugReportCallbackEXT fDestroyDebugCallback = nullptr;
     skgpu::VulkanBackendContext fBackendContext;
-    sk_sp<GrDirectContext> fDirectContext;
+    sk_sp<GrDirectContext> fDirectContext1;
 };
 
 #undef DECLARE_VK_PROC
