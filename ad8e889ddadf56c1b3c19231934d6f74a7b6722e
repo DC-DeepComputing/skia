@@ -85,6 +85,52 @@
       },
       "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f08043_a538b96f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:41:10Z",
+      "side": 1,
+      "message": "Now that the code is branchless, you can declare the `F`s as you go.\n\n```\nF _0 \u003d ...,\n  _1 \u003d ...,\n```",
+      "range": {
+        "startLine": 723,
+        "startChar": 8,
+        "endLine": 723,
+        "endChar": 25
+      },
+      "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b696a9c9_88cfe842",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 4935,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:41:10Z",
+      "side": 1,
+      "message": "Just `V v;`?",
+      "range": {
+        "startLine": 4935,
+        "startChar": 4,
+        "endLine": 4935,
+        "endChar": 12
+      },
+      "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
