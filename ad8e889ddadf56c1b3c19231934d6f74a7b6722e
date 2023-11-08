@@ -16,6 +16,75 @@
       "message": "... this is the second CL that just removes all the tail stuff.",
       "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb3ede1_79e826c7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:36:53Z",
+      "side": 1,
+      "message": "Two thoughts: \n\n- We can reverse the order here so we work forwards instead of backwards. CPUs tend to like working forwards.\n\n- Once we are working forwards, we can probably replace the first set of\n\n`_nn \u003d _mm256_insertf128_ps(_nn, ..., 0);`\n\nwith \n\n`_nn \u003d _mm256_castps128_ps256(...);`\n\nAnd eliminate the explicit initialization to zero.",
+      "range": {
+        "startLine": 501,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 0
+      },
+      "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abb609fc_6f883998",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:36:53Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 532,
+        "startChar": 9,
+        "endLine": 532,
+        "endChar": 12
+      },
+      "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f31af65_9cde4898",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:36:53Z",
+      "side": 1,
+      "message": "tiny nit: indentation",
+      "range": {
+        "startLine": 662,
+        "startChar": 14,
+        "endLine": 662,
+        "endChar": 16
+      },
+      "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
