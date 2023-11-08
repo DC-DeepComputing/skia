@@ -67,7 +67,8 @@ void GraphiteVulkanWindowContext::initializeContext() {
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             fCanPresentFn,
+                                             fDisplayParams.fCreateProtectedNativeBackend)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -125,7 +126,7 @@ void GraphiteVulkanWindowContext::initializeContext() {
     // Needed to make synchronous readPixels work
     contextOptionsPriv.fStoreContextRefInRecorder = true;
     contextOptions.fOptionsPriv = &contextOptionsPriv;
-    fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan(backendContext, contextOptions);
+    fGraphiteContext = skgpu::graphite::ContextFactory::MakeVulkan2(backendContext, contextOptions);
     fGraphiteRecorder = fGraphiteContext->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
 
     fSurface = fCreateVkSurfaceFn(fInstance);

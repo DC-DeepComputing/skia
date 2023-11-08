@@ -34,22 +34,25 @@ namespace sk_gpu_test {
                                 skgpu::VulkanExtensions*,
                                 VkPhysicalDeviceFeatures2*,
                                 VkDebugReportCallbackEXT* debugCallback,
-                                uint32_t* presentQueueIndexPtr = nullptr,
-                                const CanPresentFn& canPresent = CanPresentFn(),
-                                bool isProtected = false);
+                                uint32_t* presentQueueIndexPtr, // = nullptr,
+                                const CanPresentFn& canPresent, // = CanPresentFn(),
+                                bool isProtected /* = false */);
 
     bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                                 GrVkBackendContext* ctx,
                                 skgpu::VulkanExtensions*,
                                 VkPhysicalDeviceFeatures2*,
                                 VkDebugReportCallbackEXT* debugCallback,
-                                uint32_t* presentQueueIndexPtr = nullptr,
-                                const CanPresentFn& canPresent = CanPresentFn(),
-                                bool isProtected = false);
+                                uint32_t* presentQueueIndexPtr, // = nullptr,
+                                const CanPresentFn& canPresent, // = CanPresentFn(),
+                                bool isProtected /* = false */);
 
     void FreeVulkanFeaturesStructs(const VkPhysicalDeviceFeatures2*);
+
+    void ConvertBackendContext(const skgpu::VulkanBackendContext& newStyle,
+                               GrVkBackendContext* oldStyle);
+
 }  // namespace sk_gpu_test
 
 #endif
 #endif
-
