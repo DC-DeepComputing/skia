@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87c725ff_c408646e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-08T20:19:39Z",
+      "side": 1,
+      "message": "So I\u0027m guessing this is to handle a polygon chain so we don\u0027t detect intersections at shared vertices -- but what happens if two \"chains\" intersect at the same vertex position? E.g., we have a polygon ABCDEF shaped like\n\nA ----- B\n \\     /\n  \\   /\n   \\ /\n   C,F\n   / \\\n  /   \\\n D --- E   \n \n where C and F have the same position.",
+      "revId": "42e7951defc67a44ff27a6e31e0f821fa40b1d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
