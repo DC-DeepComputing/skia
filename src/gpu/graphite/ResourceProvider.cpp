@@ -285,4 +285,21 @@ void ResourceProvider::purgeResourcesNotUsedSince(StdSteadyClock::time_point pur
     fResourceCache->purgeResourcesNotUsedSince(purgeTime);
 }
 
+#ifdef SK_BUILD_FOR_ANDROID
+TextureInfo ResourceProvider::getTextureInfoFromAHardwareBuffer(AHardwareBuffer*,
+                                                                uint32_t bufferFormat,
+                                                                bool requireKnownFormat,
+                                                                bool isRenderable,
+                                                                bool isProtectedContent,
+                                                                bool fromAndroidWindow) const {
+    return {};
+}
+
+BackendTexture ResourceProvider::createBackendTexture(AHardwareBuffer*,
+                                                      int width, int height,
+                                                      const TextureInfo& textureInfo) const {
+    return {};
+}
+#endif
+
 }  // namespace skgpu::graphite
