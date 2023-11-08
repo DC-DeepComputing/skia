@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd1e6c3_012d472b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T20:15:40Z",
+      "side": 1,
+      "message": "... this is the second CL that just removes all the tail stuff.",
+      "revId": "ad8e889ddadf56c1b3c19231934d6f74a7b6722e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
