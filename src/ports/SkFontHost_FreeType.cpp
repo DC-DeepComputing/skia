@@ -1117,7 +1117,7 @@ SkIRect SkScalerContext_FreeType::computeGlyphBounds(const SkGlyph& glyph, SkRec
             bounds->offset(SkFixedToScalar(glyph.getSubXFixed()),
                            SkFixedToScalar(glyph.getSubYFixed()));
         }
-        irect = bounds->roundOut();
+        irect = bounds->roundOut16();
     }
     return irect;
 }
