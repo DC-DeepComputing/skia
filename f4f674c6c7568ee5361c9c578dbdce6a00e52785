@@ -16,6 +16,144 @@
       "message": "I think this is finally ready for review. It\u0027s currently structured as two CLs (to make the review easier), but I\u0027ll squash it before landing.\n\nThis one adds all of the mechanisms for setting up scratch buffers, intercepting load/store ops, patching contexts, etc. The second CL actually removes the `tail` parameter and extra code from all of the load and store stages and helpers throughout RP.\n\nI\u0027m not real thrilled with the code in uncheckedAppend (to intercept things), let me know if you think another structure would work better. (eg: Separate functions that return if an Op is a \"load\" or \"store\", as well as one that just returns the corresponding color-type or bytes-per-pixel)?",
       "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec11c17_bee28085",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:12:42Z",
+      "side": 1,
+      "message": "nit: This name could be improved.\n\n- I don\u0027t know why it is `CHECK`, usually that means \"assert\" in Google-speak. Maybe `CASE`?\n\n- `CT` isn\u0027t immediately intuitive as \"ColorType\" when it\u0027s right next to a \"ConText\". Spelling it out in the macro and var names would be helpful for the reader.",
+      "range": {
+        "startLine": 57,
+        "startChar": 14,
+        "endLine": 57,
+        "endChar": 16
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840d1554_a1eed7e3",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:12:42Z",
+      "side": 1,
+      "message": "This spooks me a bit. Logically, this shouldn\u0027t happen in a Raster Pipeline that makes _sense_, but it\u0027s not an entirely impossible outcome either. (Extend a pipeline with itself?)",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 72
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fabfb662_ce7e08ca",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:12:42Z",
+      "side": 1,
+      "message": "The rationale for the `2` is not very important; you can reduce the amount of text spent on this. (\"Only 1 in 2 million CPU-backend pipelines need more than two patches.\"?)\nI think we should spend a few lines explaining what memory-context patches do and how they allow us to implement tail operations. It\u0027s not very obvious if you haven\u0027t spent a lot of time thinking about raster pipeline.",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e57669_40af27e8",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:12:42Z",
+      "side": 1,
+      "message": "Rather than make this `mutable`, why not just clone the list at the start of `run`?\n\nWe\u0027re already making an allocation for scratch data so we can just piggyback on that. If \u003e2 contexts is really so rare, copying 2 elements is trivial and feels better than violating const-ness",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 157,
+        "endChar": 11
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82df5ce0_2de901ae",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:12:42Z",
+      "side": 1,
+      "message": "Seems like this could be a range-based for?",
+      "range": {
+        "startLine": 1144,
+        "startChar": 0,
+        "endLine": 1146,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c59474ad_84a62ad1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 1169,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:12:42Z",
+      "side": 1,
+      "message": "Range-based for?",
+      "range": {
+        "startLine": 1167,
+        "startChar": 0,
+        "endLine": 1169,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
