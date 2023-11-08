@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "73a0a9ad6279719afd1dd13b3926ae1b6127fdaf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac6eb161_5b4afc57",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T20:19:46Z",
+      "side": 1,
+      "message": "If we get this far, do we want to fail and return false, or return group 1?",
+      "range": {
+        "startLine": 223,
+        "startChar": 8,
+        "endLine": 223,
+        "endChar": 9
+      },
+      "revId": "73a0a9ad6279719afd1dd13b3926ae1b6127fdaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
