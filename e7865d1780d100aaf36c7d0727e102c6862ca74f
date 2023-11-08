@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f79e78e2_98b982f5",
+        "filename": "gm/blurs.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-08T19:35:23Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 186,
+        "startChar": 74,
+        "endLine": 186,
+        "endChar": 79
+      },
+      "revId": "e7865d1780d100aaf36c7d0727e102c6862ca74f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929ba418_e750f490",
+        "filename": "gm/blurs.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-08T19:35:23Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 190,
+        "startChar": 33,
+        "endLine": 190,
+        "endChar": 37
+      },
+      "revId": "e7865d1780d100aaf36c7d0727e102c6862ca74f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
