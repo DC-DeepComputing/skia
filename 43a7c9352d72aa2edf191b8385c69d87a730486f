@@ -16,6 +16,23 @@
       "message": "Quick fix for some build breakages caused by missing an arg.",
       "revId": "43a7c9352d72aa2edf191b8385c69d87a730486f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "951e34d3_37f61e89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-08T20:19:47Z",
+      "side": 1,
+      "message": "Got to love when two conflicting changes land simultaneously",
+      "revId": "43a7c9352d72aa2edf191b8385c69d87a730486f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
