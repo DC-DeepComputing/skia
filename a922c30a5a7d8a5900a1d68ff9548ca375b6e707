@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20c434c5_d5e4a5c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T21:26:52Z",
+      "side": 1,
+      "message": "LGTM, hoping the build errors are unrelated?",
+      "revId": "a922c30a5a7d8a5900a1d68ff9548ca375b6e707",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
