@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e8440e9_9233d2bc",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T20:33:36Z",
+      "side": 1,
+      "message": "Are there any Macs which support Metal SDK Version 3.0 but don\u0027t actually support Metal at all? If they aren\u0027t in `MTLGPUFamilyMac2` maybe we should return group 1 instead of failure?",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 31
+      },
+      "revId": "80bb47a5c9dbb94deedb50076f4a39918baa10a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
