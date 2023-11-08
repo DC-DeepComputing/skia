@@ -128,6 +128,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6487ebd1_18780e01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-11-08T01:27:39Z",
+      "side": 1,
+      "message": "I\u0027m leaving out the switch to Std430 for SSBOs from this CL since we seem to be using float4 pervasively where Std140 vs Std430 doesn\u0027t matter and the array passing logic currently uses Std140 rules (\"pessimistically-align everything world\").\n\nThere\u0027s already b/40045541 (aka crbug.com/skia/14639) which is linked in the comments in DawnCaps.",
+      "parentUuid": "f661388f_bc794340",
+      "revId": "4db67054ca80a686c9084c49c84af8212e6e8234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "cb4a58d7_d6950061",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
