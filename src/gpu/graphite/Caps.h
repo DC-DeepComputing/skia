@@ -203,6 +203,9 @@ public:
     // after being unmapped.
     bool canCreatePremappedBuffers() const { return fCanCreatePremappedBuffers; }
 
+    // Returns whether using Buffer::asyncMap() is supported.
+    bool canAsyncMapBuffer() const { return fCanAsyncMapBuffer; }
+
     // Returns whether multisampled render to single sampled is supported.
     bool msaaRenderToSingleSampledSupport() const { return fMSAARenderToSingleSampledSupport; }
 
@@ -301,6 +304,7 @@ protected:
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
     bool fCanCreatePremappedBuffers = false;
+    bool fCanAsyncMapBuffer = false;
     bool fMSAARenderToSingleSampledSupport = false;
 
     bool fComputeSupport = false;

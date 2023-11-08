@@ -36,6 +36,7 @@ void CommandBuffer::resetCommandBuffer() {
 
     this->releaseResources();
     this->onResetCommandBuffer();
+    fBuffersToAsyncMap.clear();
 }
 
 void CommandBuffer::trackResource(sk_sp<Resource> resource) {
@@ -53,6 +54,14 @@ void CommandBuffer::callFinishedProcs(bool success) {
         }
     }
     fFinishedProcs.clear();
+}
+
+void CommandBuffer::addBufferToAsyncMapOnSubmit(sk_sp<skgpu::graphite::Buffer> buffer) {
+    fBuffersToAsyncMap.emplace_back(std::move(buffer));
+}
+
+SkSpan<const sk_sp<Buffer>> CommandBuffer::buffersToAsyncMapOnSubmit() const {
+    return fBuffersToAsyncMap;
 }
 
 bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
