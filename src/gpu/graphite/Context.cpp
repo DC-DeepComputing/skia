@@ -282,43 +282,7 @@ void Context::asyncReadPixels(const TextureProxy* proxy,
         return;
     }
 
-    using AsyncReadResult = skgpu::TAsyncReadResult<Buffer, ContextID, PixelTransferResult>;
-    struct FinishContext {
-        SkImage::ReadPixelsCallback* fClientCallback;
-        SkImage::ReadPixelsContext fClientContext;
-        SkISize fSize;
-        ClientMappedBufferManager* fMappedBufferManager;
-        PixelTransferResult fTransferResult;
-    };
-    auto* finishContext = new FinishContext{callback,
-                                            callbackContext,
-                                            srcRect.size(),
-                                            fMappedBufferManager.get(),
-                                            std::move(transferResult)};
-    GpuFinishedProc finishCallback = [](GpuFinishedContext c, CallbackResult status) {
-        const auto* context = reinterpret_cast<const FinishContext*>(c);
-        if (status == CallbackResult::kSuccess) {
-            ClientMappedBufferManager* manager = context->fMappedBufferManager;
-            auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-            if (!result->addTransferResult(context->fTransferResult, context->fSize,
-                                           context->fTransferResult.fRowBytes, manager)) {
-                result.reset();
-            }
-            (*context->fClientCallback)(context->fClientContext, std::move(result));
-        } else {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-        }
-        delete context;
-    };
-
-    InsertFinishInfo info;
-    info.fFinishedContext = finishContext;
-    info.fFinishedProc = finishCallback;
-    // If addFinishInfo() fails, it invokes the finish callback automatically, which handles all the
-    // required clean up for us, just log an error message.
-    if (!fQueueManager->addFinishInfo(info, fResourceProvider.get())) {
-        SKGPU_LOG_E("Failed to register finish callbacks for asyncReadPixels.");
-    }
+    this->finalizeAsyncReadPixels({&transferResult, 1}, callback, callbackContext);
 }
 
 void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* image,
@@ -583,87 +547,101 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
     }
 
     // Now set up transfers
-    PixelTransferResult yTransfer, uTransfer, vTransfer, aTransfer;
-    yTransfer = copyPlane(ySurface.get());
-    if (!yTransfer.fTransferBuffer) {
+    PixelTransferResult transfers[4];
+    transfers[0] = copyPlane(ySurface.get());
+    if (!transfers[0].fTransferBuffer) {
         callback(callbackContext, nullptr);
         return;
     }
-    uTransfer = copyPlane(uSurface.get());
-    if (!uTransfer.fTransferBuffer) {
+    transfers[1] = copyPlane(uSurface.get());
+    if (!transfers[1].fTransferBuffer) {
         callback(callbackContext, nullptr);
         return;
     }
-    vTransfer = copyPlane(vSurface.get());
-    if (!vTransfer.fTransferBuffer) {
+    transfers[2] = copyPlane(vSurface.get());
+    if (!transfers[2].fTransferBuffer) {
         callback(callbackContext, nullptr);
         return;
     }
     if (readAlpha) {
-        aTransfer = copyPlane(aSurface.get());
-        if (!aTransfer.fTransferBuffer) {
+        transfers[3] = copyPlane(aSurface.get());
+        if (!transfers[3].fTransferBuffer) {
             callback(callbackContext, nullptr);
             return;
         }
     }
 
+    size_t n = readAlpha ? 4 : 3;
+    this->finalizeAsyncReadPixels({transfers, n}, callback, callbackContext);
+}
+
+void Context::finalizeAsyncReadPixels(SkSpan<PixelTransferResult> transferResults,
+                                      SkImage::ReadPixelsCallback callback,
+                                      SkImage::ReadPixelsContext callbackContext) {
     // Set up FinishContext and add transfer commands to queue
-    using AsyncReadResult = skgpu::TAsyncReadResult<Buffer, ContextID, PixelTransferResult>;
-    struct FinishContext {
+    struct AsyncReadFinishContext {
         SkImage::ReadPixelsCallback* fClientCallback;
         SkImage::ReadPixelsContext fClientContext;
-        SkISize fSize;
         ClientMappedBufferManager* fMappedBufferManager;
-        PixelTransferResult fYTransfer;
-        PixelTransferResult fUTransfer;
-        PixelTransferResult fVTransfer;
-        PixelTransferResult fATransfer;
+        std::array<PixelTransferResult, 4> fTransferResults;
     };
-    auto* finishContext = new FinishContext{callback,
-                                            callbackContext,
-                                            srcRect.size(),
-                                            fMappedBufferManager.get(),
-                                            std::move(yTransfer),
-                                            std::move(uTransfer),
-                                            std::move(vTransfer),
-                                            std::move(aTransfer)};
-    GpuFinishedProc finishCallback = [](GpuFinishedContext c, CallbackResult status) {
-        const auto* context = reinterpret_cast<const FinishContext*>(c);
+    auto* finishContext = new AsyncReadFinishContext{callback,
+                                                     callbackContext,
+                                                     fMappedBufferManager.get(),
+                                                     /*fTransferResults=*/{}};
+    SkASSERT(transferResults.size() <= std::size(finishContext->fTransferResults));
+    for (size_t i = 0; i < transferResults.size(); ++i) {
+        finishContext->fTransferResults[i] = std::move(transferResults[i]);
+    }
+
+    InsertFinishInfo info;
+    info.fFinishedContext = finishContext;
+    info.fFinishedProc = [](GpuFinishedContext c, CallbackResult status) {
+        auto* context = reinterpret_cast<AsyncReadFinishContext*>(c);
+        using AsyncReadResult = skgpu::TAsyncReadResult<Buffer, ContextID, PixelTransferResult>;
+
+        ClientMappedBufferManager* manager = context->fMappedBufferManager;
+        std::unique_ptr<AsyncReadResult> result;
         if (status == CallbackResult::kSuccess) {
-            auto manager = context->fMappedBufferManager;
-            auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-            if (!result->addTransferResult(context->fYTransfer, context->fSize,
-                                           context->fYTransfer.fRowBytes, manager)) {
-                result.reset();
-            }
-            SkISize uvSize = {context->fSize.width() / 2, context->fSize.height() / 2};
-            if (result && !result->addTransferResult(context->fUTransfer, uvSize,
-                                                     context->fUTransfer.fRowBytes, manager)) {
-                result.reset();
-            }
-            if (result && !result->addTransferResult(context->fVTransfer, uvSize,
-                                                     context->fVTransfer.fRowBytes, manager)) {
-                result.reset();
-            }
-            if (result && context->fATransfer.fTransferBuffer &&
-                !result->addTransferResult(context->fATransfer, context->fSize,
-                                           context->fATransfer.fRowBytes, manager)) {
-                result.reset();
-            }
-            (*context->fClientCallback)(context->fClientContext, std::move(result));
-        } else {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
+            result = std::make_unique<AsyncReadResult>(manager->ownerID());
         }
+        for (const auto& r : context->fTransferResults) {
+            if (!r.fTransferBuffer) {
+                break;
+            }
+            if (result && !result->addTransferResult(r, r.fSize, r.fRowBytes, manager)) {
+                result.reset();
+            }
+            // If we didn't get this buffer into the mapped buffer manager then make sure it gets
+            // unmapped if it has a pending or completed async map.
+            if (!result &&
+                (r.fTransferBuffer->hasPendingAsyncMap() || r.fTransferBuffer->isMapped())) {
+                r.fTransferBuffer->unmap();
+            }
+        }
+        (*context->fClientCallback)(context->fClientContext, std::move(result));
         delete context;
     };
 
-    InsertFinishInfo finishInfo;
-    finishInfo.fFinishedContext = finishContext;
-    finishInfo.fFinishedProc = finishCallback;
     // If addFinishInfo() fails, it invokes the finish callback automatically, which handles all the
     // required clean up for us, just log an error message.
-    if (!fQueueManager->addFinishInfo(finishInfo, fResourceProvider.get())) {
+    if (!fQueueManager->addFinishInfo(info, fResourceProvider.get())) {
         SKGPU_LOG_E("Failed to register finish callbacks for asyncReadPixels.");
+        return;
+    }
+    if (fSharedContext->caps()->canAsyncMapBuffer()) {
+        for (const auto& r : finishContext->fTransferResults) {
+            if (!r.fTransferBuffer) {
+                break;
+            }
+            if (!fQueueManager->addAsyncBufferMap(r.fTransferBuffer,
+                                                  this->priv().resourceProvider())) {
+                // The callback should still get called at finish time. Currently, we will try to
+                // synchronously map the buffer when it is called. When b/309019344 is implemented
+                // we must detect this and fail without attempting a synchronous map.
+                SKGPU_LOG_W("Failed to register async buffer mapping for asyncReadPixels.");
+            }
+        }
     }
 }
 
@@ -717,6 +695,7 @@ Context::PixelTransferResult Context::transferPixels(const TextureProxy* proxy,
 
     PixelTransferResult result;
     result.fTransferBuffer = std::move(buffer);
+    result.fSize = srcRect.size();
     if (srcImageInfo.colorInfo() != dstColorInfo) {
         SkISize dims = srcRect.size();
         SkImageInfo srcInfo = SkImageInfo::Make(dims, srcImageInfo.colorInfo());
