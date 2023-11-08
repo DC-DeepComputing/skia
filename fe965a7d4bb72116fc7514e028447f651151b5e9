@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0db0c6b2_11ec83b9",
+        "filename": "src/codec/SkTiffUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T14:35:27Z",
+      "side": 1,
+      "message": "While I\u0027m here -- shouldn\u0027t this be `int32_t`? The signed and unsigned blocks are identical, and this code can\u0027t return negative values.",
+      "range": {
+        "startLine": 248,
+        "startChar": 16,
+        "endLine": 248,
+        "endChar": 24
+      },
+      "revId": "fe965a7d4bb72116fc7514e028447f651151b5e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
