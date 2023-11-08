@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e66a9ccb_14b18398",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T20:14:33Z",
+      "side": 1,
+      "message": "I think this is finally ready for review. It\u0027s currently structured as two CLs (to make the review easier), but I\u0027ll squash it before landing.\n\nThis one adds all of the mechanisms for setting up scratch buffers, intercepting load/store ops, patching contexts, etc. The second CL actually removes the `tail` parameter and extra code from all of the load and store stages and helpers throughout RP.\n\nI\u0027m not real thrilled with the code in uncheckedAppend (to intercept things), let me know if you think another structure would work better. (eg: Separate functions that return if an Op is a \"load\" or \"store\", as well as one that just returns the corresponding color-type or bytes-per-pixel)?",
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
