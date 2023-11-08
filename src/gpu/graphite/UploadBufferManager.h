@@ -39,6 +39,7 @@ private:
     sk_sp<Buffer> fReusedBuffer;
     size_t fMinAlignment;
     size_t fReusedBufferOffset = 0;
+    PremapBuffer fPremapBuffers;
 
     std::vector<sk_sp<Buffer>> fUsedBuffers;
 };

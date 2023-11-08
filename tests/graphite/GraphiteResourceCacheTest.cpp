@@ -17,6 +17,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Resource.h"
@@ -191,8 +192,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     }
     const Resource* imageResourcePtr = imageProxy->texture();
     REPORTER_ASSERT(reporter, imageResourcePtr);
-    // There is an extra resource for the buffer that is uploading the data to the texture
-    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 4);
+    // There may be an extra resource for the buffer that is uploading the data to the texture.
+    int bufferCnt = 0;
+    if (!sharedContext->caps()->canCreatePremappedBuffers()) {
+        bufferCnt = 1;
+    }
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 3 + bufferCnt);
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 2);
     REPORTER_ASSERT(reporter, imageResourcePtr->budgeted() == skgpu::Budgeted::kNo);
 
@@ -210,8 +215,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     imageGpu.reset();
     resourceCache->forceProcessReturnedResources();
 
-    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 4);
-    REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 4);
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 3 + bufferCnt);
+    REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 3 + bufferCnt);
     REPORTER_ASSERT(reporter, imageResourcePtr->budgeted() == skgpu::Budgeted::kYes);
 
     // Now try an SkSurface. This is simpler since we can directly create Graphite SkSurface's.
@@ -234,8 +239,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     }
     const Resource* surfaceResourcePtr = surfaceProxy->texture();
 
-    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 5);
-    REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 4);
+    REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 4 + bufferCnt);
+    REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 3 + bufferCnt);
     REPORTER_ASSERT(reporter, surfaceResourcePtr->budgeted() == skgpu::Budgeted::kNo);
 
     // The creation of the surface may have added an initial clear to it. Thus if we just reset the
