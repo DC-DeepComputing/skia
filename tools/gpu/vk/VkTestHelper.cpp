@@ -13,10 +13,12 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
+#include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
+#include "include/gpu/vk/GrVkBackendContext.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
 #define ACQUIRE_INST_VK_PROC(name)                                                               \
-    fVk##name = reinterpret_cast<PFN_vk##name>(instProc(fBackendContext.fInstance, "vk" #name)); \
+    fVk##name = reinterpret_cast<PFN_vk##name>(instProc(fBackendContext1.fInstance, "vk" #name)); \
     if (fVk##name == nullptr) {                                                                  \
         SkDebugf("Function ptr for vk%s could not be acquired\n", #name);                        \
         return false;                                                                            \
@@ -38,19 +40,19 @@ bool VkTestHelper::init() {
     fFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
     fFeatures.pNext = nullptr;
 
-    fBackendContext.fInstance = VK_NULL_HANDLE;
-    fBackendContext.fDevice = VK_NULL_HANDLE;
+    fBackendContext1.fInstance = VK_NULL_HANDLE;
+    fBackendContext1.fDevice = VK_NULL_HANDLE;
 
-    if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, &fExtensions,
+    if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext1, &fExtensions,
                                              &fFeatures, &fDebugCallback, nullptr,
                                              sk_gpu_test::CanPresentFn(), fIsProtected)) {
         return false;
     }
-    fDevice = fBackendContext.fDevice;
+    fDevice = fBackendContext1.fDevice;
 
     if (fDebugCallback != VK_NULL_HANDLE) {
         fDestroyDebugCallback = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(
-                instProc(fBackendContext.fInstance, "vkDestroyDebugReportCallbackEXT"));
+                instProc(fBackendContext1.fInstance, "vkDestroyDebugReportCallbackEXT"));
     }
     ACQUIRE_INST_VK_PROC(DestroyInstance)
     ACQUIRE_INST_VK_PROC(DeviceWaitIdle)
@@ -72,7 +74,9 @@ bool VkTestHelper::init() {
     ACQUIRE_DEVICE_VK_PROC(FlushMappedMemoryRanges)
     ACQUIRE_DEVICE_VK_PROC(GetImageSubresourceLayout)
 
-    fDirectContext = GrDirectContexts::MakeVulkan(fBackendContext);
+    GrVkBackendContext gr;
+    sk_gpu_test::ConvertBackendContext(fBackendContext1, &gr);
+    fDirectContext = GrDirectContexts::MakeVulkan(gr);
     if (!fDirectContext) {
         return false;
     }
@@ -90,19 +94,19 @@ void VkTestHelper::cleanup() {
 
     fDirectContext.reset();
 
-    fBackendContext.fMemoryAllocator.reset();
+    fBackendContext1.fMemoryAllocator.reset();
     if (fDevice != VK_NULL_HANDLE) {
         fVkDeviceWaitIdle(fDevice);
         fVkDestroyDevice(fDevice, nullptr);
         fDevice = VK_NULL_HANDLE;
     }
     if (fDebugCallback != VK_NULL_HANDLE) {
-        fDestroyDebugCallback(fBackendContext.fInstance, fDebugCallback, nullptr);
+        fDestroyDebugCallback(fBackendContext1.fInstance, fDebugCallback, nullptr);
     }
 
-    if (fBackendContext.fInstance != VK_NULL_HANDLE) {
-        fVkDestroyInstance(fBackendContext.fInstance, nullptr);
-        fBackendContext.fInstance = VK_NULL_HANDLE;
+    if (fBackendContext1.fInstance != VK_NULL_HANDLE) {
+        fVkDestroyInstance(fBackendContext1.fInstance, nullptr);
+        fBackendContext1.fInstance = VK_NULL_HANDLE;
     }
 
     sk_gpu_test::FreeVulkanFeaturesStructs(&fFeatures);
