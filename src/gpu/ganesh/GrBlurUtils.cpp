@@ -2278,8 +2278,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> reexpand(
                                           srcAlphaType,
                                           SkMatrix::I(),
                                           GrSamplerState::Filter::kLinear,
-                                          srcBounds,
-                                          srcBounds,
+                                          SkRect::Make(srcBounds.roundOut()),
                                           *rContext->priv().caps());
     paint.setColorFragmentProcessor(std::move(fp));
     paint.setPorterDuffXPFactory(SkBlendMode::kSrc);
@@ -2562,19 +2561,6 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
     auto srcCtx = rContext->priv().makeSC(srcView, colorInfo);
     SkASSERT(srcCtx);
 
-    float scaleX = sigmaX > kMaxSigma ? kMaxSigma / sigmaX : 1.f;
-    float scaleY = sigmaY > kMaxSigma ? kMaxSigma / sigmaY : 1.f;
-    // We round down here so that when we recalculate sigmas we know they will be below
-    // kMaxSigma (but clamp to 1 do we don't have an empty texture).
-    SkISize rescaledSize = {std::max(sk_float_floor2int(srcBounds.width() * scaleX), 1),
-                            std::max(sk_float_floor2int(srcBounds.height() * scaleY), 1)};
-    // Compute the sigmas using the actual scale factors used once we integerized the
-    // rescaledSize.
-    scaleX = static_cast<float>(rescaledSize.width()) / srcBounds.width();
-    scaleY = static_cast<float>(rescaledSize.height()) / srcBounds.height();
-    sigmaX *= scaleX;
-    sigmaY *= scaleY;
-
     // When we are in clamp mode any artifacts in the edge pixels due to downscaling may be
     // exacerbated because of the tile mode. The particularly egregious case is when the original
     // image has transparent black around the edges and the downscaling pulls in some non-zero
@@ -2596,6 +2582,19 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
                                                                                                 : 0;
     int padY = mode == SkTileMode::kClamp || (mode == SkTileMode::kDecal && sigmaY > kMaxSigma) ? 1
                                                                                                 : 0;
+    float scaleX = sigmaX > kMaxSigma ? kMaxSigma / sigmaX : 1.f;
+    float scaleY = sigmaY > kMaxSigma ? kMaxSigma / sigmaY : 1.f;
+    // We round down here so that when we recalculate sigmas we know they will be below
+    // kMaxSigma (but clamp to 1 do we don't have an empty texture).
+    SkISize rescaledSize = {std::max(sk_float_floor2int(srcBounds.width() * scaleX), 1),
+                            std::max(sk_float_floor2int(srcBounds.height() * scaleY), 1)};
+    // Compute the sigmas using the actual scale factors used once we integerized the
+    // rescaledSize.
+    scaleX = static_cast<float>(rescaledSize.width()) / srcBounds.width();
+    scaleY = static_cast<float>(rescaledSize.height()) / srcBounds.height();
+    sigmaX *= scaleX;
+    sigmaY *= scaleY;
+
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
     auto rescaledSDC = skgpu::ganesh::SurfaceDrawContext::Make(
