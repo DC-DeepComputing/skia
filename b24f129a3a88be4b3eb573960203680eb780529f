@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7dcf0d3d_f2727bca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-08T14:47:25Z",
+      "side": 1,
+      "message": "\u003e Then `SkMipmap::Build` should be modified to take a `SkMipmapDownSampler` (it\u0027s fine to set a default until clients are migrated to always provide one).\n\nSkMipmap::Build is mostly (only?) used internally, so we\u0027d be running into the same problem where Skia needs to conditionally pick an implementation, right?\n\nHow about build flags?  We use stuff like this in g3:\n\n    bool_flag(\n        name \u003d \"use_foo\",\n        build_setting_default \u003d False,\n    )\n    \n    config_setting(\n        name \u003d \"use_foo_setting\",\n        flag_values \u003d {\":use_foo\": \"True\"},\n        visibility \u003d [\n            \"//visibility:private\",\n        ],\n    )\n    \n    cc_library(\n        name \u003d \"bar\",\n        srcs \u003d select({\n            \"//conditions:default\": { \u003cdefault_srcs\u003e },\n            \":use_foo_setting\": { \u003cfoo_srcs\u003e },\n        }),\n        ...\n    )\n\nIs something like this supported with Bazel?",
+      "parentUuid": "07e37f3f_f489fa63",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
