@@ -183,7 +183,7 @@ SkGlyph SkScalerContext::makeGlyph(SkPackedGlyphID packedID, SkArenaAlloc* alloc
     return internalMakeGlyph(packedID, fRec.fMaskFormat, alloc);
 }
 
-bool SkScalerContext::GenerateMetricsFromPath(
+void SkScalerContext::GenerateMetricsFromPath(
     SkGlyph* glyph, const SkPath& devPath, SkMask::Format format,
     const bool verticalLCD, const bool a8FromLCD, const bool hairline)
 {
@@ -196,10 +196,7 @@ bool SkScalerContext::GenerateMetricsFromPath(
     }
 
     const SkRect bounds = devPath.getBounds();
-    const SkIRect ir = bounds.roundOut();
-    if (!SkRectPriv::Is16Bit(ir)) {
-        return false;
-    }
+    const SkIRect ir = bounds.roundOut16();
     glyph->fLeft    = ir.fLeft;
     glyph->fTop     = ir.fTop;
     glyph->fWidth   = SkToU16(ir.width());
@@ -221,7 +218,6 @@ bool SkScalerContext::GenerateMetricsFromPath(
             glyph->fTop -= 1;
         }
     }
-    return true;
 }
 
 SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::Format format, SkArenaAlloc* alloc) {
@@ -250,9 +246,7 @@ SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::For
             const bool doVert = SkToBool(fRec.fFlags & SkScalerContext::kLCD_Vertical_Flag);
             const bool a8LCD = SkToBool(fRec.fFlags & SkScalerContext::kGenA8FromLCD_Flag);
             const bool hairline = glyph.pathIsHairline();
-            if (!GenerateMetricsFromPath(&glyph, *devPath, format, doVert, a8LCD, hairline)) {
-                zeroBounds(glyph);
-            }
+            GenerateMetricsFromPath(&glyph, *devPath, format, doVert, a8LCD, hairline);
         }
     } else {
         if (!SkRectPriv::Is16Bit(mx.bounds)) {
