@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f1dc24_55de96a1",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-08T17:17:11Z",
+      "side": 0,
+      "message": "Given the discussion below, add both of these back, then guard one of them behind a:\n```\n#if !defined(SK_SOMETHING)\n```",
+      "range": {
+        "startLine": 211,
+        "startChar": 5,
+        "endLine": 211,
+        "endChar": 28
+      },
+      "revId": "cc751f5d50ea22c269d3b6a6a8f78acf90fac487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
