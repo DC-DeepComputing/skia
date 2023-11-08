@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df263dde_1b3059c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-08T19:06:14Z",
+      "side": 1,
+      "message": "The chrome canary looks like it\u0027s progressing w/o issue. The CPU gold images of the new GM (TiledBlurBigSigma) and the GPU images in the SK_USE_PADDED_BLUR_UPSCALE config draw correctly. The GPU images with the default config do not draw correctly, although you have to expand the image to full resolution to see the artifacts.\n\nTesting locally in chrome, this fixes the issues encountered, although it required both padding the scaled dst size and adjusting the texture effect.",
+      "revId": "2707027b9af0602c8105cef9b2049a7088e3acf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
