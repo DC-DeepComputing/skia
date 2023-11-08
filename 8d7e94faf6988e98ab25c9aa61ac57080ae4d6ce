@@ -22,6 +22,30 @@
       },
       "revId": "8d7e94faf6988e98ab25c9aa61ac57080ae4d6ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f10818_97e4ba4d",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-08T19:59:10Z",
+      "side": 1,
+      "message": "It is also used in VkTestHelper::init() for the time being.",
+      "parentUuid": "843600d1_feb9a701",
+      "range": {
+        "startLine": 459,
+        "startChar": 0,
+        "endLine": 474,
+        "endChar": 1
+      },
+      "revId": "8d7e94faf6988e98ab25c9aa61ac57080ae4d6ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
