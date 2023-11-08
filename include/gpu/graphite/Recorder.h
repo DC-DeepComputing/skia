@@ -18,6 +18,7 @@
 #include <chrono>
 #include <vector>
 
+struct AHardwareBuffer;
 class SkCanvas;
 struct SkImageInfo;
 class SkPixmap;
@@ -97,6 +98,19 @@ public:
      * same Context to call deleteBackendTexture.
      */
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
+
+#ifdef SK_BUILD_FOR_ANDROID
+    TextureInfo getTextureInfoFromAHardwareBuffer(AHardwareBuffer*,
+                                                  uint32_t bufferFormat,
+                                                  bool requireKnownFormat,
+                                                  bool isRenderable,
+                                                  bool isProtectedContent,
+                                                  bool fromAndroidWindow = false) const;
+
+    BackendTexture createBackendTexture(AHardwareBuffer*,
+                                        int width, int height,
+                                        const TextureInfo& textureInfo) const;
+#endif
 
     /**
      * If possible, updates a backend texture with the provided pixmap data. The client
