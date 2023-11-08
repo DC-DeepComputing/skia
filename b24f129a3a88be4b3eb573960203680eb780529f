@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e510100b_a7bcc271",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-08T14:52:15Z",
+      "side": 1,
+      "message": "Supported in Bazel: yes\n\nSupported by G3: Not for all clients. Some clients are not able to set flags at all due to how they build and flags are *highly* discouraged for that reason.",
+      "parentUuid": "7dcf0d3d_f2727bca",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
