@@ -1254,6 +1254,19 @@ public:
         dst->setLTRB(sk_float_floor2int(fLeft), sk_float_floor2int(fTop),
                      sk_float_ceil2int(fRight), sk_float_ceil2int(fBottom));
     }
+    
+    /** Sets SkIRect by discarding the fractional portion of fLeft and fTop; and rounding
+        up fRight and fBottom, using
+        (sk_float_floor2int16(fLeft), sk_float_floor2int16(fTop),
+         sk_float_ceil2int16(fRight), sk_float_ceil2int16(fBottom)).
+
+        @param dst  storage for SkIRect
+    */
+    void roundOut16(SkIRect* dst) const {
+        SkASSERT(dst);
+        dst->setLTRB(sk_float_floor2int16(fLeft), sk_float_floor2int16(fTop),
+                     sk_float_ceil2int16(fRight), sk_float_ceil2int16(fBottom));
+    }
 
     /** Sets SkRect by discarding the fractional portion of fLeft and fTop; and rounding
         up fRight and fBottom, using
@@ -1304,6 +1317,20 @@ public:
         this->roundOut(&ir);
         return ir;
     }
+
+    /** Sets SkIRect by discarding the fractional portion of fLeft and fTop; and rounding
+        up fRight and fBottom, using
+        (sk_float_floor2int16(fLeft), sk_float_floor2int16(fTop),
+         sk_float_ceil2int16(fRight), sk_float_ceil2int16(fBottom)).
+
+        @return  rounded SkIRect
+    */
+    SkIRect roundOut16() const {
+        SkIRect ir;
+        this->roundOut16(&ir);
+        return ir;
+    }
+
     /** Sets SkIRect by rounding up fLeft and fTop; and discarding the fractional portion
         of fRight and fBottom, using
         (sk_float_ceil2int(fLeft), sk_float_ceil2int(fTop),

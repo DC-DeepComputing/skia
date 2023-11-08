@@ -353,7 +353,7 @@ SkScalerContext::GlyphMetrics SkScalerContext_Mac::generateMetrics(const SkGlyph
         skBounds.fBottom += SkFixedToFloat(glyph.getSubYFixed());
     }
 
-    skBounds.roundOut(&mx.bounds);
+    skBounds.roundOut16(&mx.bounds);
     // Expand the bounds by 1 pixel, to give CG room for anti-aliasing.
     // Note that this outset is to allow room for LCD smoothed glyphs. However, the correct outset
     // is not currently known, as CG dilates the outlines by some percentage.

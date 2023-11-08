@@ -626,14 +626,14 @@ private:
               fAdvanceY = 0;
 
     SkMask::Format fMaskFormat{SkMask::kBW_Format};
+    
+    // An SkGlyph can be created with just a packedID, but generally speaking some glyph factory
+    // needs to actually fill out the glyph before it can be used as part of that system.
+    SkDEBUGCODE(bool fAdvancesBoundsFormatAndInitialPathDone{false};)
 
     // Used by the SkScalerContext to pass state from generateMetrics to generateImage.
     // Usually specifies which glyph representation was used to generate the metrics.
     uint16_t  fScalerContextBits = 0;
-
-    // An SkGlyph can be created with just a packedID, but generally speaking some glyph factory
-    // needs to actually fill out the glyph before it can be used as part of that system.
-    SkDEBUGCODE(bool fAdvancesBoundsFormatAndInitialPathDone{false};)
 
     SkPackedGlyphID fID;
 };

@@ -383,7 +383,7 @@ protected:
 
     virtual GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) = 0;
 
-    static bool GenerateMetricsFromPath(
+    static void GenerateMetricsFromPath(
         SkGlyph* glyph, const SkPath& path, SkMask::Format format,
         bool verticalLCD, bool a8FromLCD, bool hairline);
 

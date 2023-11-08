@@ -1464,7 +1464,7 @@ bool SkScalerContext_DW::generateColorV1Metrics(const SkGlyph& glyph, SkIRect* i
         r = sk_rect_from(clipBox);
         matrix.mapRect(&r);
     }
-    r.roundOut(ibounds);
+    r.roundOut16(ibounds);
     return true;
 }
 
@@ -1603,7 +1603,13 @@ bool SkScalerContext_DW::generateDWMetrics(const SkGlyph& glyph,
         return false;
     }
 
-    *ibounds = SkIRect::MakeLTRB(bbox.left, bbox.top, bbox.right, bbox.bottom);
+    auto saturate16 = [](long x) -> int32_t {
+        x = x < INT16_MAX ? x : INT16_MAX;
+        x = x > INT16_MIN ? x : INT16_MIN;
+        return x;
+    }
+    *ibounds = SkIRect::MakeLTRB(saturate16(bbox.left), saturate16(bbox.top),
+                                 saturate16(bbox.right), saturate16(bbox.bottom));
     return true;
 }
 
@@ -1674,7 +1680,7 @@ bool SkScalerContext_DW::generateColorMetrics(const SkGlyph& glyph, SkIRect* ibo
                              SkFixedToScalar(glyph.getSubYFixed()));
     }
     matrix.mapRect(&bounds);
-    bounds.roundOut(ibounds);
+    bounds.roundOut16(ibounds);
     return true;
 }
 
@@ -1690,7 +1696,7 @@ bool SkScalerContext_DW::generateSVGMetrics(const SkGlyph& glyph, SkIRect* iboun
     sk_sp<SkPicture> pic = recorder.finishRecordingAsPicture();
     SkRect bounds = pic->cullRect();
     SkASSERT(bounds.isFinite());
-    bounds.roundOut(ibounds);
+    bounds.roundOut16(ibounds);
     return true;
 }
 
@@ -1759,7 +1765,7 @@ bool SkScalerContext_DW::generatePngMetrics(const SkGlyph& glyph, SkIRect* iboun
                              SkFixedToScalar(glyph.getSubYFixed()));
     }
     matrix.mapRect(&bounds);
-    bounds.roundOut(ibounds);
+    bounds.roundOut16(ibounds);
     return true;
 }
 

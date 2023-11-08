@@ -88,6 +88,15 @@ inline constexpr int64_t SK_MaxS64FitsInFloat = SK_MaxS64 >> (63-24) << (63-24);
 inline constexpr int64_t SK_MinS64FitsInFloat = -SK_MaxS64FitsInFloat;
 
 /**
+ *  Return the closest int16_t for the given float. Returns SK_MaxS32FitsInFloat for NaN.
+ */
+static constexpr int16_t sk_float_saturate2int16(float x) {
+    x = x < INT16_MAX ? x : INT16_MAX;
+    x = x > INT16_MIN ? x : INT16_MIN;
+    return (int)x;
+}
+
+/**
  *  Return the closest int for the given float. Returns SK_MaxS32FitsInFloat for NaN.
  */
 static constexpr int sk_float_saturate2int(float x) {
@@ -113,6 +122,9 @@ static constexpr int64_t sk_float_saturate2int64(float x) {
     x = x > SK_MinS64FitsInFloat ? x : SK_MinS64FitsInFloat;
     return (int64_t)x;
 }
+
+#define sk_float_floor2int16(x)   sk_float_saturate2int16(sk_float_floor(x))
+#define sk_float_ceil2int16(x)    sk_float_saturate2int16(sk_float_ceil(x))
 
 #define sk_float_floor2int(x)   sk_float_saturate2int(sk_float_floor(x))
 #define sk_float_round2int(x)   sk_float_saturate2int(sk_float_round(x))
