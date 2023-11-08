@@ -224,7 +224,11 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
                                     const BackendTexture& backendTex,
                                     SkColorType ct,
                                     sk_sp<SkColorSpace> cs,
-                                    const SkSurfaceProps* props) {
+                                    const SkSurfaceProps* props,
+                                    TextureReleaseProc releaseP,
+                                    ReleaseContext releaseC) {
+    auto releaseHelper = skgpu::RefCntedCallback::Make(releaseP, releaseC);
+
     if (!recorder) {
         return nullptr;
     }
@@ -244,6 +248,7 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     if (!texture) {
         return nullptr;
     }
+    texture->setReleaseCallback(std::move(releaseHelper));
 
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
 
