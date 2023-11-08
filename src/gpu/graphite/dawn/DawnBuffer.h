@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
@@ -25,6 +26,8 @@ public:
                               AccessPattern,
                               PremapBuffer);
 
+    bool hasPendingAsyncMap() const override;
+
     const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
 
 private:
@@ -34,6 +37,7 @@ private:
                void* premapPtr);
 
     void onMap() override;
+    void onAsyncMap() override;
     void onUnmap() override;
 
     void freeGpuData() override;
@@ -43,6 +47,7 @@ private:
     }
 
     wgpu::Buffer fBuffer;
+    std::optional<DawnAsyncWait> fMapAsyncWait;
 };
 
 } // namespace skgpu::graphite

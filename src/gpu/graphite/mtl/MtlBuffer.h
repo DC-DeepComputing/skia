@@ -23,12 +23,15 @@ public:
 
     id<MTLBuffer> mtlBuffer() const { return fBuffer.get(); }
 
+    bool hasPendingAsyncMap() const override;
+
 private:
     MtlBuffer(const MtlSharedContext*,
               size_t size,
               sk_cfp<id<MTLBuffer>>);
 
     void onMap() override;
+    void onAsyncMap() override;
     void onUnmap() override;
 
     void freeGpuData() override;
