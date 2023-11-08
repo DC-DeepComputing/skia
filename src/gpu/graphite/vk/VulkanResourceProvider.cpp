@@ -132,7 +132,9 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size, const Texture
 
 sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
                                                    BufferType type,
-                                                   AccessPattern accessPattern) {
+                                                   AccessPattern accessPattern,
+                                                   PremapBuffer premap) {
+    SkASSERT(premap == PremapBuffer::kNo);
     return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern);
 }
 

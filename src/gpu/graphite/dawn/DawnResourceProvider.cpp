@@ -222,8 +222,9 @@ sk_sp<Texture> DawnResourceProvider::createTexture(SkISize dimensions,
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
-                                                 AccessPattern accessPattern) {
-    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern);
+                                                 AccessPattern accessPattern,
+                                                 PremapBuffer premap) {
+    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern, premap);
 }
 
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SkSamplingOptions& options,
