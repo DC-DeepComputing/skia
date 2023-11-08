@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92e8fc37_37588ae9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-08T14:53:48Z",
+      "side": 1,
+      "message": "If we decide to *never* support toggling between the two options in G3, we can have this be set via a #define set in `SkUserConfig.h`\n\nI don\u0027t know enough about this feature and who wants it to decide that or not.",
+      "parentUuid": "e510100b_a7bcc271",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
