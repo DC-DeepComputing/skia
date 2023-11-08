@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a596e61_daf25dee",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T22:24:15Z",
+      "side": 1,
+      "message": "Agreed - Done (CHECK was a holdover from an earlier version where I was doing asserts, rather than handling the ops).",
+      "parentUuid": "eec11c17_bee28085",
+      "range": {
+        "startLine": 57,
+        "startChar": 14,
+        "endLine": 57,
+        "endChar": 16
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "840d1554_a1eed7e3",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-11-08T21:12:42Z",
       "side": 1,
       "message": "This spooks me a bit. Logically, this shouldn\u0027t happen in a Raster Pipeline that makes _sense_, but it\u0027s not an entirely impossible outcome either. (Extend a pipeline with itself?)",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 72
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73a6fd8e_0f867a80",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T22:24:15Z",
+      "side": 1,
+      "message": "Yeah, I wondered about that, too. I wanted to change addMemoryContext to just take bytes-per-pixel, so I could easily call it here. Tried a few things that got awkward, but I think the latest version is an improvement (and no longer has this comment/restriction).",
+      "parentUuid": "840d1554_a1eed7e3",
       "range": {
         "startLine": 167,
         "startChar": 0,
@@ -110,6 +158,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e99340f8_4142391c",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T22:24:15Z",
+      "side": 1,
+      "message": "Done. I added a longer comment explaining how the patching works at a high-level in the OpContexts.h header (alongside the struct declaration). Let me know what you think.",
+      "parentUuid": "fabfb662_ce7e08ca",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4c14a2d_c98f3fb2",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T22:24:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6e57669_40af27e8",
+      "range": {
+        "startLine": 157,
+        "startChar": 4,
+        "endLine": 157,
+        "endChar": 11
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82df5ce0_2de901ae",
@@ -123,6 +219,30 @@
       "writtenOn": "2023-11-08T21:12:42Z",
       "side": 1,
       "message": "Seems like this could be a range-based for?",
+      "range": {
+        "startLine": 1144,
+        "startChar": 0,
+        "endLine": 1146,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c66f62bc_991f4927",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T22:24:15Z",
+      "side": 1,
+      "message": "Done (using a temporary SkSpan). Thoughts?",
+      "parentUuid": "82df5ce0_2de901ae",
       "range": {
         "startLine": 1144,
         "startChar": 0,
