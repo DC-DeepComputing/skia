@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9b65c4_d14e2072",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T18:52:44Z",
+      "side": 1,
+      "message": "Other than preferring SkUserConfig, this lgtm",
+      "revId": "f9dbba09865172f536caa457a7eca472c8b54c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb03aa87_e4cf5302",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T18:52:44Z",
+      "side": 1,
+      "message": "I\u0027d put this in SkUserConfig.h (with the font-cache and image-cache options).",
+      "revId": "f9dbba09865172f536caa457a7eca472c8b54c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
