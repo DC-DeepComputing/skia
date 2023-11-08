@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac6a0a9e_c387d1c0",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "Move above `case Op::store_r8`",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 22
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea68487b_16bc1d09",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "Can we fuse these into a single allocation to improve the (admittedly rare) case where we have \u003e2 patches?",
+      "range": {
+        "startLine": 570,
+        "startChar": 0,
+        "endLine": 574,
+        "endChar": 0
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323a664a_ba2361bc",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "add:\n\nIf the number of pixels in a row isn\u0027t evenly divisible by N, there will be leftover pixels; this is called the \"tail.\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 86,
+        "endLine": 35,
+        "endChar": 87
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a78261fb_53a2efa3",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "when",
+      "range": {
+        "startLine": 36,
+        "startChar": 72,
+        "endLine": 36,
+        "endChar": 75
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72e9b8f7_6d46e27b",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "add:\n\nIn practice, each scratch buffer uses `SkRasterPipeline_MaxScratchPerPatch` bytes.",
+      "range": {
+        "startLine": 39,
+        "startChar": 94,
+        "endLine": 39,
+        "endChar": 98
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db23fc0d_7b6505e9",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "Each MemoryCtx in the pipeline is patched",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab38f8cd_9f8f76dc",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 1240,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "Pass a SkSpan here and everything seems like it\u0027d get simpler?",
+      "range": {
+        "startLine": 1240,
+        "startChar": 27,
+        "endLine": 1240,
+        "endChar": 92
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

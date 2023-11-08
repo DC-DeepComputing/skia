@@ -255,6 +255,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0427acbe_8c12ea70",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "LGTM but I think it\u0027ll feel even better if you introduce the span sooner (and generate ~identical code)",
+      "parentUuid": "c66f62bc_991f4927",
+      "range": {
+        "startLine": 1144,
+        "startChar": 0,
+        "endLine": 1146,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c59474ad_84a62ad1",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 17
@@ -266,6 +290,30 @@
       "writtenOn": "2023-11-08T21:12:42Z",
       "side": 1,
       "message": "Range-based for?",
+      "range": {
+        "startLine": 1167,
+        "startChar": 0,
+        "endLine": 1169,
+        "endChar": 0
+      },
+      "revId": "f4f674c6c7568ee5361c9c578dbdce6a00e52785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05bab1e5_787913fb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 1169,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-08T22:52:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c59474ad_84a62ad1",
       "range": {
         "startLine": 1167,
         "startChar": 0,
