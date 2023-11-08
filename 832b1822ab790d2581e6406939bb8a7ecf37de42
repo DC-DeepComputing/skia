@@ -36,6 +36,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c554038d_e5987dbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-11-08T18:53:41Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "832b1822ab790d2581e6406939bb8a7ecf37de42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c19d384_e7a8f4b0",
@@ -49,6 +66,24 @@
       "writtenOn": "2023-11-08T17:41:36Z",
       "side": 1,
       "message": "So when created `SkGlyph::fWidth \u003d 0`. So it\u0027s empty before `setImage` is called. So this is more like `setImageHasBeenEffectivelyCalledAfterSettingMetrics`? It would be a lot easier to reason about if `SkGlyph` could only be created with metrics (this class alone enforced that invariant, instead of letting the users try to keep it). I think this is possible now? I think just fixing up SkScalerContext::internalMakeGlyph might work, pass in a skeleton `SkGlyph` to `generateMetrics` and delay creating the `SkGlyph` until we have all the information locally. I suppose I can go take a look into cleaning this up a bit.\n\nFor the time being however, this is fine. I still don\u0027t seem to be able to access the ossfuzz issue for some reason...",
+      "revId": "832b1822ab790d2581e6406939bb8a7ecf37de42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffa00afb_561e5505",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-11-08T18:53:41Z",
+      "side": 1,
+      "message": "I agree with you statement about creation. We have been digging ourselves out of the SkGlyph invariant problem for years now. Creating a glyph with const on metrics things would be great. The only problem is advances. Sometimes only advances are needed and calculating the other metrics slow things down. I don\u0027t know if that is till the case.",
+      "parentUuid": "2c19d384_e7a8f4b0",
       "revId": "832b1822ab790d2581e6406939bb8a7ecf37de42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
