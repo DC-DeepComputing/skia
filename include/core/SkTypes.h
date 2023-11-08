@@ -153,6 +153,8 @@
   #endif
 #endif
 
+// define SK_USE_DRAWING_MIPMAP_DOWNSAMPLER to use smaller but slower mipmap builder
+
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef uint32_t SkFourByteTag;
