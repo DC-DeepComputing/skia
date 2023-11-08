@@ -146,6 +146,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37c75fab_b544f51d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-08T15:00:46Z",
+      "side": 1,
+      "message": "I think that\u0027s okay. As much as I\u0027d like to have configurable mip-mapping, we\u0027ve lived with a hard-coded internal decision for a long time. I think the expedient thing to do is get the new thing landed, so we can do some experiments. If we can achieve similar quality to the existing behavior, we\u0027ll move forward with just migrating everyone.",
+      "parentUuid": "92e8fc37_37588ae9",
+      "revId": "b24f129a3a88be4b3eb573960203680eb780529f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36865f47_37eab35d",
         "filename": "src/core/SkMipmap.h",
         "patchSetId": 5
