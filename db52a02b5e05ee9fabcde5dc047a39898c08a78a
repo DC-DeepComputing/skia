@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cb4f3fa_8cf08921",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T18:29:38Z",
+      "side": 1,
+      "message": "Made these tweaks, then squashed this CL into the predecessor.",
+      "revId": "db52a02b5e05ee9fabcde5dc047a39898c08a78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
