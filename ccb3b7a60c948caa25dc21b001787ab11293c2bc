@@ -81,6 +81,30 @@
       },
       "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80bf4185_75be8e0d",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-09T16:09:23Z",
+      "side": 1,
+      "message": "Well mostly they use to be in the same function so you could easily read that we were chaining things correctly. Now we are calling some helper to start filling out the ycbcrCreateInfo. It is not as obvious just reading this file that it is safe to overwrite the pNext.\n\nNow if you go with my other suggestion this is all moot.",
+      "parentUuid": "c009146e_1bd57d85",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 48
+      },
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
