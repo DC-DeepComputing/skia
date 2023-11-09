@@ -291,6 +291,30 @@
       },
       "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5292dc36_6b4abcfd",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-09T17:12:34Z",
+      "side": 1,
+      "message": "Ah, I am with you now. Thank you for clarifying. I agree that would make sense to signal that we are clearly maintaining a valid `pNext` chain but that the assert is fine for now. \n\nNoted, but whatever subsequent CL I issue to actually just create the YCbCr conversion within `src/gpu/vk/VulkanUtilsPriv.cpp` should make this moot as you mentioned in another comment.",
+      "parentUuid": "3b85c683_f99bf324",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 48
+      },
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
