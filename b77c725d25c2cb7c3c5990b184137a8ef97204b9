@@ -16,6 +16,29 @@
       "message": "Please take a look.",
       "revId": "b77c725d25c2cb7c3c5990b184137a8ef97204b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d95bba4_e54fd21e",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-09T14:21:58Z",
+      "side": 1,
+      "message": "Since this is a public API, could there be any use cases for this function using non-planar textures? Just wondering if it would make more sense to keep calling this \"dimensions\".",
+      "range": {
+        "startLine": 58,
+        "startChar": 27,
+        "endLine": 58,
+        "endChar": 42
+      },
+      "revId": "b77c725d25c2cb7c3c5990b184137a8ef97204b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
