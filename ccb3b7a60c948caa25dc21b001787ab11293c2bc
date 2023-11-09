@@ -267,6 +267,30 @@
       },
       "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b85c683_f99bf324",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-09T16:44:30Z",
+      "side": 1,
+      "message": "I wasn\u0027t saying there were equivalent, it was a way to make sure previous things added the pNext chain in the `SetupSamplerYcbcrConversionInfo` call are still part of the chain once we add the `externalFormat`. \n\nSo inside `SetupSamplerYcbcrConversionInfo` it has something like:\n```\nFoo foo;\nfoo.things \u003d whatever\n...\n\noutInfo-\u003epNext \u003d \u0026foo\n```\n\nThen out in the main function here we need to preserve that foo is in the chain. So we set:\n```\nexternalFormat.pNext \u003d ycbcrCreateInfo.pNext; // externalFormat.pNext now equals \u0026foo\n```\nThen we just set the `externalFormat` as the the pNext of the `ycbcrCreateInfo` and the whole pNext chain is still valid.\n\nRegardless I\u0027m fine with the Assert for now.",
+      "parentUuid": "a18220fb_57df67ff",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 48
+      },
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
