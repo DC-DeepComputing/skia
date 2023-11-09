@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a2f23751_827e1107",
+        "filename": "src/core/SkOpts.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T16:07:10Z",
+      "side": 1,
+      "message": "That\u0027s what I tried originally, and it made bazel unhappy (which is why I was passing around pointer + size). SkSpan_impl.h is part of base, whereas SkSpan.h is part of core. That impacts which other TUs (and headers) are allowed to include it. Various things that transitively include this (including SkRasterPipeline_opts.h) aren\u0027t configured to see core headers. Interestingly, it looks like we must have hit this already (or just did this for other reasons), as there are ~25 existing includes of SkSpan_impl.h",
+      "parentUuid": "07a20dd1_e09674d6",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "0f02ab802d73689b233cd96b8bd598f10e0df198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d9af2b71_d823de78",
         "filename": "src/core/SkRasterPipeline.h",
         "patchSetId": 19
