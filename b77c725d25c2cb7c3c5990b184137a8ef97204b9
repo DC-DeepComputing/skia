@@ -87,6 +87,30 @@
       },
       "revId": "b77c725d25c2cb7c3c5990b184137a8ef97204b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68936717_7a842e86",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-11-09T18:55:04Z",
+      "side": 1,
+      "message": "Thanks, added the comments to the ctor and SkASSERT for checking aspect is set.",
+      "parentUuid": "ac93274d_9e3f2ef6",
+      "range": {
+        "startLine": 58,
+        "startChar": 27,
+        "endLine": 58,
+        "endChar": 42
+      },
+      "revId": "b77c725d25c2cb7c3c5990b184137a8ef97204b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
