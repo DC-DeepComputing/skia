@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95eff738_ad25bc39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-09T16:19:44Z",
+      "side": 1,
+      "message": "Yes, that\u0027s what I\u0027m currently thinking: get the fix in to minimizing disturbances and then return to this.",
+      "parentUuid": "bdc82a32_87679d54",
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33708991_9d0f61d0",
         "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
         "patchSetId": 3
@@ -151,6 +169,30 @@
       "side": 1,
       "message": "Well mostly they use to be in the same function so you could easily read that we were chaining things correctly. Now we are calling some helper to start filling out the ycbcrCreateInfo. It is not as obvious just reading this file that it is safe to overwrite the pNext.\n\nNow if you go with my other suggestion this is all moot.",
       "parentUuid": "c009146e_1bd57d85",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 48
+      },
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41f3eeba_ec331586",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-09T16:19:44Z",
+      "side": 1,
+      "message": "Ah, I see. Were you envisioning just an `SkASSERT` for debug or something like \n```if (!ycbcrCreateInfo.pNext) {\n    ycbcrCreateInfo.pNext \u003d \u0026externalFormat;\n}``` ? \n\nI could also assign ycbcrCreateInfo.pNext to nullptr right above this #ifdef block and not within the setup helper, but that could also be confusing. I think your approach makes the most sense.",
+      "parentUuid": "80bf4185_75be8e0d",
       "range": {
         "startLine": 35,
         "startChar": 8,
