@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd7571fc_167dee88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-09T22:02:55Z",
+      "side": 1,
+      "message": "This is a clean cherry-pick, except I removed the infra try-job configurations that were part of the main CL.",
+      "revId": "18adff6f5834eddc1388ebb8336c5a2ea238b774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
