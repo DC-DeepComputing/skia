@@ -15,6 +15,7 @@
 #include "include/gpu/ganesh/vk/GrVkDirectContext.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "include/gpu/vk/GrVkBackendContext.h"
+#include "tools/gpu/ProtectedUtils.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
 #define ACQUIRE_INST_VK_PROC(name)                                                               \
@@ -40,6 +41,18 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(bool isProtected) {
     }
 
     return helper;
+}
+
+sk_sp<SkSurface> VkTestHelper::createSurface(SkISize size, bool textureable, bool isProtected) {
+    return ProtectedUtils::CreateProtectedSkSurface(fDirectContext1.get(), size,
+                                                    textureable, isProtected);
+}
+
+void VkTestHelper::submitAndWaitForCompletion() {
+    fDirectContext1->submit();
+    while (!cbContext.fCalled) {
+        fDirectContext1->checkAsyncWorkCompletion();
+    }
 }
 
 bool VkTestHelper::init() {
@@ -87,23 +100,23 @@ bool VkTestHelper::init() {
 
     GrVkBackendContext gr;
     sk_gpu_test::ConvertBackendContext(fBackendContext, &gr);
-    fDirectContext = GrDirectContexts::MakeVulkan(gr);
-    if (!fDirectContext) {
+    fDirectContext1 = GrDirectContexts::MakeVulkan(gr);
+    if (!fDirectContext1) {
         return false;
     }
 
-    SkASSERT(fDirectContext->supportsProtectedContent() == fIsProtected);
+    SkASSERT(fDirectContext1->supportsProtectedContent() == fIsProtected);
     return true;
 }
 
 void VkTestHelper::cleanup() {
     // Make sure any work, release procs, etc left on the context are finished with before we start
     // tearing everything down.
-    if (fDirectContext) {
-        fDirectContext->flushAndSubmit(GrSyncCpu::kYes);
+    if (fDirectContext1) {
+        fDirectContext1->flushAndSubmit(GrSyncCpu::kYes);
     }
 
-    fDirectContext.reset();
+    fDirectContext1.reset();
 
     fBackendContext.fMemoryAllocator.reset();
     if (fDevice != VK_NULL_HANDLE) {
