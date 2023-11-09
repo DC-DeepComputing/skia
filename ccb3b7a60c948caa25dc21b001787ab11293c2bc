@@ -201,6 +201,30 @@
       },
       "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "222be8b2_f2ff9a80",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-09T16:23:07Z",
+      "side": 1,
+      "message": "Yeah I think an assert is fine for now.\n\nAlternatively to be safe you can write something like:\n```\nexternalFormat.pNext \u003d ycbcrCreateInfo.pNext;\nycbcrCreateInfo.pNxt \u003d \u0026externalFormat\n```",
+      "parentUuid": "41f3eeba_ec331586",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 48
+      },
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
