@@ -154,7 +154,7 @@ TESTS_TO_BUILD="tests/*.cpp"
 
 # When developing locally, it can be faster to focus only on the gms or tests you care about
 # (since they all have to be recompiled/relinked) every time. To do so, mark the following as true
-if false; then
+if true; then
    GMS_TO_BUILD="gm/gm.cpp"
    TESTS_TO_BUILD="tests/BulkRectTest.cpp tests/Test.cpp"
 fi
