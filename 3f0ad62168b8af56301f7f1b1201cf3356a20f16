@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18688b8e_66ff62c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba796b1c_f5c65bc0",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac6a0a9e_c387d1c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-08T22:52:22Z",
       "side": 1,
       "message": "Move above `case Op::store_r8`",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 22
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6635e3ce_53b904da",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac6a0a9e_c387d1c0",
       "range": {
         "startLine": 95,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "375d60b0_f82c83d9",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea68487b_16bc1d09",
+      "range": {
+        "startLine": 570,
+        "startChar": 0,
+        "endLine": 574,
+        "endChar": 0
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "323a664a_ba2361bc",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-11-08T22:52:22Z",
       "side": 1,
       "message": "add:\n\nIf the number of pixels in a row isn\u0027t evenly divisible by N, there will be leftover pixels; this is called the \"tail.\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 86,
+        "endLine": 35,
+        "endChar": 87
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "372e9424_0a1be9be",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "323a664a_ba2361bc",
       "range": {
         "startLine": 35,
         "startChar": 86,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e3cd2ef_a8e10573",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a78261fb_53a2efa3",
+      "range": {
+        "startLine": 36,
+        "startChar": 72,
+        "endLine": 36,
+        "endChar": 75
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72e9b8f7_6d46e27b",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7467cd48_eebd2d54",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72e9b8f7_6d46e27b",
+      "range": {
+        "startLine": 39,
+        "startChar": 94,
+        "endLine": 39,
+        "endChar": 98
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db23fc0d_7b6505e9",
@@ -152,6 +296,30 @@
       "writtenOn": "2023-11-08T22:52:22Z",
       "side": 1,
       "message": "Each MemoryCtx in the pipeline is patched",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 48
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16a02588_45e964c8",
+        "filename": "src/core/SkRasterPipelineOpContexts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db23fc0d_7b6505e9",
       "range": {
         "startLine": 40,
         "startChar": 8,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "483bbe52_65777471",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 1149,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Acknowledged (leaving unresolved so I don\u0027t forget immediately)",
+      "parentUuid": "e5d18555_9f76fdad",
+      "range": {
+        "startLine": 1147,
+        "startChar": 0,
+        "endLine": 1149,
+        "endChar": 0
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab38f8cd_9f8f76dc",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 18
@@ -198,6 +390,30 @@
       "writtenOn": "2023-11-08T22:52:22Z",
       "side": 1,
       "message": "Pass a SkSpan here and everything seems like it\u0027d get simpler?",
+      "range": {
+        "startLine": 1240,
+        "startChar": 27,
+        "endLine": 1240,
+        "endChar": 92
+      },
+      "revId": "3f0ad62168b8af56301f7f1b1201cf3356a20f16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e71923b8_4c6a2a9d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 1240,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T15:55:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab38f8cd_9f8f76dc",
       "range": {
         "startLine": 1240,
         "startChar": 27,
