@@ -48,7 +48,6 @@ void SetupSamplerYcbcrConversionInfo(VkSamplerYcbcrConversionCreateInfo* outInfo
     outInfo->forceExplicitReconstruction = conversionInfo.fForceExplicitReconstruction;
 
 #ifdef SK_BUILD_FOR_ANDROID
-    VkExternalFormatANDROID externalFormat;
     if (conversionInfo.fExternalFormat) {
         // Format must not be specified for external images.
         SkASSERT(conversionInfo.fFormat == VK_FORMAT_UNDEFINED);
