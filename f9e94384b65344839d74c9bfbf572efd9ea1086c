@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "f9e94384b65344839d74c9bfbf572efd9ea1086c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1c8183_908adf63",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-09T17:24:55Z",
+      "side": 1,
+      "message": "Does `SkToBool` compile here? It should be roughly the same as `!!` but is a little more readable IMO.",
+      "range": {
+        "startLine": 78,
+        "startChar": 28,
+        "endLine": 78,
+        "endChar": 30
+      },
+      "revId": "f9e94384b65344839d74c9bfbf572efd9ea1086c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
