@@ -224,6 +224,7 @@ static GrBackendTexture make_vk_backend_texture(
                                         hardwareBuffer,
                                         gpu->vkInterface(),
                                         device)) {
+        SkDebugf("Failed to allocate or bind image memory\n");
         return GrBackendTexture();
     }
 

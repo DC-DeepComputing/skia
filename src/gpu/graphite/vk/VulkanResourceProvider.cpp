@@ -423,6 +423,12 @@ BackendTexture VulkanResourceProvider::createBackendTexture(
 
     VkDevice device = vkContext->device();
 
+    VulkanTexture::CreatedImageInfo createdTextureInfo;
+    // if (!VulkanTexture::MakeVkImage(this->vulkanSharedContext(), dimensions, info,
+    //                                 &createdTextureInfo)) {
+    //     return {};
+    // }
+
     VkResult result;
     VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
     VkAndroidHardwareBufferPropertiesANDROID hwbProps;
