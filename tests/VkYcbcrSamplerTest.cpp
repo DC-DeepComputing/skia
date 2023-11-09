@@ -49,15 +49,11 @@ static int round_and_clamp(float x) {
 
 DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
                                    reporter,
-                                   context_info,
+                                   ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
-    std::unique_ptr<VkTestHelper> testHelper = VkTestHelper::Make(/* isProtected= */ false);
-    if (!testHelper) {
-        ERRORF(reporter, "Could not create VkTestHelper.");
-        return;
-    }
+    GrDirectContext* dContext = ctxInfo.directContext();
 
-    VkYcbcrSamplerHelper ycbcrHelper(testHelper->directContext());
+    VkYcbcrSamplerHelper ycbcrHelper(dContext);
     if (!ycbcrHelper.isYCbCrSupported()) {
         return;
     }
@@ -67,7 +63,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
         return;
     }
 
-    sk_sp<SkImage> srcImage = SkImages::BorrowTextureFrom(testHelper->directContext(),
+    sk_sp<SkImage> srcImage = SkImages::BorrowTextureFrom(dContext,
                                                           ycbcrHelper.backendTexture(),
                                                           kTopLeft_GrSurfaceOrigin,
                                                           kRGB_888x_SkColorType,
@@ -78,7 +74,6 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
         return;
     }
 
-    auto dContext = testHelper->directContext();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             dContext,
             skgpu::Budgeted::kNo,
