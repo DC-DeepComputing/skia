@@ -39,6 +39,30 @@
       },
       "revId": "b77c725d25c2cb7c3c5990b184137a8ef97204b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b0b417_7fc1d34f",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-09T14:28:08Z",
+      "side": 1,
+      "message": "Yeah this is the current awkwardness of fitting the plane information directly into the BackendTexture API (though that is our best option right now to get things working). This sort of ambiguity goes away with a separate \"view\" object. I really need to stop dreaming about it and just do it....\n\nAs a practical solution here we can just document this API clearly that it is only intended to be used when you want to access a plane of a Texture. Then in the ctor we can check/assert that the DawnTextureInfo has the plane flags set. It is not the greats solution but hopefully this isn\u0027t a long term thing either.",
+      "parentUuid": "0d95bba4_e54fd21e",
+      "range": {
+        "startLine": 58,
+        "startChar": 27,
+        "endLine": 58,
+        "endChar": 42
+      },
+      "revId": "b77c725d25c2cb7c3c5990b184137a8ef97204b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
