@@ -57,6 +57,30 @@
       },
       "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c009146e_1bd57d85",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-09T16:00:24Z",
+      "side": 1,
+      "message": "Prior to https://skia-review.googlesource.com/c/skia/+/759558 (and afterwards), `VkSamplerYcbcrConversionCreateInfo`\u0027s `pNext` is always unconditionally getting explicitly assigned as `nullptr` and is only re-assigned in this case (building for Android, `info.fExternalFormat`). \n\nI don\u0027t think it would hurt anything to double check, but I also don\u0027t think we need it - what could we be overwriting?",
+      "parentUuid": "33708991_9d0f61d0",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 48
+      },
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
