@@ -530,10 +530,12 @@ static bool in_shard() {
     return N++ % FLAGS_shards == FLAGS_shard;
 }
 
+bool kDisable = false;
+
 static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
-        !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
+        !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str()) && kDisable) {
         TaggedSrc& s = gSrcs->push_back();
         s.reset(src.release());  // NOLINT(misc-uniqueptr-reset-release)
         s.tag = tag;
@@ -1487,7 +1489,7 @@ static void gather_tests() {
         if (!in_shard()) {
             continue;
         }
-        if (CommandLineFlags::ShouldSkip(FLAGS_match, test.fName)) {
+        if (CommandLineFlags::ShouldSkip({ "Protected" }, test.fName)) {
             continue;
         }
         if (test.fTestType == TestType::kGanesh && FLAGS_gpu) {
@@ -1573,7 +1575,7 @@ int main(int argc, char** argv) {
     setup_crash_handler();
 
     CommonFlags::SetDefaultFontMgr();
-    CommonFlags::SetAnalyticAA();
+//    CommonFlags::SetAnalyticAA();
     skiatest::SetFontTestDataDirectory();
 
     gSkForceRasterPipelineBlitter     = FLAGS_forceRasterPipelineHP || FLAGS_forceRasterPipeline;

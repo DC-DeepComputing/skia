@@ -16,26 +16,41 @@
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
+
 class GrDirectContext;
 class SkSurface;
+
+namespace skgpu::graphite {
+    class Context;
+}
+
+namespace skiatest {
+    enum class TestType : uint8_t;
+}
 
 #define DECLARE_VK_PROC(name) PFN_vk##name fVk##name
 
 class VkTestHelper {
 public:
-    static std::unique_ptr<VkTestHelper> Make(bool isProtected);
+    static std::unique_ptr<VkTestHelper> Make(skiatest::TestType testType, bool isProtected);
 
     ~VkTestHelper() {
         this->cleanup();
     }
 
-    bool isValid() const { return fDirectContext != nullptr; }
+    bool isValid() const { return fDirectContext1 != nullptr; }
 
-    GrDirectContext* directContext() { return fDirectContext.get(); }
+    GrDirectContext* directContext1() { return fDirectContext1.get(); }
+
+    skgpu::graphite::Context* graphiteContext() { return fGraphiteContext.get(); }
+
+    VkTestHelper(bool isProtected, bool) : fIsProtected1(isProtected) {}
 
 
 private:
-    VkTestHelper(bool isProtected) : fIsProtected(isProtected) {}
+    VkTestHelper(bool isProtected) : fIsProtected1(isProtected) {}
 
     bool init();
     void cleanup();
@@ -59,15 +74,17 @@ private:
     DECLARE_VK_PROC(FlushMappedMemoryRanges);
     DECLARE_VK_PROC(GetImageSubresourceLayout);
 
-    bool fIsProtected = false;
+    bool fIsProtected1 = false;
     VkDevice fDevice = VK_NULL_HANDLE;
 
     skgpu::VulkanExtensions fExtensions;
     VkPhysicalDeviceFeatures2 fFeatures = {};
     VkDebugReportCallbackEXT fDebugCallback = VK_NULL_HANDLE;
     PFN_vkDestroyDebugReportCallbackEXT fDestroyDebugCallback = nullptr;
-    skgpu::VulkanBackendContext fBackendContext;
-    sk_sp<GrDirectContext> fDirectContext;
+    skgpu::VulkanBackendContext fBackendContext7b;
+    sk_sp<GrDirectContext> fDirectContext1;
+
+    std::unique_ptr<skgpu::graphite::Context> fGraphiteContext;
 };
 
 #undef DECLARE_VK_PROC
