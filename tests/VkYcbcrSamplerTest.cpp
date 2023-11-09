@@ -51,7 +51,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
                                    reporter,
                                    context_info,
                                    CtsEnforcement::kApiLevel_T) {
-    std::unique_ptr<VkTestHelper> testHelper = VkTestHelper::Make(/* isProtected= */ false);
+    std::unique_ptr<VkTestHelper> testHelper = VkTestHelper::Make(skiatest::TestType::kGanesh,
+                                                                  /* isProtected= */ false);
     if (!testHelper) {
         ERRORF(reporter, "Could not create VkTestHelper.");
         return;
@@ -145,7 +146,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_NoYcbcrSurface,
                                    reporter,
                                    context_info,
                                    CtsEnforcement::kApiLevel_T) {
-    std::unique_ptr<VkTestHelper> testHelper = VkTestHelper::Make(/* isProtected= */ false);
+    std::unique_ptr<VkTestHelper> testHelper = VkTestHelper::Make(skiatest::TestType::kGanesh,
+                                                                  /* isProtected= */ false);
     if (!testHelper) {
         ERRORF(reporter, "Could not create VkTestHelper.");
         return;
