@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4afe048_a8c19540",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-09T15:12:22Z",
+      "side": 1,
+      "message": "Maybe it might make more sense to just let this be an `SkRect` and then do the saturation just in `internalMakeGlyph`? That also mostly simplifies the scaler context implementations and fixes the edge cases where they round out but then add one for subpixel antialiasing (which they could just do in float anyway, since if there is an issue with adding 1 then the bounds are too big and unlikely to be correct to within 1 anyway).",
+      "revId": "754990df11d9804c68f5666edb53ec6f6fe1db70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
