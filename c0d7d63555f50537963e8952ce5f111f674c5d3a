@@ -16,6 +16,23 @@
       "message": "ptal -- oops.",
       "revId": "c0d7d63555f50537963e8952ce5f111f674c5d3a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc7476d_de2b7b0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-09T14:31:49Z",
+      "side": 1,
+      "message": "Ah, yeah - this looks better than my version. Did you see my comment about the signed values not really being signed, though?\n\nhttps://skia-review.googlesource.com/c/skia/+/775399",
+      "revId": "c0d7d63555f50537963e8952ce5f111f674c5d3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
