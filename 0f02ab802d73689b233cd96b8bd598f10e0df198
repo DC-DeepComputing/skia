@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07a20dd1_e09674d6",
+        "filename": "src/core/SkOpts.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-09T15:56:46Z",
+      "side": 1,
+      "message": "`include/core/SkSpan.h`",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "0f02ab802d73689b233cd96b8bd598f10e0df198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
