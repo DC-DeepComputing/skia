@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e463b053_2077e648",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-09T16:14:34Z",
+      "side": 1,
+      "message": "We want to avoid switching logic based upon whether we are using ganesh or graphite, so I could define a macro that performs the same work like we talked about in `src/gpu/vk/VulkanUtilsPriv.cpp`. It\u0027s just not as short as the one-line macro definition I needed in the other case (just `VULKAN_CALL`), but I suppose that\u0027s not a big deal.\n\nThis might just be one more data point in favor of having defined macros that both ganesh and graphite can share, but the workaround above could be viable for now. LMKWYT",
+      "parentUuid": "84c4ec81_bfbec3d4",
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33708991_9d0f61d0",
         "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
         "patchSetId": 3
