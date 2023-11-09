@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4330378_936bc870",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-09T15:55:45Z",
+      "side": 1,
+      "message": "ugh i hate the default \"resolved\" on general comments",
+      "parentUuid": "194ebbd6_260f2c8a",
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33708991_9d0f61d0",
         "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
         "patchSetId": 3
