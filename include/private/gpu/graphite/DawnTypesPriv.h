@@ -27,8 +27,8 @@ struct DawnTextureSpec {
 
     bool isCompatible(const DawnTextureSpec& that) const {
         // The usages may match or the usage passed in may be a superset of the usage stored within.
-        return fFormat == that.fFormat && (fUsage & that.fUsage) == fUsage &&
-               fAspect == that.fAspect;
+        // The aspect does not need to match.
+        return fFormat == that.fFormat && (fUsage & that.fUsage) == fUsage;
     }
 
     SkString toString() const {
