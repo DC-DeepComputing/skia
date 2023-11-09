@@ -16,6 +16,23 @@
       "message": "Thanks!",
       "revId": "2b28e193667e85f00245a0d29eeca9af5c602d6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af4f91b6_8a8c93e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-09T16:41:16Z",
+      "side": 1,
+      "message": "Once the failing task is resolved (```../../../../../../skia/src/gpu/graphite/Surface_Graphite.cpp:230:33: error: incomplete type \u0027skgpu::RefCntedCallback\u0027 named in nested name specifier\n    auto releaseHelper \u003d skgpu::RefCntedCallback::Make(releaseP, releaseC);\n                         ~~~~~~~^~~~~~~~~~~~~~~~~~\n../../../../../../skia/include/gpu/graphite/Recording.h:19:7: note: forward declaration of \u0027skgpu::RefCntedCallback\u0027\nclass RefCntedCallback;\n      ^\n1 error generated.```), then this LGTM",
+      "revId": "2b28e193667e85f00245a0d29eeca9af5c602d6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
