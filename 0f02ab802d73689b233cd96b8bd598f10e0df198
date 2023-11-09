@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "227e4ad0_8a52e9b3",
+        "filename": "src/core/SkOpts.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-09T16:09:36Z",
+      "side": 1,
+      "message": "`src/opts` ought to be able to see `include/core` though. Maybe Kevin has a rationale for why it is this way. At any rate, if this is what it takes to make IWYU happy, we can punt on it for now.",
+      "parentUuid": "a2f23751_827e1107",
+      "range": {
+        "startLine": 11,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "0f02ab802d73689b233cd96b8bd598f10e0df198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d9af2b71_d823de78",
         "filename": "src/core/SkRasterPipeline.h",
         "patchSetId": 19
