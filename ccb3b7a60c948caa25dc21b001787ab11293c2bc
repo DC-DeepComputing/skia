@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bdc82a32_87679d54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-09T16:14:43Z",
+      "side": 1,
+      "message": "Right. I guess to fix the broken chrome tests it fastest to land this with the approach you took and could come back to this.\n\nBut how we could solve this:\n1) Have the function return the VkResult and then let the caller handle the VkResult however it wants\n\n2) Have the function that takes some \"checkResult\" lambda that gets called by a shared macro.",
+      "parentUuid": "84c4ec81_bfbec3d4",
+      "revId": "ccb3b7a60c948caa25dc21b001787ab11293c2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33708991_9d0f61d0",
         "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
         "patchSetId": 3
