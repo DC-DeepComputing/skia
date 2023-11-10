@@ -46,6 +46,30 @@
       },
       "revId": "a58076ed871abbbbf68c9b1c099c7c216104f92d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e4b01b_aa589f5c",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T17:01:18Z",
+      "side": 0,
+      "message": "The if-block above handles the case where fVkExtentions is non-null.",
+      "parentUuid": "26355834_8e1a9d87",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 9
+      },
+      "revId": "a58076ed871abbbbf68c9b1c099c7c216104f92d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
