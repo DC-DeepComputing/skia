@@ -63,6 +63,30 @@
       },
       "revId": "f8f821dbfed877f17c6f6e9b0b06d602631eb276",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f025698e_2703d839",
+        "filename": "tests/VkYcbcrSamplerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T15:39:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84682ddb_b2f01e5b",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 38
+      },
+      "revId": "f8f821dbfed877f17c6f6e9b0b06d602631eb276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
