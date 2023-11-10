@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -197,6 +198,19 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
         fCurrentCommandBuffer->addFinishedProc(std::move(callback));
     }
 
+    return true;
+}
+
+bool QueueManager::addBuffersToAsyncMap(const skia_private::TArray<sk_sp<Buffer>>& buffers,
+                                        ResourceProvider* resourceProvider) {
+    SkASSERT(!buffers.empty());
+
+    if (!this->setupCommandBuffer(resourceProvider)) {
+        SKGPU_LOG_E("CommandBuffer creation failed");
+        return false;
+    }
+
+    fCurrentCommandBuffer->addBuffersToAsyncMapOnSubmit(buffers);
     return true;
 }
 

@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/base/SkDeque.h"
+#include "include/private/base/SkTArray.h"
 #include "src/core/SkTHash.h"
 
 #include <memory>
@@ -18,6 +19,7 @@
 
 namespace skgpu::graphite {
 
+class Buffer;
 class CommandBuffer;
 class Context;
 class GpuWorkSubmission;
@@ -38,6 +40,11 @@ public:
 
     // Adds a proc that will be called when the current CommandBuffer is submitted and finishes
     [[nodiscard]] bool addFinishInfo(const InsertFinishInfo&, ResourceProvider*);
+
+    // Adds a buffer that will be asynchronously mapped *after* the current CommandBuffer is
+    // submitted.
+    [[nodiscard]] bool addBuffersToAsyncMap(const skia_private::TArray<sk_sp<Buffer>>&,
+                                            ResourceProvider*);
 
     [[nodiscard]] bool submitToGpu();
     void checkForFinishedWork(SyncToCpu);
