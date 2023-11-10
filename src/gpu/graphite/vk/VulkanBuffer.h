@@ -27,6 +27,8 @@ public:
                          VkAccessFlags dstAccessMask,
                          VkPipelineStageFlags dstStageMask) const;
 
+    bool hasPendingAsyncMap() const override;
+
 private:
     VulkanBuffer(const VulkanSharedContext*,
                  size_t,
@@ -37,6 +39,7 @@ private:
                  VkBufferUsageFlags);
 
     void onMap() override;
+    void onAsyncMap() override;
     void onUnmap() override;
 
     void internalMap(size_t readOffset, size_t readSize);

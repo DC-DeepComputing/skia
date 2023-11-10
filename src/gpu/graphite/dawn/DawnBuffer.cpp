@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 
 #include "include/private/base/SkAlign.h"
+#include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
@@ -97,39 +98,90 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext, size_t size, wgpu
     }
 }
 
+void DawnBuffer::onAsyncMap() {
+    SkASSERT(fBuffer);
+    SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
+             (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
+    if (this->isMapped() || this->hasPendingAsyncMap()) {
+        SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Pending ||
+                 fBuffer.GetMapState() == wgpu::BufferMapState::Mapped);
+        return;
+    }
+    bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
+    auto buffer = sk_ref_sp(this);
+    fMapAsyncWait.emplace(dawnSharedContext()->device());
+
+    fBuffer.MapAsync(
+            isWrite ? wgpu::MapMode::Write : wgpu::MapMode::Read,
+            0,
+            fBuffer.GetSize(),
+            [](WGPUBufferMapAsyncStatus s, void* userData) {
+                sk_sp<DawnBuffer> buffer(static_cast<DawnBuffer*>(userData));
+                if (s == WGPUBufferMapAsyncStatus_Success) {
+                    if (buffer->fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite) {
+                        buffer->fMapPtr = buffer->fBuffer.GetMappedRange();
+                    } else {
+                        // If buffer is only created with MapRead usage, Dawn only allows returning
+                        // constant pointer. We need to use const_cast as a workaround here.
+                        buffer->fMapPtr = const_cast<void*>(buffer->fBuffer.GetConstMappedRange());
+                    }
+                } else {
+                    SKGPU_LOG_E("Buffer async map failed with status %s.", [s] {
+                        switch (s) {
+                            case WGPUBufferMapAsyncStatus_ValidationError:
+                                return "ValidationError";
+                            case WGPUBufferMapAsyncStatus_Unknown:
+                                return "Unknown";
+                            case WGPUBufferMapAsyncStatus_DeviceLost:
+                                return "DeviceLost";
+                            case WGPUBufferMapAsyncStatus_DestroyedBeforeCallback:
+                                return "DestroyedBeforeCallback";
+                            case WGPUBufferMapAsyncStatus_UnmappedBeforeCallback:
+                                return "UnmappedBeforeCallback";
+                            case WGPUBufferMapAsyncStatus_MappingAlreadyPending:
+                                return "MappingAlreadyPending";
+                            case WGPUBufferMapAsyncStatus_OffsetOutOfRange:
+                                return "OffsetOutOfRange";
+                            case WGPUBufferMapAsyncStatus_SizeOutOfRange:
+                                return "SizeOutOfRange";
+                            default:
+                                return "<Other>";
+                        }
+                    }());
+                }
+                SkASSERT(buffer->fMapAsyncWait.has_value());
+                buffer->fMapAsyncWait->signal();
+            },
+            buffer.release());
+}
+
 void DawnBuffer::onMap() {
     SkASSERT(fBuffer);
     SkASSERT(!this->isMapped());
-    SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
-             (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
 
-    DawnAsyncWait wait(dawnSharedContext()->device());
-    bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
-    fBuffer.MapAsync(isWrite ? wgpu::MapMode::Write: wgpu::MapMode::Read,
-                     0,
-                     fBuffer.GetSize(),
-                     [](WGPUBufferMapAsyncStatus s, void* userData) {
-                        reinterpret_cast<DawnAsyncWait*>(userData)->signal();
-                     },
-                     &wait);
-    wait.busyWait();
-    if (isWrite) {
-        fMapPtr = fBuffer.GetMappedRange();
-    } else {
-        // If buffer is only created with MapRead usage, Dawn only allows returning
-        // constant pointer. We need to use const_cast as a workaround here.
-        fMapPtr = const_cast<void*>(fBuffer.GetConstMappedRange());
-    }
+    this->onAsyncMap();
+
+    SkASSERT(fMapAsyncWait.has_value());
+    fMapAsyncWait->busyWait();
+
     SkASSERT(fMapPtr);
 }
 
 void DawnBuffer::onUnmap() {
     SkASSERT(fBuffer);
-    SkASSERT(this->isMapped());
-    SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Mapped);
+    SkASSERT(this->isMapped() || this->hasPendingAsyncMap());
+    SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Mapped ||
+             fBuffer.GetMapState() == wgpu::BufferMapState::Pending);
 
     fBuffer.Unmap();
     fMapPtr = nullptr;
+    fMapAsyncWait.reset();
+}
+
+bool DawnBuffer::hasPendingAsyncMap() const {
+    bool result = fMapAsyncWait.has_value() && !fMapPtr;
+    SkASSERT(result == (fBuffer.GetMapState() == wgpu::BufferMapState::Pending));
+    return result;
 }
 
 void DawnBuffer::freeGpuData() {
