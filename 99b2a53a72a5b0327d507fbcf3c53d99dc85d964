@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f323c267_99d01db6",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T17:45:33Z",
+      "side": 0,
+      "message": "What was this being used for previously? I suppose I\u0027m wondering if we have something (and if not, why not) that checks for headers that aren\u0027t needed. Like the flip side of enforcing IWYU.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 33
+      },
+      "revId": "99b2a53a72a5b0327d507fbcf3c53d99dc85d964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
