@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c8303d_41f1b9b3",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-10T15:56:32Z",
+      "side": 1,
+      "message": "nit: does it make more sense to name this `shouldUsePremap`",
+      "range": {
+        "startLine": 286,
+        "startChar": 9,
+        "endLine": 286,
+        "endChar": 21
+      },
+      "revId": "bea102d4199edf4309a9fcc86590f245690064cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
