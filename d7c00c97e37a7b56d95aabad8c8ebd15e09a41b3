@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dad1539_e9f1b8df",
+        "filename": "tools/gpu/vk/VkTestHelper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T16:38:40Z",
+      "side": 1,
+      "message": "nit: What are your thoughts on `GaneshVkTestHelper`? Trying to think of a way to stick to camelCase and get rid of the `_`. Or perhaps `GrVkTestHelper` for ganesh and `VulkanTestHelper` for graphite? That might be less immediately clear but it does align with ganesh- and graphite- vulkan file naming styles. LMKWYT",
+      "range": {
+        "startLine": 35,
+        "startChar": 6,
+        "endLine": 35,
+        "endChar": 25
+      },
+      "revId": "d7c00c97e37a7b56d95aabad8c8ebd15e09a41b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
