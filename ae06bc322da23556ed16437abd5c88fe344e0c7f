@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c200673c_6d6a2e0c",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T21:04:37Z",
+      "side": 1,
+      "message": "Do we want a graphite_metal job for this machine?",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 96
+      },
+      "revId": "ae06bc322da23556ed16437abd5c88fe344e0c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
