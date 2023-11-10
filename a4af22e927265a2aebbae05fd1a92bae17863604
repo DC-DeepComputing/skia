@@ -16,6 +16,23 @@
       "message": "Found this while looking through open fuzzer bugs. Feel free to take the bug if you think you know why the base cause is happening -- I couldn\u0027t track it down.",
       "revId": "a4af22e927265a2aebbae05fd1a92bae17863604",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "814c1c0e_9adfa619",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-11-10T17:06:29Z",
+      "side": 1,
+      "message": "I have not figure out the root cause of these nulls. :-(",
+      "revId": "a4af22e927265a2aebbae05fd1a92bae17863604",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
