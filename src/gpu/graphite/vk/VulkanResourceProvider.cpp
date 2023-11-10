@@ -314,12 +314,26 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kVulkan);
 
-    skgpu::VulkanMemory::FreeImageMemory(
-            this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
-
     VULKAN_CALL(this->vulkanSharedContext()->interface(),
                 DestroyImage(this->vulkanSharedContext()->device(), texture.getVkImage(),
                              /*VkAllocationCallbacks=*/nullptr));
+
+    SkDebugf("Freeing backend texture image memory...\n");
+    if (texture.getMemoryAlloc()->fBackendMemory) {
+        SkDebugf("Freeing via VulkanMemory::FreeImageMemory\n");
+        skgpu::VulkanMemory::FreeImageMemory(
+                this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
+        SkASSERT(texture.getMemoryAlloc()->fMemory == VK_NULL_HANDLE);
+    }
+    if (texture.getMemoryAlloc()->fMemory != VK_NULL_HANDLE) {
+         SkASSERT(texture.getMemoryAlloc()->fBackendMemory == 0);
+         SkDebugf("Freeing via FreeMemory\n");
+         VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                     FreeMemory(this->vulkanSharedContext()->device(),
+                                texture.getMemoryAlloc()->fMemory,
+                                nullptr));
+    }
+    SkDebugf("it is freed\n");
 }
 
 sk_sp<VulkanSamplerYcbcrConversion>
@@ -422,6 +436,12 @@ BackendTexture VulkanResourceProvider::createBackendTexture(
              fSharedContext->isProtected() == Protected::kYes);
 
     VkDevice device = vkContext->device();
+
+    VulkanTexture::CreatedImageInfo createdTextureInfo;
+    // if (!VulkanTexture::MakeVkImage(this->vulkanSharedContext(), dimensions, info,
+    //                                 &createdTextureInfo)) {
+    //     return {};
+    // }
 
     VkResult result;
     VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
