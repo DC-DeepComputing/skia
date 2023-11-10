@@ -1,6 +1,63 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea78e459_a2e978bf",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-10T15:58:20Z",
+      "side": 1,
+      "message": "public_defines \u003d [ \"SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE\" ]",
+      "revId": "de80aa186acc221b88e067efeee4899e3741a61a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f25e63f_244e8193",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-10T15:58:20Z",
+      "side": 1,
+      "message": "public_defines \u003d [ \"SK_FONTMGR_FREETYPE_EMBEDDED_AVAILABLE\" ]",
+      "revId": "de80aa186acc221b88e067efeee4899e3741a61a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90ebf47c_bf7debee",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-10T15:58:20Z",
+      "side": 1,
+      "message": "This should be at least `FREETYPE_EMPTY` since we have a number of other `FREETYPE` based `SkFontMgr` (like the ones directly above this one).",
+      "range": {
+        "startLine": 369,
+        "startChar": 33,
+        "endLine": 369,
+        "endChar": 41
+      },
+      "revId": "de80aa186acc221b88e067efeee4899e3741a61a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d3b64dec_659adfcd",
