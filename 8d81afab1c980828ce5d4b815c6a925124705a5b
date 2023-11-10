@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea75eae_3674a0a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-10T15:23:13Z",
+      "side": 1,
+      "message": "PS2 just adds the memset calls. Seems fine from quick local testing, but I\u0027m running the MSAN bot to be sure.",
+      "revId": "8d81afab1c980828ce5d4b815c6a925124705a5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
