@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ce9980_ddec4fdf",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-10T16:06:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea78e459_a2e978bf",
+      "revId": "de80aa186acc221b88e067efeee4899e3741a61a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f25e63f_244e8193",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcccf745_0594bb8d",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-10T16:06:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f25e63f_244e8193",
+      "revId": "de80aa186acc221b88e067efeee4899e3741a61a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90ebf47c_bf7debee",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-11-10T15:58:20Z",
       "side": 1,
       "message": "This should be at least `FREETYPE_EMPTY` since we have a number of other `FREETYPE` based `SkFontMgr` (like the ones directly above this one).",
+      "range": {
+        "startLine": 369,
+        "startChar": 33,
+        "endLine": 369,
+        "endChar": 41
+      },
+      "revId": "de80aa186acc221b88e067efeee4899e3741a61a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21258e20_04c5a5b6",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-10T16:06:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90ebf47c_bf7debee",
       "range": {
         "startLine": 369,
         "startChar": 33,
