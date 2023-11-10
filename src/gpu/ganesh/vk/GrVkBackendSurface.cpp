@@ -389,6 +389,7 @@ static GrVkBackendRenderTargetData* get_and_cast_data(GrBackendRenderTarget* rt)
 namespace GrBackendRenderTargets {
 
 GrBackendRenderTarget MakeVk(int width, int height, const GrVkImageInfo& vkInfo) {
+    SkDebugf("making grbackendrendertarget\n");
     return GrBackendSurfacePriv::MakeGrBackendRenderTarget(
             width,
             height,
