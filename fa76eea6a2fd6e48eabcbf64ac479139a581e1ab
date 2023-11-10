@@ -39,6 +39,30 @@
       },
       "revId": "fa76eea6a2fd6e48eabcbf64ac479139a581e1ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca523aa6_ce67bd28",
+        "filename": "tools/gpu/vk/VkTestHelper.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T16:11:50Z",
+      "side": 1,
+      "message": "Yes - I\u0027m going to add that when I create the Graphite equivalents to the:\n   VkProtectedContext_CreateNonprotectedTextureInProtectedContext\n   VkProtectedContext_CreateProtectedTextureInNonprotectedContext\ntests.",
+      "parentUuid": "8715b6de_97207c9d",
+      "range": {
+        "startLine": 40,
+        "startChar": 3,
+        "endLine": 40,
+        "endChar": 64
+      },
+      "revId": "fa76eea6a2fd6e48eabcbf64ac479139a581e1ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
