@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3edd7a73_8800ef3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T20:52:32Z",
+      "side": 1,
+      "message": "PTAL at this CL which adds a public graphite method and internal piping for ResourceProviders to supply a BackendTexture from AHardwareBuffer information. \n\nOnly Vulkan will really implement this to return a legitimate BackendTexture, but this follows the convention used for the creation of a BackendTexture.",
+      "revId": "f10b265c7001d16511de66c82993f165dcb2cae7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
