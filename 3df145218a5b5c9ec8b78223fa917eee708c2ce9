@@ -16,6 +16,80 @@
       "message": "I\u0027m now thinking this CL shouldn\u0027t really be needed. We already have the support for transfer buffers being mappedAtCreation. So WebGPU just should always use transferBuffers that are premapped.",
       "revId": "3df145218a5b5c9ec8b78223fa917eee708c2ce9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a15845e_fbbbc859",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T18:30:04Z",
+      "side": 1,
+      "message": "some drive by thoughts, but I like this specificity.",
+      "revId": "3df145218a5b5c9ec8b78223fa917eee708c2ce9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d13f346_220434d1",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T18:30:04Z",
+      "side": 1,
+      "message": "Maybe add a comment that non-premapped static buffers are added to the global cache in createTransferAndUpdateBindings()?",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 471,
+        "endChar": 43
+      },
+      "revId": "3df145218a5b5c9ec8b78223fa917eee708c2ce9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56e3c154_b42082ed",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T18:30:04Z",
+      "side": 1,
+      "message": "comment that the key will be invalid for premapped buffers, which are not cached?",
+      "revId": "3df145218a5b5c9ec8b78223fa917eee708c2ce9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e55f663a_45052e1f",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T18:30:04Z",
+      "side": 1,
+      "message": "may also be valuable down the line to have a comment here that `kYes` prevents the buffer from being re-used from the resource cache so should only be used with good cause?",
+      "revId": "3df145218a5b5c9ec8b78223fa917eee708c2ce9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
