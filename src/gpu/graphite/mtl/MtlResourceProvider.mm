@@ -244,7 +244,9 @@ sk_sp<Texture> MtlResourceProvider::createWrappedTexture(const BackendTexture& t
 
 sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
                                                 BufferType type,
-                                                AccessPattern accessPattern) {
+                                                AccessPattern accessPattern,
+                                                PremapBuffer premap) {
+    SkASSERT(premap == PremapBuffer::kNo);
     return MtlBuffer::Make(this->mtlSharedContext(), size, type, accessPattern);
 }
 

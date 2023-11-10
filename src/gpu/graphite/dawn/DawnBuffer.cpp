@@ -30,7 +30,8 @@ static const char* kBufferTypeNames[kBufferTypeCount] = {
 sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                size_t size,
                                BufferType type,
-                               AccessPattern) {
+                               AccessPattern,
+                               PremapBuffer premap) {
     if (size <= 0) {
         return nullptr;
     }
@@ -73,9 +74,12 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
 #endif
     desc.usage = usage;
     desc.size  = size;
+
     // Specifying mappedAtCreation avoids clearing the buffer on the GPU which can cause MapAsync to
-    // be very slow as it waits for GPU execution to complete.
-    desc.mappedAtCreation = SkToBool(usage & wgpu::BufferUsage::MapWrite);
+    // be very slow as it waits for GPU execution to complete. So also map if usage includes
+    // MapWrite.
+    desc.mappedAtCreation = static_cast<bool>(premap) ||
+                            SkToBool(usage & wgpu::BufferUsage::MapWrite);
 
     auto buffer = sharedContext->device().CreateBuffer(&desc);
     if (!buffer) {
@@ -91,7 +95,6 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext, size_t size, wgpu
         : Buffer(sharedContext, size), fBuffer(std::move(buffer)) {
     // Mapped at creation.
     if (fBuffer && fBuffer.GetMapState() == wgpu::BufferMapState::Mapped) {
-        SkASSERT(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite);
         fMapPtr = fBuffer.GetMappedRange();
         SkASSERT(fMapPtr);
     }
