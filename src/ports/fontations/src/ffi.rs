@@ -11,12 +11,13 @@ use skrifa::{
     setting::VariationSetting,
     string::{LocalizedStrings, StringId},
     MetadataProvider, Tag,
+    color::color::get_clipbox,
+    color
+    
 };
 use std::pin::Pin;
 
-use crate::ffi::AxisWrapper;
-use crate::ffi::BridgeScalerMetrics;
-use crate::ffi::PathWrapper;
+use crate::ffi::{AxisWrapper, BridgeScalerMetrics, ColorPainter, PathWrapper};
 
 fn lookup_glyph_or_zero(font_ref: &BridgeFontRef, codepoint: u32) -> u16 {
     font_ref
@@ -273,6 +274,40 @@ fn colrv0_glyph_layer(
     }
 }
 
+fn has_colrv1_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool {
+    font_ref
+        .with_font(|f| color::color::has_colrv1_glyph(f, GlyphId::new(  glyph_id)).ok() )
+        .unwrap_or_default()
+}
+
+fn get_colrv1_clip_box(
+    font_ref: &BridgeFontRef,
+    coords: &BridgeNormalizedCoords,
+    glyph_id: u16,
+    size: f32,
+    x_min: &mut f32,
+    x_max: &mut f32,
+    y_min: &mut f32,
+    y_max: &mut f32,
+) -> bool {
+    let size = match size {
+        0.0 => None,
+        _ => Some(size),
+    };
+    font_ref.with_font(|f| {
+        match get_clipbox(f, GlyphId::new(glyph_id), coords.normalized_coords.coords().into(), size).ok()? {
+            Some(bounding_box) => {
+                *x_min = bounding_box.x_min;
+                *x_max = bounding_box.x_max;
+                *y_min = bounding_box.y_min;
+                Some(true)
+            },
+            _=> None
+        }
+        
+    }).unwrap_or_default()
+}
+
 /// Implements the behavior expected for `SkTypeface::getTableData`, compare
 /// documentation for this method and the FreeType implementation in Skia.
 /// * If the target data array is empty, do not copy any data into it, but
@@ -404,6 +439,15 @@ fn resolve_into_normalized_coords(
         })
         .unwrap_or_default();
     Box::new(bridge_normalized_coords)
+}
+
+fn draw_colr_glyph(
+    font_ref: &BridgeFontRef,
+    coords: &BridgeNormalizedCoords,
+    glyph_id: u16,
+    color_painter: Pin<&mut ColorPainter>,
+) -> bool {
+    false
 }
 
 struct BridgeFontRef<'a>(Option<FontRef<'a>>);
@@ -551,6 +595,18 @@ mod ffi {
             out_layer: &mut ColrV0Layer,
         ) -> bool;
 
+        fn has_colrv1_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
+        fn get_colrv1_clip_box(
+            font_ref: &BridgeFontRef,
+            normalized_coords: &BridgeNormalizedCoords,
+            glyph_id: u16,
+            size: f32,
+            x_min: &mut f32,
+            x_max: &mut f32,
+            y_min: &mut f32,
+            y_max: &mut f32,
+        ) -> bool;
+
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
         fn variation_position(
@@ -574,6 +630,13 @@ mod ffi {
             font_ref: &BridgeFontRef,
             design_coords: &[SkiaDesignCoordinate],
         ) -> Box<BridgeNormalizedCoords>;
+
+        fn draw_colr_glyph(
+            font_ref: &BridgeFontRef,
+            coords: &BridgeNormalizedCoords,
+            glyph_id: u16,
+            color_painter: Pin<&mut ColorPainter>,
+        ) -> bool;
 
     }
 
@@ -614,6 +677,13 @@ mod ffi {
             hidden: bool,
         ) -> bool;
         fn size(self: Pin<&AxisWrapper>) -> usize;
+
+        type ColorPainter;
+
+        fn push_clip_glyph(self: Pin<&mut ColorPainter>, glyph_id: u16);
+        fn pop_clip(self: Pin<&mut ColorPainter>);
+
+        fn fill_solid(self: Pin<&mut ColorPainter>, palette_index: u16, alpha: f32);
 
     }
 }

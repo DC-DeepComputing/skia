@@ -15,16 +15,35 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+
+#include "include/ports/SkTypeface_fontations.h"
 
 #include <string.h>
 #include <initializer_list>
 
 namespace skiagm {
 
+namespace {
+enum TypefaceBackend {
+    UseDefault,
+    UseFontations,
+};
+
+sk_sp<SkTypeface> MakeTypefaceFromResource(const char* resource, TypefaceBackend backend) {
+    if (backend == UseDefault) {
+        return MakeResourceAsTypeface(resource, 0);
+    } else {
+        std::unique_ptr<SkStreamAsset> resourceStream(GetResourceAsStream(resource, false));
+        return SkTypeface_Make_Fontations(std::move(resourceStream), SkFontArguments());
+    }
+}
+}  // namespace
+ 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
 const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
@@ -58,9 +77,9 @@ public:
 protected:
     void onOnceBeforeDraw() override {
         if (fVariationPosition.coordinateCount) {
-            fTypeface = MakeResourceAsTypeface(kTestFontNameVariable);
+            fTypeface = MakeTypefaceFromResource(kTestFontNameVariable, TypefaceBackend::UseFontations);
         } else {
-            fTypeface = MakeResourceAsTypeface(kTestFontName);
+            fTypeface = MakeTypefaceFromResource(kTestFontName, TypefaceBackend::UseFontations);
         }
         fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }

@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/ports/SkTypeface_fontations.h"
@@ -81,6 +83,7 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
 }
 
 namespace sk_fontations {
+
 // Path sanitization ported from SkFTGeometrySink.
 void PathGeometrySink::going_to(SkPoint point) {
     if (!fStarted) {
@@ -148,6 +151,7 @@ bool AxisWrapper::populate_axis(
 }
 
 size_t AxisWrapper::size() const { return fAxisCount; }
+
 }  // namespace sk_fontations
 
 int SkTypeface_Fontations::onGetUPEM() const {
@@ -234,7 +238,7 @@ public:
             , fBridgeNormalizedCoords(static_cast<SkTypeface_Fontations*>(this->getTypeface())
                                               ->getBridgeNormalizedCoords()) {
         fRec.getSingleMatrix(&fMatrix);
-        this->forceGenerateImageFromPath();
+        // this->forceGenerateImageFromPath();
     }
 
 protected:
@@ -252,7 +256,30 @@ protected:
                 fBridgeFontRef, scale.y(), fBridgeNormalizedCoords, glyph.getGlyphID());
         // TODO(drott): y-advance?
         mx.advance = remainingMatrix.mapXY(x_advance, SkFloatToScalar(0.f));
-        mx.computeFromPath = true;
+
+        // The FreeType backend has a big switch here:
+        // Scalable or bitmap, monochromatic or color, subpixel shifting bounds if needed.
+        // For now: check if COLRv1, get clipbox, else -
+        // get bounds from Skrifa scaler?
+
+        if (fontations_ffi::has_colrv1_glyph(fBridgeFontRef, glyph.getGlyphID())) {
+            SkRect boundsRect;
+            if (fontations_ffi::get_colrv1_clip_box(fBridgeFontRef,
+                                                    fBridgeNormalizedCoords,
+                                                    glyph.getGlyphID(),
+                                                    scale.y(),
+                                                    boundsRect.fLeft,
+                                                    boundsRect.fRight,
+                                                    boundsRect.fBottom,
+                                                    boundsRect.fTop)) {
+                boundsRect.fBottom *= -1.0f;
+                boundsRect.fTop *= -1.0f;
+                mx.bounds = boundsRect.roundOut();
+            }
+        } else {
+mx.computeFromPath = true;
+        }
+
         return mx;
     }
 
@@ -267,12 +294,23 @@ protected:
                     SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix)) {
             return false;
         }
+        bool result = generateYScalePathForGlyphId(glyph.getGlyphID(), path, scale.y());
+        if (!result) {
+            return false;
+        }
+
+        *path = path->makeTransform(remainingMatrix);
+        return true;
+    }
+
+    // TODO: Hinting control here.
+    bool generateYScalePathForGlyphId(uint16_t glyphId, SkPath* path, float yScale) {
         sk_fontations::PathGeometrySink pathWrapper;
         fontations_ffi::BridgeScalerMetrics scalerMetrics;
 
         if (!fontations_ffi::get_path(fBridgeFontRef,
-                                      glyph.getGlyphID(),
-                                      scale.y(),
+                                      glyphId,
+                                      yScale,
                                       fBridgeNormalizedCoords,
                                       pathWrapper,
                                       scalerMetrics)) {
@@ -284,8 +322,54 @@ protected:
             Simplify(*path, path);
             AsWinding(*path, path);
         }
-        *path = path->makeTransform(remainingMatrix);
+
         return true;
+    }
+
+    bool drawCOLRv1Glyph(const SkGlyph& glyph, SkSpan<SkColor> palette, SkCanvas* canvas) {
+        uint16_t upem = fontations_ffi::units_per_em_or_zero(fBridgeFontRef);
+        if (upem == 0) {
+            return false;
+        }
+
+        SkMatrix canvasMatrix;
+        fRec.getSingleMatrix(&canvasMatrix);
+        canvas->save();
+        canvasMatrix.postScale(1.f / upem, 1.f / upem);
+        canvas->concat(canvasMatrix);
+        sk_fontations::ColorPainter color_painter(*this, *canvas, palette, upem);
+        bool result = fontations_ffi::draw_colr_glyph(
+                fBridgeFontRef, fBridgeNormalizedCoords, glyph.getGlyphID(), color_painter);
+        canvas->restore();
+        return result;
+    }
+
+    sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
+        // TODO: SkTypeface FreeType uses the ScalerContext extraBits to denote glyph type during
+        // the call to generateMetrics().
+
+        //         if (glyph.extraBits() == ScalerContextBits::COLRv0 ||
+        //     glyph.extraBits() == ScalerContextBits::COLRv1 ||
+        //     glyph.extraBits() == ScalerContextBits::SVG     )
+        // {
+        // SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
+        SkPictureRecorder recorder;
+        SkCanvas* recordingCanvas = recorder.beginRecording(SkRect::Make(glyph.mask().fBounds));
+        SkColor one_color[10] = {SK_ColorBLUE,
+                                 SK_ColorRED,
+                                 SK_ColorYELLOW,
+                                 SK_ColorBLUE,
+                                 SK_ColorRED,
+                                 SK_ColorYELLOW,
+                                 SK_ColorBLUE,
+                                 SK_ColorRED,
+                                 SK_ColorYELLOW,
+                                 SK_ColorBLUE};
+        if (drawCOLRv1Glyph(glyph, one_color, recordingCanvas)) {
+            return recorder.finishRecordingAsDrawable();
+        }
+
+        return nullptr;
     }
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
@@ -311,6 +395,7 @@ private:
     sk_sp<SkData> fFontData = nullptr;
     const fontations_ffi::BridgeFontRef& fBridgeFontRef;
     const fontations_ffi::BridgeNormalizedCoords& fBridgeNormalizedCoords;
+    friend class sk_fontations::ColorPainter;
 };
 
 std::unique_ptr<SkStreamAsset> SkTypeface_Fontations::onOpenStream(int* ttcIndex) const {
@@ -353,7 +438,7 @@ size_t SkTypeface_Fontations::onGetTableData(SkFontTableTag tag,
 int SkTypeface_Fontations::onGetTableTags(SkFontTableTag tags[]) const {
     uint16_t numTables = fontations_ffi::table_tags(*fBridgeFontRef, rust::Slice<uint32_t>());
     if (!tags) {
-      return numTables;
+        return numTables;
     }
     rust::Slice<uint32_t> copyToTags(tags, numTables);
     return fontations_ffi::table_tags(*fBridgeFontRef, copyToTags);
@@ -363,9 +448,9 @@ int SkTypeface_Fontations::onGetVariationDesignPosition(
         SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const {
     rust::Slice<fontations_ffi::SkiaDesignCoordinate> copyToCoordinates;
     if (coordinates) {
-      copyToCoordinates = rust::Slice<fontations_ffi::SkiaDesignCoordinate>(
-              reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(coordinates),
-              coordinateCount);
+        copyToCoordinates = rust::Slice<fontations_ffi::SkiaDesignCoordinate>(
+                reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(coordinates),
+                coordinateCount);
     }
     return fontations_ffi::variation_position(*fBridgeNormalizedCoords, copyToCoordinates);
 }
@@ -375,3 +460,114 @@ int SkTypeface_Fontations::onGetVariationDesignParameters(
     sk_fontations::AxisWrapper axisWrapper(parameters, parameterCount);
     return fontations_ffi::populate_axes(*fBridgeFontRef, axisWrapper);
 }
+
+namespace sk_fontations {
+
+namespace {
+// https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
+inline SkBlendMode ToSkBlendMode(uint16_t colrV1CompositeMode) {
+    switch (colrV1CompositeMode) {
+        case 0:
+            return SkBlendMode::kClear;
+        case 1:
+            return SkBlendMode::kSrc;
+        case 2:
+            return SkBlendMode::kDst;
+        case 3:
+            return SkBlendMode::kSrcOver;
+        case 4:
+            return SkBlendMode::kDstOver;
+        case 5:
+            return SkBlendMode::kSrcIn;
+        case 6:
+            return SkBlendMode::kDstIn;
+        case 7:
+            return SkBlendMode::kSrcOut;
+        case 8:
+            return SkBlendMode::kDstOut;
+        case 9:
+            return SkBlendMode::kSrcATop;
+        case 10:
+            return SkBlendMode::kDstATop;
+        case 11:
+            return SkBlendMode::kXor;
+        case 12:
+            return SkBlendMode::kPlus;
+        case 13:
+            return SkBlendMode::kScreen;
+        case 14:
+            return SkBlendMode::kOverlay;
+        case 15:
+            return SkBlendMode::kDarken;
+        case 16:
+            return SkBlendMode::kLighten;
+        case 17:
+            return SkBlendMode::kColorDodge;
+        case 18:
+            return SkBlendMode::kColorBurn;
+        case 19:
+            return SkBlendMode::kHardLight;
+        case 20:
+            return SkBlendMode::kSoftLight;
+        case 21:
+            return SkBlendMode::kDifference;
+        case 22:
+            return SkBlendMode::kExclusion;
+        case 23:
+            return SkBlendMode::kMultiply;
+        case 24:
+            return SkBlendMode::kHue;
+        case 25:
+            return SkBlendMode::kSaturation;
+        case 26:
+            return SkBlendMode::kColor;
+        case 27:
+            return SkBlendMode::kLuminosity;
+        default:
+            return SkBlendMode::kDst;
+    }
+}
+}  // namespace
+
+ColorPainter::ColorPainter(SkFontationsScalerContext& scaler_context,
+                           SkCanvas& canvas,
+                           SkSpan<SkColor>& palette,
+                           uint16_t upem)
+        : fScalerContext(scaler_context), fCanvas(canvas), fPalette(palette), fUpem(upem) {}
+
+void ColorPainter::push_transform(float xx, float xy, float yx, float yy, float dx, float dy) {
+    fCanvas.save();
+    SkMatrix transform = SkMatrix::MakeAll(xx, yx, dx, xy, yy, dy, 0.f, 0.f, 1.0f);
+    fCanvas.concat(transform);
+}
+
+void ColorPainter::pop_transform() { fCanvas.restore(); }
+
+// TODO: Need to pass something that is able to extrac paths.
+void ColorPainter::push_clip_glyph(uint16_t glyph_id) {
+    fCanvas.save();
+    SkPath path;
+    fScalerContext.generateYScalePathForGlyphId(glyph_id, &path, fUpem);
+    fCanvas.clipPath(path, true /* doAntialias */);
+}
+
+void ColorPainter::pop_clip() { fCanvas.restore(); }
+
+void ColorPainter::fill_solid(uint16_t palette_index, float alpha) {
+    SkPaint paint;
+    SkColor4f color = SkColor4f::FromColor(fPalette[palette_index]);
+    color.fA *= alpha;
+    paint.setShader(nullptr);
+    paint.setColor(color);
+    fCanvas.drawPaint(paint);
+}
+
+void ColorPainter::push_layer(uint16_t compositeMode) {
+    SkPaint paint;
+    paint.setBlendMode(ToSkBlendMode(compositeMode));
+    fCanvas.saveLayer(nullptr, &paint);
+}
+
+void ColorPainter::pop_layer() { fCanvas.restore(); }
+
+}  // namespace sk_fontations
