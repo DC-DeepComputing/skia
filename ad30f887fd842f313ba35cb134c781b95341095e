@@ -39,6 +39,30 @@
       },
       "revId": "ad30f887fd842f313ba35cb134c781b95341095e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41a7f647_eb230c4e",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-10T15:04:39Z",
+      "side": 1,
+      "message": "It is a truly GPUOnly buffer but Dawn/WebGPU use a transfer to populate it. This is why it can\u0027t be later remapped: the first mapping isn\u0027t a true mapping of the real buffer.\n\nAfter off-issue discussion we decided to make this a WASM-only behavior for now. Let Graphite handle the transfer buffer on native. As work on the bug proceeds this can behavior can become used when on a \"non-yielding\" context that doesn\u0027t support synchronous maps. For native this will likely only be a testing config that will allow testing of \"webgpu sans asyncify\" behavior.",
+      "parentUuid": "12f5ea33_5309187d",
+      "range": {
+        "startLine": 306,
+        "startChar": 54,
+        "endLine": 306,
+        "endChar": 82
+      },
+      "revId": "ad30f887fd842f313ba35cb134c781b95341095e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
