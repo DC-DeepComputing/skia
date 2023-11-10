@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "901a8f68_820e2545",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-10T17:41:57Z",
+      "side": 1,
+      "message": "I\u0027m now thinking this CL shouldn\u0027t really be needed. We already have the support for transfer buffers being mappedAtCreation. So WebGPU just should always use transferBuffers that are premapped.",
+      "revId": "3df145218a5b5c9ec8b78223fa917eee708c2ce9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
