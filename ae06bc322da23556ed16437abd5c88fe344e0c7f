@@ -46,6 +46,30 @@
       },
       "revId": "ae06bc322da23556ed16437abd5c88fe344e0c7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "961ded00_f36fb15b",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T21:09:58Z",
+      "side": 1,
+      "message": "I think since we don\u0027t have any intel graphite_metal perf jobs it makes some sense. I do agree that it\u0027s not necessary to keep parity in all cases.",
+      "parentUuid": "7a30e93e_b729da4d",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 96
+      },
+      "revId": "ae06bc322da23556ed16437abd5c88fe344e0c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
