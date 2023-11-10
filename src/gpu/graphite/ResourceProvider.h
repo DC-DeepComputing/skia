@@ -95,6 +95,15 @@ public:
     const SharedContext* sharedContext() { return fSharedContext; }
 #endif
 
+#ifdef SK_BUILD_FOR_ANDROID
+    virtual BackendTexture createBackendTexture(AHardwareBuffer*,
+                                                uint32_t bufferFormat,
+                                                bool isRenderable,
+                                                bool isProtectedContent,
+                                                int width, int height,
+                                                bool fromAndroidWindow) const;
+#endif
+
 protected:
     ResourceProvider(SharedContext* sharedContext,
                      SingleOwner* singleOwner,
@@ -124,6 +133,14 @@ private:
                                               skgpu::Budgeted);
 
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
+#ifdef SK_BUILD_FOR_ANDROID
+    virtual BackendTexture onCreateBackendTexture(AHardwareBuffer*,
+                                                  uint32_t bufferFormat,
+                                                  bool isRenderable,
+                                                  bool isProtectedContent,
+                                                  int width, int height,
+                                                  bool fromAndroidWindow) const;
+#endif
     virtual void onDeleteBackendTexture(const BackendTexture&) = 0;
 };
 
