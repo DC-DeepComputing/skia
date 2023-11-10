@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "addc605d_35fe8461",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-10T15:45:16Z",
+      "side": 1,
+      "message": "It doesn\u0027t work with how our GN args are currently set up (and I don\u0027t want to tweak that). It would work when we build with the buffet build via Bazel (I think).",
+      "parentUuid": "41144ea7_75639844",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 6
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb8e8547_12592dbe",
