@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c7d5e81_33192a95",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T16:42:19Z",
+      "side": 0,
+      "message": "Do we not need to check for this extension anymore? I would\u0027ve thought we would still be checking but just against `fVkExtensions` as opposed to the deprecated `fExtensions`.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 9
+      },
+      "revId": "a58076ed871abbbbf68c9b1c099c7c216104f92d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
