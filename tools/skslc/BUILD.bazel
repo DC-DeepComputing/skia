@@ -17,6 +17,8 @@ skia_cc_binary_with_flags(
     deps = [
         ":process_worklist",
         "//:skia_internal",
+        "@dawn//src/tint/lang/wgsl",
+        "@dawn//src/tint/lang/wgsl/reader",
         "@spirv_tools",
     ],
 )
