@@ -306,10 +306,10 @@ static void init_stop_pos(SkRasterPipeline_GradientCtx* ctx,
                           SkPMColor4f c_r) {
     // See note about Clankium's old compiler in init_stop_evenly().
     SkPMColor4f Fs = {
-            (c_r.fR - c_l.fR) / (t_r - t_l),
-            (c_r.fG - c_l.fG) / (t_r - t_l),
-            (c_r.fB - c_l.fB) / (t_r - t_l),
-            (c_r.fA - c_l.fA) / (t_r - t_l),
+            sk_ieee_float_divide(c_r.fR - c_l.fR, t_r - t_l),
+            sk_ieee_float_divide(c_r.fG - c_l.fG, t_r - t_l),
+            sk_ieee_float_divide(c_r.fB - c_l.fB, t_r - t_l),
+            sk_ieee_float_divide(c_r.fA - c_l.fA, t_r - t_l),
     };
     SkPMColor4f Bs = {
             c_l.fR - Fs.fR * t_l,
