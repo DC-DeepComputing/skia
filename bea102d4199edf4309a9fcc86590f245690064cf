@@ -22,6 +22,30 @@
       },
       "revId": "bea102d4199edf4309a9fcc86590f245690064cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6a97461_104d2544",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-10T16:10:19Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s better. Done.",
+      "parentUuid": "98c8303d_41f1b9b3",
+      "range": {
+        "startLine": 286,
+        "startChar": 9,
+        "endLine": 286,
+        "endChar": 21
+      },
+      "revId": "bea102d4199edf4309a9fcc86590f245690064cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
