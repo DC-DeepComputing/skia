@@ -2029,6 +2029,9 @@ if (skia_enable_tools) {
       sources += [ "tools/gpu/vk/VkTestHelper.cpp" ]
       sources += [ "tools/gpu/vk/VkTestUtils.h" ]
       sources += [ "tools/gpu/vk/VkTestUtils.cpp" ]
+
+      #   sources += [ "tools/gpu/vk/AHardwareBufferTestUtils.cpp" ]
+      #   sources += [ "tools/gpu/vk/AHardwareBufferTestUtils.h" ]
       sources += [ "tools/gpu/vk/VkYcbcrSamplerHelper.h" ]
       sources += [ "tools/gpu/vk/VkYcbcrSamplerHelper.cpp" ]
     }
@@ -2055,7 +2058,6 @@ if (skia_enable_tools) {
       sources += [ "tools/graphite/ContextFactory.cpp" ]
       sources += [ "tools/graphite/GraphiteTestContext.h" ]
       sources += [ "tools/graphite/GraphiteTestContext.cpp" ]
-      sources += [ "tools/graphite/ProtectedUtils_Graphite.cpp" ]
       if (skia_use_dawn) {
         sources += [ "tools/graphite/dawn/GraphiteDawnTestContext.cpp" ]
         sources += [ "tools/graphite/dawn/GraphiteDawnTestContext.h" ]
@@ -2322,6 +2324,7 @@ if (skia_enable_tools) {
       ":fontmgr_android_tests",
       ":fontmgr_fontconfig_tests",
       ":fontmgr_mac_ct_tests",
+      ":gpu_tool_utils",
       ":skia",
       ":test",
       ":tool_utils",
@@ -3034,6 +3037,9 @@ if (skia_enable_tools) {
       all_dependent_configs = [ ":our_vulkan_headers" ]
 
       sources = [ "example/VulkanBasic.cpp" ]
+
+      #   sources += [ "tools/gpu/vk/AHardwareBufferTestUtils.h" ]
+      #   sources += [ "tools/gpu/vk/AHardwareBufferTestUtils.cpp" ]
       sources += [ "tools/gpu/vk/VkTestUtils.h" ]
       sources += [ "tools/gpu/vk/VkTestUtils.cpp" ]
       deps = [ ":skia" ]

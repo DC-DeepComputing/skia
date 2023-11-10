@@ -257,6 +257,7 @@ static GrBackendTexture make_vk_backend_texture(
     *updateProc = update_vk_image;
     *imageCtx = new VulkanCleanupHelper(gpu, image, alloc.fMemory);
 
+    SkDebugf("alloc backendMemory is == 0: %d\n", (alloc.fBackendMemory == 0));
     return GrBackendTextures::MakeVk(width, height, imageInfo);
 }
 
