@@ -60,6 +60,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c4b55773_3647e6a0",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T15:46:49Z",
+      "side": 1,
+      "message": "For posterity, Skia seems to moving away from using auto as much as we did before.",
+      "parentUuid": "7d8dc476_f7c7ec75",
+      "range": {
+        "startLine": 173,
+        "startChar": 10,
+        "endLine": 173,
+        "endChar": 22
+      },
+      "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d67de83a_904f33ce",
         "filename": "tools/gpu/ProtectedUtils.h",
         "patchSetId": 10
