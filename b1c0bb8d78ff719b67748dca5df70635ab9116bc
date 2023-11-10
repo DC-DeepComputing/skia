@@ -16,6 +16,69 @@
       "message": "ping",
       "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2775a971_cc5ca7d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T15:37:09Z",
+      "side": 1,
+      "message": "2 small questions but generally LGTM!",
+      "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d8dc476_f7c7ec75",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T15:37:09Z",
+      "side": 1,
+      "message": "just curious - is there a reason you are migrating away from using `auto`?",
+      "range": {
+        "startLine": 173,
+        "startChar": 10,
+        "endLine": 173,
+        "endChar": 22
+      },
+      "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67de83a_904f33ce",
+        "filename": "tools/gpu/ProtectedUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T15:37:09Z",
+      "side": 1,
+      "message": "I\u0027m all for removing the default values for these for clarity, but was there another reason? Marking this as resolved since it\u0027s just for my knowledge",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 60
+      },
+      "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
