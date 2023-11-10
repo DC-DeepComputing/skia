@@ -22,6 +22,30 @@
       },
       "revId": "a58076ed871abbbbf68c9b1c099c7c216104f92d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26355834_8e1a9d87",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T16:59:03Z",
+      "side": 0,
+      "message": "iiuc, if the client doesn\u0027t provide any extensions in the fVkExtensions slot we assume there are no extensions but need to pass something into the VulkanInterface ctor.",
+      "parentUuid": "6c7d5e81_33192a95",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 9
+      },
+      "revId": "a58076ed871abbbbf68c9b1c099c7c216104f92d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
