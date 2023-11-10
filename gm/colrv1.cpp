@@ -15,17 +15,36 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
+#include "include/ports/SkTypeface_fontations.h"
+
 #include <string.h>
 #include <initializer_list>
 
 namespace skiagm {
 
+namespace {
+enum TypefaceBackend {
+    UseDefault,
+    UseFontations,
+};
+
+sk_sp<SkTypeface> MakeTypefaceFromResource(const char* resource, TypefaceBackend backend) {
+    if (backend == UseDefault) {
+        return MakeResourceAsTypeface(resource, 0);
+    } else {
+        std::unique_ptr<SkStreamAsset> resourceStream(GetResourceAsStream(resource, false));
+        return SkTypeface_Make_Fontations(std::move(resourceStream), SkFontArguments());
+    }
+}
+}  // namespace
+ 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
 const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
@@ -59,9 +78,17 @@ public:
 protected:
     void onOnceBeforeDraw() override {
         if (fVariationPosition.coordinateCount) {
+<<<<<<< PATCH SET (992948 COLR stubs, build against local Skrifa)
+            fTypeface = MakeTypefaceFromResource(kTestFontNameVariable, TypefaceBackend::UseFontations);
+=======
             fTypeface = ToolUtils::CreateTypefaceFromResource(kTestFontNameVariable);
+>>>>>>> BASE      (3a7a6d Fix SkottieSlide.cpp)
         } else {
+<<<<<<< PATCH SET (992948 COLR stubs, build against local Skrifa)
+            fTypeface = MakeTypefaceFromResource(kTestFontName, TypefaceBackend::UseFontations);
+=======
             fTypeface = ToolUtils::CreateTypefaceFromResource(kTestFontName);
+>>>>>>> BASE      (3a7a6d Fix SkottieSlide.cpp)
         }
         fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }

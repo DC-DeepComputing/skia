@@ -20,6 +20,7 @@
 #include <memory>
 
 class SkStreamAsset;
+class SkFontationsScalerContext;
 
 namespace sk_fontations {
 
@@ -59,6 +60,44 @@ public:
 private:
     SkFontParameters::Variation::Axis* fAxisArray;
     size_t fAxisCount;
+};
+
+class ColorPainter : public fontations_ffi::ColorPainterWrapper {
+public:
+    ColorPainter() = delete;
+    ColorPainter(SkFontationsScalerContext& scaler_context,
+                 SkCanvas& canvas,
+                 SkSpan<SkColor>& palette,
+                 uint16_t upem);
+
+    // fontations_ffi::ColorPainter interface.
+    virtual void push_transform(
+            float xx, float xy, float yx, float yy, float dx, float dy) override;
+    virtual void pop_transform() override;
+    virtual void push_clip_glyph(uint16_t glyph_id) override;
+    virtual void pop_clip() override;
+
+    // Paint*Gradient equivalents:
+    virtual void fill_solid(uint16_t palette_index, float alpha) override;
+    virtual void fill_radial(float x0,
+                             float y0,
+                             float r0,
+                             float x1,
+                             float y1,
+                             float r1,
+                             const fontations_ffi::ColorStop* color_stops,
+                             size_t num_color_stops,
+                             uint8_t extend_mode) override;
+
+    // TODO: Enum? Use Skia numbers? Make them match with Fontations numbers?
+    virtual void push_layer(uint8_t compositeMode) override;
+    virtual void pop_layer() override;
+
+private:
+    SkFontationsScalerContext& fScalerContext;
+    SkCanvas& fCanvas;
+    SkSpan<SkColor>& fPalette;
+    uint16_t fUpem;
 };
 
 }  // namespace sk_fontations
