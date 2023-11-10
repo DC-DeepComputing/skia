@@ -16,6 +16,92 @@
       "message": "PTAL.",
       "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d391d2a6_de1e253c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T16:05:04Z",
+      "side": 1,
+      "message": "sorry for the delay, overall I like this change and my only comments are on the finer API points in DawnResourceProvider",
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff3b7c9_dd2fe309",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T16:05:04Z",
+      "side": 1,
+      "message": "Could this just be a for loop where we index into a constant array to get the appropriate binding index (kIntrinsicConstant, kRenderStepUniformBufferIndex, kPaintUniformBufferIndex)?",
+      "range": {
+        "startLine": 388,
+        "startChar": 0,
+        "endLine": 413,
+        "endChar": 5
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba10a948_166d749e",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T16:05:04Z",
+      "side": 1,
+      "message": "As written this will always create new buffers and never use a cached buffer. I think it\u0027s clearer to have an overload of `findOrCreateBuffer` like:\n\n    sk_sp\u003cBuffer\u003e buffer \u003d this-\u003efindOrCreateBuffer(...);\n    DawnBuffer* ptr \u003d static_cast\u003cDawnBuffer*\u003e(buffer.release());\n    return sk_sp\u003cDawnBuffer\u003e(ptr);\n    \nThis way it\u0027s clear that there isn\u0027t anything special happening inside the createDawnBuffer method vs. what happens from the more abstract API.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 84
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4535670_8a99e468",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T16:05:04Z",
+      "side": 1,
+      "message": "We don\u0027t need buffer offset because of your earlier work for dynamic offsets, right?\n\nWDYT about having the signature take `const std::array\u003cstd::pair\u003cDawnBuffer, uint32_t\u003e, 3\u003e` and then once `BindBufferInfo` stores size, this can simplify to `std::array\u003cBindBufferInfo\u003e` (and internally it will just not include the offset in the keys).",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 43,
+        "endChar": 55
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
