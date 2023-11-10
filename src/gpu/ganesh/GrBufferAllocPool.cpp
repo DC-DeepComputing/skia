@@ -283,29 +283,19 @@ void* GrBufferAllocPool::makeSpaceAtLeast(size_t minSize,
 
 void GrBufferAllocPool::putBack(size_t bytes) {
     VALIDATE();
-
-    while (bytes) {
-        // caller shouldn't try to put back more than they've taken
-        SkASSERT(!fBlocks.empty());
-        BufferBlock& block = fBlocks.back();
-        size_t bytesUsed = block.fBuffer->size() - block.fBytesFree;
-        if (bytes >= bytesUsed) {
-            bytes -= bytesUsed;
-            fBytesInUse -= bytesUsed;
-            // if we locked a vb to satisfy the make space and we're releasing
-            // beyond it, then unmap it.
-            GrBuffer* buffer = block.fBuffer.get();
-            if (!buffer->isCpuBuffer() && static_cast<GrGpuBuffer*>(buffer)->isMapped()) {
-                UNMAP_BUFFER(block);
-            }
-            this->destroyBlock();
-        } else {
-            block.fBytesFree += bytes;
-            fBytesInUse -= bytes;
-            bytes = 0;
-            break;
-        }
+    if (!bytes) {
+        return;
     }
+    SkASSERT(!fBlocks.empty());
+    BufferBlock& block = fBlocks.back();
+    // Caller shouldn't try to put back more than they've taken and all those bytes should fit into
+    // one block. All the uses of this call are sequential with a single makeSpaceAtLeast call. So
+    // we should not have a case where someone is putting back bytes that are greater than the
+    // current block.
+    // It is possible the caller returns all their allocated bytes those the <= and not just <.
+    SkASSERT(bytes <= (block.fBuffer->size() - block.fBytesFree));
+    block.fBytesFree += bytes;
+    fBytesInUse -= bytes;
 
     VALIDATE();
 }
