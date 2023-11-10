@@ -16,6 +16,23 @@
       "message": "So for a completely different take. Now, instead of having the SkScalerContext implementations handle saturating int32_t and having SkScalerContext itself take that and saturate the glyph bounds, just have the SkScalerContext implementations return floats (SkRect) and let SkScalerContext handle saturating the glyph bounds.\n\nThe nice thing about this is that there are fewer things that can go wrong (all the saturation code is in one place), it isn\u0027t any bigger (SkRect and SkIRect are the same size), the SkScalerContext implementations mostly need to use floats anyway (either because the values are reported in floats or because the values need to be mapped through a matrix), and we don\u0027t really lose precision because floats have 23 bits of integers which is more than the 16 we\u0027re going to saturate to anyway, so there\u0027s no loss when the SkScalerContext implementations need to round out and outset a fixed number of pixels for subpixel anti-aliasing. \n\nThe downsides are that all the SkScalerContext implementations do need to be updated (though that should just be Skia and one outside implementation) and because I changed all this I need a new +1. So far I haven\u0027t seen any tests fail from doing this, though it\u0027s possible that in edge cases we may get slightly different rounding since there are now generally fewer roundings.",
       "revId": "86794f6239e8833060668fedb2dc719aed5c15bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "774f89fe_f06f376f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-10T18:13:37Z",
+      "side": 1,
+      "message": "SkScalerContext implementations may need to be updated.",
+      "revId": "86794f6239e8833060668fedb2dc719aed5c15bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
