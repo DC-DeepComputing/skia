@@ -585,3 +585,9 @@ container_pull(
     registry = "gcr.io",
     repository = "skia-public/skottie-base",
 )
+
+new_local_repository(
+    name = "skrifa-local",
+    path = "/usr/local/google/home/drott/dev/fontations/skrifa",
+    build_file = "BUILD.skrifa-local",
+)
