@@ -6,6 +6,8 @@
  */
 
 #include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/SharedContext.h"
 
 namespace skgpu::graphite {
 
@@ -16,8 +18,13 @@ void* Buffer::map() {
     return fMapPtr;
 }
 
+void Buffer::asyncMap() {
+    SkASSERT(this->sharedContext()->caps()->canAsyncMapBuffer());
+    this->onAsyncMap();
+}
+
 void Buffer::unmap() {
-    SkASSERT(this->isMapped());
+    SkASSERT(this->isMapped() || this->hasPendingAsyncMap());
     this->onUnmap();
     fMapPtr = nullptr;
 }
