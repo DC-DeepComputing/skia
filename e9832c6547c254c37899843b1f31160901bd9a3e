@@ -115,6 +115,30 @@
       },
       "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff268a1c_09bbfd5d",
+        "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-10T20:29:16Z",
+      "side": 1,
+      "message": "AFAIK just makeSpace right above that function. But it is already checking for fBufferPtr",
+      "parentUuid": "62fd047e_37ef9c7d",
+      "range": {
+        "startLine": 311,
+        "startChar": 8,
+        "endLine": 311,
+        "endChar": 28
+      },
+      "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
