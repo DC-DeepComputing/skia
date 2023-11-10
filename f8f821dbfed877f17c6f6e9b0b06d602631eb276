@@ -16,6 +16,29 @@
       "message": "ping",
       "revId": "f8f821dbfed877f17c6f6e9b0b06d602631eb276",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84682ddb_b2f01e5b",
+        "filename": "tests/VkYcbcrSamplerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-10T15:23:09Z",
+      "side": 1,
+      "message": "Can we get rid of this then for this file?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 38
+      },
+      "revId": "f8f821dbfed877f17c6f6e9b0b06d602631eb276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
