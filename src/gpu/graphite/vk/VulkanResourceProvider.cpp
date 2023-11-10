@@ -29,7 +29,6 @@
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/sksl/SkSLCompiler.h"
-
 namespace skgpu::graphite {
 
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
@@ -343,5 +342,20 @@ sk_sp<VulkanSamplerYcbcrConversion>
 
     return ycbcrConversion;
 }
+
+#ifdef SK_BUILD_FOR_ANDROID
+
+BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* hardwareBuffer,
+                                                              uint32_t bufferFormat,
+                                                              bool requireKnownFormat,
+                                                              bool isRenderable,
+                                                              bool isProtectedContent,
+                                                              int width, int height,
+                                                              bool fromAndroidWindow) const {
+    // TODO(b/299475636): Implement.
+    return {};
+}
+
+#endif // SK_BUILD_FOR_ANDROID
 
 } // namespace skgpu::graphite

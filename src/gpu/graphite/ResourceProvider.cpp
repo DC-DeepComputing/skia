@@ -255,19 +255,57 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
     return buffer;
 }
 
-BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
-    const auto maxTextureSize = fSharedContext->caps()->maxTextureSize();
+namespace {
+bool determine_dimension_validity(const int maxTextureSize, const SkISize& dimensions) {
     if (dimensions.isEmpty() ||
         dimensions.width()  > maxTextureSize ||
         dimensions.height() > maxTextureSize) {
-        SKGPU_LOG_W("call to createBackendTexture has requested dimensions (%d, %d) larger than the"
+        SKGPU_LOG_W("Call to createBackendTexture has requested dimensions (%d, %d) larger than the"
                     " supported gpu max texture size: %d. Or the dimensions are empty.",
                     dimensions.fWidth, dimensions.fHeight, maxTextureSize);
+        return false;
+    }
+    return true;
+}
+}
+
+BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
+    if (!determine_dimension_validity(fSharedContext->caps()->maxTextureSize(), dimensions)) {
         return {};
     }
-
     return this->onCreateBackendTexture(dimensions, info);
 }
+
+#ifdef SK_BUILD_FOR_ANDROID
+BackendTexture ResourceProvider::createBackendTexture(AHardwareBuffer* hardwareBuffer,
+                                                      uint32_t bufferFormat,
+                                                      bool requireKnownFormat,
+                                                      bool isRenderable,
+                                                      bool isProtectedContent,
+                                                      int width, int height,
+                                                      bool fromAndroidWindow) const {
+    if (!determine_dimension_validity(fSharedContext->caps()->maxTextureSize(), {width, height})) {
+        return {};
+    }
+    return this->onCreateBackendTexture(hardwareBuffer,
+                                        bufferFormat,
+                                        requireKnownFormat,
+                                        isRenderable,
+                                        isProtectedContent,
+                                        width, height,
+                                        fromAndroidWindow);
+}
+
+BackendTexture ResourceProvider::onCreateBackendTexture(AHardwareBuffer*,
+                                                        uint32_t bufferFormat,
+                                                        bool requireKnownFormat,
+                                                        bool isRenderable,
+                                                        bool isProtectedContent,
+                                                        int width, int height,
+                                                        bool fromAndroidWindow) const {
+    return {};
+}
+#endif
 
 void ResourceProvider::deleteBackendTexture(const BackendTexture& texture) {
     this->onDeleteBackendTexture(texture);
