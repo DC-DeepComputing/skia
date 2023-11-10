@@ -103,6 +103,30 @@
       },
       "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720e9c2b_4ff1b07f",
+        "filename": "tools/gpu/ProtectedUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T15:48:22Z",
+      "side": 1,
+      "message": "Nope - this was just about making it explicit at the call sites, which type of protection was being requested.",
+      "parentUuid": "d67de83a_904f33ce",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 60
+      },
+      "revId": "b1c0bb8d78ff719b67748dca5df70635ab9116bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
