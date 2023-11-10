@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d71e79_fbdca048",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-10T17:24:09Z",
+      "side": 1,
+      "message": "Hmm. I nornmally only like using that when I know the following code is somehow protected against the potential infinities (or NaNs). I\u0027m not sure that\u0027s true here. I haven\u0027t looked at the repro case, but I see that we check for `t_l \u003c t_r` before calling `init_stop_pos`. [1] If they\u0027re equal, we just ignore the stop entirely. I\u0027m guessing that t_l and t_r are close enough that the subtraction produces zero after rounding (so they probably have to be smallest and second-smallest denorm?). Regardless, I think I\u0027d rather:\n\n1) Change `init_stop_pos` to take `t_l` and `c_scale`.\n2) Compute `1 / (t_l - t_r)` at the call-site, and then check that it\u0027s finite (where we already do the `\u003e0` check). If so, we can call and pass that scale value, otherwise we drop the stop, just like we did for exactly-equal positions.\n\nNote that this also fixes the case where `t_r - t_l` is non-zero, but the inverse is infinite (very small denorms).\n\nWDYT?\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/shaders/gradients/SkGradientBaseShader.cpp;l\u003d392;drc\u003d7172fffc3c545134d5c88af8ab07b04fcb1d628e",
+      "revId": "16d8af26aa3d68c99da24fd027f7a9f833de8fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
