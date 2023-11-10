@@ -382,10 +382,8 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
         return {};
     }
 
-    VulkanYcbcrConversionInfo ycbcrInfo;
-    GetYcbcrConversionInfoFromFormatProps(&ycbcrInfo, hwbFormatProps);
-
     VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
+    VulkanYcbcrConversionInfo ycbcrInfo;
     if (hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
         usageFlags = usageFlags |
                      VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
@@ -393,6 +391,8 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
         if (isRenderable) {
             usageFlags = usageFlags | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
         }
+    } else {
+        GetYcbcrConversionInfoFromFormatProps(&ycbcrInfo, hwbFormatProps);
     }
 
     VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL; // TODO: Query for tiling mode
