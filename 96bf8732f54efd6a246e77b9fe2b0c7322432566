@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c076cd5e_41597e7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-10T15:36:20Z",
+      "side": 1,
+      "message": "Can you take another look? Adding a file removed the +1s",
+      "revId": "96bf8732f54efd6a246e77b9fe2b0c7322432566",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
