@@ -17,6 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkOSFile.h"
@@ -429,7 +430,7 @@ int main(int , char * const []) {
     sk_sp<SkFontMgr> mgr = SkFontMgr_New_CoreText(nullptr);
     generate_fonts("/Library/Fonts/", kFamilies, mgr);
 #else
-    #error "Unsupported OS"
+    SK_ABORT("Unsupported OS");
 #endif
     generate_index(kFamilies, &kFamilies[1].fFonts[0]);
     return 0;

@@ -53,7 +53,7 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
         sktext::GlyphRunBuilder builder;
         SkPaint paint;
         auto glyphRunList = builder.textToGlyphRunList(font, paint, gText, len, {100, 100});
-        SkASSERT(!glyphRunList.empty());
+        SkASSERT_RELEASE(!glyphRunList.empty());
         auto device = SkTestCanvas<FillBench>::GetDevice(canvas);
         SkMatrix drawMatrix = view;
         const SkPoint drawOrigin = glyphRunList.origin();
@@ -65,14 +65,14 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
                                             SkStrikeCache::GlobalStrikeCache());
 
         const sktext::gpu::AtlasSubRun* subRun = fBlob->testingOnlyFirstSubRun();
-        SkASSERT(subRun);
+        SkASSERT_RELEASE(subRun);
         subRun->testingOnly_packedGlyphIDToGlyph(&fCache);
         fVertices.reset(new char[subRun->vertexStride(drawMatrix) * subRun->glyphCount() * 4]);
     }
 
     void onDraw(int loops, SkCanvas* canvas) override {
         const sktext::gpu::AtlasSubRun* subRun = fBlob->testingOnlyFirstSubRun();
-        SkASSERT(subRun);
+        SkASSERT_RELEASE(subRun);
 
         SkIRect clip = SkIRect::MakeEmpty();
         SkPaint paint;
