@@ -198,6 +198,11 @@ public:
     // Returns whether a draw buffer can be mapped.
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
 
+    // Returns whether buffers can be created pre-mapped. This applies even to
+    // AccessPattern::kGpuOnly. However, it doesn't guarantee that such buffers can be re-mapped
+    // after being unmapped.
+    bool canCreatePremappedBuffers() const { return fCanCreatePremappedBuffers; }
+
     // Returns whether multisampled render to single sampled is supported.
     bool msaaRenderToSingleSampledSupport() const { return fMSAARenderToSingleSampledSupport; }
 
@@ -295,6 +300,7 @@ protected:
     bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
+    bool fCanCreatePremappedBuffers = false;
     bool fMSAARenderToSingleSampledSupport = false;
 
     bool fComputeSupport = false;
