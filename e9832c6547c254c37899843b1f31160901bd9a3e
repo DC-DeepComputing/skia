@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304f65ce_3ae26ea0",
+        "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-10T20:13:42Z",
+      "side": 1,
+      "message": "nit: fix this (but don\u0027t want to hid my try jobs yet).",
+      "range": {
+        "startLine": 295,
+        "startChar": 67,
+        "endLine": 295,
+        "endChar": 72
+      },
+      "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17d265d2_b1400a35",
+        "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-10T20:13:42Z",
+      "side": 1,
+      "message": "I know we talked about not doing this, but so much of the validation in this class is all about not having unused blocks. I really don\u0027t know if that requirement is still important today or not. But at the same time, I don\u0027t really want to spend the effort to really understand it in Ganesh to make the decision. The perf impact is small enough since this shouldn\u0027t happen much (and no worse than today).",
+      "range": {
+        "startLine": 311,
+        "startChar": 8,
+        "endLine": 311,
+        "endChar": 28
+      },
+      "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
