@@ -26,6 +26,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4d0f57f_16de8ad0",
+        "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T20:26:22Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 302,
+        "startChar": 37,
+        "endLine": 302,
+        "endChar": 48
+      },
+      "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb73ade_5b9a718a",
+        "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T20:26:22Z",
+      "side": 1,
+      "message": "nit: \"?\" here?",
+      "range": {
+        "startLine": 305,
+        "startChar": 27,
+        "endLine": 305,
+        "endChar": 28
+      },
+      "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17d265d2_b1400a35",
         "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
         "patchSetId": 4
@@ -37,6 +83,30 @@
       "writtenOn": "2023-11-10T20:13:42Z",
       "side": 1,
       "message": "I know we talked about not doing this, but so much of the validation in this class is all about not having unused blocks. I really don\u0027t know if that requirement is still important today or not. But at the same time, I don\u0027t really want to spend the effort to really understand it in Ganesh to make the decision. The perf impact is small enough since this shouldn\u0027t happen much (and no worse than today).",
+      "range": {
+        "startLine": 311,
+        "startChar": 8,
+        "endLine": 311,
+        "endChar": 28
+      },
+      "revId": "e9832c6547c254c37899843b1f31160901bd9a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62fd047e_37ef9c7d",
+        "filename": "src/gpu/ganesh/GrBufferAllocPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-10T20:26:22Z",
+      "side": 1,
+      "message": "That\u0027s fair, and with the `!fBufferPtr` check in the makeAtLeast() it should be fine. Are there other make variants that should be checking for a null buffer pointer now too?",
+      "parentUuid": "17d265d2_b1400a35",
       "range": {
         "startLine": 311,
         "startChar": 8,
