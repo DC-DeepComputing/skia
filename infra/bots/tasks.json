@@ -94123,7 +94123,8 @@
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
         "src/sksl/generated/.*",
-        "dm/.+"
+        "dm/.+",
+        "DEPS"
       ]
     },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal": {
@@ -94160,7 +94161,8 @@
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
         "src/sksl/generated/.*",
-        "dm/.+"
+        "dm/.+",
+        "DEPS"
       ]
     },
     "Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All": {}
