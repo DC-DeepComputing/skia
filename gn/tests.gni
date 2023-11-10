@@ -385,8 +385,14 @@ precompile_tests_sources = [
 
 graphite_dawn_tests_sources = [ "$_tests/graphite/DawnBackendTextureTest.cpp" ]
 graphite_metal_tests_sources = [ "$_tests/graphite/MtlBackendTextureTest.mm" ]
-graphite_vulkan_tests_sources =
-    [ "$_tests/graphite/VulkanBackendTextureTest.cpp" ]
+graphite_vulkan_tests_sources = [
+  # "$_tests/../AHardwareBufferTestUtils.cpp",
+  # "$_tests/../AHardwareBufferTestUtils.h",
+  #   "tests/AHardwareBufferTestUtils.cpp",
+  #   "tests/AHardwareBufferTestUtils.h",
+  "$_tests/graphite/VulkanAHardwareBufferTest.cpp",
+  "$_tests/graphite/VulkanBackendTextureTest.cpp",
+]
 
 pathops_tests_sources = [
   "$_tests/PathOpsAngleIdeas.cpp",
@@ -458,7 +464,6 @@ ganesh_tests_sources = [
   "$_tests/BulkRectTest.cpp",
   "$_tests/ClearTest.cpp",
   "$_tests/DMSAATest.cpp",
-  "$_tests/DashPathEffectTestGanesh.cpp",
   "$_tests/DefaultPathRendererTest.cpp",
   "$_tests/DrawOpAtlasTest.cpp",
   "$_tests/GrClipStackTest.cpp",

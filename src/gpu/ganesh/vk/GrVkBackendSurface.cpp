@@ -269,6 +269,7 @@ GrBackendTexture MakeVk(int width,
                         int height,
                         const GrVkImageInfo& vkInfo,
                         std::string_view label) {
+    SkDebugf("making backend texture\n")
     return GrBackendSurfacePriv::MakeGrBackendTexture(
             width,
             height,
@@ -389,6 +390,7 @@ static GrVkBackendRenderTargetData* get_and_cast_data(GrBackendRenderTarget* rt)
 namespace GrBackendRenderTargets {
 
 GrBackendRenderTarget MakeVk(int width, int height, const GrVkImageInfo& vkInfo) {
+    SkDebugf("making grbackendrendertarget\n");
     return GrBackendSurfacePriv::MakeGrBackendRenderTarget(
             width,
             height,

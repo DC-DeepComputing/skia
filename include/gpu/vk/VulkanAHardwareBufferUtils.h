@@ -162,6 +162,7 @@ static bool allocate_and_bind_image_memory(skgpu::VulkanAlloc* outVulkanAlloc,
     result = SHARED_GR_VULKAN_CALL(interface,
                                    AllocateMemory(device, &allocInfo, nullptr, &memory));
     if (result != VK_SUCCESS) {
+        SkDebugf("Failed to allocate memory\n");
         SHARED_GR_VULKAN_CALL(interface, DestroyImage(device, image, nullptr));
         return false;
     }
@@ -175,6 +176,7 @@ static bool allocate_and_bind_image_memory(skgpu::VulkanAlloc* outVulkanAlloc,
 
     result = SHARED_GR_VULKAN_CALL(interface, BindImageMemory2(device, 1, &bindImageInfo));
     if (result != VK_SUCCESS) {
+        SkDebugf("Failed to bind image memory\n");
         SHARED_GR_VULKAN_CALL(interface, DestroyImage(device, image, nullptr));
         SHARED_GR_VULKAN_CALL(interface, FreeMemory(device, memory, nullptr));
         return false;
