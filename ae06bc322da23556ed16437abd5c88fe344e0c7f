@@ -70,6 +70,30 @@
       },
       "revId": "ae06bc322da23556ed16437abd5c88fe344e0c7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16e2912c_0b925606",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-10T21:12:29Z",
+      "side": 1,
+      "message": "added",
+      "parentUuid": "961ded00_f36fb15b",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 96
+      },
+      "revId": "ae06bc322da23556ed16437abd5c88fe344e0c7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
