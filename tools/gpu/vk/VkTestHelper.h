@@ -16,15 +16,26 @@
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
+
 class GrDirectContext;
 class SkSurface;
 struct SkISize;
+
+namespace skgpu::graphite {
+    class Context;
+}
+
+namespace skiatest {
+    enum class TestType : uint8_t;
+}
 
 #define DECLARE_VK_PROC(name) PFN_vk##name fVk##name
 
 class VkTestHelper {
 public:
-    static std::unique_ptr<VkTestHelper> Make(bool isProtected);
+    static std::unique_ptr<VkTestHelper> Make(skiatest::TestType testType, bool isProtected);
 
     ~VkTestHelper() {
         this->cleanup();
@@ -37,8 +48,12 @@ public:
 
     GrDirectContext* directContext() { return fDirectContext.get(); }
 
+    skgpu::graphite::Context* graphiteContext() { return fGraphiteContext.get(); }
+
+    VkTestHelper(bool isProtected, bool) : fIsProtected1(isProtected) {}
+
 private:
-    VkTestHelper(bool isProtected) : fIsProtected(isProtected) {}
+    VkTestHelper(bool isProtected) : fIsProtected1(isProtected) {}
 
     bool init();
     void cleanup();
@@ -62,15 +77,17 @@ private:
     DECLARE_VK_PROC(FlushMappedMemoryRanges);
     DECLARE_VK_PROC(GetImageSubresourceLayout);
 
-    bool fIsProtected = false;
+    bool fIsProtected1 = false;
     VkDevice fDevice = VK_NULL_HANDLE;
 
     skgpu::VulkanExtensions fExtensions;
     VkPhysicalDeviceFeatures2 fFeatures = {};
     VkDebugReportCallbackEXT fDebugCallback = VK_NULL_HANDLE;
     PFN_vkDestroyDebugReportCallbackEXT fDestroyDebugCallback = nullptr;
-    skgpu::VulkanBackendContext fBackendContext;
+    skgpu::VulkanBackendContext fBackendContext7b;
     sk_sp<GrDirectContext> fDirectContext;
+
+    std::unique_ptr<skgpu::graphite::Context> fGraphiteContext;
 };
 
 #undef DECLARE_VK_PROC

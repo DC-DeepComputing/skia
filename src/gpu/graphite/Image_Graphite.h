@@ -32,7 +32,9 @@ public:
     }
 
     // TODO: add protected content support
-    bool onIsProtected() const override { return false; }
+    bool onIsProtected() const override {
+        return fTextureProxyView.proxy()->isProtected() == skgpu::Protected::kYes;
+    }
 
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kGraphite; }
 
