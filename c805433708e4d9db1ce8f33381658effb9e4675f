@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8a72c72_a1e650e1",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "This changes the behavior on !MAC, why not use `ToolUtils::TestFontMgr()`?",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 6
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb8e8547_12592dbe",
+        "filename": "modules/skresources/include/SkResources.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "naming nit: `ImageDecodeStrategy`",
+      "range": {
+        "startLine": 90,
+        "startChar": 11,
+        "endLine": 90,
+        "endChar": 24
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5a224e_4b81a81f",
+        "filename": "modules/skresources/include/SkResources.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "nit: we can now drop the parameter name from decl (or rename to strat).",
+      "range": {
+        "startLine": 109,
+        "startChar": 84,
+        "endLine": 109,
+        "endChar": 93
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b39be75_cacbd566",
+        "filename": "modules/skresources/include/SkResources.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 207,
+        "startChar": 58,
+        "endLine": 207,
+        "endChar": 67
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57444d90_e832abb3",
+        "filename": "modules/skresources/include/SkResources.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 260,
+        "startChar": 26,
+        "endLine": 260,
+        "endChar": 35
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14cdfbd8_b78be99c",
+        "filename": "modules/skresources/src/SkResources.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "std::move(mgr)",
+      "range": {
+        "startLine": 270,
+        "startChar": 67,
+        "endLine": 270,
+        "endChar": 70
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10efcdc3_bbd13199",
+        "filename": "modules/skresources/src/SkResources.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "std::move(mgr)",
+      "range": {
+        "startLine": 276,
+        "startChar": 63,
+        "endLine": 276,
+        "endChar": 66
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62f2cf66_f5e61b49",
+        "filename": "modules/svg/utils/SvgTool.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-10T15:08:23Z",
+      "side": 1,
+      "message": "`ToolUtils::TestFontMgr()`?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 6
+      },
+      "revId": "c805433708e4d9db1ce8f33381658effb9e4675f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
