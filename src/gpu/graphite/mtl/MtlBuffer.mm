@@ -81,6 +81,8 @@ void MtlBuffer::onMap() {
     fMapPtr = static_cast<char*>((*fBuffer).contents);
 }
 
+void MtlBuffer::onAsyncMap() { SK_ABORT("Metal backend doesn't support async buffer mapping."); }
+
 void MtlBuffer::onUnmap() {
     SkASSERT(fBuffer);
     SkASSERT(this->isMapped());
@@ -91,6 +93,8 @@ void MtlBuffer::onUnmap() {
 #endif
     fMapPtr = nullptr;
 }
+
+bool MtlBuffer::hasPendingAsyncMap() const { return false; }
 
 void MtlBuffer::freeGpuData() {
     fBuffer.reset();
