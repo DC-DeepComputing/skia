@@ -16,6 +16,23 @@
       "message": "PTAL, I don\u0027t have CQ permission for this project, please help me review and +2, thanks!",
       "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e68a1db4_2d6d25f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-11T09:09:13Z",
+      "side": 1,
+      "message": "@Hitawala, If you are going to adding some new codes in the future, keep in mind don\u0027t forget Plane2, thanks!",
+      "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
