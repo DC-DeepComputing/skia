@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56102f89_4b46df33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-11T09:04:22Z",
+      "side": 1,
+      "message": "PTAL, I don\u0027t have CQ permission for this project, please help me review and +2, thanks!",
+      "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
