@@ -16,6 +16,29 @@
       "message": "will need another +1 here with new file",
       "revId": "0f127fd7ef4df377b8ff8696a8124babc4f2ccd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf771fda_14584f59",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-11T01:12:14Z",
+      "side": 1,
+      "message": "It turns out we don\u0027t want any graphite bots with 10.13 I think, given Dawn/chrome\u0027s min supported OS. I\u0027d propose moving these to be covered by the 10.15.1 IntelHD16000 below.",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 96
+      },
+      "revId": "0f127fd7ef4df377b8ff8696a8124babc4f2ccd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
