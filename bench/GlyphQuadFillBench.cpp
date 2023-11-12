@@ -21,7 +21,6 @@
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlob.h"
 #include "src/utils/SkTestCanvas.h"
-#include "tools/fonts/FontToolUtils.h"
 
 // From Project Guttenberg. This is UTF-8 text.
 static const char* gText =
@@ -45,7 +44,7 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
     }
 
     void onPerCanvasPreDraw(SkCanvas* canvas) override {
-        auto typeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
+        auto typeface = SkTypeface::MakeFromName("monospace", SkFontStyle());
         SkFont font(typeface);
 
         SkMatrix view = SkMatrix::I();
@@ -53,7 +52,7 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
         sktext::GlyphRunBuilder builder;
         SkPaint paint;
         auto glyphRunList = builder.textToGlyphRunList(font, paint, gText, len, {100, 100});
-        SkASSERT_RELEASE(!glyphRunList.empty());
+        SkASSERT(!glyphRunList.empty());
         auto device = SkTestCanvas<FillBench>::GetDevice(canvas);
         SkMatrix drawMatrix = view;
         const SkPoint drawOrigin = glyphRunList.origin();
@@ -65,14 +64,14 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
                                             SkStrikeCache::GlobalStrikeCache());
 
         const sktext::gpu::AtlasSubRun* subRun = fBlob->testingOnlyFirstSubRun();
-        SkASSERT_RELEASE(subRun);
+        SkASSERT(subRun);
         subRun->testingOnly_packedGlyphIDToGlyph(&fCache);
         fVertices.reset(new char[subRun->vertexStride(drawMatrix) * subRun->glyphCount() * 4]);
     }
 
     void onDraw(int loops, SkCanvas* canvas) override {
         const sktext::gpu::AtlasSubRun* subRun = fBlob->testingOnlyFirstSubRun();
-        SkASSERT_RELEASE(subRun);
+        SkASSERT(subRun);
 
         SkIRect clip = SkIRect::MakeEmpty();
         SkPaint paint;
