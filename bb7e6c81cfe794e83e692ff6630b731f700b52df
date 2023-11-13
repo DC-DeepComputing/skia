@@ -137,6 +137,24 @@
       "parentUuid": "a89aee80_d0e0440c",
       "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68eb9e3_4c57389b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-11-13T15:03:41Z",
+      "side": 1,
+      "message": "I\u0027m not fully sure about full-planar formats. For I420 and YV12 formats, right now they\u0027re accessed through software decode on mac and windows and it is always per plane. But we might need them for hardware decode on ChromeOS/Linux later so will need to add those to Dawn. \n\nFor the view based system, I believe we do know the full format when creating the Texture (or BackendTexture). It\u0027s just that we don\u0027t know the full format during recording but that should always be read cases AFAIK.\n\n+cc sunnyps@, vasilyt@: Please add here if I am missing something.",
+      "parentUuid": "30b95743_089d1501",
+      "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
