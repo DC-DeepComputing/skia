@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b8fdd1f_eff9a11f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-13T01:32:54Z",
+      "side": 1,
+      "message": "No idea what\u0027s up with the codesize bots, they seem to not apply the CL?!",
+      "revId": "d98ff16ed7bb36818938182f0e5ae52cac51647d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
