@@ -7874,7 +7874,6 @@ UNIX_ONLY_TEST(SkParagraph_SingleDummyPlaceholder, reporter) {
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->placeholders().size() == 1);
 
-
     size_t index = 0;
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kDecorations,
@@ -7913,4 +7912,27 @@ UNIX_ONLY_TEST(SkParagraph_EndWithLineSeparator, reporter) {
         }
     });
     REPORTER_ASSERT(reporter, visitedCount == 3);
+}
+
+// This is a rare multi-platform test that checks emoji font resolution algorithm
+DEF_TEST(SkParagraph_EmojiFontResolution, reporter) {
+    sk_sp<FontCollection> fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(SkFontMgr::RefDefault(), std::vector<SkString>());
+
+    const char* text = "♻️🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("")});
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    auto paragraph = builder.Build();
+    paragraph->layout(SK_ScalarMax);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    if (impl->runs().size() != 1) {
+        ERRORF(reporter, "Expected a single run.");
+    }
 }
