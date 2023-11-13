@@ -449,6 +449,7 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("VkTestUtils.cpp::setup_features - Protected content not supported\n");
             return false;
         }
     }
@@ -470,7 +471,7 @@ void ConvertBackendContext(const skgpu::VulkanBackendContext& newStyle,
     oldStyle->fDeviceFeatures2 = newStyle.fDeviceFeatures2;
     oldStyle->fMemoryAllocator = newStyle.fMemoryAllocator;
     oldStyle->fGetProc = newStyle.fGetProc;
-    oldStyle->fProtectedContext = newStyle.fProtectedContext;
+    oldStyle->fProtectedContext7 = newStyle.fProtectedContext72;
 }
 
 // TODO: remove once GrVkBackendContext is deprecated (skbug.com/309785258)
@@ -494,7 +495,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         return false;
     }
 
-    SkASSERT(skgpuCtx.fProtectedContext == skgpu::Protected(isProtected));
+    SkASSERT(skgpuCtx.fProtectedContext72 == skgpu::Protected(isProtected));
 
     ConvertBackendContext(skgpuCtx, ctx);
     return true;
@@ -508,6 +509,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
+
+    SkDebugf("CreateVkBackendContext: %s\n", isProtected ? "protected" : "unprotected");
+
     VkResult err;
 
     ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
@@ -880,7 +884,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fVkExtensions = extensions;
     ctx->fDeviceFeatures2 = features;
     ctx->fGetProc = getProc;
-    ctx->fProtectedContext = skgpu::Protected(isProtected);
+    ctx->fProtectedContext72 = skgpu::Protected(isProtected);
 
     return true;
 }
