@@ -4262,22 +4262,28 @@ public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
-        auto fontCollection = getFontCollection();
-        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault(), std::vector<SkString>());
         fontCollection->enableFontFallback();
         TextStyle text_style;
-        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontFamilies({SkString("")});
         text_style.setFontSize(20);
         text_style.setColor(SK_ColorBLACK);
         ParagraphStyle paragraph_style;
         paragraph_style.setTextStyle(text_style);
-        paragraph_style.setTextAlign(TextAlign::kJustify);
         ParagraphBuilderImpl builder(paragraph_style, fontCollection);
         builder.pushStyle(text_style);
-        builder.addText(u"\u3000\u3000哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈");
+        builder.addText("#");
+        builder.addText(u"\u263A");
         auto paragraph = builder.Build();
         paragraph->layout(this->size().width());
         paragraph->paint(canvas, 0, 0);
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        for (auto& run: impl->runs()) {
+            SkString ff;
+            run.font().getTypeface()->getFamilyName(&ff);
+            SkDebugf("'%s': [%d:%d)\n", ff.c_str(), run.textRange().start, run.textRange().end);
+        }
     }
 };
 
