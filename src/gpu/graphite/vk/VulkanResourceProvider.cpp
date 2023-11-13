@@ -30,6 +30,11 @@
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#ifdef  SK_BUILD_FOR_ANDROID
+#include "src/gpu/vk/VulkanUtilsPriv.h"
+#include <android/hardware_buffer.h>
+#endif
+
 namespace skgpu::graphite {
 
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
@@ -309,12 +314,27 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kVulkan);
 
-    skgpu::VulkanMemory::FreeImageMemory(
-            this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
-
     VULKAN_CALL(this->vulkanSharedContext()->interface(),
                 DestroyImage(this->vulkanSharedContext()->device(), texture.getVkImage(),
                              /*VkAllocationCallbacks=*/nullptr));
+
+    // Free image memory from BackendTextures that have memory allocated by the memory allocator
+    if (texture.getMemoryAlloc()->fBackendMemory) {
+        skgpu::VulkanMemory::FreeImageMemory(
+                this->vulkanSharedContext()->memoryAllocator(), *(texture.getMemoryAlloc()));
+        SkASSERT(texture.getMemoryAlloc()->fMemory == VK_NULL_HANDLE);
+    }
+
+    // Free image memory from BackendTextures that have memory allocated with a direct call to the
+    // Vulkan driver (ie, for AHardwareBuffer-backed BackendTextures where we use external image
+    // memory and call vkAllocateMemory directly)
+    if (texture.getMemoryAlloc()->fMemory != VK_NULL_HANDLE) {
+         SkASSERT(texture.getMemoryAlloc()->fBackendMemory == 0);
+         VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                     FreeMemory(this->vulkanSharedContext()->device(),
+                                texture.getMemoryAlloc()->fMemory,
+                                nullptr));
+    }
 }
 
 sk_sp<VulkanSamplerYcbcrConversion>
@@ -352,8 +372,109 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                                                               bool isProtectedContent,
                                                               int width, int height,
                                                               bool fromAndroidWindow) const {
-    // TODO(b/299475636): Implement.
-    return {};
+    const VulkanSharedContext* vkContext = this->vulkanSharedContext();
+    VkDevice device = vkContext->device();
+
+    VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
+    VkAndroidHardwareBufferPropertiesANDROID hwbProps;
+    if (!skgpu::GetAHardwareBufferProperties(
+                &hwbFormatProps, &hwbProps, vkContext->interface(), hardwareBuffer, device)) {
+        return {};
+    }
+
+    VulkanYcbcrConversionInfo ycbcrInfo;
+    VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
+    if (hwbFormatProps.format == VK_FORMAT_UNDEFINED) {
+        GetYcbcrConversionInfoFromFormatProps(&ycbcrInfo, hwbFormatProps);
+    } else {
+        usageFlags = usageFlags |
+                     VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
+                     VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+        if (isRenderable) {
+            usageFlags = usageFlags | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        }
+    }
+
+    VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL; // TODO: Query for tiling mode.
+    VkImageCreateFlags imgCreateflags =
+            isProtectedContent ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+
+    // TODO: Determine VkImageAspectFlags. If the VkImage is a YCbCr format, the client can select a
+    // plane. For now, use the default VK_IMAGE_ASPECT_COLOR_BIT.
+    VulkanTextureInfo vkTexInfo {VK_SAMPLE_COUNT_1_BIT,
+                                 Mipmapped::kNo,
+                                 imgCreateflags,
+                                 hwbFormatProps.format,
+                                 tiling,
+                                 usageFlags,
+                                 VK_SHARING_MODE_EXCLUSIVE,
+                                 VK_IMAGE_ASPECT_COLOR_BIT,
+                                 ycbcrInfo};
+
+    SkASSERT(!(vkTexInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) ||
+             fSharedContext->isProtected() == Protected::kYes);
+
+    VkExternalFormatANDROID externalFormat;
+    externalFormat.sType = VK_STRUCTURE_TYPE_EXTERNAL_FORMAT_ANDROID;
+    externalFormat.pNext = nullptr;
+    externalFormat.externalFormat = 0;  // If this is zero it is as if we aren't using this struct.
+
+    if (hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
+        SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures) &&
+                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_SRC_BIT & hwbFormatProps.formatFeatures) &&
+                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_DST_BIT & hwbFormatProps.formatFeatures));
+        SkASSERT(!vkTexInfo.fYcbcrConversionInfo.isValid());
+    } else {
+        // We have an external only format.
+        SkASSERT(vkTexInfo.fYcbcrConversionInfo.isValid());
+        SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures));
+        SkASSERT(vkTexInfo.fFormat == VK_FORMAT_UNDEFINED);
+        externalFormat.externalFormat = hwbFormatProps.externalFormat;
+    }
+
+    const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{
+            VK_STRUCTURE_TYPE_EXTERNAL_MEMORY_IMAGE_CREATE_INFO,                 // sType
+            &externalFormat,                                                     // pNext
+            VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID,  // handleTypes
+    };
+
+    const VkImageCreateInfo imageCreateInfo = {
+        VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,         // sType
+        &externalMemoryImageInfo,                    // pNext
+        vkTexInfo.fFlags,                            // VkImageCreateFlags
+        VK_IMAGE_TYPE_2D,                            // VkImageType
+        vkTexInfo.fFormat,                           // VkFormat
+        { (uint32_t)width, (uint32_t)height, 1 },    // VkExtent3D
+        1,                                           // mipLevels
+        1,                                           // arrayLayers
+        VK_SAMPLE_COUNT_1_BIT,                       // samples
+        vkTexInfo.fImageTiling,                      // VkImageTiling
+        vkTexInfo.fImageUsageFlags,                  // VkImageUsageFlags
+        vkTexInfo.fSharingMode,                      // VkSharingMode
+        0,                                           // queueFamilyCount
+        nullptr,                                     // pQueueFamilyIndices
+        VK_IMAGE_LAYOUT_UNDEFINED,                   // initialLayout
+    };
+
+    VkResult result;
+    VkImage image;
+    result = VULKAN_CALL(vkContext->interface(),
+                         CreateImage(device, &imageCreateInfo, nullptr, &image));
+    if (result != VK_SUCCESS) {
+        return {};
+    }
+
+    VkPhysicalDeviceMemoryProperties2 phyDevMemProps =
+            vkContext->vulkanCaps().physicalDeviceMemoryProperties2();
+
+    VulkanAlloc alloc;
+    if (!AllocateAndBindImageMemory(&alloc, image, phyDevMemProps, hwbProps, hardwareBuffer,
+                                    vkContext->interface(), device)) {
+        return {};
+    }
+
+    return {{width, height}, vkTexInfo, VK_IMAGE_LAYOUT_UNDEFINED, VK_QUEUE_FAMILY_EXTERNAL,
+             image, alloc};
 }
 
 #endif // SK_BUILD_FOR_ANDROID
