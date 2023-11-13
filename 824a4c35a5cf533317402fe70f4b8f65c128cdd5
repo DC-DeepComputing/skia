@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a77a617a_56148c6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 58
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T16:11:16Z",
+      "side": 1,
+      "message": "Please take a first pass at this CL structurally :^D I am thinking the cleanup of backend textures for graphite will be clearer w/ some `VulkanAlloc` stuct improvements like we\u0027ve discussed.",
+      "revId": "824a4c35a5cf533317402fe70f4b8f65c128cdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
