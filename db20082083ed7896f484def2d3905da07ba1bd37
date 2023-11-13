@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1e7ad0_bfcb16d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-13T17:53:12Z",
+      "side": 1,
+      "message": "Let\u0027s wait on confirmation that the assertion message does show up in Chrome bug reports before landing this change--it\u0027s not obvious to me that it does.",
+      "revId": "db20082083ed7896f484def2d3905da07ba1bd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
