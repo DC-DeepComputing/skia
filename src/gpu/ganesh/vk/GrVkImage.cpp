@@ -531,6 +531,7 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
                                  (int)useLazyAllocation);
         return gpu->checkVkResult(result);
     };
+
     auto allocator = gpu->memoryAllocator();
     skgpu::VulkanAlloc alloc;
     if (!skgpu::VulkanMemory::AllocImageMemory(allocator,
