@@ -25,6 +25,8 @@
 #include "src/utils/SkOSPath.h"
 #include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
+#include "tools/fonts/FontToolUtils.h"
+#include "tools/ToolUtils.h"
 
 #include <cmath>
 #include <vector>
