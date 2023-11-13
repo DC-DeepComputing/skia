@@ -443,8 +443,8 @@ func GenTasks(cfg *Config) {
 			"skia/resources",
 			"skia/package.json",
 			"skia/package-lock.json",
-			"skia/DEPS",       // needed to check generation
-			"skia/infra/bots", // Many Go tests live here.
+			"skia/DEPS",  // needed to check generation
+			"skia/infra", // Many Go tests and Bazel tools live here.
 			// Needed to run bazel
 			"skia/.bazelignore",
 			"skia/.bazelrc",

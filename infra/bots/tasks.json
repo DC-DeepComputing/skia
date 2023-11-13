@@ -93460,7 +93460,7 @@
         "skia/package.json",
         "skia/package-lock.json",
         "skia/DEPS",
-        "skia/infra/bots",
+        "skia/infra",
         "skia/.bazelignore",
         "skia/.bazelrc",
         "skia/.bazelversion",
