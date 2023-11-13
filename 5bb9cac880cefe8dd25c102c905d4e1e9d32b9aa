@@ -16,6 +16,29 @@
       "message": "Need to land the chrome flag to verify this will work but I think it will and still protect against the divide-by-zero.",
       "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aacfe81_4bc09e99",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-13T15:56:54Z",
+      "side": 1,
+      "message": "Suggestion: invert this to be\n```\nif !defined(SK_DISABLE_LEGACY_INIT_STOP_POS)\n```\n\nThen you don\u0027t have to land a change in Chrome first.",
+      "range": {
+        "startLine": 304,
+        "startChar": 12,
+        "endLine": 304,
+        "endChar": 39
+      },
+      "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
