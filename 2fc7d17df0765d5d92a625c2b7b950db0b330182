@@ -16,6 +16,24 @@
       "message": "This behavior is slightly different than before, right? Previously, `slotCount` would just blindly sum up all fields, even if one or more contained unsized arrays?",
       "revId": "2fc7d17df0765d5d92a625c2b7b950db0b330182",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e773401_641eb207",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-13T19:01:20Z",
+      "side": 1,
+      "message": "Though I guess the idea is that either result is incorrect/useless? Can we actually assert that we never call slotCount on something with unsized arrays?",
+      "parentUuid": "cbc33df0_1b0f74cb",
+      "revId": "2fc7d17df0765d5d92a625c2b7b950db0b330182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
