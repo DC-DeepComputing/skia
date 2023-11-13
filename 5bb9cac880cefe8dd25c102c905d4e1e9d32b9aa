@@ -63,6 +63,30 @@
       },
       "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30e2d2e3_1e93e07d",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-13T16:01:55Z",
+      "side": 1,
+      "message": "In any case the Chrome flag is on its way.",
+      "parentUuid": "4b46d4db_a78cc463",
+      "range": {
+        "startLine": 304,
+        "startChar": 12,
+        "endLine": 304,
+        "endChar": 39
+      },
+      "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
