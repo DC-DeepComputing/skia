@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9442cc_2d52b46c",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-13T17:50:30Z",
+      "side": 1,
+      "message": "Delete VkImage?",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 235,
+        "endChar": 34
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33fc0c85_0a3e4371",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 59
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-13T17:50:30Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to return this by value. That\u0027s a big copy.",
+      "range": {
+        "startLine": 87,
+        "startChar": 4,
+        "endLine": 87,
+        "endChar": 37
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74979700_264009e1",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-13T17:50:30Z",
+      "side": 1,
+      "message": "do we need this passed in? Doesn\u0027t look used.",
+      "range": {
+        "startLine": 370,
+        "startChar": 62,
+        "endLine": 370,
+        "endChar": 84
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727e5e2c_577da511",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-13T17:50:30Z",
+      "side": 1,
+      "message": "So in normal onCreateBackendTexture we will fail the call (i.e. return empty BeTex) if the client requests a format we don\u0027t support. The way this is setup right now I think if the AHB claims to know a Vulkan format we will just use that. Then we will end up failing when that BeTex is wrapped into an SkImage/Surface. I wonder if we should be checking our caps to see if we support the given format.\n\nIf we don\u0027t support the format, then I don\u0027t think we have to fail like the normal case. Instead I think we can fall back to importing it as external. We then also have to incorporate this into the isRenderable check above. I.e. we can\u0027t make a renderable thing that has an external format (there actually may be an extension now that allows it but we haven\u0027t add support).",
+      "range": {
+        "startLine": 407,
+        "startChar": 34,
+        "endLine": 407,
+        "endChar": 54
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0baaf75_cd2c47c3",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-13T17:50:30Z",
+      "side": 1,
+      "message": "Do we have to delete the VkImage if this fails?",
+      "range": {
+        "startLine": 473,
+        "startChar": 8,
+        "endLine": 473,
+        "endChar": 17
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499074e2_051d4682",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-13T17:50:30Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure we actually want this to be foreign. In Ganesh we used external at the time because of a qcomm bug not supporting it early on. But at this point all drivers should support foreign as its part of Android requirements.",
+      "range": {
+        "startLine": 476,
+        "startChar": 83,
+        "endLine": 476,
+        "endChar": 91
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
