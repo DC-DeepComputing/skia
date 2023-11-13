@@ -63,6 +63,24 @@
       "message": "Should I",
       "revId": "5aeddb66acaa581ab44853420a42bcadaeba5f1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb01a714_472b9671",
+        "filename": "AUTHORS",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-13T15:02:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "110da981_ef8709bb",
+      "revId": "5aeddb66acaa581ab44853420a42bcadaeba5f1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
