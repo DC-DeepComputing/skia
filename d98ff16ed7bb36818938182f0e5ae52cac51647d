@@ -16,6 +16,24 @@
       "message": "No idea what\u0027s up with the codesize bots, they seem to not apply the CL?!",
       "revId": "d98ff16ed7bb36818938182f0e5ae52cac51647d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0125b0a5_e5fc40fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-13T11:48:15Z",
+      "side": 1,
+      "message": "That\u0027s sort of expected - part of the codesize job is to compile at the previous CL.\n\nWhat I\u0027m puzzled about is how this landed in the first place.\n\nAnyway, I have a fix-forward in https://skia-review.googlesource.com/c/skia/+/778136",
+      "parentUuid": "5b8fdd1f_eff9a11f",
+      "revId": "d98ff16ed7bb36818938182f0e5ae52cac51647d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
