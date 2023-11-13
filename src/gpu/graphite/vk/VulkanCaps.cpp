@@ -52,6 +52,11 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     this->setDeviceName(physDevProperties.deviceName);
 #endif
 
+    fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
+    fPhysicalDeviceMemoryProperties2.pNext = nullptr;
+    VULKAN_CALL(vkInterface,
+                GetPhysicalDeviceMemoryProperties2(physDev, &fPhysicalDeviceMemoryProperties2));
+
     // Graphite requires Vulkan version 1.1 or later, which has protected support.
     fProtectedSupport = true;
 
@@ -1020,6 +1025,15 @@ VulkanCaps::FormatInfo& VulkanCaps::getFormatInfo(VkFormat format) {
     }
     static FormatInfo kInvalidFormat;
     return kInvalidFormat;
+}
+
+bool VulkanCaps::supportsVkFormat(VkFormat format) const {
+    for (size_t i = 0; i < std::size(kVkFormats); ++i) {
+        if (kVkFormats[i] == format) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const VulkanCaps::FormatInfo& VulkanCaps::getFormatInfo(VkFormat format) const {
