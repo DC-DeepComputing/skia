@@ -22,6 +22,47 @@
       },
       "revId": "5aeddb66acaa581ab44853420a42bcadaeba5f1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0b67b53_7603cc88",
+        "filename": "AUTHORS",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-13T15:02:01Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ea48a1ac_f5faa8c6",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 8
+      },
+      "revId": "5aeddb66acaa581ab44853420a42bcadaeba5f1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "110da981_ef8709bb",
+        "filename": "AUTHORS",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-13T15:02:01Z",
+      "side": 1,
+      "message": "Should I",
+      "revId": "5aeddb66acaa581ab44853420a42bcadaeba5f1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
