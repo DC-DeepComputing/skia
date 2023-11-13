@@ -138,12 +138,14 @@ public:
 protected:
     bool init() override {
         if (!this->setupBackendContext()) {
+            SkDebugf("setupBackendContext failed\n");
             return false;
         }
 
         fContext = skgpu::graphite::ContextFactory::MakeVulkan(fBackendContext,
                                                                /* contextOptions= */ {});
         if (!fContext) {
+            SkDebugf("MakeVulkan failed\n");
             return false;
         }
 
@@ -151,6 +153,7 @@ protected:
 
         fRecorder = fContext->makeRecorder();
         if (!fRecorder) {
+            SkDebugf("makeRecorder failed\n");
             return false;
         }
 
@@ -192,6 +195,7 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
 bool VkTestHelper::setupBackendContext() {
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
+        SkDebugf("LoadVkLibraryAndGetProcAddrFuncs failed\n");
         return false;
     }
 
@@ -204,6 +208,7 @@ bool VkTestHelper::setupBackendContext() {
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, &fExtensions,
                                              &fFeatures, &fDebugCallback, nullptr,
                                              sk_gpu_test::CanPresentFn(), fIsProtected)) {
+        SkDebugf("CreateVkBackendContext failed\n");
         return false;
     }
     fDevice = fBackendContext.fDevice;
