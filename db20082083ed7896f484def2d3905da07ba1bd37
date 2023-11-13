@@ -52,6 +52,24 @@
       "parentUuid": "fb91ceee_718f9996",
       "revId": "db20082083ed7896f484def2d3905da07ba1bd37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6db0e69_a8baaffe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2023-11-13T20:50:10Z",
+      "side": 1,
+      "message": "I looked through the binary with a hex editor.",
+      "parentUuid": "a708402e_71bc01dc",
+      "revId": "db20082083ed7896f484def2d3905da07ba1bd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
