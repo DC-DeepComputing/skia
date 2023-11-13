@@ -344,4 +344,17 @@ sk_sp<VulkanSamplerYcbcrConversion>
     return ycbcrConversion;
 }
 
+#ifdef SK_BUILD_FOR_ANDROID
+
+BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* hardwareBuffer,
+                                                              bool isRenderable,
+                                                              bool isProtectedContent,
+                                                              int width, int height,
+                                                              bool fromAndroidWindow) const {
+    // TODO(b/299475636): Implement.
+    return {};
+}
+
+#endif // SK_BUILD_FOR_ANDROID
+
 } // namespace skgpu::graphite
