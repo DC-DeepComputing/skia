@@ -780,6 +780,7 @@ void Context::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
 }
 
 bool Context::supportsProtectedContent() const {
+    SkDebugf("%s\n", fSharedContext->isProtected() == Protected::kYes ? "yes" : "no");
     return fSharedContext->isProtected() == Protected::kYes;
 }
 

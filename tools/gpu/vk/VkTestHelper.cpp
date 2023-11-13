@@ -149,6 +149,7 @@ protected:
             return false;
         }
 
+        SkDebugf("%d %d\n", fContext->supportsProtectedContent(), fIsProtected);
         SkASSERT(fContext->supportsProtectedContent() == fIsProtected);
 
         fRecorder = fContext->makeRecorder();
