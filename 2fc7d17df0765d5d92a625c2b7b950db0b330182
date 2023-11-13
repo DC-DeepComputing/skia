@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbc33df0_1b0f74cb",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-13T19:00:08Z",
+      "side": 1,
+      "message": "This behavior is slightly different than before, right? Previously, `slotCount` would just blindly sum up all fields, even if one or more contained unsized arrays?",
+      "revId": "2fc7d17df0765d5d92a625c2b7b950db0b330182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
