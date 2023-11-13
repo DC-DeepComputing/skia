@@ -5,6 +5,10 @@
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skshaper/include/SkShaper.h"
 
+namespace {
+    const char* kColorEmojiLocale = "und-Zsye";
+    const char* kColorEmojiFontMac = "Apple Color Emoji";
+}
 namespace skia {
 namespace textlayout {
 
@@ -142,16 +146,36 @@ sk_sp<SkTypeface> FontCollection::matchTypeface(const SkString& familyName, SkFo
 }
 
 // Find ANY font in available font managers that resolves the unicode codepoint
-sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode, SkFontStyle fontStyle, const SkString& locale) {
+sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
+                                                  SkFontStyle fontStyle,
+                                                  const SkString& locale,
+                                                  bool isEmoji) {
 
     for (const auto& manager : this->getFontManagerOrder()) {
         std::vector<const char*> bcp47;
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+        if (isEmoji) {
+            sk_sp<SkTypeface> typeface =
+                fDefaultFontManager->matchFamilyStyle(kColorEmojiFontMac, SkFontStyle());
+            if (typeface != nullptr) {
+                return typeface;
+            }
+        }
+#else
+        if (isEmoji) {
+          bcp47.push_back(kColorEmojiLocale);
+        }
+#endif
         if (!locale.isEmpty()) {
-            bcp47.push_back(locale.c_str());
+          bcp47.push_back(locale.c_str());
         }
         sk_sp<SkTypeface> typeface(manager->matchFamilyStyleCharacter(
-                nullptr, fontStyle, bcp47.data(), bcp47.size(), unicode));
+            nullptr, fontStyle, bcp47.data(), bcp47.size(), unicode));
+
         if (typeface != nullptr) {
+            SkString ff;
+            typeface->getFamilyName(&ff);
+            SkDebugf("Fallback font: '%s'\n", ff.c_str());
             return typeface;
         }
     }
