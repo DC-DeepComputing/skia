@@ -119,6 +119,24 @@
       "message": "Sida it looks like you\u0027ve already signed the CLA. You just need to add yourself to the AUTHORS file in the Skia root directory as well",
       "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48431ff3_181638a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-13T14:59:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a89aee80_d0e0440c",
+      "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
