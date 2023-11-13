@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd861517_594c127f",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-13T19:02:45Z",
+      "side": 1,
+      "message": "^ assert",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 42
+      },
+      "revId": "2fc7d17df0765d5d92a625c2b7b950db0b330182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cbc33df0_1b0f74cb",
         "filename": "src/sksl/ir/SkSLType.cpp",
         "patchSetId": 1
@@ -32,6 +55,24 @@
       "side": 1,
       "message": "Though I guess the idea is that either result is incorrect/useless? Can we actually assert that we never call slotCount on something with unsized arrays?",
       "parentUuid": "cbc33df0_1b0f74cb",
+      "revId": "2fc7d17df0765d5d92a625c2b7b950db0b330182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74778447_1eb0c6ad",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-13T19:02:45Z",
+      "side": 1,
+      "message": "The previous behavior was that we would assert if `slotCount` was called on a struct holding an unsized array, and now we will return zero. I could add the same assert to our `slotCount` here; it\u0027s probably a good idea, and we know the answer already.",
+      "parentUuid": "9e773401_641eb207",
       "revId": "2fc7d17df0765d5d92a625c2b7b950db0b330182",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
