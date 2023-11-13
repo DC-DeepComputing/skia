@@ -85,6 +85,23 @@
       "message": "This LGTM. Saif I notice we don\u0027t have any full planer formats currently in the Dawn backend. I assume we\u0027ll need to add those? Or is the plan always to pass them all in as individual planes? Also if we do move to the separate View vs Texutre system, we\u0027ll need to be able to give the full format to the Texture part.",
       "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c30ad7e2_ae413cc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21785
+      },
+      "writtenOn": "2023-11-13T14:48:38Z",
+      "side": 1,
+      "message": "hum, seems i need to update authors list?",
+      "revId": "bb7e6c81cfe794e83e692ff6630b731f700b52df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
