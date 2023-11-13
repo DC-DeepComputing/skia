@@ -39,6 +39,30 @@
       },
       "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b46d4db_a78cc463",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-13T16:01:08Z",
+      "side": 1,
+      "message": "I think it\u0027s the same number of CLs?\n1. Add to Skia with flag; turn on flag in Chrome and rebase; remove unflagged code in Skia; remove flag from Chrome.\n2. Add flag to Chrome; add to Skia; remove flag in Chrome and rebase; remove flagged code in Skia.",
+      "parentUuid": "2aacfe81_4bc09e99",
+      "range": {
+        "startLine": 304,
+        "startChar": 12,
+        "endLine": 304,
+        "endChar": 39
+      },
+      "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
