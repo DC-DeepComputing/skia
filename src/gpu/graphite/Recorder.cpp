@@ -125,8 +125,8 @@ Recorder::~Recorder() {
         device->abandonRecorder();
     }
 #if defined(GRAPHITE_TEST_UTILS)
-    if (fContext) {
-        fContext->priv().deregisterRecorder(this);
+    if (fContext1) {
+        fContext1->priv().deregisterRecorder(this);
     }
 #endif
 
@@ -413,8 +413,8 @@ bool RecorderPriv::deviceIsRegistered(Device* device) {
 }
 
 // used by the Context that created this Recorder to set a back pointer
-void RecorderPriv::setContext(Context* context) {
-    fRecorder->fContext = context;
+void RecorderPriv::setContext7(Context* context) {
+    fRecorder->fContext1 = context;
 }
 #endif
 
