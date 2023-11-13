@@ -182,6 +182,12 @@ public:
         }
     }
     void  deref() const { this->unref(); }
+#ifdef SK_DEBUG
+    /** Return the reference count. Use only for debugging. */
+    int32_t getRefCnt() const {
+        return fRefCnt.load(std::memory_order_relaxed);
+    }
+#endif
 
     // This must be used with caution. It is only valid to call this when 'threadIsolatedTestCnt'
     // refs are known to be isolated to the current thread. That is, it is known that there are at

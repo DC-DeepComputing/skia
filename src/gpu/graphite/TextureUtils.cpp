@@ -611,6 +611,7 @@ bool GenerateMipmaps(Recorder* recorder,
         sk_sp<SkSurface> stepDstSurface = sk_ref_sp(stepDst->getSurface());
         skgpu::graphite::Flush(stepDstSurface);
 
+        SkDebugf("generating mips\n");
         sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(
                 static_cast<const Surface*>(stepDstSurface.get())->readSurfaceView().refProxy(),
                 SkIRect::MakeSize(stepSize),

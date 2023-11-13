@@ -14,7 +14,7 @@
 
 GrVkCommandPool* GrVkCommandPool::Create(GrVkGpu* gpu) {
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
-    if (gpu->protectedContext()) {
+    if (gpu->protectedContext1()) {
         cmdPoolCreateFlags |= VK_COMMAND_POOL_CREATE_PROTECTED_BIT;
     }
 

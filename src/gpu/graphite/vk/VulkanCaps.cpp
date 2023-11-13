@@ -221,7 +221,7 @@ TextureInfo VulkanCaps::getTextureInfoForSampledCopy(const TextureInfo& textureI
 
     info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
-    info.fFlags = 0;
+    info.fFlags = (textureInfo.fProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
                             VK_IMAGE_USAGE_TRANSFER_DST_BIT;

@@ -141,7 +141,7 @@ static GrBackendTexture make_vk_backend_texture(
     SkASSERT(dContext->backend() == GrBackendApi::kVulkan);
     GrVkGpu* gpu = static_cast<GrVkGpu*>(dContext->priv().getGpu());
 
-    SkASSERT(!isProtectedContent || gpu->protectedContext());
+    SkASSERT(!isProtectedContent || gpu->protectedContext1());
 
     VkPhysicalDevice physicalDevice = gpu->physicalDevice();
     VkDevice device = gpu->device();
@@ -363,7 +363,7 @@ static GrBackendTexture make_vk_backend_texture(
 
 static bool can_import_protected_content(GrDirectContext* dContext) {
     SkASSERT(GrBackendApi::kVulkan == dContext->backend());
-    return static_cast<GrVkGpu*>(dContext->priv().getGpu())->protectedContext();
+    return static_cast<GrVkGpu*>(dContext->priv().getGpu())->protectedContext1();
 }
 
 GrBackendTexture MakeVulkanBackendTexture(GrDirectContext* dContext,
