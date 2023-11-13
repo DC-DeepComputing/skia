@@ -216,7 +216,6 @@ VkResult VulkanAMDMemoryAllocator::allocateBufferMemory(VkBuffer buffer,
     if (VK_SUCCESS == result) {
         *backendMemory = (VulkanBackendMemory)allocation;
     }
-
     return result;
 }
 

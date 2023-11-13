@@ -74,8 +74,8 @@ public:
     bool deviceIsRegistered(Device*);
     ResourceCache* resourceCache() { return fRecorder->fResourceProvider->resourceCache(); }
     // used by the Context that created this Recorder to set a back pointer
-    void setContext(Context*);
-    Context* context() { return fRecorder->fContext; }
+    void setContext7(Context*);
+    Context* context() { return fRecorder->fContext1; }
 #endif
 
 private:

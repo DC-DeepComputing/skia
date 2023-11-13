@@ -24,6 +24,7 @@
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
+#include "include/private/gpu/graphite/ContextOptionsPriv.h"
 #endif
 
 #define ACQUIRE_INST_VK_PROC(name)                                                               \
@@ -115,6 +116,7 @@ public:
             fContext->submit(skgpu::graphite::SyncToCpu::kYes);
         }
 
+        recording.reset();
         fRecorder.reset();
         fContext.reset();
     }
@@ -142,8 +144,13 @@ protected:
             return false;
         }
 
-        fContext = skgpu::graphite::ContextFactory::MakeVulkan(fBackendContext,
-                                                               /* contextOptions= */ {});
+        skgpu::graphite::ContextOptions contextOptions;
+        skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
+        // Needed to make synchronous readPixels work
+        contextOptionsPriv.fStoreContextRefInRecorder = true;
+        contextOptions.fOptionsPriv = &contextOptionsPriv;
+
+        fContext = skgpu::graphite::ContextFactory::MakeVulkan(fBackendContext, contextOptions);
         if (!fContext) {
             SkDebugf("MakeVulkan failed\n");
             return false;

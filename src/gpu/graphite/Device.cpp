@@ -377,6 +377,7 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
     skgpu::graphite::TextureInfo textureInfo =
             recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
                                                                   mipmapped);
+
     sk_sp<TextureProxy> dest = TextureProxy::Make(
             recorder->priv().caps(), srcRect.size(), textureInfo, skgpu::Budgeted::kNo);
     if (!dest) {

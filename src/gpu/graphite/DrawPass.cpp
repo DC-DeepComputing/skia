@@ -413,6 +413,7 @@ sk_sp<TextureProxy> add_copy_target_task(Recorder* recorder,
                                          const SkIPoint& targetOffset) {
     SkASSERT(recorder->priv().caps()->isTexturable(target->textureInfo()));
     SkIRect dstSrcRect = SkIRect::MakePtSize(targetOffset, targetInfo.dimensions());
+    SkDebugf("add_copy_target_task %d\n", target->textureInfo().isProtected() == Protected::kYes);
     sk_sp<TextureProxy> copy = TextureProxy::Make(recorder->priv().caps(),
                                                   targetInfo.dimensions(),
                                                   target->textureInfo(),

@@ -27,8 +27,8 @@ using Renderable = skgpu::Renderable;
 namespace {
 
 struct Context {
-    GrGpuFinishedProc fWrappedProc = nullptr;
-    GrGpuFinishedContext fWrappedContext = nullptr;
+    GrGpuFinishedProc fWrappedProc1 = nullptr;
+    GrGpuFinishedContext fWrappedContext1 = nullptr;
     sk_sp<sk_gpu_test::ManagedBackendTexture> fMBETs[SkYUVAInfo::kMaxPlanes];
 };
 
@@ -38,8 +38,8 @@ namespace sk_gpu_test {
 
 void ManagedBackendTexture::ReleaseProc(void* ctx) {
     std::unique_ptr<Context> context(static_cast<Context*>(ctx));
-    if (context->fWrappedProc) {
-        context->fWrappedProc(context->fWrappedContext);
+    if (context->fWrappedProc1) {
+        context->fWrappedProc1(context->fWrappedContext1);
     }
 }
 
@@ -146,6 +146,10 @@ struct MBETContext {
 
 namespace sk_gpu_test {
 
+void ManagedGraphiteTexture::ReleaseProc(void* ctx) {
+    std::unique_ptr<MBETContext> context(static_cast<MBETContext*>(ctx));
+}
+
 void ManagedGraphiteTexture::FinishedProc(void* ctx, skgpu::CallbackResult) {
     std::unique_ptr<MBETContext> context(static_cast<MBETContext*>(ctx));
 }
@@ -160,7 +164,8 @@ ManagedGraphiteTexture::~ManagedGraphiteTexture() {
 }
 
 void* ManagedGraphiteTexture::releaseContext() const {
-    return new MBETContext{{sk_ref_sp(this)}};
+    auto tmp = new MBETContext{{sk_ref_sp(this)}};
+    return tmp;
 }
 
 void* ManagedGraphiteTexture::MakeYUVAReleaseContext(

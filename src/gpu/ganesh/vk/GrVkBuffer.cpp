@@ -76,7 +76,7 @@ sk_sp<GrVkBuffer> GrVkBuffer::Make(GrVkGpu* gpu,
     // The only time we don't require mappable buffers is when we have a static access pattern and
     // we're on a device where gpu only memory has faster reads on the gpu than memory that is also
     // mappable on the cpu. Protected memory always uses mappable buffers.
-    bool requiresMappable = gpu->protectedContext() ||
+    bool requiresMappable = gpu->protectedContext1() ||
                             accessPattern == kDynamic_GrAccessPattern ||
                             accessPattern == kStream_GrAccessPattern ||
                             !gpu->vkCaps().gpuOnlyBuffersMorePerformant();
@@ -241,7 +241,7 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t offset, size_t s
     GrVkGpu* gpu = this->getVkGpu();
 
     // We should never call this method in protected contexts.
-    SkASSERT(!gpu->protectedContext());
+    SkASSERT(!gpu->protectedContext1());
 
     // The vulkan api restricts the use of vkCmdUpdateBuffer to updates that are less than or equal
     // to 65536 bytes and a size and offset that are both 4 byte aligned.
@@ -360,4 +360,3 @@ const VkDescriptorSet* GrVkBuffer::uniformDescriptorSet() const {
     SkASSERT(fUniformDescriptorSet);
     return fUniformDescriptorSet->descriptorSet();
 }
-

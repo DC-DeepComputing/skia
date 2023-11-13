@@ -233,7 +233,7 @@ private:
 
 #if defined(GRAPHITE_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
-    Context* fContext = nullptr;
+    Context* fContext1 = nullptr;
 #endif
 };
 

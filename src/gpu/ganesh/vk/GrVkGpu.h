@@ -78,7 +78,7 @@ public:
     const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties() const {
         return fPhysDevMemProps;
     }
-    bool protectedContext() const { return fProtectedContext == skgpu::Protected::kYes; }
+    bool protectedContext1() const { return fProtectedContext == skgpu::Protected::kYes; }
 
     GrVkResourceProvider& resourceProvider() { return fResourceProvider; }
 

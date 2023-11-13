@@ -49,6 +49,7 @@ std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
     // Create VkCommandPool
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
     if (sharedContext->isProtected() == Protected::kYes) {
+        SkDebugf("setting bit\n");
         cmdPoolCreateFlags |= VK_COMMAND_POOL_CREATE_PROTECTED_BIT;
     }
 
@@ -274,10 +275,7 @@ static bool submit_to_queue(const VulkanInterface* interface,
     submitInfo.pSignalSemaphores = signalSemaphores;
     VkResult result;
     VULKAN_CALL_RESULT(interface, result, QueueSubmit(queue, 1, &submitInfo, fence));
-    if (result != VK_SUCCESS) {
-        return false;
-    }
-    return true;
+    return result == VK_SUCCESS;
 }
 
 bool VulkanCommandBuffer::submit(VkQueue queue) {

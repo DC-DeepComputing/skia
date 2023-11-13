@@ -92,7 +92,7 @@ Context::~Context() {
 #if defined(GRAPHITE_TEST_UTILS)
     ASSERT_SINGLE_OWNER
     for (auto& recorder : fTrackedRecorders) {
-        recorder->priv().setContext(nullptr);
+        recorder->priv().setContext7(nullptr);
     }
 #endif
 }
@@ -127,7 +127,7 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options));
 #if defined(GRAPHITE_TEST_UTILS)
     if (fStoreContextRefInRecorder) {
-        recorder->priv().setContext(this);
+        recorder->priv().setContext7(this);
     }
 #endif
     return recorder;
@@ -780,6 +780,7 @@ void Context::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
 }
 
 bool Context::supportsProtectedContent() const {
+    SkDebugf("%s\n", fSharedContext->isProtected() == Protected::kYes ? "yes" : "no");
     return fSharedContext->isProtected() == Protected::kYes;
 }
 
