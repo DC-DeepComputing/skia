@@ -16,6 +16,24 @@
       "message": "Let\u0027s wait on confirmation that the assertion message does show up in Chrome bug reports before landing this change--it\u0027s not obvious to me that it does.",
       "revId": "db20082083ed7896f484def2d3905da07ba1bd37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb91ceee_718f9996",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2023-11-13T18:20:03Z",
+      "side": 1,
+      "message": "I see `LOG_FATAL\u0000` and\u0000 `\u0000\u0000ShaderErrorHandler.cpp:22: Shader compilation failed!` appear in the minidumps.",
+      "parentUuid": "4a1e7ad0_bfcb16d0",
+      "revId": "db20082083ed7896f484def2d3905da07ba1bd37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
