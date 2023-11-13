@@ -179,6 +179,7 @@ template("opts") {
 }
 
 is_x86 = current_cpu == "x64" || current_cpu == "x86"
+is_loongarch = current_cpu == "loong64"
 
 opts("crc32") {
   enabled = current_cpu == "arm64"
@@ -283,6 +284,18 @@ opts("skx") {
       cflags += [ "-fno-stack-check" ]  # Work around skia:9709
     }
   }
+}
+
+opts("lsx") {
+  enabled = is_loongarch
+  sources = skia_opts.lsx_sources
+  cflags = [ "-mlsx" ]
+}
+
+opts("lasx") {
+  enabled = is_loongarch
+  sources = skia_opts.lasx_sources
+  cflags = [ "-mlasx" ]
 }
 
 # Any feature of Skia that requires third-party code should be optional and use this template.
@@ -1499,6 +1512,8 @@ skia_component("skia") {
     ":hsw",
     ":jpeg_decode",
     ":jpegxl_decode",
+    ":lasx",
+    ":lsx",
     ":ndk_images",
     ":piet",
     ":png_decode",
@@ -1692,6 +1707,8 @@ skia_static_library("pathkit") {
     ":avx",
     ":crc32",
     ":hsw",
+    ":lasx",
+    ":lsx",
     ":sse42",
     ":ssse3",
   ]

@@ -49,6 +49,11 @@ struct SkCpu {
         ASIMDHP  = 1 << 4,
     };
 
+    enum {
+        LOONGARCH_SX = 1 << 0,
+        LOONGARCH_ASX = 1 << 1,
+    };
+
     static void CacheRuntimeFeatures();
     static bool Supports(uint32_t);
 private:
@@ -99,6 +104,14 @@ inline bool SkCpu::Supports(uint32_t mask) {
     features &= (SSE1 | SSE2 | SSE3 | SSSE3 | SSE41);
     #elif defined(SK_CPU_LIMIT_SSE2)
     features &= (SSE1 | SSE2);
+    #endif
+
+#elif SK_CPU_LOONGARCH
+    #if SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+    features |= LOONGARCH_SX;
+    #endif
+    #if SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LASX
+    features |= LOONGARCH_ASX;
     #endif
 
 #else

@@ -34,6 +34,10 @@
     #define SK_OPTS_NS sse2
 #elif SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE1
     #define SK_OPTS_NS sse
+#elif SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LASX
+    #define SK_OPTS_NS lasx
+#elif SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+    #define SK_OPTS_NS lsx
 #else
     #define SK_OPTS_NS portable
 #endif
@@ -112,6 +116,8 @@ namespace SkOpts {
     void Init_skx();
     void Init_erms();
     void Init_crc32();
+    void Init_lsx();
+    void Init_lasx();
 
     static void init() {
     #if defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -138,6 +144,15 @@ namespace SkOpts {
 
     #elif defined(SK_CPU_ARM64)
         if (SkCpu::Supports(SkCpu::CRC32)) { Init_crc32(); }
+
+    #elif defined(SK_CPU_LOONGARCH)
+        #if SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+            if (SkCpu::Supports(SkCpu::LOONGARCH_SX)) { Init_lsx(); }
+        #endif
+
+        #if SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LASX
+            if (SkCpu::Supports(SkCpu::LOONGARCH_ASX)) { Init_lasx(); }
+        #endif
 
     #endif
     }

@@ -17,6 +17,8 @@ namespace SK_OPTS_NS {
     static void memsetT(T buffer[], T value, int count) {
     #if defined(SK_CPU_SSE_LEVEL) && SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_AVX
         static constexpr int N = 32 / sizeof(T);
+    #elif defined(SK_CPU_LSX_LEVEL) && SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LASX
+        static constexpr int N = 32 / sizeof(T);
     #else
         static constexpr int N = 16 / sizeof(T);
     #endif

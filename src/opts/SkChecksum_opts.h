@@ -33,6 +33,34 @@
     static uint32_t crc32c_1(uint32_t seed, uint8_t  v) { return __crc32cb(seed, v); }
     static uint32_t crc32c_4(uint32_t seed, uint32_t v) { return __crc32cw(seed, v); }
     static uint32_t crc32c_8(uint32_t seed, uint64_t v) { return __crc32cd(seed, v); }
+#elif 1 && defined(SK_CPU_LOONGARCH)
+    static uint32_t crc32c_1(uint32_t seed, uint8_t  v) {
+        uint32_t out;
+        __asm__ volatile (
+                "crcc.w.b.w %0, %2, %1 \r\n"
+                : "=r"(out)
+                : "r"(seed), "r"(v)
+                );
+        return out;
+    }
+    static uint32_t crc32c_4(uint32_t seed, uint32_t  v) {
+        uint32_t out;
+        __asm__ volatile (
+                "crcc.w.w.w %0, %2, %1 \r\n"
+                : "=r"(out)
+                : "r"(seed), "r"(v)
+                );
+        return out;
+    }
+    static uint32_t crc32c_8(uint32_t seed, uint64_t v) {
+        uint32_t out;
+        __asm__ volatile (
+                "crcc.w.d.w %0, %2, %1 \r\n"
+                : "=r"(out)
+                : "r"(seed), "r"(v)
+                );
+        return out;
+    }
 #else
     // See https://www.w3.org/TR/PNG/#D-CRCAppendix,
     // but this is CRC32c, so built with 0x82f63b78, not 0xedb88320 like you'll see there.

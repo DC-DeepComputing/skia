@@ -70,6 +70,9 @@ struct GrShaderCaps;
     #include <arm_neon.h>
 #endif
 
+#if SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+    #include <lsxintrin.h>
+#endif
 namespace {
 
 enum class MorphType {
@@ -605,6 +608,41 @@ namespace {
             }
             if (x >= radius) src += srcStrideX;
             if (x + radius < width - 1) upperSrc += srcStrideX;
+            dst += dstStrideX;
+        }
+    }
+
+#elif SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+    template<MorphType type, MorphDirection direction>
+    static void morph(const SkPMColor* src, SkPMColor* dst,
+                      int radius, int width, int height, int srcStride, int dstStride) {
+        const int srcStrideX = direction == MorphDirection::kX ? 1 : srcStride;
+        const int dstStrideX = direction == MorphDirection::kX ? 1 : dstStride;
+        const int srcStrideY = direction == MorphDirection::kX ? srcStride : 1;
+        const int dstStrideY = direction == MorphDirection::kX ? dstStride : 1;
+        radius = std::min(radius, width - 1);
+        const SkPMColor* upperSrc = src + radius * srcStrideX;
+        __m128i v_zero = __lsx_vldi(0);
+        __m128i v_mask = __lsx_vreplgr2vr_w(0xFFFFFFFF);
+        for (int x = 0; x < width; ++x) {
+            const SkPMColor* lp = src;
+            const SkPMColor* up = upperSrc;
+            SkPMColor* dptr = dst;
+            for (int y = 0; y < height; ++y) {
+                __m128i extreme = (type == MorphType::kDilate) ? v_zero : v_mask;
+                for (const SkPMColor* p = lp; p <= up; p += srcStrideX) {
+                    __m128i src_pixel = v_zero;
+                    src_pixel = __lsx_vinsgr2vr_w(src_pixel, *p, 0);
+                    extreme = (type == MorphType::kDilate) ? __lsx_vmax_bu(src_pixel, extreme)
+                                                           : __lsx_vmin_bu(src_pixel, extreme);
+                }
+                *dptr = __lsx_vpickve2gr_w(extreme, 0);
+                dptr += dstStrideY;
+                lp += srcStrideY;
+                up += srcStrideY;
+            }
+            if (x >= radius) { src += srcStrideX; }
+            if (x + radius < width - 1) { upperSrc += srcStrideX; }
             dst += dstStrideX;
         }
     }

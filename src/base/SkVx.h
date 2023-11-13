@@ -46,6 +46,11 @@
         #include <arm_neon.h>
     #elif defined(__wasm_simd128__)
         #include <wasm_simd128.h>
+    #elif defined(__loongarch_asx)
+        #include <lasxintrin.h>
+        #include <lsxintrin.h>
+    #elif defined(__loongarch_sx)
+        #include <lsxintrin.h>
     #endif
 #endif
 
@@ -476,6 +481,21 @@ SINT Vec<N,T> if_then_else(const Vec<N,M<T>>& cond, const Vec<N,T>& t, const Vec
                                           bit_pun<uint8x16_t>(e)));
     }
 #endif
+#if SKVX_USE_SIMD && defined(__loongarch_asx)
+    if constexpr (N*sizeof(T) == 32) {
+        return bit_pun<Vec<N,T>>(__lasx_xvbitsel_v(bit_pun<__m256i>(e),
+                                          bit_pun<__m256i>(t),
+                                          bit_pun<__m256i>(cond)));
+    }
+#endif
+#if SKVX_USE_SIMD && defined(__loongarch_sx)
+    if constexpr (N*sizeof(T) == 16) {
+        return bit_pun<Vec<N,T>>(__lsx_vbitsel_v(bit_pun<__m128i>(e),
+                                          bit_pun<__m128i>(t),
+                                          bit_pun<__m128i>(cond)));
+    }
+#endif
+
     // Recurse for large vectors to try to hit the specializations above.
     if constexpr (N*sizeof(T) > 16) {
         return join(if_then_else(cond.lo, t.lo, e.lo),
@@ -519,6 +539,18 @@ SINT bool any(const Vec<N,T>& x) {
         return wasm_i32x4_any_true(bit_pun<VExt<4,int>>(x));
     }
 #endif
+#if SKVX_USE_SIMD && defined(__loongarch_asx)
+    if constexpr (N*sizeof(T) == 32) {
+	v8i32 retv = (v8i32)__lasx_xvmskltz_w(__lasx_xvslt_wu(__lasx_xvreplgr2vr_w(0), bit_pun<__m256i>(x)));
+	return (retv[0] != 0b0000) || (retv[4] != 0b0000);
+    }
+#endif
+#if SKVX_USE_SIMD && defined(__loongarch_sx)
+    if constexpr (N*sizeof(T) == 16) {
+	v4i32 retv = (v4i32)__lsx_vmskltz_w(__lsx_vslt_wu(__lsx_vreplgr2vr_w(0), bit_pun<__m128i>(x)));
+	return retv[0] != 0b0000;
+    }
+#endif
     return any(x.lo)
         || any(x.hi);
 }
@@ -546,6 +578,18 @@ SINT bool all(const Vec<N,T>& x) {
 #if SKVX_USE_SIMD && defined(__wasm_simd128__)
     if constexpr (N == 4 && sizeof(T) == 4) {
         return wasm_i32x4_all_true(bit_pun<VExt<4,int>>(x));
+    }
+#endif
+#if SKVX_USE_SIMD && defined(__loongarch_asx)
+    if constexpr (N*sizeof(T) == 32) {
+	v8i32 retv = (v8i32)__lasx_xvmskltz_w(__lasx_xvslt_wu(__lasx_xvreplgr2vr_w(0), bit_pun<__m256i>(x)));
+	return (retv[0] == 0b1111) && (retv[4] == 0b1111);
+    }
+#endif
+#if SKVX_USE_SIMD && defined(__loongarch_sx)
+    if constexpr (N*sizeof(T) == 16) {
+	v4i32 retv = (v4i32)__lsx_vmskltz_w(__lsx_vslt_wu(__lsx_vreplgr2vr_w(0), bit_pun<__m128i>(x)));
+	return retv[0] == 0b1111;
     }
 #endif
     return all(x.lo)
@@ -657,6 +701,16 @@ SIN Vec<N,int> lrint(const Vec<N,float>& x) {
         return bit_pun<Vec<N,int>>(_mm_cvtps_epi32(bit_pun<__m128>(x)));
     }
 #endif
+#if SKVX_USE_SIMD && defined(__loongarch_asx)
+    if constexpr (N == 8) {
+        return bit_pun<Vec<N,int>>(__lasx_xvftint_w_s(bit_pun<__m256>(x)));
+    }
+#endif
+#if SKVX_USE_SIMD && defined(__loongarch_sx)
+    if constexpr (N == 4) {
+        return bit_pun<Vec<N,int>>(__lsx_vftint_w_s(bit_pun<__m128>(x)));
+    }
+#endif
     return join(lrint(x.lo),
                 lrint(x.hi));
 }
@@ -744,14 +798,16 @@ SIN Vec<N,uint8_t> approx_scale(const Vec<N,uint8_t>& x, const Vec<N,uint8_t>& y
 // saturated_add(x,y) sums values and clamps to the maximum value instead of overflowing.
 SINT std::enable_if_t<std::is_unsigned_v<T>, Vec<N,T>> saturated_add(const Vec<N,T>& x,
                                                                      const Vec<N,T>& y) {
-#if SKVX_USE_SIMD && (defined(__SSE__) || defined(__ARM_NEON))
-    // Both SSE and ARM have 16-lane saturated adds, so use intrinsics for those and recurse down
+#if SKVX_USE_SIMD && (defined(__SSE__) || defined(__ARM_NEON) || defined(__loongarch_sx))
+    // Both SSE and ARM have 16-lane saturated adds, so use intrinsics for those and recurse down, now add lsx and lasx 16-lane saturated adds
     // or join up to take advantage.
     if constexpr (N == 16 && sizeof(T) == 1) {
         #if defined(__SSE__)
         return bit_pun<Vec<N,T>>(_mm_adds_epu8(bit_pun<__m128i>(x), bit_pun<__m128i>(y)));
-        #else  // __ARM_NEON
+        #elif defined(__ARM_NEON)  // __ARM_NEON
         return bit_pun<Vec<N,T>>(vqaddq_u8(bit_pun<uint8x16_t>(x), bit_pun<uint8x16_t>(y)));
+        #elif defined(__loongarch_sx)
+        return bit_pun<Vec<N,T>>(__lsx_vsadd_bu(bit_pun<__m128i>(x), bit_pun<__m128i>(y)));
         #endif
     } else if constexpr (N < 16 && sizeof(T) == 1) {
         return saturated_add(join(x,x), join(y,y)).lo;
@@ -847,6 +903,14 @@ SIN Vec<N,uint16_t> mulhi(const Vec<N,uint16_t>& x,
     // Use _mm_mulhi_epu16 for 8xuint16_t and join or split to get there.
     if constexpr (N == 8) {
         return bit_pun<Vec<8,uint16_t>>(_mm_mulhi_epu16(bit_pun<__m128i>(x), bit_pun<__m128i>(y)));
+    } else if constexpr (N < 8) {
+        return mulhi(join(x,x), join(y,y)).lo;
+    } else { // N > 8
+        return join(mulhi(x.lo, y.lo), mulhi(x.hi, y.hi));
+    }
+#elif SKVX_USE_SIMD && defined(__loongarch_sx)
+    if constexpr (N == 8) {
+        return bit_pun<Vec<8,uint16_t>>(__lsx_vmuh_hu(bit_pun<__m128i>(x), bit_pun<__m128i>(y)));
     } else if constexpr (N < 8) {
         return mulhi(join(x,x), join(y,y)).lo;
     } else { // N > 8
@@ -969,6 +1033,35 @@ SI void strided_load4(const float* v,
     b = bit_pun<Vec<4,float>>(b_);
     c = bit_pun<Vec<4,float>>(c_);
     d = bit_pun<Vec<4,float>>(d_);
+}
+#elif SKVX_USE_SIMD && defined(__loongarch_sx)
+
+#define _LSX_TRANSPOSE4(row0, row1, row2, row3)       \
+do {                                                    \
+    __m128i __t0 = __lsx_vilvl_w (row1, row0);    \
+    __m128i __t1 = __lsx_vilvl_w (row3, row2);    \
+    __m128i __t2 = __lsx_vilvh_w (row1, row0);    \
+    __m128i __t3 = __lsx_vilvh_w (row3, row2);    \
+    (row0) = __lsx_vilvl_d (__t1, __t0);         \
+    (row1) = __lsx_vilvh_d (__t1, __t0);         \
+    (row2) = __lsx_vilvl_d (__t3, __t2);         \
+    (row3) = __lsx_vilvh_d (__t3, __t2);         \
+} while (0)
+
+SI void strided_load4(const int* v,
+                      Vec<4,int>& a,
+                      Vec<4,int>& b,
+                      Vec<4,int>& c,
+                      Vec<4,int>& d) {
+    __m128i a_ = __lsx_vld(v, 0);
+    __m128i b_ = __lsx_vld(v, 16);
+    __m128i c_ = __lsx_vld(v, 32);
+    __m128i d_ = __lsx_vld(v, 48);
+    _LSX_TRANSPOSE4(a_, b_, c_, d_);
+    a = bit_pun<Vec<4,int>>(a_);
+    b = bit_pun<Vec<4,int>>(b_);
+    c = bit_pun<Vec<4,int>>(c_);
+    d = bit_pun<Vec<4,int>>(d_);
 }
 #endif
 

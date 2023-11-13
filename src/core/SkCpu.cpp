@@ -146,6 +146,27 @@
         return features;
     }
 
+#elif defined(SK_CPU_LOONGARCH)
+    #define LOONGARCH_CFG2 0x2
+    #define LOONGARCH_CFG2_LSX    (1 << 6)
+    #define LOONGARCH_CFG2_LASX   (1 << 7)
+
+    static uint32_t read_cpu_features(void)
+    {
+        uint32_t features = 0;
+        uint32_t reg = 0;
+
+        __asm__ volatile(
+            "cpucfg %0, %1 \n\t"
+            : "+&r"(reg)
+            : "r"(LOONGARCH_CFG2)
+        );
+
+      if (reg & LOONGARCH_CFG2_LSX) {features |= SkCpu::LOONGARCH_SX; }
+      if (reg & LOONGARCH_CFG2_LASX) {features |= SkCpu::LOONGARCH_ASX; }
+      return features;
+    }
+
 #else
     static uint32_t read_cpu_features() {
         return 0;
