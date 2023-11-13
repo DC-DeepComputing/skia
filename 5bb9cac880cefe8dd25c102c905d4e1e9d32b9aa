@@ -111,6 +111,30 @@
       },
       "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0631b832_a6c80db3",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-13T16:42:48Z",
+      "side": 1,
+      "message": "With step 1 that last CL can be batched with other flags to remove and (to me) feels like faster throughput since my Skia change doesn\u0027t feel blocked on Chrome.\n\nAlso, if you have to fix multiple clients 1) is nicer. Anyway, if you already have pipeline 2) in the works, keep it up.",
+      "parentUuid": "4799368d_fd84e627",
+      "range": {
+        "startLine": 304,
+        "startChar": 12,
+        "endLine": 304,
+        "endChar": 39
+      },
+      "revId": "5bb9cac880cefe8dd25c102c905d4e1e9d32b9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
