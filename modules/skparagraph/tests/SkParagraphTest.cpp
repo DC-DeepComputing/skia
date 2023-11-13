@@ -7872,7 +7872,6 @@ UNIX_ONLY_TEST(SkParagraph_SingleDummyPlaceholder, reporter) {
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->placeholders().size() == 1);
 
-
     size_t index = 0;
     for (auto& line : impl->lines()) {
         line.scanStyles(StyleType::kDecorations,
@@ -7911,4 +7910,31 @@ UNIX_ONLY_TEST(SkParagraph_EndWithLineSeparator, reporter) {
         }
     });
     REPORTER_ASSERT(reporter, visitedCount == 3);
+}
+
+// This is a rare multi-platform test that checks emoji font resolution algorithm
+DEF_TEST(SkParagraph_EmojiFontResolution, reporter) {
+    sk_sp<FontCollection> fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+
+    const char* text = "#\u263A";
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("")});
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    auto paragraph = builder.Build();
+    paragraph->layout(SK_ScalarMax);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    if (impl->runs().size() < 2) {
+        ERRORF(reporter, "Expected 2 runs.");
+        return;
+    }
+    REPORTER_ASSERT(reporter, impl->runs().size() == 2);
+    REPORTER_ASSERT(reporter, impl->run(0).textRange() == TextRange(0, 1));
+    REPORTER_ASSERT(reporter, impl->run(1).textRange() == TextRange(1, 4));
 }
