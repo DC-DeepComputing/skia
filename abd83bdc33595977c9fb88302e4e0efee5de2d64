@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1991349b_d725768f",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "`AllocateAndBindImageMemory` destroys the VkImage before returning `false`, but I agree it should be out here since the image is being passed in by the caller. Deleting the memory can be handled in `AllocateAndBindImageMemory` since it\u0027s locally created there, but cleaning up the VkImage outside of that helper makes more sense. Changed here and in graphite",
+      "parentUuid": "ca9442cc_2d52b46c",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 235,
+        "endChar": 34
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33fc0c85_0a3e4371",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fa747a_9b47912a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 59
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "Yikes, you\u0027re so right. I was in Vulkan opaque handle struct mode 😞 Changed to const\u0026.",
+      "parentUuid": "33fc0c85_0a3e4371",
+      "range": {
+        "startLine": 87,
+        "startChar": 4,
+        "endLine": 87,
+        "endChar": 37
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74979700_264009e1",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-11-13T17:50:30Z",
       "side": 1,
       "message": "do we need this passed in? Doesn\u0027t look used.",
+      "range": {
+        "startLine": 370,
+        "startChar": 62,
+        "endLine": 370,
+        "endChar": 84
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d26409e5_39782828",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "Yeah, you\u0027re right; this can go away along w/ the `requireKnownFormat` param. removed in parent branch which establishes API signature (https://skia-review.googlesource.com/c/skia/+/777041)",
+      "parentUuid": "74979700_264009e1",
       "range": {
         "startLine": 370,
         "startChar": 62,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53ad5d5b_b899ad9b",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "I generally like that suggestion. More intentional than simply allowing the wrapping of the BETex to fail. For my knowledge, what does Android do with non-renderable AHwBuf-BackendTextures anyhow? (Also pinged Nolan asking that)\n\nThat should help me answer some small followup considerations I have (like whether or not we can/want to add VkImage transfer src/dst usage flags).",
+      "parentUuid": "727e5e2c_577da511",
+      "range": {
+        "startLine": 407,
+        "startChar": 34,
+        "endLine": 407,
+        "endChar": 54
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0baaf75_cd2c47c3",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 59
@@ -106,6 +202,30 @@
       "writtenOn": "2023-11-13T17:50:30Z",
       "side": 1,
       "message": "Do we have to delete the VkImage if this fails?",
+      "range": {
+        "startLine": 473,
+        "startChar": 8,
+        "endLine": 473,
+        "endChar": 17
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37cc4bbd_dc57b09f",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "See other comment about ganesh equivalent",
+      "parentUuid": "c0baaf75_cd2c47c3",
       "range": {
         "startLine": 473,
         "startChar": 8,
@@ -129,6 +249,30 @@
       "writtenOn": "2023-11-13T17:50:30Z",
       "side": 1,
       "message": "I\u0027m pretty sure we actually want this to be foreign. In Ganesh we used external at the time because of a qcomm bug not supporting it early on. But at this point all drivers should support foreign as its part of Android requirements.",
+      "range": {
+        "startLine": 476,
+        "startChar": 83,
+        "endLine": 476,
+        "endChar": 91
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d173aeac_ed059284",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "Good callout. The spec (https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#_description_123) says that the main differences between `VK_QUEUE_FAMILY_EXTERNAL` and `VK_QUEUE_FAMILY_FOREIGN_EXT` are:\n\n1) Foreign queues don\u0027t require the same physical device and driver version as the current `VkInstance`, unlike external\n\n2) All external memory resources support external, but not all of them support foreign. Foreign is more restrictive\n\n3) Transitions to/from foreign queues are more expensive than those to/from external queues\n\nGiven that the client sets up the `VkInstance`, I would imagine that foreign doesn\u0027t really offer that much benefit for us over external. But I suppose there will be cases where the AHwBuffer will be from an \"foreign\" device (relevant TODO: https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/ganesh/vk/AHardwareBufferVk.cpp#346), in which case foreign would be preferable. \n\nChanged to foreign, but LMKWYT - it sounds like it would be best to make an intelligent decision b/w foreign and external if we know whether the buffer is from a foreign device or not to avoid the costlier transitions to/from foreign queues (though I\u0027m not sure off the top of my head whether we will even realistically encounter a need to transition to/from that queue type often).",
+      "parentUuid": "499074e2_051d4682",
       "range": {
         "startLine": 476,
         "startChar": 83,

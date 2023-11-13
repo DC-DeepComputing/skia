@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9eb10de_df15d2bf",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-13T23:31:52Z",
+      "side": 1,
+      "message": "If this logic is correct (that we\u0027d want to return an empty BETex in the case where isRenderable \u003d true and we are importing as an external format), then the additional check for importAsExternal on line 406 can go away since we will return here if we encounter conflicting renderability/format info.",
+      "range": {
+        "startLine": 389,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 5
+      },
+      "revId": "404081238c9bb755fd7b68c1980c01e07b9a3d0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
