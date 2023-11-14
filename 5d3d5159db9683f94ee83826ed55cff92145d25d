@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6acb300f_c081f9f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-14T15:16:24Z",
+      "side": 1,
+      "message": "Leandro, can you focus on the new Bazel rule? Ben, I\u0027d like your impression of the Bazel rules and the example C++ code.",
+      "revId": "5d3d5159db9683f94ee83826ed55cff92145d25d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
