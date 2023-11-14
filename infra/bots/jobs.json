@@ -368,6 +368,9 @@
    "cq_config": {}
    },
   {"name": "Housekeeper-PerCommit-CreateDockerImage_Skia_Release"},
+  {"name": "Housekeeper-PerCommit-GoLinters",
+    "cq_config": {}
+    },
   {"name": "Housekeeper-PerCommit-InfraTests_Linux",
    "cq_config": {}
    },
