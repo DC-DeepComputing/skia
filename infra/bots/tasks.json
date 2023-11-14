@@ -1338,12 +1338,6 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ]
     },
-    "Housekeeper-PerCommit-PushAppsFromSkiaDockerImage": {
-      "tasks": [
-        "Housekeeper-PerCommit-PushAppsFromSkiaDockerImage"
-      ],
-      "trigger": "main"
-    },
     "Housekeeper-PerCommit-RunGnToBp": {
       "tasks": [
         "Housekeeper-PerCommit-RunGnToBp"
@@ -28378,120 +28372,6 @@
         "pool:Skia"
       ],
       "idempotent": true
-    },
-    "Housekeeper-PerCommit-PushAppsFromSkiaDockerImage": {
-      "caches": [
-        {
-          "name": "docker",
-          "path": "cache/docker"
-        },
-        {
-          "name": "git",
-          "path": "cache/git"
-        },
-        {
-          "name": "git_cache",
-          "path": "cache/git_cache"
-        },
-        {
-          "name": "vpython",
-          "path": "cache/vpython"
-        }
-      ],
-      "casSpec": "empty",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/linux-amd64",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:2@3.8.10.chromium.19"
-        },
-        {
-          "name": "infra/3pp/tools/git/linux-amd64",
-          "path": "cipd_bin_packages",
-          "version": "version:2@2.38.1.chromium.9"
-        },
-        {
-          "name": "infra/tools/git/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
-        },
-        {
-          "name": "infra/tools/luci/git-credential-luci/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
-        },
-        {
-          "name": "infra/tools/luci/vpython-native/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
-        },
-        {
-          "name": "infra/tools/luci/vpython/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
-        },
-        {
-          "name": "skia/bots/bazelisk_linux_amd64",
-          "path": "bazelisk_linux_amd64",
-          "version": "version:0"
-        }
-      ],
-      "command": [
-        "./push_apps_from_skia_image",
-        "--project_id",
-        "skia-swarming-bots",
-        "--task_id",
-        "<(TASK_ID)",
-        "--task_name",
-        "Housekeeper-PerCommit-PushAppsFromSkiaDockerImage",
-        "--workdir",
-        ".",
-        "--repo",
-        "<(REPO)",
-        "--revision",
-        "<(REVISION)",
-        "--patch_issue",
-        "<(ISSUE)",
-        "--patch_set",
-        "<(PATCHSET)",
-        "--patch_server",
-        "<(CODEREVIEW_SERVER)",
-        "--bazel_cache_dir",
-        "/mnt/pd0/bazel_cache"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64",
-        "Housekeeper-PerCommit-CreateDockerImage_Skia_Release"
-      ],
-      "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
-        "pool:Skia",
-        "docker_installed:true"
-      ],
-      "environment": {
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "CLOUDSDK_PYTHON": [
-          "cipd_bin_packages/cpython3/bin/python3"
-        ],
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "bazelisk_linux_amd64",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython"
-        ]
-      },
-      "execution_timeout_ns": 7200000000000,
-      "io_timeout_ns": 7200000000000,
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Housekeeper-PerCommit-RunGnToBp": {
       "caches": [
