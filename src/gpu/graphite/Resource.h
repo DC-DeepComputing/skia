@@ -151,6 +151,15 @@ public:
     // Dumps memory usage information for this Resource to traceMemoryDump.
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
+    /**
+     * If the resource has a non-shareable key then this gives the resource subclass an opportunity
+     * to prepare itself to re-enter the cache. The ResourceCache extends its privilege to take the
+     * first UsageRef to this function via takeRef. If takeRef is called this resource will not
+     * immediately enter the cache but will be re-reprocessed with the Usage Ref count again reaches
+     * zero.
+     */
+    virtual void prepareForReturnToCache(std::function<void()> takeRef) {}
+
 #if defined(GRAPHITE_TEST_UTILS)
     bool testingShouldDeleteASAP() const { return fDeleteASAP == DeleteASAP::kYes; }
 
@@ -179,6 +188,8 @@ protected:
     }
 #endif
 
+    void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
+
 private:
     friend class ProxyCache; // for setDeleteASAP and updateAccessTime
 
@@ -188,7 +199,6 @@ private:
     };
 
     DeleteASAP shouldDeleteASAP() const { return fDeleteASAP; }
-    void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
 
     // In the ResourceCache this is called whenever a Resource is moved into the purgeableQueue. It
     // may also be called by the ProxyCache to track the time on Resources it is holding on to.

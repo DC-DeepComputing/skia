@@ -12,21 +12,43 @@
 namespace skgpu::graphite {
 
 void* Buffer::map() {
+    SkASSERT(this->isMapped() || this->hasPendingAsyncMap() ||
+             !this->sharedContext()->caps()->bufferMapsAreAsync());
     if (!this->isMapped()) {
         this->onMap();
     }
     return fMapPtr;
 }
 
-void Buffer::asyncMap() {
-    SkASSERT(this->sharedContext()->caps()->canAsyncMapBuffer());
-    this->onAsyncMap();
+void Buffer::asyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
+    SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
+    if (this->isMapped()) {
+        if (proc) {
+            proc(ctx, CallbackResult::kSuccess);
+        }
+        return;
+    }
+    if (proc) {
+        fAsyncMapCallbacks.push_back(RefCntedCallback::Make(proc, ctx));
+    }
+    if (!this->hasPendingAsyncMap()) {
+        this->onAsyncMap();
+    }
 }
 
 void Buffer::unmap() {
     SkASSERT(this->isMapped() || this->hasPendingAsyncMap());
     this->onUnmap();
     fMapPtr = nullptr;
+}
+
+void Buffer::callAsyncMapCallbacks(CallbackResult result) {
+    if (result == CallbackResult::kFailed) {
+        for (auto& cb : fAsyncMapCallbacks) {
+            cb->setFailureResult();
+        }
+    }
+    fAsyncMapCallbacks.clear();
 }
 
 } // namespace skgpu::graphite

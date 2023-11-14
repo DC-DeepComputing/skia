@@ -594,7 +594,7 @@ void Context::finalizeAsyncReadPixels(SkSpan<PixelTransferResult> transferResult
     skia_private::STArray<4, sk_sp<Buffer>> buffersToAsyncMap;
     for (size_t i = 0; i < transferResults.size(); ++i) {
         finishContext->fTransferResults[i] = std::move(transferResults[i]);
-        if (fSharedContext->caps()->canAsyncMapBuffer()) {
+        if (fSharedContext->caps()->bufferMapsAreAsync()) {
             buffersToAsyncMap.push_back(finishContext->fTransferResults[i].fTransferBuffer);
         }
     }

@@ -9,6 +9,8 @@
 #define skgpu_graphite_Buffer_DEFINED
 
 #include "include/gpu/GpuTypes.h"
+#include "include/private/base/SkTArray.h"
+#include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
@@ -24,7 +26,7 @@ public:
     void* map();
     // Starts a new asynchronous map. It can be waited on by calling map() or polled by checking
     // isMapped().
-    void asyncMap();
+    void asyncMap(GpuFinishedProc = nullptr, GpuFinishedContext = nullptr);
     // If the buffer is mapped then unmaps. If an async map is pending then it is cancelled.
     void unmap();
 
@@ -46,12 +48,16 @@ protected:
 
     void* fMapPtr = nullptr;
 
+    void callAsyncMapCallbacks(CallbackResult);
+
 private:
     virtual void onMap() = 0;
     virtual void onAsyncMap() = 0;
     virtual void onUnmap() = 0;
 
     size_t             fSize;
+
+    skia_private::TArray<sk_sp<RefCntedCallback>> fAsyncMapCallbacks;
 };
 
 } // namespace skgpu::graphite
