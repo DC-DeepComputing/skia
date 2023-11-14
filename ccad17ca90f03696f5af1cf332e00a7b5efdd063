@@ -16,6 +16,24 @@
       "message": "Was this a rebase-related change?",
       "revId": "ccad17ca90f03696f5af1cf332e00a7b5efdd063",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c270267_067ce974",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 9
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-14T23:45:04Z",
+      "side": 1,
+      "message": "Oops, something went wrong with the rebase and the diff is wrong. This change is just an indentation adjustment made by `gofmt`.",
+      "parentUuid": "733dac07_fd90866f",
+      "revId": "ccad17ca90f03696f5af1cf332e00a7b5efdd063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
