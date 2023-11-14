@@ -16,6 +16,52 @@
       "message": "Leandro, can you focus on the new Bazel rule? Ben, I\u0027d like your impression of the Bazel rules and the example C++ code.",
       "revId": "5d3d5159db9683f94ee83826ed55cff92145d25d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517f1e3b_979f56db",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-14T16:43:53Z",
+      "side": 1,
+      "message": "What about `freetype_configs()`?",
+      "range": {
+        "startLine": 281,
+        "startChar": 4,
+        "endLine": 281,
+        "endChar": 11
+      },
+      "revId": "5d3d5159db9683f94ee83826ed55cff92145d25d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "736b4e83_a9c04f5f",
+        "filename": "example/external_client/WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-14T16:43:53Z",
+      "side": 1,
+      "message": "I think we should give this a more specific name; it\u0027s hard to know what `configs` means in this context.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 7
+      },
+      "revId": "5d3d5159db9683f94ee83826ed55cff92145d25d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
