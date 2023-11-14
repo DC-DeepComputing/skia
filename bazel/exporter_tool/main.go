@@ -531,6 +531,9 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "modules/skcms/skcms.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skcms_public_headers",
 			Rules: []string{"//modules/skcms:public_hdrs"}},
+
+		// TODO(b/310927123): Replace external dependencies on skcms_sources with the more fine-
+		// grained dependencies (skcms_public + skcms_Transform*) below, and remove skcms_sources.
 		{Var: "skcms_sources",
 			Rules: []string{
 				"//modules/skcms:srcs",
