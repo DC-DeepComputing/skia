@@ -39,6 +39,30 @@
       },
       "revId": "af0cf72939ab2a2a10ade714888d6077b54bd2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6abe5836_9ac9d4ea",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-11-14T18:36:20Z",
+      "side": 1,
+      "message": "The fFormat here is never multiplanar right now. Its either always single planar or the plane view format for a multiplanar texture (based on how code is written right now). \n\nSo, I can add back check for the matching aspects or the fAspect (which comes from TextureProxy) to be All.",
+      "parentUuid": "3df623ab_57e656f7",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 45
+      },
+      "revId": "af0cf72939ab2a2a10ade714888d6077b54bd2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
