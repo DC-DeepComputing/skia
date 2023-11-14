@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/base/SkAPI.h"
 
 class SkBitmap;
 class SkImage;
@@ -55,7 +56,7 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
 sk_sp<SkFontMgr> TestFontMgr();
 
 // Must be called before the first call to TestFontMgr to have any effect.
-void UsePortableFontMgr();
+SK_SPI void UsePortableFontMgr();
 
 // Returns true if this platform is Windows and this binary is being configured to run
 // with the GDI font manager.
