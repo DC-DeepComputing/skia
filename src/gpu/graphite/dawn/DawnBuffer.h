@@ -29,6 +29,8 @@ public:
 
     const wgpu::Buffer& dawnBuffer() const { return fBuffer; }
 
+    void prepareForReturnToCache(const std::function<void()>& takeRef) override;
+
 private:
     DawnBuffer(const DawnSharedContext*,
                size_t size,
@@ -45,7 +47,6 @@ private:
     }
 
     wgpu::Buffer fBuffer;
-    std::optional<DawnAsyncWait> fMapAsyncWait;
 };
 
 } // namespace skgpu::graphite

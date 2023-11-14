@@ -299,7 +299,7 @@ void DawnCaps::initCaps(const wgpu::Device& device, const ContextOptions& option
     fStorageBufferPreferred = false;
 
     fDrawBufferCanBeMapped = false;
-    fCanAsyncMapBuffer = true;
+    fBufferMapsAreAsync = true;
 
     fComputeSupport = true;
 
