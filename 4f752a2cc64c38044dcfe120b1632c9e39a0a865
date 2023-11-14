@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5ea260_93fc5468",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-14T21:14:10Z",
+      "side": 1,
+      "message": "Hopefully this should pass the G3 canary!",
+      "revId": "4f752a2cc64c38044dcfe120b1632c9e39a0a865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
