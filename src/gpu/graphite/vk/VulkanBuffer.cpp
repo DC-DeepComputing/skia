@@ -237,11 +237,17 @@ void VulkanBuffer::onMap() {
     this->internalMap(0, fBufferUsedForCPURead ? this->size() : 0);
 }
 
+void VulkanBuffer::onAsyncMap() {
+    SK_ABORT("Vulkan backend doesn't support async buffer mapping.");
+}
+
 void VulkanBuffer::onUnmap() {
     SkASSERT(fBuffer);
     SkASSERT(this->isMapped());
     this->internalUnmap(0, fBufferUsedForCPURead ? 0 : this->size());
 }
+
+bool VulkanBuffer::hasPendingAsyncMap() const { return false; }
 
 void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
                                    VkAccessFlags dstAccessMask,

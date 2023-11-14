@@ -34,10 +34,10 @@ public:
     }
     ~DawnWorkSubmission() override {}
 
-    bool isFinished() override { return fAsyncWait.yieldAndCheck(); }
-    void waitUntilFinished() override { fAsyncWait.busyWait(); }
-
 private:
+    bool onIsFinished() override { return fAsyncWait.yieldAndCheck(); }
+    void onWaitUntilFinished() override { fAsyncWait.busyWait(); }
+
     DawnAsyncWait fAsyncWait;
 };
 } // namespace
