@@ -1308,6 +1308,11 @@
       ],
       "trigger": "main"
     },
+    "Housekeeper-PerCommit-GoLinters": {
+      "tasks": [
+        "Housekeeper-PerCommit-GoLinters"
+      ]
+    },
     "Housekeeper-PerCommit-InfraTests_Linux": {
       "tasks": [
         "Housekeeper-PerCommit-InfraTests_Linux"
@@ -27998,6 +28003,62 @@
       "execution_timeout_ns": 3600000000000,
       "io_timeout_ns": 3600000000000,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Housekeeper-PerCommit-GoLinters": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/git/linux-amd64",
+          "path": "cipd_bin_packages",
+          "version": "version:2@2.38.1.chromium.9"
+        },
+        {
+          "name": "infra/tools/git/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./go_linters",
+        "--local=false",
+        "--git_path=cipd_bin_packages/git",
+        "--project_id",
+        "skia-swarming-bots",
+        "--task_id",
+        "<(TASK_ID)",
+        "--task_name",
+        "Housekeeper-PerCommit-GoLinters",
+        "--bazel_cache_dir",
+        "/mnt/pd0/bazel_cache",
+        "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--bazel_arg=--jobs=100"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk_linux_amd64"
+        ]
+      },
+      "service_account": "skia-external-housekeeper@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Housekeeper-PerCommit-InfraTests_Linux": {
       "caches": [
@@ -93865,6 +93926,7 @@
     "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android": {},
     "Housekeeper-OnDemand-Presubmit": {},
     "Housekeeper-PerCommit-CheckGeneratedFiles": {},
+    "Housekeeper-PerCommit-GoLinters": {},
     "Housekeeper-PerCommit-InfraTests_Linux": {},
     "Housekeeper-PerCommit-RunGnToBp": {},
     "Perf-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Graphite_Metal": {
