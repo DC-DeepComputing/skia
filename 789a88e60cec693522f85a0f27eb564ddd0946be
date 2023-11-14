@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf67ebb_dc86d0d9",
+        "filename": "modules/skcms/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-14T16:20:28Z",
+      "side": 1,
+      "message": "Didn\u0027t you say they can\u0027t be in the same group? Or will that happen in a follow-up CL?",
+      "range": {
+        "startLine": 15,
+        "startChar": 27,
+        "endLine": 15,
+        "endChar": 50
+      },
+      "revId": "789a88e60cec693522f85a0f27eb564ddd0946be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
