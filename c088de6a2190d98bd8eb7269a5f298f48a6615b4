@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f8401318_69de40cc",
+        "filename": "BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-14T20:28:47Z",
+      "side": 1,
+      "message": "This macro delegates to a `go_binary` rule, so Bazel will try to compile Buildifier from scratch.\n\nI\u0027ve reverted the `PRESUBMIT.py` changes to keep the presubmit hooks fast on Macs, but left the `//:buildifier` Bazel target so we can use it from Housekeeper-PerCommit-CheckGeneratedFiles.",
+      "parentUuid": "359f5b9b_d73b04b1",
+      "range": {
+        "startLine": 1,
+        "startChar": 63,
+        "endLine": 1,
+        "endChar": 73
+      },
+      "revId": "c088de6a2190d98bd8eb7269a5f298f48a6615b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b9f5dee3_b367518b",
         "filename": "BUILD.bazel",
         "patchSetId": 9
