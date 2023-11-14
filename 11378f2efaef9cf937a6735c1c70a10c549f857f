@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e631081_a2e2b050",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-14T21:02:57Z",
+      "side": 1,
+      "message": "Arguably this should just be merged with the dependent CL, but it might make reviewing easier to see them separately.",
+      "revId": "11378f2efaef9cf937a6735c1c70a10c549f857f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
