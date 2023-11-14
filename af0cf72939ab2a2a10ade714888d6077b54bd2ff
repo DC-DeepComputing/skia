@@ -16,6 +16,29 @@
       "message": "Please take a look.",
       "revId": "af0cf72939ab2a2a10ade714888d6077b54bd2ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3df623ab_57e656f7",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-14T16:15:40Z",
+      "side": 1,
+      "message": "Do we want to add any sort of validation here? Like if the original thing was PlaneN then I think we should be getting PlaneN here. Just to keep things a little contained, I think the only valid thing to support is All dropping to a single plane.",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 45
+      },
+      "revId": "af0cf72939ab2a2a10ade714888d6077b54bd2ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
