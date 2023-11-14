@@ -425,18 +425,18 @@ def _CheckBuildifier(input_api, output_api):
     return []
   try:
     subprocess.check_output(
-        ['buildifier', '--version'],
+        ['bazelisk', '--version'],
         stderr=subprocess.STDOUT)
   except:
     return [output_api.PresubmitNotifyResult(
-      'Skipping buildifier check because it is not on PATH. \n' +
-      'You can download it from https://github.com/bazelbuild/buildtools/releases')]
+      'Skipping buildifier check because bazelisk is not on PATH. \n' +
+      'You can download it from https://github.com/bazelbuild/bazelisk/releases/tag/v1.14.0')]
 
   return _RunCommandAndCheckGitDiff(
     # One can change --lint=warn to --lint=fix to have things automatically fixed where possible.
     # However, --lint=fix will not cause a presubmit error if there are things that require
     # manual intervention, so we leave --lint=warn on by default.
-    output_api, ['buildifier', '--mode=fix', '--lint=warn'] + files)
+    output_api, ['bazelisk', 'run', '//:buildifier'] + files)
 
 
 def _CheckBannedAPIs(input_api, output_api):
