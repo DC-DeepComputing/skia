@@ -22,6 +22,30 @@
       },
       "revId": "a985d920e45f0267de3c6e95842381491409938e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c44e92c1_d97a83f0",
+        "filename": "infra/bots/task_drivers/g3_canary/g3_canary.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-14T23:52:05Z",
+      "side": 1,
+      "message": "IIUC, `pg.Push()` pushes metrics to Prometheus: https://skia.googlesource.com/buildbot/+/27f3b939347e4b367a6ab2aab71e78312231dfc7/promk/go/pushgateway/pushgateway.go#36\n\nI figured it wasn\u0027t critical since we immediately fail the test driver step after each `pg.Push()` call. Except for the last one on line 227, which I just now realize isn\u0027t followed by a `td.FailStep()` call. I\u0027m not familiar with `g3_canary.go` and I don\u0027t know how important is that we successfully collect these metrics, but I suspect we don\u0027t want to fail the task if we fail to push metrics to Prometheus.\n\nWDYT?",
+      "parentUuid": "ddb396be_fc2efe51",
+      "range": {
+        "startLine": 213,
+        "startChar": 4,
+        "endLine": 213,
+        "endChar": 5
+      },
+      "revId": "a985d920e45f0267de3c6e95842381491409938e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
