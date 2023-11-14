@@ -132,19 +132,30 @@ VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,
     info.pUserData = nullptr;
 
     if (kDedicatedAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
+        SkDebugf("VulkanAMDMemoryAllocator::allocateImageMemory - setting dedicated bit\n");
         info.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
-    }
-    if (kLazyAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
-        info.requiredFlags |= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
+    } else {
+        SkDebugf("VulkanAMDMemoryAllocator::allocateImageMemory - NOT setting dedicated bit\n");
     }
     if (kProtected_AllocationPropertyFlag & allocationPropertyFlags) {
+        SkDebugf("VulkanAMDMemoryAllocator::allocateImageMemory - setting protected bit\n");
         info.requiredFlags |= VK_MEMORY_PROPERTY_PROTECTED_BIT;
+    } else {
+        SkDebugf("VulkanAMDMemoryAllocator::allocateImageMemory - NOT setting protected bit\n");
+    }
+    if (kLazyAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
+        SkDebugf("VulkanAMDMemoryAllocator::allocateImageMemory - setting lazy bit\n");
+        info.preferredFlags |= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
+    } else {
+        SkDebugf("VulkanAMDMemoryAllocator::allocateImageMemory - NOT setting lazy bit\n");
     }
 
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForImage(fAllocator, image, &info, &allocation, nullptr);
     if (VK_SUCCESS == result) {
         *backendMemory = (VulkanBackendMemory)allocation;
+    } else {
+        SkDebugf("VkResult: %d\n", result);
     }
     return result;
 }

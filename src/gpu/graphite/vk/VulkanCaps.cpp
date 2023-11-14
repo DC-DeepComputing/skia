@@ -55,8 +55,11 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     this->setDeviceName(physDevProperties.deviceName);
 #endif
 
-    // Graphite requires Vulkan version 1.1 or later, which has protected support.
-    fProtectedSupport = (isProtected == Protected::kYes);
+    // Graphite requires Vulkan version 1.1 or later, which always has protected support.
+    if (isProtected == Protected::kYes) {
+        fProtectedSupport = true;
+        fShouldAlwaysUseDedicatedImageMemory = true;
+    }
 
     // We could actually query and get a max size for each config, however maxImageDimension2D will
     // give the minimum max size across all configs. So for simplicity we will use that for now.
@@ -221,7 +224,7 @@ TextureInfo VulkanCaps::getTextureInfoForSampledCopy(const TextureInfo& textureI
 
     info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
-    info.fFlags = 0;
+    info.fFlags = (textureInfo.fProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
                             VK_IMAGE_USAGE_TRANSFER_DST_BIT;
@@ -1276,6 +1279,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     bool isMipped = info.mipmapped() == Mipmapped::kYes;
     Protected isProtected = info.isProtected();
 
+    SkDebugf("VulkanCaps::buildKeyForTexture isProtected: %d\n", isProtected == Protected::kYes ? 1 : 0);
     // Confirm all the below parts of the key can fit in a single uint32_t. The sum of the shift
     // amounts in the asserts must be less than or equal to 32. vkSpec.fFlags will go into its
     // own 32-bit block.

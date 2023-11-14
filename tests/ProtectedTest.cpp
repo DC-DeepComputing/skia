@@ -33,7 +33,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
             sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
                                                                                 { kSize, kSize },
                                                                                 textureable,
-                                                                                isProtected);
+                                                                                isProtected,
+                                                                                /* surfaceProps= */ nullptr);
             if (!surface) {
                 continue;
             }
@@ -103,7 +104,9 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
         sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
                                                                             { kSize, kSize },
                                                                             /* textureable= */ true,
-                                                                            isProtected);
+                                                                            isProtected,
+                                                                            /* surfaceProps= */ nullptr);
+
         if (!surface) {
             continue;
         }
@@ -143,7 +146,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
         sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
                                                                             { kSize, kSize },
                                                                             /* textureable= */ true,
-                                                                            isProtected);
+                                                                            isProtected,
+                                                                            nullptr);
         if (!surface) {
             continue;
         }

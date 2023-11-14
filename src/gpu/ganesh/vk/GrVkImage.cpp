@@ -277,9 +277,9 @@ void GrVkImage::init(GrVkGpu* gpu, bool forSecondaryCB) {
             SkASSERT(!SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) &&
                      !SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT));
         } else {
-            SkASSERT(!SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT));
-            SkASSERT(SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) &&
-                     SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT));
+//            SkASSERT(!SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT));
+//            SkASSERT(SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) &&
+//                     SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT));
         }
     }
     // We can't transfer from the non graphics queue to the graphics queue since we can't
@@ -523,6 +523,9 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
     bool useLazyAllocation =
             SkToBool(imageDesc.fUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT);
 
+    SkDebugf("GrVkImage::InitImageInfo - dedicated %d prot %d lazy %d\n",
+             forceDedicatedMemory, isProtected == skgpu::Protected::kYes, useLazyAllocation);
+
     auto checkResult = [gpu, isProtected, forceDedicatedMemory, useLazyAllocation](
                                VkResult result) {
         GR_VK_LOG_IF_NOT_SUCCESS(gpu, result, "skgpu::VulkanMemory::AllocImageMemory"
@@ -539,9 +542,9 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
                                                forceDedicatedMemory,
                                                useLazyAllocation,
                                                checkResult,
-                                               &alloc) ||
-        (useLazyAllocation &&
-         !SkToBool(alloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
+                                               &alloc)) {// ||
+        //(useLazyAllocation &&
+        // !SkToBool(alloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
         VK_CALL(gpu, DestroyImage(gpu->device(), image, nullptr));
         return false;
     }

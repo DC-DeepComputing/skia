@@ -411,6 +411,7 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
         protectedMemoryFeatures->sType =
           VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROTECTED_MEMORY_FEATURES;
         protectedMemoryFeatures->pNext = nullptr;
+        protectedMemoryFeatures->protectedMemory = true;
         *tailPNext = protectedMemoryFeatures;
         tailPNext = &protectedMemoryFeatures->pNext;
     }

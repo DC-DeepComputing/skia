@@ -24,6 +24,7 @@
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
+#include "include/private/gpu/graphite/ContextOptionsPriv.h"
 #endif
 
 #define ACQUIRE_INST_VK_PROC(name)                                                               \
@@ -59,8 +60,11 @@ public:
     bool isValid() const override { return fDirectContext != nullptr; }
 
     sk_sp<SkSurface> createSurface(SkISize size, bool textureable, bool isProtected) override {
+        SkSurfaceProps props(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_SkPixelGeometry);
+
         return ProtectedUtils::CreateProtectedSkSurface(fDirectContext.get(), size,
-                                                        textureable, isProtected);
+                                                        textureable, isProtected,
+                                                        &props);
     }
 
     void submitAndWaitForCompletion(bool* completionMarker) override {
@@ -78,9 +82,11 @@ protected:
             return false;
         }
 
+        GrContextOptions contextOptions;
+
         GrVkBackendContext gr;
         sk_gpu_test::ConvertBackendContext(fBackendContext, &gr);
-        fDirectContext = GrDirectContexts::MakeVulkan(gr);
+        fDirectContext = GrDirectContexts::MakeVulkan(gr, contextOptions);
         if (!fDirectContext) {
             return false;
         }
@@ -115,6 +121,7 @@ public:
             fContext->submit(skgpu::graphite::SyncToCpu::kYes);
         }
 
+        recording.reset();
         fRecorder.reset();
         fContext.reset();
     }
@@ -141,8 +148,13 @@ protected:
             return false;
         }
 
-        fContext = skgpu::graphite::ContextFactory::MakeVulkan(fBackendContext,
-                                                               /* contextOptions= */ {});
+        skgpu::graphite::ContextOptions contextOptions;
+        skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
+        // Needed to make synchronous readPixels work
+        contextOptionsPriv.fStoreContextRefInRecorder = true;
+        contextOptions.fOptionsPriv = &contextOptionsPriv;
+
+        fContext = skgpu::graphite::ContextFactory::MakeVulkan(fBackendContext, contextOptions);
         if (!fContext) {
             return false;
         }

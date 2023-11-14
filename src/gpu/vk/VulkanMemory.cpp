@@ -58,25 +58,35 @@ bool VulkanMemory::AllocImageMemory(VulkanMemoryAllocator* allocator,
     // we let the allocators decide. The allocator can query the GPU for each image to see if the
     // GPU recommends or requires the use of dedicated memory.
     if (forceDedicatedMemory) {
+        SkDebugf("VulkanMemory::AllocImageMemory - setting dedicated bit\n");
         propFlags = VulkanMemoryAllocator::kDedicatedAllocation_AllocationPropertyFlag;
     } else {
+        SkDebugf("VulkanMemory::AllocImageMemory - NOT setting dedicated bit\n");
         propFlags = VulkanMemoryAllocator::kNone_AllocationPropertyFlag;
     }
 
     if (isProtected == Protected::kYes) {
+        SkDebugf("VulkanMemory::AllocImageMemory - setting protected flag\n");
         propFlags = propFlags | VulkanMemoryAllocator::kProtected_AllocationPropertyFlag;
+    } else {
+        SkDebugf("VulkanMemory::AllocImageMemory - NOT setting protected flag\n");
     }
 
     if (useLazyAllocation) {
+        SkDebugf("VulkanMemory::AllocImageMemory - setting lazy bit\n");
         propFlags = propFlags | VulkanMemoryAllocator::kLazyAllocation_AllocationPropertyFlag;
+    } else {
+        SkDebugf("VulkanMemory::AllocImageMemory - NOT setting lazy bit\n");
     }
 
     VkResult result = allocator->allocateImageMemory(image, propFlags, &memory);
     if (!checkResult(result)) {
+        SkDebugf("Failed VulkanMemory::AllocImageMemory %d\n", result);
         return false;
     }
 
     allocator->getAllocInfo(memory, alloc);
+    SkDebugf("VulkanMemory::AllocImageMemory - success\n");
     return true;
 }
 
@@ -159,4 +169,3 @@ void VulkanMemory::InvalidateMappedAlloc(VulkanMemoryAllocator* allocator,
 }
 
 }  // namespace skgpu
-

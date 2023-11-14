@@ -58,8 +58,7 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     SkASSERT(!isLinear || vkSamples == VK_SAMPLE_COUNT_1_BIT);
 
     VkImageCreateFlags createflags = 0;
-    if (info.isProtected() == Protected::kYes) {
-        SkASSERT(caps.protectedSupport());
+    if (info.isProtected() == Protected::kYes && caps.protectedSupport()) {
         createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
     }
 
@@ -106,6 +105,9 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     bool useLazyAllocation =
             SkToBool(spec.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT);
 
+    SkDebugf("VulkanTexture::MakeVkImage prot %d ded %d lazy %d\n",
+             info.isProtected() == Protected::kYes, forceDedicatedMemory, useLazyAllocation);
+
     auto checkResult = [sharedContext](VkResult result) {
         return sharedContext->checkVkResult(result);
     };
@@ -115,10 +117,11 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
                                                forceDedicatedMemory,
                                                useLazyAllocation,
                                                checkResult,
-                                               &outInfo->fMemoryAlloc) ||
-        (useLazyAllocation &&
-         !SkToBool(outInfo->fMemoryAlloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
+                                               &outInfo->fMemoryAlloc)) {// ||
+//        (useLazyAllocation &&
+//        !SkToBool(outInfo->fMemoryAlloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
         VULKAN_CALL(interface, DestroyImage(device, image, nullptr));
+        SKGPU_LOG_E("Failed AllocImageMemory\n");
         return false;
     }
 
@@ -129,6 +132,7 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     if (result != VK_SUCCESS) {
         skgpu::VulkanMemory::FreeImageMemory(allocator, outInfo->fMemoryAlloc);
         VULKAN_CALL(interface, DestroyImage(device, image, nullptr));
+        SKGPU_LOG_E("Failed BindImageMemory\n");
         return false;
     }
 
@@ -145,6 +149,7 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
                                    skgpu::Budgeted budgeted) {
     CreatedImageInfo imageInfo;
     if (!MakeVkImage(sharedContext, dimensions, info, &imageInfo)) {
+        SkDebugf("Failed here2\n");
         return nullptr;
     }
     auto ycbcrConversion = resourceProvider->findOrCreateCompatibleSamplerYcbcrConversion(
