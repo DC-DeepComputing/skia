@@ -58,8 +58,7 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     SkASSERT(!isLinear || vkSamples == VK_SAMPLE_COUNT_1_BIT);
 
     VkImageCreateFlags createflags = 0;
-    if (info.isProtected() == Protected::kYes) {
-        SkASSERT(caps.protectedSupport());
+    if (info.isProtected() == Protected::kYes && caps.protectedSupport()) {
         createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
     }
 
@@ -117,7 +116,7 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
                                                checkResult,
                                                &outInfo->fMemoryAlloc) ||
         (useLazyAllocation &&
-         !SkToBool(outInfo->fMemoryAlloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
+        !SkToBool(outInfo->fMemoryAlloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
         VULKAN_CALL(interface, DestroyImage(device, image, nullptr));
         return false;
     }

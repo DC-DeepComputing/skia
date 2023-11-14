@@ -403,7 +403,7 @@ bool GrVkRenderTarget::getAttachmentsDescriptor(GrVkRenderPass::AttachmentsDescr
     const GrVkImage* colorAttachment =
             withResolve ? this->msaaAttachment() : this->colorAttachment();
     if (!colorAttachment) {
-        SkDebugf("WARNING: Invalid color attachment -- possibly dmsaa attachment creation failed?");
+        SkDebugf("WARNING: Invalid color attachment -- possibly dmsaa attachment creation failed?\n");
         return false;
     }
 
