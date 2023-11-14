@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "733dac07_fd90866f",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 9
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-14T23:38:01Z",
+      "side": 1,
+      "message": "Was this a rebase-related change?",
+      "revId": "ccad17ca90f03696f5af1cf332e00a7b5efdd063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
