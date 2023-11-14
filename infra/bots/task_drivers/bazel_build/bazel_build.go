@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
+	"time"
 
 	infra_common "go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
@@ -70,6 +71,11 @@ func main() {
 	if err := bazel.EnsureBazelRCFile(ctx, opts); err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	td.Do(ctx, td.Props("sleep for 20 minutes"), func(ctx context.Context) error {
+		time.Sleep(20 * time.Minute)
+		return nil
+	})
 
 	if err := bazelBuild(ctx, skiaDir, *bazelFlags.Label, *bazelFlags.Config, *bazelFlags.AdditionalArgs...); err != nil {
 		td.Fatal(ctx, err)
