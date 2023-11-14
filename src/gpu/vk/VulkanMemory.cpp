@@ -159,4 +159,3 @@ void VulkanMemory::InvalidateMappedAlloc(VulkanMemoryAllocator* allocator,
 }
 
 }  // namespace skgpu
-

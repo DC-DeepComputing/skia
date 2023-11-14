@@ -386,7 +386,9 @@ DEF_GRAPHITE_TEST(VkProtectedContext_DrawRectangleWithFilter_Graphite,
 namespace {
 
 void draw_thin_path(skiatest::Reporter* reporter, skiatest::TestType testType) {
-    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
+    constexpr bool kIsProtected = true;
+
+    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
         return;
     }
@@ -395,7 +397,7 @@ void draw_thin_path(skiatest::Reporter* reporter, skiatest::TestType testType) {
 
     sk_sp<SkSurface> surface = helper->createSurface({ kSize, kSize },
                                                      /* textureable= */ true,
-                                                     /* isProtected= */ true);
+                                                     kIsProtected);
     REPORTER_ASSERT(reporter, surface);
     SkCanvas* canvas = surface->getCanvas();
     REPORTER_ASSERT(reporter, canvas);
@@ -464,7 +466,9 @@ namespace {
 
 void draw_protected_image_on_protected_surface(skiatest::Reporter* reporter,
                                                skiatest::TestType testType) {
-    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
+    constexpr bool kIsProtected = true;
+
+    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
         return;
     }
@@ -474,16 +478,16 @@ void draw_protected_image_on_protected_surface(skiatest::Reporter* reporter,
     // Create protected image.
     sk_sp<SkSurface> surface1 = helper->createSurface({ kSize, kSize },
                                                       /* textureable= */ true,
-                                                      /* isProtected= */ true);
+                                                      kIsProtected);
     REPORTER_ASSERT(reporter, surface1);
     sk_sp<SkImage> image = surface1->makeImageSnapshot();
     REPORTER_ASSERT(reporter, image);
-    REPORTER_ASSERT(reporter, image->isProtected());
+    REPORTER_ASSERT(reporter, image->isProtected() == kIsProtected);
 
     // Create protected canvas.
     sk_sp<SkSurface> surface2 = helper->createSurface({ kSize, kSize },
                                                       /* textureable= */ true,
-                                                      /* isProtected= */ true);
+                                                      kIsProtected);
     REPORTER_ASSERT(reporter, surface2);
     SkCanvas* canvas = surface2->getCanvas();
     REPORTER_ASSERT(reporter, canvas);

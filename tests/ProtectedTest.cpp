@@ -104,6 +104,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
                                                                             { kSize, kSize },
                                                                             /* textureable= */ true,
                                                                             isProtected);
+
         if (!surface) {
             continue;
         }
