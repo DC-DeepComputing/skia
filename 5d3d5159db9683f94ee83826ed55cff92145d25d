@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17bfbc7_8f4a07ac",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-14T18:50:40Z",
+      "side": 1,
+      "message": "This may produce other configs, unrelated to freetype.",
+      "parentUuid": "517f1e3b_979f56db",
+      "range": {
+        "startLine": 281,
+        "startChar": 4,
+        "endLine": 281,
+        "endChar": 11
+      },
+      "revId": "5d3d5159db9683f94ee83826ed55cff92145d25d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "736b4e83_a9c04f5f",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-11-14T16:43:53Z",
       "side": 1,
       "message": "I think we should give this a more specific name; it\u0027s hard to know what `configs` means in this context.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 7
+      },
+      "revId": "5d3d5159db9683f94ee83826ed55cff92145d25d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a32c543_614aa6a1",
+        "filename": "example/external_client/WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-14T18:50:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "736b4e83_a9c04f5f",
       "range": {
         "startLine": 35,
         "startChar": 0,
