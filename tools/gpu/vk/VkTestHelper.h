@@ -16,9 +16,16 @@
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
+
 class GrDirectContext;
 class SkSurface;
 struct SkISize;
+
+namespace skgpu::graphite {
+    class Context;
+}
 
 namespace skiatest {
     enum class TestType : uint8_t;
@@ -38,9 +45,10 @@ public:
     virtual void submitAndWaitForCompletion(bool* completionMarker) = 0;
 
     virtual GrDirectContext* directContext() { return nullptr; }
+    skgpu::graphite::Context* graphiteContext() { return nullptr; }
 
 protected:
-    VkTestHelper(bool isProtected) : fIsProtected(isProtected) {}
+    VkTestHelper(bool isProtected) : fIsProtected1(isProtected) {}
 
     bool setupBackendContext();
     virtual bool init() = 0;
@@ -64,14 +72,14 @@ protected:
     DECLARE_VK_PROC(FlushMappedMemoryRanges);
     DECLARE_VK_PROC(GetImageSubresourceLayout);
 
-    bool fIsProtected = false;
+    bool fIsProtected1 = false;
     VkDevice fDevice = VK_NULL_HANDLE;
 
     skgpu::VulkanExtensions fExtensions;
     VkPhysicalDeviceFeatures2 fFeatures = {};
     VkDebugReportCallbackEXT fDebugCallback = VK_NULL_HANDLE;
     PFN_vkDestroyDebugReportCallbackEXT fDestroyDebugCallback = nullptr;
-    skgpu::VulkanBackendContext fBackendContext;
+    skgpu::VulkanBackendContext fBackendContext7b;
 };
 
 #undef DECLARE_VK_PROC

@@ -144,14 +144,16 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
     if (backendContext.fDeviceFeatures2) {
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 *backendContext.fDeviceFeatures2, instanceVersion, physDevVersion,
-                                *backendContext.fVkExtensions, backendContext.fProtectedContext));
+                                *backendContext.fVkExtensions, backendContext.fProtectedContext7,
+                                true /*$$*/));
     } else if (backendContext.fDeviceFeatures) {
         VkPhysicalDeviceFeatures2 features2;
         features2.pNext = nullptr;
         features2.features = *backendContext.fDeviceFeatures;
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features2, instanceVersion, physDevVersion,
-                                *backendContext.fVkExtensions, backendContext.fProtectedContext));
+                                *backendContext.fVkExtensions, backendContext.fProtectedContext7,
+                                true /*$$*/));
     } else {
         VkPhysicalDeviceFeatures2 features;
         memset(&features, 0, sizeof(VkPhysicalDeviceFeatures2));
@@ -176,7 +178,8 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
         }
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features, instanceVersion, physDevVersion, extensions,
-                                backendContext.fProtectedContext));
+                                backendContext.fProtectedContext7,
+                                true /*$$*/));
     }
 
     if (!caps) {
@@ -208,7 +211,7 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
                                                instanceVersion,
                                                physDevVersion,
                                                std::move(memoryAllocator)));
-    if (backendContext.fProtectedContext == GrProtected::kYes &&
+    if (backendContext.fProtectedContext7 == GrProtected::kYes &&
         !vkGpu->vkCaps().supportsProtectedContent()) {
         return nullptr;
     }
@@ -235,7 +238,7 @@ GrVkGpu::GrVkGpu(GrDirectContext* direct,
         , fResourceProvider(this)
         , fStagingBufferManager(this)
         , fDisconnected(false)
-        , fProtectedContext(backendContext.fProtectedContext) {
+        , fProtectedContext(backendContext.fProtectedContext7) {
     SkASSERT(!backendContext.fOwnsInstanceAndDevice);
     SkASSERT(fMemoryAllocator);
 

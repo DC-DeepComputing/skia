@@ -27,7 +27,7 @@
 #endif
 
 #define ACQUIRE_INST_VK_PROC(name)                                                               \
-    fVk##name = reinterpret_cast<PFN_vk##name>(instProc(fBackendContext.fInstance, "vk" #name)); \
+    fVk##name = reinterpret_cast<PFN_vk##name>(instProc(fBackendContext7b.fInstance, "vk" #name)); \
     if (fVk##name == nullptr) {                                                                  \
         SkDebugf("Function ptr for vk%s could not be acquired\n", #name);                        \
         return false;                                                                            \
@@ -79,13 +79,13 @@ protected:
         }
 
         GrVkBackendContext gr;
-        sk_gpu_test::ConvertBackendContext(fBackendContext, &gr);
+        sk_gpu_test::ConvertBackendContext(fBackendContext7b, &gr);
         fDirectContext = GrDirectContexts::MakeVulkan(gr);
         if (!fDirectContext) {
             return false;
         }
 
-        SkASSERT(fDirectContext->supportsProtectedContent() == fIsProtected);
+        SkASSERT(fDirectContext->supportsProtectedContent() == fIsProtected1);
         return true;
     }
 
@@ -182,6 +182,7 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
         default:
             return nullptr;
     }
+
     if (!helper->init()) {
         return nullptr;
     }
@@ -198,19 +199,19 @@ bool VkTestHelper::setupBackendContext() {
     fFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
     fFeatures.pNext = nullptr;
 
-    fBackendContext.fInstance = VK_NULL_HANDLE;
-    fBackendContext.fDevice = VK_NULL_HANDLE;
+    fBackendContext7b.fInstance = VK_NULL_HANDLE;
+    fBackendContext7b.fDevice = VK_NULL_HANDLE;
 
-    if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, &fExtensions,
+    if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext7b, &fExtensions,
                                              &fFeatures, &fDebugCallback, nullptr,
-                                             sk_gpu_test::CanPresentFn(), fIsProtected)) {
+                                             sk_gpu_test::CanPresentFn(), fIsProtected1)) {
         return false;
     }
-    fDevice = fBackendContext.fDevice;
+    fDevice = fBackendContext7b.fDevice;
 
     if (fDebugCallback != VK_NULL_HANDLE) {
         fDestroyDebugCallback = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(
-                instProc(fBackendContext.fInstance, "vkDestroyDebugReportCallbackEXT"));
+                instProc(fBackendContext7b.fInstance, "vkDestroyDebugReportCallbackEXT"));
     }
     ACQUIRE_INST_VK_PROC(DestroyInstance)
     ACQUIRE_INST_VK_PROC(DeviceWaitIdle)
@@ -235,19 +236,19 @@ bool VkTestHelper::setupBackendContext() {
 }
 
 VkTestHelper::~VkTestHelper() {
-    fBackendContext.fMemoryAllocator.reset();
+    fBackendContext7b.fMemoryAllocator.reset();
     if (fDevice != VK_NULL_HANDLE) {
         fVkDeviceWaitIdle(fDevice);
         fVkDestroyDevice(fDevice, nullptr);
         fDevice = VK_NULL_HANDLE;
     }
     if (fDebugCallback != VK_NULL_HANDLE) {
-        fDestroyDebugCallback(fBackendContext.fInstance, fDebugCallback, nullptr);
+        fDestroyDebugCallback(fBackendContext7b.fInstance, fDebugCallback, nullptr);
     }
 
-    if (fBackendContext.fInstance != VK_NULL_HANDLE) {
-        fVkDestroyInstance(fBackendContext.fInstance, nullptr);
-        fBackendContext.fInstance = VK_NULL_HANDLE;
+    if (fBackendContext7b.fInstance != VK_NULL_HANDLE) {
+        fVkDestroyInstance(fBackendContext7b.fInstance, nullptr);
+        fBackendContext7b.fInstance = VK_NULL_HANDLE;
     }
 
     sk_gpu_test::FreeVulkanFeaturesStructs(&fFeatures);

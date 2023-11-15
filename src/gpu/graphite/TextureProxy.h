@@ -31,6 +31,7 @@ public:
 
     int numSamples() const { return fInfo.numSamples(); }
     Mipmapped mipmapped() const { return fInfo.mipmapped(); }
+    Protected isProtected() const { return fInfo.isProtected(); }
 
     SkISize dimensions() const;
     const TextureInfo& textureInfo() const { return fInfo; }
