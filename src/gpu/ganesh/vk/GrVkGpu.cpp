@@ -144,14 +144,16 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
     if (backendContext.fDeviceFeatures2) {
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 *backendContext.fDeviceFeatures2, instanceVersion, physDevVersion,
-                                *backendContext.fVkExtensions, backendContext.fProtectedContext));
+                                *backendContext.fVkExtensions, backendContext.fProtectedContext,
+                                true /*$$*/));
     } else if (backendContext.fDeviceFeatures) {
         VkPhysicalDeviceFeatures2 features2;
         features2.pNext = nullptr;
         features2.features = *backendContext.fDeviceFeatures;
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features2, instanceVersion, physDevVersion,
-                                *backendContext.fVkExtensions, backendContext.fProtectedContext));
+                                *backendContext.fVkExtensions, backendContext.fProtectedContext,
+                                true /*$$*/));
     } else {
         VkPhysicalDeviceFeatures2 features;
         memset(&features, 0, sizeof(VkPhysicalDeviceFeatures2));
@@ -176,7 +178,8 @@ std::unique_ptr<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
         }
         caps.reset(new GrVkCaps(options, interface.get(), backendContext.fPhysicalDevice,
                                 features, instanceVersion, physDevVersion, extensions,
-                                backendContext.fProtectedContext));
+                                backendContext.fProtectedContext,
+                                true /*$$*/));
     }
 
     if (!caps) {

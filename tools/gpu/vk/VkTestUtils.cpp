@@ -449,6 +449,7 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("VkTestUtils.cpp::setup_features - Protected content not supported\n");
             return false;
         }
     }
@@ -508,6 +509,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
+
+    SkDebugf("CreateVkBackendContext: %s\n", isProtected ? "protected" : "unprotected");
+
     VkResult err;
 
     ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
