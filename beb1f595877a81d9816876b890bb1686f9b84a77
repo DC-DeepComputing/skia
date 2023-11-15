@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa37198d_2c241408",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-15T18:49:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2457d6de_dcb93aec",
+      "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c5f7571_356d56dc",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-11-15T18:46:17Z",
       "side": 1,
       "message": "I don\u0027t love special-casing LastFragColor here, but not sure if there are better alternatives.",
+      "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b96a07df_11d463e0",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1288,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-15T18:49:27Z",
+      "side": 1,
+      "message": "`wgsl_builtin_name` is _only_ referenced here, so maybe we can have it return `@builtin(xxxxxxx)` instead of `xxxxxxx`? That seems harmless and fixes the issue.",
+      "parentUuid": "7c5f7571_356d56dc",
       "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
