@@ -538,6 +538,8 @@ std::string_view wgsl_builtin_type(WGSLCodeGenerator::Builtin builtin) {
             return "u32";
         case Builtin::kPosition:
             return "vec4<f32>";
+        case Builtin::kLastFragColor:
+            return "vec4<f32>";
         case Builtin::kFrontFacing:
             return "bool";
         case Builtin::kSampleIndex:
@@ -596,6 +598,8 @@ std::optional<WGSLCodeGenerator::Builtin> builtin_from_sksl_name(int builtin) {
             return Builtin::kVertexIndex;
         case SK_INSTANCEID_BUILTIN:
             return Builtin::kInstanceIndex;
+        case SK_LASTFRAGCOLOR_BUILTIN:
+            return Builtin::kLastFragColor;
         case SK_CLOCKWISE_BUILTIN:
             // TODO(skia:13092): While `front_facing` is the corresponding built-in, it does not
             // imply a particular winding order. We correctly compute the face orientation based
@@ -1264,8 +1268,7 @@ void WGSLCodeGenerator::writeUserDefinedIODecl(const Layout& layout,
     this->write("@location(" + std::to_string(layout.fLocation) + ") ");
 
     // Indices are only allowed when doing dual-source blending, and only on color attachment 0.
-    if (layout.fLocation == 0 && layout.fIndex >= 0 && fContext.fCaps->fDualSourceBlendingSupport &&
-        fProgram.fInterface.fOutputSecondaryColor) {
+    if (layout.fLocation == 0 && layout.fIndex >= 0 && fProgram.fInterface.fOutputSecondaryColor) {
         this->write("@index(" + std::to_string(layout.fIndex) + ") ");
     }
 
@@ -1282,9 +1285,14 @@ void WGSLCodeGenerator::writeBuiltinIODecl(const Type& type,
                                            std::string_view name,
                                            Builtin builtin,
                                            Delimiter delimiter) {
-    this->write("@builtin(");
-    this->write(wgsl_builtin_name(builtin));
-    this->write(") ");
+    if (builtin == Builtin::kLastFragColor) {
+        this->write("@color(0) ");
+
+    } else {
+        this->write("@builtin(");
+        this->write(wgsl_builtin_name(builtin));
+        this->write(") ");
+    }
 
     this->write(this->assembleName(name));
     this->write(": ");
@@ -3833,6 +3841,9 @@ void WGSLCodeGenerator::writeEnables() {
     this->writeLine("diagnostic(off, derivative_uniformity);");
     if (fRequirements.fPixelLocalExtension) {
         this->writeLine("enable chromium_experimental_pixel_local;");
+    }
+    if (fProgram.fInterface.fUseLastFragColor) {
+        this->writeLine("enable chromium_experimental_framebuffer_fetch;");
     }
     if (fProgram.fInterface.fOutputSecondaryColor) {
         this->writeLine("enable chromium_internal_dual_source_blending;");
