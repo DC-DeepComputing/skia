@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20241888_fd17af59",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-15T18:33:36Z",
+      "side": 0,
+      "message": "^^^",
+      "range": {
+        "startLine": 371,
+        "startChar": 55,
+        "endLine": 371,
+        "endChar": 57
+      },
+      "revId": "2c43bf002b7f90cbb582776a4dc8f112bc9dedb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
