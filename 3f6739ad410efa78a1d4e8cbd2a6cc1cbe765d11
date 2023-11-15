@@ -16,6 +16,24 @@
       "message": "Since SK_GAMMA_CONTRAST is always defined now, can we get rid of the ifdefs in SkScalerContext.cpp and DistanceFieldAdjustTable.cpp?",
       "revId": "3f6739ad410efa78a1d4e8cbd2a6cc1cbe765d11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc16346_8f7061bc",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2023-11-15T21:58:20Z",
+      "side": 1,
+      "message": "Good idea! Done.",
+      "parentUuid": "cf1b0453_49d7f875",
+      "revId": "3f6739ad410efa78a1d4e8cbd2a6cc1cbe765d11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
