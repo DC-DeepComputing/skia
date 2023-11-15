@@ -258,17 +258,17 @@ static void set_character_bounds(void* context,
 }
 
 ShapeResult SkPlainTextEditor::Shape(const char* utf8Text,
-                          size_t textByteLen,
-                          const SkFont& font,
-                          const char* locale,
-                          float width)
+                                     size_t textByteLen,
+                                     const SkFont& font,
+                                     const char* locale,
+                                     float width)
 {
     ShapeResult result;
     if (SkUTF::CountUTF8(utf8Text, textByteLen) < 0) {
         utf8Text = nullptr;
         textByteLen = 0;
     }
-    std::unique_ptr<SkShaper> shaper = SkShaper::Make();
+    std::unique_ptr<SkShaper> shaper = SkShaper::Make(SkFontMgr::RefEmpty());
     float height = font.getSpacing();
     RunHandler runHandler(utf8Text, textByteLen);
     if (textByteLen) {
