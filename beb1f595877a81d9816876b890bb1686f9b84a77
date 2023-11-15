@@ -87,6 +87,24 @@
       "parentUuid": "b96a07df_11d463e0",
       "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c45612ca_d342e16b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1288,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-15T19:05:15Z",
+      "side": 1,
+      "message": "Yes, this is what I meant",
+      "parentUuid": "ed56d4e4_f4c111c0",
+      "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
