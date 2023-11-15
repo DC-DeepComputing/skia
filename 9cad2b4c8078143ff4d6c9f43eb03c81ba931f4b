@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "387befb5_0cbe0ebd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-15T15:10:29Z",
+      "side": 1,
+      "message": "Hello,\nI\u0027ve been talking to other teams about the maintenance of code like this. If we do accept this change, we can\u0027t really guarantee that it will continue to work. (We will add a cross-compile bot to ensure it builds). It appears that when the loongarch backend was added to v8, you supplied a simulator that would allow testing, as well? Do you have any details on how that works -- could we do the same thing to test this code?",
+      "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
