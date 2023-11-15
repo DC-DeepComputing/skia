@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6461d338_052604dc",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-15T20:55:18Z",
+      "side": 1,
+      "message": "Should we be skipping this transform too ?",
+      "range": {
+        "startLine": 323,
+        "startChar": 11,
+        "endLine": 323,
+        "endChar": 35
+      },
+      "revId": "4eb3bf558b1687c1a3818b2d6219c7201048b98a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e8ad71d_ccbbe22d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-15T20:55:18Z",
+      "side": 1,
+      "message": "If this was moved into `sk_color_space_transform`, do we still get the same ALU benefit? Or do we get hurt because we do a function invocation?",
+      "range": {
+        "startLine": 337,
+        "startChar": 4,
+        "endLine": 339,
+        "endChar": 5
+      },
+      "revId": "4eb3bf558b1687c1a3818b2d6219c7201048b98a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b2e2874_10d28aad",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-15T20:55:18Z",
+      "side": 1,
+      "message": "How likely is it that the YUV-\u003eRGB transform produces the dst RGB? If it\u0027s often the case that we don\u0027t have additional CS steps, maybe we do the check here too?",
+      "revId": "4eb3bf558b1687c1a3818b2d6219c7201048b98a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
