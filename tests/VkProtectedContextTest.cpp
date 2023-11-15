@@ -481,7 +481,9 @@ DEF_GRAPHITE_TEST(VkProtectedContext_DrawThinPath_Graphite,
 namespace {
 
 void save_layer(skiatest::Reporter* reporter, skiatest::TestType testType) {
-    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
+    constexpr bool kIsProtected = true;
+
+    std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
         return;
     }
@@ -490,7 +492,7 @@ void save_layer(skiatest::Reporter* reporter, skiatest::TestType testType) {
 
     sk_sp<SkSurface> surface = helper->createSurface({ kSize, kSize },
                                                      /* textureable= */ true,
-                                                     /* isProtected= */ true);
+                                                     kIsProtected);
     REPORTER_ASSERT(reporter, surface);
     SkCanvas* canvas = surface->getCanvas();
     REPORTER_ASSERT(reporter, canvas);
