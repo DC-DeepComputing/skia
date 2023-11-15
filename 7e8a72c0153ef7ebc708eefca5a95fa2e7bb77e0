@@ -22,6 +22,30 @@
       },
       "revId": "7e8a72c0153ef7ebc708eefca5a95fa2e7bb77e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d535f1dd_5e0c5e6d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-15T18:25:20Z",
+      "side": 1,
+      "message": "They are referenced by nothing right now; I just ported over the entire enum. They are optimized out of the output if you look at the generated code so it\u0027s not really a big deal either way.",
+      "parentUuid": "8a6eae18_44107b28",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "7e8a72c0153ef7ebc708eefca5a95fa2e7bb77e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
