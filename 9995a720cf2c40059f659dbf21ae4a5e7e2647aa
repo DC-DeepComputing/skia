@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d092441_b85ea86a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2023-11-15T00:42:11Z",
+      "side": 1,
+      "message": "PTAL - this is a reupload of https://skia-review.googlesource.com/c/skia/+/777197 which was from before my chromium.org and google.com accounts were merged\n\nThe main change over the original is that this uses std430 layout for Dawn SSBOs - std140 makes tests fail e.g. SkSLUniformArray which has this SSBO struct layout (with std140):\n\n```\n   9  struct FSUniformData \n  10  {\n  11    // 0 - RuntimeEffect uniforms\n  12    float testArray_0[5];\n  13    half4 colorGreen_0;\n  14    half4 colorRed_0;\n  15  }\n```\n\nAnd the original uniform buffer layout:\n\n```\n   8  layout (binding\u003d2) uniform FSUniforms \n   9  {\n  10    // 0 - RuntimeEffect uniforms\n  11    layout(offset\u003d0) float testArray_0[5];\n  12    layout(offset\u003d80) half4 colorGreen_0;\n  13    layout(offset\u003d96) half4 colorRed_0;\n  14  }\n  15  ;\n```",
+      "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
