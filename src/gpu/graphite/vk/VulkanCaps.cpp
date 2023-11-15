@@ -33,7 +33,7 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        uint32_t physicalDeviceVersion,
                        const VkPhysicalDeviceFeatures2* features,
                        const skgpu::VulkanExtensions* extensions,
-                       Protected isProtected)
+                       Protected isProtected, bool /*$$*/)
         : Caps() {
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
                isProtected);

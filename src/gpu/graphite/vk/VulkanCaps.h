@@ -24,7 +24,7 @@ public:
                uint32_t physicalDeviceVersion,
                const VkPhysicalDeviceFeatures2*,
                const skgpu::VulkanExtensions*,
-               Protected);
+               Protected, bool);
     ~VulkanCaps() override;
 
     TextureInfo getDefaultSampledTextureInfo(SkColorType,

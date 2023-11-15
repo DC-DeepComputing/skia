@@ -46,7 +46,7 @@ GrVkCaps::GrVkCaps(const GrContextOptions& contextOptions,
                    uint32_t instanceVersion,
                    uint32_t physicalDeviceVersion,
                    const skgpu::VulkanExtensions& extensions,
-                   GrProtected isProtected)
+                   GrProtected isProtected, bool foo)
         : INHERITED(contextOptions) {
     /**************************************************************************
      * GrCaps fields
