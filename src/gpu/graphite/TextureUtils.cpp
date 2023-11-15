@@ -94,10 +94,11 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                 const SkSurfaceProps& outProps) {
     SkImageInfo outII = SkImageInfo::Make({dstRect.width(), dstRect.height()},
                                           colorType, kPremul_SkAlphaType, std::move(outCS));
-    auto device = skgpu::graphite::Device::Make(recorder,
+    auto device = skgpu::graphite::Device::Make7(recorder,
                                                 outII,
                                                 skgpu::Budgeted::kYes,
                                                 skgpu::Mipmapped::kNo,
+                                                skgpu::Protected::kNo,
                                                 outProps,
                                                 /*addInitialClear=*/false);
     if (!device) {
@@ -739,10 +740,11 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
-        return skgpu::graphite::Device::Make(fRecorder,
+        return skgpu::graphite::Device::Make7(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
+                                             skgpu::Protected::kNo,
                                              props ? *props : this->surfaceProps(),
                                              /*addInitialClear=*/false);
     }

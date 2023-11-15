@@ -42,10 +42,11 @@ class Device final : public SkDevice {
 public:
     ~Device() override;
 
-    static sk_sp<Device> Make(Recorder*,
+    static sk_sp<Device> Make7(Recorder*,
                               const SkImageInfo&,
                               skgpu::Budgeted,
                               Mipmapped,
+                              skgpu::Protected,
                               const SkSurfaceProps&,
                               bool addInitialClear);
     static sk_sp<Device> Make(Recorder*,
