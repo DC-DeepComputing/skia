@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a6eae18_44107b28",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-15T18:09:35Z",
+      "side": 1,
+      "message": "AFAICT these aren\u0027t referenced by anything? Will they be eventually?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "7e8a72c0153ef7ebc708eefca5a95fa2e7bb77e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
