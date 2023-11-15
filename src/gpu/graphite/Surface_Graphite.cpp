@@ -128,7 +128,8 @@ sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
                                        skgpu::Budgeted budgeted,
                                        Mipmapped mipmapped,
                                        const SkSurfaceProps* props) {
-    sk_sp<Device> device = Device::Make(recorder, info, budgeted, mipmapped,
+    sk_sp<Device> device = Device::Make7(recorder, info, budgeted, mipmapped,
+                                        Protected::kNo,
                                         SkSurfacePropsCopyOrDefault(props),
                                         /* addInitialClear= */ true);
     if (!device) {

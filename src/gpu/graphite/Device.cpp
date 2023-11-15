@@ -218,10 +218,11 @@ private:
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make7(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
                            Mipmapped mipmapped,
+                           Protected isProtected,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
     if (!recorder) {
@@ -232,7 +233,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                     ii.dimensions(),
                                                     ii.colorType(),
                                                     mipmapped,
-                                                    Protected::kNo,
+                                                    isProtected,
                                                     Renderable::kYes,
                                                     budgeted);
     if (!target) {
@@ -338,10 +339,11 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     bool addInitialClear = !info.fInfo.isOpaque();
 
-    return Make(fRecorder,
+    return Make7(fRecorder,
                 info.fInfo,
                 skgpu::Budgeted::kYes,
                 Mipmapped::kNo,
+                Protected(this->target()->isProtected()),
                 props,
                 addInitialClear);
 }
