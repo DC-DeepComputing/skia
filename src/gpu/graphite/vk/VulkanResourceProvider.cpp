@@ -371,7 +371,6 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                                                               bool isProtectedContent,
                                                               int width, int height,
                                                               bool fromAndroidWindow) const {
-
     const VulkanSharedContext* vkContext = this->vulkanSharedContext();
     VkDevice device = vkContext->device();
     const VulkanCaps& vkCaps = vkContext->vulkanCaps();
@@ -481,7 +480,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
     }
 
     const VkPhysicalDeviceMemoryProperties2& phyDevMemProps =
-            vkContext->vulkanCaps().physicalDeviceMemoryProperties2();
+            vkCaps.physicalDeviceMemoryProperties2();
     VulkanAlloc alloc;
     if (!AllocateAndBindImageMemory(&alloc, image, phyDevMemProps, hwbProps, hardwareBuffer,
                                     vkContext->interface(), device)) {

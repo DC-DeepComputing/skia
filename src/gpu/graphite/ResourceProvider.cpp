@@ -282,7 +282,10 @@ BackendTexture ResourceProvider::createBackendTexture(AHardwareBuffer* hardwareB
                                                       bool isProtectedContent,
                                                       int width, int height,
                                                       bool fromAndroidWindow) const {
-    if (!determine_dimension_validity(fSharedContext->caps()->maxTextureSize(), {width, height})) {
+    SkISize size;
+    size.fWidth = width;
+    size.fHeight = height;
+    if (!determine_dimension_validity(fSharedContext->caps()->maxTextureSize(), size)) {
         return {};
     }
     return this->onCreateBackendTexture(hardwareBuffer,
