@@ -33,6 +33,24 @@
       "message": "Is there any reason that this made so many Gold images? It seems as if straight lines have a slightly different opacity, which is surprising.",
       "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97ea0cbd_f9514bfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-15T16:19:50Z",
+      "side": 1,
+      "message": "I think there are two issues. One is some bad data somewhere (uniform manager, std430 layout handling, wgsl generation, or dawn-\u003etint transforms) that is messing up the large diffs such as in wacky_yuv.\n\nBut the subtle diffs like in the rotated stroked rect case are curious. I\u0027ve seen similar diffs on other CLs that changed how draws grouped into GPU dispatches where `grdawn` had the diffs but `grmtl` did not. That is also worth looking into what transformations Dawn is doing, or if there\u0027s a bug in DrawPass\u0027s sorting/state tracking that is only exposed due to Dawn\u0027s specific caps.",
+      "parentUuid": "23971a19_5eab1e3d",
+      "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
