@@ -22,10 +22,11 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecorderDevicePtrTest, reporter, context,
 
     SkImageInfo info = SkImageInfo::Make({16, 16}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<Device> device1 = Device::Make(recorder.get(),
+    sk_sp<Device> device1 = Device::Make7(recorder.get(),
                                          info,
                                          skgpu::Budgeted::kYes,
                                          Mipmapped::kNo,
+                                         skgpu::Protected::kNo,
                                          SkSurfaceProps(),
                                          /* addInitialClear= */ true);
 
@@ -37,22 +38,25 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecorderDevicePtrTest, reporter, context,
     REPORTER_ASSERT(reporter, !recorder->priv().deviceIsRegistered(devPtr));
 
     // Test adding multiple devices
-    device1 = Device::Make(recorder.get(),
+    device1 = Device::Make7(recorder.get(),
                            info,
                            skgpu::Budgeted::kYes,
                            Mipmapped::kNo,
+                           skgpu::Protected::kNo,
                            SkSurfaceProps(),
                            /* addInitialClear= */ true);
-    sk_sp<Device> device2 = Device::Make(recorder.get(),
+    sk_sp<Device> device2 = Device::Make7(recorder.get(),
                                          info,
                                          skgpu::Budgeted::kYes,
                                          Mipmapped::kNo,
+                                         skgpu::Protected::kNo,
                                          SkSurfaceProps(),
                                          /* addInitialClear= */ true);
-    sk_sp<Device> device3 = Device::Make(recorder.get(),
+    sk_sp<Device> device3 = Device::Make7(recorder.get(),
                                          info,
                                          skgpu::Budgeted::kYes,
                                          Mipmapped::kNo,
+                                         skgpu::Protected::kNo,
                                          SkSurfaceProps(),
                                          /* addInitialClear= */ true);
     REPORTER_ASSERT(reporter, device1->recorder() == recorder.get());
