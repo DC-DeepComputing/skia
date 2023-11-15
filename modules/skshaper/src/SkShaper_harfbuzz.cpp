@@ -747,8 +747,9 @@ ShaperHarfBuzz::ShaperHarfBuzz(std::unique_ptr<SkUnicode> unicode,
     : fUnicode(std::move(unicode))
     , fFontMgr(std::move(fontmgr))
     , fBuffer(std::move(buffer))
-    , fUndefinedLanguage(hb_language_from_string("und", -1))
-{ }
+    , fUndefinedLanguage(hb_language_from_string("und", -1)) {
+    SkASSERT(fFontMgr);
+}
 
 void ShaperHarfBuzz::shape(const char* utf8, size_t utf8Bytes,
                            const SkFont& srcFont,
@@ -778,7 +779,7 @@ void ShaperHarfBuzz::shape(const char* utf8, size_t utf8Bytes,
 
     std::unique_ptr<FontRunIterator> font(
                 MakeFontMgrRunIterator(utf8, utf8Bytes, srcFont,
-                                       fFontMgr ? fFontMgr : SkFontMgr::RefDefault()));
+                                       fFontMgr ? fFontMgr : SkFontMgr::RefEmpty()));
     if (!font) {
         return;
     }
