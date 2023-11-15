@@ -131,6 +131,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8205d32_0a0213cf",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-15T19:59:40Z",
+      "side": 1,
+      "message": "These buffers are going to be cached. I believe right now they just have the lifetime of the commandbuffer. And we create a new command buffer on every submit. So I think it is beneficial to go through the normal `findOrCreateBuffer` call.\n\nThere is a little extra optimization that we could make in future CLs and that is to allow Buffers that are GPU only (i.e. don\u0027t ever get mapped) to be reused right away from the cache after we submit work to the gpu. I think right now we\u0027ll end up cycling through ~3 buffers as we wait for previous work on the GPU to finish. But this is something we can look at as a future improvement.",
+      "parentUuid": "6d9e7ddf_3a392a97",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 84
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4535670_8a99e468",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
         "patchSetId": 21
