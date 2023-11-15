@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "383aa4a9_88491329",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-15T15:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21ede443_f3f48edc",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "9f8d90d56052e617d6f3ead7990bed0c59dda95d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a512db04_166051fa",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-10T17:45:33Z",
       "side": 1,
       "message": "Same here and the rest",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 44
+      },
+      "revId": "9f8d90d56052e617d6f3ead7990bed0c59dda95d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c55be0_b2b11905",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-15T15:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a512db04_166051fa",
       "range": {
         "startLine": 192,
         "startChar": 0,
