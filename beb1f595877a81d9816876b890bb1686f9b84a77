@@ -69,6 +69,24 @@
       "parentUuid": "7c5f7571_356d56dc",
       "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed56d4e4_f4c111c0",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1288,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-15T19:03:28Z",
+      "side": 1,
+      "message": "Added `\"@builtin\"` to the literals returned by `wgsl_builtin_name`; let me know if that\u0027s what you had in mind.",
+      "parentUuid": "b96a07df_11d463e0",
+      "revId": "beb1f595877a81d9816876b890bb1686f9b84a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
