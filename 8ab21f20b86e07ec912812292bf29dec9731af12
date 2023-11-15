@@ -39,6 +39,30 @@
       },
       "revId": "8ab21f20b86e07ec912812292bf29dec9731af12",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0ab3dbe_92c2f7ee",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-15T15:55:47Z",
+      "side": 1,
+      "message": "I agree a little more detail could be good. My attempt:\n\n```\nWe currently don\u0027t see any Vulkan devices that expose a memory type that supports\nboth lazy allocated and protected memory. So for simplicity we just disable the\nuse of memoryless attachments when using protected memory. In the future if we ever\ndo see devices that support both, we can look through the devices memory types here\nand see if any support both flags.\n```",
+      "parentUuid": "5d5e2c48_6d98068f",
+      "range": {
+        "startLine": 414,
+        "startChar": 8,
+        "endLine": 414,
+        "endChar": 78
+      },
+      "revId": "8ab21f20b86e07ec912812292bf29dec9731af12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
