@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9ef04a3_c09fae7f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-15T18:34:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fff3b7c9_dd2fe309",
+      "range": {
+        "startLine": 388,
+        "startChar": 0,
+        "endLine": 413,
+        "endChar": 5
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba10a948_166d749e",
@@ -83,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d9e7ddf_3a392a97",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-15T18:34:51Z",
+      "side": 1,
+      "message": "I don\u0027t think we intend to share or cache the DawnBuffer created by createDawnBuffer. This is supposed to be created and used internally by Dawn backend only. For example, the intrinsic constant buffer. It doesn\u0027t need to be cached or ref tracking inside a command buffer, because its content will always be replaced at the beginning of a render pass.\n\nWe need DawnBuffer instead of raw wgpu::Buffer because the former has unique ID which is needed by the BindGroup cache.",
+      "parentUuid": "ba10a948_166d749e",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 84
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4535670_8a99e468",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
         "patchSetId": 21
@@ -94,6 +142,30 @@
       "writtenOn": "2023-11-10T16:05:04Z",
       "side": 1,
       "message": "We don\u0027t need buffer offset because of your earlier work for dynamic offsets, right?\n\nWDYT about having the signature take `const std::array\u003cstd::pair\u003cDawnBuffer, uint32_t\u003e, 3\u003e` and then once `BindBufferInfo` stores size, this can simplify to `std::array\u003cBindBufferInfo\u003e` (and internally it will just not include the offset in the keys).",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 43,
+        "endChar": 55
+      },
+      "revId": "b1183f6d4ec96296187229bc8e5a6f5d7cf6f7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4c3387d_4bd0044c",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-11-15T18:34:51Z",
+      "side": 1,
+      "message": "Sounds good. Done.",
+      "parentUuid": "c4535670_8a99e468",
       "range": {
         "startLine": 42,
         "startChar": 12,
