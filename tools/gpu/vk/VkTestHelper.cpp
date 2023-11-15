@@ -182,6 +182,7 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
         default:
             return nullptr;
     }
+
     if (!helper->init()) {
         return nullptr;
     }
