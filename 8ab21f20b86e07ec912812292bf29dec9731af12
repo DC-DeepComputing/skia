@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c7c0aee_96e0a54a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-15T15:48:39Z",
+      "side": 1,
+      "message": "Small comment suggestion otherwise LGTM!",
+      "revId": "8ab21f20b86e07ec912812292bf29dec9731af12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d5e2c48_6d98068f",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-15T15:48:39Z",
+      "side": 1,
+      "message": "I would clarify this a bit more - maybe `Vulkan for Android does not support protected memoryless attachments`, or maybe `Vulkan on Android does not allow for protected memoryless attachments when using DMSAA`",
+      "range": {
+        "startLine": 414,
+        "startChar": 8,
+        "endLine": 414,
+        "endChar": 78
+      },
+      "revId": "8ab21f20b86e07ec912812292bf29dec9731af12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
