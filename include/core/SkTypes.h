@@ -86,35 +86,42 @@
     #define SK_GAMMA_EXPONENT (0.0f)  // SRGB
 #endif
 
-#if defined(SK_HISTOGRAM_ENUMERATION)  || \
-    defined(SK_HISTOGRAM_BOOLEAN)      || \
-    defined(SK_HISTOGRAM_EXACT_LINEAR) || \
-    defined(SK_HISTOGRAM_MEMORY_KB)
-#  define SK_HISTOGRAMS_ENABLED 1
+#if !defined(SK_GAMMA_CONTRAST)
+    // A value of 0.5 for SK_GAMMA_CONTRAST appears to be a good compromise.
+    // With lower values small text appears washed out (though correctly so).
+    // With higher values lcd fringing is worse and the smoothing effect of
+    // partial coverage is diminished.
+#define SK_GAMMA_CONTRAST (0.5f)
+#endif
+
+#if defined(SK_HISTOGRAM_ENUMERATION) || defined(SK_HISTOGRAM_BOOLEAN) || \
+            defined(SK_HISTOGRAM_EXACT_LINEAR) || defined(SK_HISTOGRAM_MEMORY_KB)
+#define SK_HISTOGRAMS_ENABLED 1
 #else
-#  define SK_HISTOGRAMS_ENABLED 0
+#define SK_HISTOGRAMS_ENABLED 0
 #endif
 
 #ifndef SK_HISTOGRAM_BOOLEAN
-#  define SK_HISTOGRAM_BOOLEAN(name, sample)
+#define SK_HISTOGRAM_BOOLEAN(name, sample)
 #endif
 
 #ifndef SK_HISTOGRAM_ENUMERATION
-#  define SK_HISTOGRAM_ENUMERATION(name, sample, enum_size)
+#define SK_HISTOGRAM_ENUMERATION(name, sample, enum_size)
 #endif
 
 #ifndef SK_HISTOGRAM_EXACT_LINEAR
-#  define SK_HISTOGRAM_EXACT_LINEAR(name, sample, value_max)
+#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, value_max)
 #endif
 
 #ifndef SK_HISTOGRAM_MEMORY_KB
-#  define SK_HISTOGRAM_MEMORY_KB(name, sample)
+#define SK_HISTOGRAM_MEMORY_KB(name, sample)
 #endif
 
 #define SK_HISTOGRAM_PERCENTAGE(name, percent_as_int) \
-    SK_HISTOGRAM_EXACT_LINEAR(name, percent_as_int, 101)
+        SK_HISTOGRAM_EXACT_LINEAR(name, percent_as_int, 101)
 
-// The top-level define SK_ENABLE_OPTIMIZE_SIZE can be used to remove several large features at once
+    // The top-level define SK_ENABLE_OPTIMIZE_SIZE can be used to remove several large features at
+    // once
 #if defined(SK_ENABLE_OPTIMIZE_SIZE)
     #if !defined(SK_FORCE_RASTER_PIPELINE_BLITTER)
         #define SK_FORCE_RASTER_PIPELINE_BLITTER
