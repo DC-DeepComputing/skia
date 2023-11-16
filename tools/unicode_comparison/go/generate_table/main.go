@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"go.skia.org/skia/tools/unicode_comparison/go/helpers"
 	"html/template"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -44,11 +45,21 @@ func (r Ratio) Divide() string {
 		return fmt.Sprintf("%.6f", float64(r.Num)/float64(r.Total))
 	}
 }
+
+func nearlyEqual(a, b float64) bool {
+    tolerance := 0.001
+    if diff := math.Abs(a - b); diff < tolerance {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 func (fr FloatRatio) Percents() string {
-	if fr.Top == fr.Bottom {
-		return "        "
+	if nearlyEqual(fr.Top, 0.0) {
+		return "0.00%"
 	} else {
-		return fmt.Sprintf("%.6f", (float64(fr.Top)/float64(fr.Bottom)-1)*100)
+		return fmt.Sprintf("%.2f", (float64(fr.Top)/float64(fr.Bottom)-1)*100)
 	}
 }
 
