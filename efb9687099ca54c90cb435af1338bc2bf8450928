@@ -39,6 +39,30 @@
       },
       "revId": "efb9687099ca54c90cb435af1338bc2bf8450928",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d97ad3_b03987f9",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-16T15:41:57Z",
+      "side": 1,
+      "message": "Hm, good point. Seems like it could be. This goes away in the subsequent change and we just check GetMapState() \u003d\u003d Pending. Perhaps more reason to just merge them into a single change.",
+      "parentUuid": "46455932_1b771334",
+      "range": {
+        "startLine": 182,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 80
+      },
+      "revId": "efb9687099ca54c90cb435af1338bc2bf8450928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
