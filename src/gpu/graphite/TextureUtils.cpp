@@ -57,6 +57,7 @@ sk_sp<SkSurface> make_surface_with_fallback(skgpu::graphite::Recorder* recorder,
         return nullptr;
     }
 
+    SkDebugf("Here 22\n");
     return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, surfaceProps);
 }
 
@@ -92,13 +93,14 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                 SkColorType colorType,
                                 sk_sp<SkColorSpace> outCS,
                                 const SkSurfaceProps& outProps) {
+    SkDebugf("-- Here 2 %d\n", recorder->priv().caps()->protectedSupport());
     SkImageInfo outII = SkImageInfo::Make({dstRect.width(), dstRect.height()},
                                           colorType, kPremul_SkAlphaType, std::move(outCS));
     auto device = skgpu::graphite::Device::Make(recorder,
                                                 outII,
                                                 skgpu::Budgeted::kYes,
                                                 skgpu::Mipmapped::kNo,
-                                                skgpu::Protected::kNo,
+                                                skgpu::Protected(recorder->priv().caps()->protectedSupport()),
                                                 outProps,
                                                 /*addInitialClear=*/false);
     if (!device) {
@@ -612,6 +614,7 @@ bool GenerateMipmaps(Recorder* recorder,
         sk_sp<SkSurface> stepDstSurface = sk_ref_sp(stepDst->getSurface());
         skgpu::graphite::Flush(stepDstSurface);
 
+        SkDebugf("Generate Mips\n");
         sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(
                 static_cast<const Surface*>(stepDstSurface.get())->readSurfaceView().refProxy(),
                 SkIRect::MakeSize(stepSize),
@@ -727,7 +730,7 @@ public:
 
     GraphiteBackend(skgpu::graphite::Recorder* recorder,
                     const SkSurfaceProps& surfaceProps,
-                    SkColorType colorType)
+                    SkColorType colorType, bool)
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
             , fRecorder(recorder) {}
@@ -740,11 +743,12 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
+        SkDebugf("Here 3 %d\n", fRecorder->priv().caps()->protectedSupport());
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
-                                             skgpu::Protected::kNo,
+                                             skgpu::Protected(fRecorder->priv().caps()->protectedSupport()),
                                              props ? *props : this->surfaceProps(),
                                              /*addInitialClear=*/false);
     }
@@ -808,7 +812,7 @@ sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps& surfaceProps,
                                    SkColorType colorType) {
     SkASSERT(recorder);
-    return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType);
+    return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType, true);
 }
 
 }  // namespace skif

@@ -107,7 +107,7 @@ public:
         SkImageInfo ii = SkImageInfo::Make(kSurfaceSize,
                                            kRGBA_8888_SkColorType,
                                            kPremul_SkAlphaType);
-        fImgDrawSurface = SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo);
+        fImgDrawSurface = SkSurfaces::RenderTarget(fRecorder, ii);
         REPORTER_ASSERT(fReporter, fImgDrawSurface);
 
         fImgDrawRecording = MakeRedrawRecording(fRecorder, fImgDrawSurface.get(), imageToDraw);

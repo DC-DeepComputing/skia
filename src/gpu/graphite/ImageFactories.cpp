@@ -269,6 +269,7 @@ sk_sp<SkImage> MakeWithFilter(skgpu::graphite::Recorder* recorder,
         return nullptr;
     }
 
+    SkDebugf("what\n");
     sk_sp<skif::Backend> backend = skif::MakeGraphiteBackend(recorder, {}, src->colorType());
     return as_IFB(filter)->makeImageWithFilter(std::move(backend),
                                                std::move(src),

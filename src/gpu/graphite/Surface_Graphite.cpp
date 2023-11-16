@@ -44,6 +44,7 @@ TextureProxyView Surface::readSurfaceView() const {
 SkCanvas* Surface::onNewCanvas() { return new SkCanvas(fDevice); }
 
 sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii) {
+    SkDebugf("Here 99\n");
     return SkSurfaces::RenderTarget(fDevice->recorder(), ii, Mipmapped::kNo, &this->props());
 }
 
@@ -128,8 +129,9 @@ sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
                                        skgpu::Budgeted budgeted,
                                        Mipmapped mipmapped,
                                        const SkSurfaceProps* props) {
+    SkDebugf("Here 1\n");
     sk_sp<Device> device = Device::Make(recorder, info, budgeted, mipmapped,
-                                        Protected::kNo,
+                                        Protected(recorder->priv().caps()->protectedSupport()),
                                         SkSurfacePropsCopyOrDefault(props),
                                         /* addInitialClear= */ true);
     if (!device) {
