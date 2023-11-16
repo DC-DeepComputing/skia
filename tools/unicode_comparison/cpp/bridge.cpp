@@ -5,6 +5,9 @@
 #include "include/core/SkString.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkTime.h"
 #include "tools/unicode_comparison/cpp/bridge.h"
@@ -20,11 +23,11 @@ bool init_skunicode_impl(char* impl) {
 
     SkString unicodeName(impl);
     if (unicodeName.equals("icu")) {
-        gUnicode = SkUnicode::ICU::Make();
+        gUnicode = SkUnicodes::ICU::Make();
     } else if (unicodeName.equals("icu4x")) {
-        gUnicode = SkUnicode::ICU4X::Make();
+        gUnicode = SkUnicodes::ICU4X::Make();
     } else if (unicodeName.equals("libgrapheme")) {
-        gUnicode = SkUnicode::Libgrapheme::Make();
+        gUnicode = SkUnicodes::Libgrapheme::Make();
     } else {
         SkDebugf("Implementation '%s' not supported\n", impl);
         return false;
