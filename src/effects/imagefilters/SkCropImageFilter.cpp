@@ -161,27 +161,7 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::requiredInput(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& outputBounds) const {
     skif::LayerSpace<SkIRect> crop = this->cropRect(mapping);
-
-    if (fTileMode == SkTileMode::kRepeat || fTileMode == SkTileMode::kMirror) {
-        // For simplicity, try and fill the full crop rect for periodic tile modes. Hypothetically
-        // if the output would only show one period of the image, we could calculate the optimal
-        // subset similar to decal/clamp tiles, but that would require exposing more internals of
-        // FilterResult::applyCrop to the rest of the SkImageFilter system.
-        return crop;
-    } else {
-        // Both clamp and decal won't show content inside cropRect that's beyond 'outputBounds'
-        if (!crop.intersect(outputBounds)) {
-            if (fTileMode == SkTileMode::kClamp) {
-                // Except for clamping when there's no intersection; in that case the closest
-                // row/column/corner covers the entire output bounds.
-                crop = skif::LayerSpace<SkIRect>(
-                        SkRectPriv::ClosestDisjointEdge(SkIRect(crop), SkIRect(outputBounds)));
-            } else {
-                crop = skif::LayerSpace<SkIRect>::Empty();
-            }
-        }
-        return crop;
-    }
+    return crop.relevantSubset(outputBounds, fTileMode);
 }
 
 skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context) const {

@@ -39,6 +39,7 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/gpu/BlurUtils.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
@@ -794,7 +795,6 @@ public:
 
     // SkBlurEngine
     const SkBlurEngine::Algorithm* findAlgorithm(SkSize sigma,
-                                                 SkTileMode tileMode,
                                                  SkColorType colorType) const override {
         // GrBlurUtils supports all tile modes and color types
         return this;
@@ -802,9 +802,12 @@ public:
 
     // SkBlurEngine::Algorithm
     float maxSigma() const override {
-        // GrBlurUtils handles resizing at the moment
-        return SK_ScalarInfinity;
+        // GrBlurUtils can resize, but if we return kMaxLinearBlurSigma here, FilterResult will do
+        // the rescaling and GrBlurUtils should just perform at the invoked resolution
+        return skgpu::kMaxLinearBlurSigma;
     }
+
+    bool supportsOnlyDecalTiling() const override { return false; }
 
     sk_sp<SkSpecialImage> blur(SkSize sigma,
                                sk_sp<SkSpecialImage> input,
