@@ -331,6 +331,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8811b8d_25588e07",
+        "filename": "src/gpu/graphite/dawn/DawnResourceWithSerial.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-16T14:20:49Z",
+      "side": 1,
+      "message": "This has been addressed separately.",
+      "parentUuid": "928ca24c_228bc218",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "3da4c3367105a0860df18212104628a177329e94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "978728ef_94c04806",
