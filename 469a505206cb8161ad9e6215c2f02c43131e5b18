@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fe789a0_217f9c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-16T20:31:23Z",
+      "side": 1,
+      "message": "I merged the CLs and took a pass at the comments on both.",
+      "revId": "469a505206cb8161ad9e6215c2f02c43131e5b18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
