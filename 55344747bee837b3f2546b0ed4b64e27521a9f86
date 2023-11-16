@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1daeddd1_abc5276f",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-16T14:16:12Z",
+      "side": 1,
+      "message": "nit: indent similar to the other blocks around",
+      "revId": "55344747bee837b3f2546b0ed4b64e27521a9f86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
