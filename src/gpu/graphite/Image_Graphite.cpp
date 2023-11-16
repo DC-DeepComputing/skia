@@ -105,6 +105,7 @@ sk_sp<SkImage> Image::makeColorTypeAndColorSpace(Recorder* recorder,
     SkImageInfo ii = SkImageInfo::Make(this->dimensions(), targetCT, at, std::move(targetCS));
 
     auto mm = requiredProps.fMipmapped ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
+    SkDebugf("Here 77\n");
     sk_sp<SkSurface> s = SkSurfaces::RenderTarget(recorder, ii, mm);
     if (!s) {
         return nullptr;

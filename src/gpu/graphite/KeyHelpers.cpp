@@ -1579,6 +1579,7 @@ static void add_to_key(const KeyContext& keyContext,
     // TODO: right now we're explicitly not caching here. We could expand the ImageProvider
     // API to include already Graphite-backed images, add a Recorder-local cache or add
     // rendered-picture images to the global cache.
+    SkDebugf("Here 11\n");
     sk_sp<SkImage> img = info.makeImage(
             SkSurfaces::RenderTarget(recorder, info.imageInfo, skgpu::Mipmapped::kNo, &info.props),
             shader->picture().get());

@@ -38,7 +38,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
+sk_sp<DrawContext> DrawContext::Make11(sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props) {
@@ -147,7 +147,8 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
     // Instantiate the compute pass that may render an atlas texture used by this draw pass.
     this->snapPathAtlasDispatches(recorder);
 
-    auto pass = DrawPass::Make(recorder,
+    SkDebugf("snapDrawPass\n");
+    auto pass = DrawPass::Make7(recorder,
                                std::move(fPendingDraws),
                                fTarget,
                                this->imageInfo(),

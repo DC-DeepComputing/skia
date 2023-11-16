@@ -632,10 +632,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraphite,
 
     auto factory = std::function<GraphiteSrcFactory<Surface>>(
             [&](skgpu::graphite::Recorder* recorder, const SkPixmap& src) {
-                Surface surface = SkSurfaces::RenderTarget(recorder,
-                                                           src.info(),
-                                                           Mipmapped::kNo,
-                                                           /*surfaceProps=*/nullptr);
+                Surface surface = SkSurfaces::RenderTarget(recorder, src.info());
                 if (surface) {
                     surface->writePixels(src, 0, 0);
 

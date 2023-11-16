@@ -413,6 +413,8 @@ sk_sp<TextureProxy> add_copy_target_task(Recorder* recorder,
                                          const SkIPoint& targetOffset) {
     SkASSERT(recorder->priv().caps()->isTexturable(target->textureInfo()));
     SkIRect dstSrcRect = SkIRect::MakePtSize(targetOffset, targetInfo.dimensions());
+
+    SkDebugf("add_copy_target_task %d\n", target->textureInfo().isProtected() == Protected::kYes);
     sk_sp<TextureProxy> copy = TextureProxy::Make(recorder->priv().caps(),
                                                   targetInfo.dimensions(),
                                                   target->textureInfo(),
@@ -443,12 +445,13 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 
 DrawPass::~DrawPass() = default;
 
-std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
+std::unique_ptr<DrawPass> DrawPass::Make7(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
                                          const SkImageInfo& targetInfo,
                                          std::pair<LoadOp, StoreOp> ops,
                                          std::array<float, 4> clearColor) {
+    SkDebugf("DrawPass::Make %d\n", target->textureInfo().isProtected() == Protected::kYes);
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.

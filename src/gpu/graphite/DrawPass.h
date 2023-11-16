@@ -55,7 +55,7 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    static std::unique_ptr<DrawPass> Make(Recorder*,
+    static std::unique_ptr<DrawPass> Make7(Recorder*,
                                           std::unique_ptr<DrawList>,
                                           sk_sp<TextureProxy> target,
                                           const SkImageInfo& targetInfo,

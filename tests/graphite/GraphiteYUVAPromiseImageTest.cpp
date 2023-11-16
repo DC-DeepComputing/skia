@@ -785,4 +785,3 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(GraphiteYUVAPromiseImageMultipleImgUses
         }
     }
 }
-

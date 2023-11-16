@@ -229,6 +229,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
+    SkDebugf("Make1 %d\n", isProtected == Protected::kYes);
     sk_sp<TextureProxy> target = TextureProxy::Make(recorder->priv().caps(),
                                                     ii.dimensions(),
                                                     ii.colorType(),
@@ -248,6 +249,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
+    SkDebugf("Make2 %d\n", target->textureInfo().isProtected() == Protected::kYes);
     return Make(recorder, target, target->dimensions(), colorInfo, props, addInitialClear);
 }
 
@@ -266,7 +268,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), deviceSize, colorInfo, props);
+    SkDebugf("Device::Make3 %d\n", target->textureInfo().isProtected() == Protected::kYes);
+    sk_sp<DrawContext> dc = DrawContext::Make11(std::move(target), deviceSize, colorInfo, props);
     if (!dc) {
         return nullptr;
     }
@@ -339,6 +342,7 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     bool addInitialClear = !info.fInfo.isOpaque();
 
+    SkDebugf("createDevice %d\n", this->target()->isProtected());
     return Make(fRecorder,
                 info.fInfo,
                 skgpu::Budgeted::kYes,
@@ -349,6 +353,7 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
+    SkDebugf("Here 88\n");
     return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props);
 }
 
@@ -379,6 +384,7 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
     skgpu::graphite::TextureInfo textureInfo =
             recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
                                                                   mipmapped);
+    SkDebugf("Foo %d\n", textureInfo.isProtected() == Protected::kYes);
     sk_sp<TextureProxy> dest = TextureProxy::Make(
             recorder->priv().caps(), srcRect.size(), textureInfo, skgpu::Budgeted::kNo);
     if (!dest) {
@@ -1437,6 +1443,7 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
                                                          SkColorType colorType) const {
+    SkDebugf("createImageFilteringBackend %d\n", fRecorder->priv().caps()->protectedSupport());
     return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType);
 }
 
