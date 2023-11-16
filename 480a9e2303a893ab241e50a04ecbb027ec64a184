@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f6f3b8c_cdea7b62",
+        "filename": "modules/skparagraph/slides/ParagraphSlide.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 4292,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-16T18:15:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ad6a0db_2649318b",
+      "revId": "480a9e2303a893ab241e50a04ecbb027ec64a184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63d68370_5ca3284b",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58865769_72f6993a",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-16T18:15:00Z",
+      "side": 1,
+      "message": "Yes, I want another fallback if Apple Color Emoji does not work.",
+      "parentUuid": "63d68370_5ca3284b",
+      "revId": "480a9e2303a893ab241e50a04ecbb027ec64a184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0621161_4330e14d",
@@ -65,6 +101,30 @@
       "writtenOn": "2023-11-16T18:02:28Z",
       "side": 1,
       "message": "This won\u0027t run on macOS or iOS where this is most interesting to test?",
+      "range": {
+        "startLine": 7917,
+        "startChar": 0,
+        "endLine": 7917,
+        "endChar": 14
+      },
+      "revId": "480a9e2303a893ab241e50a04ecbb027ec64a184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d25a2d5_66d5c5cf",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 7917,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-16T18:15:00Z",
+      "side": 1,
+      "message": "For iOS I need a different emoji to test. Jason Simmons said that the frown emoji (U+2639) works for iOS (he tested it). I am really not sure if I can rely on test environment to include it...",
+      "parentUuid": "a0621161_4330e14d",
       "range": {
         "startLine": 7917,
         "startChar": 0,
