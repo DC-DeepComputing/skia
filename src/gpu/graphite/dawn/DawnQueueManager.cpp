@@ -18,8 +18,9 @@ class DawnWorkSubmission final : public GpuWorkSubmission {
 public:
     DawnWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
                        DawnQueueManager* queueManager,
-                       const wgpu::Device& device)
-            : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(std::move(device)) {
+                       const wgpu::Device& device,
+                       const DawnCaps& caps)
+            : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(device, caps) {
         queueManager->dawnQueue().OnSubmittedWorkDone(
 #if defined(__EMSCRIPTEN__)
                 // This is parameter is being removed:
@@ -66,10 +67,10 @@ QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
 
     fQueue.Submit(/*commandCount=*/1, &wgpuCmdBuffer);
 
-    std::unique_ptr<DawnWorkSubmission> submission(new DawnWorkSubmission(
-            std::move(fCurrentCommandBuffer), this, dawnSharedContext()->device()));
-
-    return submission;
+    return std::make_unique<DawnWorkSubmission>(std::move(fCurrentCommandBuffer),
+                                                this,
+                                                dawnSharedContext()->device(),
+                                                *dawnSharedContext()->dawnCaps());
 }
 
 #if defined(GRAPHITE_TEST_UTILS)

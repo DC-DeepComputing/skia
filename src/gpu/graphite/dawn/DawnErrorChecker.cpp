@@ -22,7 +22,8 @@ constexpr int kScopeCount = std::size(kErrorScopeTypes);
 
 }  // namespace
 
-DawnErrorChecker::DawnErrorChecker(const wgpu::Device& device) : fArmed(true), fDevice(device) {
+DawnErrorChecker::DawnErrorChecker(const wgpu::Device& device, const DawnCaps* caps)
+        : fArmed(true), fDevice(device), fCaps(caps) {
     fDevice.PushErrorScope(wgpu::ErrorFilter::Validation);
     fDevice.PushErrorScope(wgpu::ErrorFilter::OutOfMemory);
     fDevice.PushErrorScope(wgpu::ErrorFilter::Internal);
@@ -44,9 +45,11 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
         int fScopeIdx;
         DawnAsyncWait fWait;
 
-        ErrorState(const wgpu::Device& device)
-                : fError(DawnErrorType::kNoError), fScopeIdx(kScopeCount - 1), fWait(device) {}
-    } errorState(fDevice);
+        ErrorState(const wgpu::Device& device, const DawnCaps& caps)
+                : fError(DawnErrorType::kNoError)
+                , fScopeIdx(kScopeCount - 1)
+                , fWait(device, caps) {}
+    } errorState(fDevice, *fCaps);
 
     wgpu::ErrorCallback errorCallback = [](WGPUErrorType status, const char* msg, void* userData) {
         ErrorState* errorState = static_cast<ErrorState*>(userData);

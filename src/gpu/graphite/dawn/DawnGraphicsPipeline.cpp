@@ -515,25 +515,28 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
-    auto asyncCreation = std::make_unique<AsyncPipelineCreation>(device);
+    auto asyncCreation = std::make_unique<AsyncPipelineCreation>(device, caps);
 
-    device.CreateRenderPipelineAsync(
-            &descriptor,
-            [](WGPUCreatePipelineAsyncStatus status,
-               WGPURenderPipeline pipeline,
-               char const* message,
-               void* userdata) {
-                AsyncPipelineCreation* arg = static_cast<AsyncPipelineCreation*>(userdata);
+    if (caps.useAsyncPipelineCreation()) {
+        device.CreateRenderPipelineAsync(
+                &descriptor,
+                [](WGPUCreatePipelineAsyncStatus status,
+                   WGPURenderPipeline pipeline,
+                   char const* message,
+                   void* userdata) {
+                    AsyncPipelineCreation* arg = static_cast<AsyncPipelineCreation*>(userdata);
 
-                if (status != WGPUCreatePipelineAsyncStatus_Success) {
-                    SKGPU_LOG_E("Failed to create render pipeline (%d): %s", status, message);
-                    arg->set(nullptr);
-                } else {
-                    arg->set(wgpu::RenderPipeline::Acquire(pipeline));
-                }
-            },
-            asyncCreation.get());
-
+                    if (status != WGPUCreatePipelineAsyncStatus_Success) {
+                        SKGPU_LOG_E("Failed to create render pipeline (%d): %s", status, message);
+                        arg->set(nullptr);
+                    } else {
+                        arg->set(wgpu::RenderPipeline::Acquire(pipeline));
+                    }
+                },
+                asyncCreation.get());
+    } else {
+        asyncCreation->set(device.CreateRenderPipeline(&descriptor));
+    }
 #if defined(GRAPHITE_TEST_UTILS)
     GraphicsPipeline::PipelineInfo pipelineInfo = {pipelineDesc.renderStepID(),
                                                    pipelineDesc.paintParamsID(),
@@ -578,6 +581,9 @@ void DawnGraphicsPipeline::freeGpuData() {
 }
 
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
+    if (auto pipeline = fAsyncPipelineCreation->getIfReady()) {
+        return *pipeline;
+    }
     return fAsyncPipelineCreation->waitAndGet();
 }
 
