@@ -267,14 +267,7 @@ bool determine_dimension_validity(const int maxTextureSize, const SkISize& dimen
     }
     return true;
 }
-}
-
-BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
-    if (!determine_dimension_validity(fSharedContext->caps()->maxTextureSize(), dimensions)) {
-        return {};
-    }
-    return this->onCreateBackendTexture(dimensions, info);
-}
+} // anonymous namespace
 
 #ifdef SK_BUILD_FOR_ANDROID
 BackendTexture ResourceProvider::createBackendTexture(AHardwareBuffer* hardwareBuffer,
