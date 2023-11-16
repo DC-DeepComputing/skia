@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6f824c7_d22dd69b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-16T15:35:18Z",
+      "side": 1,
+      "message": "This lgtm modulo comments.\n\n+Jim to double check async readPixels stuff\n+Quyen to double check Dawn buffer things (note that the follow on change is highly connected to this and does immediately modify some of the DawnBuffer changes here again).",
+      "revId": "efb9687099ca54c90cb435af1338bc2bf8450928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46455932_1b771334",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-16T15:35:18Z",
+      "side": 1,
+      "message": "Is there risk of some thread synchronization issue here? Like if some other thread finishes the map call between setting result and the assert?",
+      "range": {
+        "startLine": 182,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 80
+      },
+      "revId": "efb9687099ca54c90cb435af1338bc2bf8450928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

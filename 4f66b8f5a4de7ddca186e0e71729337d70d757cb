@@ -22,6 +22,30 @@
       },
       "revId": "4f66b8f5a4de7ddca186e0e71729337d70d757cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac85b94_75329bb9",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-16T15:35:18Z",
+      "side": 1,
+      "message": "I think separate from InsertFinishInfo is the right thing. InsertFinishInfo is public and these buffers aren\u0027t exposed. So we\u0027d have to make an interal Info struct or have some private access. For now I think this is fine. If we ever find we have more things to add maybe it makes sense to have some internal struct.",
+      "parentUuid": "00878eae_4eb268ae",
+      "range": {
+        "startLine": 44,
+        "startChar": 65,
+        "endLine": 44,
+        "endChar": 82
+      },
+      "revId": "4f66b8f5a4de7ddca186e0e71729337d70d757cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
