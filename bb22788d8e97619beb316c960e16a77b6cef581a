@@ -33,6 +33,24 @@
       "message": "CL description is outdated",
       "revId": "bb22788d8e97619beb316c960e16a77b6cef581a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e49e2b62_dc345441",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-16T17:01:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e14a303a_287dbe4c",
+      "revId": "bb22788d8e97619beb316c960e16a77b6cef581a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
