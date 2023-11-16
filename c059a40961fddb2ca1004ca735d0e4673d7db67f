@@ -152,6 +152,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f461000_0e914d10",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-16T17:40:09Z",
+      "side": 1,
+      "message": "Isn\u0027t the right implementation actually:\n```\n    __mmask16 mask64 \u003d _mm512_test_epi32_mask(c, c);\n    return mask64 \u003d 0xffff;\n````\n\nWe need to ensure that each 32-bit lane in c contains a non-zero value. (They will happen to each be ~0 if they are non-zero, but that doesn\u0027t matter). We can\u0027t use epi64, because we\u0027d incorrectly ignore a zero lane adjacent to a non-zero lane. And then we need to make sure the mask contains ALL the bits set.",
+      "parentUuid": "6289f22e_ef896d34",
+      "range": {
+        "startLine": 348,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 0
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e0ff77e9_79fe8e7f",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 1
