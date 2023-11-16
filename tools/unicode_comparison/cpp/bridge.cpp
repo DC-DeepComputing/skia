@@ -22,7 +22,9 @@ bool init_skunicode_impl(char* impl) {
     if (unicodeName.equals("icu")) {
         gUnicode = SkUnicode::MakeIcuBasedUnicode();
     } else if (unicodeName.equals("libgrapheme")) {
-        gUnicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+      gUnicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+    } else if (unicodeName.equals("icu4x")) {
+      gUnicode = SkUnicode::MakeIcu4xBasedUnicode();
     } else {
         SkDebugf("Implementation '%s' not supported\n", impl);
         return false;
