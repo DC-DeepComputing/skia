@@ -11,6 +11,8 @@ go/*
 ----
 This folder contains the set on golang utilities that allow to download, preprocess data and then generate the comparison table itself
 
+<u>Make sure you have Skia release version built before building/running go utils!</u>
+
 download_wiki.go
 ----------------
 make download_wiki
@@ -20,6 +22,7 @@ List of wiki languages: https://meta.wikimedia.org/wiki/List_of_Wikipedias
 
 extract_info.go
 ---------------
+
 
 generate_table.go
 -----------------
