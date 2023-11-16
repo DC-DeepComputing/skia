@@ -214,8 +214,6 @@ bool AnimationBuilder::resolveNativeTypefaces() {
             return;
         }
 
-        const auto& fmgr = fLazyFontMgr.get();
-
         // Typeface fallback order:
         //   1) externally-loaded font (provided by the embedder)
         //   2) system font (family/style)
@@ -226,19 +224,20 @@ bool AnimationBuilder::resolveNativeTypefaces() {
         // legacy API fallback
         // TODO: remove after client migration
         if (!finfo->fTypeface) {
-            finfo->fTypeface = fmgr->makeFromData(
+            SkASSERT(fFontMgr);
+            finfo->fTypeface = fFontMgr->makeFromData(
                     fResourceProvider->loadFont(name.c_str(), finfo->fPath.c_str()));
         }
 
         if (!finfo->fTypeface) {
-            finfo->fTypeface = fmgr->matchFamilyStyle(finfo->fFamily.c_str(),
+            finfo->fTypeface = fFontMgr->matchFamilyStyle(finfo->fFamily.c_str(),
                                                       FontStyle(this, finfo->fStyle.c_str()));
 
             if (!finfo->fTypeface) {
                 this->log(Logger::Level::kError, nullptr, "Could not create typeface for %s|%s.",
                           finfo->fFamily.c_str(), finfo->fStyle.c_str());
                 // Last resort.
-                finfo->fTypeface = fmgr->legacyMakeTypeface(nullptr,
+                finfo->fTypeface = fFontMgr->legacyMakeTypeface(nullptr,
                                                             FontStyle(this, finfo->fStyle.c_str()));
 
                 has_unresolved |= !finfo->fTypeface;
@@ -331,7 +330,7 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachTextLayer(const skjson::ObjectVa
                                                           LayerInfo*) const {
     return this->attachDiscardableAdapter<TextAdapter>(jlayer,
                                                        this,
-                                                       fLazyFontMgr.getMaybeNull(),
+                                                       fFontMgr,
                                                        fCustomGlyphMapper,
                                                        fLogger);
 }

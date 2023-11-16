@@ -1258,6 +1258,7 @@ Result SkottieSrc::draw(SkCanvas* canvas) const {
     }
 
     auto animation = skottie::Animation::Builder(flags)
+        .setFontManager(ToolUtils::TestFontMgr())
         .setResourceProvider(std::move(resource_provider))
         .setPrecompInterceptor(std::move(precomp_interceptor))
         .makeFromFile(fPath.c_str());
@@ -2270,6 +2271,11 @@ Result ViaUpright::draw(const Src& src, SkBitmap* bitmap, SkWStream* stream, SkS
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+static SkDeserialProcs deserial_procs() {
+    static SkDeserialProcs procs;
+    return procs;
+}
+
 Result ViaSerialization::draw(
         const Src& src, SkBitmap* bitmap, SkWStream* stream, SkString* log) const {
     // Record our Src into a picture.
@@ -2283,8 +2289,9 @@ Result ViaSerialization::draw(
     sk_sp<SkPicture> pic(recorder.finishRecordingAsPicture());
 
     SkSerialProcs procs = serial_procs_using_png();
+    SkDeserialProcs dProcs = deserial_procs();
     // Serialize it and then deserialize it.
-    sk_sp<SkPicture> deserialized(SkPicture::MakeFromData(pic->serialize(&procs).get()));
+    sk_sp<SkPicture> deserialized = SkPicture::MakeFromData(pic->serialize(&procs).get(), &dProcs);
 
     result = draw_to_canvas(fSink.get(), bitmap, stream, log, size,
                             [&](SkCanvas* canvas) {
