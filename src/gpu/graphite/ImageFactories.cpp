@@ -283,7 +283,7 @@ static sk_sp<SkImage> generate_picture_texture(skgpu::graphite::Recorder* record
                                                const SkImageInfo& info,
                                                SkImage::RequiredProperties requiredProps) {
     auto mm = requiredProps.fMipmapped ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, info, mm, img->props());
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, info, mm, img->props(), true);
     if (!surface) {
         SKGPU_LOG_E("Failed to create Surface");
         return nullptr;

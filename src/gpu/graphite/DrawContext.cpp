@@ -147,7 +147,7 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
     // Instantiate the compute pass that may render an atlas texture used by this draw pass.
     this->snapPathAtlasDispatches(recorder);
 
-    auto pass = DrawPass::Make(recorder,
+    auto pass = DrawPass::Make7(recorder,
                                std::move(fPendingDraws),
                                fTarget,
                                this->imageInfo(),

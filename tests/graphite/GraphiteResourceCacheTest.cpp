@@ -219,7 +219,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     REPORTER_ASSERT(reporter, imageResourcePtr->budgeted() == skgpu::Budgeted::kYes);
 
     // Now try an SkSurface. This is simpler since we can directly create Graphite SkSurface's.
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info, skgpu::Mipmapped::kNo, nullptr, true);
     if (!surface) {
         ERRORF(reporter, "Failed to make surface");
         return;

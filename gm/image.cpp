@@ -389,7 +389,7 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
                     surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, ii);
                 } else {
 #if defined(SK_GRAPHITE)
-                    surface = SkSurfaces::RenderTarget(recorder, ii);
+                    surface = SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo, nullptr, true);
 #endif
                 }
 

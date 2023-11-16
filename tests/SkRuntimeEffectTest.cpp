@@ -432,7 +432,7 @@ static sk_sp<SkSurface> make_surface(GrRecordingContext* grContext,
     sk_sp<SkSurface> surface;
     if (graphite) {
 #if defined(SK_GRAPHITE)
-        surface = SkSurfaces::RenderTarget(graphite->recorder, info);
+        surface = SkSurfaces::RenderTarget(graphite->recorder, info, skgpu::Mipmapped::kNo, nullptr, true);
 #endif
     } else if (grContext) {
         surface = SkSurfaces::RenderTarget(grContext, skgpu::Budgeted::kNo, info);

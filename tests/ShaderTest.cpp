@@ -205,7 +205,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ShaderTestNestedBlendsGraphite, reporte
                                        SkColorType::kRGBA_8888_SkColorType,
                                        SkAlphaType::kPremul_SkAlphaType);
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo, nullptr, true);
     test_nested_blends(reporter, surface.get());
 }
 #endif

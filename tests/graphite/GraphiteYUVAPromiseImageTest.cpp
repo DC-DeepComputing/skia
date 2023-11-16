@@ -268,7 +268,7 @@ void setup_test_context(Context* context,
                                        dimensions.fHeight,
                                        kRGBA_8888_SkColorType,
                                        kPremul_SkAlphaType);
-    testCtx->fSurface = SkSurfaces::RenderTarget(testCtx->fRecorder.get(), ii);
+    testCtx->fSurface = SkSurfaces::RenderTarget(testCtx->fRecorder.get(), ii, skgpu::Mipmapped::kNo, nullptr, true);
 }
 
 } // anonymous namespace
@@ -785,4 +785,3 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(GraphiteYUVAPromiseImageMultipleImgUses
         }
     }
 }
-

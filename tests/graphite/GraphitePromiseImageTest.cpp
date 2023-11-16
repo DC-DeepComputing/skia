@@ -231,7 +231,7 @@ void setup_test_context(Context* context,
                                                  PromiseTextureChecker::TextureRelease,
                                                  &testCtx->fPromiseChecker);
 
-    testCtx->fSurface = SkSurfaces::RenderTarget(testCtx->fRecorder.get(), ii);
+    testCtx->fSurface = SkSurfaces::RenderTarget(testCtx->fRecorder.get(), ii, skgpu::Mipmapped::kNo, nullptr, true);
 }
 
 } // anonymous namespace

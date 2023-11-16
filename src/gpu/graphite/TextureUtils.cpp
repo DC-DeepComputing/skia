@@ -57,7 +57,8 @@ sk_sp<SkSurface> make_surface_with_fallback(skgpu::graphite::Recorder* recorder,
         return nullptr;
     }
 
-    return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, surfaceProps);
+    SkDebugf("Here 22\n");
+    return SkSurfaces::RenderTarget(recorder, info.makeColorType(ct), mipmapped, surfaceProps, true);
 }
 
 bool valid_client_provided_image(const SkImage* clientProvided,
@@ -92,6 +93,7 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                 SkColorType colorType,
                                 sk_sp<SkColorSpace> outCS,
                                 const SkSurfaceProps& outProps) {
+    SkDebugf("Here 2\n");
     SkImageInfo outII = SkImageInfo::Make({dstRect.width(), dstRect.height()},
                                           colorType, kPremul_SkAlphaType, std::move(outCS));
     auto device = skgpu::graphite::Device::Make(recorder,
@@ -612,6 +614,7 @@ bool GenerateMipmaps(Recorder* recorder,
         sk_sp<SkSurface> stepDstSurface = sk_ref_sp(stepDst->getSurface());
         skgpu::graphite::Flush(stepDstSurface);
 
+        SkDebugf("Generate Mips\n");
         sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(
                 static_cast<const Surface*>(stepDstSurface.get())->readSurfaceView().refProxy(),
                 SkIRect::MakeSize(stepSize),
@@ -740,11 +743,12 @@ public:
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
                                                   std::move(colorSpace));
+        SkDebugf("Here 3 %d\n", fRecorder->priv().caps()->protectedSupport());
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
-                                             skgpu::Protected::kNo,
+                                             skgpu::Protected(fRecorder->priv().caps()->protectedSupport()),
                                              props ? *props : this->surfaceProps(),
                                              /*addInitialClear=*/false);
     }

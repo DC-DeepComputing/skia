@@ -58,8 +58,9 @@ SK_API sk_sp<SkImage> AsImageCopy(sk_sp<const SkSurface>,
  */
 SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
                                      const SkImageInfo& imageInfo,
-                                     skgpu::Mipmapped = skgpu::Mipmapped::kNo,
-                                     const SkSurfaceProps* surfaceProps = nullptr);
+                                     skgpu::Mipmapped, //= skgpu::Mipmapped::kNo,
+                                     const SkSurfaceProps* surfaceProps, // = nullptr,
+                                     bool);
 
 /**
  * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may

@@ -493,7 +493,7 @@ static void test_write_pixels(skiatest::Reporter* reporter,
                               skgpu::graphite::Recorder* recorder,
                               int sampleCnt) {
     const SkImageInfo ii = SkImageInfo::MakeN32Premul(DEV_W, DEV_H);
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, ii);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo, nullptr, true);
     if (surface) {
         test_write_pixels(reporter, surface.get(), ii);
     }

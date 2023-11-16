@@ -44,7 +44,8 @@ TextureProxyView Surface::readSurfaceView() const {
 SkCanvas* Surface::onNewCanvas() { return new SkCanvas(fDevice); }
 
 sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii) {
-    return SkSurfaces::RenderTarget(fDevice->recorder(), ii, Mipmapped::kNo, &this->props());
+    SkDebugf("Here 99\n");
+    return SkSurfaces::RenderTarget(fDevice->recorder(), ii, Mipmapped::kNo, &this->props(), true);
 }
 
 sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
@@ -123,13 +124,14 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
 
 TextureProxy* Surface::backingTextureProxy() { return fDevice->target(); }
 
-sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
+sk_sp<SkSurface> Surface::MakeGraphite1(Recorder* recorder,
                                        const SkImageInfo& info,
                                        skgpu::Budgeted budgeted,
                                        Mipmapped mipmapped,
                                        const SkSurfaceProps* props) {
+    SkDebugf("Here 1\n");
     sk_sp<Device> device = Device::Make(recorder, info, budgeted, mipmapped,
-                                        Protected::kNo,
+                                        Protected(recorder->priv().caps()->protectedSupport()),
                                         SkSurfacePropsCopyOrDefault(props),
                                         /* addInitialClear= */ true);
     if (!device) {
@@ -216,9 +218,9 @@ sk_sp<SkImage> AsImageCopy(sk_sp<const SkSurface> surface,
 sk_sp<SkSurface> RenderTarget(Recorder* recorder,
                               const SkImageInfo& info,
                               skgpu::Mipmapped mipmapped,
-                              const SkSurfaceProps* props) {
+                              const SkSurfaceProps* props, bool foo) {
     // The client is getting the ref on this surface so it must be unbudgeted.
-    return skgpu::graphite::Surface::MakeGraphite(
+    return skgpu::graphite::Surface::MakeGraphite1(
             recorder, info, skgpu::Budgeted::kNo, mipmapped, props);
 }
 

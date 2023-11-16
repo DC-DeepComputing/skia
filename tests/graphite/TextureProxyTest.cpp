@@ -237,7 +237,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteLazyTextureInvalidDimensions, reporte
         // texture.
         SkImageInfo surfaceImageInfo = SkImageInfo::Make(
                 1, 1, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
-        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), surfaceImageInfo);
+        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), surfaceImageInfo, skgpu::Mipmapped::kNo, nullptr, true);
         sk_sp<SkImage> promiseImage = SkImages::PromiseTextureFrom(recorder.get(),
                                                                    imageInfo.dimensions(),
                                                                    textureInfo,

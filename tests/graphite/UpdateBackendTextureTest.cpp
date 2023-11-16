@@ -115,7 +115,7 @@ void check_levels(skiatest::Reporter* reporter,
                                  : SkSamplingOptions(SkFilterMode::kNearest);
 
     SkImageInfo surfaceII = SkImageInfo::Make(kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, surfaceII, Mipmapped::kNo);
+    sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, surfaceII, Mipmapped::kNo, nullptr, true);
     SkCanvas* canvas = surf->getCanvas();
 
     for (int i = 0, drawSize = kSize.width(); i < numLevels; ++i, drawSize /= 2) {

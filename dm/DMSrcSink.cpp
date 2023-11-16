@@ -2133,7 +2133,7 @@ Result GraphiteSink::draw(const Src& src,
     {
         SkSurfaceProps props(0, kRGB_H_SkPixelGeometry);
         sk_sp<SkSurface> surface =
-                SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo, &props);
+                SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo, &props, true);
         if (!surface) {
             return Result::Fatal("Could not create a surface.");
         }

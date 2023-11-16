@@ -71,7 +71,7 @@ const MakerT makers[] = {
                         SkSurfaces::RenderTarget(c->recordingContext(), skgpu::Budgeted::kNo, info);
             } else {
 #if defined(SK_GRAPHITE)
-                surface = SkSurfaces::RenderTarget(c->recorder(), info);
+                surface = SkSurfaces::RenderTarget(c->recorder(), info, skgpu::Mipmapped::kNo, nullptr, true);
 #endif
             }
             return make_mask(surface ? surface : SkSurfaces::Raster(info));
