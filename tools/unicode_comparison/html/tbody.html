@@ -109,12 +109,8 @@
                 <td>{{ .Delta.Graphemes.Divide }}</td>
                 {{ else }}
                 <td class="one_line">
-                    {{ if .HasMissingGraphemes }}
-                    <input type="button" class="grapheme inactive" id='grapheme_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'grapheme', 'missing')" value="-{{ .MissingGraphemeNum }}"/>
-                    {{ end }}
-                    {{ if .HasExtraGraphemes }}
-                    <input type="button" class="grapheme inactive" id='grapheme_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'grapheme', 'extra')" value="+{{ .ExtraGraphemeNum }}"/>
-                    {{ end }}
+                    <input type="button" class="grapheme inactive {{ .MissingGraphemesEnabled}}" id='grapheme_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'grapheme', 'missing')" value="{{ .MissingGraphemeNum }}"/>
+                    <input type="button" class="grapheme inactive {{ .ExtraGraphemesEnabled}}" id='grapheme_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'grapheme', 'extra')" value="{{ .ExtraGraphemeNum }}"/>
                 </td>
                 {{ end }}
 
@@ -122,12 +118,8 @@
                 <td>{{ .Delta.SoftBreaks.Divide }}</td>
                 {{ else }}
                 <td class="one_line">
-                    {{ if .HasMissingSoftBreaks }}
-                    <input type="button" class="softBreak inactive" id='softBreak_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'softBreak', 'missing')" value="-{{ .MissingSoftBreakNum }}"/>
-                    {{ end }}
-                    {{ if .HasExtraSoftBreaks }}
-                    <input type="button" class="softBreak inactive" id='softBreak_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'softBreak', 'extra')" value="+{{ .ExtraSoftBreakNum }}"/>
-                    {{ end }}
+                    <input type="button" class="softBreak inactive {{ .MissingSoftBreaksEnabled}}" id='softBreak_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'softBreak', 'missing')" value="{{ .MissingSoftBreakNum }}"/>
+                    <input type="button" class="softBreak inactive {{ .ExtraSoftBreaksEnabled}}" id='softBreak_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'softBreak', 'extra')" value="{{ .ExtraSoftBreakNum }}"/>
                 </td>
                 {{ end }}
 
@@ -135,12 +127,8 @@
                 <td>{{ .Delta.HardBreaks.Divide }}</td>
                 {{ else }}
                 <td class="one_line">
-                    {{ if .HasMissingHardBreaks }}
-                    <input type="button" class="hardBreak inactive" id='hardBreak_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'hardBreak', 'missing')" value="+{{ .MissingHardBreakNum }}"/>
-                    {{ end }}
-                    {{ if .HasExtraHardBreaks }}
-                    <input type="button" class="hardBreak inactive" id='hardBreak_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'hardBreak', 'extra')" value="-{{ .ExtraHardBreakNum }}"/>
-                    {{ end }}
+                    <input type="button" class="hardBreak inactive {{ .MissingHardBreaksEnabled}}" id='hardBreak_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'hardBreak', 'missing')" value="{{ .MissingHardBreakNum }}"/>
+                    <input type="button" class="hardBreak inactive {{ .ExtraHardBreaksEnabled}}" id='hardBreak_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'hardBreak', 'extra')" value="{{ .ExtraHardBreakNum }}"/>
                 </td>
                 {{ end }}
 
@@ -148,12 +136,8 @@
                 <td>{{ .Delta.Whitespaces.Divide }}</td>
                 {{ else }}
                 <td class="one_line">
-                    {{ if .HasMissingWhitespaces }}
-                    <input type="button" class="whitespace inactive" id='whitespace_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'whitespace', 'missing')" value="-{{ .MissingWhitespaceNum }}"/>
-                    {{ end }}
-                    {{ if .HasExtraWhitespaces }}
-                    <input type="button" class="whitespace inactive" id='whitespace_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'whitespace')" value="+{{ .ExtraWhitespaceNum }}"/>
-                    {{ end }}
+                    <input type="button" class="whitespace inactive {{ .MissingWhitespacesEnabled}}" id='whitespace_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'whitespace', 'missing')" value="{{ .MissingWhitespaceNum }}"/>
+                    <input type="button" class="whitespace inactive {{ .ExtraWhitespacesEnabled}}" id='whitespace_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'whitespace', 'extra')" value="{{ .ExtraWhitespaceNum }}"/>
                 </td>
                 {{ end }}
 
@@ -161,12 +145,8 @@
                 <td>{{ .Delta.Words.Divide }}</td>
                 {{ else }}
                 <td class="one_line">
-                    {{ if .HasMissingWords }}
-                    <input type="button" class="word inactive" id='word_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'word', 'missing')" value="-{{ .MissingWordNum }}"/>
-                    {{ end }}
-                    {{ if .HasExtraWords }}
-                    <input type="button" class="word inactive" id='word_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'word', 'extra')" value="+{{ .ExtraWordNum }}"/>
-                    {{ end }}
+                    <input type="button" class="word inactive {{ .MissingWordsEnabled}}" id='word_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'word', 'missing')" value="{{ .MissingWordNum }}"/>
+                    <input type="button" class="word inactive {{ .ExtraWordsEnabled}}" id='word_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'word', 'extra')" value="{{ .ExtraWordNum }}"/>
                 </td>
                 {{ end }}
 
@@ -174,12 +154,8 @@
                 <td>{{ .Delta.Controls.Divide }}</td>
                 {{ else }}
                 <td class="one_line">
-                    {{ if .HasMissingControls }}
-                    <input type="button" class="control inactive" id='control_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'control', 'missing')" value="-{{ .MissingControlNum }}"/>
-                    {{ end }}
-                    {{ if .HasExtraControls }}
-                    <input type="button" class="control inactive" id='control_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'control', 'extra')" value="+{{ .ExtraControlNum }}"/>
-                    {{ end }}
+                    <input type="button" class="control inactive {{ .MissingControlsEnabled}}" id='control_missing{{ .Num }}' onClick="showDiff('{{ .Num }}', 'control', 'missing')" value="{{ .MissingControlNum }}"/>
+                    <input type="button" class="control inactive {{ .ExtraControlsEnabled}}" id='control_extra{{ .Num }}' onClick="showDiff('{{ .Num }}', 'control', 'extra')" value="{{ .ExtraControlNum }}"/>
                 </td>
                 {{ end }}
             </tr>

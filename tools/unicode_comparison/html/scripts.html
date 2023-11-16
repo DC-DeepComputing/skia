@@ -46,7 +46,7 @@ function hideDiff() {
   let inactives = document.querySelectorAll(`#${currentType}_${currentChunk}${currentId}`);
   [].forEach.call(inactives, function(inactive) { inactive.classList.add('inactive'); });
 
-  let invisibles = document.querySelectorAll(`#id_${currentId} > td > div.${currentType}`);
+  let invisibles = document.querySelectorAll(`#id_${currentId} > td > div.${currentType}.${currentChunk}`);
   [].forEach.call(invisibles, function(invisible) { invisible.classList.add('invisible'); });
 
   currentId = '';
@@ -63,7 +63,7 @@ function showDiff(id, type, chunkType) {
   let inactives = document.querySelectorAll(`#${type}_${chunkType}${id}`);
   [].forEach.call(inactives, function(inactive) { inactive.classList.remove('inactive'); });
 
-  let invisibles = document.querySelectorAll(`#id_${id} > td > div.${type}`);
+  let invisibles = document.querySelectorAll(`#id_${id} > td > div.${type}.${chunkType}`);
   [].forEach.call(invisibles, function(invisible) { invisible.classList.remove('invisible'); });
 
   currentId = id;
