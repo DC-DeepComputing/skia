@@ -80,6 +80,7 @@ public:
 protected:
     bool init() override {
         if (!this->setupBackendContext()) {
+            SkDebugf("failed GaneshVkTestHelper::init 1\n");
             return false;
         }
 
@@ -87,6 +88,7 @@ protected:
         sk_gpu_test::ConvertBackendContext(fBackendContext, &gr);
         fDirectContext = GrDirectContexts::MakeVulkan(gr);
         if (!fDirectContext) {
+            SkDebugf("failed GaneshVkTestHelper::init 2\n");
             return false;
         }
 

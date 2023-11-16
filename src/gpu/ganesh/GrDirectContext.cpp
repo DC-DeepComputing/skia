@@ -250,11 +250,13 @@ void GrDirectContext::freeGpuResources() {
 bool GrDirectContext::init() {
     ASSERT_SINGLE_OWNER
     if (!fGpu) {
+        SkDebugf("GrDirectContext::init failed 1\n");
         return false;
     }
 
     fThreadSafeProxy->priv().init(fGpu->refCaps(), fGpu->refPipelineBuilder());
     if (!GrRecordingContext::init()) {
+        SkDebugf("GrDirectContext::init failed 2\n");
         return false;
     }
 

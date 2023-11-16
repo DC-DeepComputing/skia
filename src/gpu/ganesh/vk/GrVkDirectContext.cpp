@@ -29,6 +29,7 @@ sk_sp<GrDirectContext> MakeVulkan(const GrVkBackendContext& backendContext,
     GrDirectContextPriv::SetGpu(direct,
                                 GrVkGpu::Make(backendContext, options, direct.get()));
     if (!GrDirectContextPriv::Init(direct)) {
+        SkDebugf("GrVkDirectContext::MakeVulkan failed\n");
         return nullptr;
     }
 
