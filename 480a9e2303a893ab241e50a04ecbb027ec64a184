@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "deb354c3_00e69af7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-16T17:48:41Z",
+      "side": 1,
+      "message": "Jason Simmons confirmed that it fixed the problem in iOS and Android",
+      "revId": "480a9e2303a893ab241e50a04ecbb027ec64a184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
