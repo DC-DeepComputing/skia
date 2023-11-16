@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d17ab446_217c4d5f",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-11-16T15:43:33Z",
+      "side": 1,
+      "message": "This one wasn\u0027t included in the original CL, but I would guess it\u0027s needed, too?",
+      "revId": "8d31ce1c8e8e5db414a281f0de0d617f1ec8e1ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
