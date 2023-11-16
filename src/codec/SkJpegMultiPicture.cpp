@@ -65,22 +65,10 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     // The rest of this function reads the structure described in Figure 6 of CIPA DC-x007-2009.
     // Determine the endianness of the values in the structure. See Figure 5 (MP endian tag
     // structure), and read the Index IFD offset.
-    bool littleEndian = false;
-    uint32_t ifdOffset = 0;
-    if (!SkTiffImageFileDirectory::ParseHeader(ifdData.get(), &littleEndian, &ifdOffset)) {
-        SkCodecPrintf("Failed to parse endian-ness and index IFD offset.\n");
-        return nullptr;
-    }
+    auto ifd = SkTiffImageFileDirectory::Make(ifdData);
 
-    // Create the Index Image File Directory (Index IFD).
-    auto ifd = SkTiffImageFileDirectory::MakeFromOffset(ifdData, littleEndian, ifdOffset);
-    if (!ifd) {
-        SkCodecPrintf("Failed to create MP Index IFD offset.\n");
-        return nullptr;
-    }
-
-    // Read the number of tags in the Index IFD. See Table 3 (MP Index IFD Tags) for a description
-    // of all possible tags.
+    // Read the number of tags in the Index IFD. See Table 3 (MP Index IFD Tags) for a
+    // description of all possible tags.
     uint16_t tagCount = ifd->getNumEntries();
 
     // We will extract the number of images from the tags.
@@ -189,9 +177,9 @@ std::unique_ptr<SkJpegMultiPictureParameters> SkJpegMultiPictureParameters::Make
     // Parse the MP Entries data.
     for (uint32_t i = 0; i < numberOfImages; ++i) {
         const uint8_t* mpEntryData = mpEntriesData->bytes() + kMPEntrySize * i;
-        const uint32_t attribute = get_endian_int(mpEntryData + 0, littleEndian);
-        const uint32_t size = get_endian_int(mpEntryData + 4, littleEndian);
-        const uint32_t dataOffset = get_endian_int(mpEntryData + 8, littleEndian);
+        const uint32_t attribute = get_tiff_uint32(mpEntryData + 0, ifd->isLittleEndian());
+        const uint32_t size = get_tiff_uint32(mpEntryData + 4, ifd->isLittleEndian());
+        const uint32_t dataOffset = get_tiff_uint32(mpEntryData + 8, ifd->isLittleEndian());
 
         const bool isPrimary =
                 (attribute & kMPEntryAttributeTypeMask) == kMPEntryAttributeTypePrimary;

@@ -93,21 +93,15 @@ static bool get_maker_note_hdr_headroom(sk_sp<SkData> data, float* hdrHeadroom) 
 }
 
 SkExifMetadata::SkExifMetadata(sk_sp<SkData> data) : fData(std::move(data)) {
-    bool littleEndian = false;
-    uint32_t ifdOffset = 0;
-    if (!SkTiffImageFileDirectory::ParseHeader(fData.get(), &littleEndian, &ifdOffset)) {
-        SkCodecPrintf("Failed to parse Exif header.\n");
+    auto ifd = SkTiffImageFileDirectory::Make(fData);
+    if (!ifd) {
+        SkCodecPrintf("Failed to make Exif root IFD\n");
         return;
     }
-    parseIfd(ifdOffset, littleEndian, /*isRoot=*/true);
+    parseIfd(ifd.get(), /*isRoot=*/true);
 }
 
-void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot) {
-    auto ifd = SkTiffImageFileDirectory::MakeFromOffset(fData, littleEndian, ifdOffset);
-    if (!ifd) {
-        SkCodecPrintf("Failed to make IFD\n");
-        return;
-    }
+void SkExifMetadata::parseIfd(SkTiffImageFileDirectory* ifd, bool isRoot) {
     for (uint32_t i = 0; i < ifd->getNumEntries(); ++i) {
         switch (ifd->getEntryTag(i)) {
             case kOriginTag: {
@@ -131,7 +125,11 @@ void SkExifMetadata::parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot
             case kSubIFDOffsetTag: {
                 uint32_t subIfdOffset = 0;
                 if (isRoot && ifd->getEntryUnsignedLong(i, 1, &subIfdOffset)) {
-                    parseIfd(subIfdOffset, littleEndian, /*isRoot=*/false);
+                    auto subIfd = SkTiffImageFileDirectory::MakeFromOffset(
+                            fData, ifd->isLittleEndian(), subIfdOffset);
+                    if (subIfd) {
+                        parseIfd(subIfd.get(), /*isRoot=*/false);
+                    }
                 }
                 break;
             }

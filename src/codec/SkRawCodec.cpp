@@ -23,6 +23,7 @@
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegCodec.h"
+#include "src/codec/SkTiffUtility.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/core/SkTaskGroup.h"
 
@@ -557,13 +558,8 @@ public:
             return false;
         }
 
-        // Check if the header is valid (endian info and magic number "42").
-        bool littleEndian;
-        if (!is_valid_endian_marker(header, &littleEndian)) {
-            return false;
-        }
-
-        return 0x2A == get_endian_short(header + 2, littleEndian);
+        // Check if the TIFF header is valid.
+        return is_valid_tiff_endian_marker_strict(header, nullptr);
     }
 
 private:

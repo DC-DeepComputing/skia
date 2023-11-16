@@ -15,6 +15,8 @@
 
 #include <cstdint>
 
+class SkTiffImageFileDirectory;
+
 class SK_API SkExifMetadata {
 public:
     /*
@@ -71,7 +73,7 @@ public:
 
 private:
     // Helper functions and constants for parsing the data.
-    void parseIfd(uint32_t ifdOffset, bool littleEndian, bool isRoot);
+    void parseIfd(SkTiffImageFileDirectory*, bool isRoot);
 
     // The input data.
     const sk_sp<SkData> fData;
