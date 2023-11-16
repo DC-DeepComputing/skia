@@ -24,7 +24,13 @@ bool init_skunicode_impl(char* impl) {
     } else if (unicodeName.equals("icu4x")) {
         gUnicode = SkUnicode::ICU4X::Make();
     } else if (unicodeName.equals("libgrapheme")) {
+<<<<<<< PATCH SET (8257e2 Reviving and improving unicode comparison table)
+      gUnicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+    } else if (unicodeName.equals("icu4x")) {
+      gUnicode = SkUnicode::MakeIcu4xBasedUnicode();
+=======
         gUnicode = SkUnicode::Libgrapheme::Make();
+>>>>>>> BASE      (1d9340 Add necessary deps to android_math_test and other Bazel targ)
     } else {
         SkDebugf("Implementation '%s' not supported\n", impl);
         return false;

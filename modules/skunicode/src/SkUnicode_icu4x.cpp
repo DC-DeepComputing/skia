@@ -310,8 +310,17 @@ private:
                       int utf8Units,
                       const char* locale,
                       std::vector<Position>* results) override {
-        SkDEBUGF("Method 'getUtf8Words' is not implemented\n");
-        return false;
+        const std::string_view str(utf8, utf8Units);
+        const auto segmenter = ICU4XWordSegmenter::create_dictionary(fDataProvider).ok().value();
+        auto iterator = segmenter.segment_utf8(str);
+        while (true) {
+            int32_t breakpoint = iterator.next();
+            if (breakpoint == -1) {
+                break;
+            }
+            results->emplace_back(breakpoint);
+        }
+        return true;
     }
 
     bool getSentences(const char utf8[],
