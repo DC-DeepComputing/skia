@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fadc2369_7c1c88bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-16T15:26:22Z",
+      "side": 1,
+      "message": "This is causing a significant number of image diffs (which is not unexpected) so I\u0027m going to remove the coords change just to avoid Chrome rebaselines and get it landed quickly.",
+      "revId": "a117175d4f598bf8a7e0f69503ce874e1bd2584e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
