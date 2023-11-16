@@ -82,7 +82,7 @@ static bool validate_ifd(const SkData* data,
         SkCodecPrintf("Insufficient space to store number of entries.\n");
         return false;
     }
-    uint16_t numEntries = get_endian_short(dataCurrent, littleEndian);
+    uint16_t numEntries = get_tiff_uint16(dataCurrent, littleEndian);
     dataCurrent += kSizeShort;
     dataSize -= kSizeShort;
 
@@ -108,28 +108,27 @@ static bool validate_ifd(const SkData* data,
     }
 
     // Save the next IFD offset.
-    *outNextIfdOffset = get_endian_int(dataCurrent, littleEndian);
+    *outNextIfdOffset = get_tiff_uint32(dataCurrent, littleEndian);
     return true;
 }
 
-bool SkTiffImageFileDirectory::ParseHeader(const SkData* data,
-                                           bool* outLittleEndian,
-                                           uint32_t* outIfdOffset) {
+std::unique_ptr<SkTiffImageFileDirectory> SkTiffImageFileDirectory::Make(sk_sp<SkData> data) {
     // Read the endianness (4 bytes) and IFD offset (4 bytes).
+    bool littleEndian = false;
     if (data->size() < 8) {
         SkCodecPrintf("Tiff header must be at least 8 bytes.\n");
-        return false;
+        return nullptr;
     }
-    if (!is_valid_endian_marker(data->bytes(), outLittleEndian)) {
+    if (!is_valid_tiff_endian_marker_loose(data->bytes(), &littleEndian)) {
         SkCodecPrintf("Tiff header had invalid endian marker 0x%x,0x%x,0x%x,0x%x.\n",
                       data->bytes()[0],
                       data->bytes()[1],
                       data->bytes()[2],
                       data->bytes()[3]);
-        return false;
+        return nullptr;
     }
-    *outIfdOffset = get_endian_int(data->bytes() + 4, *outLittleEndian);
-    return true;
+    uint32_t ifdOffset = get_tiff_uint32(data->bytes() + 4, littleEndian);
+    return MakeFromOffset(std::move(data), littleEndian, ifdOffset);
 }
 
 std::unique_ptr<SkTiffImageFileDirectory> SkTiffImageFileDirectory::MakeFromOffset(
@@ -157,7 +156,7 @@ SkTiffImageFileDirectory::SkTiffImageFileDirectory(sk_sp<SkData> data,
 
 uint16_t SkTiffImageFileDirectory::getEntryTag(uint16_t entryIndex) const {
     const uint8_t* entry = get_entry_address(fData.get(), fOffset, entryIndex);
-    return get_endian_short(entry, fLittleEndian);
+    return get_tiff_uint16(entry, fLittleEndian);
 }
 
 bool SkTiffImageFileDirectory::getEntryRawData(uint16_t entryIndex,
@@ -169,18 +168,18 @@ bool SkTiffImageFileDirectory::getEntryRawData(uint16_t entryIndex,
     const uint8_t* entry = get_entry_address(fData.get(), fOffset, entryIndex);
 
     // Read the tag
-    const uint16_t tag = get_endian_short(entry, fLittleEndian);
+    const uint16_t tag = get_tiff_uint16(entry, fLittleEndian);
     entry += kSizeShort;
 
     // Read the type.
-    const uint16_t type = get_endian_short(entry, fLittleEndian);
+    const uint16_t type = get_tiff_uint16(entry, fLittleEndian);
     entry += kSizeShort;
     if (!IsValidType(type)) {
         return false;
     }
 
     // Read the count.
-    const uint32_t count = get_endian_int(entry, fLittleEndian);
+    const uint32_t count = get_tiff_uint32(entry, fLittleEndian);
     entry += kSizeLong;
 
     // If the entry fits in the remaining 4 bytes, use that.
@@ -190,7 +189,7 @@ bool SkTiffImageFileDirectory::getEntryRawData(uint16_t entryIndex,
         entryData = entry;
     } else {
         // Otherwise, the next 4 bytes specify an offset where the data can be found.
-        const uint32_t entryDataOffset = get_endian_int(entry, fLittleEndian);
+        const uint32_t entryDataOffset = get_tiff_uint32(entry, fLittleEndian);
         if (fData->size() < entryDataOffset || fData->size() - entryDataOffset < entryDataBytes) {
             return false;
         }
@@ -239,14 +238,14 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
         const uint8_t* data = entryData + i * BytesForType(kTypeUnsignedLong);
         switch (type) {
             case kTypeUnsignedShort:
-                reinterpret_cast<uint16_t*>(values)[i] = get_endian_short(data, fLittleEndian);
+                reinterpret_cast<uint16_t*>(values)[i] = get_tiff_uint16(data, fLittleEndian);
                 break;
             case kTypeUnsignedLong:
-                reinterpret_cast<uint32_t*>(values)[i] = get_endian_int(data, fLittleEndian);
+                reinterpret_cast<uint32_t*>(values)[i] = get_tiff_uint32(data, fLittleEndian);
                 break;
             case kTypeSignedRational: {
-                uint32_t numerator = get_endian_int(data, fLittleEndian);
-                uint32_t denominator = get_endian_int(data + kSizeLong, fLittleEndian);
+                int32_t numerator = get_tiff_int32(data, fLittleEndian);
+                int32_t denominator = get_tiff_int32(data + kSizeLong, fLittleEndian);
                 if (denominator == 0) {
                     // The TIFF specification does not indicate a behavior when the denominator is
                     // zero.  The behavior of returning zero for a denominator of zero is a
@@ -259,8 +258,8 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
                 break;
             }
             case kTypeUnsignedRational: {
-                uint32_t numerator = get_endian_int(data, fLittleEndian);
-                uint32_t denominator = get_endian_int(data + kSizeLong, fLittleEndian);
+                uint32_t numerator = get_tiff_uint32(data, fLittleEndian);
+                uint32_t denominator = get_tiff_uint32(data + kSizeLong, fLittleEndian);
                 if (denominator == 0) {
                     // See comments in kTypeSignedRational.
                     reinterpret_cast<float*>(values)[i] = 0.f;
