@@ -10,9 +10,13 @@
 
 #include "src/base/SkEnumBitMask.h"
 
+#include "src/gpu/graphite/dawn/DawnAsyncWait.h"
+
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 namespace skgpu::graphite {
+
+class DawnCaps;
 
 enum class DawnErrorType : uint32_t {
     kNoError     = 0b00000000,
@@ -32,7 +36,7 @@ SK_MAKE_BITMASK_OPS(DawnErrorType);
 //
 class DawnErrorChecker {
 public:
-    explicit DawnErrorChecker(const wgpu::Device& device);
+    explicit DawnErrorChecker(const wgpu::Device& device, const DawnCaps& caps);
     ~DawnErrorChecker();
 
     SkEnumBitMask<DawnErrorType> popErrorScopes();
@@ -40,6 +44,7 @@ public:
 private:
     bool fArmed = true;
     wgpu::Device fDevice;
+    DawnAsyncWait fWait;
 };
 
 }  // namespace skgpu::graphite

@@ -312,6 +312,17 @@ void DawnCaps::initCaps(const wgpu::Device& device, const ContextOptions& option
 
     fTransientAttachmentSupport = device.HasFeature(wgpu::FeatureName::TransientAttachments);
 #endif
+    if (options.fNeverYieldToWebGPU) {
+        fAllowCpuSync = false;
+        // This seems paradoxical. However, if we use the async pipeline creation methods (e.g
+        // Device::CreateRenderPipelineAsync) then we may have to synchronize before a submit that
+        // uses the pipeline. If we use the methods that look synchronous (e.g.
+        // Device::CreateRenderPipeline) they actually operate asynchronously on WebGPU but the
+        // browser becomes responsible for synchronizing when we call submit.
+        fUseAsyncPipelineCreation = false;
+        // The implementation busy waits after popping.
+        fAllowScopedErrorChecks = false;
+    }
 }
 
 void DawnCaps::initShaderCaps(const wgpu::Device& device) {

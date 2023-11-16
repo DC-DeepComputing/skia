@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 
+#include "src/gpu/graphite/dawn/DawnCaps.h"
+
 #include <thread>
 
 #ifdef __EMSCRIPTEN__
@@ -34,21 +36,27 @@ EM_ASYNC_JS(void, asyncSleep, (), {
 
 }  // namespace
 
-DawnAsyncWait::DawnAsyncWait(const wgpu::Device& device) : fDevice(device), fSignaled(false) {}
+DawnAsyncWait::DawnAsyncWait(const wgpu::Device& device, const DawnCaps& caps)
+        : fDevice(device)
+        , fSignaled(false)
+        , fMayYield(caps.allowCpuSync()) {}
 
 bool DawnAsyncWait::yieldAndCheck() const {
-    if (fSignaled.load(std::memory_order_acquire)) {
-        return true;
-    }
+    if (fMayYield) {
+        if (fSignaled) {
+            return true;
+        }
 #ifdef __EMSCRIPTEN__
-    asyncSleep();
+        asyncSleep();
 #else
-    fDevice.Tick();
+        fDevice.Tick();
 #endif  // __EMSCRIPTEN__
-    return fSignaled.load(std::memory_order_acquire);
+    }
+    return fSignaled;
 }
 
 void DawnAsyncWait::busyWait() const {
+    SkASSERT(fMayYield);
     while (!this->yieldAndCheck()) {}
 }
 
