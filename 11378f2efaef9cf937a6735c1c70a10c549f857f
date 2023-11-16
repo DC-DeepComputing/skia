@@ -56,6 +56,30 @@
       },
       "revId": "11378f2efaef9cf937a6735c1c70a10c549f857f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fde28d38_7f594799",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-16T15:46:38Z",
+      "side": 1,
+      "message": "Ah, ok. I\u0027m a little iffy on the minute details on how the cache works. I basically want to catch these resources when both ref counts hit zero (it happens to be that these buffers aren\u0027t using CB refs, but the idea here is neither the GPU nor other Graphite code should have it when the remap occurs). Does that mean checking in multiple places?",
+      "parentUuid": "86b4b959_bc38328d",
+      "range": {
+        "startLine": 204,
+        "startChar": 18,
+        "endLine": 204,
+        "endChar": 53
+      },
+      "revId": "11378f2efaef9cf937a6735c1c70a10c549f857f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
