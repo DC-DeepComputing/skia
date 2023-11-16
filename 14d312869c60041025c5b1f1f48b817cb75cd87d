@@ -16,6 +16,69 @@
       "message": "ptal -- some more cleanup and fixing signed/unsigned issues",
       "revId": "14d312869c60041025c5b1f1f48b817cb75cd87d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b9c719f_49ec63ad",
+        "filename": "src/codec/SkTiffUtility.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-16T15:17:15Z",
+      "side": 1,
+      "message": "```suggestion\n    return false;\n```\n\nI presume?",
+      "range": {
+        "startLine": 153,
+        "startChar": 11,
+        "endLine": 153,
+        "endChar": 15
+      },
+      "revId": "14d312869c60041025c5b1f1f48b817cb75cd87d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae68e2d5_2601befd",
+        "filename": "src/codec/SkTiffUtility.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-16T15:17:15Z",
+      "side": 1,
+      "message": "I see that this does actually test for what we want, but I had to bust out DeMorgan\u0027s laws to convince myself. Maybe rewrite it to match the other pattern:\n\n```suggestion\n    if (!((\u0027I\u0027 \u003d\u003d data[0] \u0026\u0026 \u0027I\u0027 \u003d\u003d data[1]) || (\u0027M\u0027 \u003d\u003d data[0] \u0026\u0026 \u0027M\u0027 \u003d\u003d data[1]))) {\n```",
+      "revId": "14d312869c60041025c5b1f1f48b817cb75cd87d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "098d6833_b1a8c161",
+        "filename": "src/codec/SkTiffUtility.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-16T15:17:15Z",
+      "side": 1,
+      "message": "```suggestion\n    return sk_bit_cast\u003cint32_t\u003e(get_tiff_uint32(data, littleEndian));\n```\n\n(You might need to include `src/base/SkUtils.h`)",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 43
+      },
+      "revId": "14d312869c60041025c5b1f1f48b817cb75cd87d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
