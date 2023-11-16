@@ -16,6 +16,230 @@
       "message": "Adding Skia Gardener to help figure out who should review this.",
       "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4980ce11_5da24eca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "There\u0027s one missing piece here that is fairly important. Please see `src/core/SkOpts.cpp`. Skia is designed to build SkRasterPipeline more than once, each time wrapped in a different namespace and with a different architecture configuration set. At startup, when `SkGraphics::Init()` is called, we identify the CPU type and then select the SkRasterPipeline that is appropriate for your CPU. This code isn\u0027t hooked up here at all, so Skia isn\u0027t actually using it anywhere.\n\nSee `src/opts/SkOpts_hsw.cpp` (in particular, how it\u0027s set up in GN)",
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "655f1553_4bc56cf1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "nit: remove whitespace at the end of lines",
+      "range": {
+        "startLine": 334,
+        "startChar": 40,
+        "endLine": 334,
+        "endChar": 41
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b8ee916_cf5e1223",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "`c` is a vector of int32 (the type is `I32`) where each 32-bit group should be either 0 or ~0.\n\n`if_then_else` should be implementable as `return (t \u0026 c) | (f \u0026 ~c)`. I\u0027m not familiar enough with AVX-512 to be confident if your implementation is better or worse than this, but it\u0027s a shame that `_mm512_blendv_ps` does not exist. What does the codegen look like for yours vs the bitmasking way?",
+      "range": {
+        "startLine": 338,
+        "startChar": 9,
+        "endLine": 338,
+        "endChar": 53
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff31bc80_479f7b95",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 83
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edffd57b_53f78a49",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "What is wrong with \n\n```\n        __mmask8 mask64 \u003d _mm512_test_epi64_mask(c, c);\n        return mask64 !\u003d 0;\n```",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 0
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6289f22e_ef896d34",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "Same as above, why this and not\n\n```\n        __mmask8 mask64 \u003d _mm512_test_epi64_mask(c, c);\n        return mask64 \u003d\u003d 0;\n```\n\nI\u0027m willing to believe there is a good reason but it\u0027s not obvious to me.",
+      "range": {
+        "startLine": 348,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 0
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0ff77e9_79fe8e7f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "nit: wrap lines \u003e100 chars (throughout)",
+      "range": {
+        "startLine": 400,
+        "startChar": 75,
+        "endLine": 400,
+        "endChar": 92
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3341ed56_427acaa6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "Can we use `_mm512_castps128_ps512` for the zero index?",
+      "range": {
+        "startLine": 456,
+        "startChar": 16,
+        "endLine": 456,
+        "endChar": 67
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89b86332_19bbf8c4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4701,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "Do these not work/generate bad code otherwise? We don\u0027t specialize these for any other architecture so it\u0027s surprising that this is necessary.",
+      "range": {
+        "startLine": 4681,
+        "startChar": 0,
+        "endLine": 4701,
+        "endChar": 6
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86294591_00784e8b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4735,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-16T16:45:18Z",
+      "side": 1,
+      "message": "Why add the extra indirection _only_ for AVX512? I think there might be merit to this if we did it universally, so that all these helpers lived in\n\n`#if defined(JUMPER_IS_xxxxxxx)`\n\nblock above. That\u0027s how we do in highp and it\u0027s slightly nicer. But right now AVX-512 is out-of-line, and every other platform is inline; it\u0027s strange that AVX-512 is done differently.\n\nThis isn\u0027t a big deal, but ideally we could move all the platform lowp helpers into the `#if defined(JUMPER...)` blocks above. (If you want to tackle this, do it in a separate earlier CL?)",
+      "range": {
+        "startLine": 4733,
+        "startChar": 0,
+        "endLine": 4735,
+        "endChar": 28
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
