@@ -50,6 +50,42 @@
       "message": "Thanks for looking into this Jie Chen. I do think it\u0027s a bug that `$blend_porter_duff` is universally applying the `min(1` to its calculations. However, we can\u0027t remove the `min` for the plus blend mode as that is documented behavior.\n\nPlus is in an awkward spot where it\u0027s math is the only one that can produce values outside of its gamut. When colors were always normalized to [0,1] adding the min made sense. When doing plus blending on hdr content, you have to clamp the alpha channel but what do you clamp the other channels too? We\u0027ve historically continued to just clamp it to 1.\n\nIt\u0027s unlikely that chrome is using the plus blend mode for the issues in the linked bug, though. This function is also used in Ganesh as well, so it\u0027s unclear to me how Graphite is triggering this blend when Ganesh is using something else (both should be able to convert plus into hardware blending if it\u0027s the final blend mode). Were you able to export the shaders that were proving problematic?",
       "revId": "37e2670d9c3d5d5ef40eb98708df66756d2cf0a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "977e4b87_a31dba1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-11-16T06:32:05Z",
+      "side": 1,
+      "message": "Thanks for explaining the `blend_porter_duff` things, Michael. It makes sense to me.\n\nMy test case is simply like  dropping a local HDR video file to a blank tab for playing. The shader snippet had been pasted in the comment[1]. `blend_porter_duff` should have been called from [sk_coeff_blend](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/sksl_graphite_frag.sksl;drc\u003dc43eda9ad5499e2b3e9434e7380d122738829a40;l\u003d1131). The blender op that matters in my case is just `kSrc` rather than `kPlus`. To paint a HDR video texture, `src` itself can be beyond 1.0. If clamped to 1 by `blend_porter_duff`, the HDR video will look darker. That\u0027s the cause of the bug.\n\nI updated the CL to use `BlendModeBlenderBlock` instead of ` CoeffBlenderBlock` in case of `kSrc`. It works as well regarding to the bug, although it\u0027s just a workaround to better understand the problem.\n\nTo completely solve the problem, probably we should use a uniform for the min value other than the hardcoded 1. For example, on a 400-nit HDR display, the min should be `400 / 80 \u003d 5` for scRGB-FP16.\n\nAnother simpler fix is to only apply `min(1` in case of `kPlus`. This should mostly work.",
+      "parentUuid": "32627016_265736eb",
+      "revId": "37e2670d9c3d5d5ef40eb98708df66756d2cf0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "731cb47c_9834f2c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2023-11-16T06:32:05Z",
+      "side": 1,
+      "message": "[1]",
+      "parentUuid": "77945743_757b5f79",
+      "revId": "37e2670d9c3d5d5ef40eb98708df66756d2cf0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
