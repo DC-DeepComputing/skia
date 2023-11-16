@@ -16,6 +16,29 @@
       "message": "Arguably this should just be merged with the dependent CL, but it might make reviewing easier to see them separately.",
       "revId": "11378f2efaef9cf937a6735c1c70a10c549f857f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86b4b959_bc38328d",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-16T15:33:06Z",
+      "side": 1,
+      "message": "This can be a CommandBuffer ref to I believe. Well technically probably not currently since that is still a TODO in the next week or so to actually use them for Textures. But logically a Textures last ref could be a CB ref, and Textures are not shareable or usually not deleted ASAP.",
+      "range": {
+        "startLine": 204,
+        "startChar": 18,
+        "endLine": 204,
+        "endChar": 53
+      },
+      "revId": "11378f2efaef9cf937a6735c1c70a10c549f857f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
