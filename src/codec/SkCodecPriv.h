@@ -175,38 +175,6 @@ static inline uint32_t get_int(const uint8_t* buffer, uint32_t i) {
 #endif
 }
 
-/*
- * @param data           Buffer to read bytes from
- * @param isLittleEndian Output parameter
- *                       Indicates if the data is little endian
- *                       Is unaffected on false returns
- */
-static inline bool is_valid_endian_marker(const uint8_t* data, bool* isLittleEndian) {
-    // II indicates Intel (little endian) and MM indicates motorola (big endian).
-    if (('I' != data[0] || 'I' != data[1]) && ('M' != data[0] || 'M' != data[1])) {
-        return false;
-    }
-
-    *isLittleEndian = ('I' == data[0]);
-    return true;
-}
-
-static inline uint16_t get_endian_short(const uint8_t* data, bool littleEndian) {
-    if (littleEndian) {
-        return (data[1] << 8) | (data[0]);
-    }
-
-    return (data[0] << 8) | (data[1]);
-}
-
-static inline uint32_t get_endian_int(const uint8_t* data, bool littleEndian) {
-    if (littleEndian) {
-        return (data[3] << 24) | (data[2] << 16) | (data[1] << 8) | (data[0]);
-    }
-
-    return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
-}
-
 static inline SkPMColor premultiply_argb_as_rgba(U8CPU a, U8CPU r, U8CPU g, U8CPU b) {
     if (a != 255) {
         r = SkMulDiv255Round(r, a);

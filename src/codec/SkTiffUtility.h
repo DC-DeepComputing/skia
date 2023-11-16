@@ -22,11 +22,9 @@
 class SkTiffImageFileDirectory {
 public:
     /*
-     * Parse |data| to read the endian-ness into |outLittleEndian| and the IFD offset into
-     * |outIfdOffset|. Return true if the endian-ness was successfully parsed and there was
-     * the IFD offset was read.
+     * Parse |data| to read the endian-ness header, root IFD offset, and then the IFD.
      */
-    static bool ParseHeader(const SkData* data, bool* outLittleEndian, uint32_t* outIfdOffset);
+    static std::unique_ptr<SkTiffImageFileDirectory> Make(sk_sp<SkData> data);
 
     /*
      * Create an object for parsing an IFD at offset |ifdOffset| inside |data| which has endianness
@@ -35,6 +33,11 @@ public:
     static std::unique_ptr<SkTiffImageFileDirectory> MakeFromOffset(sk_sp<SkData> data,
                                                                     bool littleEndian,
                                                                     uint32_t ifdOffset);
+
+    /*
+     * Return true if this parser is reading as little endian.
+     */
+    bool isLittleEndian() const { return fLittleEndian; }
 
     /*
      * Return the number of entries.
@@ -132,5 +135,52 @@ private:
     // The offset of the next IFD (read from the next 4 bytes after the IFD entries).
     const uint32_t fNextIfdOffset;
 };
+
+// Determine endian-ness strictly adhering to the TIFF spec.
+static inline bool is_valid_tiff_endian_marker_strict(const uint8_t* data, bool* isLittleEndian) {
+    if (data[0] == 'M' && data[1] == 'M' && data[2] == 0 && data[3] == 42) {
+        if (isLittleEndian) {
+            *isLittleEndian = false;
+        }
+        return true;
+    }
+    if (data[0] == 'I' && data[1] == 'I' && data[2] == 42 && data[3] == 0) {
+        if (isLittleEndian) {
+            *isLittleEndian = true;
+        }
+        return true;
+    }
+    return true;
+}
+
+// Determine endian-ness allowing for invalid inputs.
+static inline bool is_valid_tiff_endian_marker_loose(const uint8_t* data, bool* isLittleEndian) {
+    if (('I' != data[0] || 'I' != data[1]) && ('M' != data[0] || 'M' != data[1])) {
+        return false;
+    }
+    if (isLittleEndian) {
+        *isLittleEndian = ('I' == data[0]);
+    }
+    return true;
+}
+
+static inline uint16_t get_tiff_uint16(const uint8_t* data, bool littleEndian) {
+    if (littleEndian) {
+        return (data[1] << 8) | (data[0]);
+    }
+    return (data[0] << 8) | (data[1]);
+}
+
+static inline uint32_t get_tiff_uint32(const uint8_t* data, bool littleEndian) {
+    if (littleEndian) {
+        return (data[3] << 24) | (data[2] << 16) | (data[1] << 8) | (data[0]);
+    }
+    return (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | (data[3]);
+}
+
+static inline int32_t get_tiff_int32(const uint8_t* data, bool littleEndian) {
+    uint32_t x = get_tiff_uint32(data, littleEndian);
+    return *reinterpret_cast<int32_t*>(&x);
+}
 
 #endif
