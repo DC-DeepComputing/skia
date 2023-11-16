@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10bdb3e4_1d4e1574",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-16T16:39:45Z",
+      "side": 1,
+      "message": "I suppose this means `GIT_SYNC_DEPS_SKIP_EMSDK` will need to be set in oss-fuzz somewhere?",
+      "revId": "2adc1dc0dcc4b21a8d0d4b933fd9a3d08b32d0d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
