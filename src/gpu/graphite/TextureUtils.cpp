@@ -98,7 +98,7 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                                 outII,
                                                 skgpu::Budgeted::kYes,
                                                 skgpu::Mipmapped::kNo,
-                                                skgpu::Protected::kNo,
+                                                skgpu::Protected(recorder->priv().caps()->protectedSupport()),
                                                 outProps,
                                                 /*addInitialClear=*/false);
     if (!device) {
@@ -744,7 +744,7 @@ public:
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
-                                             skgpu::Protected::kNo,
+                                             skgpu::Protected(fRecorder->priv().caps()->protectedSupport()),
                                              props ? *props : this->surfaceProps(),
                                              /*addInitialClear=*/false);
     }
