@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "afdb1243_bb13cbf2",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-16T16:05:20Z",
+      "side": 1,
+      "message": "Greg, now that you have me thinking about another thread poking the map state, I\u0027m thinking I should get rid of `hasPendingAsyncMap()` and replace it with `isUnmappable()` which returns true if the map state !\u003d unmappable to avoid checking the state twice (as happens here). I also probably need to make the callback list in the next CL thread safe (ensure only one thread accesses the list and that callbacks get called if map completes on another thread as one is being added).",
+      "revId": "efb9687099ca54c90cb435af1338bc2bf8450928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46455932_1b771334",
         "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
         "patchSetId": 9
