@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bafe03b7_19655767",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 65
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-16T17:53:38Z",
+      "side": 1,
+      "message": "These need to be checked in the renderable case as well since we are always assuming we can sample. Maybe check this first, then branch on the renderable stuff to see if we fail or just fall back to external?",
+      "range": {
+        "startLine": 419,
+        "startChar": 37,
+        "endLine": 421,
+        "endChar": 69
+      },
+      "revId": "3509764ef4e72e867ccbf53c6371bbcece688314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
