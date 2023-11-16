@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b94853_bf0b4e85",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-16T18:50:04Z",
+      "side": 1,
+      "message": "\u0027--depth\u003d1\u0027 might work and be simpler",
+      "range": {
+        "startLine": 136,
+        "startChar": 35,
+        "endLine": 136,
+        "endChar": 49
+      },
+      "revId": "0dc5aa4f8b5089525b1bfe2f09757df4c22884be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fdc88a6_478dc673",
+        "filename": "tools/git-sync-deps",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-16T18:50:04Z",
+      "side": 1,
+      "message": "Same idea as above.",
+      "range": {
+        "startLine": 167,
+        "startChar": 11,
+        "endLine": 167,
+        "endChar": 16
+      },
+      "revId": "0dc5aa4f8b5089525b1bfe2f09757df4c22884be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
