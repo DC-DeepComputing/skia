@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00b63c8d_1d98c6aa",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-16T04:16:20Z",
+      "side": 1,
+      "message": "Alright, I took a stab at adding some methods to VulkanCaps to query for transfer src/dst format feature flags and altering the logic in this method accordingly. PTAL 😄",
+      "parentUuid": "53ad5d5b_b899ad9b",
+      "range": {
+        "startLine": 407,
+        "startChar": 34,
+        "endLine": 407,
+        "endChar": 54
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0baaf75_cd2c47c3",
         "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
         "patchSetId": 59
@@ -273,6 +297,30 @@
       "side": 1,
       "message": "Good callout. The spec (https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#_description_123) says that the main differences between `VK_QUEUE_FAMILY_EXTERNAL` and `VK_QUEUE_FAMILY_FOREIGN_EXT` are:\n\n1) Foreign queues don\u0027t require the same physical device and driver version as the current `VkInstance`, unlike external\n\n2) All external memory resources support external, but not all of them support foreign. Foreign is more restrictive\n\n3) Transitions to/from foreign queues are more expensive than those to/from external queues\n\nGiven that the client sets up the `VkInstance`, I would imagine that foreign doesn\u0027t really offer that much benefit for us over external. But I suppose there will be cases where the AHwBuffer will be from an \"foreign\" device (relevant TODO: https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/ganesh/vk/AHardwareBufferVk.cpp#346), in which case foreign would be preferable. \n\nChanged to foreign, but LMKWYT - it sounds like it would be best to make an intelligent decision b/w foreign and external if we know whether the buffer is from a foreign device or not to avoid the costlier transitions to/from foreign queues (though I\u0027m not sure off the top of my head whether we will even realistically encounter a need to transition to/from that queue type often).",
       "parentUuid": "499074e2_051d4682",
+      "range": {
+        "startLine": 476,
+        "startChar": 83,
+        "endLine": 476,
+        "endChar": 91
+      },
+      "revId": "abd83bdc33595977c9fb88302e4e0efee5de2d64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13282074_22288cba",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 59
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-16T04:16:20Z",
+      "side": 1,
+      "message": "Discussed offline - resolved; simply always use \"foreign\" since the device may not even be a VkDevice.",
+      "parentUuid": "d173aeac_ed059284",
       "range": {
         "startLine": 476,
         "startChar": 83,
