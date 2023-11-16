@@ -422,7 +422,7 @@ void draw_rectangle_with_filter(skiatest::Reporter* reporter, skiatest::TestType
     SkPaint paint;
     paint.setColor(SK_ColorBLACK);
     paint.setStyle(SkPaint::kFill_Style);
-    paint.setMaskFilter(SkMaskFilter::MakeBlur(SkBlurStyle::kOuter_SkBlurStyle, 1.1f));
+    paint.setMaskFilter(SkMaskFilter::MakeBlur(SkBlurStyle::kOuter_SkBlurStyle, 30.0f));
     canvas->drawRect(SkRect::MakeWH(4, 4), paint);
 }
 

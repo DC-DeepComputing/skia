@@ -635,7 +635,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraphite,
                 Surface surface = SkSurfaces::RenderTarget(recorder,
                                                            src.info(),
                                                            Mipmapped::kNo,
-                                                           /*surfaceProps=*/nullptr);
+                                                           /*surfaceProps=*/nullptr, true);
                 if (surface) {
                     surface->writePixels(src, 0, 0);
 

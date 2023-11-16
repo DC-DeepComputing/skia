@@ -40,7 +40,7 @@ void test_draw(skiatest::Reporter* reporter,
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             recorder.get(),
-            SkImageInfo::Make(canvasSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(canvasSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType), Mipmapped::kNo, nullptr, true);
     SkCanvas* canvas = surface->getCanvas();
 
     SkBitmap bitmap;

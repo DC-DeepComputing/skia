@@ -71,7 +71,8 @@ void test_draw(skiatest::Reporter* reporter,
 
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             recorder.get(),
-            SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+            skgpu::Mipmapped::kNo, nullptr, true);
 
     REPORTER_ASSERT(reporter, surface);
     if (!surface) {

@@ -1903,7 +1903,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Graphite,
 
     auto createGraphiteSurface = [r = recorder.get()](int width, int height) -> sk_sp<SkSurface> {
         const SkImageInfo info = SkImageInfo::MakeN32(width, height, kPremul_SkAlphaType);
-        return SkSurfaces::RenderTarget(r, info);
+        return SkSurfaces::RenderTarget(r, info, skgpu::Mipmapped::kNo, nullptr, true);
     };
 
     auto graphite = [r = recorder.get()](sk_sp<SkImage> src,

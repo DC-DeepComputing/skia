@@ -762,7 +762,7 @@ void check_draw(skiatest::Reporter* reporter,
                                            kRGBA_8888_SkColorType,
                                            kPremul_SkAlphaType);
 
-        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii);
+        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo, nullptr, true);
         SkCanvas* canvas = surf->getCanvas();
 
         switch (dt) {

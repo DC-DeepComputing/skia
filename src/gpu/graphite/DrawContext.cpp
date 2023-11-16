@@ -147,7 +147,7 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
     // Instantiate the compute pass that may render an atlas texture used by this draw pass.
     this->snapPathAtlasDispatches(recorder);
 
-    auto pass = DrawPass::Make(recorder,
+    auto pass = DrawPass::Make7(recorder,
                                std::move(fPendingDraws),
                                fTarget,
                                this->imageInfo(),
@@ -219,7 +219,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
 
     if (depthStencilFlags != DepthStencilFlags::kNone) {
         desc.fDepthStencilAttachment.fTextureInfo = caps->getDefaultDepthStencilTextureInfo(
-                depthStencilFlags, desc.fSampleCount, Protected::kNo);
+                depthStencilFlags, desc.fSampleCount, targetInfo.isProtected());
         // Always clear the depth and stencil to 0 at the start of a DrawPass, but discard at the
         // end since their contents do not affect the next frame.
         desc.fDepthStencilAttachment.fLoadOp = LoadOp::kClear;

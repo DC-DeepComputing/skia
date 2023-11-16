@@ -107,7 +107,7 @@ public:
         SkImageInfo ii = SkImageInfo::Make(kSurfaceSize,
                                            kRGBA_8888_SkColorType,
                                            kPremul_SkAlphaType);
-        fImgDrawSurface = SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo);
+        fImgDrawSurface = SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, nullptr, true);
         REPORTER_ASSERT(fReporter, fImgDrawSurface);
 
         fImgDrawRecording = MakeRedrawRecording(fRecorder, fImgDrawSurface.get(), imageToDraw);
@@ -423,7 +423,8 @@ public:
         SkImageInfo ii = SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
         fMutatingSurface = SkSurfaces::RenderTarget(
-                fRecorder, ii, fWithMips ? Mipmapped::kYes : Mipmapped::kNo);
+                fRecorder, ii, fWithMips ? Mipmapped::kYes : Mipmapped::kNo,
+                nullptr, true);
         REPORTER_ASSERT(fReporter, fMutatingSurface);
 
         fMutatingSurface->getCanvas()->clear(kInitialColor);

@@ -176,7 +176,7 @@ bool check_img(skiatest::Reporter* reporter,
     SkAssertResult(result.peekPixels(&pm));
 
     {
-        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, ii);
+        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo, nullptr, true);
         if (!surface) {
             ERRORF(reporter, "Surface creation failed");
             return false;

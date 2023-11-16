@@ -38,7 +38,7 @@ void run_test(skiatest::Reporter* reporter,
             surfaceSize, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
 
     std::unique_ptr<Recorder> surfaceRecorder = context->makeRecorder();
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(surfaceRecorder.get(), surfaceImageInfo);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(surfaceRecorder.get(), surfaceImageInfo, Mipmapped::kNo, nullptr, true);
     Surface* graphiteSurface = static_cast<Surface*>(surface.get());
     const TextureInfo& textureInfo = graphiteSurface->backingTextureProxy()->textureInfo();
 

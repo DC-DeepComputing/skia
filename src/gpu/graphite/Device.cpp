@@ -222,6 +222,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
                            Mipmapped mipmapped,
+                           Protected isProtected,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
     if (!recorder) {
@@ -232,7 +233,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                     ii.dimensions(),
                                                     ii.colorType(),
                                                     mipmapped,
-                                                    Protected::kNo,
+                                                    isProtected,
                                                     Renderable::kYes,
                                                     budgeted);
     if (!target) {
@@ -342,12 +343,14 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
                 info.fInfo,
                 skgpu::Budgeted::kYes,
                 Mipmapped::kNo,
+                Protected(this->target()->isProtected()),
                 props,
                 addInitialClear);
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
-    return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props);
+    SkDebugf("Here 88\n");
+    return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props, true);
 }
 
 TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) {
@@ -377,6 +380,7 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
     skgpu::graphite::TextureInfo textureInfo =
             recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
                                                                   mipmapped);
+    SkDebugf("Foo %d\n", textureInfo.isProtected() == Protected::kYes);
     sk_sp<TextureProxy> dest = TextureProxy::Make(
             recorder->priv().caps(), srcRect.size(), textureInfo, skgpu::Budgeted::kNo);
     if (!dest) {

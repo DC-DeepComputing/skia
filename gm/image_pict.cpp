@@ -188,7 +188,7 @@ public:
         }
 #if defined(SK_GRAPHITE)
         if (skgpu::graphite::Recorder* recorder = canvas->recorder()) {
-            surface = SkSurfaces::RenderTarget(recorder, info);
+            surface = SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kNo, nullptr, true);
         }
 #endif
 

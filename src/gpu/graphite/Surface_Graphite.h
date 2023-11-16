@@ -21,7 +21,7 @@ class TextureProxy;
 
 class Surface final : public SkSurface_Base {
 public:
-    static sk_sp<SkSurface> MakeGraphite(Recorder* recorder,
+    static sk_sp<SkSurface> MakeGraphite1(Recorder* recorder,
                                          const SkImageInfo& info,
                                          skgpu::Budgeted budgeted,
                                          Mipmapped = Mipmapped::kNo,

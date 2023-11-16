@@ -351,7 +351,7 @@ void tiling_comparison_test(GrDirectContext* dContext,
 
 #if defined(SK_GRAPHITE)
                     if (recorder) {
-                        surface = SkSurfaces::RenderTarget(recorder, destII);
+                        surface = SkSurfaces::RenderTarget(recorder, destII, skgpu::Mipmapped::kNo, nullptr, true);
                     }
 #endif
 
@@ -458,7 +458,7 @@ void tiled_image_caching_test(GrDirectContext* dContext,
 
 #if defined(SK_GRAPHITE)
     if (recorder) {
-        surface = SkSurfaces::RenderTarget(recorder, destII);
+        surface = SkSurfaces::RenderTarget(recorder, destII, skgpu::Mipmapped::kNo, nullptr, true);
     }
 #endif
 

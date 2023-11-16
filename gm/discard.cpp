@@ -58,7 +58,7 @@ protected:
 #if defined(SK_GRAPHITE)
         auto recorder = canvas->recorder();
         if (recorder) {
-            surface = SkSurfaces::RenderTarget(recorder, info);
+            surface = SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kNo, nullptr, true);
         }
 #endif
 

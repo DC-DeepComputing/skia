@@ -703,7 +703,7 @@ static void test_graphite(skiatest::Reporter* r,
     const SkImageInfo info = SkImageInfo::Make({kWidth, kHeight},
                                                 kRGBA_8888_SkColorType,
                                                 kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info, skgpu::Mipmapped::kNo, nullptr, true);
     std::string_view deviceName = ctx->priv().caps()->deviceName();
     std::string_view backendAPI = skgpu::ContextTypeName(testCtx->contextType());
 

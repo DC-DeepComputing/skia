@@ -50,7 +50,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestVertexTransparency, reporter, conte
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(10, 10),
                                        SkColorType::kRGBA_8888_SkColorType,
                                        SkAlphaType::kPremul_SkAlphaType);
-    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii, Mipmapped::kNo, nullptr, true);
     SkCanvas* canvas = surface->getCanvas();
     canvas->drawVertices(v, SkBlendMode::kDst, SkPaint());
 
