@@ -70,6 +70,30 @@
       },
       "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ceb392_be8136e4",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-17T18:45:37Z",
+      "side": 1,
+      "message": "Ah, I was under the impression that Buffers might CB refs when used for draws or transfers in future revisions of the code. So I was then thinking that that prepare...() could be documented as potentially getting called multiple times. So it should check whether its resource is already prepared (which seems like it might have to do anyway).\n\nIf we went the -\u003eallowCBRefs() approach I probably need some guidance on how buffer refs are work now and if there is any changes coming. Do buffers ever get CB refs?",
+      "parentUuid": "cabf6de7_9f773b2f",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
