@@ -151,6 +151,7 @@ declare_args() {
   skia_enable_fontmgr_custom_embedded = skia_use_freetype && !is_fuchsia
   skia_enable_fontmgr_custom_empty = skia_use_freetype && !is_wasm
   skia_enable_fontmgr_fontconfig = skia_use_freetype && skia_use_fontconfig
+  skia_enable_fonmgr_split = skia_use_freetype && skia_use_fontconfig
   skia_enable_fontmgr_win_gdi = is_win && !skia_enable_winuwp
   skia_enable_fontmgr_FontConfigInterface =
       skia_use_freetype && skia_use_fontconfig
