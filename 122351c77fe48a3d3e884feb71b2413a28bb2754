@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a6c12b5_916f0db3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T19:06:26Z",
+      "side": 1,
+      "message": "Indeed \"Implementations must not, however, assume that all Emoji_Component characters are also Emoji.\"",
+      "revId": "122351c77fe48a3d3e884feb71b2413a28bb2754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
