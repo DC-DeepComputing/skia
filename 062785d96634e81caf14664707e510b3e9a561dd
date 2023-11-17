@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d98e8278_28c60c6c",
+        "filename": "bench/Sk4fBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 1,
+      "message": "This is the only instance of using `const_cast` to get rid of `volatile` (used to inhibit optimization for these timing loops).",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4daaa72_55b241ac",
+        "filename": "fuzz/FuzzCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 1,
+      "message": "There are a few like this - `free` and `delete` taking non-const pointers forces some back-and-forth.",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce4473de_100ea566",
+        "filename": "include/gpu/gl/GrGLFunctions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 1,
+      "message": "Don\u0027t ask how many places I tried to put this `const` before I got it right. 😊",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6eb5c8b_b8a80046",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1877,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 1,
+      "message": "`SkMask` is a huge mess - it stores the \"image\" as `const`, but it\u0027s mutated everywhere. Whee.",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6aaaeb9_f39ed44b",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 1,
+      "message": "This is the extra-sketchy thing I mentioned in the top-level comment. I also made a version where I changed the signature of `blitAntiH`, but that\u0027s a far-reaching change. And really ... these args should be `const`. I think?",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c14c04a2_f4bea913",
+        "filename": "src/core/SkRegion_path.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 1,
+      "message": "Given the shenanigans here, it was simpler to just remove `const` from these functions. Pretending the top-level thing is `const`, then discarding it immediately as soon as you touch it to do anything was silly.",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

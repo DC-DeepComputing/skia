@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6553cf12_0dc4c1cb",
+        "filename": "include/private/base/SkDeque.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T22:19:48Z",
+      "side": 0,
+      "message": "Incredibly elaborate way to do something very simple, and upset the compiler at the same time.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 5
+      },
+      "revId": "8e9e168418a01ef4d7e4b2db81971a8c8d59dae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
