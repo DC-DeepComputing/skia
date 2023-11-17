@@ -46,6 +46,30 @@
       },
       "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cabf6de7_9f773b2f",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-17T18:39:50Z",
+      "side": 1,
+      "message": "Yeah I\u0027m not worried about this specific use case, but trying to figure out how `prepareForReturnToCache` should behave in general. Like they way the comment reads for the function and how the cache behaves, a non-shareable resource will return to the cache when UsageRefs drop to zero. It really has nothing to do with CB refs. However, we\u0027re imposing a requirement on CB refs in this check because in this specific case of async maps we technically need that to be true.\n\nSo I was wondering if it makes sense to remove all checks on CB refs here. Then have a way to enforce that mappable dawn buffers (or all mappable buffers) can never add a CB ref.\n\nIn that model I\u0027m not too worried about multiple threads getting here since only one thread can be the last UsageRef.",
+      "parentUuid": "6f930a90_45aaa85e",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
