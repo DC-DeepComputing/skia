@@ -94,6 +94,30 @@
       },
       "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb7e388_93613cab",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-17T18:57:16Z",
+      "side": 1,
+      "message": "Currently Buffers don\u0027t ever get CB refs. The command buffer always takes a usage ref to them. Though I could see adding CB refs instead on non-mappable buffers (i.e. GPU only buffers). At that point they\u0027re not much different from a textures where access is already ordered by the command buffers.\n\nOn a high level reuse/caching of Resources is basically all controlled by the UsageRef. So it is the UsageRef going to zero that sends a Resource back to the cache where it can be reused. CB refs really only keep the object alive.",
+      "parentUuid": "e8ceb392_be8136e4",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
