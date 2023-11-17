@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fcc0141_14eb4d12",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-17T16:20:46Z",
+      "side": 1,
+      "message": "So in theory I think we could end up in this call twice if a resource had both a CB ref and Usage ref. If each of those two refs was removed on a different thread then we\u0027d get into returnResource here twice and both with think there are no refs and thus call prepareForReturnToCache twice. And I imagine that\u0027s not good?\n\nI wonder if we had an alternative where we labeled a resource as never allowing CB refs. Then these two checks would be:\n```\n!resource-\u003ehasUsageRef() \u0026\u0026\n!resource-\u003eallowsCBRefs()\n```\n\nObviously this is now another state to track on each Resource and I haven\u0027t thought about how easy it is to know to set that flag when creating. But at least an option to consider.\n\nAnother approach might be to just add an additional check here that the LastRemovedRef was a Usage one. But then you end up in a weird state where the prepareForReturnToCache call only gets made if the final ref happens to be a usage. I.e. doesn\u0027t get called from last usage but still outstanding CB or from the final CB.",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
