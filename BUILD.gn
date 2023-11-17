@@ -392,6 +392,13 @@ optional("fontmgr_fontconfig") {
   sources = [ "src/ports/SkFontMgr_fontconfig.cpp" ]
   sources_for_tests = [ "tests/FontMgrFontConfigTest.cpp" ]
 }
+
+optional("fontmgr_split") {
+  enabled = skia_enable_fonmgr_split
+  public_defines = [ "SK_FONTMGR_SPLIT_AVAILABLE" ]
+  sources = [ "src/ports/SkFontMgrSplit.cpp" ]
+}
+
 optional("fontmgr_fontconfig_factory") {
   enabled = skia_enable_fontmgr_fontconfig
   deps = [ ":fontmgr_fontconfig" ]
