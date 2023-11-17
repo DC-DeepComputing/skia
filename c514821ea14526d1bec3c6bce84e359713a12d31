@@ -16,6 +16,23 @@
       "message": "Cannot really lands this as this currently fails, this is more of a bug report than a CL.",
       "revId": "c514821ea14526d1bec3c6bce84e359713a12d31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be52081_c6f52ed8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T19:02:54Z",
+      "side": 1,
+      "message": "In general it isn\u0027t possible to tell if an individual code point should be considered \"emoji\" or not in isolation. Aside from the emoji variation selector U+FE0F there are a number of other things like flags and keycap sequences. https://unicode.org/reports/tr51/#Emoji_Properties_and_Data_Files might be a good place to start.",
+      "revId": "c514821ea14526d1bec3c6bce84e359713a12d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
