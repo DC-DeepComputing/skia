@@ -77,6 +77,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8aeca716_a6e150c4",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T17:07:07Z",
+      "side": 1,
+      "message": "Pretty sure this is not what is intended here. On the other hand, maybe? Have to ask Julia.",
+      "range": {
+        "startLine": 606,
+        "startChar": 59,
+        "endLine": 606,
+        "endChar": 80
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42a383fb_1214a1ae",
+        "filename": "modules/skplaintexteditor/src/shape.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T17:07:07Z",
+      "side": 1,
+      "message": "I suppose I could try fixing this up later, but this will really need to be fixed for this editor to continue to be useful. I\u0027m guessing this would need a copy-paste of the `SK_FONTMGR_*_AVAILABLE` macro chain here?",
+      "range": {
+        "startLine": 271,
+        "startChar": 54,
+        "endLine": 271,
+        "endChar": 75
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff8ce681_c2bc7a57",
         "filename": "modules/skshaper/include/SkShaper.h",
         "patchSetId": 13
@@ -94,6 +140,47 @@
         "endLine": 48,
         "endChar": 86
       },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33d2db37_385934cb",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T17:07:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ff8ce681_c2bc7a57",
+      "range": {
+        "startLine": 48,
+        "startChar": 78,
+        "endLine": 48,
+        "endChar": 86
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e78f8a_36bfea87",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T17:07:07Z",
+      "side": 1,
+      "message": "Really looks like this should take a SkFontMgr right here (just after `srcFont`). Maybe we could add a new one with that, then remove this one? Depends on how many users there are and where they are.",
       "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
