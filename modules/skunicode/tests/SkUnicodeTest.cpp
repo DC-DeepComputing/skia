@@ -17,6 +17,13 @@
 
 using namespace skia_private;
 
+namespace {
+static inline SkUnichar nextUtf8Unit(const char** ptr, const char* end) {
+    SkUnichar val = SkUTF::NextUTF8(ptr, end);
+    return val < 0 ? 0xFFFD : val;
+}
+}
+
 #ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
 UNIX_ONLY_TEST(SkUnicode_Client, reporter) {
     std::u16string text = u"\U000f2008";
@@ -248,4 +255,52 @@ UNIX_ONLY_TEST(SkUnicode_Ideographic, reporter) {
     for (auto n: not_ideographic) {
         REPORTER_ASSERT(reporter, !icu->isIdeographic(n));
     }
+}
+
+
+UNIX_ONLY_TEST(SkUnicode_EmojiRuns, reporter) {
+
+    auto icu = SkUnicode::Make();
+
+    auto test = [&](const char* text, std::vector<SkUnichar> expected) {
+        SkString str(text);
+        if ((false)) {
+            SkDebugf("'%s'\n", text);
+            const char* begin = str.data();
+            const char* end = str.data() + str.size();
+            while (begin != end) {
+                auto unicode = nextUtf8Unit(&begin, end);
+                SkDebugf("  %d: %s %s\n", unicode,
+                         icu->isEmojiBase(unicode) ? "isEmojiBase" : "",
+                         icu->isEmojiComponent(unicode) ? "isEmojiComponent" : ""
+                         );
+            }
+        }
+
+        SkSpan<const char> textSpan(str.data(), str.size());
+        auto emoji = icu->getEmojiSequence(textSpan);
+
+        const char* begin = emoji.data();
+        const char* end = emoji.data() + emoji.size();
+        size_t index = 0;
+        while (begin != end && index < expected.size()) {
+            auto expectedCodepoint = expected[index];
+            auto codepoint = nextUtf8Unit(&begin, end);
+            REPORTER_ASSERT(reporter, expectedCodepoint == codepoint);
+            ++index;
+        }
+        REPORTER_ASSERT(reporter, index == expected.size());
+    };
+
+    test("", { });
+    test("0", { });
+    test("2nd", { });
+    test("99", { });
+    test("0️⃣", { 48, 65039, 8419 });
+    test("#", { });
+    test("#️⃣", { 35, 65039, 8419 });
+    test("*", { });
+    test("*️⃣", { 42, 65039, 8419 });
+    test("😊", { 128522 });
+    test("👨‍👩‍👦‍👦", { 128104 });
 }

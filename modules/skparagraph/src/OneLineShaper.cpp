@@ -441,7 +441,6 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
             THashSet<SkUnichar> alreadyTriedCodepoints;
             THashSet<SkTypefaceID> alreadyTriedTypefaces;
             while (true) {
-
                 if (ch == unresolvedText.end()) {
                     // Not a single codepoint could be resolved but we finished the block
                     hopelessBlocks.push_back(fUnresolvedBlocks.front());
@@ -449,32 +448,56 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                     break;
                 }
 
-                // See if we can switch to the next DIFFERENT codepoint
-                SkUnichar unicode = -1;
+                // See if we can switch to the next DIFFERENT codepoint/emoji
+                SkSpan<const char> emoji;
+                SkUnichar codepoint = -1;
+                // We may loop until we find a new codepoint/emoji run
                 while (ch != unresolvedText.end()) {
-                    unicode = nextUtf8Unit(&ch, unresolvedText.end());
-                    if (!alreadyTriedCodepoints.contains(unicode)) {
-                        alreadyTriedCodepoints.add(unicode);
+                    emoji = fParagraph->getUnicode()->getEmojiSequence
+                        (SkSpan<const char>(ch, unresolvedText.end() - ch));
+                    if (!emoji.empty()) {
+                        // We do not keep a cache of emoji runs, but we need to move the cursor
+                        ch = emoji.end();
                         break;
+                    } else {
+                        codepoint = nextUtf8Unit(&ch, unresolvedText.end());
+                        if (!alreadyTriedCodepoints.contains(codepoint)) {
+                            alreadyTriedCodepoints.add(codepoint);
+                            break;
+                        }
                     }
                 }
-                SkASSERT(unicode != -1);
 
-                // First try to find in in a cache
-                sk_sp<SkTypeface> typeface;
-                FontKey fontKey(unicode, textStyle.getFontStyle(), textStyle.getLocale());
-                auto found = fFallbackFonts.find(fontKey);
-                if (found != nullptr) {
-                    typeface = *found;
-                } else {
-                    typeface = fParagraph->fFontCollection->defaultFallback(
-                            unicode, textStyle.getFontStyle(), textStyle.getLocale());
+                SkASSERT(codepoint != -1 || !emoji.empty());
 
-                    if (typeface == nullptr) {
-                        // There is no fallback font for this character, so move on to the next character.
-                        continue;
+                sk_sp<SkTypeface> typeface = nullptr;
+                if (emoji.empty()) {
+                    // First try to find in in a cache
+                    FontKey fontKey(codepoint, textStyle.getFontStyle(), textStyle.getLocale());
+                    auto found = fFallbackFonts.find(fontKey);
+                    if (found != nullptr) {
+                        typeface = *found;
                     }
-                    fFallbackFonts.set(fontKey, typeface);
+                    if (typeface == nullptr) {
+                        typeface = fParagraph->fFontCollection->defaultFallback(
+                                                    codepoint,
+                                                    textStyle.getFontStyle(),
+                                                    textStyle.getLocale());
+                        if (typeface != nullptr) {
+                            fFallbackFonts.set(fontKey, typeface);
+                        }
+                    }
+                } else {
+                    typeface = fParagraph->fFontCollection->defaultEmojiFallback(
+                                                emoji,
+                                                textStyle.getFontStyle(),
+                                                textStyle.getLocale());
+                }
+
+                if (typeface == nullptr) {
+                    // There is no fallback font for this character,
+                    // so move on to the next character.
+                    continue;
                 }
 
                 // Check if we already tried this font on this text range

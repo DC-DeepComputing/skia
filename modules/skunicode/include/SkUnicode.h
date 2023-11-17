@@ -130,6 +130,10 @@ class SKUNICODE_API SkUnicode {
         virtual bool isTabulation(SkUnichar utf8) = 0;
         virtual bool isHardBreak(SkUnichar utf8) = 0;
         virtual bool isEmoji(SkUnichar utf8) = 0;
+        virtual bool isEmojiBase(SkUnichar utf8) = 0;
+        virtual bool isEmojiComponent(SkUnichar utf8) = 0;
+        virtual bool isEmojiModifierBase(SkUnichar utf8) = 0;
+        virtual bool isEmojiModifier(SkUnichar utf8) = 0;
         virtual bool isIdeographic(SkUnichar utf8) = 0;
 
         // Methods used in SkShaper and SkText
@@ -287,6 +291,8 @@ class SKUNICODE_API SkUnicode {
                 pos = iter->next();
             } while (!iter->isDone());
         }
+
+        SkSpan<const char> getEmojiSequence(SkSpan<const char> text);
 
         virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
 
