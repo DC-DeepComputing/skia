@@ -11,6 +11,13 @@
 
 using namespace skia_private;
 
+namespace {
+static inline SkUnichar nextUtf8Unit(const char** ptr, const char* end) {
+    SkUnichar val = SkUTF::NextUTF8(ptr, end);
+    return val < 0 ? 0xFFFD : val;
+}
+}
+
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
     std::unique_ptr<SkUnicode> unicode;
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
@@ -108,4 +115,49 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
+}
+
+std::vector<SkUnichar> SkUnicode::getEmojiRun(const char** begin, const char* end, bool* isEmoji) {
+    std::vector<SkUnichar> unicodes;
+    *isEmoji = true;
+    bool emojiBaseFound = false;
+    bool emojiModifiersFound = false;
+    const char** next = begin;
+    while (next != &end) {
+        auto unicode = nextUtf8Unit(next, end);
+        if (unicodes.empty()) {
+            if (this->isEmojiBase(unicode)) {
+                unicodes.emplace_back(unicode);
+                emojiBaseFound = true;
+            } else if (this->isEmojiModifier(unicode)) {
+                emojiModifiersFound = true;
+            } else {
+                *isEmoji = false;
+                unicodes.emplace_back(unicode);
+                break;
+            }
+        } else if (this->isEmojiBase(unicode)) {
+            unicodes.emplace_back(unicode);
+            emojiModifiersFound = false;
+            emojiBaseFound = true;
+        } else if (this->isEmojiModifier(unicode)) {
+            unicodes.emplace_back(unicode);
+        } else {
+            *isEmoji = false;
+            begin = next;
+            unicodes.emplace_back(unicode);
+            break;
+        }
+    }
+    if (emojiBaseFound) {
+        *isEmoji = true;
+    } else if (emojiModifiersFound) {
+        *isEmoji = false;
+        // Roll back the pointer
+        auto unicode = nextUtf8Unit(begin, end);
+        unicodes.emplace_back(unicode);
+    } else {
+        *isEmoji = false;
+    }
+    return unicodes;
 }

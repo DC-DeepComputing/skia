@@ -437,6 +437,14 @@ class SkUnicode_icu : public SkUnicode {
                sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI_COMPONENT);
     }
 
+    bool isEmojiModifier(SkUnichar unichar) override {
+        return sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI_COMPONENT);
+    }
+
+    bool isEmojiBase(SkUnichar unichar) override {
+        return sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI);
+    }
+
     bool isIdeographic(SkUnichar unichar) override {
         return sk_u_hasBinaryProperty(unichar, UCHAR_IDEOGRAPHIC);
     }
