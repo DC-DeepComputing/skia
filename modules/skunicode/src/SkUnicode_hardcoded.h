@@ -19,6 +19,8 @@ public:
     bool isTabulation(SkUnichar utf8) override;
     bool isHardBreak(SkUnichar utf8) override;
     bool isEmoji(SkUnichar utf8) override;
+    bool isEmojiComponent(SkUnichar utf8) override;
+    bool isEmojiBase(SkUnichar utf8) override;
     bool isIdeographic(SkUnichar utf8) override;
 };
 

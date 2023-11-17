@@ -11,6 +11,13 @@
 
 using namespace skia_private;
 
+namespace {
+static inline SkUnichar nextUtf8Unit(const char** ptr, const char* end) {
+    SkUnichar val = SkUTF::NextUTF8(ptr, end);
+    return val < 0 ? 0xFFFD : val;
+}
+}
+
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
     std::unique_ptr<SkUnicode> unicode;
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
@@ -108,4 +115,39 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
+}
+
+std::vector<SkUnichar> SkUnicode::getEmoji(const char** begin, const char* end) {
+    std::vector<SkUnichar> unicodes;
+    const char** next = begin;
+    auto unicode = nextUtf8Unit(next, end);
+    if (!this->isEmojiBase(unicode)) {
+        // This is not a basic emoji nor it an emoji sequence
+        return unicodes;
+    }
+
+    if (!this->isEmojiComponent(unicode)) {
+        // This is the basic emoji case
+        unicodes.emplace_back(unicode);
+        begin = next;
+        return unicodes;
+    }
+
+    // This is the case of an emoji sequence
+    unicodes.emplace_back(unicode);
+    begin = next;
+    while (next != &end) {
+        auto last = next;
+        auto unicode = nextUtf8Unit(next, end);
+        if (!this->isEmojiBase(unicode) && this->isEmojiComponent(unicode)) {
+            // Keep adding emoji components to our emoji sequence
+            unicodes.emplace_back(unicode);
+            begin = next;
+        } else {
+            // This is no a part of the emoji sequence
+            begin = last;
+            break;
+        }
+    }
+    return unicodes;
 }

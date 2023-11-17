@@ -441,7 +441,6 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
             THashSet<SkUnichar> alreadyTriedCodepoints;
             THashSet<SkTypefaceID> alreadyTriedTypefaces;
             while (true) {
-
                 if (ch == unresolvedText.end()) {
                     // Not a single codepoint could be resolved but we finished the block
                     hopelessBlocks.push_back(fUnresolvedBlocks.front());
@@ -449,26 +448,49 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                     break;
                 }
 
-                // See if we can switch to the next DIFFERENT codepoint
-                SkUnichar unicode = -1;
+                // See if we can switch to the next DIFFERENT codepoint/emoji
+                std::vector<SkUnichar> unicodes;
+                bool hasEmoji = false;
+                // We may loop until we find a new codepoint/emoji run
                 while (ch != unresolvedText.end()) {
-                    unicode = nextUtf8Unit(&ch, unresolvedText.end());
-                    if (!alreadyTriedCodepoints.contains(unicode)) {
-                        alreadyTriedCodepoints.add(unicode);
+                    unicodes = fParagraph->getUnicode()->getEmoji(&ch,
+                                                                  unresolvedText.end());
+                    if (!unicodes.empty()) {
+                        // We do not keep a cache of emoji runs
+                        hasEmoji = true;
                         break;
+                    } else {
+                        auto unicode = nextUtf8Unit(&ch, unresolvedText.end());
+                        if (!alreadyTriedCodepoints.contains(unicode)) {
+                            alreadyTriedCodepoints.add(unicode);
+                            unicodes.emplace_back(unicode);
+                            break;
+                        }
                     }
                 }
-                SkASSERT(unicode != -1);
+                SkASSERT(!unicodes.empty());
 
                 // First try to find in in a cache
-                sk_sp<SkTypeface> typeface;
-                FontKey fontKey(unicode, textStyle.getFontStyle(), textStyle.getLocale());
+                sk_sp<SkTypeface> typeface = nullptr;
+                FontKey fontKey(unicodes, textStyle.getFontStyle(), textStyle.getLocale());
                 auto found = fFallbackFonts.find(fontKey);
                 if (found != nullptr) {
                     typeface = *found;
-                } else {
-                    typeface = fParagraph->fFontCollection->defaultFallback(
-                            unicode, textStyle.getFontStyle(), textStyle.getLocale());
+                }
+
+                if (typeface == nullptr) {
+                    if (hasEmoji) {
+                        typeface = fParagraph->fFontCollection->defaultEmojiFallback(
+                                                    unicodes,
+                                                    textStyle.getFontStyle(),
+                                                    textStyle.getLocale());
+                    } else {
+                        typeface = fParagraph->fFontCollection->defaultFallback(
+                                                    unicodes[0],
+                                                    textStyle.getFontStyle(),
+                                                    textStyle.getLocale());
+                    }
+
 
                     if (typeface == nullptr) {
                         // There is no fallback font for this character, so move on to the next character.
@@ -756,13 +778,25 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
 }
 
 bool OneLineShaper::FontKey::operator==(const OneLineShaper::FontKey& other) const {
-    return fUnicode == other.fUnicode && fFontStyle == other.fFontStyle && fLocale == other.fLocale;
+    if (fFontStyle == other.fFontStyle && fLocale == other.fLocale && fUnicodes.size() == other.fUnicodes.size()) {
+        for (size_t i = 0; i < fUnicodes.size(); ++i) {
+            if (fUnicodes[i] != other.fUnicodes[i]) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 uint32_t OneLineShaper::FontKey::Hasher::operator()(const OneLineShaper::FontKey& key) const {
-    return SkGoodHash()(key.fUnicode) ^
-           SkGoodHash()(key.fFontStyle) ^
-           SkGoodHash()(key.fLocale);
+    uint32_t hash = SkGoodHash()(key.fFontStyle) ^
+                SkGoodHash()(key.fLocale);
+    for (auto unicode : key.fUnicodes) {
+        hash = mix(hash, SkGoodHash()(unicode));
+    }
+    return hash;
 }
 
 }  // namespace textlayout

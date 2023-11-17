@@ -249,3 +249,26 @@ UNIX_ONLY_TEST(SkUnicode_Ideographic, reporter) {
         REPORTER_ASSERT(reporter, !icu->isIdeographic(n));
     }
 }
+
+UNIX_ONLY_TEST(SkUnicode_EmojiRuns, reporter) {
+
+    auto icu = SkUnicode::Make();
+
+    auto test = [&](const char* text, std::vector<SkUnichar> expected) {
+        SkString str(text);
+        const char* begin = str.data();
+        const char* end = str.data() + str.size();
+        while (begin != end) {
+            auto emoji = icu->getEmoji(&begin, end);
+            REPORTER_ASSERT(reporter, emoji.size() == expected.size());
+            for (size_t i = 0; i < emoji.size(); ++i) {
+                REPORTER_ASSERT(reporter, emoji[i] == expected[i]);
+            }
+        }
+    };
+
+    test("0️⃣", { 48, 65039, 8419 });
+    test("0️⃣🆗", { 48, 65039, 8419 });
+    test("0", { 48 });
+    test("0🆗", { 48 });
+}
