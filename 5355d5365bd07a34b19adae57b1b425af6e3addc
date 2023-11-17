@@ -18,6 +18,63 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b7a6b2_eb958f29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-17T16:05:12Z",
+      "side": 1,
+      "message": "How about WASM/skottie_bindings?",
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d848747d_130bec42",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2294,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-17T16:05:12Z",
+      "side": 1,
+      "message": "Is a SkDeserialProcs with all members nullptr any different than passing nullptr here?",
+      "range": {
+        "startLine": 2294,
+        "startChar": 90,
+        "endLine": 2294,
+        "endChar": 97
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d62988ac_672362f5",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-17T16:05:12Z",
+      "side": 1,
+      "message": "If a client doesn\u0027t pass a fontmgr to the builder, are they just going to crash?\n\nThat seems like poor API ergonomics, we should either default to an empty fontmgr (in the AnimationBuilder ctor) or try to handle the nullptr case gracefully (with error logging).",
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff8ce681_c2bc7a57",
@@ -36,6 +93,29 @@
         "startChar": 78,
         "endLine": 48,
         "endChar": 86
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334d1440_f6e0b9b2",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-11-17T16:05:12Z",
+      "side": 1,
+      "message": "nit: narrow the ifdef scope to just `tf \u003d ...` ?",
+      "range": {
+        "startLine": 353,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 17
       },
       "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
