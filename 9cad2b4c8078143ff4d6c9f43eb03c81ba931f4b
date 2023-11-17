@@ -69,6 +69,42 @@
       "parentUuid": "387befb5_0cbe0ebd",
       "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb0ee1f6_fc2c20ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T14:45:14Z",
+      "side": 1,
+      "message": "Excellent. Yes, I see that our recent versions of clang/LLVM already support the architecture, so setting up a cross-compile bot should be easy.\n\nFor the test environment, I\u0027d need to see more details on how it works, and discuss with our infrastructure team to make sure they can support it.",
+      "parentUuid": "4d0d5df6_9dcd45b0",
+      "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca2a0f9_bcac536c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T14:45:14Z",
+      "side": 1,
+      "message": "Yes, I\u0027d suggest doing that. One warning: There is *another* large change being proposed to SkRasterPipeline_opts.h (to add AVX-512 support) [1]. You might encounter a second rebase/merge after that lands.\n\n[1] https://skia-review.googlesource.com/c/skia/+/779235",
+      "parentUuid": "71182008_d316b1c7",
+      "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
