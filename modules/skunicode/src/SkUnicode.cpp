@@ -109,3 +109,55 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
 }
+
+// By definition any emoji_sequence starts from a codepoint that has
+// UCHAR_EMOJI property.
+// If the first codepoint does not have UCHAR_EMOJI_COMPONENT property,
+// we have an emoji sequence right away.
+// In two (and only two) cases an emoji sequence starts with a codepoint
+// that also has UCHAR_EMOJI_COMPONENT property.
+// emoji_flag_sequence   := regional_indicator regional_indicator
+// emoji_keycap_sequence := [0-9#*] \x{FE0F 20E3}
+// These two cases require additional checks of the next codepoint(s).
+SkUnichar SkUnicode::getEmojiSequenceStart(const char** begin, const char* end) {
+    const char* next = *begin;
+    auto codepoint1 = SkUTF::NextUTF8WithReplacement(&next, end);
+
+    if (!this->isEmoji(codepoint1)) {
+        // This is not a basic emoji nor it an emoji sequence
+        return -1;
+    }
+
+    if (!this->isEmojiComponent(codepoint1)) {
+        // This is an emoji sequence start
+        *begin = next;
+        return codepoint1;
+    }
+
+    // Now we need to look at the next codepoint to see what is going on
+    const char* last = next;
+    auto codepoint2 = SkUTF::NextUTF8WithReplacement(&last, end);
+
+    // emoji_flag_sequence
+    if (this->isRegionalIndicator(codepoint2)) {
+        // We expect a second regional indicator here
+        if (this->isRegionalIndicator(codepoint2)) {
+            *begin = next;
+            return codepoint1;
+        } else {
+            // That really should not happen assuming correct UTF8 text
+            return -1;
+        }
+    }
+
+    // emoji_keycap_sequence
+    if (codepoint2 == 0xFE0F) {
+        auto codepoint3 = SkUTF::NextUTF8WithReplacement(&last, end);
+        if (codepoint3 == 0x20E3) {
+            *begin = next;
+            return codepoint1;
+        }
+    }
+
+    return -1;
+}

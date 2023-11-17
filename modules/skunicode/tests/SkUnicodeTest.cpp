@@ -249,3 +249,72 @@ UNIX_ONLY_TEST(SkUnicode_Ideographic, reporter) {
         REPORTER_ASSERT(reporter, !icu->isIdeographic(n));
     }
 }
+
+
+UNIX_ONLY_TEST(SkUnicode_EmojiRuns, reporter) {
+
+    auto icu = SkUnicode::MakeIcuBasedUnicode();
+
+    auto test = [&](const char* text, SkUnichar expected) {
+        SkString str(text);
+        if ((false)) {
+            SkDebugf("'%s'\n", text);
+            const char* begin = str.data();
+            const char* end = str.data() + str.size();
+            while (begin != end) {
+                auto unicode = SkUTF::NextUTF8WithReplacement(&begin, end);
+                SkDebugf("  %d: %s %s\n", unicode,
+                         icu->isEmoji(unicode) ? "isEmoji" : "",
+                         icu->isEmojiComponent(unicode) ? "isEmojiComponent" : ""
+                         );
+            }
+
+            SkDebugf("Graphemes:");
+            skia_private::TArray<SkUnicode::CodeUnitFlags, true> codeUnitProperties;
+            icu->computeCodeUnitFlags(str.data(), str.size(), false, &codeUnitProperties);
+            int index = 0;
+            for (auto& cp : codeUnitProperties) {
+                if (SkUnicode::hasGraphemeStartFlag(cp)) {
+                    SkDebugf(" %d", index);
+                }
+                ++index;
+            }
+            SkDebugf("\n");
+        }
+
+        SkSpan<const char> textSpan(str.data(), str.size());
+        const char* begin = str.data();
+        const char* end = begin + str.size();
+        auto emojiStart = icu->getEmojiSequenceStart(&begin, end);
+        REPORTER_ASSERT(reporter, expected == emojiStart);
+    };
+
+    test("", -1);
+    test("0", -1);
+    test("2nd", -1);
+    test("99", -1);
+    test("0️⃣", 48);
+    test("0️⃣12", 48);
+    test("#", -1);
+    test("#️⃣", 35);
+    test("#️⃣#", 35);
+    test("#️⃣#️⃣", 35);
+    test("*", -1);
+    test("*️⃣", 42);
+    test("*️⃣abc", 42);
+    test("*️⃣😊", 42);
+    test("😊", 128522);
+    test("😊abc", 128522);
+    test("😊*️⃣",128522);
+    test("👨‍👩‍👦‍👦", 128104);
+
+    // These 2 have emoji components as the first codepoint
+    test("🇷🇺", 127479); // Flag sequence
+    test("0️⃣", 48); // Keycap sequence
+
+    // These have a simple emoji as a first codepoint
+    test("🏴󠁧󠁢󠁥󠁮󠁧󠁿", 127988); // Tag sequence
+    test("👋🏼", 128075); // Modifier sequence
+    test("👨‍👩‍👧‍👦", 128104); // ZWJ sequence
+
+}
