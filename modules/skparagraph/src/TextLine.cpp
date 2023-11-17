@@ -721,9 +721,12 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
     if (fOwner->fontCollection()->fontFallbackEnabled()) {
         const char* ch = ellipsis.c_str();
         SkUnichar unicode = nextUtf8Unit(&ch, ellipsis.c_str() + ellipsis.size());
-
-       auto typeface = fOwner->fontCollection()->defaultFallback(
-                    unicode, textStyle.getFontStyle(), textStyle.getLocale());
+        // We do not expect emojis in ellipsis so if they appeat there
+        // they will not be resolved with the pretiest color emoji font
+        auto typeface = fOwner->fontCollection()->defaultFallback(
+                                            unicode,
+                                            textStyle.getFontStyle(),
+                                            textStyle.getLocale());
         if (typeface) {
             ellipsisRun = shaped(typeface, true);
             if (ellipsisRun->isResolved()) {
