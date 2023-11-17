@@ -33,6 +33,42 @@
       "message": "Also: A large amount of the code being changed in this CL has already changed in Skia. This CL is based on the m114 branch, so it is seven months old.\n\nThis bug includes most of the changes to SkOpts. (I changed how most opts are compiled):\n  https://issues.skia.org/issues/40045066#comment7\n\nI also just changed some raster pipeline code to make the load and store functions simpler (and remove some unused ones):\n  https://skia-review.googlesource.com/c/skia/+/775409\n  https://skia-review.googlesource.com/c/skia/+/776517\n  https://skia-review.googlesource.com/c/skia/+/777056",
       "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71182008_d316b1c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2023-11-17T03:53:32Z",
+      "side": 1,
+      "message": "Shall we modify our changes to make them compatible with the latest version of Skia?",
+      "parentUuid": "64c0a402_08be2665",
+      "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d0d5df6_9dcd45b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2023-11-17T03:53:32Z",
+      "side": 1,
+      "message": "Hello,\nWe could provide a cross-compile bot on x86 and an loongarch enviroment to test it afterwards",
+      "parentUuid": "387befb5_0cbe0ebd",
+      "revId": "9cad2b4c8078143ff4d6c9f43eb03c81ba931f4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
