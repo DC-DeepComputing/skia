@@ -249,3 +249,58 @@ UNIX_ONLY_TEST(SkUnicode_Ideographic, reporter) {
         REPORTER_ASSERT(reporter, !icu->isIdeographic(n));
     }
 }
+
+
+UNIX_ONLY_TEST(SkUnicode_EmojiRuns, reporter) {
+
+    auto icu = SkUnicode::Make();
+
+    auto test = [&](const char* text, std::vector<SkUnichar> expected) {
+        SkString str(text);
+        if ((false)) {
+            SkDebugf("'%s'\n", text);
+            const char* begin = str.data();
+            const char* end = str.data() + str.size();
+            while (begin != end) {
+                auto unicode = SkUTF::NextUTF8WithReplacement(&begin, end);
+                SkDebugf("  %d: %s %s\n", unicode,
+                         icu->IsEmojiComponentBase(unicode) ? "IsEmojiComponentBase" : "",
+                         icu->isEmojiComponent(unicode) ? "isEmojiComponent" : ""
+                         );
+            }
+        }
+
+        SkSpan<const char> textSpan(str.data(), str.size());
+        auto emoji = icu->getEmojiSequence(textSpan);
+
+        const char* begin = emoji.data();
+        const char* end = emoji.data() + emoji.size();
+        size_t index = 0;
+        while (begin != end && index < expected.size()) {
+            auto expectedCodepoint = expected[index];
+            auto codepoint = SkUTF::NextUTF8WithReplacement(&begin, end);
+            REPORTER_ASSERT(reporter, expectedCodepoint == codepoint);
+            ++index;
+        }
+        REPORTER_ASSERT(reporter, index == expected.size());
+    };
+
+    test("", { });
+    test("0", { });
+    test("2nd", { });
+    test("99", { });
+    test("0️⃣", { 48, 65039, 8419 });
+    test("0️⃣12", { 48, 65039, 8419 });
+    test("#", { });
+    test("#️⃣", { 35, 65039, 8419 });
+    test("#️⃣#", { 35, 65039, 8419 });
+    test("#️⃣#️⃣", { 35, 65039, 8419 });
+    test("*", { });
+    test("*️⃣", { 42, 65039, 8419 });
+    test("*️⃣abc", { 42, 65039, 8419 });
+    test("*️⃣😊", { 42, 65039, 8419 });
+    test("😊", { 128522 });
+    test("😊abc", { 128522 });
+    test("😊*️⃣", { 128522 });
+    test("👨‍👩‍👦‍👦", { 128104 });
+}

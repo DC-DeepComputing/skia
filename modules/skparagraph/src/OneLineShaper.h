@@ -135,6 +135,7 @@ private:
             uint32_t operator()(const FontKey& key) const;
         };
     };
+
     skia_private::THashMap<FontKey, sk_sp<SkTypeface>, FontKey::Hasher> fFallbackFonts;
 };
 
