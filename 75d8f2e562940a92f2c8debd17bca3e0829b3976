@@ -22,6 +22,30 @@
       },
       "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f930a90_45aaa85e",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-17T18:15:21Z",
+      "side": 1,
+      "message": "I think the double call is ok for the current use case.\n\nOnly one thread can be in returnToCache after line 174 at a time. So one thread grabs the mutex and makes the call, starts the mapping, and exits. Now the second thread gets to line 187. If the map hasn\u0027t finished, then the object is reffed and the function isn\u0027t called. If the map has finished it can get into prepareForReturnToCache but that checks if it is already mapped and so does nothing.\n\nI don\u0027t think it\u0027s strictly necessary but I think I\u0027d change this line:\nhttps://skia-review.googlesource.com/c/skia/+/780176/3/src/gpu/graphite/dawn/DawnBuffer.cpp#113\n\nfrom `!...isMapped()` to `!...isUnmappable()` in case any future code changes allowed this functoin to get called when an async map is in progress but not completed.\n\nAlso perhaps after grabbing the mutex at 174 we should recheck if removedRef is still zero (it might not be on the second time through in the above example *if* buffers actually used CB refs).",
+      "parentUuid": "5fcc0141_14eb4d12",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
