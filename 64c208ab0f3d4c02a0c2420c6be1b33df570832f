@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d293fca6_c24cfe2c",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-17T21:04:36Z",
+      "side": 1,
+      "message": "change to `removedRef \u003d\u003d Usage`. Otherwise a CB ref could get in here if the usage were already 0. removedRef \u003d\u003d Usage implies !resource-\u003ehasUsageRef(), but the reverse isn\u0027t true.",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 32
+      },
+      "revId": "64c208ab0f3d4c02a0c2420c6be1b33df570832f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
