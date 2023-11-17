@@ -449,26 +449,54 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                     break;
                 }
 
-                // See if we can switch to the next DIFFERENT codepoint
-                SkUnichar unicode = -1;
+                // See if we can switch to the next DIFFERENT codepoint/emoji
+                std::vector<SkUnichar> unicodes;
+                bool isEmoji = false;
                 while (ch != unresolvedText.end()) {
-                    unicode = nextUtf8Unit(&ch, unresolvedText.end());
-                    if (!alreadyTriedCodepoints.contains(unicode)) {
-                        alreadyTriedCodepoints.add(unicode);
-                        break;
+                    unicodes = fParagraph->getUnicode()->getEmojiRun(&ch, unresolvedText.end(), &isEmoji);
+                    if (!isEmoji) {
+                        auto unicode = nextUtf8Unit(&ch, unresolvedText.end());
+                        if (!alreadyTriedCodepoints.contains(unicode)) {
+                            alreadyTriedCodepoints.add(unicode);
+                            break;
+                        }
+                    } else {
+                        bool newCodepointFound = false;
+                        for (auto unicode : unicodes) {
+                            if (!alreadyTriedCodepoints.contains(unicode)) {
+                                alreadyTriedCodepoints.add(unicode);
+                                newCodepointFound = true;
+                            }
+                        }
+                        if (!newCodepointFound) {
+                            break;
+                        }
                     }
                 }
-                SkASSERT(unicode != -1);
+
+                SkASSERT(!unicodes.empty());
 
                 // First try to find in in a cache
-                sk_sp<SkTypeface> typeface;
-                FontKey fontKey(unicode, textStyle.getFontStyle(), textStyle.getLocale());
+                sk_sp<SkTypeface> typeface = nullptr;
+                FontKey fontKey(unicodes, textStyle.getFontStyle(), textStyle.getLocale());
                 auto found = fFallbackFonts.find(fontKey);
                 if (found != nullptr) {
                     typeface = *found;
-                } else {
-                    typeface = fParagraph->fFontCollection->defaultFallback(
-                            unicode, textStyle.getFontStyle(), textStyle.getLocale());
+                }
+
+                if (typeface == nullptr) {
+                    if (isEmoji) {
+                        typeface = fParagraph->fFontCollection->defaultEmojiFallback(
+                                                    unicodes,
+                                                    textStyle.getFontStyle(),
+                                                    textStyle.getLocale());
+                    } else {
+                        typeface = fParagraph->fFontCollection->defaultFallback(
+                                                    unicodes[0],
+                                                    textStyle.getFontStyle(),
+                                                    textStyle.getLocale());
+                    }
+
 
                     if (typeface == nullptr) {
                         // There is no fallback font for this character, so move on to the next character.
@@ -756,13 +784,25 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
 }
 
 bool OneLineShaper::FontKey::operator==(const OneLineShaper::FontKey& other) const {
-    return fUnicode == other.fUnicode && fFontStyle == other.fFontStyle && fLocale == other.fLocale;
+    if (fFontStyle == other.fFontStyle && fLocale == other.fLocale && fUnicodes.size() == other.fUnicodes.size()) {
+        for (auto i = 0; i < fUnicodes.size(); ++i) {
+            if (fUnicodes[i] != other.fUnicodes[i]) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 uint32_t OneLineShaper::FontKey::Hasher::operator()(const OneLineShaper::FontKey& key) const {
-    return SkGoodHash()(key.fUnicode) ^
-           SkGoodHash()(key.fFontStyle) ^
-           SkGoodHash()(key.fLocale);
+    uint32_t hash = SkGoodHash()(key.fFontStyle) ^
+                SkGoodHash()(key.fLocale);
+    for (auto unicode : key.fUnicodes) {
+        hash = mix(hash, SkGoodHash()(unicode));
+    }
+    return hash;
 }
 
 }  // namespace textlayout

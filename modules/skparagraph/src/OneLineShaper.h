@@ -122,10 +122,9 @@ private:
     struct FontKey {
 
         FontKey() {}
-
-        FontKey(SkUnichar unicode, SkFontStyle fontStyle, SkString locale)
-            : fUnicode(unicode), fFontStyle(fontStyle), fLocale(std::move(locale)) { }
-        SkUnichar fUnicode;
+        FontKey(std::vector<SkUnichar> emoji, SkFontStyle fontStyle, SkString locale)
+            : fUnicodes(emoji), fFontStyle(fontStyle), fLocale(std::move(locale)) { }
+        std::vector<SkUnichar> fUnicodes;
         SkFontStyle fFontStyle;
         SkString fLocale;
 
@@ -133,6 +132,12 @@ private:
 
         struct Hasher {
             uint32_t operator()(const FontKey& key) const;
+            uint32_t mix(uint32_t hash, uint32_t data) const {
+                hash += data;
+                hash += (hash << 10);
+                hash ^= (hash >> 6);
+                return hash;
+            }
         };
     };
     skia_private::THashMap<FontKey, sk_sp<SkTypeface>, FontKey::Hasher> fFallbackFonts;
