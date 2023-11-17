@@ -22,6 +22,23 @@
       },
       "revId": "ddbe1f114a709c6e24ad6d7defc59f2086112f0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd13d411_d771171c",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T19:11:59Z",
+      "side": 1,
+      "message": "I should have looked a bit harder here, https://unicode.org/reports/tr51/#Emoji_Properties_and_Data_Files directly states \"Implementations must not, however, assume that all Emoji_Component characters are also Emoji.\" See https://skia-review.googlesource.com/c/skia/+/780558 . In general it isn\u0027t possible to look at a code point in isolation and determine if it should be \"emoji\" or not. Will most likely need to expose at least `isEmoji`, `isEmojiModifier`, and `isEmojiBase` and then have users of SkUnicode use these to figure out what to do. Also SkUnicode could provide a base implementation that takes a string and determines if it begins with an \"emoji\" run (and how long that run is).",
+      "revId": "ddbe1f114a709c6e24ad6d7defc59f2086112f0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
