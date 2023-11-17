@@ -311,6 +311,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc9f2769_99b22670",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-17T20:14:28Z",
+      "side": 1,
+      "message": "This is just the API being bad, the SkFontMgr should come from the constructor at the moment.",
+      "parentUuid": "2c0c4c4d_1efb991c",
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "334d1440_f6e0b9b2",
