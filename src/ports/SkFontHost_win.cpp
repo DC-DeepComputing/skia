@@ -1346,7 +1346,7 @@ void SkGDIGeometrySink::process(const uint8_t* glyphbuf, DWORD total_size) {
     const uint8_t* end_glyph = glyphbuf + total_size;
 
     while (cur_glyph < end_glyph) {
-        const TTPOLYGONHEADER* th = (TTPOLYGONHEADER*)cur_glyph;
+        const TTPOLYGONHEADER* th = (const TTPOLYGONHEADER*)cur_glyph;
 
         const uint8_t* end_poly = cur_glyph + th->cb;
         const uint8_t* cur_poly = cur_glyph + sizeof(TTPOLYGONHEADER);
@@ -1416,7 +1416,7 @@ bool SkGDIGeometrySink::process(const uint8_t* glyphbuf, DWORD total_size,
     POINTFX const * hintedPoint;
 
     while (cur_glyph < end_glyph) {
-        const TTPOLYGONHEADER* th = (TTPOLYGONHEADER*)cur_glyph;
+        const TTPOLYGONHEADER* th = (const TTPOLYGONHEADER*)cur_glyph;
 
         const uint8_t* end_poly = cur_glyph + th->cb;
         const uint8_t* cur_poly = cur_glyph + sizeof(TTPOLYGONHEADER);
@@ -1834,8 +1834,9 @@ std::unique_ptr<SkStreamAsset> LogFontTypeface::onOpenStream(int* ttcIndex) cons
             bufferSize = GetFontData(hdc, tables[i], 0, nullptr, 0);
         }
         if (bufferSize != GDI_ERROR) {
-            stream.reset(new SkMemoryStream(bufferSize));
-            if (GetFontData(hdc, tables[i], 0, (void*)stream->getMemoryBase(), bufferSize)) {
+            sk_sp<SkData> streamData = SkData::MakeUninitialized(bufferSize);
+            if (GetFontData(hdc, tables[i], 0, streamData->writable_data(), bufferSize)) {
+                stream.reset(new SkMemoryStream(std::move(streamData)));
                 break;
             } else {
                 stream.reset();
@@ -2169,7 +2170,7 @@ static int CALLBACK enum_family_proc(const LOGFONT* lf, const TEXTMETRIC*,
                                      DWORD fontType, LPARAM builderParam) {
     if (valid_logfont_for_enum(*lf)) {
         SkTDArray<ENUMLOGFONTEX>* array = (SkTDArray<ENUMLOGFONTEX>*)builderParam;
-        *array->append() = *(ENUMLOGFONTEX*)lf;
+        *array->append() = *(const ENUMLOGFONTEX*)lf;
     }
     return 1; // non-zero means continue
 }
