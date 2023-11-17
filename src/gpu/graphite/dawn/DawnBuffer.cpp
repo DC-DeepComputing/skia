@@ -103,24 +103,33 @@ void DawnBuffer::onMap() {
     SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
              (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
 
-    DawnAsyncWait wait(dawnSharedContext()->device());
+    wgpu::BufferMapAsyncStatus status = wgpu::BufferMapAsyncStatus::Unknown;
+
+    wgpu::BufferMapCallbackInfo callbackInfo = {};
+    callbackInfo.mode = wgpu::CallbackMode::AllowSpontaneous;
+    callbackInfo.callback = [](WGPUBufferMapAsyncStatus s, void* userData) {
+        *reinterpret_cast<WGPUBufferMapAsyncStatus*>(userData) = s;
+    };
+    callbackInfo.userdata = &status;
+
     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
-    fBuffer.MapAsync(isWrite ? wgpu::MapMode::Write: wgpu::MapMode::Read,
-                     0,
-                     fBuffer.GetSize(),
-                     [](WGPUBufferMapAsyncStatus s, void* userData) {
-                        reinterpret_cast<DawnAsyncWait*>(userData)->signal();
-                     },
-                     &wait);
-    wait.busyWait();
-    if (isWrite) {
-        fMapPtr = fBuffer.GetMappedRange();
-    } else {
-        // If buffer is only created with MapRead usage, Dawn only allows returning
-        // constant pointer. We need to use const_cast as a workaround here.
-        fMapPtr = const_cast<void*>(fBuffer.GetConstMappedRange());
+    wgpu::MapMode mode = isWrite ? wgpu::MapMode::Write : wgpu::MapMode::Read;
+
+    fBuffer.MapAsyncF(mode, 0, fBuffer.GetSize(), callbackInfo);
+
+    SkASSERT(status != wgpu::BufferMapAsyncStatus::Unknown);
+
+    if (status == wgpu::BufferMapAsyncStatus::Success) {
+        SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Mapped);
+        if (isWrite) {
+            fMapPtr = fBuffer.GetMappedRange();
+        } else {
+            // If buffer is only created with MapRead usage, Dawn only allows returning
+            // constant pointer. We need to use const_cast as a workaround here.
+            fMapPtr = const_cast<void*>(fBuffer.GetConstMappedRange());
+        }
+        SkASSERT(fMapPtr);
     }
-    SkASSERT(fMapPtr);
 }
 
 void DawnBuffer::onUnmap() {

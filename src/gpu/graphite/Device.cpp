@@ -284,7 +284,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 // different strategies in place for a base device vs. a layer's device.
 static constexpr int kGridCellSize = 16;
 static constexpr int kMaxBruteForceN = 64;
-static constexpr int kMaxGridSize = 32;
+static constexpr int kMaxGridSize = 8;
 
 Device::Device(Recorder* recorder, sk_sp<DrawContext> dc, bool addInitialClear)
         : SkDevice(dc->imageInfo(), dc->surfaceProps())
