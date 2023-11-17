@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7082947_0d8fd033",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-17T19:11:02Z",
+      "side": 1,
+      "message": "The failing bot is due to an unrelated change that landed.",
+      "revId": "764f323b99b3d7f3636c97b36430b5e3bc94ffe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
