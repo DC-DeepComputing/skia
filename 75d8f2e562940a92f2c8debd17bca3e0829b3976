@@ -118,6 +118,30 @@
       },
       "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a2c6aaa_a27461a8",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-17T20:21:46Z",
+      "side": 1,
+      "message": "Greg and I discussed this over VC. We decided to allow Resources to opt into having all CommandBufferRefs reroute to UsageRefs and make DawnBuffers with MapWrite usage opt in. Now we can only get here for a buffer that needs remapping when dropping the last usageref.",
+      "parentUuid": "9bb7e388_93613cab",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "75d8f2e562940a92f2c8debd17bca3e0829b3976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
