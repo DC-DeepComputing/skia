@@ -109,3 +109,48 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
 }
+
+SkSpan<const char> SkUnicode::getEmojiSequence(SkSpan<const char> text) {
+    SkSpan<const char> emptySequence(text.begin(), 0);
+    if (text.empty()) {
+        // Empty text - no emoji
+        return emptySequence;
+    }
+    const char* next = text.begin();
+    auto codepoint = SkUTF::NextUTF8WithReplacement(&next, text.end());
+    if (!this->isEmoji(codepoint)) {
+        // This is not a basic emoji nor it an emoji sequence
+        return emptySequence;
+    }
+
+    if (!this->isEmojiComponent(codepoint)) {
+        // This is the basic emoji case
+        return SkSpan<const char>(text.begin(), next - text.begin());
+    } else if (next == text.end()) {
+        // It could be an emoji sequence but it's not (ended too soon)
+        return emptySequence;
+    }
+
+    // We have the first emoji base/component,
+    // let's see if it's a real emoji sequence
+    bool firstEmoji = true;
+    while (next != text.end()) {
+        auto last = next;
+        codepoint = SkUTF::NextUTF8WithReplacement(&next, text.end());
+        if (!this->isEmoji(codepoint) && this->isEmojiComponent(codepoint)) {
+            // Keep scanning components in our emoji sequence
+            firstEmoji = false;
+        } else {
+            // This is not a part of the emoji sequence
+            if (firstEmoji) {
+                // There is no emoji sequence at all
+                return emptySequence;
+            } else {
+                // This is the end of the emoji sequence
+                return SkSpan<const char>(text.begin(), last - text.begin());
+            }
+        }
+    }
+    // We scanned the entire text as an emoji sequence
+    return text;
+}

@@ -129,7 +129,16 @@ class SKUNICODE_API SkUnicode {
         virtual bool isSpace(SkUnichar utf8) = 0;
         virtual bool isTabulation(SkUnichar utf8) = 0;
         virtual bool isHardBreak(SkUnichar utf8) = 0;
+        /**
+         * Returns if a code point may start an emoji sequence.
+         * Returns true for '#', '*', and '0'-'9' since they may start an emoji sequence.
+         * To determine if a list of code points begins with an emoji sequence, use
+         * getEmojiSequence.
+         **/
         virtual bool isEmoji(SkUnichar utf8) = 0;
+        virtual bool isEmojiComponent(SkUnichar utf8) = 0;
+        virtual bool isEmojiModifierBase(SkUnichar utf8) = 0;
+        virtual bool isEmojiModifier(SkUnichar utf8) = 0;
         virtual bool isIdeographic(SkUnichar utf8) = 0;
 
         // Methods used in SkShaper and SkText
@@ -287,6 +296,13 @@ class SKUNICODE_API SkUnicode {
                 pos = iter->next();
             } while (!iter->isDone());
         }
+
+        /**
+         * This method is intended to implement https://unicode.org/reports/tr51/#def_emoji_sequence
+         * to determine if the string of code points begins with an emoji sequence and,
+         * if so, return that sequence
+         */
+        SkSpan<const char> getEmojiSequence(SkSpan<const char> text);
 
         virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
 
