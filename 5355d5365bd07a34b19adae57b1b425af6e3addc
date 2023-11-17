@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff8ce681_c2bc7a57",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T15:36:53Z",
+      "side": 1,
+      "message": "I made these explicit because I didn\u0027t see any clients using these APIs directly and I think it is better to be clear on how fallback should be done, if any.",
+      "range": {
+        "startLine": 48,
+        "startChar": 78,
+        "endLine": 48,
+        "endChar": 86
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

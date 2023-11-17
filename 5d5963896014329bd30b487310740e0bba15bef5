@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "466e0fde_69521a4d",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T15:36:53Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this change. Should there be fallback of some kind?",
+      "range": {
+        "startLine": 606,
+        "startChar": 70,
+        "endLine": 606,
+        "endChar": 78
+      },
+      "revId": "5d5963896014329bd30b487310740e0bba15bef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
