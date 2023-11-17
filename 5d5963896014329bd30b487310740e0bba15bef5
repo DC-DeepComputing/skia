@@ -22,6 +22,30 @@
       },
       "revId": "5d5963896014329bd30b487310740e0bba15bef5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "385c07ee_50f2e51b",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-17T15:40:11Z",
+      "side": 1,
+      "message": "SkParagraph does not use SkShaper fallback, it handles it differently, so it\u0027s fine.",
+      "parentUuid": "466e0fde_69521a4d",
+      "range": {
+        "startLine": 606,
+        "startChar": 70,
+        "endLine": 606,
+        "endChar": 78
+      },
+      "revId": "5d5963896014329bd30b487310740e0bba15bef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
