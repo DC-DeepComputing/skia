@@ -227,7 +227,7 @@ UNIX_ONLY_TEST(SkUnicode_ReorderVisual, reporter) {
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
 UNIX_ONLY_TEST(SkUnicode_Emoji, reporter) {
     std::u32string emojis(U"😄😁😆😅😂🤣");
-    std::u32string not_emojis(U"満毎行昼本可");
+    std::u32string not_emojis(U"満毎行昼本可1");
     auto icu = SkUnicode::Make();
     for (auto e : emojis) {
         REPORTER_ASSERT(reporter, icu->isEmoji(e));
