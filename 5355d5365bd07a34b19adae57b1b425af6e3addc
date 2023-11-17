@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b2e0f86_32482ba2",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2294,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T19:07:44Z",
+      "side": 1,
+      "message": "It is not - this was erroneously left in.",
+      "parentUuid": "d848747d_130bec42",
+      "range": {
+        "startLine": 2294,
+        "startChar": 90,
+        "endLine": 2294,
+        "endChar": 97
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d62988ac_672362f5",
@@ -71,6 +95,24 @@
       "writtenOn": "2023-11-17T16:05:12Z",
       "side": 1,
       "message": "If a client doesn\u0027t pass a fontmgr to the builder, are they just going to crash?\n\nThat seems like poor API ergonomics, we should either default to an empty fontmgr (in the AnimationBuilder ctor) or try to handle the nullptr case gracefully (with error logging).",
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "431657c3_72de384c",
+        "filename": "modules/skottie/src/layers/TextLayer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T19:07:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d62988ac_672362f5",
       "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -98,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd968fab_04549910",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T19:07:44Z",
+      "side": 1,
+      "message": "Julia said (in another comment):\n```\nSkParagraph does not use SkShaper fallback, it handles it differently, so it\u0027s fine.\n```",
+      "parentUuid": "8aeca716_a6e150c4",
+      "range": {
+        "startLine": 606,
+        "startChar": 59,
+        "endLine": 606,
+        "endChar": 80
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42a383fb_1214a1ae",
@@ -111,6 +177,30 @@
       "writtenOn": "2023-11-17T17:07:07Z",
       "side": 1,
       "message": "I suppose I could try fixing this up later, but this will really need to be fixed for this editor to continue to be useful. I\u0027m guessing this would need a copy-paste of the `SK_FONTMGR_*_AVAILABLE` macro chain here?",
+      "range": {
+        "startLine": 271,
+        "startChar": 54,
+        "endLine": 271,
+        "endChar": 75
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba261ede_b6bcc9e6",
+        "filename": "modules/skplaintexteditor/src/shape.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T19:07:44Z",
+      "side": 1,
+      "message": "Done. Piped in the SkFontMgr from editor_application.cpp",
+      "parentUuid": "42a383fb_1214a1ae",
       "range": {
         "startLine": 271,
         "startChar": 54,
@@ -187,6 +277,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c0c4c4d_1efb991c",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T19:07:44Z",
+      "side": 1,
+      "message": "If we want that, can that be its own CL chain?\n\nOr did you mean just changing SkPlainTextEditor::Shape()?\n\n(notice the capital letter differences)",
+      "parentUuid": "17e78f8a_36bfea87",
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "334d1440_f6e0b9b2",
         "filename": "src/core/SkPictureData.cpp",
         "patchSetId": 13
@@ -198,6 +306,30 @@
       "writtenOn": "2023-11-17T16:05:12Z",
       "side": 1,
       "message": "nit: narrow the ifdef scope to just `tf \u003d ...` ?",
+      "range": {
+        "startLine": 353,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 17
+      },
+      "revId": "5355d5365bd07a34b19adae57b1b425af6e3addc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c1c1dc4_e2dca7d5",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-17T19:07:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "334d1440_f6e0b9b2",
       "range": {
         "startLine": 353,
         "startChar": 0,
