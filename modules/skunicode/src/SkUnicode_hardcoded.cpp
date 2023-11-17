@@ -86,7 +86,17 @@ bool SkUnicodeHardCodedCharProperties::isHardBreak(SkUnichar utf8) {
 }
 
 bool SkUnicodeHardCodedCharProperties::isEmoji(SkUnichar unichar) {
-    SkDEBUGFAIL("Not implemented");
+    SkDEBUGFAIL("isEmoji Not implemented");
+    return false;
+}
+
+bool SkUnicodeHardCodedCharProperties::isEmojiComponent(SkUnichar utf8)  {
+    SkDEBUGFAIL("isEmojiModifier Not implemented");
+    return false;
+}
+
+bool SkUnicodeHardCodedCharProperties::isEmojiBase(SkUnichar utf8) {
+    SkDEBUGFAIL("isEmojiBase Not implemented");
     return false;
 }
 
