@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57573e9f_60646ccb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-11-20T13:43:53Z",
+      "side": 1,
+      "message": "Hey Leandro, I think I\u0027ve hit the limit of my Bazel knowledge here - I updated the Go version in WORKSPACE.bazel, and based on the error message it looks like I also need to update the hash, but I don\u0027t see where we\u0027re specifying the hash.",
+      "revId": "47024a9ed27f1e22370e3ad868f085a69b10c6cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
