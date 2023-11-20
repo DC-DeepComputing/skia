@@ -16,6 +16,52 @@
       "message": "Changed some of the logic around. LMKWY! Also, please don\u0027t forget to +1 the parent CL (https://skia-review.googlesource.com/c/skia/+/777041/11) is the API looks good.",
       "revId": "1ab2e36a51325602248460e0131a94ea8276c5e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73f6c7fe_7d7acdb3",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-20T21:00:19Z",
+      "side": 1,
+      "message": "should these debugs statements be using our LOG stuff?",
+      "range": {
+        "startLine": 411,
+        "startChar": 8,
+        "endLine": 411,
+        "endChar": 16
+      },
+      "revId": "1ab2e36a51325602248460e0131a94ea8276c5e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faa2b0a9_69c433dd",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-20T21:00:19Z",
+      "side": 1,
+      "message": "I actually don\u0027t think we need this check. If we don\u0027t have a FormatInfo for the VkFormat in the vkTexInfo all the following 3 checks will return false (or I think those checks don\u0027t require a support format to be passed in).",
+      "range": {
+        "startLine": 416,
+        "startChar": 36,
+        "endLine": 416,
+        "endChar": 91
+      },
+      "revId": "1ab2e36a51325602248460e0131a94ea8276c5e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
