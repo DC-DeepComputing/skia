@@ -1022,7 +1022,7 @@ skia_shared_gpu_sources = [
   "$_src/gpu/DitherUtils.h",
   "$_src/gpu/GpuTypesPriv.h",
   "$_src/gpu/KeyBuilder.h",
-  "$_src/gpu/MutableTextureStateRef.h",
+  "$_src/gpu/MutableTextureState.cpp",
   "$_src/gpu/PipelineUtils.cpp",
   "$_src/gpu/PipelineUtils.h",
   "$_src/gpu/Rectanizer.h",
@@ -1106,6 +1106,8 @@ skia_shared_vk_sources = [
   "$_src/gpu/vk/VulkanInterface.h",
   "$_src/gpu/vk/VulkanMemory.cpp",
   "$_src/gpu/vk/VulkanMemory.h",
+  "$_src/gpu/vk/VulkanMutableTextureState.cpp",
+  "$_src/gpu/vk/VulkanMutableTextureStatePriv.h",
   "$_src/gpu/vk/VulkanUtilsPriv.cpp",
   "$_src/gpu/vk/VulkanUtilsPriv.h",
 ]
