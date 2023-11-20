@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a366076f_1fad8835",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-20T14:33:54Z",
+      "side": 1,
+      "message": "what\u0027s the context for this change?",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 41
+      },
+      "revId": "fdbe21eb560d9533a900cf9fc041ff99a0e61f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
