@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd40891f_96c2f682",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-20T21:19:21Z",
+      "side": 1,
+      "message": "Based on this comment, we could pack the float2 alphaSwizzle into these 2 free floats.",
+      "range": {
+        "startLine": 453,
+        "startChar": 7,
+        "endLine": 453,
+        "endChar": 59
+      },
+      "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c17b8c34_21a4cf89",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-20T21:19:21Z",
+      "side": 1,
+      "message": "This could be `kHalf2`.",
+      "range": {
+        "startLine": 872,
+        "startChar": 45,
+        "endLine": 872,
+        "endChar": 52
+      },
+      "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "230ecc53_d9aeba8f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-20T21:19:21Z",
+      "side": 1,
+      "message": "nit(?): Do these fit on one line now?",
+      "range": {
+        "startLine": 239,
+        "startChar": 44,
+        "endLine": 239,
+        "endChar": 56
+      },
+      "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ece6b868_e5ac5c07",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-20T21:19:21Z",
+      "side": 1,
+      "message": "Doing the cubic clamping here interacts weirdly if we have an alpha swizzle that would take values from the R channel. I\u0027m not sure what the best solution is, or if we should also be pushing all color space conversion into each sample?\n\nDoes Ganesh do cubic filtering, and then convert to the dst color space? Or does it convert each sample and then filter? Presumably HW filtering is doing the filtering in the source color space, so graphite\u0027s behavior is consistent with that.",
+      "range": {
+        "startLine": 299,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 56
+      },
+      "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
