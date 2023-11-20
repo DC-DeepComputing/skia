@@ -16,6 +16,24 @@
       "message": "nit: Move this up to line 15",
       "revId": "720209f3230c530f2106cc1771f6c1f6de7587df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "439a07b8_8d5b8d1c",
+        "filename": "tools/window/VulkanWindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-20T15:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8a66a8e_b37ded36",
+      "revId": "720209f3230c530f2106cc1771f6c1f6de7587df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
