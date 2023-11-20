@@ -20,6 +20,7 @@
 #include "src/gpu/ganesh/vk/GrVkImage.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanInterface.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSemaphore.h"
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 // windows wants to define this as CreateSemaphoreA or CreateSemaphoreW
@@ -537,8 +538,7 @@ sk_sp<SkSurface> VulkanWindowContext::getBackbufferSurface() {
 
     SkSurface* surface = fSurfaces[backbuffer->fImageIndex].get();
 
-    GrBackendSemaphore beSemaphore;
-    beSemaphore.initVulkan(semaphore);
+    GrBackendSemaphore beSemaphore = GrBackendSemaphores::MakeVk(semaphore);
 
     surface->wait(1, &beSemaphore);
 
@@ -550,8 +550,7 @@ void VulkanWindowContext::onSwapBuffers() {
     BackbufferInfo* backbuffer = fBackbuffers + fCurrentBackbufferIndex;
     SkSurface* surface = fSurfaces[backbuffer->fImageIndex].get();
 
-    GrBackendSemaphore beSemaphore;
-    beSemaphore.initVulkan(backbuffer->fRenderSemaphore);
+    GrBackendSemaphore beSemaphore = GrBackendSemaphores::MakeVk(backbuffer->fRenderSemaphore);
 
     GrFlushInfo info;
     info.fNumSemaphores = 1;
