@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc6754b_e4b93d65",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2293,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-20T21:04:36Z",
+      "side": 1,
+      "message": "Need typeface serialization procs?",
+      "range": {
+        "startLine": 2293,
+        "startChar": 18,
+        "endLine": 2293,
+        "endChar": 24
+      },
+      "revId": "7e86079a18de15d77bade57f7216d3ac213db193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9de3aff1_77d3efc7",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-20T21:04:36Z",
+      "side": 1,
+      "message": "Need deserialization procs in general?",
+      "range": {
+        "startLine": 2295,
+        "startChar": 86,
+        "endLine": 2295,
+        "endChar": 87
+      },
+      "revId": "7e86079a18de15d77bade57f7216d3ac213db193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
