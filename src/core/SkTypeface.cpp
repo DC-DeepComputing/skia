@@ -330,19 +330,27 @@ sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream, sk_sp<SkFontMgr>
             }
         }
 
+        // If we've gotten to here, we will try desperately to find something that might match
+        // as a kind of last ditch effort to make something work (and maybe this SkFontMgr knows
+        // something about the serialization and can look up the right thing by name anyway if
+        // the user provides it).
+        // Any time it is used the user will probably get the wrong glyphs drawn (and if they're
+        // right it is totally by accident). But sometimes drawing something or getting lucky
+        // while debugging is better than drawing nothing at all.
         SkDEBUGCODE(FactoryId id = desc.getFactoryId();)
         SkDEBUGF("Could not find factory %c%c%c%c for %s.\n",
                  (id >> 24) & 0xFF, (id >> 16) & 0xFF, (id >> 8) & 0xFF, (id >> 0) & 0xFF,
                  desc.getFamilyName());
 
+         for (const DecoderProc& proc : *decoders()) {
+            sk_sp<SkTypeface> typeface = proc.makeFromStream(desc.detachStream(),
+                                                             desc.getFontArguments());
+            if (typeface) {
+                return typeface;
+            }
+        }
+
         if (lastResortMgr) {
-            // If we've gotten to here, we will try desperately to find something that might match
-            // as a kind of last ditch effort to make something work (and maybe this SkFontMgr knows
-            // something about the serialization and can look up the right thing by name anyway if
-            // the user provides it).
-            // Any time it is used the user will probably get the wrong glyphs drawn (and if they're
-            // right it is totally by accident). But sometimes drawing something or getting lucky
-            // while debugging is better than drawing nothing at all.
             sk_sp<SkTypeface> typeface = lastResortMgr->makeFromStream(desc.detachStream(),
                                                                        desc.getFontArguments());
             if (typeface) {
