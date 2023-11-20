@@ -1,6 +1,6 @@
 module go.skia.org/skia
 
-go 1.19
+go 1.21
 
 require (
 	cloud.google.com/go/pubsub v1.8.3
