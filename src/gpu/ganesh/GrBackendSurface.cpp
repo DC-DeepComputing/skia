@@ -9,9 +9,9 @@
 
 #include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/MutableTextureState.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/MutableTextureStateRef.h"  // IWYU pragma: keep
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 
 #ifdef SK_METAL
@@ -419,7 +419,7 @@ GrBackendTexture& GrBackendTexture::operator=(const GrBackendTexture& that) {
     return *this;
 }
 
-sk_sp<skgpu::MutableTextureStateRef> GrBackendTexture::getMutableState() const {
+sk_sp<skgpu::MutableTextureState> GrBackendTexture::getMutableState() const {
     return fTextureData->getMutableState();
 }
 
@@ -682,7 +682,7 @@ GrBackendRenderTarget& GrBackendRenderTarget::operator=(const GrBackendRenderTar
     return *this;
 }
 
-sk_sp<skgpu::MutableTextureStateRef> GrBackendRenderTarget::getMutableState() const {
+sk_sp<skgpu::MutableTextureState> GrBackendRenderTarget::getMutableState() const {
     return fRTData->getMutableState();
 }
 

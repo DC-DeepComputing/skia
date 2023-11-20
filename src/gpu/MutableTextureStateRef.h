@@ -5,18 +5,19 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_MutableTextureStateRef_DEFINED
-#define skgpu_MutableTextureStateRef_DEFINED
+#ifndef skgpu_MutableTextureState_DEFINED
+#define skgpu_MutableTextureState_DEFINED
 
+#if 0
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/MutableTextureState.h"
 
 namespace skgpu {
 
-class MutableTextureStateRef : public SkRefCnt {
+class MutableTextureState : public SkRefCnt {
 public:
 #ifdef SK_VULKAN
-    MutableTextureStateRef(VkImageLayout layout, uint32_t queueFamilyIndex)
+    MutableTextureState(VkImageLayout layout, uint32_t queueFamilyIndex)
             : fState(layout, queueFamilyIndex) {}
 #endif
 
@@ -56,5 +57,7 @@ private:
 
 } // namespace skgpu
 
-#endif // skgpu_MutableTextureStateRef_DEFINED
+#endif
+
+#endif // skgpu_MutableTextureState_DEFINED
 
