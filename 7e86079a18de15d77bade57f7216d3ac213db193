@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1907240_4149c881",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1150,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-20T21:14:44Z",
+      "side": 1,
+      "message": "What is this cast? Holy cow, have we really never been able to fix this abomination? Wow, yep, sure enough `SK_PICT_TYPEFACE_TAG` really passes things this way still.",
+      "revId": "7e86079a18de15d77bade57f7216d3ac213db193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdc6754b_e4b93d65",
         "filename": "dm/DMSrcSink.cpp",
         "patchSetId": 2
