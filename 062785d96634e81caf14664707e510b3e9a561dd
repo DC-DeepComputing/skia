@@ -71,6 +71,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6f618295_68ba23e8",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1877,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-20T18:51:24Z",
+      "side": 1,
+      "message": "Yeah, I tried fixing some of that with SkMaskBuilder but never got through all these blitters. In general, anything that\u0027s a dst should be a SkMaskBuilder.",
+      "parentUuid": "d6eb5c8b_b8a80046",
+      "revId": "062785d96634e81caf14664707e510b3e9a561dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a6aaaeb9_f39ed44b",
         "filename": "src/core/SkBlitter.cpp",
         "patchSetId": 2

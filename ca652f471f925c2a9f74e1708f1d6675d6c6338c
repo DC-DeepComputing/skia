@@ -16,6 +16,29 @@
       "message": "I had to update some more stuff for Mac/Windows in later patchsets, but PS1 has a bunch of comments on it about specific areas.",
       "revId": "ca652f471f925c2a9f74e1708f1d6675d6c6338c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36da2d75_a72dcbb1",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-20T18:51:24Z",
+      "side": 1,
+      "message": "This should be `SkMaskBuilder`, which is what the one caller passes here. Looks like I missed that one previously.",
+      "range": {
+        "startLine": 301,
+        "startChar": 29,
+        "endLine": 301,
+        "endChar": 41
+      },
+      "revId": "ca652f471f925c2a9f74e1708f1d6675d6c6338c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
