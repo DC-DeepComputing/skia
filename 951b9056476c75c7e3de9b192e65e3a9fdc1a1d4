@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3fddeef_6ed3b4a6",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-20T21:21:12Z",
+      "side": 1,
+      "message": "I guess we don\u0027t use it if we never set it below, but I don\u0027t think this is default-initialized to zero",
+      "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd40891f_96c2f682",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 3
@@ -43,6 +60,23 @@
         "endLine": 872,
         "endChar": 52
       },
+      "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82957b85_1b581584",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-20T21:21:12Z",
+      "side": 1,
+      "message": "Can / should we remove this function now? (If so we could also take out the ReadSwizzle constants)",
       "revId": "951b9056476c75c7e3de9b192e65e3a9fdc1a1d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
