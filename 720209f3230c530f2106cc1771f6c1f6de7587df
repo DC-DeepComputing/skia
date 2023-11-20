@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8a66a8e_b37ded36",
+        "filename": "tools/window/VulkanWindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-20T15:39:59Z",
+      "side": 1,
+      "message": "nit: Move this up to line 15",
+      "revId": "720209f3230c530f2106cc1771f6c1f6de7587df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
