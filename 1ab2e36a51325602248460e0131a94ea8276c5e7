@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f57eef6a_a718ddc2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 67
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-20T20:19:49Z",
+      "side": 1,
+      "message": "Changed some of the logic around. LMKWY! Also, please don\u0027t forget to +1 the parent CL (https://skia-review.googlesource.com/c/skia/+/777041/11) is the API looks good.",
+      "revId": "1ab2e36a51325602248460e0131a94ea8276c5e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
