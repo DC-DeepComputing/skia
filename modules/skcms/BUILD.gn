@@ -35,6 +35,9 @@ arch("skcms_TransformHsw") {
   sources = skcms_TransformHsw
   if (is_win) {
     cflags = [ "/arch:AVX2" ]
+    if (is_clang) {
+      cflags += [ "/clang:-ffp-contract=off" ]
+    }
   } else {
     cflags = [
       "-mavx2",
@@ -49,6 +52,9 @@ arch("skcms_TransformSkx") {
   sources = skcms_TransformSkx
   if (is_win) {
     cflags = [ "/arch:AVX512" ]
+    if (is_clang) {
+      cflags += [ "/clang:-ffp-contract=off" ]
+    }
   } else {
     cflags = [
       "-mavx512f",
