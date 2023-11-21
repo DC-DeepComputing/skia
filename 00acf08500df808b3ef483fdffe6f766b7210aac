@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1780e147_fc96e6ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 68
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-21T17:42:35Z",
+      "side": 1,
+      "message": "Done; running CQ. TY! :^)",
+      "revId": "00acf08500df808b3ef483fdffe6f766b7210aac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

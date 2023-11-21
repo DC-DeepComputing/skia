@@ -22,6 +22,30 @@
       },
       "revId": "3509764ef4e72e867ccbf53c6371bbcece688314",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38803eb8_cd27830a",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 65
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-21T17:42:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bafe03b7_19655767",
+      "range": {
+        "startLine": 419,
+        "startChar": 37,
+        "endLine": 421,
+        "endChar": 69
+      },
+      "revId": "3509764ef4e72e867ccbf53c6371bbcece688314",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
