@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64d5c7be_9f381d57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-21T20:07:17Z",
+      "side": 1,
+      "message": "Chrome-Canary added to CQ bot list.\n\nFix for Chrome build here:\nhttps://skia-review.googlesource.com/c/skia/+/782016/1..2/gn/shared_sources.gni",
+      "revId": "3807f3b4c1a18e737b4cc3e87b20b5022f503c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
