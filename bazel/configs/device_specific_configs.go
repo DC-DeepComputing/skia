@@ -5,6 +5,10 @@
 
 package configs
 
+import (
+	"fmt"
+)
+
 // DeviceSpecificBazelConfig represents a Bazel config that communicates information about the
 // device under test to GM and benchmark tests.
 //
@@ -38,6 +42,16 @@ type DeviceSpecificBazelConfig struct {
 	// scheduled to run on a machine that corresponds with the device under test indicated by the
 	// Bazel config.
 	SwarmingDimensions map[string]string
+}
+
+// Model returns the "model" key in the Keys dictionary.
+func (d DeviceSpecificBazelConfig) Model() string {
+	model, ok := d.Keys["model"]
+	if !ok {
+		// Should never happen. We have a unit test that ensures all configs have this key.
+		panic(fmt.Sprintf("config %q does not contain key \"model\"", d.Name))
+	}
+	return model
 }
 
 // DeviceSpecificBazelConfigs contains all known device-specific Bazel configs.
@@ -532,6 +546,13 @@ var DeviceSpecificBazelConfigs = map[string]DeviceSpecificBazelConfig{
 			"os":    "Android",
 		},
 		GPU: "Adreno620",
+		// Based on
+		// https://skia.googlesource.com/skia/+/f8daeeb7f092abe1674bc2303c0781f9fb1756ab/infra/bots/gen_tasks_logic/gen_tasks_logic.go#836.
+		SwarmingDimensions: map[string]string{
+			"os":          "Android",
+			"device_type": "redfin",
+			"device_os":   "RD1A.200810.022.A4",
+		},
 	},
 	"Pixel5_Android12": {
 		Name: "Pixel5_Android12",
