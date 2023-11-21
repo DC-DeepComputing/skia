@@ -52,6 +52,13 @@ func writeDeviceFlagsFile(outputFile string) error {
 		// See https://bazel.build/docs/user-manual#strategy.
 		writeFlag(&sb, configName, "--strategy", "TestRunner=local")
 
+		// Pass the name of the Bazel configuration as an argument. Android tests use this to infer the
+		// model of the device under test. Specifically, adb_test_runner.go will take device-specific
+		// setup and teardown steps based on the model. C++ tests running on the same machine as Bazel
+		// will ignore this flag.
+		writeTestArgFlag(&sb, configName, "--device-specific-bazel-config")
+		writeTestArgFlag(&sb, configName, configName)
+
 		config := configs.DeviceSpecificBazelConfigs[configName]
 
 		// Sort keys for determinism.

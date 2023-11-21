@@ -128,6 +128,15 @@ static DEFINE_bool2(quiet, q, false, "if true, do not print status updates.");
 
 static DEFINE_bool2(verbose, v, false, "Enable verbose output from the test runner.");
 
+// Set in //bazel/configs/devicesrc but only consumed by adb_test_runner.go.
+[[maybe_unused]] static bool unused =
+        SkFlagInfo::CreateStringFlag("device-specific-bazel-config",
+                                     nullptr,
+                                     new CommandLineFlags::StringArray(),
+                                     nullptr,
+                                     "Ignored by this test runner.",
+                                     nullptr);
+
 // TODO(lovisolo): Move these flag validation utilities under //tools/testrunners.
 
 static void validate_string_flag_nonempty(std::string name, CommandLineFlags::StringArray flag) {
