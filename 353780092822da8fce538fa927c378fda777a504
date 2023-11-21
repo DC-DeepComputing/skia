@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f395daca_06857395",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-11-21T16:17:24Z",
+      "side": 1,
+      "message": "Please +1 again - approval got removed from rebase issues that added (but then later removed) additional files.",
+      "revId": "353780092822da8fce538fa927c378fda777a504",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
