@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f217d86_aa858782",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-21T00:00:25Z",
+      "side": 1,
+      "message": "Fix for the Build-Debian10-EMCC-wasm-Debug-CanvasKit_WebGPU bot broken by https://skia-review.googlesource.com/c/skia/+/780176",
+      "revId": "29ef69697d9627e27f8e692252cba428d8033c2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
