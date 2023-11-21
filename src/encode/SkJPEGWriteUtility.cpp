@@ -72,8 +72,8 @@ void skjpeg_error_exit(j_common_ptr cinfo) {
     /* Let the memory manager delete any temp files before we die */
     jpeg_destroy(cinfo);
 
-    if (error->fJmpBufStack.empty()) {
+    if (error->fStack[0] == nullptr) {
         SK_ABORT("JPEG error with no jmp_buf set.");
     }
-    longjmp(*error->fJmpBufStack.back(), -1);
+    longjmp(*error->fStack[0], -1);
 }
