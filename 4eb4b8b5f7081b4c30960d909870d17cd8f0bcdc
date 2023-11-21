@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1256051_e9772745",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-21T14:24:04Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to change anything for this CL, but I just foresee we\u0027ll hit bugs where someone adds a waiting operation somewhere and doesn\u0027t realize they need to be added to this list of disables and have alternative code paths. I guess we hope we have a decent enough amount of tests that try to mimic this no sync behavior and can catch it.",
+      "range": {
+        "startLine": 325,
+        "startChar": 8,
+        "endLine": 325,
+        "endChar": 31
+      },
+      "revId": "4eb4b8b5f7081b4c30960d909870d17cd8f0bcdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

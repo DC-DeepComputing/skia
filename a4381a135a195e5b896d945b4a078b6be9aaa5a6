@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b5231eb_fdc382a6",
+        "filename": "src/gpu/graphite/dawn/DawnAsyncWait.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-21T14:24:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e23f9491_9250b12e",
+      "revId": "a4381a135a195e5b896d945b4a078b6be9aaa5a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5e0fe04_2eea5561",
@@ -65,6 +83,24 @@
       "writtenOn": "2023-11-21T00:20:30Z",
       "side": 1,
       "message": "I moved this from src/gpu/dawn to src/gpu/graphite/dawn so that it could use DawnSharedContext (a Graphite type). Not sure if that was right or if I should have made a new file. It seemed like having shared Ganesh/Graphite dawn utils was no longer important now that Ganesh-Dawn is deleted.",
+      "revId": "a4381a135a195e5b896d945b4a078b6be9aaa5a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c850343_ed1b8bda",
+        "filename": "src/gpu/graphite/dawn/DawnUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-21T14:24:04Z",
+      "side": 1,
+      "message": "Yup definitely the right call. Not moving the shared utils to Dawn was an oversight when removing the Ganesh Dawn backend.",
+      "parentUuid": "e49bfa31_314f896d",
       "revId": "a4381a135a195e5b896d945b4a078b6be9aaa5a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
