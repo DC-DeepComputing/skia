@@ -93,10 +93,11 @@ generate_cpp_files_for_headers(
         "include/gpu/ganesh/SkImageGanesh.h",
         "include/gpu/ganesh/SkMeshGanesh.h",
         "include/gpu/ganesh/SkSurfaceGanesh.h",
+        "include/gpu/vk/VulkanMutableTextureState.h",
         "include/private/SkIDChangeListener.h",
         "include/private/SkWeakRefCnt.h",
+        "include/private/chromium/SkImageChromium.h",
         "include/private/gpu/ganesh/GrTextureGenerator.h",
         "include/private/gpu/ganesh/GrTypesPriv.h",
-        "include/private/chromium/SkImageChromium.h",
     ],
 )

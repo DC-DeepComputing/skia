@@ -162,6 +162,7 @@ generate_cpp_files_for_headers(
         "src/gpu/ganesh/GrBackendSurfacePriv.h",
         "src/gpu/ganesh/GrClip.h",
         "src/gpu/ganesh/gl/GrGLBackendSurfacePriv.h",
+        "src/gpu/vk/VulkanMutableTextureStatePriv.h",
         "src/image/SkImageGeneratorPriv.h",
     ],
 )
