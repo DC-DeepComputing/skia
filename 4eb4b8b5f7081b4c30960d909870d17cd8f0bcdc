@@ -22,6 +22,30 @@
       },
       "revId": "4eb4b8b5f7081b4c30960d909870d17cd8f0bcdc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "768da3c2_fdbba706",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-21T15:55:57Z",
+      "side": 1,
+      "message": "So that was why I was really determined to get the asserts into DawnTickDevice. I have a follow up CL to this one that adds a GM config, a flag for unit tests, and a new test bot so that we\u0027ll have lots of coverage. And the assert validates that there isn\u0027t any cheating.",
+      "parentUuid": "e1256051_e9772745",
+      "range": {
+        "startLine": 325,
+        "startChar": 8,
+        "endLine": 325,
+        "endChar": 31
+      },
+      "revId": "4eb4b8b5f7081b4c30960d909870d17cd8f0bcdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
