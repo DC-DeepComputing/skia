@@ -264,7 +264,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
     // regardless of the final dst surface.
     SkSurfaceProps defaultSurfaceProps;
 
-    // Use GrResourceProvider::MakeApprox to implement our own approximate size matching, but demand
+    // Use MakeApprox to implement our own approximate size matching, but demand
     // a "SkBackingFit::kExact" size match on the actual render target. We do this because the
     // filter will reach outside the src bounds, so we need to pre-clear these values to ensure a
     // "decal" sampling effect (i.e., ensure reads outside the src bounds return alpha=0).
@@ -273,7 +273,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
     // event that MakeApprox does not change the size, reads outside the right and/or bottom will do
     // the same. We should offset our filter within the render target and expand the size as needed
     // to guarantee at least 1px of padding on all sides.
-    auto approxSize = GrResourceProvider::MakeApprox(maskRect.size());
+    auto approxSize = skgpu::MakeApprox(maskRect.size());
     auto sdc = skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(rContext,
                                                                    GrColorType::kAlpha_8,
                                                                    nullptr,
