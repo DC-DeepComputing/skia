@@ -32,7 +32,7 @@ size_t GrSurface::ComputeSize(const GrBackendFormat& format,
     size_t colorSize;
 
     if (binSize) {
-        dimensions = GrResourceProvider::MakeApprox(dimensions);
+        dimensions = skgpu::MakeApprox(dimensions);
     }
 
     SkTextureCompressionType compressionType = GrBackendFormatToCompressionType(format);
