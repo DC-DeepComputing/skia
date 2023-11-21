@@ -13,6 +13,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
+#include "src/gpu/graphite/vk/VulkanFrameBuffer.h"
 
 namespace skgpu::graphite {
 

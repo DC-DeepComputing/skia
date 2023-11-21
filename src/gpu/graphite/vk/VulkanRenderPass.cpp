@@ -130,6 +130,15 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
         builder[builderIdx++] = kKeyValueUnused; // dependencyFlags
     }
 
+    int numSubpasses = 1;
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid()
+                               ? renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad
+                               : false;
+    if (loadMSAAFromResolve) {
+        numSubpasses++;
+    }
+    builder[builderIdx++] = numSubpasses;
+
     builder.finish();
     return key;
 }
@@ -235,6 +244,12 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
             resolveRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+            // VkImageView& resolveView = attachmentViews.push_back();
+            //auto vulkanResolveTexture = static_cast<const VulkanTexture*>(resolveTexture);
+            // resolveView = vulkanResolveTexture->getImageView(VulkanImageView::Usage::kAttachment)->
+            //               imageView();
+
         } else {
             resolveRef.attachment = VK_ATTACHMENT_UNUSED;
             resolveRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;

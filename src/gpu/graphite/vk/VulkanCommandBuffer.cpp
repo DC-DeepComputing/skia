@@ -584,7 +584,108 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     beginInfo.clearValueCount = clearValues.size();
     beginInfo.pClearValues = clearValues.begin();
 
-    // TODO: If needed, load MSAA from resolve
+    bool loadMSAAFromResolve =
+            resolveTexture ? renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad
+                           : false;
+    if (loadMSAAFromResolve) {
+        // We manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the MSAA attachment's load op should be LoadOp::kDiscard.
+        SkASSERT(renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kDiscard);
+
+        auto loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
+        this->bindGraphicsPipeline(loadPipeline.get());
+
+        // Actual attachment, not reference
+        VulkanTexture* msaaLoadDst = vulkanColorTexture;
+        // Resolve texture image from which to load MSAA
+        VulkanTexture* sourceResolveTexture = vulkanResolveTexture;
+        int dstWidth = msaaLoadDst->dimensions().width();
+        int dstHeight = msaaLoadDst->dimensions().height();
+
+        // Set dynamic viewport and stencil. We always use one viewport the size of the render
+        // target.
+        VkViewport viewport;
+        viewport.x = 0.0f;
+        viewport.y = 0.0f;
+        viewport.width = SkIntToScalar(dstWidth);
+        viewport.height = SkIntToScalar(dstHeight);
+        viewport.minDepth = 0.0f;
+        viewport.maxDepth = 1.0f;
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetViewport(fPrimaryCommandBuffer,
+                                   /*firstViewport=*/0,
+                                   /*viewportCount=*/1,
+                                   &viewport));
+
+        // We assume the scissor is not enabled so just set it to the whole render target
+        VkRect2D scissor;
+        scissor.extent.width = dstWidth;
+        scissor.extent.height = dstHeight;
+        scissor.offset.x = 0;
+        scissor.offset.y = 0;
+        this->setScissor(0, 0, dstWidth, dstHeight);
+
+        // LoadMSAAPipeline pipeline layout / descriptor set structure :
+        // Descriptor set #1 = uniforms (posXform... is that the same as rtAdjust?)
+        // descriptor set #2 = usually texture/samplers...
+
+        // dst rect edges in NDC (-1 to 1)
+        int w = dstWidth; // TODO - What should this actually be?
+        int h = dstHeight; // TODO - What should this actually be?
+        SkRect rect = {0,0,0,0};
+
+        float dx0 = 2.f * rect.fLeft / dstWidth - 1.f;
+        float dx1 = 2.f * (rect.fLeft + w) / dstWidth - 1.f;
+        float dy0 = 2.f * rect.fTop / dstHeight - 1.f;
+        float dy1 = 2.f * (rect.fTop + h) / dstHeight - 1.f;
+        float uniData[] = {dx1 - dx0, dy1 - dy0, dx0, dy0};  // posXform
+
+        // Update and bind uniform descriptor set
+
+    // GrResourceProvider* resourceProvider = gpu->getContext()->priv().resourceProvider();
+    // // TODO: Is it worth holding onto the last used uniform buffer and tracking the width, height,
+    // // dst width, and dst height so that we can use the buffer again without having to update the
+    // // data?
+    // sk_sp<GrGpuBuffer> uniformBuffer = resourceProvider->createBuffer(uniData,
+    //                                                                   sizeof(uniData),
+    //                                                                   GrGpuBufferType::kUniform,
+    //                                                                   kDynamic_GrAccessPattern);
+    // if (!uniformBuffer) {
+    //     return false;
+    // }
+    // GrVkBuffer* vkUniformBuffer = static_cast<GrVkBuffer*>(uniformBuffer.get());
+    // static_assert(GrVkUniformHandler::kUniformBufferDescSet < GrVkUniformHandler::kInputDescSet);
+//     commandBuffer->bindDescriptorSets(gpu, fPipelineLayout,
+//                                       GrVkUniformHandler::kUniformBufferDescSet,
+//                                       /*setCount=*/1, vkUniformBuffer->uniformDescriptorSet(),
+//                                       /*dynamicOffsetCount=*/0, /*dynamicOffsets=*/nullptr);
+//     commandBuffer->addGrBuffer(std::move(uniformBuffer));
+
+//     // Update the input descriptor set
+//     gr_rp<const GrVkDescriptorSet> inputDS = src->inputDescSetForMSAALoad(gpu);
+//     if (!inputDS) {
+//         return false;
+//     }
+//     commandBuffer->bindDescriptorSets(gpu, fPipelineLayout,
+//                                       GrVkUniformHandler::kInputDescSet, /*setCount=*/1,
+//                                       inputDS->descriptorSet(),
+//                                       /*dynamicOffsetCount=*/0, /*dynamicOffsets=*/nullptr);
+
+//     // We don't need to add the src and dst resources here since those are all tracked by the main
+//     // render pass code out in GrVkOpsRenderPass and GrVkRenderTarget::adResources.
+//     commandBuffer->addRecycledResource(std::move(inputDS));
+
+//     commandBuffer->draw(gpu, 4, 1, 0, 0);
+//
+
+        // commandBuffer->bind
+
+        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+    }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
     // beginning the render pass.

@@ -317,6 +317,48 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
                              /*VkAllocationCallbacks=*/nullptr));
 }
 
+sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
+        const RenderPassDesc& renderPassDesc) {
+    uint64_t renderPassKey =
+            this->vulkanSharedContext()->vulkanCaps().getRenderPassDescKey(renderPassDesc);
+    sk_sp<VulkanGraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey];
+
+    if (!pipeline) {
+        auto compatibleRenderPass =
+                this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
+        // The load msaa pipeline takes no uniforms, no vertex/instance attributes and only uses
+        // one texture that does not require a sampler.
+        if (fMSAALoadVertShaderModule   == VK_NULL_HANDLE ||
+            fMSAALoadFragShaderModule   == VK_NULL_HANDLE ||
+            fMSAALoadPipelineLayout     == VK_NULL_HANDLE) {
+            SkSL::Compiler compiler(fSharedContext->caps()->shaderCaps());
+            if (!VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
+                        this->vulkanSharedContext(),
+                        &compiler,
+                        &fMSAALoadVertShaderModule,
+                        &fMSAALoadFragShaderModule,
+                        &fMSAALoadShaderStageInfo[0],
+                        &fMSAALoadPipelineLayout)) {
+                return nullptr;
+                // TODO: Add log / warning here
+            }
+        }
+
+        pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(this->vulkanSharedContext(),
+                                                                fMSAALoadVertShaderModule,
+                                                                fMSAALoadFragShaderModule,
+                                                                &fMSAALoadShaderStageInfo[0],
+                                                                fMSAALoadPipelineLayout,
+                                                                compatibleRenderPass,
+                                                                this->pipelineCache());
+        if (pipeline) {
+            fLoadMSAAPipelines.set(renderPassKey, pipeline);
+        }
+    }
+
+    return pipeline;
+}
+
 sk_sp<VulkanSamplerYcbcrConversion>
         VulkanResourceProvider::findOrCreateCompatibleSamplerYcbcrConversion(
                 const VulkanYcbcrConversionInfo& ycbcrInfo) const {
