@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9a28fb3_32fe430e",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-11-21T17:25:27Z",
+      "side": 1,
+      "message": "This one used to run on Graphite. However, the image setup code didn\u0027t actually make a texture backed image on Graphite, so it was really just exercising the CPU backend and then drawing that into a Graphite canvas.",
+      "revId": "0e7ca9a3375894d08259282c7b6074119ded350e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
