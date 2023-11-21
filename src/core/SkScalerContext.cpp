@@ -298,8 +298,8 @@ SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::For
     return glyph;
 }
 
-static void applyLUTToA8Mask(const SkMask& mask, const uint8_t* lut) {
-    uint8_t* SK_RESTRICT dst = (uint8_t*)mask.fImage;
+static void applyLUTToA8Mask(SkMaskBuilder& mask, const uint8_t* lut) {
+    uint8_t* SK_RESTRICT dst = mask.image();
     unsigned rowBytes = mask.fRowBytes;
 
     for (int y = mask.fBounds.height() - 1; y >= 0; --y) {
@@ -1169,16 +1169,7 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     // Ex : deviceGamma(x) < paintGamma(x) and x is sufficiently large.
     rec->setDeviceGamma(SK_GAMMA_EXPONENT);
     rec->setPaintGamma(SK_GAMMA_EXPONENT);
-
-#ifdef SK_GAMMA_CONTRAST
     rec->setContrast(SK_GAMMA_CONTRAST);
-#else
-    // A value of 0.5 for SK_GAMMA_CONTRAST appears to be a good compromise.
-    // With lower values small text appears washed out (though correctly so).
-    // With higher values lcd fringing is worse and the smoothing effect of
-    // partial coverage is diminished.
-    rec->setContrast(0.5f);
-#endif
 
     if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kFakeGamma)) {
         rec->ignoreGamma();
