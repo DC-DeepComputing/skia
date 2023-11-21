@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d30720f_6b5bce9e",
+        "filename": "include/gpu/MutableTextureState.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-21T14:42:10Z",
+      "side": 1,
+      "message": "I don\u0027t expect this terse class name to live beyond the follow-up CL which removes the #ifdefs",
+      "range": {
+        "startLine": 74,
+        "startChar": 17,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "b015aac52ee3171e0261d5b3c945ec62a558acbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
