@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad789fa_35cdf24a",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T20:02:44Z",
+      "side": 1,
+      "message": "Yes, I think we can add a comment. In general, it\u0027s very dangerous to test a single codepoint for emoji.",
+      "parentUuid": "9f61bd02_c710442f",
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e78addd5_7dbe74e9",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-11-22T19:33:04Z",
       "side": 1,
       "message": "This naming is super confusing because Minikin has an `isEmojiBase` function which tests for `UCHAR_EMOJI_MODIFIER_BASE`. If it is possible to just change `isEmoji` to return true for `UCHAR_EMOJI` without breaking any current users, that would be better than adding this new name.",
+      "range": {
+        "startLine": 444,
+        "startChar": 9,
+        "endLine": 444,
+        "endChar": 20
+      },
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93c99a6f_5e567491",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T20:02:44Z",
+      "side": 1,
+      "message": "Honestly I am not sure about our current users anymore. I didn\u0027t know about Minikin (and yes, it makes the naming very confusing). The truth is that a user should not use isEmoji at all since it could lead to problems like I am trying to solve here.\nI could go with isEmojiComponentBase? And change isEmoji to return true only for UCHAR_EMOJI. (Two methods doing the same but I want to be more clear with what I am doing).",
+      "parentUuid": "e78addd5_7dbe74e9",
       "range": {
         "startLine": 444,
         "startChar": 9,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f525a4d_1211abe5",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T20:02:44Z",
+      "side": 1,
+      "message": "Should have done it a long time ago...",
+      "parentUuid": "f5142e3e_c43f71b2",
+      "range": {
+        "startLine": 21,
+        "startChar": 24,
+        "endLine": 21,
+        "endChar": 36
+      },
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "553cf0cf_e12912cb",
@@ -77,6 +143,24 @@
       "writtenOn": "2023-11-22T19:33:04Z",
       "side": 1,
       "message": "Please add some tests which start with an emoji sequence and then have\n1. trailing emoji sequence\n2. trailing non-emoji sequence\n\nThese tests are good for testing when the emoji sequence ends the string, but we also want some for then the string continues.",
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "564b4424_7436d732",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T20:02:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "553cf0cf_e12912cb",
       "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
