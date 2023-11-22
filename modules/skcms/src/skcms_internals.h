@@ -26,12 +26,16 @@ extern "C" {
         #define SKCMS_FALLTHROUGH [[clang::fallthrough]]
     #endif
 
-    #if __has_cpp_attribute(clang::musttail) && !__has_feature(memory_sanitizer) \
-                                             && !__has_feature(address_sanitizer)
-        // Sanitizers do not work well with [[clang::musttail]], and corrupt the src/dst pointers.
-        #define SKCMS_MUSTTAIL [[clang::musttail]]
-    #else
-        #define SKCMS_MUSTTAIL
+    #ifndef SKCMS_MUSTTAIL
+        // Sanitizers do not work well with [[clang::musttail]], and corrupt src/dst pointers.
+        // Tail-calls are a fairly new, optional feature in wasm and won't work everywhere.
+        #if __has_cpp_attribute(clang::musttail) && !__has_feature(memory_sanitizer) \
+                                                 && !__has_feature(address_sanitizer) \
+                                                 && !defined(__EMSCRIPTEN_major__)
+            #define SKCMS_MUSTTAIL [[clang::musttail]]
+        #else
+            #define SKCMS_MUSTTAIL
+        #endif
     #endif
 #endif
 
@@ -71,8 +75,7 @@ extern "C" {
 #endif
 
 // If we are in SKCMS_PORTABLE mode or running on a non-x86-64 platform, we can't enable HSW or SKX.
-// We also disable HSW/SKX on Android, even if it's Android on x64, since it's unlikely to benefit.
-#if defined(SKCMS_PORTABLE) || !defined(__x86_64__) || defined(ANDROID) || defined(__ANDROID__)
+#if defined(SKCMS_PORTABLE) || !defined(__x86_64__)
     #undef SKCMS_FORCE_HSW
     #if !defined(SKCMS_DISABLE_HSW)
         #define SKCMS_DISABLE_HSW 1
