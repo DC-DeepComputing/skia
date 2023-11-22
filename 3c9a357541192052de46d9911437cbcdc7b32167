@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b5a734e_393cb427",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T17:44:39Z",
+      "side": 1,
+      "message": "If you have text with bunch of emoji, then creating the storage for this vector will be a lot of tiny allocations. Also, the only information this vector contains which the caller does not already know is the location of the end of the run of emoji. In other words, this method could just return `const char*` which points to the end of the emoji run (which would be equal to the initial value of `*begin` at the beginning of this function if there is no run of emoji). In fact, this is what `begin` is updated to anyway.\n\nIt would be much faster to just let `defaultEmojiFallback` take a span and let it iterate over the span (using `nextUtf8Unit`) than it is to allocate vectors like this.",
+      "revId": "3c9a357541192052de46d9911437cbcdc7b32167",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
