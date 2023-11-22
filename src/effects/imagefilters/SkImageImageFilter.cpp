@@ -88,13 +88,13 @@ sk_sp<SkImageFilter> SkImageFilters::Image(sk_sp<SkImage> image,
             return sk_sp<SkImageFilter>(new SkImageImageFilter(
                     std::move(image), srcRect, dstRect, sampling));
         } else {
-            SkMatrix srcToDst = SkMatrix::RectToRect(srcRect, dstRect);
             if (!imageBounds.intersect(srcRect)) {
                 // No overlap, so draw empty
                 return SkImageFilters::Empty();
             }
 
             // Adjust dstRect to match the updated src (which is stored in imageBounds)
+            SkMatrix srcToDst = SkMatrix::RectToRect(srcRect, dstRect);
             SkRect mappedBounds = srcToDst.mapRect(imageBounds);
             if (mappedBounds.isEmpty()) {
                 return SkImageFilters::Empty();
