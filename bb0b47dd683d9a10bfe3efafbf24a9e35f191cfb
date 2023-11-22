@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f61bd02_c710442f",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T19:33:04Z",
+      "side": 1,
+      "message": "Do we have other existing users of `isEmoji`? Can it be removed? At the very least need to be deprecated and a comment added.",
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e78addd5_7dbe74e9",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T19:33:04Z",
+      "side": 1,
+      "message": "This naming is super confusing because Minikin has an `isEmojiBase` function which tests for `UCHAR_EMOJI_MODIFIER_BASE`. If it is possible to just change `isEmoji` to return true for `UCHAR_EMOJI` without breaking any current users, that would be better than adding this new name.",
+      "range": {
+        "startLine": 444,
+        "startChar": 9,
+        "endLine": 444,
+        "endChar": 20
+      },
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5142e3e_c43f71b2",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T19:33:04Z",
+      "side": 1,
+      "message": "Looks like this is being copied all over the place. Do we want to add a `SkUTF::NextUTF8WithReplacement` which does this?",
+      "range": {
+        "startLine": 21,
+        "startChar": 24,
+        "endLine": 21,
+        "endChar": 36
+      },
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "553cf0cf_e12912cb",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T19:33:04Z",
+      "side": 1,
+      "message": "Please add some tests which start with an emoji sequence and then have\n1. trailing emoji sequence\n2. trailing non-emoji sequence\n\nThese tests are good for testing when the emoji sequence ends the string, but we also want some for then the string continues.",
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
