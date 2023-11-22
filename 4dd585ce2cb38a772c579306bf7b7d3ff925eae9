@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99da0b4f_c3755e8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-11-22T19:51:38Z",
+      "side": 1,
+      "message": "Checked this locally and it looks like it fixes all the GM diffs.",
+      "revId": "4dd585ce2cb38a772c579306bf7b7d3ff925eae9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
