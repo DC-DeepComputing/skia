@@ -16,6 +16,24 @@
       "message": "Once this supports https://unicode.org/reports/tr51/#def_emoji_sequence or enough of it that you\u0027re ok with it, this lgtm. If we want to stop before fully implementing the specification though, we should have a comment here stating what is implemented.",
       "revId": "f66e16b5d41d0f3bca70b0e67d0e3ce23205ad16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "023b3eb7_d3a25c5b",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T23:24:42Z",
+      "side": 1,
+      "message": "Instead of trying to recreate grapheme detection I can use a grapheme break iterator to limit emoji detection to a single grapheme. That would remove the case of \"99\" (reducing it to \"9\") but keep flag emoji.\nWithin a single grapheme (cluster) I can check that the first codepoint is emoji-not-component or it requires another codepoint if it\u0027s emoji-and-component.",
+      "parentUuid": "22d21a2e_2b7e04c6",
+      "revId": "f66e16b5d41d0f3bca70b0e67d0e3ce23205ad16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
