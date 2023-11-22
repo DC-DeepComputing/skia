@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef skgpu_VulkanTypesPriv_DEFINED
-#define skgpu_VulkanTypesPriv_DEFINED
+#ifndef skgpu_VulkanMutableTextureState_DEFINED
+#define skgpu_VulkanMutableTextureState_DEFINED
 
 #include "include/gpu/vk/VulkanTypes.h"
 
@@ -53,5 +53,5 @@ private:
 
 } // namespace skgpu
 
-#endif // skgpu_VulkanGraphiteTypesPriv_DEFINED
+#endif // skgpu_VulkanMutableTextureState_DEFINED
 
