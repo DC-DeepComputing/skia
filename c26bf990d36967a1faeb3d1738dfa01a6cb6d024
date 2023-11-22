@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1bc8fd5_46a2c274",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T21:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd626a3b_9e147ff3",
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eab02117_0bfe0c8b",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-11-22T20:35:26Z",
       "side": 1,
       "message": "Remove.",
+      "range": {
+        "startLine": 138,
+        "startChar": 21,
+        "endLine": 138,
+        "endChar": 41
+      },
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c19e8e39_131f8c02",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T21:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eab02117_0bfe0c8b",
       "range": {
         "startLine": 138,
         "startChar": 21,
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc0cf844_6009f629",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T21:48:52Z",
+      "side": 1,
+      "message": "It\u0027s rather the first one.",
+      "parentUuid": "2c1ed6d9_c36fea6d",
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8654f941_1d1cd83d",
@@ -81,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65234bac_2b502813",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T21:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8654f941_1d1cd83d",
+      "range": {
+        "startLine": 121,
+        "startChar": 15,
+        "endLine": 121,
+        "endChar": 35
+      },
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3ce964a_c03f83fe",
@@ -94,6 +178,24 @@
       "writtenOn": "2023-11-22T20:35:26Z",
       "side": 1,
       "message": "Should add a flag (two regional indicators).",
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76607640_d63b7416",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-22T21:48:52Z",
+      "side": 1,
+      "message": "Well, the current code does not work for regional indicators.\nThey show up as emoji + emoji_component, exactly as the string \"99\" would show.\nI will add a special case for regionals, hope, it\u0027s not going to grow into full grapheme cluster detection.",
+      "parentUuid": "a3ce964a_c03f83fe",
       "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
