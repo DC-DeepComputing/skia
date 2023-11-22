@@ -16,6 +16,24 @@
       "message": "This is why I suggested that `MakeFontMgrRunIterator` just return a `TrivialFontRunIterator` if passed nullptr for `fFontMgr`. I suppose this is fine, but this will do a lot more work doing essentially the same thing (keep looking for fallback and not getting anything).\n\nIn other words, right here logically we want something like\n\n    fFontMgr ? std::make_unique\u003cSkShaper::TrivialFontRunIterator\u003e(fFont, utf8_bytes)\n             : SkShaper::MakeFontMgrRunIterator(...);\n             \nbut that logic might as well be in `MakeFontMgrRunIterator`.\n\nThough for now this seems fine to handle this (hopefully never intended) circumstance.",
       "revId": "b35346d84fd3381c0132285acce22e1956fe4dd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac95f65_1f199825",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-22T16:10:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a507b9dc_e70028f7",
+      "revId": "b35346d84fd3381c0132285acce22e1956fe4dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
