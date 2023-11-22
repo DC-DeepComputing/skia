@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd626a3b_9e147ff3",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T20:35:26Z",
+      "side": 1,
+      "message": "With the change to only return if the code point has the `EMOJI` property I don\u0027t think we should deprecate this, but we should have a comment like\n\n    /* Returns if a code point may start an emoji sequence.\n     * Returns true for \u0027#\u0027, \u0027*\u0027, and \u00270\u0027-\u00279\u0027 since they may start an emoji sequence.\n     * To determine if a list of code points begins with an emoji sequence, use\n     * getEmojiSequence.\n     */",
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eab02117_0bfe0c8b",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T20:35:26Z",
+      "side": 1,
+      "message": "Remove.",
+      "range": {
+        "startLine": 138,
+        "startChar": 21,
+        "endLine": 138,
+        "endChar": 41
+      },
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c1ed6d9_c36fea6d",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T20:35:26Z",
+      "side": 1,
+      "message": "May want to specify in a comment that the intent is to implement https://unicode.org/reports/tr51/#def_emoji_sequence to determine if the string of code points begins with an emoji sequence and, if so, return that sequence.\n\nOr is the intent more like https://unicode.org/reports/tr51/#EBNF_and_Regex ?",
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8654f941_1d1cd83d",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T20:35:26Z",
+      "side": 1,
+      "message": "Can now just be `isEmoji`.",
+      "range": {
+        "startLine": 121,
+        "startChar": 15,
+        "endLine": 121,
+        "endChar": 35
+      },
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3ce964a_c03f83fe",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T20:35:26Z",
+      "side": 1,
+      "message": "Should add a flag (two regional indicators).",
+      "revId": "c26bf990d36967a1faeb3d1738dfa01a6cb6d024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

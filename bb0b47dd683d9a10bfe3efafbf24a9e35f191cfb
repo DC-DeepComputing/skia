@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "924e66a3_2a7938fa",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T20:35:26Z",
+      "side": 1,
+      "message": "I\u0027d like to keep the names as close as possible to https://unicode.org/reports/tr51/#Emoji_Properties_and_Data_Files. If we\u0027re changing `isEmoji` as done here, then we can just remove this `isEmojiBase` / `IsEmojiComponentBase`. I don\u0027t want to add something with the name `IsEmojiComponentBase` since that\u0027s even more confusingly different from the terms used by Unicode and ICU.\n\nIn other words, at this point I think we can just not add this new method.",
+      "parentUuid": "93c99a6f_5e567491",
+      "range": {
+        "startLine": 444,
+        "startChar": 9,
+        "endLine": 444,
+        "endChar": 20
+      },
+      "revId": "bb0b47dd683d9a10bfe3efafbf24a9e35f191cfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5142e3e_c43f71b2",
         "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
         "patchSetId": 12
