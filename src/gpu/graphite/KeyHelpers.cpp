@@ -491,15 +491,18 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
 
     // Pack alpha swizzle in the unused coeff entries.
     switch (readSwizzle) {
-        case ReadSwizzle::kRGB1:
-        case ReadSwizzle::kRRR1:
-            coeffs.setRC(3, 3, 1.f);
-            break;
         case ReadSwizzle::k000R:
             coeffs.setRC(3, 1, 1.f);
+            coeffs.setRC(3, 3, 0.f);
+            break;
+        case ReadSwizzle::kRGB1:
+        case ReadSwizzle::kRRR1:
+            coeffs.setRC(3, 1, 0.f);
+            coeffs.setRC(3, 3, 1.f);
             break;
         default:
-            // do nothing, values already initialized to 0
+            coeffs.setRC(3, 1, 0.f);
+            coeffs.setRC(3, 3, 0.f);
             break;
     }
 
@@ -512,7 +515,7 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     SkASSERT(!imgData.fSampling.useCubic);
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kImageShader)
 
-    gatherer->write(SkSize::Make(imgData.fImgSize));
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(imgData.fSubset);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
@@ -527,7 +530,7 @@ void add_cubic_image_uniform_data(const ShaderCodeDictionary* dict,
     SkASSERT(imgData.fSampling.useCubic);
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kCubicImageShader)
 
-    gatherer->write(SkSize::Make(imgData.fImgSize));
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(imgData.fSubset);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
@@ -543,7 +546,7 @@ void add_hw_image_uniform_data(const ShaderCodeDictionary* dict,
     SkASSERT(!imgData.fSampling.useCubic);
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kHWImageShader)
 
-    gatherer->write(SkSize::Make(imgData.fImgSize));
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
 
     add_color_space_uniforms(imgData.fSteps, imgData.fReadSwizzle, gatherer);
 }
@@ -612,7 +615,7 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
                                 PipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kYUVImageShader)
 
-    gatherer->write(SkSize::Make(imgData.fImgSize));
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(imgData.fSubset);
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));

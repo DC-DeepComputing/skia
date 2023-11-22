@@ -864,7 +864,7 @@ std::string GenerateLocalMatrixPreamble(const ShaderInfo& shaderInfo,
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kImageShaderUniforms[] = {
-        { "imgSize",               SkSLType::kFloat2 },
+        { "invImgSize",            SkSLType::kFloat2 },
         { "subset",                SkSLType::kFloat4 },
         { "tilemodeX",             SkSLType::kInt },
         { "tilemodeY",             SkSLType::kInt },
@@ -878,7 +878,7 @@ static constexpr Uniform kImageShaderUniforms[] = {
 };
 
 static constexpr Uniform kCubicImageShaderUniforms[] = {
-        { "imgSize",               SkSLType::kFloat2 },
+        { "invImgSize",            SkSLType::kFloat2 },
         { "subset",                SkSLType::kFloat4 },
         { "tilemodeX",             SkSLType::kInt },
         { "tilemodeY",             SkSLType::kInt },
@@ -892,7 +892,7 @@ static constexpr Uniform kCubicImageShaderUniforms[] = {
 };
 
 static constexpr Uniform kHWImageShaderUniforms[] = {
-        { "imgSize",               SkSLType::kFloat2 },
+        { "invImgSize",            SkSLType::kFloat2 },
         // The next 5 uniforms are for the color space transformation
         { "csXformFlags",          SkSLType::kInt },
         { "csXformSrcKind",        SkSLType::kInt },
@@ -933,7 +933,7 @@ static constexpr char kHWImageShaderName[] = "sk_hw_image_shader";
 //--------------------------------------------------------------------------------------------------
 
 static constexpr Uniform kYUVImageShaderUniforms[] = {
-        { "imgSize",               SkSLType::kFloat2 },
+        { "invImgSize",            SkSLType::kFloat2 },
         { "subset",                SkSLType::kFloat4 },
         { "tilemodeX",             SkSLType::kInt },
         { "tilemodeY",             SkSLType::kInt },
