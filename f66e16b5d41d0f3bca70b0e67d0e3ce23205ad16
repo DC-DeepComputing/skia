@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d21a2e_2b7e04c6",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-22T22:17:05Z",
+      "side": 1,
+      "message": "Once this supports https://unicode.org/reports/tr51/#def_emoji_sequence or enough of it that you\u0027re ok with it, this lgtm. If we want to stop before fully implementing the specification though, we should have a comment here stating what is implemented.",
+      "revId": "f66e16b5d41d0f3bca70b0e67d0e3ce23205ad16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
