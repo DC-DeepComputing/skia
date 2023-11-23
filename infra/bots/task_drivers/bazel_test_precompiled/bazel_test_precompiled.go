@@ -24,6 +24,7 @@ import (
 	"go.skia.org/infra/task_driver/go/lib/auth_steps"
 	"go.skia.org/infra/task_driver/go/lib/os_steps"
 	"go.skia.org/infra/task_driver/go/td"
+	"go.skia.org/skia/bazel/device_specific_configs"
 	"go.skia.org/skia/infra/bots/task_drivers/common"
 	"google.golang.org/api/option"
 )
@@ -37,6 +38,9 @@ var (
 	command        = flag.String("command", "", "Path to the command to run (e.g. a shell script in a directory with CAS inputs).")
 	commandWorkDir = flag.String("command_workdir", "", "Path to the working directory of the command to run (e.g. a directory with CAS inputs).")
 	kind           = flag.String("kind", "", `Test kind ("benchmark", "gm" or "unit"). Required.`)
+
+	// Flags required by all Android tests.
+	deviceSpecificBazelConfigName = flag.String("device_specific_bazel_config", "", "Name of a Bazel config found in //bazel/devicesrc.")
 
 	// Flags used by benchmark and GM tests.
 	gitCommit        = flag.String("git_commit", "", "The git hash to which the data should be associated. This will be used when changelist_id and patchset_order are not set to report data to Gold that belongs on the primary branch.")
@@ -71,6 +75,12 @@ func main() {
 		testKind = unitTest
 	} else {
 		td.Fatal(ctx, skerr.Fmt("Unknown flag --kind value: %q", *kind))
+	}
+
+	if *deviceSpecificBazelConfigName != "" {
+		if _, ok := device_specific_configs.DeviceSpecificBazelConfigs[*deviceSpecificBazelConfigName]; !ok {
+			td.Fatal(ctx, skerr.Fmt("Unknown flag --device_specific_bazel_config value: %q", *deviceSpecificBazelConfigName))
+		}
 	}
 
 	wd, err := os_steps.Abs(ctx, *workdir)
@@ -109,9 +119,10 @@ func main() {
 			PatchsetOrder: *patchsetOrderStr,
 		},
 
-		testKind:       testKind,
-		commandPath:    filepath.Join(wd, *command),
-		commandWorkDir: filepath.Join(wd, *commandWorkDir),
+		testKind:                      testKind,
+		commandPath:                   filepath.Join(wd, *command),
+		commandWorkDir:                filepath.Join(wd, *commandWorkDir),
+		deviceSpecificBazelConfigName: *deviceSpecificBazelConfigName,
 
 		gcsClient: gcsClient,
 	}
@@ -141,10 +152,11 @@ type taskDriverArgs struct {
 	common.UploadToGoldArgs
 	common.BenchmarkInfo
 
-	commandPath          string
-	commandWorkDir       string
-	testKind             testKind
-	undeclaredOutputsDir string
+	commandPath                   string
+	commandWorkDir                string
+	testKind                      testKind
+	undeclaredOutputsDir          string
+	deviceSpecificBazelConfigName string
 
 	gcsClient gcs.GCSClient // Only used to upload benchmark results to Perf.
 }
@@ -159,7 +171,10 @@ func run(ctx context.Context, tdArgs taskDriverArgs) error {
 
 	var args []string
 	if tdArgs.testKind == benchmarkTest {
-		args = common.ComputeBenchmarkTestRunnerCLIFlags(ctx, tdArgs.BenchmarkInfo)
+		args = common.ComputeBenchmarkTestRunnerCLIFlags(tdArgs.BenchmarkInfo)
+	}
+	if tdArgs.deviceSpecificBazelConfigName != "" {
+		args = append(args, device_specific_configs.DeviceSpecificBazelConfigs[tdArgs.deviceSpecificBazelConfigName].TestRunnerArgs()...)
 	}
 
 	runCmd := &sk_exec.Command{
