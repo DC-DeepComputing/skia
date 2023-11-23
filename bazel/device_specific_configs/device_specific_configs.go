@@ -3,7 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package configs
+package device_specific_configs
 
 // DeviceSpecificBazelConfig represents a Bazel config that communicates information about the
 // device under test to GM and benchmark tests.
