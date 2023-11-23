@@ -17,6 +17,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"go.skia.org/skia/bazel/device_specific_configs"
 )
 
 const (
@@ -28,21 +30,8 @@ const (
 	adbTestOutputDirEnvVar = "ADB_TEST_OUTPUT_DIR"
 )
 
-type Device string
-
-const (
-	Pixel5 = Device("pixel_5")
-	Pixel7 = Device("pixel_7")
-)
-
-var AllDevices = []Device{
-	// TODO(lovisolo): Add more devices.
-	Pixel5,
-	Pixel7,
-}
-
 func main() {
-	deviceFlag := flag.String("device", "", `Device under test, e.g. "pixel_5".`)
+	deviceSpecificBazelConfigFlag := flag.String("device-specific-bazel-config", "", "The Bazel config corresponding to this Android device (see //bazel/devicesrc).")
 	benchmarkFlag := flag.Bool("benchmark", false, "Whether this is a benchmark terst or not. Might affect CPU/GPU settings, etc.")
 	archiveFlag := flag.String("archive", "", "Tarball with the payload to upload to the device under test.")
 	testRunnerFlag := flag.String("test-runner", "", "Path to the test runner inside the tarball.")
@@ -50,10 +39,14 @@ func main() {
 	outputDirFlag := flag.String("output-dir", "", "Path on the host machine where to write any outputs produced by the test.")
 	flag.Parse()
 
-	log("adb_test_runner invoked with arguments: %s", strings.Join(os.Args[1:], " "))
+	var quotedArgs []string
+	for _, arg := range os.Args[1:] {
+		quotedArgs = append(quotedArgs, fmt.Sprintf("%q", arg))
+	}
+	log("adb_test_runner invoked with arguments: %s", strings.Join(quotedArgs, " "))
 
-	if *deviceFlag == "" {
-		die("Flag --device is required.\n")
+	if *deviceSpecificBazelConfigFlag == "" {
+		die("Flag --device-specific-bazel-config is required.\n")
 	}
 	if *archiveFlag == "" {
 		die("Flag --archive is required.\n")
@@ -92,25 +85,20 @@ func main() {
 		}
 	}
 
-	var device Device
-	for _, d := range AllDevices {
-		if *deviceFlag == string(d) {
-			device = d
-		}
-	}
-	if device == "" {
-		die("Unknown device: %q\n", *deviceFlag)
+	deviceSpecificBazelConfig, ok := device_specific_configs.DeviceSpecificBazelConfigs[*deviceSpecificBazelConfigFlag]
+	if !ok {
+		die("Unknown device-specific Bazel config: %q\n", *deviceSpecificBazelConfigFlag)
 	}
 
 	ctx, cancelFn := context.WithTimeout(context.Background(), timeout)
 	defer cancelFn()
-	if err := runTest(ctx, device, *benchmarkFlag, *archiveFlag, *testRunnerFlag, *testRunnerExtraArgsFlag, *outputDirFlag); err != nil {
+	if err := runTest(ctx, deviceSpecificBazelConfig.Model(), *benchmarkFlag, *archiveFlag, *testRunnerFlag, *testRunnerExtraArgsFlag, *outputDirFlag); err != nil {
 		die("%s\n", err)
 	}
 }
 
 // runTest runs the test on device via adb.
-func runTest(ctx context.Context, device Device, benchmark bool, archive, testRunner, testRunnerExtraArgs, outputDir string) error {
+func runTest(ctx context.Context, model string, benchmark bool, archive, testRunner, testRunnerExtraArgs, outputDir string) error {
 	// TODO(lovisolo): Add any necessary device-specific setup steps such as turning cores on/off and
 	//                 setting the CPU/GPU frequencies, taking into account whether or not the test
 	//                 is a benchmark.
@@ -121,36 +109,36 @@ func runTest(ctx context.Context, device Device, benchmark bool, archive, testRu
 
 	// Clean up the device before running the test. Previous tests might have left the device in a
 	// dirty state.
-	cleanUpDevice := func(device Device) error {
-		return adb(ctx, "shell", "su", "root", "rm", "-rf", getArchivePathOnDevice(device), getArchiveExtractionDirOnDevice(device), getOutputDirOnDevice(device))
+	cleanUpDevice := func(model string) error {
+		return adb(ctx, "shell", "su", "root", "rm", "-rf", getArchivePathOnDevice(model), getArchiveExtractionDirOnDevice(model), getOutputDirOnDevice(model))
 	}
-	if err := cleanUpDevice(device); err != nil {
+	if err := cleanUpDevice(model); err != nil {
 		return fmt.Errorf("while cleaning up the device before running the test: %s", err)
 	}
 
 	// Also clean up device after running the test.
 	defer func() {
-		if err := cleanUpDevice(device); err != nil {
+		if err := cleanUpDevice(model); err != nil {
 			die(fmt.Sprintf("while cleaning up the device after running the test: %s\n", err))
 		}
 	}()
 
 	// Upload archive to device.
-	if err := adb(ctx, "push", archive, getArchivePathOnDevice(device)); err != nil {
+	if err := adb(ctx, "push", archive, getArchivePathOnDevice(model)); err != nil {
 		return fmt.Errorf("while pushing archive to device: %s", err)
 	}
 
 	// Extract archive.
-	if err := adb(ctx, "shell", "su", "root", "mkdir", "-p", getArchiveExtractionDirOnDevice(device)); err != nil {
+	if err := adb(ctx, "shell", "su", "root", "mkdir", "-p", getArchiveExtractionDirOnDevice(model)); err != nil {
 		return fmt.Errorf("while creating archive extraction directory on device: %s", err)
 	}
-	if err := adb(ctx, "shell", "su", "root", "tar", "xzvf", getArchivePathOnDevice(device), "-C", getArchiveExtractionDirOnDevice(device)); err != nil {
+	if err := adb(ctx, "shell", "su", "root", "tar", "xzvf", getArchivePathOnDevice(model), "-C", getArchiveExtractionDirOnDevice(model)); err != nil {
 		return fmt.Errorf("while extracting archive on device: %s", err)
 	}
 
 	// Create on-device output dir if necessary.
 	if outputDir != "" {
-		if err := adb(ctx, "shell", "su", "root", "mkdir", "-p", getOutputDirOnDevice(device)); err != nil {
+		if err := adb(ctx, "shell", "su", "root", "mkdir", "-p", getOutputDirOnDevice(model)); err != nil {
 			return fmt.Errorf("while creating output dir on device: %s", err)
 		}
 	}
@@ -159,11 +147,11 @@ func runTest(ctx context.Context, device Device, benchmark bool, archive, testRu
 	// variable.
 	outputDirEnvVar := ""
 	if outputDir != "" {
-		outputDirEnvVar = fmt.Sprintf("%s=%s", adbTestOutputDirEnvVar, getOutputDirOnDevice(device))
+		outputDirEnvVar = fmt.Sprintf("%s=%s", adbTestOutputDirEnvVar, getOutputDirOnDevice(model))
 	}
 
 	// Run test.
-	stdin := fmt.Sprintf("cd %s && %s %s %s", getArchiveExtractionDirOnDevice(device), outputDirEnvVar, testRunner, testRunnerExtraArgs)
+	stdin := fmt.Sprintf("cd %s && %s %s %s", getArchiveExtractionDirOnDevice(model), outputDirEnvVar, testRunner, testRunnerExtraArgs)
 	if err := adbWithStdin(ctx, stdin, "shell", "su", "root"); err != nil {
 		return fmt.Errorf("while running the test: %s", err)
 	}
@@ -171,12 +159,12 @@ func runTest(ctx context.Context, device Device, benchmark bool, archive, testRu
 	// Pull output files from the device if necessary.
 	if outputDir != "" {
 		// This will save the output files to <output dir>/<output dir on device>.
-		if err := adb(ctx, "pull", getOutputDirOnDevice(device), outputDir); err != nil {
-			return fmt.Errorf("while pulling on-device output dir %q into host output dir %q: %s", getOutputDirOnDevice(device), outputDir, err)
+		if err := adb(ctx, "pull", getOutputDirOnDevice(model), outputDir); err != nil {
+			return fmt.Errorf("while pulling on-device output dir %q into host output dir %q: %s", getOutputDirOnDevice(model), outputDir, err)
 		}
 
 		// But we want the output files to be placed in <output dir>, so we'll move them one by one.
-		srcDir := filepath.Join(outputDir, filepath.Base(getOutputDirOnDevice(device)))
+		srcDir := filepath.Join(outputDir, filepath.Base(getOutputDirOnDevice(model)))
 		dstDir := outputDir
 		entries, err := os.ReadDir(srcDir)
 		if err != nil {
@@ -202,7 +190,7 @@ func runTest(ctx context.Context, device Device, benchmark bool, archive, testRu
 
 // getArchivePathOnDevice returns the path in the device's file system where the archive should be
 // uploaded.
-func getArchivePathOnDevice(device Device) string {
+func getArchivePathOnDevice(model string) string {
 	// The /sdcard directory is writable by non-root users, but files in this directory cannot be
 	// executed. For this reason, we extract the archive in a directory under /data, which allows
 	// executing files but requires root privileges.
@@ -213,7 +201,7 @@ func getArchivePathOnDevice(device Device) string {
 
 // getArchiveExtractionDirOnDevice returns the directory in the device's file system where the
 // archive should be extracted.
-func getArchiveExtractionDirOnDevice(device Device) string {
+func getArchiveExtractionDirOnDevice(model string) string {
 	// This might change in the future based on the device type, whether or not it's rooted, etc.
 	return "/data/bazel-adb-test"
 }
@@ -221,7 +209,7 @@ func getArchiveExtractionDirOnDevice(device Device) string {
 // getOutputDirOnDevice returns the directory in the device's file system where the test should
 // write any output files. These files will then be copied from the device to the machine where adb
 // is running.
-func getOutputDirOnDevice(device Device) string {
+func getOutputDirOnDevice(model string) string {
 	// We have tests write output files to a directory under /sdcard, rather than /data, because the
 	// /data directory permissions make it impossible to "adb pull" from it.
 	//
