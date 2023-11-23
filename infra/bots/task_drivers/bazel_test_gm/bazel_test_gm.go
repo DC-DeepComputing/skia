@@ -49,8 +49,9 @@ var (
 
 func main() {
 	bazelFlags := common.MakeBazelFlags(common.MakeBazelFlagsOpts{
-		Label:  true,
-		Config: true,
+		Label:                true,
+		Config:               true,
+		DeviceSpecificConfig: true,
 	})
 
 	// StartRun calls flag.Parse().
@@ -80,8 +81,9 @@ func main() {
 			PatchsetOrder: *patchsetOrderStr,
 			TryjobID:      *tryjobID,
 		},
-		checkoutDir: filepath.Join(wd, "skia"),
-		bazelConfig: *bazelFlags.Config,
+		checkoutDir:               filepath.Join(wd, "skia"),
+		bazelConfig:               *bazelFlags.Config,
+		deviceSpecificBazelConfig: *bazelFlags.DeviceSpecificConfig,
 	}); err != nil {
 		td.Fatal(ctx, err)
 	}
@@ -92,8 +94,9 @@ func main() {
 type taskDriverArgs struct {
 	common.UploadToGoldArgs
 
-	checkoutDir string
-	bazelConfig string
+	checkoutDir               string
+	bazelConfig               string
+	deviceSpecificBazelConfig string
 }
 
 // run is the entrypoint of this task driver.
@@ -103,7 +106,7 @@ func run(ctx context.Context, bazelCacheDir string, tdArgs taskDriverArgs) error
 		return skerr.Wrap(err)
 	}
 
-	if err := bazelTest(ctx, tdArgs.checkoutDir, tdArgs.BazelLabel, tdArgs.bazelConfig); err != nil {
+	if err := bazelTest(ctx, tdArgs.checkoutDir, tdArgs.BazelLabel, tdArgs.bazelConfig, tdArgs.deviceSpecificBazelConfig); err != nil {
 		return skerr.Wrap(err)
 	}
 
@@ -122,13 +125,14 @@ func run(ctx context.Context, bazelCacheDir string, tdArgs taskDriverArgs) error
 
 // bazelTest runs the test referenced by the given fully qualified Bazel label under the given
 // config.
-func bazelTest(ctx context.Context, checkoutDir, label, config string) error {
+func bazelTest(ctx context.Context, checkoutDir, label, config, deviceSpecificConfig string) error {
 	return td.Do(ctx, td.Props(fmt.Sprintf("Test %s with config %s", label, config)), func(ctx context.Context) error {
 		runCmd := &sk_exec.Command{
 			Name: "bazelisk",
 			Args: []string{"test",
 				label,
-				"--config=" + config, // Should be defined in //bazel/buildrc.
+				"--config=" + config,               // Should be defined in //bazel/buildrc.
+				"--config=" + deviceSpecificConfig, // Should be defined in //bazel/configs/devicesrc.
 				"--test_output=errors",
 				"--jobs=100",
 			},
