@@ -25,6 +25,7 @@ import (
 	"go.skia.org/infra/go/cas/rbe"
 	"go.skia.org/infra/go/cipd"
 	"go.skia.org/infra/task_scheduler/go/specs"
+	"go.skia.org/skia/bazel/configs"
 )
 
 const (
@@ -2455,11 +2456,18 @@ func (b *jobBuilder) bazelTest() {
 			panic("Unsupported Bazel taskdriver " + taskdriverName)
 		}
 
+		// The "cross" part of the task name can be either a Bazel config_setting or a device-specific
+		// Bazel configuration.
+		deviceSpecificBazelConfigName := ""
 		if cross != "" {
-			// The cross (and host) platform is expected to be defined in
-			// //bazel/common_config_settings/BUILD.bazel
-			cross = "//bazel/common_config_settings:" + cross
-			cmd = append(cmd, "--cross="+cross)
+			if deviceSpecificBazelConfig, ok := configs.DeviceSpecificBazelConfigs[cross]; ok {
+				deviceSpecificBazelConfigName = deviceSpecificBazelConfig.Name
+			} else {
+				// The cross (and host) platform is expected to be defined in
+				// //bazel/common_config_settings/BUILD.bazel
+				cross = "//bazel/common_config_settings:" + cross
+				cmd = append(cmd, "--cross="+cross)
+			}
 		}
 
 		if host == "linux_x64" {
@@ -2477,36 +2485,18 @@ func (b *jobBuilder) bazelTest() {
 			// This task precompiles the test and stores it to CAS.
 			b.dep(fmt.Sprintf("BazelBuild-%s-%s-linux_x64", shorthand, config))
 
-			// Normalize device name in the format used by the androidDeviceInfos map.
-			normalizedDeviceNameFromConfig, ok := map[string]string{
-				// TODO(lovisolo): Add more devices.
-				"pixel_5": "Pixel5",
-				"pixel_7": "Pixel7",
-			}[config]
-			if !ok {
-				log.Fatalf("Unknown device name derived from config %q.", config)
-			}
-
-			// Look up device type and OS.
-			deviceInfo, ok := androidDeviceInfos[normalizedDeviceNameFromConfig]
-			if !ok {
-				log.Fatalf("Entry %q not found in Android mapping.", normalizedDeviceNameFromConfig)
-			}
-			deviceType := deviceInfo[0]
-			deviceOS := deviceInfo[1]
-
-			// We have more Pixel 5 devices running Android 12 than Android 11.
-			if normalizedDeviceNameFromConfig == "Pixel5" {
-				deviceOS = "SP2A.220305.012"
-			}
-
 			// Set dimensions.
-			b.dimension(
-				"os:Android",
-				fmt.Sprintf("device_type:%s", deviceType),
-				fmt.Sprintf("device_os:%s", deviceOS),
-				fmt.Sprintf("pool:%s", b.cfg.Pool),
-			)
+			deviceSpecificBazelConfig := configs.DeviceSpecificBazelConfigs[deviceSpecificBazelConfigName]
+			if len(deviceSpecificBazelConfig.SwarmingDimensions) == 0 {
+				log.Fatalf("Device-specific Bazel config %q does not provide Swarming dimensions.", deviceSpecificBazelConfigName)
+			}
+			var dimensions []string
+			for name, value := range deviceSpecificBazelConfig.SwarmingDimensions {
+				dimensions = append(dimensions, fmt.Sprintf("%s:%s", name, value))
+			}
+			dimensions = append(dimensions, fmt.Sprintf("pool:%s", b.cfg.Pool))
+			sort.Strings(dimensions)
+			b.dimension(dimensions...)
 		} else if taskdriverName == "bazel_test_benchmark" {
 			// Chosen on 2023-10-19 based on the following criteria:
 			//

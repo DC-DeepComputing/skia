@@ -109,13 +109,6 @@ func UploadToGold(ctx context.Context, utgArgs UploadToGoldArgs, outputsZIPOrDir
 			return skerr.Wrap(err)
 		}
 
-		// Prepare task-specific key:value pairs.
-		var taskSpecificKeyValuePairs []string
-		for k, v := range ComputeGoldAndPerfKeyValuePairs(ctx) {
-			taskSpecificKeyValuePairs = append(taskSpecificKeyValuePairs, k+":"+v)
-		}
-		sort.Strings(taskSpecificKeyValuePairs) // Sort for determinism.
-
 		// Initialize goldctl.
 		args := []string{
 			"imgtest", "init",
@@ -136,9 +129,6 @@ func UploadToGold(ctx context.Context, utgArgs UploadToGoldArgs, outputsZIPOrDir
 				"--changelist", utgArgs.ChangelistID,
 				"--patchset", utgArgs.PatchsetOrder,
 				"--jobid", utgArgs.TryjobID)
-		}
-		for _, kv := range taskSpecificKeyValuePairs {
-			args = append(args, "--key", kv)
 		}
 		if err := goldctl(ctx, utgArgs.GoldctlPath, args...); err != nil {
 			return skerr.Wrap(err)
