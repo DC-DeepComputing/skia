@@ -1178,6 +1178,9 @@ GrOp::CombineResult MeshOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, const Gr
         return CombineResult::kCannotCombine;
     }
 
+    if (fVertexCount + that->fVertexCount > SkToInt(INT32_MAX)) {
+        return CombineResult::kCannotCombine;
+    }
     if (SkToBool(fIndexCount) != SkToBool(that->fIndexCount)) {
         return CombineResult::kCannotCombine;
     }
