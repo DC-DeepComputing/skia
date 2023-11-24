@@ -16,6 +16,24 @@
       "message": "Clement, please confirm that this solves the issue at hand! Thank you :)",
       "revId": "243b4acc705e3e72b4b39db3e7cef80bf11c4924",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dabe1f4_9b696fa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21919
+      },
+      "writtenOn": "2023-11-24T15:49:15Z",
+      "side": 1,
+      "message": "Thank you, John. This does solve the issue against our poc as well as the one directly taken from the exploit.",
+      "parentUuid": "93354fc6_aad94305",
+      "revId": "243b4acc705e3e72b4b39db3e7cef80bf11c4924",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
