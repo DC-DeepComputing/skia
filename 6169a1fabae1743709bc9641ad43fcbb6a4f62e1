@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "994d3696_f528bb8e",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1187,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-26T03:05:13Z",
+      "side": 1,
+      "message": "Flutter builder (roll blocker) says...\n\n    FAILED: obj/flutter/third_party/skia/src/gpu/ganesh/ops/gpu.DrawMeshOp.o \n    /b/s/w/ir/cache/goma/client/gomacc  ../../buildtools/linux-x64/clang/bin/clang++ -MD -MF obj/flutter/third_party/skia/src/gpu/ganesh/ops/gpu.DrawMeshOp.o.d --target\u003daarch64-fuchsia --sysroot ../../fuchsia/sdk/linux/arch/arm64/sysroot  -DUSE_OPENSSL\u003d1 -D_FILE_OFFSET_BITS\u003d64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_FORTIFY_SOURCE\u003d2 -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS -D_LIBCPP_ENABLE_THREAD_SAFETY_ANNOTATIONS -DNDEBUG -DNVALGRIND -DDYNAMIC_ANNOTATIONS_ENABLED\u003d0 -DSK_R32_SHIFT\u003d16 -DSK_ENABLE_DUMP_GPU -DSK_FORCE_AAA -DSK_LEGACY_IGNORE_DRAW_VERTICES_BLEND_WITH_NO_SHADER -DSK_DISABLE_LEGACY_GRDIRECTCONTEXT_BOOLS -DSK_DISABLE_LEGACY_GRDIRECTCONTEXT_FLUSH -DSK_RESOLVE_FILTERS_BEFORE_RESTORE -DSK_DISABLE_LEGACY_SHADERCONTEXT -DSK_DISABLE_LOWP_RASTER_PIPELINE -DSK_FORCE_RASTER_PIPELINE_BLITTER -DSK_METAL_WAIT_UNTIL_SCHEDULED -DSK_ENABLE_PRECOMPILE -DSK_GANESH -DSK_GAMMA_APPLY_TO_A8 -DSKIA_IMPLEMENTATION\u003d1 -DSK_VULKAN -I../.. -Igen -I../../flutter/third_party/skia -I../../fuchsia/sdk/linux/pkg/vulkan/include -I../../fuchsia/sdk/linux/pkg/fdio/include -I../../fuchsia/sdk/linux/pkg/trace-engine/include -I../../fuchsia/sdk/linux/pkg/async/include -I../../fuchsia/sdk/linux/pkg/fit/include -I../../fuchsia/sdk/linux/pkg/stdcompat/include -I../../fuchsia/sdk/linux/pkg/fit-promise/include -fno-strict-aliasing -fcolor-diagnostics -ffuchsia-api-level\u003d12 -Wall -Wextra -Wendif-labels -Werror -Wno-missing-field-initializers -Wno-unused-parameter -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-implicit-int-float-conversion -Wno-deprecated-copy -Wno-psabi -Wno-deprecated-literal-operator -Wno-unqualified-std-cast-call -fvisibility\u003dhidden -Wstring-conversion -Wnewline-eof -Oz -fno-ident -fdata-sections -ffunction-sections -g2 -fvisibility-inlines-hidden -std\u003dc++17 -fno-rtti -fno-exceptions -c \n    ../../flutter/third_party/skia/src/gpu/ganesh/ops/DrawMeshOp.cpp -o obj/flutter/third_party/skia/src/gpu/ganesh/ops/gpu.DrawMeshOp.o\n    ../../flutter/third_party/skia/src/gpu/ganesh/ops/DrawMeshOp.cpp:1187:47: error: comparison of integers of different signs: \u0027int\u0027 and \u0027unsigned int\u0027 [-Werror,-Wsign-compare]\n     1187 |     if (SkToBool(fIndexCount) \u0026\u0026 fVertexCount \u003e UINT16_MAX - that-\u003efVertexCount) {\n          |                                  ~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+      "revId": "6169a1fabae1743709bc9641ad43fcbb6a4f62e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
