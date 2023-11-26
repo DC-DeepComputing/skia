@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f9e131_eb778da0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Yes, the code is not hooked up in Skia repo. I have tested the code via Pdfium and it works well. I will address this once I return from my vacation.",
+      "parentUuid": "4980ce11_5da24eca",
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "655f1553_4bc56cf1",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-11-16T16:45:18Z",
       "side": 1,
       "message": "nit: remove whitespace at the end of lines",
+      "range": {
+        "startLine": 334,
+        "startChar": 40,
+        "endLine": 334,
+        "endChar": 41
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6038c47f_a6e04a9a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "655f1553_4bc56cf1",
       "range": {
         "startLine": 334,
         "startChar": 40,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cf3abf6_3c414a6e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "For the blend implementation, using x86 MSVC v19.latest compiler, the code generation is as follows:\n        mov     eax, -2147483648\n        vpbroadcastd zmm3, eax\n        vpandd  zmm0, zmm0, zmm3\n        vptestmd k1, zmm0, zmm0\n        vblendmps zmm0 {k1}, zmm2, zmm1\n        ret     0\nFor the bitmasking way, the code generation is:\n        vpandnd zmm2, zmm0, zmm2\n        vpandd  zmm0, zmm1, zmm0\n        vpord   zmm0, zmm0, zmm2\n        ret     0\nThe method using bitmasking requires fewer cycles compared to the blend implementation. I conducted tests on various workloads and observed no significant difference in terms of performance.\nI found out we can use the ternarylogic avx512 instruction \"vpternlogq zmm0, zmm1, zmm2, 202\" to replace the three bitmask instructions.",
+      "parentUuid": "1b8ee916_cf5e1223",
+      "range": {
+        "startLine": 338,
+        "startChar": 9,
+        "endLine": 338,
+        "endChar": 53
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff31bc80_479f7b95",
@@ -104,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40449967_523601f3",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff31bc80_479f7b95",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 83
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edffd57b_53f78a49",
@@ -117,6 +207,30 @@
       "writtenOn": "2023-11-16T16:45:18Z",
       "side": 1,
       "message": "What is wrong with \n\n```\n        __mmask8 mask64 \u003d _mm512_test_epi64_mask(c, c);\n        return mask64 !\u003d 0;\n```",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 0
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d040c0f9_c3da878a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Done, fixed it.",
+      "parentUuid": "edffd57b_53f78a49",
       "range": {
         "startLine": 342,
         "startChar": 0,
@@ -198,6 +312,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66942e21_634d32a0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Done, fixed it.",
+      "parentUuid": "56ca8bc1_793b9c14",
+      "range": {
+        "startLine": 348,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 0
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0ff77e9_79fe8e7f",
@@ -211,6 +349,30 @@
       "writtenOn": "2023-11-16T16:45:18Z",
       "side": 1,
       "message": "nit: wrap lines \u003e100 chars (throughout)",
+      "range": {
+        "startLine": 400,
+        "startChar": 75,
+        "endLine": 400,
+        "endChar": 92
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac4f531d_8d5ba9f5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0ff77e9_79fe8e7f",
       "range": {
         "startLine": 400,
         "startChar": 75,
@@ -244,6 +406,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58947b07_8bd91af0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Yes, good catch.",
+      "parentUuid": "3341ed56_427acaa6",
+      "range": {
+        "startLine": 456,
+        "startChar": 16,
+        "endLine": 456,
+        "endChar": 67
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d0e4dd_cf6cb8d7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "Yes, good catch, I changed it.",
+      "parentUuid": "3341ed56_427acaa6",
+      "range": {
+        "startLine": 456,
+        "startChar": 16,
+        "endLine": 456,
+        "endChar": 67
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89b86332_19bbf8c4",
@@ -267,6 +477,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62c35158_b5e660a6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4701,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "You are right, I removed all the unnecessary checks.",
+      "parentUuid": "89b86332_19bbf8c4",
+      "range": {
+        "startLine": 4681,
+        "startChar": 0,
+        "endLine": 4701,
+        "endChar": 6
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86294591_00784e8b",
@@ -280,6 +514,30 @@
       "writtenOn": "2023-11-16T16:45:18Z",
       "side": 1,
       "message": "Why add the extra indirection _only_ for AVX512? I think there might be merit to this if we did it universally, so that all these helpers lived in\n\n`#if defined(JUMPER_IS_xxxxxxx)`\n\nblock above. That\u0027s how we do in highp and it\u0027s slightly nicer. But right now AVX-512 is out-of-line, and every other platform is inline; it\u0027s strange that AVX-512 is done differently.\n\nThis isn\u0027t a big deal, but ideally we could move all the platform lowp helpers into the `#if defined(JUMPER...)` blocks above. (If you want to tackle this, do it in a separate earlier CL?)",
+      "range": {
+        "startLine": 4733,
+        "startChar": 0,
+        "endLine": 4735,
+        "endChar": 28
+      },
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "965fc54b_45c9154b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4735,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2023-11-26T07:08:09Z",
+      "side": 1,
+      "message": "I removed the function calls and just call the AVX512 intrinsic directly.",
+      "parentUuid": "86294591_00784e8b",
       "range": {
         "startLine": 4733,
         "startChar": 0,
