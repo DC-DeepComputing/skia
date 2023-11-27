@@ -45,6 +45,54 @@
       },
       "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f4494a_8ce41873",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-27T16:49:39Z",
+      "side": 1,
+      "message": "1. If we do not return codepoint from this method, the caller has to do exactly what\u0027s already been done call NextUTF8WithReplacement again. \n2. We do need this codepoint so it\u0027s really convenient to have it as a result of a method. I can rename it to getEmojiSequenceStartingCodepoint to be more explicit.",
+      "parentUuid": "12f96612_52d3716e",
+      "range": {
+        "startLine": 122,
+        "startChar": 43,
+        "endLine": 122,
+        "endChar": 78
+      },
+      "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba24cf9a_9486110f",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-27T16:49:39Z",
+      "side": 1,
+      "message": "Start was added because I really don\u0027t want to parse the entire sequence. I do just enough to get the first codepoint and ensure that it starts an emoji sequence (any type of emoji sequence).",
+      "parentUuid": "cc36cfe4_1f9927cd",
+      "range": {
+        "startLine": 122,
+        "startChar": 37,
+        "endLine": 122,
+        "endChar": 42
+      },
+      "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
