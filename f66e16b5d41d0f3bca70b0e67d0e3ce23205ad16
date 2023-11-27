@@ -34,6 +34,24 @@
       "parentUuid": "22d21a2e_2b7e04c6",
       "revId": "f66e16b5d41d0f3bca70b0e67d0e3ce23205ad16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a2ee19f_1dcd8ad0",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-27T15:43:30Z",
+      "side": 1,
+      "message": "I analyzed the definition and I think I managed to extract the minimum I need to check to make sure it\u0027s a start of an emoji sequence. I do not check for the full sequence or for its correctness. All I need to know is that I have to apply a specific hard-coded emoji font here before anything else.",
+      "parentUuid": "023b3eb7_d3a25c5b",
+      "revId": "f66e16b5d41d0f3bca70b0e67d0e3ce23205ad16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
