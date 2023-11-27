@@ -117,6 +117,30 @@
       },
       "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f86bdf3b_e916ec4a",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-11-27T19:27:43Z",
+      "side": 1,
+      "message": "Yes, it\u0027s a very reasonable. I might consider adding getEmojiSequence if there is a request for that. For now I am moving code to SkParagraph.",
+      "parentUuid": "368728d8_302beec1",
+      "range": {
+        "startLine": 122,
+        "startChar": 43,
+        "endLine": 122,
+        "endChar": 78
+      },
+      "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
