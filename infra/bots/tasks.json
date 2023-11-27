@@ -10,9 +10,9 @@
         "BazelBuild-all_tests-release-linux_x64"
       ]
     },
-    "BazelBuild-android_math_test-pixel_5-linux_x64": {
+    "BazelBuild-android_math_test-for_android_arm64-linux_x64": {
       "tasks": [
-        "BazelBuild-android_math_test-pixel_5-linux_x64"
+        "BazelBuild-android_math_test-for_android_arm64-linux_x64"
       ]
     },
     "BazelBuild-base-enforce_iwyu-linux_x64": {
@@ -25,9 +25,9 @@
         "BazelBuild-base-release-linux_x64"
       ]
     },
-    "BazelBuild-cpu_8888_benchmark_android_test-pixel_5-linux_x64": {
+    "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64-linux_x64": {
       "tasks": [
-        "BazelBuild-cpu_8888_benchmark_android_test-pixel_5-linux_x64"
+        "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64-linux_x64"
       ]
     },
     "BazelBuild-example_hello_world_gl-release-linux_x64": {
@@ -40,9 +40,9 @@
         "BazelBuild-example_hello_world_vulkan-release-linux_x64"
       ]
     },
-    "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64": {
+    "BazelBuild-hello_bazel_world_android_test-for_android_arm64-linux_x64": {
       "tasks": [
-        "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64"
+        "BazelBuild-hello_bazel_world_android_test-for_android_arm64-linux_x64"
       ]
     },
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
@@ -65,9 +65,9 @@
         "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64"
       ]
     },
-    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64": {
+    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "tasks": [
-        "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64"
+        "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11"
       ]
     },
     "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
@@ -105,24 +105,24 @@
         "BazelTest-external_client-write_text_to_png-default-linux_x64"
       ]
     },
-    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "tasks": [
-        "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64"
+        "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11"
       ]
     },
-    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "tasks": [
-        "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-pixel_5-linux_arm64"
+        "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64-linux_arm64-Pixel5_Android12"
       ]
     },
-    "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "tasks": [
-        "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64"
+        "BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64-linux_arm64-Pixel5_Android12"
       ]
     },
-    "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_test-android_math_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "tasks": [
-        "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64"
+        "BazelTest-precompiled_test-android_math_test-for_android_arm64-linux_arm64-Pixel5_Android12"
       ]
     },
     "BazelTest-toolchain_layering_check-experimental_bazel_test_client-release-linux_x64": {
@@ -3805,7 +3805,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-android_math_test-pixel_5-linux_x64": {
+    "BazelBuild-android_math_test-for_android_arm64-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -3823,9 +3823,9 @@
         "bazel_build_task_driver/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-android_math_test-pixel_5-linux_x64",
+        "--task_name=BazelBuild-android_math_test-for_android_arm64-linux_x64",
         "--bazel_label=//tests:android_math_test",
-        "--bazel_config=pixel_5",
+        "--bazel_config=for_android_arm64",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=.",
         "--out_path=bazel_output",
@@ -3940,7 +3940,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-cpu_8888_benchmark_android_test-pixel_5-linux_x64": {
+    "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -3958,9 +3958,9 @@
         "bazel_build_task_driver/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-cpu_8888_benchmark_android_test-pixel_5-linux_x64",
+        "--task_name=BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64-linux_x64",
         "--bazel_label=//bench:cpu_8888_android_test",
-        "--bazel_config=pixel_5",
+        "--bazel_config=for_android_arm64",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=.",
         "--out_path=bazel_output",
@@ -4075,7 +4075,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64": {
+    "BazelBuild-hello_bazel_world_android_test-for_android_arm64-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4093,9 +4093,9 @@
         "bazel_build_task_driver/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64",
+        "--task_name=BazelBuild-hello_bazel_world_android_test-for_android_arm64-linux_x64",
         "--bazel_label=//gm:hello_bazel_world_android_test",
-        "--bazel_config=pixel_5",
+        "--bazel_config=for_android_arm64",
         "--bazel_cache_dir=/mnt/pd0/bazel_cache",
         "--workdir=.",
         "--out_path=bazel_output",
@@ -4296,7 +4296,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64": {
+    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4309,14 +4309,15 @@
         "./bazel_test_benchmark",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64",
+        "--task_name=BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11",
         "--workdir=.",
         "--bazel_label=//bench:cpu_8888_test",
         "--bazel_config=linux_rbe",
         "--bazel_cache_dir=/home/chrome-bot/bazel_cache",
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
-        "--patchset_order=<(PATCHSET)"
+        "--patchset_order=<(PATCHSET)",
+        "--device_specific_bazel_config=NUC9i7QN_Debian11"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
@@ -4728,7 +4729,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4746,25 +4747,24 @@
         "./bazel_test_gm",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64",
+        "--task_name=BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11",
         "--workdir=.",
         "--bazel_label=//gm:cpu_gm_tests",
         "--bazel_config=cpu_only_debug_rbe",
-        "--bazel_cache_dir=/mnt/pd0/bazel_cache",
+        "--bazel_cache_dir=/home/chrome-bot/bazel_cache",
         "--goldctl_path=./cipd_bin_packages/goldctl",
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
         "--patchset_order=<(PATCHSET)",
-        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)"
+        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)",
+        "--device_specific_bazel_config=NUC9i7QN_Debian11"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-standard-16",
-        "os:Debian-10.3",
+        "cpu:x86-64-i7-9750H",
+        "os:Debian-11.5",
         "pool:Skia"
       ],
       "env_prefixes": {
@@ -4776,36 +4776,37 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "casSpec": "bazel",
       "command": [
         "./bazel_test_precompiled",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-pixel_5-linux_arm64",
+        "--task_name=BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64-linux_arm64-Pixel5_Android12",
         "--workdir=.",
         "--command=bazel_output/bench/cpu_8888_android_test",
         "--command_workdir=bazel_output/bench/cpu_8888_android_test.runfiles/skia",
         "--kind=benchmark",
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
-        "--patchset_order=<(PATCHSET)"
+        "--patchset_order=<(PATCHSET)",
+        "--device_specific_bazel_config=Pixel5_Android12"
       ],
       "dependencies": [
-        "BazelBuild-cpu_8888_benchmark_android_test-pixel_5-linux_x64",
+        "BazelBuild-cpu_8888_benchmark_android_test-for_android_arm64-linux_x64",
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64"
       ],
       "dimensions": [
-        "os:Android",
-        "device_type:redfin",
         "device_os:SP2A.220305.012",
+        "device_type:redfin",
+        "os:Android",
         "pool:Skia"
       ],
       "idempotent": true,
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4818,7 +4819,7 @@
         "./bazel_test_precompiled",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64",
+        "--task_name=BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64-linux_arm64-Pixel5_Android12",
         "--workdir=.",
         "--command=bazel_output/gm/hello_bazel_world_android_test",
         "--command_workdir=bazel_output/gm/hello_bazel_world_android_test.runfiles/skia",
@@ -4828,42 +4829,44 @@
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
         "--patchset_order=<(PATCHSET)",
-        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)"
+        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)",
+        "--device_specific_bazel_config=Pixel5_Android12"
       ],
       "dependencies": [
-        "BazelBuild-hello_bazel_world_android_test-pixel_5-linux_x64",
+        "BazelBuild-hello_bazel_world_android_test-for_android_arm64-linux_x64",
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64"
       ],
       "dimensions": [
-        "os:Android",
-        "device_type:redfin",
         "device_os:SP2A.220305.012",
+        "device_type:redfin",
+        "os:Android",
         "pool:Skia"
       ],
       "idempotent": true,
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_test-android_math_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "casSpec": "bazel",
       "command": [
         "./bazel_test_precompiled",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64",
+        "--task_name=BazelTest-precompiled_test-android_math_test-for_android_arm64-linux_arm64-Pixel5_Android12",
         "--workdir=.",
         "--command=bazel_output/tests/android_math_test",
         "--command_workdir=bazel_output/tests/android_math_test.runfiles/skia",
-        "--kind=unit"
+        "--kind=unit",
+        "--device_specific_bazel_config=Pixel5_Android12"
       ],
       "dependencies": [
-        "BazelBuild-android_math_test-pixel_5-linux_x64",
+        "BazelBuild-android_math_test-for_android_arm64-linux_x64",
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_arm64"
       ],
       "dimensions": [
-        "os:Android",
-        "device_type:redfin",
         "device_os:SP2A.220305.012",
+        "device_type:redfin",
+        "os:Android",
         "pool:Skia"
       ],
       "idempotent": true,
@@ -95255,7 +95258,7 @@
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {},
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
-    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64": {
+    "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "experimental": true
     },
     "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
@@ -95271,16 +95274,16 @@
     "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64": {
       "experimental": true
     },
-    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "experimental": true
     },
-    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "experimental": true
     },
-    "BazelTest-precompiled_gm-hello_bazel_world_android_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_gm-hello_bazel_world_android_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "experimental": true
     },
-    "BazelTest-precompiled_test-android_math_test-pixel_5-linux_arm64": {
+    "BazelTest-precompiled_test-android_math_test-for_android_arm64-linux_arm64-Pixel5_Android12": {
       "experimental": true
     },
     "Build-Debian10-Clang-arm-Debug-Android": {},
