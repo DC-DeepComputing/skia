@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e41bfb1_49e2a49c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-27T20:42:44Z",
+      "side": 1,
+      "message": "If you can think of a way to get a similar effect in less code, I\u0027m all ears. We have flexibility in our approach (e.g. repeat the 0th pixel in dead slots, copy more bytes than strictly necessary) as long as every color in the scratch buffer corresponds to some color in the live tail section.",
+      "range": {
+        "startLine": 743,
+        "startChar": 0,
+        "endLine": 756,
+        "endChar": 0
+      },
+      "revId": "ee93e37e7b448891ba2498839a62169d86bf462f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
