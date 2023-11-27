@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c49cc852_b5f7d32c",
+        "filename": "bazel/device_specific_configs/generate/generate.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T20:20:25Z",
+      "side": 1,
+      "message": "I appreciate this thorough explanation",
+      "range": {
+        "startLine": 48,
+        "startChar": 5,
+        "endLine": 48,
+        "endChar": 10
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7a201b_3ec7323e",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T20:20:25Z",
+      "side": 1,
+      "message": "Maybe we rename this on BazelTest to be something like test_config (with the first config being build_config)?\n\nWe would probably be able to remove cross from BazelBuild also, right?",
+      "range": {
+        "startLine": 2342,
+        "startChar": 9,
+        "endLine": 2342,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b08a73_8d9cd214",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T20:20:25Z",
+      "side": 1,
+      "message": "suggestion: add an alias for `linux_arm64` called \"on_RPI\"",
+      "range": {
+        "startLine": 55,
+        "startChar": 75,
+        "endLine": 55,
+        "endChar": 86
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e734cd_7b30476e",
+        "filename": "tools/testrunners/common/android/adb_test.bzl",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T20:20:25Z",
+      "side": 1,
+      "message": "Would this be easier/better to do in the go program? I would like a simple shell scripts as possible, so could we have the go program remove the flag it cares about?",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba433f71_4ce43909",
+        "filename": "tools/testrunners/unit/BazelUnitTestRunner.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T20:20:25Z",
+      "side": 1,
+      "message": "Just to check my understanding, we need to specify this because tests that are not run via adb_test_runner.go may also have this flag?",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
