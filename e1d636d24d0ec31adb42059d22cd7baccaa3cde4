@@ -16,6 +16,24 @@
       "message": "Looks like this truncates some outputs",
       "revId": "e1d636d24d0ec31adb42059d22cd7baccaa3cde4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "458dc8de_ef874f9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-27T23:35:38Z",
+      "side": 1,
+      "message": "Done (N in lowp needed to be twice as big)",
+      "parentUuid": "4daaf223_da1b7529",
+      "revId": "e1d636d24d0ec31adb42059d22cd7baccaa3cde4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
