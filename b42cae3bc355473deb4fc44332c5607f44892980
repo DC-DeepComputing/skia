@@ -93,6 +93,30 @@
       },
       "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "368728d8_302beec1",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-27T19:00:05Z",
+      "side": 1,
+      "message": "So as this is written I don\u0027t see how this is a generally useful method that should go on SkUnicode. A useful thing to go on SkUnicode would be something like `getEmojiSequence` that implements the full specification (especially since ICU doesn\u0027t appear to have something like this built in at the moment). However, this is overly specific to this particular issue and what you\u0027re attempting to do in SkParagraph. Since this function only uses public bits of SkUnicode it would be better to just have this be a private internal implementation function in `OneLineShaper.cpp`.",
+      "parentUuid": "28f4494a_8ce41873",
+      "range": {
+        "startLine": 122,
+        "startChar": 43,
+        "endLine": 122,
+        "endChar": 78
+      },
+      "revId": "b42cae3bc355473deb4fc44332c5607f44892980",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
