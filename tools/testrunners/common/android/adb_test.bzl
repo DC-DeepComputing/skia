@@ -76,38 +76,65 @@ def _adb_test_impl(ctx):
 
         {test_undeclared_outputs_dir_env_var_check}
 
+        # Parse flag --device-specific-bazel-config, if provided. This flag is then forwarded to
+        # the adb_test_runner Go program.
+        #
+        # Also, collect any other arguments, which we will forward to the C++ binary. We will pass
+        # any such arguments to adb_test_runner via the --test-runner-extra-args, and
+        # adb_test_runner will forward these arguments to the C++ binary when executed on the
+        # Android device.
+        #
+        # For context, we pass e.g. the Git hash to the C++ binary via a command-line argument in
+        # the case of benchmark and GM tests; the Git hash is included in the files uploaded to
+        # Perf and Gold, respectively.
+        TEST_RUNNER_EXTRA_ARGS=()
+        while [[ $# -gt 0 ]]; do
+        case $1 in
+            # This case covers flag format "--device-specific-bazel-config foo", which is comprised
+            # of two separate command-line arguments (that is, the flag and its value).
+            --device-specific-bazel-config)
+            DEVICE_SPECIFIC_BAZEL_CONFIG="$2"
+            shift # Skip flag argument.
+            shift # Skip value argument.
+            ;;
+
+            # This case covers flag format "--device-specific-bazel-config=foo", which is a single
+            # command-line argument.
+            --device-specific-bazel-config=*)
+            # Remove the "--flag=" part of "--flag=value". Reference:
+            # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html.
+            DEVICE_SPECIFIC_BAZEL_CONFIG=${{1#"--device-specific-bazel-config="}}
+            shift # Skip combined flag and value argument.
+            ;;
+
+            # This case covers all other arguments, which we will collect and then forward to the
+            # C++ binary.
+            *)
+            TEST_RUNNER_EXTRA_ARGS+=("$1")
+            shift # Skip argument.
+            ;;
+        esac
+        done
+
         # Print commands and expand variables for easier debugging.
         set -x
 
         # List the test runner binary for debugging purposes.
         ls -l $(rootpath {adb_test_runner})
 
-        # Any additional arguments to pass to the C++ binary. These can be set via Bazel's
-        # --test_arg flag, or can be passed directly to the binary produced by "bazel build".
-        TEST_RUNNER_EXTRA_ARGS="$@"
+        TEST_RUNNER_EXTRA_ARGS_AS_SPACE_SEPARATED_STR=${{TEST_RUNNER_EXTRA_ARGS[@]}}
 
         $(rootpath {adb_test_runner}) \
-            --device {device} \
             {benchmark} \
             --archive $(rootpath {archive}) \
             --test-runner $(rootpath {test_runner}) \
-            --test-runner-extra-args "$TEST_RUNNER_EXTRA_ARGS" \
+            --test-runner-extra-args "$TEST_RUNNER_EXTRA_ARGS_AS_SPACE_SEPARATED_STR" \
+            --device-specific-bazel-config "$DEVICE_SPECIFIC_BAZEL_CONFIG" \
             {output_dir_flag}
     """)
 
-    if ctx.attr.device == "unknown":
-        template = remove_indentation("""
-            #!/bin/bash
-
-            echo "FAILED: No Android device was specified. Try re-running with a Bazel config that"
-            echo "        specifies an Android device under test, such as --config=pixel_5."
-
-            exit 1
-        """)
-
     # Expand variables.
     script = ctx.expand_location(template.format(
-        device = ctx.attr.device,
         benchmark = "--benchmark" if ctx.attr.benchmark else "",
         archive = ctx.attr.archive.label,
         test_runner = ctx.attr.test_runner.label,
@@ -146,15 +173,6 @@ adb_test = rule(
     """,
     implementation = _adb_test_impl,
     attrs = {
-        "device": attr.string(
-            doc = "Device under test.",
-            mandatory = True,
-            values = [
-                "pixel_5",
-                "pixel_7",
-                "unknown",
-            ],
-        ),
         "benchmark": attr.bool(
             doc = (
                 "Set up the device for benchmark tests. This might affect e.g. CPU and GPU " +
