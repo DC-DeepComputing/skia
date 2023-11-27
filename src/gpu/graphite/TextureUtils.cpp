@@ -98,6 +98,7 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                                 outII,
                                                 skgpu::Budgeted::kYes,
                                                 skgpu::Mipmapped::kNo,
+                                                SkBackingFit::kApprox,
                                                 outProps,
                                                 /*addInitialClear=*/false);
     if (!device) {
@@ -743,6 +744,7 @@ public:
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
                                              skgpu::Mipmapped::kNo,
+                                             SkBackingFit::kApprox,
                                              props ? *props : this->surfaceProps(),
                                              /*addInitialClear=*/false);
     }

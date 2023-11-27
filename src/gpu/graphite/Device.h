@@ -46,6 +46,7 @@ public:
                               const SkImageInfo&,
                               skgpu::Budgeted,
                               Mipmapped,
+                              SkBackingFit,
                               const SkSurfaceProps&,
                               bool addInitialClear);
     static sk_sp<Device> Make(Recorder*,
@@ -71,7 +72,7 @@ public:
     // from the DrawContext as a RenderPassTask and records it in the Device's recorder.
     void flushPendingWorkToRecorder();
 
-    TextureProxyView createCopy(const SkIRect* subset, Mipmapped);
+    TextureProxyView createCopy(const SkIRect* subset, Mipmapped, SkBackingFit);
 
     const Transform& localToDeviceTransform();
 
