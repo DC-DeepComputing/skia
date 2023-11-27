@@ -137,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acb6de67_0dc4365a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-27T19:53:44Z",
+      "side": 1,
+      "message": "Would it make sense to just leave the viewport, and normalized fragment coordinates, in backing-target space? The scissor we do define based on deviceSize, in DrawPass (the viewport is currently always set to the target dimensions, in RenderPassTask).\n\nI also changed the related isInstantiated() checks in DrawContext::Make and DrawPass::Make to isFullyLazy(), following up on discussion way back in http://review.skia.org/596357. This way we check dimensions of non-instantiated, non-fully-lazy targets as well.",
+      "parentUuid": "71f58050_538792a4",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 95
+      },
+      "revId": "e76f9b97f01b93a8580448afb02ae16604618e88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9858b3dc_9f2ad9ed",
         "filename": "src/gpu/graphite/TextureUtils.cpp",
         "patchSetId": 2
