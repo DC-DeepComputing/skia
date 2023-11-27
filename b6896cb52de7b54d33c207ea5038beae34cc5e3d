@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4ad1be1_ca060abe",
+        "filename": "bazel/device_specific_configs/generate/generate.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-27T21:21:57Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "c49cc852_b5f7d32c",
+      "range": {
+        "startLine": 48,
+        "startChar": 5,
+        "endLine": 48,
+        "endChar": 10
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec7a201b_3ec7323e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-27T20:20:25Z",
       "side": 1,
       "message": "Maybe we rename this on BazelTest to be something like test_config (with the first config being build_config)?\n\nWe would probably be able to remove cross from BazelBuild also, right?",
+      "range": {
+        "startLine": 2342,
+        "startChar": 9,
+        "endLine": 2342,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebff39db_72176abc",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-27T21:21:57Z",
+      "side": 1,
+      "message": "Maybe `device_specific_config` rather than `test_config`, for consistency with the language used in the Go code?\n\nMany test drivers take a `--cross` flag. I don\u0027t think we use those flags today. Can we delete flag `--cross` from all task drivers?\n\nMore generally, what about the concept of \"cross platform\", as mentioned on line 2353 below? Can that be deleted as well?",
+      "parentUuid": "ec7a201b_3ec7323e",
       "range": {
         "startLine": 2342,
         "startChar": 9,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9bc2d16_17c4ed7f",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-27T21:21:57Z",
+      "side": 1,
+      "message": "Great idea!\n\nI went with just `rpi` because `if host \u003d\u003d \"rpi\" { ... }` seems more natural than `if host \u003d\u003d \"on_rpi\" { ... }`.",
+      "parentUuid": "90b08a73_8d9cd214",
+      "range": {
+        "startLine": 55,
+        "startChar": 75,
+        "endLine": 55,
+        "endChar": 86
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "47e734cd_7b30476e",
         "filename": "tools/testrunners/common/android/adb_test.bzl",
         "patchSetId": 18
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ab23bf9_ae81b454",
+        "filename": "tools/testrunners/common/android/adb_test.bzl",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-27T21:21:57Z",
+      "side": 1,
+      "message": "IIUC the alternative is to have `adb_test_runner.go` parse flag `--test-runner-extra-args` and extract `--device-specific-bazel-config \u003cconfig-name\u003e`. The remainder of `--test-runner-extra-args` would be passed to the underlying C++ binary, and `adb_test_runner.go` would use `\u003cconfig-name\u003e` as if it were its own flag.\n\nMy reasoning to do that parsing step here is that, from a semantic POV, it seemed cleaner than having a `--test-runner-extra-args` flag where some values are given special treatment. If we did the parsing step in Go, I thought the reader would have to carry the extra cognitive load of renaming `--test-runner-extra-args` to `--test-runner-extra-args-except-for-...` in their head.\n\nHaving said that, I\u0027ll defer to your preference because you are effectively the reader here. Happy to move this step into `adb_test_runner.go` if you think that\u0027s best.",
+      "parentUuid": "47e734cd_7b30476e",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba433f71_4ce43909",
         "filename": "tools/testrunners/unit/BazelUnitTestRunner.cpp",
         "patchSetId": 18
@@ -106,6 +202,30 @@
       "writtenOn": "2023-11-27T20:20:25Z",
       "side": 1,
       "message": "Just to check my understanding, we need to specify this because tests that are not run via adb_test_runner.go may also have this flag?",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68dcf9ee_b39ce592",
+        "filename": "tools/testrunners/unit/BazelUnitTestRunner.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-27T21:21:57Z",
+      "side": 1,
+      "message": "Say we have a CI task that runs a non-Android GM target on a Skolo NUC of some kind. The Bazel invocation would be something like:\n\n```\n$ bazel test //gm:some-gm --config\u003dlinux_rbe --config\u003dsome-nuc\n```\n\nThe `some-nuc` config would be defined in `//bazel/devicesrc`. This file would include the following lines:\n\n```\n...\ntest:some-nuc --test_arg\u003d--device-specific-bazel-config\ntest:some-nuc --test_arg\u003dsome-nuc\n...\n```\n\nIn other words, Bazel would invoke the C++ binary with `--device-specific-bazel-config some-nuc`. Given how `CommandLineFlags.h` works, the C++ binary would fail with an \"unknown flag\" error, unless we define flag `--device-specific-bazel-config` explicitly. Then, we can safely ignore that flag.\n\nDoes that make sense?",
+      "parentUuid": "ba433f71_4ce43909",
       "range": {
         "startLine": 46,
         "startChar": 2,
