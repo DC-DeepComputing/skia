@@ -43,8 +43,6 @@ struct SkImageInfo;
 
 using namespace skia_private;
 
-const int GrResourceProvider::kMinScratchTextureSize = 16;
-
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
 GrResourceProvider::GrResourceProvider(GrGpu* gpu,
@@ -279,35 +277,6 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                label);
 }
 
-// Map 'value' to a larger multiple of 2. Values <= 'kMagicTol' will pop up to
-// the next power of 2. Those above 'kMagicTol' will only go up half the floor power of 2.
-SkISize GrResourceProvider::MakeApprox(SkISize dimensions) {
-    auto adjust = [](int value) {
-        static const int kMagicTol = 1024;
-
-        value = std::max(kMinScratchTextureSize, value);
-
-        if (SkIsPow2(value)) {
-            return value;
-        }
-
-        int ceilPow2 = SkNextPow2(value);
-        if (value <= kMagicTol) {
-            return ceilPow2;
-        }
-
-        int floorPow2 = ceilPow2 >> 1;
-        int mid = floorPow2 + (floorPow2 >> 1);
-
-        if (value <= mid) {
-            return mid;
-        }
-        return ceilPow2;
-    };
-
-    return {adjust(dimensions.width()), adjust(dimensions.height())};
-}
-
 sk_sp<GrTexture> GrResourceProvider::createApproxTexture(SkISize dimensions,
                                                          const GrBackendFormat& format,
                                                          GrTextureType textureType,
@@ -334,7 +303,7 @@ sk_sp<GrTexture> GrResourceProvider::createApproxTexture(SkISize dimensions,
         return nullptr;
     }
 
-    auto copyDimensions = MakeApprox(dimensions);
+    auto copyDimensions = skgpu::GetApproxSize(dimensions);
 
     if (auto tex = this->findAndRefScratchTexture(copyDimensions,
                                                   format,
