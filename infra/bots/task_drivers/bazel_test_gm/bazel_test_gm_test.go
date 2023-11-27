@@ -58,11 +58,6 @@ func TestRun_Success(t *testing.T) {
 
 			commandCollector := exec.CommandCollector{}
 			res := td.RunTestSteps(t, false, func(ctx context.Context) error {
-				ctx = common.WithGoldAndPerfKeyValuePairsContext(ctx, map[string]string{
-					"os":   "linux",
-					"arch": "x86_64",
-				})
-
 				ctx = td.WithExecRunFn(ctx, commandCollector.Run)
 				var bazelCacheDirPath string
 				ctx, bazelCacheDirPath = common.WithEnoughSpaceOnBazelCachePartitionTestOnlyContext(ctx)
@@ -83,7 +78,7 @@ func TestRun_Success(t *testing.T) {
 
 			testutils.AssertStepNames(t, res,
 				"Test //some/test:target with config linux_rbe",
-				"bazelisk test //some/test:target --config=linux_rbe --test_output=errors --jobs=100",
+				"bazelisk test //some/test:target --config=linux_rbe --config=GCE_Debian10_AVX512 --test_output=errors --jobs=100",
 				"Creating TempDir",
 				"Extract undeclared outputs archive "+outputsZIP+" into "+outputsZIPExtractionDir,
 				"Extracting file: alfa.json",
@@ -114,6 +109,7 @@ func TestRun_Success(t *testing.T) {
 						"test",
 						"//some/test:target",
 						"--config=linux_rbe",
+						"--config=GCE_Debian10_AVX512",
 						"--test_output=errors",
 						"--jobs=100",
 					},
@@ -175,11 +171,12 @@ func TestRun_Success(t *testing.T) {
 				GoldctlPath:                "/path/to/goldctl",
 				GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
 			},
-			checkoutDir: checkoutDir,
-			bazelConfig: "linux_rbe",
+			checkoutDir:               checkoutDir,
+			bazelConfig:               "linux_rbe",
+			deviceSpecificBazelConfig: "GCE_Debian10_AVX512",
 		},
 		goldctlWorkDir,
-		"/path/to/goldctl imgtest init --work-dir "+goldctlWorkDir+" --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --key arch:x86_64 --key os:linux",
+		"/path/to/goldctl imgtest init --work-dir "+goldctlWorkDir+" --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
 		[]string{
 			"imgtest",
 			"init",
@@ -188,8 +185,6 @@ func TestRun_Success(t *testing.T) {
 			"--url", "https://gold.skia.org",
 			"--bucket", "skia-infra-gm",
 			"--git_hash", "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-			"--key", "arch:x86_64",
-			"--key", "os:linux",
 		},
 	)
 
@@ -206,11 +201,12 @@ func TestRun_Success(t *testing.T) {
 				PatchsetOrder:              "1",
 				TryjobID:                   "tryjob-id",
 			},
-			checkoutDir: checkoutDir,
-			bazelConfig: "linux_rbe",
+			checkoutDir:               checkoutDir,
+			bazelConfig:               "linux_rbe",
+			deviceSpecificBazelConfig: "GCE_Debian10_AVX512",
 		},
 		goldctlWorkDir,
-		"/path/to/goldctl imgtest init --work-dir "+goldctlWorkDir+" --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id --key arch:x86_64 --key os:linux",
+		"/path/to/goldctl imgtest init --work-dir "+goldctlWorkDir+" --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id",
 		[]string{
 			"imgtest",
 			"init",
@@ -224,8 +220,6 @@ func TestRun_Success(t *testing.T) {
 			"--changelist", "changelist-id",
 			"--patchset", "1",
 			"--jobid", "tryjob-id",
-			"--key", "arch:x86_64",
-			"--key", "os:linux",
 		},
 	)
 }
