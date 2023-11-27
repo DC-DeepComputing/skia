@@ -45,6 +45,12 @@
 #include <memory>
 #include <utility>
 
+
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+
+using namespace skgpu;
+
 struct GrContextOptions;
 
 static const int kSize = 8;
@@ -195,7 +201,7 @@ void create_backend_texture_graphite(skiatest::Reporter* reporter,
                                      VK_IMAGE_USAGE_TRANSFER_DST_BIT;
     TextureInfo textureInfo(vkTextureInfo);
 
-    BackendTexture backendTex = helper->recorder()->createBackendTexture({ kSize, kSize },
+    BackendTexture backendTex = helper->recorder()->createBackendTexture({kSize, kSize},
                                                                          textureInfo);
     REPORTER_ASSERT(reporter, backendTex.isValid() == (contextIsProtected == beTexIsProtected));
     if (backendTex.isValid()) {

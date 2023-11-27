@@ -16,9 +16,16 @@
 #include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
+
 class GrDirectContext;
 class SkSurface;
 struct SkISize;
+
+namespace skgpu::graphite {
+    class Context;
+}
 
 namespace skiatest {
     enum class TestType : uint8_t;
