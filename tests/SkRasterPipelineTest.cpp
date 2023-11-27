@@ -440,48 +440,34 @@ DEF_TEST(SkRasterPipeline_MaskOffReturnMask, reporter) {
 }
 
 DEF_TEST(SkRasterPipeline_InitLaneMasks, reporter) {
-    for (size_t width = 1; width <= SkOpts::raster_pipeline_highp_stride; ++width) {
-        SkRasterPipeline_<256> p;
+    SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
+    SkRasterPipeline p(&alloc);
 
-        // Initialize dRGBA to unrelated values.
-        SkRasterPipeline_UniformColorCtx uniformCtx;
-        uniformCtx.a = 0.0f;
-        uniformCtx.r = 0.25f;
-        uniformCtx.g = 0.50f;
-        uniformCtx.b = 0.75f;
-        p.append(SkRasterPipelineOp::uniform_color_dst, &uniformCtx);
+    // Initialize RGBA to unrelated values.
+    alignas(64) static constexpr float kArbitraryColor[4] = {0.0f, 0.25f, 0.50f, 0.75f};
+    p.appendConstantColor(&alloc, kArbitraryColor);
 
-        // Overwrite dRGB with lane masks up to the tail width.
-        p.append(SkRasterPipelineOp::init_lane_masks);
+    // Overwrite RGBA with lane masks.
+    p.append(SkRasterPipelineOp::init_lane_masks);
 
-        // Use the store_src command to write out RGBA for inspection.
-        alignas(64) int32_t RGBA[4 * SkRasterPipeline_kMaxStride_highp] = {};
-        p.append(SkRasterPipelineOp::store_src, RGBA);
+    // Use the store_src command to write out RGBA for inspection.
+    alignas(64) int32_t RGBA[4 * SkRasterPipeline_kMaxStride_highp] = {};
+    p.append(SkRasterPipelineOp::store_src, RGBA);
 
-        // Execute our program.
-        p.run(0,0,width,1);
+    // Execute our program.
+    p.run(0,0,1,1);
 
-        // Initialized data should look like on/on/on/on (RGBA are all set) and is
-        // striped by the raster pipeline stride because we wrote it using store_dst.
-        size_t index = 0;
-        int32_t* channelR = RGBA;
-        int32_t* channelG = channelR + SkOpts::raster_pipeline_highp_stride;
-        int32_t* channelB = channelG + SkOpts::raster_pipeline_highp_stride;
-        int32_t* channelA = channelB + SkOpts::raster_pipeline_highp_stride;
-        for (; index < width; ++index) {
-            REPORTER_ASSERT(reporter, *channelR++ == ~0);
-            REPORTER_ASSERT(reporter, *channelG++ == ~0);
-            REPORTER_ASSERT(reporter, *channelB++ == ~0);
-            REPORTER_ASSERT(reporter, *channelA++ == ~0);
-        }
-
-        // The rest of the output array should be untouched (all zero).
-        for (; index < SkOpts::raster_pipeline_highp_stride; ++index) {
-            REPORTER_ASSERT(reporter, *channelR++ == 0);
-            REPORTER_ASSERT(reporter, *channelG++ == 0);
-            REPORTER_ASSERT(reporter, *channelB++ == 0);
-            REPORTER_ASSERT(reporter, *channelA++ == 0);
-        }
+    // All data should look like on/on/on/on (RGBA are all set). Data is striped by the raster
+    // pipeline stride because we wrote it using store_src.
+    int32_t* channelR = RGBA;
+    int32_t* channelG = channelR + SkOpts::raster_pipeline_highp_stride;
+    int32_t* channelB = channelG + SkOpts::raster_pipeline_highp_stride;
+    int32_t* channelA = channelB + SkOpts::raster_pipeline_highp_stride;
+    for (size_t index = 0; index < SkOpts::raster_pipeline_highp_stride; ++index) {
+        REPORTER_ASSERT(reporter, *channelR++ == ~0);
+        REPORTER_ASSERT(reporter, *channelG++ == ~0);
+        REPORTER_ASSERT(reporter, *channelB++ == ~0);
+        REPORTER_ASSERT(reporter, *channelA++ == ~0);
     }
 }
 
