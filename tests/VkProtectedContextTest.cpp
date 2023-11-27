@@ -45,6 +45,12 @@
 #include <memory>
 #include <utility>
 
+
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+
+using namespace skgpu;
+
 struct GrContextOptions;
 
 static const int kSize = 8;
@@ -96,6 +102,7 @@ void create_protected_surface(skiatest::Reporter* reporter, skiatest::TestType t
 
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -182,6 +189,7 @@ void create_backend_texture_graphite(skiatest::Reporter* reporter,
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGraphite,
                                                               contextIsProtected);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -195,7 +203,7 @@ void create_backend_texture_graphite(skiatest::Reporter* reporter,
                                      VK_IMAGE_USAGE_TRANSFER_DST_BIT;
     TextureInfo textureInfo(vkTextureInfo);
 
-    BackendTexture backendTex = helper->recorder()->createBackendTexture({ kSize, kSize },
+    BackendTexture backendTex = helper->recorder()->createBackendTexture({kSize, kSize},
                                                                          textureInfo);
     REPORTER_ASSERT(reporter, backendTex.isValid() == (contextIsProtected == beTexIsProtected));
     if (backendTex.isValid()) {
@@ -227,6 +235,7 @@ DEF_GANESH_TEST(VkProtectedContext_ReadFromProtectedSurface,
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
                                                               /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -256,6 +265,7 @@ void async_read_from_protected_surface(skiatest::Reporter* reporter,
                                               skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -298,6 +308,7 @@ namespace {
 void draw_rectangle(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -334,6 +345,7 @@ namespace {
 void draw_rectangle_with_aa(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -371,6 +383,7 @@ namespace {
 void draw_rectangle_with_blendmode(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -408,6 +421,7 @@ namespace {
 void draw_rectangle_with_filter(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -448,6 +462,7 @@ void draw_thin_path(skiatest::Reporter* reporter, skiatest::TestType testType) {
 
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -487,6 +502,7 @@ namespace {
 void save_layer(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -528,6 +544,7 @@ void draw_protected_image_on_protected_surface(skiatest::Reporter* reporter,
 
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
