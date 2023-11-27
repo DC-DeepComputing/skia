@@ -333,7 +333,7 @@ func TestUploadToGold_WithOutputsZIPOrDir_ValidImages_ImagesUploadedToGold(t *te
 		GoldctlPath:                "/path/to/goldctl",
 		GitCommit:                  "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
 	}
-	postSubmitTaskGoldctlImgtestInitStep := "/path/to/goldctl imgtest init --work-dir " + goldctlWorkDir + " --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --key os:linux"
+	postSubmitTaskGoldctlImgtestInitStep := "/path/to/goldctl imgtest init --work-dir " + goldctlWorkDir + " --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99"
 	postSubmitTaskGoldctlImgtestInitArgs := []string{
 		"imgtest",
 		"init",
@@ -342,7 +342,6 @@ func TestUploadToGold_WithOutputsZIPOrDir_ValidImages_ImagesUploadedToGold(t *te
 		"--url", "https://gold.skia.org",
 		"--bucket", "skia-infra-gm",
 		"--git_hash", "ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99",
-		"--key", "os:linux",
 	}
 	test("post-submit task, ZIP file", true /* =zip */, postSubmitTaskArgs, goldctlWorkDir, postSubmitTaskGoldctlImgtestInitStep, postSubmitTaskGoldctlImgtestInitArgs)
 	test("post-submit task, directory", false /* =zip */, postSubmitTaskArgs, goldctlWorkDir, postSubmitTaskGoldctlImgtestInitStep, postSubmitTaskGoldctlImgtestInitArgs)
@@ -357,7 +356,7 @@ func TestUploadToGold_WithOutputsZIPOrDir_ValidImages_ImagesUploadedToGold(t *te
 		PatchsetOrder:              "1",
 		TryjobID:                   "tryjob-id",
 	}
-	clTaskGoldctlImgtestInitStep := "/path/to/goldctl imgtest init --work-dir " + goldctlWorkDir + " --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id --key os:linux"
+	clTaskGoldctlImgtestInitStep := "/path/to/goldctl imgtest init --work-dir " + goldctlWorkDir + " --instance skia --url https://gold.skia.org --bucket skia-infra-gm --git_hash ff99ff99ff99ff99ff99ff99ff99ff99ff99ff99 --crs gerrit --cis buildbucket --changelist changelist-id --patchset 1 --jobid tryjob-id"
 	clTaskGoldctlImgtestInitArgs := []string{
 		"imgtest",
 		"init",
@@ -371,7 +370,6 @@ func TestUploadToGold_WithOutputsZIPOrDir_ValidImages_ImagesUploadedToGold(t *te
 		"--changelist", "changelist-id",
 		"--patchset", "1",
 		"--jobid", "tryjob-id",
-		"--key", "os:linux",
 	}
 	test("CL task, ZIP file", true /* =zip */, clTaskArgs, goldctlWorkDir, clTaskGoldctlImgtestInitStep, clTaskGoldctlImgtestInitArgs)
 	test("CL task, directory", false /* =zip */, clTaskArgs, goldctlWorkDir, clTaskGoldctlImgtestInitStep, clTaskGoldctlImgtestInitArgs)
