@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acfb49f0_c38f5937",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-27T22:09:12Z",
+      "side": 1,
+      "message": "This code so old... the no-yoda text was added with cl/129332959 in 2016, this code was committed in 2014 based on even older code. And that code was probably yoda style because that\u0027s how FontConfig itself internally uses FcResultMatch in predicates. Which seems to be how Behdad wrote it over 10 years ago.",
+      "parentUuid": "173bb0d5_25a3f01f",
+      "range": {
+        "startLine": 713,
+        "startChar": 20,
+        "endLine": 713,
+        "endChar": 42
+      },
+      "revId": "d99f01eff0d66aef4f686881c5a8e057e6310c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "157f7dff_a388fccd",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-27T21:34:46Z",
       "side": 1,
       "message": "Consider\n```\n                if (result \u003d\u003d FcResultMatch) {\n                    strings.push_back(patternString);\n                }\n```",
+      "range": {
+        "startLine": 716,
+        "startChar": 16,
+        "endLine": 719,
+        "endChar": 49
+      },
+      "revId": "d99f01eff0d66aef4f686881c5a8e057e6310c45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97158ee_6ae271bf",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-27T22:09:12Z",
+      "side": 1,
+      "message": "Yeah, I was just avoiding touching the existing code, but I suppose at this point this is now a complete re-write of this, so might as well.",
+      "parentUuid": "157f7dff_a388fccd",
       "range": {
         "startLine": 716,
         "startChar": 16,
