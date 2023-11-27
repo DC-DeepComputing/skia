@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3a81c7a_55fe126e",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T21:29:10Z",
+      "side": 1,
+      "message": "Let\u0027s go with something more general `test_config` over `device_specific_config` in case we need to use it for something else (e.g. if we need to skip tests).\n\nYes, I bet we can delete --cross from everywhere",
+      "parentUuid": "ebff39db_72176abc",
+      "range": {
+        "startLine": 2342,
+        "startChar": 9,
+        "endLine": 2342,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "90b08a73_8d9cd214",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 18
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Great idea!\n\nI went with just `rpi` because `if host \u003d\u003d \"rpi\" { ... }` seems more natural than `if host \u003d\u003d \"on_rpi\" { ... }`.",
       "parentUuid": "90b08a73_8d9cd214",
+      "range": {
+        "startLine": 55,
+        "startChar": 75,
+        "endLine": 55,
+        "endChar": 86
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007ab22d_510f343a",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T21:29:10Z",
+      "side": 1,
+      "message": "I suggested `on_rpi` because the task name reads better to me: `BazelTest...android_math_test-for_android_arm64-on_rpi...`\n\nIt makes it more clear that we are not compiling the task *for* a rpi. Eventually we can perhaps use `on_linux_rbe` to emphasize that point elsewhere.\n\nIf you disagree, that\u0027s fine, just wanted to make the rationale more clear, since task names are what our users tend to consume.",
+      "parentUuid": "f9bc2d16_17c4ed7f",
       "range": {
         "startLine": 55,
         "startChar": 75,
@@ -191,6 +239,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6fd9f18_b05ace56",
+        "filename": "tools/testrunners/common/android/adb_test.bzl",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T21:29:10Z",
+      "side": 1,
+      "message": "I think having this sort of \"special casing\" logic live in go code is preferable (and more testable) than here in shell scripts.",
+      "parentUuid": "9ab23bf9_ae81b454",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba433f71_4ce43909",
         "filename": "tools/testrunners/unit/BazelUnitTestRunner.cpp",
         "patchSetId": 18
@@ -226,6 +298,30 @@
       "side": 1,
       "message": "Say we have a CI task that runs a non-Android GM target on a Skolo NUC of some kind. The Bazel invocation would be something like:\n\n```\n$ bazel test //gm:some-gm --config\u003dlinux_rbe --config\u003dsome-nuc\n```\n\nThe `some-nuc` config would be defined in `//bazel/devicesrc`. This file would include the following lines:\n\n```\n...\ntest:some-nuc --test_arg\u003d--device-specific-bazel-config\ntest:some-nuc --test_arg\u003dsome-nuc\n...\n```\n\nIn other words, Bazel would invoke the C++ binary with `--device-specific-bazel-config some-nuc`. Given how `CommandLineFlags.h` works, the C++ binary would fail with an \"unknown flag\" error, unless we define flag `--device-specific-bazel-config` explicitly. Then, we can safely ignore that flag.\n\nDoes that make sense?",
       "parentUuid": "ba433f71_4ce43909",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42787507_cc22b5cf",
+        "filename": "tools/testrunners/unit/BazelUnitTestRunner.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-27T21:29:10Z",
+      "side": 1,
+      "message": "Yes, thank you.",
+      "parentUuid": "68dcf9ee_b39ce592",
       "range": {
         "startLine": 46,
         "startChar": 2,
