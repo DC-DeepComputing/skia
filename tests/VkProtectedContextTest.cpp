@@ -39,6 +39,12 @@
 #include <memory>
 #include <utility>
 
+
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+
+using namespace skgpu;
+
 struct GrContextOptions;
 
 static const int kSize = 8;
@@ -90,6 +96,7 @@ void create_protected_surface(skiatest::Reporter* reporter, skiatest::TestType t
 
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -128,6 +135,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateNonprotectedTextureInProtectedContext,
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
                                                               /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -150,6 +158,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateProtectedTextureInNonprotectedContext,
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
                                                               /* isProtected= */ false);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -172,6 +181,7 @@ DEF_GANESH_TEST(VkProtectedContext_ReadFromProtectedSurface,
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
                                                               /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -201,6 +211,7 @@ void async_read_from_protected_surface(skiatest::Reporter* reporter,
                                               skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -243,6 +254,7 @@ namespace {
 void draw_rectangle(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -279,6 +291,7 @@ namespace {
 void draw_rectangle_with_aa(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -316,6 +329,7 @@ namespace {
 void draw_rectangle_with_blendmode(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -353,6 +367,7 @@ namespace {
 void draw_rectangle_with_filter(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -393,6 +408,7 @@ void draw_thin_path(skiatest::Reporter* reporter, skiatest::TestType testType) {
 
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -432,6 +448,7 @@ namespace {
 void save_layer(skiatest::Reporter* reporter, skiatest::TestType testType) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, /* isProtected= */ true);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
@@ -473,10 +490,16 @@ void draw_protected_image_on_protected_surface(skiatest::Reporter* reporter,
 
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(testType, kIsProtected);
     if (!helper) {
+        SkDebugf("early out of test\n");
         return;
     }
 
     REPORTER_ASSERT(reporter, helper->isValid());
+
+    std::unique_ptr<skgpu::graphite::Recorder> recorder;
+    if (helper->graphiteContext()) {
+        recorder = helper->graphiteContext()->makeRecorder();
+    }
 
     // Create protected image.
     sk_sp<SkSurface> surface1 = helper->createSurface({ kSize, kSize },
