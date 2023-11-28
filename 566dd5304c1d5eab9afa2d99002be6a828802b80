@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd009b61_98f6240c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-28T20:32:39Z",
+      "side": 1,
+      "message": "In the common case of 32-bit RGBA copying 4-byte pixels, I honestly expect it will be fine performance-wise. I have no real data (do we have a good way to bench this?). Memcpy with a small size that isn\u0027t known at compile time involves a bunch of branches; for huge copies memcpy can be clever, but for small copies without guaranteed alignment I don\u0027t think memcpy is going to do anything special. (I tried stepping through the memcpy version from PS1 and it didn\u0027t seem very efficient to me.) ARM\u0027s copy loop was 9 instructions long and Intel\u0027s was similar. On Intel (but not ARM), the compiler actually emitted an unrolled 8-element copy of the loop as well, which was only 6 instructions per byte/word; when this hits it\u0027ll be quite efficient.\n\nI am not sure how far this actually drifts from the GPU execution model, since we discard the out-of-bounds lanes in `restore_memory_contexts` making them essentially dead. Even in today\u0027s world, we could have code like:\n\n`if (coords.x \u003e\u003d 0 \u0026\u0026 coords.x \u003c\u003d 10) color \u003d tex.eval(coords);`\n\nAnd this would still sample `tex` outside of the 0~10 coordinate range, wouldn\u0027t it? The value would be discarded afterwards, though, which is conceptually the same as what we are doing here.",
+      "parentUuid": "0b6c1ac3_afc9f40b",
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8121a88_69a464b4",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 8
