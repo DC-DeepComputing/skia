@@ -193,6 +193,8 @@ private:
             = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
+    VkDescriptorSet fInputAttachmentDescSetToBind = VK_NULL_HANDLE;
+
     int fNumTextureSamplers = 0;
 
     VkBuffer fBoundInputBuffers[VulkanGraphicsPipeline::kNumInputBuffers];

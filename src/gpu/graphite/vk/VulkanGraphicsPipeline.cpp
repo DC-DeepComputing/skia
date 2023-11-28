@@ -515,6 +515,71 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     return result == VK_SUCCESS ? layout : VK_NULL_HANDLE;
 }
 
+static VkPipelineLayout setup_load_msaa_pipeline_layout(const VulkanSharedContext* sharedContext) {
+    // Determine descriptor set layouts based upon the number of uniform buffers & texture/samplers.
+    // The first descriptor set houses the one intrinsic constant uniform.
+    // The second descriptor set houses the one input attachment.
+    skia_private::STArray<2, VkDescriptorSetLayout> setLayouts;
+    skia_private::STArray<1, DescriptorData> uniformDescriptors;
+    skia_private::STArray<1, DescriptorData> inputAttachmentDescriptors;
+    uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+
+    VkDescriptorSetLayout uniformSetLayout;
+    DescriptorDataToVkDescSetLayout(
+            sharedContext,
+            {uniformDescriptors},
+            &uniformSetLayout);
+    if (uniformSetLayout != VK_NULL_HANDLE) {
+        setLayouts.push_back(uniformSetLayout);
+    } else {
+        SKGPU_LOG_E("Failed to create uniform descriptor set layout; pipeline creation will fail.\n");
+        return VK_NULL_HANDLE;
+    }
+
+    inputAttachmentDescriptors.push_back(VulkanGraphicsPipeline::kInputAttachmentDescriptor);
+    VkDescriptorSetLayout inputAttachmentDescSetLayout;
+    DescriptorDataToVkDescSetLayout(
+                sharedContext,
+                {inputAttachmentDescriptors},
+                &inputAttachmentDescSetLayout);
+    if (inputAttachmentDescSetLayout != VK_NULL_HANDLE) {
+        setLayouts.push_back(inputAttachmentDescSetLayout);
+    } else {
+        SKGPU_LOG_E("Failed to create input descriptor set layout!\n");
+    }
+
+    VkPipelineLayoutCreateInfo layoutCreateInfo;
+    memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
+    layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    layoutCreateInfo.pNext = nullptr;
+    layoutCreateInfo.flags = 0;
+    layoutCreateInfo.setLayoutCount = setLayouts.size();
+    layoutCreateInfo.pSetLayouts = setLayouts.begin();
+    // TODO: Add support for push constants.
+    layoutCreateInfo.pushConstantRangeCount = 0;
+    layoutCreateInfo.pPushConstantRanges = nullptr;
+
+    VkResult result;
+    VkPipelineLayout layout;
+    VULKAN_CALL_RESULT(sharedContext->interface(),
+                       result,
+                       CreatePipelineLayout(sharedContext->device(),
+                                            &layoutCreateInfo,
+                                            /*const VkAllocationCallbacks*=*/nullptr,
+                                            &layout));
+    // Whether the pipeline layout creation was successful or not, clean up the prerequisite
+    // DescriptorSetLayout(s) that are no longer needed.
+    for (int i = 0; i < setLayouts.size(); i++) {
+        if (setLayouts[i] != VK_NULL_HANDLE) {
+            VULKAN_CALL(sharedContext->interface(),
+            DestroyDescriptorSetLayout(sharedContext->device(),
+                                       setLayouts[i],
+                                       nullptr));
+        }
+    }
+    return result == VK_SUCCESS ? layout : VK_NULL_HANDLE;
+}
+
 static void destroy_shader_modules(const VulkanSharedContext* sharedContext,
                                    VkShaderModule vsModule,
                                    VkShaderModule fsModule) {
@@ -618,10 +683,8 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
 
     // TODO: Optimize for having one texture (no sampler) once separate textures and samplers are
     // supported for Vulkan.
-    *outPipelineLayout = setup_pipeline_layout(sharedContext,
-                                               /*hasStepUniforms=*/false,
-                                               /*hasFragment=*/true,
-                                               /*numTextureSamplers=*/1);
+    *outPipelineLayout = setup_load_msaa_pipeline_layout(sharedContext);
+
     if (*outPipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, *outVertexShaderModule, *outFragShaderModule);
         return false;
