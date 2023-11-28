@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b12a6c2b_567b9136",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-28T20:41:11Z",
+      "side": 1,
+      "message": "Actually--we are already patching the stage list. There\u0027s nothing stopping us from patching `init_lane_masks` to disable lanes. If we did that, then we wouldn\u0027t even need the shenanigans with `repeat_tail` anymore. WDYT?",
+      "parentUuid": "d08d6c98_ace2b33d",
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8121a88_69a464b4",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 8
