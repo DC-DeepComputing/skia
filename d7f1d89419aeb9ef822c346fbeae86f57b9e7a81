@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ad80bd_ee25b855",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-11-28T15:13:25Z",
+      "side": 1,
+      "message": "Let\u0027s chat about how this comment corresponds with the following code. It is a bit unclear to me.",
+      "range": {
+        "startLine": 1289,
+        "startChar": 0,
+        "endLine": 1291,
+        "endChar": 57
+      },
+      "revId": "d7f1d89419aeb9ef822c346fbeae86f57b9e7a81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
