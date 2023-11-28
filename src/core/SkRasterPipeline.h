@@ -140,7 +140,8 @@ private:
 
     using StartPipelineFn = void (*)(size_t, size_t, size_t, size_t,
                                      SkRasterPipelineStage* program,
-                                     SkSpan<SkRasterPipeline_MemoryCtxPatch>);
+                                     SkSpan<SkRasterPipeline_MemoryCtxPatch>,
+                                     SkSpan<SkRasterPipeline_InitLaneMasksCtx* const>);
     StartPipelineFn buildPipeline(SkRasterPipelineStage*) const;
 
     void uncheckedAppend(SkRasterPipelineOp, void*);
@@ -156,6 +157,7 @@ private:
     // Only 1 in 2 million CPU-backend pipelines used more than two MemoryCtxs.
     // (See the comment in SkRasterPipelineOpContexts.h for how MemoryCtx patching works)
     skia_private::STArray<2, SkRasterPipeline_MemoryCtxInfo> fMemoryCtxInfos;
+    skia_private::STArray<2, SkRasterPipeline_InitLaneMasksCtx*> fInitLaneMaskContexts;
 };
 
 template <size_t bytes>

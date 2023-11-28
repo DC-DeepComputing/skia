@@ -51,10 +51,8 @@ void SkRasterPipeline::append(SkRasterPipelineOp op, void* ctx) {
     SkASSERT(op != Op::stack_rewind);             // Please use appendStackRewind().
     this->uncheckedAppend(op, ctx);
 }
-void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
-    fStages = fAlloc->make<StageList>(StageList{fStages, op, ctx});
-    fNumStages += 1;
 
+void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
     bool isLoad = false, isStore = false;
     SkColorType ct = kUnknown_SkColorType;
 
@@ -116,11 +114,20 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             // Special-case, this op uses a context that holds *two* MemoryCtxs
             SkRasterPipeline_EmbossCtx* embossCtx = (SkRasterPipeline_EmbossCtx*)ctx;
             this->addMemoryContext(&embossCtx->add,
-                                    SkColorTypeBytesPerPixel(kAlpha_8_SkColorType),
-                                    /*load=*/true, /*store=*/false);
+                                   SkColorTypeBytesPerPixel(kAlpha_8_SkColorType),
+                                   /*load=*/true, /*store=*/false);
             this->addMemoryContext(&embossCtx->mul,
-                                    SkColorTypeBytesPerPixel(kAlpha_8_SkColorType),
-                                    /*load=*/true, /*store=*/false);
+                                   SkColorTypeBytesPerPixel(kAlpha_8_SkColorType),
+                                   /*load=*/true, /*store=*/false);
+            break;
+        }
+
+        case Op::init_lane_masks: {
+            SkASSERT(ctx == nullptr);
+            auto* laneMaskCtx = fAlloc->make<SkRasterPipeline_InitLaneMasksCtx>(
+                    SkRasterPipeline_InitLaneMasksCtx{0xFF});
+            ctx = laneMaskCtx;
+            fInitLaneMaskContexts.push_back(laneMaskCtx);
             break;
         }
 
@@ -128,12 +135,16 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             break;
     }
 
+    fStages = fAlloc->make<StageList>(StageList{fStages, op, ctx});
+    fNumStages += 1;
+
     if (isLoad || isStore) {
         SkASSERT(ct != kUnknown_SkColorType);
         this->addMemoryContext(
                 (SkRasterPipeline_MemoryCtx*)ctx, SkColorTypeBytesPerPixel(ct), isLoad, isStore);
     }
 }
+
 void SkRasterPipeline::append(SkRasterPipelineOp op, uintptr_t ctx) {
     void* ptrCtx;
     memcpy(&ptrCtx, &ctx, sizeof(ctx));
@@ -172,6 +183,9 @@ void SkRasterPipeline::extend(const SkRasterPipeline& src) {
     fNumStages += src.fNumStages;
     for (const SkRasterPipeline_MemoryCtxInfo& info : src.fMemoryCtxInfos) {
         this->addMemoryContext(info.context, info.bytesPerPixel, info.load, info.store);
+    }
+    for (SkRasterPipeline_InitLaneMasksCtx* ctx : src.fInitLaneMaskContexts) {
+        fInitLaneMaskContexts.push_back(ctx);
     }
 }
 
@@ -575,7 +589,9 @@ void SkRasterPipeline::run(size_t x, size_t y, size_t w, size_t h) const {
     }
 
     auto start_pipeline = this->buildPipeline(program.get() + stagesNeeded);
-    start_pipeline(x, y, x + w, y + h, program.get(), SkSpan{patches.data(), numMemoryCtxs});
+    start_pipeline(x, y, x + w, y + h, program.get(),
+                   SkSpan{patches.data(), numMemoryCtxs},
+                   fInitLaneMaskContexts);
 }
 
 std::function<void(size_t, size_t, size_t, size_t)> SkRasterPipeline::compile() const {
@@ -596,9 +612,13 @@ std::function<void(size_t, size_t, size_t, size_t)> SkRasterPipeline::compile() 
         memset(patches[i].scratch, 0, sizeof(patches[i].scratch));
     }
 
+    auto& initLaneMaskContexts = fInitLaneMaskContexts;
+
     auto start_pipeline = this->buildPipeline(program + stagesNeeded);
     return [=](size_t x, size_t y, size_t w, size_t h) {
-        start_pipeline(x, y, x + w, y + h, program, SkSpan{patches, numMemoryCtxs});
+        start_pipeline(x, y, x + w, y + h, program,
+                       SkSpan{patches, numMemoryCtxs},
+                       initLaneMaskContexts);
     };
 }
 

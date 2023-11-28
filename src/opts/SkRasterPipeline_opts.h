@@ -729,14 +729,16 @@ SI U16 to_half(F f) {
 #endif
 }
 
-static void patch_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
-                                  size_t dx, size_t dy, size_t tail) {
+static void patch_pipeline_for_tail(
+        SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+        SkSpan<SkRasterPipeline_InitLaneMasksCtx* const> initLaneMaskContexts,
+        size_t dx, size_t dy, size_t tail, size_t vectorWidth) {
     for (SkRasterPipeline_MemoryCtxPatch& patch : memoryCtxPatches) {
         SkRasterPipeline_MemoryCtx* ctx = patch.info.context;
 
         const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
-        void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
         if (patch.info.load) {
+            void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
             memcpy(patch.scratch, ctxData, patch.info.bytesPerPixel * tail);
         }
 
@@ -745,10 +747,16 @@ static void patch_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memory
         patch.backup = ctx->pixels;
         ctx->pixels = scratchFakeBase;
     }
+
+    for (SkRasterPipeline_InitLaneMasksCtx* ctx : initLaneMaskContexts) {
+        ctx->tail = tail;
+    }
 }
 
-static void restore_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
-                                    size_t dx, size_t dy, size_t tail) {
+static void unpatch_pipeline_for_tail(
+        SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+        SkSpan<SkRasterPipeline_InitLaneMasksCtx* const> initLaneMaskContexts,
+        size_t dx, size_t dy, size_t tail) {
     for (SkRasterPipeline_MemoryCtxPatch& patch : memoryCtxPatches) {
         SkRasterPipeline_MemoryCtx* ctx = patch.info.context;
 
@@ -757,10 +765,14 @@ static void restore_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memo
         patch.backup = nullptr;
 
         const ptrdiff_t offset = patch.info.bytesPerPixel * (dy * ctx->stride + dx);
-        void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
         if (patch.info.store) {
+            void* ctxData = SkTAddOffset<void>(ctx->pixels, offset);
             memcpy(ctxData, patch.scratch, patch.info.bytesPerPixel * tail);
         }
+    }
+
+    for (SkRasterPipeline_InitLaneMasksCtx* ctx : initLaneMaskContexts) {
+        ctx->tail = 0xFF;
     }
 }
 
@@ -778,9 +790,6 @@ static void restore_memory_contexts(SkSpan<SkRasterPipeline_MemoryCtxPatch> memo
 static constexpr size_t N = sizeof(F) / sizeof(float);
 
 // We're finally going to get to what a Stage function looks like!
-//    tail == 0 ~~> work on a full N pixels
-//    tail != 0 ~~> work on only the first tail pixels
-// tail is always < N.
 
 // Any custom ABI to use for all (non-externally-facing) stage functions?
 // Also decide here whether to use narrow (compromise) or wide (ideal) stages.
@@ -807,46 +816,46 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
 
 #if JUMPER_NARROW_STAGES
     struct Params {
-        size_t dx, dy, tail;
+        size_t dx, dy;
         std::byte* base;
         F dr,dg,db,da;
     };
     using Stage = void(ABI*)(Params*, SkRasterPipelineStage* program, F r, F g, F b, F a);
 #else
-    using Stage = void(ABI*)(size_t tail, SkRasterPipelineStage* program, size_t dx, size_t dy,
+    using Stage = void(ABI*)(SkRasterPipelineStage* program, size_t dx, size_t dy,
                              std::byte* base, F,F,F,F, F,F,F,F);
 #endif
 
 static void start_pipeline(size_t dx, size_t dy,
                            size_t xlimit, size_t ylimit,
                            SkRasterPipelineStage* program,
-                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches) {
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                           SkSpan<SkRasterPipeline_InitLaneMasksCtx* const> initLaneMaskContexts) {
     auto start = (Stage)program->fn;
     const size_t x0 = dx;
     std::byte* const base = nullptr;
     for (; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
-        Params params = { x0,dy,0,base, 0,0,0,0 };
+        Params params = { x0,dy,base, 0,0,0,0 };
         while (params.dx + N <= xlimit) {
             start(&params,program, 0,0,0,0);
             params.dx += N;
         }
         if (size_t tail = xlimit - params.dx) {
-            patch_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
-            params.tail = tail;
+            patch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, params.dx, dy, tail, N);
             start(&params,program, 0,0,0,0);
-            restore_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
+            unpatch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, params.dx, dy, tail);
         }
     #else
         dx = x0;
         while (dx + N <= xlimit) {
-            start(0,program,dx,dy,base,    0,0,0,0, 0,0,0,0);
+            start(program,dx,dy,base, 0,0,0,0, 0,0,0,0);
             dx += N;
         }
         if (size_t tail = xlimit - dx) {
-            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
-            start(tail,program,dx,dy,base, 0,0,0,0, 0,0,0,0);
-            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            patch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, dx, dy, tail, N);
+            start(program,dx,dy,base, 0,0,0,0, 0,0,0,0);
+            unpatch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, dx, dy, tail);
         }
     #endif
     }
@@ -860,30 +869,30 @@ static void start_pipeline(size_t dx, size_t dy,
 
 #if JUMPER_NARROW_STAGES
     #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                     \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, std::byte*& base,    \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                 \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);         \
         static void ABI name(Params* params, SkRasterPipelineStage* program,               \
                              F r, F g, F b, F a) {                                         \
-            OFFSET name##_k(Ctx{program}, params->dx,params->dy,params->tail,params->base, \
+            OFFSET name##_k(Ctx{program}, params->dx,params->dy,params->base,              \
                             r,g,b,a, params->dr, params->dg, params->db, params->da);      \
             INC;                                                                           \
             auto fn = (Stage)program->fn;                                                  \
             MUSTTAIL return fn(params, program, r,g,b,a);                                  \
         }                                                                                  \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, std::byte*& base,    \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                 \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #else
     #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                           \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, std::byte*& base,          \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);               \
-        static void ABI name(size_t tail, SkRasterPipelineStage* program, size_t dx, size_t dy,  \
+        static void ABI name(SkRasterPipelineStage* program, size_t dx, size_t dy,               \
                              std::byte* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {      \
-            OFFSET name##_k(Ctx{program}, dx,dy,tail,base, r,g,b,a, dr,dg,db,da);                \
+            OFFSET name##_k(Ctx{program}, dx,dy,base, r,g,b,a, dr,dg,db,da);                     \
             INC;                                                                                 \
             auto fn = (Stage)program->fn;                                                        \
-            MUSTTAIL return fn(tail, program, dx,dy,base, r,g,b,a, dr,dg,db,da);                 \
+            MUSTTAIL return fn(program, dx,dy,base, r,g,b,a, dr,dg,db,da);                       \
         }                                                                                        \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, std::byte*& base,          \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, std::byte*& base,                       \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #endif
 
@@ -907,7 +916,7 @@ static void start_pipeline(size_t dx, size_t dy,
 #if JUMPER_NARROW_STAGES
     static void ABI just_return(Params*, SkRasterPipelineStage*, F,F,F,F) {}
 #else
-    static void ABI just_return(size_t, SkRasterPipelineStage*, size_t,size_t, std::byte*,
+    static void ABI just_return(SkRasterPipelineStage*, size_t,size_t, std::byte*,
                                 F,F,F,F, F,F,F,F) {}
 #endif
 
@@ -975,7 +984,7 @@ static void start_pipeline(size_t dx, size_t dy,
         ctx->stage = program;
     }
 #else
-    static void ABI stack_checkpoint(size_t tail, SkRasterPipelineStage* program,
+    static void ABI stack_checkpoint(SkRasterPipelineStage* program,
                                      size_t dx, size_t dy, std::byte* base,
                                      F r, F g, F b, F a, F dr, F dg, F db, F da) {
         SkRasterPipeline_RewindCtx* ctx = Ctx{program};
@@ -983,7 +992,7 @@ static void start_pipeline(size_t dx, size_t dy,
             auto next = (Stage)(++program)->fn;
 
             ctx->stage = nullptr;
-            next(tail, program, dx, dy, base, r, g, b, a, dr, dg, db, da);
+            next(program, dx, dy, base, r, g, b, a, dr, dg, db, da);
             program = ctx->stage;
 
             if (program) {
@@ -999,7 +1008,7 @@ static void start_pipeline(size_t dx, size_t dy,
             }
         }
     }
-    static void ABI stack_rewind(size_t tail, SkRasterPipelineStage* program,
+    static void ABI stack_rewind(SkRasterPipelineStage* program,
                                  size_t dx, size_t dy, std::byte* base,
                                  F r, F g, F b, F a, F dr, F dg, F db, F da) {
         SkRasterPipeline_RewindCtx* ctx = Ctx{program};
@@ -2922,7 +2931,7 @@ STAGE(mipmap_linear_finish, SkRasterPipeline_MipmapCtx* ctx) {
 
 STAGE(callback, SkRasterPipeline_CallbackCtx* c) {
     store4(c->rgba, r,g,b,a);
-    c->fn(c, tail ? tail : N);
+    c->fn(c, N);
     load4(c->read_from, &r,&g,&b,&a);
 }
 
@@ -2941,9 +2950,9 @@ STAGE_TAIL(set_base_pointer, std::byte* p) {
                                                    sk_bit_cast<I32>(g) & \
                                                    sk_bit_cast<I32>(b))
 
-STAGE_TAIL(init_lane_masks, NoCtx) {
+STAGE_TAIL(init_lane_masks, SkRasterPipeline_InitLaneMasksCtx* ctx) {
     uint32_t iota[] = {0,1,2,3,4,5,6,7};
-    I32 mask = tail ? cond_to_mask(sk_unaligned_load<U32>(iota) < tail) : I32(~0);
+    I32 mask = cond_to_mask(sk_unaligned_load<U32>(iota) < ctx->tail);
     r = g = b = a = sk_bit_cast<F>(mask);
 }
 
@@ -3065,13 +3074,7 @@ STAGE_TAIL(mask_off_return_mask, NoCtx) {
 }
 
 STAGE_BRANCH(branch_if_all_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
-    if (tail) {
-        uint32_t iota[] = {0,1,2,3,4,5,6,7};
-        I32 tailLanes = cond_to_mask(tail <= sk_unaligned_load<U32>(iota));
-        return all(execution_mask() | tailLanes) ? ctx->offset : 1;
-    } else {
-        return all(execution_mask()) ? ctx->offset : 1;
-    }
+    return all(execution_mask()) ? ctx->offset : 1;
 }
 
 STAGE_BRANCH(branch_if_any_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
@@ -3209,7 +3212,6 @@ SI void copy_n_slots_unmasked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::byte
     auto ctx = SkRPCtxUtils::Unpack(packed);
     F* dst = (F*)(base + ctx.dst);
     F* src = (F*)(base + ctx.src);
-    // We don't even bother masking off the tail; we're filling slots, not the destination surface.
     memcpy(dst, src, sizeof(F) * NumSlots);
 }
 
@@ -4189,12 +4191,12 @@ static constexpr size_t N = sizeof(U16) / sizeof(uint16_t);
 // It's exactly the same decision and implementation strategy as the F stages above.
 #if JUMPER_NARROW_STAGES
     struct Params {
-        size_t dx, dy, tail;
+        size_t dx, dy;
         U16 dr,dg,db,da;
     };
     using Stage = void (ABI*)(Params*, SkRasterPipelineStage* program, U16 r, U16 g, U16 b, U16 a);
 #else
-    using Stage = void (ABI*)(size_t tail, SkRasterPipelineStage* program,
+    using Stage = void (ABI*)(SkRasterPipelineStage* program,
                               size_t dx, size_t dy,
                               U16  r, U16  g, U16  b, U16  a,
                               U16 dr, U16 dg, U16 db, U16 da);
@@ -4203,29 +4205,29 @@ static constexpr size_t N = sizeof(U16) / sizeof(uint16_t);
 static void start_pipeline(size_t x0,     size_t y0,
                            size_t xlimit, size_t ylimit,
                            SkRasterPipelineStage* program,
-                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches) {
+                           SkSpan<SkRasterPipeline_MemoryCtxPatch> memoryCtxPatches,
+                           SkSpan<SkRasterPipeline_InitLaneMasksCtx* const> initLaneMaskContexts) {
     auto start = (Stage)program->fn;
     for (size_t dy = y0; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
-        Params params = { x0,dy,0, 0,0,0,0 };
+        Params params = { x0,dy, 0,0,0,0 };
         for (; params.dx + N <= xlimit; params.dx += N) {
             start(&params, program, 0,0,0,0);
         }
         if (size_t tail = xlimit - params.dx) {
-            patch_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
-            params.tail = tail;
+            patch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, params.dx, dy, tail, N);
             start(&params, program, 0,0,0,0);
-            restore_memory_contexts(memoryCtxPatches, params.dx, dy, tail);
+            unpatch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, params.dx, dy, tail);
         }
     #else
         size_t dx = x0;
         for (; dx + N <= xlimit; dx += N) {
-            start(   0, program, dx,dy, 0,0,0,0, 0,0,0,0);
+            start(program, dx,dy, 0,0,0,0, 0,0,0,0);
         }
         if (size_t tail = xlimit - dx) {
-            patch_memory_contexts(memoryCtxPatches, dx, dy, tail);
-            start(tail, program, dx,dy, 0,0,0,0, 0,0,0,0);
-            restore_memory_contexts(memoryCtxPatches, dx, dy, tail);
+            patch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, dx, dy, tail, N);
+            start(program, dx,dy, 0,0,0,0, 0,0,0,0);
+            unpatch_pipeline_for_tail(memoryCtxPatches, initLaneMaskContexts, dx, dy, tail);
         }
     #endif
     }
@@ -4234,7 +4236,7 @@ static void start_pipeline(size_t x0,     size_t y0,
 #if JUMPER_NARROW_STAGES
     static void ABI just_return(Params*, SkRasterPipelineStage*, U16,U16,U16,U16) {}
 #else
-    static void ABI just_return(size_t, SkRasterPipelineStage*,size_t,size_t,
+    static void ABI just_return(SkRasterPipelineStage*, size_t,size_t,
                                 U16,U16,U16,U16, U16,U16,U16,U16) {}
 #endif
 
@@ -4250,98 +4252,98 @@ static void start_pipeline(size_t x0,     size_t y0,
 
 #if JUMPER_NARROW_STAGES
     #define STAGE_GG(name, ARG)                                                                \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F& x, F& y);                  \
+        SI void name##_k(ARG, size_t dx, size_t dy, F& x, F& y);                               \
         static void ABI name(Params* params, SkRasterPipelineStage* program,                   \
                              U16 r, U16 g, U16 b, U16 a) {                                     \
             auto x = join<F>(r,g),                                                             \
                  y = join<F>(b,a);                                                             \
-            name##_k(Ctx{program}, params->dx,params->dy,params->tail, x,y);                   \
+            name##_k(Ctx{program}, params->dx,params->dy, x,y);                                \
             split(x, &r,&g);                                                                   \
             split(y, &b,&a);                                                                   \
             auto fn = (Stage)(++program)->fn;                                                  \
             fn(params, program, r,g,b,a);                                                      \
         }                                                                                      \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F& x, F& y)
+        SI void name##_k(ARG, size_t dx, size_t dy, F& x, F& y)
 
     #define STAGE_GP(name, ARG)                                                            \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F x, F y,                 \
+        SI void name##_k(ARG, size_t dx, size_t dy, F x, F y,                              \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da);                              \
         static void ABI name(Params* params, SkRasterPipelineStage* program,               \
                              U16 r, U16 g, U16 b, U16 a) {                                 \
             auto x = join<F>(r,g),                                                         \
                  y = join<F>(b,a);                                                         \
-            name##_k(Ctx{program}, params->dx,params->dy,params->tail, x,y, r,g,b,a,       \
+            name##_k(Ctx{program}, params->dx,params->dy, x,y, r,g,b,a,                    \
                      params->dr,params->dg,params->db,params->da);                         \
             auto fn = (Stage)(++program)->fn;                                              \
             fn(params, program, r,g,b,a);                                                  \
         }                                                                                  \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F x, F y,                 \
+        SI void name##_k(ARG, size_t dx, size_t dy, F x, F y,                              \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da)
 
     #define STAGE_PP(name, ARG)                                                            \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail,                           \
+        SI void name##_k(ARG, size_t dx, size_t dy,                                        \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da);                              \
         static void ABI name(Params* params, SkRasterPipelineStage* program,               \
                              U16 r, U16 g, U16 b, U16 a) {                                 \
-            name##_k(Ctx{program}, params->dx,params->dy,params->tail, r,g,b,a,            \
+            name##_k(Ctx{program}, params->dx,params->dy, r,g,b,a,                         \
                      params->dr,params->dg,params->db,params->da);                         \
             auto fn = (Stage)(++program)->fn;                                              \
             fn(params, program, r,g,b,a);                                                  \
         }                                                                                  \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail,                           \
+        SI void name##_k(ARG, size_t dx, size_t dy,                                        \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da)
 #else
     #define STAGE_GG(name, ARG)                                                            \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F& x, F& y);              \
-        static void ABI name(size_t tail, SkRasterPipelineStage* program,                  \
+        SI void name##_k(ARG, size_t dx, size_t dy, F& x, F& y);                           \
+        static void ABI name(SkRasterPipelineStage* program,                               \
                              size_t dx, size_t dy,                                         \
                              U16  r, U16  g, U16  b, U16  a,                               \
                              U16 dr, U16 dg, U16 db, U16 da) {                             \
             auto x = join<F>(r,g),                                                         \
                  y = join<F>(b,a);                                                         \
-            name##_k(Ctx{program}, dx,dy,tail, x,y);                                       \
+            name##_k(Ctx{program}, dx,dy, x,y);                                            \
             split(x, &r,&g);                                                               \
             split(y, &b,&a);                                                               \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(tail, program, dx,dy, r,g,b,a, dr,dg,db,da);                                \
+            fn(program, dx,dy, r,g,b,a, dr,dg,db,da);                                      \
         }                                                                                  \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F& x, F& y)
+        SI void name##_k(ARG, size_t dx, size_t dy, F& x, F& y)
 
     #define STAGE_GP(name, ARG)                                                            \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F x, F y,                 \
+        SI void name##_k(ARG, size_t dx, size_t dy, F x, F y,                              \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da);                              \
-        static void ABI name(size_t tail, SkRasterPipelineStage* program,                  \
+        static void ABI name(SkRasterPipelineStage* program,                               \
                              size_t dx, size_t dy,                                         \
                              U16  r, U16  g, U16  b, U16  a,                               \
                              U16 dr, U16 dg, U16 db, U16 da) {                             \
             auto x = join<F>(r,g),                                                         \
                  y = join<F>(b,a);                                                         \
-            name##_k(Ctx{program}, dx,dy,tail, x,y, r,g,b,a, dr,dg,db,da);                 \
+            name##_k(Ctx{program}, dx,dy, x,y, r,g,b,a, dr,dg,db,da);                      \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(tail, program, dx,dy, r,g,b,a, dr,dg,db,da);                                \
+            fn(program, dx,dy, r,g,b,a, dr,dg,db,da);                                      \
         }                                                                                  \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail, F x, F y,                 \
+        SI void name##_k(ARG, size_t dx, size_t dy, F x, F y,                              \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da)
 
     #define STAGE_PP(name, ARG)                                                            \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail,                           \
+        SI void name##_k(ARG, size_t dx, size_t dy,                                        \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da);                              \
-        static void ABI name(size_t tail, SkRasterPipelineStage* program,                  \
+        static void ABI name(SkRasterPipelineStage* program,                               \
                              size_t dx, size_t dy,                                         \
                              U16  r, U16  g, U16  b, U16  a,                               \
                              U16 dr, U16 dg, U16 db, U16 da) {                             \
-            name##_k(Ctx{program}, dx,dy,tail, r,g,b,a, dr,dg,db,da);                      \
+            name##_k(Ctx{program}, dx,dy, r,g,b,a, dr,dg,db,da);                           \
             auto fn = (Stage)(++program)->fn;                                              \
-            fn(tail, program, dx,dy, r,g,b,a, dr,dg,db,da);                                \
+            fn(program, dx,dy, r,g,b,a, dr,dg,db,da);                                      \
         }                                                                                  \
-        SI void name##_k(ARG, size_t dx, size_t dy, size_t tail,                           \
+        SI void name##_k(ARG, size_t dx, size_t dy,                                        \
                          U16&  r, U16&  g, U16&  b, U16&  a,                               \
                          U16& dr, U16& dg, U16& db, U16& da)
 #endif
