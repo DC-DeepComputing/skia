@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82373130_49e67507",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-28T20:43:41Z",
+      "side": 1,
+      "message": "Are you picturing that we use the (currently unused?) context parameter to init_lane_masks to just store the mask itself? That does seem like it would work. It\u0027s unfortunately not the same \"shape\" as the memory-contexts, so we\u0027d need another `SkSpan\u003cvoid*\u003e` for the lane-mask contexts to patch?",
+      "parentUuid": "b12a6c2b_567b9136",
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8121a88_69a464b4",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 8
