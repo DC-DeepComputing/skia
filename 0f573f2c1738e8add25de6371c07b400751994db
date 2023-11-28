@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a4163f0_5cfb06ac",
+        "filename": "tools/testrunners/common/compilation_mode_keys/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-28T22:17:54Z",
+      "side": 1,
+      "message": "Could we set this with a define instead? That is, add a defines that uses a select?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 8
+      },
+      "revId": "0f573f2c1738e8add25de6371c07b400751994db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
