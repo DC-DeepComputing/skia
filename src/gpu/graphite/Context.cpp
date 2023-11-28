@@ -48,6 +48,7 @@
 #include "src/gpu/graphite/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/UploadTask.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -104,7 +105,10 @@ Context::~Context() {
 bool Context::finishInitialization() {
     SkASSERT(!fSharedContext->rendererProvider()); // Can only initialize once
 
-    StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
+    UploadBufferManager uploadBufferManager{fResourceProvider.get(), fSharedContext->caps()};
+    StaticBufferManager bufferManager{fResourceProvider.get(),
+                                      fSharedContext->caps(),
+                                      &uploadBufferManager};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
 
@@ -114,6 +118,7 @@ bool Context::finishInitialization() {
         // use it will draw incorrectly, so it's better to fail the Context creation.
         return false;
     }
+    fQueueManager->addUploadBufferManagerRefs(&uploadBufferManager);
     if (result == StaticBufferManager::FinishResult::kSuccess &&
         !fQueueManager->submitToGpu()) {
         SKGPU_LOG_W("Failed to submit initial command buffer for Context creation.\n");
