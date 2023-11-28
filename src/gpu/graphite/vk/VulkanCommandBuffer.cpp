@@ -9,7 +9,6 @@
 
 #include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/BackendSemaphore.h"
-#include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/DescriptorTypes.h"
 #include "src/gpu/graphite/Log.h"
@@ -216,7 +215,7 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
     // Even though internally we use this helper for getting src access flags and stages they
     // can also be used for general dst flags since we don't know exactly what the client
     // plans on using the image for.
-    VkImageLayout newLayout = skgpu::MutableTextureStates::GetVkImageLayout(newState);
+    VkImageLayout newLayout = newState->getVkImageLayout();
     if (newLayout == VK_IMAGE_LAYOUT_UNDEFINED) {
         newLayout = texture->currentLayout();
     }
@@ -224,7 +223,7 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
     VkAccessFlags dstAccess = VulkanTexture::LayoutToSrcAccessMask(newLayout);
 
     uint32_t currentQueueFamilyIndex = texture->currentQueueFamilyIndex();
-    uint32_t newQueueFamilyIndex = skgpu::MutableTextureStates::GetVkQueueFamilyIndex(newState);
+    uint32_t newQueueFamilyIndex = newState->getQueueFamilyIndex();
     auto isSpecialQueue = [](uint32_t queueFamilyIndex) {
         return queueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
                queueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT;
@@ -275,7 +274,10 @@ static bool submit_to_queue(const VulkanInterface* interface,
     submitInfo.pSignalSemaphores = signalSemaphores;
     VkResult result;
     VULKAN_CALL_RESULT(interface, result, QueueSubmit(queue, 1, &submitInfo, fence));
-    return result == VK_SUCCESS;
+    if (result != VK_SUCCESS) {
+        return false;
+    }
+    return true;
 }
 
 bool VulkanCommandBuffer::submit(VkQueue queue) {
@@ -552,6 +554,8 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
     int frameBufferWidth = 0;
     int frameBufferHeight = 0;
+    // TODO: Get frame buffer render area from RenderPassDesc. Account for granularity if it wasn't
+    // already. For now, simply set the render area to be the entire frame buffer.
     if (colorTexture) {
         frameBufferWidth = colorTexture->dimensions().width();
         frameBufferHeight = colorTexture->dimensions().height();
@@ -575,14 +579,56 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = vulkanRenderPass->renderPass();
     beginInfo.framebuffer = framebuffer->framebuffer();
-    // TODO: Get render area from RenderPassDesc. Account for granularity if it wasn't already.
-    // For now, simply set the render area to be the entire frame buffer.
     beginInfo.renderArea = {{ 0, 0 },
                             { (unsigned int) frameBufferWidth, (unsigned int) frameBufferHeight }};
     beginInfo.clearValueCount = clearValues.size();
     beginInfo.pClearValues = clearValues.begin();
 
-    // TODO: If needed, load MSAA from resolve
+    bool loadMSAAFromResolve =
+            resolveTexture ? renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad
+                           : false;
+    if (loadMSAAFromResolve) {
+        // We manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the MSAA attachment's load op should be LoadOp::kDiscard.
+        SkASSERT(renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kDiscard);
+
+        auto loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
+        this->bindGraphicsPipeline(loadPipeline.get());
+
+        // Actual attachment, not reference
+        VulkanTexture* msaaLoadDst = vulkanColorTexture;
+        // Resolve texture image from which to load MSAA
+        // VulkanTexture* sourceResolveTexture = vulkanResolveTexture;
+        int dstWidth = msaaLoadDst->dimensions().width();
+        int dstHeight = msaaLoadDst->dimensions().height();
+        this->setScissor(0, 0, dstWidth, dstHeight);
+
+        // LoadMSAAPipeline pipeline layout / descriptor set structure :
+        // Descriptor set #1 = uniforms (posXform... is that the same as rtAdjust?)
+        // descriptor set #2 = usually texture/samplers...
+
+        // Update and bind uniform descriptor set
+        // update input descriptor set.... ?
+        STArray<1, DescriptorData> inputDescriptors =
+                {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+        sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
+            SkSpan<DescriptorData>{&inputDescriptors.front(), inputDescriptors.size()});
+        fInputAttachmentDescSetToBind = *set->descriptorSet();
+        //fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+        this->trackResource(std::move(set));
+
+        this->bindUniformBuffers();
+        // bind input attachment
+        // VkWriteDescriptorSet
+        // update descriptor set
+        // bind descriptor set
+
+        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+    }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
     // beginning the render pass.
