@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d08d6c98_ace2b33d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-28T20:38:01Z",
+      "side": 1,
+      "message": "I was picturing something like: `if (child.eval(coords).a \u003e 0.5) { doSomethingExpensive(); }`, where you \"know\" that it\u0027s a rare case in reality, but the new edge handling means those lanes are still active, but sampling further off the edge of `child`. That\u0027s still just a performance issue, not a correctness one, though. (This is different from the GPU model, where those lanes will be masked off at the start, like we used to do in `init_lane_masks`). Should be fine, though - and simplifies the stage signature, which is a big plus.",
+      "parentUuid": "cd009b61_98f6240c",
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8121a88_69a464b4",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 8
