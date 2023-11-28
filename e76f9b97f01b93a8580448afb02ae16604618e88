@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88655225_94a4c003",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-28T02:04:23Z",
+      "side": 1,
+      "message": "In Ganesh I believe we handled the viewport and NDC space as the full backing size. For now as long as we\u0027re setting the scissor, I think we will draw fine.\n\nHaving the NDC space and viewport connected back to the device size may be useful to avoid flakiness in rendering where MSAA sampling or coverage interpolation changes slightly due to rasterization differences resulting from normalizing with a different denominator (full target vs. the deviceSize). If we can plumb it through later on, it\u0027s probably worth making the NDC mapping consistent so we should get the same rasterization behavior regardless of approx or exact-fit backing textures. But I think that can be a separate CL and we just file a bug.",
+      "parentUuid": "acb6de67_0dc4365a",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 95
+      },
+      "revId": "e76f9b97f01b93a8580448afb02ae16604618e88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9858b3dc_9f2ad9ed",
         "filename": "src/gpu/graphite/TextureUtils.cpp",
         "patchSetId": 2
@@ -243,6 +267,30 @@
       "side": 1,
       "message": "Sorry do you mean this should only be kApprox some of the time? (Locally drawing all of our GMs showed no significant differences before this CL vs. with this CL + always using kApprox here.)",
       "parentUuid": "0664a3d8_7926e67e",
+      "range": {
+        "startLine": 748,
+        "startChar": 0,
+        "endLine": 748,
+        "endChar": 66
+      },
+      "revId": "e76f9b97f01b93a8580448afb02ae16604618e88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a35480bc_77cd488b",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-28T02:04:23Z",
+      "side": 1,
+      "message": "Yeah, it should always be `kApprox`. The `Backend` object being created here is the image-filtering backend so its only ever called for image filters evaluation.",
+      "parentUuid": "eb9d2c7b_337b77f4",
       "range": {
         "startLine": 748,
         "startChar": 0,

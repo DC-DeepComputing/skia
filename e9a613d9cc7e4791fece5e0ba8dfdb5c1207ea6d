@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d4d9aa_9e6416ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-28T02:04:23Z",
+      "side": 1,
+      "message": "lgtm (with kApprox used in TextureUtils), and later follow-up/bug for NDC fitting to deviceSize.",
+      "revId": "e9a613d9cc7e4791fece5e0ba8dfdb5c1207ea6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
