@@ -22,6 +22,30 @@
       },
       "revId": "ee93e37e7b448891ba2498839a62169d86bf462f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "004fa4c8_69c9b5c5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-28T12:05:47Z",
+      "side": 1,
+      "message": "I slept on it and came up with a pretty tight loop.",
+      "parentUuid": "1e41bfb1_49e2a49c",
+      "range": {
+        "startLine": 743,
+        "startChar": 0,
+        "endLine": 756,
+        "endChar": 0
+      },
+      "revId": "ee93e37e7b448891ba2498839a62169d86bf462f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
