@@ -17,16 +17,15 @@ GpuWorkSubmission::GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
                                      QueueManager* queueManager)
         : fCommandBuffer(std::move(cmdBuffer))
         , fQueueManager(queueManager) {
-    SkSpan<const sk_sp<Buffer>> buffers = fCommandBuffer->buffersToAsyncMapOnSubmit();
+    SkSpan<const sk_sp<Buffer>> buffers = fCommandBuffer->buffersToAsyncMapReadOnSubmit();
     if (!buffers.empty()) {
         fOutstandingAsyncMapCounter = sk_make_sp<SkRefCnt>();
-        for (auto& buffer : fCommandBuffer->buffersToAsyncMapOnSubmit()) {
+        for (auto& buffer : fCommandBuffer->buffersToAsyncMapReadOnSubmit()) {
             SkASSERT(!buffer->isUnmappable());
             fOutstandingAsyncMapCounter->ref();
-            buffer->asyncMap([](GpuFinishedContext c, CallbackResult) {
-                                static_cast<SkRefCnt*>(c)->unref();
-                             },
-                             fOutstandingAsyncMapCounter.get());
+            buffer->asyncMapRead([](GpuFinishedContext c,
+                                    CallbackResult) { static_cast<SkRefCnt*>(c)->unref(); },
+                                 fOutstandingAsyncMapCounter.get());
         }
     }
 }

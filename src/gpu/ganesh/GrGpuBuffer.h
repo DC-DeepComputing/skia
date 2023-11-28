@@ -45,6 +45,7 @@ public:
      * @return a pointer to the data or nullptr if the map fails.
      */
     void* map();
+    const void* mapRead() { return this->map(); }
 
     /**
      * Unmaps the buffer if it is mapped.

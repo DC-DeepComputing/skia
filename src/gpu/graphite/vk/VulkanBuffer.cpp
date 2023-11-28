@@ -157,6 +157,7 @@ void VulkanBuffer::freeGpuData() {
     if (fMapPtr) {
         this->internalUnmap(0, this->size());
         fMapPtr = nullptr;
+        fConstMapPtr = nullptr;
     }
 
     const VulkanSharedContext* sharedContext =
@@ -192,7 +193,7 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
             VULKAN_LOG_IF_NOT_SUCCESS(result, "skgpu::VulkanMemory::MapAlloc");
             return sharedContext->checkVkResult(result);
         };
-        fMapPtr = skgpu::VulkanMemory::MapAlloc(allocator, fAlloc, checkResult);
+        fConstMapPtr = fMapPtr = skgpu::VulkanMemory::MapAlloc(allocator, fAlloc, checkResult);
         if (fMapPtr && readSize != 0) {
             auto checkResult_invalidate = [sharedContext, readOffset, readSize](VkResult result) {
                 VULKAN_LOG_IF_NOT_SUCCESS(result, "skgpu::VulkanMemory::InvalidateMappedAlloc "
@@ -230,7 +231,7 @@ void VulkanBuffer::internalUnmap(size_t flushOffset, size_t flushSize) {
     skgpu::VulkanMemory::UnmapAlloc(allocator, fAlloc);
 }
 
-void VulkanBuffer::onMap() {
+void VulkanBuffer::onMap(bool) {
     SkASSERT(fBuffer);
     SkASSERT(!this->isMapped());
 

@@ -50,7 +50,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(UploadBufferManagerTest, reporter, cont
     REPORTER_ASSERT(reporter, lgBufferInfo.fBuffer != smBufferInfo0.fBuffer);
     REPORTER_ASSERT(reporter, lgBufferInfo.fOffset == 0);
     REPORTER_ASSERT(reporter, lgBufferInfo.fBuffer->isMapped());
-    const void* lgBufferMap = const_cast<Buffer*>(lgBufferInfo.fBuffer)->map();
+    const void* lgBufferMap = const_cast<Buffer*>(lgBufferInfo.fBuffer)->mapWrite();
     const char expectedLgBufferMap[4] = {
             1, 2,
             5, 6,
@@ -68,7 +68,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(UploadBufferManagerTest, reporter, cont
 
     REPORTER_ASSERT(reporter, smBufferInfo0.fBuffer->isMapped());
     const char* smBufferMap =
-                reinterpret_cast<const char*>(const_cast<Buffer*>(smBufferInfo0.fBuffer)->map());
+            reinterpret_cast<const char*>(const_cast<Buffer*>(smBufferInfo0.fBuffer)->mapWrite());
     // Each section of written data could be offset and aligned by GPU-required rules, so we can't
     // easily validate the contents of the buffer in one go, and instead test at each of the three
     // reported offsets.
@@ -116,7 +116,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(UploadBufferManagerTest, reporter, cont
     };
 
     REPORTER_ASSERT(reporter, alBufferInfo0.fBuffer->isMapped());
-    const void* alBufferMap = const_cast<Buffer*>(alBufferInfo0.fBuffer)->map();
+    const void* alBufferMap = const_cast<Buffer*>(alBufferInfo0.fBuffer)->mapWrite();
     REPORTER_ASSERT(reporter,
                     memcmp(alBufferMap, expectedAlBufferMap0, sizeof(expectedAlBufferMap0)) == 0);
 

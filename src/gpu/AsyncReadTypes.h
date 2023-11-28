@@ -146,7 +146,7 @@ public:
                            SkISize dimensions,
                            size_t rowBytes,
                            TClientMappedBufferManager<T, IDType>* manager) {
-        const void* mappedData = result.fTransferBuffer->map();
+        const void* mappedData = result.fTransferBuffer->mapRead();
         if (!mappedData) {
             return false;
         }
@@ -202,7 +202,7 @@ private:
             if (fMappedBuffer) {
                 SkASSERT(!fData);
                 SkASSERT(fMappedBuffer->isMapped());
-                return fMappedBuffer->map();
+                return fMappedBuffer->mapRead();
             }
             SkASSERT(fData);
             return fData->data();

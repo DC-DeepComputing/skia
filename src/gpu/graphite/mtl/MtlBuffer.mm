@@ -70,7 +70,7 @@ MtlBuffer::MtlBuffer(const MtlSharedContext* sharedContext,
         : Buffer(sharedContext, size)
         , fBuffer(std::move(buffer)) {}
 
-void MtlBuffer::onMap() {
+void MtlBuffer::onMap(bool mapForWrite) {
     SkASSERT(fBuffer);
     SkASSERT(!this->isMapped());
 
@@ -78,7 +78,7 @@ void MtlBuffer::onMap() {
         return;
     }
 
-    fMapPtr = static_cast<char*>((*fBuffer).contents);
+    fConstMapPtr = fMapPtr = static_cast<char*>((*fBuffer).contents);
 }
 
 void MtlBuffer::onUnmap() {
@@ -89,7 +89,6 @@ void MtlBuffer::onUnmap() {
         [*fBuffer didModifyRange: NSMakeRange(0, this->size())];
     }
 #endif
-    fMapPtr = nullptr;
 }
 
 void MtlBuffer::freeGpuData() {

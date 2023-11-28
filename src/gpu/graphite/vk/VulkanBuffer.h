@@ -36,7 +36,7 @@ private:
                  const skgpu::VulkanAlloc&,
                  VkBufferUsageFlags);
 
-    void onMap() override;
+    void onMap(bool) override;
     void onUnmap() override;
 
     void internalMap(size_t readOffset, size_t readSize);

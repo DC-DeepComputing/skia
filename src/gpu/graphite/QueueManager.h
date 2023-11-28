@@ -41,7 +41,7 @@ public:
     // Adds a proc that will be called when the current CommandBuffer is submitted and finishes
     [[nodiscard]] bool addFinishInfo(const InsertFinishInfo&,
                                      ResourceProvider*,
-                                     SkSpan<const sk_sp<Buffer>> buffersToAsyncMap = {});
+                                     SkSpan<const sk_sp<Buffer>> buffersToAsyncMapRead = {});
 
     [[nodiscard]] bool submitToGpu();
     [[nodiscard]] bool hasUnfinishedGpuWork();
