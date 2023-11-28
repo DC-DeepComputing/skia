@@ -16,6 +16,23 @@
       "message": "At this point Android won\u0027t be pulling from this branch, but if this is cherry-picked it will be one less place where a known issue exists.",
       "revId": "659b616f9f5751049a2cb16e2e30ef4c580aa417",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1789722d_2b345fc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-11-28T20:57:03Z",
+      "side": 1,
+      "message": "Logically this makes sense to me to keep Skia\u0027s `android/u-release` in sync with that\u0027s generally \"U\"-ish, a.k.a. AOSP in this case. @scroggo@google.com do you agree or disagree?",
+      "revId": "659b616f9f5751049a2cb16e2e30ef4c580aa417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
