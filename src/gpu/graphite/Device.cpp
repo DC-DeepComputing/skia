@@ -222,25 +222,30 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
                            Mipmapped mipmapped,
+                           SkBackingFit backingFit,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
+    SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
+
     if (!recorder) {
         return nullptr;
     }
 
     Protected isProtected = Protected(recorder->priv().caps()->protectedSupport());
-    sk_sp<TextureProxy> target = TextureProxy::Make(recorder->priv().caps(),
-                                                    ii.dimensions(),
-                                                    ii.colorType(),
-                                                    mipmapped,
-                                                    isProtected,
-                                                    Renderable::kYes,
-                                                    budgeted);
+    sk_sp<TextureProxy> target = TextureProxy::Make(
+            recorder->priv().caps(),
+            backingFit == SkBackingFit::kApprox ? GetApproxSize(ii.dimensions()) : ii.dimensions(),
+            ii.colorType(),
+            mipmapped,
+            isProtected,
+            Renderable::kYes,
+            budgeted);
     if (!target) {
         return nullptr;
     }
 
-    return Make(recorder, std::move(target), ii.colorInfo(), props, addInitialClear);
+    return Make(
+            recorder, std::move(target), ii.dimensions(), ii.colorInfo(), props, addInitialClear);
 }
 
 sk_sp<Device> Device::Make(Recorder* recorder,
@@ -343,6 +348,7 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
                 info.fInfo,
                 skgpu::Budgeted::kYes,
                 Mipmapped::kNo,
+                SkBackingFit::kApprox,
                 props,
                 addInitialClear);
 }
@@ -351,7 +357,9 @@ sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps
     return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props);
 }
 
-TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) {
+TextureProxyView Device::createCopy(const SkIRect* subset,
+                                    Mipmapped mipmapped,
+                                    SkBackingFit backingFit) {
     this->flushPendingWorkToRecorder();
 
     TextureProxyView srcView = this->readSurfaceView();
@@ -364,14 +372,18 @@ TextureProxyView Device::createCopy(const SkIRect* subset, Mipmapped mipmapped) 
                                   this->imageInfo().colorInfo(),
                                   srcView,
                                   srcRect,
-                                  mipmapped);
+                                  mipmapped,
+                                  backingFit);
 }
 
 TextureProxyView TextureProxyView::Copy(Recorder* recorder,
                                         const SkColorInfo& srcColorInfo,
                                         const TextureProxyView& srcView,
                                         SkIRect srcRect,
-                                        Mipmapped mipmapped) {
+                                        Mipmapped mipmapped,
+                                        SkBackingFit backingFit) {
+    SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
+
     SkASSERT(srcView.proxy()->isFullyLazy() ||
              SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(srcRect));
 
@@ -379,7 +391,10 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
             recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
                                                                   mipmapped);
     sk_sp<TextureProxy> dest = TextureProxy::Make(
-            recorder->priv().caps(), srcRect.size(), textureInfo, skgpu::Budgeted::kNo);
+            recorder->priv().caps(),
+            backingFit == SkBackingFit::kApprox ? GetApproxSize(srcRect.size()) : srcRect.size(),
+            textureInfo,
+            skgpu::Budgeted::kNo);
     if (!dest) {
         return {};
     }
@@ -1420,11 +1435,11 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
     if (forceCopy || !view || view.proxy()->isFullyLazy()) {
         // TODO: this doesn't address the non-readable surface view case, in which view is empty and
         // createCopy will return an empty view as well.
-        view = this->createCopy(&subset, Mipmapped::kNo);
+        view = this->createCopy(&subset, Mipmapped::kNo, SkBackingFit::kApprox);
         if (!view) {
             return nullptr;
         }
-        finalSubset = SkIRect::MakeWH(view.width(), view.height());
+        finalSubset = SkIRect::MakeSize(subset.size());
     }
 
     return SkSpecialImages::MakeGraphite(finalSubset,
