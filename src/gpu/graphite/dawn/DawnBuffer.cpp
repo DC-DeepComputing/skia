@@ -47,19 +47,29 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
 sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                    size_t size,
                                    BufferType type,
-                                   AccessPattern,
+                                   AccessPattern accessPattern,
                                    const char* label) {
     if (size <= 0) {
         return nullptr;
     }
 
     wgpu::BufferUsage usage = wgpu::BufferUsage::None;
+
+    // These mapping usages are disabled if caps' drawBufferCanBeMapped() = false
+    wgpu::BufferUsage mapReadUsageIfPossible = wgpu::BufferUsage::None;
+    wgpu::BufferUsage mapWriteUsageIfPossible = wgpu::BufferUsage::None;
+    if (accessPattern == AccessPattern::kHostVisible &&
+        sharedContext->caps()->drawBufferCanBeMapped()) {
+        mapReadUsageIfPossible = wgpu::BufferUsage::MapRead;
+        mapWriteUsageIfPossible = wgpu::BufferUsage::MapWrite;
+    }
+
     switch (type) {
     case BufferType::kVertex:
-        usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
+        usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst | mapWriteUsageIfPossible;
         break;
     case BufferType::kIndex:
-        usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst;
+        usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst | mapWriteUsageIfPossible;
         break;
     case BufferType::kXferCpuToGpu:
         usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::MapWrite;
@@ -68,20 +78,20 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::MapRead;
         break;
     case BufferType::kUniform:
-        usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
+        usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst | mapWriteUsageIfPossible;
         break;
     case BufferType::kStorage:
         usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst |
-                wgpu::BufferUsage::CopySrc;
+                wgpu::BufferUsage::CopySrc | mapReadUsageIfPossible | mapWriteUsageIfPossible;
         break;
     case BufferType::kIndirect:
-        usage = wgpu::BufferUsage::Indirect | wgpu::BufferUsage::Storage;
+        usage = wgpu::BufferUsage::Indirect | wgpu::BufferUsage::Storage | mapReadUsageIfPossible;
         break;
     case BufferType::kVertexStorage:
-        usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::Storage;
+        usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::Storage | mapReadUsageIfPossible;
         break;
     case BufferType::kIndexStorage:
-        usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::Storage;
+        usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::Storage | mapReadUsageIfPossible;
         break;
     }
 

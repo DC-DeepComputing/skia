@@ -689,7 +689,8 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
                                             &rtAdjust,
                                             sizeof(rtAdjust));
         fIntrinsicConstantBufferSlotsUsed++;
-    } else {
+    }
+    else {
 #if !defined(__EMSCRIPTEN__)
         fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer->dawnBuffer(),
                                     0,
