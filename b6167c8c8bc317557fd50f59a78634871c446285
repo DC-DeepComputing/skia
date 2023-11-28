@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e647b00_0dc451f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-28T21:20:57Z",
+      "side": 1,
+      "message": "I added some comments if we keep it this way, but it seems like the only uses that were guarded by Vulkan were for failure cases. Instead of duplicated a lot of the createCharacterization logic in the vulkan subclass, why not just have a virtual like isValidForBackend(....) which can do some backend specific checks but all the common code stays in the base class. I also think doing this would allow use to keep the fields on GrContextThreadSafeProxy private as we just pass what is needed into that virtual function",
+      "revId": "b6167c8c8bc317557fd50f59a78634871c446285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bad9247d_4b4f1d30",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-28T21:20:57Z",
+      "side": 1,
+      "message": "no need to check this? handled by override?",
+      "range": {
+        "startLine": 68,
+        "startChar": 2,
+        "endLine": 68,
+        "endChar": 73
+      },
+      "revId": "b6167c8c8bc317557fd50f59a78634871c446285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7f2b9bb_ccba0201",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-28T21:20:57Z",
+      "side": 1,
+      "message": "why have this check for vulkan if we can\u0027t be here?",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 111,
+        "endChar": 18
+      },
+      "revId": "b6167c8c8bc317557fd50f59a78634871c446285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "325309a3_ff7310a2",
+        "filename": "src/gpu/ganesh/vk/GrVkContextThreadSafeProxy.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-28T21:20:57Z",
+      "side": 1,
+      "message": "we already know this has to be false by check above.",
+      "range": {
+        "startLine": 72,
+        "startChar": 8,
+        "endLine": 72,
+        "endChar": 21
+      },
+      "revId": "b6167c8c8bc317557fd50f59a78634871c446285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6635aa1b_45812462",
+        "filename": "src/gpu/ganesh/vk/GrVkContextThreadSafeProxy.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-11-28T21:20:57Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 82,
+        "startChar": 41,
+        "endLine": 82,
+        "endChar": 54
+      },
+      "revId": "b6167c8c8bc317557fd50f59a78634871c446285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
