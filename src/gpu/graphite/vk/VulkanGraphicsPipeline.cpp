@@ -117,14 +117,14 @@ static void setup_vertex_input_state(
         attributeDescs->push_back(vkAttrib);
     }
 
-    if (vertexAttrs.size()) {
+    if (vertexAttrs.size() && bindingDescs) {
         bindingDescs->push_back() = {
                 VulkanGraphicsPipeline::kVertexBufferIndex,
                 (uint32_t) vertexAttributeOffset,
                 VK_VERTEX_INPUT_RATE_VERTEX
         };
     }
-    if (instanceAttrs.size()) {
+    if (instanceAttrs.size() && attributeDescs) {
         bindingDescs->push_back() = {
                 VulkanGraphicsPipeline::kInstanceBufferIndex,
                 (uint32_t) instanceAttributeOffset,
@@ -137,9 +137,11 @@ static void setup_vertex_input_state(
     vertexInputInfo->pNext = nullptr;
     vertexInputInfo->flags = 0;
     vertexInputInfo->vertexBindingDescriptionCount = bindingDescs->size();
-    vertexInputInfo->pVertexBindingDescriptions = bindingDescs->begin();
+    vertexInputInfo->pVertexBindingDescriptions =
+            bindingDescs->size() ? bindingDescs->begin() : VK_NULL_HANDLE;
     vertexInputInfo->vertexAttributeDescriptionCount = attributeDescs->size();
-    vertexInputInfo->pVertexAttributeDescriptions = attributeDescs->begin();
+    vertexInputInfo->pVertexAttributeDescriptions =
+            attributeDescs->size() > 0 ? attributeDescs->begin() : VK_NULL_HANDLE;
 }
 
 static VkPrimitiveTopology primitive_type_to_vk_topology(PrimitiveType primitiveType) {
@@ -539,6 +541,94 @@ static void setup_dynamic_state(VkPipelineDynamicStateCreateInfo* dynamicInfo,
     dynamicInfo->pDynamicStates = dynamicStates;
 }
 
+bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
+        const VulkanSharedContext* sharedContext,
+        SkSL::Compiler* compiler,
+        VkShaderModule* outVertexShaderModule,
+        VkShaderModule* outFragShaderModule,
+        VkPipelineShaderStageCreateInfo* outShaderStageInfo,
+        VkPipelineLayout* outPipelineLayout) {
+    SkSL::Program::Interface vsInterface, fsInterface;
+    SkSL::ProgramSettings settings;
+    settings.fForceNoRTFlip = true;
+    std::string vsSPIRV, fsSPIRV;
+    ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
+
+    std::string vertShaderText;
+    vertShaderText.append(
+            "layout(spirv, set=0, binding=0) uniform vertexUniformBuffer {"
+            "half4 uPosXform;"
+            "};"
+
+            "// MSAA Load Program VS\n"
+            "void main() {"
+            "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
+            "sk_Position.xy = position * uPosXform.xy + uPosXform.zw;"
+            "sk_Position.zw = half2(0, 1);"
+            "}");
+
+    std::string fragShaderText;
+    fragShaderText.append(
+            "layout(spirv, input_attachment_index=0, set=1, binding=0) uniform subpassInput uInput;"
+
+            "// MSAA Load Program FS\n"
+            "void main() {"
+            "sk_FragColor = subpassLoad(uInput);"
+            "}");
+
+    if (!SkSLToSPIRV(compiler,
+                     vertShaderText,
+                     SkSL::ProgramKind::kGraphiteVertex,
+                     settings,
+                     &vsSPIRV,
+                     &vsInterface,
+                     errorHandler)) {
+        return false;
+    }
+    if (!SkSLToSPIRV(compiler,
+                     fragShaderText,
+                     SkSL::ProgramKind::kGraphiteFragment,
+                     settings,
+                     &fsSPIRV,
+                     &fsInterface,
+                     errorHandler)) {
+        return false;
+    }
+    *outFragShaderModule =
+            createVulkanShaderModule(sharedContext, fsSPIRV, VK_SHADER_STAGE_FRAGMENT_BIT);
+    if (*outFragShaderModule == VK_NULL_HANDLE) {
+        return false;
+    }
+
+    *outVertexShaderModule =
+            createVulkanShaderModule(sharedContext, vsSPIRV, VK_SHADER_STAGE_VERTEX_BIT);
+    if (*outVertexShaderModule == VK_NULL_HANDLE) {
+        destroy_shader_modules(sharedContext, VK_NULL_HANDLE, *outFragShaderModule);
+        return false;
+    }
+
+    VkPipelineShaderStageCreateInfo pipelineShaderStages[2];
+    setup_shader_stage_info(VK_SHADER_STAGE_VERTEX_BIT,
+                            *outVertexShaderModule,
+                            &pipelineShaderStages[0]);
+
+    setup_shader_stage_info(VK_SHADER_STAGE_FRAGMENT_BIT,
+                            *outFragShaderModule,
+                            &pipelineShaderStages[1]);
+
+    // TODO: Optimize for having one texture (no sampler) once separate textures and samplers are
+    // supported for Vulkan.
+    *outPipelineLayout = setup_pipeline_layout(sharedContext,
+                                               /*hasStepUniforms=*/false,
+                                               /*hasFragment=*/true,
+                                               /*numTextureSamplers=*/1);
+    if (*outPipelineLayout == VK_NULL_HANDLE) {
+        destroy_shader_modules(sharedContext, *outVertexShaderModule, *outFragShaderModule);
+        return false;
+    }
+    return true;
+}
+
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const VulkanSharedContext* sharedContext,
         SkSL::Compiler* compiler,
@@ -735,6 +825,103 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        fsSkSLInfo.fNumPaintUniforms > 0,
                                        !step->uniforms().empty(),
                                        fsSkSLInfo.fNumTexturesAndSamplers));
+}
+
+sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
+        const VulkanSharedContext* sharedContext,
+        VkShaderModule vsModule,
+        VkShaderModule fsModule,
+        VkPipelineShaderStageCreateInfo* pipelineShaderStages,
+        VkPipelineLayout pipelineLayout,
+        sk_sp<VulkanRenderPass> compatibleRenderPass,
+        VkPipelineCache pipelineCache) {
+    // The load msaa pipeline takes no uniforms, no vertex/instance attributes and only uses
+    // one texture that does not require a sampler.
+    VkPipelineVertexInputStateCreateInfo vertexInputInfo;
+    setup_vertex_input_state(/*vertexAttrs=*/{},
+                            /*instanceAttrs=*/{},
+                            &vertexInputInfo,
+                            /*bindingDescs=*/nullptr,
+                            /*attributeDescs=*/nullptr);
+
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
+    setup_input_assembly_state(PrimitiveType::kTriangleStrip, &inputAssemblyInfo);
+
+    VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+    setup_depth_stencil_state(/*DepthStencilSettings=*/{}, &depthStencilInfo);
+
+    VkPipelineViewportStateCreateInfo viewportInfo;
+    setup_viewport_scissor_state(&viewportInfo);
+
+    VkPipelineMultisampleStateCreateInfo multisampleInfo;
+    // Should there be 0 samples if there is no sampler?
+    setup_multisample_state(/*numSamples=*/1, &multisampleInfo);
+
+    // We will only have one color blend attachment per pipeline.
+    VkPipelineColorBlendAttachmentState attachmentStates[1];
+    VkPipelineColorBlendStateCreateInfo colorBlendInfo;
+    // TODO: Determine blend info for MSAA load. For now, use default ctor
+    setup_color_blend_state({}, &colorBlendInfo, attachmentStates);
+
+    VkPipelineRasterizationStateCreateInfo rasterInfo;
+    // TODO: Check for wire frame mode once that is an available context option within graphite.
+    setup_raster_state(/*isWireframe=*/false, &rasterInfo);
+
+    VkDynamicState dynamicStates[3];
+    VkPipelineDynamicStateCreateInfo dynamicInfo;
+    setup_dynamic_state(&dynamicInfo, dynamicStates);
+
+    VkGraphicsPipelineCreateInfo pipelineCreateInfo;
+    memset(&pipelineCreateInfo, 0, sizeof(VkGraphicsPipelineCreateInfo));
+    pipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    pipelineCreateInfo.pNext = nullptr;
+    pipelineCreateInfo.flags = 0;
+    pipelineCreateInfo.stageCount = 2;
+    pipelineCreateInfo.pStages = &pipelineShaderStages[0];
+    pipelineCreateInfo.pVertexInputState = &vertexInputInfo;
+    pipelineCreateInfo.pInputAssemblyState = &inputAssemblyInfo;
+    pipelineCreateInfo.pTessellationState = nullptr;
+    pipelineCreateInfo.pViewportState = &viewportInfo;
+    pipelineCreateInfo.pRasterizationState = &rasterInfo;
+    pipelineCreateInfo.pMultisampleState = &multisampleInfo;
+    pipelineCreateInfo.pDepthStencilState = &depthStencilInfo;
+    pipelineCreateInfo.pColorBlendState = &colorBlendInfo;
+    pipelineCreateInfo.pDynamicState = &dynamicInfo;
+    pipelineCreateInfo.layout = pipelineLayout;
+    pipelineCreateInfo.renderPass = compatibleRenderPass->renderPass();
+
+    VkPipeline vkPipeline;
+    VkResult result;
+    {
+        TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+        SkASSERT(pipelineCache != VK_NULL_HANDLE);
+        VULKAN_CALL_RESULT(sharedContext->interface(),
+                           result,
+                           CreateGraphicsPipelines(sharedContext->device(),
+                                                   pipelineCache,
+                                                   /*createInfoCount=*/1,
+                                                   &pipelineCreateInfo,
+                                                   /*pAllocator=*/nullptr,
+                                                   &vkPipeline));
+    }
+    if (result != VK_SUCCESS) {
+        SkDebugf("Failed to create pipeline. Error: %d\n", result);
+        return nullptr;
+    }
+
+    // After creating the pipeline object, we can clean up the VkShaderModule(s).
+    destroy_shader_modules(sharedContext, vsModule, fsModule);
+
+    // TODO: If we want to track GraphicsPipeline::PipelineInfo in debug, we'll need to add
+    // PipelineDesc as an argument for this method. For now, just pass in nullptr.
+    return sk_sp<VulkanGraphicsPipeline>(
+            new VulkanGraphicsPipeline(sharedContext,
+                                       /*pipelineInfo=*/nullptr,
+                                       pipelineLayout,
+                                       vkPipeline,
+                                       /*hasFragment=*/true,
+                                       /*fHasStepUniforms=*/false,
+                                       /*numTextureSamplers*/1));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
