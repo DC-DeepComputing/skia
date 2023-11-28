@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b6c1ac3_afc9f40b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-28T20:07:14Z",
+      "side": 1,
+      "message": "Any guess how this (replacing memcpy with the smaller copying loop) is going to affect performance?\n\nSeparately: I know you called out the one obvious difference with referencing coords, but I do feel slightly queasy about that behavioral change -- this diverges from the GPU execution model now, with those lanes not being disabled. That could impact things like sampling (I guess those were always happening, though?). Is it really just explicit SkSL branches/loops that change behavior? I guess it means that branches based on sampled (eg image shader) results could behave differently?",
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8121a88_69a464b4",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-11-28T12:15:18Z",
       "side": 1,
       "message": "This is branchless on ARM (CSINC) and x64 (CMOV), so we get a tight copy loop.",
+      "range": {
+        "startLine": 745,
+        "startChar": 12,
+        "endLine": 745,
+        "endChar": 36
+      },
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "033bc66e_6a3e53d7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-11-28T20:07:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c8121a88_69a464b4",
       "range": {
         "startLine": 745,
         "startChar": 12,
