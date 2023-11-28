@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8121a88_69a464b4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-28T12:15:18Z",
+      "side": 1,
+      "message": "This is branchless on ARM (CSINC) and x64 (CMOV), so we get a tight copy loop.",
+      "range": {
+        "startLine": 745,
+        "startChar": 12,
+        "endLine": 745,
+        "endChar": 36
+      },
+      "revId": "566dd5304c1d5eab9afa2d99002be6a828802b80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
