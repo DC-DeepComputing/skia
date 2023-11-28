@@ -33,6 +33,41 @@
       "message": "Logically this makes sense to me to keep Skia\u0027s `android/u-release` in sync with that\u0027s generally \"U\"-ish, a.k.a. AOSP in this case. @scroggo@google.com do you agree or disagree?",
       "revId": "659b616f9f5751049a2cb16e2e30ef4c580aa417",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b6dda6c_a958aa30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-11-28T21:23:56Z",
+      "side": 1,
+      "message": "I discussed this with @bungeman@google.com over chat. I don\u0027t feel strongly, but I think this is fine. One motivation behind these `android/` branches is to be in sync with what Android is shipping. But it\u0027s become a lot more complicated to do this. (And in the past we have some other cases where the `android/` branch aligns with an Android QPR branch or a testing branch etc.)",
+      "parentUuid": "1789722d_2b345fc7",
+      "revId": "659b616f9f5751049a2cb16e2e30ef4c580aa417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee2398b_5fdc474f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-11-28T21:23:56Z",
+      "side": 1,
+      "message": "I don\u0027t know this code, but it looks like the original CL.",
+      "revId": "659b616f9f5751049a2cb16e2e30ef4c580aa417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
