@@ -333,6 +333,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f224b2_9194b2a5",
+        "filename": "tools/testrunners/common/android/adb_test.bzl",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-28T18:44:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7ab99634_6a9c8e86",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba433f71_4ce43909",
