@@ -36,7 +36,7 @@ void CommandBuffer::resetCommandBuffer() {
 
     this->releaseResources();
     this->onResetCommandBuffer();
-    fBuffersToAsyncMap.clear();
+    fBuffersToAsyncMapRead.clear();
 }
 
 void CommandBuffer::trackResource(sk_sp<Resource> resource) {
@@ -56,15 +56,15 @@ void CommandBuffer::callFinishedProcs(bool success) {
     fFinishedProcs.clear();
 }
 
-void CommandBuffer::addBuffersToAsyncMapOnSubmit(SkSpan<const sk_sp<Buffer>> buffers) {
+void CommandBuffer::addBuffersToAsyncMapReadOnSubmit(SkSpan<const sk_sp<Buffer>> buffers) {
     for (size_t i = 0; i < buffers.size(); ++i) {
         SkASSERT(buffers[i]);
-        fBuffersToAsyncMap.push_back(buffers[i]);
+        fBuffersToAsyncMapRead.push_back(buffers[i]);
     }
 }
 
-SkSpan<const sk_sp<Buffer>> CommandBuffer::buffersToAsyncMapOnSubmit() const {
-    return fBuffersToAsyncMap;
+SkSpan<const sk_sp<Buffer>> CommandBuffer::buffersToAsyncMapReadOnSubmit() const {
+    return fBuffersToAsyncMapRead;
 }
 
 bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,

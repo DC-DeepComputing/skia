@@ -186,7 +186,7 @@ bool QueueManager::addTask(Task* task,
 
 bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
                                  ResourceProvider* resourceProvider,
-                                 SkSpan<const sk_sp<Buffer>> buffersToAsyncMap) {
+                                 SkSpan<const sk_sp<Buffer>> buffersToAsyncMapRead) {
     sk_sp<RefCntedCallback> callback;
     if (info.fFinishedProc) {
         callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
@@ -203,7 +203,7 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
     if (callback) {
         fCurrentCommandBuffer->addFinishedProc(std::move(callback));
     }
-    fCurrentCommandBuffer->addBuffersToAsyncMapOnSubmit(buffersToAsyncMap);
+    fCurrentCommandBuffer->addBuffersToAsyncMapReadOnSubmit(buffersToAsyncMapRead);
 
     return true;
 }

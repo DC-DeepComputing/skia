@@ -31,18 +31,18 @@ using namespace skgpu::graphite;
 
 namespace {
 
-void* map_buffer(Context* context,
-                 skiatest::graphite::GraphiteTestContext* testContext,
-                 Buffer* buffer,
-                 size_t offset) {
+const void* map_buffer(Context* context,
+                       skiatest::graphite::GraphiteTestContext* testContext,
+                       Buffer* buffer,
+                       size_t offset) {
     SkASSERT(buffer);
     if (context->priv().caps()->bufferMapsAreAsync()) {
-        buffer->asyncMap();
+        buffer->asyncMapRead();
         while (!buffer->isMapped()) {
             testContext->tick();
         }
     }
-    std::byte* ptr = static_cast<std::byte*>(buffer->map());
+    const std::byte* ptr = static_cast<const std::byte*>(buffer->mapRead());
     SkASSERT(ptr);
 
     return ptr + offset;
@@ -205,7 +205,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_SingleDispatchTest,
     context->submit(SyncToCpu::kYes);
 
     // Verify the contents of the output buffer.
-    float* outData = static_cast<float*>(
+    auto outData = static_cast<const float*>(
             map_buffer(context, testContext, outputBuffer.get(), outputInfo.fOffset));
     SkASSERT(outputBuffer->isMapped() && outData != nullptr);
     for (unsigned int i = 0; i < kProblemSize; ++i) {
@@ -436,7 +436,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_DispatchGroupTest,
     context->submit(SyncToCpu::kYes);
 
     // Verify the contents of the output buffer from step 2
-    float* outData = static_cast<float*>(
+    const float* outData = static_cast<const float*>(
             map_buffer(context, testContext, outputBuffer.get(), outputInfo.fOffset));
     SkASSERT(outputBuffer->isMapped() && outData != nullptr);
     for (unsigned int i = 0; i < kProblemSize; ++i) {
@@ -446,7 +446,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_DispatchGroupTest,
     }
 
     // Verify the contents of the extra output buffer from step 1
-    float* extraOutData = static_cast<float*>(
+    const float* extraOutData = static_cast<const float*>(
             map_buffer(context, testContext, extraOutputBuffer.get(), extraOutputInfo.fOffset));
     SkASSERT(extraOutputBuffer->isMapped() && extraOutData != nullptr);
     REPORTER_ASSERT(reporter,
@@ -599,7 +599,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_UniformBufferTest,
     context->submit(SyncToCpu::kYes);
 
     // Verify the contents of the output buffer.
-    float* outData = static_cast<float*>(
+    const float* outData = static_cast<const float*>(
             map_buffer(context, testContext, outputBuffer.get(), outputInfo.fOffset));
     SkASSERT(outputBuffer->isMapped() && outData != nullptr);
     for (unsigned int i = 0; i < kProblemSize; ++i) {
@@ -720,7 +720,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ExternallyAssignedBuffer,
     context->submit(SyncToCpu::kYes);
 
     // Verify the contents of the output buffer.
-    float* outData = static_cast<float*>(
+    const float* outData = static_cast<const float*>(
             map_buffer(context, testContext, outputBuffer.get(), outputInfo.fOffset));
     SkASSERT(outputBuffer->isMapped() && outData != nullptr);
     for (unsigned int i = 0; i < kProblemSize; ++i) {
@@ -1665,7 +1665,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ClearedBuffer,
     context->submit(SyncToCpu::kYes);
 
     // Verify the contents of the output buffer.
-    uint32_t* outData = static_cast<uint32_t*>(
+    const uint32_t* outData = static_cast<const uint32_t*>(
             map_buffer(context, testContext, outputBuffer.get(), outputInfo.fOffset));
     SkASSERT(outputBuffer->isMapped() && outData != nullptr);
     for (unsigned int i = 0; i < kProblemSize; ++i) {

@@ -28,7 +28,7 @@ private:
               size_t size,
               sk_cfp<id<MTLBuffer>>);
 
-    void onMap() override;
+    void onMap(bool) override;
     void onUnmap() override;
 
     void freeGpuData() override;

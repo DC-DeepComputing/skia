@@ -42,7 +42,7 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
         bindInfo.fBuffer = buffer.get();
         bindInfo.fOffset = 0;
 
-        void* bufferMapPtr = buffer->map();
+        void* bufferMapPtr = buffer->mapWrite();
         fUsedBuffers.push_back(std::move(buffer));
         return {UploadWriter(bufferMapPtr, requiredBytes), bindInfo};
     }
@@ -66,7 +66,7 @@ std::tuple<UploadWriter, BindBufferInfo> UploadBufferManager::getUploadWriter(
     bindInfo.fBuffer = fReusedBuffer.get();
     bindInfo.fOffset = fReusedBufferOffset;
 
-    void* bufferMapPtr = fReusedBuffer->map();
+    void* bufferMapPtr = fReusedBuffer->mapWrite();
     bufferMapPtr = SkTAddOffset<void>(bufferMapPtr, fReusedBufferOffset);
 
     fReusedBufferOffset += requiredBytes;

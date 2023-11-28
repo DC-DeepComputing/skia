@@ -43,8 +43,8 @@ private:
                size_t size,
                wgpu::Buffer);
 
-    void onMap() override;
-    void onAsyncMap(GpuFinishedProc, GpuFinishedContext) override;
+    void onMap(bool mapForWrite) override;
+    void onAsyncMap(GpuFinishedProc, GpuFinishedContext, bool mapForWrite) override;
     void onUnmap() override;
 
     void freeGpuData() override;
@@ -52,6 +52,9 @@ private:
     const DawnSharedContext* dawnSharedContext() const {
         return static_cast<const DawnSharedContext*>(this->sharedContext());
     }
+
+    template <bool isWrite>
+    static void mapCallback(WGPUBufferMapAsyncStatus s, void* userData);
 
     wgpu::Buffer fBuffer;
     SkMutex fAsyncMutex;

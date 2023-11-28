@@ -271,7 +271,7 @@ std::pair<void*, BindBufferInfo> DrawBufferManager::prepareMappedBindBuffer(Buff
         return {nullptr, {}};
     }
 
-    void* ptr = SkTAddOffset<void>(info->getMappableBuffer()->map(),
+    void* ptr = SkTAddOffset<void>(info->getMappableBuffer()->mapWrite(),
                                    static_cast<ptrdiff_t>(bindInfo.fOffset));
     return {ptr, bindInfo};
 }
@@ -385,7 +385,7 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
     fCurrentOffset = SkAlignTo(fCurrentOffset, info->fAlignment);
     info->fData.push_back({BindBufferInfo{fCurrentTransferBuffer.get(), fCurrentOffset},
                            target, size});
-    void* ptr = SkTAddOffset<void>(fCurrentTransferBuffer->map(),
+    void* ptr = SkTAddOffset<void>(fCurrentTransferBuffer->mapWrite(),
                                    static_cast<ptrdiff_t>(fCurrentOffset));
     fCurrentOffset += size;
     info->fTotalRequiredBytes += size;
