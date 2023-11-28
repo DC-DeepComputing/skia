@@ -81,11 +81,14 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
     // one int32 for each possible attachment reference type, of which there are 4.
     // TODO: Reference RenderPassDesc to determine number and makeup of subpasses. For now, we only
     // ever expect 1 (in most cases) or 2 (when loading MSAA from resolve).
-    int subpassCount = 1;
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid()
+                               ? renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad
+                               : false;
+    int subpassCount = loadMSAAFromResolve ? 2 : 1;
     num32DataCnt += 4 * subpassCount;
     // Finally, subpass dependency information will be recorded. Each dependency will be allotted 7
     // int32s to store all its pertinent information. Relevant once we support multiple subpasses.
-    int subpassDependencyCount = 0;
+    int subpassDependencyCount = loadMSAAFromResolve ? 1 : 0;
     num32DataCnt += 7 * subpassDependencyCount;
 
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
@@ -198,8 +201,10 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     // Create and track attachment references for the subpass.
     VkAttachmentReference colorRef;
     VkAttachmentReference resolveRef;
+    VkAttachmentReference resolveLoadInputRef;
     VkAttachmentReference depthStencilRef;
 
+    bool loadMSAAFromResolve = false;
     if (hasColorAttachment) {
         VulkanTextureInfo colorAttachTexInfo;
         colorAttachmentTextureInfo.getVulkanTextureInfo(&colorAttachTexInfo);
@@ -218,6 +223,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
         colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
         if (hasColorResolveAttachment) {
+            loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
             VulkanTextureInfo resolveAttachTexInfo;
             colorResolveAttachmentTextureInfo.getVulkanTextureInfo(&resolveAttachTexInfo);
@@ -274,24 +280,57 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     renderPassInfo.pNext = nullptr;
     renderPassInfo.flags = 0;
-    // TODO: Support multiple subpasses. 2 are needed for loading MSAA from resolve.
-    renderPassInfo.subpassCount = 1;
 
-    VkSubpassDescription subpassDesc;
-    memset(&subpassDesc, 0, sizeof(VkSubpassDescription));
-    subpassDesc.flags = 0;
-    subpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    renderPassInfo.subpassCount = 1 + static_cast<int>(loadMSAAFromResolve);
+    skia_private::TArray<VkSubpassDescription> subpassDescs(renderPassInfo.subpassCount);
+    memset(subpassDescs.begin(), 0, renderPassInfo.subpassCount * sizeof(VkSubpassDescription));
+
+    // If we are loading MSAA from resolve, that subpass must always be first.
+    VkSubpassDependency dependency;
+    if (loadMSAAFromResolve) {
+        resolveLoadInputRef.attachment = resolveRef.attachment;
+        resolveLoadInputRef.layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+        VkSubpassDescription& loadSubpassDesc = subpassDescs.push_back();
+        memset(&loadSubpassDesc, 0, sizeof(VkSubpassDescription));
+        loadSubpassDesc.flags = 0;
+        loadSubpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        loadSubpassDesc.inputAttachmentCount = 1;
+        loadSubpassDesc.pInputAttachments = &resolveLoadInputRef;
+        loadSubpassDesc.colorAttachmentCount = 1;
+        loadSubpassDesc.pColorAttachments = &colorRef;
+        loadSubpassDesc.pResolveAttachments = nullptr;
+        loadSubpassDesc.pDepthStencilAttachment = nullptr;
+        loadSubpassDesc.preserveAttachmentCount = 0;
+        loadSubpassDesc.pPreserveAttachments = nullptr;
+
+        // Set up the subpass dependency
+        const int mainSubpassIdx = loadMSAAFromResolve ? 1 : 0;
+        dependency.srcSubpass = 0;
+        dependency.dstSubpass = mainSubpassIdx;
+        dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask =
+                VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    }
+
+    VkSubpassDescription& mainSubpassDesc = subpassDescs.push_back();
+    memset(&mainSubpassDesc, 0, sizeof(VkSubpassDescription));
+    mainSubpassDesc.flags = 0;
+    mainSubpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
     // TODO: Add support for input attachments
-    subpassDesc.inputAttachmentCount = 0;
-    subpassDesc.pInputAttachments = nullptr;
-    subpassDesc.colorAttachmentCount = 1;
-    subpassDesc.pColorAttachments = &colorRef;
-    subpassDesc.pResolveAttachments = &resolveRef;
-    subpassDesc.pDepthStencilAttachment = &depthStencilRef;
-    subpassDesc.preserveAttachmentCount = 0;
-    subpassDesc.pPreserveAttachments = nullptr;
+    mainSubpassDesc.inputAttachmentCount = 0;
+    mainSubpassDesc.pInputAttachments = nullptr;
+    mainSubpassDesc.colorAttachmentCount = 1;
+    mainSubpassDesc.pColorAttachments = &colorRef;
+    mainSubpassDesc.pResolveAttachments = &resolveRef;
+    mainSubpassDesc.pDepthStencilAttachment = &depthStencilRef;
+    mainSubpassDesc.preserveAttachmentCount = 0;
+    mainSubpassDesc.pPreserveAttachments = nullptr;
 
-    renderPassInfo.pSubpasses = &subpassDesc;
+    renderPassInfo.pSubpasses = subpassDescs.begin();
     renderPassInfo.dependencyCount = 0;
     renderPassInfo.pDependencies = VK_NULL_HANDLE;
     renderPassInfo.attachmentCount = attachmentDescs.size();
