@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6938c59f_92074c0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-28T20:53:42Z",
+      "side": 1,
+      "message": "At this point Android won\u0027t be pulling from this branch, but if this is cherry-picked it will be one less place where a known issue exists.",
+      "revId": "659b616f9f5751049a2cb16e2e30ef4c580aa417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
