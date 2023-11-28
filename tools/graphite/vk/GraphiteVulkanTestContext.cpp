@@ -15,6 +15,8 @@
 #include "tools/gpu/ContextType.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
+extern bool gCreateProtectedContext;
+
 namespace skiatest::graphite {
 
 std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
@@ -33,7 +35,9 @@ std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
     features = new VkPhysicalDeviceFeatures2;
     memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions,
-                                             features, &debugCallback)) {
+                                             features, &debugCallback, nullptr,
+                                             sk_gpu_test::CanPresentFn(),
+                                             gCreateProtectedContext)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(features);
         delete features;
         delete extensions;
@@ -98,7 +102,7 @@ std::unique_ptr<skgpu::graphite::Context> VulkanTestContext::makeContext(
     // Needed to make synchronous readPixels work
     revisedOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
 
-    return skgpu::graphite::ContextFactory::MakeVulkan(fVulkan, revisedOptions);
+    return skgpu::graphite::ContextFactory::MakeVulkan(fVulkan, revisedOptions); /*$$$*/
 }
 
 }  // namespace skiatest::graphite
