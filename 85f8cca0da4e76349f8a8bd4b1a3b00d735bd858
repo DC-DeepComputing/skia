@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f4da24_f8f5711e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-28T15:07:33Z",
+      "side": 1,
+      "message": "Need another +1 for this added comment, I\u0027m afraid",
+      "revId": "85f8cca0da4e76349f8a8bd4b1a3b00d735bd858",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
