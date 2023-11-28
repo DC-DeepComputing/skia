@@ -62,8 +62,7 @@ GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffe
             VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
             VkAndroidHardwareBufferPropertiesANDROID hwbProps;
             if (!GetAHardwareBufferProperties(
-                        &hwbFormatProps, &hwbProps, gpu->vkInterface(), hardwareBuffer, device) ||
-                hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
+                        &hwbFormatProps, &hwbProps, gpu->vkInterface(), hardwareBuffer, device)) {
                 return GrBackendFormat();
             }
 
