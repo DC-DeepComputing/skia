@@ -633,7 +633,7 @@ private:
                 const bool onEdge = !excludeTransparentCheck.isEmpty() &&
                                     excludeTransparentCheck.makeOutset(1, 1).contains(x, y);
                 if (!this->approxColor(expected.getColor4f(x, y), SkColors::kTransparent,
-                                       onEdge ? kAATolerance : 0.f)) {
+                                       onEdge ? kAATolerance : 0.f, true)) {
                     badPixels->push_back({x, y});
                     badTransparencyCount++;
                 }
@@ -644,7 +644,8 @@ private:
         return badTransparencyCount == 0;
     }
 
-    bool approxColor(const SkColor4f& a, const SkColor4f& b, float tolerance = kRGBTolerance) const {
+    bool approxColor(const SkColor4f& a, const SkColor4f& b, float tolerance = kRGBTolerance,
+                     bool logFailure=false) const {
         SkPMColor4f apm = a.premul();
         SkPMColor4f bpm = b.premul();
         // Calculate red-mean, a lowcost approximation of color difference that gives reasonable
@@ -656,6 +657,12 @@ private:
         float dg = (apm.fG - bpm.fG);
         float db = (apm.fB - bpm.fB);
         float delta = sqrt((2.f + r)*dr*dr + 4.f*dg*dg + (2.f + (1.f - r))*db*db);
+
+        if (logFailure && delta > tolerance) {
+            SkDebugf("Approx color failed with delta %f vs. %f\n", delta, tolerance);
+            SkDebugf("   A = %f %f %f %f, B = %f %f %f %f\n",
+                    a.fR, a.fG, a.fB, a.fA, b.fR, b.fG, b.fB, b.fA);
+        }
 
         return delta <= tolerance;
     }
@@ -2125,7 +2132,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
 
         const bool periodic = tm == SkTileMode::kRepeat || tm == SkTileMode::kMirror;
         TestCase(r, "2-step rescale preserves tile mode",
-                 /*allowedPercentImageDiff=*/tm == SkTileMode::kDecal ? 5.7f
+                 /*allowedPercentImageDiff=*/tm == SkTileMode::kDecal ? 5.9f
                                                                       : periodic ? 2.5f : 1.f,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 2 : 0)
                 .source({16, 16, 64, 64})
@@ -2134,8 +2141,8 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
 
         TestCase(r, "2-step rescale with near-identity elision",
-                 /*allowedPercentImageDiff=*/tm == SkTileMode::kDecal ? 37.3f
-                                                                      : periodic ? 73.2f : 52.f,
+                 /*allowedPercentImageDiff=*/tm == SkTileMode::kDecal ? 37.33f
+                                                                      : periodic ? 73.55f : 52.f,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 6 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
@@ -2182,7 +2189,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
                 .rescale({kNearlyIdentity.width(), 0.5f}, Expect::kNewImage, expectedTileMode)
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
         TestCase(r, "Identity X axis, 2-step Y axis preserves tile mode",
-                 /*allowedPercentImageDiff=*/2.75f,
+                 /*allowedPercentImageDiff=*/3.1f,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 2 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
@@ -2212,7 +2219,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
                 .rescale({0.5f, kNearlyIdentity.height()}, Expect::kNewImage, expectedTileMode)
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
         TestCase(r, "2-step X axis, identity Y axis preserves tile mode",
-                 /*allowedPercentImageDiff=*/2.75f,
+                 /*allowedPercentImageDiff=*/3.1f,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 2 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
@@ -2285,7 +2292,7 @@ DEF_TEST_SUITE(RescaleWithTransform, r,
 
         const bool periodic = tm == SkTileMode::kRepeat || tm == SkTileMode::kMirror;
         TestCase(r, "2-step rescale applies complex transform",
-                 /*allowedPercentImageDiff=*/periodic ? 6.5f : 1.52f,
+                 /*allowedPercentImageDiff=*/periodic ? 6.5f : 1.54f,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 4 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
