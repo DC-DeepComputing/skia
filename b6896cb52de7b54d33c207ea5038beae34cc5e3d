@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6adb4afb_1f7f8689",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-28T16:54:47Z",
+      "side": 1,
+      "message": "Done. FYI, I couldn\u0027t find any `--cross` flag definitions in any task drivers anyway, so this seems to be a relic of the past.",
+      "parentUuid": "a3a81c7a_55fe126e",
+      "range": {
+        "startLine": 2342,
+        "startChar": 9,
+        "endLine": 2342,
+        "endChar": 14
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90b08a73_8d9cd214",
@@ -190,6 +214,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5548770_8715a0b5",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-28T16:54:47Z",
+      "side": 1,
+      "message": "I applied your suggestion. Thanks for explaining!",
+      "parentUuid": "007ab22d_510f343a",
+      "range": {
+        "startLine": 55,
+        "startChar": 75,
+        "endLine": 55,
+        "endChar": 86
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47e734cd_7b30476e",
@@ -251,6 +299,30 @@
       "side": 1,
       "message": "I think having this sort of \"special casing\" logic live in go code is preferable (and more testable) than here in shell scripts.",
       "parentUuid": "9ab23bf9_ae81b454",
+      "range": {
+        "startLine": 79,
+        "startChar": 30,
+        "endLine": 79,
+        "endChar": 38
+      },
+      "revId": "b6896cb52de7b54d33c207ea5038beae34cc5e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab99634_6a9c8e86",
+        "filename": "tools/testrunners/common/android/adb_test.bzl",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-11-28T16:54:47Z",
+      "side": 1,
+      "message": "Done. I wrote some comments here and in the Go program trying to explain this rationale. I also added a unit test for the `--test-runner-extra-args` parsing logic. Please take a look.",
+      "parentUuid": "a6fd9f18_b05ace56",
       "range": {
         "startLine": 79,
         "startChar": 30,
