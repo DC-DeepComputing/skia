@@ -135,7 +135,7 @@ public:
     GrContextThreadSafeProxyPriv priv();
     const GrContextThreadSafeProxyPriv priv() const;  // NOLINT(readability-const-return-type)
 
-private:
+protected:
     friend class GrContextThreadSafeProxyPriv; // for ctor and hidden methods
 
     // DDL TODO: need to add unit tests for backend & maybe options
