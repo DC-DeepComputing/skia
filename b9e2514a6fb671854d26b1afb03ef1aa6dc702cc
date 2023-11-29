@@ -34,6 +34,24 @@
       "parentUuid": "956a2a55_2cadff3d",
       "revId": "b9e2514a6fb671854d26b1afb03ef1aa6dc702cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5da0b12f_9436bae4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-29T15:39:09Z",
+      "side": 1,
+      "message": "It looks like `mac-rel` succeeded on the latest roll so I don\u0027t think we need any more guarding: https://chromium-review.googlesource.com/c/chromium/src/+/5070343?tab\u003dchecks",
+      "parentUuid": "f3f4f488_f6f884e4",
+      "revId": "b9e2514a6fb671854d26b1afb03ef1aa6dc702cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
