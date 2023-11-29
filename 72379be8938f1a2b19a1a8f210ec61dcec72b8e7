@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ed160a4_11bafc8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-11-29T18:58:04Z",
+      "side": 1,
+      "message": "Good catch! I didn\u0027t realize earlier the `kSimpleRectStaysRect` doesn\u0027t include identity.",
+      "revId": "72379be8938f1a2b19a1a8f210ec61dcec72b8e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
