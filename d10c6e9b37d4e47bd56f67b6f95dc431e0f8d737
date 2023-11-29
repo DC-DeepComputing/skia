@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ba87c7c_d7fe0c8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-29T15:44:29Z",
+      "side": 1,
+      "message": "I realized that the expected images for identity rescale actions were re-drawing the image at a 1x scale, and then drawing that into the output vs. just drawing the image into the output. For devices like the JioNext (in particular, but other android too), this doubly-impacted its linear filtering precision issues at the boundary of the image.\n\nSkipping the unnecessary draw avoids this, and lets the kAATolerance go back to its original value.",
+      "revId": "d10c6e9b37d4e47bd56f67b6f95dc431e0f8d737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
