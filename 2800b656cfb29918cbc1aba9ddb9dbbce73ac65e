@@ -104,6 +104,24 @@
       "parentUuid": "f0168428_59382728",
       "revId": "2800b656cfb29918cbc1aba9ddb9dbbce73ac65e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0608a3d6_35af43c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18984
+      },
+      "writtenOn": "2023-11-29T20:56:53Z",
+      "side": 1,
+      "message": "After rebasing I found the newline at the end of the file was lost in some other commits, sequence of reverts. Should be good now",
+      "parentUuid": "6d64edd1_294aee4d",
+      "revId": "2800b656cfb29918cbc1aba9ddb9dbbce73ac65e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
