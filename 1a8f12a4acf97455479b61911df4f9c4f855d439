@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc8c1392_5609eeeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-29T16:28:25Z",
+      "side": 1,
+      "message": "Tried building `//:png_decode_codec` and `//:png_encode_codec` locally and ran into issues with not all the public includes being public.",
+      "revId": "1a8f12a4acf97455479b61911df4f9c4f855d439",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
