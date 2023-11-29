@@ -73,9 +73,11 @@ namespace SkOpts {
     extern StageFn ops_lowp [kNumRasterPipelineLowpOps ], just_return_lowp;
 
     extern void (*start_pipeline_highp)(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
-                                        SkSpan<SkRasterPipeline_MemoryCtxPatch>);
+                                        SkSpan<SkRasterPipeline_MemoryCtxPatch>,
+                                        SkSpan<SkRasterPipeline_InitLaneMasksCtx* const>);
     extern void (*start_pipeline_lowp )(size_t,size_t,size_t,size_t, SkRasterPipelineStage*,
-                                        SkSpan<SkRasterPipeline_MemoryCtxPatch>);
+                                        SkSpan<SkRasterPipeline_MemoryCtxPatch>,
+                                        SkSpan<SkRasterPipeline_InitLaneMasksCtx* const>);
 
     extern size_t raster_pipeline_lowp_stride;
     extern size_t raster_pipeline_highp_stride;
