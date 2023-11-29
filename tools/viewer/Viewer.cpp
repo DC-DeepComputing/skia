@@ -494,6 +494,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
                 displayParams.fSurfaceProps.flags() | SkSurfaceProps::kDynamicMSAA_Flag,
                 displayParams.fSurfaceProps.pixelGeometry());
     }
+    SkDebugf("Viewer::Viewer %d\n", FLAGS_createProtected);
     displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
 
     fWindow->setRequestedDisplayParams(displayParams);
@@ -830,7 +831,9 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     }
     fImGuiGamutPaint.setColor(SK_ColorWHITE);
 
-    fWindow->attach(backend_type_for_window(fBackendType));
+    if (!fWindow->attach(backend_type_for_window(fBackendType))) {
+        SK_ABORT("Could not attach window");
+    }
     this->setCurrentSlide(this->startupSlide());
 }
 

@@ -67,10 +67,14 @@ void GraphiteVulkanWindowContext::initializeContext() {
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             fCanPresentFn,
+                                             fDisplayParams.fCreateProtectedNativeBackend)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
+
+    SkDebugf("GraphiteVulkanWindowContext::initializeContext %d\n",
+             backendContext.fProtectedContext == skgpu::Protected::kYes);
 
     if (!extensions.hasExtension(VK_KHR_SURFACE_EXTENSION_NAME, 25) ||
         !extensions.hasExtension(VK_KHR_SWAPCHAIN_EXTENSION_NAME, 68)) {

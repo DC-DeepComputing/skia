@@ -279,6 +279,8 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
         mode = VK_PRESENT_MODE_IMMEDIATE_KHR;
     }
 
+    SkDebugf("VulkanWindowContext::createSwapchain: %d\n", fDisplayParams.fCreateProtectedNativeBackend);
+
     VkSwapchainCreateInfoKHR swapchainCreateInfo;
     memset(&swapchainCreateInfo, 0, sizeof(VkSwapchainCreateInfoKHR));
     swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -362,6 +364,8 @@ bool VulkanWindowContext::createBuffers(VkFormat format,
         info.fCurrentQueueFamily = fPresentQueueIndex;
         info.fProtected = skgpu::Protected(fDisplayParams.fCreateProtectedNativeBackend);
         info.fSharingMode = sharingMode;
+
+        SkDebugf("VulkanWindowContext::createBuffers: %d\n", fDisplayParams.fCreateProtectedNativeBackend);
 
         if (usageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) {
             GrBackendTexture backendTexture = GrBackendTextures::MakeVk(fWidth, fHeight, info);
