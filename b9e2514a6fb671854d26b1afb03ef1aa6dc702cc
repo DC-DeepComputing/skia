@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "956a2a55_2cadff3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-29T14:19:00Z",
+      "side": 1,
+      "message": "There is this one last use of kApprox in snapSpecial: https://crsrc.org/c/third_party/skia/src/gpu/graphite/Device.cpp;l\u003d1443;drc\u003db9e2514a\ndo we not need to guard that one?",
+      "revId": "b9e2514a6fb671854d26b1afb03ef1aa6dc702cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
