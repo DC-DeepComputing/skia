@@ -16,6 +16,24 @@
       "message": "There is this one last use of kApprox in snapSpecial: https://crsrc.org/c/third_party/skia/src/gpu/graphite/Device.cpp;l\u003d1443;drc\u003db9e2514a\ndo we not need to guard that one?",
       "revId": "b9e2514a6fb671854d26b1afb03ef1aa6dc702cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f4f488_f6f884e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-29T14:28:45Z",
+      "side": 1,
+      "message": "If the chrome roll fails, then we should get this one too, but I don\u0027t think the code paths that are being hit from the cc pixel tests trigger this.",
+      "parentUuid": "956a2a55_2cadff3d",
+      "revId": "b9e2514a6fb671854d26b1afb03ef1aa6dc702cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
