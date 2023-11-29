@@ -2685,7 +2685,6 @@ if (skia_enable_tools) {
     ]
     deps = [
       ":skia",
-      ":tool_utils",
     ]
   }
 
