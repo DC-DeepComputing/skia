@@ -62,8 +62,7 @@ GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffe
             VkAndroidHardwareBufferFormatPropertiesANDROID hwbFormatProps;
             VkAndroidHardwareBufferPropertiesANDROID hwbProps;
             if (!GetAHardwareBufferProperties(
-                        &hwbFormatProps, &hwbProps, gpu->vkInterface(), hardwareBuffer, device) ||
-                hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
+                        &hwbFormatProps, &hwbProps, gpu->vkInterface(), hardwareBuffer, device)) {
                 return GrBackendFormat();
             }
 
@@ -111,7 +110,7 @@ static GrBackendTexture make_vk_backend_texture(
         UpdateImageProc* updateProc,
         TexImageCtx* imageCtx,
         bool isProtectedContent,
-        const GrBackendFormat& backendFormat,
+        const GrBackendFormat& grBackendFormat,
         bool isRenderable,
         bool fromAndroidWindow) {
     SkASSERT(dContext->backend() == GrBackendApi::kVulkan);
@@ -128,11 +127,11 @@ static GrBackendTexture make_vk_backend_texture(
         return GrBackendTexture();
     }
 
-    VkFormat format;
-    if (!GrBackendFormats::AsVkFormat(backendFormat, &format)) {
+    VkFormat grBackendVkFormat;
+    if (!GrBackendFormats::AsVkFormat(grBackendFormat, &grBackendVkFormat)) {
         SkDebugf("AsVkFormat failed (valid: %d, backend: %u)",
-                 backendFormat.isValid(),
-                 (unsigned)backendFormat.backend());
+                 grBackendFormat.isValid(),
+                 (unsigned)grBackendFormat.backend());
         return GrBackendTexture();
     }
 
@@ -142,11 +141,18 @@ static GrBackendTexture make_vk_backend_texture(
                 &hwbFormatProps, &hwbProps, gpu->vkInterface(), hardwareBuffer, device)) {
         return GrBackendTexture();
     }
+    VkFormat hwbVkFormat = hwbFormatProps.format;
 
-    if (hwbFormatProps.format != format) {
+    // We normally expect the hardware buffer format (hwbVkFormat) to be equivalent to ganesh's
+    // GrBackendFormat VkFormat (grBackendVkFormat). However, even if the hwbVkFormat is a defined
+    // format, we may choose to ignore that and instead import the AHardwareBuffer using an
+    // external format. This can be due to the VkFormat not supporting the necessary features.
+    // Thus, it is acceptable for hwbVkFormat to differ from grBackendVkFormat iff grBackendVkFormat
+    // is VK_FORMAT_UNDEFINED.
+    if (hwbVkFormat != grBackendVkFormat && grBackendVkFormat != VK_FORMAT_UNDEFINED) {
         SkDebugf("Queried format not consistent with expected format; got: %d, expected: %d",
-                 hwbFormatProps.format,
-                 format);
+                 hwbVkFormat,
+                 grBackendVkFormat);
         return GrBackendTexture();
     }
 
@@ -156,25 +162,27 @@ static GrBackendTexture make_vk_backend_texture(
     externalFormat.externalFormat = 0;  // If this is zero it is as if we aren't using this struct.
 
     const GrVkYcbcrConversionInfo* ycbcrConversion =
-            GrBackendFormats::GetVkYcbcrConversionInfo(backendFormat);
+                GrBackendFormats::GetVkYcbcrConversionInfo(grBackendFormat);
     if (!ycbcrConversion) {
         return GrBackendTexture();
     }
 
-    if (hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
+    if (grBackendVkFormat == VK_FORMAT_UNDEFINED) { // If importing the buffer w/ an external format
+        if (!ycbcrConversion->isValid()) {
+            SkDebugf("YCbCr conversion must be valid when importing an AHardwareBuffer with an "
+                     "external format");
+            return GrBackendTexture();
+        }
+        SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures));
+        SkASSERT(hwbFormatProps.externalFormat == ycbcrConversion->fExternalFormat);
+        externalFormat.externalFormat = hwbFormatProps.externalFormat;
+    } else {
         // TODO: We should not assume the transfer features here and instead should have a way for
         // Ganesh's tracking of intenral images to report whether or not they support transfers.
         SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures) &&
-                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_SRC_BIT & hwbFormatProps.formatFeatures) &&
-                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_DST_BIT & hwbFormatProps.formatFeatures));
+                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_SRC_BIT  & hwbFormatProps.formatFeatures) &&
+                 SkToBool(VK_FORMAT_FEATURE_TRANSFER_DST_BIT  & hwbFormatProps.formatFeatures));
         SkASSERT(!ycbcrConversion->isValid());
-    } else {
-        SkASSERT(ycbcrConversion->isValid());
-        // We have an external only format
-        SkASSERT(SkToBool(VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT & hwbFormatProps.formatFeatures));
-        SkASSERT(format == VK_FORMAT_UNDEFINED);
-        SkASSERT(hwbFormatProps.externalFormat == ycbcrConversion->fExternalFormat);
-        externalFormat.externalFormat = hwbFormatProps.externalFormat;
     }
 
     const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{
@@ -182,8 +190,9 @@ static GrBackendTexture make_vk_backend_texture(
             &externalFormat,                                                     // pNext
             VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID,  // handleTypes
     };
+
     VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
-    if (format != VK_FORMAT_UNDEFINED) {
+    if (grBackendVkFormat != VK_FORMAT_UNDEFINED) {
         usageFlags = usageFlags |
                 VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
                 VK_IMAGE_USAGE_TRANSFER_DST_BIT;
@@ -203,7 +212,7 @@ static GrBackendTexture make_vk_backend_texture(
         &externalMemoryImageInfo,                    // pNext
         flags,                                       // VkImageCreateFlags
         VK_IMAGE_TYPE_2D,                            // VkImageType
-        format,                                      // VkFormat
+        grBackendVkFormat,                           // VkFormat
         { (uint32_t)width, (uint32_t)height, 1 },    // VkExtent3D
         1,                                           // mipLevels
         1,                                           // arrayLayers
@@ -228,7 +237,6 @@ static GrBackendTexture make_vk_backend_texture(
     phyDevMemProps.pNext = nullptr;
     VK_CALL(GetPhysicalDeviceMemoryProperties2(physicalDevice, &phyDevMemProps));
 
-
     skgpu::VulkanAlloc alloc;
     if (!skgpu::AllocateAndBindImageMemory(&alloc, image, phyDevMemProps, hwbProps, hardwareBuffer,
                                            gpu->vkInterface(), device)) {
@@ -241,7 +249,7 @@ static GrBackendTexture make_vk_backend_texture(
     imageInfo.fAlloc = alloc;
     imageInfo.fImageTiling = tiling;
     imageInfo.fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    imageInfo.fFormat = format;
+    imageInfo.fFormat = grBackendVkFormat;
     imageInfo.fLevelCount = 1;
     // TODO: This should possibly be VK_QUEUE_FAMILY_FOREIGN_EXT but current Adreno devices do not
     // support that extension. Or if we know the source of the AHardwareBuffer is not from a
