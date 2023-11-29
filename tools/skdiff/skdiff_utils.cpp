@@ -4,13 +4,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-#include "include/codec/SkCodec.h"
+#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
+#include "include/core/SkMallocPixelRef.h"
+#include "include/core/SkPixelRef.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
-#include "tools/EncodeUtils.h"
-#include "tools/ToolUtils.h"
+#include "include/encode/SkPngEncoder.h"
 #include "tools/skdiff/skdiff.h"
 #include "tools/skdiff/skdiff_utils.h"
 
@@ -36,7 +37,11 @@ sk_sp<SkData> read_file(const char* file_path) {
 
 bool get_bitmap(sk_sp<SkData> fileBits, DiffResource& resource, bool sizeOnly,
                 bool ignoreColorSpace) {
-    auto codec = SkCodec::MakeFromData(std::move(fileBits));
+    static constexpr const SkCodecs::Decoder decoders[] = {
+        SkPngDecoder::Decoder(),
+    };
+
+    auto codec = SkCodec::MakeFromData(std::move(fileBits), decoders);
     if (!codec) {
         SkDebugf("ERROR: could not create codec for <%s>\n", resource.fFullPath.c_str());
         resource.fStatus = DiffResource::kCouldNotDecode_Status;
@@ -82,19 +87,39 @@ bool get_bitmap(sk_sp<SkData> fileBits, DiffResource& resource, bool sizeOnly,
 }
 
 /** Thanks to PNG, we need to force all pixels 100% opaque. */
-static void force_all_opaque(const SkBitmap& bitmap) {
+static void force_all_opaque(const SkPixmap& bitmap) {
    for (int y = 0; y < bitmap.height(); y++) {
        for (int x = 0; x < bitmap.width(); x++) {
-           *bitmap.getAddr32(x, y) |= (SK_A32_MASK << SK_A32_SHIFT);
+           *bitmap.writable_addr32(x, y) |= (SK_A32_MASK << SK_A32_SHIFT);
        }
    }
 }
 
 bool write_bitmap(const SkString& path, const SkBitmap& bitmap) {
-    SkBitmap copy;
-    ToolUtils::copy_to(&copy, kN32_SkColorType, bitmap);
-    force_all_opaque(copy);
-    return ToolUtils::EncodeImageToPngFile(path.c_str(), copy);
+    SkPixmap bitmapPM;
+    if (!bitmap.peekPixels(&bitmapPM)) {
+        return false;
+    }
+
+    SkImageInfo copyInfo = bitmapPM.info().makeColorType(kN32_SkColorType);
+    sk_sp<SkPixelRef> copyPR = SkMallocPixelRef::MakeAllocate(copyInfo, 0);
+    if (!copyPR) {
+        return false;
+    }
+
+    SkPixmap copyPM(copyInfo, copyPR->pixels(), copyPR->rowBytes());
+    if (!bitmapPM.readPixels(copyPM)) {
+        return false;
+    }
+
+    force_all_opaque(copyPM);
+
+    SkFILEWStream file(path.c_str());
+    if (!file.isValid()) {
+        return false;
+    }
+
+    return SkPngEncoder::Encode(&file, copyPM, {});
 }
 
 /// Return a copy of the "input" string, within which we have replaced all instances
