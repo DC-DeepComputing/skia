@@ -140,6 +140,12 @@ bool HasDecoder(std::string_view id) {
 std::unique_ptr<SkCodec> SkCodec::MakeFromStream(
         std::unique_ptr<SkStream> stream, Result* outResult,
         SkPngChunkReader* chunkReader, SelectionPolicy selectionPolicy) {
+    return MakeFromStream(std::move(stream), SkCodecs::get_decoders(), outResult,
+                          chunkReader, selectionPolicy);
+}
+std::unique_ptr<SkCodec> SkCodec::MakeFromStream(
+        std::unique_ptr<SkStream> stream, SkSpan<const SkCodecs::Decoder> decoders,
+        Result* outResult, SkPngChunkReader* chunkReader, SelectionPolicy selectionPolicy) {
     Result resultStorage;
     if (!outResult) {
         outResult = &resultStorage;
@@ -185,7 +191,6 @@ std::unique_ptr<SkCodec> SkCodec::MakeFromStream(
     }
 
     SkCodecs::MakeFromStreamCallback rawFallback = nullptr;
-    auto decoders = SkCodecs::get_decoders();
     for (const SkCodecs::Decoder& proc : decoders) {
         if (proc.isFormat(buffer, bytesRead)) {
             // png and heif are special, since we want to be able to supply a SkPngChunkReader
@@ -215,10 +220,15 @@ std::unique_ptr<SkCodec> SkCodec::MakeFromStream(
 }
 
 std::unique_ptr<SkCodec> SkCodec::MakeFromData(sk_sp<SkData> data, SkPngChunkReader* reader) {
+    return MakeFromData(std::move(data), SkCodecs::get_decoders(), reader);
+}
+std::unique_ptr<SkCodec> SkCodec::MakeFromData(sk_sp<SkData> data,
+                                               SkSpan<const SkCodecs::Decoder> decoders,
+                                               SkPngChunkReader* reader) {
     if (!data) {
         return nullptr;
     }
-    return MakeFromStream(SkMemoryStream::Make(std::move(data)), nullptr, reader);
+    return MakeFromStream(SkMemoryStream::Make(std::move(data)), decoders, nullptr, reader);
 }
 
 SkCodec::SkCodec(SkEncodedInfo&& info,
