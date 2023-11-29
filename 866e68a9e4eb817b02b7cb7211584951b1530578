@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54ad0db8_85b4f21c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-29T19:33:52Z",
+      "side": 1,
+      "message": "An experiment with using components on a non-trivial example.",
+      "revId": "866e68a9e4eb817b02b7cb7211584951b1530578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f507f53_e158818d",
+        "filename": "tools/skdiff/skdiff_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-29T19:33:52Z",
+      "side": 1,
+      "message": "Unfortunately, this would drop support for reading in anything other than pngs. On the other hand, that\u0027s really all this tool is used with. Unfortunately, SkCodec::MakeFromData has a lot more logic than just this for handling various issues, which would be nice for users but cannot really be abstracted without the user passing in a list of codecs.",
+      "revId": "866e68a9e4eb817b02b7cb7211584951b1530578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
