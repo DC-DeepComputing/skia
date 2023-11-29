@@ -112,7 +112,8 @@ DEF_TEST(SkRasterPipeline_LoadStoreConditionMask, reporter) {
     static_assert(std::size(mask) == SkRasterPipeline_kMaxStride_highp);
 
     SkRasterPipeline_<256> p;
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     p.append(SkRasterPipelineOp::load_condition_mask, mask);
     p.append(SkRasterPipelineOp::store_condition_mask, maskCopy);
     p.append(SkRasterPipelineOp::store_src, src);
@@ -155,7 +156,8 @@ DEF_TEST(SkRasterPipeline_LoadStoreLoopMask, reporter) {
     static_assert(std::size(mask) == SkRasterPipeline_kMaxStride_highp);
 
     SkRasterPipeline_<256> p;
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     p.append(SkRasterPipelineOp::load_loop_mask, mask);
     p.append(SkRasterPipelineOp::store_loop_mask, maskCopy);
     p.append(SkRasterPipelineOp::store_src, src);
@@ -198,7 +200,8 @@ DEF_TEST(SkRasterPipeline_LoadStoreReturnMask, reporter) {
     static_assert(std::size(mask) == SkRasterPipeline_kMaxStride_highp);
 
     SkRasterPipeline_<256> p;
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     p.append(SkRasterPipelineOp::load_return_mask, mask);
     p.append(SkRasterPipelineOp::store_return_mask, maskCopy);
     p.append(SkRasterPipelineOp::store_src, src);
@@ -240,7 +243,8 @@ DEF_TEST(SkRasterPipeline_MergeConditionMask, reporter) {
     static_assert(std::size(mask) == (2 * SkRasterPipeline_kMaxStride_highp));
 
     SkRasterPipeline_<256> p;
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     p.append(SkRasterPipelineOp::merge_condition_mask, mask);
     p.append(SkRasterPipelineOp::store_src, src);
     p.run(0,0,SkOpts::raster_pipeline_highp_stride,1);
@@ -441,18 +445,16 @@ DEF_TEST(SkRasterPipeline_MaskOffReturnMask, reporter) {
 
 DEF_TEST(SkRasterPipeline_InitLaneMasks, reporter) {
     for (size_t width = 1; width <= SkOpts::raster_pipeline_highp_stride; ++width) {
-        SkRasterPipeline_<256> p;
+        SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
+        SkRasterPipeline p(&alloc);
 
-        // Initialize dRGBA to unrelated values.
-        SkRasterPipeline_UniformColorCtx uniformCtx;
-        uniformCtx.a = 0.0f;
-        uniformCtx.r = 0.25f;
-        uniformCtx.g = 0.50f;
-        uniformCtx.b = 0.75f;
-        p.append(SkRasterPipelineOp::uniform_color_dst, &uniformCtx);
+        // Initialize RGBA to unrelated values.
+        alignas(64) static constexpr float kArbitraryColor[4] = {0.0f, 0.25f, 0.50f, 0.75f};
+        p.appendConstantColor(&alloc, kArbitraryColor);
 
-        // Overwrite dRGB with lane masks up to the tail width.
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        // Overwrite RGBA with lane masks.
+        SkRasterPipeline_InitLaneMasksCtx ctx;
+        p.append(SkRasterPipelineOp::init_lane_masks, &ctx);
 
         // Use the store_src command to write out RGBA for inspection.
         alignas(64) int32_t RGBA[4 * SkRasterPipeline_kMaxStride_highp] = {};
@@ -462,7 +464,7 @@ DEF_TEST(SkRasterPipeline_InitLaneMasks, reporter) {
         p.run(0,0,width,1);
 
         // Initialized data should look like on/on/on/on (RGBA are all set) and is
-        // striped by the raster pipeline stride because we wrote it using store_dst.
+        // striped by the raster pipeline stride because we wrote it using store_src.
         size_t index = 0;
         int32_t* channelR = RGBA;
         int32_t* channelG = channelR + SkOpts::raster_pipeline_highp_stride;
@@ -964,7 +966,8 @@ DEF_TEST(SkRasterPipeline_TraceLine, r) {
     TestTraceHook trace;
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     const SkRasterPipeline_TraceLineCtx kTraceLine1 = {/*traceMask=*/kMaskOn,  &trace, 123};
     const SkRasterPipeline_TraceLineCtx kTraceLine2 = {/*traceMask=*/kMaskOff, &trace, 456};
     const SkRasterPipeline_TraceLineCtx kTraceLine3 = {/*traceMask=*/kMaskOn,  &trace, 567};
@@ -1013,7 +1016,8 @@ DEF_TEST(SkRasterPipeline_TraceEnterExit, r) {
     TestTraceHook trace;
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     const SkRasterPipeline_TraceFuncCtx kTraceFunc1 = {/*traceMask=*/kMaskOff, &trace, 99};
     const SkRasterPipeline_TraceFuncCtx kTraceFunc2 = {/*traceMask=*/kMaskOn,  &trace, 12};
     const SkRasterPipeline_TraceFuncCtx kTraceFunc3 = {/*traceMask=*/kMaskOff, &trace, 34};
@@ -1056,7 +1060,8 @@ DEF_TEST(SkRasterPipeline_TraceScope, r) {
     TestTraceHook trace;
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
-    p.append(SkRasterPipelineOp::init_lane_masks);
+    SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+    p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
     const SkRasterPipeline_TraceScopeCtx kTraceScope1  = {/*traceMask=*/kMaskOn,  &trace, +1};
     const SkRasterPipeline_TraceScopeCtx kTraceScope2  = {/*traceMask=*/kMaskOff, &trace, -2};
     const SkRasterPipeline_TraceScopeCtx kTraceScope3  = {/*traceMask=*/kMaskOff, &trace, +3};
@@ -1114,7 +1119,8 @@ DEF_TEST(SkRasterPipeline_CopySlotsMasked, r) {
             ctx.dst = N * dstIndex * sizeof(float);
             ctx.src = N * srcIndex * sizeof(float);
 
-            p.append(SkRasterPipelineOp::init_lane_masks);
+            SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+            p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
             p.append(SkRasterPipelineOp::set_base_pointer, &slots[0]);
             p.append(SkRasterPipelineOp::load_condition_mask, mask);
             p.append(op.stage, SkRPCtxUtils::Pack(ctx, &alloc));
@@ -1359,6 +1365,7 @@ DEF_TEST(SkRasterPipeline_SwizzleCopy, r) {
         // Apply the dest-swizzle pattern.
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
+        SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
         SkRasterPipeline_SwizzleCopyCtx ctx = {};
         ctx.src = source;
         ctx.dst = dest;
@@ -1367,7 +1374,7 @@ DEF_TEST(SkRasterPipeline_SwizzleCopy, r) {
                 ctx.offsets[index] = pattern.swizzle[index] * N * sizeof(float);
             }
         }
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
         p.append(pattern.op, &ctx);
         p.run(0,0,N,1);
 
@@ -2423,7 +2430,8 @@ DEF_TEST(SkRasterPipeline_BranchIfAllLanesActive, r) {
 
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+        p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
         p.append(SkRasterPipelineOp::branch_if_all_lanes_active, &ctx);
         p.append(SkRasterPipelineOp::store_src_a, first);
         p.append(SkRasterPipelineOp::store_src_a, second);
@@ -2503,7 +2511,8 @@ DEF_TEST(SkRasterPipeline_BranchIfAnyLanesActive, r) {
 
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+        p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
         p.append(SkRasterPipelineOp::branch_if_any_lanes_active, &ctx);
         p.append(SkRasterPipelineOp::store_src_a, first);
         p.append(SkRasterPipelineOp::store_src_a, second);
@@ -2583,7 +2592,8 @@ DEF_TEST(SkRasterPipeline_BranchIfNoLanesActive, r) {
 
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+        p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
         p.append(SkRasterPipelineOp::branch_if_no_lanes_active, &ctx);
         p.append(SkRasterPipelineOp::store_src_a, first);
         p.append(SkRasterPipelineOp::store_src_a, second);
@@ -2680,7 +2690,8 @@ DEF_TEST(SkRasterPipeline_BranchIfActiveLanesEqual, r) {
 
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+        p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
         p.append(SkRasterPipelineOp::branch_if_no_active_lanes_eq, &matching);
         p.append(SkRasterPipelineOp::store_src_a, first);
         p.append(SkRasterPipelineOp::store_src_a, second);
@@ -2702,7 +2713,8 @@ DEF_TEST(SkRasterPipeline_BranchIfActiveLanesEqual, r) {
 
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
-        p.append(SkRasterPipelineOp::init_lane_masks);
+        SkRasterPipeline_InitLaneMasksCtx initLaneMasksCtx;
+        p.append(SkRasterPipelineOp::init_lane_masks, &initLaneMasksCtx);
         p.append(SkRasterPipelineOp::branch_if_no_active_lanes_eq, &nonmatching);
         p.append(SkRasterPipelineOp::store_src_a, first);
         p.append(SkRasterPipelineOp::store_src_a, second);
