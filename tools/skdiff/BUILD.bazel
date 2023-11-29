@@ -17,7 +17,9 @@ cc_binary(
         "skdiff_utils.h",
     ],
     deps = [
-        "//:skia_internal",
-        "//tools:tool_utils",
+        "//:base",
+        "//:core",
+        "//:png_decode_codec",
+        "//:png_encode_codec",
     ],
 )
