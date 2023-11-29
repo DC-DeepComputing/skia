@@ -45,9 +45,9 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/ios_utils.h"
-#include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
+//#include "tools/trace/ChromeTracingTracer.h"
 
 #include <memory>
 #include <vector>

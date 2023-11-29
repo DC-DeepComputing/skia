@@ -449,6 +449,7 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("setup_features:: Failed to create protected\n");
             return false;
         }
     }
@@ -508,6 +509,8 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
+    SkDebugf("CreateVkBackendContext isProtected: %d\n", isProtected);
+
     VkResult err;
 
     ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);
@@ -666,6 +669,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     grVkGetPhysicalDeviceProperties(physDev, &physDeviceProperties);
     uint32_t physDeviceVersion = std::min(physDeviceProperties.apiVersion, apiVersion);
 
+    SkDebugf("CreateVkBackendContext %d\n", isProtected);
     if (isProtected && physDeviceVersion < VK_MAKE_VERSION(1, 1, 0)) {
         SkDebugf("protected requires vk physical device version 1.1\n");
         destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
@@ -792,6 +796,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         if (!setup_features(getProc, inst, physDev, physDeviceVersion, extensions, features,
                             isProtected)) {
             destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+            SkDebugf("CreateVkBackendContext failed\n");
             return false;
         }
 

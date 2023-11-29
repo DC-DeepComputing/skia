@@ -2893,12 +2893,11 @@ if (skia_enable_tools) {
     }
   }
 
-  # sk_app can work without GL but viewer always runs raster through a GL window context.
-  if (skia_use_gl) {
+  # Note: sk_app can work without GL but viewer always runs raster through a GL window context.
+  if (skia_use_gl || skia_use_vulkan) {
     test_app("viewer") {
       is_shared_library = is_android
       sources = [
-        "tools/viewer/3DSlide.cpp",
         "tools/viewer/AndroidShadowsSlide.cpp",
         "tools/viewer/AnimBlurSlide.cpp",
         "tools/viewer/AnimTimer.h",
@@ -2916,7 +2915,6 @@ if (skia_enable_tools) {
         "tools/viewer/ClickHandlerSlide.cpp",
         "tools/viewer/ClickHandlerSlide.h",
         "tools/viewer/ClipSlide.cpp",
-        "tools/viewer/ClockSlide.cpp",
         "tools/viewer/CowboySlide.cpp",
         "tools/viewer/DegenerateQuadsSlide.cpp",
         "tools/viewer/DegenerateTwoPtRadialsSlide.cpp",
@@ -2990,6 +2988,13 @@ if (skia_enable_tools) {
         "tools/viewer/Viewer.h",
         "tools/viewer/XferSlide.cpp",
       ]
+      if (skia_enable_skottie) {
+        sources += [ "tools/viewer/3DSlide.cpp" ]
+      }
+      if (skia_enable_pdf) {
+        sources += [ "tools/viewer/ClockSlide.cpp" ]
+      }
+
       libs = []
 
       deps = [
