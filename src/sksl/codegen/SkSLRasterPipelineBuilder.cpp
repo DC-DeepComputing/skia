@@ -1847,7 +1847,8 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 break;
             }
             case BuilderOp::init_lane_masks:
-                pipeline->push_back({ProgramOp::init_lane_masks, nullptr});
+                pipeline->push_back({ProgramOp::init_lane_masks,
+                                     alloc->make<SkRasterPipeline_InitLaneMasksCtx>()});
                 break;
 
             case BuilderOp::store_src_rg:
