@@ -16,6 +16,29 @@
       "message": "Updated not to do special handling for the start index in Shape",
       "revId": "4e084fd4e6cf7098abbef6dcd67508f68322e842",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "656f68ae_f95705aa",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-30T22:01:30Z",
+      "side": 1,
+      "message": "Can we wrap this in an `if (paint.getPathEffect())` check, and then use `SkRRect::MakeOval` for the non-path effect case so that it can use the analytic rrect renderer?\n\nAlso, I think `::Oval(oval)` defaults to using `kCW` and `1` but maybe it\u0027s better to call them out explicitly here and add a comment that we need these to preserve the legacy oval path construction compared to what\u0027s produced by `SkRRect::MakeOval() -\u003e asPath()`?",
+      "range": {
+        "startLine": 645,
+        "startChar": 4,
+        "endLine": 648,
+        "endChar": 43
+      },
+      "revId": "4e084fd4e6cf7098abbef6dcd67508f68322e842",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
