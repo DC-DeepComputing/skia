@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb4f3076_2573472b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-30T18:23:53Z",
+      "side": 1,
+      "message": "One example showing this is working as intended is in this new diff: https://gold.skia.org/detail?grouping\u003dname%3Dtextblobmixedsizes%26source_type%3Dgm\u0026digest\u003d20764250a968274c1140b7cf38e99b5c\u0026changelist_id\u003d784597\u0026crs\u003dgerrit\n\nSwitching to compare against the positive image shows the diff between grmtl and mtl configs. The small text now has no pixel diffs because they are both using the SW-blurred masks, and then correctly falling back to image-filter-based blurs for larger glyphs (which then have different behavior between graphite and ganesh).",
+      "revId": "24ddb5969f0b01c84c8728dd1275716b8b9381c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
