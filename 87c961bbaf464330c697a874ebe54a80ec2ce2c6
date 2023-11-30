@@ -16,6 +16,24 @@
       "message": "Unfortunately, the code-size information is unclear because we have a parent CL.",
       "revId": "87c961bbaf464330c697a874ebe54a80ec2ce2c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "272cb597_948fcced",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-30T18:12:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "acac785a_bd1eb95b",
+      "revId": "87c961bbaf464330c697a874ebe54a80ec2ce2c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
