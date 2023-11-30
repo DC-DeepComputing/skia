@@ -359,6 +359,7 @@ DEF_TEST(Skottie_Props, reporter) {
       false,
       false,
       nullptr,
+      SkString(),
       SkString()
     });
     REPORTER_ASSERT(reporter, texts[0].handle->get() == text_prop);
