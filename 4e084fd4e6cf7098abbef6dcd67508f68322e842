@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4271b58_349f533c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-30T21:58:00Z",
+      "side": 1,
+      "message": "Updated not to do special handling for the start index in Shape",
+      "revId": "4e084fd4e6cf7098abbef6dcd67508f68322e842",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
