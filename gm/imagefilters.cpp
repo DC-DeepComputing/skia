@@ -282,3 +282,27 @@ DEF_SIMPLE_GM(imagefilters_effect_order, canvas, 512, 512) {
     canvas->drawImage(image, 0, 0, SkSamplingOptions(), &testMaskPaint);
     canvas->restore();
 }
+
+DEF_SIMPLE_GM(multiple_filters, canvas, 220, 220) {
+    ToolUtils::draw_checkerboard(canvas);
+
+    canvas->translate(10, 10);
+
+    canvas->save();
+    sk_sp<SkImageFilter> filters[2] = {SkImageFilters::Dilate(5, 5, nullptr),
+                                       SkImageFilters::Erode(5, 5, nullptr)};
+    SkPaint restorePaint;
+    restorePaint.setAlphaf(0.5f);
+    SkCanvas::SaveLayerRec rec{
+            /*bounds=*/nullptr, &restorePaint, /*backdrop=*/nullptr, /*saveLayerFlags=*/0, filters};
+    canvas->clipRect({0, 0, 200, 200});
+    canvas->saveLayer(rec);
+
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(20);
+    paint.setColor(SK_ColorGREEN);
+    canvas->drawCircle(100, 100, 70, paint);
+
+    canvas->restore();
+}
