@@ -7,7 +7,7 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+#if defined(SK_BUILD_FOR_ANDROID)
 
 #include "include/android/SkImageAndroid.h"
 #include "include/android/SkSurfaceAndroid.h"
@@ -23,6 +23,7 @@
 
 namespace {
 
+// ws change
 static void cleanup_resources(AHardwareBuffer* buffer) {
     if (buffer) {
         AHardwareBuffer_release(buffer);
@@ -159,7 +160,7 @@ sk_sp<SkImage> create_skia_image(GrDirectContext* dContext, int width, int heigh
 
 class ProtectedSlide : public Slide {
 public:
-    ProtectedSlide() { fName = "Protected"; }
+    ProtectedSlide() { fName = "Protected2"; }
 
     SkISize getDimensions() const override { return {kSize, 2*kSize}; }
 
