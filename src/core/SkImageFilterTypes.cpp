@@ -412,12 +412,9 @@ SkIRect RoundOut(SkRect r) { return r.makeInset(kRoundEpsilon, kRoundEpsilon).ro
 
 SkIRect RoundIn(SkRect r) { return r.makeOutset(kRoundEpsilon, kRoundEpsilon).roundIn(); }
 
-bool Mapping::decomposeCTM(const SkMatrix& ctm, const SkImageFilter* filter,
+bool Mapping::decomposeCTM(const SkMatrix& ctm, MatrixCapability capability,
                            const skif::ParameterSpace<SkPoint>& representativePt) {
     SkMatrix remainder, layer;
-    using MatrixCapability = SkImageFilter_Base::MatrixCapability;
-    MatrixCapability capability =
-            filter ? as_IFB(filter)->getCTMCapability() : MatrixCapability::kComplex;
     if (capability == MatrixCapability::kTranslate) {
         // Apply the entire CTM post-filtering
         remainder = ctm;
@@ -446,6 +443,15 @@ bool Mapping::decomposeCTM(const SkMatrix& ctm, const SkImageFilter* filter,
         fDevToLayerMatrix = invRemainder;
         return true;
     }
+}
+
+bool Mapping::decomposeCTM(const SkMatrix& ctm,
+                           const SkImageFilter* filter,
+                           const skif::ParameterSpace<SkPoint>& representativePt) {
+    return this->decomposeCTM(
+            ctm,
+            filter ? as_IFB(filter)->getCTMCapability() : MatrixCapability::kComplex,
+            representativePt);
 }
 
 bool Mapping::adjustLayerSpace(const SkMatrix& layer) {
