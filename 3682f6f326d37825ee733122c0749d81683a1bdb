@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da6b8be1_3dd5987e",
+        "filename": "tools/skdiff/skdiff_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-30T19:39:37Z",
+      "side": 1,
+      "message": "The idea here is that every user who uses a Skia component build knows which decoders they (directly) depend on and can write out this list somewhere. Somewhat unfortunately, `SkCodecs::Decoder` currently has a `std::string` in it which makes it almost but not really constexpr.",
+      "revId": "3682f6f326d37825ee733122c0749d81683a1bdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
