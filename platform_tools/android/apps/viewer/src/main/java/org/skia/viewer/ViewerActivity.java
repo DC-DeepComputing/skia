@@ -56,15 +56,14 @@ public class ViewerActivity
             return true;
         }
 
-        switch (item.getItemId()) {
-            case R.id.action_left:
-                onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_LEFT);
-                return true;
-            case R.id.action_right:
-                onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_RIGHT);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_left) {
+            onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_LEFT);
+            return true;
+        } else if (item.getItemId() == R.id.action_right) {
+            onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_RIGHT);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
