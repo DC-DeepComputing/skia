@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,8 +44,10 @@ public class ViewerActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("-------------", "onCreateOptionsMenu - enter");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.title, menu);
+        Log.d("-------------", "onCreateOptionsMenu - exit");
         return true;
     }
 
@@ -56,20 +59,21 @@ public class ViewerActivity
             return true;
         }
 
-        switch (item.getItemId()) {
-            case R.id.action_left:
-                onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_LEFT);
-                return true;
-            case R.id.action_right:
-                onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_RIGHT);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_left) {
+            onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_LEFT);
+            return true;
+        } else if (item.getItemId() == R.id.action_right) {
+            onKeyPressed(mApplication.getNativeHandle(), KeyEvent.KEYCODE_SOFT_RIGHT);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("-------------", "onCreate - enter");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -92,6 +96,8 @@ public class ViewerActivity
 
         mApplication = (ViewerApplication) getApplication();
         mApplication.setViewerActivity(this);
+
+        Log.d("-------------", "onCreate - exit");
     }
 
     @Override

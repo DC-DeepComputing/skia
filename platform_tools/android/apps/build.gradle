@@ -7,10 +7,10 @@ import org.apache.tools.ant.taskdefs.condition.Os
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:8.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,7 +20,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
@@ -34,19 +34,27 @@ def setupSkiaLibraryBuild(project, appVariants, appName) {
             } else {
                 commandLine cmd.split()
             }
+            print("cmd: ")
+            println(cmd)
         }
         buildNativeLib.onlyIf { !project.hasProperty("suppressNativeBuild") }
 
         def copyNativeLib = project.task("${variant.name}_CopySkiaLib", type:Copy) {
             def fromDir = getVariantOutDir(project, variant).skiaOut
             def intoDir = getVariantOutDir(project, variant).androidOut
+            print("copying ")
+            print("${appName}.so")
+            print(" from: ")
+            print(fromDir)
+            print(" to: ")
+            println(intoDir)
             from fromDir
             into intoDir
             include "${appName}.so"
         }
 
         TaskCollection<Task> compileTask = project.tasks.matching {
-            //  println(it.name)
+            //println(it.name)
             it.name.toLowerCase().contains("compile" + variant.name.toLowerCase()) &&
                     it.name.toLowerCase().endsWith("ndk")
         }
@@ -87,6 +95,8 @@ def getVariantOutDir(project, variant) {
 
     String skiaOutDir = null
     String propName = "${variantPrefix}.out.dir"
+    print("propName: ")
+    println(propName)
     if (project.hasProperty(propName)) {
         skiaOutDir = project.getProperties().getAt(propName)
     } else {

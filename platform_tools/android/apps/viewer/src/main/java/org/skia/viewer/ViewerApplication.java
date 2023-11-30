@@ -9,6 +9,7 @@ package org.skia.viewer;
 
 import android.app.Application;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 public class ViewerApplication extends Application {
     private long mNativeHandle = 0;
@@ -24,17 +25,27 @@ public class ViewerApplication extends Application {
 
     @Override
     public void onCreate() {
+        System.out.printf("------------------------------\n");
+        Log.d("-------------", "onCreate - enter");
+
         super.onCreate();
         mNativeHandle = createNativeApp(this.getResources().getAssets());
+
+        Log.d("-------------", "onCreate - exit");
     }
 
     @Override
     public void onTerminate() {
+        Log.d("-------------", "onTerminate - enter");
+
         if (mNativeHandle != 0) {
             destroyNativeApp(mNativeHandle);
             mNativeHandle = 0;
         }
         super.onTerminate();
+
+        Log.d("-------------", "onTerminate - exit");
+
     }
 
     public long getNativeHandle() {
@@ -42,6 +53,8 @@ public class ViewerApplication extends Application {
     }
 
     public void setViewerActivity(ViewerActivity viewerActivity) {
+        Log.d("-------------", "setViewerActivity - enter");
+
         mViewerActivity = viewerActivity;
         // Note that viewerActivity might be null (called by onDestroy)
         if (mViewerActivity != null) {
@@ -53,9 +66,13 @@ public class ViewerApplication extends Application {
                 mViewerActivity.setTitle(mTitle);
             }
         }
+
+        Log.d("-------------", "setViewerActivity - exit");
     }
 
     public void setTitle(String title) {
+        Log.d("-------------", "setTitle - enter");
+
         mTitle = title; // Similar to mStateJsonStr, we have to store this.
         if (mTitle.startsWith("Viewer: ")) { // Quick hack to shorten the title
             mTitle = mTitle.replaceFirst("Viewer: ", "");
@@ -68,9 +85,13 @@ public class ViewerApplication extends Application {
                 }
             });
         }
+
+        Log.d("-------------", "setTitle - exit");
     }
 
     public void setState(String stateJsonStr) {
+        Log.d("-------------", "setState - enter");
+
         // We have to store this state because ViewerActivity may be destroyed while the native app
         // is still running. When a new ViewerActivity is created, we'll pass the state to it.
         mStateJsonStr = stateJsonStr;
@@ -82,5 +103,7 @@ public class ViewerApplication extends Application {
                 }
             });
         }
+
+        Log.d("-------------", "setState - exit");
     }
 }
