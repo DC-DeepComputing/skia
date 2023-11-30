@@ -24,6 +24,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkRasterHandleAllocator.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
@@ -177,11 +178,11 @@ bool SkCanvas::predrawNotify(const SkRect* rect, const SkPaint* paint,
 ///////////////////////////////////////////////////////////////////////////////
 
 SkCanvas::Layer::Layer(sk_sp<SkDevice> device,
-                       sk_sp<SkImageFilter> imageFilter,
+                       SkSpan<sk_sp<SkImageFilter>> imageFilters,
                        const SkPaint& paint,
                        bool isCoverage)
         : fDevice(std::move(device))
-        , fImageFilter(std::move(imageFilter))
+        , fImageFilters(imageFilters.data(), imageFilters.size())
         , fPaint(paint)
         , fIsCoverage(isCoverage)
         , fDiscard(false) {
@@ -209,12 +210,12 @@ SkCanvas::MCRec::MCRec(const MCRec* prev) : fDevice(prev->fDevice), fMatrix(prev
 SkCanvas::MCRec::~MCRec() {}
 
 void SkCanvas::MCRec::newLayer(sk_sp<SkDevice> layerDevice,
-                               sk_sp<SkImageFilter> filter,
+                               SkSpan<sk_sp<SkImageFilter>> filters,
                                const SkPaint& restorePaint,
                                bool layerIsCoverage) {
     SkASSERT(!fBackImage);
-    fLayer = std::make_unique<Layer>(std::move(layerDevice), std::move(filter),
-                                     restorePaint, layerIsCoverage);
+    fLayer =
+            std::make_unique<Layer>(std::move(layerDevice), filters, restorePaint, layerIsCoverage);
     fDevice = fLayer->fDevice.get();
 }
 
@@ -1303,7 +1304,8 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
                                            rec.fExperimentalBackdropScale);
     }
 
-    fMCRec->newLayer(std::move(newDevice), sk_ref_sp(filter), restorePaint, coverageOnly);
+    sk_sp<SkImageFilter> filters[1] = { sk_ref_sp(filter) };
+    fMCRec->newLayer(std::move(newDevice), filters, restorePaint, coverageOnly);
     fQuickRejectBounds = this->computeDeviceClipBounds();
 }
 
@@ -1394,10 +1396,12 @@ void SkCanvas::internalRestore() {
         // internalSaveLayer and internalRestore.
         if (this->predrawNotify()) {
             SkDevice* dstDev = this->topDevice();
-            if (layer->fImageFilter) {
+            SkImageFilter* imageFilter =
+                    layer->fImageFilters.empty() ? nullptr : layer->fImageFilters.front().get();
+            if (imageFilter) {
                 this->internalDrawDeviceWithFilter(layer->fDevice.get(), // src
                                                    dstDev,               // dst
-                                                   layer->fImageFilter.get(),
+                                                   imageFilter,
                                                    layer->fPaint,
                                                    DeviceCompatibleWithFilter::kYes,
                                                    /*scaleFactor=*/1.0f,
