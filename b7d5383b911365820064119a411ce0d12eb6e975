@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b3d074b_9b3ccd5d",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-30T20:17:13Z",
+      "side": 1,
+      "message": "nit: `void* mapPtr \u003d info-\u003efTransferBuffer ? info-\u003efTransferMapPtr : info-\u003efBuffer-\u003emap();`?",
+      "range": {
+        "startLine": 286,
+        "startChar": 4,
+        "endLine": 291,
+        "endChar": 5
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f6ccc48_c5a9ebac",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-30T20:17:13Z",
+      "side": 1,
+      "message": "wdyt about just `info-\u003efTransferBuffer \u003d {};`?",
+      "range": {
+        "startLine": 310,
+        "startChar": 28,
+        "endLine": 310,
+        "endChar": 48
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beed073d_7db95aa1",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-30T20:17:13Z",
+      "side": 1,
+      "message": "wdyt about having StaticBufferManager just internally have an UploadBufferManager?\n\nThen it can call `addUploadBufferManagerRefs()` using the queue manager passed into `finalize()`.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 93
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed7be87e_586b0a00",
+        "filename": "src/gpu/graphite/UploadBufferManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-11-30T20:17:13Z",
+      "side": 1,
+      "message": "nit: space",
+      "range": {
+        "startLine": 43,
+        "startChar": 64,
+        "endLine": 43,
+        "endChar": 65
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
