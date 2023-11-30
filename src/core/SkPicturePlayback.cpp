@@ -671,6 +671,7 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
             SkCanvas::SaveLayerRec rec(nullptr, nullptr, nullptr, 0);
             const uint32_t flatFlags = reader->readInt();
             SkRect bounds;
+            skia_private::AutoSTArray<2, sk_sp<SkImageFilter>> filters;
             if (flatFlags & SAVELAYERREC_HAS_BOUNDS) {
                 reader->readRect(&bounds);
                 rec.fBounds = &bounds;
@@ -695,6 +696,15 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
             if (!reader->isVersionLT(SkPicturePriv::Version::kBackdropScaleFactor) &&
                 (flatFlags & SAVELAYERREC_HAS_BACKDROP_SCALE)) {
                 SkCanvasPriv::SetBackdropScaleFactor(&rec, reader->readScalar());
+            }
+            if (flatFlags & SAVELAYERREC_HAS_MULTIPLE_FILTERS) {
+                uint32_t filterCount = reader->readUInt();
+                filters.reset(filterCount);
+                for (uint32_t i = 0; i < filterCount; ++i) {
+                    const SkPaint& paint = fPictureData->requiredPaint(reader);
+                    filters[i] = paint.refImageFilter();
+                }
+                rec.fFilters = filters;
             }
             BREAK_ON_READ_ERROR(reader);
 
