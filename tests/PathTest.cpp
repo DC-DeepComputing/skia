@@ -5987,3 +5987,22 @@ DEF_TEST(path_walk_simple_edges_1154864, r) {
     paint.setAntiAlias(true);
     surface->getCanvas()->drawPath(path, paint);
 }
+
+// crbug.com/1505329
+DEF_TEST(path_quadratic_edge_keep_continuous_1505329, r) {
+    // Drawing this path (to a sufficiently large surface) triggered an assert in
+    // SkAnalyticQuadraticEdge::keepContinuous
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(8192, 2048));
+
+    SkPath path;
+    path.lineTo(SkBits2Float(0x45958608), SkBits2Float(0x448382d2));  // 4784.75391f, 1052.08813f
+    path.quadTo(SkBits2Float(0x45848896),
+                SkBits2Float(0x447c1600),
+                SkBits2Float(0x45656000),
+                SkBits2Float(0x447c1600));  // 4241.07324f, 1008.34375f, 3670, 1008.34375f
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    surface->getCanvas()->drawPath(path, paint);
+}
