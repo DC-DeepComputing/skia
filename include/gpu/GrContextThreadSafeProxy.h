@@ -82,7 +82,7 @@ public:
      *                                         willUseGLFBO0 = false
      *                                         vkRTSupportsInputAttachment = false
      */
-    virtual GrSurfaceCharacterization createCharacterization(
+    GrSurfaceCharacterization createCharacterization(
                                   size_t cacheMaxResourceBytes,
                                   const SkImageInfo& ii,
                                   const GrBackendFormat& backendFormat,
@@ -135,11 +135,14 @@ public:
     GrContextThreadSafeProxyPriv priv();
     const GrContextThreadSafeProxyPriv priv() const;  // NOLINT(readability-const-return-type)
 
-private:
-    friend class GrContextThreadSafeProxyPriv; // for ctor and hidden methods
-
+protected:
     // DDL TODO: need to add unit tests for backend & maybe options
     GrContextThreadSafeProxy(GrBackendApi, const GrContextOptions&);
+
+    virtual bool isValidCharacterizationForVulkan(sk_sp<const GrCaps>, GrProtected);
+
+private:
+    friend class GrContextThreadSafeProxyPriv; // for ctor and hidden methods
 
     void abandonContext();
     bool abandoned() const;
