@@ -158,6 +158,8 @@ protected:
         canvas->drawImageRect(ToolUtils::MakeTextureImage(canvas, bitmap.asImage()),
                               srcR, dstR, SkSamplingOptions(),
                               nullptr, SkCanvas::kStrict_SrcRectConstraint);
+
+        canvas->drawColor(SK_ColorGREEN);
     }
 
 private:
