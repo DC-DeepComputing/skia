@@ -39,6 +39,30 @@
       },
       "revId": "4e084fd4e6cf7098abbef6dcd67508f68322e842",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5619a1d8_a384c570",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-11-30T22:41:54Z",
+      "side": 1,
+      "message": "After seeing that SkBitmapDevice just uses the defaults I decided we could too, but I did reference that in a comment.",
+      "parentUuid": "656f68ae_f95705aa",
+      "range": {
+        "startLine": 645,
+        "startChar": 4,
+        "endLine": 648,
+        "endChar": 43
+      },
+      "revId": "4e084fd4e6cf7098abbef6dcd67508f68322e842",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
