@@ -134,7 +134,7 @@ public:
 protected:
     friend class GrProxyProvider;  // for ctors
     friend class GrRenderTargetProxyPriv;
-
+    friend class GrVkSecondaryCBDrawContext;
     // Deferred version
     GrRenderTargetProxy(const GrCaps&,
                         const GrBackendFormat&,
