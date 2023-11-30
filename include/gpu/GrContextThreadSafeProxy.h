@@ -82,19 +82,18 @@ public:
      *                                         willUseGLFBO0 = false
      *                                         vkRTSupportsInputAttachment = false
      */
-    virtual GrSurfaceCharacterization createCharacterization(
-                                  size_t cacheMaxResourceBytes,
-                                  const SkImageInfo& ii,
-                                  const GrBackendFormat& backendFormat,
-                                  int sampleCount,
-                                  GrSurfaceOrigin origin,
-                                  const SkSurfaceProps& surfaceProps,
-                                  bool isMipMapped,
-                                  bool willUseGLFBO0 = false,
-                                  bool isTextureable = true,
-                                  GrProtected isProtected = GrProtected::kNo,
-                                  bool vkRTSupportsInputAttachment = false,
-                                  bool forVulkanSecondaryCommandBuffer = false);
+    GrSurfaceCharacterization createCharacterization(size_t cacheMaxResourceBytes,
+                                                     const SkImageInfo& ii,
+                                                     const GrBackendFormat& backendFormat,
+                                                     int sampleCount,
+                                                     GrSurfaceOrigin origin,
+                                                     const SkSurfaceProps& surfaceProps,
+                                                     bool isMipMapped,
+                                                     bool willUseGLFBO0 = false,
+                                                     bool isTextureable = true,
+                                                     GrProtected isProtected = GrProtected::kNo,
+                                                     bool vkRTSupportsInputAttachment = false,
+                                                     bool forVulkanSecondaryCommandBuffer = false);
 
     /*
      * Retrieve the default GrBackendFormat for a given SkColorType and renderability.
@@ -135,11 +134,12 @@ public:
     GrContextThreadSafeProxyPriv priv();
     const GrContextThreadSafeProxyPriv priv() const;  // NOLINT(readability-const-return-type)
 
-private:
-    friend class GrContextThreadSafeProxyPriv; // for ctor and hidden methods
-
+protected:
     // DDL TODO: need to add unit tests for backend & maybe options
     GrContextThreadSafeProxy(GrBackendApi, const GrContextOptions&);
+
+private:
+    friend class GrContextThreadSafeProxyPriv;  // for ctor and hidden methods
 
     void abandonContext();
     bool abandoned() const;
@@ -148,6 +148,8 @@ private:
     // with GrContext where we get the caps by creating a GPU which requires a context (see the
     // `init` method on GrContext_Base).
     void init(sk_sp<const GrCaps>, sk_sp<GrThreadSafePipelineBuilder>);
+
+    virtual bool isValidCharacterizationForVulkan(sk_sp<const GrCaps>, GrProtected);
 
     const GrBackendApi                                      fBackend;
     const GrContextOptions                                  fOptions;
