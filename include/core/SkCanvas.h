@@ -24,11 +24,13 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkDeque.h"
+#include "include/private/base/SkTArray.h"
 
 #include <cstdint>
 #include <cstring>
@@ -667,7 +669,8 @@ public:
         kF16ColorType                   = 1 << 4,
     };
 
-    typedef uint32_t SaveLayerFlags;
+    using SaveLayerFlags = uint32_t;
+    using FilterSpan = SkSpan<sk_sp<SkImageFilter>>;
 
     /** \struct SkCanvas::SaveLayerRec
         SaveLayerRec contains the state used to create the layer.
@@ -687,7 +690,7 @@ public:
             @return                SaveLayerRec with empty fBackdrop
         */
         SaveLayerRec(const SkRect* bounds, const SkPaint* paint, SaveLayerFlags saveLayerFlags = 0)
-            : SaveLayerRec(bounds, paint, nullptr, 1.f, saveLayerFlags) {}
+            : SaveLayerRec(bounds, paint, nullptr, 1.f, saveLayerFlags, /*filters=*/{}) {}
 
         /** Sets fBounds, fPaint, fBackdrop, and fSaveLayerFlags.
 
@@ -702,14 +705,16 @@ public:
             @return                SaveLayerRec fully specified
         */
         SaveLayerRec(const SkRect* bounds, const SkPaint* paint, const SkImageFilter* backdrop,
-                     SaveLayerFlags saveLayerFlags)
-            : SaveLayerRec(bounds, paint, backdrop, 1.f, saveLayerFlags) {}
+                     SaveLayerFlags saveLayerFlags, FilterSpan filters = {})
+            : SaveLayerRec(bounds, paint, backdrop, 1.f, saveLayerFlags, filters) {}
 
         /** hints at layer size limit */
         const SkRect*        fBounds         = nullptr;
 
         /** modifies overlay */
         const SkPaint*       fPaint          = nullptr;
+
+        FilterSpan fFilters = {};
 
         /**
          *  If not null, this triggers the same initialization behavior as setting
@@ -726,13 +731,21 @@ public:
         friend class SkCanvas;
         friend class SkCanvasPriv;
 
-        SaveLayerRec(const SkRect* bounds, const SkPaint* paint, const SkImageFilter* backdrop,
-                     SkScalar backdropScale, SaveLayerFlags saveLayerFlags)
-            : fBounds(bounds)
-            , fPaint(paint)
-            , fBackdrop(backdrop)
-            , fSaveLayerFlags(saveLayerFlags)
-            , fExperimentalBackdropScale(backdropScale) {}
+        SaveLayerRec(const SkRect* bounds,
+                     const SkPaint* paint,
+                     const SkImageFilter* backdrop,
+                     SkScalar backdropScale,
+                     SaveLayerFlags saveLayerFlags,
+                     FilterSpan filters)
+                : fBounds(bounds)
+                , fPaint(paint)
+                , fFilters(filters)
+                , fBackdrop(backdrop)
+                , fSaveLayerFlags(saveLayerFlags)
+                , fExperimentalBackdropScale(backdropScale) {
+            // We only allow the paint's image filter or the side-car list of filters -- not both.
+            SkASSERT(fFilters.empty() || !paint || !paint->getImageFilter());
+        }
 
         // Relative scale factor that the image content used to initialize the layer when the
         // kInitFromPrevious flag or a backdrop filter is used.
@@ -2323,14 +2336,14 @@ private:
     // clip, and matrix commands. There is a layer per call to saveLayer() using the
     // kFullLayer_SaveLayerStrategy.
     struct Layer {
-        sk_sp<SkDevice>      fDevice;
-        sk_sp<SkImageFilter> fImageFilter; // applied to layer *before* being drawn by paint
-        SkPaint              fPaint;
-        bool                 fIsCoverage;
-        bool                 fDiscard;
+        sk_sp<SkDevice>                                fDevice;
+        skia_private::STArray<1, sk_sp<SkImageFilter>> fImageFilters;
+        SkPaint                                        fPaint;
+        bool                                           fIsCoverage;
+        bool                                           fDiscard;
 
         Layer(sk_sp<SkDevice> device,
-              sk_sp<SkImageFilter> imageFilter,
+              FilterSpan imageFilters,
               const SkPaint& paint,
               bool isCoverage);
     };
@@ -2368,7 +2381,7 @@ private:
         ~MCRec();
 
         void newLayer(sk_sp<SkDevice> layerDevice,
-                      sk_sp<SkImageFilter> filter,
+                      FilterSpan filters,
                       const SkPaint& restorePaint,
                       bool layerIsCoverage);
 
