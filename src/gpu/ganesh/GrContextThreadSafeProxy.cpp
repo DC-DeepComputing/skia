@@ -17,10 +17,6 @@
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/surface/SkSurface_Ganesh.h"
 
-#ifdef SK_VULKAN
-#include "src/gpu/ganesh/vk/GrVkCaps.h"
-#endif
-
 #include <memory>
 
 static uint32_t next_id() {
@@ -112,18 +108,9 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
     }
 
     if (GrBackendApi::kVulkan == backendFormat.backend()) {
-        if (GrBackendApi::kVulkan != fBackend) {
+        if (!isValidCharacterizationForVulkan(fCaps, isProtected)) {
             return {};
         }
-
-#ifdef SK_VULKAN
-        const GrVkCaps* vkCaps = (const GrVkCaps*) fCaps.get();
-
-        // The protection status of the characterization and the context need to match
-        if (isProtected != GrProtected(vkCaps->supportsProtectedContent())) {
-            return {};
-        }
-#endif
     }
 
     return GrSurfaceCharacterization(
@@ -137,6 +124,10 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
             GrSurfaceCharacterization::VulkanSecondaryCBCompatible(forVulkanSecondaryCommandBuffer),
             isProtected,
             surfaceProps);
+}
+
+bool GrContextThreadSafeProxy::isValidCharacterizationForVulkan(sk_sp<const GrCaps>, GrProtected) {
+    return false;  // handled by a subclass
 }
 
 GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skColorType,
