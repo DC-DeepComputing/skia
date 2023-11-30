@@ -642,7 +642,7 @@ void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     // TODO: This has wasted effort from the SkCanvas level since it instead converts rrects that
     // happen to be ovals into this, only for us to go right back to rrect.
-    this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(SkRRect::MakeOval(oval))),
+    this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(SkRRect::MakeOval(oval), 2)),
                        paint, SkStrokeRec(paint));
 }
 

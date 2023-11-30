@@ -44,6 +44,8 @@ public:
     explicit Shape(const SkRRect& rrect)    { this->setRRect(rrect); }
     explicit Shape(const SkPath& path)      { this->setPath(path);   }
 
+    Shape(const SkRRect& rrect, int start)  { this->setRRect(rrect, start); }
+
     ~Shape() { this->reset(); }
 
     // NOTE: None of the geometry types benefit from move semantics, so we don't bother
@@ -129,8 +131,13 @@ public:
         fInverted = false;
     }
     void setRRect(const SkRRect& rrect) {
+        // Preserve legacy default start index 6 for CW rrect, see SkPathBuilder::addRRect().
+        this->setRRect(rrect, 6);
+    }
+    void setRRect(const SkRRect& rrect, int start) {
         this->setType(Type::kRRect);
         fRRect = rrect;
+        fStart = start;
         fInverted = false;
     }
     void setPath(const SkPath& path) {
@@ -189,6 +196,7 @@ private:
     };
 
     Type    fType     = Type::kEmpty;
+    int     fStart    = 0;
     bool    fInverted = false;
 };
 
