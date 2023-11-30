@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3c92656_a59c025d",
+        "filename": "tools/skdiff/skdiff_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-30T20:46:19Z",
+      "side": 1,
+      "message": "Made `SkCodecs::Decoder` constexpr-able.",
+      "parentUuid": "3b8061ac_b7032238",
+      "revId": "3682f6f326d37825ee733122c0749d81683a1bdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a74a22f_57bb019e",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-11-30T19:49:01Z",
       "side": 1,
       "message": "Seems like this code could continue to use `SkBitmap` and be much simpler, while still not relying on ToolUtils?\n\n```\nSkBitmap copy;\ncopy.allocPixels(bitmap.info().makeColorType(kN32_SkColorType));\nbitmap.readPixels(copy.pixmap());\nforce_all_opaque(...);\n```",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 51
+      },
+      "revId": "3682f6f326d37825ee733122c0749d81683a1bdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ef9872f_58949f06",
+        "filename": "tools/skdiff/skdiff_utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-11-30T20:46:19Z",
+      "side": 1,
+      "message": "I only write Skia, I obviously have no idea how to use it. Done.",
+      "parentUuid": "1a74a22f_57bb019e",
       "range": {
         "startLine": 99,
         "startChar": 0,
