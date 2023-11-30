@@ -16,6 +16,24 @@
       "message": "Can we just set this as the default value in the struct? (The arena will handle contructing the instance, and that would ensure that the stack allocated ones in tests are initialized correctly, too).",
       "revId": "182742fde20163d97d9e1a13ab9a2f54757143c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0033b0b7_76b9e128",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1851,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-11-30T16:37:43Z",
+      "side": 1,
+      "message": "IIRC all of the raster pipeline structs are totally POD right now, but that\u0027s probably not _actually_ a useful property. I will try adding initializers to ones where it makes sense and see if it affects anything.",
+      "parentUuid": "2df2eead_55d34353",
+      "revId": "182742fde20163d97d9e1a13ab9a2f54757143c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
