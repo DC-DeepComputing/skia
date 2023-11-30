@@ -193,7 +193,7 @@ struct SkRasterPipeline_TablesCtx {
 using SkRPOffset = uint32_t;
 
 struct SkRasterPipeline_InitLaneMasksCtx {
-    uint8_t* tail;  // TODO(johnstiles): this field is currently unused
+    uint8_t* tail = nullptr;  // TODO(johnstiles): this field is currently unused
 };
 
 struct SkRasterPipeline_ConstantCtx {
@@ -202,8 +202,8 @@ struct SkRasterPipeline_ConstantCtx {
 };
 
 struct SkRasterPipeline_UniformCtx {
-    float *dst;
-    const float *src;
+    float* dst;
+    const float* src;
 };
 
 struct SkRasterPipeline_BinaryOpCtx {
@@ -231,20 +231,20 @@ struct SkRasterPipeline_SwizzleCtx {
 };
 
 struct SkRasterPipeline_ShuffleCtx {
-    float *ptr;
+    float* ptr;
     int count;
     uint16_t offsets[16];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct SkRasterPipeline_SwizzleCopyCtx {
-    float *dst;
-    float *src;           // src values must _not_ overlap dst values
+    float* dst;
+    float* src;           // src values must _not_ overlap dst values
     uint16_t offsets[4];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct SkRasterPipeline_CopyIndirectCtx {
-    float *dst;
-    const float *src;
+    float* dst;
+    const float* src;
     const uint32_t *indirectOffset;  // this applies to `src` or `dst` based on the op
     uint32_t indirectLimit;          // the indirect offset is clamped to this upper bound
     uint32_t slots;                  // the number of slots to copy
