@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a417b25f_4f9bd7cc",
+        "filename": "tools/testrunners/common/compilation_mode_keys/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-30T14:06:19Z",
+      "side": 1,
+      "message": "I believe this can be achieved with local_defines, not copts",
+      "range": {
+        "startLine": 17,
+        "startChar": 58,
+        "endLine": 17,
+        "endChar": 84
+      },
+      "revId": "e4d53f37778df33a50b05d95739457934b43d7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
