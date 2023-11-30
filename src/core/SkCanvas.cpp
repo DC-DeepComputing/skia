@@ -24,6 +24,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkRasterHandleAllocator.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
@@ -177,11 +178,11 @@ bool SkCanvas::predrawNotify(const SkRect* rect, const SkPaint* paint,
 ///////////////////////////////////////////////////////////////////////////////
 
 SkCanvas::Layer::Layer(sk_sp<SkDevice> device,
-                       sk_sp<SkImageFilter> imageFilter,
+                       SkSpan<sk_sp<SkImageFilter>> imageFilters,
                        const SkPaint& paint,
                        bool isCoverage)
         : fDevice(std::move(device))
-        , fImageFilter(std::move(imageFilter))
+        , fImageFilters(imageFilters.data(), imageFilters.size())
         , fPaint(paint)
         , fIsCoverage(isCoverage)
         , fDiscard(false) {
@@ -209,12 +210,12 @@ SkCanvas::MCRec::MCRec(const MCRec* prev) : fDevice(prev->fDevice), fMatrix(prev
 SkCanvas::MCRec::~MCRec() {}
 
 void SkCanvas::MCRec::newLayer(sk_sp<SkDevice> layerDevice,
-                               sk_sp<SkImageFilter> filter,
+                               SkSpan<sk_sp<SkImageFilter>> filters,
                                const SkPaint& restorePaint,
                                bool layerIsCoverage) {
     SkASSERT(!fBackImage);
-    fLayer = std::make_unique<Layer>(std::move(layerDevice), std::move(filter),
-                                     restorePaint, layerIsCoverage);
+    fLayer =
+            std::make_unique<Layer>(std::move(layerDevice), filters, restorePaint, layerIsCoverage);
     fDevice = fLayer->fDevice.get();
 }
 
@@ -1124,9 +1125,11 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
     // bilerp also smoothed cropped edges. See skbug.com/11252
     restorePaint.setAntiAlias(true);
 
+    using FilterSpan = SkSpan<sk_sp<SkImageFilter>>;
+
 #if defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE)
-    const SkImageFilter* filter = optimize_layer_filter(
-            rec.fPaint ? rec.fPaint->getImageFilter() : nullptr, &restorePaint);
+    sk_sp<SkImageFilter> paintFilter = sk_ref_sp(optimize_layer_filter(
+            rec.fPaint ? rec.fPaint->getImageFilter() : nullptr, &restorePaint));
 
     // Size the new layer relative to the prior device, which may already be aligned for filters.
     SkDevice* priorDevice = this->topDevice();
@@ -1137,13 +1140,16 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
         contentBounds = skif::ParameterSpace<SkRect>(*rec.fBounds);
     }
     auto mappingAndBounds = get_layer_mapping_and_bounds(
-            filter, priorDevice->localToDevice(),
+            paintFilter.get(), priorDevice->localToDevice(),
             skif::DeviceSpace<SkIRect>(priorDevice->devClipBounds()),
             contentBounds,
             must_cover_prior_device(rec.fBackdrop, restorePaint));
+
+    FilterSpan filters = paintFilter ? FilterSpan{&paintFilter, 1} : rec.fFilters;
 #else
 
-    const SkImageFilter* filter = rec.fPaint ? rec.fPaint->getImageFilter() : nullptr;
+    sk_sp<SkImageFilter> paintFilter = rec.fPaint ? rec.fPaint->refImageFilter() : nullptr;
+    FilterSpan filters = paintFilter ? FilterSpan{&paintFilter, 1} : rec.fFilters;
     const SkColorFilter* cf = restorePaint.getColorFilter();
     const SkBlender* blender = restorePaint.getBlender();
 
@@ -1153,14 +1159,14 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
     // analogous to a backdrop filter so they are treated the same.
     const bool filtersPriorDevice = rec.fBackdrop ||
             ((rec.fSaveLayerFlags & kInitWithPrevious_SaveLayerFlag) &&
-             (filter || cf || blender || restorePaint.getAlphaf() < 1.f));
+             (!filters.empty() || cf || blender || restorePaint.getAlphaf() < 1.f));
     // If the restorePaint has a transparency-affecting colorfilter or blender, the output is
     // unbounded during restore(). `internalDrawDeviceWithFilter` automatically applies these
     // effects. When there's no image filter, SkDevice::drawDevice is used, which does
     // not apply effects beyond the layer's image so we mark `trivialRestore` as false too.
     // TODO: drawDevice() could be updated to apply transparency-affecting effects to a content-
     // clipped image, but this is the simplest solution when considering document-based SkDevices.
-    const bool drawDeviceMustFillClip = !filter &&
+    const bool drawDeviceMustFillClip = filters.empty() &&
             ((cf && as_CFB(cf)->affectsTransparentBlack()) ||
                 (blender && as_BB(blender)->affectsTransparentBlack()));
     const bool trivialRestore = !filtersPriorDevice && !drawDeviceMustFillClip;
@@ -1178,7 +1184,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
     }
 
     auto mappingAndBounds = get_layer_mapping_and_bounds(
-            filter, priorDevice->localToDevice(), outputBounds, contentBounds);
+            filters.front().get(), priorDevice->localToDevice(), outputBounds, contentBounds);
 #endif
 
     auto abortLayer = [this]() {
@@ -1202,7 +1208,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
         // produce output, or that the filter DAG has no references to the dynamic source image.
         // In this case it still has an output that we need to render, but do so now since there is
         // no new layer pushed on the stack and the paired restore() will be a no-op.
-        if (filter && !priorDevice->isNoPixelsDevice()) {
+        if (!filters.empty() && !priorDevice->isNoPixelsDevice()) {
 #if defined(SK_RESOLVE_FILTERS_BEFORE_RESTORE)
             skif::ParameterSpace<SkRect> emptyInput{SkRect::MakeEmpty()};
             std::optional<skif::DeviceSpace<SkIRect>> output =
@@ -1303,7 +1309,8 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
                                            rec.fExperimentalBackdropScale);
     }
 
-    fMCRec->newLayer(std::move(newDevice), sk_ref_sp(filter), restorePaint, coverageOnly);
+    sk_sp<SkImageFilter> filters[1] = { sk_ref_sp(filter) };
+    fMCRec->newLayer(std::move(newDevice), filters, restorePaint, coverageOnly);
     fQuickRejectBounds = this->computeDeviceClipBounds();
 }
 
@@ -1394,10 +1401,12 @@ void SkCanvas::internalRestore() {
         // internalSaveLayer and internalRestore.
         if (this->predrawNotify()) {
             SkDevice* dstDev = this->topDevice();
-            if (layer->fImageFilter) {
+            SkImageFilter* imageFilter =
+                    layer->fImageFilters.empty() ? nullptr : layer->fImageFilters.front().get();
+            if (imageFilter) {
                 this->internalDrawDeviceWithFilter(layer->fDevice.get(), // src
                                                    dstDev,               // dst
-                                                   layer->fImageFilter.get(),
+                                                   imageFilter,
                                                    layer->fPaint,
                                                    DeviceCompatibleWithFilter::kYes,
                                                    /*scaleFactor=*/1.0f,
