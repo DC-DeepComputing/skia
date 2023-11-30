@@ -30,6 +30,7 @@ Shape& Shape::operator=(const Shape& shape) {
         case Type::kPath:  this->setPath(shape.path());           break;
     }
 
+    fStart = shape.fStart;
     fInverted = shape.fInverted;
     return *this;
 }
@@ -84,12 +85,21 @@ SkPath Shape::asPath() const {
 
     SkPathBuilder builder(this->fillType());
     switch (fType) {
-        case Type::kEmpty: /* do nothing */                            break;
-        case Type::kLine:  builder.moveTo(fRect.left(), fRect.top())
-                                  .lineTo(fRect.right(), fRect.bot()); break;
-        case Type::kRect:  builder.addRect(fRect.asSkRect());          break;
-        case Type::kRRect: builder.addRRect(fRRect);                   break;
-        case Type::kPath:  SkUNREACHABLE;
+        case Type::kEmpty:
+            // do nothing
+            break;
+        case Type::kLine:
+            builder.moveTo(fRect.left(), fRect.top())
+                   .lineTo(fRect.right(), fRect.bot());
+            break;
+        case Type::kRect:
+            builder.addRect(fRect.asSkRect());
+            break;
+        case Type::kRRect:
+            builder.addRRect(fRRect, SkPathDirection::kCW, fStart);
+            break;
+        case Type::kPath:
+            SkUNREACHABLE;
     }
     return builder.detach();
 }
