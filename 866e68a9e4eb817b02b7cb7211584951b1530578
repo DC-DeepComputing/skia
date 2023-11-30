@@ -33,6 +33,24 @@
       "message": "Unfortunately, this would drop support for reading in anything other than pngs. On the other hand, that\u0027s really all this tool is used with. Unfortunately, SkCodec::MakeFromData has a lot more logic than just this for handling various issues, which would be nice for users but cannot really be abstracted without the user passing in a list of codecs.",
       "revId": "866e68a9e4eb817b02b7cb7211584951b1530578",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc6f8da2_4fc04e1c",
+        "filename": "tools/skdiff/skdiff_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-11-30T14:02:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f507f53_e158818d",
+      "revId": "866e68a9e4eb817b02b7cb7211584951b1530578",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
