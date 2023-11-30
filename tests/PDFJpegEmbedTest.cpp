@@ -61,20 +61,29 @@ DEF_TEST(SkPDF_JpegEmbedTest, r) {
     const char test[] = "SkPDF_JpegEmbedTest";
     sk_sp<SkData> mandrillData(load_resource(r, test, "images/mandrill_512_q075.jpg"));
     sk_sp<SkData> cmykData(load_resource(r, test, "images/CMYK.jpg"));
-    if (!mandrillData || !cmykData) {
+    sk_sp<SkData> cmyk2Data(load_resource(r, test, "images/crbug999986.jpeg"));
+    if (!mandrillData || !cmykData || !cmyk2Data) {
+        REPORTER_ASSERT(r, false, "Could not load all images");
         return;
     }
     ////////////////////////////////////////////////////////////////////////////
     SkDynamicMemoryWStream pdf;
     auto document = SkPDF::MakeDocument(&pdf);
-    SkCanvas* canvas = document->beginPage(642, 1028);
+    SkCanvas* canvas = document->beginPage(642, 1400);
 
     canvas->clear(SK_ColorLTGRAY);
 
     sk_sp<SkImage> im1(SkImages::DeferredFromEncodedData(mandrillData));
-    canvas->drawImage(im1.get(), 65.0, 0.0);
+    canvas->drawImage(im1, 65.0, 0.0);
     sk_sp<SkImage> im2(SkImages::DeferredFromEncodedData(cmykData));
-    canvas->drawImage(im2.get(), 0.0, 512.0);
+    canvas->drawImage(im2, 0.0, 512.0);
+
+    // This should be the same blue as the dark spot seen in the image.
+    SkPaint bluePaint;
+    bluePaint.setColor(SkColorSetARGB(255, 0, 59, 103));
+    canvas->drawRect(SkRect::MakeXYWH(0, 1000, 642, 24), bluePaint);
+    sk_sp<SkImage> im3(SkImages::DeferredFromEncodedData(cmyk2Data));
+    canvas->drawImage(im3, 0.0, 1024.0);
 
     document->endPage();
     document->close();
@@ -88,6 +97,11 @@ DEF_TEST(SkPDF_JpegEmbedTest, r) {
     // This JPEG uses a nonstandard colorspace - it can not be
     // embedded into the PDF directly.
     REPORTER_ASSERT(r, !is_subset_of(cmykData.get(), pdfData.get()));
+
+    SkFILEWStream s("/tmp/jpegembed.pdf");
+    REPORTER_ASSERT(r, s.write(pdfData->data(), pdfData->size()));
+    s.flush();
+    s.fsync();
 }
 
 #ifdef SK_SUPPORT_PDF
