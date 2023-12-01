@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11eda389_d5125edd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T15:51:49Z",
+      "side": 1,
+      "message": "Thanks for the CL, this might be okay, but I kind want to run some local tests first around what we currently mean by the Surface colorType in Skia. Chatting offline there seems to be some so inconsistencies in our uses.\n\nIn some cases we treat it as \"you should reinterpret what the hardware color channels mean\". For example When using an R8 texture with a Alpha colorType that tells us to swizzle the R channel into Alpha when reading and the reverse for writing.\n\nHowever, in other cases we don\u0027t really take this stance. For example other places similar to this where we are mixing RGB with BGR colorType/Formats. There it seems like we generally are ignoring the colorType.\n\nI want to run a test that does the following (ignoring the X for now as that part is less interesting in the issue):\n1) Makes an BGRA texture\n2) Wrap texture in Skia Surface using RGBA colorType\n3) Tell Skia to draw Red to it in a shader\n4) ReadPixels on the Surface with a dst colorType of RGBA\n5) Do we expect the resulting cpu data to be red or blue here? My gut tells me we\u0027ll end up with blue in Vulkan which I feel like is not what would be expected? But maybe it is?\n\nIf we wanted to be consistent and treat the colorType as telling us how to reinterpret the hardware channels (similar to the alpha example) we\u0027d end up not doing what you want for your specific use case which is to just sample the data normally and do nothing.\n\nIf we end up having a hard time reasoning what should happen here, we can always just add an SkColorType for BGR_888x. It is more plumbing but at least allows us to keep kick this can down the road.",
+      "revId": "d29b48e663ebd52774214f20aefabac75a3586da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
