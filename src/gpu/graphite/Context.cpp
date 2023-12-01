@@ -48,6 +48,7 @@
 #include "src/gpu/graphite/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/UploadTask.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
