@@ -117,8 +117,9 @@ bool SkIsJFIF(const SkData* data, SkJFIFInfo* info) {
     SkISize jpegSize;
     SkEncodedInfo::Color jpegColorType;
     SkEncodedOrigin exifOrientation;
+    sk_sp<SkData> iccProfileData;
     if (data && SkGetJpegInfo(data->data(), data->size(), &jpegSize,
-                              &jpegColorType, &exifOrientation)) {
+                              &jpegColorType, &exifOrientation, &iccProfileData)) {
         bool yuv = jpegColorType == SkEncodedInfo::kYUV_Color;
         bool goodColorType = yuv || jpegColorType == SkEncodedInfo::kGray_Color;
         if (goodColorType && kTopLeft_SkEncodedOrigin == exifOrientation) {

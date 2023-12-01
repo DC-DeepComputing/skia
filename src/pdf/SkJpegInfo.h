@@ -19,10 +19,12 @@ struct SkISize;
     @param [out] size        Image size in pixels
     @param [out] colorType   Encoded color type (kGray_Color, kYUV_Color, several others).
     @param [out] orientation EXIF Orientation of the image.
+    @param [out] profile     ICC Profile if present.
 */
 bool SkGetJpegInfo(const void* data, size_t len,
                    SkISize* size,
                    SkEncodedInfo::Color* colorType,
-                   SkEncodedOrigin* orientation);
+                   SkEncodedOrigin* orientation,
+                   sk_sp<SkData>* iccProfileData);
 
 #endif  // SkJpegInfo_DEFINED

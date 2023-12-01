@@ -77,6 +77,7 @@ static void emit_image_stream(SkPDFDocument* doc,
                               SkPDFIndirectReference ref,
                               T writeStream,
                               SkISize size,
+                              SkPDFIndirectReference colorSpaceRef,
                               const char* colorSpace,
                               SkPDFIndirectReference sMask,
                               int length,
@@ -85,7 +86,11 @@ static void emit_image_stream(SkPDFDocument* doc,
     pdfDict.insertName("Subtype", "Image");
     pdfDict.insertInt("Width", size.width());
     pdfDict.insertInt("Height", size.height());
-    pdfDict.insertName("ColorSpace", colorSpace);
+    if (colorSpaceRef) {
+        pdfDict.insertRef("ColorSpace", colorSpaceRef);
+    } else if (colorSpace) {
+        pdfDict.insertName("ColorSpace", colorSpace);
+    }
     if (sMask) {
         pdfDict.insertRef("SMask", sMask);
     }
@@ -156,7 +161,7 @@ static void do_deflated_alpha(const SkPixmap& pm, SkPDFDocument* doc, SkPDFIndir
     #endif
     int length = SkToInt(buffer.bytesWritten());
     emit_image_stream(doc, ref, [&buffer](SkWStream* stream) { buffer.writeToAndReset(stream); },
-                      pm.info().dimensions(), "DeviceGray", SkPDFIndirectReference(),
+                      pm.info().dimensions(), SkPDFIndirectReference(), "DeviceGray", SkPDFIndirectReference(),
                       length, format);
 }
 
@@ -224,7 +229,7 @@ static void do_deflated_image(const SkPixmap& pm,
     #endif
     int length = SkToInt(buffer.bytesWritten());
     emit_image_stream(doc, ref, [&buffer](SkWStream* stream) { buffer.writeToAndReset(stream); },
-                      pm.info().dimensions(), colorSpace, sMask, length, format);
+                      pm.info().dimensions(), SkPDFIndirectReference(), colorSpace, sMask, length, format);
     if (!isOpaque) {
         do_deflated_alpha(pm, doc, sMask);
     }
@@ -235,8 +240,9 @@ static bool do_jpeg(sk_sp<SkData> data, SkPDFDocument* doc, SkISize size,
     SkISize jpegSize;
     SkEncodedInfo::Color jpegColorType;
     SkEncodedOrigin exifOrientation;
+    sk_sp<SkData> iccProfileData;
     if (!SkGetJpegInfo(data->data(), data->size(), &jpegSize,
-                       &jpegColorType, &exifOrientation)) {
+                       &jpegColorType, &exifOrientation, &iccProfileData)) {
         return false;
     }
     bool yuv = jpegColorType == SkEncodedInfo::kYUV_Color;
@@ -252,9 +258,21 @@ static bool do_jpeg(sk_sp<SkData> data, SkPDFDocument* doc, SkISize size,
     data = buffer.detachAsData();
     #endif
 
+    SkPDFIndirectReference iccRef;
+    if (iccProfileData) {
+        auto iccStreamRef = doc->reserveRef();
+        auto iccStreamDict = SkPDFMakeDict();
+        iccStreamDict->insertInt("N", 3);
+        doc->emitStream(*iccStreamDict, [&iccProfileData](SkWStream* dst) { dst->write(iccProfileData->data(), iccProfileData->size()); }, iccStreamRef);
+        auto icc = SkPDFMakeArray();
+        icc->appendName("ICCBased");
+        icc->appendRef(iccStreamRef);
+        iccRef = doc->emit(*icc);
+    }
+
     emit_image_stream(doc, ref,
                       [&data](SkWStream* dst) { dst->write(data->data(), data->size()); },
-                      jpegSize, yuv ? "DeviceRGB" : "DeviceGray",
+                      jpegSize, iccRef, yuv ? "DeviceRGB" : "DeviceGray",
                       SkPDFIndirectReference(), SkToInt(data->size()), SkPDFStreamFormat::DCT);
     return true;
 }
