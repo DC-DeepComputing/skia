@@ -70,6 +70,24 @@
       "parentUuid": "1507edfa_4a8d06d3",
       "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "757623d5_c1eb72f0",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-01T17:14:59Z",
+      "side": 1,
+      "message": "So noticed that if I use `--layering_check` on the command like everything gets checked and `cms` currently does not build that way in a component build. Added `features \u003d [\"layering_check\"],` to `tools/skdiff/BUILD.bazel` to enable the check just for skdiff. This gets the errors the g3 build is giving which is nice, but it does mean that I cannot use anything in `//src/base:base` because I don\u0027t have visibility.\n\nIn theory I suppose most of the stuff in `base` we don\u0027t want to export for anyone to just use for just whatever. However, it would be nice to have a component that our own tools can use. I note that `base` current allows `//tests:__subpackages__` so we could add `//tools:__subpackages__` to this list, I suppose?",
+      "parentUuid": "73191bcb_d55ce6e0",
+      "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
