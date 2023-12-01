@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d56851_5c770960",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T18:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b3d074b_9b3ccd5d",
+      "range": {
+        "startLine": 286,
+        "startChar": 4,
+        "endLine": 291,
+        "endChar": 5
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f6ccc48_c5a9ebac",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-30T20:17:13Z",
       "side": 1,
       "message": "wdyt about just `info-\u003efTransferBuffer \u003d {};`?",
+      "range": {
+        "startLine": 310,
+        "startChar": 28,
+        "endLine": 310,
+        "endChar": 48
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad195d9_0855a4ff",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T18:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f6ccc48_c5a9ebac",
       "range": {
         "startLine": 310,
         "startChar": 28,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db865ee7_642f43df",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T18:29:17Z",
+      "side": 1,
+      "message": "Done. Yeah didn\u0027t see before that finalize took the queue manager to be able to it all internally to the StaticBufferManager.",
+      "parentUuid": "beed073d_7db95aa1",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 93
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed7be87e_586b0a00",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-11-30T20:17:13Z",
       "side": 1,
       "message": "nit: space",
+      "range": {
+        "startLine": 43,
+        "startChar": 64,
+        "endLine": 43,
+        "endChar": 65
+      },
+      "revId": "b7d5383b911365820064119a411ce0d12eb6e975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad8b038_e2c25ae5",
+        "filename": "src/gpu/graphite/UploadBufferManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T18:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed7be87e_586b0a00",
       "range": {
         "startLine": 43,
         "startChar": 64,
