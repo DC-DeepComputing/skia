@@ -74,6 +74,30 @@
       },
       "revId": "b203f33517aadb1e5beaa588b13ce0dcec71e018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37eaf165_466e6e9a",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-01T16:24:01Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ve just ignored Clang-Tidy\u0027s remarks (on the G3 side) up until this point.",
+      "parentUuid": "8fd2a152_618e093b",
+      "range": {
+        "startLine": 148,
+        "startChar": 42,
+        "endLine": 148,
+        "endChar": 48
+      },
+      "revId": "b203f33517aadb1e5beaa588b13ce0dcec71e018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
