@@ -16,6 +16,29 @@
       "message": "Well, It works now, but I touched another file so need +1s. Let me know if this build hacking makes sense.",
       "revId": "677c2bee88e337abdca700772509ee7e4a8c246b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e88ea47_8e29cf3a",
+        "filename": "src/base/BUILD.bazel",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-01T18:35:05Z",
+      "side": 1,
+      "message": "Yes, I think we can expand visibility of base to our own stuff.",
+      "range": {
+        "startLine": 133,
+        "startChar": 11,
+        "endLine": 133,
+        "endChar": 16
+      },
+      "revId": "677c2bee88e337abdca700772509ee7e4a8c246b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
