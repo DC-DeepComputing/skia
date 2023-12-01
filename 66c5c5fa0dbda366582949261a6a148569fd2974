@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ff3846_e38b229b",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-01T16:39:48Z",
+      "side": 1,
+      "message": "We should at least try to build with `--features\u003dlayering_check` to catch this sort of issue with out component build (since it is enabled in g3 on the component build). Unfortunately, there are other violations at the moment, so it\u0027s difficult to check this locally and I\u0027m not sure why it\u0027s working in G3 at the moment (or seems to be).",
+      "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
