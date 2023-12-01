@@ -16,6 +16,24 @@
       "message": "Are we adding any Test tasks for these devices?",
       "revId": "46d337afee5c8518e3f8c0befea878ca09052c0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9ba7976_71b0eda2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-12-01T18:42:19Z",
+      "side": 1,
+      "message": "@nscobie@google.com I think you\u0027re better equipped than me to answer this question.",
+      "parentUuid": "d46b73f2_7cf680ba",
+      "revId": "46d337afee5c8518e3f8c0befea878ca09052c0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
