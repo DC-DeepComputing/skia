@@ -52,6 +52,24 @@
       "parentUuid": "2fdd701c_45b5a011",
       "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73191bcb_d55ce6e0",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-01T16:53:18Z",
+      "side": 1,
+      "message": "Sorry, by \"doesn\u0027t exist\" I was referring to `//:base`. This wants to use `TArray` and it isn\u0027t visible. Might actually be a visibility rule rather than a dependency issue, but I was surprised that everything worked in a local build.\n\nI did locally do a layering_check but ran into issues with `cms` before the build got to `skdiff`.",
+      "parentUuid": "1507edfa_4a8d06d3",
+      "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
