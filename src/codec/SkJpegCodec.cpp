@@ -1421,4 +1421,9 @@ SkEncodedOrigin get_exif_orientation(jpeg_decompress_struct* dinfo) {
     return get_exif_orientation(metadataDecoder->getExifMetadata(/*copyData=*/false));
 }
 
+sk_sp<SkData> get_icc_profile_data(jpeg_decompress_struct* dinfo) {
+    auto metadataDecoder = SkJpegMetadataDecoder::Make(get_sk_marker_list(dinfo));
+    return metadataDecoder->getICCProfileData(/*copyData=*/true);
+}
+
 }  // namespace SkJpegPriv

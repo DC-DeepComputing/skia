@@ -58,6 +58,7 @@ struct skjpeg_error_mgr : jpeg_error_mgr {
 
 namespace SkJpegPriv {
 SkEncodedOrigin get_exif_orientation(jpeg_decompress_struct* dinfo);
+sk_sp<SkData> get_icc_profile_data(jpeg_decompress_struct* dinfo);
 }
 
 #endif

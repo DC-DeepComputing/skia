@@ -30,7 +30,8 @@ extern "C" {
 bool SkGetJpegInfo(const void* data, size_t len,
                    SkISize* size,
                    SkEncodedInfo::Color* colorType,
-                   SkEncodedOrigin* orientation) {
+                   SkEncodedOrigin* orientation,
+                   sk_sp<SkData>* iccProfileData) {
     if (!SkJpegCodec::IsJpeg(data, len)) {
         return false;
     }
@@ -64,5 +65,35 @@ bool SkGetJpegInfo(const void* data, size_t len,
     if (size) {
         *size = {SkToS32(dinfo->image_width), SkToS32(dinfo->image_height)};
     }
+
+    std::unique_ptr<SkEncodedInfo::ICCProfile> profile;
+    *iccProfileData = SkJpegPriv::get_icc_profile_data(dinfo);
+    if (iccProfileData) {
+        profile = SkEncodedInfo::ICCProfile::Make(*iccProfileData);
+    }
+    if (profile) {
+        auto type = profile->profile()->data_color_space;
+        switch (decoderMgr.dinfo()->jpeg_color_space) {
+            case JCS_CMYK:
+            case JCS_YCCK:
+                if (type != skcms_Signature_CMYK) {
+                    *iccProfileData = nullptr;
+                }
+                break;
+            case JCS_GRAYSCALE:
+                if (type != skcms_Signature_Gray &&
+                    type != skcms_Signature_RGB)
+                {
+                    *iccProfileData = nullptr;
+                }
+                break;
+            default:
+                if (type != skcms_Signature_RGB) {
+                    *iccProfileData = nullptr;
+                }
+                break;
+        }
+    }
+
     return true;
 }
