@@ -88,6 +88,24 @@
       "parentUuid": "73191bcb_d55ce6e0",
       "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0a32cec_1b06fd18",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-01T18:33:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "757623d5_c1eb72f0",
+      "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
