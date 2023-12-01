@@ -16,6 +16,46 @@
       "message": "I kicked off some canaries to make sure the std::string -\u003e char didn\u0027t break anything",
       "revId": "b203f33517aadb1e5beaa588b13ce0dcec71e018",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b60177d0_da99ac42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-01T16:18:27Z",
+      "side": 1,
+      "message": "So, interestingly this does not touch `skdiff_html.h`, `skdiff_main.cpp`, or `skdiff_utils.h` so the roller will not touch them, but these files in g3 have not had their includes re-written, so they\u0027re not finding their includes in the component build. I think the right thing to do is update them first? Will try that.",
+      "revId": "b203f33517aadb1e5beaa588b13ce0dcec71e018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd2a152_618e093b",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-01T16:18:27Z",
+      "side": 1,
+      "message": "Note that this is the first place I\u0027ve directly run into the conflict between the abomination that is \"associated headers\" in iwyu and the current \"clang tidy\" expectation for each file to actually include what it uses. This file (`SkCodec.cpp`) is not including `SkSpan.h` and iwyu currently likes it that way because there is a header named `SkCodec.h` which does include `SkSpan.h`. We need a flag in iwyu to turn off associated headers. Looks like this is https://github.com/include-what-you-use/include-what-you-use/issues/919 . It actually shouldn\u0027t bee too difficult to fix this (just don\u0027t automatically add to the list), so maybe I\u0027ll take a look into that.",
+      "range": {
+        "startLine": 148,
+        "startChar": 42,
+        "endLine": 148,
+        "endChar": 48
+      },
+      "revId": "b203f33517aadb1e5beaa588b13ce0dcec71e018",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
