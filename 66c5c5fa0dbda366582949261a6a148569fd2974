@@ -34,6 +34,24 @@
       "parentUuid": "82ff3846_e38b229b",
       "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1507edfa_4a8d06d3",
+        "filename": "tools/skdiff/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-01T16:47:52Z",
+      "side": 1,
+      "message": "It does. I implemented it for our external toolchain. https://github.com/google/skia/blob/a3f015bcb578fb1c8ba36153f26140afb35d184e/toolchain/clang_layering_check.bzl",
+      "parentUuid": "2fdd701c_45b5a011",
+      "revId": "66c5c5fa0dbda366582949261a6a148569fd2974",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
