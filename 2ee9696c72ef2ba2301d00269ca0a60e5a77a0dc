@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59e26079_b017e966",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T18:15:42Z",
+      "side": 1,
+      "message": "Up to you as I\u0027m happy all ways, but you could make this a GL only virtual check as well, or make the one virtual more general that each backend overrides, or just leave this as is.",
+      "range": {
+        "startLine": 96,
+        "startChar": 3,
+        "endLine": 98,
+        "endChar": 5
+      },
+      "revId": "2ee9696c72ef2ba2301d00269ca0a60e5a77a0dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8136e7ce_76e34ac4",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-01T18:15:42Z",
+      "side": 1,
+      "message": "lets move this into the vulkan check.",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 5
+      },
+      "revId": "2ee9696c72ef2ba2301d00269ca0a60e5a77a0dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
