@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef03c184_39b75279",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2023-12-01T22:35:24Z",
+      "side": 1,
+      "message": "Thanks!  I added a TODO for adding `kBGR_888X`.\n\nI am not too familiar with either skia and chrome.  But iff there is any followup that I can help with, do let me know.",
+      "parentUuid": "dd828d42_d38d821a",
+      "revId": "d29b48e663ebd52774214f20aefabac75a3586da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "304a0cc2_9264dd4c",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-12-01T18:08:31Z",
       "side": 1,
       "message": "This needs to be kBGRA_8888.",
+      "range": {
+        "startLine": 977,
+        "startChar": 44,
+        "endLine": 977,
+        "endChar": 46
+      },
+      "revId": "d29b48e663ebd52774214f20aefabac75a3586da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d898c673_6287fcb4",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2023-12-01T22:35:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "304a0cc2_9264dd4c",
       "range": {
         "startLine": 977,
         "startChar": 44,
