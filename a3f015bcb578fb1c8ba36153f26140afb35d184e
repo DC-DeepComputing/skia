@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67b6d412_4adc4821",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-01T15:12:24Z",
+      "side": 1,
+      "message": "Can\u0027t the done-count be inferred by `gTotalCounts - gPending`? It seems like we don\u0027t need to track this directly.",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 301,
+        "endChar": 42
+      },
+      "revId": "a3f015bcb578fb1c8ba36153f26140afb35d184e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
