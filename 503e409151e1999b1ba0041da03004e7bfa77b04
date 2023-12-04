@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bfc2ece_ed5a78c5",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-04T19:22:36Z",
+      "side": 1,
+      "message": "So a few notes on this hack which has [existed since at least 2015](https://codereview.chromium.org/1133443003/). Codecs have changed quite a bit since then, and the data needed here is almost available.\n\n    static constexpr const SkCodecs::Decoder decoders[] \u003d {\n        SkJpegDecoder::Decoder(),\n    };\n    auto codec \u003d SkCodec::MakeFromData(data, decoders);\n    codec-\u003egetICCProfile()-\u003ebuffer; // icc buffer pointer (if it exists)\n    codec-\u003egetICCProfile()-\u003esize; // icc buffer length\n    codec-\u003edimensions(); // jpegSize\n    codec-\u003egetOrigin(); // exifOrientation\n    codec-\u003egetEncodedInfo().color(); // jpegColorType, cannot get to the color?\n\nwith the missing bit being the encoded color info (which is here used to reject non-JFIF/DCT CMYK 4 channel JPEGs). Unfortunately, the `imageInfo` does not provide this needed bit of information and would need to be exposed to avoid this hack.",
+      "range": {
+        "startLine": 244,
+        "startChar": 9,
+        "endLine": 244,
+        "endChar": 22
+      },
+      "revId": "503e409151e1999b1ba0041da03004e7bfa77b04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
