@@ -159,7 +159,7 @@ sk_sp<SkImage> create_skia_image(GrDirectContext* dContext, int width, int heigh
 
 class ProtectedSlide : public Slide {
 public:
-    ProtectedSlide() { fName = "Protected"; }
+    ProtectedSlide() { fName = "Protected2"; }
 
     SkISize getDimensions() const override { return {kSize, 2*kSize}; }
 
@@ -180,6 +180,12 @@ public:
                                                   /* isProtected= */ true);
             fUnprotectedSkImage = create_skia_image(dContext, kSize, kSize, SK_ColorCYAN,
                                                     /* isProtected= */ false);
+
+            SkDebugf("-------------- Got %p %p %p %p\n",
+                     fProtectedAHBImage.get(),
+                     fUnprotectedAHBImage.get(),
+                     fProtectedSkImage.get(),
+                     fUnprotectedSkImage.get());
         }
 
         // Pick one of the four combinations to draw. Only the protected AHB-backed image will
