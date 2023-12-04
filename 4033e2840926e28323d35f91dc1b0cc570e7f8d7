@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "855e02c9_c3721a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-04T15:42:34Z",
+      "side": 1,
+      "message": "Suppressing landing of this - fix-forward coming instead.",
+      "revId": "4033e2840926e28323d35f91dc1b0cc570e7f8d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
