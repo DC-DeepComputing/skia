@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c80660_6c5ed3ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T17:17:58Z",
+      "side": 1,
+      "message": "a bunch of nits",
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab265a69_b2e60182",
+        "filename": "tests/DeferredDisplayListTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T17:17:58Z",
+      "side": 1,
+      "message": "nit: 100 chars. typically today we just put everything on its own line anyways to make it easier to read.",
+      "range": {
+        "startLine": 731,
+        "startChar": 83,
+        "endLine": 731,
+        "endChar": 104
+      },
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a23eaf3b_c59fcb38",
+        "filename": "tests/DeferredDisplayListTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1068,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T17:17:58Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1068,
+        "startChar": 91,
+        "endLine": 1068,
+        "endChar": 111
+      },
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7afbb71_b2a3810d",
+        "filename": "tests/DeferredDisplayListTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T17:17:58Z",
+      "side": 1,
+      "message": "100 chars on all these lines",
+      "range": {
+        "startLine": 1106,
+        "startChar": 100,
+        "endLine": 1106,
+        "endChar": 101
+      },
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
