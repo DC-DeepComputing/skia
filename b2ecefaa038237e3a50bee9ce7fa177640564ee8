@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8c20040_c23092f0",
+        "filename": "tests/DeferredDisplayListTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-04T17:44:29Z",
+      "side": 1,
+      "message": "Just ran `git clang-format origin/main` (which I had thought I did earlier but forgot).",
+      "parentUuid": "ab265a69_b2e60182",
+      "range": {
+        "startLine": 731,
+        "startChar": 83,
+        "endLine": 731,
+        "endChar": 104
+      },
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a23eaf3b_c59fcb38",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "420ece1c_1e2df9b2",
+        "filename": "tests/DeferredDisplayListTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1068,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-04T17:44:29Z",
+      "side": 1,
+      "message": "`git clang-format origin/main`",
+      "parentUuid": "a23eaf3b_c59fcb38",
+      "range": {
+        "startLine": 1068,
+        "startChar": 91,
+        "endLine": 1068,
+        "endChar": 111
+      },
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7afbb71_b2a3810d",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-12-04T17:17:58Z",
       "side": 1,
       "message": "100 chars on all these lines",
+      "range": {
+        "startLine": 1106,
+        "startChar": 100,
+        "endLine": 1106,
+        "endChar": 101
+      },
+      "revId": "b2ecefaa038237e3a50bee9ce7fa177640564ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "522b9341_153eed57",
+        "filename": "tests/DeferredDisplayListTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-04T17:44:29Z",
+      "side": 1,
+      "message": "`git clang-format origin/main`",
+      "parentUuid": "c7afbb71_b2a3810d",
       "range": {
         "startLine": 1106,
         "startChar": 100,
