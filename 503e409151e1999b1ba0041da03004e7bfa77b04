@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b3da719_7bbe342d",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-04T19:25:29Z",
+      "side": 1,
+      "message": "Also need to pass along the correct color space in the non-jpeg case.",
+      "range": {
+        "startLine": 232,
+        "startChar": 46,
+        "endLine": 232,
+        "endChar": 71
+      },
+      "revId": "503e409151e1999b1ba0041da03004e7bfa77b04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bfc2ece_ed5a78c5",
         "filename": "src/pdf/SkPDFBitmap.cpp",
         "patchSetId": 2
