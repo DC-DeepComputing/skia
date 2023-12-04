@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f93b9435_846cc476",
+        "filename": "src/gpu/GpuRefCnt.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T17:23:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7411f314_e2ec2da1",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 94
+      },
+      "revId": "e945b325add620928b666d79a472a92789ea09f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8644a08e_eb147195",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-04T15:47:58Z",
       "side": 1,
       "message": "Can these be command buffer too?",
+      "range": {
+        "startLine": 736,
+        "startChar": 23,
+        "endLine": 736,
+        "endChar": 36
+      },
+      "revId": "e945b325add620928b666d79a472a92789ea09f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f11d8b19_43b6939c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T17:23:04Z",
+      "side": 1,
+      "message": "They technically don\u0027t really matter what ref they take since they are shareable resources.",
+      "parentUuid": "8644a08e_eb147195",
       "range": {
         "startLine": 736,
         "startChar": 23,
