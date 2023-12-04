@@ -21,6 +21,9 @@
 
 #include <android/hardware_buffer.h>
 
+#include "include/gpu/graphite/Context.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+
 namespace {
 
 static void cleanup_resources(AHardwareBuffer* buffer) {
@@ -29,7 +32,38 @@ static void cleanup_resources(AHardwareBuffer* buffer) {
     }
 }
 
-sk_sp<SkSurface> create_protected_AHB_surface(GrDirectContext* dContext, int width, int height) {
+sk_sp<SkSurface> foo_wrap(GrDirectContext* dContext,
+                          skgpu::graphite::Context* gContext,
+                          AHardwareBuffer* buffer) {
+    if (dContext) {
+        return SkSurfaces::WrapAndroidHardwareBuffer(dContext, buffer,
+                                                     kTopLeft_GrSurfaceOrigin,
+                                                     nullptr, nullptr);
+    } else {
+        return nullptr;
+    }
+}
+
+sk_sp<SkSurface> bar(GrDirectContext* dContext,
+                     skgpu::graphite::Context* gContext,
+                     const SkImageInfo& ii) {
+    if (dContext) {
+        return SkSurfaces::RenderTarget(dContext,
+                                        skgpu::Budgeted::kYes,
+                                        ii,
+                                        /* sampleCount= */ 1,
+                                        kTopLeft_GrSurfaceOrigin,
+                                        /* surfaceProps= */ nullptr,
+                                        /* shouldCreateWithMips= */ false,
+                                        /* isProtected= */ true);
+    } else {
+        return nullptr;
+    }
+}
+
+sk_sp<SkSurface> create_protected_AHB_surface(GrDirectContext* dContext,
+                                              skgpu::graphite::Context* gContext,
+                                              int width, int height) {
 
     AHardwareBuffer* buffer = nullptr;
 
@@ -56,9 +90,7 @@ sk_sp<SkSurface> create_protected_AHB_surface(GrDirectContext* dContext, int wid
         return nullptr;
     }
 
-    sk_sp<SkSurface> surface = SkSurfaces::WrapAndroidHardwareBuffer(dContext, buffer,
-                                                                     kTopLeft_GrSurfaceOrigin,
-                                                                     nullptr, nullptr);
+    sk_sp<SkSurface> surface = foo_wrap(dContext, gContext, buffer);
     if (!surface) {
         SkDebugf("Failed to make SkSurface.\n");
         cleanup_resources(buffer);
@@ -69,8 +101,9 @@ sk_sp<SkSurface> create_protected_AHB_surface(GrDirectContext* dContext, int wid
 }
 
 sk_sp<SkImage> create_protected_AHB_image(GrDirectContext* dContext,
+                                          skgpu::graphite::Context* gContext,
                                           SkColor color, int width, int height) {
-    sk_sp<SkSurface> surf = create_protected_AHB_surface(dContext, width, height);
+    sk_sp<SkSurface> surf = create_protected_AHB_surface(dContext, gContext, width, height);
     if (!surf) {
         return nullptr;
     }
@@ -133,19 +166,14 @@ sk_sp<SkImage> create_unprotected_AHB_image(SkColor color, int width, int height
                                                  kTopLeft_GrSurfaceOrigin);
 }
 
-sk_sp<SkImage> create_skia_image(GrDirectContext* dContext, int width, int height,
+sk_sp<SkImage> create_skia_image(GrDirectContext* dContext,
+                                 skgpu::graphite::Context* gContext,
+                                 int width, int height,
                                  SkColor color, bool isProtected) {
     SkImageInfo ii = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType,
                                        kPremul_SkAlphaType);
 
-    sk_sp<SkSurface> tmpSurface = SkSurfaces::RenderTarget(dContext,
-                                                           skgpu::Budgeted::kYes,
-                                                           ii,
-                                                           /* sampleCount= */ 1,
-                                                           kTopLeft_GrSurfaceOrigin,
-                                                           /* surfaceProps= */ nullptr,
-                                                           /* shouldCreateWithMips= */ false,
-                                                           /* isProtected= */ true);
+    sk_sp<SkSurface> tmpSurface = bar(dContext, gContext, ii);
     if (!tmpSurface) {
         return nullptr;
     }
@@ -159,27 +187,72 @@ sk_sp<SkImage> create_skia_image(GrDirectContext* dContext, int width, int heigh
 
 class ProtectedSlide : public Slide {
 public:
-    ProtectedSlide() { fName = "Protected"; }
+    ProtectedSlide() { fName = "Protected2"; }
 
     SkISize getDimensions() const override { return {kSize, 2*kSize}; }
+
+    void foo(GrDirectContext* dContext) {
+        if (fCachedDirectContext != dContext) {
+            fCachedDirectContext = dContext;
+            fProtectedAHBImage = create_protected_AHB_image(dContext, nullptr, SK_ColorRED, kSize, kSize);
+            fUnprotectedAHBImage = create_unprotected_AHB_image(SK_ColorGREEN, kSize, kSize);
+            fProtectedSkImage = create_skia_image(dContext, nullptr, kSize, kSize, SK_ColorBLUE,
+                                                  /* isProtected= */ true);
+            fUnprotectedSkImage = create_skia_image(dContext, nullptr, kSize, kSize, SK_ColorCYAN,
+                                                    /* isProtected= */ false);
+
+            SkDebugf("------ Got Ganesh %p %p %p %p\n",
+                     fProtectedAHBImage.get(),
+                     fUnprotectedAHBImage.get(),
+                     fProtectedSkImage.get(),
+                     fUnprotectedSkImage.get());
+        }
+    }
+
+    void bar(skgpu::graphite::Context* context) {
+
+        if (fCachedGraphiteContext != context) {
+            fCachedGraphiteContext = context;
+            fProtectedAHBImage = create_protected_AHB_image(nullptr, context, SK_ColorRED, kSize, kSize);
+            fUnprotectedAHBImage = create_unprotected_AHB_image(SK_ColorGREEN, kSize, kSize);
+            fProtectedSkImage = create_skia_image(nullptr, context, kSize, kSize, SK_ColorBLUE,
+                                                  /* isProtected= */ true);
+            fUnprotectedSkImage = create_skia_image(nullptr, context, kSize, kSize, SK_ColorCYAN,
+                                                    /* isProtected= */ false);
+
+            SkDebugf("------ Got Graphite %p %p %p %p\n",
+                     fProtectedAHBImage.get(),
+                     fUnprotectedAHBImage.get(),
+                     fProtectedSkImage.get(),
+                     fUnprotectedSkImage.get());
+        }
+    }
 
     void draw(SkCanvas* origCanvas) override {
         origCanvas->clear(SK_ColorDKGRAY);
 
+        skgpu::graphite::Recorder* recorder = origCanvas->recorder();
         GrDirectContext* dContext = GrAsDirectContext(origCanvas->recordingContext());
-        if (!dContext || !dContext->supportsProtectedContent()) {
-            origCanvas->clear(SK_ColorGREEN);
-            return;
+
+        SkDebugf("------ recorder %p dc %p\n", recorder, dContext);
+
+        if (dContext) {
+            if (!dContext->supportsProtectedContent()) {
+                origCanvas->clear(SK_ColorGREEN);
+                return;
+            }
+
+            this->foo(dContext);
         }
 
-        if (fCachedContext != dContext) {
-            fCachedContext = dContext;
-            fProtectedAHBImage = create_protected_AHB_image(dContext, SK_ColorRED, kSize, kSize);
-            fUnprotectedAHBImage = create_unprotected_AHB_image(SK_ColorGREEN, kSize, kSize);
-            fProtectedSkImage = create_skia_image(dContext, kSize, kSize, SK_ColorBLUE,
-                                                  /* isProtected= */ true);
-            fUnprotectedSkImage = create_skia_image(dContext, kSize, kSize, SK_ColorCYAN,
-                                                    /* isProtected= */ false);
+        if (recorder) {
+            skgpu::graphite::Context* context = recorder->priv().context();
+            if (!context || !context->supportsProtectedContent()) {
+                origCanvas->clear(SK_ColorBLUE);
+                return;
+            }
+
+            this->bar(context);
         }
 
         // Pick one of the four combinations to draw. Only the protected AHB-backed image will
@@ -218,7 +291,9 @@ public:
 private:
     static const int kSize = 128;
 
-    GrDirectContext* fCachedContext = nullptr;
+    GrDirectContext* fCachedDirectContext = nullptr;
+    skgpu::graphite::Context* fCachedGraphiteContext = nullptr;
+
     sk_sp<SkImage> fProtectedAHBImage;
     sk_sp<SkImage> fUnprotectedAHBImage;
     sk_sp<SkImage> fProtectedSkImage;
