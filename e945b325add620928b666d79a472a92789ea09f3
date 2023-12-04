@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7411f314_e2ec2da1",
+        "filename": "src/gpu/GpuRefCnt.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-04T14:19:36Z",
+      "side": 1,
+      "message": "Method names out of date",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 94
+      },
+      "revId": "e945b325add620928b666d79a472a92789ea09f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
