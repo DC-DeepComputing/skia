@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e774a2c_e72ae79c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-04T18:06:08Z",
+      "side": 1,
+      "message": "ahhh this needs a +1 again. I guess removing a file from CL (because no longer any diffs) also removes previous +1s",
+      "revId": "9cc4f1c8037928950ec03bf408bed2abd0a18718",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
