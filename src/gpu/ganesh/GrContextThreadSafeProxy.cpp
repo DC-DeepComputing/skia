@@ -17,10 +17,6 @@
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/surface/SkSurface_Ganesh.h"
 
-#ifdef SK_VULKAN
-#include "src/gpu/ganesh/vk/GrVkCaps.h"
-#endif
-
 #include <memory>
 
 static uint32_t next_id() {
@@ -53,15 +49,15 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
                                      const SkImageInfo& ii, const GrBackendFormat& backendFormat,
                                      int sampleCnt, GrSurfaceOrigin origin,
                                      const SkSurfaceProps& surfaceProps,
-                                     bool isMipMapped, bool willUseGLFBO0, bool isTextureable,
-                                     GrProtected isProtected, bool vkRTSupportsInputAttachment,
+                                     skgpu::Mipmapped isMipmapped, bool willUseGLFBO0, bool isTextureable,
+                                     skgpu::Protected isProtected, bool vkRTSupportsInputAttachment,
                                      bool forVulkanSecondaryCommandBuffer) {
     SkASSERT(fCaps);
     if (!backendFormat.isValid()) {
         return {};
     }
 
-    SkASSERT(isTextureable || !isMipMapped);
+    SkASSERT(isTextureable || isMipmapped == skgpu::Mipmapped::kNo);
 
     if (GrBackendApi::kOpenGL != backendFormat.backend() && willUseGLFBO0) {
         // The willUseGLFBO0 flags can only be used for a GL backend.
@@ -76,7 +72,7 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
     }
 
     if (!fCaps->mipmapSupport()) {
-        isMipMapped = false;
+        isMipmapped = skgpu::Mipmapped::kNo;
     }
 
     if (ii.width()  < 1 || ii.width()  > fCaps->maxRenderTargetSize() ||
@@ -106,24 +102,11 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
         return {};
     }
 
-    if (forVulkanSecondaryCommandBuffer &&
-        (isTextureable || isMipMapped || willUseGLFBO0 || vkRTSupportsInputAttachment)) {
-        return {};
-    }
-
     if (GrBackendApi::kVulkan == backendFormat.backend()) {
-        if (GrBackendApi::kVulkan != fBackend) {
+        if (!isValidCharacterizationForVulkan(fCaps, isTextureable, isMipmapped, isProtected,
+            vkRTSupportsInputAttachment, forVulkanSecondaryCommandBuffer)) {
             return {};
         }
-
-#ifdef SK_VULKAN
-        const GrVkCaps* vkCaps = (const GrVkCaps*) fCaps.get();
-
-        // The protection status of the characterization and the context need to match
-        if (isProtected != GrProtected(vkCaps->supportsProtectedContent())) {
-            return {};
-        }
-#endif
     }
 
     return GrSurfaceCharacterization(
@@ -131,12 +114,21 @@ GrSurfaceCharacterization GrContextThreadSafeProxy::createCharacterization(
             cacheMaxResourceBytes, ii, backendFormat,
             origin, sampleCnt,
             GrSurfaceCharacterization::Textureable(isTextureable),
-            GrSurfaceCharacterization::MipMapped(isMipMapped),
+            isMipmapped,
             GrSurfaceCharacterization::UsesGLFBO0(willUseGLFBO0),
             GrSurfaceCharacterization::VkRTSupportsInputAttachment(vkRTSupportsInputAttachment),
             GrSurfaceCharacterization::VulkanSecondaryCBCompatible(forVulkanSecondaryCommandBuffer),
             isProtected,
             surfaceProps);
+}
+
+bool GrContextThreadSafeProxy::isValidCharacterizationForVulkan(sk_sp<const GrCaps>,
+                                          bool isTextureable,
+                                          skgpu::Mipmapped isMipmapped,
+                                          skgpu::Protected isProtected,
+                                          bool vkRTSupportsInputAttachment,
+                                          bool forVulkanSecondaryCommandBuffer) {
+    return false;  // handled by a subclass
 }
 
 GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skColorType,

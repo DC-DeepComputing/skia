@@ -34,7 +34,8 @@ static GrSurfaceCharacterization create_characterization(GrDirectContext* direct
 
     GrSurfaceCharacterization c = direct->threadSafeProxy()->createCharacterization(
                                                         maxResourceBytes, ii, backendFormat, 1,
-                                                        kTopLeft_GrSurfaceOrigin, props, false);
+                                                        kTopLeft_GrSurfaceOrigin, props,
+                                                        skgpu::Mipmapped::kNo);
     return c;
 }
 
