@@ -22,6 +22,30 @@
       },
       "revId": "e9b89245324e5e6f9fa31c91f13e703ff0b7fe9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca35ab4c_9d7482dd",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-04T16:43:43Z",
+      "side": 1,
+      "message": "Good point, previously `auto` was a little clearer because `makeDevice()` was right there, but now it\u0027s definitely not so obvious that it\u0027s an `sk_sp\u003cSkDevice\u003e` (even before it probably deserved a full type given the prior discussion).",
+      "parentUuid": "e2a36bb7_a861a93c",
+      "range": {
+        "startLine": 314,
+        "startChar": 8,
+        "endLine": 314,
+        "endChar": 13
+      },
+      "revId": "e9b89245324e5e6f9fa31c91f13e703ff0b7fe9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
