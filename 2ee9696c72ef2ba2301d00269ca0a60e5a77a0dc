@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3be49261_8bccd547",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-04T16:58:03Z",
+      "side": 1,
+      "message": "I\u0027d rather not touch GL if we don\u0027t have to.",
+      "parentUuid": "59e26079_b017e966",
+      "range": {
+        "startLine": 96,
+        "startChar": 3,
+        "endLine": 98,
+        "endChar": 5
+      },
+      "revId": "2ee9696c72ef2ba2301d00269ca0a60e5a77a0dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8136e7ce_76e34ac4",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-01T18:15:42Z",
       "side": 1,
       "message": "lets move this into the vulkan check.",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 5
+      },
+      "revId": "2ee9696c72ef2ba2301d00269ca0a60e5a77a0dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2984f5c_63b1abf8",
+        "filename": "src/gpu/ganesh/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-04T16:58:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8136e7ce_76e34ac4",
       "range": {
         "startLine": 105,
         "startChar": 4,
