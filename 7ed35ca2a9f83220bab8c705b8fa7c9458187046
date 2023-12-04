@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657a7eb5_a60e3f9c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-04T15:44:54Z",
+      "side": 1,
+      "message": "nit: unnecessary?",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 49
+      },
+      "revId": "7ed35ca2a9f83220bab8c705b8fa7c9458187046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
