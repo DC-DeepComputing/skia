@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a36bb7_a861a93c",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-04T16:15:54Z",
+      "side": 1,
+      "message": "IIRC we\u0027re moving away from `auto` per discussion in the Skia chat, otherwise LGTM",
+      "range": {
+        "startLine": 314,
+        "startChar": 8,
+        "endLine": 314,
+        "endChar": 13
+      },
+      "revId": "e9b89245324e5e6f9fa31c91f13e703ff0b7fe9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
