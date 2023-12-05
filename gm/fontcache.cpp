@@ -11,6 +11,7 @@
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
@@ -19,9 +20,11 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tools/ToolUtils.h"
@@ -60,12 +63,9 @@ protected:
     SkISize getISize() override { return SkISize::Make(kSize, kSize); }
 
     void onOnceBeforeDraw() override {
-        fTypefaces[0] = ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Italic());
-        fTypefaces[1] = ToolUtils::CreatePortableTypeface("sans-serif", SkFontStyle::Italic());
-        fTypefaces[2] = ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Normal());
-        fTypefaces[3] = ToolUtils::CreatePortableTypeface("sans-serif", SkFontStyle::Normal());
-        fTypefaces[4] = ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Bold());
-        fTypefaces[5] = ToolUtils::CreatePortableTypeface("sans-serif", SkFontStyle::Bold());
+        fTypefaces[0] = ToolUtils::CreateTypefaceFromResource("fonts/Nabla-Regular-VariableFont.ttf");
+
+//        fTypefaces[0] = ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Italic());
     }
 
     void onDraw(SkCanvas* canvas) override {
@@ -81,8 +81,8 @@ protected:
     }
 
 private:
-    void drawText(SkCanvas* canvas) {
-        static const int kSizes[] = {8, 9, 10, 11, 12, 13, 18, 20, 25};
+    void drawText(SkCanvas* inputCanvas) {
+        static const int kSizes[] = {8, 9, 10, 11, 12, 13, 18, 20, 25, 30, 40, 60, 80};
 
         static const SkString kTexts[] = {SkString("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
                                           SkString("abcdefghijklmnopqrstuvwxyz"),
@@ -91,6 +91,17 @@ private:
         SkFont font = ToolUtils::DefaultPortableFont();
         font.setEdging(SkFont::Edging::kAntiAlias);
         font.setSubpixel(true);
+
+        auto ctx = inputCanvas->recordingContext();
+        SkISize isize = getISize();
+        SkImageInfo info = SkImageInfo::MakeN32(isize.width(), isize.height(), kPremul_SkAlphaType,
+                                                SkColorSpace::MakeSRGBLinear());
+        SkSurfaceProps inputProps;
+        inputCanvas->getProps(&inputProps);
+        SkSurfaceProps props(SkSurfaceProps::kUseDeviceIndependentFonts_Flag | inputProps.flags(),
+                             inputProps.pixelGeometry());
+        auto surface(SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info, 0, &props));
+        SkCanvas* canvas = surface ? surface->getCanvas() : inputCanvas;
 
         static const SkScalar kSubPixelInc = 1 / 2.f;
         SkScalar x = 0;
@@ -103,7 +114,6 @@ private:
             canvas->scale(10, 10);
         }
 
-        do {
             for (auto s : kSizes) {
                 auto size = 2 * s;
                 font.setSize(size);
@@ -116,7 +126,7 @@ private:
                             x = 0;
                             y += SkScalarCeilToScalar(size + 3);
                             if (y > kSize) {
-                                return;
+                                break;
                             }
                         }
                     }
@@ -124,13 +134,21 @@ private:
                 (offsetX ? subpixelX : subpixelY) += kSubPixelInc;
                 offsetX = !offsetX;
             }
-        } while (true);
+
+            // render offscreen buffer
+            if (surface) {
+                SkAutoCanvasRestore acr(inputCanvas, true);
+                // since we prepended this matrix already, we blit using identity
+                inputCanvas->resetMatrix();
+                inputCanvas->drawImage(surface->makeImageSnapshot().get(), 0, 0);
+            }
+
     }
 
     inline static constexpr SkScalar kSize = 1280;
 
     GrContextOptions::Enable fAllowMultipleTextures;
-    sk_sp<SkTypeface> fTypefaces[6];
+    sk_sp<SkTypeface> fTypefaces[1];
     using INHERITED = GM;
 };
 
