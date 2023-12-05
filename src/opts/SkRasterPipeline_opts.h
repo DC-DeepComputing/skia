@@ -2193,9 +2193,81 @@ STAGE(css_lab_to_xyz, NoCtx) {
 }
 
 STAGE(css_oklab_to_linear_srgb, NoCtx) {
-    F l_ = r + 0.3963377774f * g + 0.2158037573f * b,
-      m_ = r - 0.1055613458f * g - 0.0638541728f * b,
-      s_ = r - 0.0894841775f * g - 1.2914855480f * b;
+    // Compute alpha such that (L, alpha*a, alpha*b) is in the Rec2020 gamut.
+    // Well, in the convex hull of Rec2020's R,G,B mapped into OkLab. It's fine.
+    auto gamut_map_oklab = [](float L, float a, float b) {
+        float alpha = 1.f;
+        float one_minus_L = 1.f - L;
+        {
+            float dWRM = (0.090836) * a + (0.036251) * b;
+            if (dWRM > 0.0) {
+                float nWRM = (0.113902) * one_minus_L;
+                if (nWRM < dWRM) alpha = std::min(alpha, nWRM / dWRM);
+            }
+            float dWMB = (-0.008202) * a + (-0.264819) * b;
+            if (dWMB > 0.0) {
+                float nWMB = (0.161739) * one_minus_L;
+                if (nWMB < dWMB) alpha = std::min(alpha, nWMB / dWMB);
+            }
+            float dWBC = (-0.014804) * a + (-0.162608) * b;
+            if (dWBC > 0.0) {
+                float nWBC = (0.102047) * one_minus_L;
+                if (nWBC < dWBC) alpha = std::min(alpha, nWBC / dWBC);
+            }
+            float dWCG = (-0.038533) * a + (-0.001650) * b;
+            if (dWCG > 0.0) {
+                float nWCG = (0.092029) * one_minus_L;
+                if (nWCG < dWCG) alpha = std::min(alpha, nWCG / dWCG);
+            }
+            float dWGY = (-0.034601) * a + (-0.002215) * b;
+            if (dWGY > 0.0) {
+                float nWGY = (0.081709) * one_minus_L;
+                if (nWGY < dWGY) alpha = std::min(alpha, nWGY / dWGY);
+            }
+            float dWYR = (0.070370) * a + (0.034139) * b;
+            if (dWYR > 0.0) {
+                float nWYR = (0.091132) * one_minus_L;
+                if (nWYR < dWYR) alpha = std::min(alpha, nWYR / dWYR);
+            }
+            float dKRM = (0.226781) * a + (0.018764) * b;
+            if (dKRM > 0.0) {
+                float nKRM = (0.113902) * L;
+                if (nKRM < dKRM) alpha = std::min(alpha, nKRM / dKRM);
+            }
+            float dKMB = (0.187156) * a + (-0.284304) * b;
+            if (dKMB > 0.0) {
+                float nKMB = (0.161739) * L;
+                if (nKMB < dKMB) alpha = std::min(alpha, nKMB / dKMB);
+            }
+            float dKBC = (-0.276786) * a + (0.004193) * b;
+            if (dKBC > 0.0) {
+                float nKBC = (0.102047) * L;
+                if (nKBC < dKBC) alpha = std::min(alpha, nKBC / dKBC);
+            }
+            float dKCG = (-0.232572) * a + (-0.094331) * b;
+            if (dKCG > 0.0) {
+                float nKCG = (0.092029) * L;
+                if (nKCG < dKCG) alpha = std::min(alpha, nKCG / dKCG);
+            }
+            float dKGY = (0.012185) * a + (0.338031) * b;
+            if (dKGY > 0.0) {
+                float nKGY = (0.081709) * L;
+                if (nKGY < dKGY) alpha = std::min(alpha, nKGY / dKGY);
+            }
+            float dKYR = (0.018170) * a + (0.378550) * b;
+            if (dKYR > 0.0) {
+                float nKYR = (0.091132) * L;
+                if (nKYR < dKYR) alpha = std::min(alpha, nKYR / dKYR);
+            }
+        }
+        return alpha;
+    };
+
+    float alpha = gamut_map_oklab(r[0], g[0], b[0]);
+
+    F l_ = r + 0.3963377774f * g * alpha + 0.2158037573f * b * alpha,
+      m_ = r - 0.1055613458f * g * alpha - 0.0638541728f * b * alpha,
+      s_ = r - 0.0894841775f * g * alpha - 1.2914855480f * b * alpha;
 
     F l = l_*l_*l_,
       m = m_*m_*m_,
