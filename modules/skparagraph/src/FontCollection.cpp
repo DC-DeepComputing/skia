@@ -115,7 +115,7 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
                 break;
             }
         }
-        if (!match) {
+        if (!match && false) {
             for (const auto& manager : this->getFontManagerOrder()) {
                 match = manager->legacyMakeTypeface(nullptr, fontStyle);
                 if (match) {

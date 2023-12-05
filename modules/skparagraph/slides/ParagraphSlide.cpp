@@ -4259,9 +4259,9 @@ public:
     }
 };
 
-class ParagraphSlideLast : public ParagraphSlide_Base {
+class ParagraphSlideEmojiSequence : public ParagraphSlide_Base {
 public:
-    ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+    ParagraphSlideEmojiSequence() { fName = "ParagraphSlideEmojiSequence"; }
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
         auto fontCollection = sk_make_sp<FontCollection>();
@@ -4312,6 +4312,45 @@ public:
         canvas->translate(0, 50);
         test("󠁢󠁳󠁣󠁴󠁿🏴󠁧󠁢󠁳󠁣󠁴󠁿♻️");
         */
+    }
+};
+
+class ParagraphSlideLast : public ParagraphSlide_Base {
+public:
+    ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr(), std::vector<SkString>());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("")});
+        text_style.setFontSize(20);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+
+        auto draw = [&](SkFontStyle::Weight weight, const char* text) {
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            text_style.setFontStyle(SkFontStyle(weight, SkFontStyle::kNormal_Width, SkFontStyle::kUpright_Slant));
+            builder.pushStyle(text_style);
+            builder.addText(text);
+            auto paragraph = builder.Build();
+            paragraph->layout(this->size().width());
+            paragraph->paint(canvas, 0, 0);
+            canvas->translate(0, 50);
+        };
+
+        draw(SkFontStyle::kThin_Weight,         "100 田园 A");
+        draw(SkFontStyle::kExtraLight_Weight,   "200 田园 A");
+        draw(SkFontStyle::kLight_Weight,        "300 田园 A");
+        draw(SkFontStyle::kNormal_Weight,       "400 田园 A");
+        draw(SkFontStyle::kMedium_Weight,       "500 田园 A");
+        draw(SkFontStyle::kSemiBold_Weight,     "600 田园 A");
+        draw(SkFontStyle::kBold_Weight,         "700 田园 A");
+        draw(SkFontStyle::kExtraBold_Weight,    "800 田园 A");
+        draw(SkFontStyle::kBlack_Weight,        "900 田园 A");
+        draw(SkFontStyle::kExtraBlack_Weight,   "1000 田园 A");
     }
 };
 
@@ -4393,4 +4432,5 @@ DEF_SLIDE(return new ParagraphSlideGetPath();)
 DEF_SLIDE(return new ParagraphSlideExperiment();)
 DEF_SLIDE(return new ParagraphSlideGlyphs();)
 DEF_SLIDE(return new ParagraphSlideEllipsisInRTL();)
+DEF_SLIDE(return new ParagraphSlideEmojiSequence();)
 DEF_SLIDE(return new ParagraphSlideLast();)
