@@ -9,6 +9,7 @@
 #define SkGainmapInfo_DEFINED
 
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 
 /**
  *  Gainmap rendering parameters. Suppose our display has HDR to SDR ratio of H and we wish to
@@ -70,6 +71,9 @@ struct SkGainmapInfo {
         kHDR,
     };
     BaseImageType fBaseImageType = BaseImageType::kSDR;
+
+    sk_sp<SkColorSpace> fAlternateImageColorSpace = nullptr;
+    bool fUseBaseColorSpace = true;
 
     inline bool operator==(const SkGainmapInfo& other) const {
         return fGainmapRatioMin == other.fGainmapRatioMin &&
