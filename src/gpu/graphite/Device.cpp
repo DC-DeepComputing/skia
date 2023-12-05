@@ -996,7 +996,9 @@ void Device::drawGeometry(const Transform& localToDevice,
         // work to clear up space in the atlas. If we had already flushed once (which would have
         // cleared the atlas) then the atlas is too small for this shape.
         if (!atlasMask && !needsFlush) {
-            this->flushPendingWorkToRecorder();
+            // We need to flush work for all devices associated with the current Recorder.
+            // Otherwise we may end up with outstanding draws that depend on past atlas state.
+            fRecorder->priv().flushTrackedDevices();
 
             // Try inserting the shape again.
             atlasMask = pathAtlas->addShape(recorder(),
