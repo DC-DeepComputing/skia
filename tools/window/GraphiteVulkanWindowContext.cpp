@@ -55,6 +55,8 @@ GraphiteVulkanWindowContext::GraphiteVulkanWindowContext(const DisplayParams& pa
     , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
     this->initializeContext();
+    SkDebugf("------ GraphiteVulkanWindowContext\n");
+
 }
 
 void GraphiteVulkanWindowContext::initializeContext() {
@@ -429,6 +431,8 @@ void GraphiteVulkanWindowContext::destroyBuffers() {
 }
 
 GraphiteVulkanWindowContext::~GraphiteVulkanWindowContext() {
+    SkDebugf("------ ~GraphiteVulkanWindowContext\n");
+
    this->destroyContext();
 }
 
@@ -493,6 +497,7 @@ GraphiteVulkanWindowContext::BackbufferInfo* GraphiteVulkanWindowContext::getAva
 }
 
 sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
+    SkDebugf("------ GraphiteVulkanWindowContext::getBackbufferSurface\n");
     BackbufferInfo* backbuffer = this->getAvailableBackbuffer();
     SkASSERT(backbuffer);
 

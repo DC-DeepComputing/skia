@@ -45,6 +45,8 @@ bool Window_android::attach(BackendType attachType) {
 }
 
 void Window_android::initDisplay(ANativeWindow* window) {
+    SkDebugf("------ Window_android::initDisplay %d\n", fBackendType);
+
     SkASSERT(window);
     switch (fBackendType) {
 #ifdef SK_GL
@@ -62,6 +64,11 @@ void Window_android::initDisplay(ANativeWindow* window) {
         case kVulkan_BackendType:
             fWindowContext = skwindow::MakeVulkanForAndroid(window, fRequestedDisplayParams);
             break;
+#if defined(SK_GRAPHITE)
+        case kGraphiteVulkan_BackendType:
+            fWindowContext = skwindow::MakeGraphiteVulkanForAndroid(window, fRequestedDisplayParams);
+            break;
+#endif
 #endif
     }
     this->onBackendCreated();
