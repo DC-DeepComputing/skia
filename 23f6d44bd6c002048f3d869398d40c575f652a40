@@ -39,6 +39,30 @@
       },
       "revId": "23f6d44bd6c002048f3d869398d40c575f652a40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5040d5de_74812ec4",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-05T18:45:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5dd508c_e2bed82e",
+      "range": {
+        "startLine": 42,
+        "startChar": 30,
+        "endLine": 42,
+        "endChar": 50
+      },
+      "revId": "23f6d44bd6c002048f3d869398d40c575f652a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
