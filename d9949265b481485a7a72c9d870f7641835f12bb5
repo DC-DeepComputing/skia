@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8193fafc_09bfa802",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-05T21:30:32Z",
+      "side": 1,
+      "message": "I verified that this fixes the flaking I was seeing when rendering carsvg with a small atlas.",
+      "revId": "d9949265b481485a7a72c9d870f7641835f12bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
