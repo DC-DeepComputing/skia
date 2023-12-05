@@ -16,6 +16,29 @@
       "message": "PTAL! The Android Canary is showing as red, but the 2 test failures are marked as flaky.",
       "revId": "23f6d44bd6c002048f3d869398d40c575f652a40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5dd508c_e2bed82e",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-05T14:34:30Z",
+      "side": 1,
+      "message": "instead of doing this check on every line, can we just return a format from the switch statement and check it once after?",
+      "range": {
+        "startLine": 42,
+        "startChar": 30,
+        "endLine": 42,
+        "endChar": 50
+      },
+      "revId": "23f6d44bd6c002048f3d869398d40c575f652a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
