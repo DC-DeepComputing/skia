@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "325b5c21_711f9735",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-05T16:59:11Z",
+      "side": 1,
+      "message": "This probably won\u0027t suffice for the chromium use-case -- if there is a shadow on the layer, but no image filter, then we need the filter list to be: `{ Shadow(), nullptr }`",
+      "revId": "22ba62a00c8134c4d14aed7ea1f5aae8b59810db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
