@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b54cb74_b07bd1b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-05T17:43:35Z",
+      "side": 1,
+      "message": "I think the serialize-8888 GMs will be broken until we update what\u0027s saved in an SkPicture for SaveLayerRec, but otherwise this lgtm.",
+      "revId": "22ba62a00c8134c4d14aed7ea1f5aae8b59810db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf4df83_45cb648a",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-05T17:43:35Z",
+      "side": 1,
+      "message": "WDYT about putting this constructor in SkCanvasPriv like the backdrop-scale-factor version to limit adoption while we sort out what the final plan/behavior is?",
+      "range": {
+        "startLine": 711,
+        "startChar": 0,
+        "endLine": 712,
+        "endChar": 76
+      },
+      "revId": "22ba62a00c8134c4d14aed7ea1f5aae8b59810db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "325b5c21_711f9735",
@@ -14,6 +54,29 @@
       "writtenOn": "2023-12-05T16:59:11Z",
       "side": 1,
       "message": "This probably won\u0027t suffice for the chromium use-case -- if there is a shadow on the layer, but no image filter, then we need the filter list to be: `{ Shadow(), nullptr }`",
+      "revId": "22ba62a00c8134c4d14aed7ea1f5aae8b59810db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "726e6795_d373c12f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-05T17:43:35Z",
+      "side": 1,
+      "message": "This will need to get merged with my staging CL",
+      "range": {
+        "startLine": 1197,
+        "startChar": 0,
+        "endLine": 1197,
+        "endChar": 84
+      },
       "revId": "22ba62a00c8134c4d14aed7ea1f5aae8b59810db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
