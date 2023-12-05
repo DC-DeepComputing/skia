@@ -2130,11 +2130,7 @@ if (skia_enable_tools) {
     ]
     if (skia_use_perfetto) {
       deps += [ "//third_party/perfetto" ]
-      sources += [
-        "tools/trace/SkPerfettoTrace.cpp",
-        "tools/trace/SkPerfettoTrace.h",
-      ]
-      defines = [ "SK_USE_PERFETTO" ]
+      sources += []
     }
   }
 
@@ -2895,7 +2891,6 @@ if (skia_enable_tools) {
     test_app("viewer") {
       is_shared_library = is_android
       sources = [
-        "tools/viewer/3DSlide.cpp",
         "tools/viewer/AndroidShadowsSlide.cpp",
         "tools/viewer/AnimBlurSlide.cpp",
         "tools/viewer/AnimTimer.h",
@@ -2913,7 +2908,6 @@ if (skia_enable_tools) {
         "tools/viewer/ClickHandlerSlide.cpp",
         "tools/viewer/ClickHandlerSlide.h",
         "tools/viewer/ClipSlide.cpp",
-        "tools/viewer/ClockSlide.cpp",
         "tools/viewer/CowboySlide.cpp",
         "tools/viewer/DegenerateQuadsSlide.cpp",
         "tools/viewer/DegenerateTwoPtRadialsSlide.cpp",
