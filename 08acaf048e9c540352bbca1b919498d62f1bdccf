@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13ba4539_12d3766f",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-05T18:53:22Z",
+      "side": 1,
+      "message": "don\u0027t we also want to return the basic backendformat if it is not UNDEFINED and texturable here as well?",
+      "range": {
+        "startLine": 82,
+        "startChar": 2,
+        "endLine": 85,
+        "endChar": 5
+      },
+      "revId": "08acaf048e9c540352bbca1b919498d62f1bdccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
