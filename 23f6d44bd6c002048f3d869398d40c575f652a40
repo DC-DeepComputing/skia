@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f77e624_561d671f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-05T13:38:11Z",
+      "side": 1,
+      "message": "PTAL! The Android Canary is showing as red, but the 2 test failures are marked as flaky.",
+      "revId": "23f6d44bd6c002048f3d869398d40c575f652a40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a94de8df_9bdeb8ef",
+        "filename": "src/gpu/ganesh/vk/AHardwareBufferVk.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-05T13:38:11Z",
+      "side": 1,
+      "message": "Note: If we\u0027re allowing the option to fallback to importing using an external format even *if* a VkFormat is provided, then I believe we should make that decision here in `GetVulkanBackendFormat` as opposed to within `make_vk_backend_texture`. \n\nTheoretically, the client should only really be using the former to plug that information into the latter, but it would be odd to later assign the backend format to be VK_FORMAT_UNDEFINED if it was initially created with a valid VkFormat that we are just choosing not to use. We pass in the `GrBackendFormat` to `make_vk_backend_texture` as `const` anyhow, and I think it should stay that way.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 1
+      },
+      "revId": "ddfd65e757ad2d07410d1a0b0231333ae72e3227",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
