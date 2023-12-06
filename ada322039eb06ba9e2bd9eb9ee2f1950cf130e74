@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ba257a6_e5cfe263",
+        "filename": "tests/PDFJpegEmbedTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-06T22:25:53Z",
+      "side": 1,
+      "message": "Confusingly, drawing this image directly like this appears to correctly apply the icc profile. However, printing the same jpeg by itself from Chromium (with https://chromium-review.googlesource.com/c/chromium/src/+/5046915 applied) does not appear to embed the icc profile, even though in both cases we are not embedding it a jpeg.",
+      "revId": "ada322039eb06ba9e2bd9eb9ee2f1950cf130e74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
