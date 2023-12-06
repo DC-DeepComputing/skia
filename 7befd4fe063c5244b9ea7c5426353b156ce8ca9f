@@ -16,6 +16,24 @@
       "message": "Didn\u0027t put `/Length` into the `iccStreamDict`. This should probably use `SkPDFStreamOut` to be consistent and compress, though that means potentially calling `emitStream` inside the `iccProfileMapMutex` which should be ok since the `SkPDFDocument::fMutex` taken by `emitStream` is always released and does not call anything that can call back into here.",
       "revId": "7befd4fe063c5244b9ea7c5426353b156ce8ca9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9068fb_75526c6c",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-06T21:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ee5f010_a0312a1e",
+      "revId": "7befd4fe063c5244b9ea7c5426353b156ce8ca9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
