@@ -76,7 +76,8 @@ public:
                                const SkColorInfo& dstColorInfo,
                                const std::vector<MipLevel>& levels,
                                const SkIRect& dstRect,
-                               std::unique_ptr<ConditionalUploadContext>);
+                               std::unique_ptr<ConditionalUploadContext>,
+                               bool);
     UploadInstance(UploadInstance&&);
     UploadInstance& operator=(UploadInstance&&);
     ~UploadInstance();
@@ -94,7 +95,8 @@ private:
                    size_t bytesPerPixel,
                    sk_sp<TextureProxy>,
                    std::vector<BufferTextureCopyData>,
-                   std::unique_ptr<ConditionalUploadContext>);
+                   std::unique_ptr<ConditionalUploadContext>,
+                   bool);
 
     const Buffer* fBuffer;
     size_t fBytesPerPixel;
@@ -120,7 +122,8 @@ public:
                       const SkColorInfo& dstColorInfo,
                       const std::vector<MipLevel>& levels,
                       const SkIRect& dstRect,
-                      std::unique_ptr<ConditionalUploadContext>);
+                      std::unique_ptr<ConditionalUploadContext>,
+                      bool);
 
     int size() { return fInstances.size(); }
 

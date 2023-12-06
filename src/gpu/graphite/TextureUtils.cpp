@@ -95,6 +95,7 @@ sk_sp<SkSpecialImage> eval_blur(skgpu::graphite::Recorder* recorder,
                                 const SkSurfaceProps& outProps) {
     SkImageInfo outII = SkImageInfo::Make({dstRect.width(), dstRect.height()},
                                           colorType, kPremul_SkAlphaType, std::move(outCS));
+    // Protected-ness is pulled off of the recorder
     auto device = skgpu::graphite::Device::Make(recorder,
                                                 outII,
                                                 skgpu::Budgeted::kYes,
@@ -313,11 +314,12 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
         mipmapped = Mipmapped::kNo;
     }
 
-    auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, Protected::kNo,
+    Protected isProtected = Protected(recorder->priv().supportsProtectedContent());
+    auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, isProtected,
                                                           Renderable::kNo);
     if (!textureInfo.isValid()) {
         ct = kRGBA_8888_SkColorType;
-        textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, Protected::kNo,
+        textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, isProtected,
                                                          Renderable::kNo);
     }
     SkASSERT(textureInfo.isValid());
@@ -387,7 +389,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
     // Add UploadTask to Recorder
     UploadInstance upload = UploadInstance::Make(
             recorder, proxy, colorInfo, colorInfo, texels,
-            SkIRect::MakeSize(bmpToUpload.dimensions()), std::make_unique<ImageUploadContext>());
+            SkIRect::MakeSize(bmpToUpload.dimensions()), std::make_unique<ImageUploadContext>(), true);
     if (!upload.isValid()) {
         SKGPU_LOG_E("MakeBitmapProxyView: Could not create UploadInstance");
         return {};
