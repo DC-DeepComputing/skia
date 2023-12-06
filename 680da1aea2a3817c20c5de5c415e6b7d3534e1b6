@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a47beb_3d978a3b",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-06T18:00:34Z",
+      "side": 1,
+      "message": "Need this cache to be protected by a mutex.",
+      "revId": "680da1aea2a3817c20c5de5c415e6b7d3534e1b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
