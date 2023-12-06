@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a3e0a08_4a3659e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-06T20:12:37Z",
+      "side": 1,
+      "message": "FYI for JP.\nNot quite ready for review - I\u0027m still getting errors when serializing multiple filters (the saveLayer seems to be elided), and I think we\u0027ll need to support a mix of null and non-null in the filter list. Regardless, I think we\u0027re close.",
+      "revId": "0e31d7c83d83093acd3d59c2de1ab9057fd8ddb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
