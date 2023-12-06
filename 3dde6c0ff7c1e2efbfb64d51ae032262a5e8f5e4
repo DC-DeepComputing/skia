@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f629b8f8_60c4ef87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-12-06T14:35:37Z",
+      "side": 1,
+      "message": "This turned out to be at the bottom of a bug where doing right-click-\u003ecopy of a canvas resulted in a canvas with the screen\u0027s profile.",
+      "revId": "3dde6c0ff7c1e2efbfb64d51ae032262a5e8f5e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
