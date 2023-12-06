@@ -40,8 +40,8 @@ c_plus_plus_deps()
 header_based_configs()
 
 ##############################################################################
-# Everything below here is not required for Skia, but is required for the sample
-# rules based on Skia.
+# Everything below here will likely be different for different clients depending
+# on how they set up C++ and Python toolchains (Skia needs Python to generate some files).
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # https://github.com/bazelbuild/rules_cc
