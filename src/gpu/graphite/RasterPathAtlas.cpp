@@ -51,7 +51,7 @@ void RasterPathAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
             SkColorInfo colorInfo(kAlpha_8_SkColorType, kUnknown_SkAlphaType, nullptr);
 
             if (!dc->recordUpload(recorder, currPage->fTexture, colorInfo, colorInfo, levels,
-                                  currPage->fDirtyRect, nullptr)) {
+                                  currPage->fDirtyRect, nullptr, true)) {
                 SKGPU_LOG_W("Coverage mask upload failed!");
                 return;
             }

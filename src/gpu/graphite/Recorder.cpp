@@ -217,8 +217,9 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
         return nullptr;
     }
 
+    SkDebugf("------ *Recorder::makeDeferredCanvas\n");
     fTargetProxyData = std::make_unique<Recording::LazyProxyData>(textureInfo);
-    fTargetProxyDevice = Device::Make(this,
+    fTargetProxyDevice = Device::Make8(this,
                                       fTargetProxyData->refLazyProxy(),
                                       imageInfo.dimensions(),
                                       imageInfo.colorInfo(),
@@ -328,7 +329,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
                                                  colorInfo, colorInfo,
                                                  mipLevels,
                                                  SkIRect::MakeSize(backendTex.dimensions()),
-                                                 std::make_unique<ImageUploadContext>());
+                                                 std::make_unique<ImageUploadContext>(), true);
     if (!upload.isValid()) {
         SKGPU_LOG_E("Recorder::updateBackendTexture: Could not create UploadInstance");
         return false;

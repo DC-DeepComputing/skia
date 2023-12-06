@@ -226,7 +226,7 @@ sk_sp<SkSurface> RenderTarget(Recorder* recorder,
             recorder, info, skgpu::Budgeted::kNo, mipmapped, props);
 }
 
-sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
+sk_sp<SkSurface> WrapBackendTexture100(Recorder* recorder,
                                     const BackendTexture& backendTex,
                                     SkColorType ct,
                                     sk_sp<SkColorSpace> cs,
@@ -258,7 +258,8 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
 
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
 
-    sk_sp<Device> device = Device::Make(recorder,
+    SkDebugf("------ *WrapBackendTexture\n");
+    sk_sp<Device> device = Device::Make7(recorder,
                                         std::move(proxy),
                                         info,
                                         SkSurfacePropsCopyOrDefault(props),

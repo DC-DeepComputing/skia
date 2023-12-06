@@ -38,7 +38,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
+sk_sp<DrawContext> DrawContext::Make2(sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props) {
@@ -122,7 +122,8 @@ bool DrawContext::recordUpload(Recorder* recorder,
                                const SkColorInfo& dstColorInfo,
                                const std::vector<MipLevel>& levels,
                                const SkIRect& dstRect,
-                               std::unique_ptr<ConditionalUploadContext> condContext) {
+                               std::unique_ptr<ConditionalUploadContext> condContext,
+                               bool foo) {
     // Our caller should have clipped to the bounds of the surface already.
     SkASSERT(targetProxy->isFullyLazy() ||
              SkIRect::MakeSize(targetProxy->dimensions()).contains(dstRect));
@@ -132,7 +133,7 @@ bool DrawContext::recordUpload(Recorder* recorder,
                                          dstColorInfo,
                                          levels,
                                          dstRect,
-                                         std::move(condContext));
+                                         std::move(condContext), foo);
 }
 
 PathAtlas* DrawContext::getComputePathAtlas(Recorder* recorder) {
@@ -156,6 +157,9 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
                                this->imageInfo(),
                                std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                fPendingClearColor);
+    SkDebugf("------ DrawContext::snapDrawPass %d %d\n",
+             recorder->priv().supportsProtectedContent(),
+             fTarget->isProtected());
     if (pass) {
         fDrawPasses.push_back(std::move(pass));
     }
@@ -221,6 +225,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     desc.fClearColor = clearColor;
 
     if (depthStencilFlags != DepthStencilFlags::kNone) {
+        SkDebugf("------ RenderPassDesc::Make depth settings %d\n", targetInfo.isProtected() == Protected::kYes);
         desc.fDepthStencilAttachment.fTextureInfo = caps->getDefaultDepthStencilTextureInfo(
                 depthStencilFlags, desc.fSampleCount, targetInfo.isProtected());
         // Always clear the depth and stencil to 0 at the start of a DrawPass, but discard at the
@@ -260,7 +265,7 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
                                                drawPass->requiresMSAA(),
                                                writeSwizzle);
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
-    return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+    return RenderPassTask::Make1(std::move(fDrawPasses), desc, std::move(targetProxy)); //$$
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {

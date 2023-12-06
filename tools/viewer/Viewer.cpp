@@ -190,7 +190,7 @@ static DEFINE_bool(list, false, "List samples?");
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", GL_BACKEND_STR, VK_BACKEND_STR, MTL_BACKEND_STR, D3D_BACKEND_STR, DAWN_BACKEND_STR)
 
-static DEFINE_string2(backend, b, "sw", "Backend to use. Allowed values are " BACKENDS_STR ".");
+static DEFINE_string2(backend, b, "grvk", "Backend to use. Allowed values are " BACKENDS_STR ".");
 
 static DEFINE_int(msaa, 1, "Number of subpixel samples. 0 for no HW antialiasing.");
 static DEFINE_bool(dmsaa, false, "Use internal MSAA to render to non-MSAA surfaces?");
@@ -199,7 +199,7 @@ static DEFINE_string(bisect, "", "Path to a .skp or .svg file to bisect.");
 
 static DEFINE_string2(file, f, "", "Open a single file for viewing.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "Protected2",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -235,7 +235,7 @@ static DEFINE_bool(redraw, false, "Toggle continuous redraw.");
 static DEFINE_bool(offscreen, false, "Force rendering to an offscreen surface.");
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
-static DEFINE_bool(createProtected, false, "Create a protected native backend (e.g., in EGL).");
+static DEFINE_bool(createProtected, true, "Create a protected native backend (e.g., in EGL).");
 
 #ifndef SK_GL
 static_assert(false, "viewer requires GL backend for raster.")
@@ -252,12 +252,14 @@ static bool is_graphite_backend_type(sk_app::Window::BackendType type) {
 #endif
 #ifdef SK_VULKAN
         case sk_app::Window::kGraphiteVulkan_BackendType:
+            SkDebugf("------ is_graphite_backend_type: true\n");
 #endif
             return true;
         default:
             break;
     }
 #endif
+    SkDebugf("------ is_graphite_backend_type: false\n");
     return false;
 }
 
@@ -292,7 +294,9 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 #ifdef SK_VULKAN
         case sk_app::Window::kVulkan_BackendType: return "Vulkan";
 #if defined(SK_GRAPHITE)
-        case sk_app::Window::kGraphiteVulkan_BackendType: return "Vulkan (Graphite)";
+        case sk_app::Window::kGraphiteVulkan_BackendType:
+            SkDebugf("------ get_backend_string - Vulkan (Graphite)\n");
+            return "Vulkan (Graphite)";
 #endif
 #endif
 #ifdef SK_METAL
@@ -311,6 +315,7 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 }
 
 static sk_app::Window::BackendType get_backend_type(const char* str) {
+    SkDebugf("------ get_backend_type %s\n", str);
 #ifdef SK_DAWN
 #if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn")) {
@@ -400,7 +405,9 @@ static bool primaries_equal(const SkColorSpacePrimaries& a, const SkColorSpacePr
 static Window::BackendType backend_type_for_window(Window::BackendType backendType) {
     // In raster mode, we still use GL for the window.
     // This lets us render the GUI faster (and correct).
-    return Window::kRaster_BackendType == backendType ? Window::kNativeGL_BackendType : backendType;
+    auto foo = Window::kRaster_BackendType == backendType ? Window::kNativeGL_BackendType : backendType;
+    SkDebugf("------ backend_type_for_window %d\n", foo);
+    return foo;
 }
 
 class NullSlide : public Slide {

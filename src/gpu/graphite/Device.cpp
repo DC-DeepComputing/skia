@@ -245,19 +245,19 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    return Make(
+    return Make8(
             recorder, std::move(target), ii.dimensions(), ii.colorInfo(), props, addInitialClear);
 }
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make7(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
                            bool addInitialClear) {
-    return Make(recorder, target, target->dimensions(), colorInfo, props, addInitialClear);
+    return Make8(recorder, target, target->dimensions(), colorInfo, props, addInitialClear);
 }
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make8(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            SkISize deviceSize,
                            const SkColorInfo& colorInfo,
@@ -266,13 +266,18 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     if (!recorder) {
         return nullptr;
     }
+
+    SkDebugf("------ Device::Make %d == %d\n",
+             recorder->priv().supportsProtectedContent(),
+             target->isProtected());
+
     // We don't render to unknown or unpremul alphatypes
     if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
         colorInfo.alphaType() == kUnpremul_SkAlphaType) {
         return nullptr;
     }
 
-    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), deviceSize, colorInfo, props);
+    sk_sp<DrawContext> dc = DrawContext::Make2(std::move(target), deviceSize, colorInfo, props);
     if (!dc) {
         return nullptr;
     }
@@ -486,7 +491,7 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     this->flushPendingWorkToRecorder();
 
     return fDC->recordUpload(fRecorder, sk_ref_sp(target), src.info().colorInfo(),
-                             this->imageInfo().colorInfo(), levels, dstRect, nullptr);
+                             this->imageInfo().colorInfo(), levels, dstRect, nullptr, true);
 }
 
 

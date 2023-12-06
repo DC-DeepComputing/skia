@@ -312,11 +312,15 @@ sk_sp<VulkanFramebuffer> VulkanResourceProvider::createFramebuffer(
 }
 
 void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& texture) {
+    this->vulkanSharedContext()->deleteBackendTexture(texture);
+}
+
+void VulkanSharedContext::deleteBackendTexture(const BackendTexture& texture) const {
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kVulkan);
 
-    VULKAN_CALL(this->vulkanSharedContext()->interface(),
-                DestroyImage(this->vulkanSharedContext()->device(), texture.getVkImage(),
+    VULKAN_CALL(this->interface(),
+                DestroyImage(this->device(), texture.getVkImage(),
                              /*VkAllocationCallbacks=*/nullptr));
 
     // Free the image memory used for the BackendTexture's VkImage.
@@ -326,12 +330,12 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
     // that means the allocator was used. Otherwise, a direct driver call was used and we should
     // free the VkDeviceMemory (fMemory).
     if (texture.getMemoryAlloc()->fBackendMemory) {
-        skgpu::VulkanMemory::FreeImageMemory(this->vulkanSharedContext()->memoryAllocator(),
+        skgpu::VulkanMemory::FreeImageMemory(this->memoryAllocator(),
                                              *(texture.getMemoryAlloc()));
     } else {
         SkASSERT(texture.getMemoryAlloc()->fMemory != VK_NULL_HANDLE);
-        VULKAN_CALL(this->vulkanSharedContext()->interface(),
-                    FreeMemory(this->vulkanSharedContext()->device(),
+        VULKAN_CALL(this->interface(),
+                    FreeMemory(this->device(),
                                texture.getMemoryAlloc()->fMemory,
                                nullptr));
     }

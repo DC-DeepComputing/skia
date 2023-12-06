@@ -43,6 +43,7 @@ class Device final : public SkDevice {
 public:
     ~Device() override;
 
+    // Protected-ness is pulled off the recorder
     static sk_sp<Device> Make(Recorder*,
                               const SkImageInfo&,
                               skgpu::Budgeted,
@@ -50,12 +51,12 @@ public:
                               SkBackingFit,
                               const SkSurfaceProps&,
                               bool addInitialClear);
-    static sk_sp<Device> Make(Recorder*,
+    static sk_sp<Device> Make7(Recorder*,
                               sk_sp<TextureProxy>,
                               const SkColorInfo&,
                               const SkSurfaceProps&,
                               bool addInitialClear);
-    static sk_sp<Device> Make(Recorder* recorder,
+    static sk_sp<Device> Make8(Recorder* recorder,
                               sk_sp<TextureProxy>,
                               SkISize deviceSize,
                               const SkColorInfo&,

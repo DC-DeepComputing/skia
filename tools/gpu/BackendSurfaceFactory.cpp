@@ -116,6 +116,10 @@ sk_sp<SkSurface> MakeBackendTextureSurface(skgpu::graphite::Recorder* recorder,
                                            skgpu::Mipmapped mipmapped,
                                            skgpu::Protected isProtected,
                                            const SkSurfaceProps* props) {
+    SkDebugf("------ *MakeBackendTextureSurface %d %d\n",
+             recorder->priv().supportsProtectedContent(),
+             isProtected == skgpu::Protected::kYes);
+
     if (ii.alphaType() == kUnpremul_SkAlphaType) {
         return nullptr;
     }
@@ -127,7 +131,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(skgpu::graphite::Recorder* recorder,
     if (!mbet) {
         return nullptr;
     }
-    return SkSurfaces::WrapBackendTexture(recorder,
+    return SkSurfaces::WrapBackendTexture100(recorder,
                                           mbet->texture(),
                                           ii.colorType(),
                                           ii.refColorSpace(),
