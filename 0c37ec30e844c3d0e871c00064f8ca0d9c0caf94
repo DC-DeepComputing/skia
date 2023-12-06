@@ -51,6 +51,24 @@
       "parentUuid": "2416182b_aff641d3",
       "revId": "0c37ec30e844c3d0e871c00064f8ca0d9c0caf94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae1cf91b_900815d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-06T14:53:18Z",
+      "side": 1,
+      "message": "Not sure how you tried to fix it? I see a new force-push to the PR, but the file contents look identical. If you tried to push with a different email, I suspect that the service won\u0027t (can\u0027t?) change the author of the CL here on Gerrit after it\u0027s created. I\u0027d suggest switching the AUTHORS entry to `contact@omeid.me`. You can even do that here on Gerrit, via the \u0027Edit\u0027 button in the top-right of the UI.",
+      "parentUuid": "9d317681_b02d5460",
+      "revId": "0c37ec30e844c3d0e871c00064f8ca0d9c0caf94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
