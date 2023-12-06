@@ -54,10 +54,18 @@ public:
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
+    inline static constexpr unsigned int kInputAttachmentDescSetIndex = 2;
 
     inline static constexpr unsigned int kVertexBufferIndex = 0;
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumInputBuffers = 2;
+
+
+    inline static constexpr unsigned int kInputDescriptorBindingIndex = 0;
+    inline static const DescriptorData kInputAttachmentDescriptor = {
+        DescriptorType::kInputAttachment,
+        /*descCount=*/1,
+        VulkanGraphicsPipeline::kInputDescriptorBindingIndex};
 
     static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*,
                                               SkSL::Compiler* compiler,
@@ -74,7 +82,8 @@ public:
             VkPipelineShaderStageCreateInfo* pipelineShaderStages,
             VkPipelineLayout,
             sk_sp<VulkanRenderPass> compatibleRenderPass,
-            VkPipelineCache);
+            VkPipelineCache,
+            int numSamples);
 
     static bool InitializeMSAALoadPipelineStructs(
             const VulkanSharedContext*,

@@ -80,7 +80,12 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
             layoutBinding.descriptorCount = requestedDescriptors[i].count;
             // TODO(b/307577875): Track binding stage flags of a descriptor so this can be more
             // precise
-            layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+
+            // TODO: Make this less ugly.
+            layoutBinding.stageFlags =
+                    (requestedDescriptors[i].type == DescriptorType::kInputAttachment)
+                    ? VK_SHADER_STAGE_FRAGMENT_BIT
+                    : VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
             // TODO(b/302126498): Optionally set immutableSamplers here. Needed for YCbCr
             layoutBinding.pImmutableSamplers = nullptr;
         }

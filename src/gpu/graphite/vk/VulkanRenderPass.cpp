@@ -351,8 +351,8 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     mainSubpassDesc.pPreserveAttachments = nullptr;
 
     renderPassInfo.pSubpasses = subpassDescs.begin();
-    renderPassInfo.dependencyCount = 0;
-    renderPassInfo.pDependencies = VK_NULL_HANDLE;
+    renderPassInfo.dependencyCount = loadMSAAFromResolve ? 1 : 0;
+    renderPassInfo.pDependencies = loadMSAAFromResolve ? &dependency : VK_NULL_HANDLE;
     renderPassInfo.attachmentCount = attachmentDescs.size();
     renderPassInfo.pAttachments = attachmentDescs.begin();
 
