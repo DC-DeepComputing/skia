@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba88d34_2a930a9b",
+        "filename": "src/pdf/SkPDFBitmap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-06T21:20:51Z",
+      "side": 1,
+      "message": "This might want to go in a new header?",
+      "range": {
+        "startLine": 32,
+        "startChar": 7,
+        "endLine": 32,
+        "endChar": 25
+      },
+      "revId": "d7cdd68ce8e2bd535c5e399a54daa670fa130810",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82b12f36_b5057ed7",
+        "filename": "src/pdf/SkPDFBitmap.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-06T21:20:51Z",
+      "side": 1,
+      "message": "Currently this always owns, but the atomic ref generally isn\u0027t needed when doing lookups (only want to do the ref when inserting).",
+      "range": {
+        "startLine": 33,
+        "startChar": 18,
+        "endLine": 33,
+        "endChar": 23
+      },
+      "revId": "d7cdd68ce8e2bd535c5e399a54daa670fa130810",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
