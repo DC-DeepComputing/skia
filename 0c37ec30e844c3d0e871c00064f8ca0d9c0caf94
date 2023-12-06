@@ -69,6 +69,24 @@
       "parentUuid": "9d317681_b02d5460",
       "revId": "0c37ec30e844c3d0e871c00064f8ca0d9c0caf94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc1a65de_1846daba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 22159
+      },
+      "writtenOn": "2023-12-06T23:35:12Z",
+      "side": 1,
+      "message": "Yeah, looks like the service doesn\u0027t update the commit author.\n\nI have now update the AUTHORS file as well as the commit back to contact@ just to be sure.",
+      "parentUuid": "ae1cf91b_900815d6",
+      "revId": "0c37ec30e844c3d0e871c00064f8ca0d9c0caf94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
