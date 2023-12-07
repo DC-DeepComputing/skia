@@ -96,7 +96,7 @@ public:
     }
 
     static inline SkTypeface* GetTypefaceOrDefault(const SkFont& font) {
-        return font.getTypefaceOrDefault();
+        return font.refTypefaceOrDefault().get();
     }
 };
 
