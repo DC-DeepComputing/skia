@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acac1fd4_970e9615",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T21:56:39Z",
+      "side": 1,
+      "message": "And a `TODO` below that `core_srcs` doesn\u0027t belong in this target.",
+      "parentUuid": "e334030f_140e82e3",
+      "range": {
+        "startLine": 50,
+        "startChar": 12,
+        "endLine": 50,
+        "endChar": 29
+      },
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6f49e0c_eb68317e",
         "filename": "modules/skunicode/BUILD.bazel",
         "patchSetId": 8
@@ -73,6 +97,24 @@
       "side": 1,
       "message": "Correct - the above implementation is going away and the new one will (eventually) need to be refactored as you described if clients actually need multiple implementations of SkUnicode. For now, I am trying to go with just one, as used internally in G3.",
       "parentUuid": "df9e5462_4bf7716a",
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99837262_fe193d5d",
+        "filename": "modules/skunicode/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T21:56:39Z",
+      "side": 1,
+      "message": "In that case let\u0027s be sure to put at least a `TODO` here to mark that `srcs` doesn\u0027t logically belong here.",
+      "parentUuid": "97a0cba0_389f0246",
       "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
