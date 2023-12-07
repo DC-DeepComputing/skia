@@ -156,6 +156,9 @@ void DrawContext::snapDrawPass(Recorder* recorder) {
                                this->imageInfo(),
                                std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                fPendingClearColor);
+    SkDebugf("------ DrawContext::snapDrawPass %d %d\n",
+             recorder->priv().supportsProtectedContent(),
+             fTarget->isProtected());
     if (pass) {
         fDrawPasses.push_back(std::move(pass));
     }
@@ -221,6 +224,8 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     desc.fClearColor = clearColor;
 
     if (depthStencilFlags != DepthStencilFlags::kNone) {
+        SkDebugf("------ RenderPassDesc::Make depth settings %d\n",
+                 targetInfo.isProtected() == Protected::kYes);
         desc.fDepthStencilAttachment.fTextureInfo = caps->getDefaultDepthStencilTextureInfo(
                 depthStencilFlags, desc.fSampleCount, targetInfo.isProtected());
         // Always clear the depth and stencil to 0 at the start of a DrawPass, but discard at the
