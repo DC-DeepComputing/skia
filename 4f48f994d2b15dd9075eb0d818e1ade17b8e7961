@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35bcc65f_cc1d4462",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T19:54:49Z",
+      "side": 1,
+      "message": "Directly depending on the decoder like this is very nice. However, it is awkward in the sense that it means always depending on this particular decoder, and doesn\u0027t allow the use of `SkJpegInfo_none.cpp` which is actually a minimal header reading only codec itself (except that it would need ICC parsing added to work with this).",
+      "revId": "4f48f994d2b15dd9075eb0d818e1ade17b8e7961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
