@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e334030f_140e82e3",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T21:54:03Z",
+      "side": 1,
+      "message": "Maybe I\u0027m just finding the names confusing? It seems this is really `skshaper_modularized` in which case it should also throw in the primitive shaper, unless it is also supposed to be modularizing shshaper, in which case this should not contain the `core_srcs` and that should be split out.",
+      "range": {
+        "startLine": 50,
+        "startChar": 12,
+        "endLine": 50,
+        "endChar": 29
+      },
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6f49e0c_eb68317e",
         "filename": "modules/skunicode/BUILD.bazel",
         "patchSetId": 8
