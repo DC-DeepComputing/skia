@@ -80,6 +80,30 @@
       },
       "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f763dea_bf402614",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-07T19:18:34Z",
+      "side": 1,
+      "message": "Does that include hoisting the early `return` (eg, possibly returning from this function, even if we weren\u0027t going to use `baseLayerBounds` ?",
+      "parentUuid": "a3a78422_251b25fd",
+      "range": {
+        "startLine": 657,
+        "startChar": 8,
+        "endLine": 665,
+        "endChar": 9
+      },
+      "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
