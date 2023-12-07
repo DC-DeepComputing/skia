@@ -15,11 +15,13 @@ namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow* window,
                                                             const DisplayParams& params) {
+    SkDebugf("------ MakeGraphiteVulkanForAndroid\n");
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
         return nullptr;
     }
 
+    SkDebugf("------ MakeGraphiteVulkanForAndroid 1\n");
     auto createVkSurface = [window, instProc] (VkInstance instance) -> VkSurfaceKHR {
         PFN_vkCreateAndroidSurfaceKHR createAndroidSurfaceKHR =
                 (PFN_vkCreateAndroidSurfaceKHR) instProc(instance, "vkCreateAndroidSurfaceKHR");
@@ -43,6 +45,7 @@ std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow* windo
 
     auto canPresent = [](VkInstance, VkPhysicalDevice, uint32_t) { return true; };
 
+    SkDebugf("------ MakeGraphiteVulkanForAndroid 2\n");
     std::unique_ptr<WindowContext> ctx(
             new internal::GraphiteVulkanWindowContext(params,
                                                       createVkSurface,
@@ -51,6 +54,7 @@ std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow* windo
     if (!ctx->isValid()) {
         return nullptr;
     }
+    SkDebugf("------ MakeGraphiteVulkanForAndroid 3\n");
 
     return ctx;
 }

@@ -45,6 +45,8 @@ bool Window_android::attach(BackendType attachType) {
 }
 
 void Window_android::initDisplay(ANativeWindow* window) {
+    SkDebugf("------ Window_android::initDisplay %d\n", fBackendType);
+
     SkASSERT(window);
     switch (fBackendType) {
 #ifdef SK_GL

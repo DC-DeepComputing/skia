@@ -33,6 +33,7 @@ public:
     }
 
     void setDisplayParams(const DisplayParams& params) override {
+        SkDebugf("------ setDisplayParams\n");
         this->destroyContext();
         fDisplayParams = params;
         this->initializeContext();

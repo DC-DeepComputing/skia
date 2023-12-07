@@ -61,6 +61,8 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
 
     SkASSERT(!isLinear || vkSamples == VK_SAMPLE_COUNT_1_BIT);
 
+    SkDebugf("------ *VulkanTexture::MakeVkImage %d %d\n",
+             info.isProtected() == Protected::kYes, caps.protectedSupport());
     VkImageCreateFlags createflags = 0;
     if (info.isProtected() == Protected::kYes && caps.protectedSupport()) {
         createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
