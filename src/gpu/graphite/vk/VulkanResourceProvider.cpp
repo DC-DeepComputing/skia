@@ -266,12 +266,24 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
 
 sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
         const RenderPassDesc& renderPassDesc) {
+    if (!renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() ||
+        !renderPassDesc.fColorAttachment.fTextureInfo.isValid()) {
+        SKGPU_LOG_E("Loading MSAA from resolve texture requires valid color & resolve attachment");
+        return nullptr;
+    }
+
     uint64_t renderPassKey =
             this->vulkanSharedContext()->vulkanCaps().getRenderPassDescKey(renderPassDesc);
     sk_sp<VulkanGraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey];
 
     if (!pipeline) {
-        auto compatibleRenderPass = this->findOrCreateRenderPass(renderPassDesc, true);
+        // TODO: Does it make sense to not be compat-only?
+        sk_sp<VulkanRenderPass> compatibleRenderPass =
+                this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
+
+        if (!compatibleRenderPass) {
+            SKGPU_LOG_E("Failed to make compatible render pass for loading MSAA");
+        }
         // The load msaa pipeline takes no uniforms, no vertex/instance attributes and only uses
         // one texture that does not require a sampler.
         if (fMSAALoadVertShaderModule   == VK_NULL_HANDLE ||
@@ -290,16 +302,20 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
             }
         }
 
-        pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(this->vulkanSharedContext(),
-                                                                fMSAALoadVertShaderModule,
-                                                                fMSAALoadFragShaderModule,
-                                                                &fMSAALoadShaderStageInfo[0],
-                                                                fMSAALoadPipelineLayout,
-                                                                compatibleRenderPass,
-                                                                this->pipelineCache());
-        if (pipeline) {
-            fLoadMSAAPipelines.set(renderPassKey, pipeline);
+        pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
+                this->vulkanSharedContext(),
+                fMSAALoadVertShaderModule,
+                fMSAALoadFragShaderModule,
+                &fMSAALoadShaderStageInfo[0],
+                fMSAALoadPipelineLayout,
+                compatibleRenderPass,
+                this->pipelineCache(),
+                renderPassDesc.fColorAttachment.fTextureInfo.numSamples()); // Should this be color resolve?
+        if (!pipeline) {
+            SKGPU_LOG_E("Failed to create MSAA load pipeline");
+            return nullptr;
         }
+        fLoadMSAAPipelines.set(renderPassKey, pipeline);
     }
 
     return pipeline;
@@ -307,6 +323,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
+    // TODO: update renderpass key w/ load msaa from resolve information
     auto renderPassKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
     if (Resource* resource =
             fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes)) {
