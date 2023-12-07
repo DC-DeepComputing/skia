@@ -16,6 +16,70 @@
       "message": "Michael - is my handling of `nullptr` in the filter-list correct here? I was just guessing, honestly.",
       "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "488528da_097db013",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-07T18:21:36Z",
+      "side": 1,
+      "message": "Yes, although I agree with the TODO that `contentBounds` should be applied. I selected a section of code that can do everything we need in this case too and outlined how it can be cleaned up I think.",
+      "parentUuid": "b3a65b9f_68a5fc53",
+      "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f8b20e0_23b754ec",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-07T18:21:36Z",
+      "side": 1,
+      "message": "So the `maxLayerDim` should only be updated if there is a filter. The `idealMapping`\u0027s device-to-layer matrix is set to identity as well, so this particular line isn\u0027t doing anything different than just returning `targetOutput` other than handling the cast from DeviceSpace to LayerSpace essentially.\n\nSince `maxLayerDim` is initialized to values larger than `targetOutput`\u0027s dimensions, that should end up not having any affect if there3 was a filter list with just null entries, as we\u0027d want. But we would correctly be getting the aggregate layer bounds needed if one entry accessed a very different part of the coordinate space compared to `targetOutput` (e.g. an offset filter).j\n\nI do think we need to include the `contentBounds` as well. Since `idealMapping` has the same layer matrix as `mapping`, they share the same ParameterSpace-\u003eLayerSpace transform; it\u0027s just the post-device-space mapping that is different. Assuming you go with the plan outlined in the other comment to calculate a `baseLayerBounds`, if you also keep `knownBounds` accessible, you can intersect it with `idealMapping.deviceToLayer(targetOutput)` to get the `idealBaseLayerBounds` to return when there\u0027s no filter.\n\nAnother option that has slightly different semantics around combining the behavior of filters, but is probably not a problem since this is really meant for bounding crazy transform behavior, is to just loop over the `filters` and adjust `maxLayerDim` within the loop. If a particular index is null, just skip it.",
+      "range": {
+        "startLine": 649,
+        "startChar": 20,
+        "endLine": 650,
+        "endChar": 68
+      },
+      "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3a78422_251b25fd",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-07T18:21:36Z",
+      "side": 1,
+      "message": "I would move this logic outside of the else and save it in a variable like `baseLayerBounds`. \n\nWhen there are no filters, `layerBounds \u003d baseLayerBounds`, and when `filters[i]` is null, `baseLayerBounds` is the value that should be union\u0027ed in for that `i`.",
+      "range": {
+        "startLine": 657,
+        "startChar": 8,
+        "endLine": 665,
+        "endChar": 9
+      },
+      "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
