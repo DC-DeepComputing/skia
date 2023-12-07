@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f6aea0_4d528aa8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-07T17:55:12Z",
+      "side": 1,
+      "message": "After talking to Greg we think enabling push constants across the board will be fine. If Perf shows a significant degradation we can push more on Qualcomm to\nprovide deviceIDs to check against.",
+      "revId": "5637ff9e6e44abbccb0812ce60ed7a593b76079b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
