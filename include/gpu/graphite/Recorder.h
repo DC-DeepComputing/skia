@@ -242,6 +242,7 @@ private:
 
 #if defined(GRAPHITE_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
+    // Be sure to set ContextOptionsPriv::fStoreContextRefInRecorder in order to use
     Context* fContext = nullptr;
 #endif
 };

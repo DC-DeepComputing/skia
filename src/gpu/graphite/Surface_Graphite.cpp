@@ -258,6 +258,7 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
 
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
 
+    SkDebugf("------ *WrapBackendTexture\n");
     sk_sp<Device> device = Device::Make(recorder,
                                         std::move(proxy),
                                         info,

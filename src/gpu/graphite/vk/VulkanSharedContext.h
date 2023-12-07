@@ -44,6 +44,8 @@ public:
 
     bool checkVkResult(VkResult result) const;
 
+    void deleteBackendTexture(const BackendTexture&) const override;
+
 private:
     VulkanSharedContext(const VulkanBackendContext&,
                         sk_sp<const skgpu::VulkanInterface> interface,

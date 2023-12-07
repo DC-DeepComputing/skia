@@ -473,10 +473,11 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
     SkASSERT(fNumActivePages < this->maxPages());
     SkASSERT(!fProxies[fNumActivePages]);
 
+    Protected isProtected = Protected(recorder->priv().supportsProtectedContent());
     const Caps* caps = recorder->priv().caps();
     auto textureInfo = caps->getDefaultSampledTextureInfo(fColorType,
                                                           /*mipmapped=*/Mipmapped::kNo,
-                                                          Protected::kNo,
+                                                          isProtected,
                                                           Renderable::kNo);
     fProxies[fNumActivePages] = TextureProxy::Make(
             caps, {fTextureWidth, fTextureHeight}, textureInfo, skgpu::Budgeted::kYes);

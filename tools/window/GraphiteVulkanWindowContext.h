@@ -33,7 +33,8 @@ public:
     }
 
     void setDisplayParams(const DisplayParams& params) override {
-        this->destroyContext();
+        SkDebugf("------ setDisplayParams\n");
+        this->destroyContext1();
         fDisplayParams = params;
         this->initializeContext();
     }
@@ -48,7 +49,7 @@ public:
 
 private:
     void initializeContext();
-    void destroyContext();
+    void destroyContext1();
 
     struct BackbufferInfo {
         uint32_t        fImageIndex;          // image this is associated with
