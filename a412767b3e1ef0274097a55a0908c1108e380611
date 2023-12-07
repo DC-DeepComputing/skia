@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6f49e0c_eb68317e",
+        "filename": "modules/skunicode/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T21:49:19Z",
+      "side": 1,
+      "message": "If this has `modules/skunicode/src:srcs` and the other target also has `modules/skunicode/src:srcs` then they need to be marked as mutually exclusive? And this is bad because the entire design and point of SkUnicode is to be able to have any number of implementations available at any given time.\n\nIf we want to break this up, then there would need to be a base target with all the common code, and then a target for each implementation which depends on the base, with each implementation providing its own factory function, and the base \"Make\" factory function needs to be removed.\n\nSame goes for Shaper.",
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
