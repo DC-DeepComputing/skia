@@ -962,6 +962,10 @@ optional("gpu_shared") {
     public_defines += [ "SK_METAL" ]
     sources += skia_shared_mtl_sources
   }
+
+  if (is_android) {
+    sources += skia_shared_android_sources
+  }
 }
 
 optional("gpu") {
@@ -1200,6 +1204,10 @@ optional("graphite") {
   ]
   public = skia_graphite_public
   sources = skia_graphite_sources
+
+  if (is_android) {
+    sources += skia_graphite_android_private
+  }
 
   if (skia_enable_vello_shaders) {
     sources += skia_graphite_vello_sources
