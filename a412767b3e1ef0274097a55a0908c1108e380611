@@ -34,6 +34,24 @@
       "parentUuid": "e6f49e0c_eb68317e",
       "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97a0cba0_389f0246",
+        "filename": "modules/skunicode/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-07T21:53:08Z",
+      "side": 1,
+      "message": "Correct - the above implementation is going away and the new one will (eventually) need to be refactored as you described if clients actually need multiple implementations of SkUnicode. For now, I am trying to go with just one, as used internally in G3.",
+      "parentUuid": "df9e5462_4bf7716a",
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
