@@ -17,3 +17,20 @@ skia_cc_library(
         "@icu",
     ],
 )
+
+skia_cc_library(
+    name = "skparagraph_harfbuzz_icu",
+    srcs = ["//modules/skparagraph/src:srcs"],
+    hdrs = ["//modules/skparagraph/include:hdrs"],
+    features = ["layering_check"],
+    visibility = [
+        "//:__subpackages__",
+    ],
+    deps = [
+        "//:core",
+        "//modules/skshaper:skshaper_harfbuzz",
+        "//modules/skunicode:skunicode_icu",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
