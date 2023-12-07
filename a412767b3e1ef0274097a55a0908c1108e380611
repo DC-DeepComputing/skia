@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e117770f_ea1693c4",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-07T21:56:40Z",
+      "side": 1,
+      "message": "My thought is that if someone wants to specify the underlying tech to skshaper, that should be in the name (e.g. `skshaper_harfbuzz` instead of just `skshaper`). It is not yet the case that we 1) have multiple skshaper targets or 2) we could have non-conflicting skshaper targets, but that will take some more refactoring (probably outside the scope of this CL).",
+      "parentUuid": "e334030f_140e82e3",
+      "range": {
+        "startLine": 50,
+        "startChar": 12,
+        "endLine": 50,
+        "endChar": 29
+      },
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6f49e0c_eb68317e",
         "filename": "modules/skunicode/BUILD.bazel",
         "patchSetId": 8
