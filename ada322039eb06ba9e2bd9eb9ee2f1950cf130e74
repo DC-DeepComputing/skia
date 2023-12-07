@@ -34,6 +34,24 @@
       "parentUuid": "5ba257a6_e5cfe263",
       "revId": "ada322039eb06ba9e2bd9eb9ee2f1950cf130e74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4545a14_79a57763",
+        "filename": "tests/PDFJpegEmbedTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T19:46:11Z",
+      "side": 1,
+      "message": "To be more precise, deferred decode SkImages created by Skia (though `SkGraphics::ImageGeneratorFromEncodedDataFactory gFactory` have no color space associated with them. Other places in Chromium which create deferred decode SkImages may have color spaces associated because they\u0027re not created though `DecodingImageGenerator::CreateAsSkImageGenerator`.",
+      "parentUuid": "2a9579a0_8559c00b",
+      "revId": "ada322039eb06ba9e2bd9eb9ee2f1950cf130e74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
