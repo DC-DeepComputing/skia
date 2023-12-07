@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b9e255a_3221e9f8",
+        "filename": "modules/skparagraph/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T22:08:00Z",
+      "side": 1,
+      "message": "And a `TODO` here. SkParagraph should very not care about the SkUnicode implementation that it uses. And it shouldn\u0027t care which SkShaper it gets. Currently I think it might be creating them from the `Make` that cannot exist in the future to get whatever is compiled in, but really it should be sure to take these as input from the application  (it may already, would need to look to see). So as a result a name like `skparagraph_harfbuzz_icu` is really hard to look at. I realize this is \"temporary\" in the sense that its easy to do right now, but it is a big step backward in terms of the abstraction we\u0027re attempting to impose.\n\nIn other words, another really good reason to create `skshaper_module` and `skunicode_module` targets is that this is what this should depend on (after removing the generic `Make` factory) and then this code fixed up to work with that reality.\n\nIn other words, this change is doing a lot of \"make a modular build\" by pushing the \"non-buffet\" g3 build down here. Which is maybe ok temporarily, but just having this here tempts everyone into thinking this might be workable.\n\nSo maybe also a TODO on the name itself, pointing out that it is a really bad smell.",
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e334030f_140e82e3",
         "filename": "modules/skshaper/BUILD.bazel",
         "patchSetId": 8
