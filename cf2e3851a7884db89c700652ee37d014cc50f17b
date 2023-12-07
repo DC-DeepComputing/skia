@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adac678f_0a154886",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-07T19:56:37Z",
+      "side": 1,
+      "message": "We should set `baseLayerBounds` to an empty rect (effectively remembering it\u0027s failed), and then return if we\u0027re empty in the later `else` branch.\n\nThe base layer bounds being empty may be unimportant if the image filter moves the content bounds to then intersect with the target output.",
+      "range": {
+        "startLine": 636,
+        "startChar": 12,
+        "endLine": 637,
+        "endChar": 22
+      },
+      "revId": "cf2e3851a7884db89c700652ee37d014cc50f17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -146,6 +146,30 @@
       },
       "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78a67c18_30000b67",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-07T19:56:37Z",
+      "side": 1,
+      "message": "That return should remain in the `else`.",
+      "parentUuid": "4f763dea_bf402614",
+      "range": {
+        "startLine": 657,
+        "startChar": 8,
+        "endLine": 665,
+        "endChar": 9
+      },
+      "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
