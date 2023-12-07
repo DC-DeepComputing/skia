@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b285209_a67c197c",
+        "filename": "modules/skshaper/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-07T22:12:48Z",
+      "side": 1,
+      "message": "I suppose this can be pushed off, but this could be renamed `legacy_skshaper` so that an actual `skshaper` could sneak in as the base. (Same with `skunicode`.)",
+      "range": {
+        "startLine": 18,
+        "startChar": 12,
+        "endLine": 18,
+        "endChar": 20
+      },
+      "revId": "6e6317a4008dde5860c6f9265c3c17571d49d9bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
