@@ -170,6 +170,30 @@
       },
       "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49c0aa40_c6f34ce4",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-07T22:22:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78a67c18_30000b67",
+      "range": {
+        "startLine": 657,
+        "startChar": 8,
+        "endLine": 665,
+        "endChar": 9
+      },
+      "revId": "60576461d946191c9fc2d6d2a09b292f2bbbde44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
