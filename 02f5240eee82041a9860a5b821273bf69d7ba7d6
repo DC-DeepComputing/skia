@@ -63,6 +63,24 @@
       "message": "With this check outside the mutex, won\u0027t we (sometimes) get strange bursty output from multiple threads? eg: Two threads running CPU unit tests finish at the same time, each decides it\u0027s time to log progress, etc...",
       "revId": "02f5240eee82041a9860a5b821273bf69d7ba7d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbdc9b74_68258d61",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-07T22:18:47Z",
+      "side": 1,
+      "message": "Good catch. That\u0027ll need to be fixed",
+      "parentUuid": "46089f39_76a3cb4c",
+      "revId": "02f5240eee82041a9860a5b821273bf69d7ba7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
