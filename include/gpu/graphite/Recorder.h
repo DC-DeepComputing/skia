@@ -203,7 +203,7 @@ private:
     // Note: We could probably get by with only registering Devices directly connected to
     // SkSurfaces. All other one off Devices will be created in a controlled scope where the
     // Recorder should still be valid by the time they need to flush their work when the Device is
-    // deleted. We would have to make sure we safely handle cases where a client calls saveLayer
+    // deleted. We would have to make` sure we safely handle cases where a client calls saveLayer
     // then either deletes the SkSurface or Recorder before calling restore. For simplicity we just
     // register every device for now, but if we see extra overhead in pushing back the extra
     // pointers, we can look into only registering SkSurface Devices.
@@ -242,6 +242,7 @@ private:
 
 #if defined(GRAPHITE_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder
+    // Be sure to set ContextOptionsPriv::fStoreContextRefInRecorder in order to use
     Context* fContext = nullptr;
 #endif
 };

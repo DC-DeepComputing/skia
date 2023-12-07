@@ -27,6 +27,12 @@ GLWindowContext::GLWindowContext(const DisplayParams& params)
         , fBackendContext(nullptr)
         , fSurface(nullptr) {
     fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
+
+    SkDebugf("------ GLWindowContext\n");
+}
+
+GLWindowContext::~GLWindowContext() {
+    SkDebugf("------ ~GLWindowContext\n");
 }
 
 void GLWindowContext::initializeContext() {
@@ -57,6 +63,7 @@ void GLWindowContext::destroyContext() {
 }
 
 sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
+    SkDebugf("------ GLWindowContext::getBackbufferSurface\n");
     if (nullptr == fSurface) {
         if (fContext) {
             GrGLint buffer;

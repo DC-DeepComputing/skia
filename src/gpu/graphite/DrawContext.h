@@ -46,7 +46,7 @@ class TextureProxyView;
  */
 class DrawContext final : public SkRefCnt {
 public:
-    static sk_sp<DrawContext> Make(sk_sp<TextureProxy> target,
+    static sk_sp<DrawContext> Make2(sk_sp<TextureProxy> target,
                                    SkISize deviceSize,
                                    const SkColorInfo&,
                                    const SkSurfaceProps&);
@@ -81,7 +81,8 @@ public:
                       const SkColorInfo& dstColorInfo,
                       const std::vector<MipLevel>& levels,
                       const SkIRect& dstRect,
-                      std::unique_ptr<ConditionalUploadContext>);
+                      std::unique_ptr<ConditionalUploadContext>,
+                      bool);
 
     // Returns the transient path atlas that uses compute to accumulate coverage masks for atlas
     // draws recorded to this SDC. The atlas gets created lazily upon request. Returns nullptr

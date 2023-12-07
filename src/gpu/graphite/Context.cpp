@@ -93,6 +93,7 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 }
 
 Context::~Context() {
+    SkDebugf("------ ~Context\n");
 #if defined(GRAPHITE_TEST_UTILS)
     ASSERT_SINGLE_OWNER
     for (auto& recorder : fTrackedRecorders) {

@@ -190,7 +190,7 @@ static DEFINE_bool(list, false, "List samples?");
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", GL_BACKEND_STR, VK_BACKEND_STR, MTL_BACKEND_STR, D3D_BACKEND_STR, DAWN_BACKEND_STR)
 
-static DEFINE_string2(backend, b, "sw", "Backend to use. Allowed values are " BACKENDS_STR ".");
+static DEFINE_string2(backend, b, "grvk", "Backend to use. Allowed values are " BACKENDS_STR ".");
 
 static DEFINE_int(msaa, 1, "Number of subpixel samples. 0 for no HW antialiasing.");
 static DEFINE_bool(dmsaa, false, "Use internal MSAA to render to non-MSAA surfaces?");
@@ -199,7 +199,7 @@ static DEFINE_string(bisect, "", "Path to a .skp or .svg file to bisect.");
 
 static DEFINE_string2(file, f, "", "Open a single file for viewing.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "Protected2",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -235,7 +235,7 @@ static DEFINE_bool(redraw, false, "Toggle continuous redraw.");
 static DEFINE_bool(offscreen, false, "Force rendering to an offscreen surface.");
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
-static DEFINE_bool(createProtected, false, "Create a protected native backend (e.g., in EGL).");
+static DEFINE_bool(createProtected, true, "Create a protected native backend (e.g., in EGL).");
 
 #ifndef SK_GL
 static_assert(false, "viewer requires GL backend for raster.")
@@ -252,12 +252,14 @@ static bool is_graphite_backend_type(sk_app::Window::BackendType type) {
 #endif
 #ifdef SK_VULKAN
         case sk_app::Window::kGraphiteVulkan_BackendType:
+            SkDebugf("------ is_graphite_backend_type: true\n");
 #endif
             return true;
         default:
             break;
     }
 #endif
+    SkDebugf("------ is_graphite_backend_type: false\n");
     return false;
 }
 
@@ -292,7 +294,9 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 #ifdef SK_VULKAN
         case sk_app::Window::kVulkan_BackendType: return "Vulkan";
 #if defined(SK_GRAPHITE)
-        case sk_app::Window::kGraphiteVulkan_BackendType: return "Vulkan (Graphite)";
+        case sk_app::Window::kGraphiteVulkan_BackendType:
+            SkDebugf("------ get_backend_string - Vulkan (Graphite)\n");
+            return "Vulkan (Graphite)";
 #endif
 #endif
 #ifdef SK_METAL
@@ -311,6 +315,7 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 }
 
 static sk_app::Window::BackendType get_backend_type(const char* str) {
+    SkDebugf("------ get_backend_type %s\n", str);
 #ifdef SK_DAWN
 #if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn")) {
@@ -400,7 +405,9 @@ static bool primaries_equal(const SkColorSpacePrimaries& a, const SkColorSpacePr
 static Window::BackendType backend_type_for_window(Window::BackendType backendType) {
     // In raster mode, we still use GL for the window.
     // This lets us render the GUI faster (and correct).
-    return Window::kRaster_BackendType == backendType ? Window::kNativeGL_BackendType : backendType;
+    auto foo = Window::kRaster_BackendType == backendType ? Window::kNativeGL_BackendType : backendType;
+    SkDebugf("------ backend_type_for_window %d\n", foo);
+    return foo;
 }
 
 class NullSlide : public Slide {
@@ -496,6 +503,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     }
     displayParams.fCreateProtectedNativeBackend = FLAGS_createProtected;
 
+    SkDebugf("------ setRequestedDisplayParams 1 %d\n", displayParams.fMSAASampleCount);
     fWindow->setRequestedDisplayParams(displayParams);
     fDisplay = fWindow->getRequestedDisplayParams();
     fRefresh = FLAGS_redraw;
@@ -547,6 +555,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fCommands.addCommand('v', "Swapchain", "Toggle vsync on/off", [this]() {
         DisplayParams params = fWindow->getRequestedDisplayParams();
         params.fDisableVsync = !params.fDisableVsync;
+        SkDebugf("------ setRequestedDisplayParams 2\n");
         fWindow->setRequestedDisplayParams(params);
         this->updateTitle();
         fWindow->inval();
@@ -554,6 +563,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fCommands.addCommand('V', "Swapchain", "Toggle delayed acquire on/off (Metal only)", [this]() {
         DisplayParams params = fWindow->getRequestedDisplayParams();
         params.fDelayDrawableAcquisition = !params.fDelayDrawableAcquisition;
+        SkDebugf("------ setRequestedDisplayParams 3\n");
         fWindow->setRequestedDisplayParams(params);
         this->updateTitle();
         fWindow->inval();
@@ -594,6 +604,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fCommands.addCommand('w', "Modes", "Toggle wireframe", [this]() {
         DisplayParams params = fWindow->getRequestedDisplayParams();
         params.fGrContextOptions.fWireframeMode = !params.fGrContextOptions.fWireframeMode;
+        SkDebugf("------ setRequestedDisplayParams 4\n");
         fWindow->setRequestedDisplayParams(params);
         fWindow->inval();
     });
@@ -601,6 +612,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
       DisplayParams params = fWindow->getRequestedDisplayParams();
       params.fGrContextOptions.fReducedShaderVariations =
               !params.fGrContextOptions.fReducedShaderVariations;
+      SkDebugf("------ setRequestedDisplayParams 5\n");
       fWindow->setRequestedDisplayParams(params);
       fWindow->inval();
     });
@@ -667,6 +679,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
                     break;
             }
         }
+        SkDebugf("------ setRequestedDisplayParams 6\n");
         fWindow->setRequestedDisplayParams(params);
         this->updateTitle();
         fWindow->inval();
@@ -733,6 +746,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         uint32_t flags = params.fSurfaceProps.flags();
         flags ^= SkSurfaceProps::kUseDeviceIndependentFonts_Flag;
         params.fSurfaceProps = SkSurfaceProps(flags, params.fSurfaceProps.pixelGeometry());
+        SkDebugf("------ setRequestedDisplayParams 8\n");
         fWindow->setRequestedDisplayParams(params);
         this->updateTitle();
         fWindow->inval();
@@ -2926,6 +2940,7 @@ void Viewer::drawImGui() {
         if (displayParamsChanged || uiParamsChanged) {
             fDeferredActions.push_back([=]() {
                 if (displayParamsChanged) {
+                    SkDebugf("------ setRequestedDisplayParams 9\n");
                     fWindow->setRequestedDisplayParams(params);
                 }
                 fWindow->inval();
@@ -3252,6 +3267,7 @@ void Viewer::onUIStateChanged(const SkString& stateName, const SkString& stateVa
         int sampleCount = atoi(stateValue.c_str());
         if (sampleCount != params.fMSAASampleCount) {
             params.fMSAASampleCount = sampleCount;
+            SkDebugf("------ setRequestedDisplayParams 10 %d\n", sampleCount);
             fWindow->setRequestedDisplayParams(params);
             fWindow->inval();
             this->updateTitle();
@@ -3263,6 +3279,7 @@ void Viewer::onUIStateChanged(const SkString& stateName, const SkString& stateVa
             if (pair.second == stateValue.c_str()) {
                 if (params.fGrContextOptions.fGpuPathRenderers != pair.first) {
                     params.fGrContextOptions.fGpuPathRenderers = pair.first;
+                    SkDebugf("------ setRequestedDisplayParams 12\n");
                     fWindow->setRequestedDisplayParams(params);
                     fWindow->inval();
                     this->updateTitle();

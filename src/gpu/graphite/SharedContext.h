@@ -53,6 +53,8 @@ public:
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
 
+    virtual void deleteBackendTexture(const BackendTexture&) const = 0;
+
 protected:
     SharedContext(std::unique_ptr<const Caps>, BackendApi);
 

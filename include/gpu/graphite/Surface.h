@@ -56,6 +56,7 @@ SK_API sk_sp<SkImage> AsImageCopy(sk_sp<const SkSurface>,
  * not become a scratch (i.e., reusable) resource but, if it does, it will be counted against
  * the budget.
  */
+ // Protected status is pulled off the recorder
 SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
                                      const SkImageInfo& imageInfo,
                                      skgpu::Mipmapped = skgpu::Mipmapped::kNo,
@@ -74,7 +75,7 @@ SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
  * backendTexture's width and height must not exceed the recorder's capabilities, and the
  * recorder must be able to support the back-end texture.
  */
-SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
+SK_API sk_sp<SkSurface> WrapBackendTexture100(skgpu::graphite::Recorder*,
                                            const skgpu::graphite::BackendTexture&,
                                            SkColorType colorType,
                                            sk_sp<SkColorSpace> colorSpace,

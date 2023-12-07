@@ -56,6 +56,11 @@ SK_API sk_sp<SkImage> TextureFromAHardwareBufferWithData(
  */
 SK_API sk_sp<SkImage> PinnableRasterFromBitmap(const SkBitmap&);
 
+SK_API sk_sp<SkImage> Foo(skgpu::graphite::Recorder*,
+                          AHardwareBuffer*,
+                          SkAlphaType alphaType,
+                          sk_sp<SkColorSpace>);
+
 }  // namespace SkImages
 
 // TODO(kjlubick) remove this after Android has been ported.

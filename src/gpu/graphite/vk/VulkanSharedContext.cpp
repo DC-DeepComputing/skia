@@ -142,8 +142,10 @@ VulkanSharedContext::VulkanSharedContext(const VulkanBackendContext& backendCont
         , fQueueIndex(backendContext.fGraphicsQueueIndex) {}
 
 VulkanSharedContext::~VulkanSharedContext() {
+    SkDebugf("------ VulkanSharedContext::~VulkanSharedContext - enter\n");
     // need to clear out resources before the allocator is removed
     this->globalCache()->deleteResources();
+    SkDebugf("------ VulkanSharedContext::~VulkanSharedContext - exit\n");
 }
 
 std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
