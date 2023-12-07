@@ -114,8 +114,10 @@ VulkanAMDMemoryAllocator::VulkanAMDMemoryAllocator(VmaAllocator allocator,
         , fMustUseCoherentHostVisibleMemory(mustUseCoherentHostVisibleMemory) {}
 
 VulkanAMDMemoryAllocator::~VulkanAMDMemoryAllocator() {
+    SkDebugf("------ VulkanAMDMemoryAllocator::~VulkanAMDMemoryAllocator - enter\n");
     vmaDestroyAllocator(fAllocator);
     fAllocator = VK_NULL_HANDLE;
+    SkDebugf("------ VulkanAMDMemoryAllocator::~VulkanAMDMemoryAllocator - exit\n");
 }
 
 VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,

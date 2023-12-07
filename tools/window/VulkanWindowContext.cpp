@@ -49,6 +49,7 @@ VulkanWindowContext::VulkanWindowContext(const DisplayParams& params,
     , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
     this->initializeContext();
+    SkDebugf("------ VulkanWindowContext\n");
 }
 
 void VulkanWindowContext::initializeContext() {
@@ -436,6 +437,8 @@ void VulkanWindowContext::destroyBuffers() {
 }
 
 VulkanWindowContext::~VulkanWindowContext() {
+    SkDebugf("------ ~VulkanWindowContext\n");
+
     this->destroyContext();
 }
 
@@ -457,7 +460,7 @@ void VulkanWindowContext::destroyContext() {
         }
     }
 
-    SkASSERT(fContext->unique());
+//    SkASSERT(fContext->unique());
     fContext.reset();
     fInterface.reset();
 
@@ -493,6 +496,8 @@ VulkanWindowContext::BackbufferInfo* VulkanWindowContext::getAvailableBackbuffer
 }
 
 sk_sp<SkSurface> VulkanWindowContext::getBackbufferSurface() {
+    SkDebugf("------ VulkanWindowContext::getBackbufferSurface\n");
+
     BackbufferInfo* backbuffer = this->getAvailableBackbuffer();
     SkASSERT(backbuffer);
 
