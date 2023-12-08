@@ -7,7 +7,7 @@
 
 #include "src/gpu/android/AHardwareBufferUtils.h"
 
-#if __ANDROID_API__ >= 26
+#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
 
 #include <android/hardware_buffer.h>
 
