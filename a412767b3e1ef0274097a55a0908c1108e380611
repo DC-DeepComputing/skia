@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7600b0f_f68a413d",
+        "filename": "modules/skparagraph/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-08T14:52:26Z",
+      "side": 1,
+      "message": "Yes, it\u0027s a lot of work, and I\u0027m not even sure it should block the build changes here, which are really just reflecting the actual state of the code (the idea of the code, like the rest of Skia, was to just build in the parts you want which isn\u0027t compatible with building modular pieces). In any event, I really just wanted a TODO here so that no one thinks this is all intentional or desirable (and which parts aren\u0027t intentional or desirable). For the moment this naming may even be correct and is pointing out a problem, I just want to be sure that we document here that it is a problem.\n\nThis is a general issue everywhere. In an unrelated change over in PDF, PDF has a dependency on SkJpegDecoder, but it really shouldn\u0027t and should have a jpeg decoder passed in somewhere so that it isn\u0027t depending on that specific decoder. To get around the possibility that this specific decoder wouldn\u0027t be present at build time it has it\u0027s own (optional at build time) mini-decoder that has no dependencies and reads the data directly. This leads to the issue that now there is yet another partial decoder. If something needs to be a configurable dependency then that just needs to be passed in by the user.",
+      "parentUuid": "52525d8d_90e5377d",
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e334030f_140e82e3",
         "filename": "modules/skshaper/BUILD.bazel",
         "patchSetId": 8
