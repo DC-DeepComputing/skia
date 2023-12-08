@@ -1591,7 +1591,7 @@ int main(int argc, char** argv) {
 #if !defined(SK_DISABLE_LEGACY_FONTMGR_FACTORY)
     ToolUtils::SetDefaultFontMgr();
 #endif
-    CommonFlags::SetAnalyticAA();
+//    CommonFlags::SetAnalyticAA();
     skiatest::SetFontTestDataDirectory();
 
     gSkForceRasterPipelineBlitter     = FLAGS_forceRasterPipelineHP || FLAGS_forceRasterPipeline;
