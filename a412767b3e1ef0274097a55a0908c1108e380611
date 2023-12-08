@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52525d8d_90e5377d",
+        "filename": "modules/skparagraph/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-08T13:27:26Z",
+      "side": 1,
+      "message": "Here\u0027s how I understand things\nskparagraph/src/TextLine.cpp calls `SkShaper::MakeShapeDontWrapOrReorder` (which is only supported by the *harfbuzz* version of SkShaper).\n`skshaper/src/SkShaper_harfbuzz.cpp` calls `SkShaper::Make()`, which could be one of several implementations.\n\nWe would see the same linker problem as having a SkFontMgr factory if we tried to have the client do\n\n```\ncc_binary(\n  ...\n  deps \u003d [\n    \"@skia:skparagraph\",\n    \"@skia:skshaper_harfbuzz\",\n    \"@skia:skunicode_icu\",\n  ]\n)\n```\nAs written, `skparagraph` depends on `skshaper` and `skunicode` so it would need to list those exact dependencies and not trust the client to dep on those for it. Additionally, because `skparagraph` has #ifdefs in it related to skshaper and skunicode, it needs to depend on those modules to have the defines set correctly.\n\nTo solve this, a client of `skparagraph` would need to provide an skshaper factory, which also needs an skunicode factory (or a pre-made instance of skunicode like `SkShaper::MakeShapeDontWrapOrReorder` already does). I believe we would need to remove many (all?) #ifdefs from skparagraph, skshaper, and skunicode, as well.\n\nMaybe this isn\u0027t as complicated as I initially thought, but still a fair bit of work.",
+      "parentUuid": "7b9e255a_3221e9f8",
+      "revId": "a412767b3e1ef0274097a55a0908c1108e380611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e334030f_140e82e3",
         "filename": "modules/skshaper/BUILD.bazel",
         "patchSetId": 8
