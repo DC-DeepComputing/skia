@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e529a775_f141faaf",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-08T15:57:37Z",
+      "side": 1,
+      "message": "This is \"fine\" but it would be better to just use `SkTypeface::MakeEmpty` to set the `fTypeface` any time it would otherwise be nullptr. In other words, just ensure that `SkFont` can never have a nullptr `fTypeface`.",
+      "range": {
+        "startLine": 324,
+        "startChar": 26,
+        "endLine": 324,
+        "endChar": 46
+      },
+      "revId": "07d15a0950623fb93e2eed684c6b60ac33b63e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c9e776_30aae2f4",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-08T15:57:37Z",
+      "side": 1,
+      "message": "If we\u0027re really getting rid of `GetTypefaceOrDefault`, then it should just be impossible to create an SkFont with a nullptr typeface. SkFont could internally always have a reference to an empty typeface any time the typeface would currently be nullptr.",
+      "revId": "07d15a0950623fb93e2eed684c6b60ac33b63e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
