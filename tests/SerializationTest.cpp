@@ -623,7 +623,7 @@ static void draw_something(SkCanvas* canvas) {
     canvas->drawCircle(SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/3), paint);
     paint.setColor(SK_ColorBLACK);
 
-    SkFont font;
+    SkFont font = ToolUtils::DefaultFont();
     font.setSize(kBitmapSize/3);
     canvas->drawString("Picture", SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/4), font, paint);
 }
@@ -804,6 +804,10 @@ DEF_TEST(Serialization, reporter) {
         sProcs.fImageProc = [](SkImage* img, void*) -> sk_sp<SkData> {
             return SkPngEncoder::Encode(nullptr, img, SkPngEncoder::Options{});
         };
+        sProcs.fTypefaceProc = [](SkTypeface* t, void* ctx) -> sk_sp<SkData> {
+            SkASSERT(t);
+            return t->serialize(SkTypeface::SerializeBehavior::kDoIncludeData);
+        };
         SkBinaryWriteBuffer writer(sProcs);
 
         SkPicturePriv::Flatten(pict, writer);
@@ -812,7 +816,13 @@ DEF_TEST(Serialization, reporter) {
         writer.writeToMemory(static_cast<void*>(data.get()));
 
         // Deserialize picture
+        SkDeserialProcs dProcs;
+        dProcs.fTypefaceProc = [](const void* data, size_t length, void* ctx) -> sk_sp<SkTypeface> {
+            SkMemoryStream stream(data, length, true);
+            return SkTypeface::MakeDeserialize(&stream, nullptr);
+        };
         SkReadBuffer reader(static_cast<void*>(data.get()), size);
+        reader.setDeserialProcs(dProcs);
         sk_sp<SkPicture> readPict(SkPicturePriv::MakeFromBuffer(reader));
         REPORTER_ASSERT(reporter, reader.isValid());
         REPORTER_ASSERT(reporter, readPict.get());

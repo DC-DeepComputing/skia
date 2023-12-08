@@ -242,7 +242,7 @@ void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
 
 void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
     // Write 32 bits (signed)
-    //   0 -- default font
+    //   0 -- empty font
     //  >0 -- index
     //  <0 -- custom (serial procs)
 
@@ -253,7 +253,7 @@ void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
         if (data) {
             size_t size = data->size();
             if (!SkTFitsIn<int32_t>(size)) {
-                size = 0;               // fall back to default font
+                size = 0;               // fall back to empty font
             }
             int32_t ssize = SkToS32(size);
             fWriter.write32(-ssize);    // negative to signal custom

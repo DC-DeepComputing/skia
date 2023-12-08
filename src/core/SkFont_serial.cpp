@@ -102,6 +102,7 @@ bool SkFontPriv::Unflatten(SkFont* font, SkReadBuffer& buffer) {
     }
     if (packed & kHas_Typeface_Bit) {
         font->fTypeface = buffer.readTypeface();
+        SkASSERT(font->fTypeface);
     }
 
     SkASSERT(SkFont::kAllFlags <= kMask_For_Flags);

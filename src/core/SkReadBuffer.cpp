@@ -449,23 +449,23 @@ sk_sp<SkImage> SkReadBuffer::readImage() {
 
 sk_sp<SkTypeface> SkReadBuffer::readTypeface() {
     // Read 32 bits (signed)
-    //   0 -- return null (default font)
+    //   0 -- return null (empty font)
     //  >0 -- index
     //  <0 -- custom (serial procs) : negative size in bytes
 
     int32_t index = this->read32();
     if (index == 0) {
-        return nullptr;
+        return SkTypeface::MakeEmpty();
     } else if (index > 0) {
         if (!this->validate(index <= fTFCount)) {
-            return nullptr;
+            return SkTypeface::MakeEmpty();
         }
         return fTFArray[index - 1];
     } else {    // custom
         size_t size = sk_negate_to_size_t(index);
         const void* data = this->skip(size);
         if (!this->validate(data != nullptr && fProcs.fTypefaceProc)) {
-            return nullptr;
+            return SkTypeface::MakeEmpty();
         }
         return fProcs.fTypefaceProc(data, size, fProcs.fTypefaceCtx);
     }
