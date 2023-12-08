@@ -142,6 +142,12 @@ selects.config_setting_group(
 )
 
 skia_filegroup(
+    name = "android_srcs",
+    srcs = ["AHardwareBufferUtils.cpp"],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
+skia_filegroup(
     name = "srcs",
     srcs = [
         ":core_srcs",
