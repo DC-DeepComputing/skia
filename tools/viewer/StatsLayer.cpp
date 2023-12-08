@@ -171,7 +171,11 @@ void StatsLayer::onPaint(SkSurface* surface) {
         x += xStep;
     } while (i != nextMeasurement);
 
+<<<<<<< PATCH SET (07d15a Remove SkFontMgr::RefDefault() and dependent APIs)
+    SkFont font(ToolUtils::DefaultTypeface(), 16);
+=======
     SkFont font(ToolUtils::CreatePortableTypeface("sans-serif", SkFontStyle()), 16);
+>>>>>>> BASE      (8523de Roll vulkan-deps from f4a64ca5f094 to d895a1c308f3 (1 revisi)
     paint.setColor(SK_ColorWHITE);
     double time = totalTime / std::max(1, totalCount);
     double measure = fCumulativeMeasurementTime / std::max(1, fCumulativeMeasurementCount);

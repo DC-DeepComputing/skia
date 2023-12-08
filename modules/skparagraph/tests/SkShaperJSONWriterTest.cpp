@@ -125,7 +125,7 @@ DEF_TEST(SkShaperTest_VisualizeCluster, reporter) {
 #if 0
 DEF_TEST(SkShaperTest_basic, reporter) {
     std::unique_ptr<SkShaper> shaper = SkShaper::Make();
-    SkFont font(nullptr, 14);
+    SkFont font(ToolUtils::DefaultTypeface(), 14);
 
     SkDynamicMemoryWStream out;
     SkJSONWriter jsonWriter{&out, SkJSONWriter::Mode::kPretty};

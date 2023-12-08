@@ -160,17 +160,17 @@ bool SkFont::hasSomeAntiAliasing() const {
 }
 
 SkGlyphID SkFont::unicharToGlyph(SkUnichar uni) const {
-    return this->getTypefaceOrDefault()->unicharToGlyph(uni);
+    return this->refTypefaceOrDefault()->unicharToGlyph(uni);
 }
 
 void SkFont::unicharsToGlyphs(const SkUnichar uni[], int count, SkGlyphID glyphs[]) const {
-    this->getTypefaceOrDefault()->unicharsToGlyphs(uni, count, glyphs);
+    this->refTypefaceOrDefault()->unicharsToGlyphs(uni, count, glyphs);
 }
 
 int SkFont::textToGlyphs(const void* text, size_t byteLength, SkTextEncoding encoding,
                          SkGlyphID glyphs[], int maxGlyphCount) const {
-    return this->getTypefaceOrDefault()->textToGlyphs(text, byteLength, encoding,
-                                                      glyphs, maxGlyphCount);
+    return this->refTypefaceOrDefault()->textToGlyphs(
+            text, byteLength, encoding, glyphs, maxGlyphCount);
 }
 
 SkScalar SkFont::measureText(const void* text, size_t length, SkTextEncoding encoding,
@@ -245,6 +245,7 @@ void SkFont::getWidthsBounds(const SkGlyphID glyphIDs[],
 }
 
 void SkFont::getPos(const SkGlyphID glyphIDs[], int count, SkPoint pos[], SkPoint origin) const {
+    SkASSERT(this->refTypeface());
     auto [strikeSpec, strikeToSourceScale] = SkStrikeSpec::MakeCanonicalized(*this);
     SkBulkGlyphMetrics metrics{strikeSpec};
     SkSpan<const SkGlyph*> glyphs = metrics.glyphs(SkSpan(glyphIDs, count));
@@ -320,16 +321,8 @@ SkScalar SkFont::getMetrics(SkFontMetrics* metrics) const {
     return metrics->fDescent - metrics->fAscent + metrics->fLeading;
 }
 
-SkTypeface* SkFont::getTypefaceOrDefault() const {
-    return fTypeface ? fTypeface.get() : SkTypeface::GetDefaultTypeface();
-}
-
 sk_sp<SkTypeface> SkFont::refTypefaceOrDefault() const {
-#if !defined(SK_DISABLE_LEGACY_DEFAULT_TYPEFACE)
-    return fTypeface ? fTypeface : SkTypeface::MakeDefault();
-#else
     return fTypeface ? fTypeface : SkTypeface::MakeEmpty();
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

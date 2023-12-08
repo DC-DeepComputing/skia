@@ -24,7 +24,9 @@
 
 SkStrikeSpec::SkStrikeSpec(const SkDescriptor& descriptor, sk_sp<SkTypeface> typeface)
     : fAutoDescriptor{descriptor}
-    , fTypeface{std::move(typeface)} {}
+    , fTypeface{std::move(typeface)} {
+    SkASSERT(fTypeface);
+}
 
 SkStrikeSpec::SkStrikeSpec(const SkStrikeSpec&) = default;
 SkStrikeSpec::SkStrikeSpec(SkStrikeSpec&&) = default;
@@ -156,6 +158,7 @@ SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
                            const SkSurfaceProps& surfaceProps,
                            SkScalerContextFlags scalerContextFlags,
                            const SkMatrix& deviceMatrix) {
+    SkASSERT(font.refTypeface());
     SkScalerContextEffects effects;
 
     SkScalerContext::CreateDescriptorAndEffectsUsingPaint(
@@ -164,7 +167,7 @@ SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
 
     fMaskFilter = sk_ref_sp(effects.fMaskFilter);
     fPathEffect = sk_ref_sp(effects.fPathEffect);
-    fTypeface = SkFontPriv::RefTypefaceOrDefault(font);
+    fTypeface = font.refTypeface();
 }
 
 sk_sp<sktext::StrikeForGPU> SkStrikeSpec::findOrCreateScopedStrike(
