@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f7635fe_25954b7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-08T21:57:52Z",
+      "side": 1,
+      "message": "Currently `TextBlobTest.cpp:430` assumes that by passing in nullptr that no typeface will be serialized. Instead, we\u0027re not serializing the empty typeface. If we want to keep this behavior, the serialization code could continue to not embed anything at all for the empty typeface (detecting it by either pointer identity or just as a typeface with zero glyphs and zero bounds/metrics, since all such typefaces should be functionally identical).",
+      "revId": "666250ca20c86fc855a07c6c89a8e20a22427550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
