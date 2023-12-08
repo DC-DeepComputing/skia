@@ -154,8 +154,6 @@ void SkShaperPrimitive::shape(const char* utf8, size_t utf8Bytes,
     if (!font.atEnd()) {
         font.consume();
         skfont = font.currentFont();
-    } else {
-        skfont.setTypeface(sk_ref_sp(SkFontPriv::GetTypefaceOrDefault(skfont)));
     }
     SkASSERT(skfont.getTypeface());
     bool skbidi = 0;
