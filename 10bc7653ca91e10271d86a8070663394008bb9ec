@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00d00abf_ae47d76b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-08T14:58:32Z",
+      "side": 1,
+      "message": "+1 Googliness, deprecate all the things but the new thing isn\u0027t quite ready yet :-)",
+      "revId": "10bc7653ca91e10271d86a8070663394008bb9ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
