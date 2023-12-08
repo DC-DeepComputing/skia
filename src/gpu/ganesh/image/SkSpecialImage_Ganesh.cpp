@@ -62,30 +62,6 @@ public:
 
     bool isGaneshBacked() const override { return true; }
 
-    void onDraw(SkCanvas* canvas,
-                SkScalar x,
-                SkScalar y,
-                const SkSamplingOptions& sampling,
-                const SkPaint* paint) const override {
-        SkRect dst = SkRect::MakeXYWH(x, y, this->subset().width(), this->subset().height());
-
-        // TODO: In this instance we know we're going to draw a sub-portion of the backing
-        // texture into the canvas so it is okay to wrap it in an SkImage. This poses
-        // some problems for full deferral however in that when the deferred SkImage_Ganesh
-        // instantiates itself it is going to have to either be okay with having a larger
-        // than expected backing texture (unlikely) or the 'fit' of the SurfaceProxy needs
-        // to be tightened (if it is deferred).
-        sk_sp<SkImage> img = sk_sp<SkImage>(new SkImage_Ganesh(
-                sk_ref_sp(canvas->recordingContext()), this->uniqueID(), fView, this->colorInfo()));
-
-        canvas->drawImageRect(img,
-                              SkRect::Make(this->subset()),
-                              dst,
-                              sampling,
-                              paint,
-                              SkCanvas::kStrict_SrcRectConstraint);
-    }
-
     GrRecordingContext* getContext() const override { return fContext; }
 
     GrSurfaceProxyView view(GrRecordingContext*) const { return fView; }
