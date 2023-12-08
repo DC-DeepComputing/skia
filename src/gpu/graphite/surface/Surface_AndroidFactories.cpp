@@ -1,0 +1,120 @@
+/*
+ * Copyright 2023 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "include/core/SkTypes.h"
+
+#if defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+
+#include "include/android/graphite/SurfaceAndroid.h"
+#include "include/core/SkColorSpace.h"
+#include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/android/AHardwareBufferUtils.h"
+#include "include/gpu/graphite/Surface.h"
+
+
+#if 0
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkSurface.h"
+#include "include/core/SkSurfaceProps.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrContextThreadSafeProxy.h"
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/private/base/SkTo.h"
+#include "include/private/chromium/GrSurfaceCharacterization.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkDevice.h"
+#include "src/core/SkSurfacePriv.h"
+#include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/SkBackingFit.h"
+#include "src/gpu/SkRenderEngineAbortf.h"
+#include "src/gpu/ganesh/Device.h"
+#include "include/android/GrAHardwareBufferUtils.h"
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrGpuResourcePriv.h"
+#include "src/gpu/ganesh/GrProxyProvider.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrRenderTarget.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+#include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/GrTexture.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/gpu/ganesh/surface/SkSurface_Ganesh.h"
+#include "src/image/SkImage_Base.h"
+
+#include <algorithm>
+#include <cstddef>
+#include <utility>
+#endif
+
+#include <android/hardware_buffer.h>
+
+using namespace skgpu::graphite;
+
+namespace SkSurfaces {
+
+sk_sp<SkSurface> WrapAndroidHardwareBuffer2(Recorder* recorder,
+                                           AHardwareBuffer* hardwareBuffer,
+                                           sk_sp<SkColorSpace> colorSpace,
+                                           const SkSurfaceProps* surfaceProps,
+                                           bool fromWindow) {
+    AHardwareBuffer_Desc bufferDesc;
+    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+
+    if (!SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT) ||
+        !SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE)) {
+        return nullptr;
+    }
+
+    bool isProtectedContent = SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT);
+
+    bool fromWindowLocal = false;
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    fromWindowLocal = fromWindow;
+#endif
+
+    SkISize dims = SkISize::Make(bufferDesc.width, bufferDesc.height);
+
+    BackendTexture backendTexture = recorder->createBackendTexture(hardwareBuffer,
+                                                                   /* isRenderable= */ true,
+                                                                   isProtectedContent,
+                                                                   dims,
+                                                                   fromWindowLocal);
+    if (!backendTexture.isValid()) {
+        return nullptr;
+    }
+
+    SkColorType colorType =
+            AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+
+    // Will call delete_vk_backend_texture if SkSurface creation fails.
+    return SkSurfaces::WrapBackendTexture(recorder,
+                                          backendTexture,
+                                          colorType,
+                                          std::move(colorSpace),
+                                          surfaceProps,
+                                          /* textureReleaseProc= */ nullptr,
+                                          /* textureReleaseContext= */ nullptr);
+}
+
+}  // namespace SkSurfaces
+
+#endif
