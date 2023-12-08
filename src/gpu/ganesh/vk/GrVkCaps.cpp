@@ -972,6 +972,8 @@ void GrVkCaps::initFormatTable(const GrContextOptions& contextOptions,
                 ctInfo.fColorType = ct;
                 ctInfo.fTransferColorType = GrColorType::kBGRA_8888;
                 ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                ctInfo.fTransferColorType = ct;
+                ctInfo.fFlags = ColorTypeInfo::kWrappedOnly_Flag;
                 ctInfo.fReadSwizzle = skgpu::Swizzle::RGB1();
             }
         }
@@ -2061,32 +2063,36 @@ GrVkCaps::IntelGPUType GrVkCaps::GetIntelGPUType(uint32_t deviceID) {
 #if defined(GR_TEST_UTILS)
 std::vector<GrTest::TestFormatColorTypeCombination> GrVkCaps::getTestingCombinations() const {
     std::vector<GrTest::TestFormatColorTypeCombination> combos = {
-        { GrColorType::kAlpha_8,          GrBackendFormats::MakeVk(VK_FORMAT_R8_UNORM)            },
-        { GrColorType::kBGR_565,          GrBackendFormats::MakeVk(VK_FORMAT_R5G6B5_UNORM_PACK16) },
-        { GrColorType::kABGR_4444,       GrBackendFormats::MakeVk(VK_FORMAT_R4G4B4A4_UNORM_PACK16)},
-        { GrColorType::kABGR_4444,       GrBackendFormats::MakeVk(VK_FORMAT_B4G4R4A4_UNORM_PACK16)},
-        { GrColorType::kRGBA_8888,        GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM)      },
-        { GrColorType::kRGBA_8888_SRGB,   GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_SRGB)       },
-        { GrColorType::kRGB_888x,         GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM)      },
-        { GrColorType::kRGB_888x,         GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8_UNORM)        },
-        { GrColorType::kRG_88,            GrBackendFormats::MakeVk(VK_FORMAT_R8G8_UNORM)          },
-        { GrColorType::kBGRA_8888,        GrBackendFormats::MakeVk(VK_FORMAT_B8G8R8A8_UNORM)      },
-        { GrColorType::kRGBA_1010102, GrBackendFormats::MakeVk(VK_FORMAT_A2B10G10R10_UNORM_PACK32)},
-        { GrColorType::kBGRA_1010102, GrBackendFormats::MakeVk(VK_FORMAT_A2R10G10B10_UNORM_PACK32)},
-        { GrColorType::kRGBA_10x6,
-          GrBackendFormats::MakeVk(VK_FORMAT_R10X6G10X6B10X6A10X6_UNORM_4PACK16)},
-        { GrColorType::kGray_8,           GrBackendFormats::MakeVk(VK_FORMAT_R8_UNORM)            },
-        { GrColorType::kAlpha_F16,        GrBackendFormats::MakeVk(VK_FORMAT_R16_SFLOAT)          },
-        { GrColorType::kRGBA_F16,         GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_SFLOAT) },
-        { GrColorType::kRGBA_F16_Clamped, GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_SFLOAT) },
-        { GrColorType::kAlpha_16,         GrBackendFormats::MakeVk(VK_FORMAT_R16_UNORM)           },
-        { GrColorType::kRG_1616,          GrBackendFormats::MakeVk(VK_FORMAT_R16G16_UNORM)        },
-        { GrColorType::kRGBA_16161616,    GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_UNORM)  },
-        { GrColorType::kRG_F16,           GrBackendFormats::MakeVk(VK_FORMAT_R16G16_SFLOAT)       },
-        // These two compressed formats both have an effective colorType of kRGB_888x
-        { GrColorType::kRGB_888x,      GrBackendFormats::MakeVk(VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK)},
-        { GrColorType::kRGB_888x,         GrBackendFormats::MakeVk(VK_FORMAT_BC1_RGB_UNORM_BLOCK) },
-        { GrColorType::kRGBA_8888,        GrBackendFormats::MakeVk(VK_FORMAT_BC1_RGBA_UNORM_BLOCK)},
+            {GrColorType::kAlpha_8, GrBackendFormats::MakeVk(VK_FORMAT_R8_UNORM)},
+            {GrColorType::kBGR_565, GrBackendFormats::MakeVk(VK_FORMAT_R5G6B5_UNORM_PACK16)},
+            {GrColorType::kABGR_4444, GrBackendFormats::MakeVk(VK_FORMAT_R4G4B4A4_UNORM_PACK16)},
+            {GrColorType::kABGR_4444, GrBackendFormats::MakeVk(VK_FORMAT_B4G4R4A4_UNORM_PACK16)},
+            {GrColorType::kRGBA_8888, GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM)},
+            {GrColorType::kRGBA_8888_SRGB, GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_SRGB)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeVk(VK_FORMAT_B8G8R8A8_UNORM)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8_UNORM)},
+            {GrColorType::kRG_88, GrBackendFormats::MakeVk(VK_FORMAT_R8G8_UNORM)},
+            {GrColorType::kBGRA_8888, GrBackendFormats::MakeVk(VK_FORMAT_B8G8R8A8_UNORM)},
+            {GrColorType::kRGBA_1010102,
+             GrBackendFormats::MakeVk(VK_FORMAT_A2B10G10R10_UNORM_PACK32)},
+            {GrColorType::kBGRA_1010102,
+             GrBackendFormats::MakeVk(VK_FORMAT_A2R10G10B10_UNORM_PACK32)},
+            {GrColorType::kRGBA_10x6,
+             GrBackendFormats::MakeVk(VK_FORMAT_R10X6G10X6B10X6A10X6_UNORM_4PACK16)},
+            {GrColorType::kGray_8, GrBackendFormats::MakeVk(VK_FORMAT_R8_UNORM)},
+            {GrColorType::kAlpha_F16, GrBackendFormats::MakeVk(VK_FORMAT_R16_SFLOAT)},
+            {GrColorType::kRGBA_F16, GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_SFLOAT)},
+            {GrColorType::kRGBA_F16_Clamped,
+             GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_SFLOAT)},
+            {GrColorType::kAlpha_16, GrBackendFormats::MakeVk(VK_FORMAT_R16_UNORM)},
+            {GrColorType::kRG_1616, GrBackendFormats::MakeVk(VK_FORMAT_R16G16_UNORM)},
+            {GrColorType::kRGBA_16161616, GrBackendFormats::MakeVk(VK_FORMAT_R16G16B16A16_UNORM)},
+            {GrColorType::kRG_F16, GrBackendFormats::MakeVk(VK_FORMAT_R16G16_SFLOAT)},
+            // These two compressed formats both have an effective colorType of kRGB_888x
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeVk(VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeVk(VK_FORMAT_BC1_RGB_UNORM_BLOCK)},
+            {GrColorType::kRGBA_8888, GrBackendFormats::MakeVk(VK_FORMAT_BC1_RGBA_UNORM_BLOCK)},
     };
 
     return combos;
