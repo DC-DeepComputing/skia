@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50f01844_a512d78d",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2118,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-08T17:45:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ebdb77f7_969a3dc9",
+      "range": {
+        "startLine": 2118,
+        "startChar": 47,
+        "endLine": 2118,
+        "endChar": 63
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c07f5b94_a741df5f",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "450fb7bc_bfcfab20",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-08T17:45:52Z",
+      "side": 1,
+      "message": "So I think ideally we could do a few combinations here:\n\n```\n// Format: BGRA8, Surface: kRGB_888x, Data: kBRGA_888x\n{\n    auto\u0026 ioFormat \u003d ctInfo.fExternalIOFormats[ioIdx++];\n    ioFormat.fColorType \u003d GrColorType::kBGR_888x;\n    ioFormat.fExternalType \u003d GR_GL_UNSIGNED_BYTE;\n    ioFormat.fExternalTexImageFormat \u003d GR_GL_BGRA;\n    ioFormat.fExternalReadFormat \u003d \n        formatWorkarounds.fDisallowBGRA8ReadPixels ? 0 : GR_GL_BGRA;\n}\n```\n\nor\n\n```\n// Format: BGRA8, Surface: kRGB_888x, Data: kRGBA_888x\n{\n    auto\u0026 ioFormat \u003d ctInfo.fExternalIOFormats[ioIdx++];\n    ioFormat.fColorType \u003d GrColorType::kRGB_888x;\n    ioFormat.fExternalType \u003d GR_GL_UNSIGNED_BYTE;\n    ioFormat.fExternalTexImageFormat \u003d GR_GL_RGBA;\n    ioFormat.fExternalReadFormat \u003d GR_GL_RGBA;\n}\n```\n\nNow today I only the second option actually works because we don\u0027t have a BGR_888x colorType right now. However, we do want to add that colorType to simplify things. Though I think if we really did have the colorType we\u0027d end up more with something like the following and drop the RGB_888x versions:\n\n```\n// Format: BGRA8, Surface: kBGR_888x\n{\nauto\u0026 ctInfo \u003d info.fColorTypeInfos[ctIdx++];\nctInfo.fColorType \u003d GrColorType::kBGR_888x;\nctInfo.fFlags \u003d ColorTypeInfo::kUploadData_Flag;\nctInfo.fReadSwizzle \u003d skgpu::Swizzle::RGB1();\n// Format: BGRA8, Surface: kBGR_888x, Data: kBRGA_888x\n\n{\n    auto\u0026 ioFormat \u003d ctInfo.fExternalIOFormats[ioIdx++];\n    ioFormat.fColorType \u003d GrColorType::kBGR_888x;\n    ioFormat.fExternalType \u003d GR_GL_UNSIGNED_BYTE;\n    ioFormat.fExternalTexImageFormat \u003d GR_GL_BGRA;\n    ioFormat.fExternalReadFormat \u003d \n        formatWorkarounds.fDisallowBGRA8ReadPixels ? 0 : GR_GL_BGRA;\n}\n}\n```",
+      "parentUuid": "c07f5b94_a741df5f",
+      "range": {
+        "startLine": 2129,
+        "startChar": 55,
+        "endLine": 2129,
+        "endChar": 64
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45d3c11f_6ef0d357",
         "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
         "patchSetId": 6
@@ -60,6 +108,30 @@
       "writtenOn": "2023-12-08T16:44:49Z",
       "side": 1,
       "message": "Why is this not \"wrapping\" instead of upload data",
+      "range": {
+        "startLine": 974,
+        "startChar": 47,
+        "endLine": 974,
+        "endChar": 63
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cae77614_ed05c923",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-08T17:45:52Z",
+      "side": 1,
+      "message": "A lot of how these colorTypes are used in here is not setup well. But really the wrapping was originally meant for things that we never plan on having a colorType for (e.g. YUV formats) so it was meant to say don\u0027t use this colorType at all. But IIRC last time I checked we aren\u0027t actually even using the wrapping flag in any queries.\n\nNow for this specific use case, there shouldn\u0027t be any issues with us uploading data to this format is someone asked us to (even if ChomeOS isn\u0027t using that feature). So the Upload flag seems correct here to me.",
+      "parentUuid": "45d3c11f_6ef0d357",
       "range": {
         "startLine": 974,
         "startChar": 47,
