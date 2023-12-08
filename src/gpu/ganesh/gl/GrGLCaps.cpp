@@ -2072,7 +2072,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         }
 
         if (SkToBool(info.fFlags & FormatInfo::kTexturable_Flag)) {
-            info.fColorTypeInfoCount = 1;
+            info.fColorTypeInfoCount = 2;
             info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
             int ctIdx = 0;
             // Format: BGRA8, Surface: kBGRA_8888
@@ -2107,6 +2107,28 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
                     ioFormat.fExternalType = GR_GL_UNSIGNED_BYTE;
                     ioFormat.fExternalTexImageFormat = 0;
                     ioFormat.fExternalReadFormat = GR_GL_RGBA;
+                }
+            }
+
+            // Format: BGRA8, Surface: kRGB_888x
+            {
+                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = GrColorType::kRGB_888x;
+                ctInfo.fFlags = ColorTypeInfo::kRenderable_Flag;
+                ctInfo.fReadSwizzle = skgpu::Swizzle::RGB1();
+
+                // External IO ColorTypes:
+                ctInfo.fExternalIOFormatCount = 1;
+                ctInfo.fExternalIOFormats = std::make_unique<ColorTypeInfo::ExternalIOFormats[]>(
+                        ctInfo.fExternalIOFormatCount);
+                int ioIdx = 0;
+                // Format: BGRA8, Surface: kRGB_888x, Data: kRGBA_888x
+                {
+                    auto& ioFormat = ctInfo.fExternalIOFormats[ioIdx++];
+                    ioFormat.fColorType = GrColorType::kRGB_888x;
+                    ioFormat.fExternalType = GR_GL_UNSIGNED_BYTE;
+                    ioFormat.fExternalTexImageFormat = GR_GL_BGRA;
+                    ioFormat.fExternalReadFormat = GR_GL_BGRA;
                 }
             }
         }
@@ -5105,56 +5127,41 @@ GrProgramDesc GrGLCaps::makeDesc(GrRenderTarget* /* rt */,
 #if defined(GR_TEST_UTILS)
 std::vector<GrTest::TestFormatColorTypeCombination> GrGLCaps::getTestingCombinations() const {
     std::vector<GrTest::TestFormatColorTypeCombination> combos = {
-        { GrColorType::kAlpha_8,
-          GrBackendFormats::MakeGL(GR_GL_ALPHA8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kAlpha_8,
-          GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kBGR_565,
-          GrBackendFormats::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_2D) },
-        { GrColorType::kABGR_4444,
-          GrBackendFormats::MakeGL(GR_GL_RGBA4, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_8888,
-          GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_8888_SRGB,
-          GrBackendFormats::MakeGL(GR_GL_SRGB8_ALPHA8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGB_888x,
-          GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGB_888x,
-          GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGB_888x,
-          GrBackendFormats::MakeGL(GR_GL_COMPRESSED_RGB8_ETC2, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGB_888x,
-          GrBackendFormats::MakeGL(GR_GL_COMPRESSED_ETC1_RGB8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGB_888x,
-          GrBackendFormats::MakeGL(GR_GL_COMPRESSED_RGB_S3TC_DXT1_EXT, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_8888,
-          GrBackendFormats::MakeGL(GR_GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRG_88,
-          GrBackendFormats::MakeGL(GR_GL_RG8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_1010102,
-          GrBackendFormats::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_2D) },
-        { GrColorType::kGray_8,
-          GrBackendFormats::MakeGL(GR_GL_LUMINANCE8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kGray_8,
-          GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kGrayAlpha_88,
-          GrBackendFormats::MakeGL(GR_GL_LUMINANCE8_ALPHA8, GR_GL_TEXTURE_2D) },
-        { GrColorType::kAlpha_F16,
-          GrBackendFormats::MakeGL(GR_GL_R16F, GR_GL_TEXTURE_2D) },
-        { GrColorType::kAlpha_F16,
-          GrBackendFormats::MakeGL(GR_GL_LUMINANCE16F, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_F16,
-          GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_F16_Clamped,
-          GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_2D) },
-        { GrColorType::kAlpha_16,
-          GrBackendFormats::MakeGL(GR_GL_R16, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRG_1616,
-          GrBackendFormats::MakeGL(GR_GL_RG16, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRGBA_16161616,
-          GrBackendFormats::MakeGL(GR_GL_RGBA16, GR_GL_TEXTURE_2D) },
-        { GrColorType::kRG_F16,
-          GrBackendFormats::MakeGL(GR_GL_RG16F, GR_GL_TEXTURE_2D) },
+            {GrColorType::kAlpha_8, GrBackendFormats::MakeGL(GR_GL_ALPHA8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kAlpha_8, GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kBGR_565, GrBackendFormats::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_2D)},
+            {GrColorType::kABGR_4444, GrBackendFormats::MakeGL(GR_GL_RGBA4, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_8888, GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_8888_SRGB,
+             GrBackendFormats::MakeGL(GR_GL_SRGB8_ALPHA8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeGL(GR_GL_BGRA8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGB_888x, GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGB_888x,
+             GrBackendFormats::MakeGL(GR_GL_COMPRESSED_RGB8_ETC2, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGB_888x,
+             GrBackendFormats::MakeGL(GR_GL_COMPRESSED_ETC1_RGB8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGB_888x,
+             GrBackendFormats::MakeGL(GR_GL_COMPRESSED_RGB_S3TC_DXT1_EXT, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_8888,
+             GrBackendFormats::MakeGL(GR_GL_COMPRESSED_RGBA_S3TC_DXT1_EXT, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRG_88, GrBackendFormats::MakeGL(GR_GL_RG8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_1010102,
+             GrBackendFormats::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_2D)},
+            {GrColorType::kGray_8, GrBackendFormats::MakeGL(GR_GL_LUMINANCE8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kGray_8, GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kGrayAlpha_88,
+             GrBackendFormats::MakeGL(GR_GL_LUMINANCE8_ALPHA8, GR_GL_TEXTURE_2D)},
+            {GrColorType::kAlpha_F16, GrBackendFormats::MakeGL(GR_GL_R16F, GR_GL_TEXTURE_2D)},
+            {GrColorType::kAlpha_F16,
+             GrBackendFormats::MakeGL(GR_GL_LUMINANCE16F, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_F16, GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_F16_Clamped,
+             GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_2D)},
+            {GrColorType::kAlpha_16, GrBackendFormats::MakeGL(GR_GL_R16, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRG_1616, GrBackendFormats::MakeGL(GR_GL_RG16, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRGBA_16161616, GrBackendFormats::MakeGL(GR_GL_RGBA16, GR_GL_TEXTURE_2D)},
+            {GrColorType::kRG_F16, GrBackendFormats::MakeGL(GR_GL_RG16F, GR_GL_TEXTURE_2D)},
     };
 
     if (GR_IS_GR_GL(fStandard)) {
