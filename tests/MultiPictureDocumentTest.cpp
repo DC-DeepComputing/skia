@@ -29,6 +29,7 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "include/docs/SkMultiPictureDocument.h"
+#include "src/gpu/android/AHardwareBufferUtils.h"
 #include "tests/Test.h"
 #include "tools/SkSharingProc.h"
 #include "tools/ToolUtils.h"
@@ -308,7 +309,7 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
         backendFormat,
         false   // isRenderable
     );
-    SkColorType colorType = GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
+    SkColorType colorType = AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
     sk_sp<SkImage> image = SkImages::BorrowTextureFrom(context,
                                                        texture,
                                                        kTopLeft_GrSurfaceOrigin,
