@@ -42,13 +42,6 @@ struct SkSamplingOptions;
 enum SkColorType : int;
 enum class SkTileMode;
 
-static sk_sp<SkImage> wrap_proxy_in_image(GrRecordingContext* context,
-                                          GrSurfaceProxyView view,
-                                          const SkColorInfo& colorInfo) {
-    return sk_make_sp<SkImage_Ganesh>(
-            sk_ref_sp(context), kNeedNewImageUniqueID, std::move(view), colorInfo);
-}
-
 class SkSpecialImage_Gpu final : public SkSpecialImage {
 public:
     SkSpecialImage_Gpu(GrRecordingContext* context,
@@ -74,36 +67,10 @@ public:
                 fContext, subset, this->uniqueID(), fView, this->colorInfo(), this->props());
     }
 
-    sk_sp<SkImage> onAsImage(const SkIRect* subset) const override {
-        GrSurfaceProxy* proxy = fView.proxy();
-        if (subset) {
-            if (proxy->isFunctionallyExact() && *subset == SkIRect::MakeSize(proxy->dimensions())) {
-                proxy->priv().exactify(false);
-                // The existing GrTexture is already tight so reuse it in the SkImage
-                return wrap_proxy_in_image(fContext, fView, this->colorInfo());
-            }
-
-            auto subsetView = GrSurfaceProxyView::Copy(fContext,
-                                                       fView,
-                                                       skgpu::Mipmapped::kNo,
-                                                       *subset,
-                                                       SkBackingFit::kExact,
-                                                       skgpu::Budgeted::kYes,
-                                                       /*label=*/"SkSpecialImage_AsImage");
-            if (!subsetView) {
-                return nullptr;
-            }
-            SkASSERT(subsetView.asTextureProxy());
-            SkASSERT(subsetView.proxy()->priv().isExact());
-
-            // MDB: this is acceptable (wrapping subsetProxy in an SkImage) bc Copy will
-            // return a kExact-backed proxy
-            return wrap_proxy_in_image(fContext, std::move(subsetView), this->colorInfo());
-        }
-
-        proxy->priv().exactify(true);
-
-        return wrap_proxy_in_image(fContext, fView, this->colorInfo());
+    sk_sp<SkImage> asImage() const override {
+        fView.proxy()->priv().exactify(true);
+        return sk_make_sp<SkImage_Ganesh>(
+                sk_ref_sp(fContext), this->uniqueID(), fView, this->colorInfo());
     }
 
     sk_sp<SkShader> onAsShader(SkTileMode tileMode,
