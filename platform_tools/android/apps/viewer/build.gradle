@@ -12,12 +12,11 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 30
     defaultConfig {
         applicationId "org.skia.viewer"
-        minSdkVersion 26
-        targetSdkVersion 26
+        minSdkVersion 30
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         signingConfig signingConfigs.debug
