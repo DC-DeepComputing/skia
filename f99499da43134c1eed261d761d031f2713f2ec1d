@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce50674b_21b83111",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-08T18:42:18Z",
+      "side": 1,
+      "message": "Rendering into a colorType with X gets tricky when the format itself has an Alpha channel. We can easily enough avoid writes into the A channel, but the A channel can still affect RGB channels when blending. One approach is to always do manual in shader blending and thus we can always use 1 for alpha in the shader math. But this is going to be a lot slower than allowing hardware to do the blending. If we wanted to allow hardware blending, then we kind of need to know the Alpha channel was initialized to 1 before getting to Skia. But this isn\u0027t always something a client of Skia\u0027s can even do when the textures are coming from some other piece of hardware.",
+      "parentUuid": "ecd80dfc_fc7c762a",
+      "range": {
+        "startLine": 2129,
+        "startChar": 55,
+        "endLine": 2129,
+        "endChar": 64
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45d3c11f_6ef0d357",
