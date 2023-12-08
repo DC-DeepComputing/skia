@@ -532,7 +532,6 @@ private:
     friend class SkRemoteGlyphCacheTest;
 
     sk_sp<SkTypeface> refTypefaceOrDefault() const;
-    SkTypeface* getTypefaceOrDefault() const;
 };
 
 #endif

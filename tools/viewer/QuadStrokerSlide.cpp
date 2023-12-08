@@ -32,6 +32,7 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStroke.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
 #include <cfloat>
@@ -604,7 +605,8 @@ private:
                 SkString label;
                 label.appendS32(index);
                 canvas->drawString(label,
-                    pos.x() + tan.x() * 1.25f, pos.y() + tan.y() * 1.25f, SkFont(), paint);
+                    pos.x() + tan.x() * 1.25f, pos.y() + tan.y() * 1.25f, ToolUtils::DefaultFont(),
+                    paint);
             }
         }
     }

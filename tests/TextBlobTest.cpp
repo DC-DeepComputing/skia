@@ -452,7 +452,7 @@ DEF_TEST(TextBlob_serialize, reporter) {
 
 DEF_TEST(TextBlob_MakeAsDrawText, reporter) {
     const char text[] = "Hello";
-    auto blob = SkTextBlob::MakeFromString(text, SkFont(), SkTextEncoding::kUTF8);
+    auto blob = SkTextBlob::MakeFromString(text, ToolUtils::DefaultFont(), SkTextEncoding::kUTF8);
 
     int runs = 0;
     for(SkTextBlobRunIterator it(blob.get()); !it.done(); it.next()) {
