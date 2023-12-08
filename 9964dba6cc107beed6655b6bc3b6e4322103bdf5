@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6f6c154_e514b06b",
+        "filename": "src/gpu/android/AHardwareBufferUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-08T18:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c9e4f93_14ef11c1",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbd0748b_9bf0c3fc",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a39f77be_3558a593",
+        "filename": "src/gpu/android/AHardwareBufferUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-08T18:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbd0748b_9bf0c3fc",
+      "range": {
+        "startLine": 15,
+        "startChar": 22,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06b6268a_ec1dd570",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-12-08T18:18:29Z",
       "side": 1,
       "message": "Move this include to after line 183 with the rest of the android-only includes",
+      "range": {
+        "startLine": 32,
+        "startChar": 26,
+        "endLine": 32,
+        "endChar": 46
+      },
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "046bbf94_33e6eac0",
+        "filename": "tests/MultiPictureDocumentTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-08T18:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06b6268a_ec1dd570",
       "range": {
         "startLine": 32,
         "startChar": 26,
