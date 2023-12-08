@@ -147,10 +147,9 @@ skgpu::ContextType DawnTestContext::contextType() {
 
         case wgpu::BackendType::OpenGLES:
             return skgpu::ContextType::kDawn_OpenGLES;
-
         default:
-            SkDEBUGFAIL("unexpected Dawn backend");
-            return skgpu::ContextType::kDawn;
+            SK_ABORT("unexpected Dawn backend");
+            return skgpu::ContextType::kMock;
     }
 }
 
