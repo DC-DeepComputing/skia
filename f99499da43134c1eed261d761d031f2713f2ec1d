@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecd80dfc_fc7c762a",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2023-12-08T18:36:18Z",
+      "side": 1,
+      "message": "Done. Yes it would be nice to have a real brgx and something that can be rendered (write) to not simply used a texture (read)",
+      "parentUuid": "450fb7bc_bfcfab20",
+      "range": {
+        "startLine": 2129,
+        "startChar": 55,
+        "endLine": 2129,
+        "endChar": 64
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45d3c11f_6ef0d357",
