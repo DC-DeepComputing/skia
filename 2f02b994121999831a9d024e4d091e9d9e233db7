@@ -16,6 +16,23 @@
       "message": "lgtm",
       "revId": "2f02b994121999831a9d024e4d091e9d9e233db7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2da76ded_b0df1c9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-08T17:46:38Z",
+      "side": 1,
+      "message": "Going to wait until after the Android branch (and also see about making this accessible via include/private/chromium, so we can start using it).",
+      "revId": "2f02b994121999831a9d024e4d091e9d9e233db7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
