@@ -1306,7 +1306,9 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
         builder[2] = renderPassKey & 0xFFFFFFFF;
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
-        builder[4] = renderPassDesc.fWriteSwizzle.asKey();
+        bool loadMsaaFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                                   renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+        builder[4] = renderPassDesc.fWriteSwizzle.asKey() | (loadMsaaFromResolve << 16);
 
         builder.finish();
     }

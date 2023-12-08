@@ -41,10 +41,14 @@ void add_attachment_description_info_to_key(GraphiteResourceKey::Builder& builde
 
 GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
         const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
+    // ever expect 1 (in most cases) or 2 (when loading MSAA from resolve).
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
     bool  hasColorAttachment        = renderPassDesc.fColorAttachment.fTextureInfo.isValid();
     bool  hasColorResolveAttachment = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid();
     bool  hasDepthStencilAttachment = renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid();
-    bool  hasInputAttachment        = false; // TODO: Determine this through RenderPassDesc
+    bool  hasInputAttachment        = loadMSAAFromResolve; // TODO: Determine this through RenderPassDesc
     // TODO: Query for more attachments once the RenderPassDesc struct contains that information.
     // For now, we only ever expect to see 0 or 1 of each attachment type (color, resolve, and
     // depth/stencil), so the count of each of those can simply be determined with a bool.
@@ -66,7 +70,9 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
     if (hasDepthStencilAttachment) {
         rpAttachments.push_back(&renderPassDesc.fDepthStencilAttachment);
     }
-    // TODO: Add input attachment from RenderPassDesc if it has one
+    if (hasInputAttachment) {
+        rpAttachments.push_back(&renderPassDesc.fColorResolveAttachment);
+    }
 
     // Calculate how many int32s we need to capture all relevant information.
     int num32DataCnt = 0;
@@ -79,10 +85,6 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
     // Then, subpass information will be added in the form of attachment reference indices. Reserve
     // one int32 for each possible attachment reference type, of which there are 4.
     // TODO: Reference RenderPassDesc to determine number and makeup of subpasses. For now, we only
-    // ever expect 1 (in most cases) or 2 (when loading MSAA from resolve).
-    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid()
-                               ? renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad
-                               : false;
     int subpassCount = loadMSAAFromResolve ? 2 : 1;
     num32DataCnt += 4 * subpassCount;
     // Finally, subpass dependency information will be recorded. Each dependency will be allotted 7
@@ -128,7 +130,8 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
                                                               : VK_ATTACHMENT_UNUSED;
             builder[builderIdx++] = hasDepthStencilAttachment ? kDepthStencilAttachmentIdx
                                                               : VK_ATTACHMENT_UNUSED;
-            builder[builderIdx++] = hasInputAttachment        ? kMainSubpassInputAttachmentIdx
+            builder[builderIdx++] = !loadMSAAFromResolve &&   // todo explain/change this
+                                    hasInputAttachment        ? kMainSubpassInputAttachmentIdx
                                                               : VK_ATTACHMENT_UNUSED;
         } else {
             SkASSERT(hasColorAttachment);
@@ -148,8 +151,8 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
         builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // srcStageMask
         builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // dstStageMask
         builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;          // srcAccessMask
-        builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;          // dstAccessMask
+        builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |          // dstAccessMask
+                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
         builder[builderIdx++] = VK_DEPENDENCY_BY_REGION_BIT;                   // dependencyFlags
     }
 
@@ -243,6 +246,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
         colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
         if (hasColorResolveAttachment) {
+            SkDebugf("Making render pass where we load msaa from resolve\n");
             loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
             VulkanTextureInfo resolveAttachTexInfo;
@@ -334,6 +338,8 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
         dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         dependency.dstAccessMask =
                 VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    } else {
+        SkDebugf("Making render pass where we DO NOT load msaa from resolve\n");
     }
 
     VkSubpassDescription& mainSubpassDesc = subpassDescs.push_back();
@@ -351,8 +357,8 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     mainSubpassDesc.pPreserveAttachments = nullptr;
 
     renderPassInfo.pSubpasses = subpassDescs.begin();
-    renderPassInfo.dependencyCount = 0;
-    renderPassInfo.pDependencies = VK_NULL_HANDLE;
+    renderPassInfo.dependencyCount = loadMSAAFromResolve ? 1 : 0;
+    renderPassInfo.pDependencies = loadMSAAFromResolve ? &dependency : VK_NULL_HANDLE;
     renderPassInfo.attachmentCount = attachmentDescs.size();
     renderPassInfo.pAttachments = attachmentDescs.begin();
 
@@ -368,12 +374,13 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     VULKAN_CALL(context->interface(), GetRenderAreaGranularity(context->device(),
                                                                renderPass,
                                                                &granularity));
-    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass, granularity));
+    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass, granularity, renderPassInfo.subpassCount));
 }
 
 VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                                    VkRenderPass renderPass,
-                                   VkExtent2D granularity)
+                                   VkExtent2D granularity,
+                                   int subpassCount)
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
@@ -381,7 +388,8 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                    /*label=*/"VulkanRenderPass")
         , fSharedContext(context)
         , fRenderPass (renderPass)
-        , fGranularity (granularity) {
+        , fGranularity (granularity)
+        , fSubpassCount (subpassCount) {
 }
 
 void VulkanRenderPass::freeGpuData() {

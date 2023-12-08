@@ -77,7 +77,7 @@ const char* kDebugLayerNames[] = {
     // single merged layer
     "VK_LAYER_KHRONOS_validation",
     // not included in standard_validation
-    //"VK_LAYER_LUNARG_api_dump",
+    // "VK_LAYER_LUNARG_api_dump",
     //"VK_LAYER_LUNARG_vktrace",
     //"VK_LAYER_LUNARG_screenshot",
 };
@@ -760,6 +760,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
             // many warnings even though we don't actually use them. It's easiest to just
             // avoid enabling those.
             if (0 == strcmp(deviceExtensions[i].extensionName, "VK_EXT_provoking_vertex") ||
+                0 == strcmp(deviceExtensions[i].extensionName, "VK_EXT_shader_object") ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_KHR_dynamic_rendering") ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_NV_acquire_winrt_display") ||
                 0 == strcmp(deviceExtensions[i].extensionName, "VK_NV_cuda_kernel_launch") ||

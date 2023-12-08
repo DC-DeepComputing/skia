@@ -37,16 +37,13 @@ public:
     inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     inline static const DescriptorData kIntrinsicUniformBufferDescriptor = {
-            DescriptorType::kUniformBuffer,
-            /*descCount=*/1,
+            DescriptorType::kUniformBuffer, /*descCount=*/1,
             VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
     inline static const DescriptorData kRenderStepUniformDescriptor = {
-            DescriptorType::kUniformBuffer,
-            /*descCount=*/1,
+            DescriptorType::kUniformBuffer, /*descCount=*/1,
             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex};
     inline static const DescriptorData kPaintUniformDescriptor = {
-            DescriptorType::kUniformBuffer,
-            /*descCount=*/1,
+            DescriptorType::kUniformBuffer, /*descCount=*/1,
             VulkanGraphicsPipeline::kPaintUniformBufferIndex};
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
@@ -54,10 +51,23 @@ public:
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
+    // Currently input attachments are only used for loading MSAA from resolve, so we can use the
+    // descriptor set index normally assigned to texture desc sets.
+    inline static constexpr unsigned int kInputAttachmentDescSetIndex = 1;
 
     inline static constexpr unsigned int kVertexBufferIndex = 0;
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumInputBuffers = 2;
+
+
+    inline static constexpr unsigned int kInputDescriptorBindingIndex = 0; // todo - should this be the set index?
+    inline static const DescriptorData kInputAttachmentDescriptor = {
+        DescriptorType::kInputAttachment, /*descCount=*/1,
+        VulkanGraphicsPipeline::kInputDescriptorBindingIndex};
+    // inline statis constexpr unsigned int kTextureDescriptorBindingIndex = 0; // todo - should this be the set index?
+    // inline static const DescriptorData kTextureDescriptor = {
+    //     DescriptorType::kTexture, /*descCount=*/1,
+    //     VulkanGraphicsPipeline::kTextureBindDescSetIndex};
 
     static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*,
                                               SkSL::Compiler* compiler,
@@ -74,7 +84,8 @@ public:
             VkPipelineShaderStageCreateInfo* pipelineShaderStages,
             VkPipelineLayout,
             sk_sp<VulkanRenderPass> compatibleRenderPass,
-            VkPipelineCache);
+            VkPipelineCache,
+            int numSamples);
 
     static bool InitializeMSAALoadPipelineStructs(
             const VulkanSharedContext*,
@@ -107,7 +118,8 @@ private:
                            VkPipeline,
                            bool hasFragmentUniforms,
                            bool hasStepUniforms,
-                           int numTextureSamplers);
+                           int numTextureSamplers,
+                           bool ownsPipelineLayout);
 
     void freeGpuData() override;
 
@@ -116,6 +128,7 @@ private:
     bool fHasFragmentUniforms = false;
     bool fHasStepUniforms = false;
     int fNumTextureSamplers = 0;
+    bool fOwnsPipelineLayout = true;
 };
 
 } // namespace skgpu::graphite
