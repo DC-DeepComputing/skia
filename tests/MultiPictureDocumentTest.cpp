@@ -308,7 +308,7 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
         backendFormat,
         false   // isRenderable
     );
-    SkColorType colorType = GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
+    SkColorType colorType = AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
     sk_sp<SkImage> image = SkImages::BorrowTextureFrom(context,
                                                        texture,
                                                        kTopLeft_GrSurfaceOrigin,
