@@ -21,7 +21,6 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkTime.h"
-#include "tools/fonts/FontToolUtils.h"
 
 #include <algorithm>
 #include <string>
