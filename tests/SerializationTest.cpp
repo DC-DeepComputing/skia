@@ -623,7 +623,7 @@ static void draw_something(SkCanvas* canvas) {
     canvas->drawCircle(SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/3), paint);
     paint.setColor(SK_ColorBLACK);
 
-    SkFont font;
+    SkFont font = ToolUtils::DefaultFont();
     font.setSize(kBitmapSize/3);
     canvas->drawString("Picture", SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/4), font, paint);
 }
