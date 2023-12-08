@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a37fd57_5ee1a806",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-08T18:18:29Z",
+      "side": 1,
+      "message": "Bazel changes lgtm",
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c9e4f93_14ef11c1",
+        "filename": "src/gpu/android/AHardwareBufferUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-08T18:18:29Z",
+      "side": 1,
+      "message": "I would prefer not to have this guard unless absolutely necessary. Same for the C++ file.\n\nOur build system rules should be sufficient to include or not include this, IMO",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd0748b_9bf0c3fc",
+        "filename": "src/gpu/android/AHardwareBufferUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-08T18:18:29Z",
+      "side": 1,
+      "message": "nit: does this need to be included?",
+      "range": {
+        "startLine": 15,
+        "startChar": 22,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b6268a_ec1dd570",
+        "filename": "tests/MultiPictureDocumentTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-08T18:18:29Z",
+      "side": 1,
+      "message": "Move this include to after line 183 with the rest of the android-only includes",
+      "range": {
+        "startLine": 32,
+        "startChar": 26,
+        "endLine": 32,
+        "endChar": 46
+      },
+      "revId": "9964dba6cc107beed6655b6bc3b6e4322103bdf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
