@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebdb77f7_969a3dc9",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2118,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2023-12-08T16:44:49Z",
+      "side": 1,
+      "message": "made same as vk version",
+      "range": {
+        "startLine": 2118,
+        "startChar": 47,
+        "endLine": 2118,
+        "endChar": 63
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c07f5b94_a741df5f",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2023-12-08T16:44:49Z",
+      "side": 1,
+      "message": "Should this actually be BRGA?",
+      "range": {
+        "startLine": 2129,
+        "startChar": 55,
+        "endLine": 2129,
+        "endChar": 64
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d3c11f_6ef0d357",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2023-12-08T16:44:49Z",
+      "side": 1,
+      "message": "Why is this not \"wrapping\" instead of upload data",
+      "range": {
+        "startLine": 974,
+        "startChar": 47,
+        "endLine": 974,
+        "endChar": 63
+      },
+      "revId": "f99499da43134c1eed261d761d031f2713f2ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
