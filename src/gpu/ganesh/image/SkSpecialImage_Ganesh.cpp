@@ -93,13 +93,6 @@ public:
 
     GrSurfaceProxyView view(GrRecordingContext*) const { return fView; }
 
-    bool onGetROPixels(SkBitmap* dst) const override {
-        // This should never be called: All GPU image filters are implemented entirely on the GPU,
-        // so we never perform read-back.
-        SkASSERT(false);
-        return false;
-    }
-
     sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const override {
         return SkSpecialImages::MakeDeferredFromGpu(
                 fContext, subset, this->uniqueID(), fView, this->colorInfo(), this->props());
@@ -204,18 +197,11 @@ sk_sp<SkSpecialImage> MakeDeferredFromGpu(GrRecordingContext* context,
 }
 
 GrSurfaceProxyView AsView(GrRecordingContext* context, const SkSpecialImage* img) {
-    if (!context || !img) {
+    if (!context || !img || !img->isGaneshBacked()) {
         return {};
     }
-    if (img->isGaneshBacked()) {
-        auto grImg = static_cast<const SkSpecialImage_Gpu*>(img);
-        return grImg->view(context);
-    }
-    SkASSERT(!img->isGraphiteBacked());
-    SkBitmap bm;
-    SkAssertResult(img->getROPixels(&bm));  // this should always succeed for raster images
-    return std::get<0>(GrMakeCachedBitmapProxyView(
-            context, bm, /*label=*/"SpecialImageRaster_AsView", skgpu::Mipmapped::kNo));
+    auto grImg = static_cast<const SkSpecialImage_Gpu*>(img);
+    return grImg->view(context);
 }
 
 }  // namespace SkSpecialImages
