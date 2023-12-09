@@ -21,6 +21,10 @@ extern "C" {
 // skcms can leverage some C++ extensions when they are present.
 #define ARRAY_COUNT(arr) (int)(sizeof((arr)) / sizeof(*(arr)))
 
+#if defined(__arm__) && defined(__aarch64__)
+    #error both __arm__ and __aarch64__ were defined
+#endif
+
 #if defined(__clang__) && defined(__has_cpp_attribute)
     #if __has_cpp_attribute(clang::fallthrough)
         #define SKCMS_FALLTHROUGH [[clang::fallthrough]]
