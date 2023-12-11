@@ -413,6 +413,9 @@ static sk_sp<SkTypeface> DeserializeTypeface(const void* data, size_t length, vo
         SkDEBUGFAIL("Did not serialize an index");
         return nullptr;
     }
+    if (!data) {
+        return nullptr;
+    }
     size_t idx = *reinterpret_cast<const size_t*>(data);
     if (idx >= SkToSizeT(array->size())) {
         SkDEBUGFAIL("Index too big");
