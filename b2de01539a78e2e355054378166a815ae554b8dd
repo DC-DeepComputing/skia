@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e7f155_cd6296a6",
+        "filename": "tests/TextBlobTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-11T21:21:25Z",
+      "side": 1,
+      "message": "`sizeof(idx)`? This is in bytes. I think this is working right now due to big endian?",
+      "range": {
+        "startLine": 420,
+        "startChar": 28,
+        "endLine": 420,
+        "endChar": 29
+      },
+      "revId": "b2de01539a78e2e355054378166a815ae554b8dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
