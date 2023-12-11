@@ -14,6 +14,11 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkRasterClip.h"
+#include "tools/flags/CommandLineFlags.h"
+
+#if defined(FAST_ERASE)
+static DEFINE_bool(erase, false, "Call erase");
+#endif
 
 class DrawPathBench : public Benchmark {
     SkPaint     fPaint;

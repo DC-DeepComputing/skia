@@ -1492,17 +1492,18 @@ int main(int argc, char** argv) {
             target->setup();
             bench->perCanvasPreDraw(canvas);
 
-            int maxFrameLag;
-            int loops = target->needsFrameTiming(&maxFrameLag)
-                ? setup_gpu_bench(target, bench.get(), maxFrameLag)
-                : setup_cpu_bench(overhead, target, bench.get());
+//            int maxFrameLag;
+            int loops = 1;
+            // target->needsFrameTiming(&maxFrameLag)
+            //    ? setup_gpu_bench(target, bench.get(), maxFrameLag)
+            //    : setup_cpu_bench(overhead, target, bench.get());
 
             if (kFailedLoops == loops) {
                 // Can't be timed.  A warning note has already been printed.
                 cleanup_run(target);
                 continue;
             }
-
+/*
             if (runs == 0 && FLAGS_ms < 1000) {
                 // Run the first bench for 1000ms to warm up the nanobench if FLAGS_ms < 1000.
                 // Otherwise, the first few benches' measurements will be inaccurate.
@@ -1512,7 +1513,7 @@ int main(int argc, char** argv) {
                     pool.drain();
                 } while (now_ms() < stop);
             }
-
+*/
             if (FLAGS_ms) {
                 samples.clear();
                 auto stop = now_ms() + FLAGS_ms;
