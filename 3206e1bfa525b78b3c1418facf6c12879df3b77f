@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad1ba0bf_2b686818",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-11T18:44:41Z",
+      "side": 1,
+      "message": "rm extra spaces ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 26,
+        "endLine": 45,
+        "endChar": 28
+      },
+      "revId": "3206e1bfa525b78b3c1418facf6c12879df3b77f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
