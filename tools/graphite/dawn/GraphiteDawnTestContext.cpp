@@ -23,10 +23,6 @@
 namespace skiatest::graphite {
 
 std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::BackendType> backend) {
-    static std::unique_ptr<dawn::native::Instance> sInstance;
-    static dawn::native::Adapter sAdapter;
-    static SkOnce sOnce;
-
     static constexpr const char* kToggles[] = {
         "allow_unsafe_apis",  // Needed for dual-source blending.
         "use_user_defined_labels_in_backend",
@@ -35,55 +31,64 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
     togglesDesc.enabledToggleCount  = std::size(kToggles);
     togglesDesc.enabledToggles      = kToggles;
 
-    sOnce([&]{
-        DawnProcTable backendProcs = dawn::native::GetProcs();
-        dawnProcSetProcs(&backendProcs);
+    DawnProcTable backendProcs = dawn::native::GetProcs();
+    dawnProcSetProcs(&backendProcs);
 
-        sInstance = std::make_unique<dawn::native::Instance>();
-        wgpu::RequestAdapterOptions options;
-        options.nextInChain = &togglesDesc;
-        std::vector<dawn::native::Adapter> adapters = sInstance->EnumerateAdapters(&options);
-        SkASSERT(!adapters.empty());
-        // Sort adapters by adapterType(DiscreteGPU, IntegratedGPU, CPU) and
-        // backendType(WebGPU, D3D11, D3D12, Metal, Vulkan, OpenGL, OpenGLES).
-        std::sort(adapters.begin(),
-                  adapters.end(),
-                  [](dawn::native::Adapter a, dawn::native::Adapter b) {
-                      wgpu::AdapterProperties propA;
-                      wgpu::AdapterProperties propB;
-                      a.GetProperties(&propA);
-                      b.GetProperties(&propB);
-                      return std::tuple(propA.adapterType, propA.backendType) <
-                             std::tuple(propB.adapterType, propB.backendType);
-                  });
+    auto instance = std::make_unique<dawn::native::Instance>();
+    dawn::native::Adapter matchedAdaptor;
 
+    wgpu::RequestAdapterOptions options;
+    options.nextInChain = &togglesDesc;
+    std::vector<dawn::native::Adapter> adapters = instance->EnumerateAdapters(&options);
+    SkASSERT(!adapters.empty());
+    // Sort adapters by adapterType(DiscreteGPU, IntegratedGPU, CPU) and
+    // backendType(WebGPU, D3D11, D3D12, Metal, Vulkan, OpenGL, OpenGLES).
+    std::sort(adapters.begin(),
+              adapters.end(),
+              [](dawn::native::Adapter a, dawn::native::Adapter b) {
+                  wgpu::AdapterProperties propA;
+                  wgpu::AdapterProperties propB;
+                  a.GetProperties(&propA);
+                  b.GetProperties(&propB);
+                  return std::tuple(propA.adapterType, propA.backendType) <
+                         std::tuple(propB.adapterType, propB.backendType);
+              });
+
+    if (backend.has_value()) {
         for (const auto& adapter : adapters) {
             wgpu::AdapterProperties props;
             adapter.GetProperties(&props);
-            if (backend.has_value() && backend.value() == props.backendType) {
-                sAdapter = adapter;
+            if (backend.value() == props.backendType) {
+                matchedAdaptor = adapter;
                 break;
             }
+        }
+    } else {
+        for (const auto& adapter : adapters) {
+            wgpu::AdapterProperties props;
+            adapter.GetProperties(&props);
             // We never want a null/undefined backend.
             // Skip Dawn D3D11 backend for now.
             if (props.backendType != wgpu::BackendType::Null &&
                 props.backendType != wgpu::BackendType::Undefined &&
                 props.backendType != wgpu::BackendType::D3D11) {
-                sAdapter = adapter;
+                matchedAdaptor = adapter;
                 break;
             }
         }
-        SkASSERT(sAdapter);
+    }
+    if (!matchedAdaptor) {
+        return nullptr;
+    }
 
 #if LOG_ADAPTER
-        wgpu::AdapterProperties properties;
-        sAdapter.GetProperties(&properties);
-        SkDebugf("GPU: %s\nDriver: %s\n", properties.name, properties.driverDescription);
+    wgpu::AdapterProperties properties;
+    sAdapter.GetProperties(&properties);
+    SkDebugf("GPU: %s\nDriver: %s\n", properties.name, properties.driverDescription);
 #endif
-    });
 
     std::vector<wgpu::FeatureName> features;
-    wgpu::Adapter adapter = sAdapter.Get();
+    wgpu::Adapter adapter = matchedAdaptor.Get();
     if (adapter.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled)) {
         features.push_back(wgpu::FeatureName::MSAARenderToSingleSampled);
     }
@@ -105,7 +110,7 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
     desc.requiredFeatures      = features.data();
     desc.nextInChain           = &togglesDesc;
 
-    wgpu::Device device = wgpu::Device::Acquire(sAdapter.CreateDevice(&desc));
+    wgpu::Device device = wgpu::Device::Acquire(matchedAdaptor.CreateDevice(&desc));
     SkASSERT(device);
     device.SetUncapturedErrorCallback(
             [](WGPUErrorType type, const char* message, void*) {
@@ -123,7 +128,8 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
     skgpu::graphite::DawnBackendContext backendContext;
     backendContext.fDevice = device;
     backendContext.fQueue  = device.GetQueue();
-    return std::unique_ptr<GraphiteTestContext>(new DawnTestContext(backendContext));
+    return std::unique_ptr<GraphiteTestContext>(new DawnTestContext(backendContext,
+                                                                    std::move(instance)));
 }
 
 skgpu::ContextType DawnTestContext::contextType() {

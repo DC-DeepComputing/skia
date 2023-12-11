@@ -38,10 +38,14 @@ public:
     void tick() override;
 
 protected:
-    DawnTestContext(const skgpu::graphite::DawnBackendContext& backendContext)
-            : fBackendContext(backendContext) {}
+    DawnTestContext(const skgpu::graphite::DawnBackendContext& backendContext,
+                    std::unique_ptr<dawn::native::Instance> instance)
+            : fBackendContext(backendContext)
+            , fInstance(std::move(instance)) {}
 
     skgpu::graphite::DawnBackendContext fBackendContext;
+    // The instance needs to be kept alive for the length of the Dawn TestContext.
+    std::unique_ptr<dawn::native::Instance> fInstance;
 };
 
 }  // namespace skiatest::graphite
