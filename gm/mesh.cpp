@@ -8,23 +8,21 @@
 #include "gm/gm.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMesh.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkMeshGanesh.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/core/SkMeshPriv.h"
 #include "tools/DecodeUtils.h"
-#include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
-
-#include <memory>
 
 using namespace skia_private;
 
@@ -1501,5 +1499,86 @@ DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithImage))
 DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithPaintColor))
 DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithPaintImage))
 DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithEffects))
+
+static sk_sp<SkSurface> make_offscreen_cs(SkCanvas* canvas, sk_sp<SkColorSpace> cs) {
+    SkImageInfo ii = SkImageInfo::MakeN32Premul(200, 100, cs);
+    auto surface = canvas->makeSurface(ii);
+    return surface ? surface : SkSurfaces::Raster(ii);
+}
+
+DEF_SIMPLE_GM(custommesh_cs_uniforms, canvas, 200, 300) {
+    using Attribute = SkMeshSpecification::Attribute;
+
+    static constexpr auto kRect = SkRect::MakeLTRB(20, 20, 80, 80);
+    static constexpr SkPoint kQuad[]{
+            {kRect.left(), kRect.top()},
+            {kRect.right(), kRect.top()},
+            {kRect.left(), kRect.bottom()},
+            {kRect.right(), kRect.bottom()},
+    };
+
+    static const Attribute kAttributes[]{
+            {Attribute::Type::kFloat2, 0, SkString{"pos"}},
+    };
+
+    static constexpr char kVS[] = R"(
+        Varyings main(in const Attributes attributes) {
+            Varyings varyings;
+            varyings.position = attributes.pos;
+            return varyings;
+        }
+    )";
+    static constexpr char kFS[] = R"(
+        layout(color) uniform half4 color;
+        float2 main(const Varyings varyings, out half4 c) {
+            c = color;
+            return varyings.position;
+        }
+    )";
+
+    auto vb = SkMeshes::MakeVertexBuffer(kQuad, sizeof(kQuad));
+    auto unis = SkData::MakeWithCopy(&SkColors::kRed, sizeof(SkColor4f));
+
+    auto [spec, error] = SkMeshSpecification::Make(kAttributes,
+                                                   sizeof(SkPoint),
+                                                   /*varyings=*/{},
+                                                   SkString(kVS),
+                                                   SkString(kFS),
+                                                   SkColorSpace::MakeSRGB(),
+                                                   kPremul_SkAlphaType);
+    if (!spec) {
+        SkDebugf("%s\n", error.c_str());
+    }
+    auto result = SkMesh::Make(spec,
+                               SkMesh::Mode::kTriangleStrip,
+                               vb,
+                               /*vertexCount=*/4,
+                               /*vertexOffset=*/0,
+                               /*uniforms=*/std::move(unis),
+                               /*children=*/{},
+                               kRect);
+    if (!result.mesh.isValid()) {
+        SkDebugf("Mesh creation failed: %s\n", result.error.c_str());
+    }
+
+    // In each case, the left and right boxes should match:
+    for (const sk_sp<SkColorSpace>& cs :
+         {sk_sp<SkColorSpace>(nullptr),
+          SkColorSpace::MakeSRGB()->makeColorSpin(),
+          SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kRec2020)}) {
+
+        sk_sp<SkSurface> offscreen = make_offscreen_cs(canvas, cs);
+        SkCanvas* offscreenCanvas = offscreen->getCanvas();
+
+        SkPaint paint;
+        offscreenCanvas->drawMesh(result.mesh, SkBlender::Mode(SkBlendMode::kDst), paint);
+        offscreenCanvas->translate(100, 0);
+        paint.setColor4f(SkColors::kRed);
+        offscreenCanvas->drawRect(kRect, paint);
+
+        offscreen->draw(canvas, 0, 0);
+        canvas->translate(0, 100);
+    }
+}
 
 }  // namespace skiagm

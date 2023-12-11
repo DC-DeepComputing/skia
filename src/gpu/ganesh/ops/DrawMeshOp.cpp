@@ -877,7 +877,7 @@ MeshOp::MeshOp(GrProcessorSet*                              processorSet,
     if (fColorSpaceXform) {
         fUniforms = SkRuntimeEffectPriv::TransformUniforms(mesh.spec()->uniforms(),
                                                            mesh.refUniforms(),
-                                                           fColorSpaceXform->steps());
+                                                           mesh.spec()->colorSpace());
     } else {
         fUniforms = mesh.refUniforms();
     }
