@@ -34,6 +34,24 @@
       "parentUuid": "0f7635fe_25954b7c",
       "revId": "666250ca20c86fc855a07c6c89a8e20a22427550",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8869ca8d_d2c2c6ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-11T14:00:31Z",
+      "side": 1,
+      "message": "Done by updating the serializing logic in the unit test. I briefly tried to do this in SkWriteBuffer, but things broke in ways I didn\u0027t understand.",
+      "parentUuid": "f44b29bc_d9789575",
+      "revId": "666250ca20c86fc855a07c6c89a8e20a22427550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
