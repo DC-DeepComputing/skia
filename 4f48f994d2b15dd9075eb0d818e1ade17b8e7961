@@ -34,6 +34,24 @@
       "parentUuid": "35bcc65f_cc1d4462",
       "revId": "4f48f994d2b15dd9075eb0d818e1ade17b8e7961",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80abdde5_22f5e373",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-11T15:45:06Z",
+      "side": 1,
+      "message": "The encoder has the same issue. In `serialize_image` there is a direct call to `SkJpegEncoder::Encode`. This may be backed by an implementation in either `SkJpegEncoderImpl.cpp` or `SkJpegEncoder_none.cpp`, yet another build time selector. So if the jpeg decoder should be passed in, the encoder should be as well. Also, it appears that the current `src/pdf/BUILD.bazel` doesn\u0027t know about the encoder dependency.\n\nThis goes further, since there is a long standing request to be able to pass in a subsetter (though that is a larger and less stable interface making it more difficult to abstract).",
+      "parentUuid": "dccd6c35_2e4a734b",
+      "revId": "4f48f994d2b15dd9075eb0d818e1ade17b8e7961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
