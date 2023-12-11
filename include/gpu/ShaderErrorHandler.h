@@ -18,7 +18,15 @@ class SK_API ShaderErrorHandler {
 public:
     virtual ~ShaderErrorHandler() = default;
 
+    // compileError(shader, errors) is kept for backward compatibility with older clients.
     virtual void compileError(const char* shader, const char* errors) = 0;
+    virtual void compileError(const char* shader,
+                              const char* errors,
+                              bool shaderWasCached) {
+        // Default implementation. Ignore shaderWasCached.
+        (void)shaderWasCached;
+        compileError(shader, errors);
+    }
 
 protected:
     ShaderErrorHandler() = default;
