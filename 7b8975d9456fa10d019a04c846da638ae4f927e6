@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ab4d459_431faa40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-11T20:21:04Z",
+      "side": 1,
+      "message": "Created the method but not sure where to hook it in. Should I add use of it to CombinationBuilderTest and PaintParamsKeyTest?",
+      "revId": "7b8975d9456fa10d019a04c846da638ae4f927e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
