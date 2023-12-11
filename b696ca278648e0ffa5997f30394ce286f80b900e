@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6992e608_417c4750",
+        "filename": "tests/TextBlobTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-11T19:57:57Z",
+      "side": 1,
+      "message": "Because `SerializeTypeface` returned `nullptr` I think you\u0027re getting `nullptr` here so dereferencing it is not good. A check on `data` (and maybe `length`) would be a good idea here.",
+      "range": {
+        "startLine": 416,
+        "startChar": 50,
+        "endLine": 416,
+        "endChar": 54
+      },
+      "revId": "b696ca278648e0ffa5997f30394ce286f80b900e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
