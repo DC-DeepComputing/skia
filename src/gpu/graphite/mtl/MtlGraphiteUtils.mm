@@ -92,7 +92,7 @@ sk_cfp<id<MTLLibrary>> MtlCompileShaderLibrary(const MtlSharedContext* sharedCon
                                                     error:&error]);
     if (!compiledLibrary) {
         std::string mslStr(msl);
-        errorHandler->compileError(mslStr.c_str(), error.debugDescription.UTF8String);
+        errorHandler->compileError(mslStr.c_str(), error.debugDescription.UTF8String, false);
         return nil;
     }
 
