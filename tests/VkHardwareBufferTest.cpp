@@ -1371,4 +1371,3 @@ DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_Vulkan_Syncs,
 
 #endif  // defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) &&
         // __ANDROID_API__ >= 26 && defined(SK_VULKAN)
-
