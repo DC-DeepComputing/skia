@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a0125f_11bbb6db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-11T20:38:40Z",
+      "side": 1,
+      "message": "I would leave it be for now. Ideally we would add to the (still incomplete) fuzzer.",
+      "parentUuid": "7ab4d459_431faa40",
+      "revId": "7b8975d9456fa10d019a04c846da638ae4f927e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecd329ff_0d69583a",
