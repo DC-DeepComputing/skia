@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2e91388_46a5fb19",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-11T14:45:36Z",
+      "side": 1,
+      "message": "update ?",
+      "range": {
+        "startLine": 723,
+        "startChar": 49,
+        "endLine": 723,
+        "endChar": 60
+      },
+      "revId": "8338832d72430f6c60609db043ba29aae935c4f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93fa62e9_328b4035",
+        "filename": "tests/SpecialImageTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-11T14:45:36Z",
+      "side": 1,
+      "message": "AsBitmap ?",
+      "range": {
+        "startLine": 94,
+        "startChar": 12,
+        "endLine": 94,
+        "endChar": 23
+      },
+      "revId": "8338832d72430f6c60609db043ba29aae935c4f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
