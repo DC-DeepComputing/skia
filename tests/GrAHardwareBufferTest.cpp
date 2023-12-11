@@ -97,6 +97,7 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& expectedBit
     return result;
 }
 
+#if 1
 static void cleanup_resources(AHardwareBuffer* buffer) {
     if (buffer) {
         AHardwareBuffer_release(buffer);
@@ -218,15 +219,18 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAHardwareBuffer_BasicDrawTest,
     basic_draw_test_helper(reporter, context_info, kTopLeft_GrSurfaceOrigin);
     basic_draw_test_helper(reporter, context_info, kBottomLeft_GrSurfaceOrigin);
 }
+#endif
 
 static void surface_draw_test_helper(skiatest::Reporter* reporter,
                                      const sk_gpu_test::ContextInfo& info,
                                      GrSurfaceOrigin surfaceOrigin) {
 
     auto context = info.directContext();
-    if (!context->priv().caps()->supportsAHardwareBufferImages()) {
-        return;
-    }
+//    if (!context->priv().caps()->supportsAHardwareBufferImages()) {
+//        return;
+//    }
+
+    bool isProtected = context->priv().caps()->supportsProtectedContent();
 
     ///////////////////////////////////////////////////////////////////////////
     // Setup SkBitmaps
@@ -234,6 +238,7 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
 
     const SkBitmap srcBitmap = make_src_bitmap();
 
+#if 1
     ///////////////////////////////////////////////////////////////////////////
     // Setup AHardwareBuffer
     ///////////////////////////////////////////////////////////////////////////
@@ -247,7 +252,8 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     hwbDesc.usage = AHARDWAREBUFFER_USAGE_CPU_READ_NEVER |
                     AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER |
                     AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE |
-                    AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT;
+                    AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT |
+                    (isProtected ? AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT : 0);
 
     hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
     // The following three are not used in the allocate
@@ -263,21 +269,33 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
 
     sk_sp<SkSurface> surface =
             SkSurfaces::WrapAndroidHardwareBuffer(context, buffer, surfaceOrigin, nullptr, nullptr);
+#else
+    SkImageInfo ii = SkImageInfo::Make({DEV_W, DEV_H}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context,
+                                                        skgpu::Budgeted::kYes,
+                                                        ii,
+                                                        1,
+                                                        kTopLeft_GrSurfaceOrigin,
+                                                        nullptr);
+#endif
+
     if (!surface) {
         ERRORF(reporter, "Failed to make SkSurface.");
-        cleanup_resources(buffer);
+//        cleanup_resources(buffer);
         return;
     }
 
     surface->getCanvas()->drawImage(srcBitmap.asImage(), 0, 0);
 
-    SkBitmap readbackBitmap;
-    readbackBitmap.allocN32Pixels(DEV_W, DEV_H);
+    if (!isProtected) {
+        SkBitmap readbackBitmap;
+        readbackBitmap.allocN32Pixels(DEV_W, DEV_H);
 
-    REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
-    REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
+        REPORTER_ASSERT(reporter, surface->readPixels(readbackBitmap, 0, 0));
+        REPORTER_ASSERT(reporter, check_read(reporter, srcBitmap, readbackBitmap));
+    }
 
-    cleanup_resources(buffer);
+//    cleanup_resources(buffer);
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.

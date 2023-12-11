@@ -543,7 +543,10 @@ bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
     fBackendContext.fDevice = VK_NULL_HANDLE;
 
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, fExtensions,
-                                             fFeatures, &fDebugCallback)) {
+                                             fFeatures, &fDebugCallback,
+                                             nullptr,
+                                             sk_gpu_test::CanPresentFn(),
+                                             false)) {
         return false;
     }
     fDevice = fBackendContext.fDevice;
@@ -1371,4 +1374,3 @@ DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_Vulkan_Syncs,
 
 #endif  // defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) &&
         // __ANDROID_API__ >= 26 && defined(SK_VULKAN)
-

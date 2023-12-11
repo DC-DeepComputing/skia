@@ -61,13 +61,16 @@ void GraphiteVulkanWindowContext::initializeContext() {
     SkASSERT(!fGraphiteContext && !fGraphiteRecorder);
     // any config code here (particularly for msaa)?
 
+    SkDebugf("------------- Gr:initializeContext %d\n", fDisplayParams.fCreateProtectedNativeBackend);
+
     PFN_vkGetInstanceProcAddr getInstanceProc = fGetInstanceProcAddr;
     skgpu::VulkanBackendContext backendContext;
     skgpu::VulkanExtensions extensions;
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             fCanPresentFn,
+                                             fDisplayParams.fCreateProtectedNativeBackend)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -157,6 +160,7 @@ void GraphiteVulkanWindowContext::initializeContext() {
 
 bool GraphiteVulkanWindowContext::createSwapchain(int width, int height,
                                                   const DisplayParams& params) {
+    SkDebugf("----  GraphiteVulkanWindowContext::createSwapchai\n");
     // check for capabilities
     VkSurfaceCapabilitiesKHR caps;
     VkResult res = fGetPhysicalDeviceSurfaceCapabilitiesKHR(fPhysicalDevice, fSurface, &caps);
