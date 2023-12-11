@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "4fb12cbd72418035ef2c3b1d717cd2cb5a46e83b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42f8e4c8_d46d4ea2",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-11T17:27:58Z",
+      "side": 1,
+      "message": "Could we do something like your swizzle folding into the color space matrix to combine channel selection and the yuvToRGB matrix?",
+      "range": {
+        "startLine": 405,
+        "startChar": 14,
+        "endLine": 405,
+        "endChar": 47
+      },
+      "revId": "4fb12cbd72418035ef2c3b1d717cd2cb5a46e83b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
