@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "34f3353c_8e0f2d06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-11T17:47:30Z",
+      "side": 1,
+      "message": "Nit: Due to how we\u0027ve named shaders in graphite, in this context I think of \"hw sampling\" as \"hardware tiling\" which we aren\u0027t doing for yuv. Though our default shader-tiled image shader doesn\u0027t have such a convenient descriptive name.",
+      "range": {
+        "startLine": 7,
+        "startChar": 55,
+        "endLine": 7,
+        "endChar": 66
+      },
+      "revId": "4fb12cbd72418035ef2c3b1d717cd2cb5a46e83b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d8bf8c4c_3b9f4835",
