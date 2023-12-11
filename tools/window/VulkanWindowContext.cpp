@@ -55,6 +55,8 @@ void VulkanWindowContext::initializeContext() {
     SkASSERT(!fContext);
     // any config code here (particularly for msaa)?
 
+    SkDebugf("------------- Ga:initializeContext %d\n", fDisplayParams.fCreateProtectedNativeBackend);
+
     PFN_vkGetInstanceProcAddr getInstanceProc = fGetInstanceProcAddr;
     GrVkBackendContext backendContext;
     skgpu::VulkanExtensions extensions;
@@ -146,6 +148,8 @@ void VulkanWindowContext::initializeContext() {
 
 bool VulkanWindowContext::createSwapchain(int width, int height,
                                           const DisplayParams& params) {
+    SkDebugf("------------- createSwapchain %d\n", fDisplayParams.fCreateProtectedNativeBackend);
+
     // check for capabilities
     VkSurfaceCapabilitiesKHR caps;
     VkResult res = fGetPhysicalDeviceSurfaceCapabilitiesKHR(fPhysicalDevice, fSurface, &caps);
@@ -344,6 +348,8 @@ bool VulkanWindowContext::createBuffers(VkFormat format,
     SkASSERT(fImageCount);
     fImages = new VkImage[fImageCount];
     fGetSwapchainImagesKHR(fDevice, fSwapchain, &fImageCount, fImages);
+
+    SkDebugf("------------- createBuffers %d\n", fDisplayParams.fCreateProtectedNativeBackend);
 
     // set up initial image layouts and create surfaces
     fImageLayouts = new VkImageLayout[fImageCount];
