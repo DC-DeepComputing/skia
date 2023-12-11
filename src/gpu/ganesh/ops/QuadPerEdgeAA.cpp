@@ -817,6 +817,7 @@ private:
     QuadPerEdgeAAGeometryProcessor(const VertexSpec& spec)
             : INHERITED(kQuadPerEdgeAAGeometryProcessor_ClassID)
             , fTextureColorSpaceXform(nullptr) {
+        SkDebugf("-------- QuadPerEdgeAAGeometryProcessor\n");
         SkASSERT(!spec.hasSubset());
         this->initializeAttrs(spec);
         this->setTextureSamplerCnt(0);
@@ -833,6 +834,7 @@ private:
             , fSaturate(saturate)
             , fTextureColorSpaceXform(std::move(textureColorSpaceXform))
             , fSampler(samplerState, backendFormat, swizzle) {
+        SkDebugf("-------- QuadPerEdgeAAGeometryProcessor 2\n");
         SkASSERT(spec.hasLocalCoords());
         this->initializeAttrs(spec);
         this->setTextureSamplerCnt(1);

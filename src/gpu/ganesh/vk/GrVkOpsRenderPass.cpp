@@ -685,6 +685,10 @@ void GrVkOpsRenderPass::onSetScissorRect(const SkIRect& scissor) {
 
 #ifdef SK_DEBUG
 void check_sampled_texture(GrTexture* tex, GrAttachment* colorAttachment, GrVkGpu* gpu) {
+    SkDebugf("check_sampled_texture %d %d %d\n",
+             tex->isProtected(),
+             colorAttachment->isProtected(),
+             gpu->protectedContext());
     SkASSERT(!tex->isProtected() || (colorAttachment->isProtected() && gpu->protectedContext()));
     auto vkTex = static_cast<GrVkTexture*>(tex)->textureImage();
     SkASSERT(vkTex->currentLayout() == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
@@ -698,12 +702,15 @@ bool GrVkOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
     SkASSERT(fCurrentPipelineState);
     auto colorAttachment = fFramebuffer->colorAttachment();
     for (int i = 0; i < geomProc.numTextureSamplers(); ++i) {
+        SkDebugf("geom\n");
         check_sampled_texture(geomProcTextures[i]->peekTexture(), colorAttachment, fGpu);
     }
     pipeline.visitTextureEffects([&](const GrTextureEffect& te) {
+        SkDebugf("pipeline\n");
         check_sampled_texture(te.texture(), colorAttachment, fGpu);
     });
     if (GrTexture* dstTexture = pipeline.peekDstTexture()) {
+        SkDebugf("dst\n");
         check_sampled_texture(dstTexture, colorAttachment, fGpu);
     }
 #endif

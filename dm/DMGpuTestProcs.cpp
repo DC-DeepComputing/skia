@@ -129,7 +129,7 @@ void RunWithGraphiteTestContexts(GraphiteTestFn* test,
             continue;
         }
 
-        skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(contextType);
+        skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo11(contextType);
         if (!ctxInfo.fContext) {
             continue;
         }

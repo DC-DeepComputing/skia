@@ -46,6 +46,7 @@ GrTexture::GrTexture(GrGpu* gpu,
         : GrSurface(gpu, dimensions, isProtected, label)
         , fTextureType(textureType)
         , fMipmapStatus(mipmapStatus) {
+    SkDebugf("GrTexture %d\n", isProtected == GrProtected::kYes);
     if (fMipmapStatus == GrMipmapStatus::kNotAllocated) {
         fMaxMipmapLevel = 0;
     } else {

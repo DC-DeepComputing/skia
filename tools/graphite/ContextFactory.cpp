@@ -51,7 +51,7 @@ ContextInfo ContextFactory::AsContextInfo(const OwnedContextInfo& owned) {
     return ContextInfo{owned.fTestContext.get(), owned.fContext.get()};
 }
 
-ContextInfo ContextFactory::getContextInfo(skgpu::ContextType type) {
+ContextInfo ContextFactory::getContextInfo11(skgpu::ContextType type) {
     if (!skgpu::IsDawnBackend(type) && fOptions.fNeverYieldToWebGPU) {
         return {};
     }
@@ -74,7 +74,7 @@ ContextInfo ContextFactory::getContextInfo(skgpu::ContextType type) {
         } break;
         case skgpu::ContextType::kVulkan: {
 #ifdef SK_VULKAN
-            testCtx = graphite::VulkanTestContext::Make();
+            testCtx = graphite::VulkanTestContext::Make7();
 #endif
         } break;
         case skgpu::ContextType::kDawn:
