@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df4e419d_57313dfe",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-11T14:47:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2e91388_46a5fb19",
+      "range": {
+        "startLine": 723,
+        "startChar": 49,
+        "endLine": 723,
+        "endChar": 60
+      },
+      "revId": "8338832d72430f6c60609db043ba29aae935c4f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93fa62e9_328b4035",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-11T14:45:36Z",
       "side": 1,
       "message": "AsBitmap ?",
+      "range": {
+        "startLine": 94,
+        "startChar": 12,
+        "endLine": 94,
+        "endChar": 23
+      },
+      "revId": "8338832d72430f6c60609db043ba29aae935c4f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5badc00f_f7bcd254",
+        "filename": "tests/SpecialImageTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-11T14:47:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93fa62e9_328b4035",
       "range": {
         "startLine": 94,
         "startChar": 12,
