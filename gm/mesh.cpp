@@ -8,23 +8,21 @@
 #include "gm/gm.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMesh.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkMeshGanesh.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/core/SkMeshPriv.h"
 #include "tools/DecodeUtils.h"
-#include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
-
-#include <memory>
 
 using namespace skia_private;
 
@@ -1501,5 +1499,93 @@ DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithImage))
 DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithPaintColor))
 DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithPaintImage))
 DEF_GM(return new MeshWithShadersGM(MeshWithShadersGM::Type::kMeshWithEffects))
+
+class MeshColorSpaceUniformsGM : public skiagm::GM {
+public:
+    MeshColorSpaceUniformsGM() {}
+
+protected:
+    using Attribute = SkMeshSpecification::Attribute;
+    using Varying   = SkMeshSpecification::Varying;
+
+    SkISize getISize() override { return {200, 100}; }
+
+    void onOnceBeforeDraw() override {
+        static const Attribute kAttributes[]{
+                {Attribute::Type::kFloat2, 0, SkString{"pos"}},
+        };
+
+        static constexpr char kVS[] = R"(
+                Varyings main(in const Attributes attributes) {
+                    Varyings varyings;
+                    varyings.position = attributes.pos;
+                    return varyings;
+                }
+        )";
+        static constexpr char kFS[] = R"(
+                layout(color) uniform half4 color;
+                float2 main(const Varyings varyings, out half4 c) {
+                    c = color;
+                    return varyings.position;
+                }
+        )";
+        auto [spec, error] =
+                SkMeshSpecification::Make(kAttributes,
+                                          sizeof(SkPoint),
+                                          /*varyings=*/{},
+                                          SkString(kVS),
+                                          SkString(kFS),
+                                          SkColorSpace::MakeSRGB(),
+                                          kPremul_SkAlphaType);
+        if (!spec) {
+            SkDebugf("%s\n", error.c_str());
+        }
+        fSpec = std::move(spec);
+
+        fVB = SkMeshes::MakeVertexBuffer(kQuad, sizeof(kQuad));
+    }
+
+    SkString getName() const override { return SkString("custommesh_cs_uniforms"); }
+
+    DrawResult onDraw(SkCanvas* canvas, SkString* error) override {
+        auto unis = SkData::MakeWithCopy(&SkColors::kRed, sizeof(SkColor4f));
+
+        auto result = SkMesh::Make(fSpec,
+                                    SkMesh::Mode::kTriangleStrip,
+                                    fVB,
+                                    /*vertexCount=*/4,
+                                    /*vertexOffset=*/0,
+                                    /*uniforms=*/std::move(unis),
+                                    /*children=*/{},
+                                    kRect);
+
+        if (!result.mesh.isValid()) {
+            SkDebugf("Mesh creation failed: %s\n", result.error.c_str());
+            return DrawResult::kFail;
+        }
+
+        SkPaint paint;
+        canvas->drawMesh(result.mesh, SkBlender::Mode(SkBlendMode::kDst), paint);
+
+        canvas->translate(100, 0);
+
+        return DrawResult::kOk;
+    }
+
+private:
+    static constexpr auto kRect = SkRect::MakeLTRB(20, 20, 80, 80);
+
+    static constexpr SkPoint kQuad[] {
+            {kRect.left() , kRect.top()   },
+            {kRect.right(), kRect.top()   },
+            {kRect.left() , kRect.bottom()},
+            {kRect.right(), kRect.bottom()},
+    };
+
+    sk_sp<SkMesh::VertexBuffer> fVB;
+    sk_sp<SkMeshSpecification> fSpec;
+};
+
+DEF_GM(return new MeshColorSpaceUniformsGM())
 
 }  // namespace skiagm
