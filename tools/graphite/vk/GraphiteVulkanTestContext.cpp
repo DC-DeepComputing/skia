@@ -19,6 +19,8 @@
 namespace skiatest::graphite {
 
 std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
+    SkDebugf("-------- 10\n");
+
     skgpu::VulkanBackendContext backendContext;
     skgpu::VulkanExtensions* extensions;
     VkPhysicalDeviceFeatures2* features;
@@ -34,7 +36,9 @@ std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {
     features = new VkPhysicalDeviceFeatures2;
     memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions,
-                                             features, &debugCallback)) {
+                                             features, &debugCallback,
+                                             nullptr, sk_gpu_test::CanPresentFn(),
+                                             false)) { //$$
         sk_gpu_test::FreeVulkanFeaturesStructs(features);
         delete features;
         delete extensions;
@@ -91,6 +95,7 @@ skgpu::ContextType VulkanTestContext::contextType() {
 
 std::unique_ptr<skgpu::graphite::Context> VulkanTestContext::makeContext(
         const TestOptions& options) {
+    SkDebugf("-=---- VulkanTestContext::makeContext\n");
     SkASSERT(!options.fNeverYieldToWebGPU);
     skgpu::graphite::ContextOptions revisedContextOptions(options.fContextOptions);
     skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
