@@ -18,7 +18,7 @@ class VulkanTestContext : public GraphiteTestContext {
 public:
     ~VulkanTestContext() override;
 
-    static std::unique_ptr<GraphiteTestContext> Make();
+    static std::unique_ptr<GraphiteTestContext> Make7();
 
     skgpu::BackendApi backend() override { return skgpu::BackendApi::kVulkan; }
 

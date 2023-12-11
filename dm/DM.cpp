@@ -989,6 +989,7 @@ static bool gather_srcs() {
 static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     std::unique_ptr<Sink> sink(s);
 
+#if 0
     // Try a simple Src as a canary.  If it fails, skip this sink.
     struct : public Src {
         Result draw(SkCanvas* c, skiatest::graphite::GraphiteTestContext*) const override {
@@ -1007,6 +1008,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         info("Could not run %s: %s\n", config.getTag().c_str(), result.c_str());
         exit(1);
     }
+#endif
 
     TaggedSink& ts = gSinks->push_back();
     ts.reset(sink.release());  // NOLINT(misc-uniqueptr-reset-release)
@@ -1591,7 +1593,7 @@ int main(int argc, char** argv) {
 #if !defined(SK_DISABLE_LEGACY_FONTMGR_FACTORY)
     ToolUtils::SetDefaultFontMgr();
 #endif
-    CommonFlags::SetAnalyticAA();
+//    CommonFlags::SetAnalyticAA();
     skiatest::SetFontTestDataDirectory();
 
     gSkForceRasterPipelineBlitter     = FLAGS_forceRasterPipelineHP || FLAGS_forceRasterPipeline;

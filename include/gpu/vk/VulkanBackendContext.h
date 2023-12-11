@@ -38,7 +38,7 @@ struct SK_API VulkanBackendContext {
     // for allocating Vulkan resources that use VkDeviceMemory.
     sk_sp<VulkanMemoryAllocator>     fMemoryAllocator;
     skgpu::VulkanGetProc             fGetProc;
-    Protected                        fProtectedContext;
+    Protected                        fProtectedContext1;
 };
 
 } // namespace skgpu::graphite

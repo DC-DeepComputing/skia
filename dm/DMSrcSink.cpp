@@ -2128,7 +2128,7 @@ Result GraphiteSink::draw(const Src& src,
     SkImageInfo ii = SkImageInfo::Make(src.size(), this->colorInfo());
 
     skiatest::graphite::ContextFactory factory(options);
-    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo11(fContextType);
     skgpu::graphite::Context* context = ctxInfo.fContext;
     if (!context) {
         return Result::Fatal("Could not create a context.");
