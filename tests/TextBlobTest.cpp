@@ -398,7 +398,7 @@ static sk_sp<SkImage> render(const SkTextBlob* blob) {
 static sk_sp<SkData> SerializeTypeface(SkTypeface* tf, void* ctx) {
     // Do not serialize the empty font.
     if (!tf || (tf->countGlyphs() == 0 && tf->getBounds().isEmpty())) {
-        return nullptr;
+        return SkData::MakeEmpty();
     }
     auto array = (TArray<sk_sp<SkTypeface>>*)ctx;
     const size_t idx = array->size();
@@ -411,6 +411,9 @@ static sk_sp<SkTypeface> DeserializeTypeface(const void* data, size_t length, vo
     auto array = (TArray<sk_sp<SkTypeface>>*)ctx;
     if (length != sizeof(size_t)) {
         SkDEBUGFAIL("Did not serialize an index");
+        return nullptr;
+    }
+    if (!data) {
         return nullptr;
     }
     size_t idx = *reinterpret_cast<const size_t*>(data);
