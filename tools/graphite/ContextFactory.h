@@ -36,7 +36,7 @@ public:
 
     ~ContextFactory() = default;
 
-    ContextInfo getContextInfo(skgpu::ContextType);
+    ContextInfo getContextInfo11(skgpu::ContextType);
 
 private:
     struct OwnedContextInfo {

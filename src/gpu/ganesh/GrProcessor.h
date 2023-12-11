@@ -33,6 +33,7 @@ public:
         kCircularRRectEffect_ClassID,
         kClockwiseTestProcessor_ClassID,
         kColorTableEffect_ClassID,
+
         kCoverageSetOpXP_ClassID,
         kCustomXP_ClassID,
         kDashingCircleEffect_ClassID,
@@ -43,6 +44,7 @@ public:
         kDisableColorXP_ClassID,
         kDrawAtlasPathShader_ClassID,
         kEllipseGeometryProcessor_ClassID,
+
         kEllipticalRRectEffect_ClassID,
         kFwidthSquircleTestProcessor_ClassID,
         kGP_ClassID,
@@ -64,6 +66,7 @@ public:
         kGrDSLFPTest_Ternary_ClassID,
         kGrDSLFPTest_WhileStatement_ClassID,
         kGrFillRRectOp_Processor_ClassID,
+
         kGrGaussianConvolutionFragmentProcessor_ClassID,
         kGrMatrixConvolutionEffect_ClassID,
         kGrMatrixEffect_ClassID,
@@ -85,6 +88,7 @@ public:
         kPremulFragmentProcessor_ClassID,
         kQuadEdgeEffect_ClassID,
         kQuadPerEdgeAAGeometryProcessor_ClassID,
+
         kSeriesFragmentProcessor_ClassID,
         kShaderPDXferProcessor_ClassID,
         kSurfaceColorProcessor_ClassID,

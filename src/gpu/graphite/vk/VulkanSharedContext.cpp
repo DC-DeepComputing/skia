@@ -21,6 +21,7 @@ namespace skgpu::graphite {
 
 sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& context,
                                                const ContextOptions& options) {
+    SkDebugf("---------------- here %d\n", context.fProtectedContext1 == Protected::kYes);
     if (context.fInstance == VK_NULL_HANDLE ||
         context.fPhysicalDevice == VK_NULL_HANDLE ||
         context.fDevice == VK_NULL_HANDLE ||
@@ -99,7 +100,7 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
                                                           physDevVersion,
                                                           featuresPtr,
                                                           context.fVkExtensions,
-                                                          context.fProtectedContext));
+                                                          context.fProtectedContext1));
 
     sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
     if (!memoryAllocator) {

@@ -17,7 +17,10 @@
 
 #include <queue>
 
-GrGeometryProcessor::GrGeometryProcessor(ClassID classID) : GrProcessor(classID) {}
+GrGeometryProcessor::GrGeometryProcessor(ClassID classID) : GrProcessor(classID) {
+    SkDebugf("-------------- GrGeometryProcessor %d\n", classID);
+    SkDebugf("-------- %d\n", ClassID::kQuadPerEdgeAAGeometryProcessor_ClassID);
+}
 
 const GrGeometryProcessor::TextureSampler& GrGeometryProcessor::textureSampler(int i) const {
     SkASSERT(i >= 0 && i < this->numTextureSamplers());
