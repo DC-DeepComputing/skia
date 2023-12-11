@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "826ddcf2_33fb9942",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-11T20:13:25Z",
+      "side": 1,
+      "message": "If this relands, we\u0027ll need to add a case here for \"@platforms//os:android\": and private_hdrs",
+      "revId": "cdc40b40cdde070414d75ac289f47c401b7f26b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
