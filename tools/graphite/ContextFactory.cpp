@@ -74,7 +74,7 @@ ContextInfo ContextFactory::getContextInfo(skgpu::ContextType type) {
         } break;
         case skgpu::ContextType::kVulkan: {
 #ifdef SK_VULKAN
-            testCtx = graphite::VulkanTestContext::Make();
+            testCtx = graphite::VulkanTestContext::Make7();
 #endif
         } break;
         case skgpu::ContextType::kDawn:

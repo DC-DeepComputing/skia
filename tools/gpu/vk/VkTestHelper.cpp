@@ -203,6 +203,8 @@ std::unique_ptr<VkTestHelper> VkTestHelper::Make(skiatest::TestType testType,
 }
 
 bool VkTestHelper::setupBackendContext() {
+    SkDebugf("-------- 8\n");
+
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
         return false;
