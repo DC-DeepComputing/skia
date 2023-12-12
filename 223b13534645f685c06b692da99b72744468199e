@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d63655d4_62bdc6cc",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-12T18:40:00Z",
+      "side": 1,
+      "message": "So this means now all SkSL tests will be run on all supported configs for a device instaed of just the generic GrDawn config. I hope in the future to reduce this by limiting the number of dawn backends we actually compile based on the job. So there probably will only then be one supported config anyways.",
+      "range": {
+        "startLine": 885,
+        "startChar": 43,
+        "endLine": 885,
+        "endChar": 70
+      },
+      "revId": "223b13534645f685c06b692da99b72744468199e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
