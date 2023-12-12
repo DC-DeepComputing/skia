@@ -140,6 +140,30 @@
       },
       "revId": "4fa83679efd56ec513dbb54328ad56ac76b03de4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a3d5e34_43e2fda1",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-12T17:14:30Z",
+      "side": 1,
+      "message": "Sounds perfect.",
+      "parentUuid": "7c7d31b3_1bc8f7af",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 5
+      },
+      "revId": "4fa83679efd56ec513dbb54328ad56ac76b03de4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
