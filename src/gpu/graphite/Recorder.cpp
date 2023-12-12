@@ -220,6 +220,7 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
         return nullptr;
     }
 
+    SkDebugf("------ *Recorder::makeDeferredCanvas\n");
     fTargetProxyData = std::make_unique<Recording::LazyProxyData>(textureInfo);
     fTargetProxyDevice = Device::Make(this,
                                       fTargetProxyData->refLazyProxy(),

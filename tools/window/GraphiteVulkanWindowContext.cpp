@@ -55,6 +55,8 @@ GraphiteVulkanWindowContext::GraphiteVulkanWindowContext(const DisplayParams& pa
     , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
     this->initializeContext();
+    SkDebugf("------ GraphiteVulkanWindowContext\n");
+
 }
 
 void GraphiteVulkanWindowContext::initializeContext() {
@@ -65,6 +67,7 @@ void GraphiteVulkanWindowContext::initializeContext() {
     skgpu::VulkanBackendContext backendContext;
     skgpu::VulkanExtensions extensions;
     VkPhysicalDeviceFeatures2 features;
+    SkDebugf("------ *GraphiteVulkanWindowContext::initializeContext %d\n", fDisplayParams.fCreateProtectedNativeBackend);
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
                                              fCanPresentFn,
@@ -354,6 +357,8 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format,
                                                 VkImageUsageFlags usageFlags,
                                                 SkColorType colorType,
                                                 VkSharingMode sharingMode) {
+    SkDebugf("------ *GraphiteVulkanWindowContext::createBuffers\n");
+
     fGetSwapchainImagesKHR(fDevice, fSwapchain, &fImageCount, nullptr);
     SkASSERT(fImageCount);
     fImages = new VkImage[fImageCount];
@@ -379,7 +384,6 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format,
                                                    fPresentQueueIndex,
                                                    fImages[i],
                                                    skgpu::VulkanAlloc());
-
         fSurfaces[i] = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
                                                       backendTex,
                                                       colorType,
@@ -437,11 +441,18 @@ void GraphiteVulkanWindowContext::destroyBuffers() {
 }
 
 GraphiteVulkanWindowContext::~GraphiteVulkanWindowContext() {
+    SkDebugf("------ ~GraphiteVulkanWindowContext\n");
+
    this->destroyContext();
 }
 
 void GraphiteVulkanWindowContext::destroyContext() {
+    SkDebugf("------ GraphiteVulkanWindowContext::destroyContext\n");
     if (this->isValid()) {
+        if (fGraphiteContext) {
+            fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kYes);
+        }
+
         fQueueWaitIdle(fPresentQueue);
         fDeviceWaitIdle(fDevice);
 
@@ -501,6 +512,7 @@ GraphiteVulkanWindowContext::BackbufferInfo* GraphiteVulkanWindowContext::getAva
 }
 
 sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
+    SkDebugf("------ GraphiteVulkanWindowContext::getBackbufferSurface\n");
     BackbufferInfo* backbuffer = this->getAvailableBackbuffer();
     SkASSERT(backbuffer);
 

@@ -60,6 +60,14 @@
 
 #include <android/hardware_buffer.h>
 
+#include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/SharedContext.h"
+
+using namespace skgpu::graphite;
+
 namespace SkSurfaces {
 
 sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
@@ -129,6 +137,53 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
                                                               deleteImageCtx);
 
     return surface;
+}
+
+sk_sp<SkSurface> WrapAndroidHardwareBuffer2(Recorder* recorder,
+                                           AHardwareBuffer* hardwareBuffer,
+                                           sk_sp<SkColorSpace> colorSpace,
+                                           const SkSurfaceProps* surfaceProps,
+                                           bool fromWindow) {
+    AHardwareBuffer_Desc bufferDesc;
+    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+
+    if (!SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT) ||
+        !SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE)) {
+        return nullptr;
+    }
+
+    bool isProtectedContent = SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT);
+
+    bool fromWindowLocal = false;
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    fromWindowLocal = fromWindow;
+#endif
+
+    SkISize dims = SkISize::Make(bufferDesc.width, bufferDesc.height);
+
+    BackendTexture backendTexture = recorder->createBackendTexture(hardwareBuffer,
+                                                                   /* isRenderable= */ true,
+                                                                   isProtectedContent,
+                                                                   dims,
+                                                                   fromWindowLocal);
+    if (!backendTexture.isValid()) {
+        return nullptr;
+    }
+
+    SkDebugf("------ *WrapAndroidHardwareBuffer2 %d %d\n", isProtectedContent,
+             backendTexture.info().isProtected() == skgpu::Protected::kYes);
+
+    SkColorType colorType =
+            GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+
+    // Will call delete_vk_backend_texture if SkSurface creation fails.
+    return SkSurfaces::WrapBackendTexture(recorder,
+                                          backendTexture,
+                                          colorType,
+                                          std::move(colorSpace),
+                                          surfaceProps,
+                                          /* textureReleaseProc= */ nullptr,
+                                          /* textureReleaseContext= */ nullptr);
 }
 
 }  // namespace SkSurfaces
