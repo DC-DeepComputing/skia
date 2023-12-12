@@ -193,3 +193,12 @@ skia_cc_deps(
         },
     ),
 )
+
+skia_filegroup(
+    name = "gpu_hdrs",
+    srcs = [
+        ":core_hdrs",
+        ":shared_hdrs",
+    ],
+    visibility = ["//src/gpu:__subpackages__"],
+)
