@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe8f042_691e49d5",
+        "filename": "include/gpu/ShaderErrorHandler.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-12-12T07:25:27Z",
+      "side": 1,
+      "message": "Done. There are some test bots that complained that the arguments were unused.",
+      "parentUuid": "b89edacb_fe27617d",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 0
+      },
+      "revId": "e2ce248b6ec03b5555d7f39a4377ac1a49c688db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09ef0b40_e1565f90",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-11T18:32:10Z",
       "side": 1,
       "message": "`/*shaderWasCached\u003d*/` here and below?",
+      "range": {
+        "startLine": 87,
+        "startChar": 83,
+        "endLine": 87,
+        "endChar": 88
+      },
+      "revId": "e2ce248b6ec03b5555d7f39a4377ac1a49c688db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e06cb43d_e09be0ce",
+        "filename": "src/gpu/ganesh/mtl/GrMtlUtil.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-12-12T07:25:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09ef0b40_e1565f90",
       "range": {
         "startLine": 87,
         "startChar": 83,
