@@ -22,6 +22,7 @@
 #include "src/core/SkImageInfoPriv.h"
 
 #include <cstdint>
+#include <stdio.h>
 
 static constexpr char gGainmapSKSL[] =
         "uniform shader base;"
@@ -92,7 +93,10 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
             baseImage->colorSpace() ? baseImage->refColorSpace() : SkColorSpace::MakeSRGB();
 
     // Determine the color space in which the gainmap math is to be applied.
-    sk_sp<SkColorSpace> gainmapMathColorSpace = baseColorSpace->makeLinearGamma();
+    sk_sp<SkColorSpace> gainmapMathColorSpace =
+            gainmapInfo.fGainmapMathColorSpace
+                    ? gainmapInfo.fGainmapMathColorSpace->makeLinearGamma()
+                    : baseColorSpace->makeLinearGamma();
     if (!dstColorSpace) {
         dstColorSpace = SkColorSpace::MakeSRGB();
     }
