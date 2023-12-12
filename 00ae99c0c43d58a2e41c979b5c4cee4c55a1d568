@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e139f0ef_f91ee200",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-12T20:44:01Z",
+      "side": 1,
+      "message": "PTAL.",
+      "revId": "00ae99c0c43d58a2e41c979b5c4cee4c55a1d568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d0f21e8_1ea0e14b",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-12T20:44:01Z",
+      "side": 1,
+      "message": "This was a bug in the text code too. We never saw it, maybe because we weren\u0027t spilling the atlas during a layer draw.",
+      "range": {
+        "startLine": 414,
+        "startChar": 4,
+        "endLine": 414,
+        "endChar": 44
+      },
+      "revId": "00ae99c0c43d58a2e41c979b5c4cee4c55a1d568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
