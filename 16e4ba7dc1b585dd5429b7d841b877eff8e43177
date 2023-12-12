@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42aaa3db_435ba9f0",
+        "filename": "include/android/graphite/SurfaceAndroid.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-12T17:47:04Z",
+      "side": 1,
+      "message": "It looks like you\u0027re passing in `AHardwareBuffer*` here and not a context, so maybe rename this param and update the comment docs above accordingly",
+      "range": {
+        "startLine": 54,
+        "startChar": 50,
+        "endLine": 54,
+        "endChar": 75
+      },
+      "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4705bf9_8a706f8f",
+        "filename": "tests/graphite/AHardwareBufferTest.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-12T17:47:04Z",
+      "side": 1,
+      "message": "bit: rm extra space",
+      "range": {
+        "startLine": 116,
+        "startChar": 8,
+        "endLine": 116,
+        "endChar": 9
+      },
+      "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7501dec_1d788579",
+        "filename": "tests/graphite/AHardwareBufferTest.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-12T17:47:04Z",
+      "side": 1,
+      "message": "nit: `in the allocate call` or `for allocation`, etc",
+      "range": {
+        "startLine": 120,
+        "startChar": 47,
+        "endLine": 120,
+        "endChar": 55
+      },
+      "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0070d1a2_da1df780",
+        "filename": "tests/graphite/AHardwareBufferTest.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-12T17:47:04Z",
+      "side": 1,
+      "message": "These are the shared utilities that you and I had talked about awhile back that would be nice to have in a central location that became complicated to create. In lieu of that, I\u0027m fine to have them repeated in this graphite test for now.",
+      "range": {
+        "startLine": 30,
+        "startChar": 1,
+        "endLine": 166,
+        "endChar": 24
+      },
+      "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc032ce7_0eb955aa",
+        "filename": "tests/graphite/AHardwareBufferTest.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-12T17:47:04Z",
+      "side": 1,
+      "message": "The `VK_ANDROID_external_memory_android_hardware_buffer` extension (which provides us with important utilities/structs such as `VkAndroidHardwareBufferPropertiesANDROID`) is not yet ratified or promoted to a Vulkan release, so we should check for that extension support.\n\nhttps://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VK_ANDROID_external_memory_android_hardware_buffer.html#_ratification_status",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 57
+      },
+      "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
