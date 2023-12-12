@@ -128,6 +128,15 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     }
     fMaxUniformBufferRange = physDevProperties.limits.maxUniformBufferRange;
 
+#ifdef SK_BUILD_FOR_ANDROID
+    // Currently Adreno devices are not supporting the QUEUE_FAMILY_FOREIGN_EXTENSION, so until they
+    // do we don't explicitly require it here even the spec says it is required.
+    if (extensions->hasExtension(
+            VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)) {
+        fSupportsAHardwareBufferImages = true;
+    }
+#endif
+
     // Determine whether the client enabled certain physical device features.
     if (features) {
         auto ycbcrFeatures =
