@@ -59,6 +59,26 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext*,
                                      const SkSpan<DescriptorData>&,
                                      VkDescriptorSetLayout*);
 
+inline static const DescriptorData kIntrinsicUniformBufferDescriptor = {
+        DescriptorType::kUniformBuffer,/*descCount=*/1,
+        VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex,
+        PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+
+inline static const DescriptorData kRenderStepUniformDescriptor = {
+        DescriptorType::kUniformBuffer, /*descCount=*/1,
+        VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
+        PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+
+inline static const DescriptorData kPaintUniformDescriptor = {
+        DescriptorType::kUniformBuffer, /*descCount=*/1,
+        VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+        PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+
+inline static const DescriptorData kInputAttachmentDescriptor = {
+        DescriptorType::kInputAttachment, /*descCount=*/1,
+        VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+        PipelineStageFlags::kFragmentShader};
+
 bool vkFormatIsSupported(VkFormat);
 
 } // namespace skgpu::graphite
