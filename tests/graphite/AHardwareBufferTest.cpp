@@ -215,6 +215,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Graphite_AHardwareBuffer_ImportAsSurfac
     }
 
     surface.reset();
+    SkDebugf("------ reached end of Graphite_AHardwareBuffer_ImportAsSurface - isProtected: %d\n",
+             isProtected);
 }
 
 #endif // __ANDROID_API__ >= 26

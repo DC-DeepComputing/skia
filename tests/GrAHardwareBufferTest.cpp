@@ -112,6 +112,8 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
         return;
     }
 
+    bool isProtected = context->priv().caps()->supportsProtectedContent();
+
     ///////////////////////////////////////////////////////////////////////////
     // Setup SkBitmaps
     ///////////////////////////////////////////////////////////////////////////
@@ -207,6 +209,8 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     image.reset();
 
     cleanup_resources(buffer);
+    SkDebugf("------ reached end of GrAHardwareBuffer_BasicDrawTest - isProtected: %d\n",
+             isProtected);
 }
 
 // Basic test to make sure we can import an AHardwareBuffer into an SkImage and draw it into a
@@ -283,6 +287,8 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     }
 
     cleanup_resources(buffer);
+    SkDebugf("------ reached end of GrAHardwareBuffer_ImportAsSurface - isProtected: %d\n",
+             isProtected);
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.
