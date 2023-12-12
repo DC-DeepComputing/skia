@@ -151,6 +151,7 @@ skia_filegroup(
     ] + select(
         {
             ":has_vulkan": ["//src/gpu/vk:srcs"],
+            "@platforms//os:android": ["//src/gpu/android:android_srcs"],
             "//conditions:default": [],
         },
     ),
@@ -177,6 +178,7 @@ skia_filegroup(
         {
             ":has_vulkan": ["//src/gpu/vk:private_hdrs"],
             ":has_metal": ["//src/gpu/mtl:private_hdrs"],
+            "@platforms//os:android": ["//include/android:private_hdrs"],
         },
     ),
     visibility = ["//src:__pkg__"],
