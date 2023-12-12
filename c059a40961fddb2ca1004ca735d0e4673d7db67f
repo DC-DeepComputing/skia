@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d2af1c_b4bb59d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-12T17:40:21Z",
+      "side": 1,
+      "message": "If you visit , and click on \u0027Generate Password\u0027 at the top of the page, it will give instructions. That will generate a token on your machine allowing you to upload to Gerrit. That is probably the easiest thing to do - it makes iterating on the change much simpler. skia.googlesource.com",
+      "tag": "mailMessageId\u003d\u003cCAMcBjo5d\u003dCXu5weMuvC_XAzJH47B44Z\u003d72pLxWvMXOL1-o7N4w@mail.gmail.com\u003e",
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "655f1553_4bc56cf1",
