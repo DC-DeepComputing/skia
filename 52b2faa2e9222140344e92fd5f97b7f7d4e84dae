@@ -16,6 +16,236 @@
       "message": "Adding the Skia gardener to figure out who should review this",
       "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74dca450_a7001fb5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "nit: No tabs in the repo please",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 1
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b6fe736_47c1c437",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "nit: `return {p[ix[0]],` ...`",
+      "range": {
+        "startLine": 348,
+        "startChar": 8,
+        "endLine": 348,
+        "endChar": 15
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50751bcb_a8077a47",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "nit:\n```\n        U16 _01234567 \u003d _mm256_loadu_si256(((__m256i*)ptr) + 0);\n        U16 _89abcdef \u003d _mm256_loadu_si256(((__m256i*)ptr) + 1);\n```",
+      "range": {
+        "startLine": 386,
+        "startChar": 0,
+        "endLine": 389,
+        "endChar": 0
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb1bc7e2_7a16bb5a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "nit: Line wrapping cannot exceed 100 char",
+      "range": {
+        "startLine": 398,
+        "startChar": 100,
+        "endLine": 398,
+        "endChar": 101
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e39930a_17ad2852",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "nit:  the function nesting should approximate what `clang-format` would do; line wrapping cannot exceed 100 characters.",
+      "range": {
+        "startLine": 412,
+        "startChar": 81,
+        "endLine": 412,
+        "endChar": 98
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a35cb8ad_5e59ec61",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "Unnecessary?",
+      "range": {
+        "startLine": 450,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 44
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19c56ca2_c6b740b6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "_mm512_castps128_ps512",
+      "range": {
+        "startLine": 456,
+        "startChar": 16,
+        "endLine": 456,
+        "endChar": 34
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7367973d_f256ff72",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "_mm512_castps128_ps512",
+      "range": {
+        "startLine": 460,
+        "startChar": 16,
+        "endLine": 460,
+        "endChar": 34
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50194866_c36b62a1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "_mm512_castps128_ps512",
+      "range": {
+        "startLine": 464,
+        "startChar": 16,
+        "endLine": 464,
+        "endChar": 34
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9294a10_1a49acbb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 4398,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:45:59Z",
+      "side": 1,
+      "message": "I think this is the exact same as HSW? Would be simpler to do:\n\n`#if defined(JUMPER_IS_AVX512) || defined(JUMPER_IS_HSW)`",
+      "range": {
+        "startLine": 4398,
+        "startChar": 0,
+        "endLine": 4398,
+        "endChar": 29
+      },
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
