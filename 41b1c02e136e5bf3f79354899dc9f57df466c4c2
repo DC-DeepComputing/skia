@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6749a46e_63bd8fb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-12T21:29:01Z",
+      "side": 1,
+      "message": "Although clip shaders do change a draw\u0027s shader, I haven\u0027t made any changes to the precompilation system in this CL. Ideally we\u0027d be rid of this approach before that became necessary, but I\u0027m happy to try to incorporate this into the precomp system now if we want.",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c674dde4_f25ec51a",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-12T21:29:01Z",
+      "side": 1,
+      "message": "This doesn\u0027t use KeyContextWithLocalMatrix, as other places that use LocalMatrixShaderBlock do. It was unclear to me what the purpose of the new context is -- does it apply here?",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18bcc15_905eb532",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-12T21:29:01Z",
+      "side": 1,
+      "message": "I noticed that this constructor doesn\u0027t seem to be used anywhere. Am I missing something, or can we remove it? I seemed to recall it was related to precompilation.",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda0a73b_26c813af",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-12T21:29:01Z",
+      "side": 1,
+      "message": "Unfortunately this brings back the pattern of \"pass through previous output and set a global\" that we were able to get rid of in the dst read shader blocks. Not sure if there\u0027s a more clever way to apply the clip shader output.",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
