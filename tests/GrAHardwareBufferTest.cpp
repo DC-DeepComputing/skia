@@ -283,6 +283,8 @@ static void surface_draw_test_helper(skiatest::Reporter* reporter,
     }
 
     cleanup_resources(buffer);
+    SkDebugf("------ reached end of GrAHardwareBuffer_ImportAsSurface - isProtected: %d\n",
+             isProtected);
 }
 
 // Test to make sure we can import an AHardwareBuffer into an SkSurface and draw into it.
