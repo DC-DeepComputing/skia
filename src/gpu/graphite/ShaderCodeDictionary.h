@@ -61,6 +61,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "src" argument for a blender
     kBlenderDstColor = 0x4,  // The "dst" argument for a blender
     kSurfaceColor = 0x8,
+    kClipShaderCoverage = 0x10,
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
@@ -181,6 +182,9 @@ public:
     }
     bool needsSurfaceColor() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kSurfaceColor);
+    }
+    bool needsClipShaderCoverage() const {
+        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kClipShaderCoverage);
     }
     const RuntimeEffectDictionary* runtimeEffectDictionary() const {
         return fRuntimeEffectDictionary;
