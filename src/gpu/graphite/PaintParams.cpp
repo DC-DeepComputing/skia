@@ -55,6 +55,7 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkShader> shader,
                          sk_sp<SkColorFilter> colorFilter,
                          sk_sp<SkBlender> primitiveBlender,
+                         sk_sp<SkShader> clipShader,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform,
                          bool dither)
@@ -63,12 +64,14 @@ PaintParams::PaintParams(const SkColor4f& color,
         , fShader(std::move(shader))
         , fColorFilter(std::move(colorFilter))
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fClipShader(std::move(clipShader))
         , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
         , fDither(dither) {}
 
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
+                         sk_sp<SkShader> clipShader,
                          DstReadRequirement dstReadReq,
                          bool skipColorXform)
         : fColor(paint.getColor4f())
@@ -76,6 +79,7 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fClipShader(std::move(clipShader))
         , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
         , fDither(paint.isDither()) {}
@@ -331,6 +335,14 @@ void PaintParams::toKey(const KeyContext& keyContext,
     if (fDstReadReq != DstReadRequirement::kNone) {
         // In this case the blend will have been handled by shader-based blending with the dstRead.
         finalBlendMode = SkBlendMode::kSrc;
+    }
+
+    if (fClipShader) {
+        ClipShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+            AddToKey(keyContext, builder, gatherer, fClipShader.get());
+
+        builder->endBlock();
     }
 
     // Set the hardware blend mode.
