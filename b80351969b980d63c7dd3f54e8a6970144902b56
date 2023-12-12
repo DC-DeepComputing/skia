@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eaef3738_20305bf0",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-12T18:12:38Z",
+      "side": 1,
+      "message": "Personally I do think it could be confusing to have strict subsetting predicated on whether this is called with a tile mode, so I\u0027d be in favor of a different name, but I don\u0027t have any great name ideas. `asShaderStrictSubset`/`asShaderFastSubset`?",
+      "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb2660d8_77c71235",
         "filename": "src/core/SkSpecialImage.cpp",
         "patchSetId": 6
@@ -37,6 +54,23 @@
         "endLine": 69,
         "endChar": 48
       },
+      "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7dc26a6_13b7b026",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-12T18:12:38Z",
+      "side": 1,
+      "message": "Maybe it\u0027s worth copying comments from the other `onAsShader` regarding subsetOrigin?",
       "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
