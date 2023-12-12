@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6647cd0_7624d4ed",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-12T20:18:43Z",
+      "side": 1,
+      "message": "I did `asShaderFast()` to differentiate it from `asShader()` and liken back to the `kFast_SrcRectConstraint` terminology. I didn\u0027t rename `asShader()` to avoid modifying existing call sites.",
+      "parentUuid": "eaef3738_20305bf0",
+      "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb2660d8_77c71235",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-12-12T17:48:19Z",
       "side": 1,
       "message": "Line these guys up ?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 48
+      },
+      "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38df6482_2d86c432",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-12T20:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb2660d8_77c71235",
       "range": {
         "startLine": 67,
         "startChar": 0,
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c398737f_91966929",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-12T20:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7dc26a6_13b7b026",
+      "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f67ec392_1a2c6d4b",
@@ -88,6 +148,30 @@
       "writtenOn": "2023-12-12T17:48:19Z",
       "side": 1,
       "message": "Maybe:\n(i.e., non-strict sampling).\n\njust to make it obvious",
+      "range": {
+        "startLine": 109,
+        "startChar": 67,
+        "endLine": 109,
+        "endChar": 73
+      },
+      "revId": "b80351969b980d63c7dd3f54e8a6970144902b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd10ef3_b99f2365",
+        "filename": "src/core/SkSpecialImage.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-12T20:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f67ec392_1a2c6d4b",
       "range": {
         "startLine": 109,
         "startChar": 67,
