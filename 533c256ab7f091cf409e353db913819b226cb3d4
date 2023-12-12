@@ -16,6 +16,24 @@
       "message": "This needs an \"@platforms//os:android\" for the hdr or it will break G3",
       "revId": "533c256ab7f091cf409e353db913819b226cb3d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3134d883_a57e067e",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-12T15:39:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e1f4a5bf_61d0cc8e",
+      "revId": "533c256ab7f091cf409e353db913819b226cb3d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
