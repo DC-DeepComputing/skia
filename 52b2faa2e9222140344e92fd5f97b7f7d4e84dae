@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ed6bdab_cc394cd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:47:15Z",
+      "side": 1,
+      "message": "Please address build errors.\nIt may be faster iteration time if you work in Gerrit directly rather than go through Github. There are instructions in our docs: https://skia.org/docs/dev/contrib/submit/",
+      "revId": "52b2faa2e9222140344e92fd5f97b7f7d4e84dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74dca450_a7001fb5",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 2
