@@ -77,6 +77,9 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
+    // Returns true if the device supports importing Android hardware buffers into Vulkan memory.
+    bool supportsAndroidHWBExternalMemory() const { return fSupportsAndroidHWBExternalMemory; }
+
     bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
 
     uint32_t maxVertexAttributes() const {
@@ -229,6 +232,9 @@ private:
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
+
+    bool fSupportsAndroidHWBExternalMemory = false;
+
     bool fSupportsYcbcrConversion = false;
     bool fShouldAlwaysUseDedicatedImageMemory = false;
     bool fGpuOnlyBuffersMorePerformant = false;
