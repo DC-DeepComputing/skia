@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c007e846_06d83b7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-12T13:22:11Z",
+      "side": 1,
+      "message": "I think this was already reverted. Did you mean to reland?",
+      "revId": "cdcadf6c3df8937ccb980a6ba031f6f46b3fd0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
