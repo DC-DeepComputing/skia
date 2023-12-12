@@ -63,6 +63,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateNonprotectedContext,
                 options,
                 CtsEnforcement::kNever) {
     create_nonprotected_context(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("VkProtectedContext_CreateNonprotectedContext\n");
 }
 
 #if defined(SK_GRAPHITE)
@@ -71,6 +72,7 @@ DEF_GRAPHITE_TEST(VkProtectedContext_CreateNonprotectedContext_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     create_nonprotected_context(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("VkProtectedContext_CreateNonprotectedContext_Graphite\n");
 }
 
 #endif
@@ -168,6 +170,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateBackendTextures,
             create_backend_texture_ganesh(reporter, contextIsProtected, beTexIsProtected);
         }
     }
+    SkDebugf("VkProtectedContext_CreateBackendTextures\n");
 }
 
 #if defined(SK_GRAPHITE)
@@ -216,6 +219,7 @@ DEF_GRAPHITE_TEST(VkProtectedContext_CreateBackendTextures_Graphite,
             create_backend_texture_graphite(reporter, contextIsProtected, beTexIsProtected);
         }
     }
+    SkDebugf("VkProtectedContext_CreateBackendTextures_Graphite\n");
 }
 
 #endif // SK_GRAPHITE
@@ -237,6 +241,7 @@ DEF_GANESH_TEST(VkProtectedContext_ReadFromProtectedSurface,
                                                      /* isProtected= */ true);
     REPORTER_ASSERT(reporter, surface);
     REPORTER_ASSERT(reporter, !surface->readPixels(SkImageInfo(), nullptr, 8, 0, 0));
+    SkDebugf("VkProtectedContext_ReadFromProtectedSurface\n");
 }
 
 namespace {
@@ -285,12 +290,14 @@ DEF_GANESH_TEST(VkProtectedContext_AsyncReadFromProtectedSurface,
                 options,
                 CtsEnforcement::kNever) {
     async_read_from_protected_surface(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("VkProtectedContext_AsyncReadFromProtectedSurface\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_AsyncReadFromProtectedSurface_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     async_read_from_protected_surface(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("VkProtectedContext_AsyncReadFromProtectedSurface\n");
 }
 
 namespace {

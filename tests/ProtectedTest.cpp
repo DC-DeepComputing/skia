@@ -97,6 +97,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
             }
         }
     }
+
+    SkDebugf("Protected_SmokeTest\n");
 }
 
 // Verify that readPixels fails on protected surfaces
@@ -122,6 +124,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
         readback.allocPixels(surface->imageInfo());
         REPORTER_ASSERT(reporter, isProtected != surface->readPixels(readback, 0, 0));
     }
+
+    SkDebugf("Protected_readPixelsFromSurfaces\n");
 }
 
 namespace {
@@ -171,6 +175,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
         }
         REPORTER_ASSERT(reporter, isProtected != SkToBool(cbContext.fResult));
     }
+
+    SkDebugf("Protected_asyncRescaleAndReadPixelsFromSurfaces\n");
 }
 
 #endif  // defined(SK_GANESH)
