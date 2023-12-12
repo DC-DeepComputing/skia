@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "465d8cab_5365eec9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-12T19:21:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f358d46d_c9bbb0b2",
+      "range": {
+        "startLine": 135,
+        "startChar": 81,
+        "endLine": 136,
+        "endChar": 93
+      },
+      "revId": "bb73238778cd7a10d1071a4e3bd5ddd7e81c1a06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8356049_17b0b6eb",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-12T19:17:25Z",
       "side": 1,
       "message": "nit: Align formatting here (rm new lines and smoosh it with the rest, or separate it meaningfully, or make the others match. I\u0027m partial towards smooshing)",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 51
+      },
+      "revId": "bb73238778cd7a10d1071a4e3bd5ddd7e81c1a06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9146d1b4_984d408a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-12T19:21:13Z",
+      "side": 1,
+      "message": "As discussed this Boolean was delete.",
+      "parentUuid": "a8356049_17b0b6eb",
       "range": {
         "startLine": 236,
         "startChar": 0,
