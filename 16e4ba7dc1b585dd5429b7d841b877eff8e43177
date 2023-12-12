@@ -234,6 +234,30 @@
       },
       "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d12ebe19_1883fee2",
+        "filename": "tests/graphite/AHardwareBufferTest.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-12-12T19:01:53Z",
+      "side": 1,
+      "message": "Giving this a whirl over in: https://skia-review.googlesource.com/c/skia/+/789157",
+      "parentUuid": "0a00817e_67950f54",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 57
+      },
+      "revId": "16e4ba7dc1b585dd5429b7d841b877eff8e43177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
