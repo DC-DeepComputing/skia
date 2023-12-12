@@ -2295,6 +2295,10 @@ MACOS_DEFINES = [
 ANDROID_NO_CODECS_DEFINES = [
     "SK_BUILD_FOR_ANDROID",
     "SK_GL",
+    "SK_FONTMGR_ANDROID_AVAILABLE",
+    "SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE",
+    "SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE",
+    "SK_FONTMGR_FONTCONFIG_AVAILABLE",
 ]
 
 ################################################################################
