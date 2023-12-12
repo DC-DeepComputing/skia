@@ -73,7 +73,7 @@ public:
 
     void clearTexturePool();
 
-    // Push any pending uploads to atlases onto the draw context
+    // Push any pending uploads from TextAtlasManager and RasterPathAtlas.
     void recordUploads(DrawContext*, Recorder*);
 
 private:

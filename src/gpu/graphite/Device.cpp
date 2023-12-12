@@ -1320,7 +1320,7 @@ void Device::flushPendingWorkToRecorder() {
     // TODO: we may need to further split this function up since device->device drawList and
     // DrawPass stealing will need to share some of the same logic w/o becoming a Task.
 
-    // Push any pending uploads from the atlasProvider
+    // push any pending uploads from the atlasProvider
     fRecorder->priv().atlasProvider()->recordUploads(fDC.get(), fRecorder);
 
     auto uploadTask = fDC->snapUploadTask(fRecorder);
