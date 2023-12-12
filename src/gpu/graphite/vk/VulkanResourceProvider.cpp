@@ -54,6 +54,24 @@ VulkanResourceProvider::~VulkanResourceProvider() {
                                          fPipelineCache,
                                          nullptr));
     }
+    if (fMSAALoadVertShaderModule != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyShaderModule(this->vulkanSharedContext()->device(),
+                                        fMSAALoadVertShaderModule,
+                                        nullptr));
+    }
+    if (fMSAALoadFragShaderModule != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyShaderModule(this->vulkanSharedContext()->device(),
+                                        fMSAALoadFragShaderModule,
+                                        nullptr));
+    }
+    if (fMSAALoadPipelineLayout != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyPipelineLayout(this->vulkanSharedContext()->device(),
+                                          fMSAALoadPipelineLayout,
+                                          nullptr));
+    }
 }
 
 const VulkanSharedContext* VulkanResourceProvider::vulkanSharedContext() const {
@@ -244,6 +262,47 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     }
 
     return firstDescSet;
+}
+
+sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
+        const RenderPassDesc& renderPassDesc) {
+    uint64_t renderPassKey =
+            this->vulkanSharedContext()->vulkanCaps().getRenderPassDescKey(renderPassDesc);
+    sk_sp<VulkanGraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey];
+
+    if (!pipeline) {
+        auto compatibleRenderPass = this->findOrCreateRenderPass(renderPassDesc, true);
+        // The load msaa pipeline takes no uniforms, no vertex/instance attributes and only uses
+        // one texture that does not require a sampler.
+        if (fMSAALoadVertShaderModule   == VK_NULL_HANDLE ||
+            fMSAALoadFragShaderModule   == VK_NULL_HANDLE ||
+            fMSAALoadPipelineLayout     == VK_NULL_HANDLE) {
+            SkSL::Compiler compiler(fSharedContext->caps()->shaderCaps());
+            if (!VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
+                        this->vulkanSharedContext(),
+                        &compiler,
+                        &fMSAALoadVertShaderModule,
+                        &fMSAALoadFragShaderModule,
+                        &fMSAALoadShaderStageInfo[0],
+                        &fMSAALoadPipelineLayout)) {
+                SKGPU_LOG_E("Failed to initialize MSAA load pipeline creation structure(s)\n");
+                return nullptr;
+            }
+        }
+
+        pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(this->vulkanSharedContext(),
+                                                                fMSAALoadVertShaderModule,
+                                                                fMSAALoadFragShaderModule,
+                                                                &fMSAALoadShaderStageInfo[0],
+                                                                fMSAALoadPipelineLayout,
+                                                                compatibleRenderPass,
+                                                                this->pipelineCache());
+        if (pipeline) {
+            fLoadMSAAPipelines.set(renderPassKey, pipeline);
+        }
+    }
+
+    return pipeline;
 }
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
