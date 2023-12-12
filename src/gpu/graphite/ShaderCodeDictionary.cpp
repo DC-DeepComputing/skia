@@ -338,7 +338,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
 
     const char* outColor = args.fPriorStageOutput.c_str();
     const Coverage coverage = step->coverage();
-    if (coverage != Coverage::kNone) {
+    if (coverage != Coverage::kNone || this->needsClipShaderCoverage()) {
         if (useStepStorageBuffer) {
             SkSL::String::appendf(&mainBody,
                                   "uint stepSsboIndex = %s.x;\n",
@@ -346,8 +346,12 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
             mainBody += EmitUniformsFromStorageBuffer("step", "stepSsboIndex", step->uniforms());
         }
 
-        mainBody += "half4 outputCoverage;";
+        mainBody += "half4 outputCoverage = half4(1);";
         mainBody += step->fragmentCoverageSkSL();
+
+        if (this->needsClipShaderCoverage()) {
+            mainBody += "outputCoverage *= clipShaderOutput.a;";
+        }
 
         // TODO: Determine whether draw is opaque and pass that to GetBlendFormula.
         BlendFormula coverageBlendFormula =
@@ -615,8 +619,6 @@ static constexpr TextureAndSampler kDstReadSampleTexturesAndSamplers[] = {
         {"dstSampler"},
 };
 
-// Call a function from the preamble which initializes the dst color and passes through the prior
-// stage output without modification.
 std::string GenerateDstReadSampleExpression(const ShaderInfo& shaderInfo,
                                             const ShaderNode* node,
                                             const ShaderSnippet::Args& args) {
@@ -667,6 +669,46 @@ std::string GenerateDstReadFetchPreamble(const ShaderInfo& shaderInfo, const Sha
                 "return surfaceColor;"
             "}",
             helperFnName.c_str());
+}
+
+//--------------------------------------------------------------------------------------------------
+static constexpr char kClipShaderName[] = "ClipShader";
+
+static constexpr int kNumClipShaderChildren = 1;
+
+// Calls a function from the preamble which evaluates the clip shader output and passes through the
+// prior stage output without modification.
+std::string GenerateClipShaderExpression(const ShaderInfo& shaderInfo,
+                                         const ShaderNode* node,
+                                         const ShaderSnippet::Args& args) {
+    std::string helperFnName =
+            get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
+
+    return SkSL::String::printf("%s(%s)", helperFnName.c_str(), args.fPriorStageOutput.c_str());
+}
+
+std::string GenerateClipShaderPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
+    std::string helperFnName =
+            get_mangled_name(node->entry()->fStaticFunctionName, node->keyIndex());
+
+    std::string preamble = SkSL::String::printf(
+            "half4 clipShaderOutput;"
+            "half4 %s(half4 priorStageOutput) {",
+            helperFnName.c_str());
+
+    SkASSERT(node->numChildren() == kNumClipShaderChildren);
+    static constexpr char kUnusedSrcColor[] = "half4(1)";
+    static constexpr char kUnusedDstColor[] = "half4(1)";
+    std::string childExpr = emit_expression_for_entry(
+            shaderInfo, node->child(0), {kUnusedSrcColor, kUnusedDstColor, "sk_FragCoord.xy"});
+
+    SkSL::String::appendf(&preamble,
+                          "clipShaderOutput = %s;"
+                              "return priorStageOutput;"
+                          "}",
+                          childExpr.c_str());
+
+    return preamble;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1793,6 +1835,18 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDstReadFetchPreamble,
             kNoChildren
     };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kClipShader] = {
+            "ClipShader",
+            { },                // no uniforms
+            SnippetRequirementFlags::kClipShaderCoverage,
+            { },                // no samplers
+            kClipShaderName,
+            GenerateClipShaderExpression,
+            GenerateClipShaderPreamble,
+            kNumClipShaderChildren
+    };
+
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
             "Compose",
             { },     // no uniforms
