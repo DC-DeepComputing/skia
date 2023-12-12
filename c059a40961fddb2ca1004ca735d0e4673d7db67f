@@ -55,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24600038_b432dc98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-12T17:26:48Z",
+      "side": 1,
+      "message": "Replaced by https://skia-review.googlesource.com/c/skia/+/789116",
+      "revId": "c059a40961fddb2ca1004ca735d0e4673d7db67f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "655f1553_4bc56cf1",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 1
