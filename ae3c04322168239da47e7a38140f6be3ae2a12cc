@@ -16,6 +16,24 @@
       "message": "The changes look OK to me but as you pointed out something seems to be wrong about the plot management given the broken GMs.",
       "revId": "ae3c04322168239da47e7a38140f6be3ae2a12cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85be704d_4d5d5c68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T16:13:38Z",
+      "side": 1,
+      "message": "Could it be that now parent devices and child layers are using the same flush token, so if there\u0027s a glyph cache hit whose upload was recorded in the parent DC, it\u0027s not getting executed before the child\u0027s draws that would refer to it?\n\nI feel like we could have got into that scenario before too, so I\u0027m not exactly sure what\u0027s going on.",
+      "parentUuid": "b240fbb7_1b603c4b",
+      "revId": "ae3c04322168239da47e7a38140f6be3ae2a12cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
