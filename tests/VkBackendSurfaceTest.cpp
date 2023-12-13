@@ -42,6 +42,8 @@ class GrTexture;
 struct GrContextOptions;
 
 DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnforcement::kNever) {
+    using namespace skgpu;
+
     auto dContext = ctxInfo.directContext();
 
     const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(dContext->priv().caps());
@@ -49,9 +51,12 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
         return;
     }
 
+    Protected isProtected = Protected(vkCaps->supportsProtectedContent());
+
     // First make a normal backend texture with DRM
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, 1, 1, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo);
+            dContext, 1, 1, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo,
+            isProtected);
     if (!mbet) {
         ERRORF(reporter, "Could not create backend texture.");
         return;
@@ -99,10 +104,15 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
 }
 
 DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo, CtsEnforcement::kNever) {
+    using namespace skgpu;
+
     auto dContext = ctxInfo.directContext();
 
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
+
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, 1, 1, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo);
+            dContext, 1, 1, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo,
+            isProtected);
     if (!mbet) {
         ERRORF(reporter, "Could not create backend texture.");
         return;

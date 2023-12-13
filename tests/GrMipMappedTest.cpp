@@ -89,10 +89,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
+    using namespace skgpu;
+
     auto dContext = ctxInfo.directContext();
     if (!dContext->priv().caps()->mipmapSupport()) {
         return;
     }
+
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     for (auto mipmapped : {skgpu::Mipmapped::kNo, skgpu::Mipmapped::kYes}) {
         for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
@@ -106,7 +110,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
                                                                          SkColors::kTransparent,
                                                                          mipmapped,
                                                                          renderable,
-                                                                         GrProtected::kNo);
+                                                                         isProtected);
             if (!mbet) {
                 ERRORF(reporter, "Could not make texture.");
                 return;
@@ -174,17 +178,24 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrBackendTextureImageMipMappedTest,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
+    using namespace skgpu;
+
     auto dContext = ctxInfo.directContext();
     if (!dContext->priv().caps()->mipmapSupport()) {
         return;
     }
+
+    Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     for (auto betMipmapped : {skgpu::Mipmapped::kNo, skgpu::Mipmapped::kYes}) {
         for (auto requestMipmapped : {skgpu::Mipmapped::kNo, skgpu::Mipmapped::kYes}) {
             auto ii =
                     SkImageInfo::Make({kSize, kSize}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
             sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(
-                    dContext, ii, SkColors::kTransparent, betMipmapped);
+                    dContext, ii, SkColors::kTransparent, betMipmapped,
+                    Renderable::kNo,
+                    GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin,
+                    isProtected);
             REPORTER_ASSERT(reporter,
                             (betMipmapped == skgpu::Mipmapped::kYes) == image->hasMipmaps());
 
@@ -329,6 +340,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrImageSnapshotMipMappedTest,
         return;
     }
 
+    GrProtected isProtected = GrProtected(dContext->priv().caps()->supportsProtectedContent());
+
     auto resourceProvider = dContext->priv().resourceProvider();
 
     for (auto willUseMips : {false, true}) {
@@ -343,7 +356,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrImageSnapshotMipMappedTest,
                                                                  info,
                                                                  kTopLeft_GrSurfaceOrigin,
                                                                  /* sample count */ 1,
-                                                                 mipmapped);
+                                                                 mipmapped,
+                                                                 isProtected);
             } else {
                 surface = SkSurfaces::RenderTarget(dContext,
                                                    skgpu::Budgeted::kYes,
