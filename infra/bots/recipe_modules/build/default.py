@@ -218,7 +218,7 @@ def compile_fn(api, checkout_root, out_dir):
   if configuration != 'Debug':
     args['is_debug'] = 'false'
   if 'Dawn' in extra_tokens:
-    util.set_dawn_args_and_env(args, env, api, skia_dir)
+    util.set_dawn_args_and_env(args, env, api, extra_tokens, skia_dir)
   if 'ANGLE' in extra_tokens:
     args['skia_use_angle'] = 'true'
   if 'SwiftShader' in extra_tokens:
