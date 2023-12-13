@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b594c8_db67980b",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-13T20:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b724a35_0b36fc2f",
+      "range": {
+        "startLine": 47,
+        "startChar": 46,
+        "endLine": 47,
+        "endChar": 58
+      },
+      "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fef2560_224dfcd6",
