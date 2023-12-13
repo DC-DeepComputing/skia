@@ -661,12 +661,14 @@ static GrBackendTexture create_and_clear_backend_texture(
     GrBackendTexture beTex = gpu->createBackendTexture(dimensions, backendFormat, renderable,
                                                        mipmapped, isProtected, label);
     if (!beTex.isValid()) {
+        SkDebugf("--- 2\n");
         return {};
     }
 
     if (!dContext->priv().getGpu()->clearBackendTexture(beTex,
                                                         std::move(finishedCallback),
                                                         color)) {
+        SkDebugf("--- 3\n");
         dContext->deleteBackendTexture(beTex);
         return {};
     }
@@ -760,6 +762,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width,
 
     GrBackendFormat format = this->defaultBackendFormat(skColorType, renderable);
     if (!format.isValid()) {
+        SkDebugf("--- 1\n");
         return {};
     }
 

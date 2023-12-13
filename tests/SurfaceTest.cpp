@@ -143,7 +143,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
+    using namespace skgpu;
+
     auto context = ctxInfo.directContext();
+
+    Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent());
 
     for (int ct = 0; ct < kLastEnum_SkColorType; ++ct) {
         static constexpr int kSize = 10;
@@ -161,7 +165,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
                                                           {kSize, kSize},
                                                           kTopLeft_GrSurfaceOrigin,
                                                           /*sample cnt*/ 1,
-                                                          colorType);
+                                                          colorType,
+                                                          nullptr,
+                                                          Mipmapped::kNo,
+                                                          isProtected);
             REPORTER_ASSERT(reporter, can == SkToBool(surf), "ct: %d, can: %d, surf: %d",
                             colorType, can, SkToBool(surf));
         }
@@ -177,7 +184,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
                             colorType, can, SkToBool(surf));
 
             surf = sk_gpu_test::MakeBackendTextureSurface(
-                    context, {kSize, kSize}, kTopLeft_GrSurfaceOrigin, kSampleCnt, colorType);
+                    context, {kSize, kSize}, kTopLeft_GrSurfaceOrigin, kSampleCnt, colorType,
+                    /* colorSpace= */ nullptr, Mipmapped::kNo, isProtected);
             REPORTER_ASSERT(reporter, can == SkToBool(surf),
                             "colorTypeSupportedAsSurface:%d, surf:%d, ct:%d", can, SkToBool(surf),
                             colorType);
@@ -199,7 +207,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsSurface,
                                                                     {16, 16},
                                                                     kTopLeft_GrSurfaceOrigin,
                                                                     sampleCnt,
-                                                                    colorType);
+                                                                    colorType,
+                                                                    /* colorSpace= */ nullptr,
+                                                                    isProtected);
             bool can = context->colorTypeSupportedAsSurface(colorType) &&
                        context->maxSurfaceSampleCountForColorType(colorType) >= sampleCnt;
             if (!surf && can && colorType == kBGRA_8888_SkColorType && sampleCnt > 1 &&
@@ -233,7 +243,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_maxSurfaceSamplesForColorType,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
+    using namespace skgpu;
+
     auto context = ctxInfo.directContext();
+
+    Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent());
 
     static constexpr int kSize = 10;
 
@@ -250,7 +264,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_maxSurfaceSamplesForColorType,
 
         auto info = SkImageInfo::Make(kSize, kSize, colorType, kOpaque_SkAlphaType, nullptr);
         auto surf = sk_gpu_test::MakeBackendTextureSurface(
-                context, info, kTopLeft_GrSurfaceOrigin, maxSampleCnt);
+                context, info, kTopLeft_GrSurfaceOrigin, maxSampleCnt, Mipmapped::kNo, isProtected);
         if (!surf) {
             ERRORF(reporter, "Could not make surface of color type %d.", colorType);
             continue;
