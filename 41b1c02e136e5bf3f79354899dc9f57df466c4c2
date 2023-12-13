@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90bb07f5_b6b5836f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T16:08:30Z",
+      "side": 1,
+      "message": "I think this is fine; the most immediate clients of precompilation (Android) don\u0027t really use clipShader(), and designing what the precompilation API looks like for clipShaders will probably go hand-in-hand with figuring out what the final implementation looks like.",
+      "parentUuid": "6749a46e_63bd8fb0",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c674dde4_f25ec51a",
