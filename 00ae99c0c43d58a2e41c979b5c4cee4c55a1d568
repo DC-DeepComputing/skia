@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7a37ec8_e11d627a",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-13T14:39:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11ee8d6e_6517e0ed",
+      "range": {
+        "startLine": 118,
+        "startChar": 24,
+        "endLine": 118,
+        "endChar": 25
+      },
+      "revId": "00ae99c0c43d58a2e41c979b5c4cee4c55a1d568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "748a4688_6c88b65c",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-12-13T14:25:11Z",
       "side": 1,
       "message": "You can use `SkAssertResult` to do this a little leaner.",
+      "range": {
+        "startLine": 123,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 25
+      },
+      "revId": "00ae99c0c43d58a2e41c979b5c4cee4c55a1d568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe670a16_3edaadac",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-13T14:39:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "748a4688_6c88b65c",
       "range": {
         "startLine": 123,
         "startChar": 8,
@@ -118,6 +166,30 @@
       "side": 1,
       "message": "I think we avoided it because we were updating the issue token more than necessary in `flushPendingWorkToRecorder`, but regardless I think this is a good step.",
       "parentUuid": "2d0f21e8_1ea0e14b",
+      "range": {
+        "startLine": 414,
+        "startChar": 4,
+        "endLine": 414,
+        "endChar": 44
+      },
+      "revId": "00ae99c0c43d58a2e41c979b5c4cee4c55a1d568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d72d0bce_f90f1b96",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-13T14:39:34Z",
+      "side": 1,
+      "message": "No, updating the token too often is the bug. The child layer would update the token on a flush, and when it popped back to the parent it would think that the atlas had been uploaded when it hadn\u0027t so it would overwrite it.",
+      "parentUuid": "3024d620_34147a4b",
       "range": {
         "startLine": 414,
         "startChar": 4,
