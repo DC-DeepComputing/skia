@@ -385,7 +385,7 @@ void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
     const auto intrinsicVulkanBuffer = static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get());
     SkASSERT(intrinsicVulkanBuffer);
 
-    fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
+    fUniformBuffersToBind[kIntrinsicUniformBufferIndex] =
             {intrinsicUniformBuffer.get(), /*offset=*/0};
 
     // TODO(b/307577875): Once synchronization for uniform buffers as a whole is improved, we should
@@ -708,10 +708,10 @@ void VulkanCommandBuffer::recordBufferBindingInfo(const BindBufferInfo& info, Un
     unsigned int bufferIndex = 0;
     switch (slot) {
         case UniformSlot::kRenderStep:
-            bufferIndex = VulkanGraphicsPipeline::kRenderStepUniformBufferIndex;
+            bufferIndex = kRenderStepUniformBufferIndex;
             break;
         case UniformSlot::kPaint:
-            bufferIndex = VulkanGraphicsPipeline::kPaintUniformBufferIndex;
+            bufferIndex = kPaintUniformBufferIndex;
             break;
         default:
             SkASSERT(false);
@@ -739,15 +739,15 @@ void VulkanCommandBuffer::bindUniformBuffers() {
 
     // We always bind at least one uniform buffer descriptor for intrinsic uniforms, but can bind
     // up to three (one for render step uniforms, one for paint uniforms).
-    STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-    descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+    STArray<kNumUniformBuffers, DescriptorData> descriptors;
+    descriptors.push_back(kIntrinsicUniformBufferDescriptor);
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
-            fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
-        descriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
+            fUniformBuffersToBind[kRenderStepUniformBufferIndex].fBuffer) {
+        descriptors.push_back(kRenderStepUniformDescriptor);
     }
     if (fActiveGraphicsPipeline->hasFragmentUniforms() &&
-            fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex].fBuffer) {
-        descriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
+            fUniformBuffersToBind[kPaintUniformBufferIndex].fBuffer) {
+        descriptors.push_back(kPaintUniformDescriptor);
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
@@ -803,7 +803,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
                 CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                       VK_PIPELINE_BIND_POINT_GRAPHICS,
                                       fActiveGraphicsPipeline->layout(),
-                                      VulkanGraphicsPipeline::kUniformBufferDescSetIndex,
+                                      kUniformBufferDescSetIndex,
                                       /*setCount=*/1,
                                       set->descriptorSet(),
                                       /*dynamicOffsetCount=*/0,
@@ -828,9 +828,9 @@ void VulkanCommandBuffer::bindVertexBuffers(const Buffer* vertexBuffer,
                                             const Buffer* instanceBuffer,
                                             size_t instanceOffset) {
     this->bindInputBuffer(vertexBuffer, vertexOffset,
-                          VulkanGraphicsPipeline::kVertexBufferIndex);
+                          kVertexBufferIndex);
     this->bindInputBuffer(instanceBuffer, instanceOffset,
-                          VulkanGraphicsPipeline::kInstanceBufferIndex);
+                          kInstanceBufferIndex);
 }
 
 void VulkanCommandBuffer::bindInputBuffer(const Buffer* buffer, VkDeviceSize offset,
@@ -895,7 +895,10 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
-        descriptors.push_back({DescriptorType::kCombinedTextureSampler, 1, i});
+        descriptors.push_back({DescriptorType::kCombinedTextureSampler,
+                               /*descCount=*/1,
+                               /*bindingIndex=*/i,
+                               PipelineStageFlags::kFragmentShader});
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
@@ -970,7 +973,7 @@ void VulkanCommandBuffer::bindTextureSamplers() {
                     CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                                           fActiveGraphicsPipeline->layout(),
-                                          VulkanGraphicsPipeline::kTextureBindDescSetIndex,
+                                          kTextureBindDescSetIndex,
                                           /*setCount=*/1,
                                           &fTextureSamplerDescSetToBind,
                                           /*dynamicOffsetCount=*/0,

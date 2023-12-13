@@ -189,14 +189,14 @@ private:
     bool fBindUniformBuffers = false;
     bool fBindTextureSamplers = false;
 
-    std::array<BindBufferInfo, VulkanGraphicsPipeline::kNumUniformBuffers> fUniformBuffersToBind
+    std::array<BindBufferInfo, kNumUniformBuffers> fUniformBuffersToBind
             = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
     int fNumTextureSamplers = 0;
 
-    VkBuffer fBoundInputBuffers[VulkanGraphicsPipeline::kNumInputBuffers];
-    size_t fBoundInputBufferOffsets[VulkanGraphicsPipeline::kNumInputBuffers];
+    VkBuffer fBoundInputBuffers[kNumInputBuffers];
+    size_t fBoundInputBufferOffsets[kNumInputBuffers];
 
     VkBuffer fBoundIndexBuffer = VK_NULL_HANDLE;
     VkBuffer fBoundIndirectBuffer = VK_NULL_HANDLE;
