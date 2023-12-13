@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "603bec43_89173d1e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-12-13T19:01:05Z",
+      "side": 1,
+      "message": "Ah, good point. Done.",
+      "parentUuid": "494c3f9b_cbb91323",
+      "range": {
+        "startLine": 297,
+        "startChar": 40,
+        "endLine": 297,
+        "endChar": 45
+      },
+      "revId": "62709099c2b463993ffe49e98d71aa257b595f7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e83923ea_8ab9e15a",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-12-13T18:34:29Z",
       "side": 1,
       "message": "/*texture\u003d*/",
+      "range": {
+        "startLine": 197,
+        "startChar": 42,
+        "endLine": 197,
+        "endChar": 49
+      },
+      "revId": "62709099c2b463993ffe49e98d71aa257b595f7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fed1396a_8af04df0",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-12-13T19:01:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e83923ea_8ab9e15a",
       "range": {
         "startLine": 197,
         "startChar": 42,
