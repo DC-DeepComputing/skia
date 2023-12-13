@@ -69,8 +69,8 @@
     "cmd": [
       "[START_DIR]/cache/work/skia/bin/gn",
       "gen",
-      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Debug-Graphite_Dawn_NoGpu/Debug",
-      "--args=cc=\"clang\" cc_wrapper=\"[START_DIR]/ccache_mac/bin/ccache\" cxx=\"clang++\" extra_cflags=[\"-DREBUILD_IF_CHANGED_xcode_build_version=12c33\", \"-O1\"] skia_enable_ganesh=false skia_enable_graphite=true skia_use_client_icu=true skia_use_dawn=true skia_use_gl=false target_cpu=\"arm64\" werror=true"
+      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Release-Graphite_Native_Dawn_Metal/Release",
+      "--args=cc=\"clang\" cc_wrapper=\"[START_DIR]/ccache_mac/bin/ccache\" cxx=\"clang++\" dawn_enable_d3d11=false dawn_enable_d3d12=false dawn_enable_desktop_gl=false dawn_enable_metal=true dawn_enable_opengles=false dawn_enable_vulkan=false extra_cflags=[\"-DREBUILD_IF_CHANGED_xcode_build_version=12c33\"] is_debug=false skia_enable_graphite=true skia_use_client_icu=true skia_use_dawn=true skia_use_gl=false target_cpu=\"arm64\" werror=true"
     ],
     "cwd": "[START_DIR]/cache/work/skia",
     "env": {
@@ -89,7 +89,7 @@
     "cmd": [
       "ninja",
       "-C",
-      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Debug-Graphite_Dawn_NoGpu/Debug"
+      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Release-Graphite_Native_Dawn_Metal/Release"
     ],
     "cwd": "[START_DIR]/cache/work/skia",
     "env": {
@@ -126,8 +126,8 @@
     "cmd": [
       "python",
       "import errno\nimport glob\nimport os\nimport shutil\nimport sys\n\nsrc = sys.argv[1]\ndst = sys.argv[2]\nbuild_products = ['dm', 'dm.exe', 'dm.app', 'nanobench.app', 'get_images_from_skps', 'get_images_from_skps.exe', 'nanobench', 'nanobench.exe', 'skpbench', 'skpbench.exe', '*.so', '*.dll', '*.dylib', 'skia_launcher', 'skottie_tool', 'lib/*.so', 'run_testlab']\n\ntry:\n  os.makedirs(dst)\nexcept OSError as e:\n  if e.errno != errno.EEXIST:\n    raise\n\nfor pattern in build_products:\n  path = os.path.join(src, pattern)\n  for f in glob.glob(path):\n    dst_path = os.path.join(dst, os.path.relpath(f, src))\n    if not os.path.isdir(os.path.dirname(dst_path)):\n      os.makedirs(os.path.dirname(dst_path))\n    print('Copying build product %s to %s' % (f, dst_path))\n    shutil.move(f, dst_path)\n",
-      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Debug-Graphite_Dawn_NoGpu/Debug",
-      "[START_DIR]/[SWARM_OUT_DIR]/out/Debug"
+      "[START_DIR]/cache/work/skia/out/Build-Mac-Clang-arm64-Release-Graphite_Native_Dawn_Metal/Release",
+      "[START_DIR]/[SWARM_OUT_DIR]/out/Release"
     ],
     "infra_step": true,
     "name": "copy build products",
