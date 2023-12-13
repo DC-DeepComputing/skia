@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ccd79b_c01974c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-12-13T09:16:53Z",
+      "side": 1,
+      "message": "I am not a Skia owner so I\u0027ll leave the review to Skia folks, but from Chrome\u0027s side I am supportive of changes towards enabling custom contrast settings retrieved from the registry, and of Kurt\u0027s changes in this direction.",
+      "revId": "4a77d03a515378c0935ca9945a1a50993c218555",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
