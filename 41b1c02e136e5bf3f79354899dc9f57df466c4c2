@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84978ea4_7c150c2b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T15:47:02Z",
+      "side": 1,
+      "message": "Got it; done",
+      "parentUuid": "1c7a7c5b_9c300315",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b18bcc15_905eb532",
@@ -88,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3671d215_533de149",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T15:47:02Z",
+      "side": 1,
+      "message": "OK, I\u0027ll do that in a separate CL.",
+      "parentUuid": "05ecd190_b634d4a4",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eda0a73b_26c813af",
@@ -101,6 +137,24 @@
       "writtenOn": "2023-12-12T21:29:01Z",
       "side": 1,
       "message": "Unfortunately this brings back the pattern of \"pass through previous output and set a global\" that we were able to get rid of in the dst read shader blocks. Not sure if there\u0027s a more clever way to apply the clip shader output.",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5687d177_971d64eb",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T15:47:02Z",
+      "side": 1,
+      "message": "Resolved per feedback above",
+      "parentUuid": "eda0a73b_26c813af",
       "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50834ef3_ab72a35f",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1270,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T15:47:02Z",
+      "side": 1,
+      "message": "Please lmk if the new comment here makes sense",
+      "parentUuid": "922349b0_b9c5dbb9",
+      "range": {
+        "startLine": 1270,
+        "startChar": 0,
+        "endLine": 1270,
+        "endChar": 69
+      },
+      "revId": "39aad8e86b4cf7d0e3ad56077c28d6fa558d50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "87dab4f6_3d23c407",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-13T14:43:34Z",
       "side": 1,
       "message": "If you exclude the node that requires clip shader coverage here, I think you can call `emit_glue_code_for_entry` later down in the analytic coverage handling.",
+      "range": {
+        "startLine": 327,
+        "startChar": 12,
+        "endLine": 328,
+        "endChar": 67
+      },
+      "revId": "39aad8e86b4cf7d0e3ad56077c28d6fa558d50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87de6dfc_7e9179dd",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T15:47:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87dab4f6_3d23c407",
       "range": {
         "startLine": 327,
         "startChar": 12,
@@ -60,6 +108,30 @@
       "writtenOn": "2023-12-13T14:43:34Z",
       "side": 1,
       "message": "Calling `emit_glue_code_for_entry` here should let you simplify the preamble and generator for clip shader nodes (probably just needing to invoke the child with `sk_FragCoord`).  Here we\u0027d end up with something like:\n\n    for (const ShaderNode* node : fRootNodes) {\n        if (node-\u003ecodeSnippetId() \u003d\u003d kClipShader) {\n            auto clipShaderOutput \u003d emit_glue_code_for_entry(node,...);\n            SkSL::String::appendf(\u0026mainBody, \"outputCoverage *\u003d %s.a;\\n\", clipShaderOutput);\n        }\n    }\n    \nAlternatively, instead of looping over the nodes again, if we store the clip shader node in a local variable when encounter it (and skip it) in the first node iteration above, then we could just emit it directly here, since there should only be one clip shader node at most.",
+      "range": {
+        "startLine": 353,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 64
+      },
+      "revId": "39aad8e86b4cf7d0e3ad56077c28d6fa558d50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8742cd65_8f3ec21d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T15:47:02Z",
+      "side": 1,
+      "message": "Great! I feel better about this now 😊",
+      "parentUuid": "61f3161c_3b09e5ac",
       "range": {
         "startLine": 353,
         "startChar": 0,
