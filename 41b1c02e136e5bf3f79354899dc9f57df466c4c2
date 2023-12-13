@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c7a7c5b_9c300315",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T14:43:34Z",
+      "side": 1,
+      "message": "Yeah I think it does apply. The matrix stored on the key context is used when there\u0027s an SkPictureShader that needs to look at the total transform that it\u0027s being sampled with in order to choose an appropriate resolution to render the picture to. \n\nAn SkPictureShader could definitely be passed to clipShader(), so we\u0027d want it to respond to that shader\u0027s CTM.",
+      "parentUuid": "c674dde4_f25ec51a",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b18bcc15_905eb532",
         "filename": "src/gpu/graphite/PaintParams.h",
         "patchSetId": 2
@@ -48,6 +66,24 @@
       "writtenOn": "2023-12-12T21:29:01Z",
       "side": 1,
       "message": "I noticed that this constructor doesn\u0027t seem to be used anywhere. Am I missing something, or can we remove it? I seemed to recall it was related to precompilation.",
+      "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05ecd190_b634d4a4",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T14:43:34Z",
+      "side": 1,
+      "message": "I think it maybe used to be related to precompilation since we\u0027d make PaintParams to compile before the new system that has the parallel addToKey functions that don\u0027t need PaintParams to be created.  So I think we can remove it.",
+      "parentUuid": "b18bcc15_905eb532",
       "revId": "41b1c02e136e5bf3f79354899dc9f57df466c4c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
