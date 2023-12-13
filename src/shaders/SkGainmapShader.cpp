@@ -92,7 +92,10 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
             baseImage->colorSpace() ? baseImage->refColorSpace() : SkColorSpace::MakeSRGB();
 
     // Determine the color space in which the gainmap math is to be applied.
-    sk_sp<SkColorSpace> gainmapMathColorSpace = baseColorSpace->makeLinearGamma();
+    sk_sp<SkColorSpace> gainmapMathColorSpace =
+            gainmapInfo.fGainmapMathColorSpace
+                    ? gainmapInfo.fGainmapMathColorSpace->makeLinearGamma()
+                    : baseColorSpace->makeLinearGamma();
     if (!dstColorSpace) {
         dstColorSpace = SkColorSpace::MakeSRGB();
     }
@@ -136,7 +139,7 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
     // The base image shader will convert into the color space in which the gainmap is applied.
     auto baseImageShader = baseImage->makeRawShader(baseSamplingOptions, &baseRectToDstRect)
                                    ->makeWithColorFilter(colorXformSdrToGainmap);
-
+    // return baseImageShader;
     // The gainmap image shader will ignore any color space that the gainmap has.
     auto gainmapImageShader =
             gainmapImage->makeRawShader(gainmapSamplingOptions, &gainmapRectToDstRect);
