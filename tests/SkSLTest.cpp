@@ -678,6 +678,7 @@ static void test_graphite(skiatest::Reporter* r,
                           const char* name,
                           const char* testFile,
                           SkSLTestFlags flags) {
+    SkDebugf("testCtx: %d\n", testCtx->contextType());
     // If this is an ES3-only test on a GPU which doesn't support SkSL ES3, return immediately.
     bool shouldRunGPU = SkToBool(flags & SkSLTestFlag::GPU);
     bool shouldRunGPU_ES3 =
