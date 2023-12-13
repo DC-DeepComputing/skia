@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "accae3b5_c8d89169",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T19:17:27Z",
+      "side": 1,
+      "message": "lgtm; the d3d question about renaming shouldn\u0027t be a blocker to land this.",
+      "revId": "2445ea6845c0e7ad92f7d42c879fa1347520881b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

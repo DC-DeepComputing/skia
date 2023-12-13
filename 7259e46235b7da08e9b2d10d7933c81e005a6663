@@ -16,6 +16,52 @@
       "message": "Please rereview. I\u0027ve updated this to only build the specifically requested dawn backends.",
       "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b724a35_0b36fc2f",
+        "filename": "infra/bots/recipe_modules/build/android.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T19:17:27Z",
+      "side": 1,
+      "message": "nit: space in front",
+      "range": {
+        "startLine": 47,
+        "startChar": 46,
+        "endLine": 47,
+        "endChar": 58
+      },
+      "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fef2560_224dfcd6",
+        "filename": "tools/window/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T19:17:27Z",
+      "side": 1,
+      "message": "Does this file require D3D12 and we\u0027ll run into surprises trying to use d3d11? Or should it just be renamed to DawnD3DWindowContext? From my brief look, it appears we can rename it.",
+      "range": {
+        "startLine": 174,
+        "startChar": 17,
+        "endLine": 174,
+        "endChar": 51
+      },
+      "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
