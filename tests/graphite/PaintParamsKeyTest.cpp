@@ -946,6 +946,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context,
                                 recorder.get(), &paramsGatherer, &builder, Layout::kMetal, {},
                                 PaintParams(paint,
                                             std::move(primitiveBlender),
+                                            /* clipShader= */nullptr,
                                             dstReadReq,
                                             /* skipColorXform= */ false),
                                 curDst, fakeDstOffset, ci);
