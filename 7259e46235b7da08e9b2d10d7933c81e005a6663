@@ -86,6 +86,30 @@
       },
       "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7b24d66_69ebdeda",
+        "filename": "tools/window/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-13T20:10:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "91b965d1_5d3ce370",
+      "range": {
+        "startLine": 174,
+        "startChar": 17,
+        "endLine": 174,
+        "endChar": 51
+      },
+      "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
