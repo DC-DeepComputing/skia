@@ -62,6 +62,30 @@
       },
       "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91b965d1_5d3ce370",
+        "filename": "tools/window/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-13T19:22:55Z",
+      "side": 1,
+      "message": "Right now it really only runs D3D12 in that it always tries to make a D3D12 backend of dawn. But that is the only thing in that file that is special. However, we currently don\u0027t have a way to request which backend to make. For windowing we only have a generic Dawn BackendType. So a think a follow on change to this would be to allow the windowing code to know the dawn backend as well, which I think is a little out of the scope of the CL here. But we do what that functionality regardless so we can actually switch the Dawn backends at runtime on Viewer which we currently cannot do today.\n\nFWIW I doubt many people would run into this during local development. You would need to set a `dawn_enable_*` in your gn args to disable d3d12 and enable d3d11. If you don\u0027t the system just defaults to enabling whatever is available so you\u0027ll always get the d3d12 backend.",
+      "parentUuid": "5fef2560_224dfcd6",
+      "range": {
+        "startLine": 174,
+        "startChar": 17,
+        "endLine": 174,
+        "endChar": 51
+      },
+      "revId": "7259e46235b7da08e9b2d10d7933c81e005a6663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
