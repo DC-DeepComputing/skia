@@ -34,8 +34,8 @@
     "cmd": [
       "[START_DIR]/cache/work/skia/bin/gn",
       "gen",
-      "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn/Release",
-      "--args=extra_cflags=[\"-DREBUILD_IF_CHANGED_ndk_version=42\"] is_debug=false ndk=\"[START_DIR]/android_ndk_linux\" ndk_api=26 skia_enable_graphite=true skia_use_dawn=true skia_use_gl=false target_cpu=\"arm64\" werror=true"
+      "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn_Vulkan/Release",
+      "--args=dawn_enable_d3d11=false dawn_enable_d3d12=false dawn_enable_desktop_gl=false dawn_enable_metal=false dawn_enable_opengles=false dawn_enable_vulkan=true extra_cflags=[\"-DREBUILD_IF_CHANGED_ndk_version=42\"] is_debug=false ndk=\"[START_DIR]/android_ndk_linux\" ndk_api=26 skia_enable_graphite=true skia_use_dawn=true skia_use_gl=false target_cpu=\"arm64\" werror=true"
     ],
     "cwd": "[START_DIR]/cache/work/skia",
     "env": {
@@ -49,7 +49,7 @@
     "cmd": [
       "ninja",
       "-C",
-      "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn/Release"
+      "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn_Vulkan/Release"
     ],
     "cwd": "[START_DIR]/cache/work/skia",
     "env": {
@@ -63,7 +63,7 @@
     "cmd": [
       "python",
       "import errno\nimport glob\nimport os\nimport shutil\nimport sys\n\nsrc = sys.argv[1]\ndst = sys.argv[2]\nbuild_products = ['dm', 'nanobench', 'skpbench', 'skottie_tool_gpu']\n\ntry:\n  os.makedirs(dst)\nexcept OSError as e:\n  if e.errno != errno.EEXIST:\n    raise\n\nfor pattern in build_products:\n  path = os.path.join(src, pattern)\n  for f in glob.glob(path):\n    dst_path = os.path.join(dst, os.path.relpath(f, src))\n    if not os.path.isdir(os.path.dirname(dst_path)):\n      os.makedirs(os.path.dirname(dst_path))\n    print('Copying build product %s to %s' % (f, dst_path))\n    shutil.move(f, dst_path)\n",
-      "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn/Release",
+      "[START_DIR]/cache/work/skia/out/Build-Debian10-Clang-arm64-Release-Android_Graphite_Dawn_Vulkan/Release",
       "[START_DIR]/[SWARM_OUT_DIR]/out/Release"
     ],
     "infra_step": true,
