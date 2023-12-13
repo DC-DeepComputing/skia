@@ -34,6 +34,24 @@
       "parentUuid": "b240fbb7_1b603c4b",
       "revId": "ae3c04322168239da47e7a38140f6be3ae2a12cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20415c80_a472c5cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-13T19:32:34Z",
+      "side": 1,
+      "message": "Turned out to be more subtle than that. There were multiple uploads into the same Plot, and the conditional uploading system for text detected that the uploadID was identical (because the token wasn\u0027t being incremented) so it skipped the second and subsequent uploads.\n\nSince we\u0027re not using that system I could disable it, but after talking it over with Rob I don\u0027t think it is a good change. This would only make Plots available after an atlas spill (which is the only time we call RecorderPriv::flushTrackedDevices() as far as atlases are concerned), rather than when they haven\u0027t been used for a draw recently. Still thinking about a solution for child layers calling Device::flushPendingWork() and incrementing the token when the parent hasn\u0027t flushed their uploads. Probably need more than just a single incrementing variable.",
+      "parentUuid": "85be704d_4d5d5c68",
+      "revId": "ae3c04322168239da47e7a38140f6be3ae2a12cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
