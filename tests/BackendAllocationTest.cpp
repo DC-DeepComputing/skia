@@ -951,8 +951,12 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                                    reporter,
                                    ctxInfo,
                                    CtsEnforcement::kApiLevel_T) {
+    using namespace skgpu;
+
     auto context = ctxInfo.directContext();
     const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(context->priv().caps());
+
+    Protected isProtected = Protected(vkCaps->supportsProtectedContent());
 
     constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
     constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 1 };
@@ -1010,8 +1014,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
 
         GrBackendFormat format = GrBackendFormats::MakeVk(combo.fFormat);
 
-        for (auto mipmapped : {skgpu::Mipmapped::kNo, skgpu::Mipmapped::kYes}) {
-            if (skgpu::Mipmapped::kYes == mipmapped && !vkCaps->mipmapSupport()) {
+        for (auto mipmapped : { Mipmapped::kNo, Mipmapped::kYes }) {
+            if (Mipmapped::kYes == mipmapped && !vkCaps->mipmapSupport()) {
                 continue;
             }
 
@@ -1027,15 +1031,15 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                 }
 
                 {
-                    auto uninitCreateMtd = [format](GrDirectContext* dContext,
-                                                    skgpu::Mipmapped mipmapped,
-                                                    GrRenderable renderable) {
+                    auto uninitCreateMtd = [&](GrDirectContext* dContext,
+                                               Mipmapped mipmapped,
+                                               GrRenderable renderable) {
                         auto mbet = ManagedBackendTexture::MakeWithoutData(dContext,
                                                                            32, 32,
                                                                            format,
                                                                            mipmapped,
                                                                            renderable,
-                                                                           GrProtected::kNo);
+                                                                           isProtected);
                         check_vk_tiling(mbet->texture());
                         return mbet;
                     };
@@ -1053,34 +1057,34 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                     // Ideally we'd update our validation code to use a "raw" read that doesn't
                     // impose a color type but for now we just munge the data we upload to match the
                     // expectation.
-                    skgpu::Swizzle swizzle;
+                    Swizzle swizzle;
                     switch (combo.fColorType) {
                         case GrColorType::kAlpha_8:
                             SkASSERT(combo.fFormat == VK_FORMAT_R8_UNORM);
-                            swizzle = skgpu::Swizzle("aaaa");
+                            swizzle = Swizzle("aaaa");
                             break;
                         case GrColorType::kAlpha_16:
                             SkASSERT(combo.fFormat == VK_FORMAT_R16_UNORM);
-                            swizzle = skgpu::Swizzle("aaaa");
+                            swizzle = Swizzle("aaaa");
                             break;
                         case GrColorType::kAlpha_F16:
                             SkASSERT(combo.fFormat == VK_FORMAT_R16_SFLOAT);
-                            swizzle = skgpu::Swizzle("aaaa");
+                            swizzle = Swizzle("aaaa");
                             break;
                         case GrColorType::kABGR_4444:
                             if (combo.fFormat == VK_FORMAT_B4G4R4A4_UNORM_PACK16) {
-                                swizzle = skgpu::Swizzle("bgra");
+                                swizzle = Swizzle("bgra");
                             }
                             break;
                         default:
-                            swizzle = skgpu::Swizzle("rgba");
+                            swizzle = Swizzle("rgba");
                             break;
                     }
 
-                    auto createWithColorMtd = [format, swizzle](GrDirectContext* dContext,
-                                                                const SkColor4f& color,
-                                                                skgpu::Mipmapped mipmapped,
-                                                                GrRenderable renderable) {
+                    auto createWithColorMtd = [&](GrDirectContext* dContext,
+                                                  const SkColor4f& color,
+                                                  Mipmapped mipmapped,
+                                                  GrRenderable renderable) {
                         auto swizzledColor = swizzle.applyTo(color);
                         auto mbet = ManagedBackendTexture::MakeWithData(dContext,
                                                                         32, 32,
@@ -1088,7 +1092,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
                                                                         swizzledColor,
                                                                         mipmapped,
                                                                         renderable,
-                                                                        GrProtected::kNo);
+                                                                        isProtected);
                         check_vk_tiling(mbet->texture());
                         return mbet;
                     };
