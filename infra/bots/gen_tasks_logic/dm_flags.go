@@ -1324,6 +1324,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		args = append(args, skipped...)
 	}
 
+        match = []string{}
+        match = append(match, "SkSLUniformArray_Graphite")
 	if len(match) > 0 {
 		args = append(args, "--match")
 		args = append(args, match...)
