@@ -59,7 +59,50 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext*,
                                      const SkSpan<DescriptorData>&,
                                      VkDescriptorSetLayout*);
 
+VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(SkEnumBitMask<PipelineStageFlags>);
+
 bool vkFormatIsSupported(VkFormat);
+
+inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
+inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
+inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
+inline static constexpr unsigned int kNumUniformBuffers = 3;
+
+// For now, rigidly assign all uniform buffer descriptors to be in set 0 and all texture/samplers
+// to be in set 1.
+// TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
+inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
+inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
+// Currently input attachments are only used for loading MSAA from resolve, so we can use the
+// descriptor set index normally assigned to texture desc sets.
+inline static constexpr unsigned int kInputAttachmentDescSetIndex = kTextureBindDescSetIndex;
+
+inline static constexpr unsigned int kVertexBufferIndex = 0;
+inline static constexpr unsigned int kInstanceBufferIndex = 1;
+inline static constexpr unsigned int kNumInputBuffers = 2;
+
+inline static const DescriptorData kIntrinsicUniformBufferDescriptor = {
+        DescriptorType::kUniformBuffer, /*descCount=*/1,
+        kIntrinsicUniformBufferIndex,
+        PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+
+inline static const DescriptorData kRenderStepUniformDescriptor = {
+        DescriptorType::kUniformBuffer, /*descCount=*/1,
+        kRenderStepUniformBufferIndex,
+        PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+
+inline static const DescriptorData kPaintUniformDescriptor = {
+        DescriptorType::kUniformBuffer, /*descCount=*/1,
+        kPaintUniformBufferIndex,
+        PipelineStageFlags::kFragmentShader};
+
+// Currently we only have one input attachment descriptor by itself within a set, so its binding
+// index will always be 0.
+inline static constexpr unsigned int kInputAttachmentBindingIndex = 0;
+inline static const DescriptorData kInputAttachmentDescriptor = {
+        DescriptorType::kInputAttachment, /*descCount=*/1,
+        kInputAttachmentBindingIndex,
+        PipelineStageFlags::kFragmentShader};
 
 } // namespace skgpu::graphite
 

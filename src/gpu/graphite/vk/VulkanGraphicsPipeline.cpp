@@ -99,7 +99,7 @@ static void setup_vertex_input_state(
     for (auto attrib : vertexAttrs) {
         VkVertexInputAttributeDescription vkAttrib;
         vkAttrib.location = attribIndex++;
-        vkAttrib.binding = VulkanGraphicsPipeline::kVertexBufferIndex;
+        vkAttrib.binding = kVertexBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
         vkAttrib.offset = vertexAttributeOffset;
         vertexAttributeOffset += attrib.sizeAlign4();
@@ -110,7 +110,7 @@ static void setup_vertex_input_state(
     for (auto attrib : instanceAttrs) {
         VkVertexInputAttributeDescription vkAttrib;
         vkAttrib.location = attribIndex++;
-        vkAttrib.binding = VulkanGraphicsPipeline::kInstanceBufferIndex;
+        vkAttrib.binding = kInstanceBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
         vkAttrib.offset = instanceAttributeOffset;
         instanceAttributeOffset += attrib.sizeAlign4();
@@ -119,14 +119,14 @@ static void setup_vertex_input_state(
 
     if (vertexAttrs.size()) {
         bindingDescs->push_back() = {
-                VulkanGraphicsPipeline::kVertexBufferIndex,
+                kVertexBufferIndex,
                 (uint32_t) vertexAttributeOffset,
                 VK_VERTEX_INPUT_RATE_VERTEX
         };
     }
     if (instanceAttrs.size()) {
         bindingDescs->push_back() = {
-                VulkanGraphicsPipeline::kInstanceBufferIndex,
+                kInstanceBufferIndex,
                 (uint32_t) instanceAttributeOffset,
                 VK_VERTEX_INPUT_RATE_INSTANCE
         };
@@ -445,15 +445,15 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               int numTextureSamplers) {
     // Determine descriptor set layouts based upon the number of uniform buffers & texture/samplers.
     skia_private::STArray<2, VkDescriptorSetLayout> setLayouts;
-    skia_private::STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData>
+    skia_private::STArray<kNumUniformBuffers, DescriptorData>
             uniformDescriptors;
 
-    uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+    uniformDescriptors.push_back(kIntrinsicUniformBufferDescriptor);
     if (hasStepUniforms) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kRenderStepUniformDescriptor);
+        uniformDescriptors.push_back(kRenderStepUniformDescriptor);
     }
     if (numPaintUniforms > 0) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kPaintUniformDescriptor);
+        uniformDescriptors.push_back(kPaintUniformDescriptor);
     }
     VkDescriptorSetLayout uniformSetLayout;
     DescriptorDataToVkDescSetLayout(sharedContext, uniformDescriptors, &uniformSetLayout);
@@ -469,7 +469,10 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
         skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
 
         for (int i = 0; i < numTextureSamplers; i++) {
-            textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler, 1, i});
+            textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
+                                           /*descCount=*/1,
+                                           /*bindingIndex=*/i,
+                                           PipelineStageFlags::kFragmentShader});
         }
         DescriptorDataToVkDescSetLayout(
                 sharedContext, textureSamplerDescs, &textureSamplerSetLayout);
