@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdd38905_8fcce392",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-12-13T16:03:00Z",
+      "side": 1,
+      "message": "Following discussion on http://review.skia.org/789236",
+      "revId": "28de153c953867ef4c1a67345da19a448a86c313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
