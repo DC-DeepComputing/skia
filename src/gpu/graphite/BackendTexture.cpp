@@ -118,10 +118,13 @@ BackendTexture::BackendTexture(SkISize planeDimensions,
         , fInfo(info)
         , fDawnTexture(texture)
         , fDawnTextureView(nullptr) {
-    SkASSERT(info.fAspect == wgpu::TextureAspect::All ||
-             info.fAspect == wgpu::TextureAspect::Plane0Only ||
-             info.fAspect == wgpu::TextureAspect::Plane1Only ||
-             info.fAspect == wgpu::TextureAspect::Plane2Only);
+    SkASSERT(info.fAspect == wgpu::TextureAspect::All
+#if !defined(__EMSCRIPTEN__)
+             || info.fAspect == wgpu::TextureAspect::Plane0Only
+             || info.fAspect == wgpu::TextureAspect::Plane1Only
+             || info.fAspect == wgpu::TextureAspect::Plane2Only
+#endif
+    );
 }
 
 // When we only have a WGPUTextureView we can't actually take advantage of these TextureUsage bits
