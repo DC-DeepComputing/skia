@@ -737,7 +737,96 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                        vkPipeline,
                                        fsSkSLInfo.fNumPaintUniforms > 0,
                                        !step->uniforms().empty(),
-                                       fsSkSLInfo.fNumTexturesAndSamplers));
+                                       fsSkSLInfo.fNumTexturesAndSamplers,
+                                       /*ownsPipelineLayout=*/true));
+}
+
+bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
+        const VulkanSharedContext* sharedContext,
+        SkSL::Compiler* compiler,
+        VkShaderModule* outVertexShaderModule,
+        VkShaderModule* outFragShaderModule,
+        VkPipelineShaderStageCreateInfo* outShaderStageInfo,
+        VkPipelineLayout* outPipelineLayout) {
+    SkSL::Program::Interface vsInterface, fsInterface;
+    SkSL::ProgramSettings settings;
+    settings.fForceNoRTFlip = true;
+    std::string vsSPIRV, fsSPIRV;
+    ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
+
+    std::string vertShaderText;
+    vertShaderText.append(
+            "layout(spirv, set=0, binding=0) uniform vertexUniformBuffer {"
+            "half4 uPosXform;"
+            "};"
+
+            "// MSAA Load Program VS\n"
+            "void main() {"
+            "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
+            "sk_Position.xy = position * uPosXform.xy + uPosXform.zw;"
+            "sk_Position.zw = half2(0, 1);"
+            "}");
+
+    std::string fragShaderText;
+    fragShaderText.append(
+            "layout(spirv, input_attachment_index=0, set=1, binding=0) uniform subpassInput uInput;"
+
+            "// MSAA Load Program FS\n"
+            "void main() {"
+            "sk_FragColor = subpassLoad(uInput);"
+            "}");
+
+    if (!SkSLToSPIRV(compiler,
+                     vertShaderText,
+                     SkSL::ProgramKind::kGraphiteVertex,
+                     settings,
+                     &vsSPIRV,
+                     &vsInterface,
+                     errorHandler)) {
+        return false;
+    }
+    if (!SkSLToSPIRV(compiler,
+                     fragShaderText,
+                     SkSL::ProgramKind::kGraphiteFragment,
+                     settings,
+                     &fsSPIRV,
+                     &fsInterface,
+                     errorHandler)) {
+        return false;
+    }
+    *outFragShaderModule =
+            createVulkanShaderModule(sharedContext, fsSPIRV, VK_SHADER_STAGE_FRAGMENT_BIT);
+    if (*outFragShaderModule == VK_NULL_HANDLE) {
+        return false;
+    }
+
+    *outVertexShaderModule =
+            createVulkanShaderModule(sharedContext, vsSPIRV, VK_SHADER_STAGE_VERTEX_BIT);
+    if (*outVertexShaderModule == VK_NULL_HANDLE) {
+        destroy_shader_modules(sharedContext, VK_NULL_HANDLE, *outFragShaderModule);
+        return false;
+    }
+
+    VkPipelineShaderStageCreateInfo pipelineShaderStages[2];
+    setup_shader_stage_info(VK_SHADER_STAGE_VERTEX_BIT,
+                            *outVertexShaderModule,
+                            &pipelineShaderStages[0]);
+
+    setup_shader_stage_info(VK_SHADER_STAGE_FRAGMENT_BIT,
+                            *outFragShaderModule,
+                            &pipelineShaderStages[1]);
+
+    // TODO: Optimize for having one texture (no sampler) once separate textures and samplers are
+    // supported for Vulkan.
+    *outPipelineLayout = setup_pipeline_layout(sharedContext,
+                                               /*hasStepUniforms=*/false,
+                                               /*hasFragment=*/true,
+                                               /*numTextureSamplers=*/1);
+    if (*outPipelineLayout == VK_NULL_HANDLE) {
+        destroy_shader_modules(sharedContext, *outVertexShaderModule, *outFragShaderModule);
+        return false;
+    }
+    return true;
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
@@ -746,13 +835,15 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedCont
                                                VkPipeline pipeline,
                                                bool hasFragmentUniforms,
                                                bool hasStepUniforms,
-                                               int numTextureSamplers)
+                                               int numTextureSamplers,
+                                               bool ownsPipelineLayout)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
         , fHasFragmentUniforms(hasFragmentUniforms)
         , fHasStepUniforms(hasStepUniforms)
-        , fNumTextureSamplers(numTextureSamplers) {}
+        , fNumTextureSamplers(numTextureSamplers)
+        , fOwnsPipelineLayout(ownsPipelineLayout) {}
 
 void VulkanGraphicsPipeline::freeGpuData() {
     auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
@@ -760,7 +851,7 @@ void VulkanGraphicsPipeline::freeGpuData() {
         VULKAN_CALL(sharedCtxt->interface(),
             DestroyPipeline(sharedCtxt->device(), fPipeline, nullptr));
     }
-    if (fPipelineLayout != VK_NULL_HANDLE) {
+    if (fOwnsPipelineLayout && fPipelineLayout != VK_NULL_HANDLE) {
         VULKAN_CALL(sharedCtxt->interface(),
                     DestroyPipelineLayout(sharedCtxt->device(), fPipelineLayout, nullptr));
     }
