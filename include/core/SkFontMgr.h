@@ -29,7 +29,6 @@ public:
 
     static sk_sp<SkFontStyleSet> CreateEmpty();
 
-protected:
     sk_sp<SkTypeface> matchStyleCSS3(const SkFontStyle& pattern);
 };
 

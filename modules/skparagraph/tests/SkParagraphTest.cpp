@@ -8041,3 +8041,120 @@ UNIX_ONLY_TEST(SkParagraph_EmojiRuns, reporter) {
     test("👋🏼", 128075); // Modifier sequence
     test("👨‍👩‍👧‍👦", 128104); // ZWJ sequence
 }
+
+class FirstFontProvider : public TypefaceFontProvider {
+
+    // Match to the first typeface in the family
+    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[],
+                                                  const SkFontStyle &fontStyle,
+                                                  const char* bcp47[], int bcp47Count,
+                                                  SkUnichar character) const override {
+        if (fFamilyNames.empty()) {
+            return nullptr;
+        }
+        if (familyName == nullptr) {
+            familyName = this->fFamilyNames[0].data();
+        }
+
+        auto found = fRegisteredFamilies.find(SkString(familyName));
+        if (nullptr == found) {
+            return nullptr;
+        }
+
+        return this->fRegisteredFamilies.begin()->second->createTypeface(0);
+    }
+};
+
+class FirstFontCollection : public FontCollection {
+public:
+    FirstFontCollection(std::set<std::pair<std::string, std::string>> fonts)
+            : fAllOk(true)
+            , fFontProvider(sk_make_sp<FirstFontProvider>()) {
+        std::string fonts_path = GetResourcePath("fonts/").c_str();
+        for (auto& pair : fonts) {
+            SkString family_name = SkString(pair.first.c_str());
+            std::string path = fonts_path;
+            path += pair.second;
+            auto data = SkData::MakeFromFileName(path.c_str());
+            if (data == nullptr) {
+                fAllOk = false;
+                return;
+            }
+            fFontProvider->registerTypeface(ToolUtils::TestFontMgr()->makeFromData(std::move(data)),
+                                            family_name);
+        }
+        this->setDefaultFontManager(std::move(fFontProvider), std::vector<SkString>());
+    }
+
+    bool isAllOk() const { return fAllOk; }
+private:
+    bool fAllOk;
+    sk_sp<FirstFontProvider> fFontProvider;
+};
+
+// This test require certain fonts to be present in [skia]/resources/fonts:
+// Roboto-Medium.ttf
+// Roboto-Italic.ttf
+// Roboto-Regular.ttf (already there)
+// for internal testing only
+DEF_TEST_DISABLED(SkParagraph_MatchCSS3Style, reporter) {
+
+    // The first style (that will always be picked) is never the "perfect" style
+    std::set<std::pair<std::string, std::string>> fonts = {
+            {"Roboto", "Roboto-Medium.ttf"},
+            {"Roboto", "Roboto-Italic.ttf"},
+            {"Roboto", "Roboto-Regular.ttf"},
+    };
+    auto fontCollection = sk_make_sp<FirstFontCollection>(fonts);
+    fontCollection->enableFontFallback();
+    if (!fontCollection->isAllOk()) {
+        SkDebugf("Some fonts are not available");
+        SkASSERT(false);
+        return;
+    }
+
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    ParagraphStyle paragraph_style;
+    paragraph_style.setTextStyle(text_style);
+
+    auto layout = [&](const char* text) {
+        int count = 0;
+        for (auto w = 100; w <= 900; w += 100) {
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+
+            text_style.setFontStyle(
+                    SkFontStyle(w, SkFontStyle::kNormal_Width, SkFontStyle::kUpright_Slant));
+            builder.pushStyle(text_style);
+            builder.addText(text);
+
+            auto paragraph = builder.Build();
+            paragraph->layout(SK_ScalarMax);
+
+            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+            SkFontStyle currentStyle;
+            for (auto& run : impl->runs()) {
+                auto runStyle = run.font().getTypeface()->fontStyle();
+                if (runStyle == currentStyle) {
+                    continue;
+                }
+                ++count;
+                currentStyle = runStyle;
+            }
+        }
+        return count;
+    };
+
+    fontCollection->enableMatchCSS3Style();
+    int count1 = layout("Refined styles");
+
+    fontCollection->disableMatchCSS3Style();
+    int count2 = layout("Not refined styles");
+
+    // There are fewer differences from the required fonts for MatchCSS3Style enabled
+    // The first font will be italic, so it will never match without MatchCSS3Style
+    // Even with MatchCSS3Style some weights will not match (count1 == 5)
+    SkASSERT(count1 < count2 && count2 == 9);
+}

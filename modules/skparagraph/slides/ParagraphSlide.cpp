@@ -1,4 +1,5 @@
 // Copyright 2019 Google LLC.
+#include <src/ports/SkFontMgr_custom.h>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorPriv.h"
@@ -4259,9 +4260,9 @@ public:
     }
 };
 
-class ParagraphSlideLast : public ParagraphSlide_Base {
+class ParagraphSlideEmojiStart : public ParagraphSlide_Base {
 public:
-    ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+    ParagraphSlideEmojiStart() { fName = "ParagraphSlideEmojiStart"; }
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
         auto fontCollection = sk_make_sp<FontCollection>();
@@ -4312,6 +4313,121 @@ public:
         canvas->translate(0, 50);
         test("󠁢󠁳󠁣󠁴󠁿🏴󠁧󠁢󠁳󠁣󠁴󠁿♻️");
         */
+    }
+};
+
+class FirstFontProvider : public TypefaceFontProvider {
+
+    // Match to the first typeface in the family
+    sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char familyName[],
+                                                  const SkFontStyle &fontStyle,
+                                                  const char* bcp47[], int bcp47Count,
+                                                  SkUnichar character) const override {
+        if (fFamilyNames.empty()) {
+            return nullptr;
+        }
+        if (familyName == nullptr) {
+            familyName = this->fFamilyNames[0].data();
+        }
+
+        auto found = fRegisteredFamilies.find(SkString(familyName));
+        if (nullptr == found) {
+            return nullptr;
+        }
+        // return found->get()->matchStyle(fontStyle);
+        return this->fRegisteredFamilies.find(SkString(familyName))->get()->createTypeface(0);
+    }
+};
+
+class FirstFontCollection : public FontCollection {
+public:
+    FirstFontCollection(std::set<std::pair<std::string, std::string>> fonts)
+            : fAllOk(true)
+            , fFontProvider(sk_make_sp<FirstFontProvider>()) {
+        std::string fonts_path = GetResourcePath("fonts/").c_str();
+        for (auto& pair : fonts) {
+            SkString family_name = SkString(pair.first.c_str());
+            std::string path = fonts_path;
+            path += pair.second;
+            auto data = SkData::MakeFromFileName(path.c_str());
+            if (data == nullptr) {
+                fAllOk = false;
+                return;
+            }
+            fFontProvider->registerTypeface(ToolUtils::TestFontMgr()->makeFromData(std::move(data)),
+                                            family_name);
+        }
+        this->setDefaultFontManager(std::move(fFontProvider), std::vector<SkString>());
+    }
+
+    bool isAllOk() const { return fAllOk; }
+private:
+    bool fAllOk;
+    sk_sp<FirstFontProvider> fFontProvider;
+};
+
+class ParagraphSlideLast : public ParagraphSlide_Base {
+public:
+    ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+
+        // The first style (that will always be picked) is never the "perfect" style
+        std::set<std::pair<std::string, std::string>> fonts = {
+            {"Roboto", "Roboto-Medium.ttf"},
+            {"Roboto", "Roboto-Italic.ttf"},
+            {"Roboto", "Roboto-Regular.ttf"},
+        };
+        auto fontCollection = sk_make_sp<FirstFontCollection>(fonts);
+        fontCollection->enableFontFallback();
+        if (!fontCollection->isAllOk()) {
+            SkDebugf("Some fonts are not available");
+            SkASSERT(false);
+            return;
+        }
+
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("")});
+        text_style.setFontSize(20);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+
+        auto draw = [&](const char* text) {
+            int count = 0;
+            for (auto w = 100; w <= 900; w += 100) {
+                ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+
+                text_style.setFontStyle(
+                        SkFontStyle(w, SkFontStyle::kNormal_Width, SkFontStyle::kUpright_Slant));
+                builder.pushStyle(text_style);
+                builder.addText(text);
+
+                auto paragraph = builder.Build();
+                paragraph->layout(this->size().width());
+                paragraph->paint(canvas, 0, 0);
+                canvas->translate(0, paragraph->getHeight() + 20);
+
+                auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+                SkFontStyle currentStyle;
+                for (auto& run : impl->runs()) {
+                    if (run.font().getTypeface()->fontStyle() == currentStyle) {
+                        continue;
+                    }
+                    ++count;
+                    currentStyle = run.font().getTypeface()->fontStyle();
+                }
+            }
+            return count;
+        };
+
+        fontCollection->enableMatchCSS3Style();
+        int count1 = draw("Refined styles");
+
+        fontCollection->disableMatchCSS3Style();
+        int count2 = draw("Not refined styles");
+
+        SkDebugf("Refined styles are closer to the required: %d < %d\n", count1, count2);
     }
 };
 
@@ -4393,4 +4509,5 @@ DEF_SLIDE(return new ParagraphSlideGetPath();)
 DEF_SLIDE(return new ParagraphSlideExperiment();)
 DEF_SLIDE(return new ParagraphSlideGlyphs();)
 DEF_SLIDE(return new ParagraphSlideEllipsisInRTL();)
+DEF_SLIDE(return new ParagraphSlideEmojiStart();)
 DEF_SLIDE(return new ParagraphSlideLast();)
