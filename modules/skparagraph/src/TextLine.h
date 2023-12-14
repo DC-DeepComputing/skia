@@ -12,6 +12,7 @@
 #include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/src/Run.h"
 #include "src/base/SkBitmaskEnum.h"
+#include "src/core/SkTHash.h"
 
 #include <stddef.h>
 #include <functional>
@@ -123,6 +124,7 @@ public:
                           std::vector<TextBox>& boxes) const;
     void getRectsForPlaceholders(std::vector<TextBox>& boxes);
     PositionWithAffinity getGlyphPositionAtCoordinate(SkScalar dx);
+    PositionWithAffinity getPositionAtCoordinate(SkScalar dx, bool byGrapheme = false);
 
     ClipContext measureTextInsideOneRun(TextRange textRange,
                                         const Run* run,
@@ -168,6 +170,8 @@ private:
 
     void shiftCluster(const Cluster* cluster, SkScalar shift, SkScalar prevShift);
 
+    PositionWithAffinity findGlyphProportionalPositionInsideGrapheme(const Run* run, TextRange glyphCluster);
+
     ParagraphImpl* fOwner;
     BlockRange fBlockRange;
     TextRange fTextExcludingSpaces;
@@ -187,6 +191,31 @@ private:
     bool fHasBackground;
     bool fHasShadows;
     bool fHasDecorations;
+
+    // Keeping all resolved typefaces
+    struct ProportionKey {
+
+        ProportionKey() {}
+
+        ProportionKey(SkTypefaceID id, const SkString& grapheme)
+                : fId(id), fGrapheme(grapheme) { }
+        SkTypefaceID fId;
+        SkString fGrapheme;
+
+        bool operator==(const ProportionKey& other) const {
+            return fId == other.fId && fGrapheme == other.fGrapheme;
+        }
+
+        struct Hasher {
+            uint32_t operator()(const ProportionKey& key) const {
+                return SkGoodHash()(key.fId) ^
+                       SkGoodHash()(key.fGrapheme) ;
+            }
+        };
+    };
+
+    skia_private::THashMap<ProportionKey, PositionWithAffinity, ProportionKey::Hasher> fProportionGraphemes;
+    std::unique_ptr<Run> shaped(const Run* run, sk_sp<SkTypeface> typeface, sk_sp<SkFontMgr> fallback, const SkString& text, SkSpan<SkShaper::Feature> features);
 
     LineMetricStyle fAscentStyle;
     LineMetricStyle fDescentStyle;

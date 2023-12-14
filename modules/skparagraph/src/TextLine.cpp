@@ -1,5 +1,7 @@
 // Copyright 2019 Google LLC.
 
+#include "modules/skparagraph/src/TextLine.h"
+#include "Iterators.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
@@ -20,7 +22,6 @@
 #include "modules/skparagraph/src/Decorations.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
-#include "modules/skparagraph/src/TextLine.h"
 #include "modules/skshaper/include/SkShaper.h"
 
 #include <algorithm>
@@ -628,12 +629,12 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
     }
 }
 
-std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Cluster* cluster) {
+std::unique_ptr<Run> TextLine::shaped(const Run* run, sk_sp<SkTypeface> typeface, sk_sp<SkFontMgr> fallback, const SkString& text, SkSpan<SkShaper::Feature> features) {
 
     class ShapeHandler final : public SkShaper::RunHandler {
     public:
         ShapeHandler(SkScalar lineHeight, bool useHalfLeading, SkScalar baselineShift, const SkString& ellipsis)
-            : fRun(nullptr), fLineHeight(lineHeight), fUseHalfLeading(useHalfLeading), fBaselineShift(baselineShift), fEllipsis(ellipsis) {}
+                : fRun(nullptr), fLineHeight(lineHeight), fUseHalfLeading(useHalfLeading), fBaselineShift(baselineShift), fEllipsis(ellipsis) {}
         std::unique_ptr<Run> run() & { return std::move(fRun); }
 
     private:
@@ -665,6 +666,34 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         SkString fEllipsis;
     };
 
+    ShapeHandler handler(run->heightMultiplier(), run->useHalfLeading(), run->baselineShift(), text);
+    SkFont font(std::move(typeface), run->font().getSize());
+    font.setEdging(SkFont::Edging::kAntiAlias);
+    font.setHinting(SkFontHinting::kSlight);
+    font.setSubpixel(true);
+
+    std::unique_ptr<SkShaper> shaper = SkShaper::MakeShapeDontWrapOrReorder(
+            fOwner->getUnicode()->copy(),
+            fallback ? fallback : SkFontMgr::RefEmpty());
+
+    SkShaper::TrivialFontRunIterator fontIter(font, text.size());
+    LangIterator langIter(SkSpan<const char>(text.c_str(), text.size()), fOwner->blocks({0, 0}), fOwner->paragraphStyle().getTextStyle());
+    SkShaper::TrivialBiDiRunIterator bidiIter(run->fBidiLevel, text.size());
+    auto scriptIter = SkShaper::MakeSkUnicodeHbScriptRunIterator(text.c_str(), text.size());
+    shaper->shape(text.c_str(),text.size(),
+                  fontIter, bidiIter, *scriptIter, langIter,
+                  features.data(), features.size(),
+                  std::numeric_limits<SkScalar>::max(),
+                  &handler);
+
+    auto textRun = handler.run();
+    textRun->fTextRange = TextRange(0, text.size());
+    textRun->fOwner = fOwner;
+    return textRun;
+};
+
+std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Cluster* cluster) {
+
     const Run& run = cluster->run();
     TextStyle textStyle = fOwner->paragraphStyle().getTextStyle();
     for (auto i = fBlockRange.start; i < fBlockRange.end; ++i) {
@@ -678,30 +707,8 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         }
     }
 
-    auto shaped = [&](sk_sp<SkTypeface> typeface, sk_sp<SkFontMgr> fallback) -> std::unique_ptr<Run> {
-        ShapeHandler handler(run.heightMultiplier(), run.useHalfLeading(), run.baselineShift(), ellipsis);
-        SkFont font(std::move(typeface), textStyle.getFontSize());
-        font.setEdging(SkFont::Edging::kAntiAlias);
-        font.setHinting(SkFontHinting::kSlight);
-        font.setSubpixel(true);
-
-        std::unique_ptr<SkShaper> shaper = SkShaper::MakeShapeDontWrapOrReorder(
-                            fOwner->getUnicode()->copy(),
-                            fallback ? fallback : SkFontMgr::RefEmpty());
-        shaper->shape(ellipsis.c_str(),
-                      ellipsis.size(),
-                      font,
-                      true,
-                      std::numeric_limits<SkScalar>::max(),
-                      &handler);
-        auto ellipsisRun = handler.run();
-        ellipsisRun->fTextRange = TextRange(0, ellipsis.size());
-        ellipsisRun->fOwner = fOwner;
-        return ellipsisRun;
-    };
-
     // Check the current font
-    auto ellipsisRun = shaped(run.fFont.refTypeface(), nullptr);
+    auto ellipsisRun = this->shaped(&run, run.fFont.refTypeface(), nullptr, ellipsis, SkSpan<SkShaper::Feature>(nullptr, 0));
     if (ellipsisRun->isResolved()) {
         return ellipsisRun;
     }
@@ -710,7 +717,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
     std::vector<sk_sp<SkTypeface>> typefaces = fOwner->fontCollection()->findTypefaces(
             textStyle.getFontFamilies(), textStyle.getFontStyle(), textStyle.getFontArguments());
     for (const auto& typeface : typefaces) {
-        ellipsisRun = shaped(typeface, nullptr);
+        ellipsisRun = this->shaped(&run, typeface, nullptr, ellipsis, SkSpan<SkShaper::Feature>(nullptr, 0));
         if (ellipsisRun->isResolved()) {
             return ellipsisRun;
         }
@@ -729,7 +736,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
                                             textStyle.getFontStyle(),
                                             textStyle.getLocale());
         if (typeface) {
-            ellipsisRun = shaped(typeface, fOwner->fontCollection()->getFallbackManager());
+            ellipsisRun = this->shaped(&run, typeface, fOwner->fontCollection()->getFallbackManager(), ellipsis, SkSpan<SkShaper::Feature>(nullptr, 0));
             if (ellipsisRun->isResolved()) {
                 return ellipsisRun;
             }
@@ -1475,6 +1482,166 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
             });
             return keepLooking;
         }
+    );
+    return result;
+}
+
+PositionWithAffinity TextLine::findGlyphProportionalPositionInsideGrapheme
+                                            (const Run* run, TextRange glyphCluster) {
+    // 1. Check if it's already been done
+    auto text = fOwner->text(glyphCluster);
+    SkString str(text.data(), text.size());
+    ProportionKey key(run->font().getTypeface()->uniqueID(), str);
+    auto found = fProportionGraphemes.find(key);
+    if (found != nullptr) {
+        return *found;
+    }
+
+    // 2. Disable ligatures
+    TArray<SkShaper::Feature> features;
+    features.emplace_back(SkShaper::Feature{
+            SkSetFourByteTag('l', 'i', 'g', 'a'), 0, glyphCluster.start, glyphCluster.end
+    });
+    SkSpan<SkShaper::Feature> spanFeatures(features.data(), features.size());
+
+    // 3. Shape all the text
+    auto result = this->shaped(run, run->font().refTypeface(), nullptr, str, spanFeatures);
+    
+    // 4. Calculate the proportion
+
+    // 5. Add the results to the cache
+
+}
+
+PositionWithAffinity TextLine::getPositionAtCoordinate(SkScalar dx, bool byGrapheme) {
+
+    if (SkScalarNearlyZero(this->width()) && SkScalarNearlyZero(this->spacesWidth())) {
+        // TODO: this is one of the flutter changes that have to go away eventually
+        //  Empty line is a special case in txtlib (but only when there are no spaces, too)
+        auto utf16Index = fOwner->getUTF16Index(this->fTextExcludingSpaces.end);
+        return { SkToS32(utf16Index) , kDownstream };
+    }
+
+    PositionWithAffinity result(0, Affinity::kDownstream);
+    this->iterateThroughVisualRuns(true,
+                                   [this, dx, byGrapheme, &result]
+                                   (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+                                       bool keepLooking = true;
+                                       *runWidthInLine = this->iterateThroughSingleRunByStyles(
+                                               TextAdjustment::GraphemeGluster, run, runOffsetInLine, textRange, StyleType::kNone,
+                                               [this, run, dx, byGrapheme, &result, &keepLooking]
+                                               (TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context0) {
+
+                                                   SkScalar offsetX = this->offset().fX;
+                                                   ClipContext context = context0;
+
+                                                   // Correct the clip size because libtxt counts trailing spaces
+                                                   if (run->leftToRight()) {
+                                                       context.clip.fRight += context.fExcludedTrailingSpaces; // extending clip to the right
+                                                   } else {
+                                                       // Clip starts from 0; we cannot extend it to the left from that
+                                                   }
+                                                   // However, we need to offset the clip
+                                                   context.clip.offset(offsetX, 0.0f);
+
+                                                   // This patch will help us to avoid a floating point error
+                                                   if (SkScalarNearlyEqual(context.clip.fRight, dx, 0.01f)) {
+                                                       context.clip.fRight = dx;
+                                                   }
+
+                                                   if (dx <= context.clip.fLeft) {
+                                                       // All the other runs are placed right of this one
+                                                       auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos));
+                                                       if (run->leftToRight()) {
+                                                           result = { SkToS32(utf16Index), kDownstream};
+                                                           keepLooking = false;
+                                                       } else {
+                                                           result = { SkToS32(utf16Index + 1), kUpstream};
+                                                           // If we haven't reached the end of the run we need to keep looking
+                                                           keepLooking = context.pos != 0;
+                                                       }
+                                                       // For RTL we go another way
+                                                       return !run->leftToRight();
+                                                   }
+
+                                                   if (dx >= context.clip.fRight) {
+                                                       // We have to keep looking ; just in case keep the last one as the closest
+                                                       auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos + context.size));
+                                                       if (run->leftToRight()) {
+                                                           result = {SkToS32(utf16Index), kUpstream};
+                                                       } else {
+                                                           result = {SkToS32(utf16Index), kDownstream};
+                                                       }
+                                                       // For RTL we go another way
+                                                       return run->leftToRight();
+                                                   }
+
+                                                   // So we found the run that contains our coordinates
+                                                   // Find the glyph position in the run that is the closest left of our point
+                                                   // TODO: binary search
+                                                   size_t found = context.pos;
+                                                   for (size_t index = context.pos; index < context.pos + context.size; ++index) {
+                                                       // TODO: this rounding is done to match Flutter tests. Must be removed..
+                                                       auto end = context.run->positionX(index) + context.fTextShift + offsetX;
+                                                       if (fOwner->getApplyRoundingHack()) {
+                                                           end = littleRound(end);
+                                                       }
+                                                       if (end > dx) {
+                                                           break;
+                                                       } else if (end == dx && !context.run->leftToRight()) {
+                                                           // When we move RTL variable end points to the beginning of the code point which is included
+                                                           found = index;
+                                                           break;
+                                                       }
+                                                       found = index;
+                                                   }
+
+                                                   SkScalar glyphemePosLeft = context.run->positionX(found) + context.fTextShift + offsetX;
+                                                   SkScalar glyphemesWidth = context.run->positionX(found + 1) - context.run->positionX(found);
+
+                                                   // Find the grapheme range that contains the point
+                                                   auto clusterIndex8 = context.run->globalClusterIndex(found);
+                                                   auto clusterEnd8 = context.run->globalClusterIndex(found + 1);
+                                                   auto graphemes = fOwner->countSurroundingGraphemes({clusterIndex8, clusterEnd8});
+
+                                                   SkScalar center = glyphemePosLeft + glyphemesWidth / 2;
+                                                   if (graphemes.size() > 1) {
+                                                       if (byGrapheme) {
+                                                           result = this->findGlyphProportionalPositionInsideGrapheme(run, {clusterIndex8, clusterEnd8});
+                                                       } else {
+                                                           // Calculate the position proportionally based on grapheme count
+                                                           SkScalar averageGraphemeWidth = glyphemesWidth / graphemes.size();
+                                                           SkScalar delta = dx - glyphemePosLeft;
+                                                           int graphemeIndex = SkScalarNearlyZero(averageGraphemeWidth)
+                                                                                       ? 0
+                                                                                       : SkScalarFloorToInt(delta / averageGraphemeWidth);
+                                                           auto graphemeCenter = glyphemePosLeft + graphemeIndex * averageGraphemeWidth +
+                                                                                 averageGraphemeWidth / 2;
+                                                           auto graphemeUtf8Index = graphemes[graphemeIndex];
+                                                           if ((dx < graphemeCenter) == context.run->leftToRight()) {
+                                                               size_t utf16Index = fOwner->getUTF16Index(graphemeUtf8Index);
+                                                               result = { SkToS32(utf16Index), kDownstream };
+                                                           } else {
+                                                               size_t utf16Index = fOwner->getUTF16Index(graphemeUtf8Index + 1);
+                                                               result = { SkToS32(utf16Index), kUpstream };
+                                                           }
+                                                       }
+                                                       // Keep UTF16 index as is
+                                                   } else if ((dx < center) == context.run->leftToRight()) {
+                                                       size_t utf16Index = fOwner->getUTF16Index(clusterIndex8);
+                                                       result = { SkToS32(utf16Index), kDownstream };
+                                                   } else {
+                                                       size_t utf16Index = context.run->leftToRight()
+                                                                                   ? fOwner->getUTF16Index(clusterEnd8)
+                                                                                   : fOwner->getUTF16Index(clusterIndex8) + 1;
+                                                       result = { SkToS32(utf16Index), kUpstream };
+                                                   }
+
+                                                   return keepLooking = false;
+
+                                               });
+                                       return keepLooking;
+                                   }
     );
     return result;
 }

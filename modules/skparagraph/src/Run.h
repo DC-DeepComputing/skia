@@ -171,6 +171,7 @@ private:
     friend class InternalLineMetrics;
     friend class ParagraphCache;
     friend class OneLineShaper;
+    friend class ShapeHandler;
 
     ParagraphImpl* fOwner;
     TextRange fTextRange;
