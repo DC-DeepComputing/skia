@@ -119,6 +119,7 @@ static FormatCompatibilityClass format_compatibility_class(VkFormat format) {
             return FormatCompatibilityClass::k8_1_1;
 
         case VK_FORMAT_R5G6B5_UNORM_PACK16:
+        case VK_FORMAT_B5G6R5_UNORM_PACK16:
         case VK_FORMAT_R16_SFLOAT:
         case VK_FORMAT_R8G8_UNORM:
         case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
@@ -799,6 +800,7 @@ static constexpr VkFormat kVkFormats[] = {
     VK_FORMAT_R8_UNORM,
     VK_FORMAT_B8G8R8A8_UNORM,
     VK_FORMAT_R5G6B5_UNORM_PACK16,
+    VK_FORMAT_B5G6R5_UNORM_PACK16,
     VK_FORMAT_R16G16B16A16_SFLOAT,
     VK_FORMAT_R16_SFLOAT,
     VK_FORMAT_R8G8B8_UNORM,
@@ -992,6 +994,26 @@ void GrVkCaps::initFormatTable(const GrContextOptions& contextOptions,
                 ctInfo.fColorType = ct;
                 ctInfo.fTransferColorType = ct;
                 ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+            }
+        }
+    }
+    // Format: VK_FORMAT_B5G6R5_UNORM_PACK16
+    {
+        constexpr VkFormat format = VK_FORMAT_B5G6R5_UNORM_PACK16;
+        auto& info = this->getFormatInfo(format);
+        info.init(contextOptions, interface, physDev, properties, format);
+        if (SkToBool(info.fOptimalFlags & FormatInfo::kTexturable_Flag)) {
+            info.fColorTypeInfoCount = 1;
+            info.fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info.fColorTypeInfoCount);
+            int ctIdx = 0;
+            // Format: VK_FORMAT_B5G6R5_UNORM_PACK16, Surface: kBGR_565
+            // TODO: add and use kRGB_565 instead
+            {
+                constexpr GrColorType ct = GrColorType::kBGR_565;
+                auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+                ctInfo.fColorType = ct;
+                ctInfo.fTransferColorType = ct;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
             }
         }
     }
@@ -1365,7 +1387,8 @@ void GrVkCaps::initFormatTable(const GrContextOptions& contextOptions,
     // we use for a given GrcolorType.
 
     this->setColorType(GrColorType::kAlpha_8,          { VK_FORMAT_R8_UNORM });
-    this->setColorType(GrColorType::kBGR_565,          { VK_FORMAT_R5G6B5_UNORM_PACK16 });
+    this->setColorType(GrColorType::kBGR_565,          { VK_FORMAT_R5G6B5_UNORM_PACK16,
+                                                         VK_FORMAT_B5G6R5_UNORM_PACK16 });
     this->setColorType(GrColorType::kABGR_4444,        { VK_FORMAT_R4G4B4A4_UNORM_PACK16,
                                                          VK_FORMAT_B4G4R4A4_UNORM_PACK16 });
     this->setColorType(GrColorType::kRGBA_8888,        { VK_FORMAT_R8G8B8A8_UNORM });
@@ -2063,6 +2086,7 @@ std::vector<GrTest::TestFormatColorTypeCombination> GrVkCaps::getTestingCombinat
     std::vector<GrTest::TestFormatColorTypeCombination> combos = {
         { GrColorType::kAlpha_8,          GrBackendFormats::MakeVk(VK_FORMAT_R8_UNORM)            },
         { GrColorType::kBGR_565,          GrBackendFormats::MakeVk(VK_FORMAT_R5G6B5_UNORM_PACK16) },
+        { GrColorType::kBGR_565,          GrBackendFormats::MakeVk(VK_FORMAT_B5G6R5_UNORM_PACK16) },
         { GrColorType::kABGR_4444,       GrBackendFormats::MakeVk(VK_FORMAT_R4G4B4A4_UNORM_PACK16)},
         { GrColorType::kABGR_4444,       GrBackendFormats::MakeVk(VK_FORMAT_B4G4R4A4_UNORM_PACK16)},
         { GrColorType::kRGBA_8888,        GrBackendFormats::MakeVk(VK_FORMAT_R8G8B8A8_UNORM)      },
