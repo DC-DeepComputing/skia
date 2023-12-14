@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd6566a7_8b4ece58",
+        "filename": "src/gpu/graphite/DescriptorTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-14T14:28:50Z",
+      "side": 1,
+      "message": "This is one option - to define pipeline stage flags independent of the backends that can then be translated into `VkShaderStageFlags`, Dawn\u0027s `ShaderStage`, etc.\n\nThe other option would be to handle this entirely internally to each backend that cares about descriptor organization. That could look like defining a `VulkanDescriptorData` struct that contains `DescriptorData` and the `VkShaderStageFlags` directly, for example.\n\nAs it stands now, though, Dawn and Vulkan use the same general shader stage visibilities for the same descriptors (aka Dawn `entries`). If that holds true going forward (which I would think it would?), it may make more sense to say \"Uniforms at `UniformSlot::kPaint` have pipeline shader stage flags of `PipelineStageFlags::kFragmentShader` at the graphite level and have each backend translate that as appropriate.\n\nI could also see an argument for equating that at the graphite level being overkill or unnecessary, though. LMKWYT.",
+      "range": {
+        "startLine": 30,
+        "startChar": 11,
+        "endLine": 30,
+        "endChar": 29
+      },
+      "revId": "5ceafc558b9aa548d450f9cb74d9a7c40eeabb3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
