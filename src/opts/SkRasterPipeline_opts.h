@@ -1797,6 +1797,121 @@ STAGE(css_lab_to_xyz, NoCtx) {
     b = xyz[2]*D50[2];
 }
 
+STAGE(css_oklab_gamut_map, NoCtx) {
+    auto compute_alpha = [](float L, float a, float b) {
+        // Constants for the normal vector of the plane formed by white, black, and
+        // the specified vertex of the gamut.
+        constexpr float normal_R[2] = {0.409702, -0.912219};
+        constexpr float normal_M[2] = {-0.397919, -0.917421};
+        constexpr float normal_B[2] = {-0.906800, 0.421562};
+        constexpr float normal_C[2] = {-0.171122, 0.985250};
+        constexpr float normal_G[2] = {0.460276, 0.887776};
+        constexpr float normal_Y[2] = {0.947925, 0.318495};
+
+        // For the triangles formed by white (W) or black (K) with the vertices
+        // of Yellow and Red (YR), Red and Magenta (RM), etc, the constants to be
+        // used to compute the intersection of a line of constant hue and luminance
+        // with that plane.
+        constexpr float c0_YR = 0.091132;
+        constexpr float cW_YR[2] = {0.070370, 0.034139};
+        constexpr float cK_YR[2] = {0.018170, 0.378550};
+        constexpr float c0_RM = 0.113902;
+        constexpr float cW_RM[2] = {0.090836, 0.036251};
+        constexpr float cK_RM[2] = {0.226781, 0.018764};
+        constexpr float c0_MB = 0.161739;
+        constexpr float cW_MB[2] = {-0.008202, -0.264819};
+        constexpr float cK_MB[2] = {0.187156, -0.284304};
+        constexpr float c0_BC = 0.102047;
+        constexpr float cW_BC[2] = {-0.014804, -0.162608};
+        constexpr float cK_BC[2] = {-0.276786, 0.004193};
+        constexpr float c0_CG = 0.092029;
+        constexpr float cW_CG[2] = {-0.038533, -0.001650};
+        constexpr float cK_CG[2] = {-0.232572, -0.094331};
+        constexpr float c0_GY = 0.081709;
+        constexpr float cW_GY[2] = {-0.034601, -0.002215};
+        constexpr float cK_GY[2] = {0.012185, 0.338031};
+
+        const float one_minus_L = 1.0 - L;
+        const float ab[2] = {a, b};
+
+        auto dot = [](const float x[2], const float y[2]) { return x[0] * y[0] + x[1] * y[1]; };
+
+        // Find the planes to intersect with and set the constants based on those
+        // planes.
+        float c0;
+        const float* cW;
+        const float* cK;
+
+        if (dot(ab, normal_R) < 0.0) {
+            if (dot(ab, normal_G) < 0.0) {
+                if (dot(ab, normal_C) < 0.0) {
+                    c0 = c0_BC;
+                    cW = cW_BC;
+                    cK = cK_BC;
+                } else {
+                    c0 = c0_CG;
+                    cW = cW_CG;
+                    cK = cK_CG;
+                }
+            } else {
+                if (dot(ab, normal_Y) < 0.0) {
+                    c0 = c0_GY;
+                    cW = cW_GY;
+                    cK = cK_GY;
+                } else {
+                    c0 = c0_YR;
+                    cW = cW_YR;
+                    cK = cK_YR;
+                }
+            }
+        } else {
+            if (dot(ab, normal_B) < 0.0) {
+                if (dot(ab, normal_M) < 0.0) {
+                    c0 = c0_RM;
+                    cW = cW_RM;
+                    cK = cK_RM;
+                } else {
+                    c0 = c0_MB;
+                    cW = cW_MB;
+                    cK = cK_MB;
+                }
+            } else {
+                c0 = c0_BC;
+                cW = cW_BC;
+                cK = cK_BC;
+            }
+        }
+
+        // Perform the intersection.
+        float alpha = 1.0;
+
+        // Intersect with the plane with white.
+        float w_denom = dot(cW, ab);
+        if (w_denom > 0.0) {
+            float w_num = c0 * one_minus_L;
+            if (w_num < w_denom) {
+                alpha = std::min(alpha, w_num / w_denom);
+            }
+        }
+
+        // Intersect with the plane with black.
+        float k_denom = dot(cK, ab);
+        if (k_denom > 0.0) {
+            float k_num = c0 * L;
+            if (k_num < k_denom) {
+                alpha = std::min(alpha, k_num / k_denom);
+            }
+        }
+
+        return alpha;
+    };
+
+    // Umm, I need to figure out how to vectorize this...
+    // BUT I DO SEE THIS!!
+    g *= 0.0;
+    b *= 0.0;
+}
+
 STAGE(css_oklab_to_linear_srgb, NoCtx) {
     F l_ = r + 0.3963377774f * g + 0.2158037573f * b,
       m_ = r - 0.1055613458f * g - 0.0638541728f * b,

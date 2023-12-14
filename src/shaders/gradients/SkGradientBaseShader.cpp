@@ -441,11 +441,16 @@ void SkGradientBaseShader::AppendInterpolatedToDstStages(SkRasterPipeline* p,
     // Convert colors in exotic spaces back to their intermediate SkColorSpace
     switch (interpolation.fColorSpace) {
         case ColorSpace::kLab:   p->append(SkRasterPipelineOp::css_lab_to_xyz);           break;
-        case ColorSpace::kOKLab: p->append(SkRasterPipelineOp::css_oklab_to_linear_srgb); break;
+        case ColorSpace::kOKLab:
+            p->append(SkRasterPipelineOp::css_oklab_gamut_map);
+            p->append(SkRasterPipelineOp::css_oklab_to_linear_srgb);
+            break;
         case ColorSpace::kLCH:   p->append(SkRasterPipelineOp::css_hcl_to_lab);
                                  p->append(SkRasterPipelineOp::css_lab_to_xyz);           break;
         case ColorSpace::kOKLCH: p->append(SkRasterPipelineOp::css_hcl_to_lab);
-                                 p->append(SkRasterPipelineOp::css_oklab_to_linear_srgb); break;
+            p->append(SkRasterPipelineOp::css_oklab_gamut_map);
+            p->append(SkRasterPipelineOp::css_oklab_to_linear_srgb);
+            break;
         case ColorSpace::kHSL:   p->append(SkRasterPipelineOp::css_hsl_to_srgb);          break;
         case ColorSpace::kHWB:   p->append(SkRasterPipelineOp::css_hwb_to_srgb);          break;
         default: break;

@@ -150,55 +150,40 @@
 
 // `SK_RASTER_PIPELINE_OPS_HIGHP_ONLY` defines ops that are only available in highp; this subset
 // includes all of SkSL.
-#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)                                   \
-    M(callback)                                                                \
-    M(stack_checkpoint) M(stack_rewind)                                        \
-    M(unbounded_set_rgb) M(unbounded_uniform_color)                            \
-    M(unpremul) M(unpremul_polar) M(dither)                                    \
-    M(load_16161616) M(load_16161616_dst) M(store_16161616) M(gather_16161616) \
-    M(load_a16)    M(load_a16_dst)  M(store_a16)   M(gather_a16)               \
-    M(load_rg1616) M(load_rg1616_dst) M(store_rg1616) M(gather_rg1616)         \
-    M(load_f16)    M(load_f16_dst)  M(store_f16)   M(gather_f16)               \
-    M(load_af16)   M(load_af16_dst) M(store_af16)  M(gather_af16)              \
-    M(load_rgf16)  M(load_rgf16_dst) M(store_rgf16) M(gather_rgf16)            \
-    M(load_f32)    M(load_f32_dst)  M(store_f32)   M(gather_f32)               \
-    M(load_1010102) M(load_1010102_dst) M(store_1010102) M(gather_1010102)     \
-    M(load_1010102_xr) M(load_1010102_xr_dst) M(store_1010102_xr)              \
-    M(gather_1010102_xr)                                                       \
-    M(load_10x6) M(load_10x6_dst) M(store_10x6) M(gather_10x6)                 \
-    M(store_src_rg) M(load_src_rg)                                             \
-    M(byte_tables)                                                             \
-    M(colorburn) M(colordodge) M(softlight)                                    \
-    M(hue) M(saturation) M(color) M(luminosity)                                \
-    M(matrix_3x3) M(matrix_3x4) M(matrix_4x5) M(matrix_4x3)                    \
-    M(parametric) M(gamma_) M(PQish) M(HLGish) M(HLGinvish)                    \
-    M(rgb_to_hsl) M(hsl_to_rgb)                                                \
-    M(css_lab_to_xyz) M(css_oklab_to_linear_srgb)                              \
-    M(css_hcl_to_lab)                                                          \
-    M(css_hsl_to_srgb) M(css_hwb_to_srgb)                                      \
-    M(gauss_a_to_rgba)                                                         \
-    M(mirror_x)   M(repeat_x)                                                  \
-    M(mirror_y)   M(repeat_y)                                                  \
-    M(negate_x)                                                                \
-    M(bicubic_clamp_8888)                                                      \
-    M(bilinear_setup)                                                          \
-    M(bilinear_nx) M(bilinear_px) M(bilinear_ny) M(bilinear_py)                \
-    M(bicubic_setup)                                                           \
-    M(bicubic_n3x) M(bicubic_n1x) M(bicubic_p1x) M(bicubic_p3x)                \
-    M(bicubic_n3y) M(bicubic_n1y) M(bicubic_p1y) M(bicubic_p3y)                \
-    M(accumulate)                                                              \
-    M(mipmap_linear_init) M(mipmap_linear_update) M(mipmap_linear_finish)      \
-    M(xy_to_2pt_conical_strip)                                                 \
-    M(xy_to_2pt_conical_focal_on_circle)                                       \
-    M(xy_to_2pt_conical_well_behaved)                                          \
-    M(xy_to_2pt_conical_smaller)                                               \
-    M(xy_to_2pt_conical_greater)                                               \
-    M(alter_2pt_conical_compensate_focal)                                      \
-    M(alter_2pt_conical_unswap)                                                \
-    M(mask_2pt_conical_nan)                                                    \
-    M(mask_2pt_conical_degenerates) M(apply_vector_mask)                       \
-    M(set_base_pointer)                                                        \
-    SK_RASTER_PIPELINE_OPS_SKSL(M)
+#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)                                                                                                             \
+    M(callback)                                                                                                                                          \
+    M(stack_checkpoint)                                                                                                                                  \
+    M(stack_rewind) M(unbounded_set_rgb) M(unbounded_uniform_color) M(unpremul) M(unpremul_polar) M(dither) M(load_16161616) M(                          \
+            load_16161616_dst) M(store_16161616) M(gather_16161616) M(load_a16) M(load_a16_dst) M(store_a16) M(gather_a16)                               \
+            M(load_rg1616) M(load_rg1616_dst) M(store_rg1616) M(gather_rg1616) M(load_f16) M(load_f16_dst) M(store_f16) M(                               \
+                    gather_f16) M(load_af16) M(load_af16_dst) M(store_af16) M(gather_af16) M(load_rgf16) M(load_rgf16_dst)                               \
+                    M(store_rgf16) M(gather_rgf16) M(load_f32) M(load_f32_dst) M(store_f32) M(gather_f32) M(load_1010102) M(                             \
+                            load_1010102_dst) M(store_1010102) M(gather_1010102) M(load_1010102_xr) M(load_1010102_xr_dst)                               \
+                            M(store_1010102_xr) M(gather_1010102_xr) M(load_10x6) M(load_10x6_dst) M(store_10x6) M(                                      \
+                                    gather_10x6) M(store_src_rg) M(load_src_rg) M(byte_tables) M(colorburn) M(colordodge)                                \
+                                    M(softlight) M(hue) M(saturation) M(color) M(luminosity) M(matrix_3x3) M(matrix_3x4) M(                              \
+                                            matrix_4x5) M(matrix_4x3) M(parametric) M(gamma_) M(PQish) M(HLGish)                                         \
+                                            M(HLGinvish) M(rgb_to_hsl) M(hsl_to_rgb) M(css_lab_to_xyz) M(css_oklab_gamut_map) M(                         \
+                                                    css_oklab_to_linear_srgb) M(css_hcl_to_lab) M(css_hsl_to_srgb) M(css_hwb_to_srgb)                    \
+                                                    M(gauss_a_to_rgba) M(mirror_x) M(repeat_x) M(mirror_y) M(repeat_y) M(                                \
+                                                            negate_x) M(bicubic_clamp_8888) M(bilinear_setup) M(bilinear_nx)                             \
+                                                            M(bilinear_px) M(bilinear_ny) M(bilinear_py) M(bicubic_setup) M(                             \
+                                                                    bicubic_n3x) M(bicubic_n1x) M(bicubic_p1x)                                           \
+                                                                    M(bicubic_p3x) M(bicubic_n3y) M(bicubic_n1y) M(                                      \
+                                                                            bicubic_p1y) M(bicubic_p3y) M(accumulate)                                    \
+                                                                            M(mipmap_linear_init) M(mipmap_linear_update) M(                             \
+                                                                                    mipmap_linear_finish) M(xy_to_2pt_conical_strip)                     \
+                                                                                    M(xy_to_2pt_conical_focal_on_circle) M(                              \
+                                                                                            xy_to_2pt_conical_well_behaved) M(xy_to_2pt_conical_smaller) \
+                                                                                            M(xy_to_2pt_conical_greater) M(                              \
+                                                                                                    alter_2pt_conical_compensate_focal)                  \
+                                                                                                    M(alter_2pt_conical_unswap) M(                       \
+                                                                                                            mask_2pt_conical_nan)                        \
+                                                                                                            M(mask_2pt_conical_degenerates) M(           \
+                                                                                                                    apply_vector_mask)                   \
+                                                                                                                    M(set_base_pointer)                  \
+                                                                                                                            SK_RASTER_PIPELINE_OPS_SKSL( \
+                                                                                                                                    M)
 
 // The combined set of all RasterPipeline ops:
 #define SK_RASTER_PIPELINE_OPS_ALL(M)    \
