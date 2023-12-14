@@ -123,6 +123,7 @@ public:
                           std::vector<TextBox>& boxes) const;
     void getRectsForPlaceholders(std::vector<TextBox>& boxes);
     PositionWithAffinity getGlyphPositionAtCoordinate(SkScalar dx);
+    PositionWithAffinity getPositionAtCoordinate(SkScalar dx, bool byGrapheme = false);
 
     ClipContext measureTextInsideOneRun(TextRange textRange,
                                         const Run* run,
