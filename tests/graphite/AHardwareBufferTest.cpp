@@ -113,11 +113,11 @@ AHardwareBuffer* create_AHB(skiatest::Reporter* reporter,
         hwbDesc.usage |= AHARDWAREBUFFER_USAGE_CPU_WRITE_NEVER |
                          AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT;
     } else {
-        hwbDesc.usage |= AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN;
+         hwbDesc.usage |= AHARDWAREBUFFER_USAGE_CPU_WRITE_OFTEN;
     }
 
     hwbDesc.format = AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM;
-    // The following three are not used by AHardwareBuffer_allocate
+    // The following three are not used in the allocate
     hwbDesc.stride = 0;
     hwbDesc.rfu0= 0;
     hwbDesc.rfu1= 0;
@@ -170,9 +170,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Graphite_AHardwareBuffer_ImportAsSurfac
                                          reporter,
                                          context,
                                          CtsEnforcement::kNextRelease) {
-    if (!context->priv().caps()->supportsAHardwareBufferImages()) {
-        return;
-    }
+    // TODO: Add a supportsAHardwareBufferImages() check?
 
     bool isProtected = context->priv().caps()->protectedSupport();
 

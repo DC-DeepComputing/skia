@@ -212,12 +212,6 @@ public:
     // Returns whether compute shaders are supported.
     bool computeSupport() const { return fComputeSupport; }
 
-    /**
-     * Returns true if the given backend supports importing AHardwareBuffers. This will only
-     * ever be supported on Android devices with API level >= 26.
-     */
-    bool supportsAHardwareBufferImages() const { return fSupportsAHardwareBufferImages; }
-
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
     skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
@@ -314,7 +308,6 @@ protected:
     bool fMSAARenderToSingleSampledSupport = false;
 
     bool fComputeSupport = false;
-    bool fSupportsAHardwareBufferImages = false;
 
     ResourceBindingRequirements fResourceBindingReqs;
 

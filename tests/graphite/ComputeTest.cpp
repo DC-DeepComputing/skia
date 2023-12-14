@@ -225,11 +225,6 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_DispatchGroupTest,
                                               reporter,
                                               context,
                                               testContext) {
-    // This fails on Dawn D3D11, b/315834710
-    if (testContext->contextType() == skgpu::ContextType::kDawn_D3D11) {
-        return;
-    }
-
     constexpr uint32_t kProblemSize = 512;
     constexpr float kFactor1 = 4.f;
     constexpr float kFactor2 = 3.f;
@@ -476,11 +471,6 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_UniformBufferTest,
                                               reporter,
                                               context,
                                               testContext) {
-    // This fails on Dawn D3D11, b/315834710
-    if (testContext->contextType() == skgpu::ContextType::kDawn_D3D11) {
-        return;
-    }
-
     constexpr uint32_t kProblemSize = 512;
     constexpr float kFactor = 4.f;
 
@@ -1320,11 +1310,6 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_AtomicOperationsTest,
                                               reporter,
                                               context,
                                               testContext) {
-    // This fails on Dawn D3D11, b/315834710
-    if (testContext->contextType() == skgpu::ContextType::kDawn_D3D11) {
-        return;
-    }
-
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     constexpr uint32_t kWorkgroupCount = 32;
@@ -1450,11 +1435,6 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_AtomicOperationsOverArrayA
                                               reporter,
                                               context,
                                               testContext) {
-    // This fails on Dawn D3D11, b/315834710
-    if (testContext->contextType() == skgpu::ContextType::kDawn_D3D11) {
-        return;
-    }
-
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     constexpr uint32_t kWorkgroupCount = 32;
@@ -1952,11 +1932,6 @@ DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(Compute_WorkgroupBufferDescMetal,
 }
 
 DEF_GRAPHITE_TEST_FOR_DAWN_CONTEXT(Compute_NativeShaderSourceWGSL, reporter, context, testContext) {
-    // This fails on Dawn D3D11, b/315834710
-    if (testContext->contextType() == skgpu::ContextType::kDawn_D3D11) {
-        return;
-    }
-
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     constexpr uint32_t kWorkgroupCount = 32;

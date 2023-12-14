@@ -102,14 +102,12 @@ bool GrGLProgramBuilder::compileAndAttachShaders(const std::string& glsl,
                                                  GrGLuint programId,
                                                  GrGLenum type,
                                                  SkTDArray<GrGLuint>* shaderIds,
-                                                 bool shaderWasCached,
                                                  GrContextOptions::ShaderErrorHandler* errHandler) {
     GrGLGpu* gpu = this->gpu();
     GrGLuint shaderId = GrGLCompileAndAttachShader(gpu->glContext(),
                                                    programId,
                                                    type,
                                                    glsl,
-                                                   shaderWasCached,
                                                    gpu->pipelineBuilder()->stats(),
                                                    errHandler);
     if (!shaderId) {
@@ -284,7 +282,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
                 // failure (we can still recover by compiling the program from source, below).
                 // Clients won't be directly notified, but they can infer this from the trace
                 // events, and from the traffic to the persistent cache.
-                cached = GrGLCheckLinkStatus(fGpu, programID, /*shaderWasCached=*/true,
+                cached = GrGLCheckLinkStatus(fGpu, programID,
                                              /*errorHandler=*/nullptr, nullptr, nullptr);
                 if (cached) {
                     this->addInputVars(interface);
@@ -343,12 +341,8 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
         }
 
         this->addInputVars(interface);
-        if (!this->compileAndAttachShaders(glsl[kFragment_GrShaderType],
-                                           programID,
-                                           GR_GL_FRAGMENT_SHADER,
-                                           &shadersToDelete,
-                                           cached,
-                                           errorHandler)) {
+        if (!this->compileAndAttachShaders(glsl[kFragment_GrShaderType], programID,
+                                           GR_GL_FRAGMENT_SHADER, &shadersToDelete, errorHandler)) {
             cleanup_program(fGpu, programID, shadersToDelete);
             return nullptr;
         }
@@ -370,12 +364,8 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
                 return nullptr;
             }
         }
-        if (!this->compileAndAttachShaders(glsl[kVertex_GrShaderType],
-                                           programID,
-                                           GR_GL_VERTEX_SHADER,
-                                           &shadersToDelete,
-                                           cached,
-                                           errorHandler)) {
+        if (!this->compileAndAttachShaders(glsl[kVertex_GrShaderType], programID,
+                                           GR_GL_VERTEX_SHADER, &shadersToDelete, errorHandler)) {
             cleanup_program(fGpu, programID, shadersToDelete);
             return nullptr;
         }
@@ -388,7 +378,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
         {
             TRACE_EVENT0_ALWAYS("skia.shaders", "driver_link_program");
             GL_CALL(LinkProgram(programID));
-            if (!GrGLCheckLinkStatus(fGpu, programID, cached, errorHandler, sksl, glsl)) {
+            if (!GrGLCheckLinkStatus(fGpu, programID, errorHandler, sksl, glsl)) {
                 cleanup_program(fGpu, programID, shadersToDelete);
                 return nullptr;
             }
@@ -491,12 +481,8 @@ bool GrGLProgramBuilder::PrecompileProgram(GrDirectContext* dContext,
             return false;
         }
 
-        if (GrGLuint shaderID = GrGLCompileAndAttachShader(glGpu->glContext(),
-                                                           programID,
-                                                           type,
-                                                           glsl,
-                                                           /*shaderWasCached=*/false,
-                                                           glGpu->pipelineBuilder()->stats(),
+        if (GrGLuint shaderID = GrGLCompileAndAttachShader(glGpu->glContext(), programID, type,
+                                                           glsl, glGpu->pipelineBuilder()->stats(),
                                                            errorHandler)) {
             shadersToDelete.push_back(shaderID);
             return true;

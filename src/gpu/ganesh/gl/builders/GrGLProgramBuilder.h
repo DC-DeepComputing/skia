@@ -65,7 +65,6 @@ private:
                                  GrGLuint programId,
                                  GrGLenum type,
                                  SkTDArray<GrGLuint>* shaderIds,
-                                 bool shaderWasCached,
                                  GrContextOptions::ShaderErrorHandler* errorHandler);
 
     void computeCountsAndStrides(GrGLuint programID,
