@@ -452,13 +452,13 @@ label                          label 0
 copy_constant                  v0 = 0
 label                          label 0x00000001
 copy_constant                  v1 = 0
-jump                           jump -4 (label 0 at #2)
+jump_backwards                 jump_backwards -4 (label 0 at #2)
 label                          label 0x00000002
 copy_constant                  v2 = 0
-jump                           jump -7 (label 0 at #2)
+jump_backwards                 jump_backwards -7 (label 0 at #2)
 label                          label 0x00000003
-branch_if_no_active_lanes_eq   branch -4 (label 2 at #7) if no lanes of v2 == 0
-branch_if_no_active_lanes_eq   branch -10 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
+branch_backwards_if_no_active_ branch -4 (label 2 at #7) if no lanes of v2 == 0
+branch_backwards_if_no_active_ branch -10 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
 )";
     static constexpr char kExpectationWithExecutionMaskWrites[] =
 R"(jump                           jump +10 (label 3 at #11)
@@ -466,14 +466,14 @@ label                          label 0
 copy_constant                  v0 = 0
 label                          label 0x00000001
 copy_constant                  v1 = 0
-branch_if_no_lanes_active      branch_if_no_lanes_active -2 (label 1 at #4)
-branch_if_all_lanes_active     branch_if_all_lanes_active -5 (label 0 at #2)
+branch_backwards_if_no_lanes_a branch_backwards_if_no_lanes_active -2 (label 1 at #4)
+branch_backwards_if_all_lanes_ branch_backwards_if_all_lanes_active -5 (label 0 at #2)
 label                          label 0x00000002
 copy_constant                  v2 = 0
-branch_if_any_lanes_active     branch_if_any_lanes_active -8 (label 0 at #2)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -8 (label 0 at #2)
 label                          label 0x00000003
-branch_if_no_active_lanes_eq   branch -4 (label 2 at #8) if no lanes of v2 == 0
-branch_if_no_active_lanes_eq   branch -11 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
+branch_backwards_if_no_active_ branch -4 (label 2 at #8) if no lanes of v2 == 0
+branch_backwards_if_no_active_ branch -11 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
 )";
 #else
     // We don't have guaranteed tail-calling, so we rewind the stack immediately before any backward
@@ -485,16 +485,16 @@ copy_constant                  v0 = 0
 label                          label 0x00000001
 copy_constant                  v1 = 0
 stack_rewind
-jump                           jump -5 (label 0 at #2)
+jump_backwards                 jump_backwards -5 (label 0 at #2)
 label                          label 0x00000002
 copy_constant                  v2 = 0
 stack_rewind
-jump                           jump -9 (label 0 at #2)
+jump_backwards                 jump_backwards -9 (label 0 at #2)
 label                          label 0x00000003
 stack_rewind
-branch_if_no_active_lanes_eq   branch -6 (label 2 at #8) if no lanes of v2 == 0
+branch_backwards_if_no_active_ branch -6 (label 2 at #8) if no lanes of v2 == 0
 stack_rewind
-branch_if_no_active_lanes_eq   branch -14 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
+branch_backwards_if_no_active_ branch -14 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
 )";
     static constexpr char kExpectationWithExecutionMaskWrites[] =
 R"(jump                           jump +13 (label 3 at #14)
@@ -503,18 +503,18 @@ copy_constant                  v0 = 0
 label                          label 0x00000001
 copy_constant                  v1 = 0
 stack_rewind
-branch_if_no_lanes_active      branch_if_no_lanes_active -3 (label 1 at #4)
+branch_backwards_if_no_lanes_a branch_backwards_if_no_lanes_active -3 (label 1 at #4)
 stack_rewind
-branch_if_all_lanes_active     branch_if_all_lanes_active -7 (label 0 at #2)
+branch_backwards_if_all_lanes_ branch_backwards_if_all_lanes_active -7 (label 0 at #2)
 label                          label 0x00000002
 copy_constant                  v2 = 0
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -11 (label 0 at #2)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -11 (label 0 at #2)
 label                          label 0x00000003
 stack_rewind
-branch_if_no_active_lanes_eq   branch -6 (label 2 at #10) if no lanes of v2 == 0
+branch_backwards_if_no_active_ branch -6 (label 2 at #10) if no lanes of v2 == 0
 stack_rewind
-branch_if_no_active_lanes_eq   branch -16 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
+branch_backwards_if_no_active_ branch -16 (label 0 at #2) if no lanes of v2 == 0x00000001 (1.401298e-45)
 )";
 #endif
 

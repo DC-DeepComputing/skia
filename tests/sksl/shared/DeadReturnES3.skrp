@@ -19,7 +19,7 @@ mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
 copy_constant                  $43 = 0
 merge_loop_mask                LoopMask &= $43
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -7 (label 10 at #13)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -7 (label 10 at #13)
 label                          label 0x00000009
 load_loop_mask                 LoopMask = $42
 load_return_mask               RetMask = $41
@@ -35,7 +35,7 @@ mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
 copy_constant                  $39 = 0
 merge_loop_mask                LoopMask &= $39
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -6 (label 13 at #30)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -6 (label 13 at #30)
 label                          label 0x0000000C
 load_loop_mask                 LoopMask = $38
 copy_constant                  $38 = 0xFFFFFFFF
@@ -54,7 +54,7 @@ reenable_loop_mask             LoopMask |= $40
 copy_constant                  $35 = 0
 merge_loop_mask                LoopMask &= $35
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -7 (label 16 at #48)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -7 (label 16 at #48)
 label                          label 0x0000000F
 load_loop_mask                 LoopMask = $34
 copy_constant                  $34 = 0xFFFFFFFF
@@ -86,7 +86,7 @@ reenable_loop_mask             LoopMask |= $36
 copy_constant                  $30 = 0
 merge_loop_mask                LoopMask &= $30
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -19 (label 19 at #68)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -19 (label 19 at #68)
 label                          label 0x00000012
 load_loop_mask                 LoopMask = $29
 copy_constant                  $29 = 0
@@ -117,7 +117,7 @@ reenable_loop_mask             LoopMask |= $32
 copy_constant                  $24 = 0
 merge_loop_mask                LoopMask &= $24
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -16 (label 24 at #102)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -16 (label 24 at #102)
 label                          label 0x00000017
 load_loop_mask                 LoopMask = $23
 copy_constant                  $23 = 0xFFFFFFFF
@@ -146,7 +146,7 @@ label                          label 0x0000001F
 copy_constant                  $19 = 0
 merge_loop_mask                LoopMask &= $19
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -16 (label 29 at #131)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -16 (label 29 at #131)
 label                          label 0x0000001C
 load_loop_mask                 LoopMask = $18
 load_return_mask               RetMask = $17
@@ -180,7 +180,7 @@ copy_slot_unmasked             $2 = x
 cmple_imm_int                  $2 = lessThanEqual($2, 0x00000001)
 merge_loop_mask                LoopMask &= $2
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -11 (label 36 at #170)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -11 (label 36 at #170)
 label                          label 0x00000022
 load_loop_mask                 LoopMask = $1
 copy_constant                  $1 = 0xFFFFFFFF

@@ -104,7 +104,7 @@ copy_slot_unmasked             $105 = i
 cmplt_imm_int                  $105 = lessThan($105, 0x0000000A)
 merge_loop_mask                LoopMask &= $105
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -33 (label 12 at #58)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -33 (label 12 at #58)
 label                          label 0x0000000A
 load_loop_mask                 LoopMask = $104
 trace_scope                    TraceScope(-1) when $103 is true
@@ -178,7 +178,7 @@ copy_slot_unmasked             $95 = i₁
 cmplt_imm_int                  $95 = lessThan($95, 0x0000000A)
 merge_loop_mask                LoopMask &= $95
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -37 (label 16 at #128)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -37 (label 16 at #128)
 label                          label 0x0000000E
 load_loop_mask                 LoopMask = $94
 trace_scope                    TraceScope(-1) when $93 is true
@@ -256,7 +256,7 @@ copy_slot_unmasked             $85 = i₂
 cmplt_imm_int                  $85 = lessThan($85, 0x0000000A)
 merge_loop_mask                LoopMask &= $85
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -37 (label 20 at #206)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -37 (label 20 at #206)
 label                          label 0x00000012
 load_loop_mask                 LoopMask = $84
 trace_scope                    TraceScope(-1) when $83 is true
@@ -336,7 +336,7 @@ trace_var                      TraceVar(i₄) when $13 is true
 copy_slot_unmasked             $71 = i₄
 cmple_imm_int                  $71 = lessThanEqual($71, 0x00000003)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -19 (label 25 at #304) if no lanes of $71 == 0
+branch_backwards_if_no_active_ branch -19 (label 25 at #304) if no lanes of $71 == 0
 label                          label 0x00000018
 trace_scope                    TraceScope(-1) when $70 is true
 trace_line                     TraceLine(50) when $13 is true
@@ -418,7 +418,7 @@ trace_var                      TraceVar(i₆) when $13 is true
 copy_slot_unmasked             $58 = i₆
 cmplt_imm_int                  $58 = lessThan($58, 0x00000004)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -19 (label 30 at #386) if no lanes of $58 == 0
+branch_backwards_if_no_active_ branch -19 (label 30 at #386) if no lanes of $58 == 0
 label                          label 0x0000001D
 trace_scope                    TraceScope(-1) when $57 is true
 trace_line                     TraceLine(67) when $13 is true
@@ -501,7 +501,7 @@ copy_constant                  $45 = 0x00000001 (1.401298e-45)
 copy_slot_unmasked             $46 = i₈
 cmple_int                      $45 = lessThanEqual($45, $46)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -20 (label 35 at #468) if no lanes of $45 == 0
+branch_backwards_if_no_active_ branch -20 (label 35 at #468) if no lanes of $45 == 0
 label                          label 0x00000022
 trace_scope                    TraceScope(-1) when $44 is true
 trace_line                     TraceLine(84) when $13 is true
@@ -584,7 +584,7 @@ copy_constant                  $32 = 0
 copy_slot_unmasked             $33 = i₁₀
 cmplt_int                      $32 = lessThan($32, $33)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -20 (label 40 at #551) if no lanes of $32 == 0
+branch_backwards_if_no_active_ branch -20 (label 40 at #551) if no lanes of $32 == 0
 label                          label 0x00000027
 trace_scope                    TraceScope(-1) when $31 is true
 trace_line                     TraceLine(100) when $13 is true
@@ -712,7 +712,7 @@ trace_var                      TraceVar(i₁₃) when $13 is true
 copy_slot_unmasked             $4 = i₁₃
 cmpne_imm_int                  $4 = notEqual($4, 0x00000004)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -19 (label 48 at #680) if no lanes of $4 == 0
+branch_backwards_if_no_active_ branch -19 (label 48 at #680) if no lanes of $4 == 0
 label                          label 0x0000002F
 trace_scope                    TraceScope(-1) when $3 is true
 trace_line                     TraceLine(114) when $13 is true

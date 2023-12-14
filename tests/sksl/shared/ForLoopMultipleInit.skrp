@@ -38,7 +38,7 @@ cmplt_imm_float                $2 = lessThan($2, 0x41200000 (10.0))
 bitwise_and_int                $1 &= $2
 merge_loop_mask                LoopMask &= $1
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -23 (label 2 at #7)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -23 (label 2 at #7)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_constant                  c = 0
@@ -56,7 +56,7 @@ copy_slot_unmasked             $1 = c
 cmplt_imm_int                  $1 = lessThan($1, 0x0000000A)
 merge_loop_mask                LoopMask &= $1
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -12 (label 5 at #36)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -12 (label 5 at #36)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $0
 copy_2_immutables_unmasked     d[0], d[1] = i0..1 [0, 0x41200000 (10.0)]
@@ -74,7 +74,7 @@ copy_2_slots_unmasked          $1..2 = d[0], d[1]
 cmplt_float                    $1 = lessThan($1, $2)
 merge_loop_mask                LoopMask &= $1
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -12 (label 8 at #54)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -12 (label 8 at #54)
 label                          label 0x00000006
 load_loop_mask                 LoopMask = $0
 store_loop_mask                $0 = LoopMask
@@ -84,7 +84,7 @@ branch_if_all_lanes_active     branch_if_all_lanes_active +5 (label 9 at #77)
 mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
 label                          label 0x0000000A
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -5 (label 11 at #71)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -5 (label 11 at #71)
 label                          label 0x00000009
 load_loop_mask                 LoopMask = $0
 store_loop_mask                $0 = LoopMask
@@ -94,7 +94,7 @@ branch_if_all_lanes_active     branch_if_all_lanes_active +5 (label 12 at #87)
 mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
 label                          label 0x0000000D
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -5 (label 14 at #81)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -5 (label 14 at #81)
 label                          label 0x0000000C
 load_loop_mask                 LoopMask = $0
 copy_4_slots_unmasked          $0..3 = result

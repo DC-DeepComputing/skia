@@ -1715,11 +1715,16 @@ bool Program::appendStages(SkRasterPipeline* pipeline,
                 break;
             }
             case ProgramOp::jump:
+            case ProgramOp::jump_backwards:
             case ProgramOp::branch_if_all_lanes_active:
             case ProgramOp::branch_if_any_lanes_active:
             case ProgramOp::branch_if_no_lanes_active:
-            case ProgramOp::branch_if_no_active_lanes_eq: {
-                // The branch context contain a valid label ID at this point.
+            case ProgramOp::branch_if_no_active_lanes_eq:
+            case ProgramOp::branch_backwards_if_all_lanes_active:
+            case ProgramOp::branch_backwards_if_any_lanes_active:
+            case ProgramOp::branch_backwards_if_no_lanes_active:
+            case ProgramOp::branch_backwards_if_no_active_lanes_eq: {
+                // The branch context contains a valid label ID at this point.
                 auto* branchCtx = static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx);
                 int labelID = branchCtx->offset;
                 SkASSERT(labelID >= 0 && labelID < fNumLabels);
@@ -1776,14 +1781,19 @@ void Program::makeStages(TArray<Stage>* pipeline,
     // Track labels that we have reached in processing.
     SkBitSet labelsEncountered(fNumLabels);
 
-    auto EmitStackRewindForBackwardsBranch = [&](int labelID) {
+    auto UpdateForBackwardsBranch = [&](BuilderOp op, int labelID) -> ProgramOp {
         // If we have already encountered the label associated with this branch, this is a
-        // backwards branch. Add a stack-rewind immediately before the branch to ensure that
-        // long-running loops don't use an unbounded amount of stack space.
+        // backwards branch. We use a separate op for backwards branches so we can avoid runaway
+        // infinite loops. Also, when tailcalls are unavailable, we insert a stack-rewind
+        // immediately before backwards branches to ensure that long-running loops don't use an
+        // unbounded amount of stack space.
+        int opValue = (int)op;
         if (labelsEncountered.test(labelID)) {
             this->appendStackRewind(pipeline);
             mostRecentRewind = pipeline->size();
+            ++opValue;  // the backwards-branch ops come immediately after the forward-branch ops
         }
+        return (ProgramOp)opValue;
     };
 
     auto* const basePtr = (std::byte*)slots.values.data();
@@ -1827,31 +1837,32 @@ void Program::makeStages(TArray<Stage>* pipeline,
             case BuilderOp::branch_if_any_lanes_active:
             case BuilderOp::branch_if_no_lanes_active: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
-                EmitStackRewindForBackwardsBranch(inst.fImmA);
+                ProgramOp branchOp = UpdateForBackwardsBranch(inst.fOp, inst.fImmA);
 
                 auto* ctx = alloc->make<SkRasterPipeline_BranchCtx>();
                 ctx->offset = inst.fImmA;
-                pipeline->push_back({(ProgramOp)inst.fOp, ctx});
+                pipeline->push_back({branchOp, ctx});
                 break;
             }
             case BuilderOp::branch_if_all_lanes_active: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
-                EmitStackRewindForBackwardsBranch(inst.fImmA);
+                ProgramOp branchOp = UpdateForBackwardsBranch(inst.fOp, inst.fImmA);
 
                 auto* ctx = alloc->make<SkRasterPipeline_BranchIfAllLanesActiveCtx>();
                 ctx->offset = inst.fImmA;
-                pipeline->push_back({ProgramOp::branch_if_all_lanes_active, ctx});
+                pipeline->push_back({branchOp, ctx});
                 break;
             }
             case BuilderOp::branch_if_no_active_lanes_on_stack_top_equal: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
-                EmitStackRewindForBackwardsBranch(inst.fImmA);
+                ProgramOp branchOp = UpdateForBackwardsBranch(
+                        BuilderOp::branch_if_no_active_lanes_eq, inst.fImmA);
 
                 auto* ctx = alloc->make<SkRasterPipeline_BranchIfEqualCtx>();
                 ctx->offset = inst.fImmA;
                 ctx->value = inst.fImmB;
                 ctx->ptr = reinterpret_cast<int*>(tempStackPtr - N);
-                pipeline->push_back({ProgramOp::branch_if_no_active_lanes_eq, ctx});
+                pipeline->push_back({branchOp, ctx});
                 break;
             }
             case BuilderOp::init_lane_masks: {
@@ -3225,14 +3236,19 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
                 break;
 
             case POp::jump:
+            case POp::jump_backwards:
             case POp::branch_if_all_lanes_active:
             case POp::branch_if_any_lanes_active:
             case POp::branch_if_no_lanes_active:
+            case POp::branch_backwards_if_all_lanes_active:
+            case POp::branch_backwards_if_any_lanes_active:
+            case POp::branch_backwards_if_no_lanes_active:
                 opArg1 = this->branchOffset(static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx),
                                             index);
                 break;
 
-            case POp::branch_if_no_active_lanes_eq: {
+            case POp::branch_if_no_active_lanes_eq:
+            case POp::branch_backwards_if_no_active_lanes_eq: {
                 const auto* ctx = static_cast<SkRasterPipeline_BranchIfEqualCtx*>(stage.ctx);
                 opArg1 = this->branchOffset(ctx, index);
                 opArg2 = this->ptrCtx(ctx->ptr, 1);
@@ -3688,9 +3704,13 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
                 break;
 
             case POp::jump:
+            case POp::jump_backwards:
             case POp::branch_if_all_lanes_active:
             case POp::branch_if_any_lanes_active:
             case POp::branch_if_no_lanes_active:
+            case POp::branch_backwards_if_all_lanes_active:
+            case POp::branch_backwards_if_any_lanes_active:
+            case POp::branch_backwards_if_no_lanes_active:
             case POp::invoke_shader:
             case POp::invoke_color_filter:
             case POp::invoke_blender:
@@ -3706,6 +3726,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
                 break;
 
             case POp::branch_if_no_active_lanes_eq:
+            case POp::branch_backwards_if_no_active_lanes_eq:
                 opText = "branch " + opArg1 + " if no lanes of " + opArg2 + " == " + opArg3;
                 break;
 
