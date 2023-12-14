@@ -1,4 +1,7 @@
 // Copyright 2019 Google LLC.
+#ifndef TestFontCollection_DEFINED
+#define TestFontCollection_DEFINED
+
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
 #include "src/core/SkFontDescriptor.h"
@@ -24,3 +27,4 @@ private:
 };
 }  // namespace textlayout
 }  // namespace skia
+#endif // TestFontCollection_DEFINED

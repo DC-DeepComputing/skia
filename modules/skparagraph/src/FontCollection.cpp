@@ -33,7 +33,8 @@ size_t FontCollection::FamilyKey::Hasher::operator()(const FontCollection::Famil
 }
 
 FontCollection::FontCollection()
-        : fEnableFontFallback(true)
+        : fMatchCSS3Style(false)
+        , fEnableFontFallback(true)
         , fDefaultFamilyNames({SkString(DEFAULT_FONT_FAMILY)}) { }
 
 size_t FontCollection::getFontManagersCount() const { return this->getFontManagerOrder().size(); }
@@ -148,6 +149,32 @@ sk_sp<SkTypeface> FontCollection::matchTypeface(const SkString& familyName, SkFo
     return nullptr;
 }
 
+class CSS3FontStyleSet : public SkFontStyleSet {
+public:
+    CSS3FontStyleSet(sk_sp<SkFontMgr> fontMgr, sk_sp<SkTypeface> typeface) {
+        SkString familyName;
+        typeface->getFamilyName(&familyName);
+        fFontStyleSet = fontMgr->matchFamily(familyName.c_str());
+    }
+
+    int count() override { return fFontStyleSet->count(); }
+
+    void getStyle(int index, SkFontStyle* style, SkString* familyName) override {
+        return fFontStyleSet->getStyle(index, style, familyName);
+    }
+
+    sk_sp<SkTypeface> createTypeface(int index) override {
+        return fFontStyleSet->createTypeface(index);
+    }
+
+    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+        return this->matchStyleCSS3(pattern);
+    }
+
+private:
+    sk_sp<SkFontStyleSet> fFontStyleSet;
+};
+
 // Find ANY font in available font managers that resolves the unicode codepoint
 sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
                                                   SkFontStyle fontStyle,
@@ -161,10 +188,27 @@ sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
         sk_sp<SkTypeface> typeface(manager->matchFamilyStyleCharacter(
             nullptr, fontStyle, bcp47.data(), bcp47.size(), unicode));
 
-        if (typeface != nullptr) {
-            return typeface;
+        if (typeface == nullptr) {
+            continue;
         }
+
+        //typeface = manager->legacyMakeTypeface(nullptr, fontStyle);
+
+        if (fMatchCSS3Style) {
+            manager->matchFamilyStyle(nullptr, fontStyle);
+            CSS3FontStyleSet styles(manager, typeface);
+            if (styles.count() > 1) {
+                // We can refine the typeface by CSS3 style if there are styles to select from
+                sk_sp<SkTypeface> refinedTypeface = styles.matchStyle(fontStyle);
+                if (refinedTypeface != nullptr) {
+                    return refinedTypeface;
+                }
+            }
+        }
+
+        return typeface;
     }
+    // TODO: Take the first one!
     return nullptr;
 }
 
@@ -213,9 +257,6 @@ sk_sp<SkTypeface> FontCollection::defaultFallback() {
     }
     return nullptr;
 }
-
-void FontCollection::disableFontFallback() { fEnableFontFallback = false; }
-void FontCollection::enableFontFallback() { fEnableFontFallback = true; }
 
 void FontCollection::clearCaches() {
     fParagraphCache.reset();

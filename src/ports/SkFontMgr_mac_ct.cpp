@@ -84,6 +84,17 @@ static sk_sp<SkTypeface> create_from_desc(CTFontDescriptorRef desc) {
     return SkTypeface_Mac::Make(std::move(ctFont), OpszVariation(), nullptr);
 }
 
+/** Creates a typeface from a descriptor by style only, searching the cache. */
+static sk_sp<SkTypeface> create_from_style(const SkFontStyle& fontStyle) {
+    SkUniqueCFRef<CTFontDescriptorRef> reqDesc = create_descriptor(nullptr, fontStyle);
+    auto fontStyleSet = sk_sp<SkFontStyleSet>(new SkFontStyleSet_Mac(desc.get()));
+    auto result = fontStyleSet.matchStyleCSS3();
+    if (result) {
+        return result;
+    }
+    return create_from_desc(reqDesc.get());
+}
+
 static SkUniqueCFRef<CTFontDescriptorRef> create_descriptor(const char familyName[],
                                                             const SkFontStyle& style) {
     SkUniqueCFRef<CFMutableDictionaryRef> cfAttributes(
@@ -440,10 +451,10 @@ protected:
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
                                    const SkFontStyle& style) const override {
-        SkUniqueCFRef<CTFontDescriptorRef> reqDesc = create_descriptor(familyName, style);
         if (!familyName) {
-            return create_from_desc(reqDesc.get());
+            return create_from_style(style);
         }
+        SkUniqueCFRef<CTFontDescriptorRef> reqDesc = create_descriptor(familyName, style);
         SkUniqueCFRef<CTFontDescriptorRef> resolvedDesc(
             CTFontDescriptorCreateMatchingFontDescriptor(reqDesc.get(), name_required().get()));
         if (!resolvedDesc) {

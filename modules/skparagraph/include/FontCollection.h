@@ -40,9 +40,13 @@ public:
     sk_sp<SkTypeface> defaultEmojiFallback(SkUnichar emojiStart, SkFontStyle fontStyle, const SkString& locale);
     sk_sp<SkTypeface> defaultFallback();
 
-    void disableFontFallback();
-    void enableFontFallback();
+    void disableFontFallback() { fEnableFontFallback = false; }
+    void enableFontFallback() { fEnableFontFallback = true; }
     bool fontFallbackEnabled() { return fEnableFontFallback; }
+
+    void enableMatchCSS3Style() { fMatchCSS3Style = true; }
+    void disableMatchCSS3Style() { fMatchCSS3Style = false; }
+    bool matchCSS3StyleEnabled() { return fMatchCSS3Style; }
 
     ParagraphCache* getParagraphCache() { return &fParagraphCache; }
 
@@ -70,6 +74,7 @@ private:
         };
     };
 
+    bool fMatchCSS3Style;
     bool fEnableFontFallback;
     skia_private::THashMap<FamilyKey, std::vector<sk_sp<SkTypeface>>, FamilyKey::Hasher> fTypefaces;
     sk_sp<SkFontMgr> fDefaultFontManager;
