@@ -54,6 +54,24 @@ VulkanResourceProvider::~VulkanResourceProvider() {
                                          fPipelineCache,
                                          nullptr));
     }
+    if (fMSAALoadVertShaderModule != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyShaderModule(this->vulkanSharedContext()->device(),
+                                        fMSAALoadVertShaderModule,
+                                        nullptr));
+    }
+    if (fMSAALoadFragShaderModule != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyShaderModule(this->vulkanSharedContext()->device(),
+                                        fMSAALoadFragShaderModule,
+                                        nullptr));
+    }
+    if (fMSAALoadPipelineLayout != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vulkanSharedContext()->interface(),
+                    DestroyPipelineLayout(this->vulkanSharedContext()->device(),
+                                          fMSAALoadPipelineLayout,
+                                          nullptr));
+    }
 }
 
 const VulkanSharedContext* VulkanResourceProvider::vulkanSharedContext() const {
@@ -363,6 +381,18 @@ sk_sp<VulkanSamplerYcbcrConversion>
 
     return ycbcrConversion;
 }
+
+sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
+        const RenderPassDesc& renderPassDesc) {
+    if (fMSAALoadVertShaderModule   == VK_NULL_HANDLE ||
+        fMSAALoadFragShaderModule   == VK_NULL_HANDLE ||
+        fMSAALoadPipelineLayout     == VK_NULL_HANDLE) {
+        // TODO: Call VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs.
+    }
+    // TODO: Implement
+    return nullptr;
+}
+
 
 #ifdef SK_BUILD_FOR_ANDROID
 
