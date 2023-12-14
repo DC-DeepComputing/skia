@@ -872,6 +872,34 @@ PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, Sk
     return {0, Affinity::kDownstream};
 }
 
+PositionWithAffinity ParagraphImpl::getPositionAtCoordinate(SkScalar dx, SkScalar dy, bool byGrapheme) {
+
+    if (fText.isEmpty()) {
+        return {0, Affinity::kDownstream};
+    }
+
+    this->ensureUTF16Mapping();
+
+    for (auto& line : fLines) {
+        // Let's figure out if we can stop looking
+        auto offsetY = line.offset().fY;
+        if (dy >= offsetY + line.height() && &line != &fLines.back()) {
+            // This line is not good enough
+            continue;
+        }
+
+        // This is so far the the line vertically closest to our coordinates
+        // (or the first one, or the only one - all the same)
+
+        auto result = line.getPositionAtCoordinate(dx, byGrapheme);
+        //SkDebugf("getGraphemePositionAtCoordinate(%f, %f): %d %s\n", dx, dy, result.position,
+        //   result.affinity == Affinity::kUpstream ? "up" : "down");
+        return result;
+    }
+
+    return {0, Affinity::kDownstream};
+}
+
 // Finds the first and last glyphs that define a word containing
 // the glyph at index offset.
 // By "glyph" they mean a character index - indicated by Minikin's code

@@ -115,6 +115,7 @@ public:
     std::vector<TextBox> getRectsForPlaceholders() override;
     void getLineMetrics(std::vector<LineMetrics>&) override;
     PositionWithAffinity getGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy) override;
+    PositionWithAffinity getPositionAtCoordinate(SkScalar dx, SkScalar dy, bool byGrapheme = false) override;
     SkRange<size_t> getWordBoundary(unsigned offset) override;
 
     bool getApplyRoundingHack() const { return fParagraphStyle.getApplyRoundingHack(); }

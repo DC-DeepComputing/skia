@@ -58,6 +58,12 @@ public:
     // with the top left corner as the origin, and +y direction as down
     virtual PositionWithAffinity getGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy) = 0;
 
+    // The difference from the method above shows in the case when one glyph is drawn with
+    // multiple graphemes; it such a case this method is trying to define precise position of
+    // a single grapheme (by shaping all graphems in the glyph separately and defining
+    // proportions from there). It's a rather expensive method.
+    virtual PositionWithAffinity getPositionAtCoordinate(SkScalar dx, SkScalar dy, bool byGrapheme = false) = 0;
+
     // Finds the first and last glyphs that define a word containing
     // the glyph at index offset
     virtual SkRange<size_t> getWordBoundary(unsigned offset) = 0;
