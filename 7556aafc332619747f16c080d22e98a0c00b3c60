@@ -33,6 +33,24 @@
       "message": "As mentioned and discussed in https://github.com/signalapp/Signal-Desktop/issues/6031, skia library includes by default this ICC profile which should not be included by default.",
       "revId": "7556aafc332619747f16c080d22e98a0c00b3c60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99d43853_838cec27",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-14T15:54:38Z",
+      "side": 1,
+      "message": "Sorry, but no. Skia includes an ICC profile in any images it encodes, because that\u0027s a useful and reasonable feature. Those ICC profiles include the copyright tag because it\u0027s a required tag, per the specification. Any client that wants non-standard or less-useful behavior is free to manipulate the data themselves, or use a different library.",
+      "parentUuid": "f6bdb994_48c8cc35",
+      "revId": "7556aafc332619747f16c080d22e98a0c00b3c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
