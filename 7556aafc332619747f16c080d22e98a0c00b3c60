@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f83abeb5_abe2ba0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 22269
+      },
+      "writtenOn": "2023-12-14T07:48:59Z",
+      "side": 1,
+      "message": "After digging in various open source software, the skia library is including a default Copyright ICC field which leads to some issue of privacy. Is this intended or can this be considered a bug?",
+      "revId": "7556aafc332619747f16c080d22e98a0c00b3c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6bdb994_48c8cc35",
+        "filename": "src/core/SkICC.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 22269
+      },
+      "writtenOn": "2023-12-14T07:48:59Z",
+      "side": 1,
+      "message": "As mentioned and discussed in https://github.com/signalapp/Signal-Desktop/issues/6031, skia library includes by default this ICC profile which should not be included by default.",
+      "revId": "7556aafc332619747f16c080d22e98a0c00b3c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
