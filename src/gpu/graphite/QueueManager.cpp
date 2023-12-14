@@ -80,18 +80,17 @@ bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* contex
         return false;
     }
 
-    if (this->fSharedContext->caps()->requireOrderedRecordings()) {
-        uint32_t* recordingID = fLastAddedRecordingIDs.find(info.fRecording->priv().recorderID());
-        if (recordingID &&
-            info.fRecording->priv().uniqueID() != *recordingID+1) {
-            SKGPU_LOG_E("Recordings are expected to be replayed in order");
-            return false;
-        }
-
-        // Note the new Recording ID.
-        fLastAddedRecordingIDs.set(info.fRecording->priv().recorderID(),
-                                   info.fRecording->priv().uniqueID());
+    // For the moment we require ordered recordings
+    uint32_t* recordingID = fLastAddedRecordingIDs.find(info.fRecording->priv().recorderID());
+    if (recordingID &&
+        info.fRecording->priv().uniqueID() != *recordingID+1) {
+        SKGPU_LOG_E("Recordings are expected to be replayed in order");
+        return false;
     }
+
+    // Note the new Recording ID.
+    fLastAddedRecordingIDs.set(info.fRecording->priv().recorderID(),
+                               info.fRecording->priv().uniqueID());
 
     if (info.fTargetSurface &&
         !static_cast<const SkSurface_Base*>(info.fTargetSurface)->isGraphiteBacked()) {
