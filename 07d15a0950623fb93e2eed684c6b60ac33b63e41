@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "999a1b39_169a65c7",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-14T18:32:53Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/788456",
+      "parentUuid": "e529a775_f141faaf",
+      "range": {
+        "startLine": 324,
+        "startChar": 26,
+        "endLine": 324,
+        "endChar": 46
+      },
+      "revId": "07d15a0950623fb93e2eed684c6b60ac33b63e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c4d19eb_2798e7d4",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0515c14_2cde9a9f",
+        "filename": "src/core/SkFont_serial.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-14T18:32:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c4d19eb_2798e7d4",
+      "revId": "07d15a0950623fb93e2eed684c6b60ac33b63e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85c9e776_30aae2f4",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-12-08T15:57:37Z",
       "side": 1,
       "message": "If we\u0027re really getting rid of `GetTypefaceOrDefault`, then it should just be impossible to create an SkFont with a nullptr typeface. SkFont could internally always have a reference to an empty typeface any time the typeface would currently be nullptr.",
+      "revId": "07d15a0950623fb93e2eed684c6b60ac33b63e41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0642a82e_f412be90",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-14T18:32:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85c9e776_30aae2f4",
       "revId": "07d15a0950623fb93e2eed684c6b60ac33b63e41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
