@@ -22,6 +22,30 @@
       },
       "revId": "5ceafc558b9aa548d450f9cb74d9a7c40eeabb3b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53cb88fe_fcaa62db",
+        "filename": "src/gpu/graphite/DescriptorTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-14T18:28:53Z",
+      "side": 1,
+      "message": "Per discussion offline, having these graphite-level structs keeps the door open down the line to handle some descriptor set organization outside of each backend to cut down on magic values. So keeping the structs at this level makes sense so much as it doesn\u0027t incur too much overhead to maintain.",
+      "parentUuid": "dd6566a7_8b4ece58",
+      "range": {
+        "startLine": 30,
+        "startChar": 11,
+        "endLine": 30,
+        "endChar": 29
+      },
+      "revId": "5ceafc558b9aa548d450f9cb74d9a7c40eeabb3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
