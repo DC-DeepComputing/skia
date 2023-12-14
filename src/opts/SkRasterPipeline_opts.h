@@ -3075,7 +3075,20 @@ STAGE_BRANCH(branch_if_all_lanes_active, SkRasterPipeline_BranchIfAllLanesActive
     return all(execution_mask() | tailLanes) ? ctx->offset : 1;
 }
 
+STAGE_BRANCH(branch_backwards_if_all_lanes_active,
+             SkRasterPipeline_BranchIfAllLanesActiveCtx* ctx) {
+    uint32_t iota[] = {0,1,2,3,4,5,6,7};
+    I32 tailLanes = cond_to_mask(*ctx->tail <= sk_unaligned_load<U32>(iota));
+    // TODO(b/40045221): if we have taken too many backwards branches, always return 1
+    return all(execution_mask() | tailLanes) ? ctx->offset : 1;
+}
+
 STAGE_BRANCH(branch_if_any_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
+    return any(execution_mask()) ? ctx->offset : 1;
+}
+
+STAGE_BRANCH(branch_backwards_if_any_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
+    // TODO(b/40045221): if we have taken too many backwards branches, always return 1
     return any(execution_mask()) ? ctx->offset : 1;
 }
 
@@ -3083,7 +3096,17 @@ STAGE_BRANCH(branch_if_no_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
     return any(execution_mask()) ? 1 : ctx->offset;
 }
 
+STAGE_BRANCH(branch_backwards_if_no_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
+    // TODO(b/40045221): if we have taken too many backwards branches, always return 1
+    return any(execution_mask()) ? 1 : ctx->offset;
+}
+
 STAGE_BRANCH(jump, SkRasterPipeline_BranchCtx* ctx) {
+    return ctx->offset;
+}
+
+STAGE_BRANCH(jump_backwards, SkRasterPipeline_BranchCtx* ctx) {
+    // TODO(b/40045221): if we have taken too many backwards branches, return 1 instead
     return ctx->offset;
 }
 
@@ -3093,6 +3116,16 @@ STAGE_BRANCH(branch_if_no_active_lanes_eq, SkRasterPipeline_BranchIfEqualCtx* ct
     // ... but mask off lanes that aren't executing.
     match &= execution_mask();
     // If any lanes matched, don't take the branch.
+    return any(match) ? 1 : ctx->offset;
+}
+
+STAGE_BRANCH(branch_backwards_if_no_active_lanes_eq, SkRasterPipeline_BranchIfEqualCtx* ctx) {
+    // Compare each lane against the expected value...
+    I32 match = cond_to_mask(*(const I32*)ctx->ptr == ctx->value);
+    // ... but mask off lanes that aren't executing.
+    match &= execution_mask();
+    // If any lanes matched, don't take the branch.
+    // TODO(b/40045221): if we have taken too many backwards branches, always return 1
     return any(match) ? 1 : ctx->offset;
 }
 

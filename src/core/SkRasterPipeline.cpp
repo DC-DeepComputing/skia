@@ -137,7 +137,8 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             initCtx->tail = this->tailPointer();
             break;
         }
-        case Op::branch_if_all_lanes_active: {
+        case Op::branch_if_all_lanes_active:
+        case Op::branch_backwards_if_all_lanes_active: {
             auto* branchCtx = (SkRasterPipeline_BranchIfAllLanesActiveCtx*)ctx;
             branchCtx->tail = this->tailPointer();
             break;
@@ -191,7 +192,8 @@ void SkRasterPipeline::extend(const SkRasterPipeline& src) {
                 ctx->tail = this->tailPointer();
                 break;
             }
-            case Op::branch_if_all_lanes_active: {
+            case Op::branch_if_all_lanes_active:
+            case Op::branch_backwards_if_all_lanes_active: {
                 auto* ctx = (SkRasterPipeline_BranchIfAllLanesActiveCtx*)stages[n].ctx;
                 ctx->tail = this->tailPointer();
                 break;

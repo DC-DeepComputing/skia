@@ -104,7 +104,7 @@ copy_slot_unmasked             $104 = i
 cmplt_imm_float                $104 = lessThan($104, 0x41200000 (10.0))
 merge_loop_mask                LoopMask &= $104
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -33 (label 13 at #58)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -33 (label 13 at #58)
 label                          label 0x0000000B
 load_loop_mask                 LoopMask = $103
 trace_scope                    TraceScope(-1) when $102 is true
@@ -178,7 +178,7 @@ copy_slot_unmasked             $94 = i₁
 cmplt_imm_float                $94 = lessThan($94, 0x41200000 (10.0))
 merge_loop_mask                LoopMask &= $94
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -37 (label 17 at #128)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -37 (label 17 at #128)
 label                          label 0x0000000F
 load_loop_mask                 LoopMask = $93
 trace_scope                    TraceScope(-1) when $92 is true
@@ -256,7 +256,7 @@ copy_slot_unmasked             $84 = i₂
 cmplt_imm_float                $84 = lessThan($84, 0x41200000 (10.0))
 merge_loop_mask                LoopMask &= $84
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -37 (label 21 at #206)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -37 (label 21 at #206)
 label                          label 0x00000013
 load_loop_mask                 LoopMask = $83
 trace_scope                    TraceScope(-1) when $82 is true
@@ -310,7 +310,7 @@ trace_var                      TraceVar(i₃) when $13 is true
 copy_slot_unmasked             $76 = i₃
 cmplt_imm_float                $76 = lessThan($76, 0x3F19999A (0.6))
 stack_rewind
-branch_if_no_active_lanes_eq   branch -19 (label 24 at #278) if no lanes of $76 == 0
+branch_backwards_if_no_active_ branch -19 (label 24 at #278) if no lanes of $76 == 0
 label                          label 0x00000017
 trace_scope                    TraceScope(-1) when $75 is true
 trace_line                     TraceLine(42) when $13 is true
@@ -366,7 +366,7 @@ trace_var                      TraceVar(i₄) when $13 is true
 copy_slot_unmasked             $65 = i₄
 cmple_imm_float                $65 = lessThanEqual($65, 0x40400000 (3.0))
 stack_rewind
-branch_if_no_active_lanes_eq   branch -18 (label 27 at #335) if no lanes of $65 == 0
+branch_backwards_if_no_active_ branch -18 (label 27 at #335) if no lanes of $65 == 0
 label                          label 0x0000001A
 trace_scope                    TraceScope(-1) when $64 is true
 trace_line                     TraceLine(54) when $13 is true
@@ -423,7 +423,7 @@ trace_var                      TraceVar(i₅) when $13 is true
 copy_slot_unmasked             $54 = i₅
 cmplt_imm_float                $54 = lessThan($54, 0x40800000 (4.0))
 stack_rewind
-branch_if_no_active_lanes_eq   branch -18 (label 30 at #392) if no lanes of $54 == 0
+branch_backwards_if_no_active_ branch -18 (label 30 at #392) if no lanes of $54 == 0
 label                          label 0x0000001D
 trace_scope                    TraceScope(-1) when $53 is true
 trace_line                     TraceLine(66) when $13 is true
@@ -481,7 +481,7 @@ copy_constant                  $43 = 0x3F800000 (1.0)
 copy_slot_unmasked             $44 = i₆
 cmple_float                    $43 = lessThanEqual($43, $44)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -19 (label 33 at #449) if no lanes of $43 == 0
+branch_backwards_if_no_active_ branch -19 (label 33 at #449) if no lanes of $43 == 0
 label                          label 0x00000020
 trace_scope                    TraceScope(-1) when $42 is true
 trace_line                     TraceLine(78) when $13 is true
@@ -539,7 +539,7 @@ copy_constant                  $32 = 0
 copy_slot_unmasked             $33 = i₇
 cmplt_float                    $32 = lessThan($32, $33)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -19 (label 36 at #507) if no lanes of $32 == 0
+branch_backwards_if_no_active_ branch -19 (label 36 at #507) if no lanes of $32 == 0
 label                          label 0x00000023
 trace_scope                    TraceScope(-1) when $31 is true
 trace_line                     TraceLine(90) when $13 is true
@@ -643,7 +643,7 @@ trace_var                      TraceVar(i₉) when $13 is true
 copy_slot_unmasked             $4 = i₉
 cmplt_imm_float                $4 = lessThan($4, 0x40800000 (4.0))
 stack_rewind
-branch_if_no_active_lanes_eq   branch -18 (label 42 at #612) if no lanes of $4 == 0
+branch_backwards_if_no_active_ branch -18 (label 42 at #612) if no lanes of $4 == 0
 label                          label 0x00000029
 trace_scope                    TraceScope(-1) when $3 is true
 trace_line                     TraceLine(101) when $13 is true

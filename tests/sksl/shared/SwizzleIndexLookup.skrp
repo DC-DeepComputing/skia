@@ -55,7 +55,7 @@ copy_slot_unmasked             $16 = r
 cmplt_imm_int                  $16 = lessThan($16, 0x00000003)
 merge_loop_mask                LoopMask &= $16
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -22 (label 8 at #18)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -22 (label 8 at #18)
 label                          label 0x00000006
 load_loop_mask                 LoopMask = $15
 copy_3_slots_unmasked          $15..17 = expected
@@ -70,7 +70,7 @@ copy_slot_unmasked             $15 = c
 cmplt_imm_int                  $15 = lessThan($15, 0x00000003)
 merge_loop_mask                LoopMask &= $15
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -45 (label 5 at #10)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -45 (label 5 at #10)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $14
 copy_constant                  $14 = 0xFFFFFFFF
@@ -116,7 +116,7 @@ copy_slot_unmasked             $4 = r₁
 cmplt_imm_int                  $4 = lessThan($4, 0x00000004)
 merge_loop_mask                LoopMask &= $4
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -22 (label 15 at #79)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -22 (label 15 at #79)
 label                          label 0x0000000D
 load_loop_mask                 LoopMask = $3
 copy_4_slots_unmasked          $3..6 = expected₁
@@ -131,7 +131,7 @@ copy_slot_unmasked             $3 = c₁
 cmplt_imm_int                  $3 = lessThan($3, 0x00000004)
 merge_loop_mask                LoopMask &= $3
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -45 (label 12 at #71)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -45 (label 12 at #71)
 label                          label 0x0000000A
 load_loop_mask                 LoopMask = $2
 copy_constant                  $2 = 0xFFFFFFFF

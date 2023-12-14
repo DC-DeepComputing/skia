@@ -33,7 +33,7 @@ copy_2_slots_unmasked          $3..4 = y, _0_x
 cmple_int                      $3 = lessThanEqual($3, $4)
 merge_loop_mask                LoopMask &= $3
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -13 (label 8 at #21)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -13 (label 8 at #21)
 label                          label 0x00000006
 load_loop_mask                 LoopMask = $2
 store_condition_mask           $2 = CondMask
@@ -61,7 +61,7 @@ copy_slot_unmasked             $2 = y
 cmplt_imm_int                  $2 = lessThan($2, 0x00000064)
 merge_loop_mask                LoopMask &= $2
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -46 (label 5 at #16)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -46 (label 5 at #16)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $1
 copy_slot_unmasked             $1 = x
@@ -72,7 +72,7 @@ copy_slot_unmasked             $1 = x
 cmplt_imm_int                  $1 = lessThan($1, 0x00000064)
 merge_loop_mask                LoopMask &= $1
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -61 (label 2 at #12)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -61 (label 2 at #12)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_4_uniforms                $0..3 = colorGreen

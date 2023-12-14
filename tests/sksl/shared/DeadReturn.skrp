@@ -91,7 +91,7 @@ copy_slot_unmasked             $3 = x
 cmple_imm_int                  $3 = lessThanEqual($3, 0x00000001)
 merge_loop_mask                LoopMask &= $3
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -21 (label 14 at #71)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -21 (label 14 at #71)
 label                          label 0x0000000C
 load_loop_mask                 LoopMask = $2
 copy_slot_unmasked             $2 = scratchVar

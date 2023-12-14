@@ -440,7 +440,7 @@ add_imm_float                  i += 0x3F800000 (1.0)
 copy_slot_unmasked             $0 = i
 cmplt_imm_float                $0 = lessThan($0, 0x40800000 (4.0))
 stack_rewind
-branch_if_no_active_lanes_eq   branch -35 (label 16 at #397) if no lanes of $0 == 0
+branch_backwards_if_no_active_ branch -35 (label 16 at #397) if no lanes of $0 == 0
 label                          label 0x0000000F
 copy_slot_unmasked             $0 = s
 max_imm_float                  $0 = max($0, 0)

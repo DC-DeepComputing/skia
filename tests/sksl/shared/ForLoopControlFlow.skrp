@@ -26,7 +26,7 @@ copy_slot_unmasked             $1 = r
 cmplt_imm_float                $1 = lessThan($1, 0x40A00000 (5.0))
 merge_loop_mask                LoopMask &= $1
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -20 (label 2 at #7)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -20 (label 2 at #7)
 label                          label 0
 load_loop_mask                 LoopMask = $0
 copy_constant                  b = 0x40A00000 (5.0)
@@ -54,7 +54,7 @@ copy_slot_unmasked             $2 = b
 cmple_float                    $1 = lessThanEqual($1, $2)
 merge_loop_mask                LoopMask &= $1
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -22 (label 5 at #33)
+branch_backwards_if_any_lanes_ branch_backwards_if_any_lanes_active -22 (label 5 at #33)
 label                          label 0x00000003
 load_loop_mask                 LoopMask = $0
 copy_4_slots_unmasked          $0..3 = x
