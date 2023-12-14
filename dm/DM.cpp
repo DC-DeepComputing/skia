@@ -1005,7 +1005,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     Result result = sink->draw(justOneRect, &bitmap, &stream, &log);
     if (result.isFatal()) {
         info("Could not run %s: %s\n", config.getTag().c_str(), result.c_str());
-        exit(1);
+        return;
     }
 
     TaggedSink& ts = gSinks->push_back();
