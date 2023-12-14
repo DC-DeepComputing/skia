@@ -16,6 +16,23 @@
       "message": "-Florin +brianosman@google.com, as Florin seems OOO.",
       "revId": "7e5b15c2bc47d06dbf0c43e0c4d0858cd3f7257b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "996a15ef_896f9d0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-14T20:15:09Z",
+      "side": 1,
+      "message": "I\u0027m fine with this (and with the direction, if I understand correctly). Note that when the constructors change, there may be changes required in other (non-chromium) repositories (Android, Flutter, Google internal).",
+      "revId": "7e5b15c2bc47d06dbf0c43e0c4d0858cd3f7257b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
