@@ -85,4 +85,11 @@ luci.bucket(
             "skiabot-test",
         ]),
     ],
+    dynamic_builder_template = luci.dynamic_builder_template(
+        template = luci.builder_config(
+            backend = luci.backend(
+                target = "skia://task-scheduler-staging",
+            ),
+        ),
+    ),
 )
