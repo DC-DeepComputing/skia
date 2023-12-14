@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d19dcd_0fbb5862",
+        "filename": "tools/viewer/ProtectedSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-14T15:29:11Z",
+      "side": 1,
+      "message": "`return`ing above, so the `else` block is not needed. As it stands, `return nullptr` will never be hit. \n\nI noticed we don\u0027t currently check for `recorder` and `AHardwareBuffer` ptr validity within `WrapAndroidHardwareBuffer`, so I added a comment on that CL to do so.\n\nMaybe the flow could be:\n`if (dContext)`, followed by `if (recorder)`, then finally returning nullptr if neither are valid? (as opposed to the SkASSERT).\n\nSame for below",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 12
+      },
+      "revId": "ce16b2e36d289fcd1d60bd61118cbcdd9fb16513",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
