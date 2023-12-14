@@ -274,17 +274,4 @@ SkFont DefaultFont() {
     return SkFont(DefaultTypeface(), 12);
 }
 
-#if !defined(SK_DISABLE_LEGACY_FONTMGR_FACTORY)
-void SetDefaultFontMgr() {
-    if (!FLAGS_nativeFonts) {
-        gSkFontMgr_DefaultFactory = &ToolUtils::MakePortableFontMgr;
-    }
-#if defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_GDI_AVAILABLE)
-    if (FLAGS_gdi) {
-        gSkFontMgr_DefaultFactory = &SkFontMgr_New_GDI;
-    }
-#endif
-}
-#endif
-
 }  // namespace ToolUtils
