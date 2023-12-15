@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d34e89d_ddbf2eac",
+        "filename": "gm/mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-15T19:46:22Z",
+      "side": 1,
+      "message": "nit: The result type is not spelled out anywhere, prefer `sk_sp\u003cSkSurface\u003e`",
+      "range": {
+        "startLine": 1524,
+        "startChar": 8,
+        "endLine": 1524,
+        "endChar": 12
+      },
+      "revId": "c38c8f62ed6a6d27529eb07a54ffad9f7a22bc51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637a7147_dfbc923f",
+        "filename": "gm/mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1567,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-15T19:46:22Z",
+      "side": 1,
+      "message": "Can this happen? `SkASSERT` if it shouldn\u0027t ever occur.\n\n(Below as well)",
+      "range": {
+        "startLine": 1565,
+        "startChar": 8,
+        "endLine": 1567,
+        "endChar": 9
+      },
+      "revId": "c38c8f62ed6a6d27529eb07a54ffad9f7a22bc51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
