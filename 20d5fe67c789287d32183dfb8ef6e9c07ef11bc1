@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae9c21a_a56ff600",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-15T21:08:53Z",
+      "side": 1,
+      "message": "I just created a tracking bug: b/316617002, so want to add\n\n`Bug: b/316617002` here?",
+      "revId": "20d5fe67c789287d32183dfb8ef6e9c07ef11bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
