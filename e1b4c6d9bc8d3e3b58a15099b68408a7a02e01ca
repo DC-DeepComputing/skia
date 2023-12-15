@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49c1475b_e009317b",
+        "filename": "include/core/SkFontMgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-15T21:41:26Z",
+      "side": 0,
+      "message": "We really don\u0027t want this to be public.",
+      "revId": "e1b4c6d9bc8d3e3b58a15099b68408a7a02e01ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

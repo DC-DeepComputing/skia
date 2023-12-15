@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bb224c2_2dab8ac1",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-15T21:41:26Z",
+      "side": 1,
+      "message": "If I could make a type that was returned from `getFamilyName` that absolutely could not be used with `matchFamily` or any other request I would. This will lead to really strange and unpredictable behavior.",
+      "revId": "cbb443f528715cf1daeea30f46e34336aef87a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
