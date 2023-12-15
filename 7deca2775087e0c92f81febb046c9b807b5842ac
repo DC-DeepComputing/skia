@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af27aa52_22680cd1",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-15T17:07:54Z",
+      "side": 1,
+      "message": "This is not going to be correct. The format of the return data is going to be in kRGB_565 order. I think we have to at least add the GrColorType and then add swizzles for that colorType in the GrDataUtils helper functions",
+      "range": {
+        "startLine": 1012,
+        "startChar": 56,
+        "endLine": 1012,
+        "endChar": 64
+      },
+      "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
