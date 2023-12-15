@@ -70,6 +70,19 @@ public:
     static int SetFontCacheCountLimit(int count);
 
     /**
+     *  Return the current limit to the number of entries in the typeface cache.
+     *  A cache "entry" is associated with each typeface.
+     */
+    static int GetTypefaceCacheCountLimit();
+
+    /**
+     *  Set the limit to the number of entries in the typeface cache, and return
+     *  the previous value. If this new value is lower than the previous,
+     *  it will automatically try to purge entries to meet the new limit.
+     */
+    static int SetTypefaceCacheCountLimit(int count);
+
+    /**
      *  For debugging purposes, this will attempt to purge the font cache. It
      *  does not change the limit, but will cause subsequent font measures and
      *  draws to be recreated, since they will no longer be in the cache.
