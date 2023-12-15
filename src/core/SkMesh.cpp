@@ -503,7 +503,7 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
     std::vector<Child> children;
     size_t offset = 0;
 
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
+    SkSL::Compiler compiler;
 
     // Disable memory pooling; this might slow down compilation slightly, but it will ensure that a
     // long-lived mesh specification doesn't waste memory.
