@@ -69,6 +69,24 @@
       "parentUuid": "97ea0cbd_f9514bfe",
       "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b21684_3d875099",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-15T21:42:48Z",
+      "side": 1,
+      "message": "The gold jobs are running on older versions of macOS, whereas I think corp forces us onto mac 14.",
+      "parentUuid": "936da60f_f300a2cc",
+      "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
