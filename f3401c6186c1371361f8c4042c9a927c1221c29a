@@ -34,6 +34,24 @@
       "parentUuid": "00a1f8cb_1ee7a6b5",
       "revId": "f3401c6186c1371361f8c4042c9a927c1221c29a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb8b95f6_31a686b7",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-12-15T17:14:42Z",
+      "side": 0,
+      "message": "What it does: My understanding: It was introduce to avoid a discontinuity when moving variable sliders, but at this coincidence point of angles or color stops, a discontinuity cannot be avoided, one can only choose, on which side it flips. And for flipping, the order without any special casing seems more natural and in line with the spec.",
+      "parentUuid": "7f9da117_93e2c5c2",
+      "revId": "f3401c6186c1371361f8c4042c9a927c1221c29a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
