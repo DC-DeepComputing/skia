@@ -22,6 +22,30 @@
       },
       "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad8dd903_45b54d17",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2023-12-15T17:11:50Z",
+      "side": 1,
+      "message": "I should be able to do that.  Thanks!\n\nWhat are some tests I can run to verify the change?",
+      "parentUuid": "af27aa52_22680cd1",
+      "range": {
+        "startLine": 1012,
+        "startChar": 56,
+        "endLine": 1012,
+        "endChar": 64
+      },
+      "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
