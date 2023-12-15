@@ -51,6 +51,24 @@
       "parentUuid": "23971a19_5eab1e3d",
       "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "936da60f_f300a2cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-12-15T13:55:44Z",
+      "side": 1,
+      "message": "I cannot reproduce the pixel diff locally either. What could be the reason the tests have different pixels on gold compared to local runs.",
+      "parentUuid": "97ea0cbd_f9514bfe",
+      "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
