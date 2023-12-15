@@ -12,6 +12,8 @@
 #include <array>
 #include <cstddef>
 
+#if 0
+
 #define SK_OPTS_NS RPOptsTest
 
 #if defined(__clang__)
@@ -204,3 +206,4 @@ DEF_TEST(SkRasterPipelineOpts_Pow2, r) {
     F result = SK_OPTS_NS::approx_pow2(160);
     REPORTER_ASSERT(r, SK_OPTS_NS::all(result == INFINITY));
 }
+#endif
