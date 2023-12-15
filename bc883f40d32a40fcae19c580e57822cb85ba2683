@@ -16,6 +16,24 @@
       "message": "I\u0027m confused. The changes in this CL should definitely be triggering GPU raster changes (for gradients that specify any of the new interpolation modes).\n\nOh wait ... you might be getting cached shaders, because the only difference is in the implementation of the shared (module) SkSL, and I don\u0027t think that ends up in the cache key. Try wiping your shader cache (or just forcing a new key by tweaking the text of the runtime effect at GrGradientShader.cpp:707.",
       "revId": "bc883f40d32a40fcae19c580e57822cb85ba2683",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44aeca7b_dbaec8eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-12-15T15:03:15Z",
+      "side": 1,
+      "message": "Yup, that does it!",
+      "parentUuid": "b514fe12_2d2deb0e",
+      "revId": "bc883f40d32a40fcae19c580e57822cb85ba2683",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
