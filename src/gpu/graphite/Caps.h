@@ -200,6 +200,7 @@ public:
 
     // Returns whether a draw buffer can be mapped.
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
+    bool drawBufferCanBeMappedForReadback() const { return fDrawBufferCanBeMappedForReadback; }
 
     // Returns whether using Buffer::asyncMap() must be used to map buffers. map() may only be
     // called after asyncMap() is called and will fail if the asynchronous map is not complete. This
@@ -310,6 +311,7 @@ protected:
     bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
+    bool fDrawBufferCanBeMappedForReadback = true;
     bool fBufferMapsAreAsync = false;
     bool fMSAARenderToSingleSampledSupport = false;
 

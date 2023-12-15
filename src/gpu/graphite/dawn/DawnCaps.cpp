@@ -307,7 +307,9 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fStorageBufferSupport = false;
     fStorageBufferPreferred = false;
 
-    fDrawBufferCanBeMapped = false;
+    fDrawBufferCanBeMapped =
+            backendContext.fDevice.HasFeature(wgpu::FeatureName::BufferMapExtendedUsages);
+    fDrawBufferCanBeMappedForReadback = false;
     fBufferMapsAreAsync = true;
 
     fComputeSupport = true;
