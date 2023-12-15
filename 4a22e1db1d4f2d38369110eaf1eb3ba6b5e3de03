@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c37d55a_9abe61a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-12-15T14:43:31Z",
+      "side": 1,
+      "message": "Waiting on some G3 changes, e.g. http://cl/591236336",
+      "revId": "4a22e1db1d4f2d38369110eaf1eb3ba6b5e3de03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
