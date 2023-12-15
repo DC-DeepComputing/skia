@@ -138,7 +138,7 @@ void FindAndDeclareBuiltinVariables(Program& program) {
         scanner.addImplicitFragColorWrite(program.fOwnedElements);
     }
 
-    if (context.fCaps->fMustDeclareFragmentFrontFacing) {
+    if (context.fCaps != nullptr && context.fCaps->fMustDeclareFragmentFrontFacing) {
         scanner.addDeclaringElement(symbols.findBuiltinSymbol("sk_Clockwise"));
     }
 
