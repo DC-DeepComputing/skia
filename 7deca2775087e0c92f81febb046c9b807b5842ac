@@ -46,6 +46,30 @@
       },
       "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e66ab274_56f18d1d",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-15T17:16:32Z",
+      "side": 1,
+      "message": "At the bottom of the GrVkCaps is a getTestingCombination helper. You can add the new combo there. Then I think if you run the InitialTextureClear test it will at least test uploading and reading back data from the format",
+      "parentUuid": "ad8dd903_45b54d17",
+      "range": {
+        "startLine": 1012,
+        "startChar": 56,
+        "endLine": 1012,
+        "endChar": 64
+      },
+      "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
