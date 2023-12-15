@@ -16,6 +16,24 @@
       "message": "Not that I have fully understand exactly what this does at the moment since it\u0027s been a while since I thought hard about it, but if we make this change here we should make the same change to the code in `SkScalerContext_win_dw.cpp`.",
       "revId": "f3401c6186c1371361f8c4042c9a927c1221c29a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f9da117_93e2c5c2",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-12-15T17:13:25Z",
+      "side": 0,
+      "message": "Done in latest PS. As a side note, In https://skia-review.googlesource.com/c/skia/+/774596 I am working on the callback based Fontations integration. The callback interface `ColorPainter` https://docs.rs/skrifa/0.15.0/skrifa/color/trait.ColorPainter.html is a useful abstraction for the draw calls. We might be able to factor out this part and unify our COLRv1 implementations a bit more.",
+      "parentUuid": "00a1f8cb_1ee7a6b5",
+      "revId": "f3401c6186c1371361f8c4042c9a927c1221c29a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
