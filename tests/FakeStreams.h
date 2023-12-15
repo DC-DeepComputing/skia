@@ -40,6 +40,21 @@ private:
     SkMemoryStream fStream;
 };
 
+class NonrewindableStream : public NotAssetMemStream {
+public:
+    NonrewindableStream(sk_sp<SkData> data) : INHERITED(std::move(data)) {}
+
+    bool rewind() override {
+        return false;
+    }
+
+    bool seek(size_t /* position */) override {
+        return false;
+    }
+private:
+    using INHERITED = NotAssetMemStream;
+};
+
 /*
  *  Represents a stream without all of its data.
  */
