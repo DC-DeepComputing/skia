@@ -308,6 +308,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fStorageBufferPreferred = false;
 
     fDrawBufferCanBeMapped = false;
+    fDrawBufferCanBeMappedForReadback = false;
     fBufferMapsAreAsync = true;
 
     fComputeSupport = true;
@@ -316,6 +317,9 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fClampToBorderSupport = false;
 
 #if !defined(__EMSCRIPTEN__)
+    fDrawBufferCanBeMapped =
+            backendContext.fDevice.HasFeature(wgpu::FeatureName::BufferMapExtendedUsages);
+
     fMSAARenderToSingleSampledSupport =
             backendContext.fDevice.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled);
 
