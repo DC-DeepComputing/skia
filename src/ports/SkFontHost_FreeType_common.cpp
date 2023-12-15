@@ -1046,8 +1046,7 @@ bool colrv1_configure_skpaint(FT_Face face,
              * start angle being larger than end angle. */
             startAngleScaled = 360.f - startAngleScaled;
             endAngleScaled = 360.f - endAngleScaled;
-            if (startAngleScaled > endAngleScaled ||
-                (startAngleScaled == endAngleScaled && !colorStopInserted)) {
+            if (startAngleScaled >= endAngleScaled) {
                 std::swap(startAngleScaled, endAngleScaled);
                 std::reverse(stops.begin(), stops.end());
                 std::reverse(colors.begin(), colors.end());
