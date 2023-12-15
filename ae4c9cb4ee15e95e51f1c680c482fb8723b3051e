@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe612682_35f08b2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-15T20:53:45Z",
+      "side": 1,
+      "message": "one comment then lgtm",
+      "revId": "ae4c9cb4ee15e95e51f1c680c482fb8723b3051e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09e1d546_6d36487a",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-15T20:53:45Z",
+      "side": 1,
+      "message": "lets wrap this in `#if defined(GRAPHITE_TEST_UTILS)`. In practice we never want to be mapping drawBuffers for readback. The only current use case is for one compute test.",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 95
+      },
+      "revId": "ae4c9cb4ee15e95e51f1c680c482fb8723b3051e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
