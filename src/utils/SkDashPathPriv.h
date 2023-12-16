@@ -23,9 +23,6 @@ namespace SkDashPath {
                             SkScalar* initialDashLength, int32_t* initialDashIndex,
                             SkScalar* intervalLength, SkScalar* adjustedPhase = nullptr);
 
-    bool FilterDashPath(SkPath* dst, const SkPath& src, SkStrokeRec*, const SkRect*,
-                        const SkPathEffect::DashInfo& info);
-
 #ifdef SK_BUILD_FOR_FUZZER
     const SkScalar kMaxDashCount = 10000;
 #else

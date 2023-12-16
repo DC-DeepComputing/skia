@@ -459,20 +459,6 @@ bool SkDashPath::InternalFilter(SkPath* dst, const SkPath& src, SkStrokeRec* rec
     return true;
 }
 
-bool SkDashPath::FilterDashPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
-                                const SkRect* cullRect, const SkPathEffect::DashInfo& info) {
-    if (!ValidDashPath(info.fPhase, info.fIntervals, info.fCount)) {
-        return false;
-    }
-    SkScalar initialDashLength = 0;
-    int32_t initialDashIndex = 0;
-    SkScalar intervalLength = 0;
-    CalcDashParameters(info.fPhase, info.fIntervals, info.fCount,
-                       &initialDashLength, &initialDashIndex, &intervalLength);
-    return InternalFilter(dst, src, rec, cullRect, info.fIntervals, info.fCount, initialDashLength,
-                          initialDashIndex, intervalLength, info.fPhase);
-}
-
 bool SkDashPath::ValidDashPath(SkScalar phase, const SkScalar intervals[], int32_t count) {
     if (count < 2 || !SkIsAlign2(count)) {
         return false;
