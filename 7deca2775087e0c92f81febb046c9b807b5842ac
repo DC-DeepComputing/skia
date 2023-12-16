@@ -70,6 +70,30 @@
       },
       "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10bc3df_01d8ef8f",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2023-12-16T01:25:58Z",
+      "side": 1,
+      "message": "`InitialTextureClear` passes locally (by chance?).  Let me start CQ to see which tests I can try instead.",
+      "parentUuid": "e66ab274_56f18d1d",
+      "range": {
+        "startLine": 1012,
+        "startChar": 56,
+        "endLine": 1012,
+        "endChar": 64
+      },
+      "revId": "7deca2775087e0c92f81febb046c9b807b5842ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
