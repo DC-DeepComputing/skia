@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774c679a_92e4a09b",
+        "filename": "tests/sksl/workarounds/MustDeclareFragmentFrontFacing.asm.frag",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-18T21:44:10Z",
+      "side": 1,
+      "message": "^ The test confirms that sk_Clockwise is emitted even though it\u0027s never referenced anywhere in the program",
+      "range": {
+        "startLine": 6,
+        "startChar": 37,
+        "endLine": 6,
+        "endChar": 49
+      },
+      "revId": "3ff82fbb2d74e59ae7e50ff375eac8a279d3bb88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
