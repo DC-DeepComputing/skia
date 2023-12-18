@@ -16,6 +16,23 @@
       "message": "Ok. I think this is ready for review.",
       "revId": "fcf7231cef347f8b853e06cfb35991f06d6b28e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60f6f3f8_cb116fdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-18T20:01:29Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "fcf7231cef347f8b853e06cfb35991f06d6b28e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
