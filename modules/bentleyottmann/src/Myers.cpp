@@ -102,4 +102,35 @@ int64_t compare_slopes(const Segment& s0, const Segment& s1) {
 bool slope_s0_less_than_slope_s1(const Segment& s0, const Segment& s1) {
     return compare_slopes(s0, s1) < 0;
 }
+
+// segment_less_than_upper_to_insert is used with std::lower_bound to find the place to insert the
+// segment to_insert in a vector. The signature of this function is crafted to work with
+// lower_bound.
+bool segment_less_than_upper_to_insert(const Segment& segment, const Segment& to_insert) {
+    const auto [x, y] = to_insert.upper();
+
+    { // Check extents.
+        const auto [l, r] = std::minmax(segment.upper().x, segment.lower().x);
+        if (x < l) {
+            return false;
+        }
+
+        if (r < x) {
+            return true;
+        }
+    }
+
+    const auto [u, l] = segment;
+    const auto [dx, dy] = point_to_s64(l - u);
+
+    SkASSERT(dy > 0);
+    //    u.x + dx * (y - u.y) / dy < x
+    //    dx * (y - u.y) / dy < x - u.x
+    //    dx * (y - u.y) < dy * (x - u.x)
+    // The < stays the same because dy is always positive.
+    int64_t lhs = dx * (y - u.y),
+            rhs = dy * (x - u.x);
+
+    return (lhs < rhs) || ((lhs == rhs) && slope_s0_less_than_slope_s1(segment, to_insert));
+}
 }  // namespace myers
