@@ -47,6 +47,20 @@ ModifierFlags AddConstToVarModifiers(const Variable& var,
 std::unique_ptr<Expression> RewriteIndexedSwizzle(const Context& context,
                                                   const IndexExpression& swizzle);
 
+        // When sk_Caps.rewriteMatrixVectorMultiply is set, we rewrite medium-precision
+        // matrix * vector multiplication as:
+        //   (sk_Caps.rewriteMatrixVectorMultiply ? (mat[0]*vec[0] + ... + mat[N]*vec[N])
+        //                                        : mat * vec)
+
+/**
+ * Rewrites medium-precision matrix * vector multiplication as (mat[0]*vec[0] + ... + mat[N]*vec[N]).
+ * Some GPUs always execute M*V in high-precision, so the spelled-out form can be faster.
+ */
+std::unique_ptr<Expression> RewriteMatrixVectorMultiply(const Context& context,
+                                                        Position pos,
+                                                        const Expression& left,
+                                                        const Expression& right);
+
 /**
  * Copies built-in functions from modules into the program. Relies on ProgramUsage to determine
  * which functions are necessary.

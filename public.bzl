@@ -1684,6 +1684,7 @@ BASE_SRCS_ALL = [
     "src/sksl/transform/SkSLRenamePrivateSymbols.cpp",
     "src/sksl/transform/SkSLReplaceConstVarsWithLiterals.cpp",
     "src/sksl/transform/SkSLRewriteIndexedSwizzle.cpp",
+    "src/sksl/transform/SkSLRewriteMatrixVectorMultiply.cpp",
     "src/sksl/transform/SkSLTransform.h",
     "src/text/GlyphRun.cpp",
     "src/text/GlyphRun.h",
