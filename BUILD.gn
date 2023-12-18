@@ -618,6 +618,8 @@ if (skia_compile_modules) {
     sources = skslc_deps
     sources += [
       "tools/sksl-minify/SkSLMinify.cpp",
+      "tools/sksl/ShaderCapsFactory.cpp",
+      "tools/sksl/ShaderCapsFactory.h",
       "tools/skslc/ProcessWorklist.cpp",
       "tools/skslc/ProcessWorklist.h",
     ]
@@ -746,6 +748,8 @@ if (skia_compile_sksl_tests) {
     ]
     sources = skslc_deps
     sources += [
+      "tools/sksl/ShaderCapsFactory.cpp",
+      "tools/sksl/ShaderCapsFactory.h",
       "tools/skslc/Main.cpp",
       "tools/skslc/ProcessWorklist.cpp",
       "tools/skslc/ProcessWorklist.h",
@@ -1988,6 +1992,8 @@ if (skia_enable_tools) {
       "tools/gpu/YUVUtils.cpp",
       "tools/gpu/YUVUtils.h",
       "tools/gpu/mock/MockTestContext.cpp",
+      "tools/sksl/ShaderCapsFactory.cpp",
+      "tools/sksl/ShaderCapsFactory.h",
     ]
     sources += skia_utils_gpu
 

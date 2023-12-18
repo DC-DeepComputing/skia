@@ -19,6 +19,7 @@
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 
 #include <cstring>
 #include <functional>
@@ -139,7 +140,7 @@ static void test_expect_fail(skiatest::Reporter* r, const char* testFile, SkSL::
     std::vector<std::string> expectedErrors = get_expected_errors(shaderString.c_str());
 
     // Compile the code.
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
+    SkSL::Compiler compiler(SkSL::tools::ShaderCapsFactory::Standalone());
     SkSL::ProgramSettings settings;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, std::move(shaderString),
                                                                      settings);

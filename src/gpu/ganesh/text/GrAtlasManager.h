@@ -8,17 +8,31 @@
 #ifndef GrAtlasManager_DEFINED
 #define GrAtlasManager_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrTypes.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/AtlasTypes.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDrawOpAtlas.h"
 #include "src/gpu/ganesh/GrOnFlushResourceProvider.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+
+class GrDeferredUploadTarget;
+class GrDirectContext;
+class GrResourceProvider;
+class GrSurfaceProxyView;
+class SkGlyph;
+
 namespace sktext::gpu {
 class Glyph;
 }
-class GrResourceProvider;
-class SkGlyph;
-class GrTextStrike;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /** The GrAtlasManager manages the lifetime of and access to GrDrawOpAtlases.

@@ -7,16 +7,26 @@
 
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 
-#include "include/core/SkColorSpace.h"
-#include "include/encode/SkPngEncoder.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
+#include "include/private/base/SkMalloc.h"
+#include "include/private/base/SkTLogic.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/codec/SkMasks.h"
 #include "src/core/SkDistanceFieldGen.h"
-#include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/core/SkGlyph.h"
+#include "src/core/SkMask.h"
+#include "src/core/SkStrikeSpec.h"
+#include "src/gpu/ganesh/GrColor.h"
+#include "src/gpu/ganesh/GrDeferredUpload.h"
 #include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/text/gpu/Glyph.h"
 #include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/StrikeCache.h"
+
+#include <cstring>
+#include <new>
+#include <tuple>
 
 using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
@@ -240,16 +250,25 @@ void GrAtlasManager::addGlyphToBulkAndSetUseToken(skgpu::BulkUsePlotUpdater* upd
     }
 }
 
-#ifdef SK_DEBUG
+#if defined(SK_DEBUG)
+#include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkDataTable.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkString.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/private/base/SkDebug.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
-#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
 
-#include "include/core/SkBitmap.h"
-#include "include/core/SkStream.h"
-#include <stdio.h>
+#include <utility>
+#include <cstdio>
 
 /**
   * Write the contents of the surface proxy to a PNG. Returns true if successful.

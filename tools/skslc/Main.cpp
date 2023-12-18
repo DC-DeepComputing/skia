@@ -24,6 +24,7 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "src/utils/SkShaderUtils.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 #include "tools/skslc/ProcessWorklist.h"
 
 #include "spirv-tools/libspirv.hpp"
@@ -74,7 +75,7 @@ static bool consume_suffix(std::string* str, const char suffix[]) {
     return true;
 }
 
-class ShaderCapsTestFactory : public SkSL::ShaderCapsFactory {
+class ShaderCapsTestFactory : public SkSL::tools::ShaderCapsFactory {
 public:
     static const SkSL::ShaderCaps* AddAndTrueToLoopCondition() {
         static const SkSL::ShaderCaps* sCaps = []{
@@ -542,7 +543,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
     }
 
     SkSL::ProgramSettings settings;
-    const SkSL::ShaderCaps* caps = SkSL::ShaderCapsFactory::Standalone();
+    const SkSL::ShaderCaps* caps = SkSL::tools::ShaderCapsFactory::Standalone();
     std::unique_ptr<SkSL::DebugTracePriv> debugTrace;
     if (*honorSettings) {
         if (!detect_shader_settings(text, &settings, &caps, &debugTrace)) {

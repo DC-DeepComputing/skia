@@ -10,5 +10,8 @@ skia_filegroup(
         "GrGLBackendSurface.h",
         "GrGLDirectContext.h",
     ],
-    visibility = ["//include/gpu/ganesh:__pkg__"],
+    visibility = [
+        "//include/gpu/ganesh:__pkg__",
+        "//src/gpu/ganesh/gl:__pkg__",
+    ],
 )

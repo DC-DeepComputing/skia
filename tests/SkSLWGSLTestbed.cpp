@@ -12,6 +12,7 @@
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "tests/Test.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 
 #include <memory>
 #include <string>
@@ -19,7 +20,7 @@
 static void test(skiatest::Reporter* r,
                  const char* src,
                  SkSL::ProgramKind kind = SkSL::ProgramKind::kFragment) {
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Default());
+    SkSL::Compiler compiler(SkSL::tools::ShaderCapsFactory::Default());
     SkSL::ProgramSettings settings;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, std::string(src),
                                                                      settings);
