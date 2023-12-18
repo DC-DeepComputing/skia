@@ -39,6 +39,30 @@
       },
       "revId": "b94873a3371c869ee340c7a4ccd33c16b7b69a72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a9b1c7c_6a669df6",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-18T20:06:14Z",
+      "side": 1,
+      "message": "True - alternatively, while we are kinda stuck in this intermediate rigid set index situation, I could have it be set to desc set index 2 and simply populate a valid zero sampler desc set layout at kTextureBindDescSetIndex like we do in ganesh.",
+      "parentUuid": "2e4bb862_9277b575",
+      "range": {
+        "startLine": 46,
+        "startChar": 72,
+        "endLine": 46,
+        "endChar": 96
+      },
+      "revId": "b94873a3371c869ee340c7a4ccd33c16b7b69a72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
