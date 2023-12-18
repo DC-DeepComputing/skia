@@ -16,6 +16,29 @@
       "message": "PTAL 😊",
       "revId": "b94873a3371c869ee340c7a4ccd33c16b7b69a72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4bb862_9277b575",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-18T20:03:27Z",
+      "side": 1,
+      "message": "this is fine for now, but as soon as we start using input attachments for blending this is going to start breaking things. So just make sure you\u0027re aware or have a way to notice this when you start adding the blending stuff.",
+      "range": {
+        "startLine": 46,
+        "startChar": 72,
+        "endLine": 46,
+        "endChar": 96
+      },
+      "revId": "b94873a3371c869ee340c7a4ccd33c16b7b69a72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
