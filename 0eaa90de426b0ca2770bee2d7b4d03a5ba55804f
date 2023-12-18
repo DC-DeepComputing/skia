@@ -22,6 +22,30 @@
       },
       "revId": "0eaa90de426b0ca2770bee2d7b4d03a5ba55804f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b1391f_9d5d7dc2",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-18T15:55:26Z",
+      "side": 1,
+      "message": "Correct.\nRe-did the horizontal handling. PTAL.",
+      "parentUuid": "99261168_5626b765",
+      "range": {
+        "startLine": 70,
+        "startChar": 18,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "0eaa90de426b0ca2770bee2d7b4d03a5ba55804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
