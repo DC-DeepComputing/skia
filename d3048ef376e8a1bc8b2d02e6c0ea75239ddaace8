@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccc8c824_36afd83e",
+        "filename": "src/gpu/graphite/DescriptorData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-18T17:48:06Z",
+      "side": 1,
+      "message": "FYI: This is primarily just a renaming of `DescriptorTypes` but with pipeline shader stage flags added. I did use `git mv`, but that doesn\u0027t seem to show up within gerrit as a rename, only a deletion/addition. PITA.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 0
+      },
+      "revId": "d3048ef376e8a1bc8b2d02e6c0ea75239ddaace8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
