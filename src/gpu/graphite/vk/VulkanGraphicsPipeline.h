@@ -80,6 +80,14 @@ public:
                                               const sk_sp<VulkanRenderPass>& compatibleRenderPass,
                                               VkPipelineCache);
 
+    static bool InitializeMSAALoadPipelineStructs(
+            const VulkanSharedContext*,
+            SkSL::Compiler*,
+            VkShaderModule* outVertexShaderModule,
+            VkShaderModule* outFragShaderModule,
+            VkPipelineShaderStageCreateInfo* outShaderStageInfo,
+            VkPipelineLayout* outPipelineLayout);
+
     ~VulkanGraphicsPipeline() override {}
 
     VkPipelineLayout layout() const {
@@ -103,7 +111,8 @@ private:
                            VkPipeline,
                            bool hasFragmentUniforms,
                            bool hasStepUniforms,
-                           int numTextureSamplers);
+                           int numTextureSamplers,
+                           bool ownsPipelineLayout);
 
     void freeGpuData() override;
 
@@ -112,6 +121,7 @@ private:
     bool fHasFragmentUniforms = false;
     bool fHasStepUniforms = false;
     int fNumTextureSamplers = 0;
+    bool fOwnsPipelineLayout = true;
 };
 
 } // namespace skgpu::graphite
