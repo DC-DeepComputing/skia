@@ -14,7 +14,6 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
-#include "src/sksl/ir/SkSLIRHelpers.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLSetting.h"
@@ -22,6 +21,7 @@
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
+#include "src/sksl/transform/SkSLTransform.h"
 
 namespace SkSL {
 
@@ -36,35 +36,6 @@ static bool is_low_precision_matrix_vector_multiply(const Expression& left,
            left.type().rows() == right.type().columns() &&
            Analysis::IsTrivialExpression(left) &&
            Analysis::IsTrivialExpression(right);
-}
-
-static std::unique_ptr<Expression> rewrite_matrix_vector_multiply(const Context& context,
-                                                                  Position pos,
-                                                                  const Expression& left,
-                                                                  const Expression& right) {
-    // Rewrite m33 * v3 as (m[0] * v[0] + m[1] * v[1] + m[2] * v[2])
-    IRHelpers helpers(context);
-
-    std::unique_ptr<Expression> sum;
-    for (int n = 0; n < left.type().rows(); ++n) {
-        // Get mat[N] with an index expression.
-        std::unique_ptr<Expression> matN = helpers.Index(left.clone(), helpers.Int(n));
-
-        // Get vec[N] with another index expression.
-        std::unique_ptr<Expression> vecN = helpers.Index(right.clone(), helpers.Int(n));
-
-        // Multiply them together.
-        std::unique_ptr<Expression> product = helpers.Binary(std::move(matN), OperatorKind::STAR,
-                                                             std::move(vecN));
-        // Sum all the components together.
-        if (!sum) {
-            sum = std::move(product);
-        } else {
-            sum = helpers.Binary(std::move(sum), OperatorKind::PLUS, std::move(product));
-        }
-    }
-
-    return sum;
 }
 
 std::unique_ptr<Expression> BinaryExpression::Convert(const Context& context,
@@ -202,7 +173,7 @@ std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
             if (capsBitIsTrue || !caps->isBoolLiteral()) {
                 // Rewrite the multiplication as a sum of vector-scalar products.
                 std::unique_ptr<Expression> rewrite =
-                        rewrite_matrix_vector_multiply(context, pos, *left, *right);
+                        Transform::RewriteMatrixVectorMultiply(context, pos, *left, *right);
 
                 // If we know the caps bit is true, return the rewritten expression directly.
                 if (capsBitIsTrue) {

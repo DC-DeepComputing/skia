@@ -48,6 +48,16 @@ std::unique_ptr<Expression> RewriteIndexedSwizzle(const Context& context,
                                                   const IndexExpression& swizzle);
 
 /**
+ * Rewrites matrix * vector multiplication as (mat[0]*vec[0] + ... + mat[N]*vec[N]).
+ * Some GPUs always execute M*V in high-precision, so the spelled-out form can be faster for
+ * medium-precision inputs.
+ */
+std::unique_ptr<Expression> RewriteMatrixVectorMultiply(const Context& context,
+                                                        Position pos,
+                                                        const Expression& left,
+                                                        const Expression& right);
+
+/**
  * Copies built-in functions from modules into the program. Relies on ProgramUsage to determine
  * which functions are necessary.
  */
