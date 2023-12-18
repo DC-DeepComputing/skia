@@ -46,6 +46,30 @@
       },
       "revId": "0eaa90de426b0ca2770bee2d7b4d03a5ba55804f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b37db2_c15b6fbb",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-18T15:57:32Z",
+      "side": 1,
+      "message": "Ah, nice. Yeah, having the comparator handle the horizontals feels cleaner.",
+      "parentUuid": "63b1391f_9d5d7dc2",
+      "range": {
+        "startLine": 70,
+        "startChar": 18,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "0eaa90de426b0ca2770bee2d7b4d03a5ba55804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
