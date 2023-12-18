@@ -33,6 +33,24 @@
       "message": "it should have been enough...",
       "revId": "08e0d626d8d809cccde3553205a2adea34cd36b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "816ab7cd_52853f2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-18T17:30:52Z",
+      "side": 1,
+      "message": "I think if the original CL has been landed for \u003e24 hours it\u0027s not on auto-submit?",
+      "parentUuid": "daa7d82c_fb4beac6",
+      "revId": "08e0d626d8d809cccde3553205a2adea34cd36b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
