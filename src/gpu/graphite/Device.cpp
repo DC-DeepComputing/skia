@@ -226,7 +226,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            Mipmapped mipmapped,
                            SkBackingFit backingFit,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
+                           bool addInitialClear,
+                           Device* parentDevice) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
 
     if (!recorder) {
@@ -263,7 +264,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            SkISize deviceSize,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
+                           bool addInitialClear,
+                           Device* parentDevice) {
     if (!recorder) {
         return nullptr;
     }
@@ -278,7 +280,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    return sk_sp<Device>(new Device(recorder, std::move(dc), addInitialClear));
+    return sk_sp<Device>(new Device(recorder, std::move(dc), addInitialClear, parentDevice));
 }
 
 // These default tuning numbers for the HybridBoundsManager were chosen from looking at performance
@@ -294,10 +296,14 @@ static constexpr int kGridCellSize = 16;
 static constexpr int kMaxBruteForceN = 64;
 static constexpr int kMaxGridSize = 32;
 
-Device::Device(Recorder* recorder, sk_sp<DrawContext> dc, bool addInitialClear)
+Device::Device(Recorder* recorder,
+               sk_sp<DrawContext> dc,
+               bool addInitialClear,
+               Device* parentDevice)
         : SkDevice(dc->imageInfo(), dc->surfaceProps())
         , fRecorder(recorder)
         , fDC(std::move(dc))
+        , fParentDevice(parentDevice)
         , fClip(this)
         , fColorDepthBoundsManager(
                     std::make_unique<HybridBoundsManager>(fDC->imageInfo().dimensions(),
@@ -356,7 +362,8 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
                 SkBackingFit::kExact,
 #endif
                 props,
-                addInitialClear);
+                addInitialClear,
+                this);
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
@@ -1367,13 +1374,7 @@ void Device::flushPendingWorkToRecorder() {
     // TODO: we may need to further split this function up since device->device drawList and
     // DrawPass stealing will need to share some of the same logic w/o becoming a Task.
 
-    // Push any pending uploads from the atlasProvider
-    fRecorder->priv().atlasProvider()->recordUploads(fDC.get(), fRecorder);
-
-    auto uploadTask = fDC->snapUploadTask(fRecorder);
-    if (uploadTask) {
-        fRecorder->priv().add(std::move(uploadTask));
-    }
+    this->flushPendingUploadsToRecorder();
 
     fClip.recordDeferredClipDraws();
 
@@ -1395,6 +1396,29 @@ void Device::flushPendingWorkToRecorder() {
     fColorDepthBoundsManager->reset();
     fDisjointStencilSet->reset();
     fCurrentDepth = DrawOrder::kClearDepth;
+}
+
+void Device::flushPendingUploadsToRecorder() {
+    if (fParentDevice) {
+        fParentDevice->flushPendingUploadsToRecorder();
+    }
+
+    // Push any pending uploads from the atlasProvider
+    fRecorder->priv().atlasProvider()->recordUploads(fDC.get(), fRecorder);
+
+    auto uploadTask = fDC->snapUploadTask(fRecorder);
+    if (uploadTask) {
+        fRecorder->priv().add(std::move(uploadTask));
+    }
+
+    // It is only safe to issue the next flush token if we are not a child device.
+    // By incrementing the flush token we would be telling the parent that any draws
+    // depending on these uploads have also been flushed, which is not true since
+    // we only flush the parent's uploads. Doing so would potentially cause the parent
+    // to overwrite areas of the atlas that are still in use and cause corruption.
+    if (!fParentDevice) {
+        fRecorder->priv().issueFlushToken();
+    }
 }
 
 bool Device::needsFlushBeforeDraw(int numNewRenderSteps, DstReadRequirement dstReadReq) const {
