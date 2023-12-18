@@ -264,6 +264,65 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     return firstDescSet;
 }
 
+sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
+        const RenderPassDesc& renderPassDesc) {
+
+    if (!renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() ||
+        !renderPassDesc.fColorAttachment.fTextureInfo.isValid()) {
+        SKGPU_LOG_E("Loading MSAA from resolve texture requires valid color & resolve attachment");
+        return nullptr;
+    }
+
+    uint64_t renderPassKey =
+            this->vulkanSharedContext()->vulkanCaps().getRenderPassDescKey(renderPassDesc);
+    sk_sp<VulkanGraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey];
+    if (pipeline) {
+        return pipeline;
+    }
+
+    sk_sp<VulkanRenderPass> compatibleRenderPass =
+            this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
+    if (!compatibleRenderPass) {
+        SKGPU_LOG_E("Failed to make compatible render pass for loading MSAA");
+    }
+
+    // The load msaa pipeline takes no uniforms, no vertex/instance attributes and only uses
+    // one texture that does not require a sampler.
+    if (fMSAALoadVertShaderModule   == VK_NULL_HANDLE ||
+        fMSAALoadFragShaderModule   == VK_NULL_HANDLE ||
+        fMSAALoadPipelineLayout     == VK_NULL_HANDLE) {
+        SkSL::Compiler compiler(fSharedContext->caps()->shaderCaps());
+        if (!VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
+                    this->vulkanSharedContext(),
+                    &compiler,
+                    &fMSAALoadVertShaderModule,
+                    &fMSAALoadFragShaderModule,
+                    &fMSAALoadShaderStageInfo[0],
+                    &fMSAALoadPipelineLayout)) {
+            SKGPU_LOG_E("Failed to initialize MSAA load pipeline creation structure(s)");
+            return nullptr;
+        }
+    }
+
+    pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
+            this->vulkanSharedContext(),
+            fMSAALoadVertShaderModule,
+            fMSAALoadFragShaderModule,
+            &fMSAALoadShaderStageInfo[0],
+            fMSAALoadPipelineLayout,
+            compatibleRenderPass,
+            this->pipelineCache(),
+            renderPassDesc.fColorAttachment.fTextureInfo.numSamples()); // TODO - resolve?
+
+    if (!pipeline) {
+        SKGPU_LOG_E("Failed to create MSAA load pipeline");
+        return nullptr;
+    }
+
+    fLoadMSAAPipelines.set(renderPassKey, pipeline);
+    return pipeline;
+}
+
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
     auto renderPassKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
@@ -381,35 +440,6 @@ sk_sp<VulkanSamplerYcbcrConversion>
 
     return ycbcrConversion;
 }
-
-sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
-        const RenderPassDesc& renderPassDesc) {
-    if (!renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() ||
-        !renderPassDesc.fColorAttachment.fTextureInfo.isValid()) {
-        SKGPU_LOG_E("Loading MSAA from resolve texture requires valid color & resolve attachment");
-        return nullptr;
-    }
-
-    if (fMSAALoadVertShaderModule   == VK_NULL_HANDLE ||
-        fMSAALoadFragShaderModule   == VK_NULL_HANDLE ||
-        fMSAALoadPipelineLayout     == VK_NULL_HANDLE) {
-        SkSL::Compiler compiler(fSharedContext->caps()->shaderCaps());
-        if (!VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
-                    this->vulkanSharedContext(),
-                    &compiler,
-                    &fMSAALoadVertShaderModule,
-                    &fMSAALoadFragShaderModule,
-                    &fMSAALoadShaderStageInfo[0],
-                    &fMSAALoadPipelineLayout)) {
-            SKGPU_LOG_E("Failed to initialize MSAA load pipeline creation structure(s)\n");
-            return nullptr;
-        }
-    }
-
-    // TODO: Implement.
-    return nullptr;
-}
-
 
 #ifdef SK_BUILD_FOR_ANDROID
 
