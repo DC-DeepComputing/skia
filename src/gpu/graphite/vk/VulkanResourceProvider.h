@@ -9,6 +9,8 @@
 #define skgpu_graphite_VulkanResourceProvider_DEFINED
 
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanFramebuffer.h"
+#include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DescriptorData.h"
@@ -48,8 +50,6 @@ public:
     sk_sp<VulkanSamplerYcbcrConversion> findOrCreateCompatibleSamplerYcbcrConversion(
             const VulkanYcbcrConversionInfo& ycbcrInfo) const;
 
-     sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
-
 private:
     const VulkanSharedContext* vulkanSharedContext() const;
 
@@ -82,6 +82,7 @@ private:
     void onDeleteBackendTexture(const BackendTexture&) override;
 
     sk_sp<VulkanDescriptorSet> findOrCreateDescriptorSet(SkSpan<DescriptorData>);
+    sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
     // Find or create a compatible (needed when creating a framebuffer and graphics pipeline) or
     // full (needed when beginning a render pass from the command buffer) RenderPass.
     sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&,
