@@ -94,5 +94,4 @@ std::unique_ptr<Expression> Setting::toLiteral(const Context& context) const {
     return Literal::MakeBool(fPosition, context.fCaps->*fCapsPtr, &this->type());
 }
 
-
 }  // namespace SkSL
