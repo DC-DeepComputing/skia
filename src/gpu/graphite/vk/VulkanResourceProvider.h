@@ -9,6 +9,7 @@
 #define skgpu_graphite_VulkanResourceProvider_DEFINED
 
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DescriptorData.h"
