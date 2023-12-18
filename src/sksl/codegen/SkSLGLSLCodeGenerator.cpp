@@ -25,6 +25,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLConstructor.h"
@@ -65,7 +66,7 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
-#include "src/sksl/spirv.h"
+#include "src/core/SkTraceEvent.h"
 
 #include <cstddef>
 #include <memory>
@@ -1843,6 +1844,26 @@ bool GLSLCodeGenerator::generateCode() {
     write_stringstream(fExtraFunctions, *rawOut);
     write_stringstream(body, *rawOut);
     return fContext.fErrors->errorCount() == 0;
+}
+
+bool ToGLSL(Compiler& compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toGLSL");
+    // We cannot emit GLSL without real shader caps.
+    SkASSERT(compiler.caps() != nullptr);
+    AutoSource as(&compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler.contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler.caps());
+    GLSLCodeGenerator cg(compiler.contextPtr().get(), &program, &out);
+    return cg.generateCode();
+}
+
+bool ToGLSL(Compiler& compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToGLSL(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
 }
 
 }  // namespace SkSL

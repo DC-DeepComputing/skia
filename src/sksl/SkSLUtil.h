@@ -12,8 +12,6 @@
 #include "include/sksl/SkSLVersion.h"
 #include "src/sksl/SkSLGLSL.h"
 
-#include <memory>
-
 enum class SkSLType : char;
 
 namespace SkSL {
@@ -160,31 +158,7 @@ struct ShaderCaps {
     AdvBlendEqInteraction fAdvBlendEqInteraction = kNotSupported_AdvBlendEqInteraction;
 };
 
-// Various sets of caps for use in tests
-class ShaderCapsFactory {
-public:
-    static const ShaderCaps* Default() {
-        static const SkSL::ShaderCaps* sCaps = [] {
-            std::unique_ptr<ShaderCaps> caps = MakeShaderCaps();
-            caps->fVersionDeclString = "#version 400";
-            caps->fShaderDerivativeSupport = true;
-            return caps.release();
-        }();
-        return sCaps;
-    }
-
-    static const ShaderCaps* Standalone() {
-        static const SkSL::ShaderCaps* sCaps = MakeShaderCaps().release();
-        return sCaps;
-    }
-
-protected:
-    static std::unique_ptr<ShaderCaps> MakeShaderCaps();
-};
-
-#if !defined(SKSL_STANDALONE) && (defined(SK_GANESH) || defined(SK_GRAPHITE))
 bool type_to_sksltype(const Context& context, const Type& type, SkSLType* outType);
-#endif
 
 void write_stringstream(const StringStream& d, OutputStream& out);
 

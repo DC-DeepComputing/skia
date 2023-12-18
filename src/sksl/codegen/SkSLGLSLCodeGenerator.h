@@ -24,6 +24,7 @@ class BinaryExpression;
 class Block;
 class ConstructorCompound;
 class ConstructorDiagonalMatrix;
+class Compiler;
 class DoStatement;
 class Expression;
 class ExpressionStatement;
@@ -212,6 +213,14 @@ protected:
     using INHERITED = CodeGenerator;
 };
 
+bool ToGLSL(Compiler&, Program&, OutputStream&);
+bool ToGLSL(Compiler&, Program&, std::string* out);
+bool ToHLSL(Compiler&, Program&, OutputStream& out);
+bool ToHLSL(Compiler&, Program&, std::string* out);
+bool ToMetal(Compiler&, Program&, OutputStream& out);
+bool ToMetal(Compiler&, Program&, std::string* out);
+bool ToWGSL(Compiler&, Program&, OutputStream& out);
+bool ToWGSL(Compiler&, Program&, std::string* out);
 }  // namespace SkSL
 
 #endif

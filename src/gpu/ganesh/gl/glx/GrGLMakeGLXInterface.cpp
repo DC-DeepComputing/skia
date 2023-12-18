@@ -8,6 +8,7 @@
 #include "include/gpu/gl/GrGLAssembleInterface.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
+#include "include/gpu/gl/glx/GrGLMakeGLXInterface.h"
 
 // Define this to get a prototype for glXGetProcAddress on some systems
 #define GLX_GLXEXT_PROTOTYPES 1
@@ -25,10 +26,20 @@ static GrGLFuncPtr glx_get(void* ctx, const char name[]) {
     return glXGetProcAddress(reinterpret_cast<const GLubyte*>(name));
 }
 
-sk_sp<const GrGLInterface> GrGLMakeGLXInterface() {
+namespace GrGLInterfaces {
+sk_sp<const GrGLInterface> MakeGLX() {
     if (nullptr == glXGetCurrentContext()) {
         return nullptr;
     }
 
     return GrGLMakeAssembledInterface(nullptr, glx_get);
 }
+}  // namespace GrGLInterfaces
+
+#if !defined(SK_DISABLE_LEGACY_GLXINTERFACE_FACTORY)
+sk_sp<const GrGLInterface> GrGLMakeGLXInterface() {
+    return GrGLInterfaces::MakeGLX();
+}
+#endif
+
+

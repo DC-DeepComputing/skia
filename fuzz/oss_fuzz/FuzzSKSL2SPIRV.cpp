@@ -10,11 +10,12 @@
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 
 #include "fuzz/Fuzz.h"
 
 bool FuzzSKSL2SPIRV(const uint8_t *data, size_t size) {
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Default());
+    SkSL::Compiler compiler(SkSL::tools::ShaderCapsFactory::Default());
     SkSL::ProgramSettings settings;
 
     // This tells the compiler where the rt-flip uniform will live should it be required. For
