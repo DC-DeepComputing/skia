@@ -66,8 +66,8 @@ namespace {
 class SkEmptyTypeface : public SkTypeface {
 public:
     static sk_sp<SkTypeface> Make() {
-        static SkEmptyTypeface instance;
-        return sk_ref_sp(&instance);
+        static SkNoDestructor<SkEmptyTypeface> instance;
+        return sk_ref_sp(instance.get());
     }
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('e','m','t','y');
@@ -79,6 +79,7 @@ public:
         return nullptr;
     }
 protected:
+    friend SkNoDestructor<SkEmptyTypeface>;
     SkEmptyTypeface() : SkTypeface(SkFontStyle(), true) { }
 
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override { return nullptr; }
