@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "376970c5_3c182a59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-18T16:33:54Z",
+      "side": 1,
+      "message": "Reland: PS2 has the fix for a fuzzer bug that was found. (Large uint values in the stream could turn into negative sizes when passed to the TArray::reset.",
+      "revId": "07772c7bfc0bb74b53d69777d0ee39832fa85ca0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
