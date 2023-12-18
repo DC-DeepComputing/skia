@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc3a340f_83f5aade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-12-18T16:23:21Z",
+      "side": 1,
+      "message": "LGTM!\n\nAt some point, we should consider storing `OutlineGlyphCollection` (doesn\u0027t depend on size/variations, so maybe with `FontRef`?)-- that should give a reasonable perf boost.",
+      "revId": "61aab805c13bd4350de49c8c80eceb87e830bc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
