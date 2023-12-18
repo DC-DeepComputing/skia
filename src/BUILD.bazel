@@ -163,5 +163,6 @@ generate_cpp_files_for_headers(
         "src/gpu/ganesh/GrClip.h",
         "src/gpu/ganesh/gl/GrGLBackendSurfacePriv.h",
         "src/image/SkImageGeneratorPriv.h",
+        "src/sksl/SkCompilerUtil.h",
     ],
 )

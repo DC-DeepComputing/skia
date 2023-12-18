@@ -8,4 +8,4 @@
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/glx/GrGLMakeGLXInterface.h"
 
-sk_sp<const GrGLInterface> GrGLMakeNativeInterface() { return GrGLMakeGLXInterface(); }
+sk_sp<const GrGLInterface> GrGLMakeNativeInterface() { return GrGLInterfaces::MakeGLX(); }

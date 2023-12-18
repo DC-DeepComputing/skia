@@ -140,25 +140,25 @@ public:
 
     std::unique_ptr<Expression> convertIdentifier(Position pos, std::string_view name);
 
-    bool toSPIRV(Program& program, OutputStream& out);
+    // bool toSPIRV(Program& program, OutputStream& out);
 
-    bool toSPIRV(Program& program, std::string* out);
+    // bool toSPIRV(Program& program, std::string* out);
 
-    bool toGLSL(Program& program, OutputStream& out);
+    // bool toGLSL(Program& program, OutputStream& out);
 
-    bool toGLSL(Program& program, std::string* out);
+    // bool toGLSL(Program& program, std::string* out);
 
-    bool toHLSL(Program& program, OutputStream& out);
+    // bool toHLSL(Program& program, OutputStream& out);
 
-    bool toHLSL(Program& program, std::string* out);
+    // bool toHLSL(Program& program, std::string* out);
 
-    bool toMetal(Program& program, OutputStream& out);
+    // bool toMetal(Program& program, OutputStream& out);
 
-    bool toMetal(Program& program, std::string* out);
+    // bool toMetal(Program& program, std::string* out);
 
-    bool toWGSL(Program& program, OutputStream& out);
+    // bool toWGSL(Program& program, OutputStream& out);
 
-    bool toWGSL(Program& program, std::string* out);
+    // bool toWGSL(Program& program, std::string* out);
 
     void handleError(std::string_view msg, Position pos);
 
@@ -179,6 +179,10 @@ public:
         return *fContext;
     }
 
+    std::shared_ptr<Context> contextPtr() const {
+        return fContext;
+    }
+
     std::shared_ptr<SymbolTable>& symbolTable() {
         return fContext->fSymbolTable;
     }
@@ -196,6 +200,8 @@ public:
 
     /** Run the inliner on a program which was compiled earlier (with inlining turned off). */
     void runInliner(Program& program);
+
+    const ShaderCaps* caps() const { return fCaps; }
 
 private:
     class CompilerErrorReporter : public ErrorReporter {

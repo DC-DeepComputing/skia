@@ -11,10 +11,9 @@
 
 #include <cstdint>
 
-// Contains useful mask routines for SkMaskSwizzler
 class SkMasks {
 public:
-   //Contains all of the information for a single mask
+   // Contains all of the information for a single mask
     struct MaskInfo {
         uint32_t mask;
         uint32_t shift;  // To the left
@@ -28,7 +27,7 @@ public:
         , fBlue(blue)
         , fAlpha(alpha) { }
 
-    //Input bit masks format
+    // Input bit masks format
     struct InputMasks {
         uint32_t red;
         uint32_t green;
