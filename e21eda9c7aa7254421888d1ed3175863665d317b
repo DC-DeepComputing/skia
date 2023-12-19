@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4acfa170_298934bd",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-19T14:29:46Z",
+      "side": 1,
+      "message": "As you noticed, it\u0027s now possible to set this on a glyph by glyph basis (out of `generateMetrics`).",
+      "revId": "e21eda9c7aa7254421888d1ed3175863665d317b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc701c0_69ae1732",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-19T14:29:46Z",
+      "side": 1,
+      "message": "The way to think about the scaler context bits is that they are the storage area for your \"subclass\" of `SkGlyph`. We don\u0027t want a bunch of subclasses of `SkGlyph` because that gets messy fast and we want them all to be the same size for storage reasons. However, each logical subclass of `SkGlyph` does need somewhere to put some state, mostly to cache scaler context specific information computed in `generateMetrics` to later calls (at the moment this is mostly \"what format did I settle on?\").\n\nAs a result, feel free to use this bits however makes sense. At the moment you\u0027re kinda using the \"please create from path\" bit to get the metics from path, but you\u0027ll probably want to have an enum value for that and call `GenerateImageFromPath`.",
+      "revId": "e21eda9c7aa7254421888d1ed3175863665d317b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f992c571_bc34af79",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-19T14:29:46Z",
+      "side": 1,
+      "message": "No one changes advance widths for fake bold, and no one applies fake bold to color fonts (at least well), it\u0027s hard to say what it means. In fact fake bold on single path glyphs is already an iffy thing.",
+      "revId": "e21eda9c7aa7254421888d1ed3175863665d317b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1e5313_21d26cad",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-19T14:29:46Z",
+      "side": 1,
+      "message": "Generally you want to set the path to the no-path explicitly in `generateMetrics` so you don\u0027t even try to get here (it\u0027s also better overall).",
+      "revId": "e21eda9c7aa7254421888d1ed3175863665d317b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
