@@ -502,15 +502,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                                   false);
     }
 
-    sk_sp<VulkanRenderPass> vulkanRenderPass =
-            fResourceProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/false);
-    if (!vulkanRenderPass) {
-        SKGPU_LOG_W("Could not create Vulkan RenderPass");
-        return false;
-    }
-    this->submitPipelineBarriers();
-    this->trackResource(vulkanRenderPass);
-
     skia_private::TArray<VkImageView> attachmentViews; // Needed for frame buffer
     TArray<VkClearValue> clearValues(3); // Needed for RenderPassBeginInfo, indexed by attach. num.
     clearValues.push_back_n(3);
@@ -550,8 +541,19 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         this->trackResource(sk_ref_sp(depthStencilTexture));
     }
 
+    sk_sp<VulkanRenderPass> vulkanRenderPass =
+            fResourceProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/false);
+    if (!vulkanRenderPass) {
+        SKGPU_LOG_W("Could not create Vulkan RenderPass");
+        return false;
+    }
+    this->submitPipelineBarriers();
+    this->trackResource(vulkanRenderPass);
+
     int frameBufferWidth = 0;
     int frameBufferHeight = 0;
+    // TODO: Get frame buffer render area from RenderPassDesc. Account for granularity if it wasn't
+    // already. For now, simply set the render area to be the entire frame buffer.
     if (colorTexture) {
         frameBufferWidth = colorTexture->dimensions().width();
         frameBufferHeight = colorTexture->dimensions().height();
@@ -575,14 +577,31 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = vulkanRenderPass->renderPass();
     beginInfo.framebuffer = framebuffer->framebuffer();
-    // TODO: Get render area from RenderPassDesc. Account for granularity if it wasn't already.
-    // For now, simply set the render area to be the entire frame buffer.
     beginInfo.renderArea = {{ 0, 0 },
                             { (unsigned int) frameBufferWidth, (unsigned int) frameBufferHeight }};
     beginInfo.clearValueCount = clearValues.size();
     beginInfo.pClearValues = clearValues.begin();
 
-    // TODO: If needed, load MSAA from resolve
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
+    sk_sp<VulkanGraphicsPipeline> loadPipeline;
+    if (loadMSAAFromResolve) {
+        // We manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the MSAA attachment's load op should be LoadOp::kDiscard.
+        SkASSERT(renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kDiscard);
+        SkASSERT(resolveTexture);
+
+        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
+
+        int dstWidth = vulkanColorTexture->dimensions().width();
+        int dstHeight = vulkanColorTexture->dimensions().height();
+        this->setScissor(0, 0, dstWidth, dstHeight);
+    }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
     // beginning the render pass.
@@ -594,6 +613,72 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                    VK_SUBPASS_CONTENTS_INLINE));
     this->trackResource(std::move(framebuffer));
     fActiveRenderPass = true;
+
+    if (loadPipeline) {
+        // Store the current active pipeline so we can re-bind it after loading MSAA from resolve
+        const VulkanGraphicsPipeline* priorActivePipeline = fActiveGraphicsPipeline;
+        this->bindGraphicsPipeline(loadPipeline.get());
+
+        // Obtain and populate a descriptor set that contains one input attachment
+        STArray<1, DescriptorData> inputDescriptors =
+                {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+        sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
+                SkSpan<DescriptorData>{&inputDescriptors.front(), inputDescriptors.size()});
+        this->trackResource(std::move(set));
+
+        //this->bindUniformBuffers(); // Forces the intrinsic constant to bind TODO is this needed?
+
+        // Update and bind input attachment descriptor
+        {
+            VkDescriptorImageInfo textureInfo;
+            memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
+            textureInfo.sampler = VK_NULL_HANDLE;
+            textureInfo.imageView = vulkanResolveTexture->
+                    getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+            textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+            VkWriteDescriptorSet writeInfo;
+            memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            writeInfo.pNext = nullptr;
+            writeInfo.dstSet = fInputAttachmentDescSetToBind;
+            writeInfo.dstBinding = VulkanGraphicsPipeline::kInputAttachmentBindingIndex;
+            writeInfo.dstArrayElement = 0;
+            writeInfo.descriptorCount = 1;
+            writeInfo.descriptorType = DsTypeEnumToVkDs(DescriptorType::kInputAttachment);
+            writeInfo.pImageInfo = &textureInfo;
+            writeInfo.pBufferInfo = nullptr;
+            writeInfo.pTexelBufferView = nullptr;
+
+            VULKAN_CALL(fSharedContext->interface(),
+                        UpdateDescriptorSets(fSharedContext->device(),
+                                            /*descriptorWriteCount=*/1,
+                                            &writeInfo,
+                                            /*descriptorCopyCount=*/0,
+                                            /*pDescriptorCopies=*/nullptr));
+
+            VULKAN_CALL(fSharedContext->interface(),
+                        CmdBindDescriptorSets(fPrimaryCommandBuffer,
+                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                              fActiveGraphicsPipeline->layout(),
+                                              VulkanGraphicsPipeline::kInputAttachmentDescSetIndex,
+                                              /*setCount=*/1,
+                                              &fInputAttachmentDescSetToBind,
+                                              /*dynamicOffsetCount=*/0,
+                                              /*dynamicOffsets=*/nullptr));
+        }
+
+        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+
+        // TODO: Use VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS if we add secondary cmd buffers
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdNextSubpass(fPrimaryCommandBuffer, VK_SUBPASS_CONTENTS_INLINE));
+
+        if (priorActivePipeline) {
+            this->bindGraphicsPipeline(priorActivePipeline);
+        }
+    }
+
     return true;
 }
 
