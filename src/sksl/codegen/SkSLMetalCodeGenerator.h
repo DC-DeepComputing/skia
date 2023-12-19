@@ -72,10 +72,13 @@ struct Program;
  */
 class MetalCodeGenerator : public CodeGenerator {
 public:
-    MetalCodeGenerator(const Context* context, const Program* program, OutputStream* out)
-    : INHERITED(context, program, out)
-    , fReservedWords({"atan2", "rsqrt", "rint", "dfdx", "dfdy", "vertex", "fragment"})
-    , fLineEnding("\n") {}
+    MetalCodeGenerator(const Context* context,
+                       const ShaderCaps* caps,
+                       const Program* program,
+                       OutputStream* out)
+            : INHERITED(context, caps, program, out)
+            , fReservedWords({"atan2", "rsqrt", "rint", "dfdx", "dfdy", "vertex", "fragment"})
+            , fLineEnding("\n") {}
 
     bool generateCode() override;
 

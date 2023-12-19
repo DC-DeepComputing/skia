@@ -146,12 +146,6 @@ void FindAndDeclareBuiltinVariables(Program& program) {
             switch (var->layout().fBuiltin) {
                 // Set the FlipRT program input if we find sk_FragCoord or sk_Clockwise.
                 case SK_FRAGCOORD_BUILTIN:
-                    if (context.fCaps->fCanUseFragCoord) {
-                        program.fInterface.fUseFlipRTUniform =
-                                !context.fConfig->fSettings.fForceNoRTFlip;
-                    }
-                    break;
-
                 case SK_CLOCKWISE_BUILTIN:
                     program.fInterface.fUseFlipRTUniform =
                             !context.fConfig->fSettings.fForceNoRTFlip;
@@ -160,22 +154,12 @@ void FindAndDeclareBuiltinVariables(Program& program) {
                 // Set the UseLastFragColor program input if we find sk_LastFragColor.
                 // Metal and Dawn define this as a program input, rather than a global variable.
                 case SK_LASTFRAGCOLOR_BUILTIN:
-                    if (context.fCaps->fFBFetchSupport) {
-                        program.fInterface.fUseLastFragColor = true;
-                    } else {
-                        context.fErrors->error({},
-                                               "'" + std::string(var->name()) + "' not supported");
-                    }
+                    program.fInterface.fUseLastFragColor = true;
                     break;
 
                 // Set secondary color output if we find sk_SecondaryFragColor.
                 case SK_SECONDARYFRAGCOLOR_BUILTIN:
-                    if (context.fCaps->fDualSourceBlendingSupport) {
-                        program.fInterface.fOutputSecondaryColor = true;
-                    } else {
-                        context.fErrors->error({},
-                                               "'" + std::string(var->name()) + "' not supported");
-                    }
+                    program.fInterface.fOutputSecondaryColor = true;
                     break;
             }
         }

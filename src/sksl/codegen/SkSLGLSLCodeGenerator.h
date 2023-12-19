@@ -62,8 +62,11 @@ struct ShaderCaps;
  */
 class GLSLCodeGenerator final : public CodeGenerator {
 public:
-    GLSLCodeGenerator(const Context* context, const Program* program, OutputStream* out)
-            : INHERITED(context, program, out) {}
+    GLSLCodeGenerator(const Context* context,
+                      const ShaderCaps* caps,
+                      const Program* program,
+                      OutputStream* out)
+            : INHERITED(context, caps, program, out) {}
 
     bool generateCode() override;
 
@@ -181,8 +184,6 @@ protected:
     void writeReturnStatement(const ReturnStatement& r);
 
     void writeProgramElement(const ProgramElement& e);
-
-    const ShaderCaps& caps() const { return *fContext.fCaps; }
 
     bool shouldRewriteVoidTypedFunctions(const FunctionDeclaration* func) const;
 

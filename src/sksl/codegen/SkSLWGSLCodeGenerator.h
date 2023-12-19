@@ -134,8 +134,11 @@ public:
         bool fPixelLocalExtension = false;
     };
 
-    WGSLCodeGenerator(const Context* context, const Program* program, OutputStream* out)
-            : INHERITED(context, program, out) {}
+    WGSLCodeGenerator(const Context* context,
+                      const ShaderCaps* caps,
+                      const Program* program,
+                      OutputStream* out)
+            : INHERITED(context, caps, program, out) {}
 
     bool generateCode() override;
 

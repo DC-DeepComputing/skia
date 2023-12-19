@@ -79,6 +79,7 @@ bool GrVkPipelineStateBuilder::createVkShaderModule(VkShaderStageFlagBits stage,
                                  stageInfo, settings, outSPIRV, outInterface)) {
         return false;
     }
+
     if (outInterface->fUseFlipRTUniform) {
         this->addRTFlipUniform(SKSL_RTFLIP_NAME);
     }
