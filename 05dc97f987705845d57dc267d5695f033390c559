@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "803d8dd4_f8c6f327",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T20:44:31Z",
+      "side": 1,
+      "message": "nit: This can be `const` now too",
+      "range": {
+        "startLine": 398,
+        "startChar": 4,
+        "endLine": 398,
+        "endChar": 41
+      },
+      "revId": "05dc97f987705845d57dc267d5695f033390c559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
