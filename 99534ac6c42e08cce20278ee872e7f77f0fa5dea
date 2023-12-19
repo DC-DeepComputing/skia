@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "122f1355_e2f6a462",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-19T16:15:55Z",
+      "side": 1,
+      "message": "Ah okay",
+      "parentUuid": "03aa48ab_04027ca9",
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c9fc9cf_5f485ce1",
@@ -167,6 +185,30 @@
       "side": 1,
       "message": "Shared upload tasks might be possible -- I could try to implement it in the RasterPathAtlas to start.",
       "parentUuid": "3bfb9796_bf2e410f",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f72f6169_db31df44",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-19T16:15:55Z",
+      "side": 1,
+      "message": "If you think that can be explored within the RasterPathAtlas, that seems like a good follow-up CL to start moving towards the semi-fuzzy longer term plan we\u0027ve discussed.",
+      "parentUuid": "7ba6fa8f_85aa0206",
       "range": {
         "startLine": 77,
         "startChar": 9,
