@@ -12,9 +12,11 @@
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkStringView.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLGLSL.h"
@@ -65,7 +67,6 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
-#include "src/sksl/spirv.h"
 
 #include <cstddef>
 #include <memory>
@@ -1843,6 +1844,44 @@ bool GLSLCodeGenerator::generateCode() {
     write_stringstream(fExtraFunctions, *rawOut);
     write_stringstream(body, *rawOut);
     return fContext.fErrors->errorCount() == 0;
+}
+
+bool ToGLSL(Compiler* compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::ToGLSL");
+    // We cannot emit GLSL without real shader caps.
+    SkASSERT(compiler->caps() != nullptr);
+    AutoSource as(compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler->contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler->caps());
+    GLSLCodeGenerator cg(compiler->contextPtr().get(), &program, &out);
+    return cg.generateCode();
+}
+
+bool ToGLSL(Compiler* compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToGLSL(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
+}
+
+bool ToGLSL(Compiler* compiler,
+            const std::string& sksl,
+            ProgramKind programKind,
+            const ProgramSettings& settings,
+            std::string* glsl,
+            Program::Interface* outInterface,
+            skgpu::ShaderErrorHandler* errorHandler) {
+    return ToBackend(compiler,
+                     &ToGLSL,
+                     "GLSL",
+                     sksl,
+                     programKind,
+                     settings,
+                     glsl,
+                     outInterface,
+                     errorHandler);
 }
 
 }  // namespace SkSL

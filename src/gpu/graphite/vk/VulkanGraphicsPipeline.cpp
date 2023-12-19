@@ -11,7 +11,6 @@
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -25,6 +24,7 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
 namespace skgpu::graphite {
@@ -577,13 +577,13 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkShaderModule fsModule = VK_NULL_HANDLE, vsModule = VK_NULL_HANDLE;
 
     if (hasFragmentSkSL) {
-        if (!SkSLToSPIRV(compiler,
-                         fsSkSL,
-                         SkSL::ProgramKind::kGraphiteFragment,
-                         settings,
-                         &fsSPIRV,
-                         &fsInterface,
-                         errorHandler)) {
+        if (!SkSL::ToSPIRV(compiler,
+                           fsSkSL,
+                           SkSL::ProgramKind::kGraphiteFragment,
+                           settings,
+                           &fsSPIRV,
+                           &fsInterface,
+                           errorHandler)) {
             return nullptr;
         }
 
@@ -598,13 +598,13 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                               useStorageBuffers,
                                               localCoordsNeeded);
     const std::string& vsSkSL = vsSkSLInfo.fSkSL;
-    if (!SkSLToSPIRV(compiler,
-                     vsSkSL,
-                     SkSL::ProgramKind::kGraphiteVertex,
-                     settings,
-                     &vsSPIRV,
-                     &vsInterface,
-                     errorHandler)) {
+    if (!SkSL::ToSPIRV(compiler,
+                       vsSkSL,
+                       SkSL::ProgramKind::kGraphiteVertex,
+                       settings,
+                       &vsSPIRV,
+                       &vsInterface,
+                       errorHandler)) {
         return nullptr;
     }
 

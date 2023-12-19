@@ -7,6 +7,11 @@
 
 #include "src/sksl/codegen/SkSLSPIRVtoHLSL.h"
 
+#include "src/core/SkTraceEvent.h"
+#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLCompilerUtil.h"
+#include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
+
 #if defined(SK_ENABLE_SPIRV_CROSS)
 
 #include <spirv_hlsl.hpp>
@@ -47,3 +52,47 @@ bool SPIRVtoHLSL(const std::string& spirv, std::string* hlsl) {
 namespace SkSL { bool SPIRVtoHLSL(const std::string&, std::string*) { return false; } }
 
 #endif
+
+namespace SkSL {
+bool ToHLSL(Compiler* compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::ToHLSL");
+    std::string hlsl;
+    if (!ToHLSL(compiler, program, &hlsl)) {
+        return false;
+    }
+    out.writeString(hlsl);
+    return true;
+}
+
+bool ToHLSL(Compiler* compiler, Program& program, std::string* out) {
+    std::string spirv;
+    if (!ToSPIRV(compiler, program, &spirv)) {
+        return false;
+    }
+
+    if (!SPIRVtoHLSL(spirv, out)) {
+        compiler->handleError("HLSL cross-compilation not enabled", {});
+        return false;
+    }
+    return true;
+}
+
+bool ToHLSL(Compiler* compiler,
+            const std::string& sksl,
+            ProgramKind programKind,
+            const ProgramSettings& settings,
+            std::string* hlsl,
+            Program::Interface* outInterface,
+            skgpu::ShaderErrorHandler* errorHandler) {
+    return ToBackend(compiler,
+                     &ToHLSL,
+                     "HLSL",
+                     sksl,
+                     programKind,
+                     settings,
+                     hlsl,
+                     outInterface,
+                     errorHandler);
+}
+
+}  // namespace SkSL

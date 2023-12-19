@@ -34,7 +34,6 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/SkRenderEngineAbortf.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAttachment.h"
@@ -66,6 +65,7 @@
 #include "src/gpu/ganesh/gl/builders/GrGLShaderStringBuilder.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <algorithm>
@@ -3341,8 +3341,13 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
     std::string glsl[kGrShaderTypeCount];
     SkSL::ProgramSettings settings;
     SkSL::Program::Interface interface;
-    SkSLToGLSL(this->shaderCompiler(), vertexSkSL, SkSL::ProgramKind::kVertex, settings,
-               &glsl[kVertex_GrShaderType], &interface, errorHandler);
+    SkSL::ToGLSL(this->shaderCompiler(),
+                 vertexSkSL,
+                 SkSL::ProgramKind::kVertex,
+                 settings,
+                 &glsl[kVertex_GrShaderType],
+                 &interface,
+                 errorHandler);
     GrGLuint vshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fCopyPrograms[progIdx].fProgram,
                                                   GR_GL_VERTEX_SHADER,
@@ -3357,8 +3362,13 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
         return false;
     }
 
-    SkSLToGLSL(this->shaderCompiler(), fragmentSkSL, SkSL::ProgramKind::kFragment, settings,
-               &glsl[kFragment_GrShaderType], &interface, errorHandler);
+    SkSL::ToGLSL(this->shaderCompiler(),
+                 fragmentSkSL,
+                 SkSL::ProgramKind::kFragment,
+                 settings,
+                 &glsl[kFragment_GrShaderType],
+                 &interface,
+                 errorHandler);
     GrGLuint fshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fCopyPrograms[progIdx].fProgram,
                                                   GR_GL_FRAGMENT_SHADER,
@@ -3526,8 +3536,13 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
     SkSL::ProgramSettings settings;
     SkSL::Program::Interface interface;
 
-    SkSLToGLSL(this->shaderCompiler(), vertexSkSL, SkSL::ProgramKind::kVertex, settings,
-               &glsl[kVertex_GrShaderType], &interface, errorHandler);
+    SkSL::ToGLSL(this->shaderCompiler(),
+                 vertexSkSL,
+                 SkSL::ProgramKind::kVertex,
+                 settings,
+                 &glsl[kVertex_GrShaderType],
+                 &interface,
+                 errorHandler);
     GrGLuint vshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fMipmapPrograms[progIdx].fProgram,
                                                   GR_GL_VERTEX_SHADER,
@@ -3541,8 +3556,13 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
         return false;
     }
 
-    SkSLToGLSL(this->shaderCompiler(), fragmentSkSL, SkSL::ProgramKind::kFragment, settings,
-               &glsl[kFragment_GrShaderType], &interface, errorHandler);
+    SkSL::ToGLSL(this->shaderCompiler(),
+                 fragmentSkSL,
+                 SkSL::ProgramKind::kFragment,
+                 settings,
+                 &glsl[kFragment_GrShaderType],
+                 &interface,
+                 errorHandler);
     GrGLuint fshader = GrGLCompileAndAttachShader(*fGLContext,
                                                   fMipmapPrograms[progIdx].fProgram,
                                                   GR_GL_FRAGMENT_SHADER,

@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -17,6 +16,7 @@
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
 
 namespace skgpu::graphite {
 namespace {
@@ -54,13 +54,13 @@ static ShaderInfo compile_shader_module(const DawnSharedContext* sharedContext,
 
         SkSL::Compiler compiler(caps->shaderCaps());
         std::string sksl = BuildComputeSkSL(caps, step);
-        if (SkSLToWGSL(&compiler,
-                       sksl,
-                       SkSL::ProgramKind::kCompute,
-                       settings,
-                       &wgsl,
-                       &interface,
-                       errorHandler)) {
+        if (SkSL::ToWGSL(&compiler,
+                         sksl,
+                         SkSL::ProgramKind::kCompute,
+                         settings,
+                         &wgsl,
+                         &interface,
+                         errorHandler)) {
             if (!DawnCompileWGSLShaderModule(sharedContext, wgsl, &info.fModule, errorHandler)) {
                 return {};
             }

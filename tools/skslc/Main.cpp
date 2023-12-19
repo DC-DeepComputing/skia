@@ -16,14 +16,20 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
+#include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
+#include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
+#include "src/sksl/codegen/SkSLSPIRVtoHLSL.h"
+#include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
 #include "src/utils/SkShaderUtils.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 #include "tools/skslc/ProcessWorklist.h"
 
 #include "spirv-tools/libspirv.hpp"
@@ -74,7 +80,7 @@ static bool consume_suffix(std::string* str, const char suffix[]) {
     return true;
 }
 
-class ShaderCapsTestFactory : public SkSL::ShaderCapsFactory {
+class ShaderCapsTestFactory : public SkSL::tools::ShaderCapsFactory {
 public:
     static const SkSL::ShaderCaps* AddAndTrueToLoopCondition() {
         static const SkSL::ShaderCaps* sCaps = []{
@@ -554,7 +560,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
     }
 
     SkSL::ProgramSettings settings;
-    const SkSL::ShaderCaps* caps = SkSL::ShaderCapsFactory::Standalone();
+    const SkSL::ShaderCaps* caps = SkSL::tools::ShaderCapsFactory::Standalone();
     std::unique_ptr<SkSL::DebugTracePriv> debugTrace;
     if (*honorSettings) {
         if (!detect_shader_settings(text, &settings, &caps, &debugTrace)) {
@@ -614,7 +620,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
     if (skstd::ends_with(outputPath, ".spirv")) {
         return compileProgram(
                 [](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
-                    return compiler.toSPIRV(program, out);
+                    return SkSL::ToSPIRV(&compiler, program, out);
                 });
     } else if (skstd::ends_with(outputPath, ".asm.frag") ||
                skstd::ends_with(outputPath, ".asm.vert") ||
@@ -623,7 +629,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
                 [](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
                     // Compile program to SPIR-V assembly in a string-stream.
                     SkSL::StringStream assembly;
-                    if (!compiler.toSPIRV(program, assembly)) {
+                    if (!SkSL::ToSPIRV(&compiler, program, assembly)) {
                         return false;
                     }
                     // Convert the string-stream to a SPIR-V disassembly.
@@ -645,22 +651,22 @@ static ResultCode process_command(SkSpan<std::string> args) {
     } else if (skstd::ends_with(outputPath, ".glsl")) {
         return compileProgram(
                 [](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
-                    return compiler.toGLSL(program, out);
+                    return SkSL::ToGLSL(&compiler, program, out);
                 });
     } else if (skstd::ends_with(outputPath, ".metal")) {
         return compileProgram(
                 [](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
-                    return compiler.toMetal(program, out);
+                    return SkSL::ToMetal(&compiler, program, out);
                 });
     } else if (skstd::ends_with(outputPath, ".hlsl")) {
         return compileProgram(
                 [](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
-                    return compiler.toHLSL(program, out);
+                    return SkSL::ToHLSL(&compiler, program, out);
                 });
     } else if (skstd::ends_with(outputPath, ".wgsl")) {
         return compileProgram(
                 [](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
-                    return compiler.toWGSL(program, out);
+                    return SkSL::ToWGSL(&ompiler, program, out);
                 });
     } else if (skstd::ends_with(outputPath, ".skrp")) {
         settings.fMaxVersionAllowed = SkSL::Version::k300;
