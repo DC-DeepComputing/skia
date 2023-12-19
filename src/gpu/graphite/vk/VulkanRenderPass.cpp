@@ -249,6 +249,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
         colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
         if (hasColorResolveAttachment) {
+            SkDebugf("Making render pass where we load msaa from resolve\n");
             loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
             VulkanTextureInfo resolveAttachTexInfo;
@@ -340,6 +341,8 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
         dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         dependency.dstAccessMask =
                 VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    } else {
+        SkDebugf("Making render pass where we DO NOT load msaa from resolve\n");
     }
 
     VkSubpassDescription& mainSubpassDesc = subpassDescs.push_back();
@@ -373,12 +376,13 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     VULKAN_CALL(context->interface(), GetRenderAreaGranularity(context->device(),
                                                                renderPass,
                                                                &granularity));
-    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass, granularity));
+    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass, granularity, renderPassInfo.subpassCount));
 }
 
 VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                                    VkRenderPass renderPass,
-                                   VkExtent2D granularity)
+                                   VkExtent2D granularity,
+                                   int subpassCount)
         : Resource(context,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
@@ -386,7 +390,8 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                    /*label=*/"VulkanRenderPass")
         , fSharedContext(context)
         , fRenderPass (renderPass)
-        , fGranularity (granularity) {
+        , fGranularity (granularity)
+        , fSubpassCount (subpassCount) {
 }
 
 void VulkanRenderPass::freeGpuData() {

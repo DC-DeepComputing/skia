@@ -49,10 +49,11 @@ public:
 
     const char* getResourceType() const override { return "Vulkan RenderPass"; }
 
+    int fSubpassCount = 0; // TODO remove testing only
 private:
     void freeGpuData() override;
 
-    VulkanRenderPass(const VulkanSharedContext*, VkRenderPass, VkExtent2D granularity);
+    VulkanRenderPass(const VulkanSharedContext*, VkRenderPass, VkExtent2D granularity, int subpassCount);
 
     const VulkanSharedContext* fSharedContext;
     VkRenderPass fRenderPass;
