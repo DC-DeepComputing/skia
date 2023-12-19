@@ -16,6 +16,24 @@
       "message": "LGTM!\n\nAt some point, we should consider storing `OutlineGlyphCollection` (doesn\u0027t depend on size/variations, so maybe with `FontRef`?)-- that should give a reasonable perf boost.",
       "revId": "61aab805c13bd4350de49c8c80eceb87e830bc28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "565d44f5_835d5126",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-12-19T11:08:46Z",
+      "side": 1,
+      "message": "Todo added and issue filed: https://issues.skia.org/issues/301556930",
+      "parentUuid": "fc3a340f_83f5aade",
+      "revId": "61aab805c13bd4350de49c8c80eceb87e830bc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
