@@ -9,13 +9,16 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/ShaderErrorHandler.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkStringView.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLErrorReporter.h"
@@ -30,6 +33,7 @@
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
+#include "src/sksl/codegen/SkSLBackendUtil.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLConstructor.h"
@@ -80,6 +84,12 @@
 #include <optional>
 #include <string>
 #include <utility>
+
+#ifdef SK_ENABLE_WGSL_VALIDATION
+#include "src/tint/lang/wgsl/extension.h"
+#include "src/tint/lang/wgsl/reader/options.h"
+#include "tint/tint.h"
+#endif
 
 using namespace skia_private;
 
@@ -4120,6 +4130,99 @@ bool WGSLCodeGenerator::writeFunctionDependencyParams(const FunctionDeclaration&
         this->write("Out>");
     }
     return true;
+}
+
+#if defined(SK_ENABLE_WGSL_VALIDATION)
+static bool validate_wgsl(ErrorReporter& reporter, const std::string& wgsl, std::string* warnings) {
+    // Enable the WGSL optional features that Skia might rely on.
+    tint::wgsl::reader::Options options;
+    for (auto extension : {tint::wgsl::Extension::kChromiumExperimentalPixelLocal,
+                           tint::wgsl::Extension::kChromiumInternalDualSourceBlending}) {
+        options.allowed_features.extensions.insert(extension);
+    }
+
+    // Verify that the WGSL we produced is valid.
+    tint::Source::File srcFile("", wgsl);
+    tint::Program program(tint::wgsl::reader::Parse(&srcFile, options));
+
+    if (program.Diagnostics().contains_errors()) {
+        // The program isn't valid WGSL. In debug, report the error via SkDEBUGFAIL. We also append
+        // the generated program for ease of debugging.
+        tint::diag::Formatter diagFormatter;
+        std::string diagOutput = diagFormatter.format(program.Diagnostics());
+        diagOutput += "\n";
+        diagOutput += wgsl;
+#if defined(SKSL_STANDALONE)
+        reporter.error(Position(), diagOutput);
+#else
+        SkDEBUGFAILF("%s", diagOutput.c_str());
+#endif
+        return false;
+    }
+
+    if (!program.Diagnostics().empty()) {
+        // The program contains warnings. Report them as-is.
+        tint::diag::Formatter diagFormatter;
+        *warnings = diagFormatter.format(program.Diagnostics());
+    }
+    return true;
+}
+#endif  // defined(SK_ENABLE_WGSL_VALIDATION)
+
+bool ToWGSL(Compiler* compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::ToWGSL");
+    // We cannot emit WGSL without real shader caps.
+    SkASSERT(compiler->caps() != nullptr);
+    AutoSource as(compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler->contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler->caps());
+#ifdef SK_ENABLE_WGSL_VALIDATION
+    StringStream wgsl;
+    WGSLCodeGenerator cg(ctxPtr.get(), &program, &wgsl);
+    bool result = cg.generateCode();
+    if (result) {
+        std::string wgslString = wgsl.str();
+        std::string warnings;
+        result = validate_wgsl(compiler->errorReporter(), wgslString, &warnings);
+        if (!warnings.empty()) {
+            out.writeText("/*\n\n");
+            out.writeString(warnings);
+            out.writeText("*/\n\n");
+        }
+        out.writeString(wgslString);
+    }
+#else
+    WGSLCodeGenerator cg(ctxPtr.get(), &program, &out);
+    bool result = cg.generateCode();
+#endif
+    return result;
+}
+
+bool ToWGSL(Compiler* compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToWGSL(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
+}
+
+bool ToWGSL(Compiler* compiler,
+            const std::string& sksl,
+            ProgramKind programKind,
+            const ProgramSettings& settings,
+            std::string* wgsl,
+            Program::Interface* outInterface,
+            skgpu::ShaderErrorHandler* errorHandler) {
+    return ToBackend(compiler,
+                     &ToWGSL,
+                     "WGSL",
+                     sksl,
+                     programKind,
+                     settings,
+                     wgsl,
+                     outInterface,
+                     errorHandler);
 }
 
 }  // namespace SkSL

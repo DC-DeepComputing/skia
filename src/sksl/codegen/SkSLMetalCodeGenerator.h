@@ -14,6 +14,7 @@
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLModifierFlags.h"
+#include "src/sksl/ir/SkSLProgram.h"
 
 #include <cstdint>
 #include <functional>
@@ -22,11 +23,16 @@
 #include <string>
 #include <string_view>
 
+namespace skgpu {
+class ShaderErrorHandler;
+}
+
 namespace SkSL {
 
 class AnyConstructor;
 class BinaryExpression;
 class Block;
+class Compiler;
 class ConstructorArrayCast;
 class ConstructorCompound;
 class ConstructorMatrixResize;
@@ -66,6 +72,8 @@ enum class OperatorPrecedence : uint8_t;
 enum IntrinsicKind : int8_t;
 struct Layout;
 struct Program;
+enum class ProgramKind : int8_t;
+struct ProgramSettings;
 
 /**
  * Converts a Program into Metal code.
@@ -341,6 +349,16 @@ protected:
 
     using INHERITED = CodeGenerator;
 };
+
+bool ToMetal(Compiler*, Program&, OutputStream& out);
+bool ToMetal(Compiler*, Program&, std::string* out);
+bool ToMetal(Compiler*,
+             const std::string& sksl,
+             ProgramKind programKind,
+             const ProgramSettings& settings,
+             std::string* msl,
+             Program::Interface*,
+             skgpu::ShaderErrorHandler* errorHandler);
 
 }  // namespace SkSL
 

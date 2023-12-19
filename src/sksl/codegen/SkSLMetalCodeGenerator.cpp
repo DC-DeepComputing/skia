@@ -13,9 +13,11 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkScopeExit.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLIntrinsicList.h"
@@ -27,6 +29,7 @@
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
+#include "src/sksl/codegen/SkSLBackendUtil.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLConstructor.h"
@@ -67,7 +70,6 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
-#include "src/sksl/spirv.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -1554,7 +1556,7 @@ void MetalCodeGenerator::writeIndexExpression(const IndexExpression& expr) {
         const Swizzle& swizzle = expr.base()->as<Swizzle>();
         this->writeExpression(*swizzle.base(), Precedence::kPostfix);
         this->write("[uint" + std::to_string(swizzle.components().size()) + "(");
-        auto separator = SkSL::String::Separator();
+        auto separator = String::Separator();
         for (int8_t component : swizzle.components()) {
             this->write(separator());
             this->write(std::to_string(component));
@@ -2133,7 +2135,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                 const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
                 const VarDeclaration& decl = decls.varDeclaration();
                 const Variable* var = decl.var();
-                const SkSL::Type::TypeKind varKind = var->type().typeKind();
+                const Type::TypeKind varKind = var->type().typeKind();
 
                 if (varKind == Type::TypeKind::kSampler || varKind == Type::TypeKind::kTexture) {
                     if (var->type().dimensions() != SpvDim2D) {
@@ -2693,7 +2695,7 @@ void MetalCodeGenerator::writeSampler2DPolyfill() {
             }
             fWrotePolyfill = true;
 
-            std::string polyfill = SkSL::String::printf(R"(
+            std::string polyfill = String::printf(R"(
 struct sampler2D {
     texture2d<half> tex;
     sampler smp;
@@ -2709,8 +2711,8 @@ half4 sampleGrad(sampler2D i, float2 p, float2 dPdx, float2 dPdy) {
 }
 
 )",
-                                                        fTextureBias,
-                                                        fTextureBias);
+                                                  fTextureBias,
+                                                  fTextureBias);
             fCodeGen->write(polyfill.c_str());
         }
 
@@ -3278,6 +3280,45 @@ bool MetalCodeGenerator::generateCode() {
     write_stringstream(fExtraFunctions, *fOut);
     write_stringstream(body, *fOut);
     return fContext.fErrors->errorCount() == 0;
+}
+
+bool ToMetal(Compiler* compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "ToMetal");
+    // We cannot emit MSL without real shader caps.
+    SkASSERT(compiler->caps() != nullptr);
+    AutoSource as(compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler->contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler->caps());
+    MetalCodeGenerator cg(ctxPtr.get(), &program, &out);
+    bool result = cg.generateCode();
+    return result;
+}
+
+bool ToMetal(Compiler* compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToMetal(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
+}
+
+bool ToMetal(Compiler* compiler,
+             const std::string& sksl,
+             ProgramKind programKind,
+             const ProgramSettings& settings,
+             std::string* msl,
+             Program::Interface* outInterface,
+             skgpu::ShaderErrorHandler* errorHandler) {
+    return ToBackend(compiler,
+                     &ToMetal,
+                     "MSL",
+                     sksl,
+                     programKind,
+                     settings,
+                     msl,
+                     outInterface,
+                     errorHandler);
 }
 
 }  // namespace SkSL
