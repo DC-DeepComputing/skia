@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27f0025e_6295e59f",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81125a90_714ae946",
+      "range": {
+        "startLine": 213,
+        "startChar": 77,
+        "endLine": 213,
+        "endChar": 91
+      },
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "905a3e4a_a9881c3c",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8036d0eb_2952ed09",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "905a3e4a_a9881c3c",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f193067_0d3588d3",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-12-19T19:19:31Z",
       "side": 1,
       "message": "```suggestion\n                // Tag for the beginning and ending sets.\n```",
+      "range": {
+        "startLine": 271,
+        "startChar": 19,
+        "endLine": 271,
+        "endChar": 23
+      },
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e15a339_cb46cd87",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f193067_0d3588d3",
       "range": {
         "startLine": 271,
         "startChar": 19,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d40e7c49_b017e157",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "It doesn\u0027t matter as long as there is an order. This is how the paper had it, but changing it should be fine.",
+      "parentUuid": "d027a86a_257613a9",
+      "range": {
+        "startLine": 273,
+        "startChar": 65,
+        "endLine": 273,
+        "endChar": 77
+      },
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4704b25b_4a8b0880",
@@ -100,6 +190,24 @@
       "writtenOn": "2023-12-19T19:19:31Z",
       "side": 1,
       "message": "`segmentStorage.reserve(eventOrdering.size())` ?\n\nToo bad we can\u0027t do the same for `events` without a scan to know how many unique y values there are.",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6f9ab16_d03959ab",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4704b25b_4a8b0880",
       "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -121,6 +229,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ac1be9a_29a7c860",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84930231_c402e4ef",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31cd8241_d0a9355c",
@@ -134,6 +260,24 @@
       "writtenOn": "2023-12-19T19:19:31Z",
       "side": 1,
       "message": "I\u0027m guessing this interface (mutating `nextEvent`) is sufficient for what we\u0027ll be doing? I was wondering if it made more sense to have an iterator interface, so the index can be stored in the iterator, and we can iterate over a given queue more than once, etc?",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "475fe74b_a4104303",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:39:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31cd8241_d0a9355c",
       "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
