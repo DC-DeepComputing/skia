@@ -22,6 +22,30 @@
       },
       "revId": "ffa3ece5b1edf54bf9ea44d9ff479ea2a70817b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61b3fc78_bfdfd737",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1349,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2023-12-19T01:23:55Z",
+      "side": 1,
+      "message": "This is chosen to match chrome,\nhttps://source.chromium.org/chromium/chromium/src/+/main:components/viz/common/resources/shared_image_format_utils.cc;l\u003d51?q\u003dToClosestSkColorType\u0026ss\u003dchromium%2Fchromium%2Fsrc, otherwise `onAreColorTypeAndFormatCompatible` will fail.\n\nAdding chrome gpu folks who might know the reasons behind it.",
+      "parentUuid": "09ae1127_21c1c788",
+      "range": {
+        "startLine": 1349,
+        "startChar": 56,
+        "endLine": 1349,
+        "endChar": 69
+      },
+      "revId": "ffa3ece5b1edf54bf9ea44d9ff479ea2a70817b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
