@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5825b914_bcf82ee2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-19T15:13:29Z",
+      "side": 1,
+      "message": "The code LGTM, but definitely still pondering the corruption tracking issues.",
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c9fc9cf_5f485ce1",
@@ -48,6 +65,30 @@
       "writtenOn": "2023-12-18T19:18:33Z",
       "side": 1,
       "message": "I added this method so I could flush from Device, for the case where there\u0027s no\nparent. However, there are still corruption issues so clearly something else is\ngoing on.",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bfb9796_bf2e410f",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-19T15:13:29Z",
+      "side": 1,
+      "message": "I think if there are multiple root Devices in a Recorder, one of them could be first to add a glyph and then another could reference it from the atlas. Since they aren\u0027t connected by parenting, if the latter gets flushed first for some reason, we\u0027d not have the depended uploads.\n\nIt\u0027s a bit of a hammer, but should we keep doing flushTrackedDevices() if there\u0027s no parent Device to flush the uploads? Hmm, that actually wouldn\u0027t work because you could still have the dependency on an unrelated root. Maybe we can also track on the AtlasManager a list of devices that have to be flushed with pending uploads that get included *if* the actual Device being flushed used those glyphs too?\n\nI\u0027m more convinced the solution will be that any Device/DC that references an atlas entry will share a reference to the upload instance/task so whichever gets first can handle it.",
+      "parentUuid": "4c9fc9cf_5f485ce1",
       "range": {
         "startLine": 77,
         "startChar": 9,
