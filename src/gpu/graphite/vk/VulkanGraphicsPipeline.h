@@ -36,8 +36,8 @@ public:
     inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
     inline static constexpr unsigned int kNumUniformBuffers = 3;
 
-    // For now, rigidly assign all uniform buffer descriptors to be in set 0 and all
-    // texture/samplers to be in set 1.
+    // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
+    // 0 and all texture/samplers to be in binding 1.
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;

@@ -46,6 +46,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
     auto globalCache = fSharedContext->globalCache();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
+    SkDebugf("using existing pipeline\n");
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
     if (!pipeline) {
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
