@@ -133,6 +133,30 @@
       },
       "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ba6fa8f_85aa0206",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-19T16:12:12Z",
+      "side": 1,
+      "message": "Shared upload tasks might be possible -- I could try to implement it in the RasterPathAtlas to start.",
+      "parentUuid": "3bfb9796_bf2e410f",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
