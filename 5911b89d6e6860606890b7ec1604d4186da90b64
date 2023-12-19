@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81125a90_714ae946",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "```suggestion\n// Events are horizontal lines at a given y where segments are added or they contain one or\n```",
+      "range": {
+        "startLine": 213,
+        "startChar": 77,
+        "endLine": 213,
+        "endChar": 91
+      },
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "905a3e4a_a9881c3c",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "Add a comment explaining what the three ints are, so the importance of the ordering (and the fact that lexicographic ordering does what we want) is clear?",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f193067_0d3588d3",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "```suggestion\n                // Tag for the beginning and ending sets.\n```",
+      "range": {
+        "startLine": 271,
+        "startChar": 19,
+        "endLine": 271,
+        "endChar": 23
+      },
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d027a86a_257613a9",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "The ends are ordered by the starting (upper) x? Just double-checking.",
+      "range": {
+        "startLine": 273,
+        "startChar": 65,
+        "endLine": 273,
+        "endChar": 77
+      },
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4704b25b_4a8b0880",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "`segmentStorage.reserve(eventOrdering.size())` ?\n\nToo bad we can\u0027t do the same for `events` without a scan to know how many unique y values there are.",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84930231_c402e4ef",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "nit: Move this down to private?",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31cd8241_d0a9355c",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T19:19:31Z",
+      "side": 1,
+      "message": "I\u0027m guessing this interface (mutating `nextEvent`) is sufficient for what we\u0027ll be doing? I was wondering if it made more sense to have an iterator interface, so the index can be stored in the iterator, and we can iterate over a given queue more than once, etc?",
+      "revId": "5911b89d6e6860606890b7ec1604d4186da90b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
