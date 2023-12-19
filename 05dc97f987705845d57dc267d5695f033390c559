@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e26b5844_720f8495",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:52:39Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "05dc97f987705845d57dc267d5695f033390c559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "803d8dd4_f8c6f327",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-12-19T20:44:31Z",
       "side": 1,
       "message": "nit: This can be `const` now too",
+      "range": {
+        "startLine": 398,
+        "startChar": 4,
+        "endLine": 398,
+        "endChar": 41
+      },
+      "revId": "05dc97f987705845d57dc267d5695f033390c559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "835dca45_a60cadcf",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-12-19T20:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "803d8dd4_f8c6f327",
       "range": {
         "startLine": 398,
         "startChar": 4,
