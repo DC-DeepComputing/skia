@@ -63,6 +63,8 @@ bool vkFormatIsSupported(VkFormat);
 
 VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(SkEnumBitMask<PipelineStageFlags>);
 
+VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(SkEnumBitMask<PipelineStageFlags>);
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanGraphiteUtilsPriv_DEFINED
