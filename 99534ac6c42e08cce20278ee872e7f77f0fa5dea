@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03aa48ab_04027ca9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-19T16:13:53Z",
+      "side": 1,
+      "message": "The additional corruption only happens if I try to flush where there\u0027s no parent. See the diff between patchsets 3 and 4.",
+      "parentUuid": "705ef190_369b0b21",
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c9fc9cf_5f485ce1",
