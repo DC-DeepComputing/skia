@@ -74,17 +74,16 @@ using RefKind = VariableReference::RefKind;
 
 class AutoSource {
 public:
-    AutoSource(Compiler* compiler, std::string_view source)
-            : fCompiler(compiler) {
-        SkASSERT(!fCompiler->errorReporter().source().data());
-        fCompiler->errorReporter().setSource(source);
+    AutoSource(ErrorReporter* reporter, std::string_view source) : fReporter(reporter) {
+        SkASSERT(reporter->source().empty());
+        fReporter->setSource(source);
     }
 
     ~AutoSource() {
-        fCompiler->errorReporter().setSource(std::string_view());
+        fReporter->setSource(std::string_view());
     }
 
-    Compiler* fCompiler;
+    ErrorReporter* fReporter;
 };
 
 class AutoProgramConfig {
@@ -472,7 +471,8 @@ static bool validate_spirv(ErrorReporter& reporter, std::string_view program) {
 
 bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toSPIRV");
-    AutoSource as(this, *program.fSource);
+    const Context* context = program.fContext.get();
+    AutoSource as(context->fErrors, *program.fSource);
     SkASSERT(fCaps != nullptr);
     ProgramSettings settings;
     settings.fUseMemoryPool = false;
@@ -481,7 +481,7 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     fContext->fSymbolTable = program.fSymbols;
 #ifdef SK_ENABLE_SPIRV_VALIDATION
     StringStream buffer;
-    SPIRVCodeGenerator cg(fContext.get(), fCaps, &program, &buffer);
+    SPIRVCodeGenerator cg(context, fCaps, &program, &buffer);
     bool result = cg.generateCode();
 
     if (result && program.fConfig->fSettings.fValidateSPIRV) {
@@ -490,7 +490,7 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
         out.write(binary.data(), binary.size());
     }
 #else
-    SPIRVCodeGenerator cg(fContext.get(), fCaps, &program, &out);
+    SPIRVCodeGenerator cg(context, fCaps, &program, &out);
     bool result = cg.generateCode();
 #endif
     ThreadContext::End();
@@ -508,9 +508,10 @@ bool Compiler::toSPIRV(Program& program, std::string* out) {
 
 bool Compiler::toGLSL(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toGLSL");
-    AutoSource as(this, *program.fSource);
+    const Context* context = program.fContext.get();
+    AutoSource as(context->fErrors, *program.fSource);
     SkASSERT(fCaps != nullptr);
-    GLSLCodeGenerator cg(fContext.get(), fCaps, &program, &out);
+    GLSLCodeGenerator cg(context, fCaps, &program, &out);
     bool result = cg.generateCode();
     return result;
 }
@@ -550,9 +551,10 @@ bool Compiler::toHLSL(Program& program, std::string* out) {
 
 bool Compiler::toMetal(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toMetal");
-    AutoSource as(this, *program.fSource);
+    const Context* context = program.fContext.get();
+    AutoSource as(context->fErrors, *program.fSource);
     SkASSERT(fCaps != nullptr);
-    MetalCodeGenerator cg(fContext.get(), fCaps, &program, &out);
+    MetalCodeGenerator cg(context, fCaps, &program, &out);
     bool result = cg.generateCode();
     return result;
 }
@@ -605,11 +607,12 @@ static bool validate_wgsl(ErrorReporter& reporter, const std::string& wgsl, std:
 
 bool Compiler::toWGSL(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toWGSL");
-    AutoSource as(this, *program.fSource);
+    const Context* context = program.fContext.get();
+    AutoSource as(context->fErrors, *program.fSource);
     SkASSERT(fCaps != nullptr);
 #ifdef SK_ENABLE_WGSL_VALIDATION
     StringStream wgsl;
-    WGSLCodeGenerator cg(fContext.get(), fCaps, &program, &wgsl);
+    WGSLCodeGenerator cg(context, fCaps, &program, &wgsl);
     bool result = cg.generateCode();
     if (result) {
         std::string wgslString = wgsl.str();
@@ -623,7 +626,7 @@ bool Compiler::toWGSL(Program& program, OutputStream& out) {
         out.writeString(wgslString);
     }
 #else
-    WGSLCodeGenerator cg(fContext.get(), fCaps, &program, &out);
+    WGSLCodeGenerator cg(context, fCaps, &program, &out);
     bool result = cg.generateCode();
 #endif
     return result;
