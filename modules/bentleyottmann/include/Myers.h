@@ -40,8 +40,8 @@ public:
     constexpr Segment(Point p0, Point p1)
         : Segment{std::minmax(p0, p1)} {}
 
-    Point upper() const;
-    Point lower() const;
+    const Point& upper() const;
+    const Point& lower() const;
     std::tuple<int32_t, int32_t, int32_t, int32_t> bounds() const;
     bool isHorizontal() const;
     bool isVertical() const;
