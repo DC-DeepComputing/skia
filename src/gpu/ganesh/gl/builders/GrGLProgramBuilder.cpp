@@ -12,7 +12,6 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAutoLocaleSetter.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -25,13 +24,14 @@
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLProgram.h"
 #include "src/gpu/ganesh/gl/builders/GrGLProgramBuilder.h"
+#include "src/gpu/ganesh/gl/builders/GrGLShaderStringBuilder.h"
+#include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 #include "src/utils/SkShaderUtils.h"
 
 #include <memory>
-#include "src/gpu/ganesh/gl/builders/GrGLShaderStringBuilder.h"
-#include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 
 #define GL_CALL(X) GR_GL_CALL(this->gpu()->glInterface(), X)
 #define GL_CALL_RET(R, X) GR_GL_CALL_RET(this->gpu()->glInterface(), R, X)
@@ -330,13 +330,13 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
             if (fFS.fForceHighPrecision) {
                 settings.fForceHighPrecision = true;
             }
-            if (!SkSLToGLSL(this->gpu()->shaderCompiler(),
-                            *sksl[kFragment_GrShaderType],
-                            SkSL::ProgramKind::kFragment,
-                            settings,
-                            &glsl[kFragment_GrShaderType],
-                            &interface,
-                            errorHandler)) {
+            if (!SkSL::ToGLSL(this->gpu()->shaderCompiler(),
+                              *sksl[kFragment_GrShaderType],
+                              SkSL::ProgramKind::kFragment,
+                              settings,
+                              &glsl[kFragment_GrShaderType],
+                              &interface,
+                              errorHandler)) {
                 cleanup_program(fGpu, programID, shadersToDelete);
                 return nullptr;
             }
@@ -359,13 +359,13 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
         if (glsl[kVertex_GrShaderType].empty()) {
             // Don't have cached GLSL, need to compile SkSL->GLSL
             SkSL::Program::Interface unusedInterface;
-            if (!SkSLToGLSL(this->gpu()->shaderCompiler(),
-                            *sksl[kVertex_GrShaderType],
-                            SkSL::ProgramKind::kVertex,
-                            settings,
-                            &glsl[kVertex_GrShaderType],
-                            &unusedInterface,
-                            errorHandler)) {
+            if (!SkSL::ToGLSL(this->gpu()->shaderCompiler(),
+                              *sksl[kVertex_GrShaderType],
+                              SkSL::ProgramKind::kVertex,
+                              settings,
+                              &glsl[kVertex_GrShaderType],
+                              &unusedInterface,
+                              errorHandler)) {
                 cleanup_program(fGpu, programID, shadersToDelete);
                 return nullptr;
             }
@@ -486,8 +486,13 @@ bool GrGLProgramBuilder::PrecompileProgram(GrDirectContext* dContext,
     auto compileShader = [&](SkSL::ProgramKind kind, const std::string& sksl, GrGLenum type) {
         std::string glsl;
         SkSL::Program::Interface unusedInterface;
-        if (!SkSLToGLSL(glGpu->shaderCompiler(), sksl, kind, settings, &glsl, &unusedInterface,
-                        errorHandler)) {
+        if (!SkSL::ToGLSL(glGpu->shaderCompiler(),
+                          sksl,
+                          kind,
+                          settings,
+                          &glsl,
+                          &unusedInterface,
+                          errorHandler)) {
             return false;
         }
 

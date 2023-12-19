@@ -8,7 +8,6 @@
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -23,6 +22,7 @@
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <vector>
@@ -283,13 +283,13 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
 
     bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
-        if (!SkSLToWGSL(compiler,
-                        fsSkSL,
-                        SkSL::ProgramKind::kGraphiteFragment,
-                        settings,
-                        &fsCode,
-                        &fsInterface,
-                        errorHandler)) {
+        if (!SkSL::ToWGSL(compiler,
+                          fsSkSL,
+                          SkSL::ProgramKind::kGraphiteFragment,
+                          settings,
+                          &fsCode,
+                          &fsInterface,
+                          errorHandler)) {
             return {};
         }
         if (!DawnCompileWGSLShaderModule(sharedContext, fsCode, &fsModule, errorHandler)) {
@@ -302,13 +302,13 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                               useStorageBuffers,
                                               localCoordsNeeded);
     const std::string& vsSkSL = vsSkSLInfo.fSkSL;
-    if (!SkSLToWGSL(compiler,
-                    vsSkSL,
-                    SkSL::ProgramKind::kGraphiteVertex,
-                    settings,
-                    &vsCode,
-                    &vsInterface,
-                    errorHandler)) {
+    if (!SkSL::ToWGSL(compiler,
+                      vsSkSL,
+                      SkSL::ProgramKind::kGraphiteVertex,
+                      settings,
+                      &vsCode,
+                      &vsInterface,
+                      errorHandler)) {
         return {};
     }
     if (!DawnCompileWGSLShaderModule(sharedContext, vsCode, &vsModule, errorHandler)) {

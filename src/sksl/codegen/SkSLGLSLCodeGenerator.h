@@ -17,6 +17,10 @@
 #include <string>
 #include <string_view>
 
+namespace skgpu {
+class ShaderErrorHandler;
+}
+
 namespace SkSL {
 
 class AnyConstructor;
@@ -24,6 +28,7 @@ class BinaryExpression;
 class Block;
 class ConstructorCompound;
 class ConstructorDiagonalMatrix;
+class Compiler;
 class DoStatement;
 class Expression;
 class ExpressionStatement;
@@ -53,8 +58,10 @@ class VarDeclaration;
 class Variable;
 class VariableReference;
 enum class OperatorPrecedence : uint8_t;
+enum class ProgramKind : int8_t;
 struct Layout;
 struct Program;
+struct ProgramSettings;
 struct ShaderCaps;
 
 /**
@@ -211,6 +218,16 @@ protected:
 
     using INHERITED = CodeGenerator;
 };
+
+bool ToGLSL(Compiler*, Program&, OutputStream&);
+bool ToGLSL(Compiler*, Program&, std::string* out);
+bool ToGLSL(Compiler*,
+            const std::string& sksl,
+            ProgramKind programKind,
+            const ProgramSettings& settings,
+            std::string* glsl,
+            Program::Interface*,
+            skgpu::ShaderErrorHandler* errorHandler);
 
 }  // namespace SkSL
 

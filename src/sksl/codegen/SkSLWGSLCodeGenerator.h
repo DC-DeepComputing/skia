@@ -23,11 +23,16 @@
 #include <string>
 #include <string_view>
 
+namespace skgpu {
+class ShaderErrorHandler;
+}
+
 namespace SkSL {
 
 class AnyConstructor;
 class BinaryExpression;
 class Block;
+class Compiler;
 class Context;
 class ConstructorCompound;
 class ConstructorDiagonalMatrix;
@@ -64,6 +69,8 @@ class Type;
 class VarDeclaration;
 class Variable;
 class VariableReference;
+enum class ProgramKind : int8_t;
+struct ProgramSettings;
 
 // Represents a function's dependencies that are not accessible in global scope. For instance,
 // pipeline stage input and output parameters must be passed in as an argument.
@@ -377,6 +384,16 @@ private:
 
     int fScratchCount = 0;
 };
+
+bool ToWGSL(Compiler*, Program&, OutputStream& out);
+bool ToWGSL(Compiler*, Program&, std::string* out);
+bool ToWGSL(Compiler*,
+            const std::string& sksl,
+            ProgramKind programKind,
+            const ProgramSettings& settings,
+            std::string* wgsl,
+            Program::Interface*,
+            skgpu::ShaderErrorHandler* errorHandler);
 
 }  // namespace SkSL
 

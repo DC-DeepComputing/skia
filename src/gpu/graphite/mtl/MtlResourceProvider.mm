@@ -13,7 +13,6 @@
 
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/Blend.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -33,6 +32,7 @@
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
 
 #import <Metal/Metal.h>
 
@@ -131,13 +131,13 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
     std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const BlendInfo& blendInfo = fsSkSLInfo.fBlendInfo;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
-    if (!SkSLToMSL(&skslCompiler,
-                   fsSkSL,
-                   SkSL::ProgramKind::kGraphiteFragment,
-                   settings,
-                   &fsMSL,
-                   &fsInterface,
-                   errorHandler)) {
+    if (!SkSL::ToMetal(&skslCompiler,
+                       fsSkSL,
+                       SkSL::ProgramKind::kGraphiteFragment,
+                       settings,
+                       &fsMSL,
+                       &fsInterface,
+                       errorHandler)) {
         return nullptr;
     }
 
@@ -146,13 +146,13 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
                                               useStorageBuffers,
                                               localCoordsNeeded);
     const std::string& vsSkSL = vsSkSLInfo.fSkSL;
-    if (!SkSLToMSL(&skslCompiler,
-                   vsSkSL,
-                   SkSL::ProgramKind::kGraphiteVertex,
-                   settings,
-                   &vsMSL,
-                   &vsInterface,
-                   errorHandler)) {
+    if (!SkSL::ToMetal(&skslCompiler,
+                       vsSkSL,
+                       SkSL::ProgramKind::kGraphiteVertex,
+                       settings,
+                       &vsMSL,
+                       &vsInterface,
+                       errorHandler)) {
         return nullptr;
     }
 
@@ -207,13 +207,13 @@ sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(
 
         SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
         std::string sksl = BuildComputeSkSL(fSharedContext->caps(), pipelineDesc.computeStep());
-        if (!SkSLToMSL(&skslCompiler,
-                       sksl,
-                       SkSL::ProgramKind::kCompute,
-                       settings,
-                       &msl,
-                       &interface,
-                       errorHandler)) {
+        if (!SkSL::ToMetal(&skslCompiler,
+                           sksl,
+                           SkSL::ProgramKind::kCompute,
+                           settings,
+                           &msl,
+                           &interface,
+                           errorHandler)) {
             return nullptr;
         }
         library = MtlCompileShaderLibrary(this->mtlSharedContext(), msl, errorHandler);

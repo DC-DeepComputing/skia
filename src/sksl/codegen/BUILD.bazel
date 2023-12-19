@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_deps", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_deps", "skia_cc_library", "skia_filegroup", "split_srcs_and_hdrs")
 
 licenses(["notice"])
 
@@ -15,6 +15,8 @@ skia_filegroup(
 # TODO(kjlubick) Could this be split up so we don't need to compile the SkSLMetalCodeGenerator
 # on platforms that don't support metal (e.g. WebGL, Linux)?
 GPU_SRCS = [
+    "SkSLBackendUtil.cpp",
+    "SkSLBackendUtil.h",
     "SkSLCodeGenerator.h",
     "SkSLGLSLCodeGenerator.cpp",
     "SkSLGLSLCodeGenerator.h",
@@ -31,7 +33,7 @@ GPU_SRCS = [
 ]
 
 split_srcs_and_hdrs(
-    name = "gpu",
+    name = "legacy_gpu",
     files = GPU_SRCS,
 )
 
@@ -40,7 +42,7 @@ skia_filegroup(
     srcs = [
         ":core_srcs",
     ] + select({
-        "//src/sksl:use_sksl_gpu_srcs": [":gpu_srcs"],
+        "//src/sksl:use_sksl_gpu_srcs": [":legacy_gpu"],
         "//conditions:default": [],
     }),
     visibility = ["//src/sksl:__pkg__"],
@@ -52,7 +54,7 @@ skia_filegroup(
         "SkSLRasterPipelineBuilder.h",
         "SkSLRasterPipelineCodeGenerator.h",
     ] + select({
-        "//src/sksl:use_sksl_gpu_srcs": [":gpu_hdrs"],
+        "//src/sksl:use_sksl_gpu_srcs": [":legacy_gpu_hdrs"],
         "//conditions:default": [],
     }),
     visibility = ["//src/sksl:__pkg__"],
@@ -83,4 +85,41 @@ skia_filegroup(
         "SkSLRasterPipelineCodeGenerator.cpp",
     ],
     visibility = ["//src/core:__pkg__"],
+)
+
+skia_cc_library(
+    name = "gpu",
+    srcs = [
+        "SkSLBackendUtil.cpp",
+        "SkSLPipelineStageCodeGenerator.cpp",
+    ],
+    hdrs = [
+        "SkSLBackendUtil.h",
+        "SkSLPipelineStageCodeGenerator.h",
+    ],
+    features = ["layering_check"],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+        "//src/gpu",
+    ],
+)
+
+skia_cc_library(
+    name = "glsl",
+    srcs = [
+        "SkSLCodeGenerator.h",
+        "SkSLGLSLCodeGenerator.cpp",
+    ],
+    hdrs = ["SkSLGLSLCodeGenerator.h"],
+    features = ["layering_check"],
+    visibility = ["//src/gpu/ganesh/gl:__pkg__"],
+    deps = [
+        ":gpu",
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
 )

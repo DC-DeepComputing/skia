@@ -13,11 +13,12 @@
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 
 #include "fuzz/Fuzz.h"
 
 bool FuzzSKSL2Pipeline(const uint8_t *data, size_t size) {
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Default());
+    SkSL::Compiler compiler(SkSL::tools::ShaderCapsFactory::Default());
     SkSL::ProgramSettings settings;
     std::unique_ptr<SkSL::Program> program =
             compiler.convertProgram(SkSL::ProgramKind::kRuntimeShader,
