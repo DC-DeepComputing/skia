@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b223a7d5_aca7a842",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-19T20:00:47Z",
+      "side": 1,
+      "message": "The bots have been having issues, so I am going to go ahead and send this your way even though I haven\u0027t been able to run presubmit checks yet so you can start TAL.",
+      "revId": "e068bc2803a2b213e35817333ee0d6329f2e1436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

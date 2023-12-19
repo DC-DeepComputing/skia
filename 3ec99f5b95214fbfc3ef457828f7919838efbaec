@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29bf7faf_b09e1215",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-19T20:00:47Z",
+      "side": 1,
+      "message": "I\u0027m not thrilled with how long or complicated that logic currently is, but it\u0027s designed such that it can later just fetch data from RenderPassDesc once that struct includes more information (input attachments, etc).\n\nIntermediary cleaner solution ideas are absolutely welcome.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 5
+      },
+      "revId": "3ec99f5b95214fbfc3ef457828f7919838efbaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
