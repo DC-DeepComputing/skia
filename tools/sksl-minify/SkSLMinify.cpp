@@ -22,6 +22,7 @@
 #include "src/sksl/transform/SkSLTransform.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/SkGetExecutablePath.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 #include "tools/skslc/ProcessWorklist.h"
 
 #include <cctype>
@@ -102,7 +103,7 @@ static std::forward_list<std::unique_ptr<const SkSL::Module>> compile_module_lis
 
     // Load in each input as a module, from right to left.
     // Each module inherits the symbols from its parent module.
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
+    SkSL::Compiler compiler(SkSL::tools::ShaderCapsFactory::Standalone());
     for (auto modulePath = paths.rbegin(); modulePath != paths.rend(); ++modulePath) {
         std::ifstream in(*modulePath);
         std::string moduleSource{std::istreambuf_iterator<char>(in),

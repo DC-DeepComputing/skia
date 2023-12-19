@@ -13,10 +13,12 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkChecksum.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/sksl/GLSL.std.450.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLErrorReporter.h"
@@ -28,6 +30,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLBackendUtil.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLConstructor.h"
@@ -73,6 +76,10 @@
 #include "src/sksl/ir/SkSLVariableReference.h"
 #include "src/sksl/transform/SkSLTransform.h"
 #include "src/utils/SkBitSet.h"
+
+#if defined(SK_ENABLE_SPIRV_VALIDATION)
+#include "spirv-tools/libspirv.hpp"
+#endif
 
 #include <cstring>
 #include <set>
@@ -4710,6 +4717,101 @@ bool SPIRVCodeGenerator::generateCode() {
     this->writeWord(0, *fOut); // reserved, always zero
     write_stringstream(buffer, *fOut);
     return fContext.fErrors->errorCount() == 0;
+}
+
+#if defined(SK_ENABLE_SPIRV_VALIDATION)
+static bool validate_spirv(ErrorReporter& reporter, std::string_view program) {
+    SkASSERT(0 == program.size() % 4);
+    const uint32_t* programData = reinterpret_cast<const uint32_t*>(program.data());
+    size_t programSize = program.size() / 4;
+
+    spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_0);
+    std::string errors;
+    auto msgFn = [&errors](spv_message_level_t, const char*, const spv_position_t&, const char* m) {
+        errors += "SPIR-V validation error: ";
+        errors += m;
+        errors += '\n';
+    };
+    tools.SetMessageConsumer(msgFn);
+
+    // Verify that the SPIR-V we produced is valid. At runtime, we will abort() with a message
+    // explaining the error. In standalone mode (skslc), we will send the message, plus the
+    // entire disassembled SPIR-V (for easier context & debugging) as *our* error message.
+    bool result = tools.Validate(programData, programSize);
+    if (!result) {
+#if defined(SKSL_STANDALONE)
+        // Convert the string-stream to a SPIR-V disassembly.
+        std::string disassembly;
+        uint32_t options = spvtools::SpirvTools::kDefaultDisassembleOption;
+        options |= SPV_BINARY_TO_TEXT_OPTION_INDENT;
+        if (tools.Disassemble(programData, programSize, &disassembly, options)) {
+            errors.append(disassembly);
+        }
+        reporter.error(Position(), errors);
+#else
+        SkDEBUGFAILF("%s", errors.c_str());
+#endif
+    }
+    return result;
+}
+#endif
+
+bool ToSPIRV(Compiler* compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::ToSPIRV");
+    // We cannot emit SPIR-V without real shader caps.
+    SkASSERT(compiler->caps() != nullptr);
+    AutoSource as(compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler->contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler->caps());
+    ProgramSettings settings;
+    settings.fUseMemoryPool = false;
+    ThreadContext::Start(compiler, program.fConfig->fKind, settings);
+    ThreadContext::SetErrorReporter(compiler->compilerErrorReporter());
+
+    ctxPtr->fSymbolTable = program.fSymbols;
+#ifdef SK_ENABLE_SPIRV_VALIDATION
+    StringStream buffer;
+    SPIRVCodeGenerator cg(ctxPtr.get(), &program, &buffer);
+    bool result = cg.generateCode();
+
+    if (result && program.fConfig->fSettings.fValidateSPIRV) {
+        std::string_view binary = buffer.str();
+        result = validate_spirv(compiler->errorReporter(), binary);
+        out.write(binary.data(), binary.size());
+    }
+#else
+    SPIRVCodeGenerator cg(ctxPtr.get(), &program, &out);
+    bool result = cg.generateCode();
+#endif
+    ThreadContext::End();
+    return result;
+}
+
+bool ToSPIRV(Compiler* compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToSPIRV(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
+}
+
+bool ToSPIRV(Compiler* compiler,
+             const std::string& sksl,
+             ProgramKind programKind,
+             const ProgramSettings& settings,
+             std::string* spirv,
+             Program::Interface* outInterface,
+             skgpu::ShaderErrorHandler* errorHandler) {
+    return ToBackend(compiler,
+                     &ToSPIRV,
+                     /*backendLabel=*/nullptr,
+                     sksl,
+                     programKind,
+                     settings,
+                     spirv,
+                     outInterface,
+                     errorHandler);
 }
 
 }  // namespace SkSL

@@ -13,7 +13,6 @@
 #include "include/gpu/d3d/GrD3DTypes.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/ganesh/GrAutoLocaleSetter.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrPersistentCacheUtils.h"
@@ -27,6 +26,7 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLSPIRVtoHLSL.h"
 #include "src/utils/SkShaderUtils.h"
 
 #include <d3dcompiler.h>
@@ -135,13 +135,13 @@ gr_cp<ID3DBlob> GrD3DPipelineStateBuilder::compileD3DProgram(SkSL::ProgramKind k
                                                              const SkSL::ProgramSettings& settings,
                                                              SkSL::Program::Interface* outInterface,
                                                              std::string* outHLSL) {
-    if (!skgpu::SkSLToHLSL(this->shaderCompiler(),
-                           sksl,
-                           kind,
-                           settings,
-                           outHLSL,
-                           outInterface,
-                           fGpu->getContext()->priv().getShaderErrorHandler())) {
+    if (!SkSL::ToHLSL(this->shaderCompiler(),
+                      sksl,
+                      kind,
+                      settings,
+                      outHLSL,
+                      outInterface,
+                      fGpu->getContext()->priv().getShaderErrorHandler())) {
         return gr_cp<ID3DBlob>();
     }
 

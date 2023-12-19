@@ -9,13 +9,13 @@
 
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 
 bool GrVkFormatIsSupported(VkFormat format) {
     switch (format) {
@@ -68,13 +68,13 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              SkSL::Program::Interface* outInterface) {
     TRACE_EVENT0("skia.shaders", "CompileVkShaderModule");
     skgpu::ShaderErrorHandler* errorHandler = gpu->getContext()->priv().getShaderErrorHandler();
-    if (!skgpu::SkSLToSPIRV(gpu->shaderCompiler(),
-                            shaderString,
-                            vk_shader_stage_to_skiasl_kind(stage),
-                            settings,
-                            outSPIRV,
-                            outInterface,
-                            errorHandler)) {
+    if (!SkSL::ToSPIRV(gpu->shaderCompiler(),
+                       shaderString,
+                       vk_shader_stage_to_skiasl_kind(stage),
+                       settings,
+                       outSPIRV,
+                       outInterface,
+                       errorHandler)) {
         return false;
     }
 

@@ -16,8 +16,12 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLModuleLoader.h"
 #include "src/sksl/SkSLParser.h"
+#include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
+#include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
+#include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
+#include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
@@ -147,11 +151,11 @@ protected:
             std::string result;
             switch (fOutput) {
                 case Output::kNone:    break;
-                case Output::kGLSL:    SkAssertResult(fCompiler.toGLSL(*program,  &result)); break;
+                case Output::kGLSL:    SkAssertResult(SkSL::ToGLSL(&fCompiler, *program,  &result)); break;
                 case Output::kMetal:
-                case Output::kGrMtl:   SkAssertResult(fCompiler.toMetal(*program, &result)); break;
-                case Output::kSPIRV:   SkAssertResult(fCompiler.toSPIRV(*program, &result)); break;
-                case Output::kGrWGSL:  SkAssertResult(fCompiler.toWGSL(*program, &result)); break;
+                case Output::kGrMtl:   SkAssertResult(SkSL::ToMetal(&fCompiler, *program, &result)); break;
+                case Output::kSPIRV:   SkAssertResult(SkSL::ToSPIRV(&fCompiler, *program, &result)); break;
+                case Output::kGrWGSL:  SkAssertResult(SkSL::ToWGSL(&fCompiler, *program, &result)); break;
                 case Output::kSkRP:    SkAssertResult(CompileToSkRP(*program)); break;
             }
         }

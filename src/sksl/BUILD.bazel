@@ -51,6 +51,7 @@ SKSL_SRCS = [
     "SkSLBuiltinTypes.cpp",
     "SkSLBuiltinTypes.h",
     "SkSLCompiler.cpp",
+    "SkSLCompilerUtil.h",
     "SkSLCompiler.h",
     "SkSLConstantFolder.cpp",
     "SkSLConstantFolder.h",

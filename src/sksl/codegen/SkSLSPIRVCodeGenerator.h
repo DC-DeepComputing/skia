@@ -18,6 +18,7 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
+#include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -30,11 +31,16 @@
 #include <tuple>
 #include <vector>
 
+namespace skgpu {
+class ShaderErrorHandler;
+}
+
 namespace SkSL {
 
 class AnyConstructor;
 class BinaryExpression;
 class Block;
+class Compiler;
 class ConstructorCompound;
 class ConstructorCompoundCast;
 class ConstructorDiagonalMatrix;
@@ -67,6 +73,7 @@ class VariableReference;
 enum class ProgramKind : int8_t;
 enum IntrinsicKind : int8_t;
 struct Program;
+struct ProgramSettings;
 
 /**
  * Converts a Program into a SPIR-V binary.
@@ -619,6 +626,16 @@ private:
 
     using INHERITED = CodeGenerator;
 };
+
+bool ToSPIRV(Compiler*, Program&, OutputStream& out);
+bool ToSPIRV(Compiler*, Program&, std::string* out);
+bool ToSPIRV(Compiler*,
+             const std::string& sksl,
+             ProgramKind programKind,
+             const ProgramSettings& settings,
+             std::string* spirv,
+             Program::Interface*,
+             skgpu::ShaderErrorHandler* errorHandler);
 
 }  // namespace SkSL
 

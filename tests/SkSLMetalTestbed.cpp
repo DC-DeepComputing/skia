@@ -10,8 +10,10 @@
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "tests/Test.h"
+#include "tools/sksl/ShaderCapsFactory.h"
 
 #include <memory>
 #include <string>
@@ -19,7 +21,7 @@
 static void test(skiatest::Reporter* r,
                  const char* src,
                  SkSL::ProgramKind kind = SkSL::ProgramKind::kFragment) {
-    SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Default());
+    SkSL::Compiler compiler(SkSL::tools::ShaderCapsFactory::Default());
     SkSL::ProgramSettings settings;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, std::string(src),
                                                                      settings);
@@ -28,7 +30,7 @@ static void test(skiatest::Reporter* r,
         REPORTER_ASSERT(r, program);
     } else {
         std::string output;
-        REPORTER_ASSERT(r, compiler.toMetal(*program, &output));
+        REPORTER_ASSERT(r, SkSL::ToMetal(&compiler, *program, &output));
         REPORTER_ASSERT(r, output != "");
         //SkDebugf("Metal output:\n\n%s", output.c_str());
     }
