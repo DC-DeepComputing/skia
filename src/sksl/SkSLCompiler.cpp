@@ -36,6 +36,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 #include "src/sksl/transform/SkSLTransform.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 
 #include <atomic>
 #include <cstdint>
@@ -46,24 +47,6 @@
 #include <fstream>
 #endif
 
-#if defined(SKSL_STANDALONE) || defined(SK_GANESH) || defined(SK_GRAPHITE)
-#include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
-#include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
-#include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
-#include "src/sksl/codegen/SkSLSPIRVtoHLSL.h"
-#include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
-#endif
-
-#ifdef SK_ENABLE_SPIRV_VALIDATION
-#include "spirv-tools/libspirv.hpp"
-#endif
-
-#ifdef SK_ENABLE_WGSL_VALIDATION
-#include "tint/tint.h"
-#include "src/tint/lang/wgsl/reader/options.h"
-#include "src/tint/lang/wgsl/extension.h"
-#endif
-
 namespace SkSL {
 
 // These flags allow tools like Viewer or Nanobench to override the compiler's ProgramSettings.
@@ -71,21 +54,6 @@ Compiler::OverrideFlag Compiler::sOptimizer = OverrideFlag::kDefault;
 Compiler::OverrideFlag Compiler::sInliner = OverrideFlag::kDefault;
 
 using RefKind = VariableReference::RefKind;
-
-class AutoSource {
-public:
-    AutoSource(Compiler* compiler, std::string_view source)
-            : fCompiler(compiler) {
-        SkASSERT(!fCompiler->errorReporter().source().data());
-        fCompiler->errorReporter().setSource(source);
-    }
-
-    ~AutoSource() {
-        fCompiler->errorReporter().setSource(std::string_view());
-    }
-
-    Compiler* fCompiler;
-};
 
 class AutoProgramConfig {
 public:
@@ -101,22 +69,6 @@ public:
 
     Context& fContext;
     ProgramConfig* fOldConfig;
-};
-
-class AutoShaderCaps {
-public:
-    AutoShaderCaps(std::shared_ptr<Context>& context, const ShaderCaps* caps)
-            : fContext(context.get())
-            , fOldCaps(fContext->fCaps) {
-        fContext->fCaps = caps;
-    }
-
-    ~AutoShaderCaps() {
-        fContext->fCaps = fOldCaps;
-    }
-
-    Context* fContext;
-    const ShaderCaps* fOldCaps;
 };
 
 Compiler::Compiler(const ShaderCaps* caps) : fErrorReporter(this), fCaps(caps) {
@@ -473,223 +425,6 @@ bool Compiler::finalize(Program& program) {
 
     return this->errorCount() == 0;
 }
-
-#if defined(SKSL_STANDALONE) || defined(SK_GANESH) || defined(SK_GRAPHITE)
-
-#if defined(SK_ENABLE_SPIRV_VALIDATION)
-static bool validate_spirv(ErrorReporter& reporter, std::string_view program) {
-    SkASSERT(0 == program.size() % 4);
-    const uint32_t* programData = reinterpret_cast<const uint32_t*>(program.data());
-    size_t programSize = program.size() / 4;
-
-    spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_0);
-    std::string errors;
-    auto msgFn = [&errors](spv_message_level_t, const char*, const spv_position_t&, const char* m) {
-        errors += "SPIR-V validation error: ";
-        errors += m;
-        errors += '\n';
-    };
-    tools.SetMessageConsumer(msgFn);
-
-    // Verify that the SPIR-V we produced is valid. At runtime, we will abort() with a message
-    // explaining the error. In standalone mode (skslc), we will send the message, plus the
-    // entire disassembled SPIR-V (for easier context & debugging) as *our* error message.
-    bool result = tools.Validate(programData, programSize);
-    if (!result) {
-#if defined(SKSL_STANDALONE)
-        // Convert the string-stream to a SPIR-V disassembly.
-        std::string disassembly;
-        uint32_t options = spvtools::SpirvTools::kDefaultDisassembleOption;
-        options |= SPV_BINARY_TO_TEXT_OPTION_INDENT;
-        if (tools.Disassemble(programData, programSize, &disassembly, options)) {
-            errors.append(disassembly);
-        }
-        reporter.error(Position(), errors);
-#else
-        SkDEBUGFAILF("%s", errors.c_str());
-#endif
-    }
-    return result;
-}
-#endif
-
-bool Compiler::toSPIRV(Program& program, OutputStream& out) {
-    TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toSPIRV");
-    // We cannot emit SPIR-V without real shader caps.
-    SkASSERT(fCaps != nullptr);
-    AutoSource as(this, *program.fSource);
-    AutoShaderCaps autoCaps(fContext, fCaps);
-    ProgramSettings settings;
-    settings.fUseMemoryPool = false;
-    ThreadContext::Start(this, program.fConfig->fKind, settings);
-    ThreadContext::SetErrorReporter(&fErrorReporter);
-    fContext->fSymbolTable = program.fSymbols;
-#ifdef SK_ENABLE_SPIRV_VALIDATION
-    StringStream buffer;
-    SPIRVCodeGenerator cg(fContext.get(), &program, &buffer);
-    bool result = cg.generateCode();
-
-    if (result && program.fConfig->fSettings.fValidateSPIRV) {
-        std::string_view binary = buffer.str();
-        result = validate_spirv(this->errorReporter(), binary);
-        out.write(binary.data(), binary.size());
-    }
-#else
-    SPIRVCodeGenerator cg(fContext.get(), &program, &out);
-    bool result = cg.generateCode();
-#endif
-    ThreadContext::End();
-    return result;
-}
-
-bool Compiler::toSPIRV(Program& program, std::string* out) {
-    StringStream buffer;
-    if (!this->toSPIRV(program, buffer)) {
-        return false;
-    }
-    *out = buffer.str();
-    return true;
-}
-
-bool Compiler::toGLSL(Program& program, OutputStream& out) {
-    TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toGLSL");
-    // We cannot emit GLSL without real shader caps.
-    SkASSERT(fCaps != nullptr);
-    AutoSource as(this, *program.fSource);
-    AutoShaderCaps autoCaps(fContext, fCaps);
-    GLSLCodeGenerator cg(fContext.get(), &program, &out);
-    bool result = cg.generateCode();
-    return result;
-}
-
-bool Compiler::toGLSL(Program& program, std::string* out) {
-    StringStream buffer;
-    if (!this->toGLSL(program, buffer)) {
-        return false;
-    }
-    *out = buffer.str();
-    return true;
-}
-
-bool Compiler::toHLSL(Program& program, OutputStream& out) {
-    TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toHLSL");
-    std::string hlsl;
-    if (!this->toHLSL(program, &hlsl)) {
-        return false;
-    }
-    out.writeString(hlsl);
-    return true;
-}
-
-bool Compiler::toHLSL(Program& program, std::string* out) {
-    std::string spirv;
-    if (!this->toSPIRV(program, &spirv)) {
-        return false;
-    }
-
-    if (!SPIRVtoHLSL(spirv, out)) {
-        fErrorText += "HLSL cross-compilation not enabled";
-        return false;
-    }
-
-    return true;
-}
-
-bool Compiler::toMetal(Program& program, OutputStream& out) {
-    TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toMetal");
-    // We cannot emit MSL without real shader caps.
-    SkASSERT(fCaps != nullptr);
-    AutoSource as(this, *program.fSource);
-    AutoShaderCaps autoCaps(fContext, fCaps);
-    MetalCodeGenerator cg(fContext.get(), &program, &out);
-    bool result = cg.generateCode();
-    return result;
-}
-
-bool Compiler::toMetal(Program& program, std::string* out) {
-    StringStream buffer;
-    if (!this->toMetal(program, buffer)) {
-        return false;
-    }
-    *out = buffer.str();
-    return true;
-}
-
-#if defined(SK_ENABLE_WGSL_VALIDATION)
-static bool validate_wgsl(ErrorReporter& reporter, const std::string& wgsl, std::string* warnings) {
-    // Enable the WGSL optional features that Skia might rely on.
-    tint::wgsl::reader::Options options;
-    for (auto extension : {tint::wgsl::Extension::kChromiumExperimentalPixelLocal,
-                           tint::wgsl::Extension::kChromiumInternalDualSourceBlending}) {
-        options.allowed_features.extensions.insert(extension);
-    }
-
-    // Verify that the WGSL we produced is valid.
-    tint::Source::File srcFile("", wgsl);
-    tint::Program program(tint::wgsl::reader::Parse(&srcFile, options));
-
-    if (program.Diagnostics().contains_errors()) {
-        // The program isn't valid WGSL. In debug, report the error via SkDEBUGFAIL. We also append
-        // the generated program for ease of debugging.
-        tint::diag::Formatter diagFormatter;
-        std::string diagOutput = diagFormatter.format(program.Diagnostics());
-        diagOutput += "\n";
-        diagOutput += wgsl;
-#if defined(SKSL_STANDALONE)
-        reporter.error(Position(), diagOutput);
-#else
-        SkDEBUGFAILF("%s", diagOutput.c_str());
-#endif
-        return false;
-    }
-
-    if (!program.Diagnostics().empty()) {
-        // The program contains warnings. Report them as-is.
-        tint::diag::Formatter diagFormatter;
-        *warnings = diagFormatter.format(program.Diagnostics());
-    }
-    return true;
-}
-#endif  // defined(SK_ENABLE_WGSL_VALIDATION)
-
-bool Compiler::toWGSL(Program& program, OutputStream& out) {
-    TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toWGSL");
-    // We cannot emit WGSL without real shader caps.
-    SkASSERT(fCaps != nullptr);
-    AutoSource as(this, *program.fSource);
-    AutoShaderCaps autoCaps(fContext, fCaps);
-#ifdef SK_ENABLE_WGSL_VALIDATION
-    StringStream wgsl;
-    WGSLCodeGenerator cg(fContext.get(), &program, &wgsl);
-    bool result = cg.generateCode();
-    if (result) {
-        std::string wgslString = wgsl.str();
-        std::string warnings;
-        result = validate_wgsl(this->errorReporter(), wgslString, &warnings);
-        if (!warnings.empty()) {
-            out.writeText("/*\n\n");
-            out.writeString(warnings);
-            out.writeText("*/\n\n");
-        }
-        out.writeString(wgslString);
-    }
-#else
-    WGSLCodeGenerator cg(fContext.get(), &program, &out);
-    bool result = cg.generateCode();
-#endif
-    return result;
-}
-
-bool Compiler::toWGSL(Program& program, std::string* out) {
-    StringStream buffer;
-    if (!this->toWGSL(program, buffer)) {
-        return false;
-    }
-    *out = buffer.str();
-    return true;
-}
-
-#endif // defined(SKSL_STANDALONE) || defined(SK_GANESH) || defined(SK_GRAPHITE)
 
 void Compiler::handleError(std::string_view msg, Position pos) {
     fErrorText += "error: ";

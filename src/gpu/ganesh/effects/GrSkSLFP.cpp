@@ -43,6 +43,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 
 #include <algorithm>
+#include <vector>
 
 namespace SkSL { class Context; }
 struct GrShaderCaps;

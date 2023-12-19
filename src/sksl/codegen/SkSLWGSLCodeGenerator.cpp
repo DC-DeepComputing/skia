@@ -71,6 +71,8 @@
 #include "src/sksl/ir/SkSLVariableReference.h"
 #include "src/sksl/spirv.h"
 #include "src/sksl/transform/SkSLTransform.h"
+#include "src/sksl/SkSLCompilerUtil.h"
+#include "src/core/SkTraceEvent.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -80,6 +82,13 @@
 #include <optional>
 #include <string>
 #include <utility>
+
+
+#ifdef SK_ENABLE_WGSL_VALIDATION
+#include "tint/tint.h"
+#include "src/tint/lang/wgsl/reader/options.h"
+#include "src/tint/lang/wgsl/extension.h"
+#endif
 
 using namespace skia_private;
 
@@ -4121,6 +4130,81 @@ bool WGSLCodeGenerator::writeFunctionDependencyParams(const FunctionDeclaration&
         this->write(structNamePrefix);
         this->write("Out>");
     }
+    return true;
+}
+
+#if defined(SK_ENABLE_WGSL_VALIDATION)
+static bool validate_wgsl(ErrorReporter& reporter, const std::string& wgsl, std::string* warnings) {
+    // Enable the WGSL optional features that Skia might rely on.
+    tint::wgsl::reader::Options options;
+    for (auto extension : {tint::wgsl::Extension::kChromiumExperimentalPixelLocal,
+                           tint::wgsl::Extension::kChromiumInternalDualSourceBlending}) {
+        options.allowed_features.extensions.insert(extension);
+    }
+
+    // Verify that the WGSL we produced is valid.
+    tint::Source::File srcFile("", wgsl);
+    tint::Program program(tint::wgsl::reader::Parse(&srcFile, options));
+
+    if (program.Diagnostics().contains_errors()) {
+        // The program isn't valid WGSL. In debug, report the error via SkDEBUGFAIL. We also append
+        // the generated program for ease of debugging.
+        tint::diag::Formatter diagFormatter;
+        std::string diagOutput = diagFormatter.format(program.Diagnostics());
+        diagOutput += "\n";
+        diagOutput += wgsl;
+#if defined(SKSL_STANDALONE)
+        reporter.error(Position(), diagOutput);
+#else
+        SkDEBUGFAILF("%s", diagOutput.c_str());
+#endif
+        return false;
+    }
+
+    if (!program.Diagnostics().empty()) {
+        // The program contains warnings. Report them as-is.
+        tint::diag::Formatter diagFormatter;
+        *warnings = diagFormatter.format(program.Diagnostics());
+    }
+    return true;
+}
+#endif  // defined(SK_ENABLE_WGSL_VALIDATION)
+
+bool ToWGSL(Compiler& compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::ToWGSL");
+    // We cannot emit WGSL without real shader caps.
+    SkASSERT(compiler.caps() != nullptr);
+    AutoSource as(&compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler.contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler.caps());
+#ifdef SK_ENABLE_WGSL_VALIDATION
+    StringStream wgsl;
+    WGSLCodeGenerator cg(ctxPtr.get(), &program, &wgsl);
+    bool result = cg.generateCode();
+    if (result) {
+        std::string wgslString = wgsl.str();
+        std::string warnings;
+        result = validate_wgsl(compiler.errorReporter(), wgslString, &warnings);
+        if (!warnings.empty()) {
+            out.writeText("/*\n\n");
+            out.writeString(warnings);
+            out.writeText("*/\n\n");
+        }
+        out.writeString(wgslString);
+    }
+#else
+    WGSLCodeGenerator cg(ctxPtr.get(), &program, &out);
+    bool result = cg.generateCode();
+#endif
+    return result;
+}
+
+bool ToWGSL(Compiler& compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToWGSL(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
     return true;
 }
 

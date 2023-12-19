@@ -35,6 +35,7 @@ namespace SkSL {
 class AnyConstructor;
 class BinaryExpression;
 class Block;
+class Compiler;
 class ConstructorCompound;
 class ConstructorCompoundCast;
 class ConstructorDiagonalMatrix;
@@ -610,6 +611,9 @@ private:
 
     using INHERITED = CodeGenerator;
 };
+
+bool ToSPIRV(Compiler&, Program&, OutputStream& out);
+bool ToSPIRV(Compiler&, Program&, std::string* out);
 
 }  // namespace SkSL
 

@@ -27,6 +27,7 @@ namespace SkSL {
 class AnyConstructor;
 class BinaryExpression;
 class Block;
+class Compiler;
 class ConstructorArrayCast;
 class ConstructorCompound;
 class ConstructorMatrixResize;
@@ -341,6 +342,9 @@ protected:
 
     using INHERITED = CodeGenerator;
 };
+
+bool ToMetal(Compiler&, Program&, OutputStream& out);
+bool ToMetal(Compiler&, Program&, std::string* out);
 
 }  // namespace SkSL
 

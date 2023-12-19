@@ -24,6 +24,7 @@
 #include "src/sksl/SkSLOutputStream.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/SkSLCompilerUtil.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
@@ -67,7 +68,7 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
-#include "src/sksl/spirv.h"
+#include "src/core/SkTraceEvent.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -3279,6 +3280,27 @@ bool MetalCodeGenerator::generateCode() {
     write_stringstream(fExtraFunctions, *fOut);
     write_stringstream(body, *fOut);
     return fContext.fErrors->errorCount() == 0;
+}
+
+bool ToMetal(Compiler& compiler, Program& program, OutputStream& out) {
+    TRACE_EVENT0("skia.shaders", "SkSL::ToMetal");
+    // We cannot emit MSL without real shader caps.
+    SkASSERT(compiler.caps() != nullptr);
+    AutoSource as(&compiler, *program.fSource);
+    std::shared_ptr<Context> ctxPtr = compiler.contextPtr();
+    AutoShaderCaps autoCaps(ctxPtr, compiler.caps());
+    MetalCodeGenerator cg(ctxPtr.get(), &program, &out);
+    bool result = cg.generateCode();
+    return result;
+}
+
+bool ToMetal(Compiler& compiler, Program& program, std::string* out) {
+    StringStream buffer;
+    if (!ToMetal(compiler, program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
 }
 
 }  // namespace SkSL

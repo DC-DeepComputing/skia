@@ -28,6 +28,7 @@ namespace SkSL {
 class AnyConstructor;
 class BinaryExpression;
 class Block;
+class Compiler;
 class Context;
 class ConstructorCompound;
 class ConstructorDiagonalMatrix;
@@ -377,6 +378,9 @@ private:
 
     int fScratchCount = 0;
 };
+
+bool ToWGSL(Compiler&, Program&, OutputStream& out);
+bool ToWGSL(Compiler&, Program&, std::string* out);
 
 }  // namespace SkSL
 
