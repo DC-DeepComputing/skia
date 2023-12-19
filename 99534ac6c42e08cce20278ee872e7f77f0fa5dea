@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "498a507c_23fd5b89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-12-19T16:09:47Z",
+      "side": 1,
+      "message": "So do you intend that to be +1 or do you want me to revise?",
+      "parentUuid": "5825b914_bcf82ee2",
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c9fc9cf_5f485ce1",
