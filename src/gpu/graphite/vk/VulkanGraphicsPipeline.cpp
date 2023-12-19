@@ -136,12 +136,12 @@ static void setup_vertex_input_state(
     vertexInputInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputInfo->pNext = nullptr;
     vertexInputInfo->flags = 0;
-    vertexInputInfo->vertexBindingDescriptionCount = bindingDescs->size();
+    vertexInputInfo->vertexBindingDescriptionCount = bindingDescs ? bindingDescs->size() : 0;
     vertexInputInfo->pVertexBindingDescriptions =
-            bindingDescs->empty() ? VK_NULL_HANDLE : bindingDescs->begin();
-    vertexInputInfo->vertexAttributeDescriptionCount = attributeDescs->size();
+            bindingDescs && !bindingDescs->empty() ? bindingDescs->begin() : VK_NULL_HANDLE;
+    vertexInputInfo->vertexAttributeDescriptionCount = attributeDescs ? attributeDescs->size() : 0;
     vertexInputInfo->pVertexAttributeDescriptions =
-            attributeDescs->empty() ? VK_NULL_HANDLE : attributeDescs->begin();
+            attributeDescs && !attributeDescs->empty() ? attributeDescs->begin() : VK_NULL_HANDLE;
 }
 
 static VkPrimitiveTopology primitive_type_to_vk_topology(PrimitiveType primitiveType) {
@@ -715,6 +715,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkPipelineDynamicStateCreateInfo dynamicInfo;
     setup_dynamic_state(&dynamicInfo, dynamicStates);
 
+    bool loadMsaaFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
     VkGraphicsPipelineCreateInfo pipelineCreateInfo;
     memset(&pipelineCreateInfo, 0, sizeof(VkGraphicsPipelineCreateInfo));
     pipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -733,10 +736,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     pipelineCreateInfo.pDynamicState = &dynamicInfo;
     pipelineCreateInfo.layout = pipelineLayout;
     pipelineCreateInfo.renderPass = compatibleRenderPass->renderPass();
-    // TODO: Consider setting pipeline to a subpass other than subpass 0 once we support >1 subpass.
-    // For example, if we need to load a resolve into msaa attachment for discardable msaa then
-    // the main subpass will be 1.
-    pipelineCreateInfo.subpass = 0;
+    pipelineCreateInfo.subpass = loadMsaaFromResolve ? 1 : 0;
     pipelineCreateInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineCreateInfo.basePipelineIndex = -1;
 
@@ -748,9 +748,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                            result,
                            CreateGraphicsPipelines(sharedContext->device(),
                                                    pipelineCache,
-                                                   1,
+                                                   /*createInfoCount=*/1,
                                                    &pipelineCreateInfo,
-                                                   nullptr,
+                                                   /*pAllocator=*/nullptr,
                                                    &vkPipeline));
     }
     if (result != VK_SUCCESS) {
@@ -932,6 +932,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
     pipelineCreateInfo.pColorBlendState = &colorBlendInfo;
     pipelineCreateInfo.pDynamicState = &dynamicInfo;
     pipelineCreateInfo.layout = pipelineLayout;
+
     pipelineCreateInfo.renderPass = compatibleRenderPass->renderPass();
 
     VkPipeline vkPipeline;
@@ -953,12 +954,11 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
         return nullptr;
     }
 
-
-    GraphicsPipeline::PipelineInfo* pipelineInfoPtr = nullptr;
-
+    // TODO: If we want to track GraphicsPipeline::PipelineInfo in debug, we'll need to add
+    // PipelineDesc as an argument for this method. For now, just pass in nullptr.
     return sk_sp<VulkanGraphicsPipeline>(
             new VulkanGraphicsPipeline(sharedContext,
-                                       /*pipelineInfo=*/pipelineInfoPtr,
+                                       /*pipelineInfo=*/nullptr,
                                        pipelineLayout,
                                        vkPipeline,
                                        /*hasFragmentUniforms=*/false,
