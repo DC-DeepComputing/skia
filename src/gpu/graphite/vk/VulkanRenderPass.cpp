@@ -248,9 +248,11 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
         colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
         if (hasColorResolveAttachment) {
             loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+
             VulkanTextureInfo resolveAttachTexInfo;
             colorResolveAttachmentTextureInfo.getVulkanTextureInfo(&resolveAttachTexInfo);
             auto& resolveAttachDesc = renderPassDesc.fColorResolveAttachment;
@@ -386,8 +388,7 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                    /*label=*/"VulkanRenderPass")
         , fSharedContext(context)
         , fRenderPass (renderPass)
-        , fGranularity (granularity) {
-}
+        , fGranularity (granularity) {}
 
 void VulkanRenderPass::freeGpuData() {
     VULKAN_CALL(fSharedContext->interface(),
