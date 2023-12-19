@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2062d2d0_77028d52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-19T20:30:57Z",
+      "side": 1,
+      "message": "Same deal here. A chunk of work for loading MSAA from resolve, but hasn\u0027t run on presubmit bots due to infra issues. Sending your way anyhow for feedback!",
+      "revId": "70b7e129125eb443d11ac9cfeabf4e485ea2eec0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
