@@ -230,11 +230,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     VkAttachmentReference resolveLoadInputRef;
     VkAttachmentReference depthStencilRef;
 
-    // TODO: Assign real value to loadMSAAFromResolve according to whether the resolve
-    // attachment's load op is LoadOp::kLoad. Keeping as false until all the plumbing is hooked
-    // up.
     bool loadMSAAFromResolve = false;
-
     if (hasColorAttachment) {
         VulkanTextureInfo colorAttachTexInfo;
         colorAttachmentTextureInfo.getVulkanTextureInfo(&colorAttachTexInfo);
@@ -254,7 +250,9 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
         colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
         if (hasColorResolveAttachment) {
+            loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+
             VulkanTextureInfo resolveAttachTexInfo;
             colorResolveAttachmentTextureInfo.getVulkanTextureInfo(&resolveAttachTexInfo);
             auto& resolveAttachDesc = renderPassDesc.fColorResolveAttachment;
@@ -390,8 +388,7 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                    /*label=*/"VulkanRenderPass")
         , fSharedContext(context)
         , fRenderPass (renderPass)
-        , fGranularity (granularity) {
-}
+        , fGranularity (granularity) {}
 
 void VulkanRenderPass::freeGpuData() {
     VULKAN_CALL(fSharedContext->interface(),
