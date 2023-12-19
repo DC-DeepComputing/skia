@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a873ba8e_2437d346",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-19T14:50:39Z",
+      "side": 1,
+      "message": "This is very easy to follow. Thanks!",
+      "revId": "dbef09fe976ee81c828c841dd7d6e0c453f6606a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
