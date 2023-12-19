@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "705ef190_369b0b21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-19T16:11:56Z",
+      "side": 1,
+      "message": "When you said there was still corruption, does this CL introduce more corruption than there used to be (in the flush everything all the time state), or does it reduce the amount of flushing while keeping level/chance of corruption same or better (just not 0)?\n\nIf it\u0027s the latter, then I\u0027m happy with +1\u0027ing it.",
+      "parentUuid": "498a507c_23fd5b89",
+      "revId": "99534ac6c42e08cce20278ee872e7f77f0fa5dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c9fc9cf_5f485ce1",
