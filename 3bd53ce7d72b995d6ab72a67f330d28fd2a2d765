@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d7cba6e_d278259b",
+        "filename": "src/sksl/SkSLCompilerUtil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-19T18:14:26Z",
+      "side": 1,
+      "message": "Moving this function pulls in multiple outside dependencies into SkSL (SkShaderUtils, ShaderErrorHandler) and I\u0027m not convinced it\u0027s necessary to do so. It doesn\u0027t inherently require any backend because it takes a function pointer. I get that this arrangement makes sense because the wrapper functions `SkSL::ToGLSL(lots of args)` use it, but I think there\u0027s probably a better factoring hiding here.",
+      "range": {
+        "startLine": 18,
+        "startChar": 5,
+        "endLine": 18,
+        "endChar": 14
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c030dfb_fbd4694f",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-19T18:14:26Z",
+      "side": 1,
+      "message": "I don\u0027t think there\u0027s a reason to keep this in the header any longer, but that\u0027s neither here nor there.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 54
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7360fb7_e9ba1bd6",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-19T18:14:26Z",
+      "side": 1,
+      "message": "Is this actually used anywhere? I know SkSL::Compiler had it, and you\u0027re just copying the pattern, but I don\u0027t know of any callers.",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 48
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "598402fb_384c221a",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-19T18:14:26Z",
+      "side": 1,
+      "message": "I like this. It will need caps bits though.",
+      "range": {
+        "startLine": 223,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 51
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f197bc0a_d5febe60",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-19T18:14:26Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem like it belongs in the code generator.",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 0
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
