@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c16b5d3f_376e4347",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-19T16:39:04Z",
+      "side": 1,
+      "message": "PTAL! I was a silly little goose and set an enum value to 0 which is later used for comparison bitmask ops... so it needs to be !\u003d 0.",
+      "revId": "c3e3529bcab37bfc7457e47cc79d3e2ba88acc74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
