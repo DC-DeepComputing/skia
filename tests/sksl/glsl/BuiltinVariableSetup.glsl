@@ -1,5 +1,4 @@
 #version 400
-uniform vec2 u_skRTFlip;
 in vec4 sk_FragCoord_Workaround;
 out vec4 sk_FragColor;
 vec4 func1_f4() {
