@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "718d3f7f_a39ce5a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2023-12-19T17:07:00Z",
+      "side": 1,
+      "message": "Thanks!  A generic yuv color type makes sense.",
+      "revId": "ffa3ece5b1edf54bf9ea44d9ff479ea2a70817b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09ae1127_21c1c788",
