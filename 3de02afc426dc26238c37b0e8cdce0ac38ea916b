@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6461d440_a6d481c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-19T18:10:56Z",
+      "side": 1,
+      "message": "Looks like Skrifa needs to be rolled in Chromium first.",
+      "revId": "3de02afc426dc26238c37b0e8cdce0ac38ea916b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
