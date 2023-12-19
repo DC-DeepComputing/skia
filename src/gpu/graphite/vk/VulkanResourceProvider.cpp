@@ -98,8 +98,10 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     SkSL::Compiler skslCompiler(fSharedContext->caps()->shaderCaps());
+
     auto compatibleRenderPass =
             this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
+
     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
                                         &skslCompiler,
                                         runtimeDict,
@@ -266,6 +268,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
+    // TODO: update renderpass key w/ load msaa from resolve information
     auto renderPassKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
     if (Resource* resource =
             fResourceCache->findAndRefResource(renderPassKey, skgpu::Budgeted::kYes)) {
