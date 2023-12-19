@@ -16,6 +16,23 @@
       "message": "The newest fuzzer bug is just an OOM, but I had already been thinking that a limit made sense here. Thoughts?",
       "revId": "ef674e2a8f681976a91e224451dcbec17712b81f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27cb02d8_4cff52e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-19T19:43:09Z",
+      "side": 1,
+      "message": "For the intended use in chrome, will it always just be 0,1, or 2 filters (no image filter, regular image filter, and the drop shadow compositing)?\n\nIf that\u0027s the case, I\u0027m fine imposing a limit, since anything beyond a low N will just take forever to render anyways. If there is user-provided content that can list an arbitrary number of filters, then we should push back against the spec.\n\nWe could just update our fuzzer to limit the N it chooses; chrome\u0027s saveLayer parsing is handled separately so a compromised renderer process shouldn\u0027t be able to exploit it anyways.",
+      "revId": "ef674e2a8f681976a91e224451dcbec17712b81f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
