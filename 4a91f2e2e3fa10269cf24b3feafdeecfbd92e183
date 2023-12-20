@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5418ea63_4f1fdc6b",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T19:03:08Z",
+      "side": 1,
+      "message": "Fixed in followup CL http://review.skia.org/792836",
+      "range": {
+        "startLine": 50,
+        "startChar": 7,
+        "endLine": 50,
+        "endChar": 11
+      },
+      "revId": "4a91f2e2e3fa10269cf24b3feafdeecfbd92e183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
