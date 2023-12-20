@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36530de1_a3556964",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "I need to play with this. The _Pragma version didn\u0027t make GCC happy. Looks like the syntax may be slightly different?",
+      "parentUuid": "38593dea_521b4d9c",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ed8362f_46d4d2de",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 13
@@ -71,6 +95,30 @@
       "writtenOn": "2023-12-20T21:30:05Z",
       "side": 1,
       "message": "Idea: I feel like this could/should live alongside `SK_(UN)LIKELY`? That one currently lives in SkAssert.h. Maybe SkMacros.h for all three?\n\n(side note: I didn\u0027t realize C++23 was bringing `[[assume]]`... exciting!)",
+      "range": {
+        "startLine": 38,
+        "startChar": 12,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29d9e53_1c88cda2",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "Done. (In SkAssert.h)",
+      "parentUuid": "9ed8362f_46d4d2de",
       "range": {
         "startLine": 38,
         "startChar": 12,
@@ -106,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "300179b7_f6a21af1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "If we do, the definitions need to be replicated (these functions are inside the per-arch setup). The spot where I put them is basically the first place that gets compiled for all architectures. I debated, and went this way, but I could be swayed.",
+      "parentUuid": "74034218_8d9d1cdc",
+      "range": {
+        "startLine": 564,
+        "startChar": 55,
+        "endLine": 564,
+        "endChar": 71
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "23ddd1b2_e8fd529f",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 13
@@ -117,6 +189,30 @@
       "writtenOn": "2023-12-20T21:47:04Z",
       "side": 1,
       "message": "Better link? (Found in comments of the supplied link)\n\nhttps://stackoverflow.com/questions/48255293/in-ieee-754-why-does-adding-negative-zero-result-in-a-no-op-but-adding-positive",
+      "range": {
+        "startLine": 652,
+        "startChar": 0,
+        "endLine": 652,
+        "endChar": 97
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6137cc93_6c9d9d24",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "Done. (That link still explains the fundamental important thing, and does so with many fewer words).",
+      "parentUuid": "23ddd1b2_e8fd529f",
       "range": {
         "startLine": 652,
         "startChar": 0,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "081cd922_5faeafdb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1365,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "Done. (I removed the asserts, too).",
+      "parentUuid": "82b069bb_b1c807a8",
+      "range": {
+        "startLine": 1361,
+        "startChar": 0,
+        "endLine": 1365,
+        "endChar": 0
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fce5458a_663a6bb4",
@@ -163,6 +283,30 @@
       "writtenOn": "2023-12-20T22:00:03Z",
       "side": 1,
       "message": "These lines are the same on both sides of the `#if` now.",
+      "range": {
+        "startLine": 4233,
+        "startChar": 0,
+        "endLine": 4241,
+        "endChar": 0
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7836218e_7923ff63",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 4241,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fce5458a_663a6bb4",
       "range": {
         "startLine": 4233,
         "startChar": 0,
@@ -196,6 +340,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb80b316_a3511f0f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 4250,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b997bfd6_556f60cc",
+      "range": {
+        "startLine": 4246,
+        "startChar": 0,
+        "endLine": 4250,
+        "endChar": 0
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c0f3437_85f8d0f6",
@@ -209,6 +377,30 @@
       "writtenOn": "2023-12-20T22:00:03Z",
       "side": 1,
       "message": "U32_0",
+      "range": {
+        "startLine": 5412,
+        "startChar": 14,
+        "endLine": 5412,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aac01d5_b03b3991",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 5412,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T22:12:03Z",
+      "side": 1,
+      "message": "I didn\u0027t make a `U32_0` (it\u0027s used very rarely). Want me to add it?",
+      "parentUuid": "8c0f3437_85f8d0f6",
       "range": {
         "startLine": 5412,
         "startChar": 14,
