@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad405de2_852e1000",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-20T18:43:38Z",
+      "side": 1,
+      "message": "nit: There was a Skia thread discussion about migrating away from the use of `auto` (https://chat.google.com/room/AAAAyfyaT2k/LcvS5NEM3cM)\n\nIf you want to keep it anyways, then nit: add a space b/w `auto` and `[`",
+      "range": {
+        "startLine": 697,
+        "startChar": 4,
+        "endLine": 697,
+        "endChar": 43
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fbf74342_9e12682c",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 2
@@ -60,6 +83,52 @@
         "startChar": 8,
         "endLine": 714,
         "endChar": 11
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ced2fa7_f4e109fd",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-20T18:43:38Z",
+      "side": 1,
+      "message": "Is `RGBFormat` clear enough that it\u0027s really trying to determine if it\u0027s specifically *3 channel* RGB? \n\nI\u0027m imagining a scenario where someone is like \"oh, my RGBA format is indeed RGB rather than BGR; so this should be true\" when in reality RGBA formats are 4 channels that don\u0027t require unique handling. Though maybe I\u0027m just overly paranoid :D",
+      "range": {
+        "startLine": 714,
+        "startChar": 14,
+        "endLine": 714,
+        "endChar": 25
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36621cd1_a8d19479",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-20T18:43:38Z",
+      "side": 1,
+      "message": "nit: Fix this comment",
+      "range": {
+        "startLine": 513,
+        "startChar": 18,
+        "endLine": 513,
+        "endChar": 34
       },
       "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
