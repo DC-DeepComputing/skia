@@ -33,6 +33,29 @@
       "message": "FYI: Lee, I\u0027m doing a proper GCC version, rather than the skvx implementation. (Relying on skvx is going to cause all vectors to pass on the stack, making RP code larger and significantly slower. This version will produce performance that\u0027s roughly equal with clang.)",
       "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ed8362f_46d4d2de",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T21:30:05Z",
+      "side": 1,
+      "message": "Idea: I feel like this could/should live alongside `SK_(UN)LIKELY`? That one currently lives in SkAssert.h. Maybe SkMacros.h for all three?\n\n(side note: I didn\u0027t realize C++23 was bringing `[[assume]]`... exciting!)",
+      "range": {
+        "startLine": 38,
+        "startChar": 12,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
