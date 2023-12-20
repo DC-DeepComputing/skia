@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17b41f6c_69f872e8",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T22:21:30Z",
+      "side": 1,
+      "message": "https://stackoverflow.com/a/63769749/291737\n\nIIRC this only really mattered for -Oz where the compiler generated awful code because it refused to fuse work across loop boundaries.",
+      "parentUuid": "36530de1_a3556964",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ed8362f_46d4d2de",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 13
@@ -166,6 +190,30 @@
       "side": 1,
       "message": "If we do, the definitions need to be replicated (these functions are inside the per-arch setup). The spot where I put them is basically the first place that gets compiled for all architectures. I debated, and went this way, but I could be swayed.",
       "parentUuid": "74034218_8d9d1cdc",
+      "range": {
+        "startLine": 564,
+        "startChar": 55,
+        "endLine": 564,
+        "endChar": 71
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de96c8ee_5dd3b21d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T22:21:30Z",
+      "side": 1,
+      "message": "Ack, SGTM",
+      "parentUuid": "300179b7_f6a21af1",
       "range": {
         "startLine": 564,
         "startChar": 55,
@@ -401,6 +449,30 @@
       "side": 1,
       "message": "I didn\u0027t make a `U32_0` (it\u0027s used very rarely). Want me to add it?",
       "parentUuid": "8c0f3437_85f8d0f6",
+      "range": {
+        "startLine": 5412,
+        "startChar": 14,
+        "endLine": 5412,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09ed68ce_718e045b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 5412,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T22:21:30Z",
+      "side": 1,
+      "message": "Never mind, mixed up with U16_0.",
+      "parentUuid": "3aac01d5_b03b3991",
       "range": {
         "startLine": 5412,
         "startChar": 14,
