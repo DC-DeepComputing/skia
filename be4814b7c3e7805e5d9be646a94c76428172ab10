@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dd59071_a3b8f555",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-12-20T12:19:27Z",
+      "side": 1,
+      "message": "Sorry for the trouble, will try to reland after Chromium has rolled Fontations, compare https://chromium-review.googlesource.com/c/chromium/src/+/5139687",
+      "revId": "be4814b7c3e7805e5d9be646a94c76428172ab10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
