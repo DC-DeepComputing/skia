@@ -56,6 +56,75 @@
       },
       "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74034218_8d9d1cdc",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T21:47:04Z",
+      "side": 1,
+      "message": "Can we move F0/F1/F_() up higher?",
+      "range": {
+        "startLine": 564,
+        "startChar": 55,
+        "endLine": 564,
+        "endChar": 71
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23ddd1b2_e8fd529f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T21:47:04Z",
+      "side": 1,
+      "message": "Better link? (Found in comments of the supplied link)\n\nhttps://stackoverflow.com/questions/48255293/in-ieee-754-why-does-adding-negative-zero-result-in-a-no-op-but-adding-positive",
+      "range": {
+        "startLine": 652,
+        "startChar": 0,
+        "endLine": 652,
+        "endChar": 97
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82b069bb_b1c807a8",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1365,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T21:47:04Z",
+      "side": 1,
+      "message": "This block should probably stay in sync? (Get rid of template, use single-line style with duplicated impl for I32/U32)",
+      "range": {
+        "startLine": 1361,
+        "startChar": 0,
+        "endLine": 1365,
+        "endChar": 0
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
