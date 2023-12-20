@@ -148,6 +148,75 @@
       },
       "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce5458a_663a6bb4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 4241,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T22:00:03Z",
+      "side": 1,
+      "message": "These lines are the same on both sides of the `#if` now.",
+      "range": {
+        "startLine": 4233,
+        "startChar": 0,
+        "endLine": 4241,
+        "endChar": 0
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b997bfd6_556f60cc",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 4250,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T22:00:03Z",
+      "side": 1,
+      "message": "Shame that these are duped between the highp and lowp side, but I think that\u0027s unavoidable because the raw types are not the same (they just have the same name % namespace)",
+      "range": {
+        "startLine": 4246,
+        "startChar": 0,
+        "endLine": 4250,
+        "endChar": 0
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c0f3437_85f8d0f6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 5412,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-20T22:00:03Z",
+      "side": 1,
+      "message": "U32_0",
+      "range": {
+        "startLine": 5412,
+        "startChar": 14,
+        "endLine": 5412,
+        "endChar": 21
+      },
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
