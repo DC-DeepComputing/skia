@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c167bda_a422c2f4",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-20T16:49:41Z",
+      "side": 1,
+      "message": "Do we want to also check that the colorAttachment has input attachment support here? Or should that be something checked way higher up before we ever get into this msaa loading?",
+      "range": {
+        "startLine": 388,
+        "startChar": 41,
+        "endLine": 388,
+        "endChar": 53
+      },
+      "revId": "75cec2e15f180d9b0176812a2d3c7fe1f69043fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81c86f7a_7e9eca69",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-20T16:49:41Z",
+      "side": 1,
+      "message": "is it possible to have 1 of these 3 not null but the others null? Could we just check one of them and assert the others match?",
+      "range": {
+        "startLine": 393,
+        "startChar": 8,
+        "endLine": 393,
+        "endChar": 33
+      },
+      "revId": "75cec2e15f180d9b0176812a2d3c7fe1f69043fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
