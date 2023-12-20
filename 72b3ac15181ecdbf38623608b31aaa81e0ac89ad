@@ -16,6 +16,29 @@
       "message": "please don\u0027t cringe too much at this masterpiece of pure ugliness",
       "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbf74342_9e12682c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T18:15:57Z",
+      "side": 1,
+      "message": "nit: `bpp`",
+      "range": {
+        "startLine": 714,
+        "startChar": 8,
+        "endLine": 714,
+        "endChar": 11
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
