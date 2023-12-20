@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e0a3324_78a530d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-20T21:07:24Z",
+      "side": 1,
+      "message": "This is giant, and I\u0027m in no rush to land it this year, but if you want to start taking a look, that would be cool.\n\nI verified that GCC passes all CPU unit tests with the new code, and gcc/clang produce bit-identical results for every GM in both rgba and bgra configs.",
+      "revId": "fd43e8547c80dca1790c3eb2b1c390904c198cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
