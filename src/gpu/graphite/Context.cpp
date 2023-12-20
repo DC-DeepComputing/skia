@@ -17,6 +17,7 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/base/SkRectMemcpy.h"
+#include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkYUVMath.h"
@@ -693,7 +694,7 @@ Context::PixelTransferResult Context::transferPixels(const TextureProxy* proxy,
     SkASSERT(srcImageInfo.bounds().contains(srcRect));
 
     const Caps* caps = fSharedContext->caps();
-    SkColorType supportedColorType =
+    auto[supportedColorType, isRGBFormat] =
             caps->supportedReadPixelsColorType(srcImageInfo.colorType(),
                                                proxy->textureInfo(),
                                                dstColorInfo.colorType());
@@ -710,8 +711,8 @@ Context::PixelTransferResult Context::transferPixels(const TextureProxy* proxy,
         return {};
     }
 
-    size_t rowBytes = caps->getAlignedTextureDataRowBytes(
-                              SkColorTypeBytesPerPixel(supportedColorType) * srcRect.width());
+    int bbp = isRGBFormat ? 3 : SkColorTypeBytesPerPixel(supportedColorType);
+    size_t rowBytes = caps->getAlignedTextureDataRowBytes(bbp * srcRect.width());
     size_t size = SkAlignTo(rowBytes * srcRect.height(), caps->requiredTransferBufferAlignment());
     sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(
             size, BufferType::kXferGpuToCpu, AccessPattern::kHostVisible);
@@ -737,15 +738,33 @@ Context::PixelTransferResult Context::transferPixels(const TextureProxy* proxy,
     PixelTransferResult result;
     result.fTransferBuffer = std::move(buffer);
     result.fSize = srcRect.size();
-    if (srcImageInfo.colorInfo() != dstColorInfo) {
+    if (srcImageInfo.colorInfo() != dstColorInfo || isRGBFormat) {
         SkISize dims = srcRect.size();
         SkImageInfo srcInfo = SkImageInfo::Make(dims, srcImageInfo.colorInfo());
         SkImageInfo dstInfo = SkImageInfo::Make(dims, dstColorInfo);
         result.fRowBytes = dstInfo.minRowBytes();
-        result.fPixelConverter = [dstInfo, srcInfo, rowBytes](
+        result.fPixelConverter = [dstInfo, srcInfo, rowBytes, innerIsRGBFormat = isRGBFormat](
                 void* dst, const void* src) {
+            SkAutoPixmapStorage temp;
+            size_t srcRowBytes = rowBytes;
+            if (innerIsRGBFormat) {
+                temp.alloc(srcInfo);
+                size_t tRowBytes = temp.rowBytes();
+                auto* sRow = reinterpret_cast<const char*>(src);
+                auto* tRow = reinterpret_cast<char*>(temp.writable_addr());
+                for (int y = 0; y < srcInfo.height(); ++y, sRow += srcRowBytes, tRow += tRowBytes) {
+                    for (int x = 0; x < srcInfo.width(); ++x) {
+                        auto s = sRow + x*3;
+                        auto t = tRow + x*sizeof(uint32_t);
+                        memcpy(t, s, 3);
+                        t[3] = static_cast<char>(0xFF);
+                    }
+                }
+                src = temp.addr();
+                srcRowBytes = tRowBytes;
+            }
             SkAssertResult(SkConvertPixels(dstInfo, dst, dstInfo.minRowBytes(),
-                                           srcInfo, src, rowBytes));
+                                           srcInfo, src, srcRowBytes));
         };
     } else {
         result.fRowBytes = rowBytes;

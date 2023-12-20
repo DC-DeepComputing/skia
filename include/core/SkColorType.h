@@ -17,7 +17,7 @@
     lead to inconsistent results across platforms, so use with caution.
 */
 enum SkColorType : int {
-    kUnknown_SkColorType,      //!< uninitialized
+    kUnknown_SkColorType,      //!< uninitializedkRGB_888x_SkColorType
     kAlpha_8_SkColorType,      //!< pixel with alpha in 8-bit byte
     kRGB_565_SkColorType,      //!< pixel with 5 bits red, 6 bits green, 5 bits blue, in 16-bit word
     kARGB_4444_SkColorType,    //!< pixel with 4 bits for alpha, red, green, blue; in 16-bit word
