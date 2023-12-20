@@ -11,6 +11,7 @@ filegroup(
     name = "gm_subset",
     srcs = [
         "bitmaprect.cpp",
+        "colrv1.cpp",
         "fontations.cpp",
     ],
     visibility = ["//tools/viewer:__pkg__"],
@@ -136,7 +137,7 @@ CPU_GMS = [
     # "colormatrix.cpp",
     # "colorspace.cpp",
     # "colorwheel.cpp",
-    # "colrv1.cpp",
+    "colrv1.cpp",
     # "complexclip2.cpp",
     # "complexclip3.cpp",
     # "complexclip4.cpp",
