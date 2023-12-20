@@ -243,6 +243,7 @@ private:
     // TODO: Move this into a RendererSelector object provided by the Context.
     std::pair<const Renderer*, PathAtlas*> chooseRenderer(const Transform& localToDevice,
                                                           const Geometry&,
+                                                          const SkPaint&,
                                                           const SkStrokeRec&,
                                                           bool requireMSAA) const;
 

@@ -914,7 +914,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // TODO: Some renderer decisions could depend on the clip (see PathAtlas::addShape for
     // one workaround) so we should figure out how to remove this circular dependency.
     auto [renderer, pathAtlas] =
-            this->chooseRenderer(localToDevice, geometry, style, /*requireMSAA=*/false);
+            this->chooseRenderer(localToDevice, geometry, paint, style, /*requireMSAA=*/false);
     if (!renderer) {
         SKGPU_LOG_W("Skipping draw with no supported renderer.");
         return;
@@ -1096,6 +1096,7 @@ void Device::drawClipShape(const Transform& localToDevice,
     Geometry geometry{shape};
     auto [renderer, pathAtlas] = this->chooseRenderer(localToDevice,
                                                       geometry,
+                                                      SkPaint(),
                                                       DefaultFillStyle(),
                                                       /*requireMSAA=*/true);
     if (!renderer) {
@@ -1137,6 +1138,7 @@ void Device::drawClipShape(const Transform& localToDevice,
 // be the case, in which case chooseRenderer() will have to go through compatible choices.
 std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& localToDevice,
                                                               const Geometry& geometry,
+                                                              const SkPaint& paint,
                                                               const SkStrokeRec& style,
                                                               bool requireMSAA) const {
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
@@ -1185,7 +1187,18 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     if (!requireMSAA && is_simple_shape(shape, type) &&
         (strategy == PathRendererStrategy::kDefault ||
          strategy == PathRendererStrategy::kRasterAA)) {
-        return {renderers->analyticRRect(), nullptr};
+        bool isRectClear = shape.isRect();
+        // isRectClear &= paint.getColor() == SK_ColorTRANSPARENT;
+        // isRectClear &= paint.getShader() == nullptr;
+        // isRectClear &= paint.getColorFilter() == nullptr;
+        // isRectClear &= paint.getBlender() == nullptr;
+        // isRectClear &= paint.getPathEffect() == nullptr;
+        // isRectClear &= paint.getMaskFilter() == nullptr;
+        // isRectClear &= paint.getImageFilter() == nullptr;
+        //isRectClear &= paint.isSrcOver();
+        // isRectClear &= paint.getStyle() == SkPaint::kFill_Style;
+        // fprintf(stderr, "isRectClear:%d.\n", isRectClear);
+        return {isRectClear ? renderers->rectClear() : renderers->analyticRRect(), nullptr};
     }
 
     PathAtlas* pathAtlas = nullptr;
