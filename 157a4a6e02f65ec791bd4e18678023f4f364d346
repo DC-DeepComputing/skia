@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea0e44b_6f7d8bf0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-12-21T10:44:22Z",
+      "side": 1,
+      "message": "Requires https://chromium-review.googlesource.com/c/chromium/src/+/5144190 to be landed before landing in Skia.",
+      "revId": "157a4a6e02f65ec791bd4e18678023f4f364d346",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
