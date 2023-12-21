@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bf043a74_9e3f7e09",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T15:16:49Z",
+      "side": 1,
+      "message": "This is just because the Android NDK is out of date, right? We should probably explain that in a comment; a future reader might think there is a real reason why Android doesn\u0027t want this change.",
+      "range": {
+        "startLine": 471,
+        "startChar": 9,
+        "endLine": 471,
+        "endChar": 19
+      },
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76cc117d_99ec8d67",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 1
@@ -14,6 +37,24 @@
       "writtenOn": "2023-12-21T15:06:32Z",
       "side": 1,
       "message": "Is this the right fix here? Normal integer promotion can\u0027t apply (eg, switch to `int`, because we\u0027re using 16-bit lanes). I suspect it makes no difference, because all of the SIMD arithmetic is going to wrap? Right?",
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7572f5ba_e88afcd4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4559,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T15:16:49Z",
+      "side": 1,
+      "message": "The result is a U16, so computing it as U16+U16 makes more sense than I16+I16. \nFrom a bitwise perspective it makes no difference; all roads lead to `_mm_add_epi16`.",
+      "parentUuid": "76cc117d_99ec8d67",
       "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
