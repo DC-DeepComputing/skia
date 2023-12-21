@@ -10,16 +10,21 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#include "include/ports/SkTypeface_fontations.h"
+// #include "include/ports/SkFontMgr_empty.h"
 
 #include <string.h>
 #include <initializer_list>
@@ -27,12 +32,33 @@
 namespace skiagm {
 
 namespace {
-const SkScalar kTextSizes[] = {12, 18, 30, 120};
+enum TypefaceBackend { UseDefault, UseFontations, UseFreeType };
+
+template <TypefaceBackend variant> sk_sp<SkTypeface> MakeTypefaceFromResource(const char* resource);
+
+/* template <> sk_sp<SkTypeface> MakeTypefaceFromResource<UseDefault>(const char* resource) {
+    return ToolUtils::CreateTypefaceFromResource(resource, 0);
+} */
+
+/* template <> sk_sp<SkTypeface> MakeTypefaceFromResource<UseFreeType>(const char* resource) {
+    std::unique_ptr<SkStreamAsset> resourceStream(GetResourceAsStream(resource, false));
+    return SkFontMgr_New_Custom_Empty()->makeFromStream(std::move(resourceStream), 0);
+} */
+
+template <> sk_sp<SkTypeface> MakeTypefaceFromResource<UseFontations>(const char* resource) {
+    std::unique_ptr<SkStreamAsset> resourceStream(GetResourceAsStream(resource, false));
+    return SkTypeface_Make_Fontations(std::move(resourceStream), SkFontArguments());
+}
+
+}  // namespace
+
+namespace {
+const SkScalar kTextSizes[] = {/* 12, 18, 30,  */120};
 const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
 const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 const SkScalar xWidth = 1200;
 const SkScalar xTranslate = 200;
-}
+}  // namespace
 
 class ColrV1GM : public GM {
 public:
@@ -42,10 +68,7 @@ public:
              SkScalar rotateDeg,
              std::initializer_list<SkFontArguments::VariationPosition::Coordinate>
                      specifiedVariations)
-            : fTestName(testName)
-            , fCodepoints(codepoints)
-            , fSkewX(skewX)
-            , fRotateDeg(rotateDeg) {
+            : fTestName(testName), fCodepoints(codepoints), fSkewX(skewX), fRotateDeg(rotateDeg) {
         fVariationPosition.coordinateCount = specifiedVariations.size();
         fCoordinates = std::make_unique<SkFontArguments::VariationPosition::Coordinate[]>(
                 specifiedVariations.size());
@@ -58,10 +81,12 @@ public:
 
 protected:
     void onOnceBeforeDraw() override {
+        constexpr auto backend = TypefaceBackend::UseFontations;
+        // auto backend = TypefaceBackend::UseFontations;
         if (fVariationPosition.coordinateCount) {
-            fTypeface = ToolUtils::CreateTypefaceFromResource(kTestFontNameVariable);
+            fTypeface = MakeTypefaceFromResource<backend>(kTestFontNameVariable);
         } else {
-            fTypeface = ToolUtils::CreateTypefaceFromResource(kTestFontName);
+            fTypeface = MakeTypefaceFromResource<backend>(kTestFontName);
         }
         fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }
@@ -211,6 +236,7 @@ const uint32_t foreground_color[] = {
 const uint32_t clipbox[] = {0xf0c00, 0xf0c01, 0xf0c02, 0xf0c03, 0xf0c04};
 const uint32_t gradient_p2_skewed[] = {0xf0d00};
 const uint32_t variable_alpha[] = {0xf1000};
+const uint32_t paintcolrglyph_cycle[] = { 0xf1100, 0xf1101 };
 const uint32_t sweep_coincident[] = { 0xf1300, 0xf1301, 0xf1302, 0xf1303, 0xf1304, 0xf1305,
                                       0xf1306, 0xf1307, 0xf1308, 0xf1309, 0xf130a, 0xf130b,
                                       0xf130c, 0xf130d, 0xf130e, 0xf130f, 0xf1310, 0xf1311,
@@ -304,6 +330,7 @@ DEF_GM(return F(C(sweep_varsweep),
 DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {}))
 DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {{"APH1"_t, -0.7f}}))
 DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {{"APH2"_t, -0.7f}, {"APH3"_t, -0.2f}}))
+DEF_GM(return F(C(paintcolrglyph_cycle),   0.0f,  0.0f, {}))
 DEF_GM(return F(C(sweep_coincident),       0.0f,  0.0f, {}))
 
 }  // namespace skiagm
