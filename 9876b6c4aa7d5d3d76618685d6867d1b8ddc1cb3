@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b85f33_e593f689",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T21:45:40Z",
+      "side": 1,
+      "message": "Thanks for the comments so far John, I definitely want the comments to be as clear as possible.\n\nI\u0027ve added some more reviewer notes for now.",
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d70dea5f_66c831b6",

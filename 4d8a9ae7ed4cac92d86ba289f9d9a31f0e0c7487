@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ee63511_5046a2e0",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T21:45:40Z",
+      "side": 0,
+      "message": "This is the only type conversion that the new implementation has to worry about and is handled by a `bool Half` template parameter in the `write`, `writeArray`, and `LayoutTraits::Copy` functions. In addition, I added an optimization for the `N\u003d4` case to use the vectorized float to half conversion.",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 19
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3782041f_a8d992b5",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T21:45:40Z",
+      "side": 0,
+      "message": "Now that shorts aren\u0027t going to be supported, this type conversion doesn\u0027t need to be carried forward into the new implementation.",
+      "range": {
+        "startLine": 183,
+        "startChar": 8,
+        "endLine": 192,
+        "endChar": 9
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058f8c4d_eb6678d0",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T21:45:40Z",
+      "side": 0,
+      "message": "In the new implementation, arrays of dense types that don\u0027t undergo type conversion are able to be copied in their entirety. In particular, this means a 4x4 matrix is 1 16-element write instead of 4 4-element writes, and arrays of vec4s (e.g. for gradients) are a single memcpy.",
+      "range": {
+        "startLine": 209,
+        "startChar": 16,
+        "endLine": 213,
+        "endChar": 17
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc8f9f16_ae036d37",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T21:45:40Z",
+      "side": 0,
+      "message": "The new implementation doesn\u0027t expose a way to write to a `float3x3[n]` so the only SkMatrix handling is for single uniforms. It will be easy to add support if we need it (seems unlikely).",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 75
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
