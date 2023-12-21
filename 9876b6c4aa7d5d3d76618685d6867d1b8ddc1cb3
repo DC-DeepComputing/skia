@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d70dea5f_66c831b6",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:33:26Z",
+      "side": 1,
+      "message": "Tiny grammar nit: I\u0027m not sure what subject is being \"matched\" here; a complete sentence would reduce ambiguity",
+      "range": {
+        "startLine": 90,
+        "startChar": 71,
+        "endLine": 90,
+        "endChar": 79
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "075201cd_a58b943d",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:33:26Z",
+      "side": 1,
+      "message": "Consider moving this sentence to the previous sentence after the sentence about Metal. I actually wrote a nit mentioning this, since I finished the last paragraph and thought it was odd that WebGPU was left out. (Nit now discarded.)",
+      "range": {
+        "startLine": 101,
+        "startChar": 29,
+        "endLine": 102,
+        "endChar": 38
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3657a1d2_525da691",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:33:26Z",
+      "side": 1,
+      "message": "Even in vertex attributes, the types aren\u0027t _really_ supported--they allow packing 2x16 or 4x8 values into one u32 attribute, but you can\u0027t pass them individually, and WGSL has no small-int support; those types show up in the shader as u32/i32.",
+      "range": {
+        "startLine": 105,
+        "startChar": 52,
+        "endLine": 105,
+        "endChar": 79
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659fbd9e_11b01001",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:33:26Z",
+      "side": 1,
+      "message": "is",
+      "range": {
+        "startLine": 114,
+        "startChar": 33,
+        "endLine": 114,
+        "endChar": 35
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
