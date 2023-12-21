@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a3dacc3_5d136cd1",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-12-21T16:38:03Z",
+      "side": 1,
+      "message": "Font had already been updated in https://skia-review.googlesource.com/c/skia/+/790456",
+      "revId": "3bfb3dd60de74005e8dee7f723f0981f12d093af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
