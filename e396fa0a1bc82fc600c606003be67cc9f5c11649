@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "226a73d7_cb2514a8",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-21T15:43:41Z",
+      "side": 1,
+      "message": "Done. (And confirmed by building locally with the latest NDK that the errors are fixed. I also went ahead and fixed the NEON issues in this file that show up, so that will hopefully fix any Apple-silicon Mac problems).",
+      "parentUuid": "bf043a74_9e3f7e09",
+      "range": {
+        "startLine": 471,
+        "startChar": 9,
+        "endLine": 471,
+        "endChar": 19
+      },
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76cc117d_99ec8d67",
@@ -59,6 +83,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cc2b024_c37034b6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4559,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-21T15:43:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7572f5ba_e88afcd4",
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b7f4479_d8d674ec",
@@ -72,6 +114,24 @@
       "writtenOn": "2023-12-21T15:06:32Z",
       "side": 1,
       "message": "Same question here.",
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d38e98e6_02eab7e9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 5434,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-21T15:43:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7b7f4479_d8d674ec",
       "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
