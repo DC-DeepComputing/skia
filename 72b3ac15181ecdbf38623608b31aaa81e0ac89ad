@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab04892e_2e4e6475",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-21T14:36:16Z",
+      "side": 1,
+      "message": "I updated this to use tie. Often I try to avoid using tie because it ends up looking really ugly depending on what types your are returning and how easy it is to declare a default one. The only other way is to use auto. But in this case it stays fairly clean even with tie (and avoids the need for a value copy in lambda) so switching is fine here.",
+      "parentUuid": "ad405de2_852e1000",
+      "range": {
+        "startLine": 697,
+        "startChar": 4,
+        "endLine": 697,
+        "endChar": 43
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fbf74342_9e12682c",
@@ -113,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fba24fbc_ad813783",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-21T14:36:16Z",
+      "side": 1,
+      "message": "I added 888 to the name. I think saying RGB888 is obvious enough what this is trying to to mean.",
+      "parentUuid": "1ced2fa7_f4e109fd",
+      "range": {
+        "startLine": 714,
+        "startChar": 14,
+        "endLine": 714,
+        "endChar": 25
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36621cd1_a8d19479",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 2
@@ -124,6 +172,30 @@
       "writtenOn": "2023-12-20T18:43:38Z",
       "side": 1,
       "message": "nit: Fix this comment",
+      "range": {
+        "startLine": 513,
+        "startChar": 18,
+        "endLine": 513,
+        "endChar": 34
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6db97120_0baf43f7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-21T14:36:16Z",
+      "side": 1,
+      "message": "Not sure what exactly you meant by fix since it was technically correct before. But I added more detail and context to hopefully make it clearer.",
+      "parentUuid": "36621cd1_a8d19479",
       "range": {
         "startLine": 513,
         "startChar": 18,
