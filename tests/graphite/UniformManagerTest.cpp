@@ -20,6 +20,16 @@ static constexpr Layout kLayouts[] = {
         Layout::kMetal,
 };
 
+static const char* LayoutString(Layout layout) {
+    switch(layout) {
+        case Layout::kStd140:  return "std140";
+        case Layout::kStd430:  return "std430";
+        case Layout::kMetal:   return "metal";
+        case Layout::kInvalid: return "invalid";
+    }
+    SkUNREACHABLE;
+}
+
 // This list excludes SkSLTypes that we don't support in uniforms, like Bool, UInt or UShort.
 static constexpr SkSLType kTypes[] = {
         SkSLType::kFloat,    SkSLType::kFloat2,   SkSLType::kFloat3,   SkSLType::kFloat4,   //
@@ -60,7 +70,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckSingleUniform, r, CtsEnforcement::kNextRele
             mgr.setExpectedUniforms(SkSpan(expectations));
             mgr.write(expectations[0], kFloats);
             mgr.doneWithExpectedUniforms();
-            REPORTER_ASSERT(r, mgr.size() > 0);
+            REPORTER_ASSERT(r, mgr.size() > 0, "Layout: %s - Type: %s",
+                            LayoutString(layout), SkSLTypeString(type));
             mgr.reset();
         }
     }
@@ -90,8 +101,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckFloatEncoding, r, CtsEnforcement::kNextRele
             const void* validData = (elementSize == 4) ? (const void*)kFloats : (const void*)kHalfs;
             REPORTER_ASSERT(r, uniformData.size() >= vecLength * elementSize);
             REPORTER_ASSERT(r, 0 == memcmp(validData, uniformData.data(), vecLength * elementSize),
-                            "Layout: %d - Type: %s float encoding failed",
-                            (int)layout, SkSLTypeString(type));
+                            "Layout: %s - Type: %s float encoding failed",
+                            LayoutString(layout), SkSLTypeString(type));
             mgr.reset();
         }
     }
@@ -119,8 +130,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckIntEncoding, r, CtsEnforcement::kNextReleas
             size_t elementSize = element_size(layout, type);
             REPORTER_ASSERT(r, uniformData.size() >= vecLength * elementSize);
             REPORTER_ASSERT(r, 0 == memcmp(kInts, uniformData.data(), vecLength * elementSize),
-                            "Layout: %d - Type: %s int encoding failed",
-                            (int)layout, SkSLTypeString(type));
+                            "Layout: %s - Type: %s int encoding failed",
+                            LayoutString(layout), SkSLTypeString(type));
             mgr.reset();
         }
     }
@@ -151,8 +162,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckScalarVectorPacking, r, CtsEnforcement::kNe
             // Vec3s must be laid out as if they were vec4s.
             size_t effectiveVecLength = (vecLength == 3) ? 4 : vecLength;
             REPORTER_ASSERT(r, uniformData.size() == elementSize * effectiveVecLength * 3,
-                            "Layout: %d - Type: %s tight packing failed",
-                            (int)layout, SkSLTypeString(type));
+                            "Layout: %s - Type: %s tight packing failed",
+                            LayoutString(layout), SkSLTypeString(type));
             mgr.reset();
         }
     }
@@ -191,8 +202,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckMatrixPacking, r, CtsEnforcement::kNextRele
                 numElements = matrixSize * matrixSize;
             }
             REPORTER_ASSERT(r, uniformData.size() == elementSize * numElements * 3,
-                            "Layout: %d - Type: %s matrix packing failed",
-                            (int)layout, SkSLTypeString(type));
+                            "Layout: %s - Type: %s matrix packing failed",
+                            LayoutString(layout), SkSLTypeString(type));
             mgr.reset();
         }
     }
@@ -242,8 +253,9 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingScalarVector, r, CtsEnforcement::kNe
                                         elementSize1;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Layout: %d - Types: %s, %s padding test failed",
-                                    (int)layout, SkSLTypeString(type1), SkSLTypeString(type2));
+                                    "Layout: %s - Types: %s, %s padding test failed",
+                                    LayoutString(layout),
+                                    SkSLTypeString(type1), SkSLTypeString(type2));
                 } else if (elementSize1 == 2 && elementSize2 == 4) {
                     // Elements in the array below correspond to 16 bits apiece.
                     // The expected uniform layout is listed as strings below.
@@ -260,8 +272,9 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingScalarVector, r, CtsEnforcement::kNe
                     const size_t size = strlen(kExpectedLayout[vecLength1][vecLength2]) * 2;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Layout: %d - Types: %s, %s padding test failed",
-                                    (int)layout, SkSLTypeString(type1), SkSLTypeString(type2));
+                                    "Layout: %s - Types: %s, %s padding test failed",
+                                    LayoutString(layout),
+                                    SkSLTypeString(type1), SkSLTypeString(type2));
                 } else if (elementSize1 == 4 && elementSize2 == 2) {
                     // Elements in the array below correspond to 16 bits apiece.
                     // The expected uniform layout is listed as strings below.
@@ -286,8 +299,9 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingScalarVector, r, CtsEnforcement::kNe
                     const size_t size = strlen(kExpectedLayout[vecLength1][vecLength2]) * 2;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Layout: %d - Types: %s, %s padding test failed",
-                                    (int)layout, SkSLTypeString(type1), SkSLTypeString(type2));
+                                    "Layout: %s - Types: %s, %s padding test failed",
+                                    LayoutString(layout),
+                                    SkSLTypeString(type1), SkSLTypeString(type2));
                 } else {
                     ERRORF(r, "Unexpected element sizes: %zu %zu", elementSize1, elementSize2);
                 }
@@ -353,7 +367,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingVectorMatrix, r, CtsEnforcement::kNe
                                         elementSize1;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Types: %s, %s vector-matrix padding test failed",
+                                    "Layout: %s - Types: %s, %s vector-matrix padding test failed",
+                                    LayoutString(layout),
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 } else if (elementSize1 == 2 && elementSize2 == 4) {
                     // Elements in the array below correspond to 16 bits apiece.
@@ -383,7 +398,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingVectorMatrix, r, CtsEnforcement::kNe
                     const size_t size = strlen(kExpectedLayout[vecLength1][matSize2]) * 2;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Types: %s, %s vector-matrix padding test failed",
+                                    "Layout: %s - Types: %s, %s vector-matrix padding test failed",
+                                    LayoutString(layout),
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 } else if (elementSize1 == 4 && elementSize2 == 2) {
                     // Elements in the array below correspond to 16 bits apiece.
@@ -407,7 +423,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingVectorMatrix, r, CtsEnforcement::kNe
                     const size_t size = strlen(kExpectedLayout[vecLength1][matSize2]) * 2;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Types: %s, %s vector-matrix padding test failed",
+                                    "Layout: %s - Types: %s, %s vector-matrix padding test failed",
+                                    LayoutString(layout),
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 }
                 mgr.reset();
@@ -488,7 +505,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingMatrixVector, r, CtsEnforcement::kNe
                                         elementSize1;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Types: %s, %s matrix-vector padding test failed",
+                                    "Layout: %s - Types: %s, %s matrix-vector padding test failed",
+                                    LayoutString(layout),
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 } else if (elementSize1 == 2 && elementSize2 == 4) {
                     // Elements in the array below correspond to 16 bits apiece.
@@ -514,7 +532,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingMatrixVector, r, CtsEnforcement::kNe
                     const size_t size = strlen(kExpectedLayout[matSize1][vecLength2]) * 2;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Types: %s, %s matrix-vector padding test failed",
+                                    "Layout: %s - Types: %s, %s matrix-vector padding test failed",
+                                    LayoutString(layout),
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 } else if (elementSize1 == 4 && elementSize2 == 2) {
                     // Elements in the array below correspond to 16 bits apiece.
@@ -540,7 +559,8 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingMatrixVector, r, CtsEnforcement::kNe
                     const size_t size = strlen(kExpectedLayout[matSize1][vecLength2]) * 2;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
-                                    "Types: %s, %s matrix-vector padding test failed",
+                                    "Layout: %s - Types: %s, %s matrix-vector padding test failed",
+                                    LayoutString(layout),
                                     SkSLTypeString(type1), SkSLTypeString(type2));
                 }
                 mgr.reset();
