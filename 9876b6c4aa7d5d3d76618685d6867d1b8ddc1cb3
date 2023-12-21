@@ -158,6 +158,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adc03e82_220941a7",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T21:53:35Z",
+      "side": 1,
+      "message": "It\u0027s ignored by the GPU when evaluating, but we hash the contents of the uniforms to de-duplicate / share bindings for UBOs (or indices for SSBOs). In this case we need the padding to be stable.",
+      "parentUuid": "388fd269_d5507661",
+      "range": {
+        "startLine": 118,
+        "startChar": 31,
+        "endLine": 118,
+        "endChar": 50
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b8f39e4_9ebbe63c",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 5
