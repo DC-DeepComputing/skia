@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "801c184c_d68e4f6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-12-21T16:07:56Z",
+      "side": 1,
+      "message": "Lgtm, though we may need to wait a while until the CQ works again.",
+      "revId": "6897e52d3bd467329422d729b21459dfcc2e2423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
