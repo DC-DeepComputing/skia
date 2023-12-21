@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1106b345_67986253",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-12-21T20:04:31Z",
+      "side": 1,
+      "message": "These tests had bad expectations. In std140, a 2x2 matrix is still aligned on 16 bytes, so the required alignment should be 16.\n\nIn the old UniformManager code, the helper function `sksltype_to_alignment_mask` did not account for std140\u0027s conservative array alignment. For actual offset calculations, the layout was checked before calling `sksltype_to_alignment_mask` inside `get_ubo_aligned_offset` to switch to querying alignment for `kFloat4`. However, the required alignment was updated in `writeInternal` by just calling `sksltype_to_alignment_mask`.",
+      "range": {
+        "startLine": 481,
+        "startChar": 35,
+        "endLine": 481,
+        "endChar": 47
+      },
+      "revId": "ccad7ab9d7458ba69cd2a7907fced87c9fea1eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
