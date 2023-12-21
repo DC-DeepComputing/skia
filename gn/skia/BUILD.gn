@@ -468,6 +468,11 @@ config("warnings") {
       "-Wno-weak-template-vtables",
     ]
 
+    if (!is_android) {
+      # Gives us behavior closer to GCC's default. See also: https://crbug.com/1042470
+      cflags += [ "-fno-lax-vector-conversions" ]
+    }
+
     if (target_cpu == "arm" && is_ios) {
       # Clang seems to think new/malloc will only be 4-byte aligned on 32-bit iOS.
       # We're pretty sure it's actually 8-byte alignment.
