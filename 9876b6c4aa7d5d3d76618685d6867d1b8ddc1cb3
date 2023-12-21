@@ -501,6 +501,29 @@
       },
       "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac024079_cb3c0720",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T22:53:39Z",
+      "side": 1,
+      "message": "Could we always use `skvx::Vec\u003cN,float\u003e` instead of just for `float4`? This seems a lot nicer and skvx should support any N here (although perhaps only using scalars for N\u003c4).\n\nI think the only reason I used `SkFloatToHalf` originally was that I didn\u0027t realize `skvx` exposed conversion to half.",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 60
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
