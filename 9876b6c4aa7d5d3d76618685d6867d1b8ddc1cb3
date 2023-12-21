@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41f0bc54_f61025be",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T23:01:18Z",
+      "side": 1,
+      "message": "Apparently the UBO matrix rules are not entirely identical?\n\nhttps://chat.google.com/room/AAAATWNUeXA/kUc7v2v9MF0",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 46
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d70dea5f_66c831b6",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 5
