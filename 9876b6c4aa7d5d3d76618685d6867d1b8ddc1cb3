@@ -455,6 +455,52 @@
       },
       "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a7a3424_ef1bf752",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T22:48:16Z",
+      "side": 1,
+      "message": "Pretty sure this is a no-op in this position and can be removed; `inline` (confusingly) is now about linkage, not the inliner. If you think this isn\u0027t being inlined but ought to be, we could copy this macro from Chrome: https://chromium.googlesource.com/chromium/src/base/+/master/compiler_specific.h#63\n\nWe have very similar needs in Raster Pipeline and elsewhere so maybe it\u0027s time for a shared `SK_ALWAYS_INLINE`. (We have `SI` in SkRasterPipeline_opts.h)\n\nOr, we could just use `[[clang::always_inline]]` here since we don\u0027t really care much about winning benchmarks in GCC anyway.",
+      "range": {
+        "startLine": 322,
+        "startChar": 4,
+        "endLine": 322,
+        "endChar": 10
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b88887_bbb25153",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T22:48:16Z",
+      "side": 1,
+      "message": "Access specifiers shouldn\u0027t be in a `#if` block. If someone later comes in and adds new code to the end of the class, it will have a different access level in debug and release. Maybe two `#ifdef` blocks instead?",
+      "range": {
+        "startLine": 339,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 7
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
