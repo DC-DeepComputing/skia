@@ -16,6 +16,24 @@
       "message": "If only I could guess the contents of the next CL I\u0027d have to review. :P",
       "revId": "a1436938236c4fde819ca380dd7355157c474c84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c9f2ff_f37b67da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T18:06:34Z",
+      "side": 1,
+      "message": "Challenge accepted http://review.skia.org/793318",
+      "parentUuid": "f07f4a67_40ce47d6",
+      "revId": "a1436938236c4fde819ca380dd7355157c474c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
