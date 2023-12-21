@@ -125,26 +125,6 @@ public:
                                             std::string text,
                                             ProgramSettings settings);
 
-    bool toSPIRV(Program& program, const ShaderCaps* caps, OutputStream& out);
-
-    bool toSPIRV(Program& program, const ShaderCaps* caps, std::string* out);
-
-    bool toGLSL(Program& program, const ShaderCaps* caps, OutputStream& out);
-
-    bool toGLSL(Program& program, const ShaderCaps* caps, std::string* out);
-
-    bool toHLSL(Program& program, const ShaderCaps* caps, OutputStream& out);
-
-    bool toHLSL(Program& program, const ShaderCaps* caps, std::string* out);
-
-    bool toMetal(Program& program, const ShaderCaps* caps, OutputStream& out);
-
-    bool toMetal(Program& program, const ShaderCaps* caps, std::string* out);
-
-    bool toWGSL(Program& program, const ShaderCaps* caps, OutputStream& out);
-
-    bool toWGSL(Program& program, const ShaderCaps* caps, std::string* out);
-
     void handleError(std::string_view msg, Position pos);
 
     std::string errorText(bool showCount = true);
