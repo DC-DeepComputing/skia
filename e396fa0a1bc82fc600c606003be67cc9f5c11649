@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "762eb35e_f5b324b9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-21T16:17:39Z",
+      "side": 1,
+      "message": "I think I got here incrementally. It\u0027s the only spot where we\u0027re treating an `I32` or `U32` as a float vector for an intrinsic. So it feels like a double-conversion, but it also works with a direct cast to `__m256`, so I switched it to that.",
+      "parentUuid": "e18a9579_0a3b0fa4",
+      "range": {
+        "startLine": 338,
+        "startChar": 38,
+        "endLine": 338,
+        "endChar": 69
+      },
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06ec156b_13e75235",
@@ -84,6 +108,30 @@
       "writtenOn": "2023-12-21T15:50:47Z",
       "side": 1,
       "message": "We\u0027ll need to find a way to pack the comments in tight!",
+      "range": {
+        "startLine": 453,
+        "startChar": 84,
+        "endLine": 453,
+        "endChar": 85
+      },
+      "revId": "e396fa0a1bc82fc600c606003be67cc9f5c11649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62990d0e_62af1c46",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-12-21T16:17:39Z",
+      "side": 1,
+      "message": "Yeah, I had played with this earlier and didn\u0027t find anything I liked. Realized I can (should) switch the result cast, then just trimmed a tiny bit of whitespace from the comments. Ugly, but it fits!",
+      "parentUuid": "06ec156b_13e75235",
       "range": {
         "startLine": 453,
         "startChar": 84,
