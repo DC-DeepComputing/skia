@@ -108,6 +108,75 @@
       },
       "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "350b4b57_faa1d983",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:50:33Z",
+      "side": 1,
+      "message": "M is ambiguous--the OpenGL spec does not use a variable M, and the line discusses both \"arrays\" and \"vectors\"; each of these have a size. \n\nBased on context, I believe M means vector component-width, but on an initial read, it is confusing since you need to read ahead to be confident of this.",
+      "range": {
+        "startLine": 116,
+        "startChar": 40,
+        "endLine": 116,
+        "endChar": 41
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "388fd269_d5507661",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:50:33Z",
+      "side": 1,
+      "message": "We have to zero out padding? That comes as a surprise to me. I thought it was ignored.",
+      "range": {
+        "startLine": 118,
+        "startChar": 31,
+        "endLine": 118,
+        "endChar": 50
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b8f39e4_9ebbe63c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-21T21:50:33Z",
+      "side": 1,
+      "message": "Nothing in rules 1 or 2 uses the word \"count\"; I think this means \"array size\"?",
+      "range": {
+        "startLine": 121,
+        "startChar": 65,
+        "endLine": 121,
+        "endChar": 70
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
