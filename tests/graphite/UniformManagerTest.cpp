@@ -242,14 +242,22 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingScalarVector, r, CtsEnforcement::kNe
                     // A/B: uniform values.
                     // a/b: padding as part of the uniform type (vec3 takes 4 slots)
                     // _  : padding between uniforms for alignment
-                    static constexpr const char* kExpectedLayout[5][5] = {
-                        { "", "",         "",         "",         ""         },
-                        { "", "AB",       "A_BB",     "A___BBBb", "A___BBBB" },
-                        { "", "AAB_",     "AABB",     "AA__BBBb", "AA__BBBB" },
-                        { "", "AAAaB___", "AAAaBB__", "AAAaBBBb", "AAAaBBBB" },
-                        { "", "AAAAB___", "AAAABB__", "AAAABBBb", "AAAABBBB" },
+                    static constexpr const char* kExpectedLayout[2][5][5] = {
+                        // Metal (vec3 consumes vec4 size)
+                        {{ "", "",         "",         "",         ""         },
+                         { "", "AB",       "A_BB",     "A___BBBb", "A___BBBB" },
+                         { "", "AAB_",     "AABB",     "AA__BBBb", "AA__BBBB" },
+                         { "", "AAAaB___", "AAAaBB__", "AAAaBBBb", "AAAaBBBB" },
+                         { "", "AAAAB___", "AAAABB__", "AAAABBBb", "AAAABBBB" }},
+                        // std140 and std430 (vec3 aligns to vec4, but consumes only 3 elements)
+                        {{ "", "",         "",         "",         ""         },
+                         { "", "AB",       "A_BB",     "A___BBBb", "A___BBBB" },
+                         { "", "AAB_",     "AABB",     "AA__BBBb", "AA__BBBB" },
+                         { "", "AAAB",     "AAA_BB__", "AAA_BBBb", "AAA_BBBB" },
+                         { "", "AAAAB___", "AAAABB__", "AAAABBBb", "AAAABBBB" }},
                     };
-                    const size_t size = strlen(kExpectedLayout[vecLength1][vecLength2]) *
+                    int layoutIdx = static_cast<int>(layout != Layout::kMetal);
+                    const size_t size = strlen(kExpectedLayout[layoutIdx][vecLength1][vecLength2]) *
                                         elementSize1;
                     UniformDataBlock uniformData = mgr.finishUniformDataBlock();
                     REPORTER_ASSERT(r, uniformData.size() == size,
@@ -470,7 +478,7 @@ DEF_GRAPHITE_TEST(UniformManagerCheckPaddingMatrixVector, r, CtsEnforcement::kNe
                         {
                             { "", "", "", "", "" },
                             { "", "", "", "", "" },
-                            { "", "AAaaAAaaB_", "AAaaAAaaBB", "AAaaAAaaBBBb", "AAaaAAaaBBBB" },
+                            { "", "AAaaAAaaB___", "AAaaAAaaBB__", "AAaaAAaaBBBb", "AAaaAAaaBBBB" },
                             { "",
                               "AAAaAAAaAAAaB___",
                               "AAAaAAAaAAAaBB__",
