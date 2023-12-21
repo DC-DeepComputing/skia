@@ -159,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "088a29e9_c6f277dd",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-21T14:43:34Z",
+      "side": 1,
+      "message": "Agreed! Thanks",
+      "parentUuid": "fba24fbc_ad813783",
+      "range": {
+        "startLine": 714,
+        "startChar": 14,
+        "endLine": 714,
+        "endChar": 25
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36621cd1_a8d19479",
@@ -196,6 +220,30 @@
       "side": 1,
       "message": "Not sure what exactly you meant by fix since it was technically correct before. But I added more detail and context to hopefully make it clearer.",
       "parentUuid": "36621cd1_a8d19479",
+      "range": {
+        "startLine": 513,
+        "startChar": 18,
+        "endLine": 513,
+        "endChar": 34
+      },
+      "revId": "72b3ac15181ecdbf38623608b31aaa81e0ac89ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bdef1b6_529f6f23",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-12-21T14:43:34Z",
+      "side": 1,
+      "message": "I see - I was confused by the wording of it being a lie but I am with you now! I thought it was referencing the comment that had been there in the past which was removed. Thanks",
+      "parentUuid": "6db97120_0baf43f7",
       "range": {
         "startLine": 513,
         "startChar": 18,
