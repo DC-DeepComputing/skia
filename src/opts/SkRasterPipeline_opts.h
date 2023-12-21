@@ -3884,10 +3884,10 @@ SI void matrix_multiply(SkRasterPipeline_MatrixMultiplyCtx* packed, std::byte* b
 
 #if !defined(JUMPER_IS_SCALAR)
     // This prevents Clang from generating early-out checks for zero-sized matrices.
-    __builtin_assume(outColumns >= 1);
-    __builtin_assume(outRows    >= 1);
-    __builtin_assume(outColumns <= 4);
-    __builtin_assume(outRows    <= 4);
+    SK_ASSUME(outColumns >= 1);
+    SK_ASSUME(outRows    >= 1);
+    SK_ASSUME(outColumns <= 4);
+    SK_ASSUME(outRows    <= 4);
 #endif
 
     // Get pointers to the adjacent left- and right-matrices.
