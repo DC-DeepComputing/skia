@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf44b981_26eca9b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-22T02:56:33Z",
+      "side": 1,
+      "message": "Works great on my machine!",
+      "revId": "691e24a3323d5b9f04af9c4db0aa2880e648f1c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09fe7495_b68fdf91",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-22T02:56:33Z",
+      "side": 1,
+      "message": "I believe cgo is the layer that allows Go to call into C++ and vice-versa: https://pkg.go.dev/cmd/cgo\n\nI don\u0027t think it disables parts of the stdlib; what you lose is the ability to do interop with non-Go code.",
+      "range": {
+        "startLine": 103,
+        "startChar": 1,
+        "endLine": 107,
+        "endChar": 1
+      },
+      "revId": "691e24a3323d5b9f04af9c4db0aa2880e648f1c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca6dedd_2089fa7a",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-22T02:56:33Z",
+      "side": 1,
+      "message": "I strongly encourage you to cut a bug or get in touch with the folks who own this. Almost certainly other folks will be affected by a behavior change like this, so either (a) we are the canary in the coal mine, or (b) this is a well-trodden path and they will know the answer right away. Either outcome is valuable.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 0
+      },
+      "revId": "691e24a3323d5b9f04af9c4db0aa2880e648f1c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0addaac6_544a7ef6",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-22T02:56:33Z",
+      "side": 1,
+      "message": "I can find lots of hits for \"disable cgo\" or just \"cgo\", e.g.\nhttps://go.dev/blog/cgo\nhttps://pkg.go.dev/cmd/cgo",
+      "range": {
+        "startLine": 120,
+        "startChar": 71,
+        "endLine": 120,
+        "endChar": 90
+      },
+      "revId": "691e24a3323d5b9f04af9c4db0aa2880e648f1c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
