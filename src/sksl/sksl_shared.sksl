@@ -384,6 +384,15 @@ $export $pure half3 $css_okhcl_to_linear_srgb(half3 okhcl) {
     return $css_oklab_to_linear_srgb($css_hcl_to_lab(okhcl));
 }
 
+$export $pure half3 $css_oklab_gamut_map_to_linear_srgb(half3 oklab) {
+    // TODO(https://crbug.com/1508329): Add support for gamut mapping.
+    return $css_oklab_to_linear_srgb(oklab);
+}
+
+$export $pure half3 $css_okhcl_gamut_map_to_linear_srgb(half3 okhcl) {
+    return $css_oklab_gamut_map_to_linear_srgb($css_hcl_to_lab(okhcl));
+}
+
 // TODO(skia:13108): Use our optimized version (though it has different range)
 // Doing so might require fixing (re-deriving?) the math for the HWB version below
 $export $pure half3 $css_hsl_to_srgb(half3 hsl) {
@@ -417,33 +426,43 @@ $export $pure half3 $css_hwb_to_srgb(half3 hwb) {
  * in the gradient/SkColor4fXformer's fIntermediateColorSpace.
  */
 $export $pure half4 $interpolated_to_rgb_unpremul(half4 color, int colorSpace, int doUnpremul) {
-    const int kDestination = 0;
-    const int kSRGBLinear  = 1;
-    const int kLab         = 2;
-    const int kOKLab       = 3;
-    const int kLCH         = 4;
-    const int kOKLCH       = 5;
-    const int kSRGB        = 6;
-    const int kHSL         = 7;
-    const int kHWB         = 8;
+    const int kDestination   = 0;
+    const int kSRGBLinear    = 1;
+    const int kLab           = 2;
+    const int kOKLab         = 3;
+    const int kOKLabGamutMap = 4;
+    const int kLCH           = 5;
+    const int kOKLCH         = 6;
+    const int kOKLCHGamutMap = 7;
+    const int kSRGB          = 8;
+    const int kHSL           = 9;
+    const int kHWB           = 10;
 
     if (bool(doUnpremul)) {
         switch (colorSpace) {
             case kLab:
-            case kOKLab: color = unpremul(color); break;
+            case kOKLab:
+            case kOKLabGamutMap:
+	    	color = unpremul(color);
+		break;
             case kLCH:
             case kOKLCH:
+            case kOKLCHGamutMap:
             case kHSL:
-            case kHWB: color = $unpremul_polar(color); break;
+            case kHWB:
+	    	color = $unpremul_polar(color);
+		break;
         }
     }
     switch (colorSpace) {
-        case kLab:   { color.rgb = $css_lab_to_xyz(color.rgb); break; }
-        case kOKLab: { color.rgb = $css_oklab_to_linear_srgb(color.rgb); break; }
-        case kLCH:   { color.rgb = $css_hcl_to_xyz(color.rgb); break; }
-        case kOKLCH: { color.rgb = $css_okhcl_to_linear_srgb(color.rgb); break; }
-        case kHSL:   { color.rgb = $css_hsl_to_srgb(color.rgb); break; }
-        case kHWB:   { color.rgb = $css_hwb_to_srgb(color.rgb); break; }
+        case kLab:           { color.rgb = $css_lab_to_xyz(color.rgb); break; }
+        case kOKLab:         { color.rgb = $css_oklab_to_linear_srgb(color.rgb); break; }
+        case kOKLabGamutMap: { color.rgb = $css_oklab_gamut_map_to_linear_srgb(color.rgb); break; }
+        case kLCH:           { color.rgb = $css_hcl_to_xyz(color.rgb); break; }
+        case kOKLCH:         { color.rgb = $css_okhcl_to_linear_srgb(color.rgb); break; }
+        case kOKLCHGamutMap: { color.rgb = $css_okhcl_gamut_map_to_linear_srgb(color.rgb); break; }
+        case kHSL:           { color.rgb = $css_hsl_to_srgb(color.rgb); break; }
+        case kHWB:           { color.rgb = $css_hwb_to_srgb(color.rgb); break; }
     }
     return color;
 }
