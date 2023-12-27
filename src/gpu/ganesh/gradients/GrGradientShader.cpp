@@ -689,15 +689,17 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
     using ColorSpace = SkGradientShader::Interpolation::ColorSpace;
 
     // If these values change, you will need to edit sksl_shared
-    static_assert(static_cast<int>(ColorSpace::kDestination) == 0);
-    static_assert(static_cast<int>(ColorSpace::kSRGBLinear)  == 1);
-    static_assert(static_cast<int>(ColorSpace::kLab)         == 2);
-    static_assert(static_cast<int>(ColorSpace::kOKLab)       == 3);
-    static_assert(static_cast<int>(ColorSpace::kLCH)         == 4);
-    static_assert(static_cast<int>(ColorSpace::kOKLCH)       == 5);
-    static_assert(static_cast<int>(ColorSpace::kSRGB)        == 6);
-    static_assert(static_cast<int>(ColorSpace::kHSL)         == 7);
-    static_assert(static_cast<int>(ColorSpace::kHWB)         == 8);
+    static_assert(static_cast<int>(ColorSpace::kDestination)   == 0);
+    static_assert(static_cast<int>(ColorSpace::kSRGBLinear)    == 1);
+    static_assert(static_cast<int>(ColorSpace::kLab)           == 2);
+    static_assert(static_cast<int>(ColorSpace::kOKLab)         == 3);
+    static_assert(static_cast<int>(ColorSpace::kOKLabGamutMap) == 4);
+    static_assert(static_cast<int>(ColorSpace::kLCH)           == 5);
+    static_assert(static_cast<int>(ColorSpace::kOKLCH)         == 6);
+    static_assert(static_cast<int>(ColorSpace::kOKLCHGamutMap) == 7);
+    static_assert(static_cast<int>(ColorSpace::kSRGB)          == 8);
+    static_assert(static_cast<int>(ColorSpace::kHSL)           == 9);
+    static_assert(static_cast<int>(ColorSpace::kHWB)           == 10);
 
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
         "uniform int colorSpace;"    // specialized
