@@ -132,15 +132,19 @@ DEF_SIMPLE_GM(analytic_antialias_general, canvas, W, H) {
                                     .detach(), p);
 }
 
-DEF_SIMPLE_GM(analytic_antialias_inverse, canvas, W, H) {
-        SkPaint p;
-        p.setColor(SK_ColorRED);
-        p.setAntiAlias(true);
+DEF_SIMPLE_GM(a123Test, canvas, W, H) {
+    SkPaint paint;
+     paint.setStyle(SkPaint::kFill_Style);
+     paint.setColor(SK_ColorRED);
+       paint.setAlphaf(0.5f);
 
-        canvas->save();
+       SkPath path1;
+       path1.moveTo(150, 150);
+       path1.lineTo(46, 90);
+       path1.lineTo(150, 150);
+       path1.lineTo(150, 240);
+       path1.lineTo(254, 210);
+       path1.lineTo(150, 150);
 
-        SkPath path = SkPath::Circle(100, 100, 30);
-        path.setFillType(SkPathFillType::kInverseWinding);
-        canvas->drawPath(path, p);
-        canvas->restore();
+     canvas->drawPath(path1, paint);
 }

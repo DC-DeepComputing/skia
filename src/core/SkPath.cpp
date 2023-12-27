@@ -2139,7 +2139,7 @@ struct Convexicator {
             return true;
         }
         // should only be true for first non-zero vector after setMovePt was called.
-        if (fFirstPt == fLastPt && fExpectedDir == kInvalid_DirChange) {
+        if (fFirstPt == fLastPt && fExpectedDir == kInvalid_DirChange && fLastVec.equals(0,0)) {
             fLastVec = pt - fLastPt;
             fFirstVec = fLastVec;
         } else if (!this->addVec(pt - fLastPt)) {

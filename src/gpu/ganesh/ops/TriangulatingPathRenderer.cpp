@@ -586,6 +586,8 @@ TriangulatingPathRenderer::TriangulatingPathRenderer()
 PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
         const CanDrawPathArgs& args) const {
 
+            return CanDrawPath::kNo;
+
     // Don't use this path renderer with dynamic MSAA. DMSAA tries to not rely on caching.
     if (args.fSurfaceProps->flags() & SkSurfaceProps::kDynamicMSAA_Flag) {
         return CanDrawPath::kNo;
