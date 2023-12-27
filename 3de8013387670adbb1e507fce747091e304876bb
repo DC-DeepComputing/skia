@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31a43d04_d6f924b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-12-27T18:21:46Z",
+      "side": 1,
+      "message": "Did we expect there to be pixel diffs from this change? Did we change what precision is being used in some case? None of the many gold diffs look \"bad\". But I want to make sure we understand why there were diffs in the first place since we should have just been changing where we generate shader code here if I\u0027m understanding correctly.",
+      "revId": "3de8013387670adbb1e507fce747091e304876bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
