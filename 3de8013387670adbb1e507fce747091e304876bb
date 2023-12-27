@@ -16,6 +16,24 @@
       "message": "Did we expect there to be pixel diffs from this change? Did we change what precision is being used in some case? None of the many gold diffs look \"bad\". But I want to make sure we understand why there were diffs in the first place since we should have just been changing where we generate shader code here if I\u0027m understanding correctly.",
       "revId": "3de8013387670adbb1e507fce747091e304876bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4462d615_6bca6d2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-12-27T18:26:22Z",
+      "side": 1,
+      "message": "I didn\u0027t expect pixel diffs per se, but I\u0027m not too surprised. The codegen from this approach is not entirely the same, and it also applies the optimization in more scenarios (previously it only applied the optimization when both sides were trivial-expressions). If the diffs look fine, SGTM.",
+      "tag": "mailMessageId\u003d\u003cCANBPXuDk6wX19z3hHBNkvWx_8VaVko-USyiKUxY2XVMdU1bsxA@mail.gmail.com\u003e",
+      "revId": "3de8013387670adbb1e507fce747091e304876bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
