@@ -79,8 +79,15 @@ public:
             kSRGBLinear,
             kLab,
             kOKLab,
+            // This is the same as kOKLab, except it has a simplified version of the CSS gamut
+            // mapping algorithm (https://www.w3.org/TR/css-color-4/#css-gamut-mapping)
+            // into Rec2020 space applied to it.
+            kOKLabGamutMap,
             kLCH,
             kOKLCH,
+            // This is the same as kOKLCH, except it has the same gamut mapping applied to it
+            // as kOKLabGamutMap does.
+            kOKLCHGamutMap,
             kSRGB,
             kHSL,
             kHWB,
