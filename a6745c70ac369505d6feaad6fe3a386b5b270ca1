@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43372149_ad3d53ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-12-28T15:33:26Z",
+      "side": 1,
+      "message": "ptal -- this is working (for the GPU path) now. I\u0027ll add the CPU path if the GPU path gets reasonably positive feedback.",
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
