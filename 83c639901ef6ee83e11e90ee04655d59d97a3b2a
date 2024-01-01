@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932048b6_9312866b",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-01T21:51:19Z",
+      "side": 1,
+      "message": "Should we have a bug for this to track the effort to look into these tests more?",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 96
+      },
+      "revId": "83c639901ef6ee83e11e90ee04655d59d97a3b2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89d0585e_a720d844",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-01T21:51:19Z",
+      "side": 1,
+      "message": "For this and other tests - Do we want to run this test in both unprotected and protected scenarios, even if caps technically *supports* protected content?",
+      "range": {
+        "startLine": 604,
+        "startChar": 37,
+        "endLine": 604,
+        "endChar": 70
+      },
+      "revId": "83c639901ef6ee83e11e90ee04655d59d97a3b2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a4d93f6_139f40a4",
+        "filename": "tests/BackendSurfaceMutableStateTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-01T21:51:19Z",
+      "side": 1,
+      "message": "nit: Not sure, but this may fit on one line above now.",
+      "range": {
+        "startLine": 75,
+        "startChar": 33,
+        "endLine": 75,
+        "endChar": 56
+      },
+      "revId": "83c639901ef6ee83e11e90ee04655d59d97a3b2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f016422_2cdd2057",
+        "filename": "tests/GrAHardwareBufferTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-01T21:51:19Z",
+      "side": 1,
+      "message": "If this *is* protected and therefore this if block is skipped, what is this really testing here? It just calls drawImage. I\u0027m not positive how protected content unit testing was generally handled in ganesh, but I\u0027d imagine we have more steps to verify that the protected content is being handled appropriately (like here https://skia.googlesource.com/skia.git/+/refs/heads/main/tests/ProtectedTest.cpp#123 there is a readback performed from the surface). If there are plans to add additional checking later on for protected content, we should add a TODO.",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 0
+      },
+      "revId": "83c639901ef6ee83e11e90ee04655d59d97a3b2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
