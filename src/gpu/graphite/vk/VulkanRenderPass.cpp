@@ -202,6 +202,12 @@ void setup_vk_attachment_description(VkAttachmentDescription* outAttachment,
             outAttachment->stencilLoadOp = vkLoadOp[static_cast<int>(loadOp)];
             outAttachment->stencilStoreOp = vkStoreOp[static_cast<int>(storeOp)];
             break;
+        case VK_IMAGE_LAYOUT_UNDEFINED: // todo consolidate? correct?
+            outAttachment->loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            outAttachment->storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            outAttachment->stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            outAttachment->stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            break;
         default:
             SK_ABORT("Unexpected attachment layout");
     }
@@ -230,11 +236,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     VkAttachmentReference resolveLoadInputRef;
     VkAttachmentReference depthStencilRef;
 
-    // TODO: Assign real value to loadMSAAFromResolve according to whether the resolve
-    // attachment's load op is LoadOp::kLoad. Keeping as false until all the plumbing is hooked
-    // up.
     bool loadMSAAFromResolve = false;
-
     if (hasColorAttachment) {
         VulkanTextureInfo colorAttachTexInfo;
         colorAttachmentTextureInfo.getVulkanTextureInfo(&colorAttachTexInfo);
@@ -254,7 +256,9 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
         colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
         if (hasColorResolveAttachment) {
+            loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+
             VulkanTextureInfo resolveAttachTexInfo;
             colorResolveAttachmentTextureInfo.getVulkanTextureInfo(&resolveAttachTexInfo);
             auto& resolveAttachDesc = renderPassDesc.fColorResolveAttachment;
@@ -262,15 +266,19 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
             resolveRef.attachment = attachmentDescs.size();
             VkAttachmentDescription& vkResolveAttachDesc = attachmentDescs.push_back();
             memset(&vkResolveAttachDesc, 0, sizeof(VkAttachmentDescription));
+
+            // render pass attachment layouts
+            // VK_ACCESS_INPUT_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
+            //
             setup_vk_attachment_description(
                     &vkResolveAttachDesc,
                     resolveAttachTexInfo,
                     resolveAttachDesc,
                     compatibleOnly ? LoadOp::kDiscard  : resolveAttachDesc.fLoadOp,
                     compatibleOnly ? StoreOp::kDiscard : resolveAttachDesc.fStoreOp,
-                    VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                    VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-            resolveRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                    VK_IMAGE_LAYOUT_UNDEFINED, // todo here?
+                    VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL); // todo here?
+            resolveRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL; // todo here?
         } else {
             resolveRef.attachment = VK_ATTACHMENT_UNUSED;
             resolveRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -390,8 +398,7 @@ VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                    /*label=*/"VulkanRenderPass")
         , fSharedContext(context)
         , fRenderPass (renderPass)
-        , fGranularity (granularity) {
-}
+        , fGranularity (granularity) {}
 
 void VulkanRenderPass::freeGpuData() {
     VULKAN_CALL(fSharedContext->interface(),
