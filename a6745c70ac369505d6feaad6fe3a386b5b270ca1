@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e33448_696f270c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-01-02T18:42:32Z",
+      "side": 1,
+      "message": "Yes, I suspect that there is a tighter form we can use, and we can probably move the constants into a separate uniform buffer.\n\nFor the API ... it depends on how this lands. If we end up saying that gamut mapping is intrinsic to `oklab` and `oklch` spaces (and only those spaces), then I think we end up just deleting the existing non-gamut-mapped versions. Personally I think that would be the most coherent scheme to go with (because I want these colors gamut mapped also when they\u0027re just specified as CSS literals).",
+      "parentUuid": "1fc4b619_c9362530",
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb78b043_59be21a6",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "117e3e23_f27ea7e8",
+        "filename": "gm/gradients.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-01-02T18:42:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "bb78b043_59be21a6",
+      "range": {
+        "startLine": 1118,
+        "startChar": 53,
+        "endLine": 1118,
+        "endChar": 56
+      },
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65885f22_17ec2813",
@@ -71,6 +113,24 @@
       "writtenOn": "2024-01-02T15:24:26Z",
       "side": 1,
       "message": "If we go this way, we probably want a comment/link here explaining what this does.",
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d3d39a_12ffabca",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-01-02T18:42:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65885f22_17ec2813",
       "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
