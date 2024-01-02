@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "039e63e4_d87e5183",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T21:13:48Z",
+      "side": 1,
+      "message": "If we\u0027re going to do this, let\u0027s cut a tracking bug; if it\u0027s just an aspirational idea, let\u0027s eliminate the TODO. (Are you aware of any serious users of ARM + GCC?)",
+      "range": {
+        "startLine": 71,
+        "startChar": 57,
+        "endLine": 71,
+        "endChar": 83
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4fd46da_fe3f39e5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T21:13:48Z",
+      "side": 1,
+      "message": "up to you: If you want a link that fits in 100 col, https://stackoverflow.com/q/48255293",
+      "range": {
+        "startLine": 642,
+        "startChar": 3,
+        "endLine": 642,
+        "endChar": 127
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f203c38_6abe2659",
+        "filename": "tests/SkRasterPipelineOptsTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T21:13:48Z",
+      "side": 1,
+      "message": "Can we just say `using namespace SK_OPTS_NS;` here to avoid the verbose qualifications below?\n\nAlternatively, maybe `constexpr auto F_ \u003d SK_OPTS_NS::F_;`?",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 28
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
