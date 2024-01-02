@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "640cfbaa_b6992f72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16079
+      },
+      "writtenOn": "2024-01-02T20:57:26Z",
+      "side": 1,
+      "message": "I am not sure if there is anything that needs/can be done with this, since the tree is closed atm.",
+      "revId": "883b8a4226980f71f937b2fbe27b2e6147b4be5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
