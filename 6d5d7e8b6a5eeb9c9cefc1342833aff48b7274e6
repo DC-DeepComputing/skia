@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b6cccde_869102f9",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-02T21:09:34Z",
+      "side": 1,
+      "message": "Ah good catch. I think it still works because by the time this function is called, `t.x` is clamped to be in `[0, 1]`. I believe the last valid offset in the array will have a value equal to `1` because we aren\u0027t using implicit starting and ending offsets.\n\nThe way the code is written isn\u0027t ideal, but when `t.x \u003d 1` we should be taking the `else` branch that mixes the last valid stop and the now-zero\u0027ed padding. The mix parameter will be `0 / -1` so should still be selecting the last valid stop (assuming that `mix(valid stop, half4(0), 0)`) does not somehow introduce error in the valid stop color value.\n\nWe could update shaders to use `\u003c\u003d` in the ifs so that we always mix up to the last valid stop, or I can go back to copying the last value. `memset` was easier here because of of the type change from a scalar array to two Vec4s. WDYT?",
+      "parentUuid": "a438e6f3_4320266a",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ce61449_95638d94",
         "filename": "src/gpu/graphite/PipelineData.h",
         "patchSetId": 4
@@ -72,6 +90,30 @@
       "side": 1,
       "message": "What\u0027s wrong with taking `const float\u0026` or `const int\u0026`? It\u0027s just going to pass through to `UniformManager::write(float)`, right? I don\u0027t think it will generate substantially different code once an optimizer gets its hands on it.",
       "parentUuid": "6ce61449_95638d94",
+      "range": {
+        "startLine": 116,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 51
+      },
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2564345_e3af49d6",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-02T21:09:34Z",
+      "side": 1,
+      "message": "You\u0027re right, I\u0027ll just get rid of the float/int overloads.",
+      "parentUuid": "6f343f31_3610d9be",
       "range": {
         "startLine": 116,
         "startChar": 4,
