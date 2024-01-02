@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b87993af_c559d52c",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-02T20:10:49Z",
+      "side": 1,
+      "message": "Nit: maybe move this comment up to where fOffsets is defined? (also applies in the 8-stop case below)",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a438e6f3_4320266a",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-02T20:10:49Z",
+      "side": 1,
+      "message": "I\u0027m surprised this works (or does it?) since the 8-stop gradient shader assumed trailing unused stops are equal to the last stop:\nhttps://crsrc.org/c/third_party/skia/src/sksl/sksl_graphite_frag.sksl;l\u003d491;drc\u003d4f218069",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ce61449_95638d94",
         "filename": "src/gpu/graphite/PipelineData.h",
         "patchSetId": 4
