@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "809f97f1_b1b0168a",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-02T22:06:01Z",
+      "side": 1,
+      "message": "Using `\u003c\u003d` in the shaders we\u0027d need to be careful about cases where we end with a hard stop so the last two valid stops are at t\u003d1. I\u0027d have to think about it more but I know it\u0027s not as simple as changing all the `\u003c`s to `\u003c\u003d`.\n\nOn a related note, we probably want to filter out redundant stops in gradients (if we aren\u0027t already), following up on\nhttps://skia-review.googlesource.com/c/skia/+/541725/comment/59ff5020_a94979ba/",
+      "parentUuid": "6b6cccde_869102f9",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ce61449_95638d94",
         "filename": "src/gpu/graphite/PipelineData.h",
         "patchSetId": 4
