@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce61449_95638d94",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-02T16:46:46Z",
+      "side": 1,
+      "message": "These could hit the templates above, but would map to `const float\u0026` as the input, which felt wrong to me. Maybe if the templates just took `T`, would the compiler instantiate the template with `const SkM44\u0026` for bigger types or would it instantiate `write(SkM44 t) { fUniformManager.write(t); }`?",
+      "range": {
+        "startLine": 116,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 51
+      },
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
