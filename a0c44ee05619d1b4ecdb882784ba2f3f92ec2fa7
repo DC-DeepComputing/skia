@@ -16,6 +16,52 @@
       "message": "Same as before, I\u0027ll wait for the CQ to sign off on this but it\u0027s a pretty straightforward change.",
       "revId": "a0c44ee05619d1b4ecdb882784ba2f3f92ec2fa7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acb1bc0_6c4bae4f",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:34:47Z",
+      "side": 1,
+      "message": "Please move to cpp, there\u0027s no reason this actually needs to be inline. (Previously it was a one-liner)",
+      "range": {
+        "startLine": 229,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 1
+      },
+      "revId": "a0c44ee05619d1b4ecdb882784ba2f3f92ec2fa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d00927d9_bac047f4",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1398,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:34:47Z",
+      "side": 1,
+      "message": "`SkDEBUGFAIL(\"unsupported uniform type\");`?",
+      "range": {
+        "startLine": 1398,
+        "startChar": 34,
+        "endLine": 1398,
+        "endChar": 51
+      },
+      "revId": "a0c44ee05619d1b4ecdb882784ba2f3f92ec2fa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
