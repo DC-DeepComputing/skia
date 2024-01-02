@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d480eb4e_7a1f1128",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-02T21:44:59Z",
+      "side": 1,
+      "message": "I added a new bug specifically about GCC + RP. Also: I\u0027m aiming to have that done before I land this, because it looks like it won\u0027t be that much more work. The original Mozilla patch that\u0027s being maintained does have NEON support in it, so I assume that someone is trying to do ARM + GCC (either for non-official Android builds, or perhaps for Raspberry Pi?)",
+      "parentUuid": "039e63e4_d87e5183",
+      "range": {
+        "startLine": 71,
+        "startChar": 57,
+        "endLine": 71,
+        "endChar": 83
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4fd46da_fe3f39e5",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 16
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-02T21:13:48Z",
       "side": 1,
       "message": "up to you: If you want a link that fits in 100 col, https://stackoverflow.com/q/48255293",
+      "range": {
+        "startLine": 642,
+        "startChar": 3,
+        "endLine": 642,
+        "endChar": 127
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23275529_d3e10fbe",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-02T21:44:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4fd46da_fe3f39e5",
       "range": {
         "startLine": 642,
         "startChar": 3,
