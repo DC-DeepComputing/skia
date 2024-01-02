@@ -26,6 +26,17 @@
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
+#if defined(SK_BUILD_FOR_WIN)
+ #include "C:\Program Files\RenderDoc\renderdoc_app.h"
+ #include <windows.h>
+#elif defined(SK_BUILD_FOR_UNIX)
+ #include <dlfcn.h>
+ #include "/usr/local/google/home/nicolettep/Downloads/renderdoc_1.27/include/renderdoc_app.h"
+#endif
+RENDERDOC_API_1_1_2 *rdoc_api = nullptr;
+
+#include <cassert>
+
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -47,6 +58,24 @@ uint64_t clamp_ubo_binding_size(const uint64_t& offset,
 std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         const VulkanSharedContext* sharedContext,
         VulkanResourceProvider* resourceProvider) {
+#if defined(SK_BUILD_FOR_WIN)
+    if(HMODULE mod = GetModuleHandleA("renderdoc.dll")) {
+        pRENDERDOC_GetAPI RENDERDOC_GetAPI =
+            (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
+        int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+        assert(ret == 1);
+    }
+#elif defined(SK_BUILD_FOR_UNIX)
+    if (rdoc_api == nullptr) {
+        if(void *mod = dlopen("librenderdoc.so", RTLD_NOW | RTLD_NOLOAD)) {
+            pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)dlsym(mod, "RENDERDOC_GetAPI");
+            int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+            assert(ret == 1);
+        }
+    }
+#endif
+    if(rdoc_api) rdoc_api->StartFrameCapture(NULL, NULL);
+
     // Create VkCommandPool
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
     if (sharedContext->isProtected() == Protected::kYes) {
@@ -121,6 +150,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
     VULKAN_CALL(fSharedContext->interface(), DestroyCommandPool(fSharedContext->device(),
                                                                 fPool,
                                                                 nullptr));
+    if(rdoc_api) rdoc_api->EndFrameCapture(NULL, NULL);
 }
 
 void VulkanCommandBuffer::onResetCommandBuffer() {
@@ -135,6 +165,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     fBoundIndirectBuffer = VK_NULL_HANDLE;
     fBoundIndirectBufferOffset = 0;
     fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+    fInputAttachmentDescSetToBind = VK_NULL_HANDLE;
     fNumTextureSamplers = 0;
     fUniformBuffersToBind.fill({nullptr, 0});
     for (int i = 0; i < 4; ++i) {
@@ -476,6 +507,9 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(depthStencilTexture));
     VulkanTexture* vulkanResolveTexture =
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(resolveTexture));
+
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
     if (vulkanColorTexture) {
         vulkanColorTexture->setImageLayout(this,
                                            VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
@@ -485,12 +519,23 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                            false);
         if (vulkanResolveTexture) {
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
-            vulkanResolveTexture->setImageLayout(this,
-                                                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                                VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                                VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                                false);
+            // transition layout to undefined?
+            if (loadMSAAFromResolve) {
+                vulkanResolveTexture->setImageLayout(
+                        this,
+                        VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                        VK_ACCESS_INPUT_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
+                        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
+                        VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                        false);
+            } else {
+                vulkanResolveTexture->setImageLayout(this,
+                                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+                                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                                                     false);
+            }
         }
     }
     if (vulkanDepthStencilTexture) {
@@ -501,15 +546,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                                   VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
                                                   false);
     }
-
-    sk_sp<VulkanRenderPass> vulkanRenderPass =
-            fResourceProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/false);
-    if (!vulkanRenderPass) {
-        SKGPU_LOG_W("Could not create Vulkan RenderPass");
-        return false;
-    }
-    this->submitPipelineBarriers();
-    this->trackResource(vulkanRenderPass);
 
     skia_private::TArray<VkImageView> attachmentViews; // Needed for frame buffer
     TArray<VkClearValue> clearValues(3); // Needed for RenderPassBeginInfo, indexed by attach. num.
@@ -550,8 +586,19 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         this->trackResource(sk_ref_sp(depthStencilTexture));
     }
 
+    sk_sp<VulkanRenderPass> vulkanRenderPass =
+            fResourceProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/false);
+    if (!vulkanRenderPass) {
+        SKGPU_LOG_W("Could not create Vulkan RenderPass");
+        return false;
+    }
+    this->submitPipelineBarriers();
+    this->trackResource(vulkanRenderPass);
+
     int frameBufferWidth = 0;
     int frameBufferHeight = 0;
+    // TODO: Get frame buffer render area from RenderPassDesc. Account for granularity if it wasn't
+    // already. For now, simply set the render area to be the entire frame buffer.
     if (colorTexture) {
         frameBufferWidth = colorTexture->dimensions().width();
         frameBufferHeight = colorTexture->dimensions().height();
@@ -575,14 +622,29 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = vulkanRenderPass->renderPass();
     beginInfo.framebuffer = framebuffer->framebuffer();
-    // TODO: Get render area from RenderPassDesc. Account for granularity if it wasn't already.
-    // For now, simply set the render area to be the entire frame buffer.
     beginInfo.renderArea = {{ 0, 0 },
                             { (unsigned int) frameBufferWidth, (unsigned int) frameBufferHeight }};
     beginInfo.clearValueCount = clearValues.size();
     beginInfo.pClearValues = clearValues.begin();
 
-    // TODO: If needed, load MSAA from resolve
+    // Load MSAA from resolve
+    sk_sp<VulkanGraphicsPipeline> loadPipeline;
+    if (loadMSAAFromResolve) {
+        // We manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the MSAA attachment's load op should be LoadOp::kDiscard.
+        SkASSERT(renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kDiscard);
+        SkASSERT(resolveTexture);
+
+        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
+
+        int dstWidth = vulkanColorTexture->dimensions().width();
+        int dstHeight = vulkanColorTexture->dimensions().height();
+        this->setScissor(0, 0, dstWidth, dstHeight);
+    }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
     // beginning the render pass.
@@ -594,6 +656,93 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                    VK_SUBPASS_CONTENTS_INLINE));
     this->trackResource(std::move(framebuffer));
     fActiveRenderPass = true;
+
+    if (loadPipeline) {
+        // Store the current active pipeline so we can re-bind it after loading MSAA from resolve
+        const VulkanGraphicsPipeline* priorActivePipeline = fActiveGraphicsPipeline;
+        this->bindGraphicsPipeline(loadPipeline.get());
+        this->submitPipelineBarriers(true);
+
+        // Obtain and populate a descriptor set that contains one input attachment
+        STArray<1, DescriptorData> inputDescriptors =
+                {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+        sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
+                SkSpan<DescriptorData>{&inputDescriptors.front(), inputDescriptors.size()});
+        if (!set) {
+            SKGPU_LOG_E("Unable to find or create descriptor set");
+            fInputAttachmentDescSetToBind = VK_NULL_HANDLE;
+            return false;
+        }
+
+        fInputAttachmentDescSetToBind = *set->descriptorSet();
+        this->trackResource(std::move(set));
+
+        this->bindUniformBuffers(); // Forces the uniform intrinsic constant to bind
+
+        // Update and bind input attachment descriptor
+        {
+            VkDescriptorImageInfo textureInfo;
+            memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
+            textureInfo.sampler = VK_NULL_HANDLE;
+            textureInfo.imageView = vulkanResolveTexture->
+                    getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+            textureInfo.imageLayout = vulkanResolveTexture->currentLayout();
+            //VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            // textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            //TODO review this
+
+            VkWriteDescriptorSet writeInfo;
+            memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            writeInfo.pNext = nullptr;
+            writeInfo.dstSet = fInputAttachmentDescSetToBind;
+            writeInfo.dstBinding = VulkanGraphicsPipeline::kInputAttachmentBindingIndex;
+            writeInfo.dstArrayElement = 0;
+            writeInfo.descriptorCount = 1;
+            writeInfo.descriptorType = DsTypeEnumToVkDs(DescriptorType::kInputAttachment);
+            writeInfo.pImageInfo = &textureInfo;
+            writeInfo.pBufferInfo = nullptr;
+            writeInfo.pTexelBufferView = nullptr;
+
+            VULKAN_CALL(fSharedContext->interface(),
+                        UpdateDescriptorSets(fSharedContext->device(),
+                                            /*descriptorWriteCount=*/1,
+                                            &writeInfo,
+                                            /*descriptorCopyCount=*/0,
+                                            /*pDescriptorCopies=*/nullptr));
+
+            VULKAN_CALL(fSharedContext->interface(),
+                        CmdBindDescriptorSets(fPrimaryCommandBuffer,
+                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                              fActiveGraphicsPipeline->layout(),
+                                              VulkanGraphicsPipeline::kInputAttachmentDescSetIndex,
+                                              /*setCount=*/1,
+                                              &fInputAttachmentDescSetToBind,
+                                              /*dynamicOffsetCount=*/0,
+                                              /*dynamicOffsets=*/nullptr));
+
+            fInputAttachmentDescSetToBind = VK_NULL_HANDLE;
+        }
+
+        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+
+        // TODO: Use VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS if we add secondary cmd buffers
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdNextSubpass(fPrimaryCommandBuffer, VK_SUBPASS_CONTENTS_INLINE));
+
+
+        // If we loaded the resolve attachment, then we would have set the image layout to be
+        // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an input
+        // attachment. However, when we switched to the main subpass it will transition the layout
+        // internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our tracking
+        // of the layout to match the new layout.
+        vulkanResolveTexture->updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+
+        if (priorActivePipeline) {
+            this->bindGraphicsPipeline(priorActivePipeline);
+        }
+    }
+
     return true;
 }
 

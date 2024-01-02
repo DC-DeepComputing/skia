@@ -71,6 +71,12 @@ public:
                                      bool byRegion,
                                      uint32_t newQueueFamilyIndex) const;
 
+    // This simply updates our tracking of the image layout and does not actually do any gpu work.
+    // TODO: Is this usage explanation still the case?
+    // This is only used for mip map generation where we are manually changing the layouts as we
+    // blit each layer, and then at the end need to update our tracking.
+    void updateImageLayout(VkImageLayout);
+
     VkImageLayout currentLayout() const;
     uint32_t currentQueueFamilyIndex() const;
 
