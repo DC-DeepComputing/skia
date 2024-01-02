@@ -16,6 +16,24 @@
       "message": "I am not sure if there is anything that needs/can be done with this, since the tree is closed atm.",
       "revId": "883b8a4226980f71f937b2fbe27b2e6147b4be5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d2cc61_2c6380b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-02T21:07:41Z",
+      "side": 1,
+      "message": "Yeah things are looking better and the Skia tree should open up again tomorrow morning. Hopefully the roll will just work on its own once things are opened up.",
+      "parentUuid": "640cfbaa_b6992f72",
+      "revId": "883b8a4226980f71f937b2fbe27b2e6147b4be5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
