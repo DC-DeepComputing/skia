@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8b71bcf_19ed12e8",
+        "filename": "src/core/SkSLTypeShared.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-02T19:47:33Z",
+      "side": 1,
+      "message": "This needs to be `constexpr` so that it can be used in `constexpr` constructors with asserts. AFAIK, that means it has to be in the header like the other constexpr functions above it.",
+      "parentUuid": "0acb1bc0_6c4bae4f",
+      "range": {
+        "startLine": 229,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 1
+      },
+      "revId": "a0c44ee05619d1b4ecdb882784ba2f3f92ec2fa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d00927d9_bac047f4",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 3
