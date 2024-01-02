@@ -16,6 +16,29 @@
       "message": "This is pretty mechanical, just printing the layout as a string in all the asserts and expectations.",
       "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2daba19f_c05feac1",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:03:58Z",
+      "side": 1,
+      "message": "`layout_string`? Unless you\u0027d rather move it into graphite/ResourceTypes.h (which seems reasonable).\n\nIf it stays private, probably better placed down next to `element_size` (L57) instead of up here.",
+      "range": {
+        "startLine": 23,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 31
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
