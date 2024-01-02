@@ -16,6 +16,98 @@
       "message": "I\u0027m still waiting on the CQ backlog, but I think that any issues that may come up will not impact the review (iwyu, etc)",
       "revId": "e021b58e8f903b73184cf702634e015c126799e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2427571c_6bd2c823",
+        "filename": "src/gpu/graphite/Uniform.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:49:09Z",
+      "side": 1,
+      "message": "Since enums don\u0027t really support hierarchical layout/subclassing, this seems like a difficult change and I would be worried this TODO will live on forever in limbo here in the header. If you want to keep tabs on this idea, cut an Idea bug and assign it to yourself.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 0
+      },
+      "revId": "e021b58e8f903b73184cf702634e015c126799e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ee65d6_7af64bf5",
+        "filename": "src/gpu/graphite/Uniform.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:49:09Z",
+      "side": 1,
+      "message": "Can we just call it `paintColor`? The shared aspect feels like a cool optimization/implementation detail, but when we\u0027re reading shader code it will be much clearer to see `half4 c \u003d paintColor;` instead of `half4 c \u003d paintColorSingleton;`.\n\nIf anything, the method name might be a better place for this--`Uniform::PaintColorSingleton()` or `Uniform::SharedPaintColor()` perhaps? (I\u0027m thinking this is not quite the \"singleton\" pattern since each set of uniforms will have its own paint color. \"Singleton\" typically means _exactly_ one instance of a class: https://en.wikipedia.org/wiki/Singleton_pattern)",
+      "range": {
+        "startLine": 37,
+        "startChar": 24,
+        "endLine": 37,
+        "endChar": 43
+      },
+      "revId": "e021b58e8f903b73184cf702634e015c126799e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "081e6598_d368aee2",
+        "filename": "src/gpu/graphite/Uniform.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:49:09Z",
+      "side": 1,
+      "message": "I know this was already a bitfield when you got here, but I\u0027d appreciate a small comment explaining the rationale for packing these fields so tightly, since it is rare that we use bitfields and they do come at a cost (code size goes up, thread safety is more involved).",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 0
+      },
+      "revId": "e021b58e8f903b73184cf702634e015c126799e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbf33099_480d7243",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-02T18:49:09Z",
+      "side": 1,
+      "message": "Or `this-\u003ecount()`?",
+      "range": {
+        "startLine": 552,
+        "startChar": 65,
+        "endLine": 552,
+        "endChar": 76
+      },
+      "revId": "e021b58e8f903b73184cf702634e015c126799e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
