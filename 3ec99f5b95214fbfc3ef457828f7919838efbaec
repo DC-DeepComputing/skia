@@ -22,6 +22,30 @@
       },
       "revId": "3ec99f5b95214fbfc3ef457828f7919838efbaec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9f108ee_0adade93",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-02T18:08:52Z",
+      "side": 1,
+      "message": "Per offline discussion, updated this key generation logic. Summary of the changes:\n\n1) Reorganized the key to put more high-level information at the front for quicker elimination of incompatible keys\n\n2) Added subpass dependency quantity to the key\n\n3) smooshed total attachment count, subpass count, and subpass dependency count into one uint32_t (each taking up a uint8 worth of space) since I would be shocked if any of those quantities exceeded the max value of a uint8. I did add assertions though so we can update this if that assumption changes.\n\n4) Assigned a value to represent `VK_ATTACHMENT_UNUSED` and packed attachment indices for each subpass into one uint32.",
+      "parentUuid": "29bf7faf_b09e1215",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 5
+      },
+      "revId": "3ec99f5b95214fbfc3ef457828f7919838efbaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

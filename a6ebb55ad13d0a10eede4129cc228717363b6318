@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f281b9_0d0f2ba8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-02T18:08:52Z",
+      "side": 1,
+      "message": "Updated per our chat earlier - responded in a comment w/ a summary of the changes made to renderpass key generation logic. LMKWYT! 😊",
+      "revId": "a6ebb55ad13d0a10eede4129cc228717363b6318",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
