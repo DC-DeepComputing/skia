@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25559efe_6427ab5f",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-02T19:17:40Z",
+      "side": 1,
+      "message": "Update this call site as well when you update using the real key in previous CL.",
+      "range": {
+        "startLine": 395,
+        "startChar": 54,
+        "endLine": 395,
+        "endChar": 74
+      },
+      "revId": "1996702d5e0a3f334a625b919340df190f3c1fd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
