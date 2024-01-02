@@ -80,6 +80,16 @@ public:
                                               const sk_sp<VulkanRenderPass>& compatibleRenderPass,
                                               VkPipelineCache);
 
+    static sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(
+            const VulkanSharedContext*,
+            VkShaderModule vsModule,
+            VkShaderModule fsModule,
+            VkPipelineShaderStageCreateInfo* pipelineShaderStages,
+            VkPipelineLayout,
+            sk_sp<VulkanRenderPass> compatibleRenderPass,
+            VkPipelineCache,
+            int numSamples);
+
     static bool InitializeMSAALoadPipelineStructs(
             const VulkanSharedContext*,
             SkSL::Compiler*,
