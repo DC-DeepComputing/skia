@@ -16,6 +16,63 @@
       "message": "ptal -- this is working (for the GPU path) now. I\u0027ll add the CPU path if the GPU path gets reasonably positive feedback.",
       "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fc4b619_c9362530",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-02T15:24:26Z",
+      "side": 1,
+      "message": "Looks like a lot of shader code, but it\u0027s actually not that bad. (There\u0027s probably a tighter form with fewer branches, but I\u0027m not worried about that yet). I know you\u0027re not real worried about it, but I have to ask: Should this be orthogonal to color space? From an API standpoint, it sure seems like it - but I realize that it makes the implementation much trickier (if I pick LinearSrgb + GamutMap, we need to interpolate, then transform, gamut map, transform...). Given that, I\u0027d be okay with this implementation, but that ultimately hinges on others agreeing with the strategy for CSS.",
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb78b043_59be21a6",
+        "filename": "gm/gradients.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-02T15:24:26Z",
+      "side": 1,
+      "message": "```suggestion\nDEF_SIMPLE_GM_BG(gradients_color_space, canvas, 265, 255, SK_ColorGRAY) {\n```",
+      "range": {
+        "startLine": 1118,
+        "startChar": 53,
+        "endLine": 1118,
+        "endChar": 56
+      },
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65885f22_17ec2813",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-02T15:24:26Z",
+      "side": 1,
+      "message": "If we go this way, we probably want a comment/link here explaining what this does.",
+      "revId": "a6745c70ac369505d6feaad6fe3a386b5b270ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
