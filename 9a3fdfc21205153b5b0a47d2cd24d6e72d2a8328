@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7402718c_30c7c62b",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-02T18:23:06Z",
+      "side": 1,
+      "message": "nit: \u0027doubled\u0027\n```suggestion\n        // we doubled backed at the start so need to check if fLastVec is zero or not.\n```",
+      "range": {
+        "startLine": 2142,
+        "startChar": 14,
+        "endLine": 2142,
+        "endChar": 20
+      },
+      "revId": "9a3fdfc21205153b5b0a47d2cd24d6e72d2a8328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
