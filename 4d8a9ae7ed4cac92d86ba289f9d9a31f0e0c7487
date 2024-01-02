@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3540ad09_491d323d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-02T16:47:24Z",
+      "side": 1,
+      "message": "This is pretty mechanical, just printing the layout as a string in all the asserts and expectations.",
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
