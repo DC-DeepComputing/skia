@@ -56,6 +56,9 @@ GENERAL_DEFINES = [
 }) + select({
     "//bazel/common_config_settings:build_for_debugger_true": ["SK_BUILD_FOR_DEBUGGER"],
     "//conditions:default": [],
+}) + select({
+    "//bazel/common_config_settings:use_fontations_true": ["SK_TYPEFACE_FACTORY_FONTATIONS"],
+    "//conditions:default": [],
 })
 
 GPU_DEFINES = select_multi({
