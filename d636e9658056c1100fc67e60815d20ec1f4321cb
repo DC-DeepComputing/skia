@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98a74826_d5af9b17",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T19:49:32Z",
+      "side": 1,
+      "message": "I\u0027d made a typo here in previous patchsets, and was returning `false` when the alignments were in agreement(!).",
+      "range": {
+        "startLine": 164,
+        "startChar": 26,
+        "endLine": 164,
+        "endChar": 28
+      },
+      "revId": "d636e9658056c1100fc67e60815d20ec1f4321cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b7c67c0_890240c5",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T19:49:32Z",
+      "side": 1,
+      "message": "I added these guards so that the UniformManager API stayed small in release builds. Previously these functions were always defined, but had empty bodies in release. I considered adding a check for `GRAPHITE_TEST_UTILS` but that would have greatly changed the object shape/size in our release builds so I opted for this. It\u0027s clunky, but not un-clear what\u0027s going on either.",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 23
+      },
+      "revId": "d636e9658056c1100fc67e60815d20ec1f4321cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
