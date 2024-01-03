@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ce961a1_e29458a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T19:44:41Z",
+      "side": 1,
+      "message": "Once https://skia-review.googlesource.com/c/skia/+/770796 rolls into Flutter, all uses of this flag will be gone.",
+      "revId": "b1f5948718cdd9e03e6b93197914fbe485689c70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
