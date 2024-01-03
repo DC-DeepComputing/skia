@@ -10,16 +10,21 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#include "include/ports/SkTypeface_fontations.h"
+// #include "include/ports/SkFontMgr_empty.h"
 
 #include <string.h>
 #include <initializer_list>
@@ -27,12 +32,36 @@
 namespace skiagm {
 
 namespace {
+enum TypefaceBackend { UseDefault, UseFontations };
+
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+constexpr auto kBackend = TypefaceBackend::UseFontations;
+#else
+constexpr auto kBackend = TypefaceBackend::UseDefault;
+#endif
+
+template <TypefaceBackend variant> sk_sp<SkTypeface> MakeTypefaceFromResource(const char* resource);
+
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+template <> sk_sp<SkTypeface> MakeTypefaceFromResource<UseFontations>(const char* resource) {
+    std::unique_ptr<SkStreamAsset> resourceStream(GetResourceAsStream(resource, false));
+    return SkTypeface_Make_Fontations(std::move(resourceStream), SkFontArguments());
+}
+#else
+template <> sk_sp<SkTypeface> MakeTypefaceFromResource<UseDefault>(const char* resource) {
+    return ToolUtils::CreateTypefaceFromResource(resource, 0);
+}
+#endif
+
+}  // namespace
+
+namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
 const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
 const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 const SkScalar xWidth = 1200;
 const SkScalar xTranslate = 200;
-}
+}  // namespace
 
 class ColrV1GM : public GM {
 public:
@@ -42,10 +71,7 @@ public:
              SkScalar rotateDeg,
              std::initializer_list<SkFontArguments::VariationPosition::Coordinate>
                      specifiedVariations)
-            : fTestName(testName)
-            , fCodepoints(codepoints)
-            , fSkewX(skewX)
-            , fRotateDeg(rotateDeg) {
+            : fTestName(testName), fCodepoints(codepoints), fSkewX(skewX), fRotateDeg(rotateDeg) {
         fVariationPosition.coordinateCount = specifiedVariations.size();
         fCoordinates = std::make_unique<SkFontArguments::VariationPosition::Coordinate[]>(
                 specifiedVariations.size());
@@ -59,9 +85,9 @@ public:
 protected:
     void onOnceBeforeDraw() override {
         if (fVariationPosition.coordinateCount) {
-            fTypeface = ToolUtils::CreateTypefaceFromResource(kTestFontNameVariable);
+            fTypeface = MakeTypefaceFromResource<kBackend>(kTestFontNameVariable);
         } else {
-            fTypeface = ToolUtils::CreateTypefaceFromResource(kTestFontName);
+            fTypeface = MakeTypefaceFromResource<kBackend>(kTestFontName);
         }
         fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }
@@ -211,7 +237,7 @@ const uint32_t foreground_color[] = {
 const uint32_t clipbox[] = {0xf0c00, 0xf0c01, 0xf0c02, 0xf0c03, 0xf0c04};
 const uint32_t gradient_p2_skewed[] = {0xf0d00};
 const uint32_t variable_alpha[] = {0xf1000};
-const uint32_t paintcolrglyph_cycle[] = { 0xf1100, 0xf1101, 0xf1200 };
+const uint32_t paintcolrglyph_cycle[] = { 0xf1100, 0xf1101, 0x1200 };
 const uint32_t sweep_coincident[] = { 0xf1300, 0xf1301, 0xf1302, 0xf1303, 0xf1304, 0xf1305,
                                       0xf1306, 0xf1307, 0xf1308, 0xf1309, 0xf130a, 0xf130b,
                                       0xf130c, 0xf130d, 0xf130e, 0xf130f, 0xf1310, 0xf1311,
