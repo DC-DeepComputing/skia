@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f466c55c_87b2effd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-03T17:57:56Z",
+      "side": 1,
+      "message": "The CodeSize failure is because of build changes (and the NoPatch build not reverting to the previous NDK). I\u0027ll just manually submit.",
+      "revId": "a5c299e580d16b8a7babb0929a07c4669e939e7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
