@@ -995,6 +995,11 @@ optional("gpu") {
 
   if (is_android) {
     sources += skia_gpu_android_private
+
+    # this lib is required to link against AHardwareBuffer
+    if (defined(ndk_api) && ndk_api >= 26) {
+      libs += [ "android" ]
+    }
   }
 
   if (skia_use_gl) {
@@ -1052,13 +1057,6 @@ optional("gpu") {
     }
     if (is_android) {
       sources += skia_gpu_vk_android_private
-    }
-  }
-
-  if (is_android && (skia_use_gl || skia_use_vulkan)) {
-    # this lib is required to link against AHardwareBuffer
-    if (defined(ndk_api) && ndk_api >= 26) {
-      libs += [ "android" ]
     }
   }
 
