@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c085aa_b4766fb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-03T18:10:37Z",
+      "side": 1,
+      "message": "I think this will fix the Pixel4a-HWASAN bot?",
+      "revId": "98c963eeca8ae12f77dc4b2f8018cad33ee4dd84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
