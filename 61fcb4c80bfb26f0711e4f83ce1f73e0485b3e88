@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2b389cc_a4f9a4ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-03T19:42:33Z",
+      "side": 1,
+      "message": "I landed this today, then had to revert, because the CodeSize jobs were looking for the strip binary in the wrong (old) place. I updated gen_tasks, so hopefully that fixes that job.\n\nBut, Leandro: There is also an Android Bazel toolchain, and I found a bunch of other references to binary paths (eg, in gen_trampolines.go and toolchains/BUILD.bazel). Do I need to do something there? Are those jobs still using the old NDK? (It seems like it, because BazelBuild-hello_bazel_world_android_test-for_android_arm64_release-linux_x64 continued to work after I landed the new NDK).",
+      "revId": "61fcb4c80bfb26f0711e4f83ce1f73e0485b3e88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
