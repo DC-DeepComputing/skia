@@ -107,6 +107,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "811c61b6_3c671e49",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-03T16:59:32Z",
+      "side": 1,
+      "message": "Yea I was talking about cases with 3 or more redundant stops. Actually I was just looking at Ganesh\u0027s interval representation and wondering if that\u0027s something we should consider for Graphite, but I suppose that\u0027s also independent of this CL.",
+      "parentUuid": "eaa7c64b_0bdeffe9",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ce61449_95638d94",
