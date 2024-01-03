@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d81df34_69f3ec7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-01-03T18:02:16Z",
+      "side": 1,
+      "message": "Thanks! Updated with scary comments to keep people away from these constants.",
+      "revId": "8f11543c8478722657cd4bf5dad49f9adb5b426c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
