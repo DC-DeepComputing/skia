@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5bfeebec_81fef21d",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "If you are okay with it, this could be handled in a follow-up CL. The existing Graphite behavior has this same problem because we assume std140 for uniforms in webgpu currently.",
+      "parentUuid": "41f0bc54_f61025be",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 46
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d70dea5f_66c831b6",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 5
@@ -54,6 +78,30 @@
       "writtenOn": "2023-12-21T21:33:26Z",
       "side": 1,
       "message": "Tiny grammar nit: I\u0027m not sure what subject is being \"matched\" here; a complete sentence would reduce ambiguity",
+      "range": {
+        "startLine": 90,
+        "startChar": 71,
+        "endLine": 90,
+        "endChar": 79
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4a65699_dccdfe15",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d70dea5f_66c831b6",
       "range": {
         "startLine": 90,
         "startChar": 71,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f230f4_8646da2c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "075201cd_a58b943d",
+      "range": {
+        "startLine": 101,
+        "startChar": 29,
+        "endLine": 102,
+        "endChar": 38
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3657a1d2_525da691",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-12-21T21:33:26Z",
       "side": 1,
       "message": "Even in vertex attributes, the types aren\u0027t _really_ supported--they allow packing 2x16 or 4x8 values into one u32 attribute, but you can\u0027t pass them individually, and WGSL has no small-int support; those types show up in the shader as u32/i32.",
+      "range": {
+        "startLine": 105,
+        "startChar": 52,
+        "endLine": 105,
+        "endChar": 79
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f3f503a_725fa408",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "I rewrote this section to clarify this hopefully.",
+      "parentUuid": "3657a1d2_525da691",
       "range": {
         "startLine": 105,
         "startChar": 52,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de25f137_9f5d725a",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "659fbd9e_11b01001",
+      "range": {
+        "startLine": 114,
+        "startChar": 33,
+        "endLine": 114,
+        "endChar": 35
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "350b4b57_faa1d983",
@@ -146,6 +266,30 @@
       "writtenOn": "2023-12-21T21:50:33Z",
       "side": 1,
       "message": "M is ambiguous--the OpenGL spec does not use a variable M, and the line discusses both \"arrays\" and \"vectors\"; each of these have a size. \n\nBased on context, I believe M means vector component-width, but on an initial read, it is confusing since you need to read ahead to be confident of this.",
+      "range": {
+        "startLine": 116,
+        "startChar": 40,
+        "endLine": 116,
+        "endChar": 41
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc882965_bdd5a916",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "That\u0027s correct, I added a clarifying description to M where it\u0027s first declared.",
+      "parentUuid": "350b4b57_faa1d983",
       "range": {
         "startLine": 116,
         "startChar": 40,
@@ -227,6 +371,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51eda0f_a290c9ea",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Removed this from the layout rules.",
+      "parentUuid": "78cf5f3f_00f3cf49",
+      "range": {
+        "startLine": 118,
+        "startChar": 31,
+        "endLine": 118,
+        "endChar": 50
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b8f39e4_9ebbe63c",
@@ -240,6 +408,30 @@
       "writtenOn": "2023-12-21T21:50:33Z",
       "side": 1,
       "message": "Nothing in rules 1 or 2 uses the word \"count\"; I think this means \"array size\"?",
+      "range": {
+        "startLine": 121,
+        "startChar": 65,
+        "endLine": 121,
+        "endChar": 70
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c25c8e7b_be456964",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b8f39e4_9ebbe63c",
       "range": {
         "startLine": 121,
         "startChar": 65,
@@ -273,6 +465,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01465781_1e6a4947",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaac58bb_7c3dced8",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 78
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e6c86ce_5f57d694",
@@ -286,6 +502,30 @@
       "writtenOn": "2023-12-21T22:22:00Z",
       "side": 1,
       "message": "Isn\u0027t this just a roundabout way to say\n`The current offset is then incremented by the total size of the uniform.`\n?",
+      "range": {
+        "startLine": 130,
+        "startChar": 6,
+        "endLine": 131,
+        "endChar": 14
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4adccda_8325eadf",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e6c86ce_5f57d694",
       "range": {
         "startLine": 130,
         "startChar": 6,
@@ -319,6 +559,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "630e6914_ab44ae1b",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "612e2bca_bafc7ca6",
+      "range": {
+        "startLine": 140,
+        "startChar": 45,
+        "endLine": 140,
+        "endChar": 65
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8ede5a3_ed21d8f2",
@@ -332,6 +596,30 @@
       "writtenOn": "2023-12-21T22:22:00Z",
       "side": 1,
       "message": "SkSL supports them; it\u0027s only the interface between SkSL and Ganesh/Graphite (`src/core/SkSLTypeShared.h`) which is the limiting factor.",
+      "range": {
+        "startLine": 143,
+        "startChar": 3,
+        "endLine": 143,
+        "endChar": 37
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02bf1511_65d99088",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ve clarified that distinction in the comment.",
+      "parentUuid": "e8ede5a3_ed21d8f2",
       "range": {
         "startLine": 143,
         "startChar": 3,
@@ -365,6 +653,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a6bfe7_bc90519c",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a62d3e7_aad18f09",
+      "range": {
+        "startLine": 154,
+        "startChar": 73,
+        "endLine": 154,
+        "endChar": 79
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca25a126_7c0238a7",
@@ -378,6 +690,30 @@
       "writtenOn": "2023-12-21T22:34:23Z",
       "side": 1,
       "message": "Instead of setting defaults in the ctors, just set them here:\n```\n    Layout fLayout \u003d Layout::kInvalid;\n    int fOffset \u003d 0;\n    int fReqAlignment \u003d 0;\n```",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 0
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef0ad0c3_82b555c6",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca25a126_7c0238a7",
       "range": {
         "startLine": 186,
         "startChar": 0,
@@ -411,6 +747,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd597e2e_e13e9d88",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "This was a left over remnant from an earlier version of the internal write() that took a float* instead of a void*, so getting the pointer to the first field avoided casting. But now there\u0027s no reason not to just take the address.",
+      "parentUuid": "f7aaf6de_54ad813c",
+      "range": {
+        "startLine": 232,
+        "startChar": 72,
+        "endLine": 232,
+        "endChar": 75
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83e1e6fa_9ef79168",
@@ -424,6 +784,30 @@
       "writtenOn": "2023-12-21T22:34:23Z",
       "side": 1,
       "message": "`a second copy` to make it more clear why we are skipping the write (in case a reader sees this before the big comment block above the function)",
+      "range": {
+        "startLine": 282,
+        "startChar": 59,
+        "endLine": 282,
+        "endChar": 61
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8d7ed94_2918549e",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83e1e6fa_9ef79168",
       "range": {
         "startLine": 282,
         "startChar": 59,
@@ -457,6 +841,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa3c8b06_2d62bba7",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73439509_742987bb",
+      "range": {
+        "startLine": 283,
+        "startChar": 41,
+        "endLine": 283,
+        "endChar": 48
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a3a6c6e_42bcde85",
@@ -470,6 +878,30 @@
       "writtenOn": "2023-12-21T22:34:23Z",
       "side": 1,
       "message": "We support `halfNxN` in SkSLTypeShared as well; don\u0027t we want to detect matrices here as well? We even have `void writeHalf(const SkM44\u0026 m)` above.",
+      "range": {
+        "startLine": 294,
+        "startChar": 0,
+        "endLine": 294,
+        "endChar": 96
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "610d8aba_1f0448a7",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "I\u0027ve expanded this comment, but all of the write(matrix) functions actually call the internal `writeArray\u003ccolumn type\u003e`, so from a data writing POV, the matrix SkSL types can be ignored.",
+      "parentUuid": "8a3a6c6e_42bcde85",
       "range": {
         "startLine": 294,
         "startChar": 0,
@@ -503,6 +935,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "035dfb05_8bc285a2",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "In this case I added `inline` for linkage control because its definition is defined below with `write` and `writeArray`. I added a comment to that effect.",
+      "parentUuid": "1a7a3424_ef1bf752",
+      "range": {
+        "startLine": 322,
+        "startChar": 4,
+        "endLine": 322,
+        "endChar": 10
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8b88887_bbb25153",
@@ -526,6 +982,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d70aca57_ea60dd03",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "I moved the public function declarations into a separate `#ifdef` block and moved it back up to the existing public section.",
+      "parentUuid": "c8b88887_bbb25153",
+      "range": {
+        "startLine": 339,
+        "startChar": 0,
+        "endLine": 339,
+        "endChar": 7
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac024079_cb3c0720",
@@ -539,6 +1019,30 @@
       "writtenOn": "2023-12-21T22:53:39Z",
       "side": 1,
       "message": "Could we always use `skvx::Vec\u003cN,float\u003e` instead of just for `float4`? This seems a lot nicer and skvx should support any N here (although perhaps only using scalars for N\u003c4).\n\nI think the only reason I used `SkFloatToHalf` originally was that I didn\u0027t realize `skvx` exposed conversion to half.",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 60
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04ac0dae_a44193c4",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 1,
+      "message": "`skvx` doesn\u0027t support N\u003d3 so we need the loop and the only true specialization for `to_half` is when N\u003d4. N\u003d2 might be able to use some SIMD instructions but N\u003d1 would work out to `SkFloatToHalf` anyways and I think this will have less overall code size vs. generating a an N\u003d2 `to_half` variant.  WDYT?",
+      "parentUuid": "ac024079_cb3c0720",
       "range": {
         "startLine": 363,
         "startChar": 0,

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff097fa_6d6d0392",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "1ee63511_5046a2e0",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 19
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3782041f_a8d992b5",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-21T21:45:40Z",
       "side": 0,
       "message": "Now that shorts aren\u0027t going to be supported, this type conversion doesn\u0027t need to be carried forward into the new implementation.",
+      "range": {
+        "startLine": 183,
+        "startChar": 8,
+        "endLine": 192,
+        "endChar": 9
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ae82c9b_3b618e47",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "3782041f_a8d992b5",
       "range": {
         "startLine": 183,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e29224d_5a783285",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "058f8c4d_eb6678d0",
+      "range": {
+        "startLine": 209,
+        "startChar": 16,
+        "endLine": 213,
+        "endChar": 17
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc8f9f16_ae036d37",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-12-21T21:45:40Z",
       "side": 0,
       "message": "The new implementation doesn\u0027t expose a way to write to a `float3x3[n]` so the only SkMatrix handling is for single uniforms. It will be easy to add support if we need it (seems unlikely).",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 75
+      },
+      "revId": "4d8a9ae7ed4cac92d86ba289f9d9a31f0e0c7487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8549c1ed_acb20fe2",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:42:39Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "cc8f9f16_ae036d37",
       "range": {
         "startLine": 221,
         "startChar": 0,
