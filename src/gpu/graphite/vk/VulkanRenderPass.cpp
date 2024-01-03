@@ -19,7 +19,7 @@ namespace skgpu::graphite {
 
 namespace { // anonymous namespace
 
-void add_attachment_description_info_to_key(GraphiteResourceKey::Builder& builder,
+void add_attachment_description_info_to_key(ResourceKey::Builder& builder,
                                             const TextureInfo& textureInfo,
                                             int& builderIdx,
                                             LoadOp loadOp,
@@ -39,88 +39,26 @@ void add_attachment_description_info_to_key(GraphiteResourceKey::Builder& builde
     // depth/stencil format).
 }
 
-} // anonymous namespace
-
-GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
-        const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
-    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
-                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
-
-    bool  hasColorAttachment        = renderPassDesc.fColorAttachment.fTextureInfo.isValid();
-    bool  hasColorResolveAttachment = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid();
-    bool  hasDepthStencilAttachment = renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid();
-    bool  hasInputAttachment        = loadMSAAFromResolve; // TODO: Query RenderPassDesc for this
-
-    // TODO: Query for more attachments once the RenderPassDesc struct contains that information.
-    // For now, we only ever expect to see 0 or 1 of each attachment type (color, resolve, and
-    // depth/stencil), so the count of each of those can simply be determined with a bool.
-    const int numColorAttachments        = hasColorAttachment        ? 1 : 0;
-    const int numResolveAttachments      = hasColorResolveAttachment ? 1 : 0;
-    const int numDepthStencilAttachments = hasDepthStencilAttachment ? 1 : 0;
-    const int numInputAttachments        = hasInputAttachment        ? 1 : 0;
-    const int totalRenderPassAttachments = numColorAttachments + numResolveAttachments +
-                                           numDepthStencilAttachments + numInputAttachments;
-
-    // Accumulate attachments into a container to mimic future structure in RenderPassDesc
-    skia_private::TArray<const AttachmentDesc*> rpAttachments(totalRenderPassAttachments);
-    if (hasColorAttachment) {
-        rpAttachments.push_back(&renderPassDesc.fColorAttachment);
-    }
-    if (hasColorResolveAttachment) {
-        rpAttachments.push_back(&renderPassDesc.fColorResolveAttachment);
-    }
-    if (hasDepthStencilAttachment) {
-        rpAttachments.push_back(&renderPassDesc.fDepthStencilAttachment);
-    }
-    if (hasInputAttachment) {
-        // TODO: Get input attachment information from RenderPassDesc. For now, we know the resolve
-        // attachment is used as the input when loading from MSAA.
-        rpAttachments.push_back(&renderPassDesc.fColorResolveAttachment);
-    }
-
-    // TODO: Reference RenderPassDesc to determine number and makeup of subpasses and their
-    // dependencies. For now, we only ever expect 1 (in most cases) or 2 (when loading MSAA).
-    int subpassCount = loadMSAAFromResolve ? 2 : 1;
-    int subpassDependencyCount = loadMSAAFromResolve ? 1 : 0;
-
-    // Calculate how many int32s we need to capture all relevant information. The key will be formed
-    // such that bigger-picture items (such as the total attachment count) will be near the front of
-    // the key to more quickly eliminate incompatible keys.
-    int num32DataCnt = 0;
-    // Each renderpass key will start with the total number of attachments associated with it
-    // followed by how many subpasses and subpass dependencies the renderpass has. Packed together,
-    // these will use one uint32.
-    num32DataCnt++;
-    SkASSERT(static_cast<uint32_t>(rpAttachments.size()) <= (1u << 8));
-    SkASSERT(static_cast<uint32_t>(subpassCount) <= (1u << 8));
-    SkASSERT(static_cast<uint32_t>(subpassDependencyCount) <= (1u << 8));
-
-    // The key will then contain key information for each attachment. This includes format, sample
-    // count, and load/store operation information.
-    num32DataCnt += 3 * totalRenderPassAttachments;
-    // Then, subpass information will be added in the form of attachment reference indices. Reserve
-    // one int32 for each possible attachment reference type, of which there are 4.
-    // There are 4 possible attachment reference types. Pack all 4 attachment reference indices into
-    // one uint32.
-    num32DataCnt += subpassCount;
-    // Each subpass dependency will be allotted 6 int32s to store all its pertinent information.
-    num32DataCnt += 6 * subpassDependencyCount;
-
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
-    GraphiteResourceKey key;
-    GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
-
-    // Now we can actually populate the key.
-    int builderIdx = 0;
-    builder[builderIdx++] =
-            totalRenderPassAttachments | (subpassCount << 8) | (subpassDependencyCount << 16);
+void populate_key(int startingIdx,
+                  ResourceKey::Builder& builder,
+                  const skia_private::TArray<const AttachmentDesc*>& rpAttachments,
+                  int subpassCount,
+                  int subpassDepCount,
+                  bool compatibleOnly,
+                  bool loadMSAAFromResolve,
+                  bool hasColorAttachment,
+                  bool hasColorResolveAttachment,
+                  bool hasDepthStencilAttachment) {
+    int idx = startingIdx;
+    builder[idx++] =
+            rpAttachments.size() | (subpassCount << 8) | (subpassDepCount << 16);
 
     // Iterate through each renderpass attachment to add its information
-    for (int i = 0; i < totalRenderPassAttachments; i++) {
+    for (int i = 0; i < rpAttachments.size(); i++) {
         add_attachment_description_info_to_key(
                 builder,
                 rpAttachments[i]->fTextureInfo,
-                builderIdx,
+                idx,
                 // Assign LoadOp::kLoad and StoreOp::kStore as default load/store operations for
                 // compatible render passes where load/store ops don't need to match.
                 compatibleOnly ? LoadOp::kLoad   : rpAttachments[i]->fLoadOp,
@@ -153,31 +91,217 @@ GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
             // TODO: Add input attachment info to key once supported for use in main subpass
             attachmentIdxKeyInfo |= kAttachmentUnused << 24;
 
-            builder[builderIdx++] = attachmentIdxKeyInfo;
+            builder[idx++] = attachmentIdxKeyInfo;
         } else { // Loading MSAA from resolve subpass
             SkASSERT(hasColorAttachment);
-            builder[builderIdx++] = kColorAttachmentIdx |  // color attachment
-                                    (kAttachmentUnused << 8) | // No color resolve attachment
-                                    (kAttachmentUnused << 16) | // No depth/stencil attachment
-                                    (kLoadSubpassInputAttachmentIdx << 24); // input attachment
+            builder[idx++] = kColorAttachmentIdx       | // color attachment
+                             (kAttachmentUnused << 8)  | // No color resolve attachment
+                             (kAttachmentUnused << 16) | // No depth/stencil attachment
+                             (kLoadSubpassInputAttachmentIdx << 24); // input attachment
         }
     }
 
     // TODO: Query RenderPassDesc for subpass dependency information & populate the key accordingly.
     // For now, we know that the only subpass dependency will be that expected for loading MSAA from
     // resolve.
-    for (int i = 0; i < subpassDependencyCount; i++) {
-        builder[builderIdx++] = 0 | (mainSubpassIdx << 8); // srcSubpass, dstSubpass
-        builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // srcStageMask
-        builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // dstStageMask
-        builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;          // srcAccessMask
-        builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |          // dstAccessMask
+    for (int i = 0; i < subpassDepCount; i++) {
+        builder[idx++] = 0 | (mainSubpassIdx << 8); // srcSubpass, dstSubpass
+        builder[idx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // srcStageMask
+        builder[idx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // dstStageMask
+        builder[idx++] = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;          // srcAccessMask
+        builder[idx++] = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |          // dstAccessMask
                                 VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-        builder[builderIdx++] = VK_DEPENDENCY_BY_REGION_BIT;                   // dependencyFlags
+        builder[idx++] = VK_DEPENDENCY_BY_REGION_BIT;                   // dependencyFlags
     }
+}
+
+} // anonymous namespace
+
+GraphiteResourceKey VulkanRenderPass::MakeRenderPassKey(
+        const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
+
+    VulkanRenderPassDesc rpDesc =
+            VulkanRenderPassDesc::MakeFromRenderPassDesc(renderPassDesc, compatibleOnly);
+
+    // bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+    //                            renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
+    // bool  hasColorAttachment        = renderPassDesc.fColorAttachment.fTextureInfo.isValid();
+    // bool  hasColorResolveAttachment = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid();
+    // bool  hasDepthStencilAttachment = renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid();
+
+    // // TODO: Query for more attachments once the RenderPassDesc struct contains that information.
+    // // For now, we only ever expect to see 0 or 1 of each attachment type (color, resolve, and
+    // // depth/stencil), so the count of each of those can simply be determined with a bool.
+    // const int numColorAttachments        = hasColorAttachment        ? 1 : 0;
+    // const int numResolveAttachments      = hasColorResolveAttachment ? 1 : 0;
+    // const int numDepthStencilAttachments = hasDepthStencilAttachment ? 1 : 0;
+    // const int totalRenderPassAttachments = numColorAttachments + numResolveAttachments +
+    //                                        numDepthStencilAttachments;
+
+    // // Accumulate attachments into a container to mimic future structure in RenderPassDesc
+    // skia_private::TArray<const AttachmentDesc*> rpAttachments(totalRenderPassAttachments);
+    // if (hasColorAttachment) {
+    //     rpAttachments.push_back(&renderPassDesc.fColorAttachment);
+    // }
+    // if (hasColorResolveAttachment) {
+    //     rpAttachments.push_back(&renderPassDesc.fColorResolveAttachment);
+    // }
+    // if (hasDepthStencilAttachment) {
+    //     rpAttachments.push_back(&renderPassDesc.fDepthStencilAttachment);
+    // }
+
+    // TODO: Reference RenderPassDesc to determine number and makeup of subpasses and their
+    // dependencies. For now, we only ever expect 1 (in most cases) or 2 (when loading MSAA).
+    // int subpassCount = loadMSAAFromResolve ? 2 : 1;
+    // int subpassDependencyCount = loadMSAAFromResolve ? 1 : 0;
+
+    // Calculate how many int32s we need to capture all relevant information. The key will be formed
+    // such that bigger-picture items (such as the total attachment count) will be near the front of
+    // the key to more quickly eliminate incompatible keys.
+    int num32DataCnt = 0;
+    // Each renderpass key will start with the total number of attachments associated with it
+    // followed by how many subpasses and subpass dependencies the renderpass has. Packed together,
+    // these will use one uint32.
+    num32DataCnt++;
+    SkASSERT(static_cast<uint32_t>(rpDesc.fRpAttachments.size()) <= (1u << 8));
+    SkASSERT(static_cast<uint32_t>(rpDesc.fSubpasses.size()) <= (1u << 8));
+    SkASSERT(static_cast<uint32_t>(rpDesc.fSubpassDeps.size()) <= (1u << 8));
+
+    // The key will then contain key information for each attachment. This includes format, sample
+    // count, and load/store operation information.
+    num32DataCnt += 3 * rpDesc.fRpAttachments.size();
+    // Then, subpass information will be added in the form of attachment reference indices. Reserve
+    // one int32 for each possible attachment reference type, of which there are 4.
+    // There are 4 possible attachment reference types. Pack all 4 attachment reference indices into
+    // one uint32.
+    num32DataCnt += rpDesc.fSubpasses.size();
+    // Each subpass dependency will be allotted 6 int32s to store all its pertinent information.
+    num32DataCnt += 6 * rpDesc.fSubpassDeps.size();
+
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    // determine num data count
+    GraphiteResourceKey::Builder builder(&key, kType, num32DataCnt, Shareable::kYes);
+
+    // populate_key(/*startingIdx=*/0,
+    //              builder,
+    //              rpAttachments,
+    //              subpassCount,
+    //              subpassDependencyCount,
+    //              compatibleOnly,
+    //              loadMSAAFromResolve,
+    //              hasColorAttachment,
+    //              hasColorResolveAttachment,
+    //              hasDepthStencilAttachment);
 
     builder.finish();
     return key;
+}
+
+void VulkanRenderPass::AddRenderPassInfoToKey(const RenderPassDesc& rpDesc,
+                                              bool compatibleOnly,
+                                              ResourceKey::Builder& builder,
+                                              int startingIdx) {
+
+    // // TODO: Reference RenderPassDesc to determine number and makeup of subpasses and their
+    // // dependencies. For now, we only ever expect 1 (in most cases) or 2 (when loading MSAA).
+    // // int subpassCount = loadMSAAFromResolve ? 2 : 1;
+    // // int subpassDependencyCount = loadMSAAFromResolve ? 1 : 0;
+
+    // // Calculate how many int32s we need to capture all relevant information. The key will be formed
+    // // such that bigger-picture items (such as the total attachment count) will be near the front of
+    // // the key to more quickly eliminate incompatible keys.
+    // int num32DataCnt = 0;
+    // // Each renderpass key will start with the total number of attachments associated with it
+    // // followed by how many subpasses and subpass dependencies the renderpass has. Packed together,
+    // // these will use one uint32.
+    // num32DataCnt++;
+    // SkASSERT(static_cast<uint32_t>(rpDesc.fRpAttachments.size()) <= (1u << 8));
+    // SkASSERT(static_cast<uint32_t>(rpDesc.fSubpasses.size()) <= (1u << 8));
+    // SkASSERT(static_cast<uint32_t>(rpDesc.fSubpassDeps.size()) <= (1u << 8));
+
+    // // The key will then contain key information for each attachment. This includes format, sample
+    // // count, and load/store operation information.
+    // num32DataCnt += 3 * totalRenderPassAttachments;
+    // // Then, subpass information will be added in the form of attachment reference indices. Reserve
+    // // one int32 for each possible attachment reference type, of which there are 4.
+    // // There are 4 possible attachment reference types. Pack all 4 attachment reference indices into
+    // // one uint32.
+    // num32DataCnt += subpassCount;
+    // // Each subpass dependency will be allotted 6 int32s to store all its pertinent information.
+    // num32DataCnt += 6 * subpassDependencyCount;
+
+    // populate_key(startingIdx,
+    //              builder,
+    //              rpAttachments,
+    //              subpassCount,
+    //              subpassDependencyCount,
+    //              compatibleOnly,
+    //              loadMSAAFromResolve,
+    //              hasColorAttachment,
+    //              hasColorResolveAttachment,
+    //              hasDepthStencilAttachment);
+}
+
+VulkanRenderPass::VulkanRenderPassDesc VulkanRenderPassDesc::MakeFromRenderPassDesc(
+        const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
+    bool  hasColorAttachment        = renderPassDesc.fColorAttachment.fTextureInfo.isValid();
+    bool  hasColorResolveAttachment = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid();
+    bool  hasDepthStencilAttachment = renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid();
+
+    // TODO: Query for more attachments once the RenderPassDesc struct contains that information.
+    // For now, we only ever expect to see 0 or 1 of each attachment type (color, resolve, and
+    // depth/stencil), so the count of each of those can simply be determined with a bool.
+    const int numColorAttachments        = hasColorAttachment        ? 1 : 0;
+    const int numResolveAttachments      = hasColorResolveAttachment ? 1 : 0;
+    const int numDepthStencilAttachments = hasDepthStencilAttachment ? 1 : 0;
+    const int totalRenderPassAttachments = numColorAttachments + numResolveAttachments +
+                                           numDepthStencilAttachments;
+
+    // Accumulate attachments into a container to mimic future structure in RenderPassDesc
+    fRpAttachments(totalRenderPassAttachments);
+    if (hasColorAttachment) {
+        fRpAttachments.push_back(VulkanAttachmentDesc::MakeFromAttachmentDesc(
+                renderPassDesc.fColorAttachment));
+    }
+    if (hasColorResolveAttachment) {
+        fRpAttachments.push_back(VulkanAttachmentDesc::MakeFromAttachmentDesc(
+                renderPassDesc.fColorResolveAttachment));
+    }
+    if (hasDepthStencilAttachment) {
+        fRpAttachments.push_back(VulkanAttachmentDesc::MakeFromAttachmentDesc(
+               renderPassDesc.fDepthStencilAttachment));
+    }
+
+    if (loadMSAAFromResolve) {
+        SubpassDesc& loadMSAASubpass = fSubpasses.push_back();
+        loadMSAASubpass.fAttachments[kColorAttachmentIdx]        = kColorAttachmentIdx; // TODO check if we have
+        loadMSAASubpass.fAttachments[kResolveAttachmentIdx]      = kAttachmentUnused;// check if we have
+        loadMSAASubpass.fAttachments[kDepthStencilAttachmentIdx] = kAttachmentUnused;// check if we have
+        loadMSAASubpass.fAttachments[kInputAttachmentIdx]        = kResolveAttachmentIdx;
+
+        SubpassDependency& subpassDep = fSubpassDeps.push_back();
+        subpassDep.fSrcSubpass = 0;
+        subpassDep.fDstSubpass = 1; // Main subpass index
+        subpassDep.fSrcStageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        subpassDep.fDstStageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        subpassDep.fSrcAccess = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        subpassDep.fDstAccess = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    }
+
+    SubpassDesc& mainSubpass = fSubpasses.push_back();
+    mainSubpass.fAttachments[kColorAttachmentIdx]        =
+            hasColorAttachment ? kColorAttachmentIdx : kAttachmentUnused;
+    mainSubpass.fAttachments[kResolveAttachmentIdx]      =
+            hasColorResolveAttachment ? kColorResolveAttachmentIdx : kAttachmentUnused;
+    mainSubpass.fAttachments[kDepthStencilAttachmentIdx] =
+            hasDepthStencilAttachment? kDepthStencilAttachmentIdx : kAttachmentUnused;
+    mainSubpass.fAttachments[kInputAttachmentIdx]        = kAttachmentUnused;
 }
 
 namespace { // anonymous namespace

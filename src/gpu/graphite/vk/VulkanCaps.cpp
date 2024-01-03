@@ -1302,8 +1302,7 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
                                               const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
-            UniqueKey::GenerateDomain();
+        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
 
         // 5 uint32_t's (render step id, paint id, uint64 renderpass desc, uint16 write swizzle key)
         UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 5, "GraphicsPipeline");
@@ -1317,7 +1316,7 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
         bool loadMsaaFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
                                    renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
-        builder[4] = renderPassDesc.fWriteSwizzle.asKey() | (loadMsaaFromResolve << 16);
+        builder[4] = renderPassDesc.fWriteSwizzle.asKey();
 
         builder.finish();
     }

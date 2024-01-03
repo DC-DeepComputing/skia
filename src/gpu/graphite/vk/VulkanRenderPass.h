@@ -39,6 +39,8 @@ public:
     static GraphiteResourceKey MakeRenderPassKey(const RenderPassDesc&, bool compatibleOnly);
     static sk_sp<VulkanRenderPass> MakeRenderPass(
             const VulkanSharedContext*, const RenderPassDesc&, bool compatibleOnly);
+    static void AddRenderPassInfoToKey(const RenderPassDesc&, bool compatibleOnly,
+                                       ResourceKey::Builder&, int startingIdx);
 
     VkRenderPass renderPass() const {
         SkASSERT(fRenderPass != VK_NULL_HANDLE);
@@ -53,6 +55,53 @@ private:
     void freeGpuData() override;
 
     VulkanRenderPass(const VulkanSharedContext*, VkRenderPass, VkExtent2D granularity);
+
+
+    static constexpr int kColorAttachmentIdx = 0;
+    static constexpr int kColorResolveAttachmentIdx = 1;
+    static constexpr int kDepthStencilAttachmentIdx = 2;
+    static constexpr int kInputAttachmentIdx = 4;
+
+    struct VulkanAttachmentDesc {
+        static VulkanAttachmentDesc MakeFromAttachmentDesc(const AttachmentDesc&, int idx);
+        TextureInfo fTextureInfo;
+        LoadOp fLoadOp;
+        StoreOp fStoreOp;
+        int fAttachmentIndex;
+    };
+
+    struct SubpassDesc {
+        int fAttachment[4];
+    };
+
+    struct SubpassDependency {
+        int fSrcSubpass;
+        int fDstSubpass;
+        // TODO: To make this struct backend-agnostic, PipelineStageFlags can be used instead of
+        // VkPipelineStageFlags
+        VkPipelineStageFlags fSrcStageFlags;
+        VkPipelineStageFlags fDstStageFlags;
+        VkAccessFlagBits fSrcAccess;
+        VkAccessFlagBits fDstAccess;
+    };
+
+    struct VulkanRenderPassDesc {
+        static VulkanRenderPassDesc MakeFromRenderPassDesc(const RenderPassDesc&,
+                                                           bool compatibleOnly);
+
+        skia_private::TArray<const VulkanAttachmentDesc> fRpAttachments;
+        skia_private::TArray<const SubpassDesc> fSubpasses;
+        skia_private::TArray<const SubpassDependency> fSubpassDeps;
+
+        std::array<float, 4> fClearColor;
+        float fClearDepth;
+        uint32_t fClearStencil;
+        Swizzle fWriteSwizzle;
+        // This samples count usually matches fColorAttachment & fDepthStencilAttachment's samples
+        // count. The only exceptional case is when multisampled render to single sampled is used.
+        // In that case, the fColorAttachment's samples count will be 1 and fSampleCount will be > 1
+        uint32_t fSampleCount;
+    };
 
     const VulkanSharedContext* fSharedContext;
     VkRenderPass fRenderPass;
