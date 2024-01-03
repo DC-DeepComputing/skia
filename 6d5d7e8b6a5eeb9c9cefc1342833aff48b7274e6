@@ -125,6 +125,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d1a70d2_5ac2834f",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T17:01:55Z",
+      "side": 1,
+      "message": "It\u0027s something to consider, but there\u0027s at least one chrome gradient bug out there where someone made a very small gap in offsets, less than the .0012(?) threshold that Ganesh is using. However, the actual gradient is then scaled extremely large (like 5000px wide), so that the number of pixels in that small interpolation range are actually fairly meaningful (50-100px) and Ganesh was dropping that entire interval.",
+      "parentUuid": "811c61b6_3c671e49",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ce61449_95638d94",
