@@ -26,6 +26,10 @@
 #include "src/gpu/graphite/Texture.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#ifdef SK_BUILD_FOR_ANDROID
+#include <android/hardware_buffer.h>
+#endif
+
 namespace skgpu::graphite {
 
 ResourceProvider::ResourceProvider(SharedContext* sharedContext,
