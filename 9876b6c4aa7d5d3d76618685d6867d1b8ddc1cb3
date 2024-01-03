@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2fb508b_58c456fb",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-03T17:01:07Z",
+      "side": 1,
+      "message": "The note should be fixed here, but I am fine with deferring the actual logic fix to a separate CL; this CL is big enough :)",
+      "parentUuid": "5bfeebec_81fef21d",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 46
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d70dea5f_66c831b6",
         "filename": "src/gpu/graphite/UniformManager.h",
         "patchSetId": 5
@@ -1043,6 +1067,30 @@
       "side": 1,
       "message": "`skvx` doesn\u0027t support N\u003d3 so we need the loop and the only true specialization for `to_half` is when N\u003d4. N\u003d2 might be able to use some SIMD instructions but N\u003d1 would work out to `SkFloatToHalf` anyways and I think this will have less overall code size vs. generating a an N\u003d2 `to_half` variant.  WDYT?",
       "parentUuid": "ac024079_cb3c0720",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 60
+      },
+      "revId": "9876b6c4aa7d5d3d76618685d6867d1b8ddc1cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b968493_47d25e54",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-03T17:01:07Z",
+      "side": 1,
+      "message": "Oh, if skvx only supports 2^n sizes, then yeah, I guess we are stuck with the vanilla way.",
+      "parentUuid": "04ac0dae_a44193c4",
       "range": {
         "startLine": 363,
         "startChar": 0,
