@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec232900_dee8b5c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-03T21:37:54Z",
+      "side": 1,
+      "message": "Re-added the android check (with comment) for now, while I sort out the NDK upgrade issues.",
+      "revId": "d2a56f32b68df82f7b532d8b2f3eab86632ba32c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
