@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a84e9d43_27bd14c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-03T18:18:33Z",
+      "side": 1,
+      "message": "Now that the NDK is updated, the restriction/comment is gone. (However, clang-cl doesn\u0027t know about the flag, so we instead skip this on Windows).",
+      "revId": "57221c4c972be63f7cd3ae27861cb24e2c5cbe50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
