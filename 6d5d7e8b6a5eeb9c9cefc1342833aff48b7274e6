@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b42cf3_311b8508",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:54:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b87993af_c559d52c",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a438e6f3_4320266a",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Using `\u003c\u003d` in the shaders we\u0027d need to be careful about cases where we end with a hard stop so the last two valid stops are at t\u003d1. I\u0027d have to think about it more but I know it\u0027s not as simple as changing all the `\u003c`s to `\u003c\u003d`.\n\nOn a related note, we probably want to filter out redundant stops in gradients (if we aren\u0027t already), following up on\nhttps://skia-review.googlesource.com/c/skia/+/541725/comment/59ff5020_a94979ba/",
       "parentUuid": "6b6cccde_869102f9",
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaa7c64b_0bdeffe9",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:54:48Z",
+      "side": 1,
+      "message": "I\u0027ve switched back to preserving the last color and offset in the arrays to avoid these complications. It ended up being pretty simple with the `rawOffsets` pointer.\n\nI\u0027m not sure if we do any redundant stop removal at a higher level. Ganesh has(d?) some code to merge offsets that were too close to each other because of how it encoded data as scaleAndBias terms in half-precision. \n\nThere definitely can be stops that have the same offset as each other for a hard stop. Unless you\u0027re referring specifically to the case where there are 3 stops at the same offset and the middle color will never be visible then?",
+      "parentUuid": "809f97f1_b1b0168a",
       "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -132,6 +168,30 @@
       "side": 1,
       "message": "You\u0027re right, I\u0027ll just get rid of the float/int overloads.",
       "parentUuid": "6f343f31_3610d9be",
+      "range": {
+        "startLine": 116,
+        "startChar": 4,
+        "endLine": 117,
+        "endChar": 51
+      },
+      "revId": "6d5d7e8b6a5eeb9c9cefc1342833aff48b7274e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74a37892_9ca7a2d0",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-03T16:54:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2564345_e3af49d6",
       "range": {
         "startLine": 116,
         "startChar": 4,
