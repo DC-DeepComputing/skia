@@ -92,6 +92,9 @@ declare_args() {
   skia_enable_graphite = false
   skia_use_zlib = true
 
+  # Temporary GN arg for flutter to control updating their unit tests synchronously with new code.
+  skia_resolve_filters_before_restore = false
+
   if (is_ios) {
     skia_ios_identity = ".*Google.*"
     skia_ios_profile = "Google Development"

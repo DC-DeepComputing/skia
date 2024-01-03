@@ -83,6 +83,9 @@ config("skia_public") {
   if (skia_use_safe_libcxx) {
     defines += [ "_LIBCPP_ENABLE_ASSERTIONS=1" ]
   }
+  if (skia_resolve_filters_before_restore) {
+    defines += [ "SK_RESOLVE_FILTERS_BEFORE_RESTORE" ]
+  }
 
   # Some older versions of the Clang toolchain change the visibility of
   # symbols decorated with API_AVAILABLE macro to be visible. Users of such
