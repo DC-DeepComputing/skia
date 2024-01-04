@@ -312,9 +312,19 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				skip(ALL, "test", ALL, "GraphitePurgeNotUsedSinceResourcesTest")
 				skip(ALL, "test", ALL, "PaintParamsKeyTest")
 
-				if b.matchOs("Win10") {
-					// The Dawn Win10 job OOMs (skbug.com/14410)
+				if b.matchOs("Win10") || b.matchGpu("MaliG78", "Adreno620") {
+					// The Dawn Win10 and some Android device jobs OOMs (skbug.com/14410, b/318725123)
 					skip(ALL, "test", ALL, "BigImageTest_Graphite")
+				}
+				if b.matchGpu("Adreno620") {
+					// The Dawn Pixel5 device job fail the one compute tests (b/318725123)
+					skip(ALL, "test", ALL, "Compute_AtomicOperationsOverArrayAndStructTest")
+				}
+				if b.matchOs("Wind10") && b.matchGpu("QuadroP400") {
+					// The Dawn Win10 QuadroP400 fails some sksl tests (b/318725123)
+					skip(ALL, "test", ALL, "SkSLUniformArray_Graphite")
+					skip(ALL, "test", ALL, "SkSLTemporaryIndexLookup_Graphite")
+					skip(ALL, "test", ALL, "SkSLMatrixIndexLookup_Graphite")
 				}
 			} else if b.extraConfig("Native") {
 				if b.extraConfig("Metal") {
@@ -361,6 +371,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 						// Currently broken on Android Vulkan (skbug.com/310180104)
 						skip(ALL, "test", ALL, "ImageAsyncReadPixelsGraphite")
 						skip(ALL, "test", ALL, "SurfaceAsyncReadPixelsGraphite")
+					}
+					if b.matchGpu("Adreno620") {
+						// Some sksl tests are failing (b/318726662)
+						skip(ALL, "test", ALL, "SkSLPrefixExpressionsES2_Graphite")
+						skip(ALL, "test", ALL, "SkSLMatrixToVectorCast_Graphite")
+						skip(ALL, "test", ALL, "SkSLMatrixConstructorsES2_Graphite")
 					}
 				}
 			}
