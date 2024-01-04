@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "683dc27b_b0df310c",
+        "filename": "resources/sksl/errors/DuplicateRTAdjust.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-04T14:56:44Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "90811d1e_b96cf17d",
+      "range": {
+        "startLine": 3,
+        "startChar": 2,
+        "endLine": 3,
+        "endChar": 16
+      },
+      "revId": "78a6ed89adf4167d44919814f9b3aa605837e7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc89309a_aee5732a",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-03T20:53:58Z",
       "side": 0,
       "message": "Also removed this call while I was in the neighborhood, since it was already dead; it isn\u0027t referenced anywhere.",
+      "range": {
+        "startLine": 81,
+        "startChar": 16,
+        "endLine": 81,
+        "endChar": 26
+      },
+      "revId": "78a6ed89adf4167d44919814f9b3aa605837e7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37e04a15_51a4a43f",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-04T14:56:44Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "fc89309a_aee5732a",
       "range": {
         "startLine": 81,
         "startChar": 16,
