@@ -87,6 +87,24 @@
       "parentUuid": "936da60f_f300a2cc",
       "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "647d5291_8f801b46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-04T18:11:45Z",
+      "side": 1,
+      "message": "I filed b/318687402 to investigate where the imperceptible gold diffs are coming from with this change. The wacky_yuv failures are no longer occurring.",
+      "parentUuid": "f2b21684_3d875099",
+      "revId": "9995a720cf2c40059f659dbf21ae4a5e7e2647aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
