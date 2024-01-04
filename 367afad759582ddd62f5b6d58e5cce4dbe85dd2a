@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e8742c8_1a08b5d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-04T16:12:47Z",
+      "side": 1,
+      "message": "There were many unexpected but benign gold diffs on PS 14. I commented out the use of `skvx::to_half` for the N\u003d4 case and produced no gold diffs on PS 15. For now I\u0027ve filed b/318684744 to figure out why the values are different between the two functions, because I\u0027d like them to be the same for finite, non-small floats (that wouldn\u0027t be forced to 0 for denormals). Even if we accept them encoding differently, this way that change will be a separate CL.",
+      "revId": "367afad759582ddd62f5b6d58e5cce4dbe85dd2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
