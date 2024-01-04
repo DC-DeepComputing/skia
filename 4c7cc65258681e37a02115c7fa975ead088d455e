@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e678a9ae_532897f8",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-04T18:36:37Z",
+      "side": 1,
+      "message": "Is there a reason not to create a drawable for COLRv0 here?",
+      "range": {
+        "startLine": 470,
+        "startChar": 22,
+        "endLine": 470,
+        "endChar": 47
+      },
+      "revId": "4c7cc65258681e37a02115c7fa975ead088d455e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
