@@ -799,20 +799,16 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
 
     std::string vertShaderText;
     vertShaderText.append(
-            "layout(vulkan, set=0, binding=0) uniform vertexUniformBuffer {"
-            "float4 rtAdjust;"
-            "};"
-
             "// MSAA Load Program VS\n"
             "void main() {"
-            "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
-            "sk_Position.xy = position * rtAdjust.xy + rtAdjust.zw;"
+            // "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
+            "sk_Position.xy = ndc_position;"
             "sk_Position.zw = half2(0, 1);"
             "}");
 
     std::string fragShaderText;
     fragShaderText.append(
-            "layout(vulkan, input_attachment_index=0, set=1, binding=0) subpassInput uInput;"
+            "layout(vulkan, input_attachment_index=0, set=0, binding=0) subpassInput uInput;"
 
             "// MSAA Load Program FS\n"
             "void main() {"
@@ -860,11 +856,8 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
 
     // The load msaa pipeline takes no step or paint uniforms, no vertex/instance attributes, and
     // only references one input attachment texture which does not require a sampler.
-    *outPipelineLayout = setup_pipeline_layout(sharedContext,
-                                               /*hasStepUniforms=*/false,
-                                               /*numPaintUniforms=*/0,
-                                               /*numTextureSamplers=*/0,
-                                               /*numInputAttachments=*/1);
+    *outPipelineLayout = descriptor_data_to_layout(
+            sharedContext, {{VulkanGraphicsPipeline::kInputAttachmentDescriptor}});
 
     if (*outPipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, *outVertexShaderModule, *outFragShaderModule);
@@ -881,14 +874,52 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
         VkPipelineLayout pipelineLayout,
         sk_sp<VulkanRenderPass> compatibleRenderPass,
         VkPipelineCache pipelineCache,
-        int numSamples) {
-    // The load msaa pipeline takes no vertex/instance attributes
+        const TextureInfo& dstColorAttachmentTexInfo) {
+        //int numSamples) {
+
+    int numSamples = dstColorAttachmentTexInfo.numSamples();
+    // The load msaa pipeline takes no instance attributes
+
+    // Create vertex attribute list
+    SkSpan<const Attribute> loadMSAAVertexAttribs =
+            {{"ndc_position", VertexAttribType::kFloat2, SkSLType::kFloat2}};
+
+    // construct the DrawWriter with the current pipeline layout
+    // DrawWriter;
+    // DrawWriter::Vertices verts{*writer};
+    // verts.reserve(indices ? indexCount : vertexCount);
+    // verts.append(1) <<
+    // const float x = viewport.x() - fReplayTranslation.x();
+    // const float y = viewport.y() - fReplayTranslation.y();
+    // float invTwoW = 2.f / viewport.width();
+    // float invTwoH = 2.f / viewport.height();
+    // const float rtAdjust[4] = {invTwoW, invTwoH, -1.f - x * invTwoW, -1.f - y * invTwoH};
+
+    // dst rect edges in NDC (-1 to 1)
+    // int dw = dst->width();
+    // int dh = dst->height();
+    // float dx0 = 2.f * rect.fLeft / dw - 1.f;
+    // float dx1 = 2.f * (rect.fLeft + w) / dw - 1.f;
+    // float dy0 = 2.f * rect.fTop / dh - 1.f;
+    // float dy1 = 2.f * (rect.fTop + h) / dh - 1.f;
+    // float uniData[] = {dx1 - dx0, dy1 - dy0, dx0, dy0};  // posXform
+
+    // VertState state(vertexCount, indices, indexCount);
+    // VertState::Proc vertProc = state.chooseProc(VertexMode::kTriangleStrip);
+
+    //size_t fVertexStride;   // derived from vertex attribute set
+                        //  /*vertexAttrs=*/{{"position",
+                        //                VertexAttribType::kFloat4,
+                        //                SkSLType::kFloat4}},
+
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
-    setup_vertex_input_state(/*vertexAttrs=*/{},
+    skia_private::STArray<2, VkVertexInputBindingDescription, true> bindingDescs;
+    skia_private::STArray<16, VkVertexInputAttributeDescription> attributeDescs;
+    setup_vertex_input_state(loadMSAAVertexAttribs,
                              /*instanceAttrs=*/{},
                              &vertexInputInfo,
-                             /*bindingDescs=*/nullptr,
-                             /*attributeDescs=*/nullptr);
+                             &bindingDescs,
+                             &attributeDescs);
 
     VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
     setup_input_assembly_state(PrimitiveType::kTriangleStrip, &inputAssemblyInfo);
