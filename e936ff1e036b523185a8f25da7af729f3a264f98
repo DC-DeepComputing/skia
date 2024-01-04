@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "811689bf_8763c8ef",
+        "filename": "defines.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-04T14:01:23Z",
+      "side": 1,
+      "message": "I think the idea is to set it more like this?",
+      "revId": "e936ff1e036b523185a8f25da7af729f3a264f98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
