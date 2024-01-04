@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "486a53e3_9e6f89ea",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-04T15:56:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2734b262_975c9e20",
+      "revId": "e11404b123ffbadbac314329f7994dbd6e9df9db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b098fd75_4bd1191d",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-01-04T13:29:51Z",
       "side": 1,
       "message": "...but here we have `columns` as the 2nd argument, and `rows` as the 3rd argument.\n\nIt seems like we should have these match to avoid confusion.\n\nI realize this issue predates this refactor, but the refactor happened to trip a static analysis I run.",
+      "range": {
+        "startLine": 1355,
+        "startChar": 0,
+        "endLine": 1356,
+        "endChar": 79
+      },
+      "revId": "e11404b123ffbadbac314329f7994dbd6e9df9db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64ad210b_eacc6926",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1356,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-04T15:56:55Z",
+      "side": 1,
+      "message": "Good catch! Thanks!\n\nFixed at http://review.skia.org/796396.",
+      "parentUuid": "b098fd75_4bd1191d",
       "range": {
         "startLine": 1355,
         "startChar": 0,
