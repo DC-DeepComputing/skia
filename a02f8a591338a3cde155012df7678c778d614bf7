@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b40c483_36460f34",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-04T19:08:58Z",
+      "side": 1,
+      "message": "I was able to cross-compile for aarch64-linux locally with GCC, and everything is fine. I also fixed all of the issues on Mac/iOS that I could identify before the compiler started giving errors about the SDK. We might be good! (NEON is less of a problem than x86, because it actually has distinct types for integer vectors of different lane-width).",
+      "parentUuid": "2ccf56a7_55e5cc77",
+      "range": {
+        "startLine": 71,
+        "startChar": 57,
+        "endLine": 71,
+        "endChar": 83
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4fd46da_fe3f39e5",
@@ -132,6 +156,30 @@
       "writtenOn": "2024-01-02T21:13:48Z",
       "side": 1,
       "message": "Can we just say `using namespace SK_OPTS_NS;` here to avoid the verbose qualifications below?\n\nAlternatively, maybe `constexpr auto F_ \u003d SK_OPTS_NS::F_;`?",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 28
+      },
+      "revId": "a02f8a591338a3cde155012df7678c778d614bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43b9f505_91a4b5c5",
+        "filename": "tests/SkRasterPipelineOptsTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-04T19:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f203c38_6abe2659",
       "range": {
         "startLine": 77,
         "startChar": 0,
