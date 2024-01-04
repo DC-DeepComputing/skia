@@ -1703,6 +1703,7 @@ skia_static_library("pathkit") {
     "src/core/SkEdge.cpp",
     "src/core/SkEdgeBuilder.cpp",
     "src/core/SkEdgeClipper.cpp",
+    "src/core/SkFontScanner.cpp",
     "src/core/SkGeometry.cpp",
     "src/core/SkIDChangeListener.cpp",
     "src/core/SkLineClipper.cpp",
