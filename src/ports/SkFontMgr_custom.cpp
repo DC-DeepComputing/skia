@@ -128,7 +128,9 @@ sk_sp<SkTypeface> SkFontStyleSet_Custom::matchStyle(const SkFontStyle& pattern) 
 SkString SkFontStyleSet_Custom::getFamilyName() { return fFamilyName; }
 
 
-SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader) : fDefaultFamily(nullptr) {
+SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader)
+        : fDefaultFamily(nullptr)
+        , fScanner(sk_make_sp<FontScanner_FreeType>()){
     loader.loadSystemFonts(fScanner, &fFamilies);
 
     // Try to pick a default font.
