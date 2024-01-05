@@ -84,12 +84,6 @@ public:
 
     static void SetErrorReporter(ErrorReporter* errorReporter);
 
-    /**
-     * Notifies the current ErrorReporter that an error has occurred. The default error handler
-     * prints the message to stderr and aborts.
-     */
-    static void ReportError(std::string_view msg, Position pos = Position{});
-
     static ThreadContext& Instance();
 
 private:
