@@ -16,6 +16,23 @@
       "message": "Looks like this CL is now at http://review.skia.org/778436 ?",
       "revId": "89a9d3ed4a73c9b022f836ae0f06898409344b4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68edae20_0142d861",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-05T14:56:05Z",
+      "side": 1,
+      "message": "This CL should be abandoned in favor of https://skia-review.googlesource.com/c/skia/+/778436, which has been merged.",
+      "revId": "89a9d3ed4a73c9b022f836ae0f06898409344b4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
