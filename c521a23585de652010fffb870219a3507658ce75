@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e964f25_87174bd8",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-05T19:57:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "197354d6_b79607eb",
+      "range": {
+        "startLine": 1123,
+        "startChar": 4,
+        "endLine": 1123,
+        "endChar": 29
+      },
+      "revId": "c521a23585de652010fffb870219a3507658ce75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1847da0c_f875ba10",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-05T18:15:49Z",
       "side": 1,
       "message": "We could say that a color matrix filter is too expensive here; that\u0027s not that much less math than what happens from a colorspace transformation.  We could also check the returned mode from `asAColorMode` for either porter-duff only, strictly `kDstIn`, etc.",
+      "range": {
+        "startLine": 1192,
+        "startChar": 22,
+        "endLine": 1193,
+        "endChar": 67
+      },
+      "revId": "c521a23585de652010fffb870219a3507658ce75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f821e624_f9ba1d7a",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-05T19:57:07Z",
+      "side": 1,
+      "message": "Per offline discussion, I reduced this to just asAColorMode with coefficient blend modes.",
+      "parentUuid": "1847da0c_f875ba10",
       "range": {
         "startLine": 1192,
         "startChar": 22,
