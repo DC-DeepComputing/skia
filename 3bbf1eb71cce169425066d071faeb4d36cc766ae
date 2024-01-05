@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86141a74_d2e20a1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 44
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2024-01-05T10:02:29Z",
+      "side": 1,
+      "message": "PS 44 also contains a fix for an issue where the whole color was multiplied incorrectly, instead of only the alpha channel, when applying variable alpha.\nThat should fix the remaining Skia Gold diff. \nThe other gold images have differences in advance with compared to FreeType which I am still investigating. That affects line breaking in the tests.",
+      "revId": "3bbf1eb71cce169425066d071faeb4d36cc766ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
