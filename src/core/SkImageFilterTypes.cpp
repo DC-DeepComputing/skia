@@ -1185,9 +1185,13 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
 
     SkSamplingOptions sampling = xtraSampling;
     const bool needsResolve =
-            // Deferred calculations on the input would be repeated with each sample
+            // Deferred calculations on the input would be repeated with each sample, but we allow
+            // simple color filters to skip resolving since their repeated math should be cheap.
             (flags & ShaderFlags::kSampledRepeatedly &&
-             (fColorFilter || !SkColorSpace::Equals(fImage->getColorSpace(), ctx.colorSpace()))) ||
+                    ((fColorFilter &&
+                      !fColorFilter->asAColorMatrix(nullptr) &&
+                      !fColorFilter->asAColorMode(nullptr, nullptr)) ||
+                     !SkColorSpace::Equals(fImage->getColorSpace(), ctx.colorSpace()))) ||
             // The deferred sampling options can't be merged with the one requested
             !compatible_sampling(fSamplingOptions, currentXformIsInteger,
                                  &sampling, nextXformIsInteger) ||
