@@ -32,18 +32,6 @@ using namespace skia_private;
 
 namespace SkSL {
 
-std::unique_ptr<Statement> SwitchStatement::clone() const {
-    StatementArray cases;
-    cases.reserve_exact(this->cases().size());
-    for (const std::unique_ptr<Statement>& stmt : this->cases()) {
-        cases.push_back(stmt->clone());
-    }
-    return std::make_unique<SwitchStatement>(fPosition,
-                                             this->value()->clone(),
-                                             std::move(cases),
-                                             SymbolTable::WrapIfBuiltin(this->symbols()));
-}
-
 std::string SwitchStatement::description() const {
     std::string result;
     result += String::printf("switch (%s) {\n", this->value()->description().c_str());

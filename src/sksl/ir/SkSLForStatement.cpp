@@ -47,23 +47,6 @@ static bool is_simple_initializer(const Statement* stmt) {
            stmt->is<SkSL::ExpressionStatement>();
 }
 
-std::unique_ptr<Statement> ForStatement::clone() const {
-    std::unique_ptr<LoopUnrollInfo> unrollInfo;
-    if (fUnrollInfo) {
-        unrollInfo = std::make_unique<LoopUnrollInfo>(*fUnrollInfo);
-    }
-
-    return std::make_unique<ForStatement>(
-            fPosition,
-            fForLoopPositions,
-            this->initializer() ? this->initializer()->clone() : nullptr,
-            this->test() ? this->test()->clone() : nullptr,
-            this->next() ? this->next()->clone() : nullptr,
-            this->statement()->clone(),
-            std::move(unrollInfo),
-            SymbolTable::WrapIfBuiltin(this->symbols()));
-}
-
 std::string ForStatement::description() const {
     std::string result("for (");
     if (this->initializer()) {
