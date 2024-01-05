@@ -34,6 +34,24 @@
       "parentUuid": "85280439_2edb3f49",
       "revId": "260e66591c69d30944651494b8f7b07a67c31624",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "202f8994_5a9554c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-05T17:37:28Z",
+      "side": 1,
+      "message": "C++23 includes `[[assume]]`, but unfortunately, before C++23 there isn\u0027t a gadget in GCC that implements anything equivalent without evaluating the expression.\n\n(See https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4425.pdf )\n\nIn the short term I think this is the best we can do; eventually, we will migrate to `[[assume]]` and the issue will go away. Realistically, I don\u0027t know that there is much benefit from `SK_ASSUME(anything with a side effect)` in practice, especially since that side effect won\u0027t actually occur (in non-GCC compilers).\n\nMaybe we need to add a comment to make this more clear? `/** Never pass expressions to SK_ASSUME with a side effect **/` \n\nI wonder if it can be enforced somehow?",
+      "parentUuid": "85280439_2edb3f49",
+      "revId": "260e66591c69d30944651494b8f7b07a67c31624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
