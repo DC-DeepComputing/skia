@@ -22,6 +22,30 @@
       },
       "revId": "4c7cc65258681e37a02115c7fa975ead088d455e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6155a94_253fe77e",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2024-01-05T09:35:12Z",
+      "side": 1,
+      "message": "No good one. The reason was that I added COLRv0, then forgot to add it in this spot. Fixed and tested working with GM_font_palette_default at a large size: The v0 glyph in that test does no longer appear pixelated.",
+      "parentUuid": "e678a9ae_532897f8",
+      "range": {
+        "startLine": 470,
+        "startChar": 22,
+        "endLine": 470,
+        "endChar": 47
+      },
+      "revId": "4c7cc65258681e37a02115c7fa975ead088d455e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
