@@ -16,6 +16,24 @@
       "message": "What is the promise of clang\u0027s assume? I thought it said it would not evaluate the predicate -- but it appears that at least one of the skia alternatives does. Will that ever be an issue?",
       "revId": "260e66591c69d30944651494b8f7b07a67c31624",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51833080_50cb50ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-05T17:36:35Z",
+      "side": 1,
+      "message": "You\u0027re right - various discussions online mention this discrepancy. But it looks like GCC (at least GCC \u003e\u003d 13) does have an attribute that works similarly, so perhaps we should switch to that?\n\nhttps://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html",
+      "parentUuid": "85280439_2edb3f49",
+      "revId": "260e66591c69d30944651494b8f7b07a67c31624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
