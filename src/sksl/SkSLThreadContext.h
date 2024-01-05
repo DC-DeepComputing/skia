@@ -101,7 +101,6 @@ private:
     DefaultErrorReporter fDefaultErrorReporter;
     ErrorReporter& fOldErrorReporter;
     ProgramSettings fSettings;
-    Program::Interface fInterface;
 
     friend class SkSL::Compiler;
 };
