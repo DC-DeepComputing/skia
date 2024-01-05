@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85280439_2edb3f49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-01-05T17:23:48Z",
+      "side": 1,
+      "message": "What is the promise of clang\u0027s assume? I thought it said it would not evaluate the predicate -- but it appears that at least one of the skia alternatives does. Will that ever be an issue?",
+      "revId": "260e66591c69d30944651494b8f7b07a67c31624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
