@@ -16,6 +16,24 @@
       "message": "Sorry, Gerrit deleted your +1 after I rebased CLs :|",
       "revId": "9885385b742d8d5b3b63f127831bf23470600a50",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbc1929a_5845466c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-05T21:02:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfd73547_0bdfe795",
+      "revId": "9885385b742d8d5b3b63f127831bf23470600a50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
