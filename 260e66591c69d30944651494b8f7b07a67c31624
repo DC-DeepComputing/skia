@@ -52,6 +52,24 @@
       "parentUuid": "85280439_2edb3f49",
       "revId": "260e66591c69d30944651494b8f7b07a67c31624",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a86af64_e63ca0f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-05T17:38:13Z",
+      "side": 1,
+      "message": "Oh cool, I hadn\u0027t seen `__attribute__((assume(` but that seems promising!",
+      "parentUuid": "202f8994_5a9554c1",
+      "revId": "260e66591c69d30944651494b8f7b07a67c31624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
