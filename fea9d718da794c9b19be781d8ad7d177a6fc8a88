@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9690438a_f3e285b6",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-05T17:07:45Z",
+      "side": 1,
+      "message": "Please add SkSL test disables here:\nhttps://osscs.corp.google.com/skia/skia/+/main:tests/SkSLTest.cpp;l\u003d382-428;drc\u003d4c2efad7843463aadaef4eacd66c47fc74991cf9\n\nWe disable in code because these `dm_flags` only applies to running `dm` on the tree. We need disables that work everywhere, like in WebGL/CanvasKit tests, or when running locally. (Previously WebGL disables were maintained separately and just hard-coded the assumption that skolo machines used P400, etc.)",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 6
+      },
+      "revId": "fea9d718da794c9b19be781d8ad7d177a6fc8a88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
