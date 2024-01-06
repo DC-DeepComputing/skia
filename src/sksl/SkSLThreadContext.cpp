@@ -18,10 +18,10 @@
 namespace SkSL {
 
 ThreadContext::ThreadContext(SkSL::Context& context,
+                             const SkSL::Module* module,
                              SkSL::ProgramKind kind,
                              const SkSL::ProgramSettings& settings,
                              std::string_view source,
-                             const SkSL::Module* module,
                              bool isModule)
         : fContext(context)
         , fOldConfig(context.fConfig)
@@ -55,30 +55,31 @@ ThreadContext::~ThreadContext() {
     }
 }
 
-void ThreadContext::Start(SkSL::Compiler* compiler,
+void ThreadContext::Start(SkSL::Context& context,
+                          const SkSL::Module* module,
                           SkSL::ProgramKind kind,
                           const SkSL::ProgramSettings& settings,
                           std::string_view source) {
     ThreadContext::SetInstance(
-            std::unique_ptr<ThreadContext>(new ThreadContext(compiler->context(),
+            std::unique_ptr<ThreadContext>(new ThreadContext(context,
+                                                             module,
                                                              kind,
                                                              settings,
                                                              source,
-                                                             compiler->moduleForProgramKind(kind),
                                                              /*isModule=*/false)));
 }
 
-void ThreadContext::StartModule(SkSL::Compiler* compiler,
-                          SkSL::ProgramKind kind,
-                          const SkSL::ProgramSettings& settings,
-                          std::string_view source,
-                          const SkSL::Module* parent) {
+void ThreadContext::StartModule(SkSL::Context& context,
+                                const SkSL::Module* parentModule,
+                                SkSL::ProgramKind kind,
+                                const SkSL::ProgramSettings& settings,
+                                std::string_view source) {
     ThreadContext::SetInstance(
-            std::unique_ptr<ThreadContext>(new ThreadContext(compiler->context(),
+            std::unique_ptr<ThreadContext>(new ThreadContext(context,
+                                                             parentModule,
                                                              kind,
                                                              settings,
                                                              source,
-                                                             parent,
                                                              /*isModule=*/true)));
 }
 
