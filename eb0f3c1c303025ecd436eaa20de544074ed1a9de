@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9291f51_5f928a81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-08T15:22:17Z",
+      "side": 1,
+      "message": "@bungeman@google.com, as per chat, unsafe blocks moved into separate file. Requires roll preparation in Chromium, which is in https://chromium-review.googlesource.com/c/chromium/src/+/5176909 \n\nBefore this can be landed in Skia, and rolled into Chromium, also, unfortunately, https://github.com/googlefonts/fontations/pull/751 needs to be landed and rolled into Chromium. \n\nBut I am requesting review already, just as a follow-up on yesterday\u0027s revert - while the memory is fresh. \n\nBen, when this lands, would you then help with getting the google3 roll CL reviewed by Rust unsafe reviewers?",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
