@@ -16,6 +16,23 @@
       "message": "No impact on code-gen.",
       "revId": "6c36d5a2b498a3b5845822f85256878259eaf283",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d073c1c_4aebd28e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-08T15:27:57Z",
+      "side": 1,
+      "message": "Interestingly, `[[assume(...)]]` works today in GCC 13 in C++17:\n\nhttps://godbolt.org/z/arMKoPas9\n\nBut it\u0027s not recognized as an attribute at all in Clang, regardless of C++ level:\n\nhttps://godbolt.org/z/zEEjndz9K",
+      "revId": "6c36d5a2b498a3b5845822f85256878259eaf283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
