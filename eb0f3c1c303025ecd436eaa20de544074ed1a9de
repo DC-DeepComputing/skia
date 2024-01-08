@@ -16,6 +16,57 @@
       "message": "@bungeman@google.com, as per chat, unsafe blocks moved into separate file. Requires roll preparation in Chromium, which is in https://chromium-review.googlesource.com/c/chromium/src/+/5176909 \n\nBefore this can be landed in Skia, and rolled into Chromium, also, unfortunately, https://github.com/googlefonts/fontations/pull/751 needs to be landed and rolled into Chromium. \n\nBut I am requesting review already, just as a follow-up on yesterday\u0027s revert - while the memory is fresh. \n\nBen, when this lands, would you then help with getting the google3 roll CL reviewed by Rust unsafe reviewers?",
       "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc60a13_48456f1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-08T18:38:07Z",
+      "side": 1,
+      "message": "My completely uninformed opinion after reading through the cxx.rs docs.",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7600ed_537c84a6",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-08T18:38:07Z",
+      "side": 1,
+      "message": "Like if this took `rust::Slice\u003cconst fontations_ffi::ColorStop\u003e`. Not sure if we can include the `rust/cxx.h` header here?\n\nhttps://github.com/dtolnay/cxx/blob/5ceca34a2804552c93c5d7779635bc25af232052/tests/ffi/tests.cc#L292",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0343f13_dcacaf3b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-08T18:38:07Z",
+      "side": 1,
+      "message": "I have no idea what I\u0027m suggesting, but could the use of slices and `rust::Slice\u003cconst T\u003e` ( https://cxx.rs/binding/slice.html ) allow removal of this `unsafe`? Has this been tried?\n\nhttps://github.com/dtolnay/cxx/blob/5ceca34a2804552c93c5d7779635bc25af232052/tests/test.rs#L132",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
