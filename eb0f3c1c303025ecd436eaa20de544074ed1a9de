@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a86c3ecd_5083ee4d",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-08T18:55:41Z",
+      "side": 1,
+      "message": "I\u0027ll give this a try, but my suspicion is that we get into build system trouble land again then. `Rust::Slice\u003c\u003e` we might get, but I am not sure we easily get `fontations_ffi::ColorStop` in there - see above, I previously cleaned that up to make the interface pure virtual.",
+      "parentUuid": "ec7600ed_537c84a6",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0343f13_dcacaf3b",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 2
@@ -65,6 +83,24 @@
       "writtenOn": "2024-01-08T18:38:07Z",
       "side": 1,
       "message": "I have no idea what I\u0027m suggesting, but could the use of slices and `rust::Slice\u003cconst T\u003e` ( https://cxx.rs/binding/slice.html ) allow removal of this `unsafe`? Has this been tried?\n\nhttps://github.com/dtolnay/cxx/blob/5ceca34a2804552c93c5d7779635bc25af232052/tests/test.rs#L132",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eb76b3c_5aed76f8",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-08T18:55:41Z",
+      "side": 1,
+      "message": "Yes, in principle a Rust::slice could be used for the exchange - the problem here is that these definitions are reflecting what\u0027s in `skpath_bridge.h` - and I previously cleaned up `skpath_bridge.h` of any headers. In particular, I think a Rust::Slice\u003cColorStop\u003e would create a circular dependency, as the ColorStop is defined in the `ffi` CXX section as well.",
+      "parentUuid": "a0343f13_dcacaf3b",
       "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
