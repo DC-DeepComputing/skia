@@ -19,7 +19,13 @@ rust_cxx_bridge(
 
 rust_static_library(
     name = "bridge_rust_side",
-    srcs = ["src/ffi.rs"],
+    srcs = [
+        "src/ffi.rs",
+        "src/ffi_unsafe.rs",
+    ],
+    #   This feature will be used on the Chromium side to gate this change.
+    #   crate_features = [ "disable_unsafe_ffi" ],
+    crate_root = "src/ffi.rs",
     deps = [
         "@cxx",
         "@fontations//:font-types",
