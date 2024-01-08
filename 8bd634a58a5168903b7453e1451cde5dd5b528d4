@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64f53928_4c511e55",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-08T18:10:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c81978b3_ecc720cb",
+      "range": {
+        "startLine": 294,
+        "startChar": 15,
+        "endLine": 294,
+        "endChar": 33
+      },
+      "revId": "8bd634a58a5168903b7453e1451cde5dd5b528d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0e3433d_d43edb28",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "526d632d_7e7c0c7d",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-08T18:10:18Z",
+      "side": 1,
+      "message": "You can\u0027t define functions in a function. Therefore, you can\u0027t define operator\u003d\u003d in function scope. In addition, you can\u0027t define a friend function in the struct. The only thing you can do is define operator\u003d\u003d in the struct.",
+      "parentUuid": "f0e3433d_d43edb28",
+      "range": {
+        "startLine": 298,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 0
+      },
+      "revId": "8bd634a58a5168903b7453e1451cde5dd5b528d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11b7666e_2f1aa0ce",
@@ -94,6 +142,30 @@
       "writtenOn": "2024-01-08T17:27:44Z",
       "side": 1,
       "message": "`push_back` here too?",
+      "range": {
+        "startLine": 317,
+        "startChar": 30,
+        "endLine": 317,
+        "endChar": 42
+      },
+      "revId": "8bd634a58a5168903b7453e1451cde5dd5b528d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8270e1ac_0269223a",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-08T18:10:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11b7666e_2f1aa0ce",
       "range": {
         "startLine": 317,
         "startChar": 30,
