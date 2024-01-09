@@ -57,6 +57,15 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "hybrid_srcs",
+    srcs = [
+        "SkUnicode_hybrid.cpp",
+        "SkUnicode_hybrid.h",
+    ],
+    visibility = ["//modules/skunicode:__pkg__"],
+)
+
+skia_filegroup(
     name = "libgrapheme_srcs",
     srcs = [
         "SkUnicode_libgrapheme.cpp",
