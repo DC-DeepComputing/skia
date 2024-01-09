@@ -66,6 +66,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1726be86_fa72ca64",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-09T21:09:50Z",
+      "side": 1,
+      "message": "This name collision is a little confusing since you used l1 and l0 in the anonymous block above, but in that case they\u0027re scalars, not points.",
+      "range": {
+        "startLine": 488,
+        "startChar": 8,
+        "endLine": 488,
+        "endChar": 10
+      },
+      "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e0dbd652_bdb3f71c",
         "filename": "modules/bentleyottmann/src/Myers.cpp",
         "patchSetId": 3
