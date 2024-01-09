@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "645f884d_3dab1374",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-09T14:49:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bbc04570_a73497e6",
+      "range": {
+        "startLine": 604,
+        "startChar": 37,
+        "endLine": 604,
+        "endChar": 70
+      },
+      "revId": "83c639901ef6ee83e11e90ee04655d59d97a3b2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4d93f6_139f40a4",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "Well, testing Protected stuff is difficult bc we can never read back. The ProtectedTest.cpp file exercises the expected failure of trying to read back from a Protected surface (and success from an Unprotected one). We could do that here but would still have to skip the \"check_read\" call.\n\nW/o the readback this test is just verifying we can wrap the HW buffer and draw it to a protected surface w/o error.",
       "parentUuid": "4f016422_2cdd2057",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 0
+      },
+      "revId": "83c639901ef6ee83e11e90ee04655d59d97a3b2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba029814_093d2549",
+        "filename": "tests/GrAHardwareBufferTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-09T14:49:48Z",
+      "side": 1,
+      "message": "Yeah, I gotcha. I would perhaps add a comment at the top of the test clarifying that for protected content we are only checking that there isn\u0027t any error (as opposed to checking for correctness), but that\u0027s a personal decision. It\u0027s probably fine/clear enough as-is.",
+      "parentUuid": "fb38d630_24c1d987",
       "range": {
         "startLine": 277,
         "startChar": 0,
