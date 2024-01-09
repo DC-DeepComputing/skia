@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12dfa6f8_54ced39d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1320,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-09T20:17:28Z",
+      "side": 1,
+      "message": "Yes this can absolutely be removed seeing as that information is implicitly in the RenderPass key in the form of subpass count, dependencies, etc.",
+      "parentUuid": "ec8fe67a_891f8ea8",
+      "range": {
+        "startLine": 1320,
+        "startChar": 61,
+        "endLine": 1320,
+        "endChar": 80
+      },
+      "revId": "a6ebb55ad13d0a10eede4129cc228717363b6318",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d12f7599_df42b0db",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "627cd048_0bab03b5",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-09T20:17:28Z",
+      "side": 1,
+      "message": "Yes, thank you for the reminder that we don\u0027t actually need to support independent input attachments that are not simply references to other existing attachments. Removed",
+      "parentUuid": "d12f7599_df42b0db",
+      "range": {
+        "startLine": 78,
+        "startChar": 22,
+        "endLine": 78,
+        "endChar": 31
+      },
+      "revId": "a6ebb55ad13d0a10eede4129cc228717363b6318",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa4df2bc_b0490359",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-01-02T18:59:20Z",
       "side": 1,
       "message": "Should we add asserts that the real attachment indices are less than this (well I guess technically just not equal). We should be able to use static asserts for that since those are constants.",
+      "range": {
+        "startLine": 144,
+        "startChar": 25,
+        "endLine": 144,
+        "endChar": 42
+      },
+      "revId": "a6ebb55ad13d0a10eede4129cc228717363b6318",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d800ddd1_d7a259d0",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-09T20:17:28Z",
+      "side": 1,
+      "message": "I\u0027m already checking that the total number of input attachments is \u003c the maximum value for a uint8_t, so theoretically, a valid attachment index should not exceed that (plus the attachment indices are currently statically assigned as you pointed out). Is that sufficient? \n\nPerhaps later on attachment descriptions will include their attachment index which I imagine is a good area to check to ensure the attachment index is valid at least (ie positive, within range), then it may make more sense to enforce here that the attachment indices are \u003c uint8_t max value. LMKWYT",
+      "parentUuid": "aa4df2bc_b0490359",
       "range": {
         "startLine": 144,
         "startChar": 25,
