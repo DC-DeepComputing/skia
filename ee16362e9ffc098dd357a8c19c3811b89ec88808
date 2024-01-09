@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fed0a7a2_ec14bda2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-01-09T20:28:28Z",
+      "side": 1,
+      "message": "Passing over to Ravi to stamp",
+      "revId": "ee16362e9ffc098dd357a8c19c3811b89ec88808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ebeb689_38c6e015",
@@ -48,6 +65,30 @@
       "writtenOn": "2024-01-09T20:22:57Z",
       "side": 1,
       "message": "Can you add ?\n```\n    experiments \u003d {\n        \"luci.buildbucket.backend_alt\": 100,\n    },\n```\nWe use this experiment to control whether to call the configured backend or swarming.",
+      "range": {
+        "startLine": 98,
+        "startChar": 40,
+        "endLine": 98,
+        "endChar": 41
+      },
+      "revId": "ee16362e9ffc098dd357a8c19c3811b89ec88808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a46e616_44d483fc",
+        "filename": "main.star",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-01-09T20:28:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ebeb689_38c6e015",
       "range": {
         "startLine": 98,
         "startChar": 40,
