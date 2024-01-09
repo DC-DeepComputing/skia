@@ -315,6 +315,8 @@ class SKUNICODE_API SkUnicode {
         static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
 
         static std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode();
+
+        static std::unique_ptr<SkUnicode> MakeHybridBasedUnicode();
 };
 
 namespace sknonstd {

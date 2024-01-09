@@ -13,6 +13,12 @@ using namespace skia_private;
 
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
     std::unique_ptr<SkUnicode> unicode;
+#ifdef SK_UNICODE_HYBRID_IMPLEMENTATION
+    unicode = SkUnicode::MakeHybridBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
     unicode = SkUnicode::MakeIcuBasedUnicode();
     if (unicode) {
