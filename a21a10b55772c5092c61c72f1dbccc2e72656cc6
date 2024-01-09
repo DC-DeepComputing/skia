@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef796ef_0909a9ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-09T19:52:08Z",
+      "side": 1,
+      "message": "This has a very elegant routine for detecting segment crossings as given in \"Robust Plane Sweep for Intersecting Segments\".",
+      "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
