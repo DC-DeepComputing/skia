@@ -64,8 +64,13 @@ static inline UBreakIterator* sk_ubrk_clone(const UBreakIterator* bi, UErrorCode
 static UText* utext_close_wrapper(UText* ut) {
     return sk_utext_close(ut);
 }
+
 static void ubrk_close_wrapper(UBreakIterator* bi) {
     sk_ubrk_close(bi);
+}
+
+UScriptCode getScript(SkUnichar utf32, UErrorCode* status) {
+    return sk_uscript_getScript(utf32, status);
 }
 
 using ICUUText = std::unique_ptr<UText, SkFunctionObject<utext_close_wrapper>>;

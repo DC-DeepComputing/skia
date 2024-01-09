@@ -7,6 +7,7 @@
 #ifndef SkUnicode_icu_DEFINED
 #define SkUnicode_icu_DEFINED
 
+#include "include/core/SkTypes.h"
 #include <unicode/ubidi.h>
 #include <unicode/ubrk.h>
 #include <unicode/uchar.h>
@@ -69,5 +70,7 @@ std::unique_ptr<SkICULib> SkLoadICULib();
 
 // Get cached already loaded ICU library.
 const SkICULib* SkGetICULib();
+
+static UScriptCode getScript(SkUnichar utf32, UErrorCode* status);
 
 #endif // SkUnicode_icu_DEFINED
