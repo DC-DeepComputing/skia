@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79e0cd95_f8bb9b49",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-09T23:21:03Z",
+      "side": 1,
+      "message": "You don\u0027t need to clean these up, but I do need to remember to go around and replace all of these with `STArray` since the number of stops is normally not very large and if it isn\u0027t we could avoid the heavy heap allocation that `vector` has to do.",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec7600ed_537c84a6",
         "filename": "src/ports/SkTypeface_fontations_priv.h",
         "patchSetId": 2
@@ -84,6 +101,24 @@
       "side": 1,
       "message": "Thinking about this more: If we make this a `Rust::Slice\u003cfontations_ffi::ColorStop\u003e` we would still need a copying conversion, or, again, an unsafe cast on the Rust side.\n\nThe source of the slice is a `skrifa::color::ColorStop` but on the FFI interface we can only use types that are defined in the CXX `ffi` module of the `ffi.rs` source file. But Rust won\u0027t allow us to case from `skrifa::color::ColorStop` to `fontations_ffi::ColorStop` without unsafe. So this suggestion unfortunately would not remove the requirement for `unsafe` blocks.",
       "parentUuid": "a86c3ecd_5083ee4d",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f71e385_5fc0f8bc",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-09T23:21:03Z",
+      "side": 1,
+      "message": "After taking another look into this, I think I see the issue you\u0027re running into. cxxbridge does not allow any rust types defined outside the `ffi`, so there is no safe way to push `skrifa::color::ColorStop` over to the C++ side because we\u0027re writing the ffi Skia side instead of skrifa side. Hence the unsafe part of this isn\u0027t (as I originally thought) about passing a pointer and length over to Skia (which should be a `rust::Slice`) but about about directly casting a `\u0026[skrifa::color::ColorStop]` to a `\u0026[fontations_ffi::ColorStop]`. This issue in cxxbridge seems to be discussed at https://github.com/dtolnay/cxx/issues/1077 (and 670).\n\nSince we are Skia side it looks like we could push what `populateStopsAndColors` does (plus the associated resizes which want the size) over to the rust side of things. In fact, since the first thing all these `fill_*` do is call `populateStopsAndColors` it seems like there isn\u0027t a need for a callback, the rust side could just make some vectors of Skia types and pass ownership of them over. It seems this might require something like `cxx::CxxVector` though that\u0027s also going to be an opaque type anyway (all access will go through calls).\n\nSo the only way I see to make this work without unsafe would be to keep this `fontations_ffi::ColorStop` but provide an opaque type wrapper around the slice (with a `usize size()` and `fontations_ffi::ColorStop get(i)`) or slice iterator (`Option\u003cfontations_ffi::ColorStop\u003e next()`) or something like that. Yes, this does mean a function call to get each value and a copy to make the return, but it does mean not making a full copy all at once (though that\u0027s actually not so bad since we\u0027re making more or less a full copy Skia side already).\n\nI would rather take this rather modest perf hit (but with no extra heap allocations) than have to deal with the unsafe blocks in perpetuity.",
+      "parentUuid": "ad660e88_ffe3559c",
       "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
