@@ -437,4 +437,84 @@ public:
 private:
     std::vector<Crossing> fCrossings;
 };
+
+SkSpan<Segment> remove_zero_segments_and_duplicates(SkSpan<Segment> segments) {
+    auto isZeroSegment = [](const Segment& segment) {
+        return segment.upper() == segment.lower();
+    };
+    const auto zeroSegments = std::remove_if(segments.begin(), segments.end(), isZeroSegment);
+
+    std::sort(segments.begin(), zeroSegments);
+
+    const auto duplicateSegments = std::unique(segments.begin(), zeroSegments);
+
+    return SkSpan{segments.data(), std::distance(segments.begin(), duplicateSegments)};
+}
+
+bool s0_intersects_s1(const Segment& s0, const Segment& s1) {
+    // Make sure that s0 upper is above s1 upper.
+    if (s1.upper().y < s0.upper().y
+        || ((s1.upper().y == s0.upper().y) && (s1.lower().y > s0.lower().y))) {
+        return s0_intersects_s1(s1, s0);
+    }
+
+    SkASSERT((s0.upper().y <= s1.upper().y));
+
+    {  // If extents don't overlap then there is no intersection.
+        auto [l0, t0, r0, b0] = s0.bounds();
+        auto [l1, t1, r1, b1] = s1.bounds();
+        if (r1 < l0 || r0 < l1 || b1 < t0 || b0 < t1) {
+            return false;
+        }
+    }
+
+    auto [u0, l0] = s0;
+    auto [u1, l1] = s1;
+
+    const Point D0 = l0 - u0,
+                D1 = l1 - u1;
+
+    // This is the cross product of the slopes. If it is 0, then the slopes are equal.
+    const Point U0toU1 = (u1 - u0);
+    const int64_t D0xU0toU1 = cross(D0, U0toU1);
+    if (D0xU0toU1 == 0) {
+        // u1 is on s0.
+        return true;
+    }
+
+    if (l1.y <= l0.y) {
+        const Point U0toL1 = (l1 - u0);
+        const int64_t D0xU0toL1 = cross(D0, U0toL1);
+        if (D0xU0toL1 == 0) {
+            // l1 is on s0.
+            return true;
+        }
+
+        return (D0xU0toU1 ^ D0xU0toL1) < 0;
+    } else {
+        const Point U1toL0 = (l0 - u1);
+        const int64_t D1xU1toL0 = cross(D1, U1toL0);
+        if (D1xU1toL0 == 0) {
+            return true;
+        }
+        return (D0xU0toU1 ^ D1xU1toL0) >= 0;
+    }
+}
+
+std::vector<Crossing> brute_force_crossings(SkSpan<Segment> segments) {
+
+    SkSpan<const Segment> cleanSegments = remove_zero_segments_and_duplicates(segments);
+
+    CrossingAccumulator crossings;
+    if (cleanSegments.size() >= 2) {
+        for (auto i = cleanSegments.begin(); i != std::prev(cleanSegments.end()); ++i) {
+            for (auto j = std::next(i); j != cleanSegments.end(); ++j) {
+                if (s0_intersects_s1(*i, *j)) {
+                    crossings.recordCrossing(*i, *j);
+                }
+            }
+        }
+    }
+    return crossings.finishAndReleaseCrossings();
+}
 }  // namespace myers
