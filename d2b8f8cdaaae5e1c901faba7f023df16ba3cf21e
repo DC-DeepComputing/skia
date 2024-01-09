@@ -33,6 +33,24 @@
       "message": "Please consider unit tests for this code",
       "revId": "d2b8f8cdaaae5e1c901faba7f023df16ba3cf21e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f3f79f5_4b9d4da3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-09T17:42:06Z",
+      "side": 1,
+      "message": "There are tests that cover it three CLs from now.",
+      "parentUuid": "7e349a7c_e48f8c21",
+      "revId": "d2b8f8cdaaae5e1c901faba7f023df16ba3cf21e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
