@@ -37,8 +37,13 @@ public:
     // Methods to create compatible (needed when creating a framebuffer and graphics pipeline) or
     // full (needed when beginning a render pass from the command buffer) render passes and keys.
     static GraphiteResourceKey MakeRenderPassKey(const RenderPassDesc&, bool compatibleOnly);
-    static sk_sp<VulkanRenderPass> MakeRenderPass(
-            const VulkanSharedContext*, const RenderPassDesc&, bool compatibleOnly);
+    static sk_sp<VulkanRenderPass> MakeRenderPass(const VulkanSharedContext*,
+                                                  const RenderPassDesc&,
+                                                  bool compatibleOnly);
+    static void AddRenderPassInfoToKey(const RenderPassDesc&,
+                                       bool compatibleOnly,
+                                       ResourceKey::Builder&,
+                                       int& builderIdx);
 
     VkRenderPass renderPass() const {
         SkASSERT(fRenderPass != VK_NULL_HANDLE);
