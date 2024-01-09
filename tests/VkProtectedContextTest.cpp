@@ -63,6 +63,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateNonprotectedContext,
                 options,
                 CtsEnforcement::kNever) {
     create_nonprotected_context(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_CreateNonprotectedContext\n");
 }
 
 #if defined(SK_GRAPHITE)
@@ -71,6 +72,7 @@ DEF_GRAPHITE_TEST(VkProtectedContext_CreateNonprotectedContext_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     create_nonprotected_context(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_CreateNonprotectedContext_Graphite\n");
 }
 
 #endif
@@ -81,6 +83,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateProtectedContext,
                 CtsEnforcement::kNever) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGanesh,
                                                               /* isProtected= */ true);
+    SkDebugf("------ reached end of VkProtectedContext_CreateProtectedContext\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_CreateProtectedContext_Graphite,
@@ -88,6 +91,7 @@ DEF_GRAPHITE_TEST(VkProtectedContext_CreateProtectedContext_Graphite,
                   CtsEnforcement::kNextRelease) {
     std::unique_ptr<VkTestHelper> helper = VkTestHelper::Make(skiatest::TestType::kGraphite,
                                                               /* isProtected= */ true);
+    SkDebugf("------ reached end of VkProtectedContext_CreateProtectedContext_Graphite\n");
 }
 
 namespace {
@@ -119,12 +123,14 @@ DEF_GANESH_TEST(VkProtectedContext_CreateProtectedSkSurface,
                 options,
                 CtsEnforcement::kNever) {
     create_protected_surface(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_CreateProtectedSkSurface\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_CreateProtectedSkSurface_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     create_protected_surface(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_CreateProtectedSkSurface_Graphite\n");
 }
 
 namespace {
@@ -168,6 +174,7 @@ DEF_GANESH_TEST(VkProtectedContext_CreateBackendTextures,
             create_backend_texture_ganesh(reporter, contextIsProtected, beTexIsProtected);
         }
     }
+    SkDebugf("------ reached end of VkProtectedContext_CreateBackendTextures\n");
 }
 
 #if defined(SK_GRAPHITE)
@@ -216,6 +223,7 @@ DEF_GRAPHITE_TEST(VkProtectedContext_CreateBackendTextures_Graphite,
             create_backend_texture_graphite(reporter, contextIsProtected, beTexIsProtected);
         }
     }
+    SkDebugf("------ reached end of VkProtectedContext_CreateBackendTextures_Graphite\n");
 }
 
 #endif // SK_GRAPHITE
@@ -237,6 +245,7 @@ DEF_GANESH_TEST(VkProtectedContext_ReadFromProtectedSurface,
                                                      /* isProtected= */ true);
     REPORTER_ASSERT(reporter, surface);
     REPORTER_ASSERT(reporter, !surface->readPixels(SkImageInfo(), nullptr, 8, 0, 0));
+    SkDebugf("------ reached end of VkProtectedContext_ReadFromProtectedSurface\n");
 }
 
 namespace {
@@ -285,12 +294,14 @@ DEF_GANESH_TEST(VkProtectedContext_AsyncReadFromProtectedSurface,
                 options,
                 CtsEnforcement::kNever) {
     async_read_from_protected_surface(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_AsyncReadFromProtectedSurface\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_AsyncReadFromProtectedSurface_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     async_read_from_protected_surface(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_AsyncReadFromProtectedSurface_Graphite\n");
 }
 
 namespace {
@@ -321,12 +332,14 @@ DEF_GANESH_TEST(VkProtectedContext_DrawRectangle,
                 options,
                 CtsEnforcement::kNever) {
     draw_rectangle(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangle\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_DrawRectangle_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     draw_rectangle(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangle_Graphite\n");
 }
 
 namespace {
@@ -358,12 +371,14 @@ DEF_GANESH_TEST(VkProtectedContext_DrawRectangleWithAntiAlias,
                 options,
                 CtsEnforcement::kNever) {
     draw_rectangle_with_aa(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangleWithAntiAlias\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_DrawRectangleWithAntiAlias_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     draw_rectangle_with_aa(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangleWithAntiAlias_Graphite\n");
 }
 
 namespace {
@@ -395,12 +410,14 @@ DEF_GANESH_TEST(VkProtectedContext_DrawRectangleWithBlendMode,
                 options,
                 CtsEnforcement::kNever) {
     draw_rectangle_with_blendmode(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangleWithBlendMode\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_DrawRectangleWithBlendMode_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     draw_rectangle_with_blendmode(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangleWithBlendMode_Graphite\n");
 }
 
 namespace {
@@ -433,12 +450,14 @@ DEF_GANESH_TEST(VkProtectedContext_DrawRectangleWithFilter,
                 options,
                 CtsEnforcement::kNever) {
     draw_rectangle_with_filter(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangleWithFilter\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_DrawRectangleWithFilter_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     draw_rectangle_with_filter(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_DrawRectangleWithFilter_Graphite\n");
 }
 
 namespace {
@@ -474,12 +493,14 @@ DEF_GANESH_TEST(VkProtectedContext_DrawThinPath,
                 options,
                 CtsEnforcement::kNever) {
     draw_thin_path(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_DrawThinPath\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_DrawThinPath_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     draw_thin_path(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_DrawThinPath_Graphite\n");
 }
 
 namespace {
@@ -512,12 +533,14 @@ DEF_GANESH_TEST(VkProtectedContext_SaveLayer,
                 options,
                 CtsEnforcement::kNever) {
     save_layer(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_SaveLayer\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_SaveLayer_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     save_layer(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_SaveLayer_Graphite\n");
 }
 
 namespace {
@@ -560,12 +583,14 @@ DEF_GANESH_TEST(VkProtectedContext_DrawProtectedImageOnProtectedSurface,
                 options,
                 CtsEnforcement::kNever) {
     draw_protected_image_on_protected_surface(reporter, skiatest::TestType::kGanesh);
+    SkDebugf("------ reached end of VkProtectedContext_DrawProtectedImageOnProtectedSurface\n");
 }
 
 DEF_GRAPHITE_TEST(VkProtectedContext_DrawProtectedImageOnProtectedSurface_Graphite,
                   reporter,
                   CtsEnforcement::kNextRelease) {
     draw_protected_image_on_protected_surface(reporter, skiatest::TestType::kGraphite);
+    SkDebugf("------ reached end of VkProtectedContext_DrawProtectedImageOnProtectedSurface_Graphite\n");
 }
 
 #endif  // SK_VULKAN
