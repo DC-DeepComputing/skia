@@ -456,7 +456,7 @@ public:
     }
 
     sk_sp<SkDevice> createDevice(const CreateInfo& cinfo, const SkPaint*) override {
-        const SkSurfaceProps surfaceProps(this->surfaceProps().flags(), cinfo.fPixelGeometry);
+        const SkSurfaceProps surfaceProps(this->surfaceProps().flags(), cinfo.fPixelGeometry,  this->surfaceProps().textContrast(), this->surfaceProps().textGamma());
         return sk_make_sp<GlyphTrackingDevice>(cinfo.fInfo.dimensions(),
                                                surfaceProps,
                                                fStrikeServerImpl,
