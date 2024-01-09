@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad660e88_ffe3559c",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-09T14:27:25Z",
+      "side": 1,
+      "message": "Thinking about this more: If we make this a `Rust::Slice\u003cfontations_ffi::ColorStop\u003e` we would still need a copying conversion, or, again, an unsafe cast on the Rust side.\n\nThe source of the slice is a `skrifa::color::ColorStop` but on the FFI interface we can only use types that are defined in the CXX `ffi` module of the `ffi.rs` source file. But Rust won\u0027t allow us to case from `skrifa::color::ColorStop` to `fontations_ffi::ColorStop` without unsafe. So this suggestion unfortunately would not remove the requirement for `unsafe` blocks.",
+      "parentUuid": "a86c3ecd_5083ee4d",
+      "revId": "eb0f3c1c303025ecd436eaa20de544074ed1a9de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0343f13_dcacaf3b",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 2
