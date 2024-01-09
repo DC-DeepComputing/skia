@@ -55,7 +55,7 @@ struct Ctx {
 
 using NoCtx = const void*;
 
-#if !defined(__clang__)
+#if !defined(__clang__) || defined(SK_FORCE_SCALAR_RASTER_PIPELINE)
     #define JUMPER_IS_SCALAR
 #elif defined(SK_ARM_HAS_NEON)
     #define JUMPER_IS_NEON
