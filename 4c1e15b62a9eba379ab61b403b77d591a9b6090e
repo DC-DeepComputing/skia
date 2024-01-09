@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bebb655f_ae251637",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-09T15:00:33Z",
+      "side": 1,
+      "message": "This is fine, but is it set by GN/tooling anywhere? If it\u0027s just something you will be setting manually, any reason not to just use `-DJUMPER_IS_xxxxxx` directly?\n\n```\n#if defined(JUMPER_IS_SCALAR) || defined(JUMPER_IS_NEON) || defined(JUMPER_IS_HSW)...\n    // Honor the existing setting.\n#elif !defined(clang)\n    ...\n```",
+      "range": {
+        "startLine": 58,
+        "startChar": 24,
+        "endLine": 58,
+        "endChar": 67
+      },
+      "revId": "4c1e15b62a9eba379ab61b403b77d591a9b6090e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
