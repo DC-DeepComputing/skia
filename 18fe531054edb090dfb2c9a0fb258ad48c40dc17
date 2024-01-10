@@ -16,6 +16,23 @@
       "message": "Also fixes IWYU issues that are now being caught.",
       "revId": "18fe531054edb090dfb2c9a0fb258ad48c40dc17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6570be3a_5ea07cfa",
+        "filename": "tools/fonts/FontToolUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2024-01-10T14:56:42Z",
+      "side": 1,
+      "message": "+1\u0027d, but curious as to what the difference is between TestFontMgr and the older SkFontMgr::RefDefault",
+      "revId": "18fe531054edb090dfb2c9a0fb258ad48c40dc17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
