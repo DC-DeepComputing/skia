@@ -7,25 +7,32 @@
 
 #include "tools/fonts/FontToolUtils.h"
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
-#include "include/core/SkImage.h"
+#include "include/core/SkImage.h"     // IWYU pragma: keep
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkPixelRef.h"  // IWYU pragma: keep
-#include "include/core/SkStream.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkStream.h"    // IWYU pragma: keep
 #include "include/core/SkTypeface.h"
-#include "include/private/base/SkMutex.h"
+#include "include/core/SkTypes.h"
+#include "include/private/base/SkOnce.h"
 #include "include/utils/SkCustomTypeface.h"
-#include "src/base/SkUTF.h"
 #include "src/core/SkFontMgrPriv.h"
-#include "src/core/SkOSFile.h"
 #include "tools/Resources.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/fonts/TestFontMgr.h"
+
+#include <string.h>
 
 #if defined(SK_BUILD_FOR_WIN) && (defined(SK_FONTMGR_GDI_AVAILABLE) || \
                                   defined(SK_FONTMGR_DIRECTWRITE_AVAILABLE))

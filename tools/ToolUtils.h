@@ -11,7 +11,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontParameters.h"
-#include "include/core/SkFontStyle.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"

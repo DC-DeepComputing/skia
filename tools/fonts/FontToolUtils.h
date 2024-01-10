@@ -9,13 +9,13 @@
 #define FontToolUtils_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
 
 class SkBitmap;
 class SkImage;
 class SkFont;
 class SkFontMgr;
+class SkFontStyle;
 class SkTypeface;
 
 namespace ToolUtils {
