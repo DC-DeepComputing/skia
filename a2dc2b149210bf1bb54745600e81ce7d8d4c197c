@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eafd8231_dca2e7ab",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T20:42:36Z",
+      "side": 1,
+      "message": "In the reversed loop above, insertionPoint acts as end(), so the first element is insertionPoint - 1. The element at insertion point is only checked in the forward iteration.",
+      "parentUuid": "51cf5d57_cf18b4a5",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 9
+      },
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd38bf37_084a550f",
@@ -76,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb9f5e69_8d964696",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T20:42:36Z",
+      "side": 1,
+      "message": "I don\u0027t know what will happen. It is probably time to add the code to pre-filter the code for the points in a future CL.",
+      "parentUuid": "fd38bf37_084a550f",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91615b2c_5b9c21cf",
@@ -89,6 +131,24 @@
       "writtenOn": "2024-01-10T20:21:01Z",
       "side": 1,
       "message": "Not for this CL, but do we know that `removing` is sorted? (I seem to recall that will be the case?) If so, it seems like we could do a slightly more complex O(N) version of this function, rather than the O(N^2) worst case that we have now?\n\n(Admittedly, it\u0027s only a concern for pathological inputs).",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "842eb2a9_387e548e",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T20:42:36Z",
+      "side": 1,
+      "message": "Yes. The remove can be handled like a merge sort. More thinking needed.",
+      "parentUuid": "91615b2c_5b9c21cf",
       "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
