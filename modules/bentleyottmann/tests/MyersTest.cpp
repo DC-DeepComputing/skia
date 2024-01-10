@@ -212,6 +212,7 @@ DEF_TEST(MFC_has_inner_intersection, r) {
 
 DEF_TEST(MFC_myers_brute_force_comparison, r) {
     const std::vector<Segment> tests[] = {
+            {{{-58, -100}, {75, 105}}, {{149, -58}, {-156, 49}}, {{-34, -55}, {37, 49}}, {{-58, -100}, {75, 105}}, {{-147, -229}, {143, 220}}},
             {{{-57, -138}, {56, 178}}, {{14, -146}, {-22, 132}}},
             {{{-4, -23}, {-11, 11}}, {{6, -2}, {-11, 11}}, {{159, -244}, {-159, 233}}},
             {{{-7, -22}, {10, 14}}, {{-7, -71}, {-7, 80}}, {{-7, -22}, {-4, 5}}},
@@ -256,7 +257,7 @@ DEF_TEST(MFC_myers_brute_force_comparison, r) {
         std::sort(bruteResponse.begin(), bruteResponse.end());
 
         REPORTER_ASSERT(r, myersResponse.size() == bruteResponse.size());
-#if 0
+#if 1
         if (myersResponse.size() != bruteResponse.size()) {
             SkASSERT(false);
         }
@@ -305,15 +306,15 @@ DEF_TEST(MFC_myers_brute_force_random_comparison, r) {
     if constexpr (!kRunRandomTest) {
         return;
     }
-    const int n = 50;
-    const int boxSize = 10000;
-    SkRandom random{n};
+    const int n = 200;
+    const int boxSize = 20000;
+    SkRandom random{n + boxSize};
     std::vector<Segment> segments;
 
     StopWatch myersStopWatch;
     StopWatch bruteStopWatch;
 
-    for (int trials = 0; trials < 1'000; trials++) {
+    for (int trials = 0; trials < 100'000; trials++) {
     for (int i = 0; i < n; ++i) {
         float x = random.nextRangeF(-boxSize, boxSize),
               y = random.nextRangeF(-boxSize, boxSize);
