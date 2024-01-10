@@ -16,6 +16,29 @@
       "message": "Externalizing font scanner interface (still based on FreeType)",
       "revId": "ca1e6e99e4a8b6ea84344764d5ef80bf0e2848e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfee8939_f145b33e",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-10T19:22:38Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure this doesn\u0027t need to be ref countable. If anything it should be non-copyable.",
+      "range": {
+        "startLine": 20,
+        "startChar": 17,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "ca1e6e99e4a8b6ea84344764d5ef80bf0e2848e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
