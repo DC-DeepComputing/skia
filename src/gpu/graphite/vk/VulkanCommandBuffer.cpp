@@ -643,14 +643,16 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         SkASSERT(renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kDiscard);
         SkASSERT(resolveTexture);
 
-        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        int dstWidth = vulkanColorTexture->dimensions().width();
+        int dstHeight = vulkanColorTexture->dimensions().height();
+
+        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(
+                renderPassDesc, SkIRect::MakeWH(dstWidth, dstHeight));
         if (!loadPipeline) {
             SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
             return false;
         }
 
-        int dstWidth = vulkanColorTexture->dimensions().width();
-        int dstHeight = vulkanColorTexture->dimensions().height();
         this->setScissor(0, 0, dstWidth, dstHeight);
     }
 
@@ -669,7 +671,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         // Store the current active pipeline so we can re-bind it after loading MSAA from resolve
         const VulkanGraphicsPipeline* priorActivePipeline = fActiveGraphicsPipeline;
         this->bindGraphicsPipeline(loadPipeline.get());
-        this->submitPipelineBarriers(true);
+        this->submitPipelineBarriers(true); // TODO: Is this still necessary?
 
         // Obtain and populate a descriptor set that contains one input attachment
         STArray<1, DescriptorData> inputDescriptors =
@@ -685,7 +687,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         fInputAttachmentDescSetToBind = *set->descriptorSet();
         this->trackResource(std::move(set));
 
-        this->bindUniformBuffers(); // Forces the uniform intrinsic constant to bind
+        // this->bindUniformBuffers(); // Forces the uniform intrinsic constant to bind
 
         // Update and bind input attachment descriptor
         {
@@ -695,9 +697,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             textureInfo.imageView = vulkanResolveTexture->
                     getImageView(VulkanImageView::Usage::kAttachment)->imageView();
             textureInfo.imageLayout = vulkanResolveTexture->currentLayout();
-            //VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            // textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            //TODO review this
 
             VkWriteDescriptorSet writeInfo;
             memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -732,7 +731,13 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             fInputAttachmentDescSetToBind = VK_NULL_HANDLE;
         }
 
-        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+        this->draw(PrimitiveType::kTriangleStrip, /*baseVertex=*/0, /*vertexCount=*/4);
+        /**
+         *  * CommandBuffer::draw(vertices)
+         *  - dynamic vertex data     -> DrawWriter::Vertices(writer) verts;
+         *                               verts.append(n) << ...;
+         *  - fixed vertex data       -> writer.draw(vertices, {}, vertexCount)
+        */
 
         // TODO: Use VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS if we add secondary cmd buffers
         VULKAN_CALL(fSharedContext->interface(),
@@ -740,10 +745,10 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
 
         // If we loaded the resolve attachment, then we would have set the image layout to be
-        // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an input
-        // attachment. However, when we switched to the main subpass it will transition the layout
-        // internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our tracking
-        // of the layout to match the new layout.
+        // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an
+        // input attachment. However, when we switched to the main subpass it will transition the
+        // layout internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our
+        // tracking of the layout to match the new layout.
         vulkanResolveTexture->updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 
         if (priorActivePipeline) {
