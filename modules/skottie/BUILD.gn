@@ -115,6 +115,7 @@ if (skia_enable_skottie) {
           "../..:flags",
           "../..:gpu_tool_utils",
           "../..:skia",
+          "../..:tool_utils",
           "../../experimental/ffmpeg:video_encoder",
         ]
 
@@ -137,6 +138,7 @@ if (skia_enable_skottie) {
           "../..:flags",
           "../..:gpu_tool_utils",
           "../..:skia",
+          "../..:tool_utils",
           "../../experimental/ffmpeg:video_encoder",
         ]
 
@@ -158,6 +160,7 @@ if (skia_enable_skottie) {
           "../..:flags",
           "../..:gpu_tool_utils",
           "../..:skia",
+          "../..:tool_utils",
           "../../experimental/ffmpeg:video_encoder",
         ]
 

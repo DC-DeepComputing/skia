@@ -23,6 +23,7 @@
 #include "src/image/SkImage_Base.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <algorithm>
 #include <chrono>
@@ -500,6 +501,7 @@ int main(int argc, char** argv) {
     //   - we need to know its duration upfront
     //   - we want to only report parsing errors once
     auto anim = skottie::Animation::Builder()
+            .setFontManager(ToolUtils::TestFontMgr())
             .setLogger(logger)
             .setResourceProvider(rp)
             .make(static_cast<const char*>(data->data()), data->size());

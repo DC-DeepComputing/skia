@@ -55,6 +55,7 @@ cc_binary_with_flags(
     deps = [
         ":legacy_skottie",
         ":utils",
+        "//tools:tool_utils",
     ],
 )
 
@@ -83,5 +84,6 @@ cc_binary_with_flags(
         ":legacy_skottie",
         ":utils",
         "//tools/gpu:utils",
+        "//tools:tool_utils",
     ],
 )
