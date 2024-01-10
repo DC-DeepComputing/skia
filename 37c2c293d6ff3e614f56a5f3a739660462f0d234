@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c435cd3c_af0562b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T16:50:49Z",
+      "side": 1,
+      "message": "I started out with https://skia-review.googlesource.com/c/skia/+/798407 (tweaks all the RP tests to use signaling NaNs). One of the first ones I tried to fix was just \"load_src\", which is literally `r \u003d sk_unaligned_load\u003cF\u003e(ptr)`. I then tried to use sk_unaligned_load\u003cI32\u003e, but that requires sk_bit_cast\u003cF\u003e after, which has the same problem. I ultimately realized that I needed to make these universally safe, which led to this CL.",
+      "revId": "37c2c293d6ff3e614f56a5f3a739660462f0d234",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
