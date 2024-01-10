@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "133dc264_167a1ac8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-10T19:17:49Z",
+      "side": 1,
+      "message": "Do you see this as better than Bentley-Ottmann or is this for verifying the final algorithm?",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
