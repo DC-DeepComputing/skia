@@ -179,11 +179,11 @@ SI F F_from_Half(U16 half) {
 #endif
 SI U16 Half_from_F(F f) {
 #if defined(USING_NEON_F16C)
-    return (U16)vcvt_f16_f32(f);
+    return (U16)vcvt_f16_f32(f); // this always rounds to zero
 #elif defined(USING_AVX512F)
-    return (U16)_mm512_cvtps_ph((__m512 )f, _MM_FROUND_CUR_DIRECTION );
+    return (U16)_mm512_cvtps_ph((__m512 )f, _MM_FROUND_TO_ZERO );
 #elif defined(USING_AVX_F16C)
-    return (U16)__builtin_ia32_vcvtps2ph256(f, 0x04/*_MM_FROUND_CUR_DIRECTION*/);
+    return (U16)__builtin_ia32_vcvtps2ph256(f, 0x03/*_MM_FROUND_TO_ZERO*/);
 #else
     // A float is 1-8-23 sign-exponent-mantissa, with 127 exponent bias.
     U32 sem = bit_pun<U32>(f),
