@@ -379,7 +379,6 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format,
                                                    fPresentQueueIndex,
                                                    fImages[i],
                                                    skgpu::VulkanAlloc());
-
         fSurfaces[i] = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
                                                       backendTex,
                                                       colorType,
@@ -442,6 +441,10 @@ GraphiteVulkanWindowContext::~GraphiteVulkanWindowContext() {
 
 void GraphiteVulkanWindowContext::destroyContext() {
     if (this->isValid()) {
+        if (fGraphiteContext) {
+            fGraphiteContext->submit(skgpu::graphite::SyncToCpu::kYes);
+        }
+
         fQueueWaitIdle(fPresentQueue);
         fDeviceWaitIdle(fDevice);
 

@@ -17,6 +17,10 @@ class GrDirectContext;
 class SkPixmap;
 struct AHardwareBuffer;
 
+namespace skgpu::graphite {
+    class Recorder;
+}
+
 namespace SkSurfaces {
 
 /** Private; only to be used by Android Framework.
@@ -41,6 +45,12 @@ namespace SkSurfaces {
 SK_API sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* context,
                                                   AHardwareBuffer* hardwareBuffer,
                                                   GrSurfaceOrigin origin,
+                                                  sk_sp<SkColorSpace> colorSpace,
+                                                  const SkSurfaceProps* surfaceProps,
+                                                  bool fromWindow = false);
+
+SK_API sk_sp<SkSurface> WrapAndroidHardwareBuffer2(skgpu::graphite::Recorder* recorder,
+                                                  AHardwareBuffer* hardwareBuffer,
                                                   sk_sp<SkColorSpace> colorSpace,
                                                   const SkSurfaceProps* surfaceProps,
                                                   bool fromWindow = false);

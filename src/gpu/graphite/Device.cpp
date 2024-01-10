@@ -266,6 +266,11 @@ sk_sp<Device> Device::Make(Recorder* recorder,
     if (!recorder) {
         return nullptr;
     }
+
+    SkDebugf("------ Device::Make %d == %d\n",
+             recorder->priv().supportsProtectedContent(),
+             target->isProtected());
+
     // We don't render to unknown or unpremul alphatypes
     if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
         colorInfo.alphaType() == kUnpremul_SkAlphaType) {

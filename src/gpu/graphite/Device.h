@@ -43,6 +43,7 @@ class Device final : public SkDevice {
 public:
     ~Device() override;
 
+    // Protected-ness is pulled off the recorder
     static sk_sp<Device> Make(Recorder*,
                               const SkImageInfo&,
                               skgpu::Budgeted,

@@ -29,6 +29,8 @@ GLWindowContext::GLWindowContext(const DisplayParams& params)
     fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
 }
 
+GLWindowContext::~GLWindowContext() {}
+
 void GLWindowContext::initializeContext() {
     SkASSERT(!fContext);
 
