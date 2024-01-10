@@ -40,6 +40,19 @@ class ResourceProvider;
 class SharedContext;
 class TextureProxy;
 
+enum class Priority {
+    kHigh,
+    kMedium,
+    kLow,
+};
+
+class PrecompileSingleton {
+public:
+
+private:
+
+};
+
 class SK_API Context final {
 public:
     Context(const Context&) = delete;
@@ -52,6 +65,8 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
+    void precompile(const PaintOptions&, Priority);
 
     bool insertRecording(const InsertRecordingInfo&);
     bool submit(SyncToCpu = SyncToCpu::kNo);

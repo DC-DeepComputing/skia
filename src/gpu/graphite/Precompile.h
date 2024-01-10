@@ -218,6 +218,18 @@ private:
     bool fDither = false;
 };
 
+
+enum class Priority {
+    kHigh,
+    kMedium,
+    kLow,
+};
+
+class PrecompilationSingleton {
+    void Gimme(PaintOptions, Priority);
+};
+
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Precompile_DEFINED
