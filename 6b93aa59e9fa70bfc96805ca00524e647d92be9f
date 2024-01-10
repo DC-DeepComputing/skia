@@ -63,6 +63,24 @@
       "message": "3.9f, to make MSVC happy",
       "revId": "6b93aa59e9fa70bfc96805ca00524e647d92be9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8f575a2_dfee9fac",
+        "filename": "gm/surface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-01-10T19:35:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0878e17_2579b066",
+      "revId": "6b93aa59e9fa70bfc96805ca00524e647d92be9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
