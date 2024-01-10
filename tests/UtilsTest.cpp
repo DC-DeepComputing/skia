@@ -11,6 +11,7 @@
 #include "src/base/SkRandom.h"
 #include "src/base/SkTSearch.h"
 #include "src/base/SkTSort.h"
+#include "src/base/SkUtils.h"
 #include "src/base/SkZip.h"
 #include "src/core/SkEnumerate.h"
 #include "tests/Test.h"
@@ -609,4 +610,28 @@ DEF_TEST(SkMakeZip, reporter) {
         constexpr auto z = SkMakeZip(cA, cP);
         REPORTER_ASSERT(reporter, !z.empty());
     }
+}
+
+DEF_TEST(UtilsPreserveNaNBitPatterns, r) {
+    // Bit pattern of a signaling NaN. We're going to round-trip this through float using utility
+    // functions. If any of them ever do any real FP operation (including loading it into the x87
+    // FPU on x86 builds), it will become a quiet NaN, changing the value.
+    int signalingNaN = 0x7fbfffff;
+
+    {
+        float floatNaN = sk_unaligned_load<float>(&signalingNaN);
+        REPORTER_ASSERT(r, std::isnan(floatNaN));
+        int roundtripNaN = sk_unaligned_load<int>(&floatNaN);
+        REPORTER_ASSERT(r, roundtripNaN == signalingNaN);
+    }
+
+    {
+        float floatNaN;
+        sk_unaligned_store(&floatNaN, signalingNaN);
+        int roundtripNaN;
+        sk_unaligned_store(&roundtripNaN, floatNaN);
+        REPORTER_ASSERT(r, roundtripNaN == signalingNaN);
+    }
+
+    REPORTER_ASSERT(r, sk_bit_cast<int>(sk_bit_cast<float>(signalingNaN)) == signalingNaN);
 }
