@@ -566,26 +566,8 @@ private:
     CrossingAccumulator fCrossings;
 };
 
-SkSpan<Segment> remove_zero_segments_and_duplicates(SkSpan<Segment> segments) {
-    auto isZeroSegment = [](const Segment& segment) {
-        return segment.upper() == segment.lower();
-    };
-    const auto zeroSegments = std::remove_if(segments.begin(), segments.end(), isZeroSegment);
-
-    std::sort(segments.begin(), zeroSegments);
-
-    const auto duplicateSegments = std::unique(segments.begin(), zeroSegments);
-
-    return SkSpan{segments.data(), std::distance(segments.begin(), duplicateSegments)};
-}
-
 std::vector<Crossing> myers_find_crossings(SkSpan<Segment> segments) {
-
-    // This is strictly not needed, but is added to compare performance with brute-force.
-    // TODO: remove this after done with performance comparisons.
-    SkSpan<const Segment> cleanSegments = remove_zero_segments_and_duplicates(segments);
-
-    const EventQueue eventQueue = EventQueue::Make(cleanSegments);
+    const EventQueue eventQueue = EventQueue::Make(segments);
     SweepLine sweepLine;
 
     for (const Event event : eventQueue) {
@@ -659,14 +641,20 @@ bool s0_intersects_s1(const Segment& s0, const Segment& s1) {
 
 std::vector<Crossing> brute_force_crossings(SkSpan<Segment> segments) {
 
-    SkSpan<const Segment> cleanSegments = remove_zero_segments_and_duplicates(segments);
-
     CrossingAccumulator crossings;
-    if (cleanSegments.size() >= 2) {
-        for (auto i = cleanSegments.begin(); i != std::prev(cleanSegments.end()); ++i) {
-            for (auto j = std::next(i); j != cleanSegments.end(); ++j) {
-                if (s0_intersects_s1(*i, *j)) {
-                    crossings.recordCrossing(*i, *j);
+    if (segments.size() >= 2) {
+        for (auto i = segments.begin(); i != std::prev(segments.end()); ++i) {
+            if (i->upper() == i->lower()) {
+                continue;
+            }
+            for (auto j = std::next(i); j != segments.end(); ++j) {
+                const Segment a = *i;
+                const Segment b = *j;
+                if (b.upper() == b.lower() || a == b) {
+                    continue;
+                }
+                if (s0_intersects_s1(a, b)) {
+                    crossings.recordCrossing(a, b);
                 }
             }
         }

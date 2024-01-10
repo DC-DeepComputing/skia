@@ -305,15 +305,15 @@ DEF_TEST(MFC_myers_brute_force_random_comparison, r) {
     if constexpr (!kRunRandomTest) {
         return;
     }
-    const int n = 50;
-    const int boxSize = 10000;
+    const int n = 100000;
+    const int boxSize = 700000;
     SkRandom random{n};
     std::vector<Segment> segments;
 
     StopWatch myersStopWatch;
     StopWatch bruteStopWatch;
 
-    for (int trials = 0; trials < 1'000; trials++) {
+    for (int trials = 0; trials < 1; trials++) {
     for (int i = 0; i < n; ++i) {
         float x = random.nextRangeF(-boxSize, boxSize),
               y = random.nextRangeF(-boxSize, boxSize);
@@ -341,7 +341,7 @@ DEF_TEST(MFC_myers_brute_force_random_comparison, r) {
     std::sort(myersResponse.begin(), myersResponse.end());
     std::sort(bruteResponse.begin(), bruteResponse.end());
 
-    //printf("myers size: %zu brute size: %zu\n", myersResponse.size(), bruteResponse.size());
+    printf("myers size: %zu brute size: %zu\n", myersResponse.size(), bruteResponse.size());
 
     REPORTER_ASSERT(r, myersResponse.size() == bruteResponse.size());
     if (myersResponse.size() != bruteResponse.size()) {
