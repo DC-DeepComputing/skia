@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8c3b41a_fbd1017c",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-10T19:43:48Z",
+      "side": 1,
+      "message": "We don\u0027t need to push this attachment back do we?",
+      "range": {
+        "startLine": 190,
+        "startChar": 9,
+        "endLine": 192,
+        "endChar": 72
+      },
+      "revId": "f8a31cdba6525f2620ad8ae73564e9df2f760fe5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceac9ce3_f949451f",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-10T19:43:48Z",
+      "side": 1,
+      "message": "is this number the same is the size of fAttachments?",
+      "range": {
+        "startLine": 66,
+        "startChar": 12,
+        "endLine": 66,
+        "endChar": 39
+      },
+      "revId": "f8a31cdba6525f2620ad8ae73564e9df2f760fe5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
