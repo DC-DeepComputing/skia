@@ -22,9 +22,16 @@ namespace skgpu::graphite {
 
 enum class Coverage;
 class KeyContext;
+class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class PrecompileBasePriv;
 class UniquePaintParamsID;
+
+enum class PrecompilationPriority : int {
+    kHigh,
+    kMedium,
+    kLow,
+};
 
 class PrecompileBase : public SkRefCnt {
 public:

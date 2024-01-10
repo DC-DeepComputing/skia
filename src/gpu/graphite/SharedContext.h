@@ -14,6 +14,7 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/PrecompileSingleton.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 namespace skgpu {
@@ -53,6 +54,8 @@ public:
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
 
+    PrecompileSingleton* precompileSingleton() { return fPrecompileSingleton.get(); }
+
 protected:
     SharedContext(std::unique_ptr<const Caps>, BackendApi);
 
@@ -68,6 +71,7 @@ private:
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
+    sk_sp<PrecompileSingleton> fPrecompileSingleton;
 };
 
 } // namespace skgpu::graphite
