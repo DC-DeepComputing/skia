@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1833632b_1577cfea",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T15:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67a6ee82_55270358",
+      "range": {
+        "startLine": 464,
+        "startChar": 12,
+        "endLine": 464,
+        "endChar": 14
+      },
+      "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8af167c_373b81d4",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-01-09T20:50:57Z",
       "side": 1,
       "message": "Spent a minute here, because I originally took this comment to mean \"cross product of the slopes of s0 and s1\". Might want to clarify?",
+      "range": {
+        "startLine": 480,
+        "startChar": 19,
+        "endLine": 480,
+        "endChar": 46
+      },
+      "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9bb89f5_51bbc586",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T15:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8af167c_373b81d4",
       "range": {
         "startLine": 480,
         "startChar": 19,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44b97623_1e137736",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T15:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1726be86_fa72ca64",
+      "range": {
+        "startLine": 488,
+        "startChar": 8,
+        "endLine": 488,
+        "endChar": 10
+      },
+      "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0dbd652_bdb3f71c",
@@ -100,6 +172,24 @@
       "writtenOn": "2024-01-09T20:50:57Z",
       "side": 1,
       "message": "I\u0027m all for defensive coding, but the first half of this condition was asserted earlier (line 464), and the second half just re-states the immediately preceding `if` check. Probably don\u0027t need it? (Especially as we don\u0027t have a similar assertion in the else block).",
+      "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e729bb5_f8cb92a1",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T15:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0dbd652_bdb3f71c",
       "revId": "a21a10b55772c5092c61c72f1dbccc2e72656cc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
