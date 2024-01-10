@@ -34,6 +34,63 @@
       "parentUuid": "133dc264_167a1ac8",
       "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51cf5d57_cf18b4a5",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T20:21:01Z",
+      "side": 1,
+      "message": "Both of these loops do their first iteration at insertionPoint, right? So as long as the check passes (eg, new segment starts on an existing segment), we\u0027ll add that crossing twice?",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 9
+      },
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd38bf37_084a550f",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T20:21:01Z",
+      "side": 1,
+      "message": "If I have a segment where upper.x is either INT_MAX or INT_MIN, this will cause the loops in checkCrossingsLeftAndRight to fall off the beginning or end of fStatus, right?",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91615b2c_5b9c21cf",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T20:21:01Z",
+      "side": 1,
+      "message": "Not for this CL, but do we know that `removing` is sorted? (I seem to recall that will be the case?) If so, it seems like we could do a slightly more complex O(N) version of this function, rather than the O(N^2) worst case that we have now?\n\n(Admittedly, it\u0027s only a concern for pathological inputs).",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
