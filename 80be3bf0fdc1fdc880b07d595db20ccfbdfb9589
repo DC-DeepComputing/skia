@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "500954c0_0a48bca5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-10T22:43:26Z",
+      "side": 1,
+      "message": "A small step toward fixing the Windows arm64 cross compile builder.",
+      "revId": "80be3bf0fdc1fdc880b07d595db20ccfbdfb9589",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
