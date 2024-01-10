@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d564bea_108d197b",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T21:13:40Z",
+      "side": 1,
+      "message": "Ah - I had never used make_reverse_iterator, so missed the shift-by-one that it introduces. Makes sense now.",
+      "parentUuid": "eafd8231_dca2e7ab",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 9
+      },
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd38bf37_084a550f",
@@ -114,6 +138,24 @@
       "side": 1,
       "message": "I don\u0027t know what will happen. It is probably time to add the code to pre-filter the code for the points in a future CL.",
       "parentUuid": "fd38bf37_084a550f",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eadf9f8c_5a7b2d34",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T21:13:40Z",
+      "side": 1,
+      "message": "Yeah - along with some nice unit tests of those exceptional values. 😊",
+      "parentUuid": "fb9f5e69_8d964696",
       "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
