@@ -382,10 +382,18 @@ sk_sp<VulkanSamplerYcbcrConversion>
 
 sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
         const RenderPassDesc& renderPassDesc) {
+
     if (!renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() ||
         !renderPassDesc.fColorAttachment.fTextureInfo.isValid()) {
         SKGPU_LOG_E("Loading MSAA from resolve texture requires valid color & resolve attachment");
         return nullptr;
+    }
+
+    GraphiteResourceKey renderPassKey =
+            VulkanRenderPass::MakeRenderPassKey(renderPassDesc, /*compatibleOnly=*/true);
+    sk_sp<VulkanGraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey.hash()];
+    if (pipeline) {
+        return pipeline;
     }
 
     // If any of the load MSAA pipeline creation structures are null then we need to initialize
@@ -400,15 +408,35 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
                     &fMSAALoadFragShaderModule,
                     &fMSAALoadShaderStageInfo[0],
                     &fMSAALoadPipelineLayout)) {
-            SKGPU_LOG_E("Failed to initialize MSAA load pipeline creation structure(s)\n");
+            SKGPU_LOG_E("Failed to initialize MSAA load pipeline creation structure(s)");
             return nullptr;
         }
     }
 
-    // TODO: Implement.
-    return nullptr;
-}
+    sk_sp<VulkanRenderPass> compatibleRenderPass =
+            this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
+    if (!compatibleRenderPass) {
+        SKGPU_LOG_E("Failed to make compatible render pass for loading MSAA");
+    }
 
+    pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
+            this->vulkanSharedContext(),
+            fMSAALoadVertShaderModule,
+            fMSAALoadFragShaderModule,
+            &fMSAALoadShaderStageInfo[0],
+            fMSAALoadPipelineLayout,
+            compatibleRenderPass,
+            this->pipelineCache(),
+            renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+
+    if (!pipeline) {
+        SKGPU_LOG_E("Failed to create MSAA load pipeline");
+        return nullptr;
+    }
+
+    fLoadMSAAPipelines.set(renderPassKey.hash(), pipeline);
+    return pipeline;
+}
 
 #ifdef SK_BUILD_FOR_ANDROID
 

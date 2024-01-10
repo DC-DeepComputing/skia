@@ -98,7 +98,7 @@ private:
     // update the value within this buffer as needed.
     sk_sp<Buffer> fIntrinsicUniformBuffer;
 
-    skia_private::THashMap<uint64_t, sk_sp<VulkanGraphicsPipeline>> fLoadMSAAPipelines;
+    skia_private::THashMap<uint32_t, sk_sp<VulkanGraphicsPipeline>> fLoadMSAAPipelines;
     // All of the following attributes are the same between all msaa load pipelines, so they only
     // need to be created once and can then be stored.
     VkShaderModule fMSAALoadVertShaderModule = VK_NULL_HANDLE;
