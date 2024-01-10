@@ -16,6 +16,24 @@
       "message": "Do you see this as better than Bentley-Ottmann or is this for verifying the final algorithm?",
       "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d27dd1f6_26a133ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-10T19:25:46Z",
+      "side": 1,
+      "message": "Bentley-Ottmann is not a viable algorithm for computing crossings when using rounding. For Bently-Ottmann to work you need exact arithmetic. There are a couple of straight forward examples to demonstrate this fact which I can show you. I\u0027m characterizing the performance of the Myers algorithm right now, and it seems to be fast.\n\nWe should set up a meeting to discuss this.",
+      "parentUuid": "133dc264_167a1ac8",
+      "revId": "a2dc2b149210bf1bb54745600e81ce7d8d4c197c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
