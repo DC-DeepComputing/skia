@@ -18,6 +18,8 @@
 
 extern bool gCreateProtectedContext;
 
+extern bool gCreateProtectedContext;
+
 namespace skiatest::graphite {
 
 std::unique_ptr<GraphiteTestContext> VulkanTestContext::Make() {

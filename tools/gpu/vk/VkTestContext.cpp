@@ -40,6 +40,7 @@ public:
                 return nullptr;
             }
 
+            /**/
             extensions = new skgpu::VulkanExtensions();
             features = new VkPhysicalDeviceFeatures2;
             memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));

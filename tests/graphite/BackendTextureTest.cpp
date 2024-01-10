@@ -106,7 +106,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context,
                                                           Protected::kNo,
                                                           Renderable::kYes);
 
-    auto texture = recorder->createBackendTexture(kSize, info);
+    BackendTexture texture = recorder->createBackendTexture(kSize, info);
     REPORTER_ASSERT(reporter, texture.isValid());
 
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(recorder.get(),
