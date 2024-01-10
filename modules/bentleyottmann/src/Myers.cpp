@@ -580,12 +580,7 @@ SkSpan<Segment> remove_zero_segments_and_duplicates(SkSpan<Segment> segments) {
 }
 
 std::vector<Crossing> myers_find_crossings(SkSpan<Segment> segments) {
-
-    // This is strictly not needed, but is added to compare performance with brute-force.
-    // TODO: remove this after done with performance comparisons.
-    SkSpan<const Segment> cleanSegments = remove_zero_segments_and_duplicates(segments);
-
-    const EventQueue eventQueue = EventQueue::Make(cleanSegments);
+    const EventQueue eventQueue = EventQueue::Make(segments);
     SweepLine sweepLine;
 
     for (const Event event : eventQueue) {
@@ -659,7 +654,17 @@ bool s0_intersects_s1(const Segment& s0, const Segment& s1) {
 
 std::vector<Crossing> brute_force_crossings(SkSpan<Segment> segments) {
 
-    SkSpan<const Segment> cleanSegments = remove_zero_segments_and_duplicates(segments);
+    auto isZeroSegment = [](const Segment& segment) {
+        return segment.upper() == segment.lower();
+    };
+    const auto zeroSegments = std::remove_if(segments.begin(), segments.end(), isZeroSegment);
+
+    std::sort(segments.begin(), zeroSegments);
+
+    const auto duplicateSegments = std::unique(segments.begin(), zeroSegments);
+
+    SkSpan<const Segment> cleanSegments =
+            SkSpan{segments.data(), std::distance(segments.begin(), duplicateSegments)};
 
     CrossingAccumulator crossings;
     if (cleanSegments.size() >= 2) {
