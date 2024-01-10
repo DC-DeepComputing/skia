@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843c5d8d_3e36ea8f",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-10T19:49:33Z",
+      "side": 1,
+      "message": "This should be a unique key. Once you call hash() on it, it is no longer unique. Even though the odds are low different pipelines could collide with the same hash.",
+      "range": {
+        "startLine": 437,
+        "startChar": 26,
+        "endLine": 437,
+        "endChar": 47
+      },
+      "revId": "090afe33cd9b9d6995663ab337645a1158feb771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
