@@ -121,6 +121,7 @@ if (skia_enable_skottie) {
         public_deps = [
           ":skottie",
           ":utils",
+          "../..:tool_utils",
         ]
       }
 
@@ -143,6 +144,7 @@ if (skia_enable_skottie) {
         public_deps = [
           ":skottie",
           ":utils",
+          "../..:tool_utils",
         ]
       }
 
@@ -164,6 +166,7 @@ if (skia_enable_skottie) {
         public_deps = [
           ":skottie",
           ":utils",
+          "../..:tool_utils",
         ]
       }
 
