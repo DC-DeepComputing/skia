@@ -1754,11 +1754,7 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
             this->write("_out.sk_SampleMask");
             break;
         case SK_SECONDARYFRAGCOLOR_BUILTIN:
-            if (fCaps.fDualSourceBlendingSupport) {
-                this->write("_out.sk_SecondaryFragColor");
-            } else {
-                fContext.fErrors->error(ref.position(), "'sk_SecondaryFragColor' not supported");
-            }
+            this->write("_out.sk_SecondaryFragColor");
             break;
         case SK_FRAGCOORD_BUILTIN:
             this->writeFragCoord();
@@ -1782,11 +1778,7 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
             }
             break;
         case SK_LASTFRAGCOLOR_BUILTIN:
-            if (fCaps.fFBFetchColorName) {
-                this->write(fCaps.fFBFetchColorName);
-            } else {
-                fContext.fErrors->error(ref.position(), "'sk_LastFragColor' not supported");
-            }
+            this->write(fCaps.fFBFetchColorName);
             break;
         default:
             const Variable& var = *ref.variable();
