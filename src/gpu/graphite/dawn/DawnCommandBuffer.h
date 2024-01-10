@@ -17,6 +17,8 @@
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
+#include <vector>
+
 namespace skgpu::graphite {
 class ComputePipeline;
 class DawnBuffer;
@@ -150,6 +152,9 @@ private:
     size_t fCurrentIndirectBufferOffset = 0;
 
     sk_sp<DawnBuffer> fIntrinsicConstantBuffer;
+    // Cache the whole fIntrinsicConstantBuffer for full-size write, which is the more favorable way
+    // for dawn-d3d11 to write uniform buffers.
+    std::unique_ptr<std::vector<uint8_t>> fIntrinsicConstantBufferCache;
     int fIntrinsicConstantBufferSlotsUsed = 0;
 
     const DawnGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
