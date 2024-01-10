@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e63266e7_4f7482e0",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-10T15:04:40Z",
+      "side": 1,
+      "message": "Or, alternatively, why not use the `TestFontMgr` here as well? (and remove all the supporting bits to create this `fontMgr`?",
+      "parentUuid": "ba55446a_da8ba1e0",
+      "range": {
+        "startLine": 490,
+        "startChar": 20,
+        "endLine": 490,
+        "endChar": 27
+      },
+      "revId": "18fe531054edb090dfb2c9a0fb258ad48c40dc17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6570be3a_5ea07cfa",
         "filename": "tools/fonts/FontToolUtils.h",
         "patchSetId": 3
@@ -54,6 +78,24 @@
       "writtenOn": "2024-01-10T14:56:42Z",
       "side": 1,
       "message": "+1\u0027d, but curious as to what the difference is between TestFontMgr and the older SkFontMgr::RefDefault",
+      "revId": "18fe531054edb090dfb2c9a0fb258ad48c40dc17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41e8fe31_88c0fb32",
+        "filename": "tools/fonts/FontToolUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-10T15:04:40Z",
+      "side": 1,
+      "message": "`SkFontMgr::RefDefault` was a kind of magic global thing inside Skia-the-library. It forced knowing which SkFontMgr implementations were available at build time (when we want those implementations to be in separate non-registering shared objects). `TestFontMgr` is not in Skia-the-library but instead is application code. The application knows which parts of Skia it is going to have available so can depend on those SkFontMgr implementations existing at run time.",
+      "parentUuid": "6570be3a_5ea07cfa",
       "revId": "18fe531054edb090dfb2c9a0fb258ad48c40dc17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
