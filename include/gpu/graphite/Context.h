@@ -33,12 +33,15 @@ class Context;
 class ContextPriv;
 class GlobalCache;
 class PaintOptions;
+
 class PlotUploadTracker;
 class QueueManager;
 class Recording;
 class ResourceProvider;
 class SharedContext;
 class TextureProxy;
+
+enum class PrecompilationPriority : int;
 
 class SK_API Context final {
 public:
@@ -52,6 +55,8 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
+    void precompile(const PaintOptions&, PrecompilationPriority);
 
     bool insertRecording(const InsertRecordingInfo&);
     bool submit(SyncToCpu = SyncToCpu::kNo);
