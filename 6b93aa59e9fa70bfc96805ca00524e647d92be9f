@@ -22,6 +22,47 @@
       },
       "revId": "6b93aa59e9fa70bfc96805ca00524e647d92be9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f3cca2b_d52f3201",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T14:51:10Z",
+      "side": 1,
+      "message": "Looks like Dominik already ran the TryJobs. Minor MSVC warning appears to be the only problem...",
+      "parentUuid": "798ce105_a1f088ff",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 40
+      },
+      "revId": "6b93aa59e9fa70bfc96805ca00524e647d92be9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0878e17_2579b066",
+        "filename": "gm/surface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-10T14:51:10Z",
+      "side": 1,
+      "message": "3.9f, to make MSVC happy",
+      "revId": "6b93aa59e9fa70bfc96805ca00524e647d92be9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
