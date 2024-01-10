@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f527241_24c80ef5",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-10T21:56:47Z",
+      "side": 1,
+      "message": "Should we have some caps check to see if this is necessary? Would it be enough to just base that on our backend? (For example, could we always assume we only need one scratch surface with Metal?)",
+      "revId": "93fb3ade4673e5752c1cf679d74150bfe8e21cff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
