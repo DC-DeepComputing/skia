@@ -667,6 +667,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
 
         fIntrinsicConstantBuffer = fResourceProvider->findOrCreateDawnBuffer(
                 bufferSize, BufferType::kUniform, AccessPattern::kGpuOnly);
+        fIntrinsicConstantBufferCache = std::make_unique<std::vector<uint8_t>>(bufferSize);
 
         fIntrinsicConstantBufferSlotsUsed = 0;
         SkASSERT(fIntrinsicConstantBuffer);
@@ -684,17 +685,20 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
 
     if constexpr (kNumSlotsForIntrinsicConstantBuffer > 0) {
         uint64_t offset = fIntrinsicConstantBufferSlotsUsed * kIntrinsicConstantAlignedSize;
+        memcpy(fIntrinsicConstantBufferCache->data() + offset, &rtAdjust, sizeof(rtAdjust));
         fSharedContext->queue().WriteBuffer(fIntrinsicConstantBuffer->dawnBuffer(),
-                                            offset,
-                                            &rtAdjust,
-                                            sizeof(rtAdjust));
+                                            0,
+                                            fIntrinsicConstantBufferCache->data(),
+                                            fIntrinsicConstantBufferCache->size());
+
         fIntrinsicConstantBufferSlotsUsed++;
     } else {
 #if !defined(__EMSCRIPTEN__)
+        memcpy(fIntrinsicConstantBufferCache->data(), &rtAdjust, sizeof(rtAdjust));
         fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer->dawnBuffer(),
                                     0,
-                                    reinterpret_cast<const uint8_t*>(rtAdjust),
-                                    sizeof(rtAdjust));
+                                    fIntrinsicConstantBufferCache->data(),
+                                    fIntrinsicConstantBufferCache->size());
 #endif
         fIntrinsicConstantBufferSlotsUsed = 1;
     }
