@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4501883_10ed8dd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-10T14:27:40Z",
+      "side": 1,
+      "message": "Externalizing font scanner interface (still based on FreeType)",
+      "revId": "ca1e6e99e4a8b6ea84344764d5ef80bf0e2848e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
