@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba55446a_da8ba1e0",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-10T14:57:05Z",
+      "side": 1,
+      "message": "Is there a reason not to use this `fontMgr`?",
+      "range": {
+        "startLine": 490,
+        "startChar": 20,
+        "endLine": 490,
+        "endChar": 27
+      },
+      "revId": "18fe531054edb090dfb2c9a0fb258ad48c40dc17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6570be3a_5ea07cfa",
         "filename": "tools/fonts/FontToolUtils.h",
         "patchSetId": 3
