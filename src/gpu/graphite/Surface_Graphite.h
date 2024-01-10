@@ -21,6 +21,7 @@ class TextureProxy;
 
 class Surface final : public SkSurface_Base {
 public:
+    // Protected status is pulled off the recorder
     static sk_sp<SkSurface> MakeGraphite(Recorder* recorder,
                                          const SkImageInfo& info,
                                          skgpu::Budgeted budgeted,

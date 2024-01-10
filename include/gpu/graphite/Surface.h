@@ -56,6 +56,7 @@ SK_API sk_sp<SkImage> AsImageCopy(sk_sp<const SkSurface>,
  * not become a scratch (i.e., reusable) resource but, if it does, it will be counted against
  * the budget.
  */
+ // Protected status is pulled off the recorder
 SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
                                      const SkImageInfo& imageInfo,
                                      skgpu::Mipmapped = skgpu::Mipmapped::kNo,
