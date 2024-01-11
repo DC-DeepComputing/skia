@@ -24,6 +24,7 @@
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTypefaceCache.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
+#include "src/ports/SkFontScanner_fontations.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 
 #include <algorithm>
@@ -257,7 +258,7 @@ struct NameToFamily {
 class SkFontMgr_Android : public SkFontMgr {
 public:
     SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom) {
-        fScanner = std::make_unique<FontScanner_FreeType>();
+        fScanner = std::make_unique<FontScanner_Fontations>();
         SkTDArray<FontFamily*> families;
         if (custom && SkFontMgr_Android_CustomFonts::kPreferSystem != custom->fSystemFontUse) {
             SkString base(custom->fBasePath);
