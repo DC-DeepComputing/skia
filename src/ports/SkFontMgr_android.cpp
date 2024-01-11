@@ -21,9 +21,14 @@
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkTSearch.h"
 #include "src/core/SkFontDescriptor.h"
+#include "src/core/SkFontScanner.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTypefaceCache.h"
+#include "src/ports/SkFontHost_FreeType_common.h"
 #include "src/ports/SkFontMgr_android_parser.h"
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+#include "src/ports/SkFontScanner_fontations.h"
+#endif
 #include "src/ports/SkTypeface_FreeType.h"
 
 #include <algorithm>
@@ -256,8 +261,8 @@ struct NameToFamily {
 
 class SkFontMgr_Android : public SkFontMgr {
 public:
-    SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom) {
-        fScanner = std::make_unique<SkFontScanner_FreeType>();
+    SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom, SkFontScanner* scanner)
+        : fScanner(scanner) {
         SkTDArray<FontFamily*> families;
         if (custom && SkFontMgr_Android_CustomFonts::kPreferSystem != custom->fSystemFontUse) {
             SkString base(custom->fBasePath);
@@ -504,7 +509,7 @@ static char const * const gSystemFontUseStrings[] = {
 
 }  // namespace
 
-sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom) {
+sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom, SkFontScanner* scanner) {
     if (custom) {
         SkASSERT(0 <= custom->fSystemFontUse);
         SkASSERT(custom->fSystemFontUse < std::size(gSystemFontUseStrings));
@@ -514,5 +519,17 @@ sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* cust
                  custom->fFontsXml,
                  custom->fFallbackFontsXml);
     }
-    return sk_make_sp<SkFontMgr_Android>(custom);
+    return sk_make_sp<SkFontMgr_Android>(custom, scanner);
+}
+
+sk_sp<SkFontMgr> SkFontMgr_New_Android_WithFreeType(const SkFontMgr_Android_CustomFonts* custom) {
+    return SkFontMgr_New_Android(custom, new SkFontScanner_FreeType());
+}
+
+sk_sp<SkFontMgr> SkFontMgr_New_Android_WithFontations(const SkFontMgr_Android_CustomFonts* custom) {
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+    return SkFontMgr_New_Android(custom, new SkFontScanner_Fontations());
+#else
+    return nullptr;
+#endif
 }
