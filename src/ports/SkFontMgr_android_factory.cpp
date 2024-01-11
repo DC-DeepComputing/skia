@@ -10,6 +10,6 @@
 
 #if !defined(SK_DISABLE_LEGACY_FONTMGR_FACTORY)
 sk_sp<SkFontMgr> SkFontMgr::Factory() {
-    return SkFontMgr_New_Android(nullptr);
+    return SkFontMgr_New_Android_WidthFreeType(nullptr);
 }
 #endif
