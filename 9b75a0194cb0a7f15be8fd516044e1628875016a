@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a9f78c3_bb78d727",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-11T21:44:41Z",
+      "side": 1,
+      "message": "So at Patchset 1 this appears to now build with xSAN but will not run. xSAN forces clang with libc++, and the `Build` images do not appear to have the `libc++1` package installed or otherwise provide `libc++1.so`. It is not clear how many packages will be needed and where they will need to come from to make this work. \n\nOne alternative is to make the host non-xSAN since we really just care about the target, though it is quite nice to also sanitize the build tools themselves.",
+      "revId": "9b75a0194cb0a7f15be8fd516044e1628875016a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
