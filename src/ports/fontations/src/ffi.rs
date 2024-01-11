@@ -14,6 +14,8 @@ use skrifa::{
 };
 use std::pin::Pin;
 
+use skrifa::attribute::{Stretch, Style, Weight};
+
 use crate::ffi::{
     AxisWrapper, BridgeScalerMetrics, ColorPainterWrapper, ColorStop, PaletteOverride, PathWrapper,
 };
@@ -577,6 +579,54 @@ fn num_color_stops(color_stops: &BridgeColorStops) -> usize {
     return color_stops.num_stops;
 }
 
+fn get_font_style(font_ref: &BridgeFontRef, style: &mut BridgeFontStyle) -> bool {
+    font_ref
+        .with_font(|f| {
+            let attrs = f.attributes();
+
+            let rust_weight = attrs.weight;
+            let skia_weight = if Weight::SEMI_LIGHT == rust_weight {
+               300
+            } else if Weight::EXTRA_BLACK == rust_weight {
+                1000
+            } else {
+                rust_weight.value() as i32
+            };
+
+            let rust_style = attrs.style;
+            let skia_slant = if Style::Normal == rust_style {
+                0
+            } else if Style::Italic == rust_style {
+                1
+            } else {
+                // TODO: figure it out
+                -1
+            };
+
+            let rust_stretch = attrs.stretch;
+            let skia_width =
+                if rust_stretch == Stretch::ULTRA_CONDENSED { 1 } // kUltraCondensed_Width
+                else if rust_stretch == Stretch::EXTRA_CONDENSED { 2 } // kExtraCondensed_Width
+                else if rust_stretch == Stretch::CONDENSED { 3 } // kCondensed_Width
+                else if rust_stretch == Stretch::SEMI_CONDENSED { 4 } // kSemiCondensed_Width
+                else if rust_stretch == Stretch::NORMAL { 5 } // kNormal_Width
+                else if rust_stretch == Stretch::SEMI_EXPANDED { 6 } // kSemiExpanded_Width
+                else if rust_stretch == Stretch::EXPANDED { 7 } // kExpanded_Width
+                else if rust_stretch == Stretch::EXTRA_EXPANDED {  8 } // kExtraExpanded_Width
+                else if rust_stretch == Stretch::ULTRA_EXPANDED { 9 } // :kUltraExpanded_Width
+                else { 9 };
+
+            *style = BridgeFontStyle{
+                weight: skia_weight,
+                slant: skia_slant,
+                width: skia_width,
+            };
+            Some(true)
+        })
+        .unwrap_or_default();
+    return true;
+}
+
 struct BridgeFontRef<'a>(Option<FontRef<'a>>);
 
 impl<'a> BridgeFontRef<'a> {
@@ -599,6 +649,13 @@ struct BridgeLocalizedStrings<'a> {
 struct BridgeColorStops<'a> {
     pub stops_iterator: Box<dyn Iterator<Item = &'a skrifa::color::ColorStop> + 'a>,
     pub num_stops: usize,
+}
+
+
+struct BridgeFontStyle {
+    pub weight: i32,
+    pub slant: i32,
+    pub width: i32,
 }
 
 #[cxx::bridge(namespace = "fontations_ffi")]
@@ -648,6 +705,12 @@ mod ffi {
         y_min: f32,
         x_max: f32,
         y_max: f32,
+    }
+
+    struct FontStyle {
+        weight: f32,
+        slant: f32,
+        stretch: f32,
     }
 
     extern "Rust" {
@@ -742,6 +805,8 @@ mod ffi {
         fn next_color_stop(color_stops: &mut BridgeColorStops, stop: &mut ColorStop) -> bool;
         fn num_color_stops(color_stops: &BridgeColorStops) -> usize;
 
+        type BridgeFontStyle;
+        fn get_font_style(font_ref: &BridgeFontRef, font_style: &mut BridgeFontStyle) -> bool;
     }
 
     unsafe extern "C++" {
@@ -846,7 +911,7 @@ mod ffi {
 #[cfg(test)]
 mod test {
 
-    use crate::{ffi::PaletteOverride, font_ref_is_valid, make_font_ref, resolve_palette};
+    use crate::{BridgeFontStyle, ffi::PaletteOverride, font_ref_is_valid, get_font_style, make_font_ref, resolve_palette};
     use std::fs;
 
     const TEST_FONT_FILENAME: &str = "resources/fonts/test_glyphs-glyf_colr_1_variable.ttf";
@@ -906,5 +971,22 @@ mod test {
 
         let no_palette = resolve_palette(&font_ref, 10, &out_of_bounds_overrides);
         assert_eq!(no_palette.len(), 0);
+    }
+
+    #[test]
+    fn test_font_attributes() {
+        let file_buffer =
+            fs::read(TEST_FONT_FILENAME).expect("COLRv0/v1 test font could not be opened.");
+        let font_ref = make_font_ref(&file_buffer, 0);
+        assert_eq!(font_ref_is_valid(&font_ref), true);
+
+        font_style = BridgeFontStyle { weight: 0, slant: 0, width: 0 };
+        font_style = BridgeFontStyle { weight: 0, slant: 0, width: 0 };
+        let result = get_font_style(font_ref.as_ref(), font_style);
+
+        assert_eq!(attrs.stretch, BridgeFontStyle::NORMAL);
+        assert_eq!(attrs.style, BridgeFontStyle::Italic);
+        assert_eq!(attrs.weight, BridgeFontStyle::BOLD);
+
     }
 }

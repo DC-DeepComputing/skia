@@ -74,6 +74,7 @@ skia_filegroup(
     }) + select({
         "//bazel/common_config_settings:use_fontations_true": [
             "SkTypeface_fontations.h",
+            "SkFontScanner_fontations.h",
         ],
         "//conditions:default": [],
     }),
