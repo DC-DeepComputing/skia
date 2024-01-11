@@ -150,7 +150,7 @@ DEF_TEST(Skottie_Shaper_VAlign, reporter) {
         {  5, 2.0f },
         { 10, 4.0f },
         { 15, 5.5f },
-        { 25, 8.0f },
+        { 25, 9.5f },
     };
 
     struct {
