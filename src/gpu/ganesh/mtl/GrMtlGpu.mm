@@ -1605,21 +1605,23 @@ bool GrMtlGpu::readOrTransferPixels(GrSurface* surface,
         dispatch_semaphore_signal(semaphore);
     });
 
-    const void* cfFence = (__bridge_retained const void*) semaphore;
+    CFTypeRef cfFence = CFBridgingRetain(semaphore);
     return (GrFence) cfFence;
 }
 
 bool GrMtlGpu::waitFence(GrFence fence) {
-    const void* cfFence = (const void*) fence;
-    dispatch_semaphore_t semaphore = (__bridge dispatch_semaphore_t)cfFence;
+    CFTypeRef cfFence = (CFTypeRef) fence;
+    dispatch_semaphore_t semaphore = (dispatch_semaphore_t) CFRetain(cfFence);
 
     long result = dispatch_semaphore_wait(semaphore, 0);
+
+    CFRelease((CFTypeRef) semaphore);
 
     return !result;
 }
 
 void GrMtlGpu::deleteFence(GrFence fence) {
-    const void* cfFence = (const void*) fence;
+    CFTypeRef cfFence = (CFTypeRef) fence;
     // In this case it's easier to release in CoreFoundation than depend on ARC
     CFRelease(cfFence);
 }
