@@ -28,9 +28,9 @@ public:
     };
     typedef skia_private::STArray<4, AxisDefinition, true> AxisDefinitions;
     virtual bool recognizedFont(SkStreamAsset* stream, int* numFonts) const = 0;
-    virtual bool scanFont(SkStreamAsset* stream, int ttcIndex,
-                          SkString* name, SkFontStyle* style, bool* isFixedPitch,
-                          AxisDefinitions* axes) const = 0;
+    virtual bool scanFontMetaData(SkStreamAsset* stream, int ttcIndex,
+                                  SkString* name, SkFontStyle* style, bool* isFixedPitch,
+                                  AxisDefinitions* axes) const = 0;
 };
 
 #endif // SKFONTSCANNER_H_

@@ -46,9 +46,9 @@ public:
         };
         using AxisDefinitions = skia_private::STArray<4, AxisDefinition, true>;
         bool recognizedFont(SkStreamAsset* stream, int* numFonts) const;
-        bool scanFont(SkStreamAsset* stream, int ttcIndex,
-                      SkString* name, SkFontStyle* style, bool* isFixedPitch,
-                      AxisDefinitions* axes) const;
+        bool scanFontMetaData(SkStreamAsset* stream, int ttcIndex,
+                              SkString* name, SkFontStyle* style, bool* isFixedPitch,
+                              AxisDefinitions* axes) const;
         static void computeAxisValues(
             AxisDefinitions axisDefinitions,
             const SkFontArguments::VariationPosition position,
@@ -144,12 +144,12 @@ public:
     ~SkFontScanner_FreeType() override;
 
     bool recognizedFont(SkStreamAsset* stream, int* numFaces) const override;
-    bool scanFont(SkStreamAsset* stream,
-                  int ttcIndex,
-                  SkString* name,
-                  SkFontStyle* style,
-                  bool* isFixedPitch,
-                  SkFontScanner::AxisDefinitions* axes) const override;
+    bool scanFontMetaData(SkStreamAsset* stream,
+                          int ttcIndex,
+                          SkString* name,
+                          SkFontStyle* style,
+                          bool* isFixedPitch,
+                          SkFontScanner::AxisDefinitions* axes) const override;
     static void computeAxisValues(
             AxisDefinitions axisDefinitions,
             const SkFontArguments::VariationPosition position,

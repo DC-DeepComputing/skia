@@ -2001,8 +2001,8 @@ sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAs
     SkFontStyle style;
     SkString name;
     SkFontScanner::AxisDefinitions axisDefinitions;
-    if (!scanner.scanFont(stream.get(), args.getCollectionIndex(),
-                          &name, &style, &isFixedPitch, &axisDefinitions)) {
+    if (!scanner.scanFontMetaData(stream.get(), args.getCollectionIndex(),
+                                  &name, &style, &isFixedPitch, &axisDefinitions)) {
         return nullptr;
     }
 
@@ -2078,7 +2078,7 @@ bool SkFontScanner_FreeType::recognizedFont(SkStreamAsset* stream, int* numFaces
     return true;
 }
 
-bool SkFontScanner_FreeType::scanFont(
+bool SkFontScanner_FreeType::scanFontMetaData(
         SkStreamAsset* stream, int ttcIndex,
         SkString* name, SkFontStyle* style, bool* isFixedPitch, AxisDefinitions* axes) const
 {

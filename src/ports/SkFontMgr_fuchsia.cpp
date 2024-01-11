@@ -248,10 +248,14 @@ sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stre
     SkString name;
     SkFontScanner_FreeType fontScanner;
     SkFontScanner::AxisDefinitions axisDefinitions;
-    if (!fontScanner.scanFont(stream.get(), args.getCollectionIndex(), &name, &style, &isFixedPitch,
-                          &axisDefinitions)) {
-        return nullptr;
-    }
+  if (!fontScanner.scanFontMetaData(stream.get(),
+                                    args.getCollectionIndex(),
+                                    &name,
+                                    &style,
+                                    &isFixedPitch,
+                                    &axisDefinitions)) {
+    return nullptr;
+  }
 
     const SkFontArguments::VariationPosition position = args.getVariationDesignPosition();
     AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
