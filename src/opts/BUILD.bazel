@@ -49,6 +49,7 @@ skia_cc_library(
     name = "legacy_hsw",  # https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2
     srcs = [
         "SkOpts_hsw.cpp",
+        "SkOpts_skx.cpp",
         "//include/core:opts_srcs",
         "//include/private:opts_srcs",
         "//include/private/base:private_hdrs",
@@ -89,6 +90,7 @@ skia_cc_library(
     name = "hsw",  # https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2
     srcs = [
         "SkOpts_hsw.cpp",
+        "SkOpts_skx.cpp",
         "//include/core:opts_srcs",
         "//include/private:opts_srcs",
         "//src/core:opts_srcs",
