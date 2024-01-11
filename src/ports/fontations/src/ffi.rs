@@ -15,6 +15,8 @@ use skrifa::{
 };
 use std::pin::Pin;
 
+use skrifa::attribute::{Stretch, Style, Weight};
+
 use crate::ffi::{
     AxisWrapper, BridgeScalerMetrics, ColorPainterWrapper, ColorStop, PaletteOverride, PathWrapper,
     SkiaDesignCoordinate,
@@ -713,6 +715,52 @@ fn num_color_stops(color_stops: &BridgeColorStops) -> usize {
     return color_stops.num_stops;
 }
 
+use crate::ffi::BridgeFontStyle;
+
+fn get_font_style(font_ref: &BridgeFontRef, style: &mut BridgeFontStyle) -> bool {
+    font_ref
+        .with_font(|f| {
+            let attrs = f.attributes();
+
+            let skia_weight = match attrs.weight {
+                Weight::SEMI_LIGHT => 300,
+                Weight::EXTRA_BLACK => 1000,
+                _ => attrs.weight.value() as i32,
+            };
+
+            let skia_slant = match attrs.style {
+                Style::Normal => 0,
+                Style::Italic => 1,
+                _ => {
+                    // TODO: Figure out later
+                    -1
+                }
+            };
+
+            let rust_stretch = attrs.stretch;
+            let skia_width = match attrs.stretch {
+                Stretch::ULTRA_CONDENSED => 0, // kUltraCondensed_Width
+                Stretch::EXTRA_CONDENSED => 2, // kExtraCondensed_Width
+                Stretch::CONDENSED => 3,       // kCondensed_Width
+                Stretch::SEMI_CONDENSED => 4,  // kSemiCondensed_Width
+                Stretch::NORMAL => 5,          // kNormal_Width
+                Stretch::SEMI_EXPANDED => 6,   // kSemiExpanded_Width
+                Stretch::EXPANDED => 7,        // kExpanded_Width
+                Stretch::EXTRA_EXPANDED => 8,  // kExtraExpanded_Width
+                Stretch::ULTRA_EXPANDED => 9,  // kUltraExpanded_Width
+                _ => 9,
+            };
+
+            *style = BridgeFontStyle {
+                weight: skia_weight,
+                slant: skia_slant,
+                width: skia_width,
+            };
+            Some(true)
+        })
+        .unwrap_or_default()
+}
+
 struct BridgeFontRef<'a>(Option<FontRef<'a>>);
 
 impl<'a> BridgeFontRef<'a> {
@@ -821,6 +869,12 @@ mod ffi {
         end_angle: f32,
     }
 
+    struct BridgeFontStyle {
+        pub weight: i32,
+        pub slant: i32,
+        pub width: i32,
+    }
+
     extern "Rust" {
         type BridgeFontRef<'a>;
         unsafe fn make_font_ref<'a>(font_data: &'a [u8], index: u32) -> Box<BridgeFontRef<'a>>;
@@ -923,6 +977,7 @@ mod ffi {
         fn next_color_stop(color_stops: &mut BridgeColorStops, stop: &mut ColorStop) -> bool;
         fn num_color_stops(color_stops: &BridgeColorStops) -> usize;
 
+        fn get_font_style(font_ref: &BridgeFontRef, font_style: &mut BridgeFontStyle) -> bool;
     }
 
     unsafe extern "C++" {
@@ -1039,14 +1094,15 @@ mod ffi {
 /// Run using `$ bazel test --with_fontations //src/ports/fontations:test_ffi`
 #[cfg(test)]
 mod test {
-
     use crate::{
-        ffi::PaletteOverride, font_or_collection, font_ref_is_valid, make_font_ref, resolve_palette,
+        ffi::BridgeFontStyle, ffi::PaletteOverride, font_or_collection, font_ref_is_valid,
+        get_font_style, make_font_ref, resolve_palette,
     };
     use std::fs;
 
     const TEST_FONT_FILENAME: &str = "resources/fonts/test_glyphs-glyf_colr_1_variable.ttf";
     const TEST_COLLECTION_FILENAME: &str = "resources/fonts/test.ttc";
+    const TEST_CONDENSED_BOLD_ITALIC: &str = "resources/fonts/cond-bold-italic.ttf";
 
     #[test]
     fn test_palette_override() {
@@ -1125,5 +1181,24 @@ mod test {
 
         let result_garbage = font_or_collection(&garbage, &mut num_fonts);
         assert!(!result_garbage);
+    }
+
+    #[test]
+    fn test_font_attributes() {
+        let file_buffer = fs::read(TEST_CONDENSED_BOLD_ITALIC)
+            .expect("Font to test font styles could not be opened.");
+        let font_ref = make_font_ref(&file_buffer, 0);
+        assert_eq!(font_ref_is_valid(&font_ref), true);
+
+        let mut font_style = BridgeFontStyle {
+            weight: 0,
+            slant: 0,
+            width: 0,
+        };
+        let result = get_font_style(font_ref.as_ref(), &mut font_style);
+
+        assert_eq!(font_style.width, 3); // Skia condensed
+        assert_eq!(font_style.slant, 1); // Skia italic
+        assert_eq!(font_style.weight, 900); // Skia bold
     }
 }
