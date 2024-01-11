@@ -1,0 +1,18 @@
+<<<<<<< PATCH SET (9e09a5 Experimenting with Android font mgr)
+/*
+ * Copyright 2015 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "include/core/SkFontMgr.h"
+#include "include/ports/SkFontMgr_android.h"
+
+#if !defined(SK_DISABLE_LEGACY_FONTMGR_FACTORY)
+sk_sp<SkFontMgr> SkFontMgr::Factory() {
+    return SkFontMgr_New_Android_WidthFreeType(nullptr);
+}
+#endif
+=======
+>>>>>>> BASE      (26c03d Reland "Reland "Add GCC support to Raster Pipeline"")
