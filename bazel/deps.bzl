@@ -30,13 +30,13 @@ def c_plus_plus_deps(ws = "@skia"):
     new_git_repository(
         name = "dawn",
         build_file = ws + "//bazel/external/dawn:BUILD.bazel",
-        commit = "9fbef511d79e33454bd1b1a5349b67f0035c160c",
+        commit = "52cc30c7b84b214a0cbedf05feb5f0e18a5f8864",
         remote = "https://dawn.googlesource.com/dawn.git",
     )
 
     git_repository(
         name = "abseil_cpp",
-        commit = "cb436cf0142b4cbe47aae94223443df7f82e2920",
+        commit = "334aca32051ef6ede2711487acf45d959e9bdffc",
         remote = "https://skia.googlesource.com/external/github.com/abseil/abseil-cpp.git",
     )
 
