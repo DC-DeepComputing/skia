@@ -80,8 +80,6 @@ public:
         return fBody;
     }
 
-    const SymbolTable* parameterSymbolTable() const;
-
     std::string description() const override {
         return this->declaration().description() + " " + this->body()->description();
     }
