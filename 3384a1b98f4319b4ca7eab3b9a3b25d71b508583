@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f345b2cb_ec0da29e",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-11T17:04:27Z",
+      "side": 1,
+      "message": "`SkFontScanner` In theory skia should just put all its types in a namespace, but we didn\u0027t so `Sk`.",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa119758_d0000750",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-11T17:04:27Z",
+      "side": 1,
+      "message": "Since we\u0027re making this generic, this needs to be made `SkScaler`. FreeType reports just fixed point values so that worked there, but FreeType is getting into issues with that. DirectWrite and CoreText only deal with these values in floats.",
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90601f46_625ff5b2",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-11T17:04:27Z",
+      "side": 1,
+      "message": "The more I look at this, the more I am realizing this is actually a very FreeType specific method that probably shouldn\u0027t be on this more generic type. The reason this exists is specifically because FreeType wants the axes listed in order (instead of in tag-value pairs). I believe everything else does this now in tag-value pairs instead, so this is only interesting to FreeType (the `SkFixed` here can almost be read better as `FT_Fixed`).",
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e93df81_ef8ccc0a",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-11T17:04:27Z",
+      "side": 1,
+      "message": "nit: long line",
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
