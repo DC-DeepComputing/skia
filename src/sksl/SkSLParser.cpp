@@ -631,14 +631,10 @@ bool Parser::prototypeFunction(SkSL::FunctionDeclaration* decl) {
 bool Parser::defineFunction(SkSL::FunctionDeclaration* decl) {
     // Create a symbol table for the function parameters.
     const Context& context = fCompiler.context();
-    AutoSymbolTable symbols(this);
-    if (decl) {
-        decl->addParametersToSymbolTable(context);
-    }
 
     // Parse the function body.
     Token bodyStart = this->peek();
-    std::unique_ptr<Statement> body = this->block();
+    std::unique_ptr<Statement> body = this->block(/*parametersAtTopLevel=*/decl);
 
     // If there was a problem with the declarations or body, don't actually create a definition.
     if (!decl || !body) {
@@ -1674,7 +1670,7 @@ std::unique_ptr<Statement> Parser::discardStatement() {
 }
 
 /* LBRACE statement* RBRACE */
-std::unique_ptr<Statement> Parser::block() {
+std::unique_ptr<Statement> Parser::block(SkSL::FunctionDeclaration* parametersForTopLevel) {
     AutoDepth depth(this);
     Token start;
     if (!this->expect(Token::Kind::TK_LBRACE, "'{'", &start)) {
@@ -1684,6 +1680,9 @@ std::unique_ptr<Statement> Parser::block() {
         return nullptr;
     }
     AutoSymbolTable symbols(this);
+    if (parametersForTopLevel) {
+        parametersForTopLevel->addParametersToSymbolTable(fCompiler.context());
+    }
     StatementArray statements;
     for (;;) {
         switch (this->peek().fKind) {

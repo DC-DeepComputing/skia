@@ -246,7 +246,10 @@ private:
 
     std::unique_ptr<Statement> discardStatement();
 
-    std::unique_ptr<Statement> block();
+    // A function's top-level block needs to implicitly include the parameters from the function
+    // declaration (which appear in the source before the block is opened). For inner blocks, null
+    // should always be passed.
+    std::unique_ptr<Statement> block(SkSL::FunctionDeclaration* parametersForTopLevel = nullptr);
 
     std::unique_ptr<Statement> expressionStatement();
 
