@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 
 class SkFontMgr;
+class FontScanner;
 
 struct SkFontMgr_Android_CustomFonts {
     /** When specifying custom fonts, indicates how to use system fonts. */
@@ -40,6 +41,7 @@ struct SkFontMgr_Android_CustomFonts {
 };
 
 /** Create a font manager for Android. If 'custom' is NULL, use only system fonts. */
-SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom);
-
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom, FontScanner* scanner = nullptr);
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android_WidthFreeType(const SkFontMgr_Android_CustomFonts* custom);
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android_WithFontations(const SkFontMgr_Android_CustomFonts* custom);
 #endif // SkFontMgr_android_DEFINED

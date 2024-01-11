@@ -21,8 +21,14 @@
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkTSearch.h"
 #include "src/core/SkFontDescriptor.h"
+#include "src/core/SkFontScanner.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTypefaceCache.h"
+<<<<<<< PATCH SET (9e09a5 Experimenting with Android font mgr)
+#include "src/ports/SkFontHost_FreeType_common.h"
+#include "src/ports/SkFontScanner_fontations.h"
+=======
+>>>>>>> BASE      (26c03d Reland "Reland "Add GCC support to Raster Pipeline"")
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_FreeType.h"
 
@@ -256,8 +262,13 @@ struct NameToFamily {
 
 class SkFontMgr_Android : public SkFontMgr {
 public:
+<<<<<<< PATCH SET (9e09a5 Experimenting with Android font mgr)
+    SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom, FontScanner* scanner)
+        : fScanner(scanner) {
+=======
     SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom) {
         fScanner = std::make_unique<SkFontScanner_FreeType>();
+>>>>>>> BASE      (26c03d Reland "Reland "Add GCC support to Raster Pipeline"")
         SkTDArray<FontFamily*> families;
         if (custom && SkFontMgr_Android_CustomFonts::kPreferSystem != custom->fSystemFontUse) {
             SkString base(custom->fBasePath);
@@ -504,7 +515,7 @@ static char const * const gSystemFontUseStrings[] = {
 
 }  // namespace
 
-sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom) {
+sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom, FontScanner* scanner) {
     if (custom) {
         SkASSERT(0 <= custom->fSystemFontUse);
         SkASSERT(custom->fSystemFontUse < std::size(gSystemFontUseStrings));
@@ -514,5 +525,13 @@ sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* cust
                  custom->fFontsXml,
                  custom->fFallbackFontsXml);
     }
-    return sk_make_sp<SkFontMgr_Android>(custom);
+    return sk_make_sp<SkFontMgr_Android>(custom, scanner);
+}
+
+sk_sp<SkFontMgr> SkFontMgr_New_Android_WidthFreeType(const SkFontMgr_Android_CustomFonts* custom) {
+    return SkFontMgr_New_Android(custom, new FontScanner_FreeType());
+}
+
+sk_sp<SkFontMgr> SkFontMgr_New_Android_WidthFontations(const SkFontMgr_Android_CustomFonts* custom) {
+    return SkFontMgr_New_Android(custom, new FontScanner_Fontations());
 }

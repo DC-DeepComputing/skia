@@ -32,6 +32,9 @@
 #include "tools/Resources.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#include "src/ports/SkFontHost_FreeType_common.h"
+#include "src/ports/SkFontScanner_fontations.h"
+
 #include <algorithm>
 #include <climits>
 #include <cmath>
@@ -191,7 +194,22 @@ static void test_parse_fixed(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, !parse_fixed<16>(".123a", &fix));
 }
 
-DEF_TEST(FontMgrAndroidParser, reporter) {
+#define DEF_TEST_SCANNER(name, reporter, scanner)                                       \
+    static void test_##name##scanner(skiatest::Reporter* r) { name(r, new scanner()); } \
+                                                                                        \
+    skiatest::TestRegistry name##scanner##TestRegistry(                                 \
+            Test::MakeCPU(#name #scanner, test_##name##scanner), true);
+
+#define DEF_TEST_SCANNERS(name, reporter)                    \
+    static void name(skiatest::Reporter*, FontScanner*);     \
+                                                             \
+    DEF_TEST_SCANNER(name, reporter, FontScanner_FreeType)   \
+                                                             \
+    DEF_TEST_SCANNER(name, reporter, FontScanner_Fontations) \
+                                                             \
+    void name(skiatest::Reporter* reporter, FontScanner* fs) \
+
+DEF_TEST_SCANNERS(FontMgrAndroidParser, reporter) {
     test_parse_fixed(reporter);
 
     bool resourcesMissing = false;
@@ -264,7 +282,7 @@ DEF_TEST(FontMgrAndroidParser, reporter) {
     }
 }
 
-DEF_TEST(FontMgrAndroidLegacyMakeTypeface, reporter) {
+DEF_TEST_SCANNERS(FontMgrAndroidLegacyMakeTypeface, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
     SkString fontsXml = GetResourcePath(fontsXmlFilename);
@@ -281,7 +299,7 @@ DEF_TEST(FontMgrAndroidLegacyMakeTypeface, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fm(SkFontMgr_New_Android(&custom));
+    sk_sp<SkFontMgr> fm(SkFontMgr_New_Android(&custom, fs));
     sk_sp<SkTypeface> t(fm->legacyMakeTypeface("non-existent-font", SkFontStyle()));
     REPORTER_ASSERT(reporter, nullptr == t);
 }
@@ -299,7 +317,7 @@ static bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
     return true;
 }
 
-DEF_TEST(FontMgrAndroidSystemVariableTypeface, reporter) {
+DEF_TEST_SCANNERS(FontMgrAndroidSystemVariableTypeface, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
     SkString fontsXml = GetResourcePath(fontsXmlFilename);
@@ -316,7 +334,7 @@ DEF_TEST(FontMgrAndroidSystemVariableTypeface, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom));
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, fs));
     // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf"
     sk_sp<SkTypeface> typeface(fontMgr->legacyMakeTypeface("sans-serif", SkFontStyle()));
 
@@ -376,7 +394,7 @@ DEF_TEST(FontMgrAndroidSystemVariableTypeface, reporter) {
     }
 }
 
-DEF_TEST(FontMgrAndroidSystemFallbackFor, reporter) {
+DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
     SkString fontsXml = GetResourcePath(fontsXmlFilename);
@@ -393,7 +411,7 @@ DEF_TEST(FontMgrAndroidSystemFallbackFor, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom));
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, fs));
     // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf", which doesn't have a '!'
     // but "TestTTC" has a bold font which does have '!' and is marked as fallback for "sans-serif"
     // and should take precedence over the same font marked as normal weight next to it.
