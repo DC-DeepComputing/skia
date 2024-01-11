@@ -1522,6 +1522,7 @@ std::unique_ptr<Statement> Parser::switchStatement() {
         return nullptr;
     }
 
+    AutoSymbolTable symbols(this);
     ExpressionArray values;
     StatementArray caseBlocks;
     while (this->peek().fKind == Token::Kind::TK_CASE) {
@@ -1543,7 +1544,8 @@ std::unique_ptr<Statement> Parser::switchStatement() {
     return this->statementOrNop(pos, SwitchStatement::Convert(fCompiler.context(), pos,
                                                               std::move(value),
                                                               std::move(values),
-                                                              std::move(caseBlocks)));
+                                                              std::move(caseBlocks),
+                                                              this->symbolTable()));
 }
 
 static Position range_of_at_least_one_char(int start, int end) {
