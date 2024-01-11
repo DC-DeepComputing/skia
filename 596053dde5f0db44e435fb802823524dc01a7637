@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44336655_97c61b8c",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "tiny nit: prefer `++cursor` to increment an iterator",
+      "range": {
+        "startLine": 503,
+        "startChar": 87,
+        "endLine": 503,
+        "endChar": 95
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d1bf00_2f15d104",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "`++cursor`",
+      "range": {
+        "startLine": 508,
+        "startChar": 59,
+        "endLine": 508,
+        "endChar": 67
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4f5337f_c91a65a3",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "then",
+      "range": {
+        "startLine": 531,
+        "startChar": 82,
+        "endLine": 531,
+        "endChar": 85
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5a968f_ef9ae763",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "How many elements do we expect in `fStatus` and `horizontals`? If there could be many items in `fStatus` and more than one item in `horizontals`, it could be more efficient do all the removes in one pass, since each call to `std::remove` will cost `O(fStatus.size())`.",
+      "range": {
+        "startLine": 549,
+        "startChar": 32,
+        "endLine": 549,
+        "endChar": 43
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac6afa6_a7b00d72",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "`y` is never used?\n\nThis code looks the like a copy of the end of `handleHorizontals`?",
+      "range": {
+        "startLine": 557,
+        "startChar": 23,
+        "endLine": 557,
+        "endChar": 32
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbef434d_65408f50",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "`Event\u0026`",
+      "range": {
+        "startLine": 591,
+        "startChar": 15,
+        "endLine": 591,
+        "endChar": 20
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6641873_cd432e2e",
+        "filename": "modules/bentleyottmann/tests/MyersTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "I don\u0027t think `extern` does anything meaningful here? This is just a regular function prototype.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 6
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1885700f_f411fb41",
+        "filename": "modules/bentleyottmann/tests/MyersTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "`const std::vector\u003cSegment\u003e kTests`",
+      "range": {
+        "startLine": 214,
+        "startChar": 4,
+        "endLine": 214,
+        "endChar": 30
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b3bdde_5b4847e5",
+        "filename": "modules/bentleyottmann/tests/MyersTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "`const auto\u0026`",
+      "range": {
+        "startLine": 249,
+        "startChar": 9,
+        "endLine": 249,
+        "endChar": 14
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a24de7f_3acdd1e4",
+        "filename": "modules/bentleyottmann/tests/MyersTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "`SkDebugf`?",
+      "range": {
+        "startLine": 294,
+        "startChar": 8,
+        "endLine": 294,
+        "endChar": 14
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "773fec21_25b39bf2",
+        "filename": "modules/bentleyottmann/tests/MyersTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-11T18:52:40Z",
+      "side": 1,
+      "message": "up to you: Any love for `SkTime`?",
+      "range": {
+        "startLine": 300,
+        "startChar": 4,
+        "endLine": 300,
+        "endChar": 29
+      },
+      "revId": "596053dde5f0db44e435fb802823524dc01a7637",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
