@@ -88,6 +88,24 @@
       "parentUuid": "dcf1984e_6014f87a",
       "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd528c39_01c71cd7",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1730,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-12T21:18:34Z",
+      "side": 1,
+      "message": "Yep! If it isn\u0027t too much work to make the module loader support structs it would be great to have that but it\u0027s definitely not urgent.",
+      "parentUuid": "c4194634_cf51d00c",
+      "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
