@@ -56,7 +56,7 @@ void initializeEventTracingForTools(const char* traceFlag) {
         eventTracer = new SkDebugfTracer();
     } else if (0 == strcmp(traceFlag, "perfetto")) {
       #if defined(SK_USE_PERFETTO)
-          eventTracer = new SkPerfettoTrace();
+//          eventTracer = new SkPerfettoTrace();
       #else
           // TODO(b/259248961): update this explanation (and associated docs) as the Perfetto
           // transition progresses.
@@ -67,7 +67,7 @@ void initializeEventTracingForTools(const char* traceFlag) {
       #endif
     }
     else {
-        eventTracer = new ChromeTracingTracer(traceFlag);
+//        eventTracer = new ChromeTracingTracer(traceFlag);
     }
 
     SkAssertResult(SkEventTracer::SetInstance(eventTracer));

@@ -343,6 +343,11 @@ static bool parse_option_gpu_api(const SkString&                      value,
         *outContextType = skgpu::ContextType::kANGLE_Metal_ES3;
         return true;
     }
+    if (value.equals("angle_vulkan_es3")) {
+        *outContextType = skgpu::ContextType::kANGLE_Vulkan_ES3;
+        return true;
+    }
+
     if (value.equals("mock")) {
         *outContextType = skgpu::ContextType::kMock;
         return true;

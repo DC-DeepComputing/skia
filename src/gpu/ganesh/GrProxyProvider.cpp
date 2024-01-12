@@ -351,6 +351,8 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
 
     sk_sp<GrTextureProxy> proxy = this->createLazyProxy(
             [bitmap](GrResourceProvider* resourceProvider, const LazySurfaceDesc& desc) {
+                SkDebugf("----------- createNonMippedProxyFromBitmap: isProtected %d\n",
+                         desc.fProtected == GrProtected::kYes);
                 SkASSERT(desc.fMipmapped == skgpu::Mipmapped::kNo);
                 GrMipLevel mipLevel = {bitmap.getPixels(), bitmap.rowBytes(), nullptr};
                 auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
@@ -373,7 +375,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
             GrInternalSurfaceFlags::kNone,
             fit,
             budgeted,
-            GrProtected::kNo,
+            GrProtected(this->caps()->supportsProtectedContent()),
             UseAllocator::kYes,
             "ProxyProvider_CreateNonMippedProxyFromBitmap");
 
@@ -406,6 +408,9 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
 
     sk_sp<GrTextureProxy> proxy = this->createLazyProxy(
             [bitmap, mipmaps](GrResourceProvider* resourceProvider, const LazySurfaceDesc& desc) {
+                SkDebugf("----------- createNonMippedProxyFromBitmap: isProtected %d\n",
+                         desc.fProtected == GrProtected::kYes);
+
                 const int mipLevelCount = mipmaps->countLevels() + 1;
                 std::unique_ptr<GrMipLevel[]> texels(new GrMipLevel[mipLevelCount]);
                 auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
@@ -429,7 +434,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
                                                                           1,
                                                                           desc.fBudgeted,
                                                                           skgpu::Mipmapped::kYes,
-                                                                          GrProtected::kNo,
+                                                                          desc.fProtected,
                                                                           texels.get(),
                                                                           desc.fLabel));
             },
@@ -440,7 +445,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
             GrInternalSurfaceFlags::kNone,
             SkBackingFit::kExact,
             budgeted,
-            GrProtected::kNo,
+            GrProtected(this->caps()->supportsProtectedContent()),
             UseAllocator::kYes,
             "ProxyProvider_CreateMippedProxyFromBitmap");
 
