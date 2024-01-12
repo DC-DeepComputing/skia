@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a260936e_56df4e0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-12T21:45:19Z",
+      "side": 1,
+      "message": "I realized my mistake -- once you set the corners to be all zeros it\u0027s no longer a nine-patch because the adjacent radius in that axis no longer matches (e.g. top-left Y !\u003d top-right Y). So you have to set it to be complex and everything works.",
+      "revId": "d50270c183a434df8a04915340645fae590c53ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
