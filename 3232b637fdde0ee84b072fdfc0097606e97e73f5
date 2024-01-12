@@ -70,6 +70,24 @@
       "parentUuid": "51a80403_a0465473",
       "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4194634_cf51d00c",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1730,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T21:00:58Z",
+      "side": 1,
+      "message": "IOW: \n```\nstruct IndirectDispatchArgs { int, int, int; };\n\nssboA { IndirectDispatchArgs a, b; } // \u003c-- packs tightly as 3,3\nssboB { uint3 a, b; } // \u003c-- packs as 3+1,3+1\n```\nIs that right?",
+      "parentUuid": "dcf1984e_6014f87a",
+      "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
