@@ -208,11 +208,15 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_Metal_ES2:
-                    glCtx = MakeANGLETestContext(ANGLEBackend::kMetal, ANGLEContextVersion::kES2,
+                    glCtx = MakeANGLETestContext(ANGLEBackend::kMetal1, ANGLEContextVersion::kES2,
                                                  glShareContext).release();
                     break;
                 case ContextType::kANGLE_Metal_ES3:
-                    glCtx = MakeANGLETestContext(ANGLEBackend::kMetal, ANGLEContextVersion::kES3,
+                    glCtx = MakeANGLETestContext(ANGLEBackend::kMetal1, ANGLEContextVersion::kES3,
+                                                 glShareContext).release();
+                    break;
+                case ContextType::kANGLE_Vulkan_ES3:
+                    glCtx = MakeANGLETestContext(ANGLEBackend::kVulkan, ANGLEContextVersion::kES3,
                                                  glShareContext).release();
                     break;
 #endif

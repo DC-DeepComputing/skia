@@ -99,6 +99,7 @@ static const struct {
     { "angle_gl_es3_dmsaa",    "gpu", "api=angle_gl_es3,dmsaa=true" },
     { "angle_mtl_es2",         "gpu", "api=angle_mtl_es2" },
     { "angle_mtl_es3",         "gpu", "api=angle_mtl_es3" },
+    { "angle_vk_es3",          "gpu", "api=angle_vk_es3" },
     { "mock",                  "gpu", "api=mock" },
 #ifdef SK_VULKAN
     { "vk",                    "gpu", "api=vulkan" },
@@ -343,6 +344,11 @@ static bool parse_option_gpu_api(const SkString&                      value,
         *outContextType = skgpu::ContextType::kANGLE_Metal_ES3;
         return true;
     }
+    if (value.equals("angle_vk_es3")) {
+        *outContextType = skgpu::ContextType::kANGLE_Vulkan_ES3;
+        return true;
+    }
+
     if (value.equals("mock")) {
         *outContextType = skgpu::ContextType::kMock;
         return true;
