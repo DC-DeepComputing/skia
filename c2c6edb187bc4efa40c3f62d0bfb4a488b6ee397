@@ -16,6 +16,70 @@
       "message": "More tests that failed x86-scalar (after they were adjusted to use NaNs), along with fixes plumbed through. I realize I wasn\u0027t consistent about `int` vs. `int32_t`. Any preference? (And I could see an eventual follow-up that changes the types used in the builder, but I\u0027m going to wait and see how many casts would remain either direction).",
       "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6971f0ce_fcbc5159",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T21:18:51Z",
+      "side": 1,
+      "message": "I\u0027m not too picky about `int` vs `int32_t`. I haven\u0027t managed to be consistent, unfortunately, but if you want to do a cleanup pass I\u0027d be supportive.",
+      "parentUuid": "df0f8c7f_cde397b6",
+      "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d18b3f4_6585977e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3456,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T21:18:51Z",
+      "side": 1,
+      "message": "alignment",
+      "range": {
+        "startLine": 3456,
+        "startChar": 20,
+        "endLine": 3456,
+        "endChar": 22
+      },
+      "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9dddcd0_2aaa3b92",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2114,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T21:18:51Z",
+      "side": 1,
+      "message": "`reinterpret_cast\u003c\u003e` where pointers are involved",
+      "range": {
+        "startLine": 2114,
+        "startChar": 31,
+        "endLine": 2114,
+        "endChar": 32
+      },
+      "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
