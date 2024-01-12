@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "393d1319_121130b5",
+        "filename": "src/base/SkHalf.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T19:43:01Z",
+      "side": 1,
+      "message": "```suggestion\n    if (sk_float_isnan(f)) {\n```",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "332ea1f8_c7fb802c",
+        "filename": "tests/Float16Test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T19:43:01Z",
+      "side": 1,
+      "message": "What happens with -0.0f? Should we test that?",
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
