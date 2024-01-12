@@ -1,0 +1,11 @@
+int func(int a) {
+    switch (a) {
+        case 1:
+            int x = 123;
+
+        case 2:
+            int y = 456;
+            break;
+    }
+    return x + y;
+}
