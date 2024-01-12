@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44fc0179_1d74867e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T16:22:50Z",
+      "side": 1,
+      "message": "Might be worthwhile to give a rationale for the change in the commit message (we discussed it in person yesterday but I\u0027m already fuzzy on the details--imagine next year!)\n\nAlso: NBD, but does gather use its template either? Feels weird to have scatter and gather diverge.",
+      "revId": "b08a3d3359b9c8a412212a3b37cdf47ba236300d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
