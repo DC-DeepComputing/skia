@@ -34,6 +34,24 @@
       "parentUuid": "1853d589_906ecf5c",
       "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51a80403_a0465473",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1730,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T20:36:02Z",
+      "side": 1,
+      "message": "Actually, what\u0027s wrong with `uint3` exactly? You say \"incompatible with an indirect buffer that contains multiple entries\" but I don\u0027t quite understand how a struct changes the equation. It feels like a valid use case for `uint3` to me.",
+      "parentUuid": "fdbcccba_6a8e512d",
+      "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
