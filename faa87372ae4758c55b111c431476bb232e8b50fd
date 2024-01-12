@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "012d22f1_b40df68c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-12T16:16:57Z",
+      "side": 1,
+      "message": "Whoops, seems I did that in the commit message of the follow up testing as well.",
+      "parentUuid": "6c663688_af696e13",
+      "range": {
+        "startLine": 23,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 30
+      },
+      "revId": "faa87372ae4758c55b111c431476bb232e8b50fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6d97c967_1a5a5050",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2024-01-12T15:05:30Z",
       "side": 1,
       "message": "I realize I wasn\u0027t clear about target/host/current. (Never understood current, but I take it that when a particular rule might happen more than once -- eg, for either a host or target, it reflects the one that\u0027s active at the time?) If so - yeah, this all makes sense.",
+      "revId": "faa87372ae4758c55b111c431476bb232e8b50fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d341291f_9ac24885",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-12T16:16:57Z",
+      "side": 1,
+      "message": "Yes, I had to re-read through the docs again myself. If you\u0027re building for the default toolchain then things work as written in the gn files (in fact, the default toolchain\u0027s `toolchain_args` isn\u0027t evaluated, which can lead to interesting differences between using a toolchain explicitly and using it as the default). When building for a non-default toolchain the `toolchain_args` is used to override various things (usually just the built-in `current_cpu` and `current_os` like here).\n\nFrom gn\u0027s perspective, \"host\" is where gn runs, \"target\" is what the default toolchain builds for, and \"current\" is what the current toolchain builds for.",
+      "parentUuid": "6d97c967_1a5a5050",
       "revId": "faa87372ae4758c55b111c431476bb232e8b50fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
