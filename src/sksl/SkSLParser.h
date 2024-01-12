@@ -252,6 +252,8 @@ private:
     // empty span should always be passed.
     std::unique_ptr<Statement> block(SkSpan<Variable* const> parametersForTopLevel = {});
 
+    bool populateBlockStatements(StatementArray* statements);
+
     std::unique_ptr<Statement> expressionStatement();
 
     using BinaryParseFn = std::unique_ptr<Expression> (Parser::*)();

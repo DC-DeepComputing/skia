@@ -64,7 +64,8 @@ public:
                                               std::unique_ptr<Statement> initializer,
                                               std::unique_ptr<Expression> test,
                                               std::unique_ptr<Expression> next,
-                                              std::unique_ptr<Statement> statement);
+                                              std::unique_ptr<Statement> statement,
+                                              std::shared_ptr<SymbolTable> symbolTable);
 
     // Creates an SkSL while loop; handles type-coercion and uses the ErrorReporter for errors.
     static std::unique_ptr<Statement> ConvertWhile(const Context& context,

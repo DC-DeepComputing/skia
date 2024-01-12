@@ -41,12 +41,10 @@ class InterfaceBlock final : public ProgramElement {
 public:
     inline static constexpr Kind kIRNodeKind = Kind::kInterfaceBlock;
 
-    InterfaceBlock(Position pos,
-                   Variable* var,
-                   std::shared_ptr<SymbolTable> typeOwner)
+    InterfaceBlock(Position pos, Variable* var, std::shared_ptr<SymbolTable> typeOwner)
             : INHERITED(pos, kIRNodeKind)
-            , fVariable(var)
-            , fTypeOwner(std::move(typeOwner)) {
+            , fTypeOwner(std::move(typeOwner))
+            , fVariable(var) {
         SkASSERT(fVariable->type().componentType().isInterfaceBlock());
         fVariable->setInterfaceBlock(this);
     }
@@ -101,8 +99,8 @@ public:
     std::string description() const override;
 
 private:
-    Variable* fVariable;
     std::shared_ptr<SymbolTable> fTypeOwner;
+    Variable* fVariable;
 
     using INHERITED = ProgramElement;
 };
