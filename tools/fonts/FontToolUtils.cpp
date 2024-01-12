@@ -53,6 +53,13 @@
 #include "include/ports/SkFontMgr_empty.h"
 #endif
 
+#define USE_EXTERNAL_FONTMGR
+
+#ifdef USE_EXTERNAL_FONTMGR
+extern sk_sp<SkFontMgr> MakeExternalFontMgr();
+extern sk_sp<SkTypeface> MakeExternalTypeface(const char name[], SkFontStyle);
+#endif
+
 namespace ToolUtils {
 
 static DEFINE_bool(nativeFonts,
@@ -140,6 +147,9 @@ sk_sp<SkTypeface> SampleUserTypeface() {
 }
 
 sk_sp<SkTypeface> CreatePortableTypeface(const char* name, SkFontStyle style) {
+#ifdef USE_EXTERNAL_FONTMGR
+    return MakeExternalTypeface(name, style);
+#endif
     static sk_sp<SkFontMgr> portableFontMgr = MakePortableFontMgr();
     SkASSERT_RELEASE(portableFontMgr);
     sk_sp<SkTypeface> face = portableFontMgr->legacyMakeTypeface(name, style);
@@ -203,6 +213,11 @@ sk_sp<SkFontMgr> TestFontMgr() {
     static sk_sp<SkFontMgr> mgr;
     static SkOnce once;
     once([] {
+#ifdef USE_EXTERNAL_FONTMGR
+        if (true) {
+            mgr = MakeExternalFontMgr();
+        } else
+#endif
         if (!FLAGS_nativeFonts) {
             mgr = MakePortableFontMgr();
         }
