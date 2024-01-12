@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf457bd1_7f6f9f5d",
+        "filename": "src/sksl/generated/sksl_graphite_vert.unoptimized.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T23:09:01Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 4,
+        "startChar": 30,
+        "endLine": 4,
+        "endChar": 49
+      },
+      "revId": "c396f98056bfc396ce59684e7d6d6d5bb66e3e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acf186d4_558faa0e",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T23:09:01Z",
+      "side": 1,
+      "message": "Rewriting the function as a single ternary expression makes the inliner very happy. (The original code couldn\u0027t inline at all due to early returns.)\n\nSkSL actually surprised me by optimizing away one of ternaries entirely--look at the minified output and you will see it boiled the expression down to `return isinf(p23.z) ? $kTriangularConicCurveType : float(isinf(p23.w));`. This uses the optimization pattern of `boolExpr ? 1.0 : 0.0` --\u003e `float(boolExpr)`.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "c396f98056bfc396ce59684e7d6d6d5bb66e3e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

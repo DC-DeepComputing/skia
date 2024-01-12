@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd02ade_fa4f2db8",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T23:09:01Z",
+      "side": 0,
+      "message": "This block was considered an \"early return\" which prevented inlining. Using if-else fixes that.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 5
+      },
+      "revId": "dd00933ea6640d559be3024d20cb466e5322a865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2f246c9_7b355d5f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1120,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T23:09:01Z",
+      "side": 0,
+      "message": "Every `{}` scope creates a `SkSL::Block`, which costs 72 bytes; 72 * 29 blend modes is over 2K.",
+      "range": {
+        "startLine": 1120,
+        "startChar": 26,
+        "endLine": 1120,
+        "endChar": 28
+      },
+      "revId": "dd00933ea6640d559be3024d20cb466e5322a865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d3974e7_ac7e9885",
+        "filename": "src/sksl/sksl_shared.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T23:09:01Z",
+      "side": 0,
+      "message": "0.5K of unnecessary braces.",
+      "range": {
+        "startLine": 544,
+        "startChar": 29,
+        "endLine": 544,
+        "endChar": 30
+      },
+      "revId": "dd00933ea6640d559be3024d20cb466e5322a865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
