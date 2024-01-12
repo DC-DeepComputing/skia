@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df0f8c7f_cde397b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T20:58:17Z",
+      "side": 1,
+      "message": "More tests that failed x86-scalar (after they were adjusted to use NaNs), along with fixes plumbed through. I realize I wasn\u0027t consistent about `int` vs. `int32_t`. Any preference? (And I could see an eventual follow-up that changes the types used in the builder, but I\u0027m going to wait and see how many casts would remain either direction).",
+      "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
