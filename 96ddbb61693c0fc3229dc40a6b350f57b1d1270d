@@ -16,6 +16,91 @@
       "message": "Hi John and Brian,\n\nI\u0027ve resolved the unit test bugs, and the dm -m Raster is running smoothly. However, I am uncertain about the changes made in BUILD.bazel file under /src/opts. I am looking forward to your comments. \n\nThank you all very much!\n\nPing",
       "revId": "96ddbb61693c0fc3229dc40a6b350f57b1d1270d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ac9df1_f0708813",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T15:09:42Z",
+      "side": 1,
+      "message": "It looks like you rebased this change, and just accepted your version, which overwrote quite a few recent changes. I tagged a bunch in the build files, but there are many changes to SkRasterPipeline_opts.h that need to be removed/reverted, too. (All of the explicit casts, stuff related to tail, etc...)",
+      "revId": "96ddbb61693c0fc3229dc40a6b350f57b1d1270d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21ba1451_20ff279b",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T15:09:42Z",
+      "side": 1,
+      "message": "^",
+      "revId": "96ddbb61693c0fc3229dc40a6b350f57b1d1270d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c45398_1c1d26d3",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T15:09:42Z",
+      "side": 1,
+      "message": "^",
+      "revId": "96ddbb61693c0fc3229dc40a6b350f57b1d1270d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "993c1266_06f3077a",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 3062,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T15:09:42Z",
+      "side": 1,
+      "message": "^",
+      "revId": "96ddbb61693c0fc3229dc40a6b350f57b1d1270d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b483b01_2ee6b6d7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T15:09:42Z",
+      "side": 1,
+      "message": "^",
+      "revId": "96ddbb61693c0fc3229dc40a6b350f57b1d1270d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
