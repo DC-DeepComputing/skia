@@ -52,6 +52,24 @@
       "parentUuid": "fdbcccba_6a8e512d",
       "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcf1984e_6014f87a",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1730,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-12T20:57:23Z",
+      "side": 1,
+      "message": "I worded that earlier comment a bit too strongly, hence I removed it in the subsequent patch set.\n\n`uint3` is generally fine. The main issue with it is the alignment of entries and that the underlying buffer has to be able to hold 16 bytes compared to just 12 if the buffer were declared as a struct with 3 uints or a uint array.\n\nIf you ever wanted to build a shader that prepares the indirect arguments for multiple subsequent dispatchIndirect calls by writing the elements in a buffer declared as a `uint3[]`, you\u0027d have to take the 16 byte alignment of `uint3` into account while allocating the buffer and assigning the offsets provided to the dispatchIndirect calls.\n\nHaving a struct definition for this makes this a little cleaner IMO and would take up fewer memory in that multiple indirect dispatch case. Other than that, this test definitely passes with a `uint3` (and an extra 4 byte padding added to the buffer allocation).",
+      "parentUuid": "51a80403_a0465473",
+      "revId": "3232b637fdde0ee84b072fdfc0097606e97e73f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
