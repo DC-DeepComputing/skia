@@ -226,7 +226,7 @@ public:
 
     UniquePaintParamsID findOrCreate(PaintParamsKeyBuilder*) SK_EXCLUDES(fSpinLock);
 
-    PaintParamsKey lookup(UniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
+    PaintParamsKey lookup1(UniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const Uniform> getUniforms(BuiltInCodeSnippetID) const;
     SkEnumBitMask<SnippetRequirementFlags> getSnippetRequirementFlags(

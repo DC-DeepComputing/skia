@@ -142,7 +142,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     ASSERT_SINGLE_OWNER
     for (auto& device : fTrackedDevices) {
-        device->flushPendingWorkToRecorder();
+        device->flushPendingWorkToRecorder1();
     }
 
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
@@ -237,6 +237,10 @@ void Recorder::deregisterDevice(const Device* device) {
             return;
         }
     }
+}
+
+void Recorder::compile(const PaintParams& paintParams) {
+    fSharedContext->compilationSingleton()->compile(paintParams);
 }
 
 BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info) {

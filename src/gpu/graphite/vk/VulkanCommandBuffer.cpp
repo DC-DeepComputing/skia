@@ -412,7 +412,7 @@ void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
     this->trackResource(std::move(intrinsicUniformBuffer));
 }
 
-bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
+bool VulkanCommandBuffer::onAddRenderPass1(const RenderPassDesc& renderPassDesc,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture,
@@ -457,7 +457,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     for (const auto& drawPass : drawPasses) {
-        this->addDrawPass(drawPass.get());
+        this->addDrawPass1(drawPass.get());
     }
 
     this->endRenderPass();
@@ -603,13 +603,13 @@ void VulkanCommandBuffer::endRenderPass() {
     fActiveRenderPass = false;
 }
 
-void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
-    drawPass->addResourceRefs(this);
+void VulkanCommandBuffer::addDrawPass1(const DrawPass* drawPass) {
+    drawPass->addResourceRefs1(this);
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
-                this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
+                this->bindGraphicsPipeline(drawPass->getPipeline1(bgp->fPipelineIndex));
                 break;
             }
             case DrawPassCommands::Type::kSetBlendConstants: {

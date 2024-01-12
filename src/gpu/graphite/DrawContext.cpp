@@ -234,7 +234,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     return desc;
 }
 
-sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
+sk_sp<Task> DrawContext::snapRenderPassTask1(Recorder* recorder) {
     this->snapDrawPass(recorder);
     if (fDrawPasses.empty()) {
         return nullptr;
@@ -260,7 +260,7 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
                                                drawPass->requiresMSAA(),
                                                writeSwizzle);
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
-    return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+    return RenderPassTask::Make1(std::move(fDrawPasses), desc, std::move(targetProxy));
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {

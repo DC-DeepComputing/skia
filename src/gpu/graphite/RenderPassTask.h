@@ -26,7 +26,7 @@ class RenderPassTask final : public Task {
 public:
     using DrawPassList = skia_private::TArray<std::unique_ptr<DrawPass>>;
 
-    static sk_sp<RenderPassTask> Make(DrawPassList,
+    static sk_sp<RenderPassTask> Make1(DrawPassList,
                                       const RenderPassDesc&,
                                       sk_sp<TextureProxy> target);
 

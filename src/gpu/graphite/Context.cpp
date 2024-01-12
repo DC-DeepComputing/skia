@@ -138,6 +138,13 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     return recorder;
 }
 
+void Context::precompile(const PaintOptions& options, CompilationPriority priority) {
+    // TODO: fire up precompilation combination generation and feed each combination to the
+    // CompilationSingleton
+    fSharedContext->compilationSingleton()->compile(options, priority);
+
+}
+
 bool Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 

@@ -17,7 +17,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
+sk_sp<RenderPassTask> RenderPassTask::Make1(DrawPassList passes,
                                            const RenderPassDesc& desc,
                                            sk_sp<TextureProxy> target) {
     // For now we have one DrawPass per RenderPassTask
@@ -125,7 +125,7 @@ bool RenderPassTask::addCommands(Context* context,
     // TODO(b/313629288) we always pass in the render target's dimensions as the viewport here.
     // Using the dimensions of the logical device that we're drawing to could reduce flakiness in
     // rendering.
-    return commandBuffer->addRenderPass(fRenderPassDesc,
+    return commandBuffer->addRenderPass1(fRenderPassDesc,
                                         std::move(colorAttachment),
                                         std::move(resolveAttachment),
                                         std::move(depthStencilAttachment),

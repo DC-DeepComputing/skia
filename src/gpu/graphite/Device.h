@@ -73,7 +73,7 @@ public:
 
     // Ensures clip elements are drawn that will clip previous draw calls, snaps all pending work
     // from the DrawContext as a RenderPassTask and records it in the Device's recorder.
-    void flushPendingWorkToRecorder();
+    void flushPendingWorkToRecorder1();
 
     TextureProxyView createCopy(const SkIRect* subset, Mipmapped, SkBackingFit);
 

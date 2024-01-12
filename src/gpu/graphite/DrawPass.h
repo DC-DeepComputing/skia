@@ -88,7 +88,7 @@ public:
         return fCommandList.commands();
     }
 
-    const GraphicsPipeline* getPipeline(size_t index) const {
+    const GraphicsPipeline* getPipeline1(size_t index) const {
         return fFullPipelines[index].get();
     }
     const Texture* getTexture(size_t index) const;
@@ -96,7 +96,7 @@ public:
 
     skia_private::TArray<sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
 
-    void addResourceRefs(CommandBuffer*) const;
+    void addResourceRefs1(CommandBuffer*) const;
 
 private:
     class SortKey;

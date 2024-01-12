@@ -159,7 +159,7 @@ void Flush(SkSurface* surface) {
         return;
     }
     auto gs = static_cast<Surface*>(surface);
-    gs->fDevice->flushPendingWorkToRecorder();
+    gs->fDevice->flushPendingWorkToRecorder1();
 }
 
 } // namespace skgpu::graphite

@@ -73,7 +73,7 @@ public:
     void addBuffersToAsyncMapOnSubmit(SkSpan<const sk_sp<Buffer>>);
     SkSpan<const sk_sp<Buffer>> buffersToAsyncMapOnSubmit() const;
 
-    bool addRenderPass(const RenderPassDesc&,
+    bool addRenderPass1(const RenderPassDesc&,
                        sk_sp<Texture> colorTexture,
                        sk_sp<Texture> resolveTexture,
                        sk_sp<Texture> depthStencilTexture,
@@ -124,7 +124,7 @@ private:
 
     virtual void onResetCommandBuffer() = 0;
 
-    virtual bool onAddRenderPass(const RenderPassDesc&,
+    virtual bool onAddRenderPass1(const RenderPassDesc&,
                                  const Texture* colorTexture,
                                  const Texture* resolveTexture,
                                  const Texture* depthStencilTexture,

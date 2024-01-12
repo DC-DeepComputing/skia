@@ -72,7 +72,7 @@ SkSpan<const sk_sp<Buffer>> CommandBuffer::buffersToAsyncMapOnSubmit() const {
     return fBuffersToAsyncMap;
 }
 
-bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
+bool CommandBuffer::addRenderPass1(const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> colorTexture,
                                   sk_sp<Texture> resolveTexture,
                                   sk_sp<Texture> depthStencilTexture,
@@ -81,7 +81,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     fRenderPassSize = colorTexture->dimensions();
-    if (!this->onAddRenderPass(renderPassDesc,
+    if (!this->onAddRenderPass1(renderPassDesc,
                                colorTexture.get(),
                                resolveTexture.get(),
                                depthStencilTexture.get(),

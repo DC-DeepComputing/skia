@@ -152,7 +152,7 @@ ShaderInfo::ShaderInfo(UniquePaintParamsID id,
         : fRuntimeEffectDictionary(rteDict)
         , fSsboIndex(ssboIndex)
         , fSnippetRequirementFlags(SnippetRequirementFlags::kNone) {
-    PaintParamsKey key = dict->lookup(id);
+    PaintParamsKey key = dict->lookup1(id);
     SkASSERT(key.isValid()); // invalid keys should have been caught by invalid paint ID earlier
 
     fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
@@ -460,7 +460,7 @@ UniquePaintParamsID ShaderCodeDictionary::findOrCreate(PaintParamsKeyBuilder* bu
     return newID;
 }
 
-PaintParamsKey ShaderCodeDictionary::lookup(UniquePaintParamsID codeID) const {
+PaintParamsKey ShaderCodeDictionary::lookup1(UniquePaintParamsID codeID) const {
     if (!codeID.isValid()) {
         return PaintParamsKey::Invalid();
     }
