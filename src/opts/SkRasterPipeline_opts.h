@@ -136,7 +136,9 @@ namespace SK_OPTS_NS {
     SI U16 pack(U32 v)          { return (U16)v; }
     SI U8  pack(U16 v)          { return  (U8)v; }
 
-    SI F if_then_else(I32 c, F t, F e) { return c ? t : e; }
+    SI F   if_then_else(I32 c, F   t, F   e) { return c ? t : e; }
+    SI I32 if_then_else(I32 c, I32 t, I32 e) { return c ? t : e; }
+
     SI bool any(I32 c)                 { return c != 0; }
     SI bool all(I32 c)                 { return c != 0; }
 
@@ -209,7 +211,8 @@ namespace SK_OPTS_NS {
     SI U16 pack(U32 v)       { return __builtin_convertvector(v, U16); }
     SI U8  pack(U16 v)       { return __builtin_convertvector(v,  U8); }
 
-    SI F if_then_else(I32 c, F t, F e) { return vbslq_f32((U32)c,t,e); }
+    SI F   if_then_else(I32 c, F   t, F   e) { return vbslq_f32((U32)c,t,e); }
+    SI I32 if_then_else(I32 c, I32 t, I32 e) { return vbslq_s32((U32)c,t,e); }
 
     #if defined(SK_CPU_ARM64)
         SI bool any(I32 c) { return vmaxvq_u32((U32)c) != 0; }
@@ -228,12 +231,12 @@ namespace SK_OPTS_NS {
         SI F mad(F f, F m, F a) { return vmlaq_f32(a,f,m); }
         SI F floor_(F v) {
             F roundtrip = vcvtq_f32_s32(vcvtq_s32_f32(v));
-            return roundtrip - if_then_else(roundtrip > v, 1, 0);
+            return roundtrip - if_then_else(roundtrip > v, 1, 0);  // XXX
         }
 
         SI F ceil_(F v) {
             F roundtrip = vcvtq_f32_s32(vcvtq_s32_f32(v));
-            return roundtrip + if_then_else(roundtrip < v, 1, 0);
+            return roundtrip + if_then_else(roundtrip < v, 1, 0);  // XXX
         }
 
         SI F sqrt_(F v) {
@@ -644,11 +647,12 @@ template <typename T> using V = T __attribute__((ext_vector_type(4)));
     SI U32 expand(U8  v) { return      __builtin_convertvector(     v, U32); }
 #endif
 
+/*
 template <typename V>
 SI V if_then_else(I32 c, V t, V e) {
     return sk_bit_cast<V>(if_then_else(c, sk_bit_cast<F>(t), sk_bit_cast<F>(e)));
 }
-
+*/
 SI F fract(F v) { return v - floor_(v); }
 
 // See http://www.machinedlearnings.com/2011/06/fast-approximate-logarithm-exponential.html
