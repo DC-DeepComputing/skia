@@ -60,6 +60,8 @@
 
 #include <android/hardware_buffer.h>
 
+using namespace skgpu::graphite;
+
 namespace SkSurfaces {
 
 sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
