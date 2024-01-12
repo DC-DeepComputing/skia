@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d1e9dcdd_ffb7084b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-12T17:56:23Z",
+      "side": 1,
+      "message": "I wonder if we originally made it an error with the thought that we wanted to update the higher level code to handle things and send us a Rect draw or something more specific on how it should be handled. Like we shouldn\u0027t ever see the \"empty\" shader.",
+      "revId": "6101cde8a131c9b1455c82a65cedbf849a56082b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "af269943_a6bab894",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 3
