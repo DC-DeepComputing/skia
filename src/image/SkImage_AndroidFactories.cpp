@@ -71,6 +71,14 @@
 
 #include <android/hardware_buffer.h>
 
+#if 0
+#include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
+#endif
+
+using namespace skgpu::graphite;
+
 namespace SkImages {
 
 sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, SkAlphaType at) {
@@ -168,6 +176,46 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
 
     return image;
 }
+
+#if 0
+sk_sp<SkImage> Foo2(Recorder* recorder,
+                   AHardwareBuffer* hardwareBuffer,
+                   SkAlphaType alphaType,
+                   sk_sp<SkColorSpace> colorSpace) {
+    AHardwareBuffer_Desc bufferDesc;
+    AHardwareBuffer_describe(hardwareBuffer, &bufferDesc);
+
+    if (!SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_COLOR_OUTPUT) ||
+        !SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE)) {
+        return nullptr;
+    }
+
+    bool isProtectedContent = SkToBool(bufferDesc.usage & AHARDWAREBUFFER_USAGE_PROTECTED_CONTENT);
+
+    SkISize dims = SkISize::Make(bufferDesc.width, bufferDesc.height);
+
+    BackendTexture backendTexture = recorder->createBackendTexture(hardwareBuffer,
+                                                                   /* isRenderable= */ false,
+                                                                   isProtectedContent,
+                                                                   dims,
+                                                                   /* fromWindowLocal= */ false);
+    if (!backendTexture.isValid()) {
+        return nullptr;
+    }
+
+    SkColorType colorType =
+            GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
+
+
+    return SkImages::WrapTexture(recorder,
+                                 backendTexture,
+                                 colorType,
+                                 alphaType,
+                                 std::move(colorSpace),
+                                 /* textureReleaseProc= */ nullptr,
+                                 /* releaseContext= */ nullptr);
+}
+#endif
 
 }  // namespace SkImages
 

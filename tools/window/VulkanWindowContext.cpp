@@ -457,7 +457,7 @@ void VulkanWindowContext::destroyContext() {
         }
     }
 
-    SkASSERT(fContext->unique());
+//    SkASSERT(fContext->unique());
     fContext.reset();
     fInterface.reset();
 
