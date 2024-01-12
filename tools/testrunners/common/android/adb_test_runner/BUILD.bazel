@@ -11,7 +11,10 @@ go_library(
     srcs = ["adb_test_runner.go"],
     importpath = "go.skia.org/skia/tools/testrunners/common/android/adb_test_runner",
     visibility = ["//visibility:private"],
-    deps = ["//bazel/device_specific_configs"],
+    deps = [
+        "//bazel/device_specific_configs",
+        "@org_golang_x_exp//slices",
+    ],
 )
 
 go_binary(
