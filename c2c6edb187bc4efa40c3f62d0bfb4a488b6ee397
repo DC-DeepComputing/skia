@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "836f0e65_b8b45fb0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3456,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T21:28:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d18b3f4_6585977e",
+      "range": {
+        "startLine": 3456,
+        "startChar": 20,
+        "endLine": 3456,
+        "endChar": 22
+      },
+      "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9dddcd0_2aaa3b92",
@@ -72,6 +96,30 @@
       "writtenOn": "2024-01-12T21:18:51Z",
       "side": 1,
       "message": "`reinterpret_cast\u003c\u003e` where pointers are involved",
+      "range": {
+        "startLine": 2114,
+        "startChar": 31,
+        "endLine": 2114,
+        "endChar": 32
+      },
+      "revId": "c2c6edb187bc4efa40c3f62d0bfb4a488b6ee397",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45763a6d_d1501f5c",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2114,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T21:28:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9dddcd0_2aaa3b92",
       "range": {
         "startLine": 2114,
         "startChar": 31,
