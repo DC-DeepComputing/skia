@@ -486,6 +486,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					// See skia:10149
 					configs = append(configs, "angle_d3d9_es2")
 				}
+				if b.gpu("QuadroP400") && !b.extraConfig("TSAN") {
+					configs = append(configs, "angle_vk_es3")
+				}
 				if b.model("NUC5i7RYH") {
 					// skbug.com/7376
 					skip(ALL, "test", ALL, "ProcessorCloneTest")
