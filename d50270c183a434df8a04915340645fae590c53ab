@@ -16,6 +16,41 @@
       "message": "I realized my mistake -- once you set the corners to be all zeros it\u0027s no longer a nine-patch because the adjacent radius in that axis no longer matches (e.g. top-left Y !\u003d top-right Y). So you have to set it to be complex and everything works.",
       "revId": "d50270c183a434df8a04915340645fae590c53ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f71b264_18b78671",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T21:47:28Z",
+      "side": 1,
+      "message": "Aha, makes",
+      "revId": "d50270c183a434df8a04915340645fae590c53ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17ed1e7c_0e88641e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-12T21:47:28Z",
+      "side": 1,
+      "message": "Aha, makes sense. Nice.",
+      "parentUuid": "a260936e_56df4e0f",
+      "revId": "d50270c183a434df8a04915340645fae590c53ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
