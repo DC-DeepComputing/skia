@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0831236a_84853b50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-12T15:08:39Z",
+      "side": 1,
+      "message": "This code no longer works with Chrome\u0027s version of clang, and digging deeper it looks like it may have been a little sketchy since we\u0027re not bridging between equivalent types. I believe wrapping the object will allow us to pass it to C++ and allow ARC to do its thing, but let me know if there\u0027s a better way.",
+      "revId": "e5ef7cd3b54b632a2df235aeb226f42712641fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
