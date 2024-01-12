@@ -26,6 +26,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8402f04_433b2aa9",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T20:11:30Z",
+      "side": 1,
+      "message": "You can fit `round-to-even` here without overflowing the line.",
+      "range": {
+        "startLine": 718,
+        "startChar": 81,
+        "endLine": 718,
+        "endChar": 85
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c3c060_647139c2",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T20:11:30Z",
+      "side": 1,
+      "message": "It\u0027s not clear how this equation came to be; \u002715\u0027 isn\u0027t mentioned anywhere in the above code or comment. I\u0027d accept a magic constant without question, but spelling out the formula here without explaining it just adds confusion IMO?",
+      "range": {
+        "startLine": 719,
+        "startChar": 43,
+        "endLine": 719,
+        "endChar": 61
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "291a99c2_36e702f0",
+        "filename": "src/core/SkMipmapHQDownSampler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T20:11:30Z",
+      "side": 1,
+      "message": "This comment isn\u0027t new, but it sure is misleading. I would read this as \"splat across all four lanes\" but AFAICS it really means \"0 0 0 x\". Should we rephrase it? (Or do I misunderstand?)",
+      "range": {
+        "startLine": 64,
+        "startChar": 38,
+        "endLine": 64,
+        "endChar": 62
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "522eb3d1_ef76164f",
+        "filename": "src/core/SkMipmapHQDownSampler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-12T20:11:30Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 109,
+        "startChar": 38,
+        "endLine": 109,
+        "endChar": 62
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "332ea1f8_c7fb802c",
         "filename": "tests/Float16Test.cpp",
         "patchSetId": 5
