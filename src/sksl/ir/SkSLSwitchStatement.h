@@ -36,9 +36,9 @@ public:
                     StatementArray cases,
                     std::shared_ptr<SymbolTable> symbols)
             : INHERITED(pos, kIRNodeKind)
+            , fSymbols(std::move(symbols))
             , fValue(std::move(value))
-            , fCases(std::move(cases))
-            , fSymbols(std::move(symbols)) {}
+            , fCases(std::move(cases)) {}
 
     // Create a `switch` statement with an array of case-values and case-statements.
     // Coerces case values to the proper type and reports an error if cases are duplicated.
@@ -90,9 +90,9 @@ public:
     std::string description() const override;
 
 private:
+    std::shared_ptr<SymbolTable> fSymbols;
     std::unique_ptr<Expression> fValue;
     StatementArray fCases;  // every Statement inside fCases must be a SwitchCase
-    std::shared_ptr<SymbolTable> fSymbols;
 
     using INHERITED = Statement;
 };
