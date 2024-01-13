@@ -133,7 +133,7 @@ std::unique_ptr<InterfaceBlock> InterfaceBlock::Make(const Context& context,
         context.fSymbolTable->addWithoutOwnership(context, variable);
     }
 
-    return std::make_unique<SkSL::InterfaceBlock>(pos, variable, context.fSymbolTable);
+    return std::make_unique<SkSL::InterfaceBlock>(pos, variable);
 }
 
 std::string InterfaceBlock::description() const {
