@@ -44,9 +44,9 @@ public:
           Kind kind = Kind::kBracedScope,
           std::shared_ptr<SymbolTable> symbols = nullptr)
             : INHERITED(pos, kIRNodeKind)
+            , fSymbolTable(std::move(symbols))
             , fChildren(std::move(statements))
-            , fBlockKind(kind)
-            , fSymbolTable(std::move(symbols)) {}
+            , fBlockKind(kind) {}
 
     // Make is allowed to simplify compound statements. For a single-statement unscoped Block,
     // Make can return the Statement as-is. For an empty unscoped Block, Make can return Nop.
@@ -105,9 +105,9 @@ public:
     std::string description() const override;
 
 private:
+    std::shared_ptr<SymbolTable> fSymbolTable;
     StatementArray fChildren;
     Kind fBlockKind;
-    std::shared_ptr<SymbolTable> fSymbolTable;
 
     using INHERITED = Statement;
 };
