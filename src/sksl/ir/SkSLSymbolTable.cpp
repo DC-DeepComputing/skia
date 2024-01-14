@@ -14,6 +14,8 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLType.h"
 
+#include <type_traits>
+
 namespace SkSL {
 
 std::shared_ptr<SymbolTable> SymbolTable::insertNewParent() {

@@ -19,7 +19,6 @@
 #include <memory>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -41,22 +40,6 @@ public:
     explicit SymbolTable(std::shared_ptr<SymbolTable> parent, bool builtin)
             : fParent(std::move(parent))
             , fBuiltin(builtin) {}
-
-    /** Replaces the passed-in SymbolTable with a newly-created child symbol table. */
-    static void Push(std::shared_ptr<SymbolTable>* table) {
-        Push(table, (*table)->isBuiltin());
-    }
-    static void Push(std::shared_ptr<SymbolTable>* table, bool isBuiltin) {
-        *table = std::make_shared<SymbolTable>(*table, isBuiltin);
-    }
-
-    /**
-     * Replaces the passed-in SymbolTable with its parent. If the child symbol table is otherwise
-     * unreferenced, it will be deleted.
-     */
-    static void Pop(std::shared_ptr<SymbolTable>* table) {
-        *table = (*table)->fParent;
-    }
 
     /**
      * Creates a new, empty SymbolTable between this SymbolTable and its current parent.
