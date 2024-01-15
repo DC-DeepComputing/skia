@@ -25,7 +25,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 class SkColorSpace;
 class SkData;
@@ -161,10 +160,10 @@ public:
                                           OptFlags optFlags,
                                           Args&&... args) {
 #ifdef SK_DEBUG
-        checkArgs(effect->fUniforms.begin(),
-                  effect->fUniforms.end(),
-                  effect->fChildren.begin(),
-                  effect->fChildren.end(),
+        checkArgs(effect->uniforms().begin(),
+                  effect->uniforms().end(),
+                  effect->children().begin(),
+                  effect->children().end(),
                   std::forward<Args>(args)...);
 #endif
         // This factory is used internally (for "runtime FPs"). We don't pass/know the destination
@@ -315,8 +314,8 @@ private:
     }
 
 #ifdef SK_DEBUG
-    using child_iterator = std::vector<SkRuntimeEffect::Child>::const_iterator;
-    using uniform_iterator = std::vector<SkRuntimeEffect::Uniform>::const_iterator;
+    using child_iterator = const SkRuntimeEffect::Child*;
+    using uniform_iterator = const SkRuntimeEffect::Uniform*;
 
     // Validates that all args passed to the template factory have the right names, sizes, and types
     static void checkArgs(uniform_iterator uIter,
