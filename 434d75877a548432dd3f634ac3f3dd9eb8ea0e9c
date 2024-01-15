@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a49c37_6e33dd87",
+        "filename": "tests/sksl/errors/DuplicateSymbolInSwitch.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-15T16:16:43Z",
+      "side": 1,
+      "message": "The second error occurs when `Transform::HoistSwitchVarDeclarationsAtTopLevel` runs and recreates the symbols at a different scope. (This is originally where we would assert.) It\u0027s not ideal to report the same issue twice, but doesn\u0027t seem like a big deal.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 40
+      },
+      "revId": "434d75877a548432dd3f634ac3f3dd9eb8ea0e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
