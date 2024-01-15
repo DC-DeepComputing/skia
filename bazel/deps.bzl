@@ -36,7 +36,7 @@ def c_plus_plus_deps(ws = "@skia"):
 
     git_repository(
         name = "abseil_cpp",
-        commit = "cb436cf0142b4cbe47aae94223443df7f82e2920",
+        commit = "b2dd3a5be797f8194bbc230c65f35aadd3998535",
         remote = "https://skia.googlesource.com/external/github.com/abseil/abseil-cpp.git",
     )
 
