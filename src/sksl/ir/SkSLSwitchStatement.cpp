@@ -81,7 +81,7 @@ static void move_all_but_break(std::unique_ptr<Statement>& stmt, StatementArray*
             }
 
             target->push_back(Block::Make(block.fPosition, std::move(blockStmts), block.blockKind(),
-                                          block.symbolTable()));
+                                          std::move(block.symbolTable())));
             break;
         }
 
@@ -96,9 +96,10 @@ static void move_all_but_break(std::unique_ptr<Statement>& stmt, StatementArray*
     }
 }
 
-std::unique_ptr<Statement> SwitchStatement::BlockForCase(StatementArray* cases,
-                                                         SwitchCase* caseToCapture,
-                                                         std::shared_ptr<SymbolTable> symbolTable) {
+std::unique_ptr<Statement> SwitchStatement::BlockForCase(
+        StatementArray* cases,
+        SwitchCase* caseToCapture,
+        std::unique_ptr<SymbolTable>& symbolTable) {
     // We have to be careful to not move any of the pointers until after we're sure we're going to
     // succeed, so before we make any changes at all, we check the switch-cases to decide on a plan
     // of action. First, find the switch-case we are interested in.
@@ -157,7 +158,7 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
                                                     std::unique_ptr<Expression> value,
                                                     ExpressionArray caseValues,
                                                     StatementArray caseStatements,
-                                                    std::shared_ptr<SymbolTable> symbolTable) {
+                                                    std::unique_ptr<SymbolTable> symbolTable) {
     SkASSERT(caseValues.size() == caseStatements.size());
 
     value = context.fTypes.fInt->coerceExpression(std::move(value), context);
@@ -210,7 +211,7 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
                                                  Position pos,
                                                  std::unique_ptr<Expression> value,
                                                  StatementArray cases,
-                                                 std::shared_ptr<SymbolTable> symbolTable) {
+                                                 std::unique_ptr<SymbolTable> symbolTable) {
     // Confirm that every statement in `cases` is a SwitchCase.
     SkASSERT(std::all_of(cases.begin(), cases.end(), [&](const std::unique_ptr<Statement>& stmt) {
         return stmt->is<SwitchCase>();
