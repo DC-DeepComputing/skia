@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "646425ff_059aff9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-15T19:40:27Z",
+      "side": 1,
+      "message": "Looks like some code is being rejected by MSVC. Missing #include?\n\n` C:\\b\\s\\w\\ir\\skia\\third_party\\externals\\dawn\\src\\dawn\\native\\d3d\\QueueD3D.cpp(59): error C2079: \u0027events\u0027 uses undefined class \u0027std::array\u003cstd::pair\u003cconst dawn::native::SystemEventReceiver \u0026,bool *\u003e,1\u003e\u0027`",
+      "revId": "8ef1c14b131a9009c8d7f5f1075eddb24a7e84cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
