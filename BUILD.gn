@@ -623,6 +623,8 @@ if (skia_compile_modules) {
     sources = skslc_deps
     sources += [
       "tools/sksl-minify/SkSLMinify.cpp",
+      "tools/sksl/ShaderCapsFactory.cpp",
+      "tools/sksl/ShaderCapsFactory.h",
       "tools/skslc/ProcessWorklist.cpp",
       "tools/skslc/ProcessWorklist.h",
     ]
@@ -751,6 +753,8 @@ if (skia_compile_sksl_tests) {
     ]
     sources = skslc_deps
     sources += [
+      "tools/sksl/ShaderCapsFactory.cpp",
+      "tools/sksl/ShaderCapsFactory.h",
       "tools/skslc/Main.cpp",
       "tools/skslc/ProcessWorklist.cpp",
       "tools/skslc/ProcessWorklist.h",
@@ -1993,6 +1997,8 @@ if (skia_enable_tools) {
       "tools/gpu/YUVUtils.cpp",
       "tools/gpu/YUVUtils.h",
       "tools/gpu/mock/MockTestContext.cpp",
+      "tools/sksl/ShaderCapsFactory.cpp",
+      "tools/sksl/ShaderCapsFactory.h",
     ]
     sources += skia_utils_gpu
 
@@ -2064,6 +2070,11 @@ if (skia_enable_tools) {
       sources -= [ "tools/gpu/GrTest.cpp" ]
       sources -= [ "tools/gpu/TestOps.cpp" ]
       sources -= [ "tools/gpu/TestOps.h" ]
+    } else {
+      sources += [
+        "tools/gpu/ganesh/GrAtlasTools.cpp",
+        "tools/gpu/ganesh/GrAtlasTools.h",
+      ]
     }
     if (skia_enable_graphite) {
       sources += [ "tools/graphite/ContextFactory.h" ]
