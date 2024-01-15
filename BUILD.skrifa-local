@@ -1,0 +1,15 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+rust_library(
+    name = "skrifa",
+    srcs = glob(
+        include = ["src/**/*.rs"],
+        allow_empty = False,
+    ),
+    crate_features = ["scale"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@fontations//:font-types",
+        "@fontations//:read-fonts",
+    ],
+)

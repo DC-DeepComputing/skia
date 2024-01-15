@@ -24,7 +24,8 @@ rust_static_library(
         "@cxx",
         "@fontations//:font-types",
         "@fontations//:read-fonts",
-        "@fontations//:skrifa",
+        "@skrifa-local//:skrifa",
+        #        "@fontations//:skrifa",
     ],
 )
 
