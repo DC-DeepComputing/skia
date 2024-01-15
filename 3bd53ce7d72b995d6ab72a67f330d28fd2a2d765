@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42dea53b_fae8fa9a",
+        "filename": "src/sksl/SkSLCompilerUtil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-15T16:29:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5d7cba6e_d278259b",
+      "range": {
+        "startLine": 18,
+        "startChar": 5,
+        "endLine": 18,
+        "endChar": 14
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c030dfb_fbd4694f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-19T18:14:26Z",
       "side": 1,
       "message": "I don\u0027t think there\u0027s a reason to keep this in the header any longer, but that\u0027s neither here nor there.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 54
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "392378df_6b428eb8",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-15T16:29:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1c030dfb_fbd4694f",
       "range": {
         "startLine": 70,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "334bebae_1d1e528c",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-15T16:29:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f7360fb7_e9ba1bd6",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 48
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "598402fb_384c221a",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ae0f2e7_7292b1bd",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-15T16:29:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "598402fb_384c221a",
+      "range": {
+        "startLine": 223,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 51
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f197bc0a_d5febe60",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-12-19T18:14:26Z",
       "side": 1,
       "message": "This doesn\u0027t seem like it belongs in the code generator.",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 0
+      },
+      "revId": "3bd53ce7d72b995d6ab72a67f330d28fd2a2d765",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b4009a8_c48c836c",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-15T16:29:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f197bc0a_d5febe60",
       "range": {
         "startLine": 224,
         "startChar": 0,
