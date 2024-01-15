@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a50f421f_bd31de8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-01-15T21:20:34Z",
+      "side": 1,
+      "message": "Hi Greg, I had to fix a conflict after rebase as well as an assert failure.  Can you take a look again?",
+      "revId": "41b2addfcefacd1ea1a311fffb07aa41c562f5c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c662c106_0dafdb9a",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1421,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-01-15T21:20:34Z",
+      "side": 1,
+      "message": "Fix an assert failure.",
+      "revId": "41b2addfcefacd1ea1a311fffb07aa41c562f5c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c6d8b22_3984bc2e",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2024-01-15T21:20:34Z",
+      "side": 1,
+      "message": "Bump up `kNumVkFormats`.  It was lost in v6 because https://skia-review.googlesource.com/c/skia/+/785476 had the same change.",
+      "revId": "41b2addfcefacd1ea1a311fffb07aa41c562f5c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
