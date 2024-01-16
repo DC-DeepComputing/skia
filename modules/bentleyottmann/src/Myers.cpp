@@ -457,7 +457,7 @@ public:
 
         this->handleBeginnings(y, beginnings);
         this->handleHorizontals(y, horizontals);
-        this->handleEndings(y, endings);
+        this->handleEndings(endings);
     }
 
     std::vector<Crossing> finishAndReleaseCrossings() {
@@ -500,12 +500,12 @@ private:
             const Segment& segment, StatusLine::iterator insertionPoint, CrossingCheck check) {
 
         // Match to the left using the left sentinel to break the loop.
-        for (auto cursor = std::make_reverse_iterator(insertionPoint); check(*cursor); cursor++) {
+        for (auto cursor = std::make_reverse_iterator(insertionPoint); check(*cursor); ++cursor) {
             fCrossings.recordCrossing(segment, *cursor);
         }
 
         // Match to the right using the right sentinel to break the loop.
-        for (auto cursor = insertionPoint; check(*cursor); cursor++) {
+        for (auto cursor = insertionPoint; check(*cursor); ++cursor) {
             fCrossings.recordCrossing(segment, *cursor);
         }
     }
@@ -528,7 +528,7 @@ private:
         }
     }
 
-    // Horizontals on y are handled by checking for crossings by adding them, and the immediately
+    // Horizontals on y are handled by checking for crossings by adding them, and then immediately
     // removing them.
     void handleHorizontals(int32_t y, SkSpan<const Segment> horizontals) {
         for (const Segment& s : horizontals) {
@@ -554,7 +554,7 @@ private:
     }
 
     // Remove all the segments ending on y.
-    void handleEndings(int32_t y, SkSpan<const Segment> removing) {
+    void handleEndings(SkSpan<const Segment> removing) {
         for (const Segment& s : removing) {
             auto removedPoint = std::remove(fStatus.begin(), fStatus.end(), s);
             SkASSERT(removedPoint != fStatus.end());
@@ -588,6 +588,8 @@ std::vector<Crossing> myers_find_crossings(SkSpan<Segment> segments) {
     const EventQueue eventQueue = EventQueue::Make(cleanSegments);
     SweepLine sweepLine;
 
+    // This needs to capture event by value because *iterator generates a new value and returns
+    // it, so it must be captured to avoid the temporary going out of scope.
     for (const Event event : eventQueue) {
         sweepLine.handleEvent(event);
     }
