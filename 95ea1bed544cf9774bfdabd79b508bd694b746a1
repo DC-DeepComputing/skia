@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96c9682b_1ff9b9e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2024-01-16T21:07:18Z",
+      "side": 1,
+      "message": "Hi Brian and John,\n\nI rebased to the latest branch and integrated with my changes. \nThe changes passed the Unit test dm.exe -m Raster.\nThank you all very much!\n\nPing",
+      "revId": "95ea1bed544cf9774bfdabd79b508bd694b746a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
