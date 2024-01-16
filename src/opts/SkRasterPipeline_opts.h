@@ -22,7 +22,7 @@
 #include <type_traits>
 
 // Every function in this file should be marked static and inline using SI.
-#if defined(__clang__)
+#if 0 //defined(__clang__)
     #define SI __attribute__((always_inline)) static inline
 #else
     #define SI static inline
