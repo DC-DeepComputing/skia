@@ -70,6 +70,24 @@
       "parentUuid": "82d6d4f1_0c332d5b",
       "revId": "8ef1c14b131a9009c8d7f5f1075eddb24a7e84cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d41025e_45863aaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19444
+      },
+      "writtenOn": "2024-01-16T19:41:41Z",
+      "side": 1,
+      "message": "Thanks for the breadcrumbs.  \nHeh, I was only half-smart.  I got to that output file, but I searched for \"error:\" because I\u0027m too used to clang and gcc.  I see it now. Thanks!",
+      "parentUuid": "746e50d0_d9c76e73",
+      "revId": "8ef1c14b131a9009c8d7f5f1075eddb24a7e84cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
