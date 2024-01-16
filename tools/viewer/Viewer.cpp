@@ -285,6 +285,8 @@ static const char*
             return "Default";
         case Strategy::kComputeAnalyticAA:
             return "GPU Compute AA (Analytic)";
+        case Strategy::kComputeMSAA16:
+            return "GPU Compute AA (16xMSAA)";
         case Strategy::kRasterAA:
             return "CPU Raster AA";
         case Strategy::kTessellation:
@@ -2249,6 +2251,7 @@ void Viewer::drawImGui() {
 
                         PathRendererStrategy strategies[] = {
                                 PathRendererStrategy::kComputeAnalyticAA,
+                                PathRendererStrategy::kComputeMSAA16,
                                 PathRendererStrategy::kRasterAA,
                                 PathRendererStrategy::kTessellation,
                         };
