@@ -22,6 +22,30 @@
       },
       "revId": "fea9d718da794c9b19be781d8ad7d177a6fc8a88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f0f7527_065892af",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-16T21:27:50Z",
+      "side": 1,
+      "message": "Done.\n\nBut on a side not I\u0027m not a big fan of this being a long term solution. I understand the issue with wanting to disable for all runs of DM (including local), but if we start putting disables all in individual tests it starts to make it much harder to maintain. It also is nice to have one place to look to see all the disabled tests. I guess a more ideal solution would be to have something in DM itself that disabled all these tests that gets triggered both by bots and local (could also have a flag you can pass in to disable the default disables).\n\nOn a side note, are the disables in SkSLTests ignored when we are running SkQP through CTS tests? Want to make sure driver vendors are actually seeing their failures.",
+      "parentUuid": "9690438a_f3e285b6",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 6
+      },
+      "revId": "fea9d718da794c9b19be781d8ad7d177a6fc8a88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
