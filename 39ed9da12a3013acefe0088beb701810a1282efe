@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8add13fc_056be70c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-16T15:58:25Z",
+      "side": 1,
+      "message": "This CL won\u0027t build without the DEPS changed mentioned in the commit message but it\u0027s ready for review.",
+      "revId": "39ed9da12a3013acefe0088beb701810a1282efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
