@@ -16,6 +16,24 @@
       "message": "Any chance we can rename this? It\u0027s a little strange to have the return *type* (not just CV quals) differ in the const and non-const versions of this function. `refSymbolTable` would be the most Skia-like name I can think of (but also totally different from the usual meaning of that, when we\u0027re returning an `sk_sp`). Thoughts?",
       "revId": "df35c362d009aacb276a4be2e1e83f6b9ec20415",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2d4ddee_c1dcc8a3",
+        "filename": "src/sksl/ir/SkSLBlock.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-16T15:03:08Z",
+      "side": 1,
+      "message": "Done--the `unique_ptr\u003c\u003e\u0026` overload has been removed entirely.\n\nThis was only used one time, in SwitchStatement, and this code was written before we had `ProgramWriter` which is a much simpler way to modify a Statement tree. I rewrote it at http://review.skia.org/799877/ (because I also noticed this ugly overload and wanted it to go away). I\u0027ve reordered the CLs so that fix will now land first.",
+      "parentUuid": "f16f5e3b_12867475",
+      "revId": "df35c362d009aacb276a4be2e1e83f6b9ec20415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
