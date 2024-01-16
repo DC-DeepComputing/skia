@@ -52,6 +52,24 @@
       "parentUuid": "ead21477_95de1566",
       "revId": "8ef1c14b131a9009c8d7f5f1075eddb24a7e84cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "746e50d0_d9c76e73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-16T03:08:04Z",
+      "side": 1,
+      "message": "Finding the build errors is more challenging than you\u0027d expect. I\u0027m not sure why Gerrit doesn\u0027t have a button which takes you straight to the errors. \n\nYou\u0027ll need to open the failed Check, then click the red Build square. You\u0027ll end up here, where you need to click \"Rich Output\": https://screenshot.googleplex.com/6GkfZLfsiQE7f3A\n\nThen click \"stdout\" from here: https://screenshot.googleplex.com/4mnHhFTKXwNb5T4\n\nAnd you\u0027ll end up at the actual log: https://logs.chromium.org/logs/skia/67276edafd365c11/+/steps/ninja/0/stdout",
+      "parentUuid": "82d6d4f1_0c332d5b",
+      "revId": "8ef1c14b131a9009c8d7f5f1075eddb24a7e84cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
