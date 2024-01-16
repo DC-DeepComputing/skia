@@ -182,6 +182,16 @@ opts("hsw") {
   }
 }
 
+opts("skx") {
+  enabled = is_x86
+  sources = skia_opts.skx_sources
+  if (is_win) {
+    cflags = [ "/arch:AVX512" ]
+  } else {
+    cflags = [ "-march=skylake-avx512" ]
+  }
+}
+
 # Any feature of Skia that requires third-party code should be optional and use this template.
 template("optional") {
   if (invoker.enabled) {
@@ -1440,6 +1450,7 @@ skia_component("skia") {
     ":android_utils",
     ":avif",
     ":heif",
+    ":skx",
     ":hsw",
     ":jpeg_decode",
     ":jpegxl_decode",
