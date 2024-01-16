@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e6c02b_ee352f88",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-16T16:05:26Z",
+      "side": 1,
+      "message": "Probably want 255 here? (Assuming you want a 0.0-to-1.0 distribution)",
+      "range": {
+        "startLine": 1048,
+        "startChar": 71,
+        "endLine": 1048,
+        "endChar": 76
+      },
+      "revId": "19bfc4e24f0eacaeea011f77b3b2a5e756b3c176",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd0599d2_a371beb3",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-16T16:05:26Z",
+      "side": 1,
+      "message": "The error bars here might be because of the divisor mismatch.",
+      "range": {
+        "startLine": 1134,
+        "startChar": 55,
+        "endLine": 1134,
+        "endChar": 60
+      },
+      "revId": "19bfc4e24f0eacaeea011f77b3b2a5e756b3c176",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
