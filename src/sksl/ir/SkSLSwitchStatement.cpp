@@ -18,12 +18,15 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/ir/SkSLBlock.h"
+#include "src/sksl/ir/SkSLBreakStatement.h"
 #include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLSwitchCase.h"
 #include "src/sksl/ir/SkSLType.h"
+#include "src/sksl/transform/SkSLProgramWriter.h"
 #include "src/sksl/transform/SkSLTransform.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <forward_list>
 #include <iterator>
 
@@ -68,32 +71,22 @@ static std::forward_list<const SwitchCase*> find_duplicate_case_values(
     return duplicateCases;
 }
 
-static void move_all_but_break(std::unique_ptr<Statement>& stmt, StatementArray* target) {
-    switch (stmt->kind()) {
-        case Statement::Kind::kBlock: {
-            // Recurse into the block.
-            Block& block = stmt->as<Block>();
-
-            StatementArray blockStmts;
-            blockStmts.reserve_exact(block.children().size());
-            for (std::unique_ptr<Statement>& blockStmt : block.children()) {
-                move_all_but_break(blockStmt, &blockStmts);
+static void remove_break_statements(std::unique_ptr<Statement>& stmt) {
+    class RemoveBreaksWriter : public ProgramWriter {
+    public:
+        bool visitStatementPtr(std::unique_ptr<Statement>& stmt) override {
+            if (stmt->is<BreakStatement>()) {
+                stmt = Nop::Make();
+                return false;
             }
-
-            target->push_back(Block::Make(block.fPosition, std::move(blockStmts), block.blockKind(),
-                                          block.symbolTable()));
-            break;
+            return ProgramWriter::visitStatementPtr(stmt);
         }
 
-        case Statement::Kind::kBreak:
-            // Do not append a break to the target.
-            break;
-
-        default:
-            // Append normal statements to the target.
-            target->push_back(std::move(stmt));
-            break;
-    }
+        bool visitExpressionPtr(std::unique_ptr<Expression>& expr) override {
+            return false;
+        }
+    };
+    RemoveBreaksWriter{}.visitStatementPtr(stmt);
 }
 
 std::unique_ptr<Statement> SwitchStatement::BlockForCase(StatementArray* cases,
@@ -114,7 +107,7 @@ std::unique_ptr<Statement> SwitchStatement::BlockForCase(StatementArray* cases,
     // stuck and can't simplify at all. If we find an unconditional break, we have a range of
     // statements that we can use for simplification.
     auto startIter = iter;
-    Statement* stripBreakStmt = nullptr;
+    bool removeBreakStatements = false;
     for (; iter != cases->end(); ++iter) {
         std::unique_ptr<Statement>& stmt = (*iter)->as<SwitchCase>().statement();
         if (Analysis::SwitchCaseContainsConditionalExit(*stmt)) {
@@ -124,31 +117,31 @@ std::unique_ptr<Statement> SwitchStatement::BlockForCase(StatementArray* cases,
         if (Analysis::SwitchCaseContainsUnconditionalExit(*stmt)) {
             // We found an unconditional exit. We can use this block, but we'll need to strip
             // out the break statement if there is one.
-            stripBreakStmt = stmt.get();
+            removeBreakStatements = true;
+            ++iter;
             break;
         }
     }
 
     // We fell off the bottom of the switch or encountered a break. We know the range of statements
-    // that we need to move over, and we know it's safe to do so.
-    StatementArray caseStmts;
-    caseStmts.reserve_exact(std::distance(startIter, iter) + 1);
+    // that we need to keep, and we know it's safe to do so. Move the keepers to the front, and
+    // jettison the remainder.
+    size_t numCasesToKeep = std::distance(startIter, iter);
+    std::move_backward(startIter, iter, cases->begin() + numCasesToKeep);
+    cases->resize(numCasesToKeep);
 
-    // We can move over most of the statements as-is.
-    while (startIter != iter) {
-        caseStmts.push_back(std::move((*startIter)->as<SwitchCase>().statement()));
-        ++startIter;
+    // Strip off the SwitchCase statement from our keepers--convert `case n: stmt;` to just `stmt;`.
+    for (std::unique_ptr<Statement>& stmt : *cases) {
+        stmt = std::move(stmt->as<SwitchCase>().statement());
     }
 
-    // If we found an unconditional break at the end, we need to move what we can while avoiding
-    // that break.
-    if (stripBreakStmt != nullptr) {
-        SkASSERT((*startIter)->as<SwitchCase>().statement().get() == stripBreakStmt);
-        move_all_but_break((*startIter)->as<SwitchCase>().statement(), &caseStmts);
+    // If we found an unconditional break at the end, we need to eliminate it.
+    if (removeBreakStatements) {
+        remove_break_statements(cases->back());
     }
 
     // Return our newly-synthesized block.
-    return Block::Make(caseToCapture->fPosition, std::move(caseStmts), Block::Kind::kBracedScope,
+    return Block::Make(caseToCapture->fPosition, std::move(*cases), Block::Kind::kBracedScope,
                        std::move(symbolTable));
 }
 
