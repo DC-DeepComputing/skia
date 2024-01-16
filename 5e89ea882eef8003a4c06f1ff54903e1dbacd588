@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1538c07a_807775ca",
+        "filename": "src/base/SkHalf.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "393d1319_121130b5",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8402f04_433b2aa9",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-12T20:11:30Z",
       "side": 1,
       "message": "You can fit `round-to-even` here without overflowing the line.",
+      "range": {
+        "startLine": 718,
+        "startChar": 81,
+        "endLine": 718,
+        "endChar": 85
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57691f4c_e2a7c23d",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8402f04_433b2aa9",
       "range": {
         "startLine": 718,
         "startChar": 81,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d50cafa6_de1c39a3",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T17:09:13Z",
+      "side": 1,
+      "message": "I added a comment breaking down the different constants.\n-127 for f32 exponent\n-13 to undo the 8128 multiply\n-1 to remove the implicit leading 1\n+15 to go to f16 biased exponent",
+      "parentUuid": "77c3c060_647139c2",
+      "range": {
+        "startLine": 719,
+        "startChar": 43,
+        "endLine": 719,
+        "endChar": 61
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "291a99c2_36e702f0",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-01-12T20:11:30Z",
       "side": 1,
       "message": "This comment isn\u0027t new, but it sure is misleading. I would read this as \"splat across all four lanes\" but AFAICS it really means \"0 0 0 x\". Should we rephrase it? (Or do I misunderstand?)",
+      "range": {
+        "startLine": 64,
+        "startChar": 38,
+        "endLine": 64,
+        "endChar": 62
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf7bde7d_cf11f64b",
+        "filename": "src/core/SkMipmapHQDownSampler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T17:09:13Z",
+      "side": 1,
+      "message": "Yeah it adds 0s, I updated the comment.",
+      "parentUuid": "291a99c2_36e702f0",
       "range": {
         "startLine": 64,
         "startChar": 38,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "271895c3_1ee89143",
+        "filename": "src/core/SkMipmapHQDownSampler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "522eb3d1_ef76164f",
+      "range": {
+        "startLine": 109,
+        "startChar": 38,
+        "endLine": 109,
+        "endChar": 62
+      },
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "332ea1f8_c7fb802c",
@@ -129,6 +249,24 @@
       "writtenOn": "2024-01-12T19:43:01Z",
       "side": 1,
       "message": "What happens with -0.0f? Should we test that?",
+      "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c415d1d3_329031e8",
+        "filename": "tests/Float16Test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T17:09:13Z",
+      "side": 1,
+      "message": "Added a test to confirm that -0.f stays -0 (8000 or the sign bit).",
+      "parentUuid": "332ea1f8_c7fb802c",
       "revId": "5e89ea882eef8003a4c06f1ff54903e1dbacd588",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
