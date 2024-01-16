@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f16f5e3b_12867475",
+        "filename": "src/sksl/ir/SkSLBlock.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-16T14:52:03Z",
+      "side": 1,
+      "message": "Any chance we can rename this? It\u0027s a little strange to have the return *type* (not just CV quals) differ in the const and non-const versions of this function. `refSymbolTable` would be the most Skia-like name I can think of (but also totally different from the usual meaning of that, when we\u0027re returning an `sk_sp`). Thoughts?",
+      "revId": "df35c362d009aacb276a4be2e1e83f6b9ec20415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
