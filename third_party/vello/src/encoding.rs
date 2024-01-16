@@ -5,7 +5,7 @@
 
 use crate::ffi;
 use {
-    peniko::{kurbo::Affine, Brush, Color, Mix},
+    peniko::{kurbo::{Affine, Cap, Join, Stroke}, Brush, Color, Fill, Mix},
     std::pin::Pin,
     vello_encoding::{Encoding as VelloEncoding, RenderConfig, Transform},
 };
@@ -46,11 +46,7 @@ impl Encoding {
     ) {
         self.encoding
             .encode_transform(Transform::from_kurbo(&transform.into()));
-        self.encoding.encode_linewidth(match style {
-            ffi::Fill::NonZero => -1.0,
-            ffi::Fill::EvenOdd => -2.0,
-            _ => panic!("invalid fill type"),
-        });
+        self.encoding.encode_fill_style(style.into());
         if self.encode_path(path_iter, /*is_fill=*/ true) {
             self.encoding.encode_brush(&Brush::from(brush), 1.0)
         }
@@ -63,9 +59,11 @@ impl Encoding {
         brush: &ffi::Brush,
         path_iter: Pin<&mut ffi::PathIterator>,
     ) {
+        // TODO: process any dash pattern here using kurbo's dash expander unless we decide to chop
+        // dashed strokes in Graphite.
         self.encoding
             .encode_transform(Transform::from_kurbo(&transform.into()));
-        self.encoding.encode_linewidth(style.width);
+        self.encoding.encode_stroke_style(&style.into());
         if self.encode_path(path_iter, /*is_fill=*/ false) {
             self.encoding.encode_brush(&Brush::from(brush), 1.0)
         }
@@ -74,7 +72,7 @@ impl Encoding {
     pub fn begin_clip(&mut self, transform: ffi::Affine, path_iter: Pin<&mut ffi::PathIterator>) {
         self.encoding
             .encode_transform(Transform::from_kurbo(&transform.into()));
-        self.encoding.encode_linewidth(-1.0);
+        self.encoding.encode_fill_style(Fill::NonZero);
         self.encode_path(path_iter, /*is_fill=*/ true);
         self.encoding
             .encode_begin_clip(Mix::Clip.into(), /*alpha=*/ 1.0);
@@ -213,6 +211,43 @@ impl From<&ffi::Brush> for Brush {
     }
 }
 
+impl From<ffi::Fill> for Fill {
+    fn from(src: ffi::Fill) -> Self {
+        match src {
+            ffi::Fill::NonZero => Self::NonZero,
+            ffi::Fill::EvenOdd => Self::EvenOdd,
+            _ => panic!("invalid fill type"),
+        }
+    }
+}
+
+impl From<&ffi::Stroke> for Stroke {
+    fn from(src: &ffi::Stroke) -> Self {
+        let cap = match src.cap {
+            ffi::CapStyle::Butt => Cap::Butt,
+            ffi::CapStyle::Square => Cap::Square,
+            ffi::CapStyle::Round => Cap::Round,
+            _ => panic!("invalid cap style"),
+        };
+        Self {
+            width: src.width as f64,
+            join: match src.join {
+                ffi::JoinStyle::Bevel => Join::Bevel,
+                ffi::JoinStyle::Miter => Join::Miter,
+                ffi::JoinStyle::Round => Join::Round,
+                _ => panic!("invalid join style"),
+            },
+            miter_limit: src.miter_limit as f64,
+            start_cap: cap,
+            end_cap: cap,
+            // Skia expands a dash effect by transforming the encoded path, so don't need to handle
+            // that here.
+            dash_pattern: Default::default(),
+            dash_offset: 0.,
+        }
+    }
+}
+
 impl From<&vello_encoding::WorkgroupSize> for ffi::WorkgroupSize {
     fn from(src: &vello_encoding::WorkgroupSize) -> Self {
         Self {
@@ -232,16 +267,17 @@ impl From<&vello_encoding::WorkgroupCounts> for ffi::DispatchInfo {
             path_scan1: (&src.path_scan1).into(),
             path_scan: (&src.path_scan).into(),
             bbox_clear: (&src.bbox_clear).into(),
-            path_seg: (&src.path_seg).into(),
+            flatten: (&src.flatten).into(),
             draw_reduce: (&src.draw_reduce).into(),
             draw_leaf: (&src.draw_leaf).into(),
             clip_reduce: (&src.clip_reduce).into(),
             clip_leaf: (&src.clip_leaf).into(),
             binning: (&src.binning).into(),
             tile_alloc: (&src.tile_alloc).into(),
-            path_coarse: (&src.path_coarse).into(),
+            path_count_setup: (&src.path_count_setup).into(),
             backdrop: (&src.backdrop).into(),
             coarse: (&src.coarse).into(),
+            path_tiling_setup: (&src.path_tiling_setup).into(),
             fine: (&src.fine).into(),
         }
     }
@@ -255,7 +291,6 @@ impl From<&vello_encoding::BufferSizes> for ffi::BufferSizes {
             path_reduced_scan: src.path_reduced_scan.size_in_bytes(),
             path_monoids: src.path_monoids.size_in_bytes(),
             path_bboxes: src.path_bboxes.size_in_bytes(),
-            cubics: src.cubics.size_in_bytes(),
             draw_reduced: src.draw_reduced.size_in_bytes(),
             draw_monoids: src.draw_monoids.size_in_bytes(),
             info: src.info.size_in_bytes(),
@@ -265,10 +300,13 @@ impl From<&vello_encoding::BufferSizes> for ffi::BufferSizes {
             clip_bboxes: src.clip_bboxes.size_in_bytes(),
             draw_bboxes: src.draw_bboxes.size_in_bytes(),
             bump_alloc: src.bump_alloc.size_in_bytes(),
+            indirect_count: src.indirect_count.size_in_bytes(),
             bin_headers: src.bin_headers.size_in_bytes(),
             paths: src.paths.size_in_bytes(),
+            lines: src.lines.size_in_bytes(),
             bin_data: src.bin_data.size_in_bytes(),
             tiles: src.tiles.size_in_bytes(),
+            seg_counts: src.seg_counts.size_in_bytes(),
             segments: src.segments.size_in_bytes(),
             ptcl: src.ptcl.size_in_bytes(),
         }
