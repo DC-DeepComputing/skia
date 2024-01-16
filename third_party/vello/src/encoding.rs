@@ -5,7 +5,10 @@
 
 use crate::ffi;
 use {
-    peniko::{kurbo::{Affine, Cap, Join, Stroke}, Brush, Color, Fill, Mix},
+    peniko::{
+        kurbo::{Affine, Cap, Join, Stroke},
+        Brush, Color, Fill, Mix,
+    },
     std::pin::Pin,
     vello_encoding::{Encoding as VelloEncoding, RenderConfig, Transform},
 };
