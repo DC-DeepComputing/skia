@@ -39,6 +39,30 @@
       },
       "revId": "95ea1bed544cf9774bfdabd79b508bd694b746a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aae05e36_d6e5244d",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2024-01-16T22:07:30Z",
+      "side": 1,
+      "message": "I did not observe any stack corruption issues on Windows. I came across the skx build info from a previous AVX512 support patch dating back to 2021. I specifically tested the code on Windows and WSL but haven\u0027t conducted tests or run on MacOS.",
+      "parentUuid": "5b1c26e3_27de02f8",
+      "range": {
+        "startLine": 200,
+        "startChar": 42,
+        "endLine": 200,
+        "endChar": 63
+      },
+      "revId": "95ea1bed544cf9774bfdabd79b508bd694b746a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
