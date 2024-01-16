@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3513150c_511db473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-16T19:07:18Z",
+      "side": 1,
+      "message": "From our chats, I think webgpu layout from Graphite\u0027s POV will remain exactly std140 and 430, so I updated the comment to reflect where that\u0027s enforced.",
+      "revId": "cefa6f4673a08f9fe05063360cf2b8070292d8df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
