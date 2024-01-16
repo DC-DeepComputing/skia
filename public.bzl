@@ -1975,6 +1975,7 @@ PORTS_SRCS_UNIX = [
     "src/ports/SkOSFile_stdio.cpp",
     "src/ports/SkOSLibrary.h",
     "src/ports/SkOSLibrary_posix.cpp",
+    "src/ports/SkTypeface_FreeType.h",
 ]
 
 GL_SRCS_ANDROID = base_gl_srcs + [
