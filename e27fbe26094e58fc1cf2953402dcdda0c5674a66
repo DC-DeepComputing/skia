@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e91757e_dd120332",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-16T20:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "532b529a_596ae815",
+      "range": {
+        "startLine": 549,
+        "startChar": 8,
+        "endLine": 553,
+        "endChar": 9
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "490f4d29_4e2479e7",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c1aa28_c2d402ea",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-16T20:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "490f4d29_4e2479e7",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 0
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34f07210_96bc8c2f",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-01-16T18:58:28Z",
       "side": 1,
       "message": "Intended?",
+      "range": {
+        "startLine": 303,
+        "startChar": 32,
+        "endLine": 303,
+        "endChar": 36
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3feeeb92_4f4646ed",
+        "filename": "modules/bentleyottmann/tests/MyersTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-16T20:10:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34f07210_96bc8c2f",
       "range": {
         "startLine": 303,
         "startChar": 32,
