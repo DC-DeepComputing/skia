@@ -643,15 +643,65 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         SkASSERT(renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kDiscard);
         SkASSERT(resolveTexture);
 
-        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        int dstWidth = vulkanColorTexture->dimensions().width();
+        int dstHeight = vulkanColorTexture->dimensions().height();
+
+        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(
+                renderPassDesc, SkIRect::MakeWH(dstWidth, dstHeight));
         if (!loadPipeline) {
             SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
             return false;
         }
 
-        int dstWidth = vulkanColorTexture->dimensions().width();
-        int dstHeight = vulkanColorTexture->dimensions().height();
         this->setScissor(0, 0, dstWidth, dstHeight);
+
+        // Create vertex buffer
+        static constexpr int kLoadMSAAVertexBufferSize = sizeof(float) * 8; // 4 float2s
+        sk_sp<Buffer> vertexBuffer = VulkanBuffer::Make(fSharedContext,
+                                                        kLoadMSAAVertexBufferSize,
+                                                        BufferType::kVertex,
+                                                        AccessPattern::kGpuOnly);
+        VulkanBuffer& vulkanVertexBuffer = *(static_cast<VulkanBuffer*>(vertexBuffer.get()));
+        if (!vertexBuffer) {
+            SKGPU_LOG_E("Failed to create a vertex buffer");
+            // TODO: Free past relevant allocated structures
+            return false;
+        }
+        // TODO: Assert that vertexBuffer has VK_BUFFER_USAGE_VERTEX_BUFFER_BIT
+
+        // Calculate vertices in NDC
+        // (-1,-1); (-1, 1); (1,1); (1, -1)
+        // ^ for the whole image this will work
+        //-1.f, -1.f, -1.f, 1.f, 1.f, 1.f, 1.f, -1.f
+        const float vertices[8] = { 1.f,  1.f,
+                                    1.f, -1.f,
+                                   -1.f,  1.f,
+                                   -1.f, -1.f};
+
+        vulkanVertexBuffer.setBufferAccess(this, VK_ACCESS_TRANSFER_WRITE_BIT,
+                                           VK_PIPELINE_STAGE_TRANSFER_BIT);
+        this->submitPipelineBarriers();
+
+        // Populate vertex buffer
+        VULKAN_CALL(fSharedContext->interface(), CmdUpdateBuffer(
+                fPrimaryCommandBuffer,
+                vulkanVertexBuffer.vkBuffer(),
+                /*dstOffset=*/0,
+                kLoadMSAAVertexBufferSize, // TODO: confirm always a multiple of 4?
+                &vertices));
+
+    // Ensure the buffer update is completed and made visible before reading
+        vulkanVertexBuffer.setBufferAccess(this, VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT,
+                                           VK_PIPELINE_STAGE_VERTEX_INPUT_BIT);
+
+        // Bind vertex buffer
+        // TODO: Set buffer access
+        this->bindVertexBuffers(vertexBuffer.get(),
+                                /*vertexOffset=*/0,
+                                /*instanceBuffer=*/nullptr,
+                                /*instanceOffset=*/0);
+
+        this->trackResource(std::move(vertexBuffer));
     }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
@@ -668,8 +718,12 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     if (loadPipeline) {
         // Store the current active pipeline so we can re-bind it after loading MSAA from resolve
         const VulkanGraphicsPipeline* priorActivePipeline = fActiveGraphicsPipeline;
+        bool priorUniBindVal = fBindUniformBuffers;
+        bool priorTextureBindVal = fBindTextureSamplers;
         this->bindGraphicsPipeline(loadPipeline.get());
-        this->submitPipelineBarriers(true);
+        fBindUniformBuffers = false;
+        fBindTextureSamplers = false;
+        //this->submitPipelineBarriers(true); // TODO: Is this still necessary?
 
         // Obtain and populate a descriptor set that contains one input attachment
         STArray<1, DescriptorData> inputDescriptors =
@@ -685,7 +739,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         fInputAttachmentDescSetToBind = *set->descriptorSet();
         this->trackResource(std::move(set));
 
-        this->bindUniformBuffers(); // Forces the uniform intrinsic constant to bind
+        // this->bindUniformBuffers(); // Forces the uniform intrinsic constant to bind
 
         // Update and bind input attachment descriptor
         {
@@ -695,9 +749,6 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             textureInfo.imageView = vulkanResolveTexture->
                     getImageView(VulkanImageView::Usage::kAttachment)->imageView();
             textureInfo.imageLayout = vulkanResolveTexture->currentLayout();
-            //VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            // textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            //TODO review this
 
             VkWriteDescriptorSet writeInfo;
             memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -732,7 +783,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             fInputAttachmentDescSetToBind = VK_NULL_HANDLE;
         }
 
-        this->draw(PrimitiveType::kTriangleStrip, 0, 4);
+        this->draw(PrimitiveType::kTriangleStrip, /*baseVertex=*/0, /*vertexCount=*/4);
 
         // TODO: Use VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS if we add secondary cmd buffers
         VULKAN_CALL(fSharedContext->interface(),
@@ -740,15 +791,18 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
 
         // If we loaded the resolve attachment, then we would have set the image layout to be
-        // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an input
-        // attachment. However, when we switched to the main subpass it will transition the layout
-        // internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our tracking
-        // of the layout to match the new layout.
+        // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an
+        // input attachment. However, when we switched to the main subpass it will transition the
+        // layout internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our
+        // tracking of the layout to match the new layout.
         vulkanResolveTexture->updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 
         if (priorActivePipeline) {
             this->bindGraphicsPipeline(priorActivePipeline);
         }
+        // TODO Clean this
+        fBindUniformBuffers = priorUniBindVal;
+        fBindTextureSamplers = priorTextureBindVal;
     }
 
     return true;
