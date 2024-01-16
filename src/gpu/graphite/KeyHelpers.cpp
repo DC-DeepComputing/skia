@@ -1475,7 +1475,7 @@ static void add_to_key(const KeyContext& keyContext,
     ImageShaderBlock::ImageData imgData(shader->sampling(),
                                         shader->tileModeX(),
                                         shader->tileModeY(),
-                                        view.proxy()->dimensions(),
+                                        shader->image()->imageInfo().dimensions(),
                                         shader->subset(),
                                         ReadSwizzle::kRGBA);
     imgData.fSampling = newSampling;

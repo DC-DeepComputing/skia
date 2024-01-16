@@ -25,6 +25,7 @@ class Recorder;
 class Image final : public Image_Base {
 public:
     Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&);
+    Image(uint32_t uniqueID, TextureProxyView, const SkISize&, const SkColorInfo&);
     ~Image() override;
 
     bool onHasMipmaps() const override {

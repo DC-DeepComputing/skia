@@ -57,6 +57,7 @@ public:
     const SkColorInfo& colorInfo() const { return fImageInfo.colorInfo(); }
     TextureProxy* target()                { return fTarget.get(); }
     const TextureProxy* target()    const { return fTarget.get(); }
+    sk_sp<TextureProxy> refTarget()       { return fTarget; }
 
     TextureProxyView readSurfaceView(const Caps*);
 
@@ -77,6 +78,7 @@ public:
     bool recordTextUploads(TextAtlasManager*);
     bool recordUpload(Recorder* recorder,
                       sk_sp<TextureProxy> targetProxy,
+                      const SkISize& targetDimensions,
                       const SkColorInfo& srcColorInfo,
                       const SkColorInfo& dstColorInfo,
                       const std::vector<MipLevel>& levels,

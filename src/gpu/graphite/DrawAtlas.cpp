@@ -161,8 +161,14 @@ bool DrawAtlas::recordUploads(UploadList* ul, Recorder* recorder) {
 
                 // Src and dst colorInfo are the same
                 SkColorInfo colorInfo(fColorType, kUnknown_SkAlphaType, nullptr);
-                if (!ul->recordUpload(recorder, sk_ref_sp(proxy), colorInfo, colorInfo, levels,
-                                      dstRect, /*ConditionalUploadContext=*/nullptr)) {
+                if (!ul->recordUpload(recorder,
+                                      sk_ref_sp(proxy),
+                                      proxy->dimensions(),
+                                      colorInfo,
+                                      colorInfo,
+                                      levels,
+                                      dstRect,
+                                      /*ConditionalUploadContext=*/nullptr)) {
                     return false;
                 }
             }

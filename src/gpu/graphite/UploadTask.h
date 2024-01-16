@@ -72,6 +72,7 @@ class UploadInstance {
 public:
     static UploadInstance Make(Recorder*,
                                sk_sp<TextureProxy> targetProxy,
+                               const SkISize& dimensions,
                                const SkColorInfo& srcColorInfo,
                                const SkColorInfo& dstColorInfo,
                                const std::vector<MipLevel>& levels,
@@ -116,6 +117,7 @@ class UploadList {
 public:
     bool recordUpload(Recorder*,
                       sk_sp<TextureProxy> targetProxy,
+                      const SkISize& dimensions,
                       const SkColorInfo& srcColorInfo,
                       const SkColorInfo& dstColorInfo,
                       const std::vector<MipLevel>& levels,

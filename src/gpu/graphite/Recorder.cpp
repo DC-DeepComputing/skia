@@ -149,7 +149,11 @@ std::unique_ptr<Recording> Recorder::snap() {
         for (int j = 0; j < block->numTextures(); ++j) {
             const TextureDataBlock::SampledTexture& tex = block->texture(j);
 
-            if (tex.first->isLazy()) {
+            // It's uncommon to encounter a fully-lazy proxy here, but we can for example when
+            // recording mipmap regeneration commands on a fully-lazy proxy, in which case the proxy
+            // is used as a source for draws. These proxies should not be tracked for instantiation
+            // by the Recording.
+            if (tex.first->isLazy() && !tex.first->isFullyLazy()) {
                 if (tex.first->isVolatile()) {
                     volatileLazyProxies.insert(tex.first);
                 } else {
@@ -319,7 +323,9 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
     // Add UploadTask to Recorder
     UploadInstance upload = UploadInstance::Make(this,
                                                  std::move(proxy),
-                                                 colorInfo, colorInfo,
+                                                 proxy->dimensions(),
+                                                 colorInfo,
+                                                 colorInfo,
                                                  mipLevels,
                                                  SkIRect::MakeSize(backendTex.dimensions()),
                                                  std::make_unique<ImageUploadContext>());

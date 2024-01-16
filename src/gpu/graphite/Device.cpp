@@ -443,7 +443,10 @@ TextureProxyView Device::createCopy(const SkIRect* subset,
 
         auto readView = static_cast<Surface*>(surface.get())->readSurfaceView();
         if (mipmapped == Mipmapped::kYes) {
-            if (!GenerateMipmaps(fRecorder, readView.refProxy(), this->imageInfo().colorInfo())) {
+            if (!GenerateMipmaps(fRecorder,
+                                 readView.refProxy(),
+                                 this->imageInfo().dimensions(),
+                                 this->imageInfo().colorInfo())) {
                 SKGPU_LOG_W("Device::createCopy: Failed to generate mipmaps");
             }
         }
@@ -494,8 +497,8 @@ TextureProxyView TextureProxyView::Copy(Recorder* recorder,
     recorder->priv().add(std::move(copyTask));
 
     if (mipmapped == Mipmapped::kYes) {
-        if (!GenerateMipmaps(recorder, dest, srcColorInfo)) {
-            SKGPU_LOG_W("TextureProxyView::Copy: Failed to generate mipmaps");
+        if (!GenerateMipmaps(recorder, dest, srcRect.size(), srcColorInfo)) {
+            SKGPU_LOG_W("TextureProxyView::Copy: Failed to generate mipmaps for copy dst");
         }
     }
 
@@ -578,8 +581,14 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
 
     this->flushPendingWorkToRecorder();
 
-    return fDC->recordUpload(fRecorder, sk_ref_sp(target), src.info().colorInfo(),
-                             this->imageInfo().colorInfo(), levels, dstRect, nullptr);
+    return fDC->recordUpload(fRecorder,
+                             fDC->refTarget(),
+                             fDC->imageInfo().dimensions(),
+                             src.info().colorInfo(),
+                             this->imageInfo().colorInfo(),
+                             levels,
+                             dstRect,
+                             nullptr);
 }
 
 
