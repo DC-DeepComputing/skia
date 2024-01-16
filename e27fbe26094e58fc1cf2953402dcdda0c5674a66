@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "532b529a_596ae815",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-16T18:57:51Z",
+      "side": 1,
+      "message": "Can this be replaced by `this-\u003ehandleEndings(horizontals);`?",
+      "range": {
+        "startLine": 549,
+        "startChar": 8,
+        "endLine": 553,
+        "endChar": 9
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "490f4d29_4e2479e7",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-16T18:57:51Z",
+      "side": 1,
+      "message": "That\u0027s _super spooky_ and I hope that is somehow fixable, but looking at `EventQueue::operator[]` I can see why that might not be straightforward.\n\nIf it\u0027s not fixable, I would strongly consider removing the iterators (too dangerous) and using a less-flexible pattern like `eventQueue.foreach([\u0026](const Event\u0026 event) { ... });` instead.",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 0
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
