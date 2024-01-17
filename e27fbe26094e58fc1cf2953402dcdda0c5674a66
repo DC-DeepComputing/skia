@@ -143,6 +143,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "029f1517_9e5687d7",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T14:41:18Z",
+      "side": 1,
+      "message": "OK. Now that I understand this better, it seems like the reference actually doesn\u0027t add value--either way, we are handling a complete temporary Event object. There\u0027s no existing object that we can cheaply hold a reference to; the iterator is synthesizing Event objects on the fly. It\u0027s _harmless_ to use `const Event\u0026 event` here, because of lifetime extension, but it\u0027s not _beneficial_.\n\nHmm, I guess no complaints.",
+      "parentUuid": "d07ba299_3b9399ba",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 0
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34f07210_96bc8c2f",
