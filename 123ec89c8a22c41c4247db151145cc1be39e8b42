@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d7bd78e_9996b5b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-17T21:30:11Z",
+      "side": 1,
+      "message": "I just noticed that you will also need to add your name/email to the AUTHORS file in the root of the Skia repository. You can include that change as part of this one. (This is separate from signing the CLA -- I can see that you already did that. Thanks!)",
+      "revId": "123ec89c8a22c41c4247db151145cc1be39e8b42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
