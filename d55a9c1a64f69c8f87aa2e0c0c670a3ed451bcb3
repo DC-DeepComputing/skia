@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a130d70e_34a2dac0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-17T17:24:15Z",
+      "side": 1,
+      "message": "In my COLRv1 benchmarking, this does not seem to have a measurable effect. 🤔",
+      "revId": "d55a9c1a64f69c8f87aa2e0c0c670a3ed451bcb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
