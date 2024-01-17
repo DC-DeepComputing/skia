@@ -16,6 +16,24 @@
       "message": "Hi Kevin - could you help me get DM built with Bazel? Here\u0027s what I tried so far but could not quite complete it. Background: I am trying to performance analyze / profile some Fontations font code, but it seems like when I do that with the GN + Bazel build, `perf` fails to resolve symbols for the rust functions.",
       "revId": "c571abfa2aa218ccada7528e27c66618bff1abb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab4aff1c_da41208a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-17T16:29:00Z",
+      "side": 1,
+      "message": "I don\u0027t think we should build DM using the \"cc_binary_with_flags\" rule, as that is not viable long term and I want to stop adding new dependencies to skia_public and skia_private in favor of the modularized rules. I wouldn\u0027t be shocked if that transition code is borked in such a way that is causing the rust issues.\n\nUnfortunately, we don\u0027t have enough of those modules to build all of dm using those modules. You could try building a more stripped down binary, following the example of https://github.com/google/skia/tree/main/example/external_client",
+      "parentUuid": "acf77bc8_c733cc0a",
+      "revId": "c571abfa2aa218ccada7528e27c66618bff1abb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
