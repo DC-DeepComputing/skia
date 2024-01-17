@@ -22,6 +22,29 @@
       },
       "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3301eb23_70dca7f4",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T15:02:07Z",
+      "side": 1,
+      "message": "`remove_if` is order-preserving, but we clearly don\u0027t care about the order because we sort on the very next line. If the first element is removed, every other element in the set will be copied.\n\n`partition` might be better; it allows elements to get out of order and so it copies less.\n\n(Even `partition` isn\u0027t ideal because we only care about the left side of the partition, and partition will preserve the values in the \"removed\" elements, but I don\u0027t know of a \"left-side-only partition\" algorithm.)",
+      "range": {
+        "startLine": 643,
+        "startChar": 0,
+        "endLine": 646,
+        "endChar": 0
+      },
+      "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
