@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a50ee933_02a5376b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-17T18:13:42Z",
+      "side": 1,
+      "message": "I realize it\u0027s not obvious to find the build logs. I just recorded the series of steps to get from the gerrit page, to the build log for a failing build task, hope this helps:",
+      "revId": "54b85daf2958ddcc213539df380375ccfebc8df8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85f9e46d_d3b5a65e",
