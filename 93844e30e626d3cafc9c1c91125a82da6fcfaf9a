@@ -117,6 +117,30 @@
       },
       "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a8ac1df_4f6cd9c1",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T16:04:44Z",
+      "side": 1,
+      "message": "Imagine we have a container with: `{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}`\n\nAnd our predicate function eliminates values equal to 2.\n\n`remove_if` will copy 8 elements: {1, **3, 4, 5, 6, 7, 8, 9, 10**, 10}\n\n`partition` will do one swap: {1, **10**, 3, 4, 5, 6, 7, 8, 9, **2**)}\n\nBoth are O(n) but `partition` will generally do less work, because when `remove_if` eliminates an item, it moves every other item forward one slot, and `partition` does not. \n\nCaveat: if you are removing most or all of your items, `partition` may be slower, because it preserves the \"removed\" item\u0027s values. So this technique doesn\u0027t work if you think the common case is removing most or all items.",
+      "parentUuid": "78eb79a6_371f5d8c",
+      "range": {
+        "startLine": 643,
+        "startChar": 0,
+        "endLine": 646,
+        "endChar": 0
+      },
+      "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
