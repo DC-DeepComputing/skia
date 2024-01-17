@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e303540f_66cd1b06",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-17T20:24:21Z",
+      "side": 1,
+      "message": "Remove the commented out includes here?",
+      "revId": "57415a7027ed8cb86d408e129de52164576328a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
