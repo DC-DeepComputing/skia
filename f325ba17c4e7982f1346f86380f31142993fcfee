@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62e0d9b5_37fbef96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T19:32:15Z",
+      "side": 1,
+      "message": "Not sure if Brian wants to review as well, but LGTM % nit",
+      "revId": "f325ba17c4e7982f1346f86380f31142993fcfee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "188ad92c_1cac21a3",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T19:32:15Z",
+      "side": 1,
+      "message": "Avoid `const\u0026` on `SkSpan`",
+      "range": {
+        "startLine": 273,
+        "startChar": 27,
+        "endLine": 273,
+        "endChar": 55
+      },
+      "revId": "f325ba17c4e7982f1346f86380f31142993fcfee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
