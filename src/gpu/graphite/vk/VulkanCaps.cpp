@@ -1313,10 +1313,11 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
 
         VulkanRenderPass::VulkanRenderPassMetaData rpMetaData {renderPassDesc};
 
-        // 1 uint32_t's render step id, 1 for paint id, and a variable number for the render pass
+        // Reserve 3 uint32s for the render step id, paint id, and write swizzle. The RenderPass
+        // has a variable number, so consult rpMetaData to determine how many uint32s it requires.
         UniqueKey::Builder builder(&pipelineKey,
                                    kGraphicsPipelineDomain,
-                                   2 + rpMetaData.fUint32DataCnt,
+                                   3 + rpMetaData.fUint32DataCnt,
                                    "GraphicsPipeline");
         int idx = 0;
         // add graphicspipelinedesc key
