@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41a7c240_6b55f998",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-17T15:58:36Z",
+      "side": 1,
+      "message": "My guess is that every compute step does not need all the functionality of these functions. So the vast majority would end up implementing a default failure anyways. Though I do imagine there are things like computeSkSL() that all compute steps are going to need to implement?",
+      "parentUuid": "5f130b04_12f9535a",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 1
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1db702c6_9f7f141f",
         "filename": "src/gpu/graphite/compute/ComputeStep.h",
         "patchSetId": 2
@@ -118,6 +142,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea611f4b_0194d831",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-17T15:58:36Z",
+      "side": 1,
+      "message": "I don\u0027t think we need a ref here. If I follow the logic correctly, all indirect buffers should be coming from a buffer manager which handles adding the refs to the command buffer.",
+      "parentUuid": "88958efb_93d2c5d6",
+      "range": {
+        "startLine": 864,
+        "startChar": 4,
+        "endLine": 864,
+        "endChar": 45
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b199722_f79a332c",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 2
@@ -180,6 +228,75 @@
         "startChar": 0,
         "endLine": 1713,
         "endChar": 43
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed83567b_30cd3c00",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1742,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-17T15:58:36Z",
+      "side": 1,
+      "message": "isn\u0027t this more a description of the CountStep?",
+      "range": {
+        "startLine": 1737,
+        "startChar": 1,
+        "endLine": 1742,
+        "endChar": 40
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a548fad1_f8396066",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1747,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-17T15:58:36Z",
+      "side": 1,
+      "message": "should we comment that this should match kWorkgropuCount?",
+      "range": {
+        "startLine": 1747,
+        "startChar": 38,
+        "endLine": 1747,
+        "endChar": 41
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96009e74_47b0333a",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-17T15:58:36Z",
+      "side": 1,
+      "message": "nit: maybe call this indirectStep, and then countStep below. By the time I got to actually adding these steps to commands I couldn\u0027t remember what step1 and step2 meant.",
+      "range": {
+        "startLine": 1765,
+        "startChar": 6,
+        "endLine": 1765,
+        "endChar": 11
       },
       "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
