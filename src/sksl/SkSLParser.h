@@ -247,10 +247,9 @@ private:
 
     std::unique_ptr<Statement> discardStatement();
 
-    // A function's top-level block needs to implicitly include the parameters from the function
-    // declaration (which appear in the source before the block is opened). For inner blocks, an
-    // empty span should always be passed.
-    std::unique_ptr<Statement> block(SkSpan<Variable* const> parametersForTopLevel = {});
+    std::unique_ptr<Statement> block();
+
+    std::unique_ptr<Statement> blockWithSymbols(std::unique_ptr<SymbolTable>& symbolTable);
 
     std::unique_ptr<Statement> expressionStatement();
 

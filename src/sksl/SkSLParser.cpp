@@ -639,14 +639,24 @@ bool Parser::prototypeFunction(SkSL::FunctionDeclaration* decl) {
 bool Parser::defineFunction(SkSL::FunctionDeclaration* decl) {
     // Create a symbol table for the function parameters.
     const Context& context = fCompiler.context();
-
-    // Parse the function body.
     Token bodyStart = this->peek();
-    SkSpan<Variable* const> parametersForTopLevel;
-    if (decl) {
-        parametersForTopLevel = decl->parameters();
+
+    std::unique_ptr<SymbolTable> symbolTable;
+    std::unique_ptr<Statement> body;
+    {
+        AutoSymbolTable symbols(this, &symbolTable);
+
+        // At function top-level, parameters from the function declaration are implicitly injected
+        // into the block's symbol table.
+        if (decl) {
+            for (Variable* param : decl->parameters()) {
+                symbolTable->addWithoutOwnership(fCompiler.context(), param);
+            }
+        }
+
+        // Parse the function body.
+        body = this->blockWithSymbols(symbolTable);
     }
-    std::unique_ptr<Statement> body = this->block(parametersForTopLevel);
 
     // If there was a problem with the declarations or body, don't actually create a definition.
     if (!decl || !body) {
@@ -1539,6 +1549,7 @@ std::unique_ptr<Statement> Parser::switchStatement() {
         // context's active symbol table to the enclosing block instead of the switch's inner block.
         AutoSymbolTable symbols(this, &symbolTable);
 
+        // Consume `case n:` blocks.
         while (this->peek().fKind == Token::Kind::TK_CASE) {
             if (!this->switchCase(&values, &caseBlocks)) {
                 return nullptr;
@@ -1551,6 +1562,7 @@ std::unique_ptr<Statement> Parser::switchStatement() {
                 return nullptr;
             }
         }
+
         if (!this->expect(Token::Kind::TK_RBRACE, "'}'")) {
             return nullptr;
         }
@@ -1698,7 +1710,14 @@ std::unique_ptr<Statement> Parser::discardStatement() {
 }
 
 /* LBRACE statement* RBRACE */
-std::unique_ptr<Statement> Parser::block(SkSpan<Variable* const> parametersForTopLevel) {
+std::unique_ptr<Statement> Parser::block() {
+    std::unique_ptr<SymbolTable> symbolTable;
+    AutoSymbolTable symbols(this, &symbolTable);
+
+    return this->blockWithSymbols(symbolTable);
+}
+
+std::unique_ptr<Statement> Parser::blockWithSymbols(std::unique_ptr<SymbolTable>& symbolTable) {
     AutoDepth depth(this);
     Token start;
     if (!this->expect(Token::Kind::TK_LBRACE, "'{'", &start)) {
@@ -1708,35 +1727,26 @@ std::unique_ptr<Statement> Parser::block(SkSpan<Variable* const> parametersForTo
         return nullptr;
     }
 
-    std::unique_ptr<SymbolTable> symbolTable;
+    // Consume statements until we reach the closing brace.
     StatementArray statements;
-    {
-        AutoSymbolTable symbols(this, &symbolTable);
-
-        // At function top-level, parameters from the function declaration are implicitly injected
-        // into the block's symbol table.
-        for (Variable* param : parametersForTopLevel) {
-            this->symbolTable()->addWithoutOwnership(fCompiler.context(), param);
+    for (;;) {
+        Token::Kind tokenKind = this->peek().fKind;
+        if (tokenKind == Token::Kind::TK_RBRACE) {
+            this->nextToken();
+            break;
         }
-        // Consume statements until we reach the closing brace.
-        for (;;) {
-            Token::Kind tokenKind = this->peek().fKind;
-            if (tokenKind == Token::Kind::TK_RBRACE) {
-                this->nextToken();
-                break;
-            }
-            if (tokenKind == Token::Kind::TK_END_OF_FILE) {
-                this->error(this->peek(), "expected '}', but found end of file");
-                return nullptr;
-            }
-            if (std::unique_ptr<Statement> statement = this->statement()) {
-                statements.push_back(std::move(statement));
-            }
-            if (fEncounteredFatalError) {
-                return nullptr;
-            }
+        if (tokenKind == Token::Kind::TK_END_OF_FILE) {
+            this->error(this->peek(), "expected '}', but found end of file");
+            return nullptr;
+        }
+        if (std::unique_ptr<Statement> statement = this->statement()) {
+            statements.push_back(std::move(statement));
+        }
+        if (fEncounteredFatalError) {
+            return nullptr;
         }
     }
+
     return SkSL::Block::MakeBlock(this->rangeFrom(start),
                                   std::move(statements),
                                   Block::Kind::kBracedScope,
