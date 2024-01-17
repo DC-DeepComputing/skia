@@ -57,6 +57,7 @@ skia_cc_library(
     ],
     visibility = [
         "//bench:__pkg__",
+        "//dm:__pkg__",
         "//modules/skottie:__pkg__",
         "//tests:__pkg__",
         "//tools/testrunners/benchmark/target:__pkg__",

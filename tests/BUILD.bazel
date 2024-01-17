@@ -23,7 +23,10 @@ skia_cc_library(
         "Test.h",
         "TestHarness.h",
     ],
-    visibility = ["//tools/testrunners/unit:__pkg__"],
+    visibility = [
+        "//dm:__pkg__",
+        "//tools/testrunners/unit:__pkg__",
+    ],
     deps = [
         "//:core",
         "//src/base",

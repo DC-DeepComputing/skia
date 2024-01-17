@@ -159,7 +159,10 @@ skia_cc_library(
     name = "proc_stats",
     srcs = ["ProcStats.cpp"],
     hdrs = ["ProcStats.h"],
-    visibility = ["//tools/testrunners/benchmark:__pkg__"],
+    visibility = [
+        "//dm:__pkg__",
+        "//tools/testrunners/benchmark:__pkg__",
+    ],
     deps = ["//:skia_internal"],
 )
 
