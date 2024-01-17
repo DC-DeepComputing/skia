@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f130b04_12f9535a",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "I know this prior work is separate from this change, but why not simply make these methods pure virtual and let the compiler enforce this for you? Or do you need this parent class of `ComputeStep` to be instantiable on its own?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 1
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db702c6_9f7f141f",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "nit: Consider making this simply `ComputeTypes.h` to slightly decrease fragility of this hard-coded file location+name",
+      "range": {
+        "startLine": 86,
+        "startChar": 34,
+        "endLine": 86,
+        "endChar": 66
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921475b4_7753115d",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "nit: Perhaps `Add a new indirect computer step`... to differentiate from the identical comment above",
+      "range": {
+        "startLine": 133,
+        "startChar": 14,
+        "endLine": 133,
+        "endChar": 24
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b904606d_a66e4421",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "Same here (just do file name, not location)",
+      "range": {
+        "startLine": 138,
+        "startChar": 29,
+        "endLine": 138,
+        "endChar": 61
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88958efb_93d2c5d6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "Yes, I imagine you want to be calling `this-\u003etrackResource()` here so this cmd buffer holds a ref to the indirect buffer.",
+      "range": {
+        "startLine": 864,
+        "startChar": 4,
+        "endLine": 864,
+        "endChar": 45
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b199722_f79a332c",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "You probably want to add a ref to the indirect buffer here using `trackResource()`",
+      "range": {
+        "startLine": 771,
+        "startChar": 0,
+        "endLine": 780,
+        "endChar": 1
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2cd36d3_98bc93a5",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1705,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "nit: Maybe add a `TODO` tag in addition to the bug #?\nI\u0027m in the habit of doing `// TODO(b/bugid): blahblahblah` but I\u0027m not sure if that was based on any real convention.",
+      "range": {
+        "startLine": 1705,
+        "startChar": 4,
+        "endLine": 1705,
+        "endChar": 44
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "667604ba_d65773d4",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1713,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "For my own understanding... how were these values selected?",
+      "range": {
+        "startLine": 1711,
+        "startChar": 0,
+        "endLine": 1713,
+        "endChar": 43
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16ce2c95_f383fdeb",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:37:20Z",
+      "side": 1,
+      "message": "nit: capitalize `Shared` here and above",
+      "range": {
+        "startLine": 1839,
+        "startChar": 26,
+        "endLine": 1839,
+        "endChar": 27
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
