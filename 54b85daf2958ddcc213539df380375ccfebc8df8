@@ -34,6 +34,24 @@
       "parentUuid": "85f9e46d_d3b5a65e",
       "revId": "54b85daf2958ddcc213539df380375ccfebc8df8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26133405_ae0b31aa",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2024-01-17T16:42:47Z",
+      "side": 1,
+      "message": "Yes, I just did the modifications to fix the build errors, just trying to push the updates to the Gerrit.",
+      "parentUuid": "85f9e46d_d3b5a65e",
+      "revId": "54b85daf2958ddcc213539df380375ccfebc8df8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
