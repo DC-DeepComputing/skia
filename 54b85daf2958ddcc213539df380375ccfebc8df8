@@ -16,6 +16,24 @@
       "message": "If you look at the build logs, you\u0027ll see errors on this line (and others). I recently added `-fno-lax-vector-conversions` to the clang command line arguments. Clang will still allow `F` to be silently converted to `__mm512`, but it will not allow any integer vectors to be converted to `__mm512i`. You can see how I had to fix this down in the HSW section. The fix is pretty easy, it just requires explicit casts to `__m512i` when passing any integer vector to an intrinsic, and then casting any integer vector back to the proper return type.",
       "revId": "54b85daf2958ddcc213539df380375ccfebc8df8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16d4ff4a_21e54a98",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-17T16:41:11Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/793316 is a good reference for the necessary changes",
+      "parentUuid": "85f9e46d_d3b5a65e",
+      "revId": "54b85daf2958ddcc213539df380375ccfebc8df8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
