@@ -34,6 +34,7 @@ skia_filegroup(
     name = "typeface_freetype_hdrs",
     srcs = [
         "SkFontHost_FreeType_common.h",
+        "SkTypeface_FreeType.h",
     ],
 )
 
@@ -287,6 +288,7 @@ skia_filegroup(
     ] + select({
         ":uses_freetype": [
             "SkFontHost_FreeType_common.h",
+            "SkTypeface_FreeType.h",
             "SkFontMgr_custom.h",
         ],
         "//conditions:default": [],
