@@ -164,6 +164,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "417149fd_3c39f5f5",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:59:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ea611f4b_0194d831",
+      "range": {
+        "startLine": 864,
+        "startChar": 4,
+        "endLine": 864,
+        "endChar": 45
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b199722_f79a332c",
@@ -177,6 +201,30 @@
       "writtenOn": "2024-01-17T15:37:20Z",
       "side": 1,
       "message": "You probably want to add a ref to the indirect buffer here using `trackResource()`",
+      "range": {
+        "startLine": 771,
+        "startChar": 0,
+        "endLine": 780,
+        "endChar": 1
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc3a01f_3482a5d2",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-17T15:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b199722_f79a332c",
       "range": {
         "startLine": 771,
         "startChar": 0,
