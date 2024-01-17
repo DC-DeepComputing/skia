@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a2943bd_0988e9cd",
+        "filename": "modules/bentleyottmann/include/Myers.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T14:43:35Z",
+      "side": 1,
+      "message": "Don\u0027t pass spans by `const SkSpan\u003c\u003e\u0026`. It\u0027s more efficient to just pass the span.\n\nhttp://go/totw/93#as-function-parameters\n\n\"As with string_view, it is usually better to pass Span by value when used as a function parameter - this form is slightly faster, and produces smaller code.\"",
+      "range": {
+        "startLine": 107,
+        "startChar": 43,
+        "endLine": 107,
+        "endChar": 72
+      },
+      "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
