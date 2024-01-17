@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d07ba299_3b9399ba",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-17T14:35:40Z",
+      "side": 1,
+      "message": "c++ reference lifetime extension FTW",
+      "parentUuid": "d651bab6_9066c600",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 0
+      },
+      "revId": "e27fbe26094e58fc1cf2953402dcdda0c5674a66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34f07210_96bc8c2f",
