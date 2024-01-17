@@ -14,11 +14,14 @@
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLNop.h"
+#include "src/sksl/ir/SkSLSymbol.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
+#include "src/sksl/ir/SkSLVariable.h"
 
 namespace SkSL {
 
@@ -65,6 +68,41 @@ std::string ForStatement::description() const {
     return result;
 }
 
+static void hoist_vardecl_symbols_into_outer_scope(const Context& context,
+                                                   const Block& initBlock,
+                                                   SymbolTable* hoistedSymbols) {
+    class SymbolHoister : public ProgramVisitor {
+    public:
+        SymbolHoister(const Context& ctx, SymbolTable* initSym, SymbolTable* hoistSym)
+                : fContext(ctx)
+                , fInitializerSymbols(initSym)
+                , fHoistedSymbols(hoistSym) {}
+
+        bool visitStatement(const Statement& stmt) override {
+            if (stmt.is<VarDeclaration>()) {
+                // Hoist the variable's symbol outside of the initializer block's symbol table, and
+                // into the outer symbol table. If the initializer's symbol table originally had
+                // ownership, transfer it. (If the variable was owned elsewhere, it can keep its
+                // current owner.)
+                const VarDeclaration& vardecl = stmt.as<VarDeclaration>();
+                Variable* var = vardecl.var();
+                if (std::unique_ptr<Symbol> varSymbol = fInitializerSymbols->removeSymbol(var)) {
+                    fHoistedSymbols->add(fContext, std::move(varSymbol));
+                } else {
+                    fHoistedSymbols->addWithoutOwnership(fContext, var);
+                }
+            }
+            return false;
+        }
+
+        const Context& fContext;
+        SymbolTable* fInitializerSymbols;
+        SymbolTable* fHoistedSymbols;
+    };
+
+    SymbolHoister{context, initBlock.symbolTable(), hoistedSymbols}.visitStatement(initBlock);
+}
+
 std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
                                                  Position pos,
                                                  ForLoopPositions positions,
@@ -74,8 +112,8 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
                                                  std::unique_ptr<Statement> statement,
                                                  std::unique_ptr<SymbolTable> symbolTable) {
     bool isSimpleInitializer = is_simple_initializer(initializer.get());
-    bool isVardeclBlockInitializer =
-            !isSimpleInitializer && is_vardecl_block_initializer(initializer.get());
+    bool isVardeclBlockInitializer = !isSimpleInitializer &&
+                                     is_vardecl_block_initializer(initializer.get());
 
     if (!isSimpleInitializer && !isVardeclBlockInitializer) {
         context.fErrors->error(initializer->fPosition, "invalid for loop initializer");
@@ -121,17 +159,34 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
         // conceptually equivalent to synthesize a scope, declare the variables, and then emit a for
         // statement with an empty init-stmt. (Note that we can't just do this transformation
         // unilaterally for all for-statements, because the resulting for loop isn't ES2-compliant.)
+        std::unique_ptr<SymbolTable> hoistedSymbols = symbolTable->insertNewParent();
+        hoist_vardecl_symbols_into_outer_scope(context, initializer->as<Block>(),
+                                               hoistedSymbols.get());
         StatementArray scope;
         scope.push_back(std::move(initializer));
-        scope.push_back(ForStatement::Make(context, pos, positions, /*initializer=*/nullptr,
-                                           std::move(test), std::move(next), std::move(statement),
-                                           std::move(unrollInfo), /*symbolTable=*/nullptr));
-        return Block::Make(pos, std::move(scope), Block::Kind::kBracedScope,
-                           std::move(symbolTable));
+        scope.push_back(ForStatement::Make(context,
+                                           pos,
+                                           positions,
+                                           /*initializer=*/nullptr,
+                                           std::move(test),
+                                           std::move(next),
+                                           std::move(statement),
+                                           std::move(unrollInfo),
+                                           std::move(symbolTable)));
+        return Block::Make(pos,
+                           std::move(scope),
+                           Block::Kind::kBracedScope,
+                           std::move(hoistedSymbols));
     }
 
-    return ForStatement::Make(context, pos, positions, std::move(initializer), std::move(test),
-                              std::move(next), std::move(statement), std::move(unrollInfo),
+    return ForStatement::Make(context,
+                              pos,
+                              positions,
+                              std::move(initializer),
+                              std::move(test),
+                              std::move(next),
+                              std::move(statement),
+                              std::move(unrollInfo),
                               std::move(symbolTable));
 }
 
