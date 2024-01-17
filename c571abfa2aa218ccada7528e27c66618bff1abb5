@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf77bc8_c733cc0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2024-01-17T15:22:51Z",
+      "side": 1,
+      "message": "Hi Kevin - could you help me get DM built with Bazel? Here\u0027s what I tried so far but could not quite complete it. Background: I am trying to performance analyze / profile some Fontations font code, but it seems like when I do that with the GN + Bazel build, `perf` fails to resolve symbols for the rust functions.",
+      "revId": "c571abfa2aa218ccada7528e27c66618bff1abb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
