@@ -19,7 +19,7 @@
 #include "modules/sksg/include/SkSGInvalidationController.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
-#include "src/ports/SkFontHost_FreeType_common.h"
+#include "src/ports/SkTypeface_FreeType.h"
 #include "tools/skui/InputState.h"
 #include "tools/skui/ModifierKey.h"
 
