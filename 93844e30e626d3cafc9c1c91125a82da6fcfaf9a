@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cf72d13_1e571f8b",
+        "filename": "modules/bentleyottmann/include/Myers.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-17T15:39:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8a2943bd_0988e9cd",
+      "range": {
+        "startLine": 107,
+        "startChar": 43,
+        "endLine": 107,
+        "endChar": 72
+      },
+      "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3301eb23_70dca7f4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-17T15:02:07Z",
       "side": 1,
       "message": "`remove_if` is order-preserving, but we clearly don\u0027t care about the order because we sort on the very next line. If the first element is removed, every other element in the set will be copied.\n\n`partition` might be better; it allows elements to get out of order and so it copies less.\n\n(Even `partition` isn\u0027t ideal because we only care about the left side of the partition, and partition will preserve the values in the \"removed\" elements, but I don\u0027t know of a \"left-side-only partition\" algorithm.)",
+      "range": {
+        "startLine": 643,
+        "startChar": 0,
+        "endLine": 646,
+        "endChar": 0
+      },
+      "revId": "93844e30e626d3cafc9c1c91125a82da6fcfaf9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78eb79a6_371f5d8c",
+        "filename": "modules/bentleyottmann/src/Myers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-17T15:39:08Z",
+      "side": 1,
+      "message": "I think that remove_if is about as fast as it gets...\nhttps://github.com/llvm-mirror/libcxx/blob/78d6a7767ed57b50122a161b91f59f19c9bd0d19/include/algorithm#L2089",
+      "parentUuid": "3301eb23_70dca7f4",
       "range": {
         "startLine": 643,
         "startChar": 0,
