@@ -381,7 +381,7 @@ sk_sp<VulkanSamplerYcbcrConversion>
 }
 
 sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
-        const RenderPassDesc& renderPassDesc) {
+        const RenderPassDesc& renderPassDesc, SkIRect rect) {
 
     if (!renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() ||
         !renderPassDesc.fColorAttachment.fTextureInfo.isValid()) {
@@ -427,7 +427,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
             fMSAALoadPipelineLayout,
             compatibleRenderPass,
             this->pipelineCache(),
-            renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+            renderPassDesc.fColorAttachment.fTextureInfo);
+            //renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
 
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");
