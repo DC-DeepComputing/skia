@@ -398,9 +398,6 @@ public:
 
     bool wireframeMode() const { return fWireframeMode; }
 
-    /** Supports using GrFence. */
-    bool fenceSyncSupport() const { return fFenceSyncSupport; }
-
     /** Supports using GrSemaphores. */
     bool semaphoreSupport() const { return fSemaphoreSupport; }
 
@@ -635,7 +632,6 @@ protected:
     // ANGLE performance workaround
     bool fPreferVRAMUseOverFlushes                   : 1;
 
-    bool fFenceSyncSupport                           : 1;
     bool fSemaphoreSupport                           : 1;
     bool fBackendSemaphoreSupport                     : 1;
 
