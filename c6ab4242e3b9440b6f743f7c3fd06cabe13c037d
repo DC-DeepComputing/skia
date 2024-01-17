@@ -33,6 +33,24 @@
       "message": "Concerned about the name of this header, since it might be difficult to change the name of in the future. We already have public `SkTypeface_*.h` files in `include/ports` and we should probably have a `SkMakeTypefaceFromFreeType` in a `SkTypeface_freetype.h` over there, and we would like to avoid name collisions. We\u0027ve gotten away with naming the ones in `src/ports` like `SkTypeface_mac_ct.h` and the ones in `include/ports` like `SkTypeface_mac.h` so far, which is a bit misleading really.\n\nI\u0027ll have to think for a minute about what the naming convention should be. It\u0027s actually a bit awkward that the ones in the public includes are using the `SkTypeface` as part of their name, because while they declare things that return typefaces they don\u0027t declare any typeface types (like this one is). But then I\u0027m not sure what to call them. Maybe those should be named more like `SkTypefaceFactory_FreeType.h`? So maybe this name is fine and I\u0027ll just have to fix up the public ones?",
       "revId": "c6ab4242e3b9440b6f743f7c3fd06cabe13c037d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2696d2a0_d38b2d43",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-01-17T21:27:11Z",
+      "side": 1,
+      "message": "I don\u0027t disagree.\n\nSince this is (1) going into src, and not include, and (2) being removed from an existing file, we certainly are safe for the short-term from anyone using it. Can we defer the rename to a separate CL?",
+      "parentUuid": "70a9dd51_528497cb",
+      "revId": "c6ab4242e3b9440b6f743f7c3fd06cabe13c037d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
