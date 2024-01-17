@@ -1795,16 +1795,3 @@ void GrD3DGpu::waitSemaphore(GrSemaphore* semaphore) {
     // TODO: Do we need to track the lifetime of this?
     fQueue->Wait(d3dSem->fence(), d3dSem->value());
 }
-
-[[nodiscard]] GrFence GrD3DGpu::insertFence() {
-    GR_D3D_CALL_ERRCHECK(fQueue->Signal(fFence.get(), ++fCurrentFenceValue));
-    return fCurrentFenceValue;
-}
-
-bool GrD3DGpu::waitFence(GrFence fence) {
-    return (fFence->GetCompletedValue() >= fence);
-}
-
-void GrD3DGpu::finishOutstandingGpuWork() {
-    this->waitForQueueCompletion();
-}

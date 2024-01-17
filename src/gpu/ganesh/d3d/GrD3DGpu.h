@@ -100,10 +100,6 @@ public:
                                    int numBarriers,
                                    D3D12_RESOURCE_TRANSITION_BARRIER* barriers) const;
 
-    [[nodiscard]] GrFence insertFence() override;
-    bool waitFence(GrFence) override;
-    void deleteFence(GrFence) override {}
-
     [[nodiscard]] std::unique_ptr<GrSemaphore> makeSemaphore(bool isOwned) override;
     std::unique_ptr<GrSemaphore> wrapBackendSemaphore(const GrBackendSemaphore&,
                                                       GrSemaphoreWrapType,
@@ -308,9 +304,6 @@ private:
     GrD3DResourceProvider fResourceProvider;
     GrStagingBufferManager fStagingBufferManager;
     GrRingBuffer fConstantsRingBuffer;
-
-    gr_cp<ID3D12Fence> fFence;
-    uint64_t fCurrentFenceValue = 0;
 
     std::unique_ptr<GrD3DDirectCommandList> fCurrentDirectCommandList;
     // One-off special-case descriptors created directly for the mipmap compute shader
