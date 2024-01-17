@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a779bce_b79a7a9f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2745,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-17T16:24:16Z",
+      "side": 1,
+      "message": "Are the dual casts necessary?",
+      "range": {
+        "startLine": 2745,
+        "startChar": 48,
+        "endLine": 2745,
+        "endChar": 74
+      },
+      "revId": "0e917659db5c0dbd7408f0cfd196e269539e6669",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
