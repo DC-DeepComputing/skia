@@ -81,7 +81,7 @@ private:
 
     sk_sp<VulkanDescriptorSet> findOrCreateDescriptorSet(SkSpan<DescriptorData>);
 
-    sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
+    sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&, SkIRect);
 
     // Find or create a compatible (needed when creating a framebuffer and graphics pipeline) or
     // full (needed when beginning a render pass from the command buffer) RenderPass.
