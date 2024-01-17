@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44d792c9_035a4b10",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-17T19:38:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f345b2cb_ec0da29e",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa119758_d0000750",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-01-11T17:04:27Z",
       "side": 1,
       "message": "Since we\u0027re making this generic, this needs to be made `SkScaler`. FreeType reports just fixed point values so that worked there, but FreeType is getting into issues with that. DirectWrite and CoreText only deal with these values in floats.",
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64979d62_25bbaddd",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-17T19:38:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa119758_d0000750",
       "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33c30d6_a4dd591c",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-17T19:38:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90601f46_625ff5b2",
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e93df81_ef8ccc0a",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-01-11T17:04:27Z",
       "side": 1,
       "message": "nit: long line",
+      "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b9eaec6_21318c84",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-17T19:38:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e93df81_ef8ccc0a",
       "revId": "3384a1b98f4319b4ca7eab3b9a3b25d71b508583",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
