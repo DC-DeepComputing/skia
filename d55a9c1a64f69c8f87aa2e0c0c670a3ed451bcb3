@@ -16,6 +16,63 @@
       "message": "In my COLRv1 benchmarking, this does not seem to have a measurable effect. 🤔",
       "revId": "d55a9c1a64f69c8f87aa2e0c0c670a3ed451bcb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3d6ce18_544fa00a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-17T17:37:41Z",
+      "side": 1,
+      "message": "C++ side lgtm with a space nit",
+      "revId": "d55a9c1a64f69c8f87aa2e0c0c670a3ed451bcb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3943e67_070084ba",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-17T17:37:41Z",
+      "side": 1,
+      "message": "nit: Why these spaces?",
+      "range": {
+        "startLine": 263,
+        "startChar": 38,
+        "endLine": 263,
+        "endChar": 39
+      },
+      "revId": "d55a9c1a64f69c8f87aa2e0c0c670a3ed451bcb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50298aa5_21cf94cc",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-17T17:37:41Z",
+      "side": 1,
+      "message": "It appears the mental model is to think of `skrifa::OutlineGlyphCollection` as being the `loca`/`CFF `/`CFF2` table, `skrifa::OutlineGlyph` as an individual glyph outline and all associated data, `skrifa::outline::EmbeddedHintingInstance` holding onto the font/size specific cvt and storage state.\n\nSo it seems fine for the `fOutlines` to be here, and then some `EmbeddedHintingInstance fHinting` would be the scaler context counterpart.",
+      "revId": "d55a9c1a64f69c8f87aa2e0c0c670a3ed451bcb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
