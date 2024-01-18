@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de73e5e5_6ad76537",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-01-18T22:51:42Z",
+      "side": 1,
+      "message": "I extracted out the logic for deciding the CPU governor here and in `scaleDeviceForBenchmark` into functions `getCPUGovernorForPerformanceTests` and `getCPUGovernorForBenchmarkTests`, respectively.\n\nWDYT?",
+      "parentUuid": "8792a9fe_3e66e0bd",
+      "range": {
+        "startLine": 314,
+        "startChar": 30,
+        "endLine": 314,
+        "endChar": 36
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c58ba9b_1535e1f3",
         "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-18T12:21:17Z",
       "side": 1,
       "message": "Would it be easier to make a list of devices that we currently want to support root on? For example, we haven\u0027t had any NVIDIA_SHIELDs to test in years, so this list might be a bit stale",
+      "range": {
+        "startLine": 366,
+        "startChar": 5,
+        "endLine": 366,
+        "endChar": 24
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd83d8c4_f4309b63",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-01-18T22:51:42Z",
+      "side": 1,
+      "message": "I deleted `NVIDIA_Shield`, `MotoG4` and `TecnoSpark3Pro` from the list as we don\u0027t currently have any such devices on the tree.\n\nI think most devices support `adb root`, which is why we use a skip list rather than an allow list. Does that makes sense or did I misunderstand your question?",
+      "parentUuid": "2c58ba9b_1535e1f3",
       "range": {
         "startLine": 366,
         "startChar": 5,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbcbe154_fa020c9a",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-01-18T22:51:42Z",
+      "side": 1,
+      "message": "`executil.WithFakeTests()` is great for tests with a handful of external binary calls, but I\u0027m not sure if it\u0027s the right tool for this use case.\n\nI really want to test that the `adb` invocations happen in the expected order and that there are no unexpected invocations. The code under test is very sensitive to bugs such as switching the order of a pair of `adb shell echo 0 \u003e foo`, `adb shell echo 1 \u003e foo` calls.\n\nIt\u0027s not impossible to do that with `executil.WithFakeTests()`, but it would require keeping some state between fake executable invocations; specifically, the expected command index. See `curCmdIdx` in `adb_test_runner_test.go`, line 323.\n\nOne way to do that is to have the test export a `FAKE_EXE_TMP_DIR` environment variable pointing to a directory created with `t.TempDir()`. Then, the fake executable would read a `current-command-index.txt` file in the directory pointed at by `FAKE_EXE_TMP_DIR` with the index of the current `commandAndResult` struct, fake the behavior indicated by the struct, and write the `current-command-index.txt` file with the previous index + 1. The fake executable would also assert that it received the expected arguments and `os.Exit(1)` if not. Finally, the test itself would read `current-command-index.txt` at the end and assert that all commands were invoked.\n\nWDYT?",
+      "parentUuid": "cda4e36d_c04c66a3",
+      "range": {
+        "startLine": 745,
+        "startChar": 14,
+        "endLine": 745,
+        "endChar": 21
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e9bff35_1791f8a9",
         "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner_test.go",
         "patchSetId": 7
@@ -83,6 +155,30 @@
       "writtenOn": "2024-01-18T12:21:17Z",
       "side": 1,
       "message": "Idea for tightening up the syntax a bit - makeCommandCollector takes variadiac commandAndResults, we add a helper function with a variadic string input that returns commandAndResult, and add a method to commandAndResult to specify what the stdout is.\n```\nmakeCommandCollector(t,\n  cmdAndArgs(\"adb\", \"shell\", \"su\", \"root\", \"rm\", \"-rf\", \"/sdcard/bazel-adb-test.tar.gz\", \"/data/bazel-adb-test\", \"/sdcard/bazel-adb-test-output-dir\"),\n  cmdAndArgs(\"adb\", \"root\"),\n  ...\n  cmdAndArgs(\"adb\", \"shell\", \"cat /sys/devices/system/cpu/cpu4/online\").withstdout(\"0\\n\"),\n  ...\n)\n```",
+      "range": {
+        "startLine": 62,
+        "startChar": 57,
+        "endLine": 62,
+        "endChar": 77
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4752ab46_1a33655a",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-01-18T22:51:42Z",
+      "side": 1,
+      "message": "Love it! Done.",
+      "parentUuid": "3e9bff35_1791f8a9",
       "range": {
         "startLine": 62,
         "startChar": 57,
@@ -106,6 +202,30 @@
       "writtenOn": "2024-01-18T12:21:17Z",
       "side": 1,
       "message": "Can you add some prose describing the whole flow more generally before getting into the nitty gritty? E.g. what user story are all these commands implementing?",
+      "range": {
+        "startLine": 63,
+        "startChar": 5,
+        "endLine": 63,
+        "endChar": 10
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7645367_fabe5169",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-01-18T22:51:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "754ea849_af78f626",
       "range": {
         "startLine": 63,
         "startChar": 5,
