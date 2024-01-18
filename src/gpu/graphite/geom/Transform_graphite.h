@@ -47,10 +47,10 @@ public:
     Transform(const Transform& t) = default;
 
     static constexpr Transform Identity() {
-        return Transform(SkM44(), SkM44(), Type::kIdentity, {1.f, 1.f});
+        return Transform(SkM44(), SkM44(), Type::kIdentity);
     }
     static constexpr Transform Invalid() {
-        return Transform(SkM44(SkM44::kNaN_Constructor), SkM44(), Type::kInvalid, {1.f, 1.f});
+        return Transform(SkM44(SkM44::kNaN_Constructor), SkM44(), Type::kInvalid);
     }
 
     static inline Transform Translate(float x, float y) {
@@ -58,7 +58,7 @@ public:
             return Identity();
         } else if (SkScalarsAreFinite(x, y)) {
             return Transform(SkM44::Translate(x, y), SkM44::Translate(-x, -y),
-                             Type::kSimpleRectStaysRect, {1.f, 1.f});
+                             Type::kSimpleRectStaysRect);
         } else {
             return Invalid();
         }
@@ -75,8 +75,22 @@ public:
     const SkM44& matrix() const { return fM; }
     const SkM44& inverse() const { return fInvM; }
 
-    const SkV2& scaleFactors() const { return fScale; }
-    float maxScaleFactor() const { return std::max(fScale.x, fScale.y); }
+    // Return the {min,max} scale factor at the pre-transformed location 'p'. A unit circle about
+    // 'p' transformed by this Transform will be contained in an ellipse with radii equal to 'min'
+    // and 'max', e.g. moving 1 local unit will move at least 'min' pixels and at most 'max' pixels
+    std::pair<float, float> scaleFactors(const SkV2& p) const;
+
+    // This is valid for non-projection types and 1.0 for projection/invalid matrices.
+    float maxScaleFactor() const { return fMaxScaleFactor; }
+
+    // Return the minimum distance needed to move in local (pre-transform) space to ensure that the
+    // transformed coordinates are at least 1px away from the original mapped point. This minimum
+    // distance is specific to the given local 'bounds' since the scale factors change with
+    // perspective.
+    //
+    // If the bounds would be clipped by the w=0 plane or otherwise is ill-conditioned, this will
+    // return positive infinity.
+    float localAARadius(const Rect& bounds) const;
 
     Type type() const { return fType; }
     bool valid() const { return fType != Type::kInvalid; }
@@ -103,15 +117,25 @@ public:
     Transform concatInverse(const SkM44& t) const;
 
 private:
-    constexpr Transform(const SkM44& m, const SkM44& invM, Type type, const SkV2 scale)
-            : fM(m), fInvM(invM), fType(type), fScale(scale) {}
+    // Only used for transforms that have identity scale factors (identity, translate, or invalid).
+    constexpr Transform(const SkM44& m, const SkM44& invM, Type type,
+                        float minScale=1.f, float maxScale=1.f)
+            : fM(m)
+            , fInvM(invM)
+            , fType(type)
+            , fMinScaleFactor(minScale)
+            , fMaxScaleFactor(maxScale) {}
+
+    SkDEBUGCODE(void validate() const;)
 
     SkM44 fM;
     SkM44 fInvM; // M^-1
     Type  fType;
-    // TODO: It would be nice to have a scale factor for perspective too, and there is
-    // SkMatrixPriv::DifferentialAreaScale but that requires a specific location.
-    SkV2  fScale; // always > 0
+
+    // These are cached for non-projection transforms since they are constant; projection matrices
+    // must be computed per point, and these values are ignored.
+    float fMinScaleFactor;
+    float fMaxScaleFactor;
 };
 
 } // namespace skgpu::graphite
