@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe9f393b_b9ab1469",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-18T18:02:06Z",
+      "side": 1,
+      "message": "Gold diffs are just flakes, with the changes to `to_half` in earlier CLs, this no longer causes the many color conversion diffs that I saw when I first tried to use SkVx::to_half.",
+      "revId": "2454bf11b9bca90e834eda3a0d725d569b637ccf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
