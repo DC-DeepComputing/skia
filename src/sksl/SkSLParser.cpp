@@ -1244,6 +1244,31 @@ std::unique_ptr<Statement> Parser::statement() {
     }
 }
 
+std::unique_ptr<Statement> Parser::statementWithSymbols(std::unique_ptr<SymbolTable>& symbols) {
+    AutoDepth depth(this);
+    if (!depth.increase()) {
+        return nullptr;
+    }
+    if (this->peek().fKind == Token::Kind::TK_LBRACE) {
+        // If we are starting a braced block, we have a natural home for the symbol table.
+        return this->blockWithSymbols(symbols);
+    }
+    std::unique_ptr<Statement> stmt = this->statement();
+    if (!stmt) {
+        // The statement was not valid.
+        return nullptr;
+    }
+    if (symbols->count() == 0) {
+        // The symbol table was never used, and doesn't need to be preserved.
+        return stmt;
+    }
+    // Wrap the statement in an unbraced block in order to preserve the symbol table.
+    Position pos = stmt->position();
+    StatementArray stmts;
+    stmts.push_back(std::move(stmt));
+    return Block::Make(pos, std::move(stmts), Block::Kind::kUnbracedBlock, std::move(symbols));
+}
+
 const Type* Parser::findType(Position pos,
                              Modifiers* modifiers,
                              std::string_view name) {
@@ -1631,7 +1656,7 @@ std::unique_ptr<Statement> Parser::forStatement() {
         if (!this->expect(Token::Kind::TK_RPAREN, "')'", &rparen)) {
             return nullptr;
         }
-        statement = this->statement();
+        statement = this->statementWithSymbols(symbolTable);
         if (!statement) {
             return nullptr;
         }
@@ -1646,8 +1671,7 @@ std::unique_ptr<Statement> Parser::forStatement() {
                                                            std::move(initializer),
                                                            std::move(test),
                                                            std::move(next),
-                                                           std::move(statement),
-                                                           std::move(symbolTable)));
+                                                           std::move(statement)));
 }
 
 /* RETURN expression? SEMICOLON */
