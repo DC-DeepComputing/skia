@@ -16,6 +16,23 @@
       "message": "rubber stamp",
       "revId": "3bdf10612a52b8e34f6e636557734fb4a5c54a0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8702ce_28ca3679",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-18T16:23:04Z",
+      "side": 1,
+      "message": "Apparently you @chromium.org do not satisfy the requirement for Review-Enforcement.",
+      "revId": "3bdf10612a52b8e34f6e636557734fb4a5c54a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
