@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec062b7_b2544356",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-18T20:10:59Z",
+      "side": 1,
+      "message": "so SkISize is just empty? That\u0027s not immediately clear to me why that\u0027s the case",
+      "range": {
+        "startLine": 256,
+        "startChar": 17,
+        "endLine": 256,
+        "endChar": 18
+      },
+      "revId": "e262470a1f73a629e9b29ac36264be06a1a44295",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a45f71_72134b0d",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-18T20:10:59Z",
+      "side": 1,
+      "message": "nit: since only one argument is changing, maybe consider using a ternary here? \n\nlike\n```\nbuilder.appendStep(params.fAaConfig \u003d\u003d VelloAaConfig::kMSAA16 ? \u0026fFineMsaa16 \n                                                              : \u0026fFineArea,\n                   to_wg_size(dispatchInfo.fine));\n```",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 5
+      },
+      "revId": "e262470a1f73a629e9b29ac36264be06a1a44295",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
