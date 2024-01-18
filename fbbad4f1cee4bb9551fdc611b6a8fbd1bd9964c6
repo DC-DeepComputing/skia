@@ -22,6 +22,30 @@
       },
       "revId": "fbbad4f1cee4bb9551fdc611b6a8fbd1bd9964c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c10d71ee_b3df1564",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 21839
+      },
+      "writtenOn": "2024-01-18T15:09:41Z",
+      "side": 1,
+      "message": "It works and I just use the AVX512 instructions instead. There are no performance differences. I can change it back to __builtin_convertvector.",
+      "parentUuid": "395797e4_d890e05d",
+      "range": {
+        "startLine": 891,
+        "startChar": 0,
+        "endLine": 892,
+        "endChar": 78
+      },
+      "revId": "fbbad4f1cee4bb9551fdc611b6a8fbd1bd9964c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
