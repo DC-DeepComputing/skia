@@ -22,6 +22,30 @@
       },
       "revId": "090afe33cd9b9d6995663ab337645a1158feb771",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6630f48c_2c6b402b",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-18T15:28:10Z",
+      "side": 1,
+      "message": "You\u0027re so right, thank you! I now key using the `GraphiteResourceKey` directly but just provided the `THashMap` with a way to get the key\u0027s hash. This way if two hashes match, the keys themselves should then be compared w/ `\u003d\u003d` as intended/per `SkTHash` implementation",
+      "parentUuid": "843c5d8d_3e36ea8f",
+      "range": {
+        "startLine": 437,
+        "startChar": 26,
+        "endLine": 437,
+        "endChar": 47
+      },
+      "revId": "090afe33cd9b9d6995663ab337645a1158feb771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
