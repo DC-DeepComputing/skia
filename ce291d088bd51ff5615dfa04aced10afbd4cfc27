@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8792a9fe_3e66e0bd",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T12:21:17Z",
+      "side": 1,
+      "message": "This would probably be more readable pulled out as a module level \"constant\"",
+      "range": {
+        "startLine": 314,
+        "startChar": 30,
+        "endLine": 314,
+        "endChar": 36
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c58ba9b_1535e1f3",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T12:21:17Z",
+      "side": 1,
+      "message": "Would it be easier to make a list of devices that we currently want to support root on? For example, we haven\u0027t had any NVIDIA_SHIELDs to test in years, so this list might be a bit stale",
+      "range": {
+        "startLine": 366,
+        "startChar": 5,
+        "endLine": 366,
+        "endChar": 24
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cda4e36d_c04c66a3",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T12:21:17Z",
+      "side": 1,
+      "message": "I personally prefer using the stock exec and then https://github.com/google/skia-buildbot/blob/main/go/executil/executil.go to stub out executions rather than the exec in infra. How much churn would that cause?",
+      "range": {
+        "startLine": 745,
+        "startChar": 14,
+        "endLine": 745,
+        "endChar": 21
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e9bff35_1791f8a9",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T12:21:17Z",
+      "side": 1,
+      "message": "Idea for tightening up the syntax a bit - makeCommandCollector takes variadiac commandAndResults, we add a helper function with a variadic string input that returns commandAndResult, and add a method to commandAndResult to specify what the stdout is.\n```\nmakeCommandCollector(t,\n  cmdAndArgs(\"adb\", \"shell\", \"su\", \"root\", \"rm\", \"-rf\", \"/sdcard/bazel-adb-test.tar.gz\", \"/data/bazel-adb-test\", \"/sdcard/bazel-adb-test-output-dir\"),\n  cmdAndArgs(\"adb\", \"root\"),\n  ...\n  cmdAndArgs(\"adb\", \"shell\", \"cat /sys/devices/system/cpu/cpu4/online\").withstdout(\"0\\n\"),\n  ...\n)\n```",
+      "range": {
+        "startLine": 62,
+        "startChar": 57,
+        "endLine": 62,
+        "endChar": 77
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "754ea849_af78f626",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner_test.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T12:21:17Z",
+      "side": 1,
+      "message": "Can you add some prose describing the whole flow more generally before getting into the nitty gritty? E.g. what user story are all these commands implementing?",
+      "range": {
+        "startLine": 63,
+        "startChar": 5,
+        "endLine": 63,
+        "endChar": 10
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
