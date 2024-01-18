@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "840c7982_082856e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-18T22:01:23Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this the best solution as it refers to the tools directory -- but we\u0027ve already referred to that directory for window setup and displayparams.",
+      "revId": "c77e0635ab0d8767cf040c9cc2d5295ced0af2a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
