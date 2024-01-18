@@ -216,6 +216,8 @@ private:
 
     std::unique_ptr<Statement> statement();
 
+    std::unique_ptr<Statement> statementWithSymbols(std::unique_ptr<SymbolTable>& symbols);
+
     const Type* findType(Position pos, Modifiers* modifiers, std::string_view name);
 
     const Type* type(Modifiers* modifiers);
