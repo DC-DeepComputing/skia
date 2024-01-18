@@ -129,13 +129,8 @@ std::unique_ptr<Statement> Transform::HoistSwitchVarDeclarationsAtTopLevel(
         *innerDeclaration = std::move(replacementStmt);
 
         // Hoist the variable's symbol outside of the switch's symbol table, and into the enclosing
-        // block's symbol table. If the switch's symbol table originally had ownership, transfer it.
-        // (If the variable was owned elsewhere, it can keep its current owner.)
-        if (std::unique_ptr<Symbol> variableSymbol = switchSymbols->removeSymbol(var)) {
-            blockSymbols->add(context, std::move(variableSymbol));
-        } else {
-            blockSymbols->addWithoutOwnership(context, var);
-        }
+        // block's symbol table.
+        switchSymbols->moveSymbolTo(blockSymbols.get(), var, context);
     }
 
     // Return a scoped Block holding the switch.
