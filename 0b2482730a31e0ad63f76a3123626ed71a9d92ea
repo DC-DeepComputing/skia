@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ad26ec_60fdd03e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-18T15:28:04Z",
+      "side": 1,
+      "message": "After reading the Khronos docs some more, my approach _works_ but I want to try it their way.",
+      "revId": "0b2482730a31e0ad63f76a3123626ed71a9d92ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
