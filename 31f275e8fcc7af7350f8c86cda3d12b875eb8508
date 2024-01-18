@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "092d81d3_3ed5910d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-18T15:42:07Z",
+      "side": 1,
+      "message": "Follow up to fix Fontations tests in https://skia-review.googlesource.com/c/skia/+/802501 .",
+      "revId": "31f275e8fcc7af7350f8c86cda3d12b875eb8508",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c47106d5_cba21764",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-18T15:42:07Z",
+      "side": 0,
+      "message": "Needed `SkTypeface_FreeType::MakeFromStream`",
+      "revId": "d8bc1f7f9ac6fe9c8fa4267d3e7d01c4daef902d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0fd8c1c_633e809a",
+        "filename": "tests/FontationsFtCompTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-18T15:42:07Z",
+      "side": 0,
+      "message": "Also need the new header.",
+      "revId": "d8bc1f7f9ac6fe9c8fa4267d3e7d01c4daef902d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
