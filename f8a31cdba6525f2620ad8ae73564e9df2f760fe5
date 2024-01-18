@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f85f3a5_662a6aa2",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-18T15:26:23Z",
+      "side": 1,
+      "message": "yes that should be so gone by now, my bad!",
+      "parentUuid": "d8c3b41a_fbd1017c",
+      "range": {
+        "startLine": 190,
+        "startChar": 9,
+        "endLine": 192,
+        "endChar": 72
+      },
+      "revId": "f8a31cdba6525f2620ad8ae73564e9df2f760fe5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceac9ce3_f949451f",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-10T19:43:48Z",
       "side": 1,
       "message": "is this number the same is the size of fAttachments?",
+      "range": {
+        "startLine": 66,
+        "startChar": 12,
+        "endLine": 66,
+        "endChar": 39
+      },
+      "revId": "f8a31cdba6525f2620ad8ae73564e9df2f760fe5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e8f03a7_d9610c27",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-18T15:26:23Z",
+      "side": 1,
+      "message": "Yeah, we can just consult the size.",
+      "parentUuid": "ceac9ce3_f949451f",
       "range": {
         "startLine": 66,
         "startChar": 12,
