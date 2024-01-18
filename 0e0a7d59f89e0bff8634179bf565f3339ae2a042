@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfe4f963_3cf6e8de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-18T13:46:38Z",
+      "side": 1,
+      "message": "PTAL. The canary failures appear to be unrelated to this CL.",
+      "revId": "0e0a7d59f89e0bff8634179bf565f3339ae2a042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
