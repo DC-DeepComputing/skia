@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78986c85_066e597f",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T23:48:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "de73e5e5_6ad76537",
+      "range": {
+        "startLine": 314,
+        "startChar": 30,
+        "endLine": 314,
+        "endChar": 36
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c58ba9b_1535e1f3",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I deleted `NVIDIA_Shield`, `MotoG4` and `TecnoSpark3Pro` from the list as we don\u0027t currently have any such devices on the tree.\n\nI think most devices support `adb root`, which is why we use a skip list rather than an allow list. Does that makes sense or did I misunderstand your question?",
       "parentUuid": "2c58ba9b_1535e1f3",
+      "range": {
+        "startLine": 366,
+        "startChar": 5,
+        "endLine": 366,
+        "endChar": 24
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f01c2e9_5d89cecc",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-18T23:48:15Z",
+      "side": 1,
+      "message": "I think it\u0027s fine for now. We are only really able to root 1p devices, which I would have thought was a smaller list than 3p ones.",
+      "parentUuid": "bd83d8c4_f4309b63",
       "range": {
         "startLine": 366,
         "startChar": 5,
