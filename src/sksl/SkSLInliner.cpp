@@ -385,34 +385,31 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
             const ExpressionStatement& e = statement.as<ExpressionStatement>();
             return ExpressionStatement::Make(*fContext, expr(e.expression()));
         }
-        case Statement::Kind::kFor:
-            return makeWithChildSymbolTable([&](std::unique_ptr<SymbolTable> symbolTable) {
-                const ForStatement& f = statement.as<ForStatement>();
-                // We need to ensure `initializer` is evaluated first, so that we've already
-                // remapped its declaration by the time we evaluate `test` and `next`.
-                std::unique_ptr<Statement> initializerStmt = stmt(f.initializer());
-                std::unique_ptr<Expression> testExpr = expr(f.test());
-                std::unique_ptr<Expression> nextExpr = expr(f.next());
-                std::unique_ptr<Statement> bodyStmt = stmt(f.statement());
+        case Statement::Kind::kFor: {
+            const ForStatement& f = statement.as<ForStatement>();
+            // We need to ensure `initializer` is evaluated first, so that we've already
+            // remapped its declaration by the time we evaluate `test` and `next`.
+            std::unique_ptr<Statement> initializerStmt = stmt(f.initializer());
+            std::unique_ptr<Expression> testExpr = expr(f.test());
+            std::unique_ptr<Expression> nextExpr = expr(f.next());
+            std::unique_ptr<Statement> bodyStmt = stmt(f.statement());
 
-                std::unique_ptr<LoopUnrollInfo> unrollInfo;
-                if (f.unrollInfo()) {
-                    // The for loop's unroll-info points to the Variable in the initializer as the
-                    // index. This variable has been rewritten into a clone by the inliner, so we
-                    // need to update the loop-unroll info to point to the clone.
-                    unrollInfo = std::make_unique<LoopUnrollInfo>(*f.unrollInfo());
-                    unrollInfo->fIndex = RemapVariable(unrollInfo->fIndex, varMap);
-                }
+            std::unique_ptr<LoopUnrollInfo> unrollInfo;
+            if (f.unrollInfo()) {
+                // The for loop's unroll-info points to the Variable in the initializer as the
+                // index. This variable has been rewritten into a clone by the inliner, so we
+                // need to update the loop-unroll info to point to the clone.
+                unrollInfo = std::make_unique<LoopUnrollInfo>(*f.unrollInfo());
+                unrollInfo->fIndex = RemapVariable(unrollInfo->fIndex, varMap);
+            }
 
-                return ForStatement::Make(*fContext, pos, ForLoopPositions{},
-                                          std::move(initializerStmt),
-                                          std::move(testExpr),
-                                          std::move(nextExpr),
-                                          std::move(bodyStmt),
-                                          std::move(unrollInfo),
-                                          std::move(symbolTable));
-            });
-
+            return ForStatement::Make(*fContext, pos, ForLoopPositions{},
+                                      std::move(initializerStmt),
+                                      std::move(testExpr),
+                                      std::move(nextExpr),
+                                      std::move(bodyStmt),
+                                      std::move(unrollInfo));
+        }
         case Statement::Kind::kIf: {
             const IfStatement& i = statement.as<IfStatement>();
             return IfStatement::Make(*fContext, pos, expr(i.test()),
