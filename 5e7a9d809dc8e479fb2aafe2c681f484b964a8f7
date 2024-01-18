@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "305546f6_d489ec96",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-18T17:51:30Z",
+      "side": 1,
+      "message": "identical",
+      "range": {
+        "startLine": 389,
+        "startChar": 29,
+        "endLine": 389,
+        "endChar": 39
+      },
+      "revId": "5e7a9d809dc8e479fb2aafe2c681f484b964a8f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
