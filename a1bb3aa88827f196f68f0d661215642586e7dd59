@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "278efe45_b5601221",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-18T14:26:56Z",
+      "side": 1,
+      "message": "Had to rebase since Kevin\u0027s last changes. Now it requires another code review approval...",
+      "revId": "a1bb3aa88827f196f68f0d661215642586e7dd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
