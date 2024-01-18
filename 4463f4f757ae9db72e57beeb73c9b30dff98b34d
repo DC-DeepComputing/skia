@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d45b60_51766711",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-18T21:04:03Z",
+      "side": 1,
+      "message": "My only remaining request: For many of these tests, we\u0027re not really checking interesting data in the last 8 lanes. Can you specify a mix of `0` and `~0` (alternating, random, doesn\u0027t matter), just so we can be sure that things are working correctly? (I do actually think they\u0027re working, I just want our tests to be verifying that).",
+      "revId": "4463f4f757ae9db72e57beeb73c9b30dff98b34d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
