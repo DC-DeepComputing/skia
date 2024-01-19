@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916ebd5f_9a2915b1",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-19T15:23:57Z",
+      "side": 0,
+      "message": "When I tested locally, Clang was complaining because some code was passing a `TraceStringWithCopy` object through `sk_noop`, and it\u0027s UB to pass a class object through a C variadic function. Replacing with a template is safe, though. \n\nThis was occurring somewhere in the font code, so it\u0027s possible that this doesn\u0027t occur on the tree because we didn\u0027t have a build which disables tracing _and_ enables skia_use_freetype. \n\n(I wanted to fix the skprintf variants as well, but printf-like functions apparently _must_ use C variadics. Strangely, Clang issues a warning saying that GCC requires it!)",
+      "range": {
+        "startLine": 218,
+        "startChar": 19,
+        "endLine": 218,
+        "endChar": 31
+      },
+      "revId": "b894af366325a2f8996c2727a2a607d861914b79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
