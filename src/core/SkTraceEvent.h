@@ -161,6 +161,8 @@
         INTERNAL_TRACE_EVENT_UID(atomic), \
         INTERNAL_TRACE_EVENT_UID(category_group_enabled));
 
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
+
 // Implementation detail: internal macro to create static category and add
 // event if the category is enabled.
 #define INTERNAL_TRACE_EVENT_ADD(phase, category_group, name, flags, ...) \
@@ -206,6 +208,19 @@
               INTERNAL_TRACE_EVENT_UID(category_group_enabled), name, h); \
         } \
     } while (0)
+
+#else // defined(SK_ENABLE_OPTIMIZE_SIZE)
+
+#define INTERNAL_TRACE_EVENT_ADD(phase, category_group, name, flags, ...) \
+    do {} while (0)
+
+#define INTERNAL_TRACE_EVENT_ADD_WITH_ID(phase, category_group, name, id, flags, ...) \
+    do {} while (0)
+
+#define INTERNAL_TRACE_EVENT_ADD_SCOPED(category_group, name, ...) \
+    do {} while (0)
+
+#endif
 
 namespace skia_private {
 
