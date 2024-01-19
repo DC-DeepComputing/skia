@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eed05b9_c3f04abb",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-19T15:52:07Z",
+      "side": 1,
+      "message": "Since we already creating the renderPassKey above, I wonder if we should have a version of this call that just takes the Key to avoid have to create it twice.",
+      "range": {
+        "startLine": 417,
+        "startChar": 18,
+        "endLine": 417,
+        "endChar": 40
+      },
+      "revId": "e89af6ebd516d7722e98d780c21c773f5ad0fa68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5d36621_79ff00b3",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-19T15:52:07Z",
+      "side": 1,
+      "message": "I wonder how much we are actually gaining from this being a HashMap. At least in this case we aren\u0027t needing to call the hash function each time since we store it in the key. But in practice I feel like we\u0027d probably only have like ~6ish of these piplines. Maybe 2 different colorFormats, maybe stencil or no stencil, then optionally a blend self-dependency? At that point is it just faster to linearly search the list and check for key equality? The hash is the first part of the key, so that should allow for quick equality rejections as it is doing key comparison.\n\nMaybe in the future if we start doing more subpasses for layers then we\u0027ll start growing the number of render passes and a hash could help, maybe?\n\nAnyways since we\u0027re at least not calling a hash function each time, I\u0027m okay if you want to leave this as is, but just wanted to point on an alternative.",
+      "range": {
+        "startLine": 107,
+        "startChar": 18,
+        "endLine": 107,
+        "endChar": 26
+      },
+      "revId": "e89af6ebd516d7722e98d780c21c773f5ad0fa68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
