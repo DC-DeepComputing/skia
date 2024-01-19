@@ -37,6 +37,17 @@ split_srcs_and_hdrs(
     files = GPU_SRCS,
 )
 
+# TODO(kjlubick) delete after updating G3
+alias(
+    name = "gpu_hdrs",
+    actual = ":legacy_gpu_hdrs",
+)
+
+alias(
+    name = "gpu_srcs",
+    actual = ":legacy_gpu_srcs",
+)
+
 skia_filegroup(
     name = "srcs",
     srcs = [
