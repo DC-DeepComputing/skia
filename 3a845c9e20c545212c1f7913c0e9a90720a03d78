@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53b4ae8b_2649e4f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-19T21:37:15Z",
+      "side": 1,
+      "message": "PS1 -\u003e PS5 has fixes for several issues:\n- Added the skx sources to Android\n- Guarded the Init_skx call with a define, so chromium, G3, and flutter can be updated separately\n- Fixed a soft-merge conflict in the bzl files (I think there was a refactor done while this was rebased - it built fine on our bazel bots, but failed the G3 roll).",
+      "revId": "3a845c9e20c545212c1f7913c0e9a90720a03d78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
