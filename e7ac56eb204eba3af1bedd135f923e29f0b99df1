@@ -22,6 +22,30 @@
       },
       "revId": "e7ac56eb204eba3af1bedd135f923e29f0b99df1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89f27de3_b236d2a5",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-19T16:08:14Z",
+      "side": 1,
+      "message": "So I\u0027m not too worried about performance of doing the loop here given we\u0027re only going to be checking usually ~5 memoryTypes here. So it will be very fast. However, I did update the code to be a little less pessimistic about protected support and at least gives it a chance to see if the combo exists. Let me know what you think.",
+      "parentUuid": "0e8dc49f_95ef5e0a",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 5
+      },
+      "revId": "e7ac56eb204eba3af1bedd135f923e29f0b99df1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
