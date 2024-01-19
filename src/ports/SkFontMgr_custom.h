@@ -113,7 +113,7 @@ public:
     class SystemFontLoader {
     public:
         virtual ~SystemFontLoader() { }
-        virtual void loadSystemFonts(const SkFontScanner*, Families*) const = 0;
+        virtual void loadSystemFonts(const SkTypeface_FreeType::Scanner&, Families*) const = 0;
     };
     explicit SkFontMgr_Custom(const SystemFontLoader& loader);
 
@@ -136,7 +136,7 @@ protected:
 private:
     Families fFamilies;
     sk_sp<SkFontStyleSet> fDefaultFamily;
-    std::unique_ptr<SkFontScanner> fScanner;
+    SkTypeface_FreeType::Scanner fScanner;
 };
 
 #endif

@@ -144,6 +144,7 @@ static bool find_by_FontIdentity(SkTypeface* cachedTypeface, void* ctx) {
 
 class SkFontMgr_FCI : public SkFontMgr {
     sk_sp<SkFontConfigInterface> fFCI;
+    SkTypeface_FreeType::Scanner fScanner;
 
     mutable SkMutex fMutex;
     mutable SkTypefaceCache fTFCache;
