@@ -16,6 +16,24 @@
       "message": "Should we have some caps check to see if this is necessary? Would it be enough to just base that on our backend? (For example, could we always assume we only need one scratch surface with Metal?)",
       "revId": "93fb3ade4673e5752c1cf679d74150bfe8e21cff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fa53adf_004044b0",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-19T16:37:38Z",
+      "side": 1,
+      "message": "For the case of one scratch are you thinking of the case where we always use the original as the input for the draw and adjust the mip lod so we only sample from the level we want?\n\nIf so I think we have more plumbing to add to have the level of control on sampling. Once we have that we could add an additional cap check. I think it would be something like `bool canDirectlySampleSpecificMipLevel(TextureProxy/TextureInfo)`. Anyways for now I wouldn\u0027t add anything for that.",
+      "parentUuid": "4f527241_24c80ef5",
+      "revId": "93fb3ade4673e5752c1cf679d74150bfe8e21cff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
