@@ -16,6 +16,24 @@
       "message": "This breaks building with Fontations for me on mac. \n\n```\n$ ninja -C out/gnvello viewer \nninja: Entering directory `out/gnvello\u0027\n[47/795] ACTION //:skia.h(//gn/toolchain:gcc_like)\nFAILED: gen/skia.h \npython3 ../../gn/find_headers.py /Users/drott/dev/skia/bin/gn /Users/drott/dev/skia/ gen/skia.h /Users/drott/dev/skia/client_utils/android /Users/drott/dev/skia/include/android /Users/drott/dev/skia/include/codec /Users/drott/dev/skia/include/config /Users/drott/dev/skia/include/core /Users/drott/dev/skia/include/docs /Users/drott/dev/skia/include/effects /Users/drott/dev/skia/include/encode /Users/drott/dev/skia/include/gpu /Users/drott/dev/skia/include/pathops /Users/drott/dev/skia/include/ports /Users/drott/dev/skia/include/svg /Users/drott/dev/skia/include/utils /Users/drott/dev/skia/include/utils/mac /Users/drott/dev/skia/modules/skottie/include /Users/drott/dev/skia/modules/skparagraph/include /Users/drott/dev/skia/modules/skshaper/include /Users/drott/dev/skia/modules/svg/include\n\ngn generated a warning when we asked for JSON output.\nTo see the warning, run this command from the out_dir:\n(you may need to quote the * argument)\n\n/Users/drott/dev/skia/bin/gn desc . --root\u003d/Users/drott/dev/skia --format\u003djson *\n\n\n[58/795] compile ../../tools/trace/EventTracingPriv.cpp\n```",
       "revId": "38e85e85079f4140158a8f83c7bbceb7a1ac5ca5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eac6eb2_9341abb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-19T09:24:05Z",
+      "side": 1,
+      "message": "GN args for reference:\n\n```\nskia_use_freetype\u003dtrue\nskia_use_fontations\u003dtrue\nskia_enable_vello_shaders\u003dtrue\nskia_use_harfbuzz\u003dtrue\nskia_use_system_freetype2\u003dfalse\nskia_use_system_harfbuzz\u003dfalse\nis_debug\u003dtrue\nskia_fontmgr_factory \u003d \":fontmgr_custom_empty_factory\"\nextra_cflags_cc \u003d [ \"-ggdb\" ]\nextra_cflags \u003d [ \"-ggdb\" ]\n```\n\nAlso, after this change, I get a `gn` warning:\n```\nWARNING at build arg file (use \"gn args \u003cout_dir\u003e\" to edit):7:24: Build argument has no effect.\nskia_fontmgr_factory \u003d \":fontmgr_custom_empty_factory\"\n                       ^------------------------------\nThe variable \"skia_fontmgr_factory\" was set as a build argument\nbut never appeared in a declare_args() block in any buildfile.\n\nTo view all possible args, run \"gn args --list \u003cout_dir\u003e\"\n\nThe build continued as if that argument was unspecified.\n```",
+      "parentUuid": "0a1696c0_bed87de2",
+      "revId": "38e85e85079f4140158a8f83c7bbceb7a1ac5ca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
