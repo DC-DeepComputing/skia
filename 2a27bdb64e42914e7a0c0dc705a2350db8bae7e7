@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "471fbaab_5e5e5f9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-19T15:52:05Z",
+      "side": 1,
+      "message": "Thank you for your patience, addressing all of our requests. And a big thanks for the contribution! Once this lands, we will need to make minor changes to chromium and pdfium to enable the new code path.",
+      "revId": "2a27bdb64e42914e7a0c0dc705a2350db8bae7e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
