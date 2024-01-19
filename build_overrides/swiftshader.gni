@@ -1,0 +1,5 @@
+# We are building SwiftShader standalone
+swiftshader_standalone = false
+
+# Path to SwiftShader
+swiftshader_dir = "//third_party/externals/swiftshader"

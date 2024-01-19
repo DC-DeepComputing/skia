@@ -9,3 +9,11 @@ angle_has_build = false
 # Bunch of features ANGLE's build files test for that we never set.
 is_cfi = false
 is_chromeos = false
+
+angle_enable_vulkan = true
+angle_vulkan_memory_allocator_dir =
+    "//third_party/externals/vulkanmemoryallocator"
+
+# Generic Buffer Management
+angle_use_gbm = false
+angle_vulkan_headers_dir = "//third_party/externals/vulkan-headers"
