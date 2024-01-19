@@ -39,6 +39,30 @@
       },
       "revId": "6c49656447a6cc7791ea98ce8dc6eead881afccb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d242103_40b82da1",
+        "filename": "include/third_party/vulkan/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-19T18:09:28Z",
+      "side": 1,
+      "message": "textual_hdrs are headers that cannot be #included on their own.",
+      "parentUuid": "b9e4ce63_901371c1",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 14,
+        "endChar": 55
+      },
+      "revId": "6c49656447a6cc7791ea98ce8dc6eead881afccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
