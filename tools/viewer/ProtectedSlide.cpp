@@ -167,7 +167,7 @@ sk_sp<SkImage> create_protected_skia_image(GrDirectContext* dContext,
 
 class ProtectedSlide : public Slide {
 public:
-    ProtectedSlide() { fName = "Protected"; }
+    ProtectedSlide() { fName = "Protected2"; }
 
     SkISize getDimensions() const override { return {kSize, 2*kSize}; }
 
