@@ -16,6 +16,29 @@
       "message": "G3 canary is actually passing, it lies.",
       "revId": "6c49656447a6cc7791ea98ce8dc6eead881afccb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9e4ce63_901371c1",
+        "filename": "include/third_party/vulkan/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-19T17:57:46Z",
+      "side": 1,
+      "message": "I have no idea what textual_hdrs means, but I wonder if these should go here? Like they\u0027re similar in the sense that Skia doesn\u0027t directly include them anywhere. But then again I don\u0027t know the differences.",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 14,
+        "endChar": 55
+      },
+      "revId": "6c49656447a6cc7791ea98ce8dc6eead881afccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
