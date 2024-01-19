@@ -135,7 +135,7 @@ VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,
         info.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
     }
     if (kLazyAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
-        info.requiredFlags |= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
+    //    info.requiredFlags |= VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
     }
     if (kProtected_AllocationPropertyFlag & allocationPropertyFlags) {
         info.requiredFlags |= VK_MEMORY_PROPERTY_PROTECTED_BIT;
@@ -143,6 +143,11 @@ VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,
 
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForImage(fAllocator, image, &info, &allocation, nullptr);
+   // if (result != VK_SUCCESS && kLazyAllocation_AllocationPropertyFlag & allocationPropertyFlags) {
+  //      info.requiredFlags &= ~VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
+  //      result = vmaAllocateMemoryForImage(fAllocator, image, &info, &allocation, nullptr);
+  //  }
+
     if (VK_SUCCESS == result) {
         *backendMemory = (VulkanBackendMemory)allocation;
     }
