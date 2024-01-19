@@ -46,6 +46,30 @@
       },
       "revId": "e7ac56eb204eba3af1bedd135f923e29f0b99df1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f7402ae_cf5c6aa2",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-19T16:10:09Z",
+      "side": 1,
+      "message": "LGTM :)",
+      "parentUuid": "89f27de3_b236d2a5",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 5
+      },
+      "revId": "e7ac56eb204eba3af1bedd135f923e29f0b99df1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
