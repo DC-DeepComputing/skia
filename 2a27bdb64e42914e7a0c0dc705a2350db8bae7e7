@@ -34,6 +34,24 @@
       "parentUuid": "471fbaab_5e5e5f9e",
       "revId": "2a27bdb64e42914e7a0c0dc705a2350db8bae7e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b996a5a_b69b8121",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-19T16:40:41Z",
+      "side": 1,
+      "message": "+1, this is an exciting upgrade! AVX-512 had a rocky launch, but in modern CPUs it can be quite a performance boost. Thanks for your efforts.",
+      "parentUuid": "9c1541d0_7136f837",
+      "revId": "2a27bdb64e42914e7a0c0dc705a2350db8bae7e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
