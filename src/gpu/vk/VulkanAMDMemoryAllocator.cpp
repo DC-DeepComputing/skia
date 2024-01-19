@@ -143,6 +143,7 @@ VkResult VulkanAMDMemoryAllocator::allocateImageMemory(VkImage image,
 
     VmaAllocation allocation;
     VkResult result = vmaAllocateMemoryForImage(fAllocator, image, &info, &allocation, nullptr);
+
     if (VK_SUCCESS == result) {
         *backendMemory = (VulkanBackendMemory)allocation;
     }
