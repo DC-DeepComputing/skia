@@ -30,6 +30,8 @@ const char* skgpu::ContextTypeName(skgpu::ContextType type) {
             return "ANGLE Metal ES2";
         case skgpu::ContextType::kANGLE_Metal_ES3:
             return "ANGLE Metal ES3";
+        case skgpu::ContextType::kANGLE_Vulkan_ES3:
+            return "ANGLE Vulkan ES3";
         case skgpu::ContextType::kVulkan:
             return "Vulkan";
         case skgpu::ContextType::kMetal:
@@ -100,6 +102,7 @@ GrBackendApi skgpu::ganesh::ContextTypeBackend(skgpu::ContextType type) {
         case skgpu::ContextType::kANGLE_GL_ES3:
         case skgpu::ContextType::kANGLE_Metal_ES2:
         case skgpu::ContextType::kANGLE_Metal_ES3:
+        case skgpu::ContextType::kANGLE_Vulkan_ES3:
             return GrBackendApi::kOpenGL;
 
         case ContextType::kVulkan:
@@ -136,6 +139,7 @@ skgpu::BackendApi skgpu::graphite::ContextTypeBackend(ContextType type) {
         case skgpu::ContextType::kANGLE_GL_ES3:
         case skgpu::ContextType::kANGLE_Metal_ES2:
         case skgpu::ContextType::kANGLE_Metal_ES3:
+        case skgpu::ContextType::kANGLE_Vulkan_ES3:
         case skgpu::ContextType::kDirect3D:
             return BackendApi::kUnsupported;
 
