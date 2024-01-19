@@ -16,6 +16,24 @@
       "message": "Could you explain the reason you think this CL is responsible for the CTS errors? The linked bug doesn\u0027t make that case AFAICS.",
       "revId": "99e8f1d20acdb793e4d48b1e6114383b3e0ed0e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60154da0_16c55498",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3250479
+      },
+      "writtenOn": "2024-01-19T15:50:46Z",
+      "side": 1,
+      "message": "I created the revert as an attempt to fix b/321135001 but failed to verify with ABTD or local build. Abandoning.",
+      "parentUuid": "eb412ead_f5a91e50",
+      "revId": "99e8f1d20acdb793e4d48b1e6114383b3e0ed0e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
