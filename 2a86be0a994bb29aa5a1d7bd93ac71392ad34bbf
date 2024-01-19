@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65730200_2d08a136",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-19T16:01:10Z",
+      "side": 1,
+      "message": "This almost makes it so libgrapheme works, but now it looks like we might be finding actual issues with AddressSanitizer build of libgrapheme on Windows which will need to be looked into.",
+      "revId": "2a86be0a994bb29aa5a1d7bd93ac71392ad34bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
