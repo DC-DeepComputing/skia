@@ -52,6 +52,24 @@
       "parentUuid": "2f1a2cc9_9124f2b0",
       "revId": "f2200d963de6f1d18c61d60b7cd581bcef3f8019",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f393680_e78232ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-19T02:15:52Z",
+      "side": 1,
+      "message": "Fixed. The code size wins are actually identical between the two approaches, but this is probably cleaner.",
+      "parentUuid": "61a13cd3_ca612c1f",
+      "revId": "f2200d963de6f1d18c61d60b7cd581bcef3f8019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
