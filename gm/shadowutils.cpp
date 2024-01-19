@@ -223,7 +223,7 @@ void draw_paths(SkCanvas* canvas, ShadowMode mode) {
     }
 }
 
-DEF_SIMPLE_GM(shadow_utils, canvas, kW, kH) {
+DEF_SIMPLE_GM(shadow_utils1, canvas, kW, kH) {
     draw_paths(canvas, kDebugColorNoOccluders);
 }
 

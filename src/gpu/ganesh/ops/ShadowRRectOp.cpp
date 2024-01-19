@@ -696,6 +696,7 @@ static GrSurfaceProxyView create_falloff_texture(GrRecordingContext* rContext) {
     }
     bitmap.setImmutable();
 
+    SkDebugf("+++++++++++++++++++ here\n");
     view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap));
     if (!view) {
         return {};
