@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3876c7d9_37a0c613",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-19T01:11:40Z",
+      "side": 1,
+      "message": "Could `SK_ENABLE_OPTIMIZE_SIZE` builds also define `SK_DISABLE_TRACING`? There\u0027s a switch for the latter already at https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkTraceEventCommon.h;l\u003d226;drc\u003df7e2ca20190f2857d9f07a1ec69dfd2f459e276d which disables the outer macros that route to these internally",
+      "revId": "f2200d963de6f1d18c61d60b7cd581bcef3f8019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
