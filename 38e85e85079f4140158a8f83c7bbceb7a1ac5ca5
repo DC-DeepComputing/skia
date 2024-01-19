@@ -52,6 +52,24 @@
       "parentUuid": "1eac6eb2_9341abb4",
       "revId": "38e85e85079f4140158a8f83c7bbceb7a1ac5ca5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e027808e_93faa04f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-19T13:11:08Z",
+      "side": 1,
+      "message": "Remove `skia_fontmgr_factory \u003d \":fontmgr_custom_empty_factory\"` - it does nothing anymore",
+      "parentUuid": "db3072ab_e6491251",
+      "revId": "38e85e85079f4140158a8f83c7bbceb7a1ac5ca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
