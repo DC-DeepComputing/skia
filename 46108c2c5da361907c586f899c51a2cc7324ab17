@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "948ee059_f1159799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-19T17:35:50Z",
+      "side": 1,
+      "message": "Rebase against AVX-512 was actually trivial.",
+      "revId": "46108c2c5da361907c586f899c51a2cc7324ab17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
