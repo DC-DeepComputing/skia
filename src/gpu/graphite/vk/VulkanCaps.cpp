@@ -81,15 +81,23 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
 
-    // Enable the use of memoryless attachments for tiler GPUs (ARM Mali and Qualcomm Adreno).
-    if (physDevProperties.vendorID == kARM_VkVendor ||
-        physDevProperties.vendorID == kQualcomm_VkVendor) {
-        // We currently don't see any Vulkan devices that expose a memory type that supports
-        // both lazy allocated and protected memory. So for simplicity we just disable the
-        // use of memoryless attachments when using protected memory. In the future, if we ever
-        // do see devices that support both, we can look through the device's memory types here
-        // and see if any support both flags.
-        fSupportsMemorylessAttachments = !fProtectedSupport;
+    VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
+    VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
+    fSupportsMemorylessAttachments = false;
+    for (uint32_t i = 0; i < deviceMemoryProperties.memoryTypeCount; ++i) {
+        if (deviceMemoryProperties.memoryTypes[i].propertyFlags &
+            VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT) {
+            fSupportsMemorylessAttachments = true;
+        }
+    }
+
+    // We currently don't see any Vulkan devices that expose a memory type that supports
+    // both lazy allocated and protected memory. So for simplicity we just disable the
+    // use of memoryless attachments when using protected memory. In the future, if we ever
+    // do see devices that support both, we can look through the device's memory types here
+    // and see if any support both flags.
+    if (fProtectedSupport) {
+        fSupportsMemorylessAttachments = false;
     }
 
 #ifdef SK_BUILD_FOR_UNIX
