@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e8dc49f_95ef5e0a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-19T15:51:20Z",
+      "side": 1,
+      "message": "Perhaps only do this iteration if `!fProtectedSupport`, since that\u0027s a quick indicator that we don\u0027t need to bother checking",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 5
+      },
+      "revId": "e7ac56eb204eba3af1bedd135f923e29f0b99df1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
