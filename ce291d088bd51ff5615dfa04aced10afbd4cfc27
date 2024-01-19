@@ -190,6 +190,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07664de1_e35df646",
+        "filename": "tools/testrunners/common/android/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-19T19:22:29Z",
+      "side": 1,
+      "message": "That\u0027s a valid justification. This seems like a good choice then.",
+      "parentUuid": "fbcbe154_fa020c9a",
+      "range": {
+        "startLine": 745,
+        "startChar": 14,
+        "endLine": 745,
+        "endChar": 21
+      },
+      "revId": "ce291d088bd51ff5615dfa04aced10afbd4cfc27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e9bff35_1791f8a9",
