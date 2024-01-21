@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d910cc6_1f86c6ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-01-21T18:39:13Z",
+      "side": 1,
+      "message": "FYI -- I still have to customize their \"build\" file, but here is the only patch on skia I needed (modulo the font related stuff)",
+      "revId": "0741e904dec985e2f0660b1ee89a5e5fc6a36ad7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
