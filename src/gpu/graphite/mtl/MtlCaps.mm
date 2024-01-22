@@ -397,6 +397,20 @@ size_t MtlCaps::GetFormatIndex(MTLPixelFormat pixelFormat) {
     return GetFormatIndex(MTLPixelFormatInvalid);
 }
 
+SkColorType MtlCaps::flooble(MTLPixelFormat format) const {
+    const FormatInfo& info = fFormatTable[GetFormatIndex(format)];
+
+    const ColorTypeInfo* infos = info.fColorTypeInfos.get();
+
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        if (infos[i].fFlags & ColorTypeInfo::kRenderable_Flag) {
+            return infos[i].fColorType;
+        }
+    }
+
+    return kUnknown_SkColorType;
+}
+
 void MtlCaps::initFormatTable() {
     FormatInfo* info;
 
@@ -491,7 +505,7 @@ void MtlCaps::initFormatTable() {
 
     if (@available(macOS 11.0, iOS 8.0, tvOS 9.0, *)) {
         if (this->isApple()) {
-            // Format: B5G6R5Unorm
+            // Format: B5G6R5Unorm, Surface: kBGR_565
             {
                 info = &fFormatTable[GetFormatIndex(MTLPixelFormatB5G6R5Unorm)];
                 info->fFlags = FormatInfo::kAllFlags;
@@ -886,13 +900,16 @@ const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
     return nullptr;
 }
 
+static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
+static const int kGraphicsPipelineKeyData32Count = 5;
+
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
         // 5 uint32_t's (render step id, paint id, uint64 renderpass desc, uint16 write swizzle key)
-        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 5, "GraphicsPipeline");
+        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain,
+                                   kGraphicsPipelineKeyData32Count, "GraphicsPipeline");
         // add graphicspipelinedesc key
         builder[0] = pipelineDesc.renderStepID();
         builder[1] = pipelineDesc.paintParamsID().asUInt();
@@ -908,6 +925,36 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
 
     return pipelineKey;
 }
+
+void MtlCaps::reverse1(const UniqueKey& key, Foobar* foobar) const {
+    SkASSERT(key.domain() == kGraphicsPipelineDomain);
+    SkASSERT(key.dataSize() == 4 * kGraphicsPipelineKeyData32Count);
+
+    const uint32_t* data7 = key.data7();
+
+    uint32_t renderStepID = data7[0];
+    (void) renderStepID;
+    UniquePaintParamsID paintParamsID = UniquePaintParamsID(data7[1]);
+    (void) paintParamsID;
+
+    foobar->fDSSampleCount = data7[2] & 0xFFFF;
+    MtlPixelFormat dsFormat = static_cast<MtlPixelFormat>((data7[2] >> 16) & 0xFFFF);
+
+    DepthStencilFlags dsFlags = DepthStencilFlags::kNone;
+    if (dsFormat == MTLPixelFormatStencil8) {
+        foobar->fDSFlags = DepthStencilFlags::kStencil;
+    } else if (dsFormat == MTLPixelFormatDepth32Float) {
+        foobar->fDSFlags = DepthStencilFlags::kDepth;
+    } else if (dsFormat == MTLPixelFormatDepth32Float_Stencil8) {
+        foobar->fDSFlags = DepthStencilFlags::kDepthStencil;
+    }
+
+    foobar->fColorSampleCount = data7[3] & 0xFFFF;
+    MtlPixelFormat colorFormat = static_cast<MtlPixelFormat>((data7[3] >> 16) & 0xFFFF);
+
+    foobar->fColorType = this->flooble(colorFormat);
+}
+
 
 uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
     MtlTextureInfo colorInfo, depthStencilInfo;

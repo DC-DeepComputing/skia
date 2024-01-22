@@ -41,6 +41,8 @@ public:
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
+    void reverse1(const UniqueKey& key, Foobar*) const override;
+
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
 
     // Get a sufficiently unique bit representation for the RenderPassDesc to be embedded in other
@@ -60,6 +62,8 @@ public:
                             ResourceType,
                             Shareable,
                             GraphiteResourceKey*) const override;
+
+    SkColorType flooble(MTLPixelFormat format) const;
 
 private:
     void initGPUFamily(const id<MTLDevice>);
