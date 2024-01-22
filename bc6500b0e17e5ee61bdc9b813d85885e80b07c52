@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929029f7_26f30d1b",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-22T15:42:41Z",
+      "side": 1,
+      "message": "For SSE4.1, when N \u003d 4, we could add `_mm_max_epi32` specializations. They have versions for N\u003d8 (AVX2) and N\u003d16 (AVX512) as well, not sure if that\u0027s worth providing?",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 67
+      },
+      "revId": "bc6500b0e17e5ee61bdc9b813d85885e80b07c52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
