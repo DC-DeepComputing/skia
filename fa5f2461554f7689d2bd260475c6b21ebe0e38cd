@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fc94fa3_4de915e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-22T23:56:54Z",
+      "side": 1,
+      "message": "LGTM % one question. The AA on the glyph_pos_h_s slide with the vello config seems to have changed slightly but I don\u0027t if the changes are incorrect or not.\n\nOtherwise LGTM",
+      "revId": "fa5f2461554f7689d2bd260475c6b21ebe0e38cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24395292_2b28b0a9",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-22T23:56:54Z",
+      "side": 1,
+      "message": "Does this comment need to get updated now that tx and ty are getting used?",
+      "range": {
+        "startLine": 87,
+        "startChar": 29,
+        "endLine": 87,
+        "endChar": 65
+      },
+      "revId": "fa5f2461554f7689d2bd260475c6b21ebe0e38cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
