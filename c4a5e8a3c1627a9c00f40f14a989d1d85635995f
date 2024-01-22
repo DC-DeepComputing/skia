@@ -16,6 +16,24 @@
       "message": "A lot of the changes here are just to plumb fully-lazy proxy dimensions around. It makes me wonder would it make sense to actually let fully-lazy proxies have dimensions, and flag that they\u0027re fully-lazy some other way?",
       "revId": "c4a5e8a3c1627a9c00f40f14a989d1d85635995f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "709fb67e_bbe1bfb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-22T19:47:55Z",
+      "side": 1,
+      "message": "Actually most of the plumbing here is just to pass dimensions into UploadInstance::Make for debug checks; we could also just skip these checks for fully-lazy proxies.",
+      "parentUuid": "146f368a_fcc3b9ea",
+      "revId": "c4a5e8a3c1627a9c00f40f14a989d1d85635995f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
