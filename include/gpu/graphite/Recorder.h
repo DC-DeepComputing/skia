@@ -44,6 +44,7 @@ class Device;
 class DrawBufferManager;
 class GlobalCache;
 class ImageProvider;
+class PaintParams;
 class ProxyCache;
 class RecorderPriv;
 class ResourceProvider;
@@ -209,6 +210,8 @@ private:
     // pointers, we can look into only registering SkSurface Devices.
     void registerDevice(Device*);
     void deregisterDevice(const Device*);
+
+    void compile(const PaintParams&);
 
     sk_sp<SharedContext> fSharedContext;
     std::unique_ptr<ResourceProvider> fResourceProvider;

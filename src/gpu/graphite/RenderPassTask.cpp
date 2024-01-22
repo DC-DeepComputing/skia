@@ -17,7 +17,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
+sk_sp<RenderPassTask> RenderPassTask::Make1(DrawPassList passes,
                                            const RenderPassDesc& desc,
                                            sk_sp<TextureProxy> target) {
     // For now we have one DrawPass per RenderPassTask

@@ -78,7 +78,7 @@ private:
                          const Texture* depthStencilTexture);
     void endRenderPass();
 
-    void addDrawPass(const DrawPass*);
+    void addDrawPass1(const DrawPass*);
 
     // Track descriptor changes for binding prior to draw calls
     void recordBufferBindingInfo(const BindBufferInfo& info, UniformSlot);
@@ -209,4 +209,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_VulkanCommandBuffer_DEFINED
-

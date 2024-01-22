@@ -107,7 +107,7 @@ public:
     // caller is responsible for configuring the returned Tasks's dependencies.
     //
     // Returns null if there are no pending commands or draw passes to move into a task.
-    sk_sp<Task> snapRenderPassTask(Recorder*);
+    sk_sp<Task> snapRenderPassTask1(Recorder*);
 
     // Ends the current UploadList if needed, and moves the accumulated Uploads into an UploadTask
     // that can be drawn and depended on. The caller is responsible for configuring the returned

@@ -1381,7 +1381,7 @@ void Device::flushPendingWorkToRecorder() {
 
     // Snap the render pass task before snapping the compute task because creating a DrawPass may
     // record DispatchGroups that it depends on (e.g. to process geometry or atlas draws).
-    auto drawTask = fDC->snapRenderPassTask(fRecorder);
+    auto drawTask = fDC->snapRenderPassTask1(fRecorder);
     auto computeTask = fDC->snapComputeTask(fRecorder);
 
     // Execute the compute task before the draw task.

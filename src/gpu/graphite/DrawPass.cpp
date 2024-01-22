@@ -725,7 +725,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
+void DrawPass::addResourceRefs1(CommandBuffer* commandBuffer) const {
     for (int i = 0; i < fFullPipelines.size(); ++i) {
         commandBuffer->trackResource(fFullPipelines[i]);
     }
