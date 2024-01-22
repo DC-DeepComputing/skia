@@ -47,6 +47,8 @@ skia_graphite_sources = [
   "$_src/CommandBuffer.cpp",
   "$_src/CommandBuffer.h",
   "$_src/CommandTypes.h",
+  "$_src/CompilationSingleton.cpp",
+  "$_src/CompilationSingleton.h",
   "$_src/ComputePipeline.cpp",
   "$_src/ComputePipeline.h",
   "$_src/ComputeTask.cpp",

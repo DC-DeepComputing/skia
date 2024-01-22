@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "src/gpu/graphite/CompilationSingleton.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
@@ -53,6 +54,8 @@ public:
                                                                    uint32_t recorderID,
                                                                    size_t resourceBudget) = 0;
 
+    CompilationSingleton* compilationSingleton() { return fCompilationSingleton.get(); }
+
 protected:
     SharedContext(std::unique_ptr<const Caps>, BackendApi);
 
@@ -68,6 +71,7 @@ private:
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
+    sk_sp<CompilationSingleton> fCompilationSingleton;
 };
 
 } // namespace skgpu::graphite
