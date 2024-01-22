@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea323152_c94bb877",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-22T20:49:31Z",
+      "side": 1,
+      "message": "Interestingly, reed@ just asked me about doing --depth\u003d1 in this script. I\u0027m wondering if we should just make this behavior the default? Saves a lot of time/bandwidth/disk for users, 99% of which never need the full repos.",
+      "revId": "b1ffef633cca016ad6520a02e5bd2917c75a1561",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
