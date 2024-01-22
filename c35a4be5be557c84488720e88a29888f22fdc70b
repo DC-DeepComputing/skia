@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c180e1aa_b977fbc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-22T15:01:05Z",
+      "side": 1,
+      "message": "G3 build seems to be fixed (at least not crashing from visibility issues)",
+      "revId": "c35a4be5be557c84488720e88a29888f22fdc70b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
