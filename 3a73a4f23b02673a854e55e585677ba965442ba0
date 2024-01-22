@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "263f5f50_77fa4646",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-22T20:42:32Z",
+      "side": 1,
+      "message": "The related issue is about Chromium not setting the title or language in the PDF. Oddly, Skia has allowed setting the title forever, Chromium just isn\u0027t setting it. However, Skia hasn\u0027t set or allowed setting the top level language (it already does set the language in the structure element tree) so this allows for that.",
+      "revId": "3a73a4f23b02673a854e55e585677ba965442ba0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
