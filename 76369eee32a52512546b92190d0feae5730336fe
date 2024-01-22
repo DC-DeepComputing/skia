@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a509770a_ebacaf02",
+        "filename": "src/ports/fontations/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2024-01-22T15:44:24Z",
+      "side": 1,
+      "message": "This is going to be removed once https://github.com/googlefonts/fontations/pull/754 lands in Fontations and that in turn is rolled into Chromium and Skia.",
+      "revId": "76369eee32a52512546b92190d0feae5730336fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
