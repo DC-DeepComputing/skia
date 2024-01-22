@@ -2821,6 +2821,17 @@ private:
     SkSpan<float> fUniforms;
 };
 
+constexpr size_t cstrlen(const char* s) {
+    return std::string::traits_type::length(s);
+}
+
+static void join(std::string* result, const std::string& a, const char* b, const std::string& c) {
+    result->reserve(a.length() + cstrlen(b) + c.length());
+    result->append(a);
+    result->append(b);
+    result->append(c);
+}
+
 void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
     using POp = ProgramOp;
 
@@ -3407,7 +3418,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::bitwise_and_imm_2_ints:
             case POp::bitwise_and_imm_3_ints:
             case POp::bitwise_and_imm_4_ints:
-                opText = opArg1 + " &= " + opArg2;
+                join(&opText, opArg1, " &= ", opArg2);
                 break;
 
             case POp::bitwise_or_int:
@@ -3415,7 +3426,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::bitwise_or_3_ints:
             case POp::bitwise_or_4_ints:
             case POp::bitwise_or_n_ints:
-                opText = opArg1 + " |= " + opArg2;
+                join(&opText, opArg1, " |= ", opArg2);
                 break;
 
             case POp::bitwise_xor_int:
@@ -3424,7 +3435,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::bitwise_xor_4_ints:
             case POp::bitwise_xor_n_ints:
             case POp::bitwise_xor_imm_int:
-                opText = opArg1 + " ^= " + opArg2;
+                join(&opText, opArg1, " ^= ", opArg2);
                 break;
 
             case POp::cast_to_float_from_int:
@@ -3473,7 +3484,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::swizzle_1:                   case POp::swizzle_2:
             case POp::swizzle_3:                   case POp::swizzle_4:
             case POp::shuffle:
-                opText = opArg1 + " = " + opArg2;
+                join(&opText, opArg1, " = ", opArg2);
                 break;
 
             case POp::copy_from_indirect_unmasked:
@@ -3592,7 +3603,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::add_4_floats:  case POp::add_4_ints:
             case POp::add_n_floats:  case POp::add_n_ints:
             case POp::add_imm_float: case POp::add_imm_int:
-                opText = opArg1 + " += " + opArg2;
+                join(&opText, opArg1, " += ", opArg2);
                 break;
 
             case POp::sub_float:    case POp::sub_int:
@@ -3600,7 +3611,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::sub_3_floats: case POp::sub_3_ints:
             case POp::sub_4_floats: case POp::sub_4_ints:
             case POp::sub_n_floats: case POp::sub_n_ints:
-                opText = opArg1 + " -= " + opArg2;
+                join(&opText, opArg1, " -= ", opArg2);
                 break;
 
             case POp::mul_float:     case POp::mul_int:
@@ -3609,7 +3620,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::mul_4_floats:  case POp::mul_4_ints:
             case POp::mul_n_floats:  case POp::mul_n_ints:
             case POp::mul_imm_float: case POp::mul_imm_int:
-                opText = opArg1 + " *= " + opArg2;
+                join(&opText, opArg1, " *= ", opArg2);
                 break;
 
             case POp::div_float:    case POp::div_int:    case POp::div_uint:
@@ -3617,7 +3628,7 @@ void Program::Dumper::dump(SkWStream* out, bool writeInstructionCount) {
             case POp::div_3_floats: case POp::div_3_ints: case POp::div_3_uints:
             case POp::div_4_floats: case POp::div_4_ints: case POp::div_4_uints:
             case POp::div_n_floats: case POp::div_n_ints: case POp::div_n_uints:
-                opText = opArg1 + " /= " + opArg2;
+                join(&opText, opArg1, " /= ", opArg2);
                 break;
 
             case POp::matrix_multiply_2:
