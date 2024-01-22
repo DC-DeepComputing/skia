@@ -60,6 +60,8 @@
 #endif
 #endif
 
+#include "src/gpu/graphite/PublicPrecompile.h"
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
@@ -136,6 +138,18 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     }
 #endif
     return recorder;
+}
+
+void Context::precompile(const PaintOptions& options, CompilationPriority priority) {
+#if defined(SK_ENABLE_PRECOMPILE)
+    Precompile(this, options, DrawTypeFlags::kAll);
+#endif
+//    fSharedContext->compilationSingleton()->compile(options, priority);
+}
+
+bool Context::areAllShadersCompiled(const Recording* recording) {
+    // Right now we always do all this work inline in the Recorder
+    return true;
 }
 
 bool Context::insertRecording(const InsertRecordingInfo& info) {

@@ -239,6 +239,10 @@ void Recorder::deregisterDevice(const Device* device) {
     }
 }
 
+void Recorder::compile(const PaintParams& paintParams) {
+    fSharedContext->compilationSingleton()->compile(paintParams);
+}
+
 BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
     ASSERT_SINGLE_OWNER
 
