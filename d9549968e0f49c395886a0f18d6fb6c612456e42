@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd10cb62_10e43c15",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-22T16:23:08Z",
+      "side": 1,
+      "message": "Not sure we want to check this in.\n\nI\u0027m reminded of a number of gms we used to have a long time ago which only worked on reed\u0027s machine because they had checked in paths to images that only existed on his machine.",
+      "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "914ee9bc_50e28c3f",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-22T16:23:08Z",
+      "side": 1,
+      "message": "I realize this is a Fontations side API issue and should probably be commented there, but is there really a reason to not just require `fill_glyph` to be implemented? It is required by [DWriteCore](https://github.com/microsoft/WindowsAppSDK/blob/main/specs/dwritecore/DWriteCore.md#color-paint-apis), see `DWRITE_PAINT_TYPE_GLYPH`. Since this was just added to Fontations is there any user that would care that it becomes required? If so, would it be possible to just add a default implementation of `fill_glyph` which just calls the other methods?",
+      "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
