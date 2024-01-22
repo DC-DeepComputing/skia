@@ -69,6 +69,30 @@
       },
       "revId": "bc6500b0e17e5ee61bdc9b813d85885e80b07c52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b145c5a2_3cfeb31a",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-22T16:12:58Z",
+      "side": 1,
+      "message": "I added some explanation and matching comments in SkVX as well.",
+      "parentUuid": "1c715ac0_41e1e6a4",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 36
+      },
+      "revId": "bc6500b0e17e5ee61bdc9b813d85885e80b07c52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
