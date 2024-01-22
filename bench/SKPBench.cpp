@@ -154,7 +154,7 @@ static void draw_pic_for_stats(SkCanvas* canvas,
     canvas->drawPicture(picture);
     dContext->flush();
 
-    dContext->priv().dumpGpuStatsKeyValuePairs(keys, values);
+    dContext->priv().dumpGpuStatsKeyValuePairs1(keys, values);
     dContext->priv().dumpCacheStatsKeyValuePairs(keys, values);
     dContext->priv().dumpContextStatsKeyValuePairs(keys, values);
 }

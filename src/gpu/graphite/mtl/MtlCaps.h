@@ -41,6 +41,8 @@ public:
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
+    void reverse1(const UniqueKey& key, Foobar*) const override;
+
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
 
     // Get a sufficiently unique bit representation for the RenderPassDesc to be embedded in other
@@ -60,6 +62,8 @@ public:
                             ResourceType,
                             Shareable,
                             GraphiteResourceKey*) const override;
+
+    SkColorType flooble(MTLPixelFormat format) const;
 
 private:
     void initGPUFamily(const id<MTLDevice>);
@@ -130,11 +134,11 @@ private:
     inline static constexpr size_t kNumMtlFormats = 19;
 
     static size_t GetFormatIndex(MTLPixelFormat);
-    FormatInfo fFormatTable[kNumMtlFormats];
+    FormatInfo fFormatTable1[kNumMtlFormats];
 
     const FormatInfo& getFormatInfo(const MTLPixelFormat pixelFormat) const {
         size_t index = GetFormatIndex(pixelFormat);
-        return fFormatTable[index];
+        return fFormatTable1[index];
     }
 
     MTLPixelFormat fColorTypeToFormatTable[kSkColorTypeCnt];

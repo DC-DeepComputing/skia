@@ -585,9 +585,25 @@ private:
     skiatest::graphite::TestOptions fOptions;
     skgpu::ContextType fContextType;
     SurfaceType fSurfaceType;
+
     SkColorType fColorType;
     SkAlphaType fAlphaType;
     sk_sp<SkColorSpace> fColorSpace;
+};
+
+class GraphitePrecompileTestingSink : public GraphiteSink {
+public:
+    GraphitePrecompileTestingSink(const SkCommandLineConfigGraphite* config)
+            : GraphiteSink(config) {}
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to do our matching test
+        return nullptr;
+    }
+
+private:
 };
 
 #endif
