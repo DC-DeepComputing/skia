@@ -22,6 +22,53 @@
       },
       "revId": "bc6500b0e17e5ee61bdc9b813d85885e80b07c52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e826136_bedbcbb1",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-22T15:56:20Z",
+      "side": 1,
+      "message": "I don\u0027t think we actually ship SSE4.1 though. IIRC Chrome ships opts for SSSE3 and HSW.\n\nThat being said, Chrome will probably move past SSSE3.1 to SSE4.1 someday, so it might matter down the road?\n\n@brianosman@google.com WDYT?",
+      "parentUuid": "929029f7_26f30d1b",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 67
+      },
+      "revId": "bc6500b0e17e5ee61bdc9b813d85885e80b07c52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c715ac0_41e1e6a4",
+        "filename": "modules/skcms/src/Transform_inl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-22T15:56:20Z",
+      "side": 1,
+      "message": "There isn\u0027t any inherent reason why they have to be the same, right? This is just a matter of keeping copy-pasted code from drifting apart over time?\n\nWe should probably add some more information here to explain this.\n\nAlso, the same warning should exist in skvx as well--the more likely scenario (IMO) is that we improve skvx and forget to port to skcms. The odds of improving skcms and forgetting to port to skvx are low.",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 36
+      },
+      "revId": "bc6500b0e17e5ee61bdc9b813d85885e80b07c52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
