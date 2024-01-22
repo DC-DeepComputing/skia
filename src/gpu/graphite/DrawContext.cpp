@@ -118,16 +118,17 @@ bool DrawContext::recordTextUploads(TextAtlasManager* am) {
 
 bool DrawContext::recordUpload(Recorder* recorder,
                                sk_sp<TextureProxy> targetProxy,
+                               const SkISize& targetDimensions,
                                const SkColorInfo& srcColorInfo,
                                const SkColorInfo& dstColorInfo,
                                const std::vector<MipLevel>& levels,
                                const SkIRect& dstRect,
                                std::unique_ptr<ConditionalUploadContext> condContext) {
     // Our caller should have clipped to the bounds of the surface already.
-    SkASSERT(targetProxy->isFullyLazy() ||
-             SkIRect::MakeSize(targetProxy->dimensions()).contains(dstRect));
+    SkASSERT(SkIRect::MakeSize(targetDimensions).contains(dstRect));
     return fPendingUploads->recordUpload(recorder,
                                          std::move(targetProxy),
+                                         targetDimensions,
                                          srcColorInfo,
                                          dstColorInfo,
                                          levels,

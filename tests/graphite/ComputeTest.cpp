@@ -928,6 +928,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
     mipLevel.fRowBytes = srcPixels.rowBytes();
     UploadInstance upload = UploadInstance::Make(recorder.get(),
                                                  srcProxy,
+                                                 srcProxy->dimensions(),
                                                  srcPixels.info().colorInfo(),
                                                  srcPixels.info().colorInfo(),
                                                  {mipLevel},

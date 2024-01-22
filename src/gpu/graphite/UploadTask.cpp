@@ -85,6 +85,7 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
 
 UploadInstance UploadInstance::Make(Recorder* recorder,
                                     sk_sp<TextureProxy> textureProxy,
+                                    const SkISize& dimensions,
                                     const SkColorInfo& srcColorInfo,
                                     const SkColorInfo& dstColorInfo,
                                     const std::vector<MipLevel>& levels,
@@ -97,15 +98,15 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
 
     unsigned int mipLevelCount = levels.size();
     // The assumption is either that we have no mipmaps, or that our rect is the entire texture
-    SkASSERT(mipLevelCount == 1 || dstRect == SkIRect::MakeSize(textureProxy->dimensions()));
+    SkASSERT(mipLevelCount == 1 || dstRect == SkIRect::MakeSize(dimensions));
 
     // We assume that if the texture has mip levels, we either upload to all the levels or just the
     // first.
 #ifdef SK_DEBUG
     unsigned int numExpectedLevels = 1;
     if (textureProxy->textureInfo().mipmapped() == Mipmapped::kYes) {
-        numExpectedLevels = SkMipmap::ComputeLevelCount(textureProxy->dimensions().width(),
-                                                        textureProxy->dimensions().height()) + 1;
+        numExpectedLevels =
+                SkMipmap::ComputeLevelCount(dimensions.width(), dimensions.height()) + 1;
     }
     SkASSERT(mipLevelCount == 1 || mipLevelCount == numExpectedLevels);
 #endif
@@ -279,14 +280,20 @@ void UploadInstance::addCommand(Context* context,
 
 bool UploadList::recordUpload(Recorder* recorder,
                               sk_sp<TextureProxy> textureProxy,
+                              const SkISize& dimensions,
                               const SkColorInfo& srcColorInfo,
                               const SkColorInfo& dstColorInfo,
                               const std::vector<MipLevel>& levels,
                               const SkIRect& dstRect,
                               std::unique_ptr<ConditionalUploadContext> condContext) {
-    UploadInstance instance = UploadInstance::Make(recorder, std::move(textureProxy),
-                                                   srcColorInfo, dstColorInfo,
-                                                   levels, dstRect, std::move(condContext));
+    UploadInstance instance = UploadInstance::Make(recorder,
+                                                   std::move(textureProxy),
+                                                   dimensions,
+                                                   srcColorInfo,
+                                                   dstColorInfo,
+                                                   levels,
+                                                   dstRect,
+                                                   std::move(condContext));
     if (!instance.isValid()) {
         return false;
     }

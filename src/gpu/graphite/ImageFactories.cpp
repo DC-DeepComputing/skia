@@ -295,7 +295,7 @@ static sk_sp<SkImage> generate_picture_texture(skgpu::graphite::Recorder* record
         skgpu::graphite::Flush(surface);
         sk_sp<TextureProxy> texture =
                 static_cast<Surface*>(surface.get())->readSurfaceView().refProxy();
-        if (!GenerateMipmaps(recorder, std::move(texture), info.colorInfo())) {
+        if (!GenerateMipmaps(recorder, std::move(texture), info.dimensions(), info.colorInfo())) {
             SKGPU_LOG_W("Failed to create mipmaps for texture from SkPicture");
         }
     }
