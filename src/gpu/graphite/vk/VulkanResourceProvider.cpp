@@ -427,7 +427,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
             fMSAALoadPipelineLayout,
             compatibleRenderPass,
             this->pipelineCache(),
-            renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+            renderPassDesc.fColorAttachment.fTextureInfo);
 
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");
