@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8bf98de_9838edf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-23T15:15:57Z",
+      "side": 1,
+      "message": "lgtm but can we change the naming to be \"scratch\" instead of \"local\"? That aligns with the historical naming Skia/Ganesh has used for the temporary surfaces.",
+      "revId": "0683ccd02ed7f2f04d71d4238134035161ee2fde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
