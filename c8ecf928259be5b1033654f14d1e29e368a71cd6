@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ab20f4_f88cb80b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-23T16:52:06Z",
+      "side": 1,
+      "message": "WDYT about handling this similarly to how we handle the buffer creation + population for `rtAdjust`? As in storing one persistent buffer on the ResourceProvider which can be updated w/ different values for different pipelines?",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 659,
+        "endChar": 28
+      },
+      "revId": "c8ecf928259be5b1033654f14d1e29e368a71cd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
