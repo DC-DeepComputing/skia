@@ -87,6 +87,10 @@ private:
     // full (needed when beginning a render pass from the command buffer) RenderPass.
     sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&, bool compatibleOnly);
 
+    // Use a predetermined RenderPass key for finding/creating a RenderPass to avoid recreating it
+    sk_sp<VulkanRenderPass> findOrCreateRenderPassWithKnownKey(
+            const RenderPassDesc&, bool compatibleOnly, const GraphiteResourceKey& rpKey);
+
     VkPipelineCache pipelineCache();
 
     friend class VulkanCommandBuffer;
@@ -98,7 +102,14 @@ private:
     // update the value within this buffer as needed.
     sk_sp<Buffer> fIntrinsicUniformBuffer;
 
-    skia_private::THashMap<uint64_t, sk_sp<VulkanGraphicsPipeline>> fLoadMSAAPipelines;
+    struct KeyHash {
+        uint32_t operator()(const GraphiteResourceKey& key) const {
+            return key.hash();
+        }
+    };
+
+    skia_private::THashMap<
+            GraphiteResourceKey, sk_sp<VulkanGraphicsPipeline>, KeyHash> fLoadMSAAPipelines;
     // All of the following attributes are the same between all msaa load pipelines, so they only
     // need to be created once and can then be stored.
     VkShaderModule fMSAALoadVertShaderModule = VK_NULL_HANDLE;
