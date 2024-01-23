@@ -98,6 +98,9 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
@@ -1878,7 +1881,7 @@ Result GPUDDLSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log
     GrContextFactory factory(contextOptions);
 
     // This captures the context destined to be the main gpu context
-    ContextInfo mainCtxInfo = factory.getContextInfo(this->contextType(), this->contextOverrides());
+    ContextInfo mainCtxInfo = factory.getContextInfo(this->contextType1(), this->contextOverrides());
     sk_gpu_test::TestContext* mainTestCtx = mainCtxInfo.testContext();
     auto mainCtx = mainCtxInfo.directContext();
     if (!mainCtx) {
@@ -2190,6 +2193,102 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     SkUNREACHABLE;
 }
 
+Result GraphitePrecompileTestingSink::drawSrc(const Src& src,
+                                              skgpu::graphite::Context* context,
+                                              skiatest::graphite::GraphiteTestContext* testContext) const {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+    if (!recorder) {
+        return Result::Fatal("Could not create a recorder.");
+    }
+
+    sk_sp<SkSurface> surface = this->makeSurface(recorder.get(), src.size());
+    if (!surface) {
+        return Result::Fatal("Could not create a surface.");
+    }
+    Result result = src.draw(surface->getCanvas(), testContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+    if (!recording) {
+        return Result::Fatal("Could not create a recording.");
+    }
+
+    skgpu::graphite::InsertRecordingInfo info;
+    info.fRecording = recording.get();
+    if (!context->insertRecording(info)) {
+        return Result::Fatal("Context::insertRecording failed.");
+    }
+    if (!context->submit(skgpu::graphite::SyncToCpu::kYes)) {
+        return Result::Fatal("Context::submit failed.");
+    }
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::thrash(skgpu::graphite::Context* context) const {
+    const skgpu::graphite::Caps* caps = context->priv().caps();
+
+    std::vector<skgpu::UniqueKey> keys;
+
+    context->priv().globalCache()->getKeys(&keys);
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    for (auto k : keys) {
+        skgpu::graphite::Caps::Foobar foobar;
+        caps->reverse1(k, &foobar);
+
+    }
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::check(skgpu::graphite::Context* context) const {
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::draw(const Src& src,
+                                           SkBitmap* dst,
+                                           SkWStream* dstStream,
+                                           SkString* log) const {
+    skiatest::graphite::TestOptions options = fOptions;
+    // If we've copied context options from an external source we can't trust that the
+    // priv pointer is still in scope, so assume it should be NULL and set our own up.
+    SkASSERT(!options.fContextOptions.fOptionsPriv);
+    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    options.fContextOptions.fOptionsPriv = &optionsPriv;
+
+    src.modifyGraphiteContextOptions(&options.fContextOptions);
+
+    skiatest::graphite::ContextFactory factory(options);
+    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+    skgpu::graphite::Context* context = ctxInfo.fContext;
+    if (!context) {
+        return Result::Fatal("Could not create a context.");
+    }
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    Result result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    result = this->thrash(context);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    return this->check(context);
+}
 #endif
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -2255,8 +2354,7 @@ Result ViaMatrix::draw(const Src& src, SkBitmap* bitmap, SkWStream* stream, SkSt
     SkMatrix matrix = fMatrix;
     SkISize size = auto_compute_translate(&matrix, src.size().width(), src.size().height());
     return draw_to_canvas(fSink.get(), bitmap, stream, log, size,
-                          [&](SkCanvas* canvas,
-                              Src::GraphiteTestContext* testContext) {
+                          [&](SkCanvas* canvas, Src::GraphiteTestContext* testContext) {
                               canvas->concat(matrix);
                               return src.draw(canvas, testContext);
                           });
@@ -2350,6 +2448,29 @@ Result ViaPicture::draw(const Src& src, SkBitmap* bitmap, SkWStream* stream, SkS
     }
 
     return check_against_reference(bitmap, src, fSink.get());
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+Result ViaPrecompile::draw(const Src& src, SkBitmap* bitmap,
+                           SkWStream* wStream, SkString* log) const {
+    skgpu::graphite::Context* context = nullptr;
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    SkBitmap firstImg, secondImg;
+    // SkDynamicMemoryWStream wStream;   ----- use this instead?
+    Result result = fSink->draw(src, &firstImg, wStream, log);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    result = fSink->draw(src, &secondImg, wStream, log);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    return Result::Ok();
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

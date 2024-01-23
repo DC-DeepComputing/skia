@@ -54,7 +54,8 @@ void GrThreadSafePipelineBuilder::Stats::dump(SkString* out) {
 
 void GrThreadSafePipelineBuilder::Stats::dumpKeyValuePairs(TArray<SkString>* keys,
                                                            TArray<double>* values) {
-    keys->push_back(SkString("shader_compilations")); values->push_back(fShaderCompilations);
+    keys->push_back(SkString("shader_compilations"));
+    values->push_back(fShaderCompilations);
 }
 
 #endif // defined(GR_TEST_UTILS)

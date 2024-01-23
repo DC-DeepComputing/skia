@@ -1043,7 +1043,11 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
 #if defined(SK_GRAPHITE)
     if (FLAGS_graphite) {
         if (const SkCommandLineConfigGraphite *graphiteConfig = config->asConfigGraphite()) {
-            return new GraphiteSink(graphiteConfig);
+            if (graphiteConfig->getTestPrecompile()) {
+                return new GraphitePrecompileTestingSink(graphiteConfig);
+            } else {
+                return new GraphiteSink(graphiteConfig);
+            }
         }
     }
 #endif
@@ -1129,7 +1133,7 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfi
         }
 
         // The command line config already parsed out the via-style color space. Apply it here.
-        sink->setColorSpace(config.refColorSpace());
+        sink->setColorSpace1(config.refColorSpace());
 
         const TArray<SkString>& parts = config.getViaParts();
         for (int j = parts.size(); j-- > 0;) {

@@ -117,7 +117,7 @@ struct Sink {
     [[nodiscard]] virtual Result draw(const Src&, SkBitmap*, SkWStream*, SkString* log) const = 0;
 
     // Override the color space of this Sink, after creation
-    virtual void setColorSpace(sk_sp<SkColorSpace>) {}
+    virtual void setColorSpace1(sk_sp<SkColorSpace>) {}
 
     // Force Tasks using this Sink to run on the main thread?
     virtual bool serial() const { return false; }
@@ -374,11 +374,11 @@ public:
                   std::function<void(GrDirectContext*)> initContext = nullptr,
                   std::function<SkCanvas*(SkCanvas*)> wrapCanvas = nullptr) const;
 
-    skgpu::ContextType contextType() const { return fContextType; }
+    skgpu::ContextType contextType1() const { return fContextType; }
     const sk_gpu_test::GrContextFactory::ContextOverrides& contextOverrides() const {
         return fContextOverrides;
     }
-    SkCommandLineConfigGpu::SurfType surfType() const { return fSurfType; }
+    SkCommandLineConfigGpu::SurfType surfType1() const { return fSurfType; }
     bool serial() const override { return true; }
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override {
@@ -387,7 +387,7 @@ public:
         return SinkFlags{ SinkFlags::kGPU, SinkFlags::kDirect, ms };
     }
     const GrContextOptions& baseContextOptions() const { return fBaseContextOptions; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace1(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
     SkColorInfo colorInfo() const override {
         return SkColorInfo(fColorType, fAlphaType, fColorSpace);
     }
@@ -519,7 +519,7 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kRaster, SinkFlags::kDirect }; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace1(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
 
     SkColorInfo colorInfo() const override {
         // If there's an appropriate alpha type for this color type, use it, otherwise use premul.
@@ -572,12 +572,12 @@ public:
     bool serial() const override { return true; }
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{SinkFlags::kGPU, SinkFlags::kDirect}; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace1(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
     SkColorInfo colorInfo() const override {
         return SkColorInfo(fColorType, fAlphaType, fColorSpace);
     }
 
-private:
+protected:
     sk_sp<SkSurface> makeSurface(skgpu::graphite::Recorder*, SkISize) const;
 
     using SurfaceType = SkCommandLineConfigGraphite::SurfaceType;
@@ -585,9 +585,33 @@ private:
     skiatest::graphite::TestOptions fOptions;
     skgpu::ContextType fContextType;
     SurfaceType fSurfaceType;
+
     SkColorType fColorType;
     SkAlphaType fAlphaType;
     sk_sp<SkColorSpace> fColorSpace;
+};
+
+class GraphitePrecompileTestingSink : public GraphiteSink {
+public:
+    GraphitePrecompileTestingSink(const SkCommandLineConfigGraphite* config)
+            : GraphiteSink(config) {}
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to check that
+        // the precompilation API is expressive enough and prepopulates the cache.
+        // If desired, this could be updated to save the result of the precompiled rendering.
+        // However; if all the keys match, as is expected, the images should always match.
+        return nullptr;
+    }
+
+private:
+    Result drawSrc(const Src&,
+                   skgpu::graphite::Context*,
+                   skiatest::graphite::GraphiteTestContext*) const;
+    Result thrash(skgpu::graphite::Context* context) const;
+    Result check(skgpu::graphite::Context* context) const;
 };
 
 #endif
@@ -604,8 +628,8 @@ public:
         flags.approach = SinkFlags::kIndirect;
         return flags;
     }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override {
-        fSink->setColorSpace(colorSpace);
+    void setColorSpace1(sk_sp<SkColorSpace> colorSpace) override {
+        fSink->setColorSpace1(colorSpace);
     }
 protected:
     std::unique_ptr<Sink> fSink;
@@ -638,6 +662,12 @@ public:
 class ViaPicture : public Via {
 public:
     explicit ViaPicture(Sink* sink) : Via(sink) {}
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+};
+
+class ViaPrecompile : public Via {
+public:
+    explicit ViaPrecompile(Sink* sink) : Via(sink) {}
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
