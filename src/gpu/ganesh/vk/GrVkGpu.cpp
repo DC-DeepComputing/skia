@@ -16,6 +16,7 @@
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -53,7 +54,15 @@
 #include "src/gpu/vk/VulkanMemory.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
+// nscobie-debug
+#include <inttypes.h>
+#include <cstddef>
+#include <cstring>
 #include <utility>
+
+#include "include/gpu/vk/VulkanTypes.h"
+#include "include/private/gpu/vk/SkiaVulkan.h"
+#include "vulkan/vulkan_core.h"
 
 using namespace skia_private;
 
@@ -235,7 +244,9 @@ GrVkGpu::GrVkGpu(GrDirectContext* direct,
         , fResourceProvider(this)
         , fStagingBufferManager(this)
         , fDisconnected(false)
-        , fProtectedContext(backendContext.fProtectedContext) {
+        , fProtectedContext(backendContext.fProtectedContext)
+        , fDeviceLostContext(backendContext.fDeviceLostContext)
+        , fDeviceLostProc(backendContext.fDeviceLostProc) {
     SkASSERT(!backendContext.fOwnsInstanceAndDevice);
     SkASSERT(fMemoryAllocator);
 
@@ -2674,7 +2685,15 @@ bool GrVkGpu::checkVkResult(VkResult result) {
         case VK_SUCCESS:
             return true;
         case VK_ERROR_DEVICE_LOST:
-            fDeviceIsLost = true;
+            if (!fDeviceIsLost) {
+                // Callback should only be invoked once, and device should be marked as lost first.
+                fDeviceIsLost = true;
+                skgpu::InvokeDeviceLostCallback(vkInterface(),
+                                                device(),
+                                                fDeviceLostContext,
+                                                fDeviceLostProc,
+                                                vkCaps().supportsDeviceFaultInfo());
+            }
             return false;
         case VK_ERROR_OUT_OF_DEVICE_MEMORY:
         case VK_ERROR_OUT_OF_HOST_MEMORY:

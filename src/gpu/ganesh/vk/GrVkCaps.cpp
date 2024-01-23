@@ -15,6 +15,7 @@
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "include/gpu/vk/GrVkBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
+#include "include/third_party/vulkan/vulkan/vulkan_core.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
@@ -396,6 +397,10 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
 
     if (extensions.hasExtension(VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME, 1)) {
         fSupportsDRMFormatModifiers = true;
+    }
+
+    if (extensions.hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
+        fSupportsDeviceFaultInfo = true;
     }
 
     fMaxInputAttachmentDescriptors = properties.limits.maxDescriptorSetInputAttachments;

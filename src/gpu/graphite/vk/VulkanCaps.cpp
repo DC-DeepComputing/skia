@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
+#include "vulkan/vulkan_core.h"
 
 #ifdef SK_BUILD_FOR_ANDROID
 #include <sys/system_properties.h>
@@ -149,6 +150,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         if (ycbcrFeatures && ycbcrFeatures->samplerYcbcrConversion) {
             fSupportsYcbcrConversion = true;
         }
+    }
+
+    if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
+        fSupportsDeviceFaultInfo = true;
     }
 
     this->finishInitialization(contextOptions);
