@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd1d0eb3_e9574612",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-23T02:25:17Z",
+      "side": 1,
+      "message": "Those are all vello configs that show that change, which uses the Transform\u0027s max scale factor as part of determining how to chop conics into quads. The line in question is a skew transform which wasn\u0027t accurately handled by the previous approach (which was only storing the length of the mapped X and Y axes, whereas the singular values handles skew properly). This leading to a change in AA is not surprising but it\u0027s hard for me to judge what\u0027s better. \n\n`glyph_pos_h_s` is also testing hairlines, which I think also is using the transform max scale to figure out what stroke radius to pass to Vello. That will also change with using singular values for the scale factor calculations on a skew matrix.",
+      "parentUuid": "3fc94fa3_4de915e9",
+      "revId": "fa5f2461554f7689d2bd260475c6b21ebe0e38cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24395292_2b28b0a9",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-01-22T23:56:54Z",
       "side": 1,
       "message": "Does this comment need to get updated now that tx and ty are getting used?",
+      "range": {
+        "startLine": 87,
+        "startChar": 29,
+        "endLine": 87,
+        "endChar": 65
+      },
+      "revId": "fa5f2461554f7689d2bd260475c6b21ebe0e38cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d637fff8_ac08774d",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-23T02:25:17Z",
+      "side": 1,
+      "message": "I made a follow-up to clarify that (tx,ty) are used in the inverse calculations, but they aren\u0027t used to classify the transform type.\n\nhttps://skia-review.googlesource.com/c/skia/+/804298",
+      "parentUuid": "24395292_2b28b0a9",
       "range": {
         "startLine": 87,
         "startChar": 29,
