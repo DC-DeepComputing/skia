@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59766527_a066624c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-23T22:16:55Z",
+      "side": 1,
+      "message": "It\u0027s useful for RE \u0026 HWUI for the callback to be invoked on `VK_ERROR_DEVICE_LOST` regardless of whether we can get detailed info from the optional `VK_EXT_device_fault` API, since we still want to crash immediately to hopefully help with stack-based clustering.\n\nThe \"generic info\" refers to the `description` strings hardcoded in the `InvokeDeviceLostCallback` implementation for different failure scenarios. Do you think those should we tweaked to clarify that Skia tried to get more info about the `VK_ERROR_DEVICE_LOST`, but couldn\u0027t?",
+      "parentUuid": "cc907e3d_157be124",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 12,
+        "endChar": 60
+      },
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "309801c9_0b5e050b",
         "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2024-01-23T20:58:11Z",
       "side": 1,
       "message": "This seems ship-blocking if this could happen from multiple threads concurrently?\n\nBut it also seems not terribly hard to fix, unless I\u0027m missing something? You could use a mutex inside `InvokeDeviceLostCallback`, though I\u0027m not sure who should own it.",
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f7b008_73111919",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-23T22:16:55Z",
+      "side": 1,
+      "message": "I don\u0027t _think_ this would be an issue with RE\u0027s planned usage of Graphite, but you\u0027re right it\u0027s probably not a good idea to add a new API to Skia that might not be thread-safe for other clients.",
+      "parentUuid": "309801c9_0b5e050b",
       "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
