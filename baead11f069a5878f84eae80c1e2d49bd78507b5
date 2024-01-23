@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb4293b2_e8c46ab2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-23T22:52:43Z",
+      "side": 1,
+      "message": "Ah sorry yeah I should\u0027ve provided examples of what this might end up looking like when finally logged. In my current prototype of using this callback in RE, `description` ends up in a line like:\n\n\u003e RenderEngine: VK_ERROR_DEVICE_LOST (non-protected context): Exception type 0x1337: Cosmic tuning fork overloaded the reactor core.\n\nfor a driver-provided failure message, or:\n\n\u003e RenderEngine: VK_ERROR_DEVICE_LOST (non-protected context): No details: VK_EXT_device_fault not available/enabled\n\nfor a Skia-provided failure message. I\u0027m very open to changing the logging format in RE though.\n\nI feel like it\u0027s the client\u0027s responsibility to give context for the `description`, but I also definitely want the \"No details...\" `description`s that Skia provides to logically fit with what a driver might provide, so also happy to tweak those.",
+      "parentUuid": "7182b04c_39f875c5",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 12,
+        "endChar": 60
+      },
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "309801c9_0b5e050b",
