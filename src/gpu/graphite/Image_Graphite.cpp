@@ -32,6 +32,9 @@ Image::Image(uint32_t uniqueID,
     , fTextureProxyView(std::move(view)) {
 }
 
+Image::Image(uint32_t uniqueID, TextureProxyView view, const SkISize& size, const SkColorInfo& info)
+        : Image_Base(SkImageInfo::Make(size, info), uniqueID), fTextureProxyView(std::move(view)) {}
+
 Image::~Image() {}
 
 size_t Image::textureSize() const {

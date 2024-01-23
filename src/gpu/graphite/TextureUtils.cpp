@@ -397,9 +397,14 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
     // Src and dst colorInfo are the same
     const SkColorInfo& colorInfo = bmpToUpload.info().colorInfo();
     // Add UploadTask to Recorder
-    UploadInstance upload = UploadInstance::Make(
-            recorder, proxy, colorInfo, colorInfo, texels,
-            SkIRect::MakeSize(bmpToUpload.dimensions()), std::make_unique<ImageUploadContext>());
+    UploadInstance upload = UploadInstance::Make(recorder,
+                                                 proxy,
+                                                 proxy->dimensions(),
+                                                 colorInfo,
+                                                 colorInfo,
+                                                 texels,
+                                                 SkIRect::MakeSize(bmpToUpload.dimensions()),
+                                                 std::make_unique<ImageUploadContext>());
     if (!upload.isValid()) {
         SKGPU_LOG_E("MakeBitmapProxyView: Could not create UploadInstance");
         return {};
@@ -587,7 +592,8 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
 
 bool GenerateMipmaps(Recorder* recorder,
                      sk_sp<TextureProxy> texture,
-                     const SkColorInfo& colorInfo) {
+                     const SkISize& textureSize,
+                     const SkColorInfo& srcColorInfo) {
     constexpr SkSamplingOptions kSamplingOptions = SkSamplingOptions(SkFilterMode::kLinear);
 
     SkASSERT(texture->mipmapped() == Mipmapped::kYes);
@@ -595,10 +601,10 @@ bool GenerateMipmaps(Recorder* recorder,
     // Within a rescaling pass scratchImg is read from and a scratch surface is written to.
     // At the end of the pass the scratch surface's texture is wrapped and assigned to scratchImg.
     sk_sp<SkImage> scratchImg(
-            new Image(kNeedNewImageUniqueID, TextureProxyView(texture), colorInfo));
+            new Image(kNeedNewImageUniqueID, TextureProxyView(texture), textureSize, srcColorInfo));
 
-    SkISize srcSize = texture->dimensions();
-    const SkColorInfo outColorInfo = colorInfo.makeAlphaType(kPremul_SkAlphaType);
+    SkISize srcSize = textureSize;
+    const SkColorInfo outColorInfo = srcColorInfo.makeAlphaType(kPremul_SkAlphaType);
 
     // Alternate between two scratch surfaces to avoid reading from and writing to a texture in the
     // same pass. The dimensions of the first usages of the two scratch textures will be 1/2 and 1/4
