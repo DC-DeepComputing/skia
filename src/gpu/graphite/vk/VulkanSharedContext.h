@@ -55,6 +55,9 @@ private:
 
     VkDevice fDevice;
     uint32_t fQueueIndex;
+
+    skgpu::VulkanDeviceLostContext fDeviceLostContext;
+    skgpu::VulkanDeviceLostProc fDeviceLostProc;
 };
 
 } // namespace skgpu::graphite
