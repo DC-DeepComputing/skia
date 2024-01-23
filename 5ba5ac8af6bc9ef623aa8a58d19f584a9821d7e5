@@ -56,6 +56,30 @@
       },
       "revId": "5ba5ac8af6bc9ef623aa8a58d19f584a9821d7e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad3deaf_3a7f01b8",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-23T15:13:22Z",
+      "side": 1,
+      "message": "+1, the macros up above would need to be changed too, right?",
+      "parentUuid": "225f52c9_ccd17727",
+      "range": {
+        "startLine": 302,
+        "startChar": 33,
+        "endLine": 302,
+        "endChar": 40
+      },
+      "revId": "5ba5ac8af6bc9ef623aa8a58d19f584a9821d7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
