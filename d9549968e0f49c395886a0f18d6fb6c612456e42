@@ -69,6 +69,24 @@
       "parentUuid": "914ee9bc_50e28c3f",
       "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a412d2b_3c7d91a2",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2024-01-23T15:43:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25f7574c_6cce71bc",
+      "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
