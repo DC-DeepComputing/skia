@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "5ba5ac8af6bc9ef623aa8a58d19f584a9821d7e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6743ab99_c9826d0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-23T00:00:08Z",
+      "side": 1,
+      "message": "LGTM % one suggestion",
+      "revId": "5ba5ac8af6bc9ef623aa8a58d19f584a9821d7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "225f52c9_ccd17727",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-23T00:00:08Z",
+      "side": 1,
+      "message": "Would you mind changing this config to something like `compute-area` or `compute-analytic`? Then I\u0027ll introduce a `compute-msaa16` option in https://skia-review.googlesource.com/c/skia/+/801377.",
+      "range": {
+        "startLine": 302,
+        "startChar": 33,
+        "endLine": 302,
+        "endChar": 40
+      },
+      "revId": "5ba5ac8af6bc9ef623aa8a58d19f584a9821d7e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
