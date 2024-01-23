@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc907e3d_157be124",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-01-23T20:58:11Z",
+      "side": 1,
+      "message": "Is this useful?\n\nOr could it be harmful? Might I look at the generic info and be mislead?",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 12,
+        "endChar": 60
+      },
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "309801c9_0b5e050b",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-01-23T20:58:11Z",
+      "side": 1,
+      "message": "This seems ship-blocking if this could happen from multiple threads concurrently?\n\nBut it also seems not terribly hard to fix, unless I\u0027m missing something? You could use a mutex inside `InvokeDeviceLostCallback`, though I\u0027m not sure who should own it.",
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
