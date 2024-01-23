@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "d92e2ef990eca9f52fbf6f6abd6137f194703371",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6c3b778_280c8907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-23T15:11:48Z",
+      "side": 1,
+      "message": "Greg, Peng and I have discussed this change some at our meetings and, in general, this is not how we want to address backend-specific performance optimizations in Graphite or Dawn. As written this is doing a very pessimisticly sized copy for every dawn backend, even if metal or vulkan or d3d12 would allow for a partial update.\n\nThe main issue I think is that the DawnCommandBuffer class is trying to share an implementation for both native Dawn and WebGPU/wasm, which has more restrictions. For native, we should be able to keep the requested buffer size to 16 bytes and allow the d3d11 backend to internally handle the full buffer write (which works out to roughly the same work, but is now directly owned by the backend). For the wasm case where we have the larger buffer with offsets that have to be aligned for valid bindings, I think this is moot. We may just need to accept that the implementations have to diverge a bit more.",
+      "revId": "d92e2ef990eca9f52fbf6f6abd6137f194703371",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
