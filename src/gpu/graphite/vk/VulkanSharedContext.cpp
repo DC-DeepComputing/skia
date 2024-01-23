@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/vk/VulkanAMDMemoryAllocator.h"
 #include "src/gpu/vk/VulkanInterface.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 
 namespace skgpu::graphite {
 
@@ -135,7 +136,9 @@ VulkanSharedContext::VulkanSharedContext(const VulkanBackendContext& backendCont
         , fInterface(std::move(interface))
         , fMemoryAllocator(std::move(memoryAllocator))
         , fDevice(std::move(backendContext.fDevice))
-        , fQueueIndex(backendContext.fGraphicsQueueIndex) {}
+        , fQueueIndex(backendContext.fGraphicsQueueIndex)
+        , fDeviceLostContext(backendContext.fDeviceLostContext)
+        , fDeviceLostProc(backendContext.fDeviceLostProc) {}
 
 VulkanSharedContext::~VulkanSharedContext() {
     // need to clear out resources before the allocator is removed
@@ -175,6 +178,12 @@ bool VulkanSharedContext::checkVkResult(VkResult result) const {
     case VK_SUCCESS:
         return true;
     case VK_ERROR_DEVICE_LOST:
+        // TODO: only call this on the first VK_ERROR_DEVICE_LOST (!fDeviceIsLost)
+        skgpu::InvokeDeviceLostCallback(interface(),
+                                        device(),
+                                        fDeviceLostContext,
+                                        fDeviceLostProc,
+                                        vulkanCaps().supportsDeviceFaultInfo());
         // TODO: determine how we'll track this in a thread-safe manner
         //fDeviceIsLost = true;
         return false;
