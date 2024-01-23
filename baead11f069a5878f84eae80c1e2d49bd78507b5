@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7182b04c_39f875c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-01-23T22:24:06Z",
+      "side": 1,
+      "message": "If I\u0027m understanding correctly, it will include a message like \"No details...\". I can\u0027t say for sure without looking at some examples, but this sounds pretty clear!",
+      "parentUuid": "59766527_a066624c",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 12,
+        "endChar": 60
+      },
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "309801c9_0b5e050b",
