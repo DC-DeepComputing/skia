@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7521306_a519c48c",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-23T11:34:21Z",
+      "side": 1,
+      "message": "No, definitely not, I meant for this to be covered by my note above, that this and the other change to the build files would be removed. I sent this out for review with the intention to get an early look and feedback.",
+      "parentUuid": "cd10cb62_10e43c15",
+      "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "914ee9bc_50e28c3f",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2024-01-22T16:23:08Z",
       "side": 1,
       "message": "I realize this is a Fontations side API issue and should probably be commented there, but is there really a reason to not just require `fill_glyph` to be implemented? It is required by [DWriteCore](https://github.com/microsoft/WindowsAppSDK/blob/main/specs/dwritecore/DWriteCore.md#color-paint-apis), see `DWRITE_PAINT_TYPE_GLYPH`. Since this was just added to Fontations is there any user that would care that it becomes required? If so, would it be possible to just add a default implementation of `fill_glyph` which just calls the other methods?",
+      "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f7574c_6cce71bc",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-23T11:34:21Z",
+      "side": 1,
+      "message": "The second part of your suggestion is in alignment with Chad\u0027s feedback on the Fontations side pull request as well (add a default fill_glyph impl). So I\u0027ll do that and update the PR and this CL.",
+      "parentUuid": "914ee9bc_50e28c3f",
       "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
