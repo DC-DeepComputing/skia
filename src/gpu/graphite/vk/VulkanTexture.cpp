@@ -327,6 +327,10 @@ void VulkanTexture::freeGpuData() {
     }
 }
 
+void VulkanTexture::updateImageLayout(VkImageLayout newLayout) {
+    skgpu::MutableTextureStates::SetVkImageLayout(this->mutableState(), newLayout);
+}
+
 VkImageLayout VulkanTexture::currentLayout() const {
     return skgpu::MutableTextureStates::GetVkImageLayout(this->mutableState());
 }
