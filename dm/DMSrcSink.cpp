@@ -98,6 +98,9 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
@@ -2190,6 +2193,72 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     SkUNREACHABLE;
 }
 
+Result GraphitePrecompileTestingSink::draw(const Src& src,
+                                           SkBitmap* dst,
+                                           SkWStream* dstStream,
+                                           SkString* log) const {
+    SkImageInfo ii = SkImageInfo::Make(src.size(), fColorType, fAlphaType);
+
+    skiatest::graphite::TestOptions options = fOptions;
+    // If we've copied context options from an external source we can't trust that the
+    // priv pointer is still in scope, so assume it should be NULL and set our own up.
+    SkASSERT(!options.fContextOptions.fOptionsPriv);
+    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    options.fContextOptions.fOptionsPriv = &optionsPriv;
+
+    src.modifyGraphiteContextOptions(&options.fContextOptions);
+
+    skiatest::graphite::ContextFactory factory(options);
+    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+    skgpu::graphite::Context* context = ctxInfo.fContext;
+    if (!context) {
+        return Result::Fatal("Could not create a context.");
+    }
+
+    const skgpu::graphite::Caps* caps = context->priv().caps();
+
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+    if (!recorder) {
+        return Result::Fatal("Could not create a recorder.");
+    }
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    {
+        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+        if (!surface) {
+            return Result::Fatal("Could not create a surface.");
+        }
+        Result result = src.draw(surface->getCanvas(), ctxInfo.fTestContext);
+        if (!result.isOk()) {
+            return result;
+        }
+
+        std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+        if (!recording) {
+            return Result::Fatal("Could not create a recording.");
+        }
+
+        skgpu::graphite::InsertRecordingInfo info;
+        info.fRecording = recording.get();
+        if (!context->insertRecording(info)) {
+            return Result::Fatal("Context::insertRecording failed.");
+        }
+        context->submit(skgpu::graphite::SyncToCpu::kYes);
+    }
+
+    std::vector<skgpu::UniqueKey> keys;
+
+    context->priv().globalCache()->getKeys(&keys);
+
+    for (auto k : keys) {
+        skgpu::graphite::Caps::Foobar foobar;
+        caps->reverse1(k, &foobar);
+    }
+
+    return Result::Ok();
+}
 #endif
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
