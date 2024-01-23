@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a364ad3b_7d484152",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2024-01-23T15:43:43Z",
+      "side": 1,
+      "message": "These are now removed.",
+      "parentUuid": "c7521306_a519c48c",
+      "revId": "d9549968e0f49c395886a0f18d6fb6c612456e42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "914ee9bc_50e28c3f",
