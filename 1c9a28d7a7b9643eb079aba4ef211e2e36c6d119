@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4568474_df839e2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-23T16:53:04Z",
+      "side": 1,
+      "message": "I would do a trial Canary roll on this CL before landing it",
+      "revId": "1c9a28d7a7b9643eb079aba4ef211e2e36c6d119",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
