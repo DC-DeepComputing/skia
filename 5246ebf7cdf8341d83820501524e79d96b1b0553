@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ae93fb_cfaaaa36",
+        "filename": "modules/bentleyottmann/include/Contour.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-23T20:28:34Z",
+      "side": 1,
+      "message": "This is fixed in the next CL where I do all the IWYU changes.\nhttps://skia-review.googlesource.com/c/skia/+/804657",
+      "parentUuid": "8bbc228a_b161b2a3",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "5246ebf7cdf8341d83820501524e79d96b1b0553",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cef5fde3_044ddf6a",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-23T19:52:46Z",
       "side": 1,
       "message": "Are we hoping that we can pick a single value that works universally (assuming that we\u0027re going to be using this once paths are already in device space)?",
+      "range": {
+        "startLine": 50,
+        "startChar": 43,
+        "endLine": 50,
+        "endChar": 47
+      },
+      "revId": "5246ebf7cdf8341d83820501524e79d96b1b0553",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a966a618_224f86b2",
+        "filename": "modules/bentleyottmann/include/Contour.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-23T20:28:34Z",
+      "side": 1,
+      "message": "This is just to get started.",
+      "parentUuid": "cef5fde3_044ddf6a",
       "range": {
         "startLine": 50,
         "startChar": 43,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "763ec3e0_d5a22c36",
+        "filename": "modules/bentleyottmann/src/Contour.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-23T20:28:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11de117e_c9515c2b",
+      "revId": "5246ebf7cdf8341d83820501524e79d96b1b0553",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04adcd31_94173fae",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-01-23T19:52:46Z",
       "side": 1,
       "message": "`static` ?",
+      "revId": "5246ebf7cdf8341d83820501524e79d96b1b0553",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5764bf7c_48eefe32",
+        "filename": "modules/bentleyottmann/src/Contour.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-23T20:28:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04adcd31_94173fae",
       "revId": "5246ebf7cdf8341d83820501524e79d96b1b0553",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
