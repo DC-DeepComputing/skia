@@ -311,6 +311,7 @@ public:
         // It is assumed the caller has already accounted for the desired output, or it's a
         // situation where the desired output shouldn't apply (e.g. this surface will be transformed
         // to align with the actual desired output via FilterResult metadata).
+        ctx.markNewSurface();
         sk_sp<SkDevice> device =
                 dstBounds.isEmpty() ? nullptr
                                     : ctx.backend()->makeDevice(SkISize(dstBounds.size()),
@@ -409,6 +410,27 @@ sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, SkColorType
     colorType = kN32_SkColorType;
 
     return sk_make_sp<RasterBackend>(surfaceProps, colorType);
+}
+
+void Stats::dumpStats() const {
+    SkDebugf("ImageFilter Stats:\n"
+             "      # visited filters: %d\n"
+             "           # cache hits: %d\n"
+             "   # offscreen surfaces: %d\n"
+             " # shader-clamped draws: %d\n"
+             "   # shader-tiled draws: %d\n",
+             fNumVisitedImageFilters,
+             fNumCacheHits,
+             fNumOffscreenSurfaces,
+             fNumShaderClampedDraws,
+             fNumShaderBasedTilingDraws);
+}
+
+void Stats::reportStats() const {
+    TRACE_EVENT_INSTANT2("skia", "ImageFilter Graph Size", TRACE_EVENT_SCOPE_THREAD, "count", fNumVisitedImageFilters, "cache hits", fNumCacheHits);
+    TRACE_EVENT_INSTANT1("skia", "ImageFilter Surfaces", TRACE_EVENT_SCOPE_THREAD, "count", fNumOffscreenSurfaces);
+    TRACE_EVENT_INSTANT2("skia", "ImageFilter Shader Tiling", TRACE_EVENT_SCOPE_THREAD, "clamp", fNumShaderClampedDraws, "other", fNumShaderBasedTilingDraws);
+    // FIXME
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1140,6 +1162,7 @@ void FilterResult::draw(const Context& ctx,
         sampling = {};
     }
 
+    const bool approxFitImage = fImage->backingStoreDimensions() != fImage->dimensions();
     if (analysis & BoundsAnalysis::kEffectsVisible) {
         if (fTileMode == SkTileMode::kDecal) {
             // apply_decal consumes the transform, so we don't modify the canvas
@@ -1154,12 +1177,18 @@ void FilterResult::draw(const Context& ctx,
         }
         // Fill the canvas with the shader, relying on it to do the transform
         device->drawPaint(paint);
+        if (approxFitImage) {
+            ctx.markShaderBasedTilingRequired(fTileMode);
+        }
     } else {
         // src's origin is embedded in fTransform. For historical reasons, drawSpecial() does
         // not automatically use the device's current local-to-device matrix, but that's what preps
         // it to match the expected layer coordinate system.
         SkMatrix netTransform = SkMatrix::Concat(device->localToDevice(), SkMatrix(fTransform));
         device->drawSpecial(fImage.get(), netTransform, sampling, paint);
+        if (approxFitImage) {
+            ctx.markShaderBasedTilingRequired(SkTileMode::kClamp);
+        }
     }
 
     if (preserveDeviceState && (analysis & BoundsAnalysis::kLayerCropVisible)) {
@@ -1212,6 +1241,9 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
         if (pixels) {
             shader = pixels->asShader(SkTileMode::kDecal, sampling,
                                       SkMatrix::Translate(origin.x(), origin.y()));
+            if (pixels->backingStoreDimensions() != pixels->dimensions()) {
+                ctx.markShaderBasedTilingRequired(SkTileMode::kDecal);
+            }
         }
     } else {
         // Since we didn't need to resolve, we know the content being sampled isn't cropped by
@@ -1224,6 +1256,10 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
 
         if (shader && fColorFilter) {
             shader = shader->makeWithColorFilter(fColorFilter);
+        }
+
+        if (fImage->backingStoreDimensions() != fImage->dimensions()) {
+            ctx.markShaderBasedTilingRequired(fTileMode);
         }
     }
 
@@ -1393,10 +1429,16 @@ FilterResult FilterResult::rescale(const Context& ctx,
                                                      SkMatrix(fTransform)));
                 }
                 paint.setColorFilter(fColorFilter);
+                if (fImage->backingStoreDimensions() != fImage->dimensions()) {
+                    ctx.markShaderBasedTilingRequired(fTileMode);
+                }
             } else {
                 // Otherwise just bilinearly downsample the origin-aligned prior step's image.
                 paint.setShader(image->asShader(tileMode, SkFilterMode::kLinear,
                                                 SkMatrix::Translate(origin.x(), origin.y())));
+                if (image->backingStoreDimensions() != image->dimensions()) {
+                    ctx.markShaderBasedTilingRequired(tileMode);
+                }
             }
 
             surface->drawPaint(paint);

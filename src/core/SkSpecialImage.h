@@ -60,6 +60,8 @@ public:
 
     uint32_t uniqueID() const { return fUniqueID; }
 
+    virtual SkISize backingStoreDimensions() const { return this->dimensions(); }
+
     virtual size_t getSize() const = 0;
 
     const SkColorInfo& colorInfo() const { return fColorInfo; }
