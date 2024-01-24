@@ -16,6 +16,24 @@
       "message": "Not for now, but most of these look like good candidates for moving to include/private/ or src/ ... I don\u0027t want to be in the business of providing C-style string manipulation API.",
       "revId": "d5100df1e825966858f3736785b0b8cab9088c9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2d364b7_1a6a76d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T16:01:29Z",
+      "side": 1,
+      "message": "If we\u0027d rather hide these APIs, we probably shouldn\u0027t mark them as SK_API.\n\nI\u0027ll take away SK_API from the ones that deal in chars.",
+      "parentUuid": "5f8863d5_aae5fd6c",
+      "revId": "d5100df1e825966858f3736785b0b8cab9088c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
