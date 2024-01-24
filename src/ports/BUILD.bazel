@@ -59,7 +59,7 @@ skia_filegroup(
             "//bazel/common_config_settings:fci_fontmgr": [":fontmgr_fci"],
         },
     ) + select({
-        "@platforms//os:linux": [":legacy_fontmgr_fontconfig"],
+        ":uses_fontconfig": [":legacy_fontmgr_fontconfig"],
         "//conditions:default": [],
     }),
 )
@@ -239,7 +239,6 @@ selects.config_setting_group(
         "//bazel/common_config_settings:custom_empty_fontmgr",
         "//bazel/common_config_settings:fontconfig_fontmgr",
         "//bazel/common_config_settings:fci_fontmgr",
-        "@platforms//os:linux",
     ],
 )
 
@@ -248,7 +247,6 @@ selects.config_setting_group(
     match_any = [
         "//bazel/common_config_settings:fontconfig_fontmgr",
         "//bazel/common_config_settings:fci_fontmgr",
-        "@platforms//os:linux",
     ],
 )
 
