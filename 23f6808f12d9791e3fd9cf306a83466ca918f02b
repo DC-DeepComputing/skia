@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "006ac438_657f7078",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2605,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-24T14:54:27Z",
+      "side": 1,
+      "message": "Revised version of this test fails without the fix.",
+      "revId": "23f6808f12d9791e3fd9cf306a83466ca918f02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
