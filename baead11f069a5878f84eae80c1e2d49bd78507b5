@@ -186,6 +186,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b54c8186_60e0f06d",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-24T22:59:53Z",
+      "side": 1,
+      "message": "- Added a mutex, PTAL.\n- I also took the liberty to expose a `isDeviceLost()` function, and plumbed it all the way up through `Context`. This aligns with Ganesh IMO, but LMK if it\u0027s not desired for Graphite.\n- To clarify my last comment, I meant we\u0027re not currently planning to take advantage of Graphite\u0027s ability to have multiple `Recorder`s across different threads, but I\u0027m definitely on board with making it thread safe 😊 (and in any case, maybe Graphite is doing more multithreaded VK access under the hood that I wasn\u0027t aware of, even in a single-`Recorder` scenario?)",
+      "parentUuid": "1af23fcc_95ab82a9",
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4bcd49c_ded09c3a",
         "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
         "patchSetId": 4
@@ -197,6 +215,30 @@
       "writtenOn": "2024-01-24T18:52:54Z",
       "side": 1,
       "message": "nit: I don\u0027t think this comma is needed",
+      "range": {
+        "startLine": 196,
+        "startChar": 54,
+        "endLine": 196,
+        "endChar": 55
+      },
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99584263_b4003a02",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-24T22:59:53Z",
+      "side": 1,
+      "message": "Thanks for catching",
+      "parentUuid": "d4bcd49c_ded09c3a",
       "range": {
         "startLine": 196,
         "startChar": 54,
