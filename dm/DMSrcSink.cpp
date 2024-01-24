@@ -97,6 +97,10 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
@@ -2190,6 +2194,108 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     SkUNREACHABLE;
 }
 
+Result GraphitePrecompileTestingSink::drawSrc(const Src& src,
+                                              skgpu::graphite::Context* context,
+                                              skiatest::graphite::GraphiteTestContext* testContext) const {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+    if (!recorder) {
+        return Result::Fatal("Could not create a recorder.");
+    }
+
+    sk_sp<SkSurface> surface = this->makeSurface(recorder.get(), src.size());
+    if (!surface) {
+        return Result::Fatal("Could not create a surface.");
+    }
+    Result result = src.draw(surface->getCanvas(), testContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+    if (!recording) {
+        return Result::Fatal("Could not create a recording.");
+    }
+
+    skgpu::graphite::InsertRecordingInfo info;
+    info.fRecording = recording.get();
+    if (!context->insertRecording(info)) {
+        return Result::Fatal("Context::insertRecording failed.");
+    }
+    if (!context->submit(skgpu::graphite::SyncToCpu::kYes)) {
+        return Result::Fatal("Context::submit failed.");
+    }
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::thrash(skgpu::graphite::Context* context) const {
+    using namespace skgpu::graphite;
+
+    const Caps* caps = context->priv().caps();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+
+    std::vector<skgpu::UniqueKey> keys;
+
+    context->priv().globalCache()->getKeys(&keys);
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    for (auto k : keys) {
+        Caps::Foobar foobar;
+        caps->reverse1(k, &foobar);
+        foobar.dump();
+
+        PaintParamsKey paramsKey = dict->lookup(foobar.fPaintParamsID);
+        paramsKey.dump(dict);
+    }
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::check(skgpu::graphite::Context* context) const {
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::draw(const Src& src,
+                                           SkBitmap* dst,
+                                           SkWStream* dstStream,
+                                           SkString* log) const {
+    skiatest::graphite::TestOptions options = fOptions;
+    // If we've copied context options from an external source we can't trust that the
+    // priv pointer is still in scope, so assume it should be NULL and set our own up.
+    SkASSERT(!options.fContextOptions.fOptionsPriv);
+    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    options.fContextOptions.fOptionsPriv = &optionsPriv;
+
+    src.modifyGraphiteContextOptions(&options.fContextOptions);
+
+    skiatest::graphite::ContextFactory factory(options);
+    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+    skgpu::graphite::Context* context = ctxInfo.fContext;
+    if (!context) {
+        return Result::Fatal("Could not create a context.");
+    }
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    Result result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    result = this->thrash(context);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    return this->check(context);
+}
 #endif
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
