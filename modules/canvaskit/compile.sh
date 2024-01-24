@@ -247,11 +247,11 @@ echo "Compiling"
   skia_enable_skparagraph=true \
   skia_enable_pdf=false \
   skia_canvaskit_enable_rt_shader=true \
+  skia_enable_skottie=${ENABLE_SKOTTIE} \
   skia_canvaskit_force_tracing=${FORCE_TRACING} \
   skia_canvaskit_profile_build=${PROFILE_BUILD} \
   skia_canvaskit_enable_skp_serialization=${SERIALIZE_SKP} \
   skia_canvaskit_enable_effects_deserialization=${DESERIALIZE_EFFECTS} \
-  skia_canvaskit_enable_skottie=${ENABLE_SKOTTIE} \
   skia_canvaskit_include_viewer=${INCLUDE_VIEWER} \
   skia_canvaskit_enable_pathops=${ENABLE_PATHOPS} \
   skia_canvaskit_enable_matrix_helper=${ENABLE_MATRIX} \
