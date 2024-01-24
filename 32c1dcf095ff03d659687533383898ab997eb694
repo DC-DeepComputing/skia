@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aa233ba_acbc2eee",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T19:12:46Z",
+      "side": 1,
+      "message": "No reason; changed back. (Backstory: originally when I was refactoring I had both names, and started off with `float numStops \u003d float(intStops);`.)",
+      "parentUuid": "f4dd4efa_9e7b0065",
+      "range": {
+        "startLine": 544,
+        "startChar": 64,
+        "endLine": 544,
+        "endChar": 72
+      },
+      "revId": "32c1dcf095ff03d659687533383898ab997eb694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33bb2934_8452bfd6",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-01-24T18:17:00Z",
       "side": 1,
       "message": "Is `oo` meant to be \"one-over\"? I\u0027ve generally preferred something like `invNumStops`",
+      "range": {
+        "startLine": 557,
+        "startChar": 14,
+        "endLine": 557,
+        "endChar": 24
+      },
+      "revId": "32c1dcf095ff03d659687533383898ab997eb694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b03e69ff_e4342dfd",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T19:12:46Z",
+      "side": 1,
+      "message": "Yes, it meant \"one over\". Changed to `inv`.",
+      "parentUuid": "33bb2934_8452bfd6",
       "range": {
         "startLine": 557,
         "startChar": 14,
