@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb32106_d5454056",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T16:32:39Z",
+      "side": 1,
+      "message": "I think the `!(is_win \u0026\u0026 is_component_build)` check in the previous implementation of `skia_enable_skottie` was preventing the second half of the `||` from ever being evaluated.\n\nSkottie is incompatible with \"is-component\" on any OS since it uses private API. I think the previous implementation was a de-facto `skia_enable_skottie \u003d true`, and if you were actually making a build with `is_win \u003d true` and `is_component_build \u003d true` you would hit a GN error that could be fixed by also adding `skia_enable_skottie \u003d false`.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
