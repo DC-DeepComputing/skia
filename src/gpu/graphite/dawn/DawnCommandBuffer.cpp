@@ -25,12 +25,17 @@ namespace skgpu::graphite {
 
 namespace {
 
-using IntrinsicConstant = float[4];
+using IntrinsicConstantData = float[4];
 
 constexpr int kBufferBindingOffsetAlignment = 256;
 
 constexpr int kIntrinsicConstantAlignedSize =
-        SkAlignTo(sizeof(IntrinsicConstant), kBufferBindingOffsetAlignment);
+        SkAlignTo(sizeof(IntrinsicConstantData), kBufferBindingOffsetAlignment);
+
+union IntrinsicConstant {
+    IntrinsicConstantData data;
+    uint8_t padding[kIntrinsicConstantAlignedSize];
+};
 
 #if defined(__EMSCRIPTEN__)
 // When running against WebGPU in WASM we don't have the wgpu::CommandBuffer::WriteBuffer method. We
@@ -649,7 +654,8 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
     const float y = viewport.y() - fReplayTranslation.y();
     const float invTwoW = 2.f / viewport.width();
     const float invTwoH = 2.f / viewport.height();
-    const IntrinsicConstant rtAdjust = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
+    const IntrinsicConstant rtAdjust =
+            {.data = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH}};
 
     bool needNewBuffer = !fIntrinsicConstantBuffer;
     if (!needNewBuffer && kNumSlotsForIntrinsicConstantBuffer > 0) {
@@ -693,7 +699,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
 #if !defined(__EMSCRIPTEN__)
         fCommandEncoder.WriteBuffer(fIntrinsicConstantBuffer->dawnBuffer(),
                                     0,
-                                    reinterpret_cast<const uint8_t*>(rtAdjust),
+                                    reinterpret_cast<const uint8_t*>(&rtAdjust),
                                     sizeof(rtAdjust));
 #endif
         fIntrinsicConstantBufferSlotsUsed = 1;
