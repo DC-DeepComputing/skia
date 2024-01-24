@@ -94,6 +94,30 @@
       },
       "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6531f263_97aa68e1",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T17:03:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f3cca464_889ccd68",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
