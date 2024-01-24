@@ -346,10 +346,10 @@ public:
 
 private:
     /*
-     * The gradients currently have two specializations based on the number of stops.
+     * The gradients currently have three specializations based on the number of stops.
      */
-    inline static constexpr int kNumStopVariants = 2;
-    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8 };
+    inline static constexpr int kNumStopVariants = 3;
+    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8, 16 };
 
     int numIntrinsicCombinations() const override {
         return kNumStopVariants;
@@ -480,6 +480,33 @@ private:
 sk_sp<PrecompileShader> PrecompileShaders::ColorFilter(sk_sp<PrecompileShader> shader,
                                                        sk_sp<PrecompileColorFilter> cf) {
     return sk_make_sp<PrecompileColorFilterShader>(std::move(shader), std::move(cf));
+}
+
+//--------------------------------------------------------------------------------------------------
+class PrecompilePerlinNoiseShader : public PrecompileShader {
+public:
+    PrecompilePerlinNoiseShader() {}
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+
+        SkASSERT(desiredCombination == 0); // The color shader only ever has one combination
+
+        // TODO: remove the need for this
+        PerlinNoiseShaderBlock::PerlinNoiseData data(PerlinNoiseShaderBlock::Type::kTurbulence,
+                                                     { 0.0f, 0.0f },
+                                                     0,
+                                                     { 0, 0 });
+
+        PerlinNoiseShaderBlock::AddBlock(keyContext, builder, gatherer, data);
+    }
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::PerlinNoise() {
+    return sk_make_sp<PrecompilePerlinNoiseShader>();
 }
 
 //--------------------------------------------------------------------------------------------------

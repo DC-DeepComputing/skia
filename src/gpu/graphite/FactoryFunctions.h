@@ -54,6 +54,8 @@ public:
     static sk_sp<PrecompileShader> ColorFilter(sk_sp<PrecompileShader>,
                                                sk_sp<PrecompileColorFilter>);
 
+    static sk_sp<PrecompileShader> PerlinNoise();
+
 private:
     PrecompileShaders() = delete;
 };
