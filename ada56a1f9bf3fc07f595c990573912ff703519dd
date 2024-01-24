@@ -70,6 +70,30 @@
       },
       "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3cca464_889ccd68",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-01-24T16:57:51Z",
+      "side": 1,
+      "message": "Yeah, I don\u0027t remember Skottie ever supporting component builds, this makes sense.",
+      "parentUuid": "1e3a1a48_3a991852",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
