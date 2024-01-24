@@ -16,7 +16,37 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/sksl/SkSLUtil.h"
 
+#include "src/gpu/graphite/ResourceTypes.h"
+#include "tools/ToolUtils.h"
+//#include "src/gpu/graphite/mtl/MtlCaps.h"
+
+const char* nameIt(int format);
+
 namespace skgpu::graphite {
+
+static const char* to_str(DepthStencilFlags dsFlags) {
+    switch (dsFlags) {
+        case DepthStencilFlags::kNone:         return "kNone";
+        case DepthStencilFlags::kDepth:        return "kDepth";
+        case DepthStencilFlags::kStencil:      return "kStencil";
+        case DepthStencilFlags::kDepthStencil: return "kDepthStencil";
+        default:                               return "kUnknown";
+    }
+}
+
+void Caps::Foobar::dump() const {
+    SkDebugf("Foobar %d %d %s (%s) %d %s (%s) %d\n",
+             fRenderStepID,
+             fPaintParamsID.asUInt(),
+
+             nameIt(fColorFormat),
+             ToolUtils::colortype_name(fColorType),
+             fColorSampleCount,
+
+             nameIt(fDSFormat),
+             to_str(fDSFlags),
+             fDSSampleCount);
+}
 
 Caps::Caps()
         : fShaderCaps(std::make_unique<SkSL::ShaderCaps>())

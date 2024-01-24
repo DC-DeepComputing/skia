@@ -109,7 +109,7 @@ void Blend(const KeyContext& keyContext,
     keyBuilder->endBlock();  // BlendShaderBlock
 }
 
-void Compose(const KeyContext& keyContext,
+void Compose1(const KeyContext& keyContext,
              PaintParamsKeyBuilder* keyBuilder,
              PipelineDataGatherer* gatherer,
              AddToKeyFn addInnerToKey,

@@ -36,6 +36,8 @@ public:
     static sk_sp<PrecompileShader> Blend(SkSpan<SkBlendMode> blendModes,
                                          SkSpan<const sk_sp<PrecompileShader>> dsts,
                                          SkSpan<const sk_sp<PrecompileShader>> srcs);
+    static sk_sp<PrecompileShader> Compose(SkSpan<const sk_sp<PrecompileShader>> inners,
+                                           SkSpan<const sk_sp<PrecompileShader>> outers);
     // TODO: add an SkShaders::Image to match this and SkImageFilters (skbug.com/13440)
     static sk_sp<PrecompileShader> Image();
     static sk_sp<PrecompileShader> YUVImage();
@@ -53,6 +55,8 @@ public:
     static sk_sp<PrecompileShader> LocalMatrix(sk_sp<PrecompileShader> wrapped);
     static sk_sp<PrecompileShader> ColorFilter(sk_sp<PrecompileShader>,
                                                sk_sp<PrecompileColorFilter>);
+
+    static sk_sp<PrecompileShader> PerlinNoise();
 
 private:
     PrecompileShaders() = delete;

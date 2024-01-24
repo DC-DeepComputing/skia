@@ -265,6 +265,99 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileComposeShader : public PrecompileShader {
+public:
+    PrecompileComposeShader(SkSpan<const sk_sp<PrecompileShader>> inners,
+                            SkSpan<const sk_sp<PrecompileShader>> outers)
+            : fInnerOptions(inners.begin(), inners.end())
+            , fOuterOptions(outers.begin(), outers.end()) {
+
+        fNumInnerCombos = 0;
+        for (const auto& i : fInnerOptions) {
+            fNumInnerCombos += i->numCombinations();
+        }
+
+        fNumOuterCombos = 0;
+        for (const auto& o : fOuterOptions) {
+            fNumOuterCombos += o->numCombinations();
+        }
+    }
+
+private:
+    int numChildCombinations() const override {
+        return fNumInnerCombos * fNumOuterCombos;
+    }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numCombinations());
+
+        const int desiredDstCombination = desiredCombination % fNumDstCombos;
+        int remainingCombinations = desiredCombination / fNumDstCombos;
+
+        const int desiredSrcCombination = remainingCombinations % fNumSrcCombos;
+        remainingCombinations /= fNumSrcCombos;
+
+        int desiredBlendCombination = remainingCombinations;
+        SkASSERT(desiredBlendCombination < fNumBlenderCombos);
+
+        if (desiredBlendCombination == fPorterDuffIndex ||
+            desiredBlendCombination == fSeparableModeIndex) {
+            BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+        } else {
+            // TODO: share this with the copy over in SkComposeShader.cpp. For now, the block ID is
+            // determined by a hash of the code so both copies will generate the same key and
+            // the SkPaint vs. PaintOptions key match testing will trigger if they get out of
+            // sync.
+            static SkRuntimeEffect* sBlendEffect = SkMakeRuntimeEffect(
+                    SkRuntimeEffect::MakeForShader,
+                    "uniform shader s, d;"
+                    "uniform blender b;"
+                    "half4 main(float2 xy) {"
+                    "return b.eval(s.eval(xy), d.eval(xy));"
+                    "}"
+            );
+            RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                           { sk_ref_sp(sBlendEffect) });
+            SkASSERT(desiredBlendCombination >= fBlenderIndex);
+            desiredBlendCombination -= fBlenderIndex;
+        }
+
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fSrcOptions,
+                desiredSrcCombination);
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fDstOptions,
+                desiredDstCombination);
+
+        if (desiredBlendCombination == fPorterDuffIndex) {
+            CoeffBlenderBlock::AddBlock(keyContext, builder, gatherer,
+                                        { 0.0f, 0.0f, 0.0f, 0.0f }); // coeffs aren't used
+        } else if (desiredBlendCombination == fSeparableModeIndex) {
+            BlendModeBlenderBlock::AddBlock(keyContext, builder, gatherer,
+                                            SkBlendMode::kOverlay); // the blendmode is unused
+        } else {
+            AddToKey<PrecompileBlender>(keyContext, builder, gatherer, fRuntimeBlendEffects,
+                    desiredBlendCombination);
+        }
+
+        builder->endBlock();  // BlendShaderBlock or RuntimeEffectBlock
+    }
+
+    std::vector<sk_sp<PrecompileShader>> fInnerOptions;
+    std::vector<sk_sp<PrecompileShader>> fOuterOptions;
+
+    int fNumInnerCombos;
+    int fNumOuterCombos;
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::Compose(SkSpan<const sk_sp<PrecompileShader>> inners,
+                                                   SkSpan<const sk_sp<PrecompileShader>> outers) {
+    return sk_make_sp<PrecompileComposeShader>(inners, outers);
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileImageShader : public PrecompileShader {
 public:
     PrecompileImageShader() {}
@@ -346,10 +439,10 @@ public:
 
 private:
     /*
-     * The gradients currently have two specializations based on the number of stops.
+     * The gradients currently have three specializations based on the number of stops.
      */
-    inline static constexpr int kNumStopVariants = 2;
-    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8 };
+    inline static constexpr int kNumStopVariants = 3;
+    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8, 16 };
 
     int numIntrinsicCombinations() const override {
         return kNumStopVariants;
@@ -480,6 +573,33 @@ private:
 sk_sp<PrecompileShader> PrecompileShaders::ColorFilter(sk_sp<PrecompileShader> shader,
                                                        sk_sp<PrecompileColorFilter> cf) {
     return sk_make_sp<PrecompileColorFilterShader>(std::move(shader), std::move(cf));
+}
+
+//--------------------------------------------------------------------------------------------------
+class PrecompilePerlinNoiseShader : public PrecompileShader {
+public:
+    PrecompilePerlinNoiseShader() {}
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+
+        SkASSERT(desiredCombination == 0); // The color shader only ever has one combination
+
+        // TODO: remove the need for this
+        PerlinNoiseShaderBlock::PerlinNoiseData data(PerlinNoiseShaderBlock::Type::kTurbulence,
+                                                     { 0.0f, 0.0f },
+                                                     0,
+                                                     { 0, 0 });
+
+        PerlinNoiseShaderBlock::AddBlock(keyContext, builder, gatherer, data);
+    }
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::PerlinNoise() {
+    return sk_make_sp<PrecompilePerlinNoiseShader>();
 }
 
 //--------------------------------------------------------------------------------------------------
