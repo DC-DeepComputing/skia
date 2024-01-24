@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db446e0_27f29559",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-24T20:49:34Z",
+      "side": 1,
+      "message": "Might have to fix other clients due to backwards refs. Not sure if that\u0027s just missing deps yet or if we have to migrate them onto the modular targets.",
+      "revId": "f9f893527ec1041d52c486fea29469fea6c424eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
