@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b9cff3_e1bd28a0",
+        "filename": "modules/skottie/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T16:45:29Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "eec1e9e4f140b9eeaff3c4e98d17321b0db719bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
