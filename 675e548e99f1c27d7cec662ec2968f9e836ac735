@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "246b6bdb_117b7c23",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-24T21:17:26Z",
+      "side": 0,
+      "message": "Doesn\u0027t look like anything builds this anymore?",
+      "revId": "675e548e99f1c27d7cec662ec2968f9e836ac735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
