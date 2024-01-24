@@ -33,10 +33,10 @@ static inline bool SkStrStartsWith(const char string[], const char prefixChar) {
     return (prefixChar == *string);
 }
 
-bool SkStrEndsWith(const char string[], const char suffixStr[]);
-bool SkStrEndsWith(const char string[], const char suffixChar);
+SK_API bool SkStrEndsWith(const char string[], const char suffixStr[]);
+SK_API bool SkStrEndsWith(const char string[], const char suffixChar);
 
-int SkStrStartsWithOneOf(const char string[], const char prefixes[]);
+SK_API int SkStrStartsWithOneOf(const char string[], const char prefixes[]);
 
 static inline int SkStrFind(const char string[], const char substring[]) {
     const char *first = strstr(string, substring);
@@ -82,14 +82,14 @@ static inline bool SkStrContains(const char string[], const char subchar) {
  */
 
 static constexpr int kSkStrAppendU32_MaxSize = 10;
-char*   SkStrAppendU32(char buffer[], uint32_t);
+SK_API char* SkStrAppendU32(char buffer[], uint32_t);
 static constexpr int kSkStrAppendU64_MaxSize = 20;
-char*   SkStrAppendU64(char buffer[], uint64_t, int minDigits);
+SK_API char* SkStrAppendU64(char buffer[], uint64_t, int minDigits);
 
 static constexpr int kSkStrAppendS32_MaxSize = kSkStrAppendU32_MaxSize + 1;
-char*   SkStrAppendS32(char buffer[], int32_t);
+SK_API char* SkStrAppendS32(char buffer[], int32_t);
 static constexpr int kSkStrAppendS64_MaxSize = kSkStrAppendU64_MaxSize + 1;
-char*   SkStrAppendS64(char buffer[], int64_t, int minDigits);
+SK_API char* SkStrAppendS64(char buffer[], int64_t, int minDigits);
 
 /**
  *  Floats have at most 8 significant digits, so we limit our %g to that.
@@ -107,7 +107,7 @@ static constexpr int kSkStrAppendScalar_MaxSize = 15;
  *  Thus if the caller wants to add a 0 at the end, buffer must be at least
  *  kSkStrAppendScalar_MaxSize + 1 bytes large.
  */
-char* SkStrAppendScalar(char buffer[], SkScalar);
+SK_API char* SkStrAppendScalar(char buffer[], SkScalar);
 
 /** \class SkString
 
@@ -281,7 +281,7 @@ private:
 };
 
 /// Creates a new string and writes into it using a printf()-style format.
-SkString SkStringPrintf(const char* format, ...) SK_PRINTF_LIKE(1, 2);
+SK_API SkString SkStringPrintf(const char* format, ...) SK_PRINTF_LIKE(1, 2);
 /// This makes it easier to write a caller as a VAR_ARGS function where the format string is
 /// optional.
 static inline SkString SkStringPrintf() { return SkString(); }
