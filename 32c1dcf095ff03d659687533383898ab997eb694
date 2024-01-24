@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d2abd0_2d7d0d0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-24T18:17:00Z",
+      "side": 1,
+      "message": "other than names, lgtm, thanks for the clean up!",
+      "revId": "32c1dcf095ff03d659687533383898ab997eb694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4dd4efa_9e7b0065",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-24T18:17:00Z",
+      "side": 1,
+      "message": "any reason to rename this? `numStops` seems fine to me.",
+      "range": {
+        "startLine": 544,
+        "startChar": 64,
+        "endLine": 544,
+        "endChar": 72
+      },
+      "revId": "32c1dcf095ff03d659687533383898ab997eb694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33bb2934_8452bfd6",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-24T18:17:00Z",
+      "side": 1,
+      "message": "Is `oo` meant to be \"one-over\"? I\u0027ve generally preferred something like `invNumStops`",
+      "range": {
+        "startLine": 557,
+        "startChar": 14,
+        "endLine": 557,
+        "endChar": 24
+      },
+      "revId": "32c1dcf095ff03d659687533383898ab997eb694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
