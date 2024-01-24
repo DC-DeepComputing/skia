@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c36fbcd_c696cadb",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-24T18:45:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e9e08282_6703ba7e",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 1
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1db702c6_9f7f141f",
@@ -439,6 +463,30 @@
       "side": 1,
       "message": "The values are arbitrary. These are here mainly to keep a consistent declaration for the data sizes expected in the test input and output.",
       "parentUuid": "667604ba_d65773d4",
+      "range": {
+        "startLine": 1711,
+        "startChar": 0,
+        "endLine": 1713,
+        "endChar": 43
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0749230e_346c922a",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1713,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-24T18:45:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "748a7fbb_c981aef7",
       "range": {
         "startLine": 1711,
         "startChar": 0,
