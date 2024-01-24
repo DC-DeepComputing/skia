@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f63b80a5_37de3ae5",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:48:11Z",
+      "side": 1,
+      "message": "I agree that this is jarring. The texture sizes aren\u0027t known here and `VelloFineStep` resources get assigned directly to the `DispatchGroupBuilder` while snapping the recording, based on the parameters of the draw (see https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/compute/VelloRenderer.cpp;l\u003d411?q\u003dVelloRenderer\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F).\n\nWe need to be able to query the texture format to describe the bind group layout but size is unused in this case. Maybe mandatory parameters (like the format) and optional ones could have different methods to query them (which I\u0027m happy explore as a separate change).",
+      "parentUuid": "eec062b7_b2544356",
+      "range": {
+        "startLine": 256,
+        "startChar": 17,
+        "endLine": 256,
+        "endChar": 18
+      },
+      "revId": "e262470a1f73a629e9b29ac36264be06a1a44295",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13a45f71_72134b0d",
         "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-18T20:10:59Z",
       "side": 1,
       "message": "nit: since only one argument is changing, maybe consider using a ternary here? \n\nlike\n```\nbuilder.appendStep(params.fAaConfig \u003d\u003d VelloAaConfig::kMSAA16 ? \u0026fFineMsaa16 \n                                                              : \u0026fFineArea,\n                   to_wg_size(dispatchInfo.fine));\n```",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 5
+      },
+      "revId": "e262470a1f73a629e9b29ac36264be06a1a44295",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "094c9f4d_14f4d733",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13a45f71_72134b0d",
       "range": {
         "startLine": 453,
         "startChar": 0,
