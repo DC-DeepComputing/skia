@@ -47,6 +47,10 @@ public:
 
     GrSurfaceProxyView view(GrRecordingContext*) const { return fView; }
 
+    SkISize backingStoreDimensions() const override {
+        return fView.proxy()->backingStoreDimensions();
+    }
+
     sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const override {
         return SkSpecialImages::MakeDeferredFromGpu(
                 fContext, subset, this->uniqueID(), fView, this->colorInfo(), this->props());
