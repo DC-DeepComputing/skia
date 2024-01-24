@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7f8d42b_71c0c4a7",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-24T21:26:29Z",
+      "side": 1,
+      "message": "Was the intention to put `SkCodec.cpp` here as well?",
+      "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1869f64_400895e2",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-24T21:26:29Z",
+      "side": 1,
+      "message": "Is it ok to put this `filegroup` here? Before I\u0027m guessing this worked because there was only the png one that used it, but now it looks like the .cpp files in here may be built multiple times? Will this result in ODR issues? Should \"any_decoder_srcs\" be a library? I wish I could remember all the rules here off the top of my head, but this is the 6th build system I\u0027ve been involved with so I\u0027m confused.",
+      "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
