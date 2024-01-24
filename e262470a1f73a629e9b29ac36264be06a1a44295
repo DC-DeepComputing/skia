@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b98bc2f4_afa3fea4",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-24T18:44:41Z",
+      "side": 1,
+      "message": "Yeah that can absolutely be a separate change, maybe for now simply add a comment explaining that texture size isn\u0027t known here and how that later gets determined some other way / perhaps add a TODO to add queries for the information you want to be able to pull off of a texture.",
+      "parentUuid": "f63b80a5_37de3ae5",
+      "range": {
+        "startLine": 256,
+        "startChar": 17,
+        "endLine": 256,
+        "endChar": 18
+      },
+      "revId": "e262470a1f73a629e9b29ac36264be06a1a44295",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13a45f71_72134b0d",
         "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
         "patchSetId": 3
