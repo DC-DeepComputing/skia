@@ -114,16 +114,18 @@ protected:
         return *this;
     }
 
+public:
     uint32_t domain() const { return fKey[kDomainAndSize_MetaDataIdx] & 0xffff; }
 
     /** size of the key data, excluding meta-data (hash, domain, etc).  */
     size_t dataSize() const { return this->size() - 4 * kMetaDataCnt; }
 
     /** ptr to the key data, excluding meta-data (hash, domain, etc).  */
-    const uint32_t* data() const {
+    const uint32_t* data7() const {
         this->validate();
         return &fKey[kMetaDataCnt];
     }
+protected:
 
 #ifdef SK_DEBUG
     void dump() const {
@@ -284,7 +286,7 @@ public:
             SkASSERT(&innerKey != key);
             // add the inner key to the end of the key so that op[] can be indexed normally.
             uint32_t* innerKeyData = &this->operator[](extraData32Cnt);
-            const uint32_t* srcData = innerKey.data();
+            const uint32_t* srcData = innerKey.data7();
             (*innerKeyData++) = innerKey.domain();
             memcpy(innerKeyData, srcData, innerKey.dataSize());
             key->fTag = tag;

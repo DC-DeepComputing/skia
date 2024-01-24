@@ -346,10 +346,10 @@ public:
 
 private:
     /*
-     * The gradients currently have two specializations based on the number of stops.
+     * The gradients currently have three specializations based on the number of stops.
      */
-    inline static constexpr int kNumStopVariants = 2;
-    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8 };
+    inline static constexpr int kNumStopVariants = 3;
+    inline static constexpr int kStopVariants[kNumStopVariants] = { 4, 8, 16 };
 
     int numIntrinsicCombinations() const override {
         return kNumStopVariants;
