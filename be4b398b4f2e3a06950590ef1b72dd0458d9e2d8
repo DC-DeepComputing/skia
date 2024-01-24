@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef8aa3c7_a4beb38b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1321,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-24T16:54:21Z",
+      "side": 1,
+      "message": "Yes, thank you for pointing that out. Encapsulated in https://skia-review.googlesource.com/c/skia/+/805256",
+      "parentUuid": "7060a225_8aa2ffaa",
+      "range": {
+        "startLine": 1321,
+        "startChar": 8,
+        "endLine": 1321,
+        "endChar": 55
+      },
+      "revId": "be4b398b4f2e3a06950590ef1b72dd0458d9e2d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f59d96aa_26845a5f",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-23T23:29:42Z",
       "side": 1,
       "message": "nit: could we have this be a named constant instead of a magic number?",
+      "range": {
+        "startLine": 1324,
+        "startChar": 35,
+        "endLine": 1324,
+        "endChar": 36
+      },
+      "revId": "be4b398b4f2e3a06950590ef1b72dd0458d9e2d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e433cb24_846ce2f3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1324,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-24T16:54:21Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s the more proper way to do this. Done in https://skia-review.googlesource.com/c/skia/+/805256",
+      "parentUuid": "f59d96aa_26845a5f",
       "range": {
         "startLine": 1324,
         "startChar": 35,
