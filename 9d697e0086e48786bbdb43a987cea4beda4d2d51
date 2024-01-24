@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66392144_066f4d32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-24T22:02:29Z",
+      "side": 1,
+      "message": "It looks like `flutter/engine/tools/gn` directly sets `skia_canvaskit_enable_skottie`. Not sure if you\u0027d need to set `skia_enable_skottie` there first (potentially conditionally) before landing this?",
+      "revId": "9d697e0086e48786bbdb43a987cea4beda4d2d51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
