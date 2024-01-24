@@ -151,6 +151,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         }
     }
 
+    if (extensions->hasExtension(VK_EXT_DEVICE_FAULT_EXTENSION_NAME, 1)) {
+        fSupportsDeviceFaultInfo = true;
+    }
+
     this->finishInitialization(contextOptions);
 }
 
