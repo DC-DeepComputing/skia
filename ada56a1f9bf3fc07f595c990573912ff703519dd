@@ -22,6 +22,30 @@
       },
       "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98cb6a36_f525e11e",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T16:46:34Z",
+      "side": 1,
+      "message": "I was curious about the origin of the `is_win` check and traced it down to this CL from 2019 when @brianosman@google.com was focused on getting Windows components builds working: https://skia-review.googlesource.com/c/skia/+/207307/comment/03b9cff3_e1bd28a0/",
+      "parentUuid": "9bb32106_d5454056",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "ada56a1f9bf3fc07f595c990573912ff703519dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
