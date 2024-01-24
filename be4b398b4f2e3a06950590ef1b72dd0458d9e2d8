@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7060a225_8aa2ffaa",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1321,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-24T16:33:33Z",
+      "side": 1,
+      "message": "To Kevin\u0027s point, the comment is now out of date.",
+      "range": {
+        "startLine": 1321,
+        "startChar": 8,
+        "endLine": 1321,
+        "endChar": 55
+      },
+      "revId": "be4b398b4f2e3a06950590ef1b72dd0458d9e2d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f59d96aa_26845a5f",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 3
