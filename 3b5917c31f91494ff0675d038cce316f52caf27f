@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9e08282_6703ba7e",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Yes, this needs a default implementation because not all subclasses are required to implement it. `computeSkSL` is also optional when the ComputeStep supports returning a backend native shader source via `nativeShaderSource()` (which is what gets used in the case of Vello).",
+      "parentUuid": "41a7c240_6b55f998",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 1
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1db702c6_9f7f141f",
         "filename": "src/gpu/graphite/compute/ComputeStep.h",
         "patchSetId": 2
@@ -61,6 +85,30 @@
       "writtenOn": "2024-01-17T15:37:20Z",
       "side": 1,
       "message": "nit: Consider making this simply `ComputeTypes.h` to slightly decrease fragility of this hard-coded file location+name",
+      "range": {
+        "startLine": 86,
+        "startChar": 34,
+        "endLine": 86,
+        "endChar": 66
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2dc9634_cd73923e",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1db702c6_9f7f141f",
       "range": {
         "startLine": 86,
         "startChar": 34,
@@ -94,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dbbefaf_c3c5178b",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "921475b4_7753115d",
+      "range": {
+        "startLine": 133,
+        "startChar": 14,
+        "endLine": 133,
+        "endChar": 24
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b904606d_a66e4421",
@@ -107,6 +179,30 @@
       "writtenOn": "2024-01-17T15:37:20Z",
       "side": 1,
       "message": "Same here (just do file name, not location)",
+      "range": {
+        "startLine": 138,
+        "startChar": 29,
+        "endLine": 138,
+        "endChar": 61
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e068dcb1_5b035067",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b904606d_a66e4421",
       "range": {
         "startLine": 138,
         "startChar": 29,
@@ -188,6 +284,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f20c8b9e_5b7e2a0b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "417149fd_3c39f5f5",
+      "range": {
+        "startLine": 864,
+        "startChar": 4,
+        "endLine": 864,
+        "endChar": 45
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b199722_f79a332c",
@@ -258,6 +378,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36c1abd2_d763366d",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1705,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2cd36d3_98bc93a5",
+      "range": {
+        "startLine": 1705,
+        "startChar": 4,
+        "endLine": 1705,
+        "endChar": 44
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "667604ba_d65773d4",
@@ -271,6 +415,30 @@
       "writtenOn": "2024-01-17T15:37:20Z",
       "side": 1,
       "message": "For my own understanding... how were these values selected?",
+      "range": {
+        "startLine": 1711,
+        "startChar": 0,
+        "endLine": 1713,
+        "endChar": 43
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "748a7fbb_c981aef7",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1713,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "The values are arbitrary. These are here mainly to keep a consistent declaration for the data sizes expected in the test input and output.",
+      "parentUuid": "667604ba_d65773d4",
       "range": {
         "startLine": 1711,
         "startChar": 0,
@@ -304,6 +472,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e3a49ab_e1c61885",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1742,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Oops, leftover copy pasta. Done.",
+      "parentUuid": "ed83567b_30cd3c00",
+      "range": {
+        "startLine": 1737,
+        "startChar": 1,
+        "endLine": 1742,
+        "endChar": 40
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a548fad1_f8396066",
@@ -317,6 +509,30 @@
       "writtenOn": "2024-01-17T15:58:36Z",
       "side": 1,
       "message": "should we comment that this should match kWorkgropuCount?",
+      "range": {
+        "startLine": 1747,
+        "startChar": 38,
+        "endLine": 1747,
+        "endChar": 41
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d44c376_82178da0",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1747,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a548fad1_f8396066",
       "range": {
         "startLine": 1747,
         "startChar": 38,
@@ -350,6 +566,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d646e85e_dba9de6c",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1765,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96009e74_47b0333a",
+      "range": {
+        "startLine": 1765,
+        "startChar": 6,
+        "endLine": 1765,
+        "endChar": 11
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16ce2c95_f383fdeb",
@@ -363,6 +603,30 @@
       "writtenOn": "2024-01-17T15:37:20Z",
       "side": 1,
       "message": "nit: capitalize `Shared` here and above",
+      "range": {
+        "startLine": 1839,
+        "startChar": 26,
+        "endLine": 1839,
+        "endChar": 27
+      },
+      "revId": "3b5917c31f91494ff0675d038cce316f52caf27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac0fb2e_a20a88f2",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-24T00:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16ce2c95_f383fdeb",
       "range": {
         "startLine": 1839,
         "startChar": 26,
