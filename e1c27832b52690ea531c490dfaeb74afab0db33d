@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7921e01_661b581c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-24T23:24:34Z",
+      "side": 1,
+      "message": "I\u0027m finally realizing that Graphite\u0027s [`VULKAN_CALL_xyz` macros](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h) receive a `VulkanInterface` which just has Vk function pointers but no state, whereas Ganesh\u0027s [analogous macros](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/vk/GrVkUtil.h) receive a `GrVkGpu` argument, allowing them to check device lost state and call `checkVkResult`.\n\nWould it be feasible to update Graphite\u0027s `VULKAN_CALL` macros to take `VulkanSharedContext` (instead of `VulkanInterface` directly) in a follow-up CL? (Asking architecturally, but also because I don\u0027t want to block Ganesh using this callback on that.)",
+      "revId": "e1c27832b52690ea531c490dfaeb74afab0db33d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
