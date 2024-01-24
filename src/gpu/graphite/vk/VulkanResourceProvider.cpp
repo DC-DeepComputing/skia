@@ -42,9 +42,11 @@ VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID,
                                                size_t resourceBudget,
-                                               sk_sp<Buffer> intrinsicConstantUniformBuffer)
+                                               sk_sp<Buffer> intrinsicConstantUniformBuffer,
+                                               sk_sp<Buffer> loadMSAAVertexBuffer)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
-        , fIntrinsicUniformBuffer(std::move(intrinsicConstantUniformBuffer)) {
+        , fIntrinsicUniformBuffer(std::move(intrinsicConstantUniformBuffer))
+        , fLoadMSAAVertexBuffer(std::move(loadMSAAVertexBuffer)) {
 }
 
 VulkanResourceProvider::~VulkanResourceProvider() {
@@ -92,6 +94,9 @@ sk_sp<Buffer> VulkanResourceProvider::refIntrinsicConstantBuffer() const {
     return fIntrinsicUniformBuffer;
 }
 
+sk_sp<Buffer> VulkanResourceProvider::refLoadMSAAVertexBuffer() const {
+    return fLoadMSAAVertexBuffer;
+}
 
 sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
@@ -439,7 +444,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
             fMSAALoadPipelineLayout,
             compatibleRenderPass,
             this->pipelineCache(),
-            renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+            renderPassDesc.fColorAttachment.fTextureInfo);
 
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");
