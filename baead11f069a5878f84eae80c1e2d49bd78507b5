@@ -150,6 +150,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "619bfcb9_ed9b5449",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-24T18:57:29Z",
+      "side": 1,
+      "message": "Commenting here just to add weight to Leon\u0027s concerns about the safety of invoking this call when multithreading. \n\n@egdaniel@google.com I know we talked about handling a device lost bool for graphite in the past - did we land on a path forward there? If not, did you already have an idea of how we\u0027d like to do that or is it worth having a discussion about?",
+      "parentUuid": "b3f7b008_73111919",
+      "revId": "baead11f069a5878f84eae80c1e2d49bd78507b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4bcd49c_ded09c3a",
         "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
         "patchSetId": 4
