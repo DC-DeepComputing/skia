@@ -151,10 +151,12 @@ class ArrayType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kArray;
 
-    ArrayType(std::string_view name, const char* abbrev, const Type& componentType, int count)
+    ArrayType(std::string_view name, const char* abbrev, const Type& componentType, int count,
+              bool isBuiltin)
             : INHERITED(name, abbrev, kTypeKind)
             , fComponentType(componentType)
-            , fCount(count) {
+            , fCount(count)
+            , fIsBuiltin(isBuiltin) {
         SkASSERT(count > 0 || count == kUnsizedArray);
         // Disallow multi-dimensional arrays.
         SkASSERT(!componentType.is<ArrayType>());
@@ -162,6 +164,10 @@ public:
 
     bool isArray() const override {
         return true;
+    }
+
+    bool isBuiltin() const override {
+        return fIsBuiltin;
     }
 
     bool isOrContainsArray() const override {
@@ -212,6 +218,7 @@ private:
 
     const Type& fComponentType;
     int fCount;
+    bool fIsBuiltin;
 };
 
 class GenericType final : public Type {
@@ -578,11 +585,12 @@ public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kStruct;
 
     StructType(Position pos, std::string_view name, TArray<Field> fields, int nestingDepth,
-               bool interfaceBlock)
+               bool interfaceBlock, bool isBuiltin)
             : INHERITED(std::move(name), "S", kTypeKind, pos)
             , fFields(std::move(fields))
             , fNestingDepth(nestingDepth)
-            , fInterfaceBlock(interfaceBlock) {
+            , fInterfaceBlock(interfaceBlock)
+            , fIsBuiltin(isBuiltin) {
         for (const Field& f : fFields) {
             fContainsArray        = fContainsArray        || f.fType->isOrContainsArray();
             fContainsUnsizedArray = fContainsUnsizedArray || f.fType->isOrContainsUnsizedArray();
@@ -605,6 +613,10 @@ public:
 
     bool isInterfaceBlock() const override {
         return fInterfaceBlock;
+    }
+
+    bool isBuiltin() const override {
+        return fIsBuiltin;
     }
 
     bool isAllowedInES2() const override {
@@ -657,6 +669,7 @@ private:
     bool fContainsArray = false;
     bool fContainsUnsizedArray = false;
     bool fContainsAtomic = false;
+    bool fIsBuiltin = false;
 };
 
 class VectorType final : public Type {
@@ -723,10 +736,12 @@ std::unique_ptr<Type> Type::MakeAliasType(std::string_view name, const Type& tar
     return std::make_unique<AliasType>(std::move(name), targetType);
 }
 
-std::unique_ptr<Type> Type::MakeArrayType(std::string_view name, const Type& componentType,
+std::unique_ptr<Type> Type::MakeArrayType(const Context& context,
+                                          std::string_view name,
+                                          const Type& componentType,
                                           int columns) {
     return std::make_unique<ArrayType>(std::move(name), componentType.abbreviatedName(),
-                                       componentType, columns);
+                                       componentType, columns, context.fConfig->fIsBuiltinCode);
 }
 
 std::unique_ptr<Type> Type::MakeGenericType(const char* name,
@@ -837,7 +852,7 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
                                     "' is too deeply nested");
     }
     return std::make_unique<StructType>(pos, name, std::move(fields), nestingDepth + 1,
-                                        interfaceBlock);
+                                        interfaceBlock, context.fConfig->fIsBuiltinCode);
 }
 
 std::unique_ptr<Type> Type::MakeTextureType(const char* name, SpvDim_ dimensions, bool isDepth,
@@ -1140,7 +1155,7 @@ const Type& Type::toCompound(const Context& context, int columns, int rows) cons
 
 const Type* Type::clone(const Context& context, SymbolTable* symbolTable) const {
     // Many types are built-ins, and exist in every SymbolTable by default.
-    if (this->isInBuiltinTypes()) {
+    if (this->isBuiltin()) {
         return this;
     }
     // Even if the type isn't a built-in, it might already exist in the SymbolTable.
@@ -1166,7 +1181,8 @@ const Type* Type::clone(const Context& context, SymbolTable* symbolTable) const 
                                                  *name,
                                                  TArray<Field>(fieldSpan.data(), fieldSpan.size()),
                                                  this->structNestingDepth(),
-                                                 this->isInterfaceBlock()));
+                                                 /*interfaceBlock=*/this->isInterfaceBlock(),
+                                                 /*isBuiltin=*/context.fConfig->fIsBuiltinCode));
         }
         default:
             SkDEBUGFAILF("don't know how to clone type '%s'", this->description().c_str());
