@@ -16,6 +16,24 @@
       "message": "Could we count a single font as a collection with one font only? That would cause less checks later, I think. (Assuming font retrieval understand it, too)",
       "revId": "d57d9146b652673f818642448011b650276a493d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a36c4874_3b7ddef6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-25T16:14:00Z",
+      "side": 1,
+      "message": "The part I\u0027m more concerned about is that this returns false on both Font or Err. What we really want this for is as a \"recognizer\" so it would actually be nice if this returned distinct return types for each of Collection, Font, and Err. Maybe return true and 0 for Font, false and 0 for Err? Not sure. At that point this is less of a `num_fonts_in_collection` and more of a `is_font_data` which also returns the number of font in the collection if it is a collection.",
+      "parentUuid": "b95dae47_59c2c663",
+      "revId": "d57d9146b652673f818642448011b650276a493d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
