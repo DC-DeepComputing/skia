@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab044d25_e96b58b2",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-25T23:55:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6f688d5f_77ca3cfe",
+      "range": {
+        "startLine": 230,
+        "startChar": 17,
+        "endLine": 230,
+        "endChar": 26
+      },
+      "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7700a256_28e02e6b",
@@ -84,6 +108,30 @@
       "writtenOn": "2024-01-25T22:53:39Z",
       "side": 1,
       "message": "This could be called `isInRootSymbolTable`?",
+      "range": {
+        "startLine": 642,
+        "startChar": 9,
+        "endLine": 642,
+        "endChar": 25
+      },
+      "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a18759c0_43dded82",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-25T23:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7700a256_28e02e6b",
       "range": {
         "startLine": 642,
         "startChar": 9,
