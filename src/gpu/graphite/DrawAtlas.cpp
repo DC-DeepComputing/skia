@@ -157,7 +157,7 @@ bool DrawAtlas::recordUploads(UploadList* ul, Recorder* recorder) {
                 }
 
                 std::vector<MipLevel> levels;
-                levels.push_back({dataPtr, fBytesPerPixel*fPlotWidth});
+                levels.emplace_back(dataPtr, fBytesPerPixel*fPlotWidth);
 
                 // Src and dst colorInfo are the same
                 SkColorInfo colorInfo(fColorType, kUnknown_SkAlphaType, nullptr);

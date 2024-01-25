@@ -46,7 +46,7 @@ void RasterPathAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
             dataPtr += currPage->fPixels.info().bytesPerPixel() * currPage->fDirtyRect.fLeft;
 
             std::vector<MipLevel> levels;
-            levels.push_back({dataPtr, rowBytes});
+            levels.emplace_back(dataPtr, rowBytes);
 
             SkColorInfo colorInfo(kAlpha_8_SkColorType, kUnknown_SkAlphaType, nullptr);
 

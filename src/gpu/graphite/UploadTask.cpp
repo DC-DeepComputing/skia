@@ -60,7 +60,7 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
     size_t alignedBytesPerRow =
             caps->getAlignedTextureDataRowBytes(baseDimensions.width() * bytesPerPixel);
 
-    levelOffsetsAndRowBytes->push_back({0, alignedBytesPerRow});
+    levelOffsetsAndRowBytes->emplace_back(0, alignedBytesPerRow);
     size_t combinedBufferSize = SkAlignTo(alignedBytesPerRow * baseDimensions.height(),
                                           minTransferBufferAlignment);
     SkISize levelDimensions = baseDimensions;
@@ -74,7 +74,7 @@ std::pair<size_t, size_t> compute_combined_buffer_size(
                                        minTransferBufferAlignment);
         SkASSERT(combinedBufferSize % minTransferBufferAlignment == 0);
 
-        levelOffsetsAndRowBytes->push_back({combinedBufferSize, alignedBytesPerRow});
+        levelOffsetsAndRowBytes->emplace_back(combinedBufferSize, alignedBytesPerRow);
         combinedBufferSize += alignedSize;
     }
 

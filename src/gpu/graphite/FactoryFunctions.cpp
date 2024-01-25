@@ -918,7 +918,7 @@ public:
             : fEffect(std::move(effect)) {
         fChildOptions.reserve(childOptions.size());
         for (PrecompileChildOptions c : childOptions) {
-            fChildOptions.push_back({ c.begin(), c.end() });
+            fChildOptions.emplace_back(c.begin(), c.end());
         }
     }
 

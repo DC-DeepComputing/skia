@@ -563,8 +563,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             TextureBindingCache::Index textureIndex = textureBindingTracker.trackTextures(
                     performsShading ? paintTextures : nullptr, stepTextures);
 
-            keys.push_back({&draw, stepIndex, pipelineIndex,
-                            geomUniformIndex, shadingUniformIndex, textureIndex});
+            keys.emplace_back(&draw, stepIndex, pipelineIndex,
+                              geomUniformIndex, shadingUniformIndex, textureIndex);
         }
 
         passBounds.join(draw.fDrawParams.clip().drawBounds());

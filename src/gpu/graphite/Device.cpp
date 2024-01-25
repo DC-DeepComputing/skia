@@ -574,7 +574,7 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     // Set up copy location
     const void* addr = src.addr(dstRect.fLeft - x, dstRect.fTop - y);
     std::vector<MipLevel> levels;
-    levels.push_back({addr, src.rowBytes()});
+    levels.emplace_back(addr, src.rowBytes());
 
     this->flushPendingWorkToRecorder();
 

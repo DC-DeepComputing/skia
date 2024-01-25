@@ -26,7 +26,7 @@ skia_private::TArray<ComputeStep::WorkgroupBufferDesc> VelloWorkgroupBuffers(
     if (!wgBuffers.empty()) {
         result.reserve(wgBuffers.size());
         for (const auto& desc : wgBuffers) {
-            result.push_back({desc.size_in_bytes, desc.index});
+            result.emplace_back(desc.size_in_bytes, desc.index);
         }
     }
     return result;

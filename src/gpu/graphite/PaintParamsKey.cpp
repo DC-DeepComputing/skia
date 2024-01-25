@@ -37,7 +37,7 @@ void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
     }
 
     const ShaderSnippet* snippet = fDict->getEntry(codeSnippetID);
-    fStack.push_back({codeSnippetID, snippet->fNumChildren});
+    fStack.emplace_back(codeSnippetID, snippet->fNumChildren);
 }
 
 void PaintParamsKeyBuilder::popStack() {

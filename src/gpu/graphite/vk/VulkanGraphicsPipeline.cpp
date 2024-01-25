@@ -513,10 +513,10 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     if (numTextureSamplers > 0) {
         skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
         for (int i = 0; i < numTextureSamplers; i++) {
-            textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                            /*descCount=*/1,
-                                            /*bindingIdx=*/i,
-                                            PipelineStageFlags::kFragmentShader});
+            textureSamplerDescs.emplace_back(DescriptorType::kCombinedTextureSampler,
+                                             /*descCount=*/1,
+                                             /*bindingIdx=*/i,
+                                             PipelineStageFlags::kFragmentShader);
         }
         VkDescriptorSetLayout textureSamplerDescSetLayout =
                 descriptor_data_to_layout(sharedContext, {textureSamplerDescs});

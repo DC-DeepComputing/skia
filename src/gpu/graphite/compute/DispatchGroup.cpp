@@ -210,7 +210,7 @@ bool Builder::appendStepInternal(
             SKGPU_LOG_W("Failed to allocate resource for compute dispatch");
             return false;
         }
-        dispatch.fBindings.push_back({static_cast<BindingIndex>(bindingIndex), dispatchResource});
+        dispatch.fBindings.emplace_back(static_cast<BindingIndex>(bindingIndex), dispatchResource);
     }
 
     auto wgBufferDescs = step->workgroupBuffers();

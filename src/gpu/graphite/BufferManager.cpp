@@ -336,7 +336,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     info->fOffset += requiredBytes;
 
     if (cleared == ClearBuffer::kYes) {
-        fClearList.push_back({bindInfo.fBuffer, bindInfo.fOffset, requiredBytes});
+        fClearList.emplace_back(bindInfo.fBuffer, bindInfo.fOffset, requiredBytes);
     }
 
     return bindInfo;
@@ -387,7 +387,7 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
     auto [transferMapPtr, transferBindInfo] =
             fUploadManager.makeBindInfo(size, fRequiredTransferAlignment);
 
-    info->fData.push_back({transferBindInfo, target, size});
+    info->fData.emplace_back(transferBindInfo, target, size);
     info->fTotalRequiredBytes += size;
     return transferMapPtr;
 }

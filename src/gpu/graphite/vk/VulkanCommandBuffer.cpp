@@ -895,10 +895,10 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
     // Query resource provider to obtain a descriptor set for the texture/samplers
     TArray<DescriptorData> descriptors(command.fNumTexSamplers);
     for (int i = 0; i < command.fNumTexSamplers; i++) {
-        descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                               /*descCount=*/1,
-                               /*bindingIdx=*/i,
-                               PipelineStageFlags::kFragmentShader});
+        descriptors.emplace_back(DescriptorType::kCombinedTextureSampler,
+                                 /*descCount=*/1,
+                                 /*bindingIdx=*/i,
+                                 PipelineStageFlags::kFragmentShader);
     }
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
