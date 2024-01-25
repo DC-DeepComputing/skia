@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95dae47_59c2c663",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-01-25T15:26:55Z",
+      "side": 1,
+      "message": "Could we count a single font as a collection with one font only? That would cause less checks later, I think. (Assuming font retrieval understand it, too)",
+      "revId": "d57d9146b652673f818642448011b650276a493d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
