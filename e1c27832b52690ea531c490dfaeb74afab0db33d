@@ -34,6 +34,24 @@
       "parentUuid": "e7921e01_661b581c",
       "revId": "e1c27832b52690ea531c490dfaeb74afab0db33d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1dcfdb_4755f28f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-25T18:59:45Z",
+      "side": 1,
+      "message": "SG, TY! We got sidetracked discussing shader pre-compilation offline, so just circling back to bump that the thread-safety updates are ready to review. TIA",
+      "parentUuid": "394c0977_d86183af",
+      "revId": "e1c27832b52690ea531c490dfaeb74afab0db33d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
