@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceb23d12_925e98fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-25T15:10:16Z",
+      "side": 1,
+      "message": "This will be used in follow-up CLs to make sure that the number of shader draws or the number of complex-tiled shader draws goes down as I add approx-fit mitigation logic.",
+      "revId": "2af9dad5154f93c44d892296c086b7e49699e84b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
