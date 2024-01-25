@@ -736,11 +736,12 @@ sk_sp<SkDevice> SkSVGDevice::Make(const SkISize& size,
 }
 
 SkSVGDevice::SkSVGDevice(const SkISize& size, std::unique_ptr<SkXMLWriter> writer, uint32_t flags)
-    : SkClipStackDevice(SkImageInfo::MakeUnknown(size.fWidth, size.fHeight),
-                        SkSurfaceProps(0, kUnknown_SkPixelGeometry))
-    , fWriter(std::move(writer))
-    , fResourceBucket(new ResourceBucket)
-    , fFlags(flags)
+        : SkClipStackDevice(
+            SkImageInfo::MakeUnknown(size.fWidth, size.fHeight),
+            SkSurfaceProps(0, kUnknown_SkPixelGeometry, SK_GAMMA_CONTRAST, SK_GAMMA_EXPONENT))
+        , fWriter(std::move(writer))
+        , fResourceBucket(new ResourceBucket)
+        , fFlags(flags)
 {
     SkASSERT(fWriter);
 
