@@ -45,6 +45,53 @@
       },
       "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f688d5f_77ca3cfe",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-25T22:53:39Z",
+      "side": 1,
+      "message": "There is a weird naming thing here and I should probably clean it up, but it\u0027s way out of scope for this CL and I\u0027m not entirely settled on the right names. `isBuiltin()` exists on FunctionDefinition, FunctionDeclaration, SymbolTable, FunctionPrototype, Variable, and now on Type as well. \"Builtin\" in this context means that the IR node isn\u0027t part of the program. Module code qualifies, and so do Types that exist in the root symbol table (the hard-coded types like `float4` that live in BuiltinTypes.cpp).\n\nGenerally the distinction between \"builtin\" and \"module\" is irrelevant; I usually just think of things as \"in a module\" or \"in a program,\" and consider the root symbol table to be on the \"module\" side. The root symbol table is owned by the ModuleLoader so this approximation is 99% true.\n\nThis name also pops up in ProgramConfig:\n```\n    /** True if we are currently processing one of the built-in SkSL include modules. */\n    bool fIsBuiltinCode;\n```\n\nI am leaning towards renaming all of the \"builtin\" things to \"module\" at some point, but wasn\u0027t planning on doing it today. At present, the name `isBuiltin` keeps consistency with the rest of the IR types.",
+      "parentUuid": "93256e0e_f532f844",
+      "range": {
+        "startLine": 230,
+        "startChar": 17,
+        "endLine": 230,
+        "endChar": 26
+      },
+      "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7700a256_28e02e6b",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-25T22:53:39Z",
+      "side": 1,
+      "message": "This could be called `isInRootSymbolTable`?",
+      "range": {
+        "startLine": 642,
+        "startChar": 9,
+        "endLine": 642,
+        "endChar": 25
+      },
+      "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
