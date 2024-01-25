@@ -33,6 +33,24 @@
       "message": "It seems like you could allow:\n```\n    [sx kx 0 tx]\n    [ky sy 0 ty]\n    [*  *  * * ]\n    [0  0  0 1 ]\n```\nthrough to here even if there was an API that allowed setting local z to something other than 0 (and *\u0027s in the rest of the third column if not) unless you plan to do something with the \"device space\" z value. Otherwise clients that have a z-transform will lose all the rrect optimizations, right?",
       "revId": "e3eb9b7d0c34242d776e2e2bc6327e521878817c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe0e3a1d_5d304ba4",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-25T20:08:08Z",
+      "side": 1,
+      "message": "Which rrect optimizations are you thinking of? Graphite\u0027s rrect renderer doesn\u0027t care about the transform type.\n\nI opted not to let orthographic transforms get lower because of their impact on calculating the inverse matrix. In coverage mask/text draws we have to map by the inverse to get the local coords and I\u0027ll need to re-review to see whether or not they could get away with this simplification.",
+      "parentUuid": "5c6e9216_4a154c91",
+      "revId": "e3eb9b7d0c34242d776e2e2bc6327e521878817c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
