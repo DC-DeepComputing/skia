@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a920e7_d38364e4",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-25T22:24:55Z",
+      "side": 1,
+      "message": "👍",
+      "range": {
+        "startLine": 225,
+        "startChar": 68,
+        "endLine": 225,
+        "endChar": 95
+      },
+      "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93256e0e_f532f844",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-01-25T22:24:55Z",
+      "side": 1,
+      "message": "Should this be called something like `isModuleOrBuiltin`? The main reason I\u0027m suggesting that is to distinguish this from `isInBuiltinTypes` since the distinction isn\u0027t so clear from the function name alone.",
+      "range": {
+        "startLine": 230,
+        "startChar": 17,
+        "endLine": 230,
+        "endChar": 26
+      },
+      "revId": "3ed2c42823e920a79ca918abac30794ddaa7728e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
