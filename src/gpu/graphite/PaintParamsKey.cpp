@@ -65,7 +65,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
     const int32_t index = (*currentIndex)++;
     const int32_t id = fData[index];
 
-    auto entry = dict->getEntry(id);
+    const ShaderSnippet* entry = dict->getEntry(id);
     if (!entry) {
         SKGPU_LOG_E("Unknown snippet ID in key: %d", id);
         return nullptr;
@@ -80,7 +80,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index, true); /**/
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
