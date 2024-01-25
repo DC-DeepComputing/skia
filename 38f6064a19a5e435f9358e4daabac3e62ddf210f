@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2215c06b_d3791fc7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "I think it is correct and needed that we need the color attachment access and output stage in this barrier, but from a quick reading that isn\u0027t obvious since we are just using it for input attachment reads in this first subpass. Maybe add a comment explaining it more.",
+      "range": {
+        "startLine": 506,
+        "startChar": 24,
+        "endLine": 506,
+        "endChar": 69
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ffce234_8343e1d3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "could all of this and the code in the `if (loadPipeline)` be a separate helper function? This just makes beginRenderPass a very large function.",
+      "range": {
+        "startLine": 608,
+        "startChar": 8,
+        "endLine": 608,
+        "endChar": 26
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48b24c02_2b3c7039",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "Should this be wrapped in its own function? Seems like it is all logic we\u0027d want for anyone calling vkCmdUpdateBuffer",
+      "range": {
+        "startLine": 642,
+        "startChar": 7,
+        "endLine": 652,
+        "endChar": 28
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "633e4bed_fafc291d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "why is this needed?",
+      "range": {
+        "startLine": 680,
+        "startChar": 8,
+        "endLine": 680,
+        "endChar": 84
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59afeeab_844a8b80",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "Does it make sense for this to be its own function on VulkanCommandBuffer so that we have separate functions for each actual command buffer call? In the future if/when we are using more subpasses I think we\u0027d have more callers.",
+      "range": {
+        "startLine": 742,
+        "startChar": 7,
+        "endLine": 744,
+        "endChar": 86
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f44f2e72_330b74fe",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "do we actually have draws without a vertex binding now that you changed the msaa load shader?",
+      "range": {
+        "startLine": 141,
+        "startChar": 53,
+        "endLine": 141,
+        "endChar": 65
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8b7b18_39de5cc4",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "should we assert in here that uniformDescriptors is empty since we are currently sharing the set number?",
+      "range": {
+        "startLine": 502,
+        "startChar": 8,
+        "endLine": 502,
+        "endChar": 27
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f6f516_a638955f",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-25T15:22:40Z",
+      "side": 1,
+      "message": "I\u0027m not sure why here and above we\u0027re trying to be so generic with saying \"a uniform buffer\" or \"a vertex buffer\". Why not say intrinsitc constant buffer and msaa load vertex buffer. Like these debug logs are for us and I feel like being more explicit is easier to quickly understand logs.",
+      "range": {
+        "startLine": 172,
+        "startChar": 40,
+        "endLine": 172,
+        "endChar": 46
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
