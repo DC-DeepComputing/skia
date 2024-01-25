@@ -652,6 +652,16 @@ fn get_outline_collection<'a>(font_ref: &'a BridgeFontRef<'a>) -> Box<BridgeOutl
     )
 }
 
+fn num_fonts_in_collection<'a>(font_data: &'a [u8], num_fonts: &mut u32) -> bool {
+    match FileRef::new(font_data) {
+        Ok(FileRef::Collection(collection)) => {
+            *num_fonts = collection.len();
+            true
+        }
+        _ => false,
+    }
+}
+
 fn resolve_into_normalized_coords(
     font_ref: &BridgeFontRef,
     design_coords: &[SkiaDesignCoordinate],
@@ -828,6 +838,11 @@ mod ffi {
         unsafe fn get_outline_collection<'a>(
             font_ref: &'a BridgeFontRef<'a>,
         ) -> Box<BridgeOutlineCollection<'a>>;
+
+        // Returns true if the passed in data is a font collection. In that
+        // case, assigns the number of fonts in the collection to the output
+        // parameter num_fonts. Otherwise returns false.
+        unsafe fn num_fonts_in_collection<'a>(font_data: &'a [u8], num_fonts: &mut u32) -> bool;
 
         fn lookup_glyph_or_zero(font_ref: &BridgeFontRef, codepoint: u32) -> u16;
         fn get_path(
@@ -1026,10 +1041,14 @@ mod ffi {
 #[cfg(test)]
 mod test {
 
-    use crate::{ffi::PaletteOverride, font_ref_is_valid, make_font_ref, resolve_palette};
+    use crate::{
+        ffi::PaletteOverride, font_ref_is_valid, make_font_ref, num_fonts_in_collection,
+        resolve_palette,
+    };
     use std::fs;
 
     const TEST_FONT_FILENAME: &str = "resources/fonts/test_glyphs-glyf_colr_1_variable.ttf";
+    const TEST_COLLECTION_FILENAME: &str = "resources/fonts/test.ttc";
 
     #[test]
     fn test_palette_override() {
@@ -1086,5 +1105,20 @@ mod test {
 
         let no_palette = resolve_palette(&font_ref, 10, &out_of_bounds_overrides);
         assert_eq!(no_palette.len(), 0);
+    }
+
+    #[test]
+    fn test_num_fonts_in_collection() {
+        let collection_buffer = fs::read(TEST_COLLECTION_FILENAME)
+            .expect("Unable to open TrueType collection test file.");
+        let font_buffer =
+            fs::read(TEST_FONT_FILENAME).expect("COLRv0/v1 test font could not be opened.");
+
+        let mut num_fonts = 0;
+        let result_collection = num_fonts_in_collection(&collection_buffer, &mut num_fonts);
+        assert!(result_collection && num_fonts == 2);
+
+        let result_font_file = num_fonts_in_collection(&font_buffer, &mut num_fonts);
+        assert!(!result_font_file);
     }
 }
