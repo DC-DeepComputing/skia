@@ -259,3 +259,4 @@ DEF_TEST(Fontations_VariationParameters_BufferTooSmall, reporter) {
     REPORTER_ASSERT(reporter,
                     variableTypeface->getVariationDesignParameters(axes, kArrayTooSmall) == -1);
 }
+
