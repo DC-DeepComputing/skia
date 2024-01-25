@@ -51,6 +51,24 @@
       "parentUuid": "5c6e9216_4a154c91",
       "revId": "e3eb9b7d0c34242d776e2e2bc6327e521878817c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f97551b_581f3613",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-01-25T20:13:22Z",
+      "side": 1,
+      "message": "Ah, gotcha. I forgot that the rrect code handled arbitrary transforms. The original repro case (from which I generated the fiddle on the bug) began as a stroked ellipse and then somewhere along the way became a path. But I didn\u0027t track down whether that happened in client code or in Skia.",
+      "parentUuid": "fe0e3a1d_5d304ba4",
+      "revId": "e3eb9b7d0c34242d776e2e2bc6327e521878817c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
