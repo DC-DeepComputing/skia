@@ -16,6 +16,23 @@
       "message": "Friendly ping on this. Happy to discuss on Google Meet or via email if you have any questions bungeman@",
       "revId": "7f6f7976b03dd0fad2a2de694621785f521ba4d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df079b14_15fcb7f6",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-25T14:03:59Z",
+      "side": 1,
+      "message": "nit: line wrapping\n```suggestion\n        , fBitmapFallbackProps{SkSurfaceProps{props.flags(), kUnknown_SkPixelGeometry,\n                                              props.textContrast(), props.textGamma()}}\n```",
+      "revId": "7f6f7976b03dd0fad2a2de694621785f521ba4d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
