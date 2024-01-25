@@ -69,6 +69,24 @@
       "parentUuid": "b1869f64_400895e2",
       "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57cb97bb_f523280e",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-25T15:37:15Z",
+      "side": 1,
+      "message": "I really wish I could believe this. However, just looking for some documentation for what actually happens brings up things like\n\nhttps://github.com/bazelbuild/bazel/issues/492\nhttps://github.com/bazelbuild/bazel/issues/1920\n\nwhich cause even more feelings of \"bazel is a fun tech demo for dependency tracking, if only it had a good way to specify builds\". I suppose this works because we never build any of these cc_library as shared objects, but do we have a way to mark these as never be shared (.so or .dll)? It works for the same awkward reason that internal linkage things work in headers (the linker picks one implementation per shared object) but doesn\u0027t work with globals and exported functions (each shared object gets its own copy of the global or exported function). Which shouldn\u0027t be too much of an issue for a good library without globals or statics, but Skia isn\u0027t that, and is an issue for all the duplicated functions (should these targets end up being shared libraries).",
+      "parentUuid": "2205e707_e32b28aa",
+      "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
