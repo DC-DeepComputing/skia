@@ -87,6 +87,24 @@
       "parentUuid": "2205e707_e32b28aa",
       "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "120f003e_256e150c",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-25T15:50:02Z",
+      "side": 1,
+      "message": "Also, is this even the correct structure for all of this? It appears (from external conversation) that `SkImages::DeferredFromEncodedData` currently just \"magically shows up\" because of a dependency on one of these decoder targets. Which is a bit awkward since the user may want to use `SkImages::DeferredFromEncodedData` with their own set of decoders and not use any of the decoder targets in this file.",
+      "parentUuid": "57cb97bb_f523280e",
+      "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
