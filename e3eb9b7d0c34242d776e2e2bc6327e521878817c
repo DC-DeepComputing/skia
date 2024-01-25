@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dad915_602b3453",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-01-25T18:53:39Z",
+      "side": 1,
+      "message": "Thanks for the quick fix!",
+      "revId": "e3eb9b7d0c34242d776e2e2bc6327e521878817c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c6e9216_4a154c91",
+        "filename": "src/gpu/graphite/geom/Transform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-01-25T18:53:39Z",
+      "side": 1,
+      "message": "It seems like you could allow:\n```\n    [sx kx 0 tx]\n    [ky sy 0 ty]\n    [*  *  * * ]\n    [0  0  0 1 ]\n```\nthrough to here even if there was an API that allowed setting local z to something other than 0 (and *\u0027s in the rest of the third column if not) unless you plan to do something with the \"device space\" z value. Otherwise clients that have a z-transform will lose all the rrect optimizations, right?",
+      "revId": "e3eb9b7d0c34242d776e2e2bc6327e521878817c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
