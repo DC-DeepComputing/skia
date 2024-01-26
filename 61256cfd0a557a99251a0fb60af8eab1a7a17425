@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c05136d_51021b85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-26T14:07:07Z",
+      "side": 1,
+      "message": "I know you already +1\u0027d the other CL, but I figured I\u0027d split this apart.",
+      "revId": "61256cfd0a557a99251a0fb60af8eab1a7a17425",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
