@@ -17,6 +17,7 @@ class Expression;
 class FunctionDeclaration;
 class ProgramElement;
 class Statement;
+class Type;
 class Variable;
 
 /**
@@ -44,6 +45,7 @@ public:
     bool operator==(const ProgramUsage& that) const;
     bool operator!=(const ProgramUsage& that) const { return !(*this == that); }
 
+    skia_private::THashMap<const Type*, int> fStructCounts;
     skia_private::THashMap<const Variable*, VariableCounts> fVariableCounts;
     skia_private::THashMap<const FunctionDeclaration*, int> fCallCounts;
 };
