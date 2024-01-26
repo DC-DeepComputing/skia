@@ -393,6 +393,96 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// Paths
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CanvasLinePoint : public MMObject {
+public:
+    CanvasLinePoint(SkRandom* random, SkSize size) {
+    }
+
+    ~CanvasLinePoint() override = default;
+
+    virtual void append(SkPath* path) {
+    }
+
+    // unused, all the work is done by append
+    void draw(SkCanvas*) override {}
+    void animate(double) override {}
+
+    SkColor getColor() { return fColor; }
+    float getWidth() { return fLineWidth; }
+
+private:
+    SkPoint fPoint;
+    SkColor fColor;
+    float fLineWidth;
+};
+
+std::unique_ptr<CanvasLinePoint> make_line_path(SkRandom* random) {
+    return nullptr;
+}
+
+class CanvasLinePathStage : public Stage {
+private:
+    static constexpr int kStartingObjectCount = 5000;
+    static constexpr int kObjectIncrement = 1000;
+
+public:
+    CanvasLinePathStage(SkSize size) : Stage(size) {
+        for (int i = 0; i < kStartingObjectCount; ++i) {
+            std::unique_ptr<CanvasLinePoint> path = make_line_path(&fRandom);
+            fObjects.push_back(std::move(path));
+        }
+    }
+
+    ~CanvasLinePathStage() override = default;
+
+    void draw(SkCanvas* canvas) override {
+        canvas->clear(SK_ColorWHITE);
+
+        // Not quite
+        for (size_t i = 0; i < fObjects.size(); ++i) {
+            fObjects[i]->draw(canvas);
+        }
+    }
+
+    bool animate(double nanos) override {
+        for (size_t i = 0; i < fObjects.size(); ++i) {
+            fObjects[i]->animate(nanos);
+        }
+        return true;
+    }
+
+    bool onChar(SkUnichar uni) override {
+        bool handled = false;
+        switch (uni) {
+            case '+':
+            case '=':
+                for (int i = 0; i < kObjectIncrement; ++i) {
+                    std::unique_ptr<CanvasLinePoint> path = make_line_path(&fRandom);
+                    fObjects.push_back(std::move(path));
+                }
+                handled = true;
+                break;
+            case '-':
+            case '_':
+                if (fObjects.size() > kObjectIncrement) {
+                    fObjects.resize(fObjects.size() - kObjectIncrement);
+                }
+                handled = true;
+                break;
+            default:
+                break;
+        }
+
+        return handled;
+    }
+
+private:
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class MotionMarkSlide : public Slide {
 public:
