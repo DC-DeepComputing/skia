@@ -393,6 +393,9 @@ bool Compiler::runInliner(Inliner* inliner,
 }
 
 bool Compiler::finalize(Program& program) {
+    // Copy all referenced built-in structs into the Program.
+    Transform::FindAndDeclareBuiltinStructs(program);
+
     // Copy all referenced built-in functions into the Program.
     Transform::FindAndDeclareBuiltinFunctions(program);
 

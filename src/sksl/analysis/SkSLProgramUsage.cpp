@@ -50,10 +50,15 @@ public:
                 // they are unread and unwritten.
                 ProgramUsage::VariableCounts& counts = fUsage->fVariableCounts[param];
                 counts.fVarExists += fDelta;
+
+                this->visitType(param->type());
             }
         } else if (pe.is<InterfaceBlock>()) {
             // Ensure interface-block variables exist in the variable usage map.
-            fUsage->fVariableCounts[pe.as<InterfaceBlock>().var()];
+            const Variable* var = pe.as<InterfaceBlock>().var();
+            fUsage->fVariableCounts[var];
+
+            this->visitType(var->type());
         }
         return INHERITED::visitProgramElement(pe);
     }
@@ -74,6 +79,7 @@ public:
     }
 
     bool visitExpression(const Expression& e) override {
+        this->visitType(e.type());
         if (e.is<FunctionCall>()) {
             const FunctionDeclaration* f = &e.as<FunctionCall>().function();
             fUsage->fCallCounts[f] += fDelta;
@@ -97,6 +103,18 @@ public:
             SkASSERT(counts.fRead >= 0 && counts.fWrite >= 0);
         }
         return INHERITED::visitExpression(e);
+    }
+
+    void visitType(const Type& t) {
+        if (t.isStruct()) {
+            int& structCount = fUsage->fStructCounts[&t];
+            structCount += fDelta;
+            SkASSERT(structCount >= 0);
+
+            for (const Field& f : t.fields()) {
+                this->visitType(*f.fType);
+            }
+        }
     }
 
     using ProgramVisitor::visitProgramElement;
