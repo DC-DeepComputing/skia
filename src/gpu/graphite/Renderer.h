@@ -257,23 +257,23 @@ private:
     friend class RendererProvider; // for ctors
 
     // Max render steps is 4, so just spell the options out for now...
-    Renderer(std::string_view name, DrawTypeFlags drawTypes, const RenderStep* s1)
-            : Renderer(name, drawTypes, std::array<const RenderStep*, 1>{s1}) {}
+    Renderer(std::string_view name, DrawTypeFlags drawTypes, const RenderStep* s1, bool)
+            : Renderer(name, drawTypes, std::array<const RenderStep*, 1>{s1}, true) {}
 
     Renderer(std::string_view name, DrawTypeFlags drawTypes,
-             const RenderStep* s1, const RenderStep* s2)
-            : Renderer(name, drawTypes, std::array<const RenderStep*, 2>{s1, s2}) {}
+             const RenderStep* s1, const RenderStep* s2, bool)
+            : Renderer(name, drawTypes, std::array<const RenderStep*, 2>{s1, s2}, true) {}
 
     Renderer(std::string_view name, DrawTypeFlags drawTypes,
-             const RenderStep* s1, const RenderStep* s2, const RenderStep* s3)
-            : Renderer(name, drawTypes, std::array<const RenderStep*, 3>{s1, s2, s3}) {}
+             const RenderStep* s1, const RenderStep* s2, const RenderStep* s3, bool)
+            : Renderer(name, drawTypes, std::array<const RenderStep*, 3>{s1, s2, s3}, true) {}
 
     Renderer(std::string_view name, DrawTypeFlags drawTypes,
-             const RenderStep* s1, const RenderStep* s2, const RenderStep* s3, const RenderStep* s4)
-            : Renderer(name, drawTypes, std::array<const RenderStep*, 4>{s1, s2, s3, s4}) {}
+             const RenderStep* s1, const RenderStep* s2, const RenderStep* s3, const RenderStep* s4, bool)
+            : Renderer(name, drawTypes, std::array<const RenderStep*, 4>{s1, s2, s3, s4}, true) {}
 
     template<size_t N>
-    Renderer(std::string_view name, DrawTypeFlags drawTypes, std::array<const RenderStep*, N> steps)
+    Renderer(std::string_view name, DrawTypeFlags drawTypes, std::array<const RenderStep*, N> steps, bool)
             : fName(name)
             , fDrawTypes(drawTypes)
             , fStepCount(SkTo<int>(N)) {

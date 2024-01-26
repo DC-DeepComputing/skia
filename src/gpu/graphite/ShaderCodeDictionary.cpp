@@ -19,6 +19,8 @@
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/FactoryFunctions.h"
+#include "src/gpu/graphite/Precompile.h"
 #include "src/gpu/graphite/ReadSwizzle.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
@@ -141,6 +143,363 @@ static constexpr skgpu::BlendInfo gBlendTable[kNumCoeffModes] = {
 };
 
 } // anonymous namespace
+
+sk_sp<PrecompileShader> ShaderNode::gimmeShader(const RuntimeEffectDictionary* rteDict) const {
+    switch (fCodeID) {
+        case (int) BuiltInCodeSnippetID::kError:
+            return PrecompileShaders::Error();
+        case (int) BuiltInCodeSnippetID::kDitherShader:
+            return PrecompileShaders::Dither();
+        case (int) BuiltInCodeSnippetID::kRGBPaintColor:
+            return PrecompileShaders::OpaquePaintRGB();
+        case (int) BuiltInCodeSnippetID::kAlphaOnlyPaintColor:
+            return PrecompileShaders::PaintAlpha();
+        case (int) BuiltInCodeSnippetID::kDstReadFetch:
+            return PrecompileShaders::DstReadFetch();
+        case (int) BuiltInCodeSnippetID::kSolidColorShader:
+            return PrecompileShaders::Color();
+        case (int) BuiltInCodeSnippetID::kBlendShader: {
+            SkASSERT(this->numChildren() == 3);
+            sk_sp<PrecompileShader> src = this->child(0)->gimmeShader(rteDict);
+            sk_sp<PrecompileShader> dst = this->child(1)->gimmeShader(rteDict);
+            sk_sp<PrecompileBlender> blender = this->child(2)->gimmeBlender(rteDict);
+            return PrecompileShaders::Blend(SkSpan<const sk_sp<PrecompileBlender>>({ blender }), { dst }, { src });
+        } break;
+        case (int) BuiltInCodeSnippetID::kImageShader:
+        case (int) BuiltInCodeSnippetID::kCubicImageShader:
+        case (int) BuiltInCodeSnippetID::kHWImageShader:
+            return PrecompileShaders::Image();
+        case (int) BuiltInCodeSnippetID::kYUVImageShader:
+        case (int) BuiltInCodeSnippetID::kCubicYUVImageShader:
+            return PrecompileShaders::YUVImage();
+        case (int) BuiltInCodeSnippetID::kLinearGradientShader4:
+        case (int) BuiltInCodeSnippetID::kLinearGradientShader8:
+        case (int) BuiltInCodeSnippetID::kLinearGradientShaderTexture:
+            return PrecompileShaders::LinearGradient();
+        case (int) BuiltInCodeSnippetID::kRadialGradientShader4:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShader8:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShaderTexture:
+            return PrecompileShaders::RadialGradient();
+        case (int) BuiltInCodeSnippetID::kSweepGradientShader4:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShader8:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShaderTexture:
+            return PrecompileShaders::SweepGradient();
+        case (int) BuiltInCodeSnippetID::kConicalGradientShader4:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShader8:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShaderTexture:
+            return PrecompileShaders::TwoPointConicalGradient();
+        case (int) BuiltInCodeSnippetID::kPerlinNoiseShader:
+            return PrecompileShaders::PerlinNoise();
+        case (int) BuiltInCodeSnippetID::kCompose: {
+            SkASSERT(this->numChildren() == 2);
+            sk_sp<PrecompileShader> first = this->child(0)->gimmeShader(rteDict);
+            sk_sp<PrecompileBase> second = this->child(1)->gimmeThing(rteDict);
+            if (second->type() == PrecompileBase::Type::kShader) {
+                sk_sp<PrecompileShader> tmp = sk_ref_sp((PrecompileShader*) second.get());
+                return PrecompileShaders::Compose({ first }, SkSpan<const sk_sp<PrecompileShader>>({ tmp }));
+            } else if (second->type() == PrecompileBase::Type::kColorFilter) {
+                sk_sp<PrecompileColorFilter> tmp = sk_ref_sp((PrecompileColorFilter*) second.get());
+                return PrecompileShaders::Compose({ first }, SkSpan<const sk_sp<PrecompileColorFilter>>({ tmp }));
+            }
+            return nullptr;
+        } break;
+        case (int) BuiltInCodeSnippetID::kLocalMatrixShader: {
+            SkASSERT(this->numChildren() == 1);
+            sk_sp<PrecompileShader> child = this->child(0)->gimmeShader(rteDict);
+            return PrecompileShaders::LocalMatrix({ child });
+        } break;
+        case (int) BuiltInCodeSnippetID::kCoordClampShader: {
+            SkASSERT(this->numChildren() == 1);
+            sk_sp<PrecompileShader> child = this->child(0)->gimmeShader(rteDict);
+            SkDebugf("Unknown %d\n", fCodeID);
+            SK_ABORT("crashity crash 1\n");
+            return nullptr;
+        } break;
+    }
+
+    if (fCodeID > (int) BuiltInCodeSnippetID::kLast) {
+        const SkRuntimeEffect* effect = rteDict->find(fCodeID);
+        if (effect && effect->allowShader()) {
+            return MakePrecompileShader(sk_ref_sp(effect));
+        }
+    }
+
+    SkDebugf("Unknown %d\n", fCodeID);
+    SK_ABORT("crashity crash 2\n");
+
+    return nullptr;
+}
+
+sk_sp<PrecompileBlender> ShaderNode::gimmeBlender(const RuntimeEffectDictionary* rteDict) const {
+    switch (fCodeID) {
+        case (int) BuiltInCodeSnippetID::kBlendModeBlender:
+            return PrecompileBlenders::Mode();
+
+        case (int) BuiltInCodeSnippetID::kCoeffBlender:
+            return PrecompileBlenders::Coeff();
+
+        case (int) BuiltInCodeSnippetID::kFixedFunctionClearBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcOverBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstOverBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcInBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstInBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcOutBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstOutBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcATopBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstATopBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionXorBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionPlusBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionModulateBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionScreenBlendMode: {
+            int bmInt = fCodeID - kFixedFunctionBlendModeIDOffset;
+            return PrecompileBlenders::Mode(static_cast<SkBlendMode>(bmInt));
+        } break;
+    }
+
+    if (fCodeID > (int) BuiltInCodeSnippetID::kLast) {
+        const SkRuntimeEffect* effect = rteDict->find(fCodeID);
+        SkDebugf("rte isS: %d isCF: %d isB: %d\n",
+                 effect->allowShader(), effect->allowColorFilter(), effect->allowBlender());
+        if (effect && effect->allowBlender()) {
+            return MakePrecompileBlender(sk_ref_sp(effect));
+        }
+    }
+
+    SkDebugf("Missing %d\n", fCodeID);
+    SK_ABORT("crash 4\n");
+    return nullptr;
+}
+
+sk_sp<PrecompileColorFilter> ShaderNode::gimmeColorFilter(const RuntimeEffectDictionary* rteDict) const {
+    switch (fCodeID) {
+        case (int) BuiltInCodeSnippetID::kMatrixColorFilter:
+            return PrecompileColorFilters::Matrix();
+        case (int) BuiltInCodeSnippetID::kTableColorFilter:
+            return PrecompileColorFilters::Table();
+        case (int) BuiltInCodeSnippetID::kGaussianColorFilter:
+            return PrecompileColorFilters::Gaussian();
+        case (int) BuiltInCodeSnippetID::kColorSpaceXformColorFilter:
+            return PrecompileColorFilters::ColorSpaceXform();
+    }
+
+    if (fCodeID > (int) BuiltInCodeSnippetID::kLast) {
+        const SkRuntimeEffect* effect = rteDict->find(fCodeID);
+        if (effect && effect->allowColorFilter()) {
+            return MakePrecompileColorFilter(sk_ref_sp(effect));
+        }
+    }
+
+    SkDebugf("Missing %d\n", fCodeID);
+    SK_ABORT("crash 5\n");
+
+    return nullptr;
+}
+
+
+sk_sp<PrecompileBase> ShaderNode::gimmeThing(const RuntimeEffectDictionary* rteDict) const {
+
+    switch (fCodeID) {
+        case (int) BuiltInCodeSnippetID::kError:
+        case (int) BuiltInCodeSnippetID::kDitherShader:
+
+        case (int) BuiltInCodeSnippetID::kRGBPaintColor:
+        case (int) BuiltInCodeSnippetID::kAlphaOnlyPaintColor:
+
+        case (int) BuiltInCodeSnippetID::kDstReadFetch:
+
+        case (int) BuiltInCodeSnippetID::kSolidColorShader:
+
+        case (int) BuiltInCodeSnippetID::kBlendShader:
+
+        case (int) BuiltInCodeSnippetID::kImageShader:
+        case (int) BuiltInCodeSnippetID::kCubicImageShader:
+        case (int) BuiltInCodeSnippetID::kHWImageShader:
+
+        case (int) BuiltInCodeSnippetID::kYUVImageShader:
+        case (int) BuiltInCodeSnippetID::kCubicYUVImageShader:
+
+        case (int) BuiltInCodeSnippetID::kLinearGradientShader4:
+        case (int) BuiltInCodeSnippetID::kLinearGradientShader8:
+        case (int) BuiltInCodeSnippetID::kLinearGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShader4:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShader8:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShader4:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShader8:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShader4:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShader8:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kPerlinNoiseShader:
+        case (int) BuiltInCodeSnippetID::kCoordClampShader:
+        case (int) BuiltInCodeSnippetID::kLocalMatrixShader:
+        case (int) BuiltInCodeSnippetID::kCompose:
+            return this->gimmeShader(rteDict);
+
+        case (int) BuiltInCodeSnippetID::kMatrixColorFilter:
+        case (int) BuiltInCodeSnippetID::kTableColorFilter:
+        case (int) BuiltInCodeSnippetID::kGaussianColorFilter:
+        case (int) BuiltInCodeSnippetID::kColorSpaceXformColorFilter:
+            return this->gimmeColorFilter(rteDict);
+
+        case (int) BuiltInCodeSnippetID::kBlendModeBlender:
+        case (int) BuiltInCodeSnippetID::kCoeffBlender:
+
+        case (int) BuiltInCodeSnippetID::kFixedFunctionClearBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcOverBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstOverBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcInBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstInBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcOutBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstOutBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcATopBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstATopBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionXorBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionPlusBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionModulateBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionScreenBlendMode:
+            return this->gimmeBlender(rteDict);
+
+        case (int) BuiltInCodeSnippetID::kPriorOutput:
+        case (int) BuiltInCodeSnippetID::kRuntimeShader:
+        case (int) BuiltInCodeSnippetID::kPrimitiveColor:
+        case (int) BuiltInCodeSnippetID::kDstReadSample:
+        case (int) BuiltInCodeSnippetID::kClipShader:
+            SkDebugf("Missing %d\n", fCodeID);
+            SK_ABORT("crash 6\n");
+            break;
+    }
+
+    if (fCodeID > (int) BuiltInCodeSnippetID::kLast) {
+        const SkRuntimeEffect* effect = rteDict->find(fCodeID);
+        if (effect) {
+            if (effect->allowColorFilter()) {
+                return MakePrecompileColorFilter(sk_ref_sp(effect));
+            } else if (effect->allowShader()) {
+                return MakePrecompileShader(sk_ref_sp(effect));
+            } else if (effect->allowBlender()) {
+                return MakePrecompileBlender(sk_ref_sp(effect));
+            }
+        }
+    }
+
+    SkDebugf("missing %d!\n", fCodeID);
+    SK_ABORT("crash 7\n");
+
+    return nullptr;
+}
+
+void ShaderNode::reversify(const RuntimeEffectDictionary* rteDict,
+                           PaintOptions* paintOptions) const {
+
+    switch (fCodeID) {
+        case (int) BuiltInCodeSnippetID::kError:
+        case (int) BuiltInCodeSnippetID::kDitherShader:
+
+        case (int) BuiltInCodeSnippetID::kRGBPaintColor:
+        case (int) BuiltInCodeSnippetID::kAlphaOnlyPaintColor:
+
+        case (int) BuiltInCodeSnippetID::kDstReadFetch:  // should never actually appear at top level
+
+        case (int) BuiltInCodeSnippetID::kSolidColorShader:
+
+        case (int) BuiltInCodeSnippetID::kBlendShader:
+
+        case (int) BuiltInCodeSnippetID::kImageShader:
+        case (int) BuiltInCodeSnippetID::kCubicImageShader:
+        case (int) BuiltInCodeSnippetID::kHWImageShader:
+
+        case (int) BuiltInCodeSnippetID::kYUVImageShader:
+        case (int) BuiltInCodeSnippetID::kCubicYUVImageShader:
+
+        case (int) BuiltInCodeSnippetID::kLinearGradientShader4:
+        case (int) BuiltInCodeSnippetID::kLinearGradientShader8:
+        case (int) BuiltInCodeSnippetID::kLinearGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShader4:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShader8:
+        case (int) BuiltInCodeSnippetID::kRadialGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShader4:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShader8:
+        case (int) BuiltInCodeSnippetID::kSweepGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShader4:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShader8:
+        case (int) BuiltInCodeSnippetID::kConicalGradientShaderTexture:
+        case (int) BuiltInCodeSnippetID::kPerlinNoiseShader:
+        case (int) BuiltInCodeSnippetID::kCoordClampShader:
+        case (int) BuiltInCodeSnippetID::kLocalMatrixShader:
+        case (int) BuiltInCodeSnippetID::kCompose: {
+            sk_sp<PrecompileShader> s = this->gimmeShader(rteDict);
+            paintOptions->setShaders({ s });
+            return;
+        } break;
+
+        case (int) BuiltInCodeSnippetID::kMatrixColorFilter:
+        case (int) BuiltInCodeSnippetID::kTableColorFilter:
+        case (int) BuiltInCodeSnippetID::kGaussianColorFilter:
+        case (int) BuiltInCodeSnippetID::kColorSpaceXformColorFilter: {
+            sk_sp<PrecompileColorFilter> cf = this->gimmeColorFilter(rteDict);
+            paintOptions->setColorFilters({ cf });
+            return;
+        } break;
+
+        case (int) BuiltInCodeSnippetID::kBlendModeBlender:
+        case (int) BuiltInCodeSnippetID::kCoeffBlender:
+
+        case (int) BuiltInCodeSnippetID::kFixedFunctionClearBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcOverBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstOverBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcInBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstInBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcOutBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstOutBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionSrcATopBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionDstATopBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionXorBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionPlusBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionModulateBlendMode:
+        case (int) BuiltInCodeSnippetID::kFixedFunctionScreenBlendMode: {
+            sk_sp<PrecompileBlender> b = this->gimmeBlender(rteDict);
+            paintOptions->setBlenders({ b });
+            return;
+        } break;
+
+        case (int) BuiltInCodeSnippetID::kPriorOutput:
+        case (int) BuiltInCodeSnippetID::kRuntimeShader:
+        case (int) BuiltInCodeSnippetID::kPrimitiveColor:
+        case (int) BuiltInCodeSnippetID::kDstReadSample:
+        case (int) BuiltInCodeSnippetID::kClipShader:
+            SkDebugf("Missing %d\n", fCodeID);
+            SK_ABORT("crash 3\n");
+            break;
+    }
+
+    if (fCodeID > (int) BuiltInCodeSnippetID::kLast) {
+        sk_sp<PrecompileBase> thing = this->gimmeThing(rteDict);
+
+        if (thing->type() == PrecompileBase::Type::kShader) {
+            // TODO: asShaderRef call
+            sk_sp<PrecompileShader> s = sk_ref_sp((PrecompileShader*)thing.get());
+            paintOptions->setShaders({ s });
+        } else if (thing->type() == PrecompileBase::Type::kColorFilter) {
+            sk_sp<PrecompileColorFilter> cf = sk_ref_sp((PrecompileColorFilter*)thing.get());
+            paintOptions->setColorFilters({ cf });
+        } else if (thing->type() == PrecompileBase::Type::kBlender) {
+            sk_sp<PrecompileBlender> b = sk_ref_sp((PrecompileBlender*)thing.get());
+            paintOptions->setBlenders({ b });
+        }
+
+        return;
+    }
+
+    SkDebugf("missing %d!\n", fCodeID);
+    SK_ABORT("crash 5\n");
+}
 
 //--------------------------------------------------------------------------------------------------
 // ShaderInfo
