@@ -88,7 +88,7 @@ void Transform::FindAndDeclareBuiltinFunctions(Program& program) {
         }
     }
 
-    // Insert the new functions into the program's shared elements, right at the front.
+    // Insert the new functions into the program's shared elements.
     // They are added in reverse so that the deepest dependencies are added to the top.
     program.fSharedElements.insert(program.fSharedElements.begin(),
                                    addedBuiltins.rbegin(), addedBuiltins.rend());
