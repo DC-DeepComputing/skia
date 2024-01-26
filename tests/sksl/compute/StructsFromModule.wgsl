@@ -1,4 +1,9 @@
 diagnostic(off, derivative_uniformity);
+struct IndirectDispatchArgs {
+  x: i32,
+  y: i32,
+  z: i32,
+};
 fn _skslMain() {
   {
   }
