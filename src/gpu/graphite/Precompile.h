@@ -145,8 +145,6 @@ public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
 
     virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
-
-    static sk_sp<PrecompileBlender> Mode(SkBlendMode);
 };
 
 //--------------------------------------------------------------------------------------------------
@@ -170,17 +168,13 @@ public:
         fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
     }
 
-    void setBlendModes(SkSpan<SkBlendMode> blendModes) {
-        fBlenderOptions.reserve(blendModes.size());
-        for (SkBlendMode bm : blendModes) {
-            fBlenderOptions.emplace_back(PrecompileBlender::Mode(bm));
-        }
-    }
+    void setBlendModes(SkSpan<SkBlendMode> blendModes);
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
         fBlenderOptions.assign(blenders.begin(), blenders.end());
     }
 
     void setDither(bool dither) { fDither = dither; }
+    bool dither() const { return fDither; }
 
     // Provides access to functions that aren't part of the public API.
     PaintOptionsPriv priv();

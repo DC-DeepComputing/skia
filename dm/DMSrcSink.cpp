@@ -97,11 +97,18 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
 #endif
+
+#include "src/gpu/graphite/Precompile.h"
 
 #if defined(SK_ENABLE_ANDROID_UTILS)
     #include "client_utils/android/BitmapRegionDecoder.h"
@@ -2190,6 +2197,147 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     SkUNREACHABLE;
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(const SkCommandLineConfigGraphite* config)
+        : GraphiteSink(config) {}
+
+GraphitePrecompileTestingSink::~GraphitePrecompileTestingSink() {}
+
+Result GraphitePrecompileTestingSink::drawSrc(const Src& src,
+                                              skgpu::graphite::Context* context,
+                                              skiatest::graphite::GraphiteTestContext* testContext) const {
+    SkASSERT(!fRecorder);
+
+    fRecorder = context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+    if (!fRecorder) {
+        return Result::Fatal("Could not create a recorder.");
+    }
+
+    sk_sp<SkSurface> surface = this->makeSurface(fRecorder.get(), src.size());
+    if (!surface) {
+        return Result::Fatal("Could not create a surface.");
+    }
+    Result result = src.draw(surface->getCanvas(), testContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    std::unique_ptr<skgpu::graphite::Recording> recording = fRecorder->snap();
+    if (!recording) {
+        return Result::Fatal("Could not create a recording.");
+    }
+
+    skgpu::graphite::InsertRecordingInfo info;
+    info.fRecording = recording.get();
+    if (!context->insertRecording(info)) {
+        return Result::Fatal("Context::insertRecording failed.");
+    }
+    if (!context->submit(skgpu::graphite::SyncToCpu::kYes)) {
+        return Result::Fatal("Context::submit failed.");
+    }
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::thrash(skgpu::graphite::Context* context) const {
+    using namespace skgpu::graphite;
+
+    SkASSERT(fRecorder);
+
+    const Caps* caps = context->priv().caps();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+
+    RuntimeEffectDictionary* rteDict = fRecorder->priv().runtimeEffectDictionary();
+
+    std::vector<skgpu::UniqueKey> keys;
+
+    context->priv().globalCache()->getKeys(&keys);
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    SkArenaAlloc alloc{256};
+
+    PaintOptions paintOptions;
+    for (auto k : keys) {
+        Caps::Foobar foobar;
+        caps->reverse1(k, &foobar);
+        foobar.dump();
+
+        PaintParamsKey paramsKey = dict->lookup(foobar.fPaintParamsID);
+
+        if (paramsKey.isValid()) {
+            paramsKey.dump(dict);
+
+            SkSpan<const ShaderNode*> nodes = paramsKey.getRootNodes(dict, &alloc);
+
+            for (const ShaderNode* node: nodes) {
+                node->reversify(rteDict, &paintOptions);
+            }
+
+            // Given the resulting PaintOptions is a result of reversing an already restructured
+            // ShaderNode tree, all of these options should be already baked into the tree.
+            SkASSERT(!paintOptions.dither());
+        }
+    }
+
+    fRecorder = nullptr;
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::check(skgpu::graphite::Context* context) const {
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::draw(const Src& src,
+                                           SkBitmap* dst,
+                                           SkWStream* dstStream,
+                                           SkString* log) const {
+    skiatest::graphite::TestOptions options = fOptions;
+    // If we've copied context options from an external source we can't trust that the
+    // priv pointer is still in scope, so assume it should be NULL and set our own up.
+    SkASSERT(!options.fContextOptions.fOptionsPriv);
+    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    options.fContextOptions.fOptionsPriv = &optionsPriv;
+
+    src.modifyGraphiteContextOptions(&options.fContextOptions);
+
+    skiatest::graphite::ContextFactory factory(options);
+    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+    skgpu::graphite::Context* context = ctxInfo.fContext;
+    if (!context) {
+        return Result::Fatal("Could not create a context.");
+    }
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+//    Left off dealing w/ the fact that the runtimeeffect dictionary isn't on the context
+//    It is on the recorder
+//    For now, manually, keep the recorder alive and pass the rteDict into thrash
+
+    Result result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        fRecorder.reset();
+        return result;
+    }
+
+    result = this->thrash(context);
+    if (!result.isOk()) {
+        fRecorder.reset();
+        return result;
+    }
+
+    result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        fRecorder.reset();
+        return result;
+    }
+
+    fRecorder.reset();
+
+    return this->check(context);
+}
 #endif
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

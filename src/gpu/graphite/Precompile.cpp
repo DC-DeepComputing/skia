@@ -48,6 +48,13 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilter::makeComposed(
 }
 
 //--------------------------------------------------------------------------------------------------
+void PaintOptions::setBlendModes(SkSpan<SkBlendMode> blendModes) {
+    fBlenderOptions.reserve(blendModes.size());
+    for (SkBlendMode bm : blendModes) {
+        fBlenderOptions.emplace_back(PrecompileBlenders::Mode(bm));
+    }
+}
+
 int PaintOptions::numShaderCombinations() const {
     int numShaderCombinations = 0;
     for (const sk_sp<PrecompileShader>& s : fShaderOptions) {
@@ -221,7 +228,7 @@ void PaintOption::handleColorFilter(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer) const {
     if (fColorFilter.first) {
-        Compose(keyContext, builder, gatherer,
+        Compose1(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handlePaintAlpha(keyContext, builder, gatherer);
                 },
@@ -261,7 +268,7 @@ void PaintOption::handleDithering(const KeyContext& keyContext,
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
     if (this->shouldDither(ct)) {
-        Compose(keyContext, builder, gatherer,
+        Compose1(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handleColorFilter(keyContext, builder, gatherer);
                 },
