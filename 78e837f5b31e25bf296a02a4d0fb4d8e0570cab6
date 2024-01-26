@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a02c98f_2351bf25",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-26T17:23:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfe38bc9_7fea8c6e",
+      "revId": "78e837f5b31e25bf296a02a4d0fb4d8e0570cab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4e4a66f_8ab11680",
@@ -49,6 +67,30 @@
       "writtenOn": "2024-01-26T17:08:58Z",
       "side": 1,
       "message": "```suggestion\n    // All Symbol* objects in fCallCounts must be FunctionDeclaration*.\n```",
+      "range": {
+        "startLine": 50,
+        "startChar": 30,
+        "endLine": 50,
+        "endChar": 43
+      },
+      "revId": "78e837f5b31e25bf296a02a4d0fb4d8e0570cab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd24cbb0_45a064a2",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-26T17:23:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4e4a66f_8ab11680",
       "range": {
         "startLine": 50,
         "startChar": 30,
