@@ -670,7 +670,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
         if constexpr (kNumSlotsForIntrinsicConstantBuffer > 1) {
             bufferSize = kIntrinsicConstantAlignedSize * kNumSlotsForIntrinsicConstantBuffer;
         } else {
-            bufferSize = kIntrinsicConstantAlignedSize;
+            bufferSize = sizeof(IntrinsicConstant);
         }
 
         fIntrinsicConstantBuffer = fResourceProvider->findOrCreateDawnBuffer(
