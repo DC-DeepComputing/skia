@@ -182,6 +182,7 @@ skia_filegroup(
         "compute/DesaturateReadWrite.compute",
         "compute/MatrixMultiply.compute",
         "compute/Raytrace.compute",
+        "compute/StructsFromModule.compute",
         "compute/Uniforms.compute",
         "compute/Workgroup.compute",
     ],
