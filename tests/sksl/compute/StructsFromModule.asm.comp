@@ -1,0 +1,36 @@
+### Compilation failed:
+
+error: SPIR-V validation error: Variables can not have a function[7] storage class outside of a function
+  %3 = OpVariable %_ptr_Function_InterfaceBlock Function
+
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint GLCompute %main "main"
+               OpExecutionMode %main LocalSize 16 16 1
+               OpName %IndirectDispatchArgs "IndirectDispatchArgs"
+               OpMemberName %IndirectDispatchArgs 0 "x"
+               OpMemberName %IndirectDispatchArgs 1 "y"
+               OpMemberName %IndirectDispatchArgs 2 "z"
+               OpName %InterfaceBlock "InterfaceBlock"
+               OpMemberName %InterfaceBlock 0 "args"
+               OpName %main "main"
+               OpMemberDecorate %IndirectDispatchArgs 0 Offset 0
+               OpMemberDecorate %IndirectDispatchArgs 1 Offset 4
+               OpMemberDecorate %IndirectDispatchArgs 2 Offset 8
+               OpMemberDecorate %InterfaceBlock 0 Offset 0
+               OpMemberDecorate %InterfaceBlock 0 RelaxedPrecision
+               OpDecorate %InterfaceBlock Block
+        %int = OpTypeInt 32 1
+%IndirectDispatchArgs = OpTypeStruct %int %int %int
+%InterfaceBlock = OpTypeStruct %IndirectDispatchArgs
+%_ptr_Function_InterfaceBlock = OpTypePointer Function %InterfaceBlock
+          %3 = OpVariable %_ptr_Function_InterfaceBlock Function
+       %void = OpTypeVoid
+          %9 = OpTypeFunction %void
+       %main = OpFunction %void None %9
+         %10 = OpLabel
+               OpReturn
+               OpFunctionEnd
+
+1 error
