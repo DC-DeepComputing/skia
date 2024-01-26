@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a0f64f9_d8667243",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-26T19:43:38Z",
+      "side": 1,
+      "message": "Ben and I discussed this, and we\u0027re on board. I did point out a few minor fixes below. Also, there are two big notes/questions:\n\n1) Internally, Skia caches data for a single gamma value. If you intend to have surfaces with different text gamma values (perhaps because of multi-display?), then there could be some cache thrashing. Of course, if those will be separate processes, then it should be fine.\n\n2) Our understanding is that Windows used to (still does?) only apply the gamma settings to ClearType, not to simple Alpha_8 masks? Is that what you\u0027d expect/want? Note that Skia has an extra define for this today (`SK_GAMMA_APPLY_TO_A8`).",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ba61d8_ad94be0c",
+        "filename": "include/core/SkSurfaceProps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-26T19:43:38Z",
+      "side": 1,
+      "message": "nit: The parameter names here should match the ones used in the function definition (so `textContrast` and `textGamma`). The `f` prefix used on the fields just means `field`.",
+      "range": {
+        "startLine": 69,
+        "startChar": 61,
+        "endLine": 69,
+        "endChar": 74
+      },
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2b23d23_9ba81826",
+        "filename": "include/core/SkSurfaceProps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-26T19:43:38Z",
+      "side": 1,
+      "message": "Do you mind adding a comment here? Ben and I realized it would help us in the future to remember how this is different from the surface\u0027s color space:\n\n```\n// This gamma value is specifically about blending of mask coverage.\n// The surface also has a color space, but that applies to the colors.\n```",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00b9cd39_d24bc87a",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-26T19:43:38Z",
+      "side": 1,
+      "message": "Here (and in the other createDevice calls), I think it would be cleaner (and more maintainable) to just do:\n```\nconst SkSurfaceProps surfaceProps \u003d\n    this-\u003esurfaceProps().cloneWithPixelGeometry(cinfo.fPixelGeometry);\n```",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d09984b_da19691e",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-26T19:43:38Z",
+      "side": 1,
+      "message": "Note that there is one more site like this (you probably missed it because the new Graphite backend isn\u0027t compiled by default). Please see `src/gpu/graphite/Device.cpp`, which also has a `createDevice`",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
