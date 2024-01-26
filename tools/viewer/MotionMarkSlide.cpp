@@ -393,6 +393,169 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// Paths
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CanvasLinePoint : public MMObject {
+protected:
+    void setPoint(SkRandom* random, SkSize size, SkPoint* prev) {
+        const SkSize kGridSize = { 80, 40 };
+        const SkPoint kGridCenter = { 40, 20 };
+        const SkPoint kOffsets[4] = {
+            {-4, 0},
+            {2, 0},
+            {1, -2},
+            {1, 2}
+        };
+
+        SkPoint coordinate = prev ? *prev : kGridCenter;
+        if (prev) {
+            SkPoint offset = kOffsets[random->nextRangeU(0, 3)];
+            coordinate += offset;
+            if (coordinate.fX < 0 || coordinate.fX > kGridSize.width())
+                coordinate.fX -= offset.fX * 2;
+            if (coordinate.fY < 0 || coordinate.fY > kGridSize.height())
+                coordinate.fY -= offset.fY * 2;
+        }
+
+        fPoint = SkPoint::Make((coordinate.fX + 0.5f) * size.width() / (kGridSize.width() + 1),
+                               (coordinate.fY + 0.5f) * size.height() / (kGridSize.height() + 1));
+        fCoordinate = coordinate;
+    }
+
+public:
+    CanvasLinePoint(SkRandom* random, SkSize size, SkPoint* prev) {
+        const SkColor kColors[7] = {
+            0xff101010, 0xff808080, 0xffc0c0c0, 0xff101010, 0xff808080, 0xffc0c0c0, 0xffe01040
+        };
+        fColor = kColors[random->nextRangeU(0, 6)];
+
+        fWidth = sk_float_pow(random->nextF(), 5) * 20 + 1;
+        fIsSplit = random->nextBool();
+
+        this->setPoint(random, size, prev);
+    }
+
+    ~CanvasLinePoint() override = default;
+
+    virtual void append(SkPath* path) {
+        path->lineTo(fPoint.fX, fPoint.fY);
+    }
+
+    // unused, all the work is done by append
+    void draw(SkCanvas*) override {}
+    void animate(double) override {}
+
+    SkColor getColor() { return fColor; }
+    float getWidth() { return fWidth; }
+    SkPoint getPoint() { return fPoint; }
+    bool isSplit() { return fIsSplit; }
+    void toggleIsSplit() { fIsSplit = !fIsSplit; }
+
+private:
+    SkPoint fPoint;
+    SkPoint fCoordinate; //?
+    SkColor fColor;
+    float fWidth;
+    bool fIsSplit;
+};
+
+std::unique_ptr<CanvasLinePoint> make_line_path(SkRandom* random, SkSize size, SkPoint* prev) {
+    return std::make_unique<CanvasLinePoint>(random, size, prev);
+}
+
+class CanvasLinePathStage : public Stage {
+private:
+    static constexpr int kStartingObjectCount = 5000;
+    static constexpr int kObjectIncrement = 1000;
+
+public:
+    CanvasLinePathStage(SkSize size) : Stage(size) {
+        SkPoint prevPoint;
+        for (int i = 0; i < kStartingObjectCount; ++i) {
+            std::unique_ptr<CanvasLinePoint> obj;
+            if (i > 0) {
+                obj = make_line_path(&fRandom, fSize, &prevPoint);
+            } else {
+                obj = make_line_path(&fRandom, fSize, nullptr);
+            }
+            prevPoint = obj->getPoint();
+            fObjects.push_back(std::move(obj));
+        }
+    }
+
+    ~CanvasLinePathStage() override = default;
+
+    void draw(SkCanvas* canvas) override {
+        canvas->clear(SK_ColorWHITE);
+
+        SkPath currentPath;
+        SkPaint paint;
+        paint.setStyle(SkPaint::kStroke_Style);
+        for (size_t i = 0; i < fObjects.size(); ++i) {
+            CanvasLinePoint* object = reinterpret_cast<CanvasLinePoint*>(fObjects[i].get());
+            if (i == 0) {
+                paint.setStrokeWidth(object->getWidth());
+                paint.setColor(object->getColor());
+                currentPath.moveTo(object->getPoint());
+            } else {
+                object->append(&currentPath);
+
+                if (object->isSplit()) {
+                    canvas->drawPath(currentPath, paint);
+
+                    paint.setStrokeWidth(object->getWidth());
+                    paint.setColor(object->getColor());
+                    currentPath.reset();
+                    currentPath.moveTo(object->getPoint());
+                }
+
+                if (fRandom.nextBool() > 0.995) {
+                    object->toggleIsSplit();
+                }
+            }
+        }
+        canvas->drawPath(currentPath, paint);
+    }
+
+    bool animate(double nanos) override {
+        for (size_t i = 0; i < fObjects.size(); ++i) {
+            fObjects[i]->animate(nanos);
+        }
+        return true;
+    }
+
+    bool onChar(SkUnichar uni) override {
+        bool handled = false;
+        switch (uni) {
+            case '+':
+            case '=':
+                for (int i = 0; i < kObjectIncrement; ++i) {
+                    CanvasLinePoint* prevObject = reinterpret_cast<CanvasLinePoint*>(fObjects[fObjects.size()-1].get());
+                    SkPoint point = prevObject->getPoint();
+                    std::unique_ptr<CanvasLinePoint> path = make_line_path(&fRandom, fSize, &point);
+                    fObjects.push_back(std::move(path));
+                }
+                handled = true;
+                break;
+            case '-':
+            case '_':
+                if (fObjects.size() > kObjectIncrement) {
+                    fObjects.resize(fObjects.size() - kObjectIncrement);
+                }
+                handled = true;
+                break;
+            default:
+                break;
+        }
+
+        return handled;
+    }
+
+private:
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class MotionMarkSlide : public Slide {
 public:
@@ -408,6 +571,10 @@ public:
         std::unique_ptr<CanvasArcStage> arcStage =
                 std::make_unique<CanvasArcStage>(size);
         fStages.push_back(std::move(arcStage));
+
+        std::unique_ptr<CanvasLinePathStage> pathStage =
+                std::make_unique<CanvasLinePathStage>(size);
+        fStages.push_back(std::move(pathStage));
     }
 
     bool onChar(SkUnichar uni) override {
