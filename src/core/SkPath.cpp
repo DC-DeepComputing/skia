@@ -1434,6 +1434,11 @@ SkPath& SkPath::addPath(const SkPath& srcPath, const SkMatrix& matrix, AddPathMo
         return *this;
     }
 
+    if (isEmpty() && matrix.isIdentity()) {
+        *this = srcPath;
+        return *this;
+    }
+
     // Detect if we're trying to add ourself
     const SkPath* src = &srcPath;
     SkTLazy<SkPath> tmp;
