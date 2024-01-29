@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34fd526_002f04a3",
+        "filename": "tools/viewer/MotionMarkSlide.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-29T17:31:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "63ebb4a5_8f3e4344",
+      "revId": "e24124912cc37fe9bd217cf6dc0bbce1eb7b7cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "979f267e_8e2a0298",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-01-29T16:33:24Z",
       "side": 1,
       "message": "...and this line appear to be the only two places where we assign a value to `fCurrentStage`.  And in both places it is assigned in reference to its current value.\n\nSo it seems like we\u0027re always using this value uninitialized.  Should we be initializing `fCurrentStage` to something in the constructor?",
+      "revId": "e24124912cc37fe9bd217cf6dc0bbce1eb7b7cd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57cc052d_a13a6a27",
+        "filename": "tools/viewer/MotionMarkSlide.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-29T17:31:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "979f267e_8e2a0298",
       "revId": "e24124912cc37fe9bd217cf6dc0bbce1eb7b7cd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
