@@ -15,22 +15,13 @@ class SkStrikeClient;
 
 namespace sktext::gpu {
 
-#if !defined(SK_SLUG_DISABLE_LEGACY_DESERIALIZE) && (defined(SK_GANESH) || defined(SK_GRAPHITE))
-// This is implemented in SlugImpl.cpp
-sk_sp<Slug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client);
-#endif
-
 sk_sp<Slug> Slug::MakeFromBuffer(SkReadBuffer& buffer) {
     auto procs = buffer.getDeserialProcs();
     if (procs.fSlugProc) {
         return procs.fSlugProc(buffer, procs.fSlugCtx);
     }
     SkDEBUGFAIL("Should have set serial procs");
-#if !defined(SK_SLUG_DISABLE_LEGACY_DESERIALIZE) && (defined(SK_GANESH) || defined(SK_GRAPHITE))
-    return SkMakeSlugFromBuffer(buffer, nullptr);
-#else
     return nullptr;
-#endif
 }
 
 }  // namespace sktext::gpu
