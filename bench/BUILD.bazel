@@ -18,7 +18,7 @@ skia_cc_library(
     hdrs = ["Benchmark.h"],
     visibility = ["//tools/testrunners/benchmark:__subpackages__"],
     deps = [
-        "//:skia_internal",
+        "//:core",
         "//tools:registry",
     ],
 )
@@ -33,9 +33,10 @@ skia_cc_library(
     ],
 )
 
-cc_test_with_flags(
+cc_test(
     name = "cpu_nonrendering_test",
     srcs = [
+        "//tools/testrunners/benchmark:BazelBenchmarkTestRunner.cpp",
         "GradientBench.cpp",
         "TextBlobBench.cpp",
     ],
@@ -44,12 +45,15 @@ cc_test_with_flags(
         "nonrendering",
         "--autoTuneLoops",
     ],
-    set_flags = {
-        "include_encoder": [
-            "png_encode_codec",
-        ],
-    },
-    deps = [":benchmarks_base"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "//bench:benchmark",
+        "//tools:autorelease_pool",
+        "//tools:registry",
+        "//tools:stats",
+        "//src/utils:json",
+    ],
 )
 
 cc_test_with_flags(
