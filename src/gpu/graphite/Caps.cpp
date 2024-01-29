@@ -16,7 +16,51 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/sksl/SkSLUtil.h"
 
+#include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ResourceTypes.h"
+#include "tools/ToolUtils.h"
+//#include "src/gpu/graphite/mtl/MtlCaps.h"
+
+const char* nameIt(int format);
+
 namespace skgpu::graphite {
+
+static const char* to_str(DepthStencilFlags dsFlags) {
+    switch (dsFlags) {
+        case DepthStencilFlags::kNone:         return "kNone";
+        case DepthStencilFlags::kDepth:        return "kDepth";
+        case DepthStencilFlags::kStencil:      return "kStencil";
+        case DepthStencilFlags::kDepthStencil: return "kDepthStencil";
+        default:                               return "kUnknown";
+    }
+}
+
+void Caps::Foobar::dump(const RendererProvider* rendererProvider) const {
+    SkDebugf("Foobar %d (", fRenderStepID);
+
+    const RenderStep* rs = rendererProvider->lookup(fRenderStepID);
+
+    for (auto r : rendererProvider->renderers()) {
+        for (int i = 0; i < r->numRenderSteps(); ++i) {
+            if (&r->step(i) == rs) {
+                SkDebugf("%s | ", r->name());
+                break;
+            }
+        }
+    }
+
+    SkDebugf(") %d %s (%s) %d %s (%s) %d\n",
+             fPaintParamsID.asUInt(),
+
+             nameIt(fColorFormat),
+             ToolUtils::colortype_name(fColorType),
+             fColorSampleCount,
+
+             nameIt(fDSFormat),
+             to_str(fDSFlags),
+             fDSSampleCount);
+}
 
 Caps::Caps()
         : fShaderCaps(std::make_unique<SkSL::ShaderCaps>())

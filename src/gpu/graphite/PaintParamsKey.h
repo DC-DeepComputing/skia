@@ -107,9 +107,11 @@ private:
 // into the dictionary to be prohibitive since that should be infrequent.
 class PaintParamsKeyBuilder {
 public:
-    PaintParamsKeyBuilder(const ShaderCodeDictionary* dict) {
+    PaintParamsKeyBuilder(const ShaderCodeDictionary* dict, bool fromKey) : fFromKey(fromKey) {
         SkDEBUGCODE(fDict = dict;)
     }
+
+    bool fromKey() const { return fFromKey; }
 
     ~PaintParamsKeyBuilder() { SkASSERT(!fLocked); }
 
@@ -179,6 +181,8 @@ private:
     skia_private::TArray<StackFrame> fStack;
     bool fLocked = false;
 #endif
+    bool fFromKey = false;
+
 };
 
 class AutoLockBuilderAsKey {
