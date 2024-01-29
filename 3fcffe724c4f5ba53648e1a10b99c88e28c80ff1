@@ -22,6 +22,30 @@
       },
       "revId": "3fcffe724c4f5ba53648e1a10b99c88e28c80ff1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6125e864_29687b73",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-01-29T19:46:38Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "d363c6a2_52290072",
+      "range": {
+        "startLine": 675,
+        "startChar": 65,
+        "endLine": 675,
+        "endChar": 66
+      },
+      "revId": "3fcffe724c4f5ba53648e1a10b99c88e28c80ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
