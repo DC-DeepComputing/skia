@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00822d96_5d789125",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-29T18:56:06Z",
+      "side": 1,
+      "message": "I will update this after https://skia-review.googlesource.com/c/skia/+/805883 lands, but it looks compatible with the changes I made to Stage.\n\nThe main fix was to the start/end angle so that the we weren\u0027t drawing arcs with sweeps progressively \u003e 360.",
+      "revId": "b7129b7baa20731aedb94644127dd46d234c954e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
