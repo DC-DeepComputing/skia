@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "484add9f_2e210712",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-01-29T18:40:23Z",
+      "side": 1,
+      "message": "You are right this definitely changes behavior. I assumed places that need to modify the underlying SkPathRef only do it if the path is unique, otherwise they copy. For example, moveTo. The one place I had to change to make this work is interpolate, it was assuming the current implementation.\n\nI can do a more localized change in the chrome side, but it seemed like a general issue. If you\u0027re worried there are compatibility issues, I can look to change chrome to avoid addPath() in empty cases.",
+      "parentUuid": "1ac4e641_a243644e",
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "513d43d6_81b25463",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2024-01-29T18:34:51Z",
       "side": 1,
       "message": "this-\u003eisEmpty()",
+      "range": {
+        "startLine": 1438,
+        "startChar": 8,
+        "endLine": 1438,
+        "endChar": 15
+      },
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "910ae4fe_4329f21b",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1438,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-01-29T18:40:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "513d43d6_81b25463",
       "range": {
         "startLine": 1438,
         "startChar": 8,
