@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13f9f43d_61d1ed63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-01-29T16:22:40Z",
+      "side": 1,
+      "message": "For posterity, the part I was missing is that we have a gentleman\u0027s agreement with Chrome that they\u0027ll never request mipmapping on a fully lazy proxy unless they give us the final dimensions.",
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb36af55_5f7e9008",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-01-29T16:22:40Z",
+      "side": 1,
+      "message": "It\u0027s probably more efficient to just pass this by value (i.e., just an SkISize)",
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "630fc5f5_0e9aad9b",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-01-29T16:22:40Z",
+      "side": 1,
+      "message": "srcSize ? to match header",
+      "range": {
+        "startLine": 595,
+        "startChar": 36,
+        "endLine": 595,
+        "endChar": 47
+      },
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecaf839d_96b136ea",
+        "filename": "src/gpu/graphite/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-01-29T16:22:40Z",
+      "side": 1,
+      "message": "We do have a \"ComputeLevelCount(SkISize s)\" variant",
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
