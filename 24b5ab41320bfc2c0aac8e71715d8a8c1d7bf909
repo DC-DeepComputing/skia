@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ac4e641_a243644e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-29T18:34:51Z",
+      "side": 1,
+      "message": "Doesn\u0027t this change behavior? If code modifies path1 after adding it to path2, doesn\u0027t this also modify path2? I don\u0027t think it does that today?",
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513d43d6_81b25463",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1438,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-29T18:34:51Z",
+      "side": 1,
+      "message": "this-\u003eisEmpty()",
+      "range": {
+        "startLine": 1438,
+        "startChar": 8,
+        "endLine": 1438,
+        "endChar": 15
+      },
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
