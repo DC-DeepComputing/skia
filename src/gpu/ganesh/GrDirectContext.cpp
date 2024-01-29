@@ -324,16 +324,6 @@ size_t GrDirectContext::getResourceCachePurgeableBytes() const {
     return fResourceCache->getPurgeableBytes();
 }
 
-void GrDirectContext::getResourceCacheLimits(int* maxResources, size_t* maxResourceBytes) const {
-    ASSERT_SINGLE_OWNER
-    if (maxResources) {
-        *maxResources = -1;
-    }
-    if (maxResourceBytes) {
-        *maxResourceBytes = this->getResourceCacheLimit();
-    }
-}
-
 size_t GrDirectContext::getResourceCacheLimit() const {
     ASSERT_SINGLE_OWNER
     return fResourceCache->getMaxResourceBytes();

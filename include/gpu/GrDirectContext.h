@@ -192,15 +192,6 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     // Resource Cache
 
-    /** DEPRECATED
-     *  Return the current GPU resource cache limits.
-     *
-     *  @param maxResources If non-null, will be set to -1.
-     *  @param maxResourceBytes If non-null, returns maximum number of bytes of
-     *                          video memory that can be held in the cache.
-     */
-    void getResourceCacheLimits(int* maxResources, size_t* maxResourceBytes) const;
-
     /**
      *  Return the current GPU resource cache limit in bytes.
      */
