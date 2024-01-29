@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ca6f6a9_6795df58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-29T19:21:02Z",
+      "side": 1,
+      "message": "I don\u0027t think this actually changes behavior? It\u0027s the same as just doing an assignment, right? The path will later detect the non-unique ownership of the path-ref, and make a copy at the time of edit:\nhttps://fiddle.skia.org/c/b48d312fab531f6e1f8e665f16dffe51",
+      "parentUuid": "d1fc977e_b372c732",
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "513d43d6_81b25463",
