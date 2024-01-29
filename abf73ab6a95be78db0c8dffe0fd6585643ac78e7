@@ -105,6 +105,24 @@
       "parentUuid": "57cb97bb_f523280e",
       "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "befb82e4_42f7c625",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-29T15:35:51Z",
+      "side": 1,
+      "message": "There are no plans that I\u0027m aware of to have bmp_decode or any other cc_library here be standalone shared libraries. If we were to have a shared object output, it would be one big libskia.so that does not have duplicate symbols. I have not researched this very much, as it is currently not in (my) scope.\n\nI rewrote any_decoder to be a cc_library. I had initially been hesitant to do this because I would be putting private .h files in a hdrs and I had been trying to avoid doing this, however doing so won\u0027t actually stop clients from using them if they ignore layer checks (go/bazel-bites slides 135+ ish). That means the arbitrary restriction I had been imposing on myself was not helpful and even a bit harmful.",
+      "parentUuid": "120f003e_256e150c",
+      "revId": "abf73ab6a95be78db0c8dffe0fd6585643ac78e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
