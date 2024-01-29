@@ -16,6 +16,24 @@
       "message": "Interesting that the G3 roll points out the issue with `src/codec/SkScalingCodec.h`  needing a full include of `SkStream.h` (and unrelated `\u003cmemory\u003e` for `std::unique_ptr` and maybe more) because it needs to call the `SkStream` destructor.",
       "revId": "a99c1327569a4f5c6f096aa9bc90d51559240f5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1fd45d2_72f18852",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-29T16:23:52Z",
+      "side": 1,
+      "message": "Fixed. I guess many of the ways we built ended up with SkScalingCodec.h being included after SkStream anyway. But `skdiff` did not. I enforced IWYU on the file so we should be more future proof.",
+      "parentUuid": "1061469c_cb8b0516",
+      "revId": "a99c1327569a4f5c6f096aa9bc90d51559240f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
