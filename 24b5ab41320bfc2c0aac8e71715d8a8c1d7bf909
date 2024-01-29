@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1fc977e_b372c732",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-01-29T19:18:16Z",
+      "side": 1,
+      "message": "I think we should change it on the chrome side, for now. Then, we can see what implications the change would have for other Skia users.",
+      "parentUuid": "484add9f_2e210712",
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "513d43d6_81b25463",
