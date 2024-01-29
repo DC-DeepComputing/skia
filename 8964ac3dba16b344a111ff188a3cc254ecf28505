@@ -22,6 +22,30 @@
       },
       "revId": "8964ac3dba16b344a111ff188a3cc254ecf28505",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b0792ae_c1ff91f1",
+        "filename": "tools/viewer/MotionMarkSlide.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-01-29T17:31:15Z",
+      "side": 1,
+      "message": "It should be, but you\u0027re correct on this and the other CL that they should be initialized just in case. I\u0027ve been testing in debug so I\u0027ve probably been getting lucky. I\u0027ll put together a CL to address this.",
+      "parentUuid": "4b7ac3a2_f91c8799",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 0
+      },
+      "revId": "8964ac3dba16b344a111ff188a3cc254ecf28505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
