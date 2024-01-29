@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b7ac3a2_f91c8799",
+        "filename": "tools/viewer/MotionMarkSlide.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2024-01-29T16:37:41Z",
+      "side": 1,
+      "message": "Naive post-submit drive-by:\n\nAre we assured that `animate()` will always be called before `draw()`?  If not, then it looks like we\u0027ll use `fCurrentAngle` and `fCurrentGradientStep` uninitialized in `draw()`.  Maybe we should consider initializing these fields in the constructor?",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 0
+      },
+      "revId": "8964ac3dba16b344a111ff188a3cc254ecf28505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
