@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d812d33_e805d0c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2024-01-29T19:34:04Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t think this actually changes behavior?\n\nIt depends upon the caller. The interpolate() case is the one place assuming the current behavior and the one place I changed to account for this. At least in SkPath, interpolate() is the only place that calls addpath(), so fixing it should result in no outward change in behavior.\n\n\u003e It\u0027s the same as just doing an assignment, right? The path will later detect the non-unique ownership of the path-ref, and make a copy at the time of edit:\n\u003e https://fiddle.skia.org/c/b48d312fab531f6e1f8e665f16dffe51\n\nThat\u0027s right.",
+      "parentUuid": "9ca6f6a9_6795df58",
+      "revId": "24b5ab41320bfc2c0aac8e71715d8a8c1d7bf909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "513d43d6_81b25463",
