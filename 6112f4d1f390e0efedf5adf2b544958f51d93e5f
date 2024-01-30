@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7603928_2a30954b",
+        "filename": "site/docs/dev/internal/_index.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2024-01-30T14:26:59Z",
+      "side": 0,
+      "message": "I could not locate replacements for these, is it ok to drop?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "6112f4d1f390e0efedf5adf2b544958f51d93e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
