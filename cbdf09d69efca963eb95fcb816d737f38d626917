@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "176040bc_88bb489b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1598,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-30T14:22:22Z",
+      "side": 0,
+      "message": "Isn\u0027t this still relevant? We don\u0027t want to emit `@blend_src(-1)`.",
+      "range": {
+        "startLine": 1598,
+        "startChar": 33,
+        "endLine": 1598,
+        "endChar": 54
+      },
+      "revId": "cbdf09d69efca963eb95fcb816d737f38d626917",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
