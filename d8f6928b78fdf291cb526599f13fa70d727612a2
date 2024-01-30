@@ -16,6 +16,52 @@
       "message": "Pixel7s are all currently dead/offline which is why they didn\u0027t run if you\u0027re looking at try jobs.",
       "revId": "d8f6928b78fdf291cb526599f13fa70d727612a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4841002_7ef8817b",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-30T14:43:58Z",
+      "side": 1,
+      "message": "\"fails the one compute test\"?",
+      "range": {
+        "startLine": 426,
+        "startChar": 35,
+        "endLine": 426,
+        "endChar": 61
+      },
+      "revId": "d8f6928b78fdf291cb526599f13fa70d727612a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "138d781c_cec79a59",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-30T14:43:58Z",
+      "side": 1,
+      "message": "Vulkan",
+      "range": {
+        "startLine": 288,
+        "startChar": 47,
+        "endLine": 288,
+        "endChar": 53
+      },
+      "revId": "d8f6928b78fdf291cb526599f13fa70d727612a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
