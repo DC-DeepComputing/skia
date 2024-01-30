@@ -63,6 +63,7 @@ public:
         int fNumColorAttachments;
         int fNumResolveAttachments;
         int fNumDepthStencilAttachments;
+
         int fSubpassCount;
         int fSubpassDependencyCount;
         int fUint32DataCnt;
