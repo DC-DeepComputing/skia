@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5289326_455ac0a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-01-30T15:21:03Z",
+      "side": 1,
+      "message": "Seems like I should rename the files from _common to something else. Sound good?",
+      "revId": "f2bb48ffbf2c4b65426d53fcdec16c77e07a5abc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
