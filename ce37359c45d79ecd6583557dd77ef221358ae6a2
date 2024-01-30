@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f552fda1_e2f0372f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-30T20:11:12Z",
+      "side": 1,
+      "message": "This looks fine as-is, with some naming fun. If you want we can land this and the argue about file names and naming this class later.",
+      "revId": "ce37359c45d79ecd6583557dd77ef221358ae6a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "599578c7_b62061b4",
+        "filename": "src/ports/SkFontHost_FreeType_common.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-30T20:11:12Z",
+      "side": 1,
+      "message": "Ah, naming things. This is fine, though I suppose `SkScalerContext_FreeType_Utils` might work (though this isn\u0027t a scaler context). `SkFreeTypeUtils` is a little too generic, this really is supposed to be the parts of an `SkScalerContext_FreeType` that most FreeType scaler contexts would agree on.",
+      "range": {
+        "startLine": 34,
+        "startChar": 7,
+        "endLine": 34,
+        "endChar": 29
+      },
+      "revId": "ce37359c45d79ecd6583557dd77ef221358ae6a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
