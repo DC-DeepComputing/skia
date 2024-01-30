@@ -93,6 +93,30 @@
       },
       "revId": "e89af6ebd516d7722e98d780c21c773f5ad0fa68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9afa5ad_9191d3d6",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:42:41Z",
+      "side": 1,
+      "message": "Though really, we\u0027d want to make sure different write swizzles etc. did, in fact, return a different graphics pipeline for loading MSAA which would require the pipeline key (not just the RP key) so I think some of that work will be necessary anyhow ^",
+      "parentUuid": "e76e7541_fe882843",
+      "range": {
+        "startLine": 107,
+        "startChar": 18,
+        "endLine": 107,
+        "endChar": 26
+      },
+      "revId": "e89af6ebd516d7722e98d780c21c773f5ad0fa68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
