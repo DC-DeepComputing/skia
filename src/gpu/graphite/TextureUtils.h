@@ -54,7 +54,10 @@ sk_sp<SkImage> RescaleImage(Recorder*,
                             SkImage::RescaleGamma rescaleGamma,
                             SkImage::RescaleMode rescaleMode);
 
-bool GenerateMipmaps(Recorder*, sk_sp<TextureProxy>, const SkColorInfo&);
+bool GenerateMipmaps(Recorder*,
+                     sk_sp<TextureProxy>,
+                     SkISize textureSize,
+                     const SkColorInfo& colorInfo);
 
 std::tuple<skgpu::graphite::TextureProxyView, SkColorType> AsView(Recorder*,
                                                                   const SkImage*,
