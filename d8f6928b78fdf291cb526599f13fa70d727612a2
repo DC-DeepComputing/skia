@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eee003f_e48442b9",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-30T14:48:41Z",
+      "side": 1,
+      "message": "yeah you don\u0027t know about THE ONE compute tests?? Reworded it a little better.",
+      "parentUuid": "a4841002_7ef8817b",
+      "range": {
+        "startLine": 426,
+        "startChar": 35,
+        "endLine": 426,
+        "endChar": 61
+      },
+      "revId": "d8f6928b78fdf291cb526599f13fa70d727612a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "138d781c_cec79a59",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-01-30T14:43:58Z",
       "side": 1,
       "message": "Vulkan",
+      "range": {
+        "startLine": 288,
+        "startChar": 47,
+        "endLine": 288,
+        "endChar": 53
+      },
+      "revId": "d8f6928b78fdf291cb526599f13fa70d727612a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85489dec_56b5232f",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 16
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-30T14:48:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "138d781c_cec79a59",
       "range": {
         "startLine": 288,
         "startChar": 47,
