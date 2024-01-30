@@ -34,6 +34,24 @@
       "parentUuid": "b5d28bd8_602208a1",
       "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca48825_0b45d11f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-01-30T13:58:49Z",
+      "side": 1,
+      "message": "Yes please. It should then automatically get synced to this change.",
+      "parentUuid": "063b8965_3b38a545",
+      "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
