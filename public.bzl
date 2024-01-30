@@ -1960,8 +1960,8 @@ GL_SRCS_UNIX_EGL = base_gl_srcs + [
 
 PORTS_SRCS_UNIX = [
     "src/ports/SkDebug_stdio.cpp",
-    "src/ports/SkFontHost_FreeType_common.cpp",
-    "src/ports/SkFontHost_FreeType_common.h",
+    "src/ports/SkScalerContext_FreeType_Utils.cpp",
+    "src/ports/SkScalerContext_FreeType_Utils.h",
     "src/ports/SkFontHost_FreeType.cpp",
     "src/ports/SkFontMgr_custom.cpp",
     "src/ports/SkFontMgr_custom_directory.cpp",
@@ -1984,8 +1984,8 @@ GL_SRCS_ANDROID = base_gl_srcs + [
 
 PORTS_SRCS_ANDROID = [
     "src/ports/SkDebug_android.cpp",
-    "src/ports/SkFontHost_FreeType_common.cpp",
-    "src/ports/SkFontHost_FreeType_common.h",
+    "src/ports/SkScalerContext_FreeType_Utils.cpp",
+    "src/ports/SkScalerContext_FreeType_Utils.h",
     "src/ports/SkFontHost_FreeType.cpp",
     "src/ports/SkFontMgr_android.cpp",
     "src/ports/SkFontMgr_android_parser.cpp",
@@ -2044,8 +2044,8 @@ PORTS_SRCS_IOS = [
 
 PORTS_SRCS_FUCHSIA = [
     "src/ports/SkDebug_stdio.cpp",
-    "src/ports/SkFontHost_FreeType_common.cpp",
-    "src/ports/SkFontHost_FreeType_common.h",
+    "src/ports/SkScalerContext_FreeType_Utils.cpp",
+    "src/ports/SkScalerContext_FreeType_Utils.h",
     "src/ports/SkFontHost_FreeType.cpp",
     "src/ports/SkFontMgr_custom.cpp",
     "src/ports/SkFontMgr_custom.h",
@@ -2067,8 +2067,8 @@ PORTS_SRCS_MACOS = PORTS_SRCS_IOS
 
 PORTS_SRCS_WASM = [
     "src/ports/SkDebug_stdio.cpp",
-    "src/ports/SkFontHost_FreeType_common.cpp",
-    "src/ports/SkFontHost_FreeType_common.h",
+    "src/ports/SkScalerContext_FreeType_Utils.cpp",
+    "src/ports/SkScalerContext_FreeType_Utils.h",
     "src/ports/SkFontHost_FreeType.cpp",
     "src/ports/SkFontMgr_custom.cpp",
     "src/ports/SkFontMgr_custom.h",
