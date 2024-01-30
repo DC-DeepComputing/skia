@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -32,18 +33,22 @@ class VulkanSamplerYcbcrConversion;
 class VulkanResourceProvider final : public ResourceProvider {
 public:
     static constexpr size_t kIntrinsicConstantSize = sizeof(float) * 4;
+    static constexpr size_t kLoadMSAAVertexBufferSize = sizeof(float) * 8; // 4 points of 2 floats
 
     VulkanResourceProvider(SharedContext* sharedContext,
                            SingleOwner*,
                            uint32_t recorderID,
                            size_t resourceBudget,
-                           sk_sp<Buffer> intrinsicConstantUniformBuffer);
+                           sk_sp<Buffer> intrinsicConstantUniformBuffer,
+                           sk_sp<Buffer> loadMSAAVertexBuffer);
 
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
 
     sk_sp<Buffer> refIntrinsicConstantBuffer() const;
+
+    sk_sp<Buffer> refLoadMSAAVertexBuffer() const;
 
     sk_sp<VulkanSamplerYcbcrConversion> findOrCreateCompatibleSamplerYcbcrConversion(
             const VulkanYcbcrConversionInfo& ycbcrInfo) const;
@@ -101,6 +106,9 @@ private:
     // resource provider creation. This way, render passes across all command buffers can simply
     // update the value within this buffer as needed.
     sk_sp<Buffer> fIntrinsicUniformBuffer;
+    // Similary, use a shared buffer b/w all renderpasses to store vertices for loading MSAA from
+    // resolve.
+    sk_sp<Buffer> fLoadMSAAVertexBuffer;
 
     struct KeyHash {
         uint32_t operator()(const GraphiteResourceKey& key) const {

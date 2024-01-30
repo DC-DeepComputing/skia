@@ -369,7 +369,6 @@ void VulkanCommandBuffer::waitUntilFinished() {
 }
 
 void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
-    // vkCmdUpdateBuffer can only be called outside of a render pass.
     SkASSERT(fActive && !fActiveRenderPass);
 
     // Vulkan's framebuffer space has (0, 0) at the top left. This agrees with Skia's device coords.
@@ -381,30 +380,22 @@ void VulkanCommandBuffer::updateRtAdjustUniform(const SkRect& viewport) {
     float invTwoH = 2.f / viewport.height();
     const float rtAdjust[4] = {invTwoW, invTwoH, -1.f - x * invTwoW, -1.f - y * invTwoH};
 
-    auto intrinsicUniformBuffer = fResourceProvider->refIntrinsicConstantBuffer();
-    const auto intrinsicVulkanBuffer = static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get());
+    sk_sp<Buffer> intrinsicUniformBuffer = fResourceProvider->refIntrinsicConstantBuffer();
+    const VulkanBuffer* intrinsicVulkanBuffer =
+            static_cast<VulkanBuffer*>(intrinsicUniformBuffer.get());
     SkASSERT(intrinsicVulkanBuffer);
 
     fUniformBuffersToBind[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] =
             {intrinsicUniformBuffer.get(), /*offset=*/0};
 
-    // TODO(b/307577875): Once synchronization for uniform buffers as a whole is improved, we should
-    // be able to rely upon the bindUniformBuffers() call to handle buffer access changes for us,
-    // removing the need to call setBufferAccess(...) within this method.
-
     // Per the spec, vkCmdUpdateBuffer is treated as a “transfer" operation for the purposes of
     // synchronization barriers. Ensure this write operation occurs after any previous read
     // operations and without clobbering any other write operations on the same memory in the cache.
-    intrinsicVulkanBuffer->setBufferAccess(this, VK_ACCESS_TRANSFER_WRITE_BIT,
-                                           VK_PIPELINE_STAGE_TRANSFER_BIT);
-    this->submitPipelineBarriers();
-
-    VULKAN_CALL(fSharedContext->interface(), CmdUpdateBuffer(
-            fPrimaryCommandBuffer,
-            intrinsicVulkanBuffer->vkBuffer(),
-            /*dstOffset=*/0,
-            VulkanResourceProvider::kIntrinsicConstantSize,
-            &rtAdjust));
+    this->updateBuffer(intrinsicVulkanBuffer,
+                       VK_ACCESS_TRANSFER_WRITE_BIT,
+                       VK_PIPELINE_STAGE_TRANSFER_BIT,
+                       &rtAdjust,
+                       VulkanResourceProvider::kIntrinsicConstantSize);
 
     // Ensure the buffer update is completed and made visible before reading
     intrinsicVulkanBuffer->setBufferAccess(this, VK_ACCESS_UNIFORM_READ_BIT,
@@ -438,19 +429,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     this->updateRtAdjustUniform(viewport);
-    VkViewport vkViewport = {
-        viewport.fLeft,
-        viewport.fTop,
-        viewport.width(),
-        viewport.height(),
-        0.0f, // minDepth
-        1.0f, // maxDepth
-    };
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdSetViewport(fPrimaryCommandBuffer,
-                               /*firstViewport=*/0,
-                               /*viewportCount=*/1,
-                               &vkViewport));
+    this->setViewport(viewport);
 
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
@@ -464,43 +443,288 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     return true;
 }
 
+bool VulkanCommandBuffer::updateAndBindVertexBuffer() {
+    sk_sp<Buffer> vertexBuffer = fResourceProvider->refLoadMSAAVertexBuffer();
+    const VulkanBuffer* vulkanVertexBuffer = static_cast<VulkanBuffer*>(vertexBuffer.get());
+    if (!vertexBuffer) {
+        return false;
+    }
+    SkASSERT(vulkanVertexBuffer->bufferUsageFlags() & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
+
+    // Determine vertices in NDC. TODO: When only wanting to draw a portion of the resolve
+    // texture, these values will need to be dynamically determined. For now, simply span the
+    // range of NDC since we want to reference the entire resolve texture.
+    static constexpr float vertices[8] = { 1.f,  1.f,
+                                           1.f, -1.f,
+                                          -1.f,  1.f,
+                                          -1.f, -1.f };
+
+    this->updateBuffer(vulkanVertexBuffer,
+                       VK_ACCESS_TRANSFER_WRITE_BIT,
+                       VK_PIPELINE_STAGE_TRANSFER_BIT,
+                       &vertices,
+                       VulkanResourceProvider::kLoadMSAAVertexBufferSize);
+
+    // Ensure the buffer update is completed and made visible before reading
+    vulkanVertexBuffer->setBufferAccess(this, VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT,
+                                        VK_PIPELINE_STAGE_VERTEX_INPUT_BIT);
+
+    // Bind vertex buffer
+    this->bindVertexBuffers(vulkanVertexBuffer,
+                            /*vertexOffset=*/0,
+                            /*instanceBuffer=*/nullptr,
+                            /*instanceOffset=*/0);
+
+    this->trackResource(std::move(vertexBuffer));
+    return true;
+}
+
+bool VulkanCommandBuffer::updateAndBindInputAttachment(const VulkanTexture& resolveTexture) {
+    // TODO: Can we have a more generic update/bind method to encapsulate this and update/binding
+    // of uniform descriptors, vertex buffers, etc.?
+
+    // Fetch a descriptor set that contains one input attachment
+    STArray<1, DescriptorData> inputDescriptors =
+            {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+    sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
+            SkSpan<DescriptorData>{&inputDescriptors.front(), inputDescriptors.size()});
+    if (!set) {
+        return false;
+    }
+
+    VkDescriptorImageInfo textureInfo;
+    memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
+    textureInfo.sampler = VK_NULL_HANDLE;
+    textureInfo.imageView =
+            resolveTexture.getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+    textureInfo.imageLayout = resolveTexture.currentLayout();
+
+    VkWriteDescriptorSet writeInfo;
+    memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+    writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    writeInfo.pNext = nullptr;
+    writeInfo.dstSet = *set->descriptorSet();
+    writeInfo.dstBinding = VulkanGraphicsPipeline::kInputAttachmentBindingIndex;
+    writeInfo.dstArrayElement = 0;
+    writeInfo.descriptorCount = 1;
+    writeInfo.descriptorType = DsTypeEnumToVkDs(DescriptorType::kInputAttachment);
+    writeInfo.pImageInfo = &textureInfo;
+    writeInfo.pBufferInfo = nullptr;
+    writeInfo.pTexelBufferView = nullptr;
+
+    VULKAN_CALL(fSharedContext->interface(),
+                UpdateDescriptorSets(fSharedContext->device(),
+                                    /*descriptorWriteCount=*/1,
+                                    &writeInfo,
+                                    /*descriptorCopyCount=*/0,
+                                    /*pDescriptorCopies=*/nullptr));
+
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdBindDescriptorSets(fPrimaryCommandBuffer,
+                                      VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                      fActiveGraphicsPipeline->layout(),
+                                      VulkanGraphicsPipeline::kInputAttachmentDescSetIndex,
+                                      /*setCount=*/1,
+                                      set->descriptorSet(),
+                                      /*dynamicOffsetCount=*/0,
+                                      /*dynamicOffsets=*/nullptr));
+
+    this->trackResource(std::move(set));
+    return true;
+}
+
+bool VulkanCommandBuffer::loadMSAAFromResolve(sk_sp<VulkanGraphicsPipeline> loadPipeline,
+                                              VulkanTexture& resolveTexture,
+                                              SkISize dstDimensions) {
+    this->bindGraphicsPipeline(loadPipeline.get());
+    // Make sure we do not attempt to bind uniform or texture/sampler descriptors because we do
+    // not use them for loading MSAA from resolve.
+    fBindUniformBuffers = false;
+    fBindTextureSamplers = false;
+
+    this->setScissor(/*left=*/0, /*top=*/0, dstDimensions.width(), dstDimensions.height());
+
+    // Update and bind input attachment descriptor
+    if (!updateAndBindInputAttachment(resolveTexture)) {
+        SKGPU_LOG_E("Unable to update and bind an input attachment descriptor set");
+        return false;
+    }
+
+    this->draw(PrimitiveType::kTriangleStrip, /*baseVertex=*/0, /*vertexCount=*/4);
+
+    this->nextSubpass();
+
+    // If we loaded the resolve attachment, then we would have set the image layout to be
+    // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an
+    // input attachment. However, when we switched to the main subpass it will transition the
+    // layout internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our
+    // tracking of the layout to match the new layout.
+    resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+
+    // After using a distinct descriptor set layout for loading MSAA from resolve, we will need to
+    // (re-)bind any descriptor sets.
+    fBindUniformBuffers = true;
+    fBindTextureSamplers = true;
+    return true;
+}
+
+namespace {
+void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
+                           VulkanTexture* colorTexture,
+                           VulkanTexture* resolveTexture,
+                           VulkanTexture* depthStencilTexture,
+                           bool loadMSAAFromResolve) {
+    if (colorTexture) {
+        colorTexture->setImageLayout(cmdBuf,
+                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                                     /*byRegion=*/false);
+        if (resolveTexture) {
+            if (loadMSAAFromResolve) {
+                // When loading MSAA from resolve, the texture is used in the first subpass as an
+                // input attachment. Subsequent subpass(es) need the resolve texture to provide read
+                // access to the color attachment (for use cases such as blending), so add access
+                // and pipeline stage flags for both usages.
+                resolveTexture->setImageLayout(cmdBuf,
+                                               VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                                               VK_ACCESS_INPUT_ATTACHMENT_READ_BIT |
+                                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
+                                               VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
+                                               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                                               /*byRegion=*/false);
+            } else {
+                resolveTexture->setImageLayout(cmdBuf,
+                                               VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+                                               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                                               /*byRegion=*/false);
+            }
+        }
+    }
+    if (depthStencilTexture) {
+        depthStencilTexture->setImageLayout(cmdBuf,
+                                            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+                                            VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
+                                            VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT |
+                                            VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
+                                            /*byRegion=*/false);
+    }
+}
+
+void track_attachments(VulkanCommandBuffer* cmdBuf,
+                       VulkanTexture* colorTexture,
+                       VulkanTexture* resolveTexture,
+                       VulkanTexture* depthStencilTexture) {
+    if (colorTexture) {
+        cmdBuf->trackResource(sk_ref_sp(colorTexture));
+    }
+    if (resolveTexture){
+        cmdBuf->trackResource(sk_ref_sp(resolveTexture));
+    }
+    if (depthStencilTexture) {
+        cmdBuf->trackResource(sk_ref_sp(depthStencilTexture));
+    }
+}
+
+void gather_attachment_views(skia_private::TArray<VkImageView>& attachmentViews,
+                             VulkanTexture* colorTexture,
+                             VulkanTexture* resolveTexture,
+                             VulkanTexture* depthStencilTexture) {
+    if (colorTexture) {
+        VkImageView& colorAttachmentView = attachmentViews.push_back();
+        colorAttachmentView =
+                colorTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+
+        if (resolveTexture) {
+            VkImageView& resolveView = attachmentViews.push_back();
+            resolveView =
+                    resolveTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+        }
+    }
+
+    if (depthStencilTexture) {
+        VkImageView& stencilView = attachmentViews.push_back();
+        memset(&stencilView, 0, sizeof(VkImageView));
+        stencilView =
+                depthStencilTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+    }
+}
+
+void gather_clear_values(
+        STArray<VulkanRenderPass::kMaxExpectedAttachmentCount, VkClearValue>& clearValues,
+        const RenderPassDesc& renderPassDesc,
+        VulkanTexture* colorTexture,
+        VulkanTexture* depthStencilTexture) {
+    clearValues.push_back_n(VulkanRenderPass::kMaxExpectedAttachmentCount);
+    if (colorTexture) {
+        VkClearValue& colorAttachmentClear =
+                clearValues.at(VulkanRenderPass::kColorAttachmentIdx);
+        memset(&colorAttachmentClear, 0, sizeof(VkClearValue));
+        colorAttachmentClear.color = {{renderPassDesc.fClearColor[0],
+                                       renderPassDesc.fClearColor[1],
+                                       renderPassDesc.fClearColor[2],
+                                       renderPassDesc.fClearColor[3]}};
+    }
+    // Resolve texture does not have a clear value
+    if (depthStencilTexture) {
+        VkClearValue& depthStencilAttachmentClear =
+                clearValues.at(VulkanRenderPass::kDepthStencilAttachmentIdx);
+        memset(&depthStencilAttachmentClear, 0, sizeof(VkClearValue));
+        depthStencilAttachmentClear.depthStencil = {renderPassDesc.fClearDepth,
+                                                    renderPassDesc.fClearStencil};
+    }
+}
+
+} // anonymous namespace
+
 bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture) {
-    // Before beginning a renderpass, set all textures to an appropriate image layout.
     // TODO: Check that Textures match RenderPassDesc
     VulkanTexture* vulkanColorTexture =
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(colorTexture));
-    VulkanTexture* vulkanDepthStencilTexture =
-            const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(depthStencilTexture));
     VulkanTexture* vulkanResolveTexture =
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(resolveTexture));
-    if (vulkanColorTexture) {
-        vulkanColorTexture->setImageLayout(this,
-                                           VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                           VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                           VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                           VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                           false);
-        if (vulkanResolveTexture) {
-            SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
-            vulkanResolveTexture->setImageLayout(this,
-                                                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                                VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                                VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                                false);
-        }
+    VulkanTexture* vulkanDepthStencilTexture =
+            const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(depthStencilTexture));
+
+    SkASSERT(resolveTexture ? renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore
+                            : true);
+
+    // Determine if we need to load MSAA from resolve, and if so, make certain that key conditions
+    // are met before proceeding.
+    bool loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+    if (loadMSAAFromResolve && (!vulkanResolveTexture || !vulkanColorTexture ||
+                                !vulkanResolveTexture->supportsInputAttachmentUsage())) {
+        SKGPU_LOG_E("Cannot begin render pass. In order to load MSAA from resolve, the color "
+                    "attachment must have input attachment usage and both the color and resolve "
+                    "attachments must be valid.");
+        return false;
     }
-    if (vulkanDepthStencilTexture) {
-        vulkanDepthStencilTexture->setImageLayout(this,
-                                                  VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
-                                                  VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
-                                                  VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT |
-                                                  VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
-                                                  false);
-    }
+
+    track_attachments(this, vulkanColorTexture, vulkanResolveTexture, vulkanDepthStencilTexture);
+
+    // Before beginning a renderpass, set all textures to the appropriate image layout.
+    setup_texture_layouts(this,
+                          vulkanColorTexture,
+                          vulkanResolveTexture,
+                          vulkanDepthStencilTexture,
+                          loadMSAAFromResolve);
+
+    static constexpr int kMaxNumAttachments = 3;
+    // Gather attachment views neeeded for frame buffer creation.
+    skia_private::TArray<VkImageView> attachmentViews;
+    gather_attachment_views(
+            attachmentViews, vulkanColorTexture, vulkanResolveTexture, vulkanDepthStencilTexture);
+
+     // Gather clear values needed for RenderPassBeginInfo. Indexed by attachment number.
+    STArray<kMaxNumAttachments, VkClearValue> clearValues;
+    gather_clear_values(clearValues, renderPassDesc, vulkanColorTexture, vulkanDepthStencilTexture);
 
     sk_sp<VulkanRenderPass> vulkanRenderPass =
             fResourceProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/false);
@@ -511,47 +735,10 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     this->submitPipelineBarriers();
     this->trackResource(vulkanRenderPass);
 
-    skia_private::TArray<VkImageView> attachmentViews; // Needed for frame buffer
-    TArray<VkClearValue> clearValues(3); // Needed for RenderPassBeginInfo, indexed by attach. num.
-    clearValues.push_back_n(3);
-    int attachmentNumber = 0;
-    if (colorTexture) {
-        VkImageView& colorAttachmentView = attachmentViews.push_back();
-        colorAttachmentView =
-                vulkanColorTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-
-        VkClearValue& colorAttachmentClear = clearValues.at(attachmentNumber++);
-        memset(&colorAttachmentClear, 0, sizeof(VkClearValue));
-        colorAttachmentClear.color = {{renderPassDesc.fClearColor[0],
-                                       renderPassDesc.fClearColor[1],
-                                       renderPassDesc.fClearColor[2],
-                                       renderPassDesc.fClearColor[3]}};
-
-        this->trackResource(sk_ref_sp(colorTexture));
-        if (resolveTexture) {
-            VkImageView& resolveView = attachmentViews.push_back();
-            resolveView = vulkanResolveTexture->getImageView(VulkanImageView::Usage::kAttachment)->
-                          imageView();
-            attachmentNumber++;
-            this->trackResource(sk_ref_sp(resolveTexture));
-        }
-    }
-
-    if (depthStencilTexture) {
-        VkImageView& stencilView = attachmentViews.push_back();
-        memset(&stencilView, 0, sizeof(VkImageView));
-        stencilView = vulkanDepthStencilTexture->getImageView(VulkanImageView::Usage::kAttachment)->
-                      imageView();
-
-        VkClearValue& depthStencilAttachmentClear = clearValues.at(attachmentNumber);
-        memset(&depthStencilAttachmentClear, 0, sizeof(VkClearValue));
-        depthStencilAttachmentClear.depthStencil = {renderPassDesc.fClearDepth,
-                                                    renderPassDesc.fClearStencil};
-        this->trackResource(sk_ref_sp(depthStencilTexture));
-    }
-
     int frameBufferWidth = 0;
     int frameBufferHeight = 0;
+    // TODO: Get frame buffer render area from RenderPassDesc. Account for granularity if it wasn't
+    // already. For now, simply set the render area to be the entire frame buffer.
     if (colorTexture) {
         frameBufferWidth = colorTexture->dimensions().width();
         frameBufferHeight = colorTexture->dimensions().height();
@@ -575,14 +762,33 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     beginInfo.pNext = nullptr;
     beginInfo.renderPass = vulkanRenderPass->renderPass();
     beginInfo.framebuffer = framebuffer->framebuffer();
-    // TODO: Get render area from RenderPassDesc. Account for granularity if it wasn't already.
-    // For now, simply set the render area to be the entire frame buffer.
     beginInfo.renderArea = {{ 0, 0 },
                             { (unsigned int) frameBufferWidth, (unsigned int) frameBufferHeight }};
     beginInfo.clearValueCount = clearValues.size();
     beginInfo.pClearValues = clearValues.begin();
 
-    // TODO: If needed, load MSAA from resolve
+    // If loading MSAA from resolve, we need to update and bind a vertex buffer w/ NDC. This entails
+    // take care of some necessary preparations that must be
+    // performed while there is not an active renderpass.
+    sk_sp<VulkanGraphicsPipeline> loadPipeline;
+    if (loadMSAAFromResolve) {
+        // We manually load the contents of the resolve texture into the MSAA attachment as a draw,
+        // so the MSAA attachment's load op should be LoadOp::kDiscard.
+        SkASSERT(!fActiveRenderPass);
+        SkASSERT(renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kDiscard);
+        SkASSERT(resolveTexture);
+
+        loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
+
+        if (!this->updateAndBindVertexBuffer()) {
+            SKGPU_LOG_E("Failed to update and bind vertex buffer for loading MSAA from resolve");
+            return false;
+        }
+    }
 
     // Submit pipeline barriers to ensure any image layout transitions are recorded prior to
     // beginning the render pass.
@@ -594,6 +800,22 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                    VK_SUBPASS_CONTENTS_INLINE));
     this->trackResource(std::move(framebuffer));
     fActiveRenderPass = true;
+
+    // if (loadMSAAFromResolve) {
+    //     loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+    //     if (!loadPipeline) {
+    //         SKGPU_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+    //         return false;
+    //     }
+    // }
+
+    if (loadMSAAFromResolve && !this->loadMSAAFromResolve(loadPipeline,
+                                                          *vulkanResolveTexture,
+                                                          vulkanColorTexture->dimensions())) {
+        SKGPU_LOG_E("Failed to load MSAA from resolve");
+        return false;
+    }
+
     return true;
 }
 
@@ -1418,5 +1640,50 @@ void VulkanCommandBuffer::submitPipelineBarriers(bool forSelfDependency) {
     SkASSERT(!fDstStageMask);
 }
 
+void VulkanCommandBuffer::updateBuffer(const VulkanBuffer* buffer,
+                                       VkAccessFlagBits accessMask,
+                                       VkPipelineStageFlagBits pipelineStage,
+                                       const void* data,
+                                       size_t dataSize,
+                                       size_t dstOffset) {
+    // vkCmdUpdateBuffer can only be called outside of a render pass.
+    SkASSERT(fActive && !fActiveRenderPass);
+    if (!buffer || buffer->vkBuffer() == VK_NULL_HANDLE) {
+        SKGPU_LOG_W("VulkanCommandBuffer::updateBuffer requires a valid VulkanBuffer pointer backed"
+                    "by a valid VkBuffer handle");
+        return;
+    }
+
+    buffer->setBufferAccess(this, accessMask, pipelineStage);
+    this->submitPipelineBarriers();
+
+    VULKAN_CALL(fSharedContext->interface(), CmdUpdateBuffer(fPrimaryCommandBuffer,
+                                                             buffer->vkBuffer(),
+                                                             dstOffset,
+                                                             dataSize,
+                                                             data));
+}
+
+void VulkanCommandBuffer::nextSubpass() {
+    // TODO: Use VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS if we add secondary cmd buffers
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdNextSubpass(fPrimaryCommandBuffer, VK_SUBPASS_CONTENTS_INLINE));
+}
+
+void VulkanCommandBuffer::setViewport(const SkRect& viewport) {
+    VkViewport vkViewport = {
+        viewport.fLeft,
+        viewport.fTop,
+        viewport.width(),
+        viewport.height(),
+        0.0f, // minDepth
+        1.0f, // maxDepth
+    };
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdSetViewport(fPrimaryCommandBuffer,
+                               /*firstViewport=*/0,
+                               /*viewportCount=*/1,
+                               &vkViewport));
+}
 
 } // namespace skgpu::graphite
