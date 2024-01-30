@@ -369,6 +369,7 @@ skia_cc_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":any_decoder",
+        "//modules/skcms",
         "//src/base",
         "//src/core",
         "//src/core:core_priv",
