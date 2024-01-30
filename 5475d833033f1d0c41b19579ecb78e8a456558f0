@@ -16,6 +16,24 @@
       "message": "Please add yourself to AUTHORS",
       "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "063b8965_3b38a545",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3278089
+      },
+      "writtenOn": "2024-01-30T04:59:20Z",
+      "side": 1,
+      "message": "May I directly push this change to https://github.com/google/skia/pull/156?",
+      "parentUuid": "b5d28bd8_602208a1",
+      "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
