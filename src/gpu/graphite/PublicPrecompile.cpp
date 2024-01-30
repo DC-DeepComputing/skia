@@ -36,7 +36,18 @@ void compile(const RendererProvider* rendererProvider,
              SkSpan<RenderPassDesc> renderPassDescs,
              bool withPrimitiveBlender,
              Coverage coverage) {
+    auto caps = keyContext.caps();
+
     for (const Renderer* r : rendererProvider->renderers()) {
+        if (!strcmp("SingleStep[AnalyticRRectRenderStep]", r->name())) {
+            Coverage rsCoverage = r->coverage();
+            SkDebugf("%s %s - specified coverage %s\n", r->name(),
+                     rsCoverage == Coverage::kNone ? "kNone" :
+                     (rsCoverage == Coverage::kLCD ? "kLCD" : "kSingleChannel"),
+                     coverage == Coverage::kNone ? "kNone" :
+                     (coverage == Coverage::kLCD ? "kLCD" : "kSingleChannel"));
+        }
+
         if (!(r->drawTypes() & drawTypes)) {
             continue;
         }
@@ -47,7 +58,8 @@ void compile(const RendererProvider* rendererProvider,
             continue;
         }
 
-        if (r->coverage() != coverage) {
+        Coverage tmp = r->coverage();
+        if (tmp != coverage) {
             // For now, UniqueIDs are explicitly built with a specific type of coverage so must
             // match what the Renderer requires
             continue;
@@ -61,7 +73,13 @@ void compile(const RendererProvider* rendererProvider,
             GraphicsPipelineDesc pipelineDesc(s, paintID);
 
             for (const RenderPassDesc& renderPassDesc : renderPassDescs) {
-                auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                skgpu::UniqueKey k = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
+
+                Caps::Foobar foobar;
+                caps->reverse1(k, &foobar);
+                foobar.dump(rendererProvider);
+
+                sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
                         keyContext.rtEffectDict(),
                         pipelineDesc,
                         renderPassDesc);
