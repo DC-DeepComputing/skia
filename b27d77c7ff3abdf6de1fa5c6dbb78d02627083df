@@ -46,6 +46,30 @@
       },
       "revId": "b27d77c7ff3abdf6de1fa5c6dbb78d02627083df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74e90241_18d21252",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-01-30T17:04:05Z",
+      "side": 0,
+      "message": "I agree -- I\u0027ll try both. Certainly passing the face explicitly as a parameter is ok, since the previous code did it that way.",
+      "parentUuid": "65825d3e_ca517441",
+      "range": {
+        "startLine": 1484,
+        "startChar": 27,
+        "endLine": 1484,
+        "endChar": 34
+      },
+      "revId": "b27d77c7ff3abdf6de1fa5c6dbb78d02627083df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
