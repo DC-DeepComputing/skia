@@ -22,6 +22,30 @@
       },
       "revId": "b27d77c7ff3abdf6de1fa5c6dbb78d02627083df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65825d3e_ca517441",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-30T16:48:25Z",
+      "side": 0,
+      "message": "Of course the other way to do this is to just keep passing the `FT_Face` to each function directly. It seems awkward that it can be \"factored out\" to the class, but logically it\u0027s really difficult to think of it that way since the only part that is \"factored out\" is the pointer value but not large amount of state behind that pointer.",
+      "parentUuid": "bc0bbc5b_395da24f",
+      "range": {
+        "startLine": 1484,
+        "startChar": 27,
+        "endLine": 1484,
+        "endChar": 34
+      },
+      "revId": "b27d77c7ff3abdf6de1fa5c6dbb78d02627083df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
