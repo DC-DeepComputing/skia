@@ -26,14 +26,14 @@ skia_filegroup(
     name = "typeface_freetype",
     srcs = [
         "SkFontHost_FreeType.cpp",
-        "SkFontHost_FreeType_common.cpp",
+        "SkScalerContext_FreeType_Utils.cpp",
     ],
 )
 
 skia_filegroup(
     name = "typeface_freetype_hdrs",
     srcs = [
-        "SkFontHost_FreeType_common.h",
+        "SkScalerContext_FreeType_Utils.h",
         "SkTypeface_FreeType.h",
     ],
 )
@@ -204,7 +204,7 @@ skia_filegroup(
         "SkOSLibrary.h",
     ] + select({
         ":uses_freetype": [
-            "SkFontHost_FreeType_common.h",
+            "SkScalerContext_FreeType_Utils.h",
             "SkFontMgr_custom.h",
             "SkTypeface_FreeType.h",
         ],
