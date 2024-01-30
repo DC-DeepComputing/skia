@@ -22,6 +22,30 @@
       },
       "revId": "cbdf09d69efca963eb95fcb816d737f38d626917",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c2635e_51de2846",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1598,
+      "author": {
+        "id": 8036
+      },
+      "writtenOn": "2024-01-30T14:26:11Z",
+      "side": 0,
+      "message": "Oh I misread it as a `\u003e 0`. Though when can a `-1` happen?",
+      "parentUuid": "176040bc_88bb489b",
+      "range": {
+        "startLine": 1598,
+        "startChar": 33,
+        "endLine": 1598,
+        "endChar": 54
+      },
+      "revId": "cbdf09d69efca963eb95fcb816d737f38d626917",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
