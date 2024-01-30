@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "816c090e_86fb9eb8",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-30T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb36af55_5f7e9008",
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "630fc5f5_0e9aad9b",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0dce78a_822469e5",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-30T18:24:57Z",
+      "side": 1,
+      "message": "Renamed in header",
+      "parentUuid": "630fc5f5_0e9aad9b",
+      "range": {
+        "startLine": 595,
+        "startChar": 36,
+        "endLine": 595,
+        "endChar": 47
+      },
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecaf839d_96b136ea",
@@ -71,6 +113,24 @@
       "writtenOn": "2024-01-29T16:22:40Z",
       "side": 1,
       "message": "We do have a \"ComputeLevelCount(SkISize s)\" variant",
+      "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bdf3c80_bb60d8c6",
+        "filename": "src/gpu/graphite/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-01-30T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecaf839d_96b136ea",
       "revId": "69adff9e633f1daa5ce3ba47cae7462dd69d1d32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
