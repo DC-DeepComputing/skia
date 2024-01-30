@@ -33,6 +33,24 @@
       "message": "oops, did a file rename w/o seeing your last comment -- should I revert that, or just keep as is?",
       "revId": "e5c57368c566355d1520b8a4bfb695fefa671f70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d109e5_df7a5b70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-30T20:22:43Z",
+      "side": 1,
+      "message": "This is fine. The rename seems good.",
+      "parentUuid": "7aa1ea50_4423addb",
+      "revId": "e5c57368c566355d1520b8a4bfb695fefa671f70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
