@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a3a5794_b7f0ea5b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "I think there\u0027s good potential for update/binding desc set helpers, but this CL is already too big so I can explore that in another one.",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 530,
+        "endChar": 67
+      },
+      "revId": "28887f64833161f76c8a5c5601ec21b321dd553c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

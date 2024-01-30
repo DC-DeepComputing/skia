@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61d446eb_67663012",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "Good point! Done.",
+      "parentUuid": "2215c06b_d3791fc7",
+      "range": {
+        "startLine": 506,
+        "startChar": 24,
+        "endLine": 506,
+        "endChar": 69
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ffce234_8343e1d3",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-25T15:22:40Z",
       "side": 1,
       "message": "could all of this and the code in the `if (loadPipeline)` be a separate helper function? This just makes beginRenderPass a very large function.",
+      "range": {
+        "startLine": 608,
+        "startChar": 8,
+        "endLine": 608,
+        "endChar": 26
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e023b4cd_2e7d234b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "Absolutely! Good callout - it has become a bit unwieldy. It\u0027s almost as if doing code reviews and having a second set of eyes is helpful and leads to better results. 😮\n\nI used this opportunity to break out more functionality into single-purpose helper functions.\n\nI also can break those other changes into their own CL.",
+      "parentUuid": "8ffce234_8343e1d3",
       "range": {
         "startLine": 608,
         "startChar": 8,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88944414_1275e981",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "Yes, I\u0027ve moved the transfer buffer access setting, pipeline barrier submission, and `vkCmdUpdateBuffer` call into an `updateBuffer(...)` method.\n\nI left out the setting of the buffer access post-update (as in the callers can decided if and how to update buffer access after the update call). However, I could also have `updateBuffer(...)` take in a dst access mask and pipeline stage though to handle that second access transition internal to the new method - it just may be presumptuous to assume we\u0027ll always want to update the access again after updating. LMKWYT!",
+      "parentUuid": "48b24c02_2b3c7039",
+      "range": {
+        "startLine": 642,
+        "startChar": 7,
+        "endLine": 652,
+        "endChar": 28
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "633e4bed_fafc291d",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 17
@@ -83,6 +155,30 @@
       "writtenOn": "2024-01-25T15:22:40Z",
       "side": 1,
       "message": "why is this needed?",
+      "range": {
+        "startLine": 680,
+        "startChar": 8,
+        "endLine": 680,
+        "endChar": 84
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dd2b35b_c95d2046",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "I was originally thinking of a use case where we have an existing pipeline / pipeline state, want to use a different subpass to load MSAA from resolve, then want to continue using the prior pipeline for whatever reason (like a drawpass command that triggers loading from MSAA on the Vulkan backend, but then simply receiving more draw commands without an explicit draw pass command to bind back the old pipeline). We actually probably don\u0027t need to actually (nor have a reason to) support that though given that loading from MSAA has a different pipeline key and therefore triggers a different pipeline to be bound anyways.\n\nRemoved!",
+      "parentUuid": "633e4bed_fafc291d",
       "range": {
         "startLine": 680,
         "startChar": 8,
@@ -106,6 +202,30 @@
       "writtenOn": "2024-01-25T15:22:40Z",
       "side": 1,
       "message": "Does it make sense for this to be its own function on VulkanCommandBuffer so that we have separate functions for each actual command buffer call? In the future if/when we are using more subpasses I think we\u0027d have more callers.",
+      "range": {
+        "startLine": 742,
+        "startChar": 7,
+        "endLine": 744,
+        "endChar": 86
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc499dc_6a25c46f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "I see, like we do for other command buffer `Cmd[...]` calls. Done! I did this for next subpass and for setting the viewport. I plan to also do this for update/bind descriptor set calls, but am not sure yet whether that\u0027ll be within this CL or not.",
+      "parentUuid": "59afeeab_844a8b80",
       "range": {
         "startLine": 742,
         "startChar": 7,
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d793c6e6_3ec4bf68",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "No, we will always have a vertex binding now.\n\nI could change this to simply assert that bindingDescs is non-null and skip this ternary, adding it back later if we ever have a need for a vertex binding description-less pipeline. \n\nI personally don\u0027t mind leaving it this way to mirror the instance attribute handling, but I can see the argument for removing it. LMKWYT.",
+      "parentUuid": "f44f2e72_330b74fe",
+      "range": {
+        "startLine": 141,
+        "startChar": 53,
+        "endLine": 141,
+        "endChar": 65
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f8b7b18_39de5cc4",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 17
@@ -152,6 +296,30 @@
       "writtenOn": "2024-01-25T15:22:40Z",
       "side": 1,
       "message": "should we assert in here that uniformDescriptors is empty since we are currently sharing the set number?",
+      "range": {
+        "startLine": 502,
+        "startChar": 8,
+        "endLine": 502,
+        "endChar": 27
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1c3d22e_302ecd6c",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "Good idea! Done.",
+      "parentUuid": "8f8b7b18_39de5cc4",
       "range": {
         "startLine": 502,
         "startChar": 8,
@@ -175,6 +343,30 @@
       "writtenOn": "2024-01-25T15:22:40Z",
       "side": 1,
       "message": "I\u0027m not sure why here and above we\u0027re trying to be so generic with saying \"a uniform buffer\" or \"a vertex buffer\". Why not say intrinsitc constant buffer and msaa load vertex buffer. Like these debug logs are for us and I feel like being more explicit is easier to quickly understand logs.",
+      "range": {
+        "startLine": 172,
+        "startChar": 40,
+        "endLine": 172,
+        "endChar": 46
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8856f5d_0191fec3",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-01-30T19:26:45Z",
+      "side": 1,
+      "message": "Yeah, that makes sense! Changed both error messages in this method to provide that specificity.",
+      "parentUuid": "16f6f516_a638955f",
       "range": {
         "startLine": 172,
         "startChar": 40,
