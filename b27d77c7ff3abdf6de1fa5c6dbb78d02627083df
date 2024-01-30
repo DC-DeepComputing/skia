@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc0bbc5b_395da24f",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-30T16:46:14Z",
+      "side": 0,
+      "message": "Ewwwww... I suppose I noticed this here first because now this takes neither a `FT_Face` nor an `SkGlyph`.\n\nThe statefulness of FreeType biting once again. In the new `generateGlyphPath` there just so happens to be another pointer to the same `FT_Face` as `fFace` which will, by action-at-a-distance, happen to have the same `glyph` loaded up. Of course, this pointer is being passed here through the implicit `this` pointer being passed. But the `this` is invisible and its `fFace`\u0027s relationship to the `fFace` here is also invisible. It\u0027s a lot of invisible.\n\nThis is also an issue for all but the COLRv0/1 calls, since at least those don\u0027t have all this state on the FreeType side (the fact that SVG does is a real pain). For all the others there are hard pre-conditions on the state of the `FT_Face` before they can be called. This was already ugly before but somewhat unavoidable due to FreeType, but at least it was obvious that the `fFace` was being passed in and that its state is part of the call. Now it seems much more difficult to reason about, especially for what we would hope to be generally useful utility functions.\n\nIt might work to remove the `FT_Face fFace` from this SkScalerContext and instead use `fUtils.fFace` instead? That seems somewhat awkward, but at least would remove the awkwardness of needing to remember that there are two `fFace` pointers that need to be the same in order for anything to work. In other words, these two `fFace` pointers cannot just be pointing to the same logical `FT_Face`, they actually need to be pointing to the same `FT_Face` with the same internal state. The foreground color and flags don\u0027t have this issue since their entire state is in their value.",
+      "range": {
+        "startLine": 1484,
+        "startChar": 27,
+        "endLine": 1484,
+        "endChar": 34
+      },
+      "revId": "b27d77c7ff3abdf6de1fa5c6dbb78d02627083df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
