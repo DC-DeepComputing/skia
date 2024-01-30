@@ -16,6 +16,24 @@
       "message": "... are those canary failures real, or flakes?",
       "revId": "7f4421d77edcbacaefb17d288512369d323727c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbefd29a_06a62ccc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-30T23:44:30Z",
+      "side": 1,
+      "message": "G3 and Flutter actually passed, though point out that SkFontHost_FreeType_common.cpp is missing includes for SkScalerContext (for Flags), SkGlyph, SkSpan, SkMaskGamma, and SkGlyphID. The one failure in Chromium looks unrelated.",
+      "parentUuid": "8b0316c0_606965b7",
+      "revId": "7f4421d77edcbacaefb17d288512369d323727c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
