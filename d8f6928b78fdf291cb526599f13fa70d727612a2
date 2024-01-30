@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8c16a01_d5c7be91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-30T14:41:48Z",
+      "side": 1,
+      "message": "Pixel7s are all currently dead/offline which is why they didn\u0027t run if you\u0027re looking at try jobs.",
+      "revId": "d8f6928b78fdf291cb526599f13fa70d727612a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
