@@ -22,6 +22,30 @@
       },
       "revId": "26471332eed18426de683a4037ac161d370016d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b624c3_534b479e",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-01-31T20:58:09Z",
+      "side": 1,
+      "message": "Or another way to spin it, probably a wash with the last version but you never know\n\n```\n    uint32_t rgb \u003d 0;\n    if (a !\u003d 0) {\n        const float invA \u003d 255.0f / a;\n        auto unpremul \u003d [invA](float c) {\n            return (uint32_t)std::round(c * invA);\n        };\n        rgb |\u003d unpremul(b) \u003c\u003c 16\n             | unpremul(g) \u003c\u003c  8\n             | unpremul(r) \u003c\u003c  0;\n    }\n    dst[i] \u003d (uint32_t)a \u003c\u003c 24 | rgb;\n```",
+      "parentUuid": "fa444955_b678c6b7",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "26471332eed18426de683a4037ac161d370016d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
