@@ -33,6 +33,24 @@
       "message": "Can you tag b/40043601 on this as well? It looks like I had tried to add dithering to drawImage/Rect in Ganesh and avoid using the TextureOp fast path but had a very weird black screen issue.\n\nFingers crossed we can get it to stick this time.",
       "revId": "b894274976663cb0fa7dcf8a9c1e71b6a7dcb9d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dcafc89_4f8c1b3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-31T19:12:22Z",
+      "side": 1,
+      "message": "Actually nvm, I just marked the old issue as a duplicate of this new one.",
+      "parentUuid": "d482bda1_db92faae",
+      "revId": "b894274976663cb0fa7dcf8a9c1e71b6a7dcb9d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
