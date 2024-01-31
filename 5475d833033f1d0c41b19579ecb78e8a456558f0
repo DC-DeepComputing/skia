@@ -88,6 +88,24 @@
       "parentUuid": "d49e44ba_8e178f87",
       "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c487f665_aa4b77b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-01-31T14:42:41Z",
+      "side": 1,
+      "message": "Oh just noticed that the uploader of this change is yorkiefixer@gmail.com not an email with rokid.com, so I will have to add yorkiefixer@gmail.com as the AUTHOR.",
+      "parentUuid": "bbe82081_d71a6feb",
+      "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
