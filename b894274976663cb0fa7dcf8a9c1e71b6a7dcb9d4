@@ -16,6 +16,23 @@
       "message": "This just emphasizes that dithering:\n1) On CPU, applies to both imageShader and drawImage\n2) On GPU, applies to imageShader, but not drawImage",
       "revId": "b894274976663cb0fa7dcf8a9c1e71b6a7dcb9d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d482bda1_db92faae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-01-31T19:11:17Z",
+      "side": 1,
+      "message": "Can you tag b/40043601 on this as well? It looks like I had tried to add dithering to drawImage/Rect in Ganesh and avoid using the TextureOp fast path but had a very weird black screen issue.\n\nFingers crossed we can get it to stick this time.",
+      "revId": "b894274976663cb0fa7dcf8a9c1e71b6a7dcb9d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
