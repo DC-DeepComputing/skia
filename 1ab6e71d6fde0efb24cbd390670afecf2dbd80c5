@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6882c2d_6abae8c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-31T20:30:33Z",
+      "side": 1,
+      "message": "As a note, it is quite interesting to look at the gm affected by this change (`mixedtextblobs`) in viewer and then look at the generated pdf in Pdfium, Preview, and Reader. I\u0027m not sure any one of them quite agrees with any of the others yet.",
+      "revId": "1ab6e71d6fde0efb24cbd390670afecf2dbd80c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
