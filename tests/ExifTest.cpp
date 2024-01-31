@@ -7,12 +7,15 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkExif.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
 #include <memory>
+#include <tuple>
 #include <utility>
 
 DEF_TEST(ExifOrientation, r) {
@@ -26,6 +29,15 @@ DEF_TEST(ExifOrientation, r) {
     REPORTER_ASSERT(r, nullptr != codec);
     SkEncodedOrigin origin = codec->getOrigin();
     REPORTER_ASSERT(r, kTopRight_SkEncodedOrigin == origin);
+
+    auto result = codec->getImage();
+    REPORTER_ASSERT(r, std::get<1>(result) == SkCodec::Result::kSuccess,
+                    "Not success %d", std::get<1>(result));
+    sk_sp<SkImage> frame = std::get<0>(result);
+    REPORTER_ASSERT(r, frame);
+    SkISize dims = frame->dimensions();
+    REPORTER_ASSERT(r, dims.fWidth == 100, "width %d != 100", dims.fWidth);
+    REPORTER_ASSERT(r, dims.fHeight == 50, "height %d != 50", dims.fHeight);
 
     codec = SkCodec::MakeFromStream(GetResourceAsStream("images/mandrill_512_q075.jpg"));
     REPORTER_ASSERT(r, nullptr != codec);
