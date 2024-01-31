@@ -33,6 +33,23 @@
       "message": "The build part of this looks fine to me, but I\u0027ll leave the vulkan parts to Greg.",
       "revId": "12d3f9ee7350481598ecae1cdbf6a5e63cef7285",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5917f2e9_3394f133",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-01-31T17:33:58Z",
+      "side": 1,
+      "message": "I don\u0027t have the cycles to grok if this would be a problem, but FYI regarding:\n\n\u003e To my knowledge, Skia does not have any platform specific helpers\nfor Vulkan, so we only need to expose a general \"ganesh_vulkan\"\nbackend for clients to use.\n\nThere are helper methods for working with `AHardwareBuffer`s on Android that are guarded by `SK_BUILD_FOR_ANDROID`, which is set when building to run _on_ Android, not just _in_ the Android framework. Could this be a problem for Bazel customers what might want to embed Skia into an Android app using Vulkan, or could they still set that define?\n\n(See `include/android/GrAHardwareBufferUtils.h` for an example, but `SK_BUILD_FOR_ANDROID` is checked elsewhere for Vulkan stuff too.)",
+      "revId": "12d3f9ee7350481598ecae1cdbf6a5e63cef7285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
