@@ -577,7 +577,7 @@ public:
         return SkColorInfo(fColorType, fAlphaType, fColorSpace);
     }
 
-private:
+protected:
     sk_sp<SkSurface> makeSurface(skgpu::graphite::Recorder*, SkISize) const;
 
     using SurfaceType = SkCommandLineConfigGraphite::SurfaceType;
@@ -588,6 +588,31 @@ private:
     SkColorType fColorType;
     SkAlphaType fAlphaType;
     sk_sp<SkColorSpace> fColorSpace;
+};
+
+class GraphitePrecompileTestingSink : public GraphiteSink {
+public:
+    GraphitePrecompileTestingSink(const SkCommandLineConfigGraphite*);
+    ~GraphitePrecompileTestingSink() override;
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    const char* fileExtension() const override {
+        // Suppress writing out results from this config - we just want to check that
+        // the precompilation API is expressive enough and prepopulates the cache.
+        // If desired, this could be updated to save the result of the precompiled rendering.
+        // However; if all the keys match, as is expected, the images should always match.
+        return nullptr;
+    }
+
+private:
+    Result drawSrc(const Src&,
+                   skgpu::graphite::Context*,
+                   skiatest::graphite::GraphiteTestContext*) const;
+    Result thrash(skgpu::graphite::Context* context) const;
+    Result check(skgpu::graphite::Context* context) const;
+
+    mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
 };
 
 #endif

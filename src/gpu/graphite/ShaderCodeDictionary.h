@@ -41,8 +41,14 @@ class Swizzle;
 namespace skgpu::graphite {
 
 class Caps;
+class PaintOptions;
 class RenderStep;
 class RuntimeEffectDictionary;
+
+class PrecompileBase;
+class PrecompileBlender;
+class PrecompileColorFilter;
+class PrecompileShader;
 
 // TODO: How to represent the type (e.g., 2D) of texture being sampled?
 class TextureAndSampler {
@@ -131,7 +137,7 @@ public:
     ShaderNode(const ShaderSnippet* snippet,
                SkSpan<const ShaderNode*> children,
                int codeID,
-               int keyIndex)
+               int keyIndex, bool)
             : fEntry(snippet)
             , fChildren(children)
             , fCodeID(codeID)
@@ -154,6 +160,12 @@ public:
     int numChildren() const { return fEntry->fNumChildren; }
     SkSpan<const ShaderNode*> children() const { return fChildren; }
     const ShaderNode* child(int childIndex) const { return fChildren[childIndex]; }
+
+    sk_sp<PrecompileBase> gimmeThing(const RuntimeEffectDictionary*) const;
+    sk_sp<PrecompileShader> gimmeShader(const RuntimeEffectDictionary*) const;
+    sk_sp<PrecompileBlender> gimmeBlender(const RuntimeEffectDictionary*) const;
+    sk_sp<PrecompileColorFilter> gimmeColorFilter(const RuntimeEffectDictionary*) const;
+    void reversify(const RuntimeEffectDictionary*, PaintOptions*) const;
 
 private:
     const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
@@ -211,7 +223,7 @@ private:
     // TODO: There should really only be one root node representing the final blend, which has a
     // child defining how the src color is calculated.
     SkSpan<const ShaderNode*> fRootNodes;
-    SkBlendMode fBlendMode = SkBlendMode::kClear;
+    SkBlendMode fBlendMode = SkBlendMode::kColorDodge;
     skgpu::BlendInfo fBlendInfo;
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
 };
