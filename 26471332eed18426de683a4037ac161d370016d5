@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c783838c_621ec2f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-31T20:59:15Z",
+      "side": 1,
+      "message": "Approach here looks reasonable. However, one wrinkle (in addition to whatever the bots are complaining about)... We probably need to pin the rgb values after the unpremul. It\u0027s an edge case, but we no longer guarantee that premul RGB \u003c\u003d A (see https://skia-review.googlesource.com/c/skia/+/579280, for example). This was ultimately required for images in different color-spaces (where out-of-gamut colors turn into \"invalid\" premul colors after blending).\n\nHopefully that doesn\u0027t make the portable path too much slower? Casting to uint8_t instead of uint32_t would prevent overflow from leaking into adjacent channels, but it would also wrap the results, rather than saturate.",
+      "revId": "26471332eed18426de683a4037ac161d370016d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa444955_b678c6b7",
