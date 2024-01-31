@@ -52,6 +52,24 @@
       "parentUuid": "a36c4874_3b7ddef6",
       "revId": "d57d9146b652673f818642448011b650276a493d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36b16cc1_8a3f34e5",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-01-31T14:49:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "953eec75_f72dce1b",
+      "revId": "d57d9146b652673f818642448011b650276a493d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
