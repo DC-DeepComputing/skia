@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5057fbda_58c3ffb6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-01-31T20:28:32Z",
+      "side": 1,
+      "message": "I\u0027m confused about which one you\u0027re switching to and which one you\u0027re switching from.",
+      "range": {
+        "startLine": 10,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 63
+      },
+      "revId": "24fd9f3d6263f4629841d5253bb72b31a09fca9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "964be75d_6fd117a5",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-01-31T20:28:32Z",
+      "side": 1,
+      "message": "Should this be optional, based on a parameter?\n\nThere\u0027s an advantage to the non-oriented version - it\u0027s theoretically faster.\n\nSeparately, someone *might* be expecting the old version. Is that okay?",
+      "range": {
+        "startLine": 412,
+        "startChar": 47,
+        "endLine": 413,
+        "endChar": 54
+      },
+      "revId": "24fd9f3d6263f4629841d5253bb72b31a09fca9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

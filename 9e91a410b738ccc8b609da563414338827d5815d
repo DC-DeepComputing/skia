@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a9db49_35c68b0c",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-01-31T20:28:32Z",
+      "side": 1,
+      "message": "We\u0027ve lost information regarding whether the image is complete, or has an error. Can we use the real `SkCodec::Result`? Otherwise we may as well just return the image or `nullptr`.",
+      "range": {
+        "startLine": 548,
+        "startChar": 44,
+        "endLine": 548,
+        "endChar": 52
+      },
+      "revId": "9e91a410b738ccc8b609da563414338827d5815d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
