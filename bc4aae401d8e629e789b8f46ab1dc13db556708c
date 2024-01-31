@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1217db24_f59a2895",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-31T10:00:32Z",
+      "side": 1,
+      "message": "Updated according to wishes - now detects a font too. Let me know if this works, otherwise please feel free to take over this CL and customize as you need it. This is only internal/FFI API so we can always change this.",
+      "revId": "bc4aae401d8e629e789b8f46ab1dc13db556708c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
