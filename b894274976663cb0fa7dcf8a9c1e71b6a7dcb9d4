@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5778d3e1_8ed5297b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-01-31T18:48:42Z",
+      "side": 1,
+      "message": "This just emphasizes that dithering:\n1) On CPU, applies to both imageShader and drawImage\n2) On GPU, applies to imageShader, but not drawImage",
+      "revId": "b894274976663cb0fa7dcf8a9c1e71b6a7dcb9d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
