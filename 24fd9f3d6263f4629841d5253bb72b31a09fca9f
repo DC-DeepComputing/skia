@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b90d06e_a9aaa273",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-31T22:07:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5057fbda_58c3ffb6",
+      "range": {
+        "startLine": 10,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 63
+      },
+      "revId": "24fd9f3d6263f4629841d5253bb72b31a09fca9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "964be75d_6fd117a5",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-31T20:28:32Z",
       "side": 1,
       "message": "Should this be optional, based on a parameter?\n\nThere\u0027s an advantage to the non-oriented version - it\u0027s theoretically faster.\n\nSeparately, someone *might* be expecting the old version. Is that okay?",
+      "range": {
+        "startLine": 412,
+        "startChar": 47,
+        "endLine": 413,
+        "endChar": 54
+      },
+      "revId": "24fd9f3d6263f4629841d5253bb72b31a09fca9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "715a6b8e_d6eb0a6f",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-31T22:07:15Z",
+      "side": 1,
+      "message": "If someone wants the non-oriented version, they can call getPixels directly. I presume most images don\u0027t need a rotation and the code should be just as fast before (modulo a few extra conditionals to check.\n\nIf they are expecting the old version, I added something to the release notes to alert them of this change.",
+      "parentUuid": "964be75d_6fd117a5",
       "range": {
         "startLine": 412,
         "startChar": 47,
