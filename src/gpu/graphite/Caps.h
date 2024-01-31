@@ -19,6 +19,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -41,7 +42,6 @@ class GraphicsPipelineDesc;
 class GraphiteResourceKey;
 struct RenderPassDesc;
 class TextureInfo;
-class TextureProxy;
 
 struct ResourceBindingRequirements {
     // The required data layout rules for the contents of a uniform buffer.
@@ -98,6 +98,11 @@ public:
                                                           Protected) const = 0;
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
+
+    // TODO: Adapt to return the data type we actually want
+    virtual uint32_t getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        return 0;
+    }
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
