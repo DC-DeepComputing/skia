@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f4de340_8655812f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "a few more comments. Moving everything into helpers was nice as it was easier to see the flow of things from a high level which exposed some of these new comments",
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d568ee5_1a123a59",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "We should name this function something more specific to MSAALoading and updating the buffer.",
+      "range": {
+        "startLine": 446,
+        "startChar": 26,
+        "endLine": 446,
+        "endChar": 51
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fc17c22_b00aeeb8",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "I wonder if it makes more sense to move the binding here to where we actually do the draw. Like generally we always do our buffer bindings for general draws inside the renderpass right before the draw.",
+      "range": {
+        "startLine": 472,
+        "startChar": 4,
+        "endLine": 475,
+        "endChar": 50
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c30f56f_102228cf",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "same name thing",
+      "range": {
+        "startLine": 481,
+        "startChar": 26,
+        "endLine": 481,
+        "endChar": 54
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a0a23f3_1e99c288",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "why does this need to happen out here? Could this be done inside loadMSAAFromResolve",
+      "range": {
+        "startLine": 782,
+        "startChar": 8,
+        "endLine": 782,
+        "endChar": 87
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc5cd575_cfdcaae7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "what happens if we return false here? Does something know to call endRenderPass or should we manually be doing that here?",
+      "range": {
+        "startLine": 809,
+        "startChar": 9,
+        "endLine": 809,
+        "endChar": 21
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e23fa29_4e3e8beb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1638,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "do we need to pass these in? Won\u0027t they always be the same transfer write flags?",
+      "range": {
+        "startLine": 1637,
+        "startChar": 39,
+        "endLine": 1638,
+        "endChar": 76
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e5ad17c_5f6b9c18",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-01-31T18:30:39Z",
+      "side": 1,
+      "message": "Does this need to return a ref? I believe the ResourceProvider should outlive any CommandBuffer that uses the buffer.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 17
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
