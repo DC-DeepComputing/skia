@@ -10,6 +10,7 @@
 
 #include "include/private/SkColorData.h"
 #include "src/base/SkVx.h"
+#include <cmath>
 #include <utility>
 
 #if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSSE3
@@ -36,6 +37,36 @@ static void RGBA_to_rgbA_portable(uint32_t* dst, const uint32_t* src, int count)
     }
 }
 
+static void rgbA_to_RGBA_portable(uint32_t* dst, const uint32_t* src, int count) {
+    for (int i = 0; i < count; i++) {
+        uint8_t a = (src[i] >> 24) & 0xFF,
+                b = (src[i] >> 16) & 0xFF,
+                g = (src[i] >>  8) & 0xFF,
+                r = (src[i] >>  0) & 0xFF;
+
+        // Doing the math for an original color b resulting in a premul color x,
+        //   x = ⌊(b * a + 127) / 255⌋,
+        //   x ≤ (b * a + 127) / 255 < x + 1,
+        //   255 * x ≤ b * a + 127 < 255 * (x + 1),
+        //   255 * x - 127 ≤ b * a < 255 * (x + 1) - 127,
+        //   255 * x - 127 ≤ b * a < 255 * x + 128,
+        //   (255 * x - 127) / a ≤ b < (255 * x + 128) / a.
+        //   So, given a premul value x < a, the original color b can be in the above range.
+        //   We can pick the middle of that range as
+        //   b = 255 * x / a
+        //   b = x * (255 / a)
+        // By definition, if a is 0, then the result is 0.
+        const float invA = a == 0 ? 0 : 255.0f / a;
+        auto unpremul = [invA](float c) {
+            return (uint32_t)std::round(c * invA);
+        };
+        dst[i] = (uint32_t)a  << 24
+               |  unpremul(b) << 16
+               |  unpremul(g) <<  8
+               |  unpremul(r) <<  0;
+    }
+}
+
 static void RGBA_to_bgrA_portable(uint32_t* dst, const uint32_t* src, int count) {
     for (int i = 0; i < count; i++) {
         uint8_t a = (src[i] >> 24) & 0xFF,
@@ -49,6 +80,24 @@ static void RGBA_to_bgrA_portable(uint32_t* dst, const uint32_t* src, int count)
                | (uint32_t)r << 16
                | (uint32_t)g <<  8
                | (uint32_t)b <<  0;
+    }
+}
+
+static void rgbA_to_BGRA_portable(uint32_t* dst, const uint32_t* src, int count) {
+    for (int i = 0; i < count; i++) {
+        uint8_t a = (src[i] >> 24) & 0xFF,
+                b = (src[i] >> 16) & 0xFF,
+                g = (src[i] >>  8) & 0xFF,
+                r = (src[i] >>  0) & 0xFF;
+        // See rgbA_to_RGBA_portable for math details
+        const float invA = a == 0 ? 0 : 255.0f / a;
+        auto unpremul = [invA](float c) {
+            return (uint32_t)std::round(c * invA);
+        };
+        dst[i] = (uint32_t)a  << 24
+               |  unpremul(r) << 16
+               |  unpremul(g) <<  8
+               |  unpremul(b) <<  0;
     }
 }
 
@@ -196,6 +245,14 @@ static void premul_should_swapRB(bool kSwapRB, uint32_t* dst, const uint32_t* sr
 
 /*not static*/ inline void RGBA_to_bgrA(uint32_t* dst, const uint32_t* src, int count) {
     premul_should_swapRB(true, dst, src, count);
+}
+
+/*not static*/ inline void rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
+    rgbA_to_RGBA_portable(dst, src, count);
+}
+
+/*not static*/ inline void rgbA_to_BGRA(uint32_t* dst, const uint32_t* src, int count) {
+    rgbA_to_BGRA_portable(dst, src, count);
 }
 
 /*not static*/ inline void RGBA_to_BGRA(uint32_t* dst, const uint32_t* src, int count) {
