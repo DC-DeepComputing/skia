@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f379a80_f5794af7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-31T14:54:29Z",
+      "side": 1,
+      "message": "Small clean-up in https://skia-review.googlesource.com/c/skia/+/807696",
+      "revId": "439a6aae5036e10fd74b308c3afddae950b0e797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
