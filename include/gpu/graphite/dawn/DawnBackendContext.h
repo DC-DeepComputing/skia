@@ -38,16 +38,17 @@ namespace skgpu::graphite {
  * Using a non-yielding Context makes it possible to build and run Graphite/Dawn on WebGPU without
  * -s ASYNCIFY.
  */
-using DawnTickFunction = void(const wgpu::Device& device);
+using DawnTickFunction = void(const wgpu::Instance& instance);
 
 #if !defined(__EMSCRIPTEN__)
-SK_API inline void DawnNativeTickFunction(const wgpu::Device& device) { device.Tick(); }
+SK_API inline void DawnNativeProcessEventsFunction(const wgpu::Instance& instance) { instance.ProcessEvents(); }
 #endif
 
 // The DawnBackendContext contains all of the base Dawn objects needed by the graphite Dawn
 // backend. The client will create this object and pass it into the Context::MakeDawn factory call
 // when setting up Skia.
 struct SK_API DawnBackendContext {
+    wgpu::Instance fInstance;
     wgpu::Device fDevice;
     wgpu::Queue fQueue;
     // See comment on DawnTickFunction.
