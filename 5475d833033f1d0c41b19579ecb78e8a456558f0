@@ -70,6 +70,24 @@
       "parentUuid": "0ca48825_0b45d11f",
       "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe82081_d71a6feb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-01-31T14:40:37Z",
+      "side": 1,
+      "message": "Looks like the automatic syncing did not happen :/\nLet me try to manually add the AUTHORS entry to this CL.",
+      "parentUuid": "d49e44ba_8e178f87",
+      "revId": "5475d833033f1d0c41b19579ecb78e8a456558f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
