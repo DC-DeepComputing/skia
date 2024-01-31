@@ -34,6 +34,24 @@
       "parentUuid": "b95dae47_59c2c663",
       "revId": "d57d9146b652673f818642448011b650276a493d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953eec75_f72dce1b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 5
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-01-31T10:01:15Z",
+      "side": 1,
+      "message": "Updated the function to understand single fonts as well and behave as @bungeman@google.com suggests.",
+      "parentUuid": "a36c4874_3b7ddef6",
+      "revId": "d57d9146b652673f818642448011b650276a493d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
