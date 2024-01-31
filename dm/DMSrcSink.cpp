@@ -1065,6 +1065,9 @@ Result ColorCodecSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
     }
 
     SkImageInfo info = codec->getInfo();
+    if (SkEncodedOriginSwapsWidthHeight(this->getOrigin())) {
+        info = SkPixmapUtils::SwapWidthHeight(info);
+    }
     if (fDecodeToDst) {
         SkImageInfo canvasInfo = canvas->imageInfo();
         if (!canvasInfo.colorSpace()) {
