@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4081207e_dfab0971",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-31T18:51:04Z",
+      "side": 1,
+      "message": "Yeah. That\u0027s where I had to punt on some of the modularization stuff (due to it being difficult to fully update all calls in the Android Framework). We\u0027ll see if we run into issues running Vulkan on Android to inform what more cleanup needs to be done there or not.",
+      "parentUuid": "5917f2e9_3394f133",
+      "revId": "12d3f9ee7350481598ecae1cdbf6a5e63cef7285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0aa40509_65d8f65e",
@@ -65,6 +83,30 @@
       "writtenOn": "2024-01-31T17:43:29Z",
       "side": 1,
       "message": "Just update this comment a little to say explicitly that it will fail the GrDirectContext::MakeVulkan call.",
+      "range": {
+        "startLine": 23,
+        "startChar": 7,
+        "endLine": 23,
+        "endChar": 24
+      },
+      "revId": "12d3f9ee7350481598ecae1cdbf6a5e63cef7285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2c8ca20_fc8b70a6",
+        "filename": "example/external_client/src/ganesh_vulkan.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-01-31T18:51:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0aa40509_65d8f65e",
       "range": {
         "startLine": 23,
         "startChar": 7,
