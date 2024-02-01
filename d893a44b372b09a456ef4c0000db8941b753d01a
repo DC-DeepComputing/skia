@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c9a4d585_cc530568",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T20:24:54Z",
+      "side": 1,
+      "message": "SGTM. I noticed that bug was fixed and was kind of wondering about that, but I don\u0027t think we have any official Window ARM support or testing either way. I will clean that up.",
+      "parentUuid": "f07c821a_6df1c676",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e50d1f7a_e4d22525",
         "filename": "third_party/zlib/BUILD.gn",
         "patchSetId": 7
@@ -48,6 +66,24 @@
       "writtenOn": "2024-02-01T20:18:21Z",
       "side": 1,
       "message": "I\u0027m a bit confused by this. Nothing in this file can set use_arm_neon_optimizations to false on Android from what I can tell. Upstream chromium has a arm_use_neon declare_arg that bots conceivably could set, but this file here doesn\u0027t have anything like that. So I don\u0027t think this could ever be hit on arm?",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09125d0d_375dfb9f",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T20:24:54Z",
+      "side": 1,
+      "message": "This is verbatim from Chromium: https://source.chromium.org/chromium/chromium/src/+/main:third_party/zlib/BUILD.gn;l\u003d324-328;drc\u003d09a7bce97b70ef641d5b59b354e8fe80b56e98b7\n\nOur previous GN file had diverged dramatically from Chromium\u0027s which made it difficult to update zlib. I copied over the Chromium structure into ours and just updated what was necessary for Skia. There are still some differences (e.g. the paths all have `../externals/zlib/`) but even if this check is inert, I\u0027d rather keep it just to make it align better with Chromium so future zlib rolls are smoother.\n\nFWIW, ANGLE and Dawn also have this block of code and it\u0027s likely inert for them as well :)\n\nhttps://source.chromium.org/search?q\u003d%22Apparently%20android_cronet%20bot%20builds%20with%20NEON%20disabled%20and%22\u0026sq\u003d\u0026ss\u003dchromium",
+      "parentUuid": "e50d1f7a_e4d22525",
       "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
