@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "342484f5_c25b17da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-01T15:21:25Z",
+      "side": 1,
+      "message": "I\u0027ll follow this up with a new GM that tests SkEmptyShaders more directly (apparently, the degenerate_gradients GM is insufficient).",
+      "revId": "69b00c7afd75c735c507a4274161aef09192c18f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
