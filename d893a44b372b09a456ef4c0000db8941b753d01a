@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27899089_3ad62df6",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T20:32:09Z",
+      "side": 1,
+      "message": "Simplified at http://review.skia.org/808596",
+      "parentUuid": "c9a4d585_cc530568",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e50d1f7a_e4d22525",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "This is verbatim from Chromium: https://source.chromium.org/chromium/chromium/src/+/main:third_party/zlib/BUILD.gn;l\u003d324-328;drc\u003d09a7bce97b70ef641d5b59b354e8fe80b56e98b7\n\nOur previous GN file had diverged dramatically from Chromium\u0027s which made it difficult to update zlib. I copied over the Chromium structure into ours and just updated what was necessary for Skia. There are still some differences (e.g. the paths all have `../externals/zlib/`) but even if this check is inert, I\u0027d rather keep it just to make it align better with Chromium so future zlib rolls are smoother.\n\nFWIW, ANGLE and Dawn also have this block of code and it\u0027s likely inert for them as well :)\n\nhttps://source.chromium.org/search?q\u003d%22Apparently%20android_cronet%20bot%20builds%20with%20NEON%20disabled%20and%22\u0026sq\u003d\u0026ss\u003dchromium",
       "parentUuid": "e50d1f7a_e4d22525",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38b9413d_02ac458f",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T20:32:09Z",
+      "side": 1,
+      "message": "Removed the comment, but kept the structure, at http://review.skia.org/808596",
+      "parentUuid": "09125d0d_375dfb9f",
       "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
