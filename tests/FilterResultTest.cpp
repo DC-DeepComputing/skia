@@ -119,6 +119,8 @@ static const float kFuzzyKernel[3][3] = {{0.9f, 0.9f, 0.9f},
 static_assert(std::size(kFuzzyKernel) == std::size(kFuzzyKernel[0]), "Kernel must be square");
 static constexpr int kKernelSize = std::size(kFuzzyKernel);
 
+static constexpr bool kLogAllBitmaps = false; // Spammy, recommend limiting test cases being run
+
 bool colorfilter_equals(const SkColorFilter* actual, const SkColorFilter* expected) {
     if (!actual || !expected) {
         return !actual && !expected; // both null
@@ -549,14 +551,15 @@ public:
                                    FilterResultImageResolver::Method::kImageAndOffset,
                                    allowedPercentImageDiff, transparentCheckBorderTolerance) &&
                this->compareImages(ctx, expectedBM, expectedOrigin, actual,
+                                   FilterResultImageResolver::Method::kDrawToCanvas,
+                                   allowedPercentImageDiff, transparentCheckBorderTolerance) &&
+               this->compareImages(ctx, expectedBM, expectedOrigin, actual,
                                    FilterResultImageResolver::Method::kShader,
                                    allowedPercentImageDiff, transparentCheckBorderTolerance) &&
                this->compareImages(ctx, expectedBM, expectedOrigin, actual,
                                    FilterResultImageResolver::Method::kClippedShader,
-                                   allowedPercentImageDiff, transparentCheckBorderTolerance) &&
-               this->compareImages(ctx, expectedBM, expectedOrigin, actual,
-                                   FilterResultImageResolver::Method::kDrawToCanvas,
                                    allowedPercentImageDiff, transparentCheckBorderTolerance);
+
     }
 
 private:
@@ -572,9 +575,14 @@ private:
         if (!this->compareBitmaps(expected, expectedOrigin, actualBM, actualOrigin,
                                   allowedPercentImageDiff, transparentCheckBorderTolerance,
                                   &badPixels)) {
-            SkDebugf("FilterResult comparison failed for method %s\n", resolver.methodName());
-            this->logBitmaps(expected, actualBM, badPixels);
+            if (!fLoggedErrorImage) {
+                SkDebugf("FilterResult comparison failed for method %s\n", resolver.methodName());
+                this->logBitmaps(expected, actualBM, badPixels);
+                fLoggedErrorImage = true;
+            }
             return false;
+        } else if (kLogAllBitmaps) {
+            this->logBitmaps(expected, actualBM, badPixels);
         }
         return true;
     }
@@ -757,10 +765,6 @@ private:
     void logBitmaps(const SkBitmap& expected,
                     const SkBitmap& actual,
                     const TArray<SkIPoint>& badPixels) {
-        if (fLoggedErrorImage) {
-            return; // no more spam
-        }
-
         SkString expectedURL;
         ToolUtils::BitmapToBase64DataURI(expected, &expectedURL);
         SkDebugf("Expected:\n%s\n\n", expectedURL.c_str());
@@ -774,15 +778,16 @@ private:
         }
 
         if (!badPixels.empty()) {
+            SkBitmap error = expected;
+            error.allocPixels();
+            SkAssertResult(expected.readPixels(error.pixmap()));
             for (auto p : badPixels) {
-                expected.erase(SkColors::kRed, SkIRect::MakeXYWH(p.fX, p.fY, 1, 1));
+                error.erase(SkColors::kRed, SkIRect::MakeXYWH(p.fX, p.fY, 1, 1));
             }
             SkString markedURL;
-            ToolUtils::BitmapToBase64DataURI(expected, &markedURL);
+            ToolUtils::BitmapToBase64DataURI(error, &markedURL);
             SkDebugf("Errors:\n%s\n\n", markedURL.c_str());
         }
-
-        fLoggedErrorImage = true;
     }
 
     skiatest::Reporter* fReporter;
@@ -2249,7 +2254,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
         TestCase(r, "1-step X axis, 2-step Y axis preserves tile mode",
                  /*allowedPercentImageDiff=*/tm == SkTileMode::kDecal ? 22.f
                                                                       : periodic ? 55.f : 29.5f,
-                /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 5 : 0)
+                 /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 5 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
                 .rescale({.55f, 0.27f}, Expect::kNewImage, expectedTileMode)
@@ -2279,7 +2284,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
         TestCase(r, "2-step X axis, 1-step Y axis preserves tile mode",
                  /*allowedPercentImageDiff=*/tm == SkTileMode::kDecal ? 22.f
                                                                       : periodic ? 55.f : 29.5f,
-                /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 5 : 0)
+                 /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 5 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
                 .rescale({.27f, 0.55f}, Expect::kNewImage, expectedTileMode)
