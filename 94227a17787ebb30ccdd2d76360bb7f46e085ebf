@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "365e3acc_237fb0cd",
+        "filename": "gn/flutter_defines.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-01T21:29:03Z",
+      "side": 1,
+      "message": "Adding breadcrumbs for future editors. I happened to know this, but I\u0027ve seen other people tripped up by this recently.",
+      "revId": "94227a17787ebb30ccdd2d76360bb7f46e085ebf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
