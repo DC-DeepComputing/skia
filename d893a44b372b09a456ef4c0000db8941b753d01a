@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d5e7337_121b66ba",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-01T20:27:08Z",
+      "side": 1,
+      "message": "We build (but don\u0027t test) MSVC + ARM64.",
+      "parentUuid": "c9a4d585_cc530568",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e50d1f7a_e4d22525",
         "filename": "third_party/zlib/BUILD.gn",
         "patchSetId": 7
