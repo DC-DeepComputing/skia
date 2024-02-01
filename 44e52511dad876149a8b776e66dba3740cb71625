@@ -22,6 +22,30 @@
       },
       "revId": "44e52511dad876149a8b776e66dba3740cb71625",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a273d5d2_ed1ed523",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1478,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-02-01T15:30:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7c5de82_d657af89",
+      "range": {
+        "startLine": 1476,
+        "startChar": 11,
+        "endLine": 1478,
+        "endChar": 30
+      },
+      "revId": "44e52511dad876149a8b776e66dba3740cb71625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
