@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "95e6cf68_dde274cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T23:16:11Z",
+      "side": 1,
+      "message": "Apparently we didn\u0027t set this in size optimized builds before! Well there\u0027s some free bits back.",
+      "revId": "94227a17787ebb30ccdd2d76360bb7f46e085ebf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "365e3acc_237fb0cd",
         "filename": "gn/flutter_defines.gni",
         "patchSetId": 1
