@@ -33,6 +33,24 @@
       "message": "Some of the code around ensuring exclusive access to a `FT_Library` instance is already in the freetype typeface implementations - would it make sense to factor that out and share the usage? Example and related code here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontHost_FreeType.cpp;l\u003d222;drc\u003d6b284da9be36f6edfdc0ddde4a031270c41096d8;bpv\u003d1;bpt\u003d1",
       "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d7bcf2_0aaab751",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-01T15:17:46Z",
+      "side": 1,
+      "message": "The next step after I implement font scanner on fontations is to remove free type and clean it up.\nI will do something like you suggested there, I promise.",
+      "parentUuid": "65e4c508_e9f272f5",
+      "revId": "40200ceca00e8614b84bb229d34cb2aa3b269308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
