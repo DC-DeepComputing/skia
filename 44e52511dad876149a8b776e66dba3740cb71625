@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7c5de82_d657af89",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1478,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-01T15:27:31Z",
+      "side": 1,
+      "message": "```suggestion\n            SKGPU_LOG_W(\"Device::flushPendingWorkToRecorder: Failed to generate mipmaps \"\n                        \"for draw target\");\n```",
+      "range": {
+        "startLine": 1476,
+        "startChar": 11,
+        "endLine": 1478,
+        "endChar": 30
+      },
+      "revId": "44e52511dad876149a8b776e66dba3740cb71625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
