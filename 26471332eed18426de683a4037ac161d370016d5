@@ -111,6 +111,30 @@
       },
       "revId": "26471332eed18426de683a4037ac161d370016d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5cce497_4c16a677",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-01T20:57:06Z",
+      "side": 1,
+      "message": "Sorry - I totally flaked out earlier when this was being discussed. I don\u0027t think we want this conditional optimization. (context: https://crsrc.org/c/third_party/skia/src/opts/SkBlitRow_opts.h;drc\u003d5dd88a48f7e2795a05f138a343dbea3baf16421a;l\u003d19)\n\nIt\u0027s possible that this particular code path wouldn\u0027t ever matter, but I wouldn\u0027t bet on it.",
+      "parentUuid": "163335e8_bb561167",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "26471332eed18426de683a4037ac161d370016d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
