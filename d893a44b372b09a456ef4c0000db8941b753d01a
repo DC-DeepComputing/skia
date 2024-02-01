@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6c621d4_0b9cb7b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2024-02-01T20:18:21Z",
+      "side": 1,
+      "message": "Drive-by since I\u0027m cc\u0027d on the chromium bug you linked to. Feel free to ignore if the comment doesn\u0027t make sense!",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07c821a_6df1c676",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2024-02-01T20:18:21Z",
+      "side": 1,
+      "message": "(fwiw trying to remove this upstream in https://chromium-review.googlesource.com/c/chromium/src/+/5259899)",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50d1f7a_e4d22525",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2024-02-01T20:18:21Z",
+      "side": 1,
+      "message": "I\u0027m a bit confused by this. Nothing in this file can set use_arm_neon_optimizations to false on Android from what I can tell. Upstream chromium has a arm_use_neon declare_arg that bots conceivably could set, but this file here doesn\u0027t have anything like that. So I don\u0027t think this could ever be hit on arm?",
+      "revId": "d893a44b372b09a456ef4c0000db8941b753d01a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
