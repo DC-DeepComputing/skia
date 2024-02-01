@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bdc0a77_3fa944ea",
+        "filename": "third_party/zlib/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T21:25:10Z",
+      "side": 0,
+      "message": "We have more problems on ARM + MSVC.\n\n`C:\\b\\s\\w\\ir\\skia\\third_party\\externals\\zlib\\crc32_simd.c(402): fatal error C1189: #error:  ARM CRC32 SIMD extensions only supported for Clang and GCC`\n\nI think this TODO might be out of date, but the if check is correct as-is.\n\nWhat we _want_ is `is_clang || is_gcc`, but surprisingly we don\u0027t have an `is_gcc` flag. We can approximate what we want by saying `is_clang || !is_win`, since we don\u0027t use GCC on Windows and don\u0027t use MSVC on anything _but_ Windows. The check we have today matches that, just stated with an extra negation for some weird reason.\n\n@thakis@chromium.org",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 0
+      },
+      "revId": "c7e5e14751b78634589d70077d377fb0f30f16c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
