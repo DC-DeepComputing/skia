@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce49e875_f2639445",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "Well done for figuring this out, just some drive-by comments on the Rust code, even though this is WIP.",
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b744152_b51113e1",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "```suggestion\nsk_sp\u003cSkFontMgr\u003e SkFontMgr_New_Android_WithFreeType(const SkFontMgr_Android_CustomFonts* custom) {\n```",
+      "range": {
+        "startLine": 523,
+        "startChar": 39,
+        "endLine": 523,
+        "endChar": 44
+      },
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8bb5ef9_fd791a09",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "```suggestion\nsk_sp\u003cSkFontMgr\u003e SkFontMgr_New_Android_WithFontations(const SkFontMgr_Android_CustomFonts* custom) {\n```",
+      "range": {
+        "startLine": 527,
+        "startChar": 17,
+        "endLine": 527,
+        "endChar": 54
+      },
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee49340_26f3a8d8",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "Interesting, I didn\u0027t know these were pre-parsed. How convenient.",
+      "range": {
+        "startLine": 723,
+        "startChar": 24,
+        "endLine": 723,
+        "endChar": 38
+      },
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc9e45bf_2f0ec806",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "Use a `match` statement.\n\n```suggestion\n   match attrs.weight {\n      Weight::SEMI_LIGHT \u003d\u003e {\n          300\n      }\n      Weight::EXTRA_BLACK \u003d\u003e {\n          1000\n      }\n...\n```",
+      "range": {
+        "startLine": 725,
+        "startChar": 12,
+        "endLine": 725,
+        "endChar": 43
+      },
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33c8879e_be4253d5",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "Ditto re `match statement`.",
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9beb8a4_4e5dc877",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "Similar here, \n\n```\nmatch attrs.stretch {\n    ...\n}\n```",
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e9cfcf_ca6ebe5d",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-01T15:03:44Z",
+      "side": 1,
+      "message": "```suggestion\n    #[test]\n    fn test_font_attributes() {\n```\n\nCould do with a test where the values come back not at default.",
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
