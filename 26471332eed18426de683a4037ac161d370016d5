@@ -135,6 +135,30 @@
       },
       "revId": "26471332eed18426de683a4037ac161d370016d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82aa223e_2814138f",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-01T21:27:16Z",
+      "side": 1,
+      "message": "+1, I wasn\u0027t thinking of timing attacks. It\u0027s a trap!",
+      "parentUuid": "e5cce497_4c16a677",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "26471332eed18426de683a4037ac161d370016d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
