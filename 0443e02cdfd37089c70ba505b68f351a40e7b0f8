@@ -34,6 +34,24 @@
       "parentUuid": "2c0ee952_754ab19b",
       "revId": "0443e02cdfd37089c70ba505b68f351a40e7b0f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abe19960_8346d1e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13219
+      },
+      "writtenOn": "2024-02-01T15:36:50Z",
+      "side": 1,
+      "message": "Thanks! Yes, I am disabling temporarily using fontations for local GCC builds. But the problem seems to be in the GN build of Rust that may be missing what is needed to link hashbrown properly.",
+      "parentUuid": "f7b5301e_91b62747",
+      "revId": "0443e02cdfd37089c70ba505b68f351a40e7b0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
