@@ -2666,7 +2666,6 @@ if (skia_enable_tools) {
         "tools/skqp/src/skqp_GpuTestProcs.cpp",
       ]
       deps = [
-        ":gm",
         ":skia",
         ":tests",
         ":tool_utils",
