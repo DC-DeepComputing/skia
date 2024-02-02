@@ -16,6 +16,24 @@
       "message": "I know it\u0027s really long but maybe\n\nhttps://learn.microsoft.com/en-us/typography/opentype/spec/svg#svg-capability-requirements-and-restrictions\n\nto get to the right part of the docs?",
       "revId": "375201b27ddd12539ac92963226bfc8dface12bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eff18735_2ed662d7",
+        "filename": "modules/svg/src/SkSVGOpenTypeSVGDecoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-02T16:56:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "128fe388_d0623313",
+      "revId": "375201b27ddd12539ac92963226bfc8dface12bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
