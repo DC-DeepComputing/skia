@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74d765e8_d8500e4a",
+        "filename": "src/pdf/SkPDFDocument.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-02T03:42:17Z",
+      "side": 1,
+      "message": "Chromium for Android complains that this is a global with a `CAPITALIZED_NAME` (or a `kCamelCaseName`) but it is in `.data` and not `.rodata`. This is because `SkMatrix` has a mutable field `fTypeMask`. While this object\u0027s `fTypeMask` isn\u0027t going to change, nothing prevents it being changed (it wouldn\u0027t be UB to change it) so it can\u0027t go in `.rodata`. The default constructor for `SkMatrix` is `constexpr` so this object should be constructed in `.data` at compile time, but it won\u0027t be write-protected.\n\nThis can be alleviated by naming it something else, like `identity`. Though it would be nice if SkMatrix didn\u0027t have hidden mutability.\n\nEasy enough to fix forward with a rename, however there is a desire to cherry-pick this change into Chromium 122. The best course for now is to revert and re-land.",
+      "range": {
+        "startLine": 527,
+        "startChar": 36,
+        "endLine": 527,
+        "endChar": 37
+      },
+      "revId": "9832c77220614781f7bcc4ccf11ea3de4974d2f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
