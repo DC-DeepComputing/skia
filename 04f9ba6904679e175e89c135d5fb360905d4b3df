@@ -224,6 +224,30 @@
       },
       "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b064e2_7bd00643",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-02T16:08:25Z",
+      "side": 1,
+      "message": "In any case - if we do switch to the std::min version, we\u0027ll have to do the divide using `sk_ieee_float_divide`, or sanitizers will immediately yell at us.",
+      "parentUuid": "bbbe5ccf_cd6959cb",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 46
+      },
+      "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
