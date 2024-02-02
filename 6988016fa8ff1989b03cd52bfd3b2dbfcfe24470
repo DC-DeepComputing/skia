@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9211802_03bad51e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-02T17:37:35Z",
+      "side": 1,
+      "message": "So what this has pointed out is that the icu data file is not being packaged up from the build and made available at runtime. So on Windows we are not testing icu. This also points out that since icu is preferred, enabling both libicu and libgrapheme at the same time doesn\u0027t really exercise libgrapheme very much. So if we fixed icu on Windows we just wouldn\u0027t be running much libgrapheme at all in tests with this setup. It looks like we would need new jobs that run with just libgrapheme.",
+      "revId": "6988016fa8ff1989b03cd52bfd3b2dbfcfe24470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
