@@ -69,6 +69,30 @@
       },
       "revId": "f2f8c8a8a45a1ea34b246ecd487bb1dfa06a1cec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c1dd7ff_aa6ab59f",
+        "filename": "tests/sksl/errors/InvalidAtomicDeclarations.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-02T15:42:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d48c49e8_b2c4c957",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "f2f8c8a8a45a1ea34b246ecd487bb1dfa06a1cec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
