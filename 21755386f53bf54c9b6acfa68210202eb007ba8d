@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccde52a1_ef038d79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-02T17:41:44Z",
+      "side": 1,
+      "message": "I\u0027ve never really looked at this code, but how does this thing work, exactly? fLineBreakIndex is never mutated, except to set it to 0?\n\nLike, I\u0027d expext `next()` to actually do `fLineBreakIndex++`, perhaps? But the old code had the same behavior, so I don\u0027t know if I\u0027m just missing something?",
+      "revId": "21755386f53bf54c9b6acfa68210202eb007ba8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
