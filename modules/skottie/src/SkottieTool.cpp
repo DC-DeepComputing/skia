@@ -13,7 +13,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/base/SkTPin.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/utils/SkottieUtils.h"
@@ -32,6 +31,7 @@
 
 #if !defined(CPU_ONLY)
 #include "include/gpu/GrContextOptions.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tools/gpu/GrContextFactory.h"
 #endif
 
