@@ -176,6 +176,30 @@
       },
       "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a7cb046_c9d0a546",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-02T15:36:41Z",
+      "side": 1,
+      "message": "I also noticed the std::round calls. We can definitely look at improving that (in a follow-up, or before landing) - given that this doesn\u0027t need to handle arbitrary values, I think we\u0027ll get away with a simple addition of 0.5, then convert to int?\n\nThe branchiness is annoying, because I don\u0027t love the impact on a\u003d0 pixels (those will almost always have RGB\u003d0, so the result would still be transparent black - maybe we try that way. The only thing that comes to mind where we\u0027d have non-zero RGB with zero A is from a runtime shader or similar, where the user is explicitly overriding our normal behavior.",
+      "parentUuid": "02856d87_47c28524",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 46
+      },
+      "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
