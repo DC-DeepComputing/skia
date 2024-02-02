@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2040d82_d29ea770",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-02T15:45:05Z",
+      "side": 1,
+      "message": "May revise this if we decide SkAnimCodecPlayer can be removed from the public API",
+      "revId": "50a8d55c2807836f59582bea853fdace0a9b26da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca43d4c3_39df4a67",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-02T15:45:05Z",
+      "side": 1,
+      "message": "Note to self: in G3 this name will cause a conflict, so we\u0027ll have to disambiguate it after rolling in.",
+      "range": {
+        "startLine": 209,
+        "startChar": 12,
+        "endLine": 209,
+        "endChar": 23
+      },
+      "revId": "50a8d55c2807836f59582bea853fdace0a9b26da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
