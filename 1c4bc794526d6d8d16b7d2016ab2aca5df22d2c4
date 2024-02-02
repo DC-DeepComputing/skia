@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4123e7c_36e43869",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-02T22:00:28Z",
+      "side": 1,
+      "message": "This should fix the Android roll. We can re-evaluate other fixes next week.",
+      "revId": "1c4bc794526d6d8d16b7d2016ab2aca5df22d2c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
