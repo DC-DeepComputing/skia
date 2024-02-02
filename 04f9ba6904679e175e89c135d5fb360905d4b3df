@@ -104,6 +104,30 @@
       },
       "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a482cfc_6f5538af",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-02T15:24:58Z",
+      "side": 1,
+      "message": "No, that\u0027s not right; std::min is branchless (`minss`), but the ternary actually makes a branch.\n\nhttps://godbolt.org/z/bzWEsjo55",
+      "parentUuid": "50b92c8a_66df1728",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 46
+      },
+      "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
