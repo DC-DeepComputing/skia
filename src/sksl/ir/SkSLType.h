@@ -248,11 +248,15 @@ public:
     }
 
     /**
-     * Returns true if this type is legal to use as a uniform.
+     * Returns true if this type is legal to use as a uniform. If false is returned, the `position`
+     * field may be populated; if so, this position can be used to emit the error "caused by:
+     * <a field>" for nested types.
      * Note that runtime effects enforce additional, much stricter rules about uniforms; these
      * limitations are not handled here.
      */
-    virtual bool isAllowedInUniform() const {
+    virtual bool isAllowedInUniform(Position* position = nullptr) const {
+        // We don't allow samplers, textures or atomics to be marked as uniforms.
+        // This rules out all opaque types.
         return !this->isOpaque();
     }
 
