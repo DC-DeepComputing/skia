@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbef8971_513e2e29",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-02T00:30:04Z",
+      "side": 1,
+      "message": "This constructor occurs either way; it might be overly wordy to call it out here.",
+      "range": {
+        "startLine": 691,
+        "startChar": 33,
+        "endLine": 691,
+        "endChar": 46
+      },
+      "revId": "f2f8c8a8a45a1ea34b246ecd487bb1dfa06a1cec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48c49e8_b2c4c957",
+        "filename": "tests/sksl/errors/InvalidAtomicDeclarations.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-02T00:30:04Z",
+      "side": 1,
+      "message": "This error was missed before; the new code fixes a bug we didn\u0027t know we had. The previous code failed to recurse into arrays-of-structs.\n\n```\nlayout(metal, binding \u003d 4) uniform ubo4 {\n    S uboStructWithAtomicMemberArray[2];      // invalid\n};\n```",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "f2f8c8a8a45a1ea34b246ecd487bb1dfa06a1cec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
