@@ -309,6 +309,7 @@ skia_cc_library(
         "SkTiffUtility.cpp",
         "SkTiffUtility.h",
         "//include/codec:any_codec_hdrs",
+        "//src/utils:codec_srcs",
     ],
     hdrs = [
         # These are not actually "public" headers, and clients using a toolchain that supports layer
@@ -341,7 +342,10 @@ skia_cc_library(
     hdrs = [
         "//include/codec:any_codec_hdrs",
     ],
-    visibility = ["//:__pkg__"],
+    visibility = [
+        "//:__pkg__",
+        "//modules/skresources:__pkg__",
+    ],
     deps = [
         ":any_decoder",
     ],

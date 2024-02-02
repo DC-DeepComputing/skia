@@ -43,6 +43,7 @@ skia_filegroup(
         "SkCodecAnimation.h",
         "SkEncodedImageFormat.h",
         "SkPixmapUtils.h",
+        "//include/utils:codec_hdrs",
     ],
     visibility = ["//src/codec:__pkg__"],
 )
