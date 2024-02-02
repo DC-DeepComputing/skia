@@ -16,6 +16,23 @@
       "message": "At Patchset 2 this looks like the minimal changes to make this work. However, there doesn\u0027t appear to be any reason to actually store all these line breaks? I suppose it could be a bit faster to store them if there were many calls to `first()` to reset to the beginning and try again, but I don\u0027t think that happens often in practice?",
       "revId": "7df4a70e4109f188d794c07bdd6bb3a46aa317a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39936015_16e60e68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-02T20:08:30Z",
+      "side": 1,
+      "message": "Also, with this change the tests now pass, but SkUnicode_libgrapheme is still not generally usable due to the lack of implementation of isEmoji* .",
+      "revId": "7df4a70e4109f188d794c07bdd6bb3a46aa317a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
