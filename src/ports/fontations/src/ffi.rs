@@ -3,7 +3,10 @@ use ffi::{FillLinearParams, FillRadialParams};
 // Use of this source code is governed by a BSD-style license that can be found
 // in the LICENSE file.
 use font_types::{BoundingBox, GlyphId, Pen};
-use read_fonts::{tables::colr::CompositeMode, FileRef, FontRef, ReadError, TableProvider};
+use read_fonts::{
+    tables::{colr::CompositeMode, sbix::GlyphData},
+    FileRef, FontRef, ReadError, TableProvider,
+};
 use skrifa::{
     color::{Brush, ColorGlyphFormat, ColorPainter, Transform},
     instance::{Location, Size},
@@ -740,6 +743,58 @@ pub struct BridgeColorStops<'a> {
     pub num_stops: usize,
 }
 
+enum BitmapData<'a> {
+    PngData(&'a [u8]),
+}
+
+// TODO: Consider factoring out offsets and scale into a callback interface for translate and scale.
+#[derive(Default)]
+struct BridgeBitmapGlyph<'a> {
+    _offset_x: f32,
+    _offset_y: f32,
+    data: Option<BitmapData<'a>>,
+    _scale_x: f32,
+    _scale_y: f32, // TODO: Bitmap specific metrics?
+}
+
+fn sbix_glyph<'a>(font_ref: &'a FontRef, glyph_id: GlyphId) -> Result<Option<GlyphData<'a>>, ReadError> {
+    // TODO: Find closest strike, identify scale information.
+    let last_strike = font_ref
+        .sbix()?
+        .strikes()
+        .iter()
+        .last()
+        .ok_or(ReadError::OutOfBounds)??;
+    last_strike.glyph_data(glyph_id)
+}
+
+fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool {
+    font_ref
+        .with_font(|font| {
+            let sbix_glyph = sbix_glyph(font, GlyphId::new(glyph_id)).ok()?;
+            Some(sbix_glyph.is_some())
+        })
+        .unwrap_or_default()
+}
+
+unsafe fn bitmap_glyph<'a>(font_ref: &'a BridgeFontRef, glyph_id: u16) -> Box<BridgeBitmapGlyph<'a>> {
+    font_ref
+    .with_font(|font| {
+        if let Some(sbix_glyph) = sbix_glyph(font, GlyphId::new(glyph_id)).ok()? {
+            return Some(Box::new(BridgeBitmapGlyph { data: Some(BitmapData::PngData(sbix_glyph.data())), ..Default::default()}));
+        } else {
+            None
+        }
+    }).unwrap_or_default()
+}
+
+unsafe fn png_data<'a>(bitmap_glyph : &'a BridgeBitmapGlyph) -> &'a [u8] {
+    if let Some(BitmapData::PngData(glyph_data)) = bitmap_glyph.data {
+        return glyph_data
+    }
+    &[]
+}
+
 #[cxx::bridge(namespace = "fontations_ffi")]
 mod ffi {
     struct ColorStop {
@@ -887,6 +942,11 @@ mod ffi {
             size: f32,
             clip_box: &mut ClipBox,
         ) -> bool;
+
+        type BridgeBitmapGlyph<'a>;
+        fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
+        unsafe fn bitmap_glyph<'a>(font_ref: &'a BridgeFontRef, glyph_id: u16) -> Box<BridgeBitmapGlyph<'a>>;
+        unsafe fn png_data<'a>(bitmap_glyph : &'a BridgeBitmapGlyph) -> &'a [u8];
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
