@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa93e9aa_98d7de00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2024-02-02T15:11:54Z",
+      "side": 1,
+      "message": "FYI: Skia Infra Gardener",
+      "revId": "614031d887368c1f4f7cb17fc00aaf183eb57fe9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
