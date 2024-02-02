@@ -524,10 +524,10 @@ SkPDFIndirectReference SkPDFDocument::getPage(size_t pageIndex) const {
 }
 
 const SkMatrix& SkPDFDocument::currentPageTransform() const {
-    static constexpr const SkMatrix I;
+    static constexpr const SkMatrix identity;
     // If not on a page (like when emitting a Type3 glyph) return identity.
     if (!this->hasCurrentPage()) {
-        return I;
+        return identity;
     }
     return fPageDevice->initialTransform();
 }
