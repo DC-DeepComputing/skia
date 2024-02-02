@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20f1b27e_9dec6c59",
+        "filename": "modules/skresources/include/SkResources.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-02T17:00:39Z",
+      "side": 1,
+      "message": "This is likely used in g3, we should update the clients before changing behavior.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 100
+      },
+      "revId": "ca15614624f9014fc1ed13f0c4b901bd6033b101",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
