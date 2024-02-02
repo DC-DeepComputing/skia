@@ -16,7 +16,7 @@ sk_sp<SkBlender> GetRuntimeBlendForBlendMode(SkBlendMode mode) {
         half4 main(half4 src, half4 dst) {
             return b.eval(src, dst);
         }
-    )"));
+    )"), /* stableKey= */ 0);
 
     SkASSERTF(result.effect, "%s", result.errorText.c_str());
 

@@ -101,7 +101,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
         auto draw_filter = [&](const char* src) {
-            auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(src));
+            auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(src), /* stableKey= */ 0);
             if (!effect) {
                 SkDebugf("%s\n%s\n", src, err.c_str());
             }
@@ -156,7 +156,7 @@ DEF_SIMPLE_GM(runtimecolorfilter_vertices_atlas_and_patch, canvas, 404, 404) {
             pos[3], pos[3] - vy, pos[0] + vy
     };
 
-    auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(gLumaSrc));
+    auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString(gLumaSrc), /* stableKey= */ 0);
     if (!effect) {
         SkDebugf("%s\n%s\n", gLumaSrc, err.c_str());
     }

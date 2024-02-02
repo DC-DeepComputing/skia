@@ -419,7 +419,7 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
                                 "}"
                             "}"
                         "%s", // kFooterSkSL
-                        kMaxUniformKernelSize, kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str());
+                        kMaxUniformKernelSize, kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str(), kMatrixConvStableKey1);
 
     // The texture-backed kernel creates shaders with quantized upper bounds on the kernel size and
     // then stored in a thread-safe LRU cache.
@@ -446,7 +446,7 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
                                    "}"
                                "%s", // kFooterSkSL
                                maxKernelSize.fWidth, maxKernelSize.fHeight,
-                               kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str());
+                               kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str(), kMatrixConvStableKey2);
     };
 
 

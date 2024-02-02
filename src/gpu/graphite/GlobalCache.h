@@ -56,6 +56,7 @@ public:
     void forEachGraphicsPipeline(
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)
             SK_EXCLUDES(fSpinLock);
+    void getKeys(std::vector<UniqueKey>* keys) SK_EXCLUDES(fSpinLock);
 #endif
 
     // Find and add operations for ComputePipelines, with the same pattern as GraphicsPipelines.

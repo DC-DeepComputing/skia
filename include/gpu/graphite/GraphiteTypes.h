@@ -11,6 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/private/base/SkMacros.h"
 
 #include <memory>
 
@@ -123,6 +124,7 @@ enum DrawTypeFlags : uint8_t {
     kMostCommon = kText | kShape,
     kAll = kText | kDrawVertices | kShape
 };
+SK_MAKE_BITFIELD_OPS(DrawTypeFlags)
 
 } // namespace skgpu::graphite
 

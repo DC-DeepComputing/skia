@@ -24,6 +24,8 @@ class MtlSharedContext;
 
 MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags>);
 
+DepthStencilFlags MtlFormatToDepthStencilFlags(MTLPixelFormat);
+
 sk_cfp<id<MTLLibrary>> MtlCompileShaderLibrary(const MtlSharedContext* sharedContext,
                                                std::string_view msl,
                                                ShaderErrorHandler* errorHandler);

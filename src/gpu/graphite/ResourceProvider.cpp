@@ -48,6 +48,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                                                                             renderPassDesc);
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
     if (!pipeline) {
+        fStats.incGraphicsPipelineCreation();
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
         // across Recorders, we could theoretically create equivalent pipelines on different
         // threads. If this happens, GlobalCache returns the first-through-gate pipeline and we
@@ -60,6 +61,14 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
         }
+        if (pipeline) {
+//            SkDebugf("--- created %d\n", globalCache->numGraphicsPipelines());
+        } else {
+            SkDebugf("--- failed to create\n");
+            SK_ABORT();
+        }
+    } else {
+//        SkDebugf("--- found\n");
     }
     return pipeline;
 }
@@ -276,6 +285,14 @@ BackendTexture ResourceProvider::createBackendTexture(SkISize dimensions, const 
     }
     return this->onCreateBackendTexture(dimensions, info);
 }
+
+#if defined(GRAPHITE_TEST_UTILS)
+
+void ResourceProvider::Stats::reset() {
+    fShaderCompilations.store(0);
+};
+
+#endif
 
 #ifdef SK_BUILD_FOR_ANDROID
 BackendTexture ResourceProvider::createBackendTexture(AHardwareBuffer* hardwareBuffer,

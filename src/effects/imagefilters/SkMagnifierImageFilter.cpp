@@ -170,7 +170,7 @@ static sk_sp<SkShader> make_magnifier_shader(
             // Saturate before squaring so that negative weights are clamped to 0 before squaring
             "weight = saturate(weight);"
             "return src.eval(mix(coord, zoomCoord, weight*weight));"
-        "}"
+        "}", kMagnifierStableKey
     );
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
