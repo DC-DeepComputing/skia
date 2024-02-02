@@ -233,24 +233,22 @@ private:
 class SkBreakIterator_libgrapheme: public SkBreakIterator {
     SkUnicode_libgrapheme* fUnicode;
     std::vector<SkUnicode::LineBreakBefore> fLineBreaks;
-    Position fLastResult;
-    Position fStart;
-    Position fEnd;
+    Position fLineBreakIndex;
 public:
     explicit SkBreakIterator_libgrapheme(SkUnicode_libgrapheme* unicode) : fUnicode(unicode) { }
     Position first() override
-      { return fLineBreaks[fStart + (fLastResult = 0)].pos; }
+      { return fLineBreaks[(fLineBreakIndex = 0)].pos; }
     Position current() override
-      { return fLineBreaks[fStart + fLastResult].pos; }
+      { return fLineBreaks[fLineBreakIndex].pos; }
     Position next() override
-      { return fLineBreaks[fStart + fLastResult + 1].pos; }
+      { return fLineBreaks[fLineBreakIndex + 1].pos; }
     Status status() override {
-        return fLineBreaks[fStart + fLastResult].breakType ==
+        return fLineBreaks[fLineBreakIndex].breakType ==
                        SkUnicode::LineBreakType::kHardLineBreak
                        ? SkUnicode::CodeUnitFlags::kHardLineBreakBefore
                        : SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
     }
-    bool isDone() override { return fStart + fLastResult == fEnd; }
+    bool isDone() override { return fLineBreakIndex == fLineBreaks.size(); }
     bool setText(const char utftext8[], int utf8Units) override {
         fLineBreaks.clear();
         size_t lineBreak = 0;
@@ -262,9 +260,7 @@ public:
                                     ? SkUnicode::LineBreakType::kHardLineBreak
                                     : SkUnicode::LineBreakType::kSoftLineBreak);
         }
-        fStart = 0;
-        fEnd = utf8Units;
-        fLastResult = 0;
+        fLineBreakIndex = 0;
         return true;
     }
     bool setText(const char16_t utftext16[], int utf16Units) override {
