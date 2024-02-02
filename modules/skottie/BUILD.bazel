@@ -24,7 +24,7 @@ skia_cc_library(
 )
 
 skia_cc_library(
-    name = "utils",
+    name = "legacy_utils",
     srcs = ["//modules/skottie/utils:srcs"],
     hdrs = ["//modules/skottie/utils:hdrs"],
     visibility = ["//:__subpackages__"],
@@ -34,7 +34,7 @@ skia_cc_library(
     ],
 )
 
-cc_binary_with_flags(
+cc_binary(
     name = "skottie_tool_cpu",
     testonly = True,
     srcs = [
@@ -42,19 +42,11 @@ cc_binary_with_flags(
         "//tools/flags",
     ],
     defines = ["CPU_ONLY"],
-    set_flags = {
-        "include_fontmgr": ["custom_empty_fontmgr"],
-        "include_decoder": [
-            "jpeg_decode_codec",
-            "png_decode_codec",
-            "webp_decode_codec",
-        ],
-        "use_harfbuzz": ["True"],
-        "use_icu": ["True"],
-    },
     deps = [
-        ":legacy_skottie",
+        ":skottie_harfbuzz_icu",
         ":utils",
+        "//:fontmgr_empty_freetype",
+        "//:png_encode_codec",
     ],
 )
 
@@ -81,7 +73,41 @@ cc_binary_with_flags(
     },
     deps = [
         ":legacy_skottie",
-        ":utils",
+        ":legacy_utils",
         "//tools/gpu:utils",
+    ],
+)
+
+skia_cc_library(
+    name = "skottie_harfbuzz_icu",
+    srcs = [
+        "//modules/skottie/src:srcs",
+        "//src/utils:json_hdrs",
+        "//src/utils:json_srcs",
+    ],
+    hdrs = ["//modules/skottie/include:hdrs"],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//:core",
+        "//modules/skresources",
+        "//modules/sksg",
+        "//modules/sksg:sksg_priv",
+        "//modules/skshaper:skshaper_harfbuzz",
+        "//modules/skunicode:skunicode_icu",
+        "//src/base",
+        "//src/codec:codec_support_priv",
+        "//src/core:core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "utils",
+    srcs = ["//modules/skottie/utils:srcs"],
+    hdrs = ["//modules/skottie/utils:hdrs"],
+    deps = [
+        ":skottie_harfbuzz_icu",
+        "//:core",
+        "//tools/skui",
     ],
 )
