@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f303bce_c955cd2b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-02T21:07:43Z",
+      "side": 1,
+      "message": "Your proposed wording sounds fine - unless we want to go further and make SelectionPolicy a hard choice (ie, explicitly disable animation features in webp, even though it\u0027s not necessary).\n\nI\u0027m also ambivalent about this - like you said, this is a pretty wild edge-case -- but I think the CL is okay if you want to land it.",
+      "parentUuid": "fd3d7021_f5469445",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 15
+      },
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1d04ab3d_42507279",
