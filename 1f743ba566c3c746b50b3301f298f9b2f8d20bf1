@@ -34,6 +34,24 @@
       "parentUuid": "4290cd29_8fef99a7",
       "revId": "1f743ba566c3c746b50b3301f298f9b2f8d20bf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df44de14_843327ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-02T15:00:44Z",
+      "side": 1,
+      "message": "I\u0027m not sure I want to put a whole bunch of noise right here about something that is way more general (Chromium enforcing a particular naming convention on everything including third_party based on where in the binary something ends up). So I\u0027ll name it with a different more Skia naming convention, `gIdentity` so it\u0027s less likely someone feels the need to change this particular name in the future.",
+      "parentUuid": "1cdfd69d_094a799a",
+      "revId": "1f743ba566c3c746b50b3301f298f9b2f8d20bf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
