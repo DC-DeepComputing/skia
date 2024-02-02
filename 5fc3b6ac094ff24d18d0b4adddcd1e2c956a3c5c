@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e614859_f6e1d7e0",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-02T09:26:43Z",
+      "side": 1,
+      "message": "Remove this and the semicolon in line 774 in order to just return the result of `unwrap_or_default()`. Compare other functions that do that. This will result in returning false if the font was not available.",
+      "range": {
+        "startLine": 775,
+        "startChar": 0,
+        "endLine": 775,
+        "endChar": 16
+      },
+      "revId": "5fc3b6ac094ff24d18d0b4adddcd1e2c956a3c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e38d344_df0ab613",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 1202,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-02T09:26:43Z",
+      "side": 1,
+      "message": "Looks like the test font has changed and this error string should be updated.",
+      "range": {
+        "startLine": 1202,
+        "startChar": 57,
+        "endLine": 1202,
+        "endChar": 66
+      },
+      "revId": "5fc3b6ac094ff24d18d0b4adddcd1e2c956a3c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
