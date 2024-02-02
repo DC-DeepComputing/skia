@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33ae4181_18d32109",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-02T09:52:28Z",
+      "side": 1,
+      "message": "Also, please run `rustfmt` on the file after your changes.",
+      "revId": "5fc3b6ac094ff24d18d0b4adddcd1e2c956a3c5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e614859_f6e1d7e0",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 17
