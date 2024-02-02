@@ -214,3 +214,11 @@ skia_filegroup(
     ],
     visibility = ["//src/gpu:__subpackages__"],
 )
+
+skia_filegroup(
+    name = "codec_srcs",
+    srcs = [
+        "SkAnimCodecPlayer.cpp",
+    ],
+    visibility = ["//src/codec:__pkg__"],
+)

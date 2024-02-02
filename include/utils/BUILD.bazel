@@ -41,3 +41,11 @@ skia_filegroup(
     ],
     visibility = ["//src/core:__pkg__"],
 )
+
+skia_filegroup(
+    name = "codec_hdrs",
+    srcs = [
+        "SkAnimCodecPlayer.h",
+    ],
+    visibility = ["//include/codec:__pkg__"],
+)
