@@ -247,6 +247,15 @@ public:
         return true;
     }
 
+    /**
+     * Returns true if this type is legal to use as a uniform.
+     * Note that runtime effects enforce additional, much stricter rules about uniforms; these
+     * limitations are not handled here.
+     */
+    virtual bool isAllowedInUniform() const {
+        return !this->isOpaque();
+    }
+
     /** If this is an alias, returns the underlying type, otherwise returns this. */
     virtual const Type& resolve() const {
         return *this;
