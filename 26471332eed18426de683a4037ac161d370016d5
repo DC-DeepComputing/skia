@@ -159,6 +159,30 @@
       },
       "revId": "26471332eed18426de683a4037ac161d370016d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "847d4d42_ffb9d7b9",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-02T14:06:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82aa223e_2814138f",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "26471332eed18426de683a4037ac161d370016d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
