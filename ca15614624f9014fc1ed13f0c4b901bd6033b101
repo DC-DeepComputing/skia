@@ -22,6 +22,30 @@
       },
       "revId": "ca15614624f9014fc1ed13f0c4b901bd6033b101",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "679a0866_99cfdaeb",
+        "filename": "modules/skresources/include/SkResources.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-02T17:02:31Z",
+      "side": 1,
+      "message": "Yes. This CL does not change the behavior, but it will be changed as we move them from an old target to the new way. I plan to land this CL, update client API calls, then try to update their dependencies.",
+      "parentUuid": "20f1b27e_9dec6c59",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 100
+      },
+      "revId": "ca15614624f9014fc1ed13f0c4b901bd6033b101",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
