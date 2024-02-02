@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdacd55b_a8c89e68",
+        "filename": "include/gpu/graphite/dawn/DawnBackendContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-02-02T22:35:48Z",
+      "side": 1,
+      "message": "We are working to make some decisions about this. But yes, the goal is to standardize it in webgpu-c and webgpu-cpp.",
+      "parentUuid": "6620fb64_def36101",
+      "range": {
+        "startLine": 18,
+        "startChar": 47,
+        "endLine": 18,
+        "endChar": 58
+      },
+      "revId": "26473664739a1a1e334f810f573d92818e878b67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13407a98_db76dc85",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-01T14:09:12Z",
       "side": 1,
       "message": "does this need to be updated to use instance now?\n\nAlso if Tick has gone away from Dawn, do we still want to call this public function in Skia Tick or does something else make sense?",
+      "range": {
+        "startLine": 42,
+        "startChar": 30,
+        "endLine": 42,
+        "endChar": 56
+      },
+      "revId": "26473664739a1a1e334f810f573d92818e878b67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4f5242b_1db5e707",
+        "filename": "include/gpu/graphite/dawn/DawnBackendContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-02-02T22:35:48Z",
+      "side": 1,
+      "message": "Oops, yes, I think I must\u0027ve messed up when rebasing and separating out the changes thanks!\n\nAs for whether we want to rename it, I was thinking that with the WGPUFuture plans, we may be able to change how we wait for async tasks entirely so I\u0027m not sure whether renaming it right now nets any value.",
+      "parentUuid": "13407a98_db76dc85",
       "range": {
         "startLine": 42,
         "startChar": 30,
