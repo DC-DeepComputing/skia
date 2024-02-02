@@ -3,6 +3,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd3d7021_f5469445",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-02T20:52:14Z",
+      "side": 1,
+      "message": "I was thinking I\u0027d update the comments for `SelectionPolicy` in the header, but I\u0027m having trouble coming up with the right wording.\n```\nkPreferStillImage may prevent use of the animation features if the input is not rewindable.\n```\n\n? I\u0027m very vague here because e.g. `SkWebpCodec` still copies the stream. It has to, due to its use of `libwebp`. And that has always been its behavior. So no regressions there.\n\nThis bug came up because the switch to Wuffs resulted in a regression - Android used to be able to decode a giant GIF, but the copy ends up using too much memory.\n\nI\u0027m kind of ambivalent about this change at all - it only fixes some cases. If a client used `AnimatedImageDrawable` instead, it would still crash for a similar image.\n\nThe image that sparked the bug is 2.5 GB, with thousands of frames. (It\u0027s probably quite small if you just look at the first frame, but I haven\u0027t.) Not sure why it\u0027s so important to support that, especially when we don\u0027t use most of the info in the file anyway. But it is a regression...\n\nAnd we *are* actually seeing this bug happen. See b/321923587.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 15
+      },
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2806b36a_ea11b847",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-02T20:52:14Z",
+      "side": 1,
+      "message": "Looks good on Android, and I think Chromium should be fine. Not sure about Flutter.",
+      "range": {
+        "startLine": 18,
+        "startChar": 20,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d04ab3d_42507279",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-02T20:52:14Z",
+      "side": 1,
+      "message": "Of course the test passed - it worked by copying the stream.\n\nThere\u0027s not an obvious way to test this - we want to verify that it doesn\u0027t copy the stream, but there\u0027s no way to query whether that happened.\n\nI *have* verified that I can open the file on Android now. I\u0027ve also verified it passes CTS. (Though patch set 2 changes things some; I don\u0027t think the changes should break anything, but I\u0027ll verify again once we feel good about the changes.) I haven\u0027t tested Chromium, but I feel confident it doesn\u0027t break things there. (I can also run a Canary.)",
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e9e12474_de8b505a",
         "filename": "src/codec/SkWuffsCodec.cpp",
         "patchSetId": 1
@@ -14,6 +77,24 @@
       "writtenOn": "2023-12-17T22:50:29Z",
       "side": 1,
       "message": "Should \u003d\u003d be !\u003d instead?",
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f11a0d1b_342647fc",
+        "filename": "src/codec/SkWuffsCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-02T20:52:14Z",
+      "side": 1,
+      "message": "Yes! Thanks!",
+      "parentUuid": "e9e12474_de8b505a",
       "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
