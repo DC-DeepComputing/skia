@@ -128,6 +128,30 @@
       },
       "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02856d87_47c28524",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-02T15:26:21Z",
+      "side": 1,
+      "message": "Also: the godbolt output is actually emitting function calls to `roundf` which concerns me (from a performance standpoint).",
+      "parentUuid": "0a482cfc_6f5538af",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 46
+      },
+      "revId": "04f9ba6904679e175e89c135d5fb360905d4b3df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
