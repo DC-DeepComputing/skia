@@ -12,6 +12,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/private/base/SkAPI.h"
 
 #include <cstdint>
 #include <memory>
@@ -19,7 +20,7 @@
 
 class SkImage;
 
-class SkAnimCodecPlayer {
+class SK_SPI SkAnimCodecPlayer {
 public:
     SkAnimCodecPlayer(std::unique_ptr<SkCodec> codec);
     ~SkAnimCodecPlayer();
