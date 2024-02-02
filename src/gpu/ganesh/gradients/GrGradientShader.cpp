@@ -99,7 +99,8 @@ static std::unique_ptr<GrFragmentProcessor> make_single_interval_colorizer(const
             // Clamping and/or wrapping was already handled by the parent shader so the output
             // color is a simple lerp.
             "return mix(start, end, half(coord.x));"
-        "}"
+        "}",
+        kSingleIntervalColorizerStableKey
     );
     return GrSkSLFP::Make(effect, "SingleIntervalColorizer", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kNone,
@@ -130,7 +131,8 @@ static std::unique_ptr<GrFragmentProcessor> make_dual_interval_colorizer(const S
             "}"
 
             "return half4(t * s + b);"
-        "}"
+        "}",
+        kDualIntervalColorizerStableKey
     );
 
     // Derive scale and biases from the 4 colors and threshold
@@ -251,7 +253,7 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int interval
                   (intervalCount <= 6) ? "" : "s = scale[6]; b = bias[6];",
                   (intervalCount <= 7) ? "" : "s = scale[7]; b = bias[7];");
 
-        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl));
+        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl), kUnrolledColorizerStableKey);
         SkASSERTF(result.effect, "%s", result.errorText.c_str());
         effects[intervalCount - 1] = result.effect.release();
     });
@@ -343,7 +345,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
             /* loopCount: */ loopCount,
             /* if (loopCount > 0): */ loopCount);
 
-        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl));
+        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl), kLoopingColorizerStableKey);
         SkASSERTF(result.effect, "%s", result.errorText.c_str());
         cacheEntry->effect = result.effect.release();
     });
@@ -593,7 +595,7 @@ static std::unique_ptr<GrFragmentProcessor> make_clamped_gradient(
                 "outColor = colorizer.eval(t.x0);"
             "}"
             "return outColor;"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     // If the layout does not preserve opacity, remove the opaque optimization,
@@ -656,7 +658,7 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
                 "half4 outColor = colorizer.eval(t.x0);"
                 "return outColor;"
             "}"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     // If the layout does not preserve opacity, remove the opaque optimization,
@@ -707,7 +709,7 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
 
         "half4 main(half4 color) {"
             "return $interpolated_to_rgb_unpremul(color, colorSpace, do_unpremul);"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     // Are we interpreting premul colors? We use this later to decide if we need to inject a final
@@ -933,7 +935,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "half4 main(float2 coord) {"
             "return half4(half(coord.x) + 0.00001, 1, 0, 0);" // y = 1 for always valid
-        "}"
+        "}", /* stableKey= */ 0
     );
     // The linear gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(effect, "LinearLayout", /*inputFP=*/nullptr,

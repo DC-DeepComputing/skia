@@ -69,7 +69,7 @@ static sk_sp<SkColorFilter> MakeTintColorFilter(SkColor lo, SkColor hi, bool use
             uniform colorFilter inner;
             uniform colorFilter outer;
             half4 main(half4 c) { return outer.eval(inner.eval(c)); }
-        )"));
+        )"), /* stableKey= */ 0);
         SkASSERT(effect);
         sk_sp<SkColorFilter> children[] = { inner, outer };
         return effect->makeColorFilter(nullptr, children, std::size(children));

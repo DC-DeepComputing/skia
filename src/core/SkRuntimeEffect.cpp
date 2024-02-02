@@ -466,7 +466,8 @@ SkSL::ProgramSettings SkRuntimeEffect::MakeSettings(const Options& options) {
 
 SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(SkString sksl,
                                                         const Options& options,
-                                                        SkSL::ProgramKind kind) {
+                                                        SkSL::ProgramKind kind,
+                                                        uint32_t stableKey) {
     SkSL::Compiler compiler;
     SkSL::ProgramSettings settings = MakeSettings(options);
     std::unique_ptr<SkSL::Program> program =
@@ -476,12 +477,13 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(SkString sksl,
         RETURN_FAILURE("%s", compiler.errorText().c_str());
     }
 
-    return MakeInternal(std::move(program), options, kind);
+    return MakeInternal(std::move(program), options, kind, stableKey);
 }
 
 SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Program> program,
                                                       const Options& options,
-                                                      SkSL::ProgramKind kind) {
+                                                      SkSL::ProgramKind kind,
+                                                      uint32_t stableKey) {
     SkSL::Compiler compiler;
 
     uint32_t flags = 0;
@@ -610,7 +612,8 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
                                                       std::move(uniforms),
                                                       std::move(children),
                                                       std::move(sampleUsages),
-                                                      flags));
+                                                      flags,
+                                                      stableKey));
     return Result{std::move(effect), SkString()};
 }
 
@@ -642,7 +645,7 @@ sk_sp<SkRuntimeEffect> SkRuntimeEffect::makeUnoptimizedClone() {
         return sk_ref_sp(this);
     }
 
-    SkRuntimeEffect::Result result = MakeInternal(std::move(program), options, kind);
+    SkRuntimeEffect::Result result = MakeInternal(std::move(program), options, kind, /* stableKey= */ 0);
     if (!result.effect) {
         // Nothing in MakeInternal should change as a result of optimizations being toggled.
         SkDEBUGFAILF("makeUnoptimizedClone: MakeInternal failed\n%s",
@@ -653,26 +656,29 @@ sk_sp<SkRuntimeEffect> SkRuntimeEffect::makeUnoptimizedClone() {
     return result.effect;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(SkString sksl, const Options& options) {
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForColorFilter(SkString sksl, const Options& options,
+                                                            uint32_t stableKey) {
     auto programKind = options.allowPrivateAccess ? SkSL::ProgramKind::kPrivateRuntimeColorFilter
                                                   : SkSL::ProgramKind::kRuntimeColorFilter;
-    auto result = MakeFromSource(std::move(sksl), options, programKind);
+    auto result = MakeFromSource(std::move(sksl), options, programKind, stableKey);
     SkASSERT(!result.effect || result.effect->allowColorFilter());
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(SkString sksl, const Options& options) {
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForShader(SkString sksl, const Options& options,
+                                                       uint32_t stableKey) {
     auto programKind = options.allowPrivateAccess ? SkSL::ProgramKind::kPrivateRuntimeShader
                                                   : SkSL::ProgramKind::kRuntimeShader;
-    auto result = MakeFromSource(std::move(sksl), options, programKind);
+    auto result = MakeFromSource(std::move(sksl), options, programKind, stableKey);
     SkASSERT(!result.effect || result.effect->allowShader());
     return result;
 }
 
-SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(SkString sksl, const Options& options) {
+SkRuntimeEffect::Result SkRuntimeEffect::MakeForBlender(SkString sksl, const Options& options,
+                                                        uint32_t stableKey) {
     auto programKind = options.allowPrivateAccess ? SkSL::ProgramKind::kPrivateRuntimeBlender
                                                   : SkSL::ProgramKind::kRuntimeBlender;
-    auto result = MakeFromSource(std::move(sksl), options, programKind);
+    auto result = MakeFromSource(std::move(sksl), options, programKind, stableKey);
     SkASSERT(!result.effect || result.effect->allowBlender());
     return result;
 }
@@ -738,8 +744,10 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                  std::vector<Uniform>&& uniforms,
                                  std::vector<Child>&& children,
                                  std::vector<SkSL::SampleUsage>&& sampleUsages,
-                                 uint32_t flags)
-        : fHash(SkChecksum::Hash32(baseProgram->fSource->c_str(), baseProgram->fSource->size()))
+                                 uint32_t flags,
+                                 uint32_t stableKey)
+        : fHash1(SkChecksum::Hash32(baseProgram->fSource->c_str(), baseProgram->fSource->size()))
+        , fStableKey(stableKey)
         , fBaseProgram(std::move(baseProgram))
         , fMain(main)
         , fUniforms(std::move(uniforms))
@@ -758,12 +766,12 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
         SkSL::Version maxVersionAllowed;
     };
     static_assert(sizeof(Options) == sizeof(KnownOptions));
-    fHash = SkChecksum::Hash32(&options.forceUnoptimized,
-                               sizeof(options.forceUnoptimized), fHash);
-    fHash = SkChecksum::Hash32(&options.allowPrivateAccess,
-                               sizeof(options.allowPrivateAccess), fHash);
-    fHash = SkChecksum::Hash32(&options.maxVersionAllowed,
-                               sizeof(options.maxVersionAllowed), fHash);
+    fHash1 = SkChecksum::Hash32(&options.forceUnoptimized,
+                               sizeof(options.forceUnoptimized), fHash1);
+    fHash1 = SkChecksum::Hash32(&options.allowPrivateAccess,
+                               sizeof(options.allowPrivateAccess), fHash1);
+    fHash1 = SkChecksum::Hash32(&options.maxVersionAllowed,
+                               sizeof(options.maxVersionAllowed), fHash1);
 }
 
 SkRuntimeEffect::~SkRuntimeEffect() = default;

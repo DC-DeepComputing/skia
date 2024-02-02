@@ -50,6 +50,29 @@ namespace SkSL::RP {
 class Program;
 }
 
+static const uint32_t kLinearBlur1DStableKey = 22;
+static const uint32_t kBlur2DStableKey = 23;
+static const uint32_t kDecalStableKey = 24;
+static const uint32_t kHighContrastStableKey = 25;
+static const uint32_t kSingleIntervalColorizerStableKey = 26;
+static const uint32_t kDualIntervalColorizerStableKey = 27;
+static const uint32_t kUnrolledColorizerStableKey = 28;
+static const uint32_t kLoopingColorizerStableKey = 29;
+static const uint32_t kArithmeticStableKey = 30;
+static const uint32_t kBlendShaderStableKey = 31;
+static const uint32_t kCircleBlurStableKey = 31;
+static const uint32_t kDisplacementMapStableKey = 32;
+static const uint32_t kLerpStableKey = 33;
+static const uint32_t kLumaColorFilterStableKey = 34;
+static const uint32_t kOverDrawColorFilterStableKey = 35;
+static const uint32_t kRectBlurStableKey = 36;
+static const uint32_t kRRectBlurStableKey = 37;
+static const uint32_t kMagnifierStableKey = 38;
+static const uint32_t kLinearMorphologyStableKey = 39;
+static const uint32_t kSparseMorphologyStableKey = 40;
+static const uint32_t kMatrixConvStableKey1 = 41;
+static const uint32_t kMatrixConvStableKey2 = 42;
+
 /*
  * SkRuntimeEffect supports creating custom SkShader and SkColorFilter objects using Skia's SkSL
  * shading language.
@@ -160,23 +183,23 @@ public:
 
     // Color filter SkSL requires an entry point that looks like:
     //     vec4 main(vec4 inColor) { ... }
-    static Result MakeForColorFilter(SkString sksl, const Options&);
-    static Result MakeForColorFilter(SkString sksl) {
-        return MakeForColorFilter(std::move(sksl), Options{});
+    static Result MakeForColorFilter(SkString sksl, const Options&, uint32_t stableKey);
+    static Result MakeForColorFilter(SkString sksl, uint32_t stableKey) {
+        return MakeForColorFilter(std::move(sksl), Options{}, stableKey);
     }
 
     // Shader SkSL requires an entry point that looks like:
     //     vec4 main(vec2 inCoords) { ... }
-    static Result MakeForShader(SkString sksl, const Options&);
-    static Result MakeForShader(SkString sksl) {
-        return MakeForShader(std::move(sksl), Options{});
+    static Result MakeForShader(SkString sksl, const Options&, uint32_t stableKey);
+    static Result MakeForShader(SkString sksl, uint32_t stableKey) {
+        return MakeForShader(std::move(sksl), Options{}, stableKey);
     }
 
     // Blend SkSL requires an entry point that looks like:
     //     vec4 main(vec4 srcColor, vec4 dstColor) { ... }
-    static Result MakeForBlender(SkString sksl, const Options&);
-    static Result MakeForBlender(SkString sksl) {
-        return MakeForBlender(std::move(sksl), Options{});
+    static Result MakeForBlender(SkString sksl, const Options&, uint32_t stableKey);
+    static Result MakeForBlender(SkString sksl, uint32_t stableKey) {
+        return MakeForBlender(std::move(sksl), Options{}, stableKey);
     }
 
     // Object that allows passing a SkShader, SkColorFilter or SkBlender as a child
@@ -284,19 +307,23 @@ private:
                     std::vector<Uniform>&& uniforms,
                     std::vector<Child>&& children,
                     std::vector<SkSL::SampleUsage>&& sampleUsages,
-                    uint32_t flags);
+                    uint32_t flags,
+                    uint32_t stableKey);
 
     sk_sp<SkRuntimeEffect> makeUnoptimizedClone();
 
-    static Result MakeFromSource(SkString sksl, const Options& options, SkSL::ProgramKind kind);
+    static Result MakeFromSource(SkString sksl, const Options& options, SkSL::ProgramKind kind,
+                                 uint32_t stableKey);
 
     static Result MakeInternal(std::unique_ptr<SkSL::Program> program,
                                const Options& options,
-                               SkSL::ProgramKind kind);
+                               SkSL::ProgramKind kind,
+                               uint32_t stableKey);
 
     static SkSL::ProgramSettings MakeSettings(const Options& options);
 
-    uint32_t hash() const { return fHash; }
+    uint32_t hash1() const { return fHash1; }
+    uint32_t stableKey() const { return fStableKey; }
     bool usesSampleCoords()   const { return (fFlags & kUsesSampleCoords_Flag);   }
     bool samplesOutsideMain() const { return (fFlags & kSamplesOutsideMain_Flag); }
     bool usesColorTransform() const { return (fFlags & kUsesColorTransform_Flag); }
@@ -312,7 +339,8 @@ private:
 
     friend class SkRuntimeEffectPriv;
 
-    uint32_t fHash;
+    uint32_t fHash1;
+    uint32_t fStableKey;
 
     std::unique_ptr<SkSL::Program> fBaseProgram;
     std::unique_ptr<SkSL::RP::Program> fRPProgram;

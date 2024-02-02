@@ -39,13 +39,13 @@ static sk_sp<SkShader> paint_color_shader() {
 
 static sk_sp<SkShader> raw_shader(SkColor4f color) {
     return SkRuntimeEffect::MakeForShader(SkString("uniform half4 c;"
-                                                   "half4 main(float2 xy) { return c; }"))
+                                                   "half4 main(float2 xy) { return c; }"), /* stableKey= */ 0)
             .effect->makeShader(SkData::MakeWithCopy(&color, sizeof(SkColor4f)), {});
 }
 
 static sk_sp<SkShader> managed_shader(SkColor4f color) {
     return SkRuntimeEffect::MakeForShader(SkString("layout(color) uniform half4 c;"
-                                                   "half4 main(float2 xy) { return c; }"))
+                                                   "half4 main(float2 xy) { return c; }"), /* stableKey= */ 0)
             .effect->makeShader(SkData::MakeWithCopy(&color, sizeof(SkColor4f)), {});
 }
 
@@ -57,13 +57,13 @@ static sk_sp<SkShader> gradient_shader() {
 
 static sk_sp<SkColorFilter> raw_cf(SkColor4f color) {
     return SkRuntimeEffect::MakeForColorFilter(SkString("uniform half4 c;"
-                                                        "half4 main(half4 color) { return c; }"))
+                                                        "half4 main(half4 color) { return c; }"), /* stableKey= */ 0)
             .effect->makeColorFilter(SkData::MakeWithCopy(&color, sizeof(SkColor4f)));
 }
 
 static sk_sp<SkColorFilter> managed_cf(SkColor4f color) {
     return SkRuntimeEffect::MakeForColorFilter(SkString("layout(color) uniform half4 c;"
-                                                        "half4 main(half4 color) { return c; }"))
+                                                        "half4 main(half4 color) { return c; }"), /* stableKey= */ 0)
             .effect->makeColorFilter(SkData::MakeWithCopy(&color, sizeof(SkColor4f)));
 }
 
@@ -71,7 +71,7 @@ static sk_sp<SkColorFilter> indirect_cf(SkColor4f color) {
     SkRuntimeEffect::ChildPtr children[] = {color_shader(color)};
     return SkRuntimeEffect::MakeForColorFilter(
                    SkString("uniform shader s;"
-                            "half4 main(half4 color) { return s.eval(float2(0)); }"))
+                            "half4 main(half4 color) { return s.eval(float2(0)); }"), /* stableKey= */ 0)
             .effect->makeColorFilter(nullptr, children);
 }
 

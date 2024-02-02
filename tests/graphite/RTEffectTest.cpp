@@ -23,8 +23,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(Shader_FindOrCreateSnippetForRuntimeEffect, r
     std::unique_ptr<SkRuntimeEffect> testEffect(SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "half4 main(float2 coords) {"
             "return half4(coords.xy01);"
-        "}"
-    ));
+        "}",
+        /* stableKey= */ 0));
 
     // Create a new runtime-effect snippet.
     int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
@@ -51,8 +51,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilter_FindOrCreateSnippetForRuntimeEffe
             SkRuntimeEffect::MakeForColorFilter,
                 "half4 main(half4 color) {"
                     "return color.gbra;"
-                "}"
-            ));
+                "}",
+                /* stableKey= */ 0));
 
     // Create a new runtime-effect snippet.
     int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
@@ -79,7 +79,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderUniforms_FindOrCreateSnippetForRuntimeE
         "uniform half2 MyHalf2ArrayUniform[99];"
         "half4 main(float2 coords) {"
             "return half4(coords.xy01);"
-        "}"
+        "}", /* stableKey= */ 0
     ));
 
     // Create a new runtime-effect snippet.
@@ -123,7 +123,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilterUniforms_FindOrCreateSnippetForRun
                 "uniform half2 MyHalf2ArrayUniform[99];"
                 "half4 main(half4 color) {"
                     "return color.gbra;"
-                "}"
+                "}", /* stableKey= */ 0
             ));
 
     // Create a new runtime-effect snippet.

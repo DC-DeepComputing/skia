@@ -74,8 +74,8 @@ public:
         return true;
     }
 
-    static uint32_t Hash(const SkRuntimeEffect& effect) {
-        return effect.hash();
+    static uint32_t Hash1(const SkRuntimeEffect& effect) {
+        return effect.hash1();
     }
 
     static const SkSL::Program& Program(const SkRuntimeEffect& effect) {
@@ -135,21 +135,24 @@ public:
 // keeping these APIs private means users will not be forced into our cache or cache policy.
 
 sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString sksl, const SkRuntimeEffect::Options&),
-        SkString sksl);
+        SkRuntimeEffect::Result (*make)(SkString sksl, const SkRuntimeEffect::Options&, uint32_t stableKey),
+        SkString sksl,
+        uint32_t stableKey);
 
 inline sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&),
-        const char* sksl) {
-    return SkMakeCachedRuntimeEffect(make, SkString{sksl});
+        SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&, uint32_t stableKey),
+        const char* sksl,
+        uint32_t stableKey) {
+    return SkMakeCachedRuntimeEffect(make, SkString{sksl}, stableKey);
 }
 
 // Internal API that assumes (and asserts) that the shader code is valid, but does no internal
 // caching. Used when the caller will cache the result in a static variable. Ownership is passed to
 // the caller; the effect will be leaked if it the pointer is not stored or explicitly deleted.
 inline SkRuntimeEffect* SkMakeRuntimeEffect(
-        SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&),
+        SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&, uint32_t stableKeyIn),
         const char* sksl,
+        uint32_t stableKey,
         SkRuntimeEffect::Options options = SkRuntimeEffect::Options{}) {
 #if defined(SK_DEBUG)
     // Our SKSL snippets we embed in Skia should not have comments or excess indentation.
@@ -159,7 +162,7 @@ inline SkRuntimeEffect* SkMakeRuntimeEffect(
     }
 #endif
     SkRuntimeEffectPriv::AllowPrivateAccess(&options);
-    auto result = make(SkString{sksl}, options);
+    auto result = make(SkString{sksl}, options, stableKey);
     if (!result.effect) {
         SK_ABORT("%s", result.errorText.c_str());
     }

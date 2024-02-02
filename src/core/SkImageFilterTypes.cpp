@@ -276,7 +276,8 @@ sk_sp<SkShader> apply_decal(
             "half4 d = half4(decalBounds - coord.xyxy) * half4(-1, -1, 1, 1);"
             "d = saturate(d + 0.5);"
             "return (d.x*d.y*d.z*d.w) * image.eval(coord);"
-        "}");
+        "}",
+        kDecalStableKey);
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
     builder.child("image") = image->asShader(SkTileMode::kClamp, sampling, preDecal);

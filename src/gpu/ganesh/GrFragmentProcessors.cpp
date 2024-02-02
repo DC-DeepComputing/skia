@@ -363,7 +363,7 @@ static GrFPResult make_colorfilter_fp(GrRecordingContext*,
                                 "half factor = 1 - inColor.a;"
                                 "factor = exp(-factor * factor * 4) - 0.018;"
                                 "return half4(factor);"
-                                "}");
+                                "}", /* stableKey= */ 0);
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrFPSuccess(
             GrSkSLFP::Make(effect, "gaussian_fp", std::move(inputFP), GrSkSLFP::OptFlags::kNone));
@@ -374,7 +374,7 @@ static std::unique_ptr<GrFragmentProcessor> rgb_to_hsl(std::unique_ptr<GrFragmen
             SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
                                 "half4 main(half4 color) {"
                                 "return $rgb_to_hsl(color.rgb, color.a);"
-                                "}");
+                                "}", /* stableKey= */ 0);
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(
             effect, "RgbToHsl", std::move(child), GrSkSLFP::OptFlags::kPreservesOpaqueInput);
@@ -385,7 +385,7 @@ static std::unique_ptr<GrFragmentProcessor> hsl_to_rgb(std::unique_ptr<GrFragmen
             SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
                                 "half4 main(half4 color) {"
                                 "return $hsl_to_rgb(color.rgb, color.a);"
-                                "}");
+                                "}", /* stableKey= */ 0);
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(
             effect, "HslToRgb", std::move(child), GrSkSLFP::OptFlags::kPreservesOpaqueInput);
@@ -556,7 +556,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkCoordClampSha
                                 "uniform float4 s;"
                                 "half4 main(float2 p) {"
                                     "return c.eval(clamp(p, s.LT, s.RB));"
-                                "}");
+                                "}", /* stableKey= */ 0);
 
     auto fp = Make(shader->shader().get(), args, mRec.applied());
     if (!fp) {
@@ -876,7 +876,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                                 "v = -1;"
                             "}"
                             "return half4(half(t), v, 0, 0);"
-                        "}"
+                        "}", /* stableKey= */ 0
                     );
             float r0 = shader->getStartRadius() / shader->getCenterX1();
             fp = GrSkSLFP::Make(kEffect,
@@ -897,7 +897,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                             "half v = 1;"
                             "float t = length(p) * lengthScale - r0;"
                             "return half4(half(t), v, 0, 0);"
-                        "}"
+                        "}", /* stableKey= */ 0
                     );
             float dr = shader->getDiffRadius();
             float r0 = shader->getStartRadius() / dr;
@@ -992,7 +992,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                             "}"
 
                             "return half4(half(t), v, 0, 0);"
-                        "}"
+                        "}", /* stableKey= */ 0
                     );
 
             const SkConicalGradient::FocalData& focalData = shader->getFocalData();
@@ -1029,7 +1029,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkRadialGradi
             SkRuntimeEffect::MakeForShader,
             "half4 main(float2 coord) {"
                 "return half4(half(length(coord)), 1, 0, 0);"  // y = 1 for always valid
-            "}");
+            "}", /* stableKey= */ 0);
     // The radial gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(
             effect, "RadialLayout", /*inputFP=*/nullptr, GrSkSLFP::OptFlags::kPreservesOpaqueInput);
@@ -1065,7 +1065,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkSweepGradie
             // 0.1591549430918 is 1/(2*pi), used since atan returns values [-pi, pi]
             "half t = (angle * 0.1591549430918 + 0.5 + bias) * scale;"
             "return half4(t, 1, 0, 0);" // y = 1 for always valid
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     // The sweep gradient never rejects a pixel so it doesn't change opacity
