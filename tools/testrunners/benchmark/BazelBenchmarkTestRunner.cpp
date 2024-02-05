@@ -575,7 +575,7 @@ static void print_benchmark_stats(Stats* stats,
 // Based on
 // https://skia.googlesource.com/skia/+/a063eaeaf1e09e4d6f42e0f44a5723622a46d21c/bench/nanobench.cpp#1337.
 int main(int argc, char** argv) {
-#ifdef SK_BUILD_FOR_ANDROID
+#if defined(SK_BUILD_FOR_ANDROID)
     extern bool gSkDebugToStdOut;  // If true, sends SkDebugf to stdout as well.
     gSkDebugToStdOut = true;
 #endif
@@ -662,27 +662,28 @@ int main(int argc, char** argv) {
 
         std::unique_ptr<BenchmarkTarget> target =
                 BenchmarkTarget::FromConfig(surfaceConfig, benchmark.get());
-
-        // Print warning about missing cpu_or_gpu key if necessary.
-        if (target->isCpuOrGpuBound() == SurfaceManager::CpuOrGpu::kCPU && cpuName == "") {
-            SkDebugf(
-                    "Warning: The surface is CPU-bound, but flag --cpuName was not provided. "
-                    "Perf traces will omit keys \"cpu_or_gpu\" and \"cpu_or_gpu_value\".\n");
-        }
-        if (target->isCpuOrGpuBound() == SurfaceManager::CpuOrGpu::kGPU && gpuName == "") {
-            SkDebugf(
-                    "Warning: The surface is GPU-bound, but flag --gpuName was not provided. "
-                    "Perf traces will omit keys \"cpu_or_gpu\" and \"cpu_or_gpu_value\".\n");
-        }
+        SkASSERT_RELEASE(target);
 
         if (benchmark->isSuitableFor(target->getBackend())) {
+            // Print warning about missing cpu_or_gpu key if necessary.
+            if (target->isCpuOrGpuBound() == SurfaceManager::CpuOrGpu::kCPU && cpuName == "") {
+                SkDebugf(
+                        "Warning: The surface is CPU-bound, but flag --cpuName was not provided. "
+                        "Perf traces will omit keys \"cpu_or_gpu\" and \"cpu_or_gpu_value\".\n");
+            }
+            if (target->isCpuOrGpuBound() == SurfaceManager::CpuOrGpu::kGPU && gpuName == "") {
+                SkDebugf(
+                        "Warning: The surface is GPU-bound, but flag --gpuName was not provided. "
+                        "Perf traces will omit keys \"cpu_or_gpu\" and \"cpu_or_gpu_value\".\n");
+            }
+
             // Run benchmark and collect samples.
             int loops;
             skia_private::TArray<double> samples;
             skia_private::TArray<SkString> statKeys;
             skia_private::TArray<double> statValues;
             if (!sample_benchmark(target.get(), &loops, &samples, &statKeys, &statValues)) {
-                // Sampling failed. A warning has alredy been printed.
+                // Sampling failed. A warning has already been printed.
                 pool.drain();
                 continue;
             }
@@ -775,6 +776,12 @@ int main(int argc, char** argv) {
             }
 
             pool.drain();
+        } else {
+            if (FLAGS_verbose) {
+                SkDebugf("Skipping %s because backend \"%s\" was unsuitable\n",
+                         target->getBenchmark()->getUniqueName(),
+                         surfaceConfig.c_str());
+            }
         }
     }
 

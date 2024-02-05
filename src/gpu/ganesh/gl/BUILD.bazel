@@ -138,7 +138,11 @@ skia_cc_library(
         "//include/gpu/ganesh/gl:public_hdrs",
         "//include/gpu/gl:ganesh_gl_hdrs",
     ],
-    defines = ["SK_DISABLE_LEGACY_GL_MAKE_NATIVE_INTERFACE"],
+    defines = [
+        "SK_DISABLE_LEGACY_GL_MAKE_NATIVE_INTERFACE",
+        "SK_GANESH",
+        "SK_GL",
+    ],
     features = ["layering_check"],
     visibility = ["//:__pkg__"],
     deps = [
