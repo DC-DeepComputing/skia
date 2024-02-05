@@ -17,13 +17,22 @@
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
+
+#include <diplomat_runtime.hpp>
+
+//#include <ICU4XBidi.h>
+
 #include <ICU4XDataProvider.hpp>
 #include <ICU4XGraphemeClusterSegmenter.hpp>
 #include <ICU4XLineSegmenter.hpp>
 #include <ICU4XWordSegmenter.hpp>
-#include <ICU4XCodePointSetData.hpp>
 #include <ICU4XBidi.hpp>
-
+/*
+#include <diplomat_result_box_ICU4XDataProvider_ICU4XError.h>
+#include <diplomat_result_box_ICU4XGraphemeClusterSegmenter_ICU4XError.h>
+#include <diplomat_result_box_ICU4XLineSegmenter_ICU4XError.h>
+#include <diplomat_result_box_ICU4XWordSegmenter_ICU4XError.h>
+*/
 #include <cstdint>
 #include <unicode/umachine.h>
 #include <algorithm>
