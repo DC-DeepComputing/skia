@@ -63,35 +63,6 @@ bool MtlFormatIsCompressed(MTLPixelFormat mtlFormat) {
     }
 }
 
-const char* MtlFormatToString(MTLPixelFormat mtlFormat) {
-    switch (mtlFormat) {
-        case MTLPixelFormatInvalid:         return "Invalid";
-        case MTLPixelFormatRGBA8Unorm:      return "RGBA8Unorm";
-        case MTLPixelFormatR8Unorm:         return "R8Unorm";
-        case MTLPixelFormatA8Unorm:         return "A8Unorm";
-        case MTLPixelFormatBGRA8Unorm:      return "BGRA8Unorm";
-        case MTLPixelFormatB5G6R5Unorm:     return "B5G6R5Unorm";
-        case MTLPixelFormatRGBA16Float:     return "RGBA16Float";
-        case MTLPixelFormatR16Float:        return "R16Float";
-        case MTLPixelFormatRG8Unorm:        return "RG8Unorm";
-        case MTLPixelFormatRGB10A2Unorm:    return "RGB10A2Unorm";
-        case MTLPixelFormatBGR10A2Unorm:    return "BGR10A2Unorm";
-        case MTLPixelFormatABGR4Unorm:      return "ABGR4Unorm";
-        case MTLPixelFormatRGBA8Unorm_sRGB: return "RGBA8Unorm_sRGB";
-        case MTLPixelFormatR16Unorm:        return "R16Unorm";
-        case MTLPixelFormatRG16Unorm:       return "RG16Unorm";
-        case MTLPixelFormatETC2_RGB8:       return "ETC2_RGB8";
-#ifdef SK_BUILD_FOR_MAC
-        case MTLPixelFormatBC1_RGBA:        return "BC1_RGBA";
-#endif
-        case MTLPixelFormatRGBA16Unorm:     return "RGBA16Unorm";
-        case MTLPixelFormatRG16Float:       return "RG16Float";
-        case MTLPixelFormatStencil8:        return "Stencil8";
-
-        default:                            return "Unknown";
-    }
-}
-
 uint32_t MtlFormatChannels(MTLPixelFormat mtlFormat) {
     switch (mtlFormat) {
         case MTLPixelFormatRGBA8Unorm:      return kRGBA_SkColorChannelFlags;

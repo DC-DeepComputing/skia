@@ -222,40 +222,6 @@ template<typename T> T* GetExtensionFeatureStruct(const VkPhysicalDeviceFeatures
 void SetupSamplerYcbcrConversionInfo(VkSamplerYcbcrConversionCreateInfo* outInfo,
                                      const VulkanYcbcrConversionInfo& conversionInfo);
 
-#if defined(SK_DEBUG) || defined(GR_TEST_UTILS)
-static constexpr const char* VkFormatToStr(VkFormat vkFormat) {
-    switch (vkFormat) {
-        case VK_FORMAT_R8G8B8A8_UNORM:           return "R8G8B8A8_UNORM";
-        case VK_FORMAT_R8_UNORM:                 return "R8_UNORM";
-        case VK_FORMAT_B8G8R8A8_UNORM:           return "B8G8R8A8_UNORM";
-        case VK_FORMAT_R5G6B5_UNORM_PACK16:      return "R5G6B5_UNORM_PACK16";
-        case VK_FORMAT_B5G6R5_UNORM_PACK16:      return "B5G6R5_UNORM_PACK16";
-        case VK_FORMAT_R16G16B16A16_SFLOAT:      return "R16G16B16A16_SFLOAT";
-        case VK_FORMAT_R16_SFLOAT:               return "R16_SFLOAT";
-        case VK_FORMAT_R8G8B8_UNORM:             return "R8G8B8_UNORM";
-        case VK_FORMAT_R8G8_UNORM:               return "R8G8_UNORM";
-        case VK_FORMAT_A2B10G10R10_UNORM_PACK32: return "A2B10G10R10_UNORM_PACK32";
-        case VK_FORMAT_A2R10G10B10_UNORM_PACK32: return "A2R10G10B10_UNORM_PACK32";
-        case VK_FORMAT_B4G4R4A4_UNORM_PACK16:    return "B4G4R4A4_UNORM_PACK16";
-        case VK_FORMAT_R4G4B4A4_UNORM_PACK16:    return "R4G4B4A4_UNORM_PACK16";
-        case VK_FORMAT_R32G32B32A32_SFLOAT:      return "R32G32B32A32_SFLOAT";
-        case VK_FORMAT_R8G8B8A8_SRGB:            return "R8G8B8A8_SRGB";
-        case VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK:  return "ETC2_R8G8B8_UNORM_BLOCK";
-        case VK_FORMAT_BC1_RGB_UNORM_BLOCK:      return "BC1_RGB_UNORM_BLOCK";
-        case VK_FORMAT_BC1_RGBA_UNORM_BLOCK:     return "BC1_RGBA_UNORM_BLOCK";
-        case VK_FORMAT_R16_UNORM:                return "R16_UNORM";
-        case VK_FORMAT_R16G16_UNORM:             return "R16G16_UNORM";
-        case VK_FORMAT_R16G16B16A16_UNORM:       return "R16G16B16A16_UNORM";
-        case VK_FORMAT_R16G16_SFLOAT:            return "R16G16_SFLOAT";
-        case VK_FORMAT_S8_UINT:                  return "S8_UINT";
-        case VK_FORMAT_D24_UNORM_S8_UINT:        return "D24_UNORM_S8_UINT";
-        case VK_FORMAT_D32_SFLOAT_S8_UINT:       return "D32_SFLOAT_S8_UINT";
-
-        default:                                 return "Unknown";
-    }
-}
-#endif // defined(SK_DEBUG) || defined(GR_TEST_UTILS)
-
 #ifdef SK_BUILD_FOR_ANDROID
 /**
  * Vulkan AHardwareBuffer utility functions shared between graphite and ganesh
