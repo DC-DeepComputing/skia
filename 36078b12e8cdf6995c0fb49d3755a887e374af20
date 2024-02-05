@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ecfb30f_c4bdd290",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-05T23:38:28Z",
+      "side": 1,
+      "message": "Why are we trying to remove these TEST_UTILS macros at all? I feel like this came up previously maybe like 6 months ago. The argument is that these are defines we never want/expect a client to ever enable. The only uses will be on our own test jobs where we can control things to enable them. Also there are many use cases where it really makes sense to have the guard they guard with the normal production code. Moving all the many uses to helper utility classes is a big usability lose for Skia developers.",
+      "revId": "36078b12e8cdf6995c0fb49d3755a887e374af20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
