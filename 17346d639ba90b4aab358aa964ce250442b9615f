@@ -16,6 +16,24 @@
       "message": "LGTM if it fixes g3.",
       "revId": "17346d639ba90b4aab358aa964ce250442b9615f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef144b2_d987abbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-05T16:45:42Z",
+      "side": 1,
+      "message": "I think it should, but the canary has merge issues.",
+      "parentUuid": "b6e3ac1c_2a7d3a28",
+      "revId": "17346d639ba90b4aab358aa964ce250442b9615f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
