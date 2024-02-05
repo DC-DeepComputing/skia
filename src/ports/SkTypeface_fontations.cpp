@@ -5,10 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/effects/SkGradientShader.h"
@@ -294,6 +297,7 @@ protected:
         static const constexpr value_type PATH = 1;
         static const constexpr value_type COLRv0 = 2;
         static const constexpr value_type COLRv1 = 3;
+        static const constexpr value_type BITMAP = 4;
     };
 
     GlyphMetrics generateMetrics(const SkGlyph& glyph, SkArenaAlloc*) override {
@@ -322,6 +326,8 @@ protected:
                 fontations_ffi::has_colrv1_glyph(fBridgeFontRef, glyph.getGlyphID());
         bool has_colrv0_glyph =
                 fontations_ffi::has_colrv0_glyph(fBridgeFontRef, glyph.getGlyphID());
+        bool has_bitmap_glyph =
+                fontations_ffi::has_bitmap_glyph(fBridgeFontRef, glyph.getGlyphID());
 
         if (has_colrv1_glyph || has_colrv0_glyph) {
             mx.extraBits = has_colrv1_glyph ? ScalerContextBits::COLRv1 : ScalerContextBits::COLRv0;
@@ -367,6 +373,11 @@ protected:
                     }
                 }
             }
+        } else if (has_bitmap_glyph) {
+            mx.maskFormat = SkMask::kARGB32_Format;
+            mx.neverRequestPath = true;
+            mx.extraBits = ScalerContextBits::BITMAP;
+            mx.bounds = SkRect::MakeSize(SkSize::Make(scale.fX, scale.fY));
         } else {
             // TODO: Retrieve from read_fonts and Skrifa - TrueType bbox or from path with
             // hinting?
@@ -410,6 +421,39 @@ protected:
             canvas.translate(-glyph.left(), -glyph.top());
 
             drawCOLRGlyph(glyph, fRec.fForegroundColor, &canvas);
+        } else if (format == ScalerContextBits::BITMAP) {
+            SkASSERT(glyph.maskFormat() == SkMask::kARGB32_Format);
+            SkBitmap dstBitmap;
+            dstBitmap.setInfo(
+                    SkImageInfo::Make(
+                            glyph.width(), glyph.height(), kN32_SkColorType, kPremul_SkAlphaType),
+                    glyph.rowBytes());
+            dstBitmap.setPixels(imageBuffer);
+
+            SkCanvas canvas(dstBitmap);
+
+            rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
+                    fontations_ffi::bitmap_glyph(fBridgeFontRef, glyph.getGlyphID());
+            rust::cxxbridge1::Slice<const uint8_t> png_data =
+                    fontations_ffi::png_data(*bitmap_glyph);
+            SkASSERT(png_data.size());
+
+            // TODO: Check this first before allocating anything?
+            std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(
+                    SkData::MakeWithoutCopy(png_data.data(), png_data.size()), nullptr);
+            auto [glyph_image, result] = codec->getImage();
+
+            if (result == SkCodec::Result::kSuccess) {
+                canvas.clear(SK_ColorTRANSPARENT);
+                // TODO: Fix scaling computation, needs to be controlled by pixel size and ppem info
+                // from font, needs to take into account sbix rules on placement within glyf shape
+                // rect.
+                canvas.scale((float)glyph.width() / glyph_image->width(),
+                             (float)glyph.height() / glyph_image->height());
+                // TODO: Take into account offset information from image.
+                canvas.drawImage(glyph_image, 0, 0);
+            }
+
         } else {
             SK_ABORT("Bad format");
         }
@@ -481,6 +525,9 @@ protected:
             }
         };
         ScalerContextBits::value_type format = glyph.extraBits();
+        if (format == ScalerContextBits::BITMAP) {
+            return nullptr;
+        }
         SkASSERT(format == ScalerContextBits::COLRv1 || format == ScalerContextBits::COLRv0);
         return sk_sp<SkDrawable>(new ColrGlyphDrawable(this, glyph));
     }
