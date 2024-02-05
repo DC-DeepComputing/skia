@@ -105,6 +105,7 @@
 
 #if defined(SK_ENABLE_PRECOMPILE)
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
@@ -2277,6 +2278,7 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
     }
 
     context->priv().globalCache()->resetGraphicsPipelines();
+    context->priv().resourceProvider()->resetStats();
 
     Result result = this->drawSrc(src, context, ctxInfo.fTestContext);
     if (!result.isOk()) {
@@ -2284,11 +2286,17 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    int numInCache = context->priv().globalCache()->numGraphicsPipelines();
+    int firstPassCount = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    SkASSERT(numInCache == firstPassCount);
+
     result = this->resetAndRecreatePipelines(context);
     if (!result.isOk()) {
         fRecorder.reset();
         return result;
     }
+
+    context->priv().resourceProvider()->resetStats();
 
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
     if (!result.isOk()) {
@@ -2297,6 +2305,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
     }
 
     fRecorder.reset();
+
+    int secondPassCount = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    SkASSERT(firstPassCount == secondPassCount);
 
     // TODO: check that no additional pipelines were created during the second 'drawSrc' call
     return Result::Ok();
