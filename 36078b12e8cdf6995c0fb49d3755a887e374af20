@@ -16,6 +16,41 @@
       "message": "Why are we trying to remove these TEST_UTILS macros at all? I feel like this came up previously maybe like 6 months ago. The argument is that these are defines we never want/expect a client to ever enable. The only uses will be on our own test jobs where we can control things to enable them. Also there are many use cases where it really makes sense to have the guard they guard with the normal production code. Moving all the many uses to helper utility classes is a big usability lose for Skia developers.",
       "revId": "36078b12e8cdf6995c0fb49d3755a887e374af20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c9623a2_4d99bc81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-05T23:47:30Z",
+      "side": 1,
+      "message": "Oh wait the goal here just to move it out of non-ganesh code because it has a GR name? If that is the case, I don\u0027t think there is anything special about it being GR and only used with ganesh. I bet we could just change all GR_TEST_UTILS macros to be GPU_TEST_UTILS instead. If there are any cases that were actually using it to be \"are we running our tests and are in ganesh\" then we can just add the `\u0026\u0026 defined(SK_GANESH)`. Having just one global GPU_TEST_UTILS define seems better anyways.",
+      "parentUuid": "7ecfb30f_c4bdd290",
+      "revId": "36078b12e8cdf6995c0fb49d3755a887e374af20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbffb968_273e9511",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-05T23:47:30Z",
+      "side": 1,
+      "message": "Oh wait I think I missed the",
+      "revId": "36078b12e8cdf6995c0fb49d3755a887e374af20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
