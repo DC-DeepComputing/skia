@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9431dbe3_16414f9f",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-05T17:55:47Z",
+      "side": 1,
+      "message": "Update comment",
+      "range": {
+        "startLine": 840,
+        "startChar": 32,
+        "endLine": 842,
+        "endChar": 21
+      },
+      "revId": "b4430fa18d7ed5d2583c7a426bf33164c5b25b1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5432757a_0ce0196c",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-05T17:55:47Z",
+      "side": 1,
+      "message": "Extra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 468,
+        "startChar": 42,
+        "endLine": 468,
+        "endChar": 43
+      },
+      "revId": "b4430fa18d7ed5d2583c7a426bf33164c5b25b1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec3fa6b8_5c61aebd",
         "filename": "tests/FilterResultTest.cpp",
         "patchSetId": 12
@@ -14,6 +60,30 @@
       "writtenOn": "2024-02-05T16:17:02Z",
       "side": 1,
       "message": "When using `kLogAllBitmaps`, without this copy, the expected image would be gradually corrupted by the marked error pixels and then cause later comparisons with different ResolveMethods to fail when they normally wouldn\u0027t.",
+      "range": {
+        "startLine": 820,
+        "startChar": 12,
+        "endLine": 822,
+        "endChar": 64
+      },
+      "revId": "b4430fa18d7ed5d2583c7a426bf33164c5b25b1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ac356b2_d30cf29c",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-05T17:55:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ec3fa6b8_5c61aebd",
       "range": {
         "startLine": 820,
         "startChar": 12,
