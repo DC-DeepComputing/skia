@@ -2252,6 +2252,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(fRecorder);
 
+    dfdsfs
     // TODO: reset the pipelines and then recreate them here
     return Result::Ok();
 }
