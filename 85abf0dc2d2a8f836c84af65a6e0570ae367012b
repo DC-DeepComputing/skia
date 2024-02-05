@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae02fdb6_5b7c5567",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-05T19:50:50Z",
+      "side": 1,
+      "message": "Dominik, there is a Rust problem with using match on types from skrifa Attributes (see the comments).\nCurrently, I cannot even compile the code with your suggestions.",
+      "revId": "85abf0dc2d2a8f836c84af65a6e0570ae367012b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cbf45e0d_925218e1",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-05T19:50:50Z",
+      "side": 1,
+      "message": "I still have this question: how to I use match pattern without changing skrifa?\nIt looks like I need #[derive(PartialEq, Eq)] on Weight, Styke and Stretch.\nThe current way that you see now does not compile. I looked through the Internet and could not find a solution...",
+      "parentUuid": "89408ce1_81442ac9",
+      "range": {
+        "startLine": 723,
+        "startChar": 24,
+        "endLine": 723,
+        "endChar": 38
+      },
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc9e45bf_2f0ec806",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 16
