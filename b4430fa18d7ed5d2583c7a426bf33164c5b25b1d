@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec3fa6b8_5c61aebd",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-05T16:17:02Z",
+      "side": 1,
+      "message": "When using `kLogAllBitmaps`, without this copy, the expected image would be gradually corrupted by the marked error pixels and then cause later comparisons with different ResolveMethods to fail when they normally wouldn\u0027t.",
+      "range": {
+        "startLine": 820,
+        "startChar": 12,
+        "endLine": 822,
+        "endChar": 64
+      },
+      "revId": "b4430fa18d7ed5d2583c7a426bf33164c5b25b1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
