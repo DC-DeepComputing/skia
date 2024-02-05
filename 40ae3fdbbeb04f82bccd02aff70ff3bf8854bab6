@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6677d46d_a9db0d09",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-05T23:22:45Z",
+      "side": 0,
+      "message": "What\u0027s wrong with this? `src/gpu/mtl/MtlUtils.mm` is a shared location that Ganesh and Graphite can both use. I don\u0027t understand the issue.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 57
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a907b91_119543a8",
+        "filename": "src/gpu/mtl/MtlUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-05T23:22:45Z",
+      "side": 0,
+      "message": "Just remove the guard if that is the concern. Let the linker take care of eliminating it.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 47
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16c7c158_4c6ab36f",
         "filename": "src/sksl/SkSLModuleLoader.cpp",
         "patchSetId": 4
