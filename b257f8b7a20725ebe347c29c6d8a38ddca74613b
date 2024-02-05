@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2efb1300_b8e74285",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-05T16:06:21Z",
+      "side": 1,
+      "message": "previously, the layer bounds checks were done last, but they had to be moved first so that we could detect when the dst bounds would be restricted by the layer crop. In that case, the actual image-sampled bounds are smaller so make it more likely that the image sampling is safe to the subset.",
+      "range": {
+        "startLine": 628,
+        "startChar": 7,
+        "endLine": 629,
+        "endChar": 48
+      },
+      "revId": "b257f8b7a20725ebe347c29c6d8a38ddca74613b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842effd6_9d312b2e",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-05T16:06:21Z",
+      "side": 1,
+      "message": "this is roughly equivalent to the QuadContainsRect check that was in the deleted decal_tiling_differs_from_aa() helper function, but now its results can be used to also analyze how sampling accesses texels with any tile mode.",
+      "range": {
+        "startLine": 695,
+        "startChar": 26,
+        "endLine": 698,
+        "endChar": 74
+      },
+      "revId": "b257f8b7a20725ebe347c29c6d8a38ddca74613b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d79285f_3410962e",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-05T16:06:21Z",
+      "side": 1,
+      "message": "The old implementation of fuzzy scale factor matching transformed the sample radius by the transform and then compared the dimensions to the original. This changes it to just extract scale factors and compare to identity scale factor.\n\nHowever, the fuzzy threshold had to change from 0.1 to 0.2. Previously a scale factor of 0.8 applied to a 0.5 sample radius produced a new radius of 0.4, which was considered acceptable with the 0.1 threshold. To avoid changing when the decal shader kicks in, the threshold for the actual scale factor has to be 0.2 to let 0.8 be acceptable.",
+      "range": {
+        "startLine": 721,
+        "startChar": 16,
+        "endLine": 723,
+        "endChar": 69
+      },
+      "revId": "b257f8b7a20725ebe347c29c6d8a38ddca74613b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c32a1f96_bf8864d5",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-05T16:06:21Z",
+      "side": 1,
+      "message": "most of this logic is identical to what was in `apply_decal`, with the added checks to switch to non-strict shaders and use kClamp when the tile mode wouldn\u0027t be visible.",
+      "range": {
+        "startLine": 1208,
+        "startChar": 30,
+        "endLine": 1208,
+        "endChar": 51
+      },
+      "revId": "b257f8b7a20725ebe347c29c6d8a38ddca74613b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "483d4c0a_a1473bc6",
+        "filename": "src/core/SkRectPriv.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-05T16:06:21Z",
+      "side": 1,
+      "message": "This version is needed so that we can disregard edges that are HW tiled.",
+      "range": {
+        "startLine": 97,
+        "startChar": 22,
+        "endLine": 97,
+        "endChar": 42
+      },
+      "revId": "b257f8b7a20725ebe347c29c6d8a38ddca74613b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
