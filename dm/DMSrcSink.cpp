@@ -105,6 +105,7 @@
 
 #if defined(SK_ENABLE_PRECOMPILE)
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
@@ -2290,6 +2291,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    context->priv().resourceProvider()->resetStats();
+
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
     if (!result.isOk()) {
         fRecorder.reset();
@@ -2297,6 +2300,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
     }
 
     fRecorder.reset();
+
+    int numGraphicsPipelineCreations = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    SkASSERT(numGraphicsPipelineCreations == 0);
 
     // TODO: check that no additional pipelines were created during the second 'drawSrc' call
     return Result::Ok();
