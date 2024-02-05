@@ -8082,6 +8082,7 @@ UNIX_ONLY_TEST(SkParagraph_EndWithLineSeparator, reporter) {
     REPORTER_ASSERT(reporter, visitedCount == 3);
 }
 
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION) || defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_EmojiFontResolution, reporter) {
     auto fontCollection = sk_make_sp<FontCollection>();
     fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr(), std::vector<SkString>());
@@ -8119,11 +8120,12 @@ UNIX_ONLY_TEST(SkParagraph_EmojiFontResolution, reporter) {
         REPORTER_ASSERT(reporter, ff.equals(ff1));
     }
 }
+#endif
 
-#ifdef SK_UNICODE_ICU_IMPLEMENTATION
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION) || defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_EmojiRuns, reporter) {
 
-    auto icu = SkUnicode::MakeIcuBasedUnicode();
+    auto icu = SkUnicode::Make();
 
     auto test = [&](const char* text, SkUnichar expected) {
         SkString str(text);
