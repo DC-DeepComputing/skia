@@ -138,16 +138,6 @@ public:
     };
     inline static constexpr int kMaskTypeCount = static_cast<int>(MaskType::kLast) + 1;
 
-#if defined(GR_TEST_UTILS)
-    static GrOp::Owner CreateOpTestingOnly(skgpu::ganesh::SurfaceDrawContext*,
-                                           const SkPaint&,
-                                           const SkFont&,
-                                           const SkMatrix&,
-                                           const char* text,
-                                           int x,
-                                           int y);
-#endif
-
 private:
     friend class GrOp; // for ctor
 
