@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "367a7787_935b1f2d",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2278,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-05T16:55:16Z",
+      "side": 1,
+      "message": "A comment block describing the intent of the control flow here might be helpful. For example, I\u0027m not sure what the difference is between resetGraphicsPipelines and resetAndRecreateGraphicsPipeines. I guess it\u0027s reflected the comment in DMSrcSink.h but I think it might be helpful to have something here too.",
+      "revId": "6edc8a439e50b6580186ba970fc13ad20cd57ad2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
