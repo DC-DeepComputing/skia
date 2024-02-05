@@ -17,11 +17,15 @@
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
+
+#include <diplomat_runtime.hpp>
+
+//#include <ICU4XBidi.h>
+
 #include <ICU4XDataProvider.hpp>
 #include <ICU4XGraphemeClusterSegmenter.hpp>
 #include <ICU4XLineSegmenter.hpp>
 #include <ICU4XWordSegmenter.hpp>
-#include <ICU4XCodePointSetData.hpp>
 #include <ICU4XBidi.hpp>
 
 #include <cstdint>
@@ -32,11 +36,32 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <ICU4XCodePointSetData.hpp>
+#include <ICU4XCodePointMapData8.hpp>
+#include <ICU4XCaseMapper.hpp>
 
-class SkUnicode_icu4x :  public SkUnicodeHardCodedCharProperties {
+class SkUnicode_icu4x :  public SkUnicode {
 public:
-    SkUnicode_icu4x()
-        : fDataProvider(ICU4XDataProvider::create_test()) { }
+    SkUnicode_icu4x() {
+        fLocale = ICU4XLocale::create_from_string("tr").ok().value();
+        fDataProvider = ICU4XDataProvider::create_compiled();
+        fCaseMapper = ICU4XCaseMapper::create(fDataProvider).ok().value();
+        const auto general = ICU4XCodePointMapData8::load_general_category(fDataProvider).ok().value();
+        fControls = general.get_set_for_value(/*Control*/15);
+        fWhitespaces = general.get_set_for_value(/*SpaceSeparator*/12);
+        fSpaces = general.get_set_for_value(/*SpaceSeparator*/12);
+        // TODO: u_isSpace
+        fBlanks = ICU4XCodePointSetData::load_blank(fDataProvider).ok().value();
+        fEmoji = ICU4XCodePointSetData::load_emoji(fDataProvider).ok().value();
+        fEmojiComponent = ICU4XCodePointSetData::load_emoji_component(fDataProvider).ok().value();
+        fEmojiModifier = ICU4XCodePointSetData::load_emoji_modifier(fDataProvider).ok().value();
+        fEmojiModifierBase = ICU4XCodePointSetData::load_emoji_modifier_base(fDataProvider).ok().value();
+        fEmoji = ICU4XCodePointSetData::load_emoji(fDataProvider).ok().value();
+        fRegionalIndicator = ICU4XCodePointSetData::load_regional_indicator(fDataProvider).ok().value();
+        fIdeographic = ICU4XCodePointSetData::load_ideographic(fDataProvider).ok().value();
+        const auto lineBreaks = ICU4XCodePointMapData8::load_line_break(fDataProvider).ok().value();
+        fHardLineBreaks = lineBreaks.get_set_for_value(/*MandatoryBreak*/6);
+    }
 
     ~SkUnicode_icu4x() override = default;
 
@@ -45,6 +70,24 @@ public:
     }
 
     void reset();
+
+    // SkUnicode properties
+    bool isControl(SkUnichar utf8) override { return fControls.contains(utf8); }
+    bool isWhitespace(SkUnichar utf8) override { return fWhitespaces.contains(utf8); }
+    bool isSpace(SkUnichar utf8) override { return fBlanks.contains(utf8); }
+    bool isHardBreak(SkUnichar utf8) override { return fHardLineBreaks.contains(utf8); }
+    bool isEmoji(SkUnichar utf8) override { return fEmoji.contains(utf8); }
+    bool isEmojiComponent(SkUnichar utf8) override { return fEmojiComponent.contains(utf8); }
+    bool isEmojiModifierBase(SkUnichar utf8) override { return fEmojiModifierBase.contains(utf8); }
+    bool isEmojiModifier(SkUnichar utf8) override { return fEmojiModifier.contains(utf8); }
+    bool isRegionalIndicator(SkUnichar utf8) override { return fRegionalIndicator.contains(utf8); }
+    bool isIdeographic(SkUnichar utf8) override { return fIdeographic.contains(utf8); }
+
+    // TODO: is there a check for tabulation
+    bool isTabulation(SkUnichar utf8) override {
+        return utf8 == '\t';
+    }
+
     // For SkShaper
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[], int count,
                                                      SkBidiIterator::Direction dir) override;
@@ -92,6 +135,7 @@ public:
                               skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         results->clear();
         results->push_back_n(utf8Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
+        // TODO: deal with hardLineBreak hack
         this->markLineBreaks(utf8, utf8Units, /*hardLineBreaks=*/false, results);
         //this->markLineBreaks(utf8, utf8Units, /*hardLineBreaks=*/true, results);
         this->markHardLineBreaksHack(utf8, utf8Units, results);
@@ -125,8 +169,15 @@ public:
     }
 
     SkString toUpper(const SkString& str) override {
-        SkDEBUGFAIL("Method 'toUpper' is not implemented yet.\n");
-        return SkString();
+        return toUpper(str, "und");
+    }
+
+    SkString toUpper(const SkString& str, const char* localeStr) override {
+        auto locale = ICU4XLocale::create_from_string(localeStr).ok().value();
+        std::string std_string(str.data(), str.size());
+        // TODO: upper case
+        auto result = fCaseMapper.uppercase(std_string, locale).ok().value();
+        return SkString(result.data(), result.size());
     }
 
     void reorderVisual(const BidiLevel runLevels[],
@@ -251,8 +302,21 @@ private:
         return false;
     }
 
-    ICU4XDataProvider fDataProvider;
     std::shared_ptr<std::vector<SkUnicode::BidiRegion>> fRegions;
+    ICU4XLocale fLocale;
+    ICU4XDataProvider fDataProvider;
+    ICU4XCaseMapper fCaseMapper;
+    ICU4XCodePointSetData fWhitespaces;
+    ICU4XCodePointSetData fSpaces;
+    ICU4XCodePointSetData fBlanks;
+    ICU4XCodePointSetData fEmoji;
+    ICU4XCodePointSetData fEmojiComponent;
+    ICU4XCodePointSetData fEmojiModifier;
+    ICU4XCodePointSetData fEmojiModifierBase;
+    ICU4XCodePointSetData fRegionalIndicator;
+    ICU4XCodePointSetData fIdeographic;
+    ICU4XCodePointSetData fControls;
+    ICU4XCodePointSetData fHardLineBreaks;
 };
 
 class SkBreakIterator_icu4x: public SkBreakIterator {
@@ -322,6 +386,7 @@ std::unique_ptr<SkBreakIterator> SkUnicode_icu4x::makeBreakIterator(const char l
                                                    BreakType breakType) {
     SkASSERT(false); return nullptr;
 }
+
 std::unique_ptr<SkBreakIterator> SkUnicode_icu4x::makeBreakIterator(BreakType breakType) {
     SkASSERT(false); return nullptr;
 }
