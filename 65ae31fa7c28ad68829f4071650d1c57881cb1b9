@@ -33,6 +33,23 @@
       "message": "Here is the godbolt link...\nhttps://godbolt.org/z/1nTovWzfd",
       "revId": "65ae31fa7c28ad68829f4071650d1c57881cb1b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8ffd497_53ebb2ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-05T20:46:54Z",
+      "side": 1,
+      "message": "Do we know how to tell MSVC that the divide by zero is ok?",
+      "revId": "65ae31fa7c28ad68829f4071650d1c57881cb1b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
