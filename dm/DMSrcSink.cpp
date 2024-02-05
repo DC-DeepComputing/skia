@@ -98,11 +98,25 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ShaderCodeDictionary.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
-#endif
+
+#if defined(SK_ENABLE_PRECOMPILE)
+#include "src/gpu/graphite/Precompile.h"
+#include "src/gpu/graphite/PublicPrecompile.h"
+#endif // SK_ENABLE_PRECOMPILE
+
+#endif // SK_GRAPHITE
+
 
 #if defined(SK_ENABLE_ANDROID_UTILS)
     #include "client_utils/android/BitmapRegionDecoder.h"
@@ -2194,7 +2208,109 @@ sk_sp<SkSurface> GraphiteSink::makeSurface(skgpu::graphite::Recorder* recorder,
     SkUNREACHABLE;
 }
 
-#endif
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#if defined(SK_ENABLE_PRECOMPILE)
+
+GraphitePrecompileTestingSink::GraphitePrecompileTestingSink(
+        const SkCommandLineConfigGraphite* config) : GraphiteSink(config) {}
+
+GraphitePrecompileTestingSink::~GraphitePrecompileTestingSink() {}
+
+Result GraphitePrecompileTestingSink::drawSrc(
+        const Src& src,
+        skgpu::graphite::Context* context,
+        skiatest::graphite::GraphiteTestContext* testContext) const {
+    if (!fRecorder) {
+        fRecorder = context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+        if (!fRecorder) {
+            return Result::Fatal("Could not create a recorder.");
+        }
+    }
+
+    sk_sp<SkSurface> surface = this->makeSurface(fRecorder.get(), src.size());
+    if (!surface) {
+        return Result::Fatal("Could not create a surface.");
+    }
+    Result result = src.draw(surface->getCanvas(), testContext);
+    if (!result.isOk()) {
+        return result;
+    }
+
+    std::unique_ptr<skgpu::graphite::Recording> recording = fRecorder->snap();
+    if (!recording) {
+        return Result::Fatal("Could not create a recording.");
+    }
+
+    skgpu::graphite::InsertRecordingInfo info;
+    info.fRecording = recording.get();
+    if (!context->insertRecording(info)) {
+        return Result::Fatal("Context::insertRecording failed.");
+    }
+    if (!context->submit(skgpu::graphite::SyncToCpu::kYes)) {
+        return Result::Fatal("Context::submit failed.");
+    }
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
+        skgpu::graphite::Context* context) const {
+    using namespace skgpu::graphite;
+
+    SkASSERT(fRecorder);
+
+    return Result::Ok();
+}
+
+Result GraphitePrecompileTestingSink::draw(const Src& src,
+                                           SkBitmap* dst,
+                                           SkWStream* dstStream,
+                                           SkString* log) const {
+    skiatest::graphite::TestOptions options = fOptions;
+    // If we've copied context options from an external source we can't trust that the
+    // priv pointer is still in scope, so assume it should be NULL and set our own up.
+    SkASSERT(!options.fContextOptions.fOptionsPriv);
+    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    options.fContextOptions.fOptionsPriv = &optionsPriv;
+
+    src.modifyGraphiteContextOptions(&options.fContextOptions);
+
+    skiatest::graphite::ContextFactory factory(options);
+    skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
+    skgpu::graphite::Context* context = ctxInfo.fContext;
+    if (!context) {
+        return Result::Fatal("Could not create a context.");
+    }
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    Result result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        fRecorder.reset();
+        return result;
+    }
+
+    result = this->resetAndRecreatePipelines(context);
+    if (!result.isOk()) {
+        fRecorder.reset();
+        return result;
+    }
+
+    result = this->drawSrc(src, context, ctxInfo.fTestContext);
+    if (!result.isOk()) {
+        fRecorder.reset();
+        return result;
+    }
+
+    fRecorder.reset();
+
+    // TODO: check that no additional pipelines were created during the second 'drawSrc' call
+    return Result::Ok();
+}
+#endif // SK_ENABLE_PRECOMPILE
+
+#endif // SK_GRAPHITE
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
