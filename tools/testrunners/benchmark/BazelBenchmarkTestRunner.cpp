@@ -575,7 +575,7 @@ static void print_benchmark_stats(Stats* stats,
 // Based on
 // https://skia.googlesource.com/skia/+/a063eaeaf1e09e4d6f42e0f44a5723622a46d21c/bench/nanobench.cpp#1337.
 int main(int argc, char** argv) {
-#ifdef SK_BUILD_FOR_ANDROID
+#if defined(SK_BUILD_FOR_ANDROID)
     extern bool gSkDebugToStdOut;  // If true, sends SkDebugf to stdout as well.
     gSkDebugToStdOut = true;
 #endif
@@ -662,6 +662,7 @@ int main(int argc, char** argv) {
 
         std::unique_ptr<BenchmarkTarget> target =
                 BenchmarkTarget::FromConfig(surfaceConfig, benchmark.get());
+        SkASSERT_RELEASE(target);
 
         // Print warning about missing cpu_or_gpu key if necessary.
         if (target->isCpuOrGpuBound() == SurfaceManager::CpuOrGpu::kCPU && cpuName == "") {

@@ -86,6 +86,21 @@ public:
     NonRenderingBenchmarkTarget(Benchmark* benchmark) : RasterBenchmarkTarget(nullptr, benchmark) {}
 
     Benchmark::Backend getBackend() const override { return Benchmark::kNonRendering_Backend; }
+
+    SurfaceManager::CpuOrGpu isCpuOrGpuBound() const override {
+        return SurfaceManager::CpuOrGpu::kCPU;
+    }
+
+    std::map<std::string, std::string> getKeyValuePairs(std::string cpuName,
+                                                        std::string gpuName) const override {
+        if (cpuName == "") {
+            return std::map<std::string, std::string>();
+        }
+        return {
+            {"cpu_or_gpu", "CPU"},
+            {"cpu_or_gpu_value", cpuName},
+        };
+    }
 };
 
 std::unique_ptr<BenchmarkTarget> BenchmarkTarget::FromConfig(std::string surfaceConfig,
