@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16c7c158_4c6ab36f",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-05T23:18:09Z",
+      "side": 0,
+      "message": "`GR_TEST_UTILS` is here to allow perfbots to give stats on Graphite modules:\nhttps://skia-review.googlesource.com/c/skia/+/743237\n\n@egdaniel@google.com Is `SK_GRAPHITE` defined on perf bots now?\n\nIf not, would there be any reason not to enable it? (We don\u0027t necessarily need to use Graphite, just enable the flag.)",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 49
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
