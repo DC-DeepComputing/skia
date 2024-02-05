@@ -2246,13 +2246,38 @@ Result GraphitePrecompileTestingSink::drawSrc(
     return Result::Ok();
 }
 
+namespace {
+
+void fetch_unique_keys(skgpu::graphite::GlobalCache* globalCache,
+                       std::vector<skgpu::UniqueKey>* keys) {
+    keys->reserve(globalCache->numGraphicsPipelines());
+    globalCache->forEachGraphicsPipeline([keys](const skgpu::UniqueKey& key,
+                                                const skgpu::graphite::GraphicsPipeline* pipeline) {
+                                                    keys->push_back(key);
+                                         });
+}
+
+} // anonymous namespace
+
 Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
         skgpu::graphite::Context* context) const {
     using namespace skgpu::graphite;
 
     SkASSERT(fRecorder);
 
-    // TODO: reset the pipelines and then recreate them here
+    std::vector<skgpu::UniqueKey> keys;
+
+    fetch_unique_keys(context->priv().globalCache(), &keys);
+
+    int numBeforeReset = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERT(numBeforeReset == keys.size());
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    SkASSERT(context->priv().globalCache()->numGraphicsPipelines() == 0);
+
+    // TODO: recreate the Pipelines here from the UniqueKeys
+
     return Result::Ok();
 }
 
@@ -2294,6 +2319,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    int numBeforeRerendering = context->priv().globalCache()->numGraphicsPipelines();
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2303,6 +2330,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
     }
 
     fRecorder.reset();
+
+    int numAfterRerendering = context->priv().globalCache()->numGraphicsPipelines();
 
     // TODO: verify that no additional pipelines were created during the second 'drawSrc' call
     return Result::Ok();
