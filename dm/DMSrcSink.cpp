@@ -2252,6 +2252,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(fRecorder);
 
+    dfdsfs
     // TODO: reset the pipelines and then recreate them here
     return Result::Ok();
 }
@@ -2297,6 +2298,10 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
     }
 
     fRecorder.reset();
+
+    // All of the pipelines should've been created by the pre-compilation
+    int numGraphicsPipelineCreations = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    SkASSERT(numGraphicsPipelineCreations == 0);
 
     // TODO: check that no additional pipelines were created during the second 'drawSrc' call
     return Result::Ok();
