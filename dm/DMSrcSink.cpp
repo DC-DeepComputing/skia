@@ -105,6 +105,8 @@
 
 #if defined(SK_ENABLE_PRECOMPILE)
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
@@ -2252,7 +2254,9 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(fRecorder);
 
-    // TODO: reset the pipelines and then recreate them here
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    // TODO: recreate the pipelines here
     return Result::Ok();
 }
 
@@ -2278,6 +2282,11 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     // First, clear out any miscellaneous Pipelines that might be cluttering up the global cache.
     context->priv().globalCache()->resetGraphicsPipelines();
+    context->priv().resourceProvider()->resetStats();
+    int numInCache0 = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERT(numInCache0 == 0);
+    int foo = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    SkASSERT(foo == 0);
 
     // Draw the Src for the first time, populating the global pipeline cache.
     Result result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2285,6 +2294,13 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         fRecorder.reset();
         return result;
     }
+
+    SkDebugf("local %p global %p\n", fRecorder->priv().resourceProvider(),
+             context->priv().resourceProvider());
+    int globalCnt1 = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    int localCnt1 = fRecorder->priv().resourceProvider()->numGraphicsPipelineCreations();
+    int numInCache1 = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERTF(numInCache1 == (localCnt1 + globalCnt1), "cached %d != created %d+%d", numInCache1, localCnt1, globalCnt1);
 
     // Call resetAndRecreatePipelines to clear out all the Pipelines in the global cache and then
     // regenerate them using the Precompilation system.
@@ -2294,6 +2310,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    context->priv().resourceProvider()->resetStats();
+    fRecorder->priv().resourceProvider()->resetStats();
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2301,6 +2320,13 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         fRecorder.reset();
         return result;
     }
+
+    int globalCnt2 = context->priv().resourceProvider()->numGraphicsPipelineCreations();
+    int localCnt2 = fRecorder->priv().resourceProvider()->numGraphicsPipelineCreations();
+    int numInCache2 = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERT(localCnt1 == localCnt2);
+    SkASSERT(globalCnt1 == globalCnt2);
+    SkASSERT(numInCache1 == numInCache2);
 
     fRecorder.reset();
 
