@@ -185,6 +185,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07d8111e_1a78aafe",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-06T14:01:04Z",
+      "side": 1,
+      "message": "Right, this won\u0027t work, because `Weight` is implemented as wrapping a floating point value and we won\u0027t be able to use that in `match`. \n\nFor `weight`, perhaps the long `if` chain can be replaced with a formula + less `ifs` - to get and using `Weight::value()`?",
+      "parentUuid": "cbf45e0d_925218e1",
+      "range": {
+        "startLine": 723,
+        "startChar": 24,
+        "endLine": 723,
+        "endChar": 38
+      },
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc9e45bf_2f0ec806",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 16
@@ -296,6 +320,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "f9beb8a4_4e5dc877",
+      "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfde5331_05f4b010",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 16
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-06T14:01:04Z",
+      "side": 1,
+      "message": "Okay, sorry my suggestion does not work, so ok for me to use the `ifs`, or alternative, use match with match guards, e.g. \n\n```\nmatch attrs.stretch {\n  x if x \u003d\u003d Stretch::ULTRA_CONDENSED \u003d\u003e 0,\n  ...\n  _ \u003d\u003e 9\n}\n```",
+      "parentUuid": "9ac3c133_f0a13d58",
       "revId": "01f9aeec769006de2e7b9e57de983572b523cfef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
