@@ -223,8 +223,8 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
             auto index = i - glyphs.start;
             if (i < glyphs.end) {
                 piece->fGlyphs[index] = run->fGlyphs[i];
+                piece->fClusterIndexes[index] = run->fClusterIndexes[i];
             }
-            piece->fClusterIndexes[index] = run->fClusterIndexes[i];
             piece->fPositions[index] = run->fPositions[i] - zero;
             piece->fOffsets[index] = run->fOffsets[i];
             piece->addX(index, advanceX);
