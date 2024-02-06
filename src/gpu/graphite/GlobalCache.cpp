@@ -15,7 +15,9 @@
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
-        : fGraphicsPipelineCache(256) // TODO: find a good value for these limits
+// TODO: need to trim down the generated combinations _and_ provide a better
+// signal that things are getting removed from the cache!
+        : fGraphicsPipelineCache(10000) // TODO: find a good value for these limits
         , fComputePipelineCache(16) {}
 
 GlobalCache::~GlobalCache() {
@@ -76,6 +78,17 @@ void GlobalCache::forEachGraphicsPipeline(
         fn(*k, v->get());
     });
 }
+
+void GlobalCache::getKeys(std::vector<UniqueKey>* keys) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    keys->reserve(fGraphicsPipelineCache.count());
+
+    fGraphicsPipelineCache.foreach([&](UniqueKey* key, sk_sp<GraphicsPipeline>*) {
+        keys->push_back(*key);
+    });
+}
+
 #endif // defined(GRAPHITE_TEST_UTILS)
 
 sk_sp<ComputePipeline> GlobalCache::findComputePipeline(const UniqueKey& key) {

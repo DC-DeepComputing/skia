@@ -144,9 +144,10 @@ class PrecompileBlender : public PrecompileBase {
 public:
     PrecompileBlender() : PrecompileBase(Type::kBlender) {}
 
-    virtual std::optional<SkBlendMode> asBlendMode() const { return {}; }
+    virtual std::optional<SkBlendMode> asBlendMode1() const { return {}; }
 
-    static sk_sp<PrecompileBlender> Mode(SkBlendMode);
+    virtual bool isCoeffBased() const { return false; }
+    virtual bool isBlendModeBased() const { return false; }
 };
 
 //--------------------------------------------------------------------------------------------------
@@ -154,6 +155,8 @@ class PaintOptionsPriv;
 
 class PaintOptions {
 public:
+    PaintOptions(bool valid, bool fromKey) : fValid(valid), fFromKey(fromKey) {}
+
     void setShaders(SkSpan<const sk_sp<PrecompileShader>> shaders) {
         fShaderOptions.assign(shaders.begin(), shaders.end());
     }
@@ -170,21 +173,19 @@ public:
         fImageFilterOptions.assign(imageFilters.begin(), imageFilters.end());
     }
 
-    void setBlendModes(SkSpan<SkBlendMode> blendModes) {
-        fBlenderOptions.reserve(blendModes.size());
-        for (SkBlendMode bm : blendModes) {
-            fBlenderOptions.emplace_back(PrecompileBlender::Mode(bm));
-        }
-    }
+    void setBlendModes(SkSpan<SkBlendMode> blendModes);
     void setBlenders(SkSpan<const sk_sp<PrecompileBlender>> blenders) {
         fBlenderOptions.assign(blenders.begin(), blenders.end());
     }
 
     void setDither(bool dither) { fDither = dither; }
+    bool dither() const { return fDither; }
 
     // Provides access to functions that aren't part of the public API.
     PaintOptionsPriv priv();
     const PaintOptionsPriv priv() const;  // NOLINT(readability-const-return-type)
+
+    bool fromKey() const { return fFromKey; }
 
 private:
     friend class PaintOptionsPriv;
@@ -216,6 +217,8 @@ private:
     std::vector<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
     std::vector<sk_sp<PrecompileBlender>> fBlenderOptions;
     bool fDither = false;
+    bool fValid = false;
+    bool fFromKey = false;
 };
 
 } // namespace skgpu::graphite

@@ -236,7 +236,7 @@ sk_sp<SkShader> make_normal_shader(sk_sp<SkShader> alphaMap,
 
             "half mainAlpha = alphaC1.y;" // offset = (0,0)
             "return half4(normal(alphaC0, alphaC1, alphaC2), mainAlpha);"
-        "}");
+        "}", kNormalShaderStableKey);
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
     builder.child("alphaMap") = std::move(alphaMap);
@@ -323,7 +323,7 @@ sk_sp<SkShader> make_lighting_shader(sk_sp<SkShader> normalMap,
             "half depth = materialAndLightType.x;"
             "half3 surfaceToLight = surface_to_light(half3(half2(coord), depth*normalAndA.a));"
             "return compute_lighting(normalAndA.xyz, surfaceToLight);"
-        "}");
+        "}", kLightingShaderStableKey);
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
     builder.child("normalMap") = std::move(normalMap);

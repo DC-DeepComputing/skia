@@ -62,13 +62,13 @@ public:
             }
         )");
 
-        auto [blurEffect, error] = SkRuntimeEffect::MakeForShader(blurString);
+        auto [blurEffect, error] = SkRuntimeEffect::MakeForShader(blurString, /* stableKey= */ 0);
         if (!blurEffect) {
             SkDEBUGFAILF("RuntimeShader error: %s\n", error.c_str());
         }
         fBlurEffect = std::move(blurEffect);
 
-        auto [mixEffect, error2] = SkRuntimeEffect::MakeForShader(mixString);
+        auto [mixEffect, error2] = SkRuntimeEffect::MakeForShader(mixString, /* stableKey= */ 0);
         if (!mixEffect) {
             SkDEBUGFAILF("RuntimeShader error: %s\n", error2.c_str());
         }

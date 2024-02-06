@@ -247,7 +247,8 @@ const SkRuntimeEffect* GetLinearBlur1DEffect(int radius) {
                                 "sum += s.w * child.eval(coord + s.z*dir);"
                             "}"
                             "return sum;"
-                        "}", kMaxBlurSamples, kernelWidth).c_str());
+                        "}", kMaxBlurSamples, kernelWidth).c_str(),
+                        kLinearBlur1DStableKey);
     };
 
     return get_effect(BlurLinearKernelWidth(radius), make1DEffect);
@@ -287,7 +288,8 @@ const SkRuntimeEffect* GetBlur2DEffect(const SkISize& radii) {
                                 "sum += k.w * child.eval(coord + o.zw);"
                             "}"
                             "return sum;"
-                        "}", kMaxBlurSamples, maxKernelSize).c_str());
+                        "}", kMaxBlurSamples, maxKernelSize).c_str(),
+                        kBlur2DStableKey);
     };
 
     int kernelArea = BlurKernelWidth(radii.width()) * BlurKernelWidth(radii.height());

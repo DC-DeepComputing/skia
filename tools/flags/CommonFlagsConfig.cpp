@@ -135,7 +135,8 @@ static const struct {
 #if defined(SK_GRAPHITE)
 #ifdef SK_DIRECT3D
     { "grd3d",                 "graphite", "api=direct3d" },
-#endif
+#endif // SK_DIRECT3D
+
 #ifdef SK_DAWN
     { "grdawn_fakeWGPU",       "graphite", "api=dawn_mtl,fakeWGPU=true" },
     { "grdawn_d3d11",          "graphite", "api=dawn_d3d11" },
@@ -147,8 +148,9 @@ static const struct {
 #if defined(SK_ENABLE_PRECOMPILE)
     { "grdawn_mtlprecompile",  "graphite", "api=dawn_mtl,precompile=true" },
     { "grdawn_vkprecompile",   "graphite", "api=dawn_vk, precompile=true" },
-#endif
-#endif
+#endif // SK_ENABLE_PRECOMPILE
+#endif // SK_DAWN
+
 #ifdef SK_METAL
     { "grmtl",                 "graphite", "api=metal" },
     { "grmtlf16",              "graphite", "api=metal,color=f16" },
@@ -157,15 +159,16 @@ static const struct {
     { "grmtl1010102",          "graphite", "api=metal,color=1010102" },
 #if defined(SK_ENABLE_PRECOMPILE)
     { "grmtlprecompile",       "graphite", "api=metal,precompile=true" },
-#endif
-#endif
+#endif // SK_ENABLE_PRECOMPILE
+#endif // SK_METAL
+
 #ifdef SK_VULKAN
     { "grvk",                  "graphite", "api=vulkan" },
 #if defined(SK_ENABLE_PRECOMPILE)
     { "grvkprecompile",        "graphite", "api=vulkan,precompile=true" },
-#endif
-#endif
-#endif
+#endif // SK_ENABLE_PRECOMPILE
+#endif // SK_VULKAN
+#endif // SK_GRAPHITE
 
 };
 // clang-format on

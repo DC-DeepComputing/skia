@@ -38,8 +38,8 @@ public:
 
     void onOnceBeforeDraw() override {
         auto [effect, error] = (fFlags & kColorFilter_RTFlag)
-                                       ? SkRuntimeEffect::MakeForColorFilter(fSkSL)
-                                       : SkRuntimeEffect::MakeForShader(fSkSL);
+                                       ? SkRuntimeEffect::MakeForColorFilter(fSkSL, /* stableKey= */ 0)
+                                       : SkRuntimeEffect::MakeForShader(fSkSL, /* stableKey= */ 0);
         if (!effect) {
             SkDebugf("RuntimeShader error: %s\n", error.c_str());
         }
@@ -661,7 +661,7 @@ DEF_SIMPLE_GM(child_sampling_rt, canvas, 256,256) {
     surf->getCanvas()->drawLine(0, 0, 100, 100, p);
     auto shader = surf->makeImageSnapshot()->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
 
-    SkRuntimeShaderBuilder builder(SkRuntimeEffect::MakeForShader(SkString(scale)).effect);
+    SkRuntimeShaderBuilder builder(SkRuntimeEffect::MakeForShader(SkString(scale), /* stableKey= */ 0).effect);
     builder.child("child") = shader;
     p.setShader(builder.makeShader());
 
@@ -678,7 +678,7 @@ static sk_sp<SkShader> normal_map_shader() {
             return (v * 0.5 + 0.5).xyz1;
         }
     )";
-    auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc)).effect;
+    auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc), /* stableKey= */ 0).effect;
     return effect->makeShader(nullptr, {});
 }
 
@@ -733,7 +733,7 @@ static sk_sp<SkShader> lit_shader(sk_sp<SkShader> normals) {
             return saturate(dot(n, l)).xxx1;
         }
     )";
-    auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc)).effect;
+    auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc), /* stableKey= */ 0).effect;
     return effect->makeShader(nullptr, &normals, 1);
 }
 
@@ -747,7 +747,7 @@ static sk_sp<SkShader> lit_shader_linear(sk_sp<SkShader> normals) {
             return fromLinearSrgb(saturate(dot(n, l)).xxx).xxx1;
         }
     )";
-    auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc)).effect;
+    auto effect = SkRuntimeEffect::MakeForShader(SkString(kSrc), /* stableKey= */ 0).effect;
     return effect->makeShader(nullptr, &normals, 1);
 }
 
@@ -917,7 +917,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
             uniform shader s;
             half4 main(float2 p) { return s.eval(p) + half4(0.5, 0, 0.5, 1); }
         )"};
-        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalShader);
+        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalShader, /* stableKey= */ 0);
         SkASSERT(rtShader);
 
         SkPaint paint;
@@ -934,7 +934,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
             uniform colorFilter cf;
             half4 main(float2 p) { return cf.eval(half4(0.5, 0, 0.5, 1)); }
         )"};
-        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalColorFilter);
+        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalColorFilter, /* stableKey= */ 0);
         SkASSERT(rtShader);
 
         SkPaint paint;
@@ -951,7 +951,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
             uniform blender b;
             half4 main(float2 p) { return b.eval(half4(0.5, 0, 0, 0.5), half4(0, 0, 1, 1)); }
         )"};
-        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalBlender);
+        auto [rtShader, error] = SkRuntimeEffect::MakeForShader(kEvalBlender, /* stableKey= */ 0);
         SkASSERT(rtShader);
 
         SkPaint paint;
@@ -971,7 +971,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
             uniform shader s;
             half4 main(half4 c) { return s.eval(float2(0)) + half4(0.5, 0, 0.5, 1); }
         )"};
-        auto [rtFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalShader);
+        auto [rtFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalShader, /* stableKey= */ 0);
         SkASSERT(rtFilter);
 
         SkPaint paint;
@@ -988,7 +988,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
             uniform colorFilter cf;
             half4 main(half4 c) { return cf.eval(half4(0.5, 0, 0.5, 1)); }
         )"};
-        auto [rtFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalColorFilter);
+        auto [rtFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalColorFilter, /* stableKey= */ 0);
         SkASSERT(rtFilter);
 
         SkPaint paint;
@@ -1005,7 +1005,7 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 100) {
             uniform blender b;
             half4 main(half4 c) { return b.eval(half4(0.5, 0, 0, 0.5), half4(0, 0, 1, 1)); }
         )"};
-        auto [rtFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalBlender);
+        auto [rtFilter, error] = SkRuntimeEffect::MakeForColorFilter(kEvalBlender, /* stableKey= */ 0);
         SkASSERT(rtFilter);
 
         SkPaint paint;
@@ -1029,7 +1029,7 @@ DEF_SIMPLE_GM_CAN_FAIL(deferred_shader_rt, canvas, errorMsg, 150, 50) {
         uniform half4 color;
         half4 main(float2 p) { return color; }
     )"};
-    auto [effect, error] = SkRuntimeEffect::MakeForShader(kShader);
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(kShader, /* stableKey= */ 0);
     SkASSERT(effect);
 
     SkColor4f color = SkColors::kRed;
@@ -1101,7 +1101,7 @@ DEF_SIMPLE_GM_CAN_FAIL(alpha_image_shader_rt, canvas, errorMsg, 350, 50) {
     // These should all be BLACK
     paint.setShader(
             SkRuntimeEffect::MakeForShader(SkString("uniform shader s;"
-                                                    "half4 main(float2 p) { return s.eval(p); }"))
+                                                    "half4 main(float2 p) { return s.eval(p); }"), /* stableKey= */ 0)
                     .effect->makeShader(nullptr, children));
     rect();
 
@@ -1109,7 +1109,7 @@ DEF_SIMPLE_GM_CAN_FAIL(alpha_image_shader_rt, canvas, errorMsg, 350, 50) {
     paint.setShader(nullptr);
     paint.setColorFilter(SkRuntimeEffect::MakeForColorFilter(
                                  SkString("uniform shader s;"
-                                          "half4 main(half4 color) { return s.eval(float2(0)); }"))
+                                          "half4 main(half4 color) { return s.eval(float2(0)); }"), /* stableKey= */ 0)
                                  .effect->makeColorFilter(nullptr, children));
     rect();
 
@@ -1122,7 +1122,7 @@ DEF_SIMPLE_GM_CAN_FAIL(alpha_image_shader_rt, canvas, errorMsg, 350, 50) {
     paint.setBlender(
             SkRuntimeEffect::MakeForBlender(
                     SkString("uniform shader s;"
-                             "half4 main(half4 src, half4 dst) { return s.eval(float2(0)); }"))
+                             "half4 main(half4 src, half4 dst) { return s.eval(float2(0)); }"), /* stableKey= */ 0)
                     .effect->makeBlender(nullptr, children));
     rect();
 

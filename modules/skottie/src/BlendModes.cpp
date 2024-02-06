@@ -30,7 +30,7 @@ static sk_sp<SkBlender> hardMix() {
                 "return src + (1 - src.a)*dst;"
             "}"
         ;
-        auto result = SkRuntimeEffect::MakeForBlender(SkString(hardMix));
+        auto result = SkRuntimeEffect::MakeForBlender(SkString(hardMix), /* stableKey= */ 0);
         return result.effect.release();
     }();
     return hardMixEffect->makeBlender(nullptr);

@@ -98,7 +98,7 @@ private:
 
         Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
              const Clip& clip, DrawOrder order, const PaintParams* paint,
-             const StrokeStyle* stroke)
+             const StrokeStyle* stroke, bool)
                 : fRenderer(renderer)
                 , fDrawParams(transform, geometry, clip, order, stroke)
                 , fPaintParams(paint ? std::optional<PaintParams>(*paint) : std::nullopt) {}

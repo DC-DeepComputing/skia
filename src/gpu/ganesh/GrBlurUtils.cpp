@@ -690,7 +690,8 @@ static std::unique_ptr<GrFragmentProcessor> make_circle_blur(GrRecordingContext*
             "half2 vec = half2((sk_FragCoord.xy - circleData.xy) * circleData.w);"
             "half dist = length(vec) + (0.5 - circleData.z) * circleData.w;"
             "return blurProfile.eval(half2(dist, 0.5)).aaaa;"
-        "}"
+        "}",
+        kCircleBlurStableKey
     );
 
     SkV4 circleData = {circle.centerX(), circle.centerY(), solidRadius, 1.f / textureRadius};
@@ -902,7 +903,8 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_blur(GrRecordingContext* c
                               "- integral.eval(half2(rect.B, 0.5)).a;"
             "}"
             "return half4(xCoverage * yCoverage);"
-        "}"
+        "}",
+        kRectBlurStableKey
     );
 
     std::unique_ptr<GrFragmentProcessor> fp =
@@ -1305,7 +1307,8 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
             "half2 texCoord = translatedFragPosHalf / proxyDims;"
 
             "return ninePatchFP.eval(texCoord).aaaa;"
-        "}"
+        "}",
+        kRRectBlurStableKey
     );
 
     float cornerRadius = SkRRectPriv::GetSimpleRadii(devRRect).fX;

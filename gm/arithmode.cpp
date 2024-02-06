@@ -200,7 +200,7 @@ class ArithmodeBlenderGM : public skiagm::GM {
                 return arithBlend.eval(srcImage.eval(xy), dstImage.eval(xy));
             }
         )";
-        auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(kShader));
+        auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(kShader), /* stableKey= */ 0);
         SkASSERT(effect);
         fRuntimeEffect = effect;
 
