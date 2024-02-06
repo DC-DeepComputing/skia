@@ -28,6 +28,38 @@ namespace {
 
 using namespace skgpu::graphite;
 
+void warg(const RendererProvider* rendererProvider,
+          ResourceProvider* resourceProvider,
+          RuntimeEffectDictionary* rteDict,
+          const Caps* caps,
+          UniquePaintParamsID uniqueID,
+          const RenderStep* s,
+          const RenderPassDesc& renderPassDesc,
+          const skgpu::UniqueKey& orig) {
+//    SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
+
+    UniquePaintParamsID paintID = s->performsShading() ? uniqueID
+                                                       : UniquePaintParamsID::InvalidID();
+    GraphicsPipelineDesc pipelineDesc(s, paintID);
+
+    skgpu::UniqueKey k = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
+    if (orig != k) {
+        Caps::Foobar foobar;
+        caps->reverse1(k, &foobar);
+        foobar.dump(rendererProvider);
+        SK_ABORT();
+    }
+
+    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+            rteDict,
+            pipelineDesc,
+            renderPassDesc);
+    if (!pipeline) {
+        SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+        return;
+    }
+}
+
 void compile(const RendererProvider* rendererProvider,
              ResourceProvider* resourceProvider,
              const KeyContext& keyContext,
@@ -77,6 +109,46 @@ void compile(const RendererProvider* rendererProvider,
 } // anonymous namespace
 
 namespace skgpu::graphite {
+
+void Precompile(Context* context, RuntimeEffectDictionary* rteDict, const skgpu::UniqueKey& key) {
+    const Caps* caps = context->priv().caps();
+    ResourceProvider* resourceProvider = context->priv().resourceProvider();
+    const RendererProvider* rendererProvider = context->priv().rendererProvider();
+
+    Caps::Foobar foobar;
+    caps->reverse1(key, &foobar);
+//    SkDebugf("in alternate Precompile\n");
+    foobar.dump(rendererProvider);
+
+    SkASSERT(foobar.fColorSampleCount == foobar.fDSSampleCount);
+
+//    DrawTypeFlags drawTypes = rendererProvider->yo(foobar.fRenderStepID1);
+//    dump_flags(drawTypes);
+
+    TextureInfo info = caps->getDefaultSampledTextureInfo(foobar.fColorType,
+                                                          Mipmapped::kNo,
+                                                          Protected::kNo,
+                                                          Renderable::kYes);
+
+    RenderPassDesc renderPassDesc =
+            RenderPassDesc::Make(caps,
+                                 info,
+                                 LoadOp::kClear,
+                                 StoreOp::kStore,
+                                 foobar.fDSFlags,
+                                 /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                 /* requiresMSAA= */ foobar.fColorSampleCount > 1,
+                                 Swizzle(foobar.fSwizzle)); // should this be foobar.fSwizzle
+
+    warg(rendererProvider,
+         resourceProvider,
+         rteDict,
+         caps,
+         foobar.fPaintParamsID,
+         rendererProvider->lookup(foobar.fRenderStepID1),
+         renderPassDesc,
+         key);
+}
 
 void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
 
