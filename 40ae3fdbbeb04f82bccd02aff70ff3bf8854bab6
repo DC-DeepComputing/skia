@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5dc7fec_c9ce6700",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-06T18:01:47Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6677d46d_a9db0d09",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 57
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a907b91_119543a8",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35513b83_600d42bb",
+        "filename": "src/gpu/mtl/MtlUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-06T18:01:47Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6a907b91_119543a8",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 47
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16c7c158_4c6ab36f",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-05T23:18:09Z",
       "side": 0,
       "message": "`GR_TEST_UTILS` is here to allow perfbots to give stats on Graphite modules:\nhttps://skia-review.googlesource.com/c/skia/+/743237\n\n@egdaniel@google.com Is `SK_GRAPHITE` defined on perf bots now?\n\nIf not, would there be any reason not to enable it? (We don\u0027t necessarily need to use Graphite, just enable the flag.)",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 49
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07f1744_1d4a6b15",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-06T18:01:47Z",
+      "side": 0,
+      "message": "I don\u0027t know what y\u0027all mean by \"perf bots\". We have tasks that generate perf metrics, but I don\u0027t know which tasks or metrics you are referring to that are important to you. If you can show me which ones you need, I can make sure they are still there after this CL.",
+      "parentUuid": "16c7c158_4c6ab36f",
       "range": {
         "startLine": 65,
         "startChar": 0,

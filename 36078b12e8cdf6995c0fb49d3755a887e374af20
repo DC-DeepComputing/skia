@@ -87,6 +87,24 @@
       "parentUuid": "336924e4_1c344353",
       "revId": "36078b12e8cdf6995c0fb49d3755a887e374af20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13508a2_79605752",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-06T18:01:47Z",
+      "side": 1,
+      "message": "I would strongly caution against having a define turn on and off test-specific behavior spread more broadly than it already has. As I said in the commit message, my goal is to contain it to Ganesh, because the wider a define like this spreads, the more complicated to have Bazel integrate it in a smooth manner.",
+      "parentUuid": "336924e4_1c344353",
+      "revId": "36078b12e8cdf6995c0fb49d3755a887e374af20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
