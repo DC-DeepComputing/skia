@@ -34,6 +34,24 @@
       "parentUuid": "54b05101_68954fb9",
       "revId": "e154e08bd03e022706bc437eceab75789177e4ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0785abf_a0c8c55e",
+        "filename": "include/private/SkColorData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-06T15:39:03Z",
+      "side": 1,
+      "message": "Ah, but we might be okay, because we ensure that the zero is always passed as the first argument, and the general specification for how std::max works agrees with that. (Plus, you added the unit test to ensure that it works). I think this is alright for now.",
+      "parentUuid": "c1bb3c4a_a5892f64",
+      "revId": "e154e08bd03e022706bc437eceab75789177e4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
