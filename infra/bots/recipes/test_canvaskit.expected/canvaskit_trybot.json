@@ -20,15 +20,12 @@
   },
   {
     "cmd": [
-      "python",
-      "import os\nprint('%d:%d' % (os.getuid(), os.getgid()))\n"
+      "python3",
+      "RECIPE_MODULE[skia::docker]/resources/get_uid_gid.py"
     ],
     "name": "Docker setup.Get uid and gid",
     "~followup_annotations": [
-      "@@@STEP_NEST_LEVEL@1@@@",
-      "@@@STEP_LOG_LINE@python.inline@import os@@@",
-      "@@@STEP_LOG_LINE@python.inline@print('%d:%d' % (os.getuid(), os.getgid()))@@@",
-      "@@@STEP_LOG_END@python.inline@@@"
+      "@@@STEP_NEST_LEVEL@1@@@"
     ]
   },
   {
@@ -77,10 +74,10 @@
     "cmd": [
       "chmod",
       "0755",
-      "[START_DIR]/skia/infra/canvaskit/test_canvaskit.sh"
+      "RECIPE_MODULE[skia::docker]/resources/get_uid_gid.py"
     ],
     "infra_step": true,
-    "name": "Docker setup.chmod 0755 [START_DIR]/skia/infra/canvaskit/test_canvaskit.sh",
+    "name": "Docker setup.chmod 0755 RECIPE_MODULE[skia::docker]/resources/get_uid_gid.py",
     "~followup_annotations": [
       "@@@STEP_NEST_LEVEL@1@@@"
     ]
@@ -205,7 +202,7 @@
       "--mount",
       "type=bind,source=[START_DIR]/[SWARM_OUT_DIR],target=/OUT",
       "gcr.io/skia-public/gold-karma-chrome-tests:87.0.4280.88_v2",
-      "/SRC/skia/infra/canvaskit/test_canvaskit.sh",
+      "/SRC/../RECIPE_MODULE[skia::docker]/resources/get_uid_gid.py",
       "--builder",
       "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Debug-All-CanvasKit",
       "--git_hash",

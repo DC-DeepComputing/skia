@@ -38,10 +38,10 @@ class iOSFlavor(default.DefaultFlavor):
 
   def _run(self, title, *cmd, **kwargs):
     def sleep(attempt):
-      self.m.python.inline('sleep before attempt %d' % attempt, """
-import time
-time.sleep(2)
-""")  # pragma: nocover
+      self.m.step(
+          'sleep before attempt %d' % attempt,
+          cmd=['sleep', '2']) # pragma: nocover
+
     return self.m.run.with_retry(self.m.step, title, 3, cmd=list(cmd),
                                  between_attempts_fn=sleep, **kwargs)
 

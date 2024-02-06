@@ -88,7 +88,7 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 Fail if git is not obtained from CIPD.
 
-&mdash; **def [bot\_update](/infra/bots/recipe_modules/checkout/api.py#48)(self, checkout_root, gclient_cache=None, skip_patch=False, override_revision=None):**
+&mdash; **def [bot\_update](/infra/bots/recipe_modules/checkout/api.py#39)(self, checkout_root, gclient_cache=None, skip_patch=False, override_revision=None):**
 
 Run the steps to obtain a checkout using bot_update.
 
@@ -101,7 +101,7 @@ Args:
 
 The default location for cached persistent checkouts.
 
-&mdash; **def [git](/infra/bots/recipe_modules/checkout/api.py#35)(self, checkout_root):**
+&mdash; **def [git](/infra/bots/recipe_modules/checkout/api.py#26)(self, checkout_root):**
 
 Run the steps to perform a pure-git checkout without DEPS.
 ### *recipe_modules* / [docker](/infra/bots/recipe_modules/docker)
@@ -302,7 +302,7 @@ Prepare the variables.
 
 &emsp; **@property**<br>&mdash; **def [swarming\_bot\_id](/infra/bots/recipe_modules/vars/api.py#96)(self):**
 
-&emsp; **@property**<br>&mdash; **def [swarming\_task\_id](/infra/bots/recipe_modules/vars/api.py#108)(self):**
+&emsp; **@property**<br>&mdash; **def [swarming\_task\_id](/infra/bots/recipe_modules/vars/api.py#107)(self):**
 ## Recipes
 
 ### *recipes* / [build:examples/full](/infra/bots/recipe_modules/build/examples/full.py)
@@ -448,17 +448,17 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 &mdash; **def [RunSteps](/infra/bots/recipes/perf_pathkit.py#28)(api):**
 ### *recipes* / [perf\_skottietrace](/infra/bots/recipes/perf_skottietrace.py)
 
-[DEPS](/infra/bots/recipes/perf_skottietrace.py#17): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/file][recipe_engine/recipe_modules/file], [recipe\_engine/json][recipe_engine/recipe_modules/json], [recipe\_engine/path][recipe_engine/recipe_modules/path], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/python][recipe_engine/recipe_modules/python], [recipe\_engine/raw\_io][recipe_engine/recipe_modules/raw_io], [recipe\_engine/step][recipe_engine/recipe_modules/step], [recipe\_engine/time][recipe_engine/recipe_modules/time], [flavor](#recipe_modules-flavor), [run](#recipe_modules-run), [vars](#recipe_modules-vars)
+[DEPS](/infra/bots/recipes/perf_skottietrace.py#17): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/file][recipe_engine/recipe_modules/file], [recipe\_engine/json][recipe_engine/recipe_modules/json], [recipe\_engine/path][recipe_engine/recipe_modules/path], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/python][recipe_engine/recipe_modules/python], [recipe\_engine/raw\_io][recipe_engine/recipe_modules/raw_io], [recipe\_engine/step][recipe_engine/recipe_modules/step], [recipe\_engine/time][recipe_engine/recipe_modules/time], [flavor](#recipe_modules-flavor), [infra](#recipe_modules-infra), [run](#recipe_modules-run), [vars](#recipe_modules-vars)
 
 PYTHON_VERSION_COMPATIBILITY: PY3
 
-&mdash; **def [RunSteps](/infra/bots/recipes/perf_skottietrace.py#238)(api):**
+&mdash; **def [RunSteps](/infra/bots/recipes/perf_skottietrace.py#192)(api):**
 
-&mdash; **def [get\_trace\_match](/infra/bots/recipes/perf_skottietrace.py#147)(lottie_filename, is_android):**
+&mdash; **def [get\_trace\_match](/infra/bots/recipes/perf_skottietrace.py#148)(lottie_filename, is_android):**
 
 Returns the DM regex to match the specified lottie file name.
 
-&mdash; **def [parse\_trace](/infra/bots/recipes/perf_skottietrace.py#162)(trace_json, lottie_filename, api):**
+&mdash; **def [parse\_trace](/infra/bots/recipes/perf_skottietrace.py#163)(trace_json, lottie_filename, api):**
 
 parse_trace parses the specified trace JSON.
 
@@ -473,7 +473,7 @@ A dictionary is returned that has the following structure:
   'frame_avg_us': 95,
 }
 
-&mdash; **def [perf\_steps](/infra/bots/recipes/perf_skottietrace.py#37)(api):**
+&mdash; **def [perf\_steps](/infra/bots/recipes/perf_skottietrace.py#38)(api):**
 
 Run DM on lottie files with tracing turned on and then parse the output.
 ### *recipes* / [perf\_skottiewasm\_lottieweb](/infra/bots/recipes/perf_skottiewasm_lottieweb.py)
@@ -517,18 +517,18 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 benchmark Skia using skpbench.
 ### *recipes* / [sync\_and\_compile](/infra/bots/recipes/sync_and_compile.py)
 
-[DEPS](/infra/bots/recipes/sync_and_compile.py#10): [depot\_tools/gitiles][depot_tools/recipe_modules/gitiles], [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/file][recipe_engine/recipe_modules/file], [recipe\_engine/json][recipe_engine/recipe_modules/json], [recipe\_engine/path][recipe_engine/recipe_modules/path], [recipe\_engine/platform][recipe_engine/recipe_modules/platform], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/python][recipe_engine/recipe_modules/python], [recipe\_engine/step][recipe_engine/recipe_modules/step], [build](#recipe_modules-build), [checkout](#recipe_modules-checkout), [run](#recipe_modules-run), [vars](#recipe_modules-vars)
+[DEPS](/infra/bots/recipes/sync_and_compile.py#10): [depot\_tools/gitiles][depot_tools/recipe_modules/gitiles], [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/file][recipe_engine/recipe_modules/file], [recipe\_engine/json][recipe_engine/recipe_modules/json], [recipe\_engine/path][recipe_engine/recipe_modules/path], [recipe\_engine/platform][recipe_engine/recipe_modules/platform], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/python][recipe_engine/recipe_modules/python], [recipe\_engine/step][recipe_engine/recipe_modules/step], [build](#recipe_modules-build), [checkout](#recipe_modules-checkout), [infra](#recipe_modules-infra), [run](#recipe_modules-run), [vars](#recipe_modules-vars)
 
 PYTHON_VERSION_COMPATIBILITY: PY3
 
-&mdash; **def [RunSteps](/infra/bots/recipes/sync_and_compile.py#27)(api):**
+&mdash; **def [RunSteps](/infra/bots/recipes/sync_and_compile.py#28)(api):**
 ### *recipes* / [test](/infra/bots/recipes/test.py)
 
 [DEPS](/infra/bots/recipes/test.py#13): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/file][recipe_engine/recipe_modules/file], [recipe\_engine/path][recipe_engine/recipe_modules/path], [recipe\_engine/platform][recipe_engine/recipe_modules/platform], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/python][recipe_engine/recipe_modules/python], [recipe\_engine/raw\_io][recipe_engine/recipe_modules/raw_io], [recipe\_engine/step][recipe_engine/recipe_modules/step], [env](#recipe_modules-env), [flavor](#recipe_modules-flavor), [gold\_upload](#recipe_modules-gold_upload), [run](#recipe_modules-run), [vars](#recipe_modules-vars)
 
 PYTHON_VERSION_COMPATIBILITY: PY3
 
-&mdash; **def [RunSteps](/infra/bots/recipes/test.py#167)(api):**
+&mdash; **def [RunSteps](/infra/bots/recipes/test.py#137)(api):**
 
 &mdash; **def [test\_steps](/infra/bots/recipes/test.py#31)(api):**
 
