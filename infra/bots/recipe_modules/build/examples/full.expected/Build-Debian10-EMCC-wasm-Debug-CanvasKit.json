@@ -16,7 +16,7 @@
   },
   {
     "cmd": [
-      "python",
+      "python3",
       "[START_DIR]/cache/work/skia/bin/activate-emsdk"
     ],
     "cwd": "[START_DIR]/cache/work/skia",

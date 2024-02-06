@@ -1,7 +1,7 @@
 [
   {
     "cmd": [
-      "python",
+      "python3",
       "[START_DIR]\\cache\\work\\skia\\bin\\fetch-gn"
     ],
     "cwd": "[START_DIR]\\cache\\work\\skia",

@@ -298,7 +298,7 @@
   },
   {
     "cmd": [
-      "python",
+      "python3",
       "[START_DIR]/skia/bin/fetch-gn"
     ],
     "cwd": "[START_DIR]/skia",
