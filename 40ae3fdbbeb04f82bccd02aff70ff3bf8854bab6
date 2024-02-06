@@ -188,6 +188,30 @@
       },
       "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9209ddbd_0bb7114e",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-06T20:47:44Z",
+      "side": 0,
+      "message": "Those #includes let us measure the binary size impact of the minified module text. They don\u0027t help with compilation performance or memory consumption of loading in the module. The module loader is required for that.",
+      "parentUuid": "c0ee04f9_41b36f91",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 49
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
