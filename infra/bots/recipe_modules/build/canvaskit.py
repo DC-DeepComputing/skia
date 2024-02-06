@@ -22,8 +22,8 @@ def compile_fn(api, checkout_root, _ignore):
   # Download the emsdk binaries (we won't actually use the ones on the Docker
   # image anymore, now that we have proper GN support)
   with api.context(cwd=skia_dir):
-    api.run(api.python, 'activate-emsdk',
-            script=skia_dir.join('bin', 'activate-emsdk'),
+    api.run(api.step, 'activate-emsdk',
+            cmd=['python3', skia_dir.join('bin', 'activate-emsdk')],
             infra_step=True)
 
   # This uses the emscripten sdk docker image and says "run the
