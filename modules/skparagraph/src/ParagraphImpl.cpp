@@ -486,6 +486,14 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
 
 // Clusters in the order of the input text
 void ParagraphImpl::buildClusterTable() {
+    for (auto& run: fRuns) {
+        SkDebugf("run[%zu:%zu)\n", run.textRange().start, run.textRange().end);
+        SkDebugf("clusters:");
+        for (auto pos = 0ul; pos <= run.size(); ++pos) {
+            SkDebugf(" %zu[%zu]", run.clusterIndex(pos), pos);
+        }
+        SkDebugf("\n");
+    }
     // It's possible that one grapheme includes few runs; we cannot handle it
     // so we break graphemes by the runs instead
     // It's not the ideal solution and has to be revisited later
