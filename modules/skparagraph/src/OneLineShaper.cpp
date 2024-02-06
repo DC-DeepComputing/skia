@@ -222,9 +222,24 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
 
             auto index = i - glyphs.start;
             if (i < glyphs.end) {
+                // We need extra caution when dealing with the last glyph in the run
+                // Some of the data arrays have n+1 elements, some - just n.
+                // fGlyphs has n elements, so we have to check
                 piece->fGlyphs[index] = run->fGlyphs[i];
+
+                // fClusterIndexes is another (long) story. It has n+1 elements but:
+                // It's possible that fRun (which we are trying to break into pieces here)
+                // has some mismatch between glyphs ranges and grapheme clusters edges.
+                // (for instance, "​🇳​🇩🇮🇩⃢" is unicode correct, but it's a mess inside)
+                // The second ​ does not have a glyph representation so we cannot catch it
+                // as "unresolved" codepoint. However, it is skipped in cluster indexes array.
+                // When it's not the last glyph in the run the situation will fix itself
+                // (next glyph will start earlier, not ideal, but it's the best effort anyway)
+                // For the last codepoint however we should not set the end of the "piece" run to it
+                // or we will not have the full text coverage in clusterIndexes and
+                // will crash miserably on some ASSERT later
+                piece->fClusterIndexes[index] = run->fClusterIndexes[i];
             }
-            piece->fClusterIndexes[index] = run->fClusterIndexes[i];
             piece->fPositions[index] = run->fPositions[i] - zero;
             piece->fOffsets[index] = run->fOffsets[i];
             piece->addX(index, advanceX);
