@@ -164,6 +164,30 @@
       },
       "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0ee04f9_41b36f91",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-06T19:09:35Z",
+      "side": 0,
+      "message": "Aren\u0027t those loaded directly by SkSLBench.cpp for that reason?\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/bench/SkSLBench.cpp;l\u003d37-40?q\u003dskslbench.cpp\u0026ss\u003dchromium",
+      "parentUuid": "ba4aa26b_21b9dd81",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 49
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
