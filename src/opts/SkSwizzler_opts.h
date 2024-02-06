@@ -490,6 +490,58 @@ static void inverted_cmyk_to(Format format, uint32_t* dst, const uint32_t* src, 
 }
 
 /*not static*/ inline void rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
+#if 1
+
+    while (count >= 8) {
+        const uint8x8x4_t in = vld4_u8((const uint8_t*)src);
+
+        auto widen = [](uint8x8_t v) -> float32x4x2_t {
+            const uint16x8_t to16 = vmovl_u8(v);
+            const float32x4_t lower = vcvtq_f32_u32(vmovl_u16(vget_low_u16(to16)));
+            const float32x4_t upper = vcvtq_f32_u32(vmovl_u16(vget_high_u16(to16)));
+            return float32x4x2_t({lower, upper});
+        };
+
+        static constexpr float kN = 1.0f / 255.0f;
+        auto normalize = [](float32x4x2_t v) -> float32x4x2_t{
+            return {v.val[0] * kN, v.val[1] * kN};
+        };
+
+        const uint8x8_t savedA = in.val[0];
+        const float32x4x2_t a = normalize(widen(savedA));
+        const float32x4x2_t b = normalize(widen(in.val[1]));
+        const float32x4x2_t g = normalize(widen(in.val[2]));
+        const float32x4x2_t r = normalize(widen(in.val[3]));
+
+        const float32x4x2_t invA = {1.0f / a.val[0], 1.0f / a.val[1]};
+
+        auto unpremul = [&](float32x4x2_t v) ->  float32x4x2_t{
+            return {invA.val[0] * v.val[0] * 255.0f, invA.val[1] * v.val[1] * 255.0f};
+        };
+
+        auto narrow = [] (float32x4x2_t v) -> uint8x8_t {
+            const uint32x4_t lower = vcvtpq_u32_f32(v.val[0]);
+            const uint32x4_t upper = vcvtpq_u32_f32(v.val[1]);
+            const uint16x8_t combined = vqmovn_high_u32(vqmovn_u32(lower), upper);
+            return vqmovn_u16(combined);
+        };
+
+        const uint8x8_t bu = narrow(unpremul(b));
+        const uint8x8_t gu = narrow(unpremul(g));
+        const uint8x8_t ru = narrow(unpremul(r));
+
+
+
+        const uint8x8x4_t result{savedA, bu, gu, ru};
+        vst4_u8((uint8_t*)dst, result);
+
+        src += 8;
+        dst += 8;
+        count -= 8;
+    }
+#endif
+
+    // Handle the tail. Count will be < 4.
     rgbA_to_RGBA_portable(dst, src, count);
 }
 

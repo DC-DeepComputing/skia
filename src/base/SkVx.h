@@ -958,6 +958,8 @@ SINT void strided_load4(const T* v,
     strided_load4(v, a.lo, b.lo, c.lo, d.lo);
     strided_load4(v + 4*(N/2), a.hi, b.hi, c.hi, d.hi);
 }
+
+
 #if SKVX_USE_SIMD && defined(SK_ARM_HAS_NEON)
 #define IMPL_LOAD4_TRANSPOSED(N, T, VLD) \
 SI void strided_load4(const T* v, \
@@ -986,6 +988,15 @@ IMPL_LOAD4_TRANSPOSED(8, int16_t, vld4q_s16)
 IMPL_LOAD4_TRANSPOSED(16, int8_t, vld4q_s8)
 IMPL_LOAD4_TRANSPOSED(4, float, vld4q_f32)
 #undef IMPL_LOAD4_TRANSPOSED
+
+SI void strided_store4(uint8_t* dst,
+                       const Vec<8, uint8_t>& a,
+                       const Vec<8, uint8_t>& b,
+                       const Vec<8, uint8_t>& c,
+                       const Vec<8, uint8_t>& d) {
+    const uint8x8x4_t m{to_vext(a), to_vext(b), to_vext(c), to_vext(d)};
+    vst4_u8(dst, m);
+}
 
 #elif SKVX_USE_SIMD && SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE1
 
