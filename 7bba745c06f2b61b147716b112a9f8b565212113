@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ded93eca_e845cbfe",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-06T19:26:00Z",
+      "side": 0,
+      "message": "If we want to fix-forward for the rollers, I think we could leave all the code in, and just guard this one line,with something like:\n\n```\n#if !defined(SK_USE_FAST_UNPREMUL)\n    steps.flags.unpremul  ||\n#endif\n```",
+      "revId": "7bba745c06f2b61b147716b112a9f8b565212113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
