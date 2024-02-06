@@ -104,7 +104,12 @@
 #include "tools/graphite/GraphiteTestContext.h"
 
 #if defined(SK_ENABLE_PRECOMPILE)
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/PublicPrecompile.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
@@ -2246,13 +2251,73 @@ Result GraphitePrecompileTestingSink::drawSrc(
     return Result::Ok();
 }
 
+namespace {
+
+void fetch_unique_keys(skgpu::graphite::GlobalCache* globalCache,
+                       std::vector<skgpu::UniqueKey>* keys) {
+    keys->reserve(globalCache->numGraphicsPipelines());
+    globalCache->forEachGraphicsPipeline([keys](const skgpu::UniqueKey& key,
+                                                const skgpu::graphite::GraphicsPipeline* pipeline) {
+                                                    keys->push_back(key);
+                                         });
+}
+
+void dump_descs(const skgpu::graphite::RendererProvider* rendererProvider,
+                const skgpu::graphite::GraphicsPipelineDesc& pipelineDesc,
+                const skgpu::graphite::RenderPassDesc& renderPassDesc) {
+    using namespace skgpu::graphite;
+
+    const RenderStep* rs = rendererProvider->lookup(pipelineDesc.renderStepID());
+
+    SkDebugf("GraphicsPipelineDesc: %d %s\n", pipelineDesc.paintParamsID().asUInt(), rs->name());
+
+}
+
+// The first step in rebuilding the UniqueKeys is extracting their information. This
+// helper does that and checks that the reassembled pieces match the original.
+void extract_key_descs(skgpu::graphite::Context* context, const skgpu::UniqueKey& origKey) {
+    using namespace skgpu::graphite;
+
+    const Caps* caps = context->priv().caps();
+    const RendererProvider* rendererProvider = context->priv().rendererProvider();
+
+    GraphicsPipelineDesc pipelineDesc;
+    RenderPassDesc renderPassDesc;
+    caps->extractGraphicsDescs(origKey, &pipelineDesc, &renderPassDesc, rendererProvider);
+
+    skgpu::UniqueKey newKey = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
+    if (origKey != newKey) {
+        SkDebugf("The UniqueKey didn't round trip!\n");
+        origKey.dump("original key:");
+        newKey.dump("reassembled key:");
+        dump_descs(rendererProvider, pipelineDesc, renderPassDesc);
+        SK_ABORT("Key didn't round trip");
+    }
+}
+
+} // anonymous namespace
+
 Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
         skgpu::graphite::Context* context) const {
     using namespace skgpu::graphite;
 
     SkASSERT(fRecorder);
 
-    // TODO: reset the pipelines and then recreate them here
+    std::vector<skgpu::UniqueKey> keys;
+
+    fetch_unique_keys(context->priv().globalCache(), &keys);
+
+    int numBeforeReset = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERT(numBeforeReset == (int) keys.size());
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    SkASSERT(context->priv().globalCache()->numGraphicsPipelines() == 0);
+
+    for (auto k : keys) {
+        extract_key_descs(context, k);
+    }
+
     return Result::Ok();
 }
 
@@ -2294,6 +2359,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+//    int numBeforeRerendering = context->priv().globalCache()->numGraphicsPipelines();
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2304,7 +2371,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     fRecorder.reset();
 
-    // TODO: verify that no additional pipelines were created during the second 'drawSrc' call
+//    int numAfterRerendering = context->priv().globalCache()->numGraphicsPipelines();
+//    SkASSERT(numBeforeRerendering == numAfterRerendering);
+
     return Result::Ok();
 }
 #endif // SK_ENABLE_PRECOMPILE

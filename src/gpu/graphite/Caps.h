@@ -39,6 +39,7 @@ struct ContextOptions;
 class ComputePipelineDesc;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
+class RendererProvider;
 struct RenderPassDesc;
 class TextureInfo;
 class TextureProxy;
@@ -102,6 +103,11 @@ public:
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
+
+    virtual void extractGraphicsDescs(const UniqueKey&,
+                                      GraphicsPipelineDesc*,
+                                      RenderPassDesc*,
+                                      const RendererProvider*) const = 0;
 
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
     virtual uint32_t channelMask(const TextureInfo&) const = 0;

@@ -43,6 +43,11 @@ public:
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
 
+    void extractGraphicsDescs(const UniqueKey&,
+                              GraphicsPipelineDesc*,
+                              RenderPassDesc*,
+                              const RendererProvider*) const override;
+
     // Get a sufficiently unique bit representation for the RenderPassDesc to be embedded in other
     // UniqueKeys (e.g. makeGraphicsPipelineKey).
     uint64_t getRenderPassDescKey(const RenderPassDesc&) const;
@@ -67,6 +72,8 @@ private:
     void initCaps(const id<MTLDevice>);
     void initShaderCaps();
     void initFormatTable();
+
+    SkColorType getColorTypeFromFormat(MTLPixelFormat) const;
 
     enum class GPUFamily {
         kMac,
