@@ -105,6 +105,8 @@
 
 #if defined(SK_ENABLE_PRECOMPILE)
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/PublicPrecompile.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
@@ -2246,13 +2248,58 @@ Result GraphitePrecompileTestingSink::drawSrc(
     return Result::Ok();
 }
 
+namespace {
+
+void fetch_unique_keys(skgpu::graphite::GlobalCache* globalCache,
+                       std::vector<skgpu::UniqueKey>* keys) {
+    keys->reserve(globalCache->numGraphicsPipelines());
+    globalCache->forEachGraphicsPipeline([keys](const skgpu::UniqueKey& key,
+                                                const skgpu::graphite::GraphicsPipeline* pipeline) {
+                                                    keys->push_back(key);
+                                         });
+}
+
+} // anonymous namespace
+
 Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
         skgpu::graphite::Context* context) const {
     using namespace skgpu::graphite;
 
     SkASSERT(fRecorder);
 
-    // TODO: reset the pipelines and then recreate them here
+    RuntimeEffectDictionary* rteDict = fRecorder->priv().runtimeEffectDictionary();
+
+    std::vector<skgpu::UniqueKey> keys;
+
+    fetch_unique_keys(context->priv().globalCache(), &keys);
+
+    int numBeforeReset = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERT(numBeforeReset == (int) keys.size());
+
+    context->priv().globalCache()->resetGraphicsPipelines();
+
+    SkASSERT(context->priv().globalCache()->numGraphicsPipelines() == 0);
+
+    for (auto k : keys) {
+        Precompile(context, rteDict, k);
+    }
+
+    int numPostRecreate = context->priv().globalCache()->numGraphicsPipelines();
+
+    SkASSERT(numBeforeReset == numPostRecreate);
+
+    {
+        std::vector<skgpu::UniqueKey> keys2;
+
+        fetch_unique_keys(context->priv().globalCache(), &keys2);
+
+        for (auto k : keys) {
+            if(std::find(keys2.begin(), keys2.end(), k) == keys2.end()) {
+                return Result::Fatal("Missing a required Pipeline.");
+            }
+        }
+    }
+
     return Result::Ok();
 }
 
@@ -2294,6 +2341,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    int numBeforeRerendering = context->priv().globalCache()->numGraphicsPipelines();
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2304,7 +2353,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     fRecorder.reset();
 
-    // TODO: verify that no additional pipelines were created during the second 'drawSrc' call
+    int numAfterRerendering = context->priv().globalCache()->numGraphicsPipelines();
+    SkASSERT(numBeforeRerendering == numAfterRerendering);
+
     return Result::Ok();
 }
 #endif // SK_ENABLE_PRECOMPILE
