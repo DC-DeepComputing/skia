@@ -483,6 +483,61 @@ static void inverted_cmyk_to(Format format, uint32_t* dst, const uint32_t* src, 
 }
 
 /*not static*/ inline void rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
+#if 1
+
+    while (count >= 8) {
+        const uint8x8x4_t in = vld4_u8((const uint8_t*)src);
+
+        auto round = [](float32x4_t v) -> uint32x4_t {
+            #if defined(SK_CPU_ARM64)
+                return vcvtnq_u32_f32(v);
+            #else
+                return vcvtq_u32_f32(v + 0.5f);
+            #endif
+        };
+
+        static constexpr float kN = 1.0f / 255.0f;
+        auto toNormalized = [](uint16x4_t v) -> float32x4_t {
+            return vcvtq_f32_u32(vmovl_u16(v)) * kN;
+        };
+
+        auto unpremulHalf = [toNormalized, round](float32x4_t invA, uint16x4_t v) -> uint16x4_t {
+            const float32x4_t normalizedV = toNormalized(v);
+            const float32x4_t divided = invA * normalizedV;
+            const float32x4_t denormalized = divided * 255.0f;
+            const uint32x4_t rounded = round(denormalized);
+            return vqmovn_u32(rounded);
+        };
+
+        const uint8x8_t a = in.val[0];
+        const uint16x8_t intA = vmovl_u8(a);
+        const float32x4_t invALow = 1.0f / toNormalized(vget_low_u16(intA));
+        const float32x4_t invAHigh = 1.0f / toNormalized(vget_high_u16(intA));
+
+        auto unpremul = [unpremulHalf, invALow, invAHigh](uint8x8_t v) -> uint8x8_t {
+            const uint16x8_t to16 = vmovl_u8(v);
+
+            const uint16x4_t low = unpremulHalf(invALow, vget_low_u16(to16));
+            const uint16x4_t high = unpremulHalf(invAHigh, vget_high_u16(to16));
+
+            const uint16x8_t combined = vcombine_u16(low, high);
+            return vqmovn_u16(combined);
+        };
+
+        const uint8x8_t b = unpremul(in.val[1]);
+        const uint8x8_t g = unpremul(in.val[2]);
+        const uint8x8_t r = unpremul(in.val[3]);
+
+        const uint8x8x4_t out{a, b, g, r};
+        vst4_u8((uint8_t*)dst, out);
+
+        src += 8;
+        dst += 8;
+        count -= 8;
+    }
+#endif
+
+    // Handle the tail. Count will be < 4.
     rgbA_to_RGBA_portable(dst, src, count);
 }
 
