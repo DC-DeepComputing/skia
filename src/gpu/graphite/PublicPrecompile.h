@@ -10,12 +10,15 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
+namespace skgpu { class UniqueKey; }
+
 // TODO: this header should be moved to include/gpu/graphite once the precompilation API
 // is made public
 namespace skgpu::graphite {
 
 class Context;
 class PaintOptions;
+class RuntimeEffectDictionary;
 
 /**
  * Precompilation allows clients to create pipelines ahead of time based on what they expect
