@@ -16,6 +16,24 @@
       "message": "Based on a quick read, I don\u0027t think this works. That language is from the IEEE spec, but those are \"special\" functions that aren\u0027t necessarily implemented by `std::max`. `std::fmax`, on the other hand, have the specified behavior.\n\nUnfortunately, it looks like the `std::fmax` implementation is quite a bit more expensive than `std::max` (for this reason).\n\nhttps://godbolt.org/z/nvWPd3rGh",
       "revId": "e154e08bd03e022706bc437eceab75789177e4ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1bb3c4a_a5892f64",
+        "filename": "include/private/SkColorData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-06T15:36:01Z",
+      "side": 1,
+      "message": "Though ARM64 has an instruction that implements this exact behavior (`FMAXNM`), so it generates BETTER code for `std::fmax`. Sigh.",
+      "parentUuid": "54b05101_68954fb9",
+      "revId": "e154e08bd03e022706bc437eceab75789177e4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
