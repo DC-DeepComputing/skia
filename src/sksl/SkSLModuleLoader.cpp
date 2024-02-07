@@ -62,7 +62,7 @@
         #include "src/sksl/generated/sksl_public.minified.sksl"
         #include "src/sksl/generated/sksl_rt_shader.minified.sksl"
         #include "src/sksl/generated/sksl_vert.minified.sksl"
-        #if defined(SK_GRAPHITE) || GR_TEST_UTILS
+        #if defined(SK_GRAPHITE)
         #include "src/sksl/generated/sksl_graphite_frag.minified.sksl"
         #include "src/sksl/generated/sksl_graphite_vert.minified.sksl"
         #include "src/sksl/generated/sksl_graphite_frag_es2.minified.sksl"
@@ -76,7 +76,7 @@
         #include "src/sksl/generated/sksl_public.unoptimized.sksl"
         #include "src/sksl/generated/sksl_rt_shader.unoptimized.sksl"
         #include "src/sksl/generated/sksl_vert.unoptimized.sksl"
-        #if defined(SK_GRAPHITE) || GR_TEST_UTILS
+        #if defined(SK_GRAPHITE)
         #include "src/sksl/generated/sksl_graphite_frag.unoptimized.sksl"
         #include "src/sksl/generated/sksl_graphite_vert.unoptimized.sksl"
         #include "src/sksl/generated/sksl_graphite_frag_es2.unoptimized.sksl"
