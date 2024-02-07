@@ -14,14 +14,15 @@
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Picture.h"
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/TiledTextureUtils.h"
+#if defined(SK_GRAPHITE) && !defined(SK_DIABLE_LEGACY_TILED_IMAGE_UTILS)
+#include "include/gpu/graphite/TiledImageUtils.h"
 #endif
 
 #include <string.h>
 
 namespace SkTiledImageUtils {
 
+#if !defined(SK_DIABLE_LEGACY_TILED_IMAGE_UTILS)
 void DrawImageRect(SkCanvas* canvas,
                    const SkImage* image,
                    const SkRect& src,
@@ -35,16 +36,16 @@ void DrawImageRect(SkCanvas* canvas,
 
 #if defined(SK_GRAPHITE)
     if (canvas->recorder()) {
-        if (skgpu::TiledTextureUtils::DrawAsTiledImageRect(canvas, image, src, dst,
-                                                           SkCanvas::kAll_QuadAAFlags, sampling,
-                                                           paint, constraint)) {
-            return;
-        }
+        skgpu::graphite::DrawImageRect(canvas, image, src, dst, sampling,
+                                       paint, constraint);
+        return;
     }
 #endif
 
     canvas->drawImageRect(image, src, dst, sampling, paint, constraint);
 }
+
+#endif
 
 void GetImageKeyValues(const SkImage* image, uint32_t keyValues[kNumImageKeyValues]) {
     if (!image || !keyValues) {

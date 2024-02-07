@@ -23,9 +23,12 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
-#include "include/core/SkTiledImageUtils.h"
 #include "include/effects/SkGradientShader.h"
 #include "tools/ToolUtils.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/TiledImageUtils.h"
+#endif
 
 static void draw(SkCanvas* canvas, int width, int height, SkColor colors[2]) {
     const SkPoint center = { SkIntToScalar(width)/2, SkIntToScalar(height)/2 };
@@ -72,7 +75,13 @@ static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2
     canvas->save();
     canvas->clipRect(dstRect);
     if (manuallyTile) {
-        SkTiledImageUtils::DrawImage(canvas, image, 0, 0);
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::DrawImage(canvas, image, 0, 0);
+#else
+        SkRect src = SkRect::MakeIWH(image->width(), image->height());
+        SkRect dst = SkRect::MakeXYWH(0, 0, image->width(), image->height());
+        canvas->drawImageRect(image, src, dst, {}, nullptr, SkCanvas::kFast_SrcRectConstraint);
+#endif
     } else {
         canvas->drawImage(image, 0, 0);
     }
@@ -84,8 +93,13 @@ static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2
     int hh = height / 2;
     SkRect subset = SkRect::MakeLTRB(hw - 64, hh - 32, hw + 64, hh + 32);
     if (manuallyTile) {
-        SkTiledImageUtils::DrawImageRect(canvas, image, subset, dstRect, {}, nullptr,
-                                         SkCanvas::kStrict_SrcRectConstraint);
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::DrawImageRect(canvas, image, subset, dstRect, {}, nullptr,
+                                       SkCanvas::kStrict_SrcRectConstraint);
+#else
+        canvas->drawImageRect(image, subset, dstRect, {}, nullptr,
+                              SkCanvas::kStrict_SrcRectConstraint);
+#endif
     } else {
         canvas->drawImageRect(image, subset, dstRect, {}, nullptr,
                               SkCanvas::kStrict_SrcRectConstraint);
@@ -94,7 +108,12 @@ static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2
 
     dstRect.offset(SkIntToScalar(150), 0);
     if (manuallyTile) {
-        SkTiledImageUtils::DrawImageRect(canvas, image, dstRect);
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::DrawImageRect(canvas, image, dstRect);
+#else
+        SkRect src = SkRect::MakeIWH(image->width(), image->height());
+        canvas->drawImageRect(image, src, dstRect, {}, nullptr, SkCanvas::kFast_SrcRectConstraint);
+#endif
     } else {
         canvas->drawImageRect(image, dstRect, {});
     }
