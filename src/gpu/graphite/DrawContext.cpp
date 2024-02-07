@@ -184,6 +184,9 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
             desc.fColorAttachment.fLoadOp = loadOp;
             desc.fColorAttachment.fStoreOp = storeOp;
             desc.fSampleCount = caps->defaultMSAASamplesCount();
+
+            desc.fColorResolveAttachment.fLoadOp = LoadOp::kDiscard;
+            desc.fColorResolveAttachment.fStoreOp = StoreOp::kDiscard;
         } else {
             // TODO: If the resolve texture isn't readable, the MSAA color attachment will need to
             // be persistently associated with the framebuffer, in which case it's not discardable.
@@ -211,12 +214,18 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                 desc.fColorAttachment.fTextureInfo = targetInfo;
                 desc.fColorAttachment.fLoadOp = loadOp;
                 desc.fColorAttachment.fStoreOp = storeOp;
+
+                desc.fColorResolveAttachment.fLoadOp = LoadOp::kDiscard;
+                desc.fColorResolveAttachment.fStoreOp = StoreOp::kDiscard;
             }
         }
     } else {
         desc.fColorAttachment.fTextureInfo = targetInfo;
         desc.fColorAttachment.fLoadOp = loadOp;
         desc.fColorAttachment.fStoreOp = storeOp;
+
+        desc.fColorResolveAttachment.fLoadOp = LoadOp::kDiscard;
+        desc.fColorResolveAttachment.fStoreOp = StoreOp::kDiscard;
     }
     desc.fClearColor = clearColor;
 
