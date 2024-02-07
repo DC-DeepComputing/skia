@@ -160,10 +160,10 @@ DEF_TEST(PublicSwizzleOpts, r) {
     REPORTER_ASSERT(r, dst == 0xFA04B0CE);
 }
 
-using fn = float (*)(float);
+using fn_reciprocal = float (*)(float);
 static void test_reciprocal_alpha(
         skiatest::Reporter* reporter,
-        fn test255, fn test1) {
+        fn_reciprocal test255, fn_reciprocal test1) {
     REPORTER_ASSERT(reporter, test255(0) == 0);
     for (uint32_t i = 1; i < 256; ++i) {
         const float r = test255(i);
@@ -180,6 +180,25 @@ static void test_reciprocal_alpha(
     }
 }
 
+using fn_round = int32_t (*)(float);
+static void test_round_to_even(
+        skiatest::Reporter* reporter,
+        fn_round round_to_even) {
+    for (float p = 0.0f; p <= 255.0; p += 0.25f) {
+        int32_t expected;
+        const float roundUp = std::floor(p + 0.5f);
+        const float roundDown = std::ceil(p - 0.5f);
+        if (roundUp == roundDown) {
+            expected = roundDown;
+        } else {
+            // Half way case.
+            expected = ((int32_t)roundDown & 1) ? roundUp : roundDown;
+        }
+        const int32_t actual = round_to_even(p);
+        REPORTER_ASSERT(reporter, expected == actual);
+    }
+}
+
 #define SK_OPTS_TARGET SK_OPTS_TARGET_DEFAULT
 #include "src/opts/SkOpts_SetTarget.h"
 #include "src/opts/SkSwizzler_opts.h"
@@ -193,5 +212,10 @@ DEF_TEST(ReciprocalAlphaPortable, reporter) {
     test_reciprocal_alpha(reporter,
                           SK_OPTS_NS::SkReciprocalAlphaTimes255_portable,
                           SK_OPTS_NS::SkReciprocalAlpha_portable);
+}
+
+DEF_TEST(PinPixelRoundToEvenPortable, reporter) {
+    test_round_to_even(reporter,
+                       SK_OPTS_NS::pixel_pin_round_to_even_portable);
 }
 #include "src/opts/SkOpts_RestoreTarget.h"
