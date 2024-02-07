@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2c79334_c6338719",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-07T19:48:22Z",
+      "side": 1,
+      "message": "Could use some advice here. To make the Renderer decision, we have to feed in the same data that we\u0027re going to use in addShape() to decide the mask type to store. Otherwise we might not get the same result. Ideally I think that would be the transformedShapeBounds we pass in addShape() but we don\u0027t have it at this point. Using conservative bounds for the Renderer choice will likely get us a mismatch between what we choose for the data, again using transformedShapeBounds. So I think all we can do is build rough bounds from the Shape bounds, transform, and stroke width -- but other suggestions are welcome.",
+      "revId": "3da298ffe829e57240df477cbd1c9e90a2dfc0ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
