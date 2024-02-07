@@ -24,6 +24,11 @@
 #include <cstring>
 #include <initializer_list>
 
+#include <arm_neon.h>
+
+static const int px = 179;
+static const int py = 226;
+
 static bool rect_memcpy(const SkImageInfo& dstInfo,       void* dstPixels, size_t dstRB,
                         const SkImageInfo& srcInfo, const void* srcPixels, size_t srcRB,
                         const SkColorSpaceXformSteps& steps) {
@@ -40,6 +45,8 @@ static bool rect_memcpy(const SkImageInfo& dstInfo,       void* dstPixels, size_
                  srcPixels, srcRB, dstInfo.minRowBytes(), dstInfo.height());
     return true;
 }
+
+#define SK_USE_FAST_UNPREMUL_324099025
 
 static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels, size_t dstRB,
                               const SkImageInfo& srcInfo, const void* srcPixels, size_t srcRB,
@@ -74,11 +81,17 @@ static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels,
         fn = SkOpts::RGBA_to_BGRA;
     }
 
+
+    const uint32_t* srcPixelPtr = SkTAddOffset<const uint32_t>(srcPixels, srcRB * py);
+    uint32_t srcPixel = srcPixelPtr[px];
+    uint32_t* dstPixelPtr = SkTAddOffset<uint32_t>(dstPixels, dstRB * py);
     for (int y = 0; y < dstInfo.height(); y++) {
         fn((uint32_t*)dstPixels, (const uint32_t*)srcPixels, dstInfo.width());
         dstPixels = SkTAddOffset<void>(dstPixels, dstRB);
         srcPixels = SkTAddOffset<const void>(srcPixels, srcRB);
     }
+    uint32_t dstPixel = dstPixelPtr[px];
+    SkDebugf("Bulk - src: %x, dst: %x\n", srcPixel, dstPixel);
     return true;
 }
 
@@ -249,11 +262,85 @@ bool SkConvertPixels(const SkImageInfo& dstInfo,       void* dstPixels, size_t d
     SkColorSpaceXformSteps steps{srcInfo.colorSpace(), srcInfo.alphaType(),
                                  dstInfo.colorSpace(), dstInfo.alphaType()};
 
+
+
+    std::unique_ptr<uint32_t[]> dstBulk{new uint32_t[dstInfo.width() * dstInfo.height()]};
+    std::unique_ptr<uint32_t[]> dstRP{new uint32_t[dstInfo.width() * dstInfo.height()]};
+
+    auto srcPixel = [srcPixels, srcRB](int x, int y) {
+        const uint32_t* srcRow = SkTAddOffset<const uint32_t>(srcPixels, srcRB * y);
+        return srcRow[x];
+    };
+
+    auto dstPixel = [dstPixels, dstRB](int x, int y) {
+        const uint32_t* dstRow = SkTAddOffset<uint32_t>(dstPixels, dstRB * y);
+        return dstRow[x];
+    };
+
     for (auto fn : {rect_memcpy, swizzle_or_premul, convert_to_alpha8}) {
         if (fn(dstInfo, dstPixels, dstRB, srcInfo, srcPixels, srcRB, steps)) {
-            return true;
+            for (int y = 0; y < dstInfo.height(); ++y) {
+                for (int x = 0; x < dstInfo.width(); ++x) {
+                    dstBulk[y * dstInfo.width() + x] = dstPixel(x, y);
+                }
+            }
+            // return true;
         }
     }
+
     convert_with_pipeline(dstInfo, dstPixels, dstStride, srcInfo, srcPixels, srcStride, steps);
+    for (int y = 0; y < dstInfo.height(); ++y) {
+        for (int x = 0; x < dstInfo.width(); ++x) {
+            dstRP[y * dstInfo.width() + x] = dstPixel(x, y);
+        }
+    }
+
+    auto roundToEven = [](float n) {
+        return vcvtns_u32_f32(n);
+    };
+
+    auto expectDenormalized = [](float a, float s) {
+        float reciprocalA = 255.0f / a;
+        return std::floor(s * reciprocalA + 0.5);
+    };
+
+    auto expectNormalized = [roundToEven](float a, float s) {
+        float aN = a * (1.0f / 255.0f);
+        float sN = s * (1.0f / 255.0f);
+        float reciprocalA = 1.0f / aN;
+        return roundToEven((sN * reciprocalA) * 255.0f);
+    };
+
+    auto analyzeComponent = [expectDenormalized](float a, float s, float bulk, float rp) {
+        float expected = expectDenormalized(a, s);
+        if (expected != bulk) {
+            SkDebugf("bad bulk - expected: %g actual: %g\n", expected, bulk);
+        }
+
+        if (expected != rp) {
+            SkDebugf("bad rp - expected: %g actual: %g\n", expected, rp);
+        }
+    };
+
+    auto analyzeDifference = [analyzeComponent](uint32_t src, uint32_t bulk, uint32_t rp) {
+        uint32_t a = SkGetPackedA32(src);
+        analyzeComponent(a, SkGetPackedR32(src), SkGetPackedR32(bulk), SkGetPackedR32(rp));
+        analyzeComponent(a, SkGetPackedG32(src), SkGetPackedG32(bulk), SkGetPackedG32(rp));
+        analyzeComponent(a, SkGetPackedB32(src), SkGetPackedB32(bulk), SkGetPackedB32(rp));
+
+
+    };
+
+    for (int y = 0; y < dstInfo.height(); ++y) {
+        for (int x = 0; x < dstInfo.width(); ++x) {
+            if (dstRP[y * dstInfo.width() + x] != dstBulk[y * dstInfo.width() + x]) {
+                uint32_t srcP = srcPixel(x, y);
+                uint32_t dstBulkP = dstBulk[y * dstInfo.width() + x];
+                uint32_t dstRPP = dstRP[y * dstInfo.width() + x];
+                analyzeDifference(srcP, dstBulkP, dstRPP);
+            }
+        }
+    }
+
     return true;
 }

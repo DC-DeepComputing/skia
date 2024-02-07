@@ -52,9 +52,8 @@ static uint32_t rgbA_to_CCCA(float c00, float c08, float c16, float a) {
     //   b = x * (255 / a)
     const float reciprocalA = SkReciprocalAlphaTimes255(a);
     auto unpremul = [reciprocalA](float c) {
-        return (uint32_t)std::min(255.0f, (c * reciprocalA + 0.5f));
+        return (uint32_t)(std::min(255.0f, (c * reciprocalA + 0.5f)));
     };
-
     return (uint32_t) a << 24
         | unpremul(c16) << 16
         | unpremul(c08) <<  8
