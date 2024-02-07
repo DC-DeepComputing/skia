@@ -50,6 +50,7 @@ struct GrContextOptions;
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/gpu/graphite/TiledImageUtils.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Texture.h"
@@ -386,9 +387,15 @@ void tiling_comparison_test(GrDirectContext* dContext,
                             canvas->save();
                             canvas->clipRect(clipRect);
 
-                            SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
-                                                             sampling, /* paint= */ nullptr,
-                                                             constraint);
+#if defined(SK_GRAPHITE)
+                            skgpu::graphite::DrawImageRect(canvas, img, srcRect, destRect,
+                                                           sampling, /* paint= */ nullptr,
+                                                           constraint);
+#else
+                            canvas->drawImageRect(img, srcRect, destRect, sampling,
+                                                  /* paint= */ nullptr, constraint);
+#endif
+
                             SkAssertResult(surface->readPixels(expected, 0, 0));
                             int actualNumTiles = gNumTilesDrawn.load(std::memory_order_acquire);
                             REPORTER_ASSERT(reporter, actualNumTiles == 0);
@@ -402,9 +409,15 @@ void tiling_comparison_test(GrDirectContext* dContext,
                             canvas->save();
                             canvas->clipRect(clipRect);
 
-                            SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
-                                                             sampling, /* paint= */ nullptr,
-                                                             constraint);
+#if defined(SK_GRAPHITE)
+                            skgpu::graphite::DrawImageRect(canvas, img, srcRect, destRect,
+                                                           sampling, /* paint= */ nullptr,
+                                                           constraint);
+#else
+                            canvas->drawImageRect(img, srcRect, destRect, sampling,
+                                                  /* paint= */ nullptr, constraint);
+#endif
+
                             SkAssertResult(surface->readPixels(actual, 0, 0));
 
                             actualNumTiles = gNumTilesDrawn.load(std::memory_order_acquire);
@@ -473,11 +486,20 @@ void tiled_image_caching_test(GrDirectContext* dContext,
     for (int i = 0; i < 2; ++i) {
         canvas->clear(SK_ColorBLACK);
 
-        SkTiledImageUtils::DrawImage(canvas, img,
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::DrawImage(canvas, img,
                                      /* x= */ 0, /* y= */ 0,
                                      SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
                                      /* paint= */ nullptr,
                                      SkCanvas::kFast_SrcRectConstraint);
+#else
+        SkRect src = SkRect::MakeIWH(img->width(), img->height());
+        SkRect dst = SkRect::MakeXYWH(0, 0, img->width(), img->height());
+        canvas->drawImageRect(img, src, dst,
+                              SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
+                              /* paint= */ nullptr, SkCanvas::kFast_SrcRectConstraint);
+#endif
+
         SkAssertResult(surface->readPixels(readback, 0, 0));
     }
 

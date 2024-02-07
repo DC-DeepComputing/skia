@@ -12,7 +12,10 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
-#include "include/core/SkTiledImageUtils.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/TiledImageUtils.h"
+#endif
 
 DEF_SIMPLE_GM(path_huge_crbug_800804, canvas, 50, 600) {
     SkPaint paint;
@@ -55,7 +58,14 @@ static void draw_huge_path(SkCanvas* canvas, int w, int h, bool manual) {
     canvas->clipRect(SkRect::MakeXYWH(4, 4, 64, 64));
     can->drawPath(path, paint);
     if (manual) {
-        SkTiledImageUtils::DrawImage(canvas, surf->makeImageSnapshot(), 64 - w, 0);
+        sk_sp<SkImage> image = surf->makeImageSnapshot();
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::DrawImage(canvas, image, 64 - w, 0);
+#else
+        SkRect src = SkRect::MakeIWH(image->width(), image->height());
+        SkRect dst = SkRect::MakeXYWH(64 - w, 0, image->width(), image->height());
+        canvas->drawImageRect(image, src, dst, {}, nullptr, SkCanvas::kFast_SrcRectConstraint);
+#endif
     } else {
         canvas->drawImage(surf->makeImageSnapshot(), 64 - w, 0);
     }
@@ -68,7 +78,14 @@ static void draw_huge_path(SkCanvas* canvas, int w, int h, bool manual) {
     paint.setAntiAlias(true);
     can->drawPath(path, paint);
     if (manual) {
-        SkTiledImageUtils::DrawImage(canvas, surf->makeImageSnapshot(), 64 - w, 0);
+        sk_sp<SkImage> image = surf->makeImageSnapshot();
+#if defined(SK_GRAPHITE)
+        skgpu::graphite::DrawImage(canvas, image, 64 - w, 0);
+#else
+        SkRect src = SkRect::MakeIWH(image->width(), image->height());
+        SkRect dst = SkRect::MakeXYWH(64 - w, 0, image->width(), image->height());
+        canvas->drawImageRect(image, src, dst, {}, nullptr, SkCanvas::kFast_SrcRectConstraint);
+#endif
     } else {
         canvas->drawImage(surf->makeImageSnapshot(), 64 - w, 0);
     }

@@ -29,6 +29,8 @@ class SkPaint;
 */
 namespace SkTiledImageUtils {
 
+#if !defined(SK_DIABLE_LEGACY_TILED_IMAGE_UTILS)
+
 SK_API void DrawImageRect(SkCanvas* canvas,
                           const SkImage* image,
                           const SkRect& src,
@@ -101,6 +103,8 @@ inline void DrawImage(SkCanvas* canvas,
                               SkCanvas::kFast_SrcRectConstraint) {
     DrawImage(canvas, image.get(), x, y, sampling, paint, constraint);
 }
+
+#endif // !defined(SK_DIABLE_LEGACY_TILED_IMAGE_UTILS)
 
 static constexpr int kNumImageKeyValues = 6;
 
