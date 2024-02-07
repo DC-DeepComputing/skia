@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d233c31a_8b5d7cb3",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2380,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-07T17:17:50Z",
+      "side": 0,
+      "message": "I don\u0027t understand, glyph.top() is almost never 0 (that would imply that the entire glyph bitmap was hanging from the baseline).",
+      "revId": "0fb71bedffa29913d34cb942ee023a0abfc53b31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
