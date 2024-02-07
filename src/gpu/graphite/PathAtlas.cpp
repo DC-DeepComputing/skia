@@ -73,6 +73,13 @@ std::optional<PathAtlas::MaskAndOrigin> PathAtlas::addShape(
                           SkIPoint{(int) maskBounds.left(), (int) maskBounds.top()});
 }
 
+const Renderer* PathAtlas::maskRenderer(const Recorder* recorder,
+                                        const Shape&,
+                                        const Transform&,
+                                        const SkStrokeRec&) const {
+    return recorder->priv().rendererProvider()->coverageMask();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ComputePathAtlas::ComputePathAtlas()
