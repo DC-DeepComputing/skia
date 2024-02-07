@@ -1,0 +1,106 @@
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_ganesh_GrTiledImageUtils_DEFINED
+#define skgpu_ganesh_GrTiledImageUtils_DEFINED
+
+#include "include/core/SkCanvas.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkScalar.h"
+#include "include/private/base/SkAPI.h"
+
+#include <cstdint>
+
+class SkPaint;
+
+namespace skgpu::ganesh {
+/**
+    These DrawImage/DrawImageRect methods are intended to be direct replacements
+    for their SkCanvas equivalents. The SkTiledImageUtils calls will break SkBitmap-backed
+    SkImages into smaller tiles and draw them if the original image is too large to be
+    uploaded to the GPU. If the original image doesn't need tiling or is already gpu-backed
+    the DrawImage/DrawImageRect calls will fall through to the matching SkCanvas call.
+*/
+SK_API void DrawImageRect(SkCanvas* canvas,
+                          const SkImage* image,
+                          const SkRect& src,
+                          const SkRect& dst,
+                          const SkSamplingOptions& sampling = {},
+                          const SkPaint* paint = nullptr,
+                          SkCanvas::SrcRectConstraint constraint =
+                                  SkCanvas::kFast_SrcRectConstraint);
+
+inline void DrawImageRect(SkCanvas* canvas,
+                          const sk_sp<SkImage>& image,
+                          const SkRect& src,
+                          const SkRect& dst,
+                          const SkSamplingOptions& sampling = {},
+                          const SkPaint* paint = nullptr,
+                          SkCanvas::SrcRectConstraint constraint =
+                                  SkCanvas::kFast_SrcRectConstraint) {
+    DrawImageRect(canvas, image.get(), src, dst, sampling, paint, constraint);
+}
+
+inline void DrawImageRect(SkCanvas* canvas,
+                          const SkImage* image,
+                          const SkRect& dst,
+                          const SkSamplingOptions& sampling = {},
+                          const SkPaint* paint = nullptr,
+                          SkCanvas::SrcRectConstraint constraint =
+                                  SkCanvas::kFast_SrcRectConstraint) {
+    if (!image) {
+        return;
+    }
+
+    SkRect src = SkRect::MakeIWH(image->width(), image->height());
+
+    DrawImageRect(canvas, image, src, dst, sampling, paint, constraint);
+}
+
+inline void DrawImageRect(SkCanvas* canvas,
+                          const sk_sp<SkImage>& image,
+                          const SkRect& dst,
+                          const SkSamplingOptions& sampling = {},
+                          const SkPaint* paint = nullptr,
+                          SkCanvas::SrcRectConstraint constraint =
+                                  SkCanvas::kFast_SrcRectConstraint) {
+    DrawImageRect(canvas, image.get(), dst, sampling, paint, constraint);
+}
+
+inline void DrawImage(SkCanvas* canvas,
+                      const SkImage* image,
+                      SkScalar x, SkScalar y,
+                      const SkSamplingOptions& sampling = {},
+                      const SkPaint* paint = nullptr,
+                      SkCanvas::SrcRectConstraint constraint =
+                              SkCanvas::kFast_SrcRectConstraint) {
+    if (!image) {
+        return;
+    }
+
+    SkRect src = SkRect::MakeIWH(image->width(), image->height());
+    SkRect dst = SkRect::MakeXYWH(x, y, image->width(), image->height());
+
+    DrawImageRect(canvas, image, src, dst, sampling, paint, constraint);
+}
+
+inline void DrawImage(SkCanvas* canvas,
+                      const sk_sp<SkImage>& image,
+                      SkScalar x, SkScalar y,
+                      const SkSamplingOptions& sampling = {},
+                      const SkPaint* paint = nullptr,
+                      SkCanvas::SrcRectConstraint constraint =
+                              SkCanvas::kFast_SrcRectConstraint) {
+    DrawImage(canvas, image.get(), x, y, sampling, paint, constraint);
+}
+
+}  // namespace skgpu::ganesh
+
+#endif

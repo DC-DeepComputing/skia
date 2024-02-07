@@ -20,6 +20,7 @@ skia_graphite_public = [
   "$_include/Recording.h",
   "$_include/Surface.h",
   "$_include/TextureInfo.h",
+  "$_include/TiledImageUtils.h",
   "$_include/YUVABackendTextures.h",
 ]
 
@@ -154,6 +155,7 @@ skia_graphite_sources = [
   "$_src/TextureProxyView.h",
   "$_src/TextureUtils.cpp",
   "$_src/TextureUtils.h",
+  "$_src/TiledImageUtils.cpp",
   "$_src/Uniform.h",
   "$_src/UniformManager.cpp",
   "$_src/UniformManager.h",

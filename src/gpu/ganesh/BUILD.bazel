@@ -219,6 +219,7 @@ CORE_FILES = [
     "GrThreadSafeCache.h",
     "GrThreadSafePipelineBuilder.cpp",
     "GrThreadSafePipelineBuilder.h",
+    "GrTiledImageUtils.cpp",
     "GrTracing.h",
     "GrTransferFromRenderTask.cpp",
     "GrTransferFromRenderTask.h",

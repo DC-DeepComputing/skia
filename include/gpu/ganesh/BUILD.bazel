@@ -21,6 +21,7 @@ skia_filegroup(
     name = "ganesh_hdrs",
     srcs = [
         "GrExternalTextureGenerator.h",
+        "GrTiledImageUtils.h",
         "SkImageGanesh.h",
         "SkMeshGanesh.h",
         "SkSurfaceGanesh.h",
