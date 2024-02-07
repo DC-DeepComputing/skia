@@ -10,6 +10,8 @@
 
 #include "include/private/SkColorData.h"
 #include "src/base/SkVx.h"
+#include "src/core/SkSwizzlePriv.h"
+
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -21,6 +23,58 @@
 #endif
 
 namespace SK_OPTS_NS {
+
+#if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE2
+// -- SSE2
+static inline float SkReciprocalAlphaTimes255(float a) {
+#if 0
+        movss   xmm1, dword ptr [rip + .LCPI1_0] # xmm1 = mem[0],zero,zero,zero
+        divss   xmm1, xmm0
+        xorps   xmm2, xmm2
+        cmpneqss        xmm0, xmm2
+        andps   xmm0, xmm1
+        ret
+#endif
+    __m128 ma{a};
+    __m128 k{255.0f};
+    auto q = _mm_div_ss(, ma);
+    __m128 z{0};
+    auto f = ma == z;
+    auto answer = _mm_and_ps(f, q);
+    return answer[0];
+
+
+}
+#else
+// Neon and generic
+// Return 255 / a, or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a = 0.
+static inline float SkReciprocalAlphaTimes255(float a) {
+    SkASSERT(0 <= a && a <= 255);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(255.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+
+// Return 1 / a or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a = 0.
+static inline float SkReciprocalAlpha(float a) {
+    SkASSERT(0 <= a && a <= 1);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(1.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+#endif
 
 static void RGBA_to_rgbA_portable(uint32_t* dst, const uint32_t* src, int count) {
     for (int i = 0; i < count; i++) {
