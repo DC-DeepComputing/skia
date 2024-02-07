@@ -86,6 +86,39 @@ static void RGBA_to_rgbA_portable(uint32_t* dst, const uint32_t* src, int count)
     }
 }
 
+static float round_to_even_portable(float n) {
+    float roundUp = std::floor(n + 0.5f);
+    float roundDown = std::ceil(n - 0.5f);
+    if (roundUp == roundDown) {
+        return roundDown;
+    }
+
+    if ((int)roundDown & 1 == 0) {
+        return roundDown;
+    } else {
+        return roundUp;
+    }
+}
+
+# if defined(__clang__)
+static float round_to_even(float n) {
+    using F4 = float __attribute__((ext_vector_type(4)));
+    F4 N{n};
+    return __builtin_elementwise_roundeven(N)[0];
+}
+#else
+static float round_to_even(float n) {
+    float roundUp = std::floor(n + 0.5f);
+    float roundDown = std::ceil(n - 0.5f);
+    if (u == l) {
+        return u;
+    }
+
+
+}
+#endif
+
+#if defined(SK_USE_FAST_UNPREMUL_324099025)
 static uint32_t rgbA_to_CCCA(float c00, float c08, float c16, float a) {
     // Doing the math for an original color b resulting in a premul color x,
     //   x = ⌊(b * a + 127) / 255⌋,
@@ -108,6 +141,22 @@ static uint32_t rgbA_to_CCCA(float c00, float c08, float c16, float a) {
         | unpremul(c08) <<  8
         | unpremul(c00) <<  0;
 }
+#else
+// This version calculates the calculation preformed by Raster Pipeline
+static uint32_t rgbA_to_CCCA(float c00, float c08, float c16, float a) {
+    const float reciprocalA = SkReciprocalAlpha(a);
+    auto unpremul = [reciprocalA](float c) {
+        const float normalizedC = c * (1.0f / 255.0f);
+        const float answer = std::min(255.0f, c * reciprocalA * 255.0f);
+        return (uint32_t)round_to_even(answer);
+    };
+
+    return (uint32_t) a << 24
+           | unpremul(c16) << 16
+           | unpremul(c08) <<  8
+           | unpremul(c00) <<  0;
+}
+#endif
 
 static void rgbA_to_RGBA_portable(uint32_t* dst, const uint32_t* src, int count) {
     for (int i = 0; i < count; i++) {
