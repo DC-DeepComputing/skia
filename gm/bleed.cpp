@@ -24,7 +24,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
-#include "include/core/SkTiledImageUtils.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/private/base/SkTDArray.h"
@@ -33,6 +32,7 @@
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/ContextOptions.h"
+#include "include/gpu/graphite/TiledImageUtils.h"
 #include "include/private/gpu/graphite/ContextOptionsPriv.h"
 #endif
 
@@ -133,8 +133,12 @@ protected:
     void drawImage(SkCanvas* canvas, sk_sp<SkImage> image, SkRect srcRect, SkRect dstRect,
                    const SkSamplingOptions& sampling, SkPaint* paint) {
         if (fManual) {
-            SkTiledImageUtils::DrawImageRect(canvas, image.get(), srcRect, dstRect,
-                                             sampling, paint, fConstraint);
+#if defined(SK_GRAPHITE)
+            skgpu::graphite::DrawImageRect(canvas, image.get(), srcRect, dstRect,
+                                           sampling, paint, fConstraint);
+#else
+            canvas->drawImageRect(image.get(), srcRect, dstRect, sampling, paint, fConstraint);
+#endif
         } else {
             canvas->drawImageRect(image.get(), srcRect, dstRect, sampling, paint, fConstraint);
         }

@@ -16,6 +16,10 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/TiledImageUtils.h"
+#endif
+
 // This test exercises Ganesh's drawing of tiled bitmaps. In particular, that the offsets and the
 // extents of the tiles don't cause gaps between tiles.
 static void draw_tile_bitmap_with_fractional_offset(SkCanvas* canvas, bool vertical, bool manual) {
@@ -54,9 +58,15 @@ static void draw_tile_bitmap_with_fractional_offset(SkCanvas* canvas, bool verti
                               : SkRect::MakeXYWH(0.0f, 37.0f * i, 1124.0f, 32.0f);
 
         if (manual) {
-            SkTiledImageUtils::DrawImageRect(canvas, bmp.asImage(), src, dst, SkSamplingOptions(),
-                                             /* paint= */ nullptr,
-                                             SkCanvas::kStrict_SrcRectConstraint);
+#if defined(SK_GRAPHITE)
+            skgpu::graphite::DrawImageRect(canvas, bmp.asImage(), src, dst, SkSamplingOptions(),
+                                           /* paint= */ nullptr,
+                                           SkCanvas::kStrict_SrcRectConstraint);
+#else
+            canvas->drawImageRect(bmp.asImage(), src, dst, SkSamplingOptions(),
+                                  /* paint= */ nullptr,
+                                  SkCanvas::kStrict_SrcRectConstraint);
+#endif
         } else {
             canvas->drawImageRect(bmp.asImage(), src, dst, SkSamplingOptions(),
                                   /* paint= */ nullptr,
