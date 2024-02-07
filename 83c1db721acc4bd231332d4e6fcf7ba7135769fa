@@ -34,6 +34,29 @@
       "parentUuid": "165ee42e_88228b14",
       "revId": "83c1db721acc4bd231332d4e6fcf7ba7135769fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd4b24f7_8059e34c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-07T19:35:04Z",
+      "side": 1,
+      "message": "Looks like ganesh used `cinfo` but graphite used `info`, resulting in copy-pasta.",
+      "range": {
+        "startLine": 352,
+        "startChar": 52,
+        "endLine": 352,
+        "endChar": 53
+      },
+      "revId": "83c1db721acc4bd231332d4e6fcf7ba7135769fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
