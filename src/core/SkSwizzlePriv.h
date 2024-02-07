@@ -59,4 +59,31 @@ static inline uint32_t Sk4f_toL32(const skvx::float4& px) {
     return l32;
 }
 
-#endif
+// Return 255 / a, or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a = 0.
+static inline float SkReciprocalAlphaTimes255(float a) {
+    SkASSERT(0 <= a && a <= 255);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(255.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+
+// Return 1 / a or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a = 0.
+static inline float SkReciprocalAlpha(float a) {
+    SkASSERT(0 <= a && a <= 1);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(1.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+#endif  // SkSwizzlePriv_DEFINED

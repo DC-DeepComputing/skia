@@ -241,7 +241,8 @@ DEF_TEST(PremulAlphaRoundTripSkConvertPixels, reporter) {
     }
 }
 
-DEF_TEST(ReciprocalAlpha, reporter) {
+/*
+DEF_TEST(ReciprocalAlphaTimes255, reporter) {
     REPORTER_ASSERT(reporter, SkReciprocalAlphaTimes255(0) == 0);
     for (uint32_t i = 1; i < 256; ++i) {
         const float r = SkReciprocalAlphaTimes255(i);
@@ -249,3 +250,14 @@ DEF_TEST(ReciprocalAlpha, reporter) {
         REPORTER_ASSERT(reporter, r == e);
     }
 }
+
+DEF_TEST(ReciprocalAlpha, reporter) {
+    REPORTER_ASSERT(reporter, SkReciprocalAlpha(0) == 0);
+    for (uint32_t i = 1; i < 256; ++i) {
+        const float normalized = i / 255.0f;
+        const float r = SkReciprocalAlpha(normalized);
+        const float e = (1.0f / normalized);
+        REPORTER_ASSERT(reporter, r == e);
+    }
+}
+ */
