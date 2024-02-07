@@ -383,16 +383,28 @@ constexpr SkPMColor4f SK_PMColor4fILLEGAL = { SK_FloatNegativeInfinity,
                                               SK_FloatNegativeInfinity,
                                               SK_FloatNegativeInfinity };
 
-// Return 255 / a, or 0 if a = 0.
-// ieee 754 max(x, NaN) returns x.
-// From the standard:
-//     maxNum(x, y) is the canonicalized number y if x < y, x if y < x, the canonicalized number
-//     if one operand is a number and the other a quiet NaN.
-// The other trick we can use is that 0/0 produces NaN. We can produce NaN in 255/a by
-// multiplying by a/a which is NaN when a = 0.
-//     (255 * a) / (a * a).
+// Return 255 / a, or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a == 0.
 static inline float SkReciprocalAlphaTimes255(float a) {
-    SkASSERT(a <= 255);
-    return std::max(0.0f, sk_ieee_float_divide(a * 255.0f, a * a));
+    SkASSERT(0 <= a && a <= 255);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(255.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+
+static inline float SkReciprocalAlpha(float a) {
+    SkASSERT(0 <= a && a <= 1);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(1.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
 }
 #endif  // SkColorData_DEFINED
