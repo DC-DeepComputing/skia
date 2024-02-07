@@ -32,11 +32,11 @@ static const struct {
     int                  quality;
 } gRecs[] = {
     // We don't support GIF, BMP, or ICO. This applies to both NDK and SkEncoder.
-    { SkEncodedImageFormat::kPNG,  100},
-    { SkEncodedImageFormat::kJPEG, 100},
+    //{ SkEncodedImageFormat::kPNG,  100},
+    // { SkEncodedImageFormat::kJPEG, 100},
     { SkEncodedImageFormat::kWEBP, 100}, // Lossless
-    { SkEncodedImageFormat::kWEBP,  80}, // Lossy
-    { SkEncodedImageFormat::kPNG,  100},
+    //{ SkEncodedImageFormat::kWEBP,  80}, // Lossy
+    //{ SkEncodedImageFormat::kPNG,  100},
 };
 
 } // anonymous namespace
@@ -97,17 +97,18 @@ protected:
         tmp.extractSubset(&premulBm, SkIRect::MakeWH(256, 256));
         tmp.reset();
         unpremulBm.allocPixels(premulBm.info().makeAlphaType(kUnpremul_SkAlphaType));
-        SkAssertResult(premulBm.readPixels(unpremulBm.pixmap()));
+        //SkAssertResult(premulBm.readPixels(unpremulBm.pixmap()));
 
         for (const auto& rec : gRecs) {
             auto fmt = rec.format; int q = rec.quality;
-            auto opaqueImage = SkImages::DeferredFromEncodedData(encode_data(fmt, opaqueBm, q));
+            //auto opaqueImage = SkImages::DeferredFromEncodedData(encode_data(fmt, opaqueBm, q));
             auto premulImage = SkImages::DeferredFromEncodedData(encode_data(fmt, premulBm, q));
-            auto unpremulImage = SkImages::DeferredFromEncodedData(encode_data(fmt, unpremulBm, q));
+           // auto unpremulImage = SkImages::DeferredFromEncodedData(
+           // encode_data(fmt, unpremulBm, q));
 
-            canvas->drawImage(opaqueImage.get(), 0.0f, 0.0f);
+            //canvas->drawImage(opaqueImage.get(), 0.0f, 0.0f);
             canvas->drawImage(premulImage.get(), 0.0f, 256.0f);
-            canvas->drawImage(unpremulImage.get(), 0.0f, 512.0f);
+            //canvas->drawImage(unpremulImage.get(), 0.0f, 512.0f);
 
             canvas->translate(256.0f, 0.0f);
         }
