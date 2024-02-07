@@ -63,8 +63,9 @@ public:
 
     using sk_is_trivially_relocatable = std::true_type;
 
-private:
+public:
     explicit constexpr Swizzle(uint16_t key) : fKey(key) {}
+private:
 
     static constexpr float ComponentIndexToFloat(std::array<float, 4>, size_t idx);
     static constexpr int CToI(char c);
