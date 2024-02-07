@@ -212,6 +212,30 @@
       },
       "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78d4f113_6a83a78a",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-07T13:32:44Z",
+      "side": 0,
+      "message": "We do have several existing jobs that do perf metrics on Graphite, so that should still be the case after this CL:\nPerf-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Graphite_Dawn_Metal",
+      "parentUuid": "9209ddbd_0bb7114e",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 49
+      },
+      "revId": "40ae3fdbbeb04f82bccd02aff70ff3bf8854bab6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
