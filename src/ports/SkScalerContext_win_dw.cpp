@@ -2377,7 +2377,6 @@ bool SkScalerContext_DW::generatePngImage(const SkGlyph& glyph, void* imageBuffe
 
     SkCanvas canvas(dstBitmap);
     canvas.clear(SK_ColorTRANSPARENT);
-    canvas.translate(-glyph.left(), -glyph.top());
 
     return this->drawPngImage(glyph, canvas);
 }
