@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f35d5b9_0d804354",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-07T17:59:12Z",
+      "side": 1,
+      "message": "Actually, the compiler sees through all of these shenanigans and completely rewrites it, _adding a branch_ and reinstating a timing attack.\n\nhttps://godbolt.org/z/rGT46j114",
+      "parentUuid": "d6319570_a5ab6872",
+      "revId": "b8bb27f8ba40de9aab65d40bc6500945101cd067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12e58ae9_c7bf9440",
         "filename": "include/private/SkColorData.h",
         "patchSetId": 1
