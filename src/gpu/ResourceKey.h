@@ -20,6 +20,10 @@
 
 class TestResource;
 
+namespace skgpu::graphite {
+    class MtlCaps;
+}
+
 namespace skgpu {
 
 uint32_t ResourceKeyHash(const uint32_t* data, size_t size);
@@ -298,6 +302,8 @@ public:
     };
 
 private:
+    friend class skgpu::graphite::MtlCaps; // to allow extractGraphicsDescs
+
     sk_sp<SkData> fData;
     const char* fTag;
 };
