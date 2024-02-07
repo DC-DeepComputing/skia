@@ -10,6 +10,8 @@
 
 #include "include/private/SkColorData.h"
 #include "src/base/SkVx.h"
+#include "src/core/SkSwizzlePriv.h"
+
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -21,6 +23,62 @@
 #endif
 
 namespace SK_OPTS_NS {
+
+#if defined(SK_ARM_HAS_NEON)
+// -- NEON
+static inline float SkReciprocalAlphaTimes255(float a) {
+    return a != 0 ? 255.0f / a : 0.0f;
+}
+
+static inline float SkReciprocalAlpha(float a) {
+    return a != 0 ? 1.0f / a : 0.0f;
+}
+#elif SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE1
+// -- SSE2
+using F4 = __m128;
+static inline float SkReciprocalAlphaTimes255(float a) {
+    SkASSERT(0 <= a && a <= 255);
+    F4 vA{a};
+    auto q = _mm_div_ss(F4{255.0f}, vA);
+    return _mm_and_ps(vA != F4{0.0f}, q)[0];
+}
+
+static inline float SkReciprocalAlpha(float a) {
+    SkASSERT(0 <= a && a <= 1);
+    F4 vA{a};
+    auto q = _mm_div_ss(F4{1.0f}, vA);
+    return _mm_and_ps(vA != F4{0.0f}, q)[0];
+}
+#else
+// -- Portable
+// Return 255 / a, or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a = 0.
+static inline float SkReciprocalAlphaTimes255(float a) {
+    SkASSERT(0 <= a && a <= 255);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(255.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+
+// Return 1 / a or 0 if a = 0 with no branching instructions.
+// Calculate the reciprocal for a and use a mask to change it to zero if
+// a = 0.
+static inline float SkReciprocalAlpha(float a) {
+    SkASSERT(0 <= a && a <= 1);
+    const uint32_t isNotZero = -(a != 0);
+    float reciprocalA = sk_ieee_float_divide(1.0f, a);
+    uint32_t binaryReciprocalA;
+    memcpy(&binaryReciprocalA, &reciprocalA, sizeof(binaryReciprocalA));
+    binaryReciprocalA &= isNotZero;
+    memcpy(&reciprocalA, &binaryReciprocalA, sizeof(reciprocalA));
+    return reciprocalA;
+}
+#endif
 
 static void RGBA_to_rgbA_portable(uint32_t* dst, const uint32_t* src, int count) {
     for (int i = 0; i < count; i++) {

@@ -159,3 +159,55 @@ DEF_TEST(PublicSwizzleOpts, r) {
     SkSwapRB(&dst, &src, 1);
     REPORTER_ASSERT(r, dst == 0xFA04B0CE);
 }
+
+using fn = float (*)(float);
+static void test_reciprocal_alpha(
+        skiatest::Reporter* reporter,
+        fn test255, fn test1) {
+    REPORTER_ASSERT(reporter, test255(0) == 0);
+    for (uint32_t i = 1; i < 256; ++i) {
+        const float r = test255(i);
+        const float e = (255.0f / i);
+        REPORTER_ASSERT(reporter, r == e);
+    }
+
+    REPORTER_ASSERT(reporter, test1(0) == 0);
+    for (uint32_t i = 1; i < 256; ++i) {
+        const float normalized = i / 255.0f;
+        const float r = test1(normalized);
+        const float e = (1.0f / normalized);
+        REPORTER_ASSERT(reporter, r == e);
+    }
+}
+
+#define SK_OPTS_TARGET SK_OPTS_TARGET_DEFAULT
+#include "src/opts/SkOpts_SetTarget.h"
+#include "src/opts/SkSwizzler_opts.h"
+#if defined(SK_ARM_HAS_NEON)
+DEF_TEST(ReciprocalAlphaNeon, reporter) {
+    test_reciprocal_alpha(reporter,
+                          neon::SkReciprocalAlphaTimes255,
+                          neon::SkReciprocalAlpha);
+}
+#elif SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSSE3
+DEF_TEST(ReciprocalAlphaSsse3, reporter) {
+    test_reciprocal_alpha(reporter,
+                          ssse3::SkReciprocalAlphaTimes255,
+                          ssse3::SkReciprocalAlpha);
+}
+#endif
+#include "src/opts/SkOpts_RestoreTarget.h"
+
+#undef SK_CPU_SSE_LEVEL
+#undef SK_ARM_HAS_NEON
+#undef SK_OPTS_NS
+#undef SkSwizzler_opts_DEFINED
+#define SK_OPTS_NS portable
+
+#include "src/opts/SkSwizzler_opts.h"
+
+DEF_TEST(ReciprocalAlphaPortable, reporter) {
+    test_reciprocal_alpha(reporter,
+                          portable::SkReciprocalAlphaTimes255,
+                          portable::SkReciprocalAlpha);
+}
