@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/mtl/MtlGraphiteUtilsPriv.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
@@ -757,6 +758,20 @@ void MtlCaps::initFormatTable() {
 
 }
 
+SkColorType MtlCaps::getColorTypeFromFormat(MTLPixelFormat format) const {
+    const FormatInfo& info = fFormatTable[GetFormatIndex(format)];
+
+    const ColorTypeInfo* infos = info.fColorTypeInfos.get();
+
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        if (infos[i].fFlags & ColorTypeInfo::kRenderable_Flag) {
+            return infos[i].fColorType;
+        }
+    }
+
+    return kUnknown_SkColorType;
+}
+
 TextureInfo MtlCaps::getDefaultSampledTextureInfo(SkColorType colorType,
                                                   Mipmapped mipmapped,
                                                   Protected,
@@ -886,13 +901,16 @@ const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
     return nullptr;
 }
 
+static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
+static const int kGraphicsPipelineKeyData32Count = 5;
+
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
         // 5 uint32_t's (render step id, paint id, uint64 renderpass desc, uint16 write swizzle key)
-        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 5, "GraphicsPipeline");
+        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain,
+                                   kGraphicsPipelineKeyData32Count, "GraphicsPipeline");
         // add graphicspipelinedesc key
         builder[0] = pipelineDesc.renderStepID();
         builder[1] = pipelineDesc.paintParamsID().asUInt();
@@ -907,6 +925,76 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
     }
 
     return pipelineKey;
+}
+
+bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
+                                   GraphicsPipelineDesc* pipelineDesc,
+                                   RenderPassDesc* renderPassDesc,
+                                   const RendererProvider* rendererProvider) const {
+    struct UnpackedKeyData {
+        // The GraphicsPipelineDesc
+        uint32_t fRenderStepID = 0;
+        UniquePaintParamsID fPaintParamsID;
+
+        // From the RenderPassDesc
+        int fColorFormat = 0;
+        SkColorType fColorType1 = kUnknown_SkColorType;
+        uint32_t fColorSampleCount = 1;
+
+        int fDSFormat = 0;
+        SkEnumBitMask<DepthStencilFlags> fDSFlags = DepthStencilFlags::kNone;
+        uint32_t fDSSampleCount = 1;
+
+        uint16_t fSwizzle = 0;
+    } keyData;
+
+    SkASSERT(key.domain() == kGraphicsPipelineDomain);
+    SkASSERT(key.dataSize() == 4 * kGraphicsPipelineKeyData32Count);
+
+    const uint32_t* data7 = key.data();
+
+    keyData.fRenderStepID = data7[0];
+    keyData.fPaintParamsID = data7[1] ? UniquePaintParamsID(data7[1])
+                                      : UniquePaintParamsID::InvalidID();
+    MtlPixelFormat dsFormat = static_cast<MtlPixelFormat>((data7[2] >> 16) & 0xFFFF);
+
+    keyData.fDSFormat = dsFormat;
+    keyData.fDSFlags = MtlFormatToDepthStencilFlags((MTLPixelFormat) dsFormat);
+    keyData.fDSSampleCount = data7[2] & 0xFFFF;
+
+    MtlPixelFormat colorFormat = static_cast<MtlPixelFormat>((data7[3] >> 16) & 0xFFFF);
+
+    keyData.fColorFormat = colorFormat;
+    keyData.fColorType1 = this->getColorTypeFromFormat((MTLPixelFormat) colorFormat);
+    keyData.fColorSampleCount = data7[3] & 0xFFFF;
+
+    keyData.fSwizzle = data7[4];
+
+    //------
+    SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);
+
+    TextureInfo info = this->getDefaultSampledTextureInfo(keyData.fColorType1,
+                                                          skgpu::Mipmapped::kNo,
+                                                          skgpu::Protected::kNo,
+                                                          skgpu::Renderable::kYes);
+
+    *renderPassDesc = RenderPassDesc::Make(this,
+                                           info,
+                                           LoadOp::kClear,
+                                           StoreOp::kStore,
+                                           keyData.fDSFlags,
+                                           /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                           /* requiresMSAA= */ keyData.fColorSampleCount > 1,
+                                           Swizzle(keyData.fSwizzle));
+
+    const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
+
+    UniquePaintParamsID paintID = renderStep->performsShading() ? keyData.fPaintParamsID
+                                                                : UniquePaintParamsID::InvalidID();
+
+    *pipelineDesc = GraphicsPipelineDesc(renderStep, paintID);
+
+    return true;
 }
 
 uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
