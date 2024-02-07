@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6319570_a5ab6872",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-07T17:56:43Z",
+      "side": 1,
+      "message": "I don\u0027t know if my information is outdated here, but historically, there were nontrivial stalls/penalties for moving a value between int and float. I am willing to be proven wrong, but on its face I would have expected this to be very costly.",
+      "revId": "b8bb27f8ba40de9aab65d40bc6500945101cd067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12e58ae9_c7bf9440",
+        "filename": "include/private/SkColorData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-07T17:56:43Z",
+      "side": 1,
+      "message": "`sk_bit_cast` for readability?\n\n`uint32_t binaryReciprocalA \u003d sk_bit_cast\u003cuint32_t\u003e(reciprocalA);`",
+      "range": {
+        "startLine": 393,
+        "startChar": 4,
+        "endLine": 394,
+        "endChar": 72
+      },
+      "revId": "b8bb27f8ba40de9aab65d40bc6500945101cd067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
