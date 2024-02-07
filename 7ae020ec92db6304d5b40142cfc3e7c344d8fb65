@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c6170dd_fa7160f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-07T18:10:29Z",
+      "side": 1,
+      "message": "1) This is a great consideration, and I was not aware of how caching works. However, it shouldn\u0027t matter here, because this is a global setting (only the primary monitor settings are looked at, per the DirectWrite API\u0027s). Also, as you noted, any divergent settings would be in a different process anyways.\n\n2) Yeah, this isn\u0027t exactly like ClearType, but it brings the rendering closer to it. We\u0027ve been testing this in Edge for over a year now and gotten positive feedback from customers on it.",
+      "parentUuid": "0a0f64f9_d8667243",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25ba61d8_ad94be0c",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-01-26T19:43:38Z",
       "side": 1,
       "message": "nit: The parameter names here should match the ones used in the function definition (so `textContrast` and `textGamma`). The `f` prefix used on the fields just means `field`.",
+      "range": {
+        "startLine": 69,
+        "startChar": 61,
+        "endLine": 69,
+        "endChar": 74
+      },
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "397f57e7_0b569128",
+        "filename": "include/core/SkSurfaceProps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-07T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25ba61d8_ad94be0c",
       "range": {
         "startLine": 69,
         "startChar": 61,
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35792129_6e1e3456",
+        "filename": "include/core/SkSurfaceProps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-07T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2b23d23_9ba81826",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00b9cd39_d24bc87a",
@@ -75,6 +135,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "673edb03_e62d6bdf",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-07T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00b9cd39_d24bc87a",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d09984b_da19691e",
@@ -88,6 +166,24 @@
       "writtenOn": "2024-01-26T19:43:38Z",
       "side": 1,
       "message": "Note that there is one more site like this (you probably missed it because the new Graphite backend isn\u0027t compiled by default). Please see `src/gpu/graphite/Device.cpp`, which also has a `createDevice`",
+      "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ec63e71_3d4418b4",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-07T18:10:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d09984b_da19691e",
       "revId": "7ae020ec92db6304d5b40142cfc3e7c344d8fb65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
