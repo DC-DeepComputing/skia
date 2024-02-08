@@ -33,6 +33,24 @@
       "message": "Note previous comment.",
       "revId": "3da298ffe829e57240df477cbd1c9e90a2dfc0ee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a2a66b_01138dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-08T16:21:58Z",
+      "side": 1,
+      "message": "As another data point in favor of this CL\u0027s approach, SmallPathRenderer uses the ctm and a GrStyledShape -- i.e., a bundled Shape and style -- to build the search key, and the ctm and the Shape bounds to make the bitmap/SDF decision. So this would keep things consistent.",
+      "parentUuid": "a2c79334_c6338719",
+      "revId": "3da298ffe829e57240df477cbd1c9e90a2dfc0ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
