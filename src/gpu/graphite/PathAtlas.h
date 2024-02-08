@@ -25,6 +25,7 @@ class Caps;
 class DrawContext;
 class Recorder;
 class Rect;
+class Renderer;
 class Shape;
 class TextureProxy;
 class Transform;
@@ -55,7 +56,7 @@ public:
      * Returns an empty result if a the shape cannot fit in the atlas. Otherwise, returns the
      * CoverageMaskShape (including the texture proxy) for sampling the eventually-rendered coverage
      * mask and the device-space origin the mask should be drawn at (e.g. its recorded draw should
-     * be an integer translation matrix).
+     * be an integer translation matrix), and the Renderer that should be used to draw that shape.
      *
      * The bounds of the atlas entry is laid out with a 1 pixel outset from the given dimensions.
      * The returned shape's UV origin accounts for the padding, and its mask size does not include
@@ -75,11 +76,12 @@ public:
      * The stroke-and-fill style is drawn as a single combined coverage mask containing the stroke
      * and the fill.
      */
-    std::optional<MaskAndOrigin> addShape(Recorder*,
-                                          const Rect& transformedShapeBounds,
-                                          const Shape& shape,
-                                          const Transform& localToDevice,
-                                          const SkStrokeRec& style);
+    std::pair<const Renderer*, std::optional<MaskAndOrigin>> addShape(
+            Recorder*,
+            const Rect& transformedShapeBounds,
+            const Shape& shape,
+            const Transform& localToDevice,
+            const SkStrokeRec& style);
 
     /**
      * Returns true if a path coverage mask with the given device-space bounds is sufficiently
