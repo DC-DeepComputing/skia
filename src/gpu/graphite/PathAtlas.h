@@ -25,6 +25,7 @@ class Caps;
 class DrawContext;
 class Recorder;
 class Rect;
+class Renderer;
 class Shape;
 class TextureProxy;
 class Transform;
@@ -86,6 +87,16 @@ public:
      * small to benefit from atlasing without causing too many atlas renders.
      */
     virtual bool isSuitableForAtlasing(const Rect& transformedShapeBounds) const { return true; }
+
+    /**
+     * Which Renderer should be used for a cached shape of this size? For example,
+     * for smaller shapes the atlas could store the mask directly but for larger ones it
+     * could use SDF, or a compressed format.
+     */
+    virtual const Renderer* maskRenderer(const Recorder*,
+                                         const Shape&,
+                                         const Transform& localToDevice,
+                                         const SkStrokeRec&) const;
 
     uint32_t width() const { return fWidth; }
     uint32_t height() const { return fHeight; }

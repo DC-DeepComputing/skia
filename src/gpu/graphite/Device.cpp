@@ -1377,7 +1377,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         // paths with atlasing.
         if (!msaaSupported || strategy == PathRendererStrategy::kComputeAnalyticAA ||
             strategy == PathRendererStrategy::kRasterAA) {
-            return {renderers->coverageMask(), pathAtlas};
+            return {pathAtlas->maskRenderer(fRecorder, geometry.shape(), localToDevice, style),
+                    pathAtlas};
         }
 
         // Use the conservative clip bounds for a rough estimate of the mask size (this avoids
@@ -1386,7 +1387,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         Rect drawBounds = localToDevice.mapRect(shape.bounds());
         drawBounds.intersect(fClip.conservativeBounds());
         if (pathAtlas->isSuitableForAtlasing(drawBounds)) {
-            return {renderers->coverageMask(), pathAtlas};
+            return {pathAtlas->maskRenderer(fRecorder, geometry.shape(), localToDevice, style),
+                    pathAtlas};
         }
     }
 
