@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50bb0e04_c304ece4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-08T22:52:55Z",
+      "side": 1,
+      "message": "\u003e Oof, is the idea that codec registration must live in top-level components because Bazel build time configuration cannot push flags down to lower level components (and hence we can no longer use a centralized factory)?\n\nYes, no centralized factory can live in src/skia.\n\n\u003e Have you looked at all the external clients that would have to be updated also?\n\nYes. I have identified 3 cases that need to be handled for SkResources in G3",
+      "parentUuid": "b739d0b9_b99b7585",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1c469cb_7c5c442c",
         "filename": "modules/canvaskit/canvaskit_bindings.cpp",
         "patchSetId": 4
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5871a699_aa25c7e5",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-08T22:52:55Z",
+      "side": 1,
+      "message": "GN doesn\u0027t provide defines for BMP or WBMP (fixing this in https://skia-review.googlesource.com/c/skia/+/811818 at least for G3) and the current logic in SkCodec brings in ICO if PNG is also added (since ICO could be BMP or PNG).\n\nThe Bazel build sets defines for all these, thus the TODOs.\n\nCanvasKit is currently built with GN and Bazel, so I have to fallback to the lowest common denominator until we either update GN or build CK only with Bazel.",
+      "parentUuid": "a1c469cb_7c5c442c",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 5
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "edac7bd3_57be6d6a",
         "filename": "tools/viewer/Viewer.cpp",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-08T21:06:41Z",
       "side": 1,
       "message": "Same comment.",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 6
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb743d3_da9b53cf",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-08T22:52:55Z",
+      "side": 1,
+      "message": "For GN, we seem to always build DM with PNG+JPEG+WEBP+GIF support. We sometimes build with these other codecs. When I added the logic to DM, I was merely duplicating the existing behavior. I agree that these should be guarded, but I took a shortcut when I did it the first time around and am copy-pasting that shortcut here.\n\nWe could possibly consolidate this into a tools/something.h if you prefer to avoid the duplication.",
+      "parentUuid": "edac7bd3_57be6d6a",
       "range": {
         "startLine": 465,
         "startChar": 0,
