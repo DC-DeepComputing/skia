@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b739d0b9_b99b7585",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-08T21:06:41Z",
+      "side": 1,
+      "message": "Oof, is the idea that codec registration must live in top-level components because Bazel build time configuration cannot push flags down to lower level components (and hence we can no longer use a centralized factory)?\n\nIt certainly seems less maintainable to have all this duplicate initialization hardcoded in multiple source files...  stuff like adding a new codec or making sure that multiple binaries share the same configuration (e.g. app and tests) comes to mind.\n\nHave you looked at all the external clients that would have to be updated also?",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1c469cb_7c5c442c",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-08T21:06:41Z",
+      "side": 1,
+      "message": "How come some codecs are compile-time guarded and some are not?  I\u0027m guessing only the guarded ones can be disabled at build time?\n\nI think it would make sense to guard everything, to decouple build system invariants from source code.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 5
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edac7bd3_57be6d6a",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-08T21:06:41Z",
+      "side": 1,
+      "message": "Same comment.",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 6
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
