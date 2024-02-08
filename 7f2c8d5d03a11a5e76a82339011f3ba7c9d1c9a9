@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bfbb475_0da00916",
+        "filename": "tools/testrunners/common/TestRunner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-08T23:00:48Z",
+      "side": 1,
+      "message": "ubernit: I prefer `#if defined(SK_BUILD_FOR_ANDROID)` since it makes for easier augmentations later",
+      "range": {
+        "startLine": 79,
+        "startChar": 1,
+        "endLine": 79,
+        "endChar": 6
+      },
+      "revId": "7f2c8d5d03a11a5e76a82339011f3ba7c9d1c9a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
