@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b57d96_b5eb46d2",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-08T19:07:03Z",
+      "side": 1,
+      "message": "Now I\u0027m more confused. What about longer clusters?",
+      "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
