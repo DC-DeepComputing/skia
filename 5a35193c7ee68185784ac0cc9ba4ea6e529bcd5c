@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb69e9b1_0231377b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T22:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b4f7468_ea81b8e4",
+      "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94f6ac85_11b517a6",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e339d7bf_b020eec1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T22:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94f6ac85_11b517a6",
+      "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df9c880f_088daa17",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-08T21:42:10Z",
       "side": 1,
       "message": "This doesn\u0027t really need a long comment, maybe something like\n\n    There are only n glyphs in a run, not n+1.",
+      "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d89e093a_98f8fb95",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T22:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df9c880f_088daa17",
       "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -137,6 +191,24 @@
       "side": 1,
       "message": "Ok, then this comment should state just that, not what happens if this doesn\u0027t happen. Something like\n\n    fClusterIndexes n+1 is already set to the end of the run.\n    Do not attempt to overwrite this value with the cluster index that starts the next Run.\n    It is assumed later that all clusters in a Run are contained by the Run.",
       "parentUuid": "7bdfeb60_85254ff9",
+      "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f16ec2dc_54479eb1",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T22:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "765b76cb_6d23d857",
       "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
