@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20442db9_08043991",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-08T16:25:19Z",
+      "side": 1,
+      "message": "Note: this is the same behavior as DM",
+      "range": {
+        "startLine": 464,
+        "startChar": 12,
+        "endLine": 464,
+        "endChar": 27
+      },
+      "revId": "5335edecd69692abedbab439ad1e975296ce3206",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
