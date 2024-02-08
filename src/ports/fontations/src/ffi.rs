@@ -3,7 +3,14 @@ use ffi::{FillLinearParams, FillRadialParams};
 // Use of this source code is governed by a BSD-style license that can be found
 // in the LICENSE file.
 use font_types::{BoundingBox, GlyphId, Pen};
-use read_fonts::{tables::colr::CompositeMode, FileRef, FontRef, ReadError, TableProvider};
+use read_fonts::{
+    tables::{
+        bitmap::{BitmapContent, BitmapData, BitmapDataFormat, BitmapMetrics, BitmapSize},
+        colr::CompositeMode,
+        sbix::GlyphData,
+    },
+    FileRef, FontRef, ReadError, TableProvider,
+};
 use skrifa::{
     color::{Brush, ColorGlyphFormat, ColorPainter, Transform},
     instance::{Location, Size},
@@ -16,8 +23,8 @@ use skrifa::{
 use std::pin::Pin;
 
 use crate::ffi::{
-    AxisWrapper, BridgeScalerMetrics, ColorPainterWrapper, ColorStop, PaletteOverride, PathWrapper,
-    SkiaDesignCoordinate,
+    AxisWrapper, BitmapMetrics as FfiBitmapMetrics, BridgeScalerMetrics, ColorPainterWrapper,
+    ColorStop, PaletteOverride, PathWrapper, SkiaDesignCoordinate,
 };
 
 fn lookup_glyph_or_zero(font_ref: &BridgeFontRef, codepoint: u32) -> u16 {
@@ -740,6 +747,179 @@ pub struct BridgeColorStops<'a> {
     pub num_stops: usize,
 }
 
+enum BitmapPixelData<'a> {
+    PngData(&'a [u8]),
+}
+
+struct CblcGlyph<'a> {
+    bitmap_data: BitmapData<'a>,
+    ppem_x: u8,
+    ppem_y: u8,
+}
+
+// TODO: Consider factoring out offsets and scale into a callback interface for translate and scale.
+#[derive(Default)]
+struct BridgeBitmapGlyph<'a> {
+    data: Option<BitmapPixelData<'a>>,
+    metrics: FfiBitmapMetrics,
+}
+
+fn sbix_glyph<'a>(font_ref: &'a FontRef, glyph_id: GlyphId) -> Option<GlyphData<'a>> {
+    let find_glyph =
+        |font_ref: &'a FontRef, glyph_id: GlyphId| -> Result<Option<GlyphData<'a>>, ReadError> {
+            // TODO: Find closest strike, identify scale information.
+            let last_strike = font_ref
+                .sbix()?
+                .strikes()
+                .iter()
+                .last()
+                .ok_or(ReadError::OutOfBounds)??;
+            last_strike.glyph_data(glyph_id)
+        };
+    find_glyph(font_ref, glyph_id).unwrap_or_default()
+}
+
+trait StrikeSizeRetrievable {
+    fn strike_size(&self) -> f32;
+}
+
+impl StrikeSizeRetrievable for BitmapSize {
+    fn strike_size(&self) -> f32 {
+        self.ppem_y() as f32
+    }
+}
+
+fn best_strike_size<'a, T>(strikes: &'a [T], font_size: f32) -> Option<&'a T>
+where
+    T: StrikeSizeRetrievable,
+{
+    let mut nearest_smaller = None;
+    let mut nearest_larger = None;
+    for entry in strikes.iter() {
+        println!(
+            "Entry size: {:?} - requested size: {:?}",
+            entry.strike_size(),
+            font_size
+        );
+        if entry.strike_size() as f32 >= font_size {
+            nearest_larger = nearest_larger.map_or(Some(entry), |current_larger: &T| {
+                if entry.strike_size() as f32 - font_size
+                    < current_larger.strike_size() as f32 - font_size
+                {
+                    return Some(entry);
+                }
+                Some(current_larger)
+            });
+        } else {
+            nearest_smaller = nearest_smaller.map_or(Some(entry), |current_smaller: &T| {
+                if (font_size - entry.strike_size() as f32)
+                    < font_size - current_smaller.strike_size() as f32
+                {
+                    return Some(entry);
+                }
+                Some(current_smaller)
+            });
+        }
+    }
+    nearest_larger.or(nearest_smaller)
+}
+
+fn cblc_glyph<'a>(
+    font_ref: &'a FontRef,
+    glyph_id: GlyphId,
+    font_size: Option<f32>,
+) -> Option<CblcGlyph<'a>> {
+    let find_glyph = |font_ref: &'a FontRef,
+                      glyph_id,
+                      font_size: Option<f32>|
+     -> Result<Option<CblcGlyph<'_>>, ReadError> {
+        let cblc = font_ref.cblc()?;
+
+        let strikes = &cblc.bitmap_sizes();
+        let best_strike = font_size.map_or(strikes.get(0), |font_size| {
+            best_strike_size(strikes, font_size)
+        });
+
+        if let Some(strike) = best_strike {
+            println!("Choosen size: {:?}", strike.ppem_y());
+            let location = strike.location(cblc.offset_data(), glyph_id)?;
+            Ok(Some(CblcGlyph {
+                bitmap_data: font_ref.cbdt()?.data(&location)?,
+                ppem_x: strike.ppem_x,
+                ppem_y: strike.ppem_y,
+            }))
+        } else {
+            Ok(None)
+        }
+    };
+
+    find_glyph(font_ref, glyph_id, font_size).unwrap_or_default()
+}
+
+fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool {
+    let glyph_id = GlyphId::new(glyph_id);
+    font_ref
+        .with_font(|font| {
+            Some(sbix_glyph(font, glyph_id).is_some() || cblc_glyph(font, glyph_id, None).is_some())
+        })
+        .unwrap_or_default()
+}
+
+unsafe fn bitmap_glyph<'a>(
+    font_ref: &'a BridgeFontRef,
+    glyph_id: u16,
+    font_size: f32,
+) -> Box<BridgeBitmapGlyph<'a>> {
+    let glyph_id = GlyphId::new(glyph_id);
+    font_ref
+        .with_font(|font| {
+            if let Some(sbix_glyph) = sbix_glyph(font, glyph_id) {
+                return Some(Box::new(BridgeBitmapGlyph {
+                    data: Some(BitmapPixelData::PngData(sbix_glyph.data())),
+                    ..Default::default()
+                }));
+            } else if let Some(cblc_glyph) = cblc_glyph(font, glyph_id, Some(font_size)) {
+                let (bearing_x, bearing_y) = match cblc_glyph.bitmap_data.metrics {
+                    BitmapMetrics::Small(small_metrics) => (
+                        small_metrics.bearing_x() as f32,
+                        small_metrics.bearing_y() as f32,
+                    ),
+                    BitmapMetrics::Big(big_metrics) => (
+                        big_metrics.hori_bearing_x() as f32,
+                        big_metrics.hori_bearing_y() as f32,
+                    ),
+                };
+                if let BitmapContent::Data(BitmapDataFormat::Png, png_buffer) =
+                    cblc_glyph.bitmap_data.content
+                {
+                    return Some(Box::new(BridgeBitmapGlyph {
+                        data: Some(BitmapPixelData::PngData(png_buffer)),
+                        metrics: FfiBitmapMetrics {
+                            bearing_x,
+                            bearing_y,
+                            ppem_x: cblc_glyph.ppem_x as f32,
+                            ppem_y: cblc_glyph.ppem_y as f32,
+                            ..Default::default()
+                        },
+                    }));
+                }
+            }
+            None
+        })
+        .unwrap_or_default()
+}
+
+unsafe fn png_data<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a [u8] {
+    if let Some(BitmapPixelData::PngData(glyph_data)) = bitmap_glyph.data {
+        return glyph_data;
+    }
+    &[]
+}
+
+unsafe fn bitmap_metrics<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a FfiBitmapMetrics {
+    &bitmap_glyph.metrics
+}
+
 #[cxx::bridge(namespace = "fontations_ffi")]
 mod ffi {
     struct ColorStop {
@@ -821,6 +1001,16 @@ mod ffi {
         end_angle: f32,
     }
 
+    #[derive(Default)]
+    struct BitmapMetrics {
+        bearing_x: f32,
+        bearing_y: f32,
+        // Not returning width and height values as these should be retrieved from the PNG, which is safer.
+        // ppem_* values are used to compute a scale factor on the client side.
+        ppem_x: f32,
+        ppem_y: f32,
+    }
+
     extern "Rust" {
         type BridgeFontRef<'a>;
         unsafe fn make_font_ref<'a>(font_data: &'a [u8], index: u32) -> Box<BridgeFontRef<'a>>;
@@ -887,6 +1077,16 @@ mod ffi {
             size: f32,
             clip_box: &mut ClipBox,
         ) -> bool;
+
+        type BridgeBitmapGlyph<'a>;
+        fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
+        unsafe fn bitmap_glyph<'a>(
+            font_ref: &'a BridgeFontRef,
+            glyph_id: u16,
+            font_size: f32,
+        ) -> Box<BridgeBitmapGlyph<'a>>;
+        unsafe fn png_data<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a [u8];
+        unsafe fn bitmap_metrics<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a BitmapMetrics;
 
         fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
         fn table_tags(font_ref: &BridgeFontRef, tags: &mut [u32]) -> u16;
