@@ -113,10 +113,15 @@ public:
      * boundaries aren't visible AND the texel data in adjacent rows/cols is valid to be included
      * by the given sampling options.
      */
-    virtual sk_sp<SkShader> asShader(SkTileMode,
-                                     const SkSamplingOptions&,
-                                     const SkMatrix& lm,
-                                     bool strict=true) const;
+    sk_sp<SkShader> asShader(SkTileMode,
+                             const SkSamplingOptions&,
+                             const SkMatrix& lm,
+                             bool strict=true) const;
+
+    // Create an SkShader that clamps to a 1px boundary around the subset of this special image,
+    // under the assumption that the boundary is filled with transparent data, allowing kClamp
+    // tiling to visually match kDecal.
+    sk_sp<SkShader> asDecalClampedShader(const SkSamplingOptions&, const SkMatrix& lm) const;
 
     /**
      *  If the SpecialImage is backed by a gpu texture, return true.
@@ -138,6 +143,8 @@ protected:
     // This subset is relative to the backing store's coordinate frame, it has already been mapped
     // from the content rect by the non-virtual makeSubset().
     virtual sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const = 0;
+
+    virtual sk_sp<SkShader> asShader(SkTileMode, const SkSamplingOptions&, const SkMatrix& lm, const SkIRect* shadingSubset) const;
 
 private:
     const SkIRect        fSubset;

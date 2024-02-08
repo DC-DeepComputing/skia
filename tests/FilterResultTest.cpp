@@ -118,6 +118,14 @@ public:
     static void TrackStats(skif::Context* ctx, skif::Stats* stats) {
         ctx->fStats = stats;
     }
+
+    static bool IsTilingVisible(const skif::Context& ctx, const skif::FilterResult& image) {
+        return SkToBool(image.analyzeBounds(ctx.desiredOutput()) & FilterResult::BoundsAnalysis::kHasLayerFillingEffect);
+    }
+
+    static bool IsSurroundedByTransparentPixels(const skif::FilterResult& image) {
+        return image.fBoundary == FilterResult::PixelBoundary::kTransparent;
+    }
 };
 
 namespace {
@@ -860,7 +868,6 @@ public:
         return *this;
     }
 
-
     TestCase& applyCrop(const SkIRect& crop, Expect expectation) {
         return this->applyCrop(crop, SkTileMode::kDecal, expectation);
     }
@@ -1096,6 +1103,14 @@ public:
                             "expected %d+%d <= %d",
                             stats.fNumShaderBasedTilingDraws, stats.fNumShaderClampedDraws,
                             expectedShaderTiledDraws);
+            if (stats.fNumShaderBasedTilingDraws > 0) {
+                REPORTER_ASSERT(fRunner, stats.fNumShaderBasedTilingDraws == 0 ||
+                        (FilterResultTestAccess::IsTilingVisible(ctx, source) &&
+                            (source.tileMode() == SkTileMode::kMirror || source.tileMode() == SkTileMode::kRepeat)) ||
+                        (source.tileMode() == SkTileMode::kDecal && !FilterResultTestAccess::IsSurroundedByTransparentPixels(source)),
+                        "expensive shader draw %d, for %d in -> %d out",
+                        stats.fNumShaderBasedTilingDraws, (int) source.tileMode(), (int) output.tileMode());
+            }
 
             // Validate layer bounds and sampling when we expect a new or deferred image
             if (output.image()) {
@@ -2269,7 +2284,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
 
         TestCase(r, "Identity X axis, 1-step Y axis preserves tile mode",
-                 /*allowedPercentImageDiff=*/tm == SkTileMode::kMirror ? 1.2f : 1.f,
+                 /*allowedPercentImageDiff=*/tm == SkTileMode::kMirror ? 1.21f : 1.f,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 1 : 0)
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)

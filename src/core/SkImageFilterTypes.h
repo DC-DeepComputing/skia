@@ -694,18 +694,11 @@ public:
     explicit FilterResult(sk_sp<SkSpecialImage> image)
             : FilterResult(std::move(image), LayerSpace<SkIPoint>({0, 0})) {}
 
-    FilterResult(std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> imageAndOrigin)
-            : FilterResult(std::move(std::get<0>(imageAndOrigin)), std::get<1>(imageAndOrigin)) {}
+    // FilterResult(std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> imageAndOrigin)
+    //         : FilterResult(std::move(std::get<0>(imageAndOrigin)), std::get<1>(imageAndOrigin)) {}
 
     FilterResult(sk_sp<SkSpecialImage> image, const LayerSpace<SkIPoint>& origin)
-            : fImage(std::move(image))
-            , fSamplingOptions(kDefaultSampling)
-            , fTileMode(SkTileMode::kDecal)
-            , fTransform(SkMatrix::Translate(origin.x(), origin.y()))
-            , fColorFilter(nullptr)
-            , fLayerBounds(
-                    fTransform.mapRect(LayerSpace<SkIRect>(fImage ? fImage->dimensions()
-                                                                  : SkISize{0, 0}))) {}
+            : FilterResult(std::move(image), origin, PixelBoundary::kUnknown) {}
 
     // Renders the 'pic', clipped by 'cullRect', into an optimally sized surface (depending on
     // picture bounds and 'ctx's desired output). The picture is transformed by the context's
@@ -813,13 +806,36 @@ public:
 private:
     friend class ::FilterResultTestAccess; // For testing draw() and asShader()
 
+    class AutoSurface;
+
+    enum class PixelBoundary : int {
+        kUnknown,     // Pixels outside the image subset are of unknown value, possibly unitialized
+        kTransparent, // Pixels bordering the image subset are transparent black
+        kInitialized, // Pixels bordering the image are known to be initialized
+    };
+
+    FilterResult(sk_sp<SkSpecialImage> image, const LayerSpace<SkIPoint>& origin, PixelBoundary boundary)
+            : fImage(std::move(image))
+            , fBoundary(boundary)
+            , fSamplingOptions(kDefaultSampling)
+            , fTileMode(SkTileMode::kDecal)
+            , fTransform(SkMatrix::Translate(origin.x(), origin.y()))
+            , fColorFilter(nullptr)
+            , fLayerBounds(
+                    fTransform.mapRect(LayerSpace<SkIRect>(fImage ? fImage->dimensions()
+                                                                  : SkISize{0, 0}))) {}
+
     // Renders this FilterResult into a new, but visually equivalent, image that fills 'dstBounds',
     // has default sampling, no color filter, and a transform that translates by only 'dstBounds's
     // top-left corner. 'dstBounds' is intersected with 'fLayerBounds' unless 'preserveTransparency'
     // is true.
-    std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
-    resolve(const Context& ctx, LayerSpace<SkIRect> dstBounds,
-            bool preserveTransparency=false) const;
+    FilterResult resolve(const Context& ctx, LayerSpace<SkIRect> dstBounds,
+                         bool preserveTransparency=false) const;
+    // Returns a decal-tiled subset view of this FilterResult, requiring that this has an integer
+    // translation equivalent to 'knownOrigin'.
+    FilterResult subset(const LayerSpace<SkIPoint>& knownOrigin,
+                        const LayerSpace<SkIRect>& subsetBounds,
+                        bool clampSrcIfDisjoint=false) const;
 
     enum class BoundsAnalysis : int {
         // The image can be drawn directly, without needing to apply tiling, or handling how any
@@ -847,15 +863,23 @@ private:
     };
     SK_DECL_BITMASK_OPS_FRIENDS(BoundsAnalysis)
 
+    enum class BoundsScope : int {
+        kDeferred,
+        kCanDrawDirectly,
+        kShaderOnly
+    };
+
     // Determine what effects are visible based on the target 'dstBounds' and extra transform that
     // will be applied when this FilterResult is drawn. These are not LayerSpace because the
     // 'xtraTransform' may be either a within-layer transform, or a layer-to-device space transform.
     // The 'dstBounds' should be in the same coordinate space that 'xtraTransform' maps to. When
     // that is the identity matrix, 'dstBounds' is in layer space.
     SkEnumBitMask<BoundsAnalysis> analyzeBounds(const SkMatrix& xtraTransform,
-                                                const SkIRect& dstBounds) const;
-    SkEnumBitMask<BoundsAnalysis> analyzeBounds(const LayerSpace<SkIRect>& dstBounds) const {
-        return this->analyzeBounds(SkMatrix::I(), SkIRect(dstBounds));
+                                                const SkIRect& dstBounds,
+                                                BoundsScope scope) const;
+    SkEnumBitMask<BoundsAnalysis> analyzeBounds(const LayerSpace<SkIRect>& dstBounds,
+                                                BoundsScope scope = BoundsScope::kDeferred) const {
+        return this->analyzeBounds(SkMatrix::I(), SkIRect(dstBounds), scope);
     }
 
     // Return an equivalent FilterResult such that its backing image dimensions have been reduced
@@ -914,6 +938,8 @@ private:
     // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform',
     // filtered by 'fColorFilter', and then clipped to 'fLayerBounds'.
     sk_sp<SkSpecialImage> fImage;
+    PixelBoundary         fBoundary;
+
     SkSamplingOptions     fSamplingOptions;
     SkTileMode            fTileMode;
     // Typically this will be an integer translation that encodes the origin of the top left corner,
