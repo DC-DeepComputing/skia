@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3227778d_1fd7b569",
+        "filename": "tools/testrunners/common/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-08T23:03:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "34410481_433c5756",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "938c2a1e5e73e2aeebcf7e7c967018dd56025e92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a64596d7_f27ca2a8",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-08T22:56:37Z",
       "side": 1,
       "message": "I don\u0027t suppose we are concerned with the performance of building a lot of regexes for each test case?",
+      "range": {
+        "startLine": 15,
+        "startChar": 19,
+        "endLine": 15,
+        "endChar": 21
+      },
+      "revId": "938c2a1e5e73e2aeebcf7e7c967018dd56025e92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "accf6e57_4be8d76b",
+        "filename": "tools/testrunners/common/TestRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-08T23:03:01Z",
+      "side": 1,
+      "message": "I don\u0027t have a definitive answer here, but if we find this to be slow in practice, we could turn this into a class that takes the flags as constructor arguments, builds and caches the regexps, and offers a `ShouldRunTestCase` method that uses those prebuilt regexps.",
+      "parentUuid": "a64596d7_f27ca2a8",
       "range": {
         "startLine": 15,
         "startChar": 19,
