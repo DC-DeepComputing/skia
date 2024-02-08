@@ -9,6 +9,14 @@
 
 #include "bench/GpuTools.h"
 #include "gm/gm.h"
+#include "include/codec/SkBmpDecoder.h"
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkGifDecoder.h"
+#include "include/codec/SkIcoDecoder.h"
+#include "include/codec/SkJpegDecoder.h"
+#include "include/codec/SkPngDecoder.h"
+#include "include/codec/SkWbmpDecoder.h"
+#include "include/codec/SkWebpDecoder.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -124,6 +132,22 @@
 #if defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGOpenTypeSVGDecoder.h"
 #include "tools/viewer/SvgSlide.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_AVIF
+#include "include/codec/SkAvifDecoder.h"
+#endif
+
+#ifdef SK_HAS_HEIF_LIBRARY
+#include "include/android/SkHeifDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_JPEGXL
+#include "include/codec/SkJpegxlDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_RAW
+#include "include/codec/SkRawDecoder.h"
 #endif
 
 using namespace skia_private;
@@ -437,6 +461,29 @@ static Window::BackendType backend_type_for_window(Window::BackendType backendTy
     return Window::kRaster_BackendType == backendType ? Window::kNativeGL_BackendType : backendType;
 }
 
+static void register_codecs() {
+    SkCodecs::Register(SkPngDecoder::Decoder());
+    SkCodecs::Register(SkJpegDecoder::Decoder());
+    SkCodecs::Register(SkWebpDecoder::Decoder());
+    SkCodecs::Register(SkGifDecoder::Decoder());
+    SkCodecs::Register(SkBmpDecoder::Decoder());
+    SkCodecs::Register(SkWbmpDecoder::Decoder());
+    SkCodecs::Register(SkIcoDecoder::Decoder());
+
+#ifdef SK_CODEC_DECODES_AVIF
+    SkCodecs::Register(SkAvifDecoder::Decoder());
+#endif
+#ifdef SK_HAS_HEIF_LIBRARY
+    SkCodecs::Register(SkHeifDecoder::Decoder());
+#endif
+#ifdef SK_CODEC_DECODES_JPEGXL
+    SkCodecs::Register(SkJpegxlDecoder::Decoder());
+#endif
+#ifdef SK_CODEC_DECODES_RAW
+    SkCodecs::Register(SkRawDecoder::Decoder());
+#endif
+}
+
 class NullSlide : public Slide {
     void draw(SkCanvas* canvas) override {
         canvas->clear(0xffff11ff);
@@ -488,6 +535,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
 #if defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
+    register_codecs();
 
     gGaneshPathRendererNames[GpuPathRenderers::kDefault] = "Default Path Renderers";
     gGaneshPathRendererNames[GpuPathRenderers::kAtlas] = "Atlas (tessellation)";

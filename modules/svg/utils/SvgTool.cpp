@@ -23,6 +23,19 @@
 #include "include/ports/SkFontMgr_empty.h"
 #endif
 
+#if defined(SK_CODEC_DECODES_GIF)
+#include "include/codec/SkGifDecoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_JPEG)
+#include "include/codec/SkJpegDecoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_PNG)
+#include "include/codec/SkPngDecoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_WEBP)
+#include "include/codec/SkWebpDecoder.h"
+#endif
+
 static DEFINE_string2(input , i, nullptr, "Input SVG file.");
 static DEFINE_string2(output, o, nullptr, "Output PNG file.");
 
@@ -53,6 +66,19 @@ int main(int argc, char** argv) {
     sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_CoreText(nullptr);
 #else
     sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_Custom_Empty();
+#endif
+
+#if defined(SK_CODEC_DECODES_GIF)
+    SkCodecs::Register(SkGifDecoder::Decoder());
+#endif
+#if defined(SK_CODEC_DECODES_JPEG)
+    SkCodecs::Register(SkJpegDecoder::Decoder());
+#endif
+#if defined(SK_CODEC_DECODES_PNG)
+    SkCodecs::Register(SkPngDecoder::Decoder());
+#endif
+#if defined(SK_CODEC_DECODES_WEBP)
+    SkCodecs::Register(SkWebpDecoder::Decoder());
 #endif
 
     auto predecode = skresources::ImageDecodeStrategy::kPreDecode;

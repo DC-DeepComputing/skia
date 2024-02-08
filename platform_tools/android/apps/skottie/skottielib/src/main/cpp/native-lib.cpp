@@ -168,6 +168,7 @@ Java_org_skia_skottie_SkottieAnimation_nCreateProxy(JNIEnv *env,
     skottieAnimation->mStream = std::move(stream);
 
     skottieAnimation->mAnimation = skottie::Animation::Builder()
+        // Note, this nullptr ResourceProvider won't actually load any fonts or images.
         .setResourceProvider(skresources::DataURIResourceProviderProxy::Make(nullptr))
         .make(skottieAnimation->mStream.get());
     skottieAnimation->mTimeBase  = 0.0f; // force a time reset
