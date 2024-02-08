@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6a24b2e_5b0543fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T16:14:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b213c1e9_3a620503",
+      "revId": "00f3af7f9ee5c3d3080cfc81002d80c36088ffac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebcf0291_b8864227",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd1d239_bc387e47",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T16:14:47Z",
+      "side": 1,
+      "message": "I added a comment to the place of the fix.",
+      "parentUuid": "ebcf0291_b8864227",
+      "revId": "00f3af7f9ee5c3d3080cfc81002d80c36088ffac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "933a976e_41fdad5c",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-07T21:17:25Z",
       "side": 1,
       "message": "I take it that the difference is that `fGlyphs` and `fClusterIndexes` are attached to glyphs, but there is always one more `fPosition` and `fOffset` to indicate the default position of the next glyph (so that one knows where to put the caret / text insertion indicator).\n\nIf this is the case then the commit message should be updated to state this, because otherwise it is difficult to see the justification for why only `fClusterIndexes` should be moved here.",
+      "revId": "00f3af7f9ee5c3d3080cfc81002d80c36088ffac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d6be797_ac8a876e",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T16:14:47Z",
+      "side": 1,
+      "message": "I did my best to explain the situation.",
+      "parentUuid": "933a976e_41fdad5c",
       "revId": "00f3af7f9ee5c3d3080cfc81002d80c36088ffac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
