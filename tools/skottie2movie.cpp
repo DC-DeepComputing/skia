@@ -6,6 +6,10 @@
  */
 
 #include "experimental/ffmpeg/SkVideoEncoder.h"
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkJpegDecoder.h"
+#include "include/codec/SkPngDecoder.h"
+#include "include/codec/SkWebpDecoder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkStream.h"
@@ -65,6 +69,10 @@ int main(int argc, char** argv) {
         assetPath = SkOSPath::Dirname(FLAGS_input[0]);
     }
     SkDebugf("assetPath %s\n", assetPath.c_str());
+
+    SkCodecs::Register(SkPngDecoder::Decoder());
+    SkCodecs::Register(SkJpegDecoder::Decoder());
+    SkCodecs::Register(SkWebpDecoder::Decoder());
 
     auto animation = skottie::Animation::Builder()
         .setResourceProvider(skresources::FileResourceProvider::Make(assetPath))
