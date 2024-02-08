@@ -52,6 +52,24 @@
       "parentUuid": "589e1e53_8bed2d22",
       "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bdfeb60_85254ff9",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-08T20:44:59Z",
+      "side": 1,
+      "message": "It\u0027s always assigned in the Run constructor:\n    fClusterIndexes[info.glyphCount] \u003d this-\u003eleftToRight() ? info.utf8Range.end() : info.utf8Range.begin();\n\nI suppose I could do what you suggested but that would mean I add another (different) check.\nEither way, the correct value is already there since the construction time and we should not touch it.",
+      "parentUuid": "2d6e5a2a_17534604",
+      "revId": "5a35193c7ee68185784ac0cc9ba4ea6e529bcd5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
