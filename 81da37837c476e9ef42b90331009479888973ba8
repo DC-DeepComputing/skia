@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac870c70_aa6b344d",
+        "filename": "src/core/SkSwizzlePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-08T18:24:22Z",
+      "side": 1,
+      "message": "I don\u0027t entirely understand why we have an implementation in the Priv header and a separate one in _opts. Are both needed? Who calls this one, and are timing attacks a factor? Can we just use the basic Neon-style ternary?",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 23
+      },
+      "revId": "81da37837c476e9ef42b90331009479888973ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed532e4_8ea640b2",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-08T18:24:22Z",
+      "side": 1,
+      "message": "Just use the NEON version?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 0
+      },
+      "revId": "81da37837c476e9ef42b90331009479888973ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
