@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79ac5796_3a5ccae1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-08T22:56:54Z",
+      "side": 1,
+      "message": "I believe the intent is for this line to replace \"Fixing a crash\".",
+      "revId": "63d70febfe42d780d7c7064bd72c89d23fd2408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18f36171_b0b9e7b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-08T22:56:54Z",
+      "side": 1,
+      "message": "Please hard wrap at 72 characters.",
+      "revId": "63d70febfe42d780d7c7064bd72c89d23fd2408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
