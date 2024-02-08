@@ -7,6 +7,7 @@
 
 #include "include/android/SkAnimatedImage.h"
 #include "include/codec/SkAndroidCodec.h"
+#include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBlendMode.h"
@@ -137,6 +138,64 @@ extern "C" const SkEmbeddedResourceHeader SK_EMBEDDED_FONTS;
 #if defined(GR_TEST_UTILS)
 #error "This define should not be set, as it brings in test-only things and bloats codesize."
 #endif
+
+#include "include/codec/SkBmpDecoder.h"
+#include "include/codec/SkWbmpDecoder.h"
+
+#if defined(SK_CODEC_DECODES_GIF)
+#include "include/codec/SkGifDecoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_JPEG)
+#include "include/codec/SkJpegDecoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_PNG)
+#include "include/codec/SkIcoDecoder.h"
+#include "include/codec/SkPngDecoder.h"
+#endif
+#if defined(SK_CODEC_DECODES_WEBP)
+#include "include/codec/SkWebpDecoder.h"
+#endif
+
+// We'd like clients to be able to compile in as many or few codecs as they want (e.g. codesize)
+std::unique_ptr<SkCodec> DecodeImageData(sk_sp<SkData> data) {
+    if (data == nullptr) {
+        return nullptr;
+    }
+    // These codecs are arbitrarily ordered in alphabetical order.
+    // TODO(kjlubick) make this look at SK_CODEC_DECODES_BMP
+    if (SkBmpDecoder::IsBmp(data->data(), data->size())) {
+        return SkBmpDecoder::Decode(data, nullptr);
+    }
+#if defined(SK_CODEC_DECODES_GIF)
+    if (SkGifDecoder::IsGif(data->data(), data->size())) {
+        return SkGifDecoder::Decode(data, nullptr);
+    }
+#endif
+#if defined(SK_CODEC_DECODES_JPEG)
+    if (SkJpegDecoder::IsJpeg(data->data(), data->size())) {
+        return SkJpegDecoder::Decode(data, nullptr);
+    }
+#endif
+#if defined(SK_CODEC_DECODES_PNG)
+    if (SkPngDecoder::IsPng(data->data(), data->size())) {
+        return SkPngDecoder::Decode(data, nullptr);
+    }
+    // TODO(kjlubick) make this look at SK_CODEC_DECODES_ICO
+    if (SkIcoDecoder::IsIco(data->data(), data->size())) {
+        return SkIcoDecoder::Decode(data, nullptr);
+    }
+#endif
+    // TODO(kjlubick) make this look at SK_CODEC_DECODES_WBMP
+    if (SkWbmpDecoder::IsWbmp(data->data(), data->size())) {
+        return SkWbmpDecoder::Decode(data, nullptr);
+    }
+#if defined(SK_CODEC_DECODES_WEBP)
+    if (SkWebpDecoder::IsWebp(data->data(), data->size())) {
+        return SkWebpDecoder::Decode(data, nullptr);
+    }
+#endif
+    return nullptr;
+}
 
 struct OptionalMatrix : SkMatrix {
     OptionalMatrix(WASMPointerF32 mPtr) {
@@ -1000,8 +1059,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                   size_t length)->sk_sp<SkAnimatedImage> {
         uint8_t* imgData = reinterpret_cast<uint8_t*>(iptr);
         auto bytes = SkData::MakeFromMalloc(imgData, length);
-        auto aCodec = SkAndroidCodec::MakeFromData(std::move(bytes));
-        if (nullptr == aCodec) {
+        auto codec = DecodeImageData(bytes);
+        if (codec == nullptr) {
+            return nullptr;
+        }
+        auto aCodec = SkAndroidCodec::MakeFromCodec(std::move(codec));
+        if (aCodec == nullptr) {
             return nullptr;
         }
 
@@ -1010,8 +1073,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
     function("_decodeImage", optional_override([](WASMPointerU8 iptr,
                                                   size_t length)->sk_sp<SkImage> {
         uint8_t* imgData = reinterpret_cast<uint8_t*>(iptr);
-        sk_sp<SkData> bytes = SkData::MakeFromMalloc(imgData, length);
-        return SkImages::DeferredFromEncodedData(std::move(bytes));
+        auto bytes = SkData::MakeFromMalloc(imgData, length);
+        auto codec = DecodeImageData(bytes);
+        if (codec == nullptr) {
+            return nullptr;
+        }
+        return std::get<0>(codec->getImage());
     }), allow_raw_pointers());
 
     // These won't be called directly, there are corresponding JS helpers to deal with arrays.
