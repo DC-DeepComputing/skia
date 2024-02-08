@@ -4259,6 +4259,107 @@ public:
     }
 };
 
+class ParagraphSlideEmojiSequence : public ParagraphSlide_Base {
+public:
+    ParagraphSlideEmojiSequence() { fName = "ParagraphSlideEmojiSequence"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr(), std::vector<SkString>());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("")});
+        text_style.setFontSize(20);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+
+        auto test = [&](const char* text) {
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            builder.pushStyle(text_style);
+            builder.addText(text);
+            auto paragraph = builder.Build();
+            paragraph->layout(this->size().width());
+            paragraph->paint(canvas, 0, 0);
+            if ((false)) {
+                SkDebugf("Paragraph '%s'\n", text);
+                auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+                for (auto& run: impl->runs()) {
+                    SkString ff;
+                    run.font().getTypeface()->getFamilyName(&ff);
+                    SkDebugf("'%s': [%zu:%zu)\n", ff.c_str(), run.textRange().start, run.textRange().end);
+                }
+            }
+        };
+        test("2nd");
+        canvas->translate(0, 50);
+        test("99");
+        canvas->translate(0, 50);
+        test("999");
+        canvas->translate(0, 50);
+        /*
+        test("🆗");
+        canvas->translate(0, 50);
+        test("0️⃣");
+        canvas->translate(0, 50);
+        test("0️⃣🆗");
+        canvas->translate(0, 50);
+        test("0");
+        canvas->translate(0, 50);
+        test("0️");
+        canvas->translate(0, 50);
+        test("♻️");
+        canvas->translate(0, 50);
+        test("󠁢󠁳󠁣󠁴󠁿🏴󠁧󠁢󠁳󠁣󠁴󠁿♻️");
+        */
+    }
+};
+
+class ParagraphSlideWordSpacing : public ParagraphSlide_Base {
+public:
+    ParagraphSlideWordSpacing() { fName = "ParagraphWordSpacing"; }
+
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+        fontCollection->enableFontFallback();
+
+        ParagraphStyle paragraph_style;
+        TextStyle text_style;
+        text_style.setColor(SK_ColorBLACK);
+        text_style.setFontFamilies({});
+        text_style.setFontSize(20.0);
+
+        auto draw = [&](TextDirection direction, SkScalar spacing, const char* text) {
+            paragraph_style.setTextDirection(direction);
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            text_style.setWordSpacing(spacing);
+            builder.pushStyle(text_style);
+            builder.addText(text);
+            builder.pop();
+            auto paragraph = builder.Build();
+            paragraph->layout(this->size().width());
+            paragraph->paint(canvas, 0, 0);
+            canvas->translate(0, paragraph->getHeight() + 20);
+        };
+
+        //const char* englishText = "Lorem ipsum dolor sit amet";
+        //const char*  hebrewText = "טקסט ללא רווח בין מילים";
+        //const char*  arabicText = "نص مع عدم وجود مسافات بين الكلمات";
+
+        //draw(TextDirection::kLtr, 20, englishText);
+        //draw(TextDirection::kRtl, 20, englishText);
+
+        draw(TextDirection::kLtr, 20, "טקסט ללא רווח בין מילים");
+        //draw(TextDirection::kRtl, 20, "טקסט ללא רווח בין מילים");
+
+        //draw(TextDirection::kLtr, 20, "نص مع عدم وجود مسافات بين الكلمات");
+        //draw(TextDirection::kRtl, 20, "نص مع عدم وجود مسافات بين الكلمات");
+    }
+};
+
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
@@ -4368,4 +4469,5 @@ DEF_SLIDE(return new ParagraphSlideGetPath();)
 DEF_SLIDE(return new ParagraphSlideExperiment();)
 DEF_SLIDE(return new ParagraphSlideGlyphs();)
 DEF_SLIDE(return new ParagraphSlideEllipsisInRTL();)
+DEF_SLIDE(return new ParagraphSlideWordSpacing();)
 DEF_SLIDE(return new ParagraphSlideLast();)

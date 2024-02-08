@@ -459,13 +459,21 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
 
             // Process word spacing
             if (currentStyle->fStyle.getWordSpacing() != 0) {
+                SkScalar spacing = currentStyle->fStyle.getWordSpacing();
                 if (cluster->isWhitespaceBreak() && cluster->isSoftBreak()) {
-                    if (!soFarWhitespacesOnly) {
+                    if (cluster->endPos() == run.size()) {
+                        // We have to extend the last whitespace cluster in the run
+                        // so we do not skip spacing (under assumption that all
+                        // contiguous whitespaces go into the same run)
+                        shift += spacing;
+                        run.addSpacesAtTheEnd(spacing, cluster);
+                        run.extend(cluster, spacing);
+                        wordSpacingPending = false;
+                    } else if (!soFarWhitespacesOnly) {
                         lastSpaceCluster = cluster;
                         wordSpacingPending = true;
                     }
                 } else if (wordSpacingPending) {
-                    SkScalar spacing = currentStyle->fStyle.getWordSpacing();
                     run.addSpacesAtTheEnd(spacing, lastSpaceCluster);
                     run.shift(cluster, spacing);
                     shift += spacing;
