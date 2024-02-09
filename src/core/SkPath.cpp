@@ -989,7 +989,6 @@ SkPath& SkPath::addRRect(const SkRRect& rrect, SkPathDirection dir) {
 SkPath& SkPath::addRRect(const SkRRect &rrect, SkPathDirection dir, unsigned startIndex) {
     assert_known_direction(dir);
 
-    bool isRRect = hasOnlyMoveTos();
     const SkRect& bounds = rrect.getBounds();
 
     if (rrect.isRect() || rrect.isEmpty()) {
@@ -1036,9 +1035,6 @@ SkPath& SkPath::addRRect(const SkRRect &rrect, SkPathDirection dir, unsigned sta
             }
         }
         this->close();
-
-        SkPathRef::Editor ed(&fPathRef);
-        ed.setIsRRect(isRRect, dir == SkPathDirection::kCCW, startIndex % 8);
 
         SkASSERT(this->countVerbs() == initialVerbCount + kVerbs);
     }
