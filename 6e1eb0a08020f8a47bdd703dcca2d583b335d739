@@ -22,6 +22,30 @@
       },
       "revId": "6e1eb0a08020f8a47bdd703dcca2d583b335d739",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a4c9b1_fd0c277d",
+        "filename": "src/gpu/graphite/RasterPathAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-09T18:52:52Z",
+      "side": 1,
+      "message": "My plan was to change `RasterPathAtlas` to cache medium-sized masks using the current scheme, and put large masks in their own textures. I think both could work using scratch textures, depending on how we can invalidate the rectanized medium-sized atlas. I.e., we don\u0027t want a single mask keeping an atlas around.",
+      "parentUuid": "7393c89f_0d070449",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 53
+      },
+      "revId": "6e1eb0a08020f8a47bdd703dcca2d583b335d739",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
