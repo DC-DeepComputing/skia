@@ -583,7 +583,7 @@ static std::optional<Config> create_config(const SkCommandLineConfig* config) {
         }
 
         return Config{gpuConfig->getTag(),
-                      Benchmark::kGPU_Backend,
+                      Benchmark::kGanesh_Backend,
                       colorType,
                       kPremul_SkAlphaType,
                       config->refColorSpace(),
@@ -715,7 +715,7 @@ static Target* is_enabled(Benchmark* bench, const Config& config) {
     Target* target = nullptr;
 
     switch (config.backend) {
-    case Benchmark::kGPU_Backend:
+    case Benchmark::kGanesh_Backend:
         target = new GPUTarget(config);
         break;
 #if defined(SK_GRAPHITE)
@@ -1533,7 +1533,7 @@ int main(int argc, char** argv) {
 
             TArray<SkString> keys;
             TArray<double> values;
-            if (configs[i].backend == Benchmark::kGPU_Backend) {
+            if (configs[i].backend == Benchmark::kGanesh_Backend) {
                 if (FLAGS_gpuStatsDump) {
                     // TODO cache stats
                     bench->getGpuStats(canvas, &keys, &values);
@@ -1640,7 +1640,7 @@ int main(int argc, char** argv) {
                         );
             }
 
-            if (FLAGS_gpuStats && Benchmark::kGPU_Backend == configs[i].backend) {
+            if (FLAGS_gpuStats && Benchmark::kGanesh_Backend == configs[i].backend) {
                 target->dumpStats();
             }
 
