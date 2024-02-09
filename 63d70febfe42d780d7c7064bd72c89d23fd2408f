@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60e61589_3986c9b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-09T14:19:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79ac5796_3a5ccae1",
+      "revId": "63d70febfe42d780d7c7064bd72c89d23fd2408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f36171_b0b9e7b7",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-08T22:56:54Z",
       "side": 1,
       "message": "Please hard wrap at 72 characters.",
+      "revId": "63d70febfe42d780d7c7064bd72c89d23fd2408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd5b1c8_f4a353f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-09T14:19:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18f36171_b0b9e7b7",
       "revId": "63d70febfe42d780d7c7064bd72c89d23fd2408f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
