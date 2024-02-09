@@ -16,6 +16,63 @@
       "message": "Ok, PTAL at the updated version.",
       "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613df6b4_ca619aa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T13:54:42Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0df3dfa7_21329c97",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T13:54:42Z",
+      "side": 1,
+      "message": "nit: const\n```suggestion\n    const bool outsetBoundsForAA \u003d renderer ? renderer-\u003eoutsetBoundsForAA() : true;\n```",
+      "range": {
+        "startLine": 1077,
+        "startChar": 4,
+        "endLine": 1077,
+        "endChar": 8
+      },
+      "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc7de44b_210fba29",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T13:54:42Z",
+      "side": 1,
+      "message": "can we add an assert here that if we got a valid `atlasMask` that `renderer` is non-null now?",
+      "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
