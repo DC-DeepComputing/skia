@@ -402,6 +402,7 @@ gm_sources = [
   "$_gm/vertices.cpp",
   "$_gm/verylargebitmap.cpp",
   "$_gm/wacky_yuv_formats.cpp",
+  "$_gm/weight.cpp",
   "$_gm/widebuttcaps.cpp",
   "$_gm/windowrectangles.cpp",
   "$_gm/workingspace.cpp",
