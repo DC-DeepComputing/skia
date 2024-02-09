@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc47aff1_9f5d13ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T16:08:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "50bb0e04_c304ece4",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1c469cb_7c5c442c",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "GN doesn\u0027t provide defines for BMP or WBMP (fixing this in https://skia-review.googlesource.com/c/skia/+/811818 at least for G3) and the current logic in SkCodec brings in ICO if PNG is also added (since ICO could be BMP or PNG).\n\nThe Bazel build sets defines for all these, thus the TODOs.\n\nCanvasKit is currently built with GN and Bazel, so I have to fallback to the lowest common denominator until we either update GN or build CK only with Bazel.",
       "parentUuid": "a1c469cb_7c5c442c",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 5
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4f86a2b_6a0f311e",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T16:08:50Z",
+      "side": 1,
+      "message": "I added the defines to our GN build.",
+      "parentUuid": "5871a699_aa25c7e5",
       "range": {
         "startLine": 166,
         "startChar": 0,
@@ -156,6 +204,30 @@
       "side": 1,
       "message": "\u003e We could possibly consolidate this into a tools/something.h if you prefer to avoid the duplication.\n\nYeah, having a centralized codec registration utility makes sense, at least for our internal tooling.  Can be a followup.",
       "parentUuid": "fbb743d3_da9b53cf",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 6
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e47c2927_ad4bf582",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T16:08:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d17fc40_fcbcf6ef",
       "range": {
         "startLine": 465,
         "startChar": 0,
