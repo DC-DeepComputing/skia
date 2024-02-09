@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7393c89f_0d070449",
+        "filename": "src/gpu/graphite/RasterPathAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T16:46:14Z",
+      "side": 1,
+      "message": "Eventually, wdyt about removing caching logic from `RasterPathAtlas` so that large masks just go into a scratch atlas and we don\u0027t have to worry about triggering device flushes?",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 53
+      },
+      "revId": "6e1eb0a08020f8a47bdd703dcca2d583b335d739",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
