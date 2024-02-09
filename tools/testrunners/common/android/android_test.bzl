@@ -1,6 +1,5 @@
 """This module defines the android_test macro."""
 
-load("//bazel:cc_binary_with_flags.bzl", "cc_binary_with_flags")
 load("//tools/testrunners/common:binary_wrapper_script_with_cmdline_flags.bzl", "binary_wrapper_script_with_cmdline_flags")
 load("//tools/testrunners/common/android:adb_test.bzl", "adb_test")
 
@@ -10,7 +9,6 @@ def android_test(
         test_runner_if_required_condition_is_satisfied,
         test_runner_if_required_condition_is_not_satisfied,
         deps = [],
-        flags = {},
         extra_args = [],
         benchmark = False,
         requires_condition = "//bazel/common_config_settings:always_true",
@@ -74,9 +72,6 @@ def android_test(
             requires_condition argument.
         deps: Any dependencies needed by the srcs. This list should not include a main() function
             (see the requires_condition argument).
-        flags: A map of strings to lists of strings to specify features that must be compiled in
-            for these tests to work. For example, tests targeting our codec logic will want the
-            various codecs included, but most tests won't need that.
         extra_args: Additional command-line arguments to pass to the test, for example, any
             device-specific --skip flags to skip incompatible or buggy test cases.
         benchmark: Set up the device for benchmark tests. This might affect e.g. CPU and GPU
@@ -101,7 +96,7 @@ def android_test(
 
     test_binary = "%s_binary" % name
 
-    cc_binary_with_flags(
+    native.cc_binary(
         name = test_binary,
         srcs = select({
             requires_condition: srcs,
@@ -111,7 +106,6 @@ def android_test(
             requires_condition: [test_runner_if_required_condition_is_satisfied] + deps,
             "//conditions:default": [test_runner_if_required_condition_is_not_satisfied],
         }),
-        set_flags = flags,
         testonly = True,  # Needed to gain access to test-only files.
     )
 
