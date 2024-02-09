@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dbb3ad_59c72bcb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:57:26Z",
+      "side": 1,
+      "message": "Adding Brian for the `//include/core/SkSurfaceProps.h` change.",
+      "revId": "163b24c0029ace28f40c6ec01dc1def6a1e0940b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
