@@ -26,6 +26,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9510f1f_268d460f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:36:33Z",
+      "side": 1,
+      "message": "Good question. I\u0027m afraid I don\u0027t have a good answer.\n\nThese environment variables are specific to each workstation. For example, when I SSH into my gLinux workstation, `XDG_RUNTIME_DIR` is set, but `DISPLAY` is not set, even though there is a graphical session running in the background. This means that for my particular setup:\n\n- I can just pipe through `XDG_RUNTIME_DIR` with `--test_env\u003dXDG_RUNTIME_DIR` (note that this is `--test_env\u003dVAR` rather than `--test_env\u003dVAR\u003dVAL`).\n- I need to define the right value for `DISPLAY`, which in my case is `:20`, so I use `--test_env\u003dDISPLAY\u003d:20`.\n\nThere is no guarantee that the right value for `DISPLAY` is going to be `:20` for other folks.\n\nFurthermore, if I open a terminal emulator from within a graphical session, `DISPLAY` will already be set, so I would invoke Bazel with `--test_env\u003dDISPLAY` rather than `--test_env\u003dDISPLAY\u003d:20`.",
+      "parentUuid": "d8c2869b_b04de042",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 32
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8be9878_6f2c21ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:36:33Z",
+      "side": 1,
+      "message": "In this patchset I addressed some of the suggestions you made in the descendant CL https://skia-review.googlesource.com/c/skia/+/811244.",
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07f82014_9664a80d",
         "filename": "bench/BUILD.bazel",
         "patchSetId": 7
@@ -37,6 +78,30 @@
       "writtenOn": "2024-02-09T13:43:56Z",
       "side": 1,
       "message": "Do you know if Bazel does the right thing with these args and builds one test binary and runs it several times with the different arguments or does it build N test binaries?",
+      "range": {
+        "startLine": 82,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 12
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3548ca57_aef3fd0d",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:36:33Z",
+      "side": 1,
+      "message": "This is just a list comprehension that yields exactly one `cc_test_with_flags` target (i.e. one test binary) per `[name, surfaceConfig]` pair. It is equivalent to writing the following targets explicitly:\n\n```\ncc_test_with_flags(\n    name \u003d \"gpu_vk_test\",\n    srcs \u003d ...,\n    args \u003d [\"--surfaceConfig\", \"vk\", \"--autoTuneLoops\"],\n    ...\n)\n\ncc_test_with_flags(\n    name \u003d \"gpu_vk_1010102_test\",\n    srcs \u003d ...,\n    args \u003d [\"--surfaceConfig\", \"vk_1010102\", \"--autoTuneLoops\"],\n    ...\n)\n\ncc_test_with_flags(\n    name \u003d \"gpu_vk_msaa4_test\",\n    srcs \u003d ...,\n    args \u003d [\"--surfaceConfig\", \"vk_msaa4\", \"--autoTuneLoops\"],\n    ...\n)\n\n...\n```",
+      "parentUuid": "07f82014_9664a80d",
       "range": {
         "startLine": 82,
         "startChar": 8,
@@ -70,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b5b037_1881c35b",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:36:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "befa0bc4_719914a8",
+      "range": {
+        "startLine": 96,
+        "startChar": 13,
+        "endLine": 96,
+        "endChar": 16
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bd4400c_4844ff77",
@@ -93,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32bed61d_f67e4b76",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:36:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bd4400c_4844ff77",
+      "range": {
+        "startLine": 631,
+        "startChar": 13,
+        "endLine": 631,
+        "endChar": 19
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa2cbf95_66776880",
@@ -106,6 +219,30 @@
       "writtenOn": "2024-02-09T13:43:56Z",
       "side": 1,
       "message": "skgpu::Protected instead of GrProtected",
+      "range": {
+        "startLine": 88,
+        "startChar": 61,
+        "endLine": 88,
+        "endChar": 72
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51a73fa6_53c70b79",
+        "filename": "tools/testrunners/common/surface_manager/GaneshVulkanSurfaceManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-09T18:36:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa2cbf95_66776880",
       "range": {
         "startLine": 88,
         "startChar": 61,
