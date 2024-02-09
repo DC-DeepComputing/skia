@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8c2869b_b04de042",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T13:43:56Z",
+      "side": 1,
+      "message": "These are going to be annoying to remember for me (and other devs probably). Can we have our test runners set these environment variables or will devs need to configure them?",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 32
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f82014_9664a80d",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T13:43:56Z",
+      "side": 1,
+      "message": "Do you know if Bazel does the right thing with these args and builds one test binary and runs it several times with the different arguments or does it build N test binaries?",
+      "range": {
+        "startLine": 82,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 12
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "befa0bc4_719914a8",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T13:43:56Z",
+      "side": 1,
+      "message": "ganesh_vk, not gpu_",
+      "range": {
+        "startLine": 96,
+        "startChar": 13,
+        "endLine": 96,
+        "endChar": 16
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bd4400c_4844ff77",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T13:43:56Z",
+      "side": 1,
+      "message": "ganesh_vk_*",
+      "range": {
+        "startLine": 631,
+        "startChar": 13,
+        "endLine": 631,
+        "endChar": 19
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa2cbf95_66776880",
+        "filename": "tools/testrunners/common/surface_manager/GaneshVulkanSurfaceManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T13:43:56Z",
+      "side": 1,
+      "message": "skgpu::Protected instead of GrProtected",
+      "range": {
+        "startLine": 88,
+        "startChar": 61,
+        "endLine": 88,
+        "endChar": 72
+      },
+      "revId": "ae2b4159ae13effd8fecebd51087a98c9b89a13e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
