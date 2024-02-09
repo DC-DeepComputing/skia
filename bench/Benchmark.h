@@ -44,7 +44,7 @@ public:
     enum Backend {
         kNonRendering_Backend,
         kRaster_Backend,
-        kGPU_Backend,
+        kGanesh_Backend,
         kGraphite_Backend,
         kPDF_Backend,
         kHWUI_Backend,
