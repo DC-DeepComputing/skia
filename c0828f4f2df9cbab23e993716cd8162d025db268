@@ -34,6 +34,24 @@
       "parentUuid": "89de081f_6b53c975",
       "revId": "c0828f4f2df9cbab23e993716cd8162d025db268",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "442fb42f_2cb32d20",
+        "filename": "tools/testrunners/common/TestRunner.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-09T17:28:38Z",
+      "side": 1,
+      "message": "Oh, yeah, this needs to be declared outside this function. Just realized this and it looks like you\u0027re already on that with https://skia-review.googlesource.com/c/skia/+/811100 .\n\nStill would like to see the linker enforce the list of dependencies though. Bazel rather painfully does treat `deps` as `public_deps` and Bazel\u0027s version of `private_deps` known as `implementation_deps` can\u0027t be used yet. I\u0027m going to grumble about this all the time.",
+      "parentUuid": "2f1f4c33_c7508c17",
+      "revId": "c0828f4f2df9cbab23e993716cd8162d025db268",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
