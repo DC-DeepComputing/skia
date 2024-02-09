@@ -17,7 +17,7 @@ public:
     }
 
     bool isSuitableFor(Backend backend) override {
-        return kGPU_Backend == backend || kRaster_Backend == backend;
+        return kGanesh_Backend == backend || kRaster_Backend == backend;
     }
 
 protected:

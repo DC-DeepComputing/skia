@@ -25,9 +25,7 @@ public:
     }
 
 protected:
-    bool isSuitableFor(Backend backend) override {
-        return kGPU_Backend == backend;
-    }
+    bool isSuitableFor(Backend backend) override { return kGanesh_Backend == backend; }
 
     const char* onGetName() override { return fName.c_str(); }
 
