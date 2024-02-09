@@ -16,6 +16,24 @@
       "message": "nit: Is this generally preferred? I don\u0027t have a preference, but generally like to avoid churn unless the change is clearly better.",
       "revId": "4b001f35eb0a8f648f62b10426144bdacedbbce7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a0fe48b_02085ead",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-09T17:17:01Z",
+      "side": 1,
+      "message": "I and Greg (?) prefer this because it\u0027s easier to modify (e.g. adding another condition). So as long as I was adding some #ifdefs for BMP and ICO, I figure I would tidy up the others.",
+      "parentUuid": "22b72234_9035cd03",
+      "revId": "4b001f35eb0a8f648f62b10426144bdacedbbce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
