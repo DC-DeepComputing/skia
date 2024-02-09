@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c05cffe1_65350a73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T16:40:15Z",
+      "side": 1,
+      "message": "I added some small comments initially, but then started to think about how this works, and I think we can come at this from a different direction that might be simpler:\n\n1. Add a virtual to SkDevice to control whether or not SkCanvas\u0027s onDrawImageRect() should attempt calling `drawAsTiledImage()`. For raster and graphite this will be false, and for ganesh it will be true.\n2. Add the cache size and max texture size parameters to `skgpu::TiledTextureUtils` so that it can be implemented independent of a GPU backend.\n3. Define `drawAsTiledImage()` for Graphite\u0027s Device class as well to call into TiledTextureUtils. But since we return false from the new virtual in #1, no behavior will be changed.\n4. Update the core/public SkTiledImageUtils to just call drawAsTiledImage() w/o checking the virtual from #1.\n\nThis way we leverage the existing build modularization around Device but still share the implementation of tiling between ganesh and graphite, and don\u0027t pay the cost in code size for tiling logic in a CPU-only build. Clients and our test code won\u0027t need to be updated either.\n\nWDYT?",
+      "revId": "7d6b0039ebc8376fbb440376604e2add0026d595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3d89f9d_0c79129f",
+        "filename": "include/gpu/graphite/TiledImageUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T16:40:15Z",
+      "side": 1,
+      "message": "We lost the TiledImageUtils namespace, which seems valuable for callsites in client code, e.g. `skgpu::graphite::TiledImageUtils::DrawImageRect(...)`",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 23,
+        "endChar": 26
+      },
+      "revId": "7d6b0039ebc8376fbb440376604e2add0026d595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2721488c_dabf7220",
+        "filename": "include/gpu/graphite/TiledImageUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-09T16:40:15Z",
+      "side": 1,
+      "message": "nit: out of date",
+      "range": {
+        "startLine": 26,
+        "startChar": 40,
+        "endLine": 26,
+        "endChar": 57
+      },
+      "revId": "7d6b0039ebc8376fbb440376604e2add0026d595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
