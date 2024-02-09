@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89de081f_6b53c975",
+        "filename": "tools/testrunners/common/TestRunner.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-09T16:48:15Z",
+      "side": 1,
+      "message": "On builders not finding this when linking. It looks like this is defined with storage in `SkDebug_android.cpp` which is provided by `//src/ports:skdebug` which is referenced in `//src/ports:srcs` (old build) and `//src/ports:base_srcs` (new build). As a result, this should be part of `//src/base:base` (new build).\n\nThis file is in `//tools/testrunners/common:testrunner` which deps on `//:core` which does deps on `//src/base:base`. While this means `gSkDebugToStdOut` will be available, since there is no direct dependency on `base`, this target will not link against `base` and the linker will not know about the symbol. This is because the deps of `core` are not public but are implementation details and `core` could in theory change its list of dependencies at any time. I think the issue is solvable by adding a dependency to `//src/base` here.",
+      "revId": "c0828f4f2df9cbab23e993716cd8162d025db268",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
