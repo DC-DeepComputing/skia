@@ -43,6 +43,7 @@ skia_cc_library(
             "//tools/gpu/gl:srcs",
         ],
         "//src/gpu:vulkan_ganesh": [
+            "//tests:test_type",
             "//tools/gpu/vk:private_hdrs",
             "//tools/gpu/vk:srcs",
         ],
