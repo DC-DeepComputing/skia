@@ -140,6 +140,30 @@
       },
       "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d17fc40_fcbcf6ef",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-09T15:41:23Z",
+      "side": 1,
+      "message": "\u003e We could possibly consolidate this into a tools/something.h if you prefer to avoid the duplication.\n\nYeah, having a centralized codec registration utility makes sense, at least for our internal tooling.  Can be a followup.",
+      "parentUuid": "fbb743d3_da9b53cf",
+      "range": {
+        "startLine": 465,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 6
+      },
+      "revId": "9df11b51281c06b573bc9101e0135a66fc120ca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
