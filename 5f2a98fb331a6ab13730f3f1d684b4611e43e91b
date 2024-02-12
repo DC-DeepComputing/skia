@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4e6b9de_2e03d3d4",
+        "filename": "tools/viewer/SBIXSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-12T20:19:30Z",
+      "side": 1,
+      "message": "Line size. Here and below.",
+      "range": {
+        "startLine": 254,
+        "startChar": 16,
+        "endLine": 257,
+        "endChar": 39
+      },
+      "revId": "5f2a98fb331a6ab13730f3f1d684b4611e43e91b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
