@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a61072bb_7fdc003a",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-12T20:03:59Z",
+      "side": 1,
+      "message": "I always assumed that a vello PathAtlas would only get accessed by the Recorder that it was created with. TBH I\u0027m slightly unclear on a DrawContext\u0027s relationship with Recorder(s). AIUI there is one DrawContext per Device and in turn one Device per Recorder that is tied to that particular Recorder. Yet, all the various `snapFoo` methods on DrawContext take a Recorder as a parameter.\n\nCan any of the snap methods be called with a Recorder that is different from the Recorder than the DrawContext was created on? `getComputePathAtlas` and `snapComputeTask` currently just mimic that overall structure. `getComputePathAtlas` is technically already broken if it were to be called with different Recorders (since it always returns the same PathAtlas once it creates one).\n\nWhat I\u0027m getting at is if a DrawContext is meant to be exclusively accessed by the same Recorder then this doesn\u0027t matter (and maybe the `Recorder` parameter in the `snapFoo`/`recordFoo` methods could be removed in favor of a DrawContext member to reduce the ambiguity?). If my understanding is wrong, then it might make sense to keep PathAtlas generic on the Recorder.\n\nI\u0027m also not 100% if DrawContext is the right place to store a `ComputePathAtlas`. I\u0027m open to suggestions here but the main reason for storing it here was to avoid flushes that clobber the atlas content (e.g. via usage of saveLayer IIRC).",
+      "parentUuid": "c97302c2_ee673bf0",
+      "range": {
+        "startLine": 288,
+        "startChar": 52,
+        "endLine": 288,
+        "endChar": 60
+      },
+      "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8848ab18_00330c2c",
         "filename": "src/gpu/graphite/PathAtlas.cpp",
         "patchSetId": 2
