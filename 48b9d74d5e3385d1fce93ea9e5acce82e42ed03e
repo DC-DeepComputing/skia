@@ -39,6 +39,30 @@
       },
       "revId": "48b9d74d5e3385d1fce93ea9e5acce82e42ed03e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efdd0173_aceacc70",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-12T16:27:32Z",
+      "side": 1,
+      "message": "That makes sense to me, I think having an owning recorder seems like a good guard.",
+      "parentUuid": "8303052a_3848dd40",
+      "range": {
+        "startLine": 244,
+        "startChar": 4,
+        "endLine": 244,
+        "endChar": 35
+      },
+      "revId": "48b9d74d5e3385d1fce93ea9e5acce82e42ed03e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
