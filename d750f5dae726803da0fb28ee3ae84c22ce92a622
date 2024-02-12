@@ -108,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "03be4b17_fc98280d",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-12T20:41:32Z",
+      "side": 1,
+      "message": "I think practically it makes sense to have a single Recorder per DrawContext but I don\u0027t think we have that limitation right now. I\u0027m going to land this with an assert right now but will think about if there\u0027s a better way to approach all of this.",
+      "parentUuid": "a61072bb_7fdc003a",
+      "range": {
+        "startLine": 288,
+        "startChar": 52,
+        "endLine": 288,
+        "endChar": 60
+      },
+      "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8848ab18_00330c2c",
         "filename": "src/gpu/graphite/PathAtlas.cpp",
         "patchSetId": 2
