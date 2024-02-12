@@ -133,7 +133,7 @@ bool DrawContext::recordUpload(Recorder* recorder,
 
 PathAtlas* DrawContext::getComputePathAtlas(Recorder* recorder) {
     if (!fComputePathAtlas) {
-        fComputePathAtlas = recorder->priv().atlasProvider()->createComputePathAtlas();
+        fComputePathAtlas = recorder->priv().atlasProvider()->createComputePathAtlas(recorder);
     }
     return fComputePathAtlas.get();
 }
@@ -290,7 +290,7 @@ void DrawContext::snapPathAtlasDispatches(Recorder* recorder) {
         // Platform doesn't support compute or atlas was never initialized.
         return;
     }
-    auto dispatchGroup = fComputePathAtlas->recordDispatches(recorder);
+    auto dispatchGroup = fComputePathAtlas->recordDispatches();
     if (dispatchGroup) {
         // For now this check is valid as all coverage mask draws involve dispatches
         SkASSERT(fPendingDraws->hasCoverageMaskDraws());
