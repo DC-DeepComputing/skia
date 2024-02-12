@@ -13277,6 +13277,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-218",
         "docker_installed:true"
       ],
       "environment": {
