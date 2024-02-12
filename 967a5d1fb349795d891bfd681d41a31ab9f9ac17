@@ -16,6 +16,24 @@
       "message": "It\u0027s unfortunate that we haven\u0027t already considered what the state on failure should be. For instance, what happens if the user calls `write`, and this writes some in the tail, but allocating the next block fails? Should the write partially succeed? (If they tried writing again later, should that make sense?) In other words, should a failed write be atomic or should it leave the stream in an undefined but destructable state?\n\nTo support the atomic write, the logic of this needs to be essentially reversed from \"if we have a tail then put some data into it, then get a new block and write the rest into that\" to \"first ensure that we have all the allocations we need to do this write, then do the writing\". It isn\u0027t clear if that is really necessary here since most callers I can think of would simply discard this stream on write failure.",
       "revId": "967a5d1fb349795d891bfd681d41a31ab9f9ac17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4893c6c7_1cf05759",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-12T19:16:59Z",
+      "side": 1,
+      "message": "Heh, Skia doesn\u0027t even return a `size_t` like `fwrite` to indicate partial writes. So in practice `SkFILEWStream::write` already has the behavior that when returning false the buffer may have been partially written to the stream. So that\u0027s already in an undefined but destructable state. It seems unfortunate, but I suppose that\u0027s the precedent so far.",
+      "parentUuid": "252b908e_3fd9e162",
+      "revId": "967a5d1fb349795d891bfd681d41a31ab9f9ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
