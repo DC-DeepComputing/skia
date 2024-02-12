@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c97302c2_ee673bf0",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-12T19:13:00Z",
+      "side": 1,
+      "message": "Oh right, I was thinking I went too far and should have left recordDispatches but missed it on looking it over. I switched it back, but does it make sense to snap dispatches with a different Recorder than the one the Vello atlas was created with?",
+      "parentUuid": "2669d60c_64dfce1d",
+      "range": {
+        "startLine": 288,
+        "startChar": 52,
+        "endLine": 288,
+        "endChar": 60
+      },
+      "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8848ab18_00330c2c",
         "filename": "src/gpu/graphite/PathAtlas.cpp",
         "patchSetId": 2
@@ -71,6 +95,24 @@
       "writtenOn": "2024-02-12T18:29:18Z",
       "side": 1,
       "message": "This will need a new constructor definition as well.",
+      "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be6c6545_1b79789e",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-12T19:13:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8848ab18_00330c2c",
       "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -88,6 +130,24 @@
       "writtenOn": "2024-02-12T18:29:18Z",
       "side": 1,
       "message": "Do we want to mark this as `explicit`? Also consider making this constructor protected as a ComputePathAtlas should generally be instantiated via subclasses anyway.",
+      "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46cdbd1a_ad7f469b",
+        "filename": "src/gpu/graphite/PathAtlas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-12T19:13:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d657089_9d16bba0",
       "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
