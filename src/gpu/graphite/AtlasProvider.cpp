@@ -30,12 +30,12 @@ AtlasProvider::PathAtlasFlagsBitMask AtlasProvider::QueryPathAtlasSupport(const 
 
 AtlasProvider::AtlasProvider(Recorder* recorder)
         : fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
-        , fRasterPathAtlas(std::make_unique<RasterPathAtlas>())
+        , fRasterPathAtlas(std::make_unique<RasterPathAtlas>(recorder))
         , fPathAtlasFlags(QueryPathAtlasSupport(recorder->priv().caps())) {}
 
-std::unique_ptr<ComputePathAtlas> AtlasProvider::createComputePathAtlas() const {
+std::unique_ptr<ComputePathAtlas> AtlasProvider::createComputePathAtlas(Recorder* recorder) const {
     if (this->isAvailable(PathAtlasFlags::kCompute)) {
-        return ComputePathAtlas::CreateDefault();
+        return ComputePathAtlas::CreateDefault(recorder);
     }
     return nullptr;
 }
@@ -90,12 +90,12 @@ void AtlasProvider::clearTexturePool() {
 }
 
 void AtlasProvider::recordUploads(DrawContext* dc, Recorder* recorder) {
-    if (!fTextAtlasManager->recordUploads(dc, recorder)) {
+    if (!fTextAtlasManager->recordUploads(dc)) {
         SKGPU_LOG_E("TextAtlasManager uploads have failed -- may see invalid results.");
     }
 
     if (fRasterPathAtlas) {
-        fRasterPathAtlas->recordUploads(dc, recorder);
+        fRasterPathAtlas->recordUploads(dc);
     }
 }
 
