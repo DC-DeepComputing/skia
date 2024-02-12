@@ -832,16 +832,25 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
                 // Unlike snapSpecialScaled(), snapSpecial() can avoid a copy when the underlying
                 // representation permits it.
                 source = {src->snapSpecial(SkIRect(availSrc)), requiredSubset.topLeft()};
+                if (compat == DeviceCompatibleWithFilter::kYes) {
+                    // Padding was added to the source image
+                    source = source.insetForSaveLayer();
+                }
             } else {
+                SkASSERT(compat == DeviceCompatibleWithFilter::kUnknown);
                 source = {src->snapSpecialScaled(SkIRect(availSrc),
                                                  SkISize(requiredSubset.size())),
                           requiredSubset.topLeft()};
                 ctx.markNewSurface();
             }
 
-            // If snapSpecialScaled() fails, this will fall through and automatically apply any
-            // transform in the next condition, otherwise add clamp tiling
-            source = source.applyCrop(ctx, source.layerBounds(), SkTileMode::kClamp);
+            // If snapSpecialScaled() failed, this will fall through and automatically apply any
+            // transform in the next condition, otherwise add clamp tiling if the device wasn't
+            // created specifically for the source (in which case 'src' may not have sufficient
+            // data to fulfill what's required).
+            if (compat == DeviceCompatibleWithFilter::kUnknown) {
+                source = source.applyCrop(ctx, source.layerBounds(), SkTileMode::kClamp);
+            }
         }
 
         if (!requiredInput.isEmpty() && !source) {
@@ -1297,6 +1306,12 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
         // until the restore() since we don't care about any of its content.
         abortLayer();
         return;
+    } else {
+        // Add a buffer of padding so that image filtering can avoid accessing unitialized data and
+        // switch from shader-decal'ing to clamping. We could skip padding the layer when there's
+        // no image filter and no device-filling effects, but always padding simplifies the rest of
+        // the layer prep logic and the restore logic.
+        layerBounds.outset(skif::LayerSpace<SkISize>({1, 1}));
     }
 
     sk_sp<SkDevice> newDevice;
@@ -1334,6 +1349,11 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
                                                  fProps, this->imageInfo().refColorSpace());
         initBackdrop = false;
     }
+
+    // Clip while the device coordinate space is the identity so it's easy to define the rect that
+    // excludes the added padding pixels. This ensures they remain cleared to transparent black.
+    newDevice->clipRect(SkRect::MakeLTRB(1, 1, newDevice->width() - 1, newDevice->height() - 1),
+                        SkClipOp::kIntersect, /*aa=*/false);
 
     // Configure device to match determined mapping for any image filters.
     // The setDeviceCoordinateSystem applies the prior device's global transform since
