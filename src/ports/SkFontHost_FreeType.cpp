@@ -1409,6 +1409,9 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph, void* imageBu
         bitmapMatrix = &subpixelBitmapMatrix;
     }
 
+    printf("Bitmap glyph bounds: ");
+    glyph.rect().dump();
+
     fUtils.generateGlyphImage(fFace, glyph, imageBuffer, *bitmapMatrix, fPreBlend);
 }
 
