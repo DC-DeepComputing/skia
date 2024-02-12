@@ -93371,10 +93371,6 @@
         "src/codec/SkWuffs.*"
       ]
     },
-    "Build-Debian10-EMCC-wasm-Release-CanvasKit": {},
-    "Build-Debian10-EMCC-wasm-Release-CanvasKit_CPU": {},
-    "Build-Debian11-GCC-x86_64-Debug-NoGPU_Docker": {},
-    "Build-Debian11-GCC-x86_64-Release-Docker": {},
     "Build-Mac-Clang-arm64-Debug-ASAN_Graphite_Native_Metal": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
@@ -93467,13 +93463,11 @@
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {},
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-BonusConfigs": {},
-    "Test-Debian10-EMCC-GCE-CPU-AVX2-asmjs-Release-All-PathKit": {},
     "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit": {
       "location_regexes": [
         "modules/canvaskit/.*"
       ]
     },
-    "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-PathKit": {},
     "Test-Debian10-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit": {
       "location_regexes": [
         "modules/canvaskit/.*"
