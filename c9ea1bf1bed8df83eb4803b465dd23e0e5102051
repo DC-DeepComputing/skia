@@ -16,6 +16,23 @@
       "message": "This is another fairly mechanical refactor prepping for more bounds changes in follow-up CLs",
       "revId": "c9ea1bf1bed8df83eb4803b465dd23e0e5102051",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63ff387d_9103092e",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1465,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-02-12T21:25:55Z",
+      "side": 1,
+      "message": "Is it not a concern that we\u0027re now calling resolve here where we weren\u0027t before? (and I guess below we\u0027re calling resolve redundantly).",
+      "revId": "c9ea1bf1bed8df83eb4803b465dd23e0e5102051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
