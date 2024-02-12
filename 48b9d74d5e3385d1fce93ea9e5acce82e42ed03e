@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e006980_63ca2768",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-12T15:14:09Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "48b9d74d5e3385d1fce93ea9e5acce82e42ed03e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8303052a_3848dd40",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-12T15:14:09Z",
+      "side": 1,
+      "message": "Future CL coming -- the TextAtlasManager stores a pointer to the Recorder that created it. This keeps things consistent in terms of which buffermanager gets used\nand the tokenTracker used. I\u0027m thinking we should do the same for the PathAtlases. I could also see the argument that eventually we\u0027ll be able to use them across\nRecorders so we shouldn\u0027t lock in -- but we\u0027re not there yet and I think there\u0027s a potential for bugs if we accidentally cross the streams as it were.",
+      "range": {
+        "startLine": 244,
+        "startChar": 4,
+        "endLine": 244,
+        "endChar": 35
+      },
+      "revId": "48b9d74d5e3385d1fce93ea9e5acce82e42ed03e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
