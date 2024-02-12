@@ -60,6 +60,7 @@
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkVerticesPriv.h"
+#include "src/gpu/TiledTextureUtils.h"
 #include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
 #include "src/text/gpu/GlyphVector.h"
@@ -69,6 +70,7 @@
 #include "src/text/gpu/VertexFiller.h"
 
 #include <functional>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -753,6 +755,38 @@ void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
                        DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter,
                        std::move(blender),
                        skipColorXform);
+}
+
+bool Device::drawAsTiledImageRect(SkCanvas* canvas,
+                                  const SkImage* image,
+                                  const SkRect* src,
+                                  const SkRect& dst,
+                                  const SkSamplingOptions& sampling,
+                                  const SkPaint& paint,
+                                  SkCanvas::SrcRectConstraint constraint) {
+    auto recorder = canvas->recorder();
+    if (!recorder) {
+        return false;
+    }
+    SkASSERT(src);
+
+    // For Graphite this is a pretty loose heuristic. The Recorder-local cache size (relative
+    // to the large image's size) is used as a proxy for how conservative we should be when
+    // allocating tiles. Since the tiles will actually be owned by the client (via an
+    // ImageProvider) they won't actually add any memory pressure directly to Graphite.
+    size_t cacheSize = recorder->priv().getResourceCacheLimit();
+    size_t maxTextureSize = recorder->priv().caps()->maxTextureSize();
+
+    return std::get<0>(skgpu::TiledTextureUtils::DrawAsTiledImageRect(canvas,
+                                                                      image,
+                                                                      *src,
+                                                                      dst,
+                                                                      SkCanvas::kAll_QuadAAFlags,
+                                                                      sampling,
+                                                                      &paint,
+                                                                      constraint,
+                                                                      cacheSize,
+                                                                      maxTextureSize));
 }
 
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
