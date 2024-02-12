@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "0b88f6c1a94efb87b77998246f82bea50adb9b45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e1e75e_61ed5e07",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-12T21:13:12Z",
+      "side": 1,
+      "message": "These are using the portable path because we know the code-gen is good? If so, I\u0027d include a comment.",
+      "revId": "0b88f6c1a94efb87b77998246f82bea50adb9b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "388271b2_64ea74de",
+        "filename": "tests/SwizzlerTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-12T21:13:12Z",
+      "side": 1,
+      "message": "Maybe `ReciprocalAlphaOptimized`, as this is testing SSE on x86, etc?\n```suggestion\nDEF_TEST(ReciprocalAlphaOptimized, reporter) {\n```",
+      "range": {
+        "startLine": 186,
+        "startChar": 24,
+        "endLine": 186,
+        "endChar": 28
+      },
+      "revId": "0b88f6c1a94efb87b77998246f82bea50adb9b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
