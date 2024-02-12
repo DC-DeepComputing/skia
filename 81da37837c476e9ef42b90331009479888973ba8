@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ba922a_574c09c9",
+        "filename": "src/core/SkSwizzlePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-12T20:56:26Z",
+      "side": 1,
+      "message": "I removed the old implementation from priv.",
+      "parentUuid": "ac870c70_aa6b344d",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 23
+      },
+      "revId": "81da37837c476e9ef42b90331009479888973ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ed532e4_8ea640b2",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-08T18:24:22Z",
       "side": 1,
       "message": "Just use the NEON version?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 0
+      },
+      "revId": "81da37837c476e9ef42b90331009479888973ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0f51151_ea51193f",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-12T20:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ed532e4_8ea640b2",
       "range": {
         "startLine": 59,
         "startChar": 0,

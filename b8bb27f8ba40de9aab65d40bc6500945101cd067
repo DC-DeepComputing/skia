@@ -93,6 +93,30 @@
       },
       "revId": "b8bb27f8ba40de9aab65d40bc6500945101cd067",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a961496f_bc8f855f",
+        "filename": "include/private/SkColorData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-12T20:56:26Z",
+      "side": 1,
+      "message": "This code is removed.",
+      "parentUuid": "12e58ae9_c7bf9440",
+      "range": {
+        "startLine": 393,
+        "startChar": 4,
+        "endLine": 394,
+        "endChar": 72
+      },
+      "revId": "b8bb27f8ba40de9aab65d40bc6500945101cd067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
