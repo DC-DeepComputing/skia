@@ -26,8 +26,8 @@ namespace skiagm {
 namespace {
 
 constexpr int kGmWidth = 1000;
-constexpr int kMargin = 15;
-constexpr float kFontSize = 24;
+constexpr float kFontSize = 64;
+constexpr int kMargin = kFontSize * 1.8;
 constexpr float kLangYIncrementScale = 1.9;
 
 /** Compare bitmap A and B, in this case originating from text rendering results with FreeType and
@@ -65,6 +65,35 @@ void comparePixels(const SkBitmap& bitmapA,
     }
 }
 
+class EmojiTestFontDataProvider : public TestFontDataProvider {
+public:
+    EmojiTestFontDataProvider(const std::string& name, const std::string& filter)
+            : TestFontDataProvider(name, filter) {}
+
+    bool next(TestSet* testSet) override {
+        if (counter == 1) {
+            testSet->fontName = "Apple Color Emoji Subset";
+            testSet->fontFilename = "resources/fonts/apple_color_emoji_subset.ttf";
+            testSet->langSamples = {
+                    {SkString("en_EN"), SkString("\U0001F3BA\U0001F9FA"), SkString()}};
+
+        } else if (counter == 0) {
+            testSet->fontName = "CBDT Test font";
+            testSet->fontFilename = "resources/fonts/cbdt.ttf";
+            testSet->langSamples = {{SkString("en_EN"), SkString("\U000002662"), SkString()}};
+        } else {
+            return false;
+        }
+        counter += 1;
+        return true;
+    }
+
+    void rewind() override { counter = 0; }
+
+private:
+    size_t counter = 0;
+};
+
 }  // namespace
 
 class FontationsFtCompareGM : public GM {
@@ -98,7 +127,9 @@ protected:
         fTestDataIterator.rewind();
         TestFontDataProvider::TestSet testSet;
 
+        int countSamples = 0;
         while (fTestDataIterator.next(&testSet)) {
+            countSamples++;
             sk_sp<SkTypeface> testTypeface = SkTypeface_Make_Fontations(
                     SkStream::MakeFromFile(testSet.fontFilename.c_str()), SkFontArguments());
             sk_sp<SkTypeface> ftTypeface = SkTypeface_FreeType::MakeFromStream(
@@ -125,7 +156,7 @@ protected:
 
             SkRect maxBounds = SkRect::MakeEmpty();
             for (auto phase : {DrawPhase::Fontations, DrawPhase::FreeType, DrawPhase::Comparison}) {
-                SkScalar yCoord = kFontSize * 1.5f;
+                SkScalar yCoord = kFontSize * 1.5f * (countSamples - 1);
 
                 for (auto& langEntry : testSet.langSamples) {
                     auto shapeAndDrawToCanvas = [canvas, paint, langEntry](const SkFont& font,
@@ -241,8 +272,7 @@ protected:
                             break;
                         }
                     }
-
-                    yCoord += font.getSize() * kLangYIncrementScale;
+                    yCoord += kFontSize * kLangYIncrementScale + 200;
                 }
             }
         }
@@ -253,11 +283,15 @@ protected:
 private:
     using INHERITED = GM;
 
-    TestFontDataProvider fTestDataIterator;
+    EmojiTestFontDataProvider fTestDataIterator;
     SkString fTestName;
     sk_sp<SkTypeface> fReportTypeface;
     std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> fCoordinates;
 };
+
+DEF_GM(return new FontationsFtCompareGM("Emoji", "", ""));
+
+/*
 
 DEF_GM(return new FontationsFtCompareGM(
         "NotoSans",
@@ -322,5 +356,5 @@ DEF_GM(return new FontationsFtCompareGM("NotoSans_Elba", "Noto Sans Elbasan", "s
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Vith", "Noto Sans Vithkuqi", "sq_Vith"));
 
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Guru", "Noto Sans Gurmukhi", "pa_Guru"));
-
+ */
 }  // namespace skiagm
