@@ -34,6 +34,24 @@
       "parentUuid": "252b908e_3fd9e162",
       "revId": "967a5d1fb349795d891bfd681d41a31ab9f9ac17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9d8ea4_5a08a1ba",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-12T20:43:39Z",
+      "side": 1,
+      "message": "FWIW, `SkWStream` *does* have `bytesWritten()`, so if you really wanted to know about a partial success, you could get the details that way.",
+      "parentUuid": "4893c6c7_1cf05759",
+      "revId": "967a5d1fb349795d891bfd681d41a31ab9f9ac17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
