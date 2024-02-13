@@ -94,6 +94,14 @@ public:
     }
 
     /**
+     * Return a special image with a 1px larger subset in the backing store compared to this image.
+     * This should only be used when it's externally known that those outer pixels are valid.
+     */
+    sk_sp<SkSpecialImage> makePixelOutset() const {
+        return this->onMakeSubset(this->subset().makeOutset(1, 1));
+    }
+
+    /**
      * Create an SkImage view of the contents of this special image, pointing to the same
      * underlying memory.
      *
