@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6181ec81_4042da85",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-13T16:56:16Z",
+      "side": 1,
+      "message": "Will we get an enum on what formats to expect? Mostly I suppose the only real useful ones are uncompressed pixmaps and \"guess from the encoded data\".",
+      "revId": "05375499d39b7193b6c8f81ea79bfb68031376e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd70374_85ba8052",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 13
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-13T16:56:16Z",
+      "side": 1,
+      "message": "From the ffi side of things, I think it\u0027s fine to just always report the bottom left corner. This is what DiretWrite does and then ScalerContext side can handle mucking about getting the png extent.",
+      "revId": "05375499d39b7193b6c8f81ea79bfb68031376e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
