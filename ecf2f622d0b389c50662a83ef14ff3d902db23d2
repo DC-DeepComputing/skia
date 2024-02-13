@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fb640c6_43d4ebef",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-13T20:39:36Z",
+      "side": 1,
+      "message": "I think this triggered https://crbug.com/oss-fuzz/66700",
+      "range": {
+        "startLine": 563,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 29
+      },
+      "revId": "ecf2f622d0b389c50662a83ef14ff3d902db23d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
