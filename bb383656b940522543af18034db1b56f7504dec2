@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4949183a_da1b3661",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-13T17:25:32Z",
+      "side": 1,
+      "message": "This comment is no longer accurate - it was previously describing the already-instantiated case, but now we handle either case here.",
+      "range": {
+        "startLine": 412,
+        "startChar": 6,
+        "endLine": 412,
+        "endChar": 49
+      },
+      "revId": "bb383656b940522543af18034db1b56f7504dec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "855696c2_7d6f5cad",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-13T17:25:32Z",
+      "side": 1,
+      "message": "nit\n\n```suggestion\n    // beyond the safe known region (the current value of fProxy-\u003efDimensions). If the proxy is\n```",
+      "range": {
+        "startLine": 419,
+        "startChar": 49,
+        "endLine": 419,
+        "endChar": 54
+      },
+      "revId": "bb383656b940522543af18034db1b56f7504dec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
