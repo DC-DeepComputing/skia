@@ -16,6 +16,29 @@
       "message": "`",
       "revId": "cafa155b107e7a932cdd0011416c8f7f1503d4c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa24814b_d90c9f4f",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-13T18:56:31Z",
+      "side": 1,
+      "message": "As noted in chat: this is effectively mm_div_ps, not mm_div_ss. Clang is smart enough to optimize the div_ps to a div_ss (in -O1 and beyond); GCC isn\u0027t (even at -O3). However, maybe this isn\u0027t a concern.\n\nWe need to land something to fix the tree so I\u0027ve +1ed this CL and we can sort out the ideal code in a followup if need be.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 0
+      },
+      "revId": "cafa155b107e7a932cdd0011416c8f7f1503d4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
