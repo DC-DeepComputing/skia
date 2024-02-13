@@ -16,6 +16,24 @@
       "message": "This reads really strange - we can make a subset that\u0027s really a superset? I guess I figured once you had a subset image, you wouldn\u0027t be able to undo that?",
       "revId": "a732feef287039d3c46729e9f7fb06b8b93772ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f12433_4ae2c1a9",
+        "filename": "src/core/SkSpecialImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T20:16:58Z",
+      "side": 1,
+      "message": "Yeah, the SkSpecialImage is reaching an awkward point in its life time where FilterResult is taking over more of that responsibility but hasn\u0027t completely taken it over.\n\nAdditionally, the public `makeSubset()` is taking a subset relative to the special image\u0027s subset, and `onMakeSubset` is actually making a subset of the backing image and is technically unrelated to the specific special-image view that triggered it.\n\nRenaming that to `onMakeView` or something maybe could help. The long term design is that SkSpecialImage won\u0027t have a subset at all, but just be a way to point to a deferred rendering task. FilterResult will store the src rect for accessing pixels and track what\u0027s initialized and what\u0027s being tiled. At that point, it can easily play these padding games in internal logic. Right now, though, FilterResult relies on the subset and SkSpecialImage \"dimensions\" for lots of its bounds analysis and it seemed simpler to let special image widen back out, vs. updating everywhere in FilterResult to know when to inset dimensions to get its content.\n\nSo, for the short term, would you think renaming `onMakeSubset` to `onMakeView` or `onMakeBackingStoreSubset` help with this? Or leave it and hope all this clean up actually happens quickly 😊",
+      "parentUuid": "4e0c9f4b_b7e8f10d",
+      "revId": "a732feef287039d3c46729e9f7fb06b8b93772ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
