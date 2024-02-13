@@ -513,11 +513,12 @@ class FilterResult::AutoSurface {
 public:
     AutoSurface(const Context& ctx,
                 const LayerSpace<SkIRect>& dstBounds,
+                PixelBoundary boundary,
                 bool renderInParameterSpace,
                 const SkSurfaceProps* props = nullptr)
             : fDstBounds(dstBounds)
             // TODO(b/323886079): Pass this in via a parameter to add padding to resolved surfaces
-            , fBoundary(PixelBoundary::kUnknown) {
+            , fBoundary(boundary) {
         // We don't intersect by ctx.desiredOutput() and only use the Context to make the surface.
         // It is assumed the caller has already accounted for the desired output, or it's a
         // situation where the desired output shouldn't apply (e.g. this surface will be transformed
@@ -873,6 +874,7 @@ FilterResult FilterResult::applyColorFilter(const Context& ctx,
                                 LayerSpace<SkIRect>{SkIRect::MakeXYWH(ctx.desiredOutput().left(),
                                                                       ctx.desiredOutput().top(),
                                                                       1, 1)},
+                                PixelBoundary::kInitialized,
                                 /*renderInParameterSpace=*/false};
             if (surface) {
                 SkPaint paint;
@@ -1060,7 +1062,9 @@ FilterResult FilterResult::resolve(const Context& ctx,
 
     // Don't use context properties to avoid DMSAA on internal stages of filter evaluation.
     SkSurfaceProps props = {};
-    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/false, &props};
+    PixelBoundary boundary = preserveDstBounds ? PixelBoundary::kUnknown
+                                               : PixelBoundary::kTransparent;
+    AutoSurface surface{ctx, dstBounds, boundary, /*renderInParameterSpace=*/false, &props};
     if (surface) {
         this->draw(ctx, surface.device(), /*preserveDeviceState=*/false);
     }
@@ -1517,7 +1521,10 @@ FilterResult FilterResult::rescale(const Context& ctx,
             SkASSERT(sy != 1.f || dstPixelBounds.height() == stepPixelBounds.height());
         }
 
-        AutoSurface surface{ctx, dstPixelBounds, /*renderInParameterSpace=*/false};
+        // TODO(b/323886180): Take advantage of pixel boundary tracking here, passing in kUnknown
+        // preserves the surface dimensions exactly for now.
+        AutoSurface surface{ctx, dstPixelBounds, PixelBoundary::kUnknown,
+                            /*renderInParameterSpace=*/false};
         if (surface) {
             // Fill all of surface (to include any padded edge pixels) with 'scaleXform' as the CTM.
             const auto scaleXform = PixelSpace<SkMatrix>::RectToRect(stepBoundsF, dstBoundsF);
@@ -1566,6 +1573,8 @@ FilterResult FilterResult::rescale(const Context& ctx,
             LayerSpace<SkMatrix>::RectToRect(stepBoundsF, LayerSpace<SkRect>{srcRect}));
     result.fLayerBounds = visibleLayerBounds;
 
+    // TODO(b/323886180): Set the pixel boundary to kInitialized or kTransparent since rescale()
+    // does add padding to the image.
     if (enforceDecal) {
         // Since we weren't deferring the tiling, the original tile mode should have been resolved
         // in the first iteration. However, as part of the decimation, we included transparent
@@ -1595,7 +1604,8 @@ FilterResult FilterResult::MakeFromPicture(const Context& ctx,
     // for layers that are still axis-aligned?
     SkSurfaceProps props = ctx.backend()->surfaceProps()
                                          .cloneWithPixelGeometry(kUnknown_SkPixelGeometry);
-    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/true, &props};
+    AutoSurface surface{ctx, dstBounds, PixelBoundary::kTransparent,
+                        /*renderInParameterSpace=*/true, &props};
     if (surface) {
         surface->clipRect(SkRect(cullRect));
         surface->drawPicture(std::move(pic));
@@ -1607,7 +1617,8 @@ FilterResult FilterResult::MakeFromShader(const Context& ctx,
                                           sk_sp<SkShader> shader,
                                           bool dither) {
     SkASSERT(shader);
-    AutoSurface surface{ctx, ctx.desiredOutput(), /*renderInParameterSpace=*/true};
+    AutoSurface surface{ctx, ctx.desiredOutput(), PixelBoundary::kTransparent,
+                        /*renderInParameterSpace=*/true};
     if (surface) {
         SkPaint paint;
         paint.setShader(shader);
@@ -1632,7 +1643,9 @@ FilterResult FilterResult::MakeFromImage(const Context& ctx,
         sk_sp<SkSpecialImage> specialImage = ctx.backend()->makeImage(srcSubset, std::move(image));
 
         // Treat the srcRect's top left as "layer" space since we are folding the src->dst transform
-        // and the param->layer transform into a single transform step.
+        // and the param->layer transform into a single transform step. We don't override the
+        // PixelBoundary from kUnknown even if srcRect is contained within the 'image' because the
+        // client could be doing their own external approximate-fit texturing.
         skif::FilterResult subset{std::move(specialImage),
                                   skif::LayerSpace<SkIPoint>(srcSubset.topLeft())};
         SkMatrix transform = SkMatrix::Concat(ctx.mapping().layerMatrix(),
@@ -1646,7 +1659,8 @@ FilterResult FilterResult::MakeFromImage(const Context& ctx,
         return {};
     }
 
-    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/true};
+    AutoSurface surface{ctx, dstBounds, PixelBoundary::kTransparent,
+                        /*renderInParameterSpace=*/true};
     if (surface) {
         SkPaint paint;
         paint.setAntiAlias(true);
@@ -1718,7 +1732,8 @@ FilterResult FilterResult::Builder::drawShader(sk_sp<SkShader> shader,
         return {};
     }
 
-    AutoSurface surface{fContext, outputBounds, evaluateInParameterSpace};
+    AutoSurface surface{fContext, outputBounds, PixelBoundary::kTransparent,
+                        evaluateInParameterSpace};
     if (surface) {
         SkPaint paint;
         paint.setShader(std::move(shader));
@@ -1743,7 +1758,8 @@ FilterResult FilterResult::Builder::merge() {
             [this](int i) { return fInputs[i].fImage.layerBounds(); });
     const auto outputBounds = this->outputBounds(mergedBounds);
 
-    AutoSurface surface{fContext, outputBounds, /*renderInParameterSpace=*/false};
+    AutoSurface surface{fContext, outputBounds, PixelBoundary::kTransparent,
+                        /*renderInParameterSpace=*/false};
     if (surface) {
         for (const SampledFilterResult& input : fInputs) {
             SkASSERT(!input.fSampleBounds.has_value() &&
