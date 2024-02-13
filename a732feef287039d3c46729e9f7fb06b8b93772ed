@@ -34,6 +34,24 @@
       "parentUuid": "4e0c9f4b_b7e8f10d",
       "revId": "a732feef287039d3c46729e9f7fb06b8b93772ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b611103_a67d4fa5",
+        "filename": "src/core/SkSpecialImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-13T20:20:01Z",
+      "side": 1,
+      "message": "If it\u0027s not too much trouble, renaming `onMakeSubset` would definitely help. `onMakeBackingStoreSubset` might be the most explicit (best) option?",
+      "parentUuid": "71f12433_4ae2c1a9",
+      "revId": "a732feef287039d3c46729e9f7fb06b8b93772ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
