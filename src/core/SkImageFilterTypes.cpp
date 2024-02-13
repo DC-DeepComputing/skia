@@ -668,6 +668,7 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
     netTransform.postConcat(LayerSpace<SkMatrix>(xtraTransform));
     SkM44 netM44{SkMatrix(netTransform)};
     const bool isPixelAligned = is_nearly_integer_translation(netTransform);
+    bool hasPixelPadding = fBoundary != PixelBoundary::kUnknown;
 
     if (!SkRectPriv::QuadContainsRect(netM44,
                                       imageBounds,
@@ -676,6 +677,24 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
         analysis |= BoundsAnalysis::kDstBoundsNotCovered;
         if (fillsLayerBounds) {
             analysis |= BoundsAnalysis::kHasLayerFillingEffect;
+        }
+        if (fTileMode == SkTileMode::kDecal) {
+            // Some amount of decal tiling will be visible in the output, but it only needs to
+            // be handled special if it's not nearest neighbor and not an identity scale factor.
+            // NOTE: all the cases where fSamplingOptions is not nearest neighbor, but can be
+            // reduced to nearest neighbor later, satisfy the net xform having the identity scale
+            float scaleFactors[2];
+            if (fSamplingOptions != kNearestNeighbor &&
+                !(SkMatrix(netTransform).getMinMaxScales(scaleFactors) &&
+                  SkScalarNearlyEqual(scaleFactors[0], 1.f, 0.2f) &&
+                  SkScalarNearlyEqual(scaleFactors[1], 1.f, 0.2f))) {
+                analysis |= BoundsAnalysis::kRequiresDecalInLayerSpace;
+                if (fBoundary == PixelBoundary::kTransparent) {
+                    // Turn off considering the transparent padding as safe to prevent that
+                    // transparency from multiplying with the layer-space decal effect.
+                    hasPixelPadding = false;
+                }
+            }
         }
     }
 
@@ -687,7 +706,7 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
         // we are pixel aligned, then it is safe to skip shader-based tiling.
         const bool nnOrBilerp = fSamplingOptions == kDefaultSampling ||
                                 fSamplingOptions == SkFilterMode::kNearest;
-        if (nnOrBilerp && (fBoundary != PixelBoundary::kUnknown || isPixelAligned)) {
+        if (nnOrBilerp && (hasPixelPadding || isPixelAligned)) {
             return analysis;
         }
     }
@@ -703,7 +722,7 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
         // seem to get that correct). To be safe we have to clamp to epsilon inside the 1/2px.
         safeImageBounds.inset(kRoundEpsilon, kRoundEpsilon);
     }
-    if (fBoundary != PixelBoundary::kUnknown) {
+    if (hasPixelPadding) {
         safeImageBounds.outset(1.f, 1.f);
     }
     pixelCenterBounds.inset(kHalfPixel, kHalfPixel);
@@ -727,20 +746,6 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
         }
         if (!all(edgeMask | hwEdge)) {
             analysis |= BoundsAnalysis::kRequiresShaderTiling;
-        }
-
-        if (fTileMode == SkTileMode::kDecal) {
-            // Some amount of decal tiling will be visible in the output, but it only needs to
-            // be handled special if it's not nearest neighbor and not an identity scale factor.
-            // NOTE: all the cases where fSamplingOptions is not nearest neighbor, but can be
-            // reduced to nearest neighbor later, satisfy the net xform having the identity scale
-            float scaleFactors[2];
-            if (fSamplingOptions != kNearestNeighbor &&
-                !(SkMatrix(netTransform).getMinMaxScales(scaleFactors) &&
-                  SkScalarNearlyEqual(scaleFactors[0], 1.f, 0.2f) &&
-                  SkScalarNearlyEqual(scaleFactors[1], 1.f, 0.2f))) {
-                analysis |= BoundsAnalysis::kRequiresDecalInLayerSpace;
-            }
         }
     }
 
@@ -1176,7 +1181,6 @@ void FilterResult::draw(const Context& ctx,
     }
 
     SkPaint paint;
-    paint.setAntiAlias(true);
     if (blender) {
         paint.setBlender(sk_ref_sp(blender));
     } else {
@@ -1197,12 +1201,25 @@ void FilterResult::draw(const Context& ctx,
         paint.setColorFilter(fColorFilter);
         SkMatrix netTransform = SkMatrix::Concat(device->localToDevice(), SkMatrix(fTransform));
 
-        SkCanvas::SrcRectConstraint constraint = SkCanvas::kFast_SrcRectConstraint;
-        if (analysis & BoundsAnalysis::kRequiresShaderTiling) {
-            constraint = SkCanvas::kStrict_SrcRectConstraint;
-            ctx.markShaderBasedTilingRequired(SkTileMode::kClamp);
+        const bool decalClampToTransparent = fTileMode == SkTileMode::kDecal &&
+                                             fBoundary == PixelBoundary::kTransparent &&
+                                             !(analysis & BoundsAnalysis::kRequiresDecalInLayerSpace);
+
+        if (decalClampToTransparent) {
+            SkASSERT(!(analysis & BoundsAnalysis::kRequiresShaderTiling));
+            paint.setAntiAlias(false);
+            netTransform.preTranslate(-1.f, -1.f);
+            device->drawSpecial(fImage->getPaddedOutset().get(), netTransform, sampling, paint,
+                                SkCanvas::kFast_SrcRectConstraint);
+        } else {
+            paint.setAntiAlias(true);
+            SkCanvas::SrcRectConstraint constraint = SkCanvas::kFast_SrcRectConstraint;
+            if (analysis & BoundsAnalysis::kRequiresShaderTiling) {
+                constraint = SkCanvas::kStrict_SrcRectConstraint;
+                ctx.markShaderBasedTilingRequired(SkTileMode::kClamp);
+            }
+            device->drawSpecial(fImage.get(), netTransform, sampling, paint, constraint);
         }
-        device->drawSpecial(fImage.get(), netTransform, sampling, paint, constraint);
     }
 
     if (preserveDeviceState && (analysis & BoundsAnalysis::kRequiresLayerCrop)) {
@@ -1299,7 +1316,8 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
     // for the image shader itself.
     SkTileMode effectiveTileMode = fTileMode;
     const bool decalClampToTransparent = fTileMode == SkTileMode::kDecal &&
-                                         fBoundary == PixelBoundary::kTransparent;
+                                         fBoundary == PixelBoundary::kTransparent &&
+                                         !(analysis & BoundsAnalysis::kRequiresDecalInLayerSpace);
     if (!(analysis & BoundsAnalysis::kDstBoundsNotCovered) ||
         analysis & BoundsAnalysis::kRequiresDecalInLayerSpace ||
         decalClampToTransparent) {
@@ -1308,9 +1326,10 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
     const bool strict = SkToBool(analysis & BoundsAnalysis::kRequiresShaderTiling);
 
     sk_sp<SkShader> imageShader;
-    if (strict && decalClampToTransparent &&
-        !(analysis & BoundsAnalysis::kRequiresDecalInLayerSpace)) {
-        imageShader = fImage->asDecalClampedShader(finalSampling, preDecal);
+    if (strict && decalClampToTransparent) {
+        // imageShader = fImage->asDecalClampedShader(finalSampling, preDecal);
+        preDecal.preTranslate(-1, -1);
+        imageShader = fImage->getPaddedOutset()->asShader(effectiveTileMode, finalSampling, preDecal, /*strict=*/true);
     } else {
         imageShader = fImage->asShader(effectiveTileMode, finalSampling, preDecal, strict);
     }

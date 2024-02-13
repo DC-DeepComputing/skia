@@ -93,6 +93,11 @@ public:
         return this->onMakeSubset(absolute);
     }
 
+    sk_sp<SkSpecialImage> getPaddedOutset() const {
+        SkIRect paddedAbsolute = this->subset().makeOutset(1, 1);
+        return this->onMakeSubset(paddedAbsolute);
+    }
+
     /**
      * Create an SkImage view of the contents of this special image, pointing to the same
      * underlying memory.
