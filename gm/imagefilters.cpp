@@ -6,10 +6,13 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkImageInfo.h"
@@ -19,6 +22,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
@@ -325,5 +329,38 @@ DEF_SIMPLE_GM(multiple_filters, canvas, 415, 210) {
         sk_sp<SkImageFilter> filters[2] = {
                 SkImageFilters::DropShadowOnly(7, 7, 5, 5, SK_ColorBLUE, nullptr), nullptr};
         drawFilteredLayer(filters);
+    }
+}
+
+static sk_sp<SkImage> make_image(SkColorType ct, int size) {
+    SkImageInfo info = SkImageInfo::Make(size, size, ct, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::Raster(info);
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorWHITE);
+    SkPaint paint;
+    canvas->drawLine({0, 0}, SkPoint::Make(size, size), paint);
+    return surface->makeImageSnapshot();
+}
+
+DEF_SIMPLE_GM(blur_gray, canvas, 280, 140) {
+    constexpr int kSize = 100;
+    const SkRect r = SkRect::MakeWH(kSize, kSize);
+
+    canvas->translate(20, 20);
+
+    for (SkColorType ct : {kRGBA_8888_SkColorType, kGray_8_SkColorType}) {
+        canvas->save();
+        auto filter = SkImageFilters::Image(make_image(ct, kSize), SkSamplingOptions{});
+
+        SkPaint paint;
+        paint.setImageFilter(filter);
+        canvas->drawRect(r, paint);
+
+        canvas->translate(140, 0);
+        paint.setImageFilter(SkImageFilters::Blur(4, 4, filter));
+        canvas->drawRect(r, paint);
+
+        canvas->restore();
+        canvas->translate(0, 140);
     }
 }
