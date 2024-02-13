@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f2af863_2969d30e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-02-13T14:17:07Z",
+      "side": 1,
+      "message": "This is blocked on:\n- https://skia-review.googlesource.com/c/k8s-config/+/813497\n- http://cl/606595226\n- https://chrome-internal-review.googlesource.com/c/infradata/config/+/6966154",
+      "revId": "ab2c3bd5173399fd7791f8ab56f62ae0e9f9f15d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
