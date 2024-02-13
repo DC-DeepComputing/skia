@@ -154,6 +154,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c173ee4_31599d1a",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T01:49:56Z",
+      "side": 1,
+      "message": "Device and DrawContext are in a one-to-one relation. Early on, I thought there\u0027d be value in an additional simple wrapper around DrawContext for offscreen draws, but in practice the layers and image filters have all been routed to Device and the remaining texture/copy/mipmap-generation ones were most convenient to use Device as well. It\u0027s maybe a little heavy weight to have a clip stack, but hasn\u0027t been a problem so far.\n\nWith my texture reuse plan and re-ordering plans, a new DrawTask might replace DrawContext but I have to see how things look once I start writing code for it.\n\nBut there is a requirement (somewhat unspoken) that a Device (and transitively any SkSurface wrapping the Device) are used by one Recorder. There are too many operations that might trigger tasks, etc. that need to be added somewhere, and can\u0027t be updated to just take a `Recorder*` as an argument. In the future, we could probably offer a way to move a surface from one Recorder to another.",
+      "parentUuid": "1bf3b668_825e66b1",
+      "range": {
+        "startLine": 288,
+        "startChar": 52,
+        "endLine": 288,
+        "endChar": 60
+      },
+      "revId": "d750f5dae726803da0fb28ee3ae84c22ce92a622",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8848ab18_00330c2c",
