@@ -33,6 +33,24 @@
       "message": "Is it not a concern that we\u0027re now calling resolve here where we weren\u0027t before? (and I guess below we\u0027re calling resolve redundantly).",
       "revId": "c9ea1bf1bed8df83eb4803b465dd23e0e5102051",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3048dc03_bc142891",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1465,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T01:37:27Z",
+      "side": 1,
+      "message": "`resolve()` has a fast path where it\u0027s a no-op if the FilterResult is describable as an image/origin so other than some redundant checks (here and below), it shouldn\u0027t be any different.\n\nExtracting the image/origin pair like this is temporary. Once the rest of this CL stack lands, blur() will be updated to call the `FilterResult::rescale()` function and then it will stay in FilterResult types for longer.",
+      "parentUuid": "63ff387d_9103092e",
+      "revId": "c9ea1bf1bed8df83eb4803b465dd23e0e5102051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
