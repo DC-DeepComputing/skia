@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0318c922_164ee18d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-13T21:15:33Z",
+      "side": 1,
+      "message": "As John suggested, I set the `Block` to `nullptr` to verify that `validate` now does the right thing.",
+      "revId": "9a08f19411d275fcc2504251a63874e6ae82c897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
