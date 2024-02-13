@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e0c9f4b_b7e8f10d",
+        "filename": "src/core/SkSpecialImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-13T19:53:15Z",
+      "side": 1,
+      "message": "This reads really strange - we can make a subset that\u0027s really a superset? I guess I figured once you had a subset image, you wouldn\u0027t be able to undo that?",
+      "revId": "a732feef287039d3c46729e9f7fb06b8b93772ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
