@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc82c546_740d3eef",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-13T22:06:29Z",
+      "side": 1,
+      "message": "Attempt to fix at https://skia-review.googlesource.com/c/skia/+/813878",
+      "parentUuid": "b58c1262_1f0c8f30",
+      "revId": "ecf2f622d0b389c50662a83ef14ff3d902db23d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fb640c6_43d4ebef",
