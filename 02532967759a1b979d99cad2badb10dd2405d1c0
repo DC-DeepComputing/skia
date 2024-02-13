@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "15535f89_2223a0ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-13T22:04:34Z",
+      "side": 1,
+      "message": "\u003e Your proposed wording sounds fine - unless we want to go further and make SelectionPolicy a hard choice (ie, explicitly disable animation features in webp, even though it\u0027s not necessary).\n\nConsistency is nice, but note that not only would that be unnecessary, it would be ironic because even just to get the first image, `libwebp`\u0027s API requires us to copy the stream.\n\n\u003e \n\u003e I\u0027m also ambivalent about this - like you said, this is a pretty wild edge-case -- but I think the CL is okay if you want to land it.\n\nI like this better than other options. This patch fixes the regression and saves memory, without real downsides for the user, unless I\u0027m missing something.\n\nIn a separate thread, @jreck@google.com suggested capping the stream copy at 100MB. That might fix this issue, though to be honest, I haven\u0027t checked whether it would or not for this particular image. But it would certainly break *some* images.\n\nAnother option I was thinking about: copy the stream as we read it. We actually do this for `SkRawCodec`. (And interestingly - that one caps the size at 100MB. But it always has, AFAIK, so no regression there.) This would probably be my second choice - it has perhaps a clearer API, but it also copies when it doesn\u0027t need to.",
+      "parentUuid": "0f303bce_c955cd2b",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 15
+      },
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1d04ab3d_42507279",
