@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "491a0713_5ea81c80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2024-02-13T22:22:06Z",
+      "side": 1,
+      "message": "I greatly prefer this to a random 100MB cap. Don\u0027t spend RAM you didn\u0027t need spend, and we don\u0027t need to spend this if we\u0027re not animating.\n\nIf we are animating then we always have a stream that satisfies seekability requirements, so if anything I\u0027d like to see the combination of animation enabled + not seekable stream result in a failure instead of a silent, potentially extremely expensive, deep copy, but this is maybe too aggressive of a change :)",
+      "parentUuid": "15535f89_2223a0ea",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 15
+      },
+      "revId": "02532967759a1b979d99cad2badb10dd2405d1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1d04ab3d_42507279",
