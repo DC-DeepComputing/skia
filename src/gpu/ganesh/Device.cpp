@@ -117,6 +117,15 @@ using namespace skia_private;
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fContext->priv().singleOwner())
 
+#if defined(GR_TEST_UTILS)
+// GrContextOptions::fMaxTextureSizeOverride exists but doesn't allow for changing the
+// maxTextureSize on the fly.
+int gOverrideMaxTextureSizeGanesh = 0;
+// Allows tests to check how many tiles were drawn on the most recent call to
+// Device::drawAsTiledImageRect
+int gNumTilesDrawnGanesh = 0;
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace {
@@ -991,86 +1000,118 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
                                   const SkSamplingOptions& sampling,
                                   const SkPaint& paint,
                                   SkCanvas::SrcRectConstraint constraint) {
+    GrRecordingContext* rCtx = canvas->recordingContext();
+    if (!rCtx) {
+        return false;
+    }
     ASSERT_SINGLE_OWNER
 
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
     SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
                                                        : SkCanvas::kNone_QuadAAFlags;
 
-    return TiledTextureUtils::DrawAsTiledImageRect(canvas,
-                                                   image,
-                                                   src ? *src
-                                                       : SkRect::MakeIWH(image->width(),
-                                                                         image->height()),
-                                                   dst, aaFlags, sampling, &paint, constraint);
-}
-
-
-void Device::drawViewLattice(GrSurfaceProxyView view,
-                             const GrColorInfo& info,
-                             std::unique_ptr<SkLatticeIter> iter,
-                             const SkRect& dst,
-                             SkFilterMode filter,
-                             const SkPaint& origPaint) {
-    GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::ganesh::Device", "drawViewLattice", fContext.get());
-    SkASSERT(view);
-
-    SkTCopyOnFirstWrite<SkPaint> paint(&origPaint);
-
-    if (!info.isAlphaOnly() && (paint->getColor() & 0x00FFFFFF) != 0x00FFFFFF) {
-        paint.writable()->setColor(SkColorSetARGB(origPaint.getAlpha(), 0xFF, 0xFF, 0xFF));
+    // NOTE: if the context is not a direct context, it doesn't have access to the resource
+    // cache, and theoretically, the resource cache's limits could be being changed on
+    // another thread, so even having access to just the limit wouldn't be a reliable
+    // test during recording here.
+    size_t cacheSize = 0;
+    if (auto dCtx = GrAsDirectContext(rCtx)) {
+        cacheSize = dCtx->getResourceCacheLimit();
     }
-    GrPaint grPaint;
-    // Passing null as shaderFP indicates that the GP will provide the shader.
-    if (!SkPaintToGrPaintReplaceShader(this->recordingContext(),
-                                       fSurfaceDrawContext->colorInfo(),
-                                       *paint,
-                                       this->localToDevice(),
-                                       /*shaderFP=*/nullptr,
-                                       fSurfaceDrawContext->surfaceProps(),
-                                       &grPaint)) {
-        return;
+    size_t maxTextureSize = rCtx->maxTextureSize();
+#if defined(GR_TEST_UTILS)
+    if (gOverrideMaxTextureSizeGanesh) {
+        maxTextureSize = gOverrideMaxTextureSizeGanesh;
+    }
+    gNumTilesDrawnGanesh = 0;
+#endif
+
+    if (!src) {
+        [[maybe_unused]] auto [wasTiled, numTiles] = TiledTextureUtils::DrawAsTiledImageRect(
+                canvas,
+                image,
+                src ? *src : SkRect::MakeIWH(image->width(), image->height()),
+                dst,
+                aaFlags,
+                sampling,
+                &paint,
+                constraint,
+                cacheSize,
+                maxTextureSize);
+#if defined(GR_TEST_UTILS)
+        gNumTilesDrawnGanesh = numTiles;
+#endif
+        return wasTiled;
     }
 
-    if (info.isAlphaOnly()) {
-        // If we were doing this with an FP graph we'd use a kDstIn blend between the texture and
-        // the paint color.
-        view.concatSwizzle(skgpu::Swizzle("aaaa"));
+    void Device::drawViewLattice(GrSurfaceProxyView view,
+                                 const GrColorInfo& info,
+                                 std::unique_ptr<SkLatticeIter> iter,
+                                 const SkRect& dst,
+                                 SkFilterMode filter,
+                                 const SkPaint& origPaint) {
+        GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::ganesh::Device", "drawViewLattice", fContext.get());
+        SkASSERT(view);
+
+        SkTCopyOnFirstWrite<SkPaint> paint(&origPaint);
+
+        if (!info.isAlphaOnly() && (paint->getColor() & 0x00FFFFFF) != 0x00FFFFFF) {
+            paint.writable()->setColor(SkColorSetARGB(origPaint.getAlpha(), 0xFF, 0xFF, 0xFF));
+        }
+        GrPaint grPaint;
+        // Passing null as shaderFP indicates that the GP will provide the shader.
+        if (!SkPaintToGrPaintReplaceShader(this->recordingContext(),
+                                           fSurfaceDrawContext->colorInfo(),
+                                           *paint,
+                                           this->localToDevice(),
+                                           /*shaderFP=*/nullptr,
+                                           fSurfaceDrawContext->surfaceProps(),
+                                           &grPaint)) {
+            return;
+        }
+
+        if (info.isAlphaOnly()) {
+            // If we were doing this with an FP graph we'd use a kDstIn blend between the texture
+            // and the paint color.
+            view.concatSwizzle(skgpu::Swizzle("aaaa"));
+        }
+        auto csxf = GrColorSpaceXform::Make(info, fSurfaceDrawContext->colorInfo());
+
+        fSurfaceDrawContext->drawImageLattice(this->clip(),
+                                              std::move(grPaint),
+                                              this->localToDevice(),
+                                              std::move(view),
+                                              info.alphaType(),
+                                              std::move(csxf),
+                                              filter,
+                                              std::move(iter),
+                                              dst);
     }
-    auto csxf = GrColorSpaceXform::Make(info, fSurfaceDrawContext->colorInfo());
 
-    fSurfaceDrawContext->drawImageLattice(this->clip(), std::move(grPaint), this->localToDevice(),
-                                          std::move(view), info.alphaType(), std::move(csxf),
-                                          filter, std::move(iter), dst);
-}
+    void Device::drawImageLattice(const SkImage* image,
+                                  const SkCanvas::Lattice& lattice,
+                                  const SkRect& dst,
+                                  SkFilterMode filter,
+                                  const SkPaint& paint) {
+        ASSERT_SINGLE_OWNER
+        auto iter = std::make_unique<SkLatticeIter>(lattice, dst);
 
-void Device::drawImageLattice(const SkImage* image,
-                              const SkCanvas::Lattice& lattice,
-                              const SkRect& dst,
-                              SkFilterMode filter,
-                              const SkPaint& paint) {
-    ASSERT_SINGLE_OWNER
-    auto iter = std::make_unique<SkLatticeIter>(lattice, dst);
-
-    auto [view, ct] = skgpu::ganesh::AsView(this->recordingContext(), image, skgpu::Mipmapped::kNo);
-    if (view) {
-        GrColorInfo colorInfo(ct, image->alphaType(), image->refColorSpace());
-        this->drawViewLattice(std::move(view),
-                              std::move(colorInfo),
-                              std::move(iter),
-                              dst,
-                              filter,
-                              paint);
+        auto [view, ct] =
+                skgpu::ganesh::AsView(this->recordingContext(), image, skgpu::Mipmapped::kNo);
+        if (view) {
+            GrColorInfo colorInfo(ct, image->alphaType(), image->refColorSpace());
+            this->drawViewLattice(
+                    std::move(view), std::move(colorInfo), std::move(iter), dst, filter, paint);
+        }
     }
-}
 
-void Device::drawVertices(const SkVertices* vertices,
-                          sk_sp<SkBlender> blender,
-                          const SkPaint& paint,
-                          bool skipColorXform) {
-    ASSERT_SINGLE_OWNER
-    GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::ganesh::Device", "drawVertices", fContext.get());
-    SkASSERT(vertices);
+    void Device::drawVertices(const SkVertices* vertices,
+                              sk_sp<SkBlender> blender,
+                              const SkPaint& paint,
+                              bool skipColorXform) {
+        ASSERT_SINGLE_OWNER
+        GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::ganesh::Device", "drawVertices", fContext.get());
+        SkASSERT(vertices);
 
 #ifdef SK_LEGACY_IGNORE_DRAW_VERTICES_BLEND_WITH_NO_SHADER
     if (!paint.getShader()) {
