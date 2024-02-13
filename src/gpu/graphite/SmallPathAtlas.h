@@ -16,7 +16,7 @@
 
 namespace skgpu::graphite {
 
-class UploadList;
+class DrawContext;
 
 /**
  * PathAtlas class that rasterizes coverage masks on the CPU and caches them in a
@@ -27,12 +27,15 @@ class UploadList;
  * uploads are recorded by `recordUploads()` and subsequently added to an UploadTask.
  *
  */
-class SmallPathAtlas : public PathAtlas {
+class SmallPathAtlas : public PathAtlas,
+                       public AtlasGenerationCounter {
 public:
     explicit SmallPathAtlas(Recorder*);
     ~SmallPathAtlas() override {}
 
-    bool recordUploads(UploadList*) { /*TODO*/ return false; }
+    bool initAtlas();
+
+    bool recordUploads(DrawContext*, Recorder*);
 
 protected:
     const TextureProxy* onAddShape(const Shape&,
