@@ -39,6 +39,30 @@
       },
       "revId": "9a08f19411d275fcc2504251a63874e6ae82c897",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6fe0ed6_93d90c47",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-13T22:05:37Z",
+      "side": 1,
+      "message": "+1\n\nMoving it down here also allows un-nesting the `if`s above (it can just be `if (fTail \u0026\u0026 fTail-\u003eavail() \u003e 0)`).\n\nAlso it\u0027s interesting that here it\u0027s `if (fTail !\u003d nullptr)` and above it\u0027s `if (fTail)`.  I would prefer they both be just `if (fTail` to make it lexically obvious that they\u0027re the same predicate.",
+      "parentUuid": "e42b436c_aea6fdaa",
+      "range": {
+        "startLine": 576,
+        "startChar": 8,
+        "endLine": 576,
+        "endChar": 12
+      },
+      "revId": "9a08f19411d275fcc2504251a63874e6ae82c897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
