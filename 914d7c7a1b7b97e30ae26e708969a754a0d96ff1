@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d95011_4c37bf51",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-13T20:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0df3dfa7_21329c97",
+      "range": {
+        "startLine": 1077,
+        "startChar": 4,
+        "endLine": 1077,
+        "endChar": 8
+      },
+      "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc7de44b_210fba29",
@@ -71,6 +95,24 @@
       "writtenOn": "2024-02-09T13:54:42Z",
       "side": 1,
       "message": "can we add an assert here that if we got a valid `atlasMask` that `renderer` is non-null now?",
+      "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dabe0615_b8e4dcb5",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-13T20:02:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc7de44b_210fba29",
       "revId": "914d7c7a1b7b97e30ae26e708969a754a0d96ff1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
