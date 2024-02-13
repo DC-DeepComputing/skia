@@ -560,6 +560,12 @@ bool SkDynamicMemoryWStream::write(const void* buffer, size_t count) {
 
         Block* block = (Block*)sk_malloc_canfail(sizeof(Block) + size);
         if (!block) {
+            if (fTail) {
+                // The first block added this amount assuming a new tail would be added.
+                // Since we failed to allocate a new tail, fBytesWrittenBeforeTail
+                // (emphasis on "Before") should not include those bytes.
+                fBytesWrittenBeforeTail -= fTail->written();
+            }
             this->validate();
             return false;
         }
