@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddc1c210_62253469",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T18:01:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4949183a_da1b3661",
+      "range": {
+        "startLine": 412,
+        "startChar": 6,
+        "endLine": 412,
+        "endChar": 49
+      },
+      "revId": "bb383656b940522543af18034db1b56f7504dec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "855696c2_7d6f5cad",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-13T17:25:32Z",
       "side": 1,
       "message": "nit\n\n```suggestion\n    // beyond the safe known region (the current value of fProxy-\u003efDimensions). If the proxy is\n```",
+      "range": {
+        "startLine": 419,
+        "startChar": 49,
+        "endLine": 419,
+        "endChar": 54
+      },
+      "revId": "bb383656b940522543af18034db1b56f7504dec2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89c030c6_d7097807",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T18:01:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "855696c2_7d6f5cad",
       "range": {
         "startLine": 419,
         "startChar": 49,
