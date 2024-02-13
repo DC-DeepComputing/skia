@@ -116,7 +116,7 @@ public:
     // Returns null if there are no pending uploads to move into a task.
     //
     // TODO: see if we can merge transfers into this
-    sk_sp<Task> snapUploadTask(Recorder*);
+    sk_sp<Task> snapUploadTask();
 
     // Moves all accummulated DispatchGroups into a ComputeTask and returns it. A DispatchGroup may
     // be recorded internally as a dependency of a DrawPass (which may happen during a call to
@@ -132,7 +132,7 @@ public:
     // current thinking around image filters that may operate on the result of a draw involves
     // maintaining this order by adding a post-draw compute pass to a subsequent DrawContext. This
     // design needs to get hashed out.
-    sk_sp<Task> snapComputeTask(Recorder*);
+    sk_sp<Task> snapComputeTask();
 
 private:
     DrawContext(sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);

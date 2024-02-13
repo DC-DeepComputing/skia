@@ -133,6 +133,9 @@ public:
     // Returns the currently preferred ComputePathAtlas implementation.
     static std::unique_ptr<ComputePathAtlas> CreateDefault(Recorder*);
 
+    // Record the compute dispatches necessary to generate the cached path data.
+    // The Recorder given should be the same as the one used to create this PathAtlas,
+    // and the same as the one used for the subsequent DrawPass.
     virtual std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const = 0;
 
     // Clear all scheduled atlas draws and free up atlas allocations, if necessary. After this call

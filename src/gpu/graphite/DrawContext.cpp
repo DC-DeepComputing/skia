@@ -259,7 +259,7 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
 }
 
-sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
+sk_sp<Task> DrawContext::snapUploadTask() {
     if (!fPendingUploads || fPendingUploads->size() == 0) {
         return nullptr;
     }
@@ -273,7 +273,7 @@ sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
     return uploadTask;
 }
 
-sk_sp<Task> DrawContext::snapComputeTask(Recorder* recorder) {
+sk_sp<Task> DrawContext::snapComputeTask() {
     if (fDispatchGroups.empty()) {
         return nullptr;
     }
