@@ -16,6 +16,29 @@
       "message": "As John suggested, I set the `Block` to `nullptr` to verify that `validate` now does the right thing.",
       "revId": "9a08f19411d275fcc2504251a63874e6ae82c897",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e42b436c_aea6fdaa",
+        "filename": "src/core/SkStream.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-13T21:30:57Z",
+      "side": 1,
+      "message": "Can we move `fBytesWrittenBeforeTail +\u003d fTail-\u003ewritten();` here instead?\nAFAICS it\u0027s OK if it isn\u0027t updated until this point is reached.\nSeems less risky than doing the operation and then turning around and undoing it. This could get out of sync if more changes are made to the code.",
+      "range": {
+        "startLine": 576,
+        "startChar": 8,
+        "endLine": 576,
+        "endChar": 12
+      },
+      "revId": "9a08f19411d275fcc2504251a63874e6ae82c897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
