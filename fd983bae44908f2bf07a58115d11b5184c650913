@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9667cc_483c6e44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T19:28:52Z",
+      "side": 1,
+      "message": "lgtm modulo build failures",
+      "revId": "fd983bae44908f2bf07a58115d11b5184c650913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cab7ebe4_0d554da2",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-13T19:28:52Z",
+      "side": 1,
+      "message": "nit: Either the image didn\u0027t require tiling or this is a raster-backed canvas. In either case fall back to a default draw.\n```suggestion\n        // Either the image didn\u0027t require tiling or this is a raster-backed\n        // canvas. In either case fall back to a default draw.\n```",
+      "range": {
+        "startLine": 41,
+        "startChar": 11,
+        "endLine": 41,
+        "endChar": 79
+      },
+      "revId": "fd983bae44908f2bf07a58115d11b5184c650913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
