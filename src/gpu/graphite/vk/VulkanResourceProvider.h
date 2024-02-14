@@ -19,6 +19,12 @@ extern "C" {
 }
 #endif
 
+#ifdef  SK_BUILD_FOR_ANDROID
+extern "C" {
+    typedef struct AHardwareBuffer AHardwareBuffer;
+}
+#endif
+
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;

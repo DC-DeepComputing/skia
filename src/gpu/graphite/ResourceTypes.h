@@ -207,6 +207,7 @@ struct SamplerDesc {
 
 private:
     uint32_t fDesc;
+    //uint32_t fOptionalAdditionalBackendDesc = 0;
 };
 
 };  // namespace skgpu::graphite
