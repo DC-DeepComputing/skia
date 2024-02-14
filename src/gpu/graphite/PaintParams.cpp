@@ -109,7 +109,7 @@ void Blend(const KeyContext& keyContext,
     keyBuilder->endBlock();  // BlendShaderBlock
 }
 
-void Compose(const KeyContext& keyContext,
+void Compose1(const KeyContext& keyContext,
              PaintParamsKeyBuilder* keyBuilder,
              PipelineDataGatherer* gatherer,
              AddToKeyFn addInnerToKey,
@@ -251,7 +251,7 @@ void PaintParams::handleColorFilter(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer) const {
     if (fColorFilter) {
-        Compose(keyContext, builder, gatherer,
+        Compose1(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handlePaintAlpha(keyContext, builder, gatherer);
                 },
@@ -270,7 +270,7 @@ void PaintParams::handleDithering(const KeyContext& keyContext,
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
     if (should_dither(*this, ct)) {
-        Compose(keyContext, builder, gatherer,
+        Compose1(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handleColorFilter(keyContext, builder, gatherer);
                 },

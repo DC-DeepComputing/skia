@@ -47,7 +47,7 @@ static void test_expect_fail(skiatest::Reporter* r, const char* testFile) {
     }
 
     SkString shaderString{reinterpret_cast<const char*>(shaderData->bytes()), shaderData->size()};
-    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(shaderString, options);
+    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(shaderString, options, /* stableKey= */ 0);
     if (result.effect) {
         ERRORF(r, "%s: Expected failure, but compiled successfully",
                   SkOSPath::Basename(testFile).c_str());
@@ -64,7 +64,7 @@ static void test_expect_pass(skiatest::Reporter* r, SkSurface* surface, const ch
     }
 
     SkString shaderString{reinterpret_cast<const char*>(shaderData->bytes()), shaderData->size()};
-    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(shaderString, options);
+    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(shaderString, options, /* stableKey= */ 0);
     if (!result.effect) {
         ERRORF(r, "%s: %s", testFile, result.errorText.c_str());
         return;

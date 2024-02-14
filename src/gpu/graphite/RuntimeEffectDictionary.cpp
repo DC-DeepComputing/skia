@@ -11,10 +11,12 @@
 
 namespace skgpu::graphite {
 
-void RuntimeEffectDictionary::set(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect) {
+void RuntimeEffectDictionary::set1(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect) {
+//    SkDebugf("RuntimeEffectDictionary::set %d\n", codeSnippetID);
+
     // The same code-snippet ID should never refer to two different effects.
-    SkASSERT(!fDict.find(codeSnippetID) || (SkRuntimeEffectPriv::Hash(*fDict[codeSnippetID]) ==
-                                            SkRuntimeEffectPriv::Hash(*effect)));
+    SkASSERT(!fDict.find(codeSnippetID) || (SkRuntimeEffectPriv::Hash1(*fDict[codeSnippetID]) ==
+                                            SkRuntimeEffectPriv::Hash1(*effect)));
     fDict.set(codeSnippetID, std::move(effect));
 }
 

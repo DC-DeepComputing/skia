@@ -162,6 +162,181 @@ std::optional<LayerSpace<SkMatrix>> periodic_axis_transform(
     }
 }
 
+// Returns true if decal tiling an image with 'imageBounds' subject to 'transform', limited to
+// the un-transformed 'sampleBounds' would exhibit significantly different visual quality from
+// drawing the image with clamp tiling and limited geometrically to 'imageBounds'.
+//
+// Non-nearest-neighbor sampling across the image boundary with decal tiling introduces transparency
+// If the transform's scale factor is near identity, the width of this transparent interpolation is
+// visually consistent with the 1px anti-aliased edge produced by a SkCanvas::drawImage operation.
+// If the scale factor is non-identity, the transparent ramp can get progressively smaller or larger
+// as the relative size of a texel changes vs. the pixel size. While technically expected of decal
+// tiling, it produces inconsistent rendering vs. when the transformed image is resolved to the
+// actual layer resolution and then sampled by an image filter shader.
+bool decal_tiling_differs_from_aa(const LayerSpace<SkMatrix> transform,
+                                  const LayerSpace<SkIRect> imageBounds,
+                                  const LayerSpace<SkIRect> sampleBounds,
+                                  const SkSamplingOptions& sampling) {
+    static constexpr SkSamplingOptions kNearestNeighbor = {};
+    static constexpr SkSize kHalfPixel = {0.5f, 0.5f};
+    static constexpr SkSize kCubicRadius = {1.5f, 1.5f};
+
+    if (sampling == kNearestNeighbor) {
+        // There's no interpolating between two samples, so the size of texels doesn't matter.
+        return false;
+    }
+
+    LayerSpace<SkSize> expectedSampleRadius{sampling.useCubic ? kCubicRadius : kHalfPixel};
+    LayerSpace<SkSize> sampleRadius = transform.mapSize(expectedSampleRadius);
+
+    LayerSpace<SkRect> bufferedSampleBounds{sampleBounds};
+    // First inset by half a pixel to account for where the dst sample coords actually are
+    bufferedSampleBounds.inset(LayerSpace<SkSize>(kHalfPixel));
+    // Then outset by the mapped radius
+    bufferedSampleBounds.outset(sampleRadius);
+
+    // If the sample bounds (including implicit samples from interpolation) are contained by the
+    // transformed 'imageBounds', then the sampling would not access texels outside the image bounds
+    if (SkRectPriv::QuadContainsRect(SkMatrix(transform),
+                                     SkIRect(imageBounds),
+                                     SkIRect(bufferedSampleBounds.roundOut()),
+                                     kRoundEpsilon)) {
+        return false;
+    }
+
+    // The decal sampling would be visible, but we only care if the width of the interpolation is
+    // significantly different from an identity-scale.
+    return !SkScalarNearlyEqual(sampleRadius.width(), expectedSampleRadius.width(), 0.1f) ||
+           !SkScalarNearlyEqual(sampleRadius.height(), expectedSampleRadius.height(), 0.1f);
+}
+
+// The returned shader includes the transform as a local matrix.
+sk_sp<SkShader> apply_decal(
+        const LayerSpace<SkMatrix>& transform,
+        sk_sp<SkSpecialImage> image,
+        const LayerSpace<SkIRect>& sampleBounds,
+        const SkSamplingOptions& sampling) {
+    LayerSpace<SkIRect> imageBounds{image->dimensions()};
+    if (!decal_tiling_differs_from_aa(transform, imageBounds, sampleBounds, sampling)) {
+        // Decal the image as part of its sampling and apply the full transform afterwards
+        return image->asShader(SkTileMode::kDecal, sampling, SkMatrix(transform));
+    }
+
+    // Otherwise we need to apply the decal in a coordinate space that matches the resolution of
+    // the layer space. If the transform preserves rectangles, map the image bounds by the transform
+    // so we can apply it before we evaluate the shader. Otherwise decompose the transform into
+    // a non-scaling post-decal transform and a scaling pre-decal transform.
+    const SkMatrix& m(transform);
+    SkMatrix postDecal, preDecal;
+    if (m.rectStaysRect()) {
+        postDecal = SkMatrix::I();
+        preDecal = m;
+    } else {
+        auto representativePoint = LayerSpace<SkRect>(imageBounds).center();
+        decompose_transform(m, SkPoint(representativePoint), &postDecal, &preDecal);
+    }
+
+    // TODO(skbug:12784) - As part of fully supporting subsets in image shaders, it probably makes
+    // sense to share the subset tiling logic that's in GrTextureEffect as dedicated SkShaders.
+    // Graphite can then add those to its program as-needed vs. always doing shader-based tiling,
+    // and CPU can have raster-pipeline tiling applied more flexibly than at the bitmap level. At
+    // that point, this effect is redundant and can be replaced with the decal-subset shader.
+    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+        "uniform shader image;"
+        "uniform float4 decalBounds;"
+
+        "half4 main(float2 coord) {"
+            "half4 d = half4(decalBounds - coord.xyxy) * half4(-1, -1, 1, 1);"
+            "d = saturate(d + 0.5);"
+            "return (d.x*d.y*d.z*d.w) * image.eval(coord);"
+        "}",
+        kDecalStableKey);
+
+    SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
+    builder.child("image") = image->asShader(SkTileMode::kClamp, sampling, preDecal);
+    builder.uniform("decalBounds") = preDecal.mapRect(SkRect::Make(SkIRect(imageBounds)));
+
+    sk_sp<SkShader> decalShader = builder.makeShader();
+    if (decalShader && !postDecal.isIdentity()) {
+        decalShader = decalShader->makeWithLocalMatrix(postDecal);
+    }
+    return decalShader;
+}
+
+// AutoSurface manages an SkCanvas and device state to draw to a layer-space bounding box,
+// and then snap it into a FilterResult. It provides operators to be used directly as an SkDevice,
+// assuming surface creation succeeded. It can also be viewed as an SkCanvas (for when an operation
+// is unavailable on SkDevice). A given AutoSurface should only rely on one access API.
+// Usage:
+//
+//     AutoSurface surface{ctx, dstBounds, renderInParameterSpace}; // if true, concats layer matrix
+//     if (surface) {
+//         surface->drawFoo(...);
+//     }
+//     return surface.snap(); // Automatically handles failed allocations
+class AutoSurface {
+public:
+    AutoSurface(const Context& ctx,
+                const LayerSpace<SkIRect>& dstBounds,
+                bool renderInParameterSpace,
+                const SkSurfaceProps* props = nullptr)
+            : fDstBounds(dstBounds) {
+        // We don't intersect by ctx.desiredOutput() and only use the Context to make the surface.
+        // It is assumed the caller has already accounted for the desired output, or it's a
+        // situation where the desired output shouldn't apply (e.g. this surface will be transformed
+        // to align with the actual desired output via FilterResult metadata).
+        ctx.markNewSurface();
+        sk_sp<SkDevice> device =
+                dstBounds.isEmpty() ? nullptr
+                                    : ctx.backend()->makeDevice(SkISize(dstBounds.size()),
+                                                                ctx.refColorSpace(),
+                                                                props);
+        if (!device) {
+            return;
+        }
+
+        // Wrap the device in a canvas and use that to configure its origin and clip. This ensures
+        // the device and the canvas are in sync regardless of how the AutoSurface user intends
+        // to render.
+        fCanvas.emplace(std::move(device));
+        fCanvas->translate(-fDstBounds.left(), -fDstBounds.top());
+        fCanvas->clear(SkColors::kTransparent);
+        // The device functor may have provided an approx-fit backing surface so clip to the
+        // expected dst bounds.
+        fCanvas->clipIRect(SkIRect(fDstBounds));
+
+        if (renderInParameterSpace) {
+            fCanvas->concat(SkMatrix(ctx.mapping().layerMatrix()));
+        }
+    }
+
+    explicit operator bool() const { return fCanvas.has_value(); }
+
+    SkDevice* device() { SkASSERT(fCanvas.has_value()); return SkCanvasPriv::TopDevice(&*fCanvas); }
+    SkCanvas* operator->() { SkASSERT(fCanvas.has_value()); return &*fCanvas; }
+
+    // NOTE: This pair is equivalent to a FilterResult but we keep it this way for use by resolve(),
+    // which wants them separate while the legacy imageAndOffset() function is around.
+    std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> snap() {
+        if (fCanvas.has_value()) {
+            // Snap a subset of the device matching the expected dst bounds.
+            SkIRect subset = SkIRect::MakeWH(fDstBounds.width(), fDstBounds.height());
+            fCanvas->restoreToCount(0);
+            this->device()->setImmutable();
+            auto snapped = std::make_pair(this->device()->snapSpecial(subset),
+                                          fDstBounds.topLeft());
+            fCanvas.reset(); // Only use the AutoSurface once
+            return snapped;
+        } else {
+            return {nullptr, {}};
+        }
+    }
+
+private:
+    std::optional<SkCanvas> fCanvas;
+    LayerSpace<SkIRect> fDstBounds;
+};
+
 class RasterBackend : public Backend {
 public:
 
