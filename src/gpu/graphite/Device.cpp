@@ -31,6 +31,7 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/SmallPathAtlas.h"
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -1425,7 +1426,12 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     } else if (atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kRaster) &&
                (strategy == PathRendererStrategy::kRasterAA ||
                 (strategy == PathRendererStrategy::kDefault && !msaaSupported))) {
-        pathAtlas = atlasProvider->getRasterPathAtlas();
+        skvx::float2 boundsSize = shape.bounds().size();
+        if (boundsSize.x() < 73 && boundsSize.y() < 73) {
+            pathAtlas = atlasProvider->getSmallPathAtlas();
+        } else {
+            pathAtlas = atlasProvider->getRasterPathAtlas();
+        }
     }
 
     // Use an atlas only if an MSAA technique isn't required.
