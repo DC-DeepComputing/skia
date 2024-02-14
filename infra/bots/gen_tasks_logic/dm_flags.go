@@ -1243,6 +1243,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.extraConfig("Vulkan") && b.gpu("RadeonVega6") {
 		skip(ALL, "gm", ALL, "ycbcrimage")                                 // skia:13265
 		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skia:13265
+		skip(ALL, "gm", ALL, "squarehair")  // b/325102485
+		skip(ALL, "gm", ALL, "hairline_subdiv")  // b/325102485
 	}
 
 	match := []string{}

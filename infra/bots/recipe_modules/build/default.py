@@ -281,7 +281,7 @@ def compile_fn(api, checkout_root, out_dir):
     args['is_component_build'] = 'true'
   if 'Vulkan' in extra_tokens and not 'Android' in extra_tokens and not 'Dawn' in extra_tokens:
     args['skia_use_vulkan'] = 'true'
-    args['skia_enable_vulkan_debug_layers'] = 'true'
+    args['skia_enable_vulkan_debug_layers'] = 'false'
     # When running TSAN with Vulkan on NVidia, we experienced some timeouts. We found
     # a workaround (in GrContextFactory) that requires GL (in addition to Vulkan).
     if 'TSAN' in extra_tokens:
