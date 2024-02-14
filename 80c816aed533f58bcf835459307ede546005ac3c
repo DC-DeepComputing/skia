@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d65260a1_49ab53ce",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-14T21:04:47Z",
+      "side": 1,
+      "message": "WDYT of this?\n\n```\nstatic const bool isAppExtension \u003d [[[NSBundle mainBundle] bundlePath] hasSuffix:@\".appex\"];\nreturn !isAppExtension \u0026\u0026 ...\n```\n\nSource: https://stackoverflow.com/a/29322061/291737",
+      "range": {
+        "startLine": 159,
+        "startChar": 13,
+        "endLine": 159,
+        "endChar": 44
+      },
+      "revId": "80c816aed533f58bcf835459307ede546005ac3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
