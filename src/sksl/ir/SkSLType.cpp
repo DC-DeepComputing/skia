@@ -660,6 +660,18 @@ public:
         return fContainsAtomic;
     }
 
+    bool isOrContainsArray() const override {
+        return fContainsArray;
+    }
+
+    bool isOrContainsUnsizedArray() const override {
+        return fContainsUnsizedArray;
+    }
+
+    bool isOrContainsAtomic() const override {
+        return fContainsAtomic;
+    }
+
     size_t slotCount() const override {
         SkASSERT(!fContainsUnsizedArray);
         return fSlotCount;

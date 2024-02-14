@@ -1,0 +1,76 @@
+defines = -DSK_PDF_USE_HARFBUZZ_SUBSET -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSKIA_IMPLEMENTATION=1 -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML
+framework_dirs =
+include_dirs = -I..
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi -isystem /Users/nicolettep/Repos/skia/third_party/externals/zlib -isystem /Users/nicolettep/Repos/skia/third_party/harfbuzz -isystem /Users/nicolettep/Repos/skia/third_party/externals/harfbuzz/src -isystem /Users/nicolettep/Repos/skia/third_party/libjpeg-turbo -isystem /Users/nicolettep/Repos/skia/third_party/externals/libjpeg-turbo
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = pdf
+
+build obj/src/pdf/pdf.SkClusterator.o: cxx ../src/pdf/SkClusterator.cpp
+  source_file_part = SkClusterator.cpp
+  source_name_part = SkClusterator
+build obj/src/pdf/pdf.SkDeflate.o: cxx ../src/pdf/SkDeflate.cpp
+  source_file_part = SkDeflate.cpp
+  source_name_part = SkDeflate
+build obj/src/pdf/pdf.SkKeyedImage.o: cxx ../src/pdf/SkKeyedImage.cpp
+  source_file_part = SkKeyedImage.cpp
+  source_name_part = SkKeyedImage
+build obj/src/pdf/pdf.SkPDFBitmap.o: cxx ../src/pdf/SkPDFBitmap.cpp
+  source_file_part = SkPDFBitmap.cpp
+  source_name_part = SkPDFBitmap
+build obj/src/pdf/pdf.SkPDFDevice.o: cxx ../src/pdf/SkPDFDevice.cpp
+  source_file_part = SkPDFDevice.cpp
+  source_name_part = SkPDFDevice
+build obj/src/pdf/pdf.SkPDFDocument.o: cxx ../src/pdf/SkPDFDocument.cpp
+  source_file_part = SkPDFDocument.cpp
+  source_name_part = SkPDFDocument
+build obj/src/pdf/pdf.SkPDFFont.o: cxx ../src/pdf/SkPDFFont.cpp
+  source_file_part = SkPDFFont.cpp
+  source_name_part = SkPDFFont
+build obj/src/pdf/pdf.SkPDFFormXObject.o: cxx ../src/pdf/SkPDFFormXObject.cpp
+  source_file_part = SkPDFFormXObject.cpp
+  source_name_part = SkPDFFormXObject
+build obj/src/pdf/pdf.SkPDFGradientShader.o: cxx ../src/pdf/SkPDFGradientShader.cpp
+  source_file_part = SkPDFGradientShader.cpp
+  source_name_part = SkPDFGradientShader
+build obj/src/pdf/pdf.SkPDFGraphicStackState.o: cxx ../src/pdf/SkPDFGraphicStackState.cpp
+  source_file_part = SkPDFGraphicStackState.cpp
+  source_name_part = SkPDFGraphicStackState
+build obj/src/pdf/pdf.SkPDFGraphicState.o: cxx ../src/pdf/SkPDFGraphicState.cpp
+  source_file_part = SkPDFGraphicState.cpp
+  source_name_part = SkPDFGraphicState
+build obj/src/pdf/pdf.SkPDFMakeCIDGlyphWidthsArray.o: cxx ../src/pdf/SkPDFMakeCIDGlyphWidthsArray.cpp
+  source_file_part = SkPDFMakeCIDGlyphWidthsArray.cpp
+  source_name_part = SkPDFMakeCIDGlyphWidthsArray
+build obj/src/pdf/pdf.SkPDFMakeToUnicodeCmap.o: cxx ../src/pdf/SkPDFMakeToUnicodeCmap.cpp
+  source_file_part = SkPDFMakeToUnicodeCmap.cpp
+  source_name_part = SkPDFMakeToUnicodeCmap
+build obj/src/pdf/pdf.SkPDFMetadata.o: cxx ../src/pdf/SkPDFMetadata.cpp
+  source_file_part = SkPDFMetadata.cpp
+  source_name_part = SkPDFMetadata
+build obj/src/pdf/pdf.SkPDFResourceDict.o: cxx ../src/pdf/SkPDFResourceDict.cpp
+  source_file_part = SkPDFResourceDict.cpp
+  source_name_part = SkPDFResourceDict
+build obj/src/pdf/pdf.SkPDFShader.o: cxx ../src/pdf/SkPDFShader.cpp
+  source_file_part = SkPDFShader.cpp
+  source_name_part = SkPDFShader
+build obj/src/pdf/pdf.SkPDFSubsetFont.o: cxx ../src/pdf/SkPDFSubsetFont.cpp
+  source_file_part = SkPDFSubsetFont.cpp
+  source_name_part = SkPDFSubsetFont
+build obj/src/pdf/pdf.SkPDFTag.o: cxx ../src/pdf/SkPDFTag.cpp
+  source_file_part = SkPDFTag.cpp
+  source_name_part = SkPDFTag
+build obj/src/pdf/pdf.SkPDFType1Font.o: cxx ../src/pdf/SkPDFType1Font.cpp
+  source_file_part = SkPDFType1Font.cpp
+  source_name_part = SkPDFType1Font
+build obj/src/pdf/pdf.SkPDFTypes.o: cxx ../src/pdf/SkPDFTypes.cpp
+  source_file_part = SkPDFTypes.cpp
+  source_name_part = SkPDFTypes
+build obj/src/pdf/pdf.SkPDFUtils.o: cxx ../src/pdf/SkPDFUtils.cpp
+  source_file_part = SkPDFUtils.cpp
+  source_name_part = SkPDFUtils
+build obj/src/pdf/pdf.SkJpegInfo_libjpegturbo.o: cxx ../src/pdf/SkJpegInfo_libjpegturbo.cpp
+  source_file_part = SkJpegInfo_libjpegturbo.cpp
+  source_name_part = SkJpegInfo_libjpegturbo
+
+build obj/pdf.stamp: stamp obj/src/pdf/pdf.SkClusterator.o obj/src/pdf/pdf.SkDeflate.o obj/src/pdf/pdf.SkKeyedImage.o obj/src/pdf/pdf.SkPDFBitmap.o obj/src/pdf/pdf.SkPDFDevice.o obj/src/pdf/pdf.SkPDFDocument.o obj/src/pdf/pdf.SkPDFFont.o obj/src/pdf/pdf.SkPDFFormXObject.o obj/src/pdf/pdf.SkPDFGradientShader.o obj/src/pdf/pdf.SkPDFGraphicStackState.o obj/src/pdf/pdf.SkPDFGraphicState.o obj/src/pdf/pdf.SkPDFMakeCIDGlyphWidthsArray.o obj/src/pdf/pdf.SkPDFMakeToUnicodeCmap.o obj/src/pdf/pdf.SkPDFMetadata.o obj/src/pdf/pdf.SkPDFResourceDict.o obj/src/pdf/pdf.SkPDFShader.o obj/src/pdf/pdf.SkPDFSubsetFont.o obj/src/pdf/pdf.SkPDFTag.o obj/src/pdf/pdf.SkPDFType1Font.o obj/src/pdf/pdf.SkPDFTypes.o obj/src/pdf/pdf.SkPDFUtils.o obj/src/pdf/pdf.SkJpegInfo_libjpegturbo.o || ./libzlib.a ./libharfbuzz.a obj/jpeg_decode.stamp ./libjpeg.a obj/jpeg_encode.stamp obj/third_party/zlib/zlib_adler32_simd.stamp obj/third_party/zlib/zlib_crc32_simd.stamp obj/third_party/zlib/zlib_inflate_chunk_simd.stamp obj/third_party/zlib/zlib_x86_x64_simd.stamp obj/jpeg_mpf.stamp obj/xml.stamp ./libexpat.a

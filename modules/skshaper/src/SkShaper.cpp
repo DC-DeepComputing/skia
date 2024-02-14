@@ -21,6 +21,13 @@
 #include <string>
 #include <utility>
 
+#include <limits.h>
+#include <algorithm>
+#include <cstring>
+#include <locale>
+#include <string>
+#include <utility>
+
 #ifdef SK_SHAPER_UNICODE_AVAILABLE
 #include "modules/skunicode/include/SkUnicode.h"
 #endif

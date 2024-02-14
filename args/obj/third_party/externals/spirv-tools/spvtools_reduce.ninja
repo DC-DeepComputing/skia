@@ -1,0 +1,104 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\]
+framework_dirs =
+include_dirs = -I../third_party/externals/spirv-tools -I../third_party/externals/spirv-headers/include -I../third_party/externals/spirv-tools/include -Igen/third_party/externals/spirv-tools
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wno-implicit-fallthrough -Wno-newline-eof -Wno-unreachable-code-break -Wno-unreachable-code-return -std=c++17
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = libspvtools_reduce
+
+build obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.change_operand_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/change_operand_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = change_operand_reduction_opportunity.cpp
+  source_name_part = change_operand_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.change_operand_to_undef_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/change_operand_to_undef_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = change_operand_to_undef_reduction_opportunity.cpp
+  source_name_part = change_operand_to_undef_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.conditional_branch_to_simple_conditional_branch_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/conditional_branch_to_simple_conditional_branch_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = conditional_branch_to_simple_conditional_branch_opportunity_finder.cpp
+  source_name_part = conditional_branch_to_simple_conditional_branch_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.conditional_branch_to_simple_conditional_branch_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/conditional_branch_to_simple_conditional_branch_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = conditional_branch_to_simple_conditional_branch_reduction_opportunity.cpp
+  source_name_part = conditional_branch_to_simple_conditional_branch_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.merge_blocks_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/merge_blocks_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = merge_blocks_reduction_opportunity.cpp
+  source_name_part = merge_blocks_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.merge_blocks_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/merge_blocks_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = merge_blocks_reduction_opportunity_finder.cpp
+  source_name_part = merge_blocks_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.operand_to_const_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/operand_to_const_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = operand_to_const_reduction_opportunity_finder.cpp
+  source_name_part = operand_to_const_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.operand_to_dominating_id_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/operand_to_dominating_id_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = operand_to_dominating_id_reduction_opportunity_finder.cpp
+  source_name_part = operand_to_dominating_id_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.operand_to_undef_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/operand_to_undef_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = operand_to_undef_reduction_opportunity_finder.cpp
+  source_name_part = operand_to_undef_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reducer.o: cxx ../third_party/externals/spirv-tools/source/reduce/reducer.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = reducer.cpp
+  source_name_part = reducer
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = reduction_opportunity.cpp
+  source_name_part = reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = reduction_opportunity_finder.cpp
+  source_name_part = reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_pass.o: cxx ../third_party/externals/spirv-tools/source/reduce/reduction_pass.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = reduction_pass.cpp
+  source_name_part = reduction_pass
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_util.o: cxx ../third_party/externals/spirv-tools/source/reduce/reduction_util.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = reduction_util.cpp
+  source_name_part = reduction_util
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_block_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_block_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_block_reduction_opportunity.cpp
+  source_name_part = remove_block_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_block_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_block_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_block_reduction_opportunity_finder.cpp
+  source_name_part = remove_block_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_function_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_function_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_function_reduction_opportunity.cpp
+  source_name_part = remove_function_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_function_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_function_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_function_reduction_opportunity_finder.cpp
+  source_name_part = remove_function_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_instruction_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_instruction_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_instruction_reduction_opportunity.cpp
+  source_name_part = remove_instruction_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_selection_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_selection_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_selection_reduction_opportunity.cpp
+  source_name_part = remove_selection_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_selection_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_selection_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_selection_reduction_opportunity_finder.cpp
+  source_name_part = remove_selection_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_struct_member_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_struct_member_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_struct_member_reduction_opportunity.cpp
+  source_name_part = remove_struct_member_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_unused_instruction_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_unused_instruction_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_unused_instruction_reduction_opportunity_finder.cpp
+  source_name_part = remove_unused_instruction_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_unused_struct_member_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/remove_unused_struct_member_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = remove_unused_struct_member_reduction_opportunity_finder.cpp
+  source_name_part = remove_unused_struct_member_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.simple_conditional_branch_to_branch_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/simple_conditional_branch_to_branch_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = simple_conditional_branch_to_branch_opportunity_finder.cpp
+  source_name_part = simple_conditional_branch_to_branch_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.simple_conditional_branch_to_branch_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/simple_conditional_branch_to_branch_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = simple_conditional_branch_to_branch_reduction_opportunity.cpp
+  source_name_part = simple_conditional_branch_to_branch_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_construct_to_block_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/structured_construct_to_block_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = structured_construct_to_block_reduction_opportunity.cpp
+  source_name_part = structured_construct_to_block_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_construct_to_block_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/structured_construct_to_block_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = structured_construct_to_block_reduction_opportunity_finder.cpp
+  source_name_part = structured_construct_to_block_reduction_opportunity_finder
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_loop_to_selection_reduction_opportunity.o: cxx ../third_party/externals/spirv-tools/source/reduce/structured_loop_to_selection_reduction_opportunity.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = structured_loop_to_selection_reduction_opportunity.cpp
+  source_name_part = structured_loop_to_selection_reduction_opportunity
+build obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_loop_to_selection_reduction_opportunity_finder.o: cxx ../third_party/externals/spirv-tools/source/reduce/structured_loop_to_selection_reduction_opportunity_finder.cpp || obj/third_party/externals/spirv-tools/spvtools_reduce.inputdeps.stamp
+  source_file_part = structured_loop_to_selection_reduction_opportunity_finder.cpp
+  source_name_part = structured_loop_to_selection_reduction_opportunity_finder
+
+build ./libspvtools_reduce.a: alink obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.change_operand_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.change_operand_to_undef_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.conditional_branch_to_simple_conditional_branch_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.conditional_branch_to_simple_conditional_branch_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.merge_blocks_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.merge_blocks_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.operand_to_const_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.operand_to_dominating_id_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.operand_to_undef_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reducer.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_pass.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.reduction_util.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_block_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_block_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_function_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_function_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_instruction_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_selection_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_selection_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_struct_member_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_unused_instruction_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.remove_unused_struct_member_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.simple_conditional_branch_to_branch_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.simple_conditional_branch_to_branch_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_construct_to_block_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_construct_to_block_reduction_opportunity_finder.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_loop_to_selection_reduction_opportunity.o obj/third_party/externals/spirv-tools/source/reduce/libspvtools_reduce.structured_loop_to_selection_reduction_opportunity_finder.o || obj/third_party/externals/spirv-tools/spvtools_headers.stamp ./libspvtools.a ./libspvtools_opt.a obj/third_party/externals/spirv-headers/spv_headers.stamp
+  arflags =
+  output_extension = .a
+  output_dir = 

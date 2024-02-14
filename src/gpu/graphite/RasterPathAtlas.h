@@ -72,7 +72,7 @@ private:
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(Page);
     };
 
-    void makeMRU(Page*);
+    void makeMRU(Page*, Recorder*);
     // Free up atlas allocations, if necessary. After this call the atlas can be considered
     // available for new shape insertions. However this method does not have any bearing on the
     // contents of any atlas textures themselves, which may be in use by GPU commands that are

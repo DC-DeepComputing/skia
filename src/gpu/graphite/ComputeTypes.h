@@ -23,6 +23,14 @@ struct IndirectDispatchArgs {
 };
 constexpr size_t kIndirectDispatchArgumentSize = sizeof(IndirectDispatchArgs);
 
+// The minimum element stride of an indirect dispatch argument array in bytes
+struct IndirectDispatchArgs {
+    uint32_t global_size_x;
+    uint32_t global_size_y;
+    uint32_t global_size_z;
+};
+constexpr size_t kIndirectDispatchArgumentSize = sizeof(IndirectDispatchArgs);
+
 /**
  * Defines the space that a compute shader operates on. A problem space is logically divided into
  * abstract "work groups" (or "thread groups" in Metal/D3D12).

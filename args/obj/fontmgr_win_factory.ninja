@@ -1,0 +1,8 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSKIA_IMPLEMENTATION=1
+framework_dirs =
+include_dirs = -I..
+root_out_dir = .
+target_output_name = fontmgr_win_factory
+
+
+build obj/fontmgr_win_factory.stamp: stamp

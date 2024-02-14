@@ -353,6 +353,12 @@ bool SkPictureData::parseStreamTag(SkStream* stream,
                 else {
                     tf = SkTypeface::MakeDeserialize(stream, nullptr);
                 }
+#endif
+                }
+#endif
+                }
+#endif
+                }
                 if (!tf) {    // failed to deserialize
                     // fTFPlayback asserts it never has a null, so we plop in
                     // a default here.

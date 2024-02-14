@@ -1137,6 +1137,9 @@ void FilterResult::draw(const Context& ctx,
         // black, apply the blend mode to the dst, or any combination thereof.
         paint.setShader(this->getAnalyzedShaderView(ctx, sampling, analysis));
         device->drawPaint(paint);
+        if (approxFitImage) {
+            ctx.markShaderBasedTilingRequired(fTileMode);
+        }
     } else {
         // src's origin is embedded in fTransform. For historical reasons, drawSpecial() does
         // not automatically use the device's current local-to-device matrix, but that's what preps

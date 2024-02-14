@@ -1,0 +1,16 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\]
+framework_dirs =
+include_dirs =
+cflags = -w -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -O3 -isystem /Users/nicolettep/Repos/skia/third_party/perfetto -isystem /Users/nicolettep/Repos/skia/third_party/externals/perfetto/sdk
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = libperfetto
+
+build obj/third_party/externals/perfetto/sdk/libperfetto.perfetto.o: cxx ../third_party/externals/perfetto/sdk/perfetto.cc
+  source_file_part = perfetto.cc
+  source_name_part = perfetto
+
+build ./libperfetto.a: alink obj/third_party/externals/perfetto/sdk/libperfetto.perfetto.o
+  arflags =
+  output_extension = .a
+  output_dir = 

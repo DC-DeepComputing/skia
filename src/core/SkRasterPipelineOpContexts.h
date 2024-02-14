@@ -26,6 +26,11 @@ inline static constexpr size_t SkRasterPipeline_MaxScratchPerPatch =
         std::max(SkRasterPipeline_kMaxStride_highp * 16,  // 16 == largest highp bpp (RGBA_F32)
                  SkRasterPipeline_kMaxStride * 4);        // 4 == largest lowp bpp (RGBA_8888)
 
+// How much space to allocate for each MemoryCtx scratch buffer, as part of tail-pixel handling.
+inline static constexpr size_t SkRasterPipeline_MaxScratchPerPatch =
+        std::max(SkRasterPipeline_kMaxStride_highp * 16,  // 16 == largest highp bpp (RGBA_F32)
+                 SkRasterPipeline_kMaxStride * 4);        // 4 == largest lowp bpp (RGBA_8888)
+
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct SkRasterPipeline_MemoryCtx {
     void* pixels;

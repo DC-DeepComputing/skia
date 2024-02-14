@@ -92607,7 +92607,8 @@
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
         "src/sksl/generated/.*",
-        "dm/.+"
+        "dm/.+",
+        "DEPS"
       ]
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-Graphite_Native_Metal": {

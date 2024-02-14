@@ -1,0 +1,99 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_SVG -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE
+framework_dirs =
+include_dirs = -I../include/third_party/vulkan -I../modules/svg/include -I..
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+cflags_objcc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wno-direct-ivar-access -Wno-objcc-interface-ivars -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = tool_utils
+
+build obj/tool_utils.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/icu/make_data_assembly.stamp
+build obj/tools/tool_utils.AndroidSkDebugToStdOut.o: cxx ../tools/AndroidSkDebugToStdOut.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = AndroidSkDebugToStdOut.cpp
+  source_name_part = AndroidSkDebugToStdOut
+build obj/tools/tool_utils.DDLPromiseImageHelper.o: cxx ../tools/DDLPromiseImageHelper.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = DDLPromiseImageHelper.cpp
+  source_name_part = DDLPromiseImageHelper
+build obj/tools/tool_utils.DDLTileHelper.o: cxx ../tools/DDLTileHelper.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = DDLTileHelper.cpp
+  source_name_part = DDLTileHelper
+build obj/tools/tool_utils.DecodeUtils.o: cxx ../tools/DecodeUtils.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = DecodeUtils.cpp
+  source_name_part = DecodeUtils
+build obj/tools/tool_utils.EncodeUtils.o: cxx ../tools/EncodeUtils.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = EncodeUtils.cpp
+  source_name_part = EncodeUtils
+build obj/tools/tool_utils.GpuToolUtils.o: cxx ../tools/GpuToolUtils.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = GpuToolUtils.cpp
+  source_name_part = GpuToolUtils
+build obj/tools/tool_utils.LsanSuppressions.o: cxx ../tools/LsanSuppressions.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = LsanSuppressions.cpp
+  source_name_part = LsanSuppressions
+build obj/tools/tool_utils.MSKPPlayer.o: cxx ../tools/MSKPPlayer.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = MSKPPlayer.cpp
+  source_name_part = MSKPPlayer
+build obj/tools/tool_utils.ProcStats.o: cxx ../tools/ProcStats.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = ProcStats.cpp
+  source_name_part = ProcStats
+build obj/tools/tool_utils.Resources.o: cxx ../tools/Resources.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = Resources.cpp
+  source_name_part = Resources
+build obj/tools/tool_utils.RuntimeBlendUtils.o: cxx ../tools/RuntimeBlendUtils.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = RuntimeBlendUtils.cpp
+  source_name_part = RuntimeBlendUtils
+build obj/tools/tool_utils.SkMetaData.o: cxx ../tools/SkMetaData.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = SkMetaData.cpp
+  source_name_part = SkMetaData
+build obj/tools/tool_utils.SkSharingProc.o: cxx ../tools/SkSharingProc.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = SkSharingProc.cpp
+  source_name_part = SkSharingProc
+build obj/tools/tool_utils.TestFontDataProvider.o: cxx ../tools/TestFontDataProvider.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = TestFontDataProvider.cpp
+  source_name_part = TestFontDataProvider
+build obj/tools/tool_utils.ToolUtils.o: cxx ../tools/ToolUtils.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = ToolUtils.cpp
+  source_name_part = ToolUtils
+build obj/tools/tool_utils.UrlDataManager.o: cxx ../tools/UrlDataManager.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = UrlDataManager.cpp
+  source_name_part = UrlDataManager
+build obj/tools/debugger/tool_utils.DebugCanvas.o: cxx ../tools/debugger/DebugCanvas.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = DebugCanvas.cpp
+  source_name_part = DebugCanvas
+build obj/tools/debugger/tool_utils.DebugLayerManager.o: cxx ../tools/debugger/DebugLayerManager.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = DebugLayerManager.cpp
+  source_name_part = DebugLayerManager
+build obj/tools/debugger/tool_utils.DrawCommand.o: cxx ../tools/debugger/DrawCommand.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = DrawCommand.cpp
+  source_name_part = DrawCommand
+build obj/tools/debugger/tool_utils.JsonWriteBuffer.o: cxx ../tools/debugger/JsonWriteBuffer.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = JsonWriteBuffer.cpp
+  source_name_part = JsonWriteBuffer
+build obj/tools/fonts/tool_utils.FontToolUtils.o: cxx ../tools/fonts/FontToolUtils.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = FontToolUtils.cpp
+  source_name_part = FontToolUtils
+build obj/tools/fonts/tool_utils.RandomScalerContext.o: cxx ../tools/fonts/RandomScalerContext.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = RandomScalerContext.cpp
+  source_name_part = RandomScalerContext
+build obj/tools/fonts/tool_utils.TestFontMgr.o: cxx ../tools/fonts/TestFontMgr.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = TestFontMgr.cpp
+  source_name_part = TestFontMgr
+build obj/tools/fonts/tool_utils.TestSVGTypeface.o: cxx ../tools/fonts/TestSVGTypeface.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = TestSVGTypeface.cpp
+  source_name_part = TestSVGTypeface
+build obj/tools/fonts/tool_utils.TestTypeface.o: cxx ../tools/fonts/TestTypeface.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = TestTypeface.cpp
+  source_name_part = TestTypeface
+build obj/tools/timer/tool_utils.Timer.o: cxx ../tools/timer/Timer.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = Timer.cpp
+  source_name_part = Timer
+build obj/tools/tool_utils.SvgPathExtractor.o: cxx ../tools/SvgPathExtractor.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = SvgPathExtractor.cpp
+  source_name_part = SvgPathExtractor
+build obj/tools/tool_utils.CrashHandler.o: cxx ../tools/CrashHandler.cpp || obj/tool_utils.inputdeps.stamp
+  source_file_part = CrashHandler.cpp
+  source_name_part = CrashHandler
+build obj/tools/tool_utils.AutoreleasePool.o: objcxx ../tools/AutoreleasePool.mm || obj/tool_utils.inputdeps.stamp
+  source_file_part = AutoreleasePool.mm
+  source_name_part = AutoreleasePool
+
+build obj/tool_utils.stamp: stamp obj/tools/tool_utils.AndroidSkDebugToStdOut.o obj/tools/tool_utils.DDLPromiseImageHelper.o obj/tools/tool_utils.DDLTileHelper.o obj/tools/tool_utils.DecodeUtils.o obj/tools/tool_utils.EncodeUtils.o obj/tools/tool_utils.GpuToolUtils.o obj/tools/tool_utils.LsanSuppressions.o obj/tools/tool_utils.MSKPPlayer.o obj/tools/tool_utils.ProcStats.o obj/tools/tool_utils.Resources.o obj/tools/tool_utils.RuntimeBlendUtils.o obj/tools/tool_utils.SkMetaData.o obj/tools/tool_utils.SkSharingProc.o obj/tools/tool_utils.TestFontDataProvider.o obj/tools/tool_utils.ToolUtils.o obj/tools/tool_utils.UrlDataManager.o obj/tools/debugger/tool_utils.DebugCanvas.o obj/tools/debugger/tool_utils.DebugLayerManager.o obj/tools/debugger/tool_utils.DrawCommand.o obj/tools/debugger/tool_utils.JsonWriteBuffer.o obj/tools/fonts/tool_utils.FontToolUtils.o obj/tools/fonts/tool_utils.RandomScalerContext.o obj/tools/fonts/tool_utils.TestFontMgr.o obj/tools/fonts/tool_utils.TestSVGTypeface.o obj/tools/fonts/tool_utils.TestTypeface.o obj/tools/timer/tool_utils.Timer.o obj/tools/tool_utils.SvgPathExtractor.o obj/tools/tool_utils.CrashHandler.o obj/tools/tool_utils.AutoreleasePool.o || obj/gpu_tool_utils.stamp obj/flags.stamp ./libsvg.a ./libskia.a ./libskshaper.a ./libskunicode.a

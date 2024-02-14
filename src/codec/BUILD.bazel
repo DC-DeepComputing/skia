@@ -508,6 +508,68 @@ skia_cc_library(
 )
 
 skia_filegroup(
+    name = "common_jpeg_srcs",
+    srcs = [
+        "SkJpegConstants.h",
+        "SkJpegPriv.h",
+    ],
+    visibility = ["//src/encode:__pkg__"],
+)
+
+skia_cc_library(
+    name = "jpeg_decode",
+    srcs = [
+        "SkJpegCodec.cpp",
+        "SkJpegCodec.h",
+        "SkJpegDecoderMgr.cpp",
+        "SkJpegDecoderMgr.h",
+        "SkJpegSourceMgr.cpp",
+        "SkJpegSourceMgr.h",
+        "SkJpegUtility.cpp",
+        "SkJpegUtility.h",
+        ":common_jpeg_srcs",
+        "//include/private:jpeg_decode_srcs",
+    ],
+    hdrs = [
+        "//include/codec:any_codec_hdrs",
+        "//include/codec:jpeg_public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":any_decoder",
+        "//modules/skcms",
+        "//src/base",
+        "//src/core",
+        "//src/core:core_priv",
+        "@libjpeg_turbo",
+    ],
+)
+
+skia_cc_library(
+    name = "jpegxl_decode",
+    srcs = [
+        "SkJpegxlCodec.cpp",
+        "SkJpegxlCodec.h",
+        ":common_jpeg_srcs",
+    ],
+    hdrs = [
+        "//include/codec:any_codec_hdrs",
+        "//include/codec:jpegxl_public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":any_decoder",
+        "//modules/skcms",
+        "//src/base",
+        "//src/core",
+        "//src/core:core_priv",
+        "@libjxl",
+    ],
+)
+
+skia_filegroup(
     name = "buffet_png_srcs",
     srcs = [
         "SkPngCodec.cpp",

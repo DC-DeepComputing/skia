@@ -1016,6 +1016,7 @@ public:
             source = FilterResult(sourceSurface->snapSpecial(subset), fSourceBounds.topLeft());
         }
 
+        Stats stats;
         Context baseContext{fRunner.refBackend(),
                             skif::Mapping{SkMatrix::I()},
                             skif::LayerSpace<SkIRect>::Empty(),
@@ -1037,6 +1038,9 @@ public:
             expectedOrigin = LayerSpace<SkIPoint>({0, 0});
         }
         SkASSERT(expectedImage);
+
+        int expectedNumOffscreenSurfaces = 0;
+        int expectedShaderTiledDraws = 0; // includes shader-based clamping for simplicity
 
         // Apply each action and validate, from first to last action
         for (int i = 0; i < (int) fActions.size(); ++i) {
@@ -1113,6 +1117,7 @@ public:
                 }
             }
 
+            FilterResultTestAccess::TrackStats(&ctx, nullptr);
             expectedImage = fActions[i].renderExpectedImage(ctx,
                                                             std::move(expectedImage),
                                                             expectedOrigin,
@@ -1130,6 +1135,18 @@ public:
             }
             source = output;
         }
+
+        // Verify overall stats behavior
+        REPORTER_ASSERT(fRunner, expectedNumOffscreenSurfaces == stats.fNumOffscreenSurfaces,
+                        "expected %d, got %d",
+                        expectedNumOffscreenSurfaces, stats.fNumOffscreenSurfaces);
+
+        REPORTER_ASSERT(fRunner,
+                        expectedShaderTiledDraws ==
+                                stats.fNumShaderBasedTilingDraws + stats.fNumShaderClampedDraws,
+                        "expected %d, got %d + %d",
+                        expectedShaderTiledDraws,
+                        stats.fNumShaderBasedTilingDraws, stats.fNumShaderClampedDraws);
     }
 
 private:

@@ -169,6 +169,15 @@ public:
         return sCaps;
     }
 
+    static const SkSL::ShaderCaps* MustDeclareFragmentFrontFacing() {
+        static const SkSL::ShaderCaps* sCaps = [] {
+            std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();
+            caps->fMustDeclareFragmentFrontFacing = true;
+            return caps.release();
+        }();
+        return sCaps;
+    }
+
     static const SkSL::ShaderCaps* MustForceNegatedAtanParamToFloat() {
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<SkSL::ShaderCaps> caps = MakeShaderCaps();

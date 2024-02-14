@@ -202,6 +202,61 @@ sk_sp<VulkanDescriptorSet> add_new_desc_set_to_cache(const VulkanSharedContext* 
 }
 } // anonymous namespace
 
+namespace {
+GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDescriptors,
+                                       const uint32_t uniqueId) {
+    // TODO(nicolettep): Finalize & optimize key structure. Refactor to have the order of the
+    // requested descriptors be irrelevant.
+    // For now, to place some kind of upper limit on key size, limit a key to only containing
+    // information for up to 9 descriptors. This number was selected due to having a maximum of 3
+    // uniform buffer descriptors and observationally only encountering up to 6 texture/samplers for
+    // our testing use cases. The 10th uint32 is reserved for housing a unique descriptor set ID.
+    static const int kMaxDescriptorQuantity = 9;
+    static const int kNum32DataCnt = kMaxDescriptorQuantity + 1;
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    GraphiteResourceKey key;
+    GraphiteResourceKey::Builder builder(&key, kType, kNum32DataCnt, Shareable::kNo);
+
+    if (requestedDescriptors.size() > kMaxDescriptorQuantity) {
+        SKGPU_LOG_E("%d descriptors requested, but graphite currently only supports creating"
+                    "descriptor set keys for up to %d. The key will only take the first %d into"
+                    " account.", static_cast<int>(requestedDescriptors.size()),
+                    kMaxDescriptorQuantity, kMaxDescriptorQuantity);
+    }
+
+    for (size_t i = 0; i < kNum32DataCnt; i++) {
+        if (i < requestedDescriptors.size()) {
+            // TODO: Consider making the DescriptorData struct itself just use uint16_t.
+            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].count);
+            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].type) << 24
+                          | requestedDescriptors[i].bindingIndex << 16
+                          | smallerCount;
+        } else {
+            // Populate reminaing key components with 0.
+            builder[i] = 0;
+        }
+    }
+    builder[kNum32DataCnt - 1] = uniqueId;
+    builder.finish();
+    return key;
+}
+
+sk_sp<VulkanDescriptorSet> add_new_desc_set_to_cache(const VulkanSharedContext* context,
+                                                     const sk_sp<VulkanDescriptorPool>& pool,
+                                                     const GraphiteResourceKey& descSetKey,
+                                                     ResourceCache* resourceCache) {
+    sk_sp<VulkanDescriptorSet> descSet = VulkanDescriptorSet::Make(context, pool);
+    if (!descSet) {
+        return nullptr;
+    }
+    descSet->setKey(descSetKey);
+    resourceCache->insertResource(descSet.get());
+
+    return descSet;
+}
+} // anonymous namespace
+
 sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
         SkSpan<DescriptorData> requestedDescriptors) {
     if (requestedDescriptors.empty()) {

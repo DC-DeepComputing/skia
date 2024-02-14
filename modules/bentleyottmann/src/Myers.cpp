@@ -573,6 +573,22 @@ std::vector<Crossing> myers_find_crossings(const SkSpan<const Segment> segments)
     return sweepLine.finishAndReleaseCrossings();
 }
 
+std::vector<Crossing> myers_find_crossings(SkSpan<Segment> segments) {
+
+    // This is strictly not needed, but is added to compare performance with brute-force.
+    // TODO: remove this after done with performance comparisons.
+    SkSpan<const Segment> cleanSegments = remove_zero_segments_and_duplicates(segments);
+
+    const EventQueue eventQueue = EventQueue::Make(cleanSegments);
+    SweepLine sweepLine;
+
+    for (const Event& event : eventQueue) {
+        sweepLine.handleEvent(event);
+    }
+
+    return sweepLine.finishAndReleaseCrossings();
+}
+
 // This intersection algorithm is from "Robust Plane Sweep for Intersecting Segments" page 10.
 bool s0_intersects_s1(const Segment& s0, const Segment& s1) {
     // Make sure that s0 upper is above s1 upper.

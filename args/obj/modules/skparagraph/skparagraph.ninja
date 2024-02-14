@@ -1,0 +1,62 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_ENABLE_PARAGRAPH -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_UNICODE_AVAILABLE -DSK_UNICODE_ICU_IMPLEMENTATION -DSK_SHAPER_CORETEXT_AVAILABLE -DSK_SHAPER_HARFBUZZ_AVAILABLE -DSK_SHAPER_UNICODE_AVAILABLE
+framework_dirs =
+include_dirs = -I../modules/skparagraph/include -I../modules/skparagraph/utils -I.. -I../modules/skunicode/include -I../modules/skshaper/include
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = libskparagraph
+
+build obj/modules/skparagraph/skparagraph.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/icu/make_data_assembly.stamp
+build obj/modules/skparagraph/src/libskparagraph.Decorations.o: cxx ../modules/skparagraph/src/Decorations.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = Decorations.cpp
+  source_name_part = Decorations
+build obj/modules/skparagraph/src/libskparagraph.FontArguments.o: cxx ../modules/skparagraph/src/FontArguments.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = FontArguments.cpp
+  source_name_part = FontArguments
+build obj/modules/skparagraph/src/libskparagraph.FontCollection.o: cxx ../modules/skparagraph/src/FontCollection.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = FontCollection.cpp
+  source_name_part = FontCollection
+build obj/modules/skparagraph/src/libskparagraph.OneLineShaper.o: cxx ../modules/skparagraph/src/OneLineShaper.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = OneLineShaper.cpp
+  source_name_part = OneLineShaper
+build obj/modules/skparagraph/src/libskparagraph.ParagraphBuilderImpl.o: cxx ../modules/skparagraph/src/ParagraphBuilderImpl.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = ParagraphBuilderImpl.cpp
+  source_name_part = ParagraphBuilderImpl
+build obj/modules/skparagraph/src/libskparagraph.ParagraphCache.o: cxx ../modules/skparagraph/src/ParagraphCache.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = ParagraphCache.cpp
+  source_name_part = ParagraphCache
+build obj/modules/skparagraph/src/libskparagraph.ParagraphImpl.o: cxx ../modules/skparagraph/src/ParagraphImpl.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = ParagraphImpl.cpp
+  source_name_part = ParagraphImpl
+build obj/modules/skparagraph/src/libskparagraph.ParagraphPainterImpl.o: cxx ../modules/skparagraph/src/ParagraphPainterImpl.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = ParagraphPainterImpl.cpp
+  source_name_part = ParagraphPainterImpl
+build obj/modules/skparagraph/src/libskparagraph.ParagraphStyle.o: cxx ../modules/skparagraph/src/ParagraphStyle.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = ParagraphStyle.cpp
+  source_name_part = ParagraphStyle
+build obj/modules/skparagraph/src/libskparagraph.Run.o: cxx ../modules/skparagraph/src/Run.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = Run.cpp
+  source_name_part = Run
+build obj/modules/skparagraph/src/libskparagraph.TextLine.o: cxx ../modules/skparagraph/src/TextLine.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = TextLine.cpp
+  source_name_part = TextLine
+build obj/modules/skparagraph/src/libskparagraph.TextShadow.o: cxx ../modules/skparagraph/src/TextShadow.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = TextShadow.cpp
+  source_name_part = TextShadow
+build obj/modules/skparagraph/src/libskparagraph.TextStyle.o: cxx ../modules/skparagraph/src/TextStyle.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = TextStyle.cpp
+  source_name_part = TextStyle
+build obj/modules/skparagraph/src/libskparagraph.TextWrapper.o: cxx ../modules/skparagraph/src/TextWrapper.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = TextWrapper.cpp
+  source_name_part = TextWrapper
+build obj/modules/skparagraph/src/libskparagraph.TypefaceFontProvider.o: cxx ../modules/skparagraph/src/TypefaceFontProvider.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = TypefaceFontProvider.cpp
+  source_name_part = TypefaceFontProvider
+build obj/modules/skparagraph/utils/libskparagraph.TestFontCollection.o: cxx ../modules/skparagraph/utils/TestFontCollection.cpp || obj/modules/skparagraph/skparagraph.inputdeps.stamp
+  source_file_part = TestFontCollection.cpp
+  source_name_part = TestFontCollection
+
+build ./libskparagraph.a: alink obj/modules/skparagraph/src/libskparagraph.Decorations.o obj/modules/skparagraph/src/libskparagraph.FontArguments.o obj/modules/skparagraph/src/libskparagraph.FontCollection.o obj/modules/skparagraph/src/libskparagraph.OneLineShaper.o obj/modules/skparagraph/src/libskparagraph.ParagraphBuilderImpl.o obj/modules/skparagraph/src/libskparagraph.ParagraphCache.o obj/modules/skparagraph/src/libskparagraph.ParagraphImpl.o obj/modules/skparagraph/src/libskparagraph.ParagraphPainterImpl.o obj/modules/skparagraph/src/libskparagraph.ParagraphStyle.o obj/modules/skparagraph/src/libskparagraph.Run.o obj/modules/skparagraph/src/libskparagraph.TextLine.o obj/modules/skparagraph/src/libskparagraph.TextShadow.o obj/modules/skparagraph/src/libskparagraph.TextStyle.o obj/modules/skparagraph/src/libskparagraph.TextWrapper.o obj/modules/skparagraph/src/libskparagraph.TypefaceFontProvider.o obj/modules/skparagraph/utils/libskparagraph.TestFontCollection.o || ./libskia.a ./libskunicode.a ./libskshaper.a
+  arflags =
+  output_extension = .a
+  output_dir = 

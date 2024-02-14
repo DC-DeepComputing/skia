@@ -616,6 +616,298 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// Canvas Arcs
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CanvasArc : public MMObject {
+public:
+    CanvasArc(SkRandom* random, SkSize size) {
+        constexpr float kMaxX = 6;
+        constexpr float kMaxY = 3;
+
+        const SkColor baseColors[3] = {
+            0xff101010, 0xff808080, 0xffc0c0c0
+        };
+        const SkColor bonusColors[3] = {
+            0xffe01040, 0xff10c030, 0xffe05010
+        };
+        float distanceX = size.fWidth / kMaxX;
+        float distanceY = size.fHeight / (kMaxY + 1);
+        int randY = random->nextRangeU(0, kMaxY);
+        int randX = random->nextRangeU(0, kMaxX - 1 * (randY % 2));
+
+        fPoint = SkPoint::Make(distanceX * (randX + (randY % 2) / 2), distanceY * (randY + 0.5f));
+
+        fRadius = 20 + sk_float_pow(random->nextF(), 5) * (std::min(distanceX, distanceY) / 1.8f);
+        fStartAngle = random->nextRangeF(0, 2*SK_ScalarPI);
+        fEndAngle = random->nextRangeF(0, 2*SK_ScalarPI);
+        fOmega = (random->nextF() - 0.5f) * 0.3f;
+        fCounterclockwise = random->nextBool();
+        // The MotionMark code appends a random element from an array and appends it to the color
+        // array, then randomly picks from that. We'll just pick that random element and use it
+        // if the index is out of bounds for the base color array.
+        SkColor bonusColor = bonusColors[(randX + sk_float_ceil2int(randY * 0.5f)) % 3];
+        int colorIndex = random->nextRangeU(0, 3);
+        fColor = colorIndex == 3 ? bonusColor : baseColors[colorIndex];
+        fLineWidth = 1 + sk_float_pow(random->nextF(), 5) * 30;
+        fDoStroke = random->nextRangeU(0, 3) != 0;
+    }
+
+    ~CanvasArc() override = default;
+
+    void draw(SkCanvas* canvas) override {
+        SkPaint paint;
+        paint.setColor(fColor);
+        SkRect arcRect = SkRect::MakeXYWH(fPoint.fX - fRadius, fPoint.fY - fRadius,
+                                          2*fRadius, 2*fRadius);
+
+        float startAngleDeg = fStartAngle * 180.f / SK_ScalarPI;
+        float endAngleDeg = fEndAngle * 180.f / SK_ScalarPI;
+        canonicalize_angle(&startAngleDeg, &endAngleDeg);
+        endAngleDeg = adjust_end_angle(startAngleDeg, endAngleDeg, fCounterclockwise);
+
+        float sweepAngle = startAngleDeg - endAngleDeg;
+
+        if (fDoStroke) {
+            paint.setStrokeWidth(fLineWidth);
+            paint.setStyle(SkPaint::kStroke_Style);
+            canvas->drawArc(arcRect, startAngleDeg, sweepAngle, false, paint);
+        } else {
+            paint.setStyle(SkPaint::kFill_Style);
+            // The MotionMark code creates a path for fills via lineTo(point), arc(), lineTo(point).
+            // For now we'll just use drawArc for both but might need to revisit.
+            canvas->drawArc(arcRect, startAngleDeg, sweepAngle, true, paint);
+        }
+    }
+
+    void animate(double /*nanos*/) override {
+        fStartAngle += fOmega;
+        fEndAngle += fOmega / 2;
+    }
+
+private:
+    SkPoint fPoint;
+    float fRadius;
+    float fStartAngle; // in radians
+    float fEndAngle;   // in radians
+    SkColor fColor;
+    float fOmega;      // in radians
+    bool fDoStroke;
+    bool fCounterclockwise;
+    float fLineWidth;
+};
+
+class CanvasArcStage : public Stage {
+public:
+    CanvasArcStage(SkSize size)
+            : Stage(size, /*startingObjectCount=*/1000, /*objectIncrement=*/200) {
+        this->initializeObjects();
+    }
+
+    ~CanvasArcStage() override = default;
+
+    void draw(SkCanvas* canvas) override {
+        canvas->clear(SK_ColorWHITE);
+        this->Stage::draw(canvas);
+    }
+
+    std::unique_ptr<MMObject> createObject() override {
+        return std::make_unique<CanvasArc>(&fRandom, fSize);
+    }
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Paths
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CanvasLinePoint : public MMObject {
+protected:
+    void setEndPoint(SkRandom* random, SkSize size, SkPoint* prevCoord) {
+        const SkSize kGridSize = { 80, 40 };
+        const SkPoint kGridCenter = { 40, 20 };
+        const SkPoint kOffsets[4] = {
+            {-4, 0},
+            {2, 0},
+            {1, -2},
+            {1, 2}
+        };
+
+        SkPoint coordinate = prevCoord ? *prevCoord : kGridCenter;
+        if (prevCoord) {
+            SkPoint offset = kOffsets[random->nextRangeU(0, 3)];
+            coordinate += offset;
+            if (coordinate.fX < 0 || coordinate.fX > kGridSize.width())
+                coordinate.fX -= offset.fX * 2;
+            if (coordinate.fY < 0 || coordinate.fY > kGridSize.height())
+                coordinate.fY -= offset.fY * 2;
+        }
+
+        fPoint = SkPoint::Make((coordinate.fX + 0.5f) * size.width() / (kGridSize.width() + 1),
+                               (coordinate.fY + 0.5f) * size.height() / (kGridSize.height() + 1));
+        fCoordinate = coordinate;
+    }
+
+public:
+    CanvasLinePoint(SkRandom* random, SkSize size, SkPoint* prev) {
+        const SkColor kColors[7] = {
+            0xff101010, 0xff808080, 0xffc0c0c0, 0xff101010, 0xff808080, 0xffc0c0c0, 0xffe01040
+        };
+        fColor = kColors[random->nextRangeU(0, 6)];
+
+        fWidth = sk_float_pow(random->nextF(), 5) * 20 + 1;
+        fIsSplit = random->nextBool();
+
+        this->setEndPoint(random, size, prev);
+    }
+
+    ~CanvasLinePoint() override = default;
+
+    virtual void append(SkPath* path) {
+        path->lineTo(fPoint);
+    }
+
+    // unused, all the work is done by append
+    void draw(SkCanvas*) override {}
+    void animate(double) override {}
+
+    SkColor getColor() { return fColor; }
+    float getWidth() { return fWidth; }
+    SkPoint getPoint() { return fPoint; }
+    SkPoint getCoord() { return fCoordinate; }
+    bool isSplit() { return fIsSplit; }
+    void toggleIsSplit() { fIsSplit = !fIsSplit; }
+
+private:
+    SkPoint fPoint;
+    SkPoint fCoordinate;
+    SkColor fColor;
+    float fWidth;
+    bool fIsSplit;
+};
+
+class CanvasQuadraticSegment : public CanvasLinePoint {
+public:
+    CanvasQuadraticSegment(SkRandom* random, SkSize size, SkPoint* prev)
+            : CanvasLinePoint(random, size, prev) {
+        // Note: The construction of these points is odd but mirrors the Javascript code.
+
+        // The chosen point from the base constructor is instead the control point.
+        fPoint2 = this->getPoint();
+
+        // Get another random point for the actual end point of the segment.
+        this->setEndPoint(random, size, prev);
+    }
+
+    void append(SkPath* path) override {
+        path->quadTo(fPoint2, this->getPoint());
+    }
+
+private:
+    SkPoint fPoint2;
+};
+
+class CanvasBezierSegment : public CanvasLinePoint {
+public:
+    CanvasBezierSegment(SkRandom* random, SkSize size, SkPoint* prev)
+            : CanvasLinePoint(random, size, prev) {
+        // Note: The construction of these points is odd but mirrors the Javascript code.
+
+        // The chosen point from the base constructor is instead the control point.
+        fPoint2 = this->getPoint();
+
+        // Get the second control point.
+        this->setEndPoint(random, size, prev);
+        fPoint3 = this->getPoint();
+
+        // Get third random point for the actual end point of the segment.
+        this->setEndPoint(random, size, prev);
+    }
+
+    void append(SkPath* path) override {
+        path->cubicTo(fPoint2, fPoint3, this->getPoint());
+    }
+
+private:
+    SkPoint fPoint2;
+    SkPoint fPoint3;
+};
+
+
+std::unique_ptr<CanvasLinePoint> make_line_path(SkRandom* random, SkSize size, SkPoint* prev) {
+    int choice = random->nextRangeU(0, 3);
+    switch (choice) {
+        case 0:
+            return std::make_unique<CanvasQuadraticSegment>(random, size, prev);
+            break;
+        case 1:
+            return std::make_unique<CanvasBezierSegment>(random, size, prev);
+            break;
+        case 2:
+        case 3:
+        default:
+            return std::make_unique<CanvasLinePoint>(random, size, prev);
+            break;
+    }
+}
+
+class CanvasLinePathStage : public Stage {
+public:
+    CanvasLinePathStage(SkSize size)
+            : Stage(size, /*startingObjectCount=*/5000, /*objectIncrement=*/1000) {
+        this->initializeObjects();
+    }
+
+    ~CanvasLinePathStage() override = default;
+
+    void draw(SkCanvas* canvas) override {
+        canvas->clear(SK_ColorWHITE);
+
+        SkPath currentPath;
+        SkPaint paint;
+        paint.setStyle(SkPaint::kStroke_Style);
+        for (size_t i = 0; i < fObjects.size(); ++i) {
+            CanvasLinePoint* object = reinterpret_cast<CanvasLinePoint*>(fObjects[i].get());
+            if (i == 0) {
+                paint.setStrokeWidth(object->getWidth());
+                paint.setColor(object->getColor());
+                currentPath.moveTo(object->getPoint());
+            } else {
+                object->append(&currentPath);
+
+                if (object->isSplit()) {
+                    canvas->drawPath(currentPath, paint);
+
+                    paint.setStrokeWidth(object->getWidth());
+                    paint.setColor(object->getColor());
+                    currentPath.reset();
+                    currentPath.moveTo(object->getPoint());
+                }
+
+                if (fRandom.nextF() > 0.995) {
+                    object->toggleIsSplit();
+                }
+            }
+        }
+        canvas->drawPath(currentPath, paint);
+    }
+
+    bool animate(double /*nanos*/) override {
+        // Nothing to do, but return true so we redraw.
+        return true;
+    }
+
+    std::unique_ptr<MMObject> createObject() override {
+        if (fObjects.empty()) {
+            return make_line_path(&fRandom, fSize, nullptr);
+        } else {
+            CanvasLinePoint* prevObject = reinterpret_cast<CanvasLinePoint*>(fObjects.back().get());
+            SkPoint coord = prevObject->getCoord();
+            return make_line_path(&fRandom, fSize, &coord);
+        }
+    }
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CanvasLinesSlide : public MotionMarkSlide {
 public:

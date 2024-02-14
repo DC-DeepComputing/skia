@@ -45,6 +45,8 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
+    SkSpan<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
@@ -85,6 +87,13 @@ public:
         return fMaxVertexAttributes;
     }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
+
+    const VkPhysicalDeviceMemoryProperties2& physicalDeviceMemoryProperties2() const {
+        return fPhysicalDeviceMemoryProperties2;
+    }
+
+    bool isTransferSrc(const VulkanTextureInfo&) const;
+    bool isTransferDst(const VulkanTextureInfo&) const;
 
     const VkPhysicalDeviceMemoryProperties2& physicalDeviceMemoryProperties2() const {
         return fPhysicalDeviceMemoryProperties2;

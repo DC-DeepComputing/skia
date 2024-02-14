@@ -1,0 +1,383 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_SHAPER_CORETEXT_AVAILABLE -DSK_SHAPER_HARFBUZZ_AVAILABLE -DSK_SHAPER_UNICODE_AVAILABLE
+framework_dirs =
+include_dirs = -I../include/third_party/vulkan -I.. -I../modules/skshaper/include
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = bench
+
+build obj/bench.inputdeps.stamp: stamp obj/skia.h.stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/icu/make_data_assembly.stamp
+build obj/bench/bench.AAClipBench.o: cxx ../bench/AAClipBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = AAClipBench.cpp
+  source_name_part = AAClipBench
+build obj/bench/bench.AlternatingColorPatternBench.o: cxx ../bench/AlternatingColorPatternBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = AlternatingColorPatternBench.cpp
+  source_name_part = AlternatingColorPatternBench
+build obj/bench/bench.AndroidCodecBench.o: cxx ../bench/AndroidCodecBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = AndroidCodecBench.cpp
+  source_name_part = AndroidCodecBench
+build obj/bench/bench.BenchLogger.o: cxx ../bench/BenchLogger.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BenchLogger.cpp
+  source_name_part = BenchLogger
+build obj/bench/bench.Benchmark.o: cxx ../bench/Benchmark.cpp || obj/bench.inputdeps.stamp
+  source_file_part = Benchmark.cpp
+  source_name_part = Benchmark
+build obj/bench/bench.BezierBench.o: cxx ../bench/BezierBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BezierBench.cpp
+  source_name_part = BezierBench
+build obj/bench/bench.BigPath.o: cxx ../bench/BigPath.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BigPath.cpp
+  source_name_part = BigPath
+build obj/bench/bench.BigPathBench.o: cxx ../bench/BigPathBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BigPathBench.cpp
+  source_name_part = BigPathBench
+build obj/bench/bench.BitmapRegionDecoderBench.o: cxx ../bench/BitmapRegionDecoderBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BitmapRegionDecoderBench.cpp
+  source_name_part = BitmapRegionDecoderBench
+build obj/bench/bench.BlendmodeBench.o: cxx ../bench/BlendmodeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BlendmodeBench.cpp
+  source_name_part = BlendmodeBench
+build obj/bench/bench.BlurBench.o: cxx ../bench/BlurBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BlurBench.cpp
+  source_name_part = BlurBench
+build obj/bench/bench.BlurImageFilterBench.o: cxx ../bench/BlurImageFilterBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BlurImageFilterBench.cpp
+  source_name_part = BlurImageFilterBench
+build obj/bench/bench.BlurRectBench.o: cxx ../bench/BlurRectBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BlurRectBench.cpp
+  source_name_part = BlurRectBench
+build obj/bench/bench.BlurRectsBench.o: cxx ../bench/BlurRectsBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BlurRectsBench.cpp
+  source_name_part = BlurRectsBench
+build obj/bench/bench.CanvasSaveRestoreBench.o: cxx ../bench/CanvasSaveRestoreBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CanvasSaveRestoreBench.cpp
+  source_name_part = CanvasSaveRestoreBench
+build obj/bench/bench.ChartBench.o: cxx ../bench/ChartBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ChartBench.cpp
+  source_name_part = ChartBench
+build obj/bench/bench.ChecksumBench.o: cxx ../bench/ChecksumBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ChecksumBench.cpp
+  source_name_part = ChecksumBench
+build obj/bench/bench.ChromeBench.o: cxx ../bench/ChromeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ChromeBench.cpp
+  source_name_part = ChromeBench
+build obj/bench/bench.ClipMaskBench.o: cxx ../bench/ClipMaskBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ClipMaskBench.cpp
+  source_name_part = ClipMaskBench
+build obj/bench/bench.ClipStrategyBench.o: cxx ../bench/ClipStrategyBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ClipStrategyBench.cpp
+  source_name_part = ClipStrategyBench
+build obj/bench/bench.CmapBench.o: cxx ../bench/CmapBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CmapBench.cpp
+  source_name_part = CmapBench
+build obj/bench/bench.CodecBench.o: cxx ../bench/CodecBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CodecBench.cpp
+  source_name_part = CodecBench
+build obj/bench/bench.ColorFilterBench.o: cxx ../bench/ColorFilterBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ColorFilterBench.cpp
+  source_name_part = ColorFilterBench
+build obj/bench/bench.ColorPrivBench.o: cxx ../bench/ColorPrivBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ColorPrivBench.cpp
+  source_name_part = ColorPrivBench
+build obj/bench/bench.ColorSpaceBench.o: cxx ../bench/ColorSpaceBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ColorSpaceBench.cpp
+  source_name_part = ColorSpaceBench
+build obj/bench/bench.CompositingImagesBench.o: cxx ../bench/CompositingImagesBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CompositingImagesBench.cpp
+  source_name_part = CompositingImagesBench
+build obj/bench/bench.ControlBench.o: cxx ../bench/ControlBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ControlBench.cpp
+  source_name_part = ControlBench
+build obj/bench/bench.CoverageBench.o: cxx ../bench/CoverageBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CoverageBench.cpp
+  source_name_part = CoverageBench
+build obj/bench/bench.CreateBackendTextureBench.o: cxx ../bench/CreateBackendTextureBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CreateBackendTextureBench.cpp
+  source_name_part = CreateBackendTextureBench
+build obj/bench/bench.CubicMapBench.o: cxx ../bench/CubicMapBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = CubicMapBench.cpp
+  source_name_part = CubicMapBench
+build obj/bench/bench.DDLRecorderBench.o: cxx ../bench/DDLRecorderBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = DDLRecorderBench.cpp
+  source_name_part = DDLRecorderBench
+build obj/bench/bench.DashBench.o: cxx ../bench/DashBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = DashBench.cpp
+  source_name_part = DashBench
+build obj/bench/bench.DecodeBench.o: cxx ../bench/DecodeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = DecodeBench.cpp
+  source_name_part = DecodeBench
+build obj/bench/bench.DisplacementBench.o: cxx ../bench/DisplacementBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = DisplacementBench.cpp
+  source_name_part = DisplacementBench
+build obj/bench/bench.DrawBitmapAABench.o: cxx ../bench/DrawBitmapAABench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = DrawBitmapAABench.cpp
+  source_name_part = DrawBitmapAABench
+build obj/bench/bench.EncodeBench.o: cxx ../bench/EncodeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = EncodeBench.cpp
+  source_name_part = EncodeBench
+build obj/bench/bench.FSRectBench.o: cxx ../bench/FSRectBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = FSRectBench.cpp
+  source_name_part = FSRectBench
+build obj/bench/bench.FilteringBench.o: cxx ../bench/FilteringBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = FilteringBench.cpp
+  source_name_part = FilteringBench
+build obj/bench/bench.FindCubicConvex180ChopsBench.o: cxx ../bench/FindCubicConvex180ChopsBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = FindCubicConvex180ChopsBench.cpp
+  source_name_part = FindCubicConvex180ChopsBench
+build obj/bench/bench.FontCacheBench.o: cxx ../bench/FontCacheBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = FontCacheBench.cpp
+  source_name_part = FontCacheBench
+build obj/bench/bench.GMBench.o: cxx ../bench/GMBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GMBench.cpp
+  source_name_part = GMBench
+build obj/bench/bench.GameBench.o: cxx ../bench/GameBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GameBench.cpp
+  source_name_part = GameBench
+build obj/bench/bench.GeometryBench.o: cxx ../bench/GeometryBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GeometryBench.cpp
+  source_name_part = GeometryBench
+build obj/bench/bench.GlyphQuadFillBench.o: cxx ../bench/GlyphQuadFillBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GlyphQuadFillBench.cpp
+  source_name_part = GlyphQuadFillBench
+build obj/bench/bench.GrMemoryPoolBench.o: cxx ../bench/GrMemoryPoolBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GrMemoryPoolBench.cpp
+  source_name_part = GrMemoryPoolBench
+build obj/bench/bench.GrMipmapBench.o: cxx ../bench/GrMipmapBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GrMipmapBench.cpp
+  source_name_part = GrMipmapBench
+build obj/bench/bench.GrQuadBench.o: cxx ../bench/GrQuadBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GrQuadBench.cpp
+  source_name_part = GrQuadBench
+build obj/bench/bench.GrResourceCacheBench.o: cxx ../bench/GrResourceCacheBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GrResourceCacheBench.cpp
+  source_name_part = GrResourceCacheBench
+build obj/bench/bench.GradientBench.o: cxx ../bench/GradientBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = GradientBench.cpp
+  source_name_part = GradientBench
+build obj/bench/bench.HairlinePathBench.o: cxx ../bench/HairlinePathBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = HairlinePathBench.cpp
+  source_name_part = HairlinePathBench
+build obj/bench/bench.HardStopGradientBench_ScaleNumColors.o: cxx ../bench/HardStopGradientBench_ScaleNumColors.cpp || obj/bench.inputdeps.stamp
+  source_file_part = HardStopGradientBench_ScaleNumColors.cpp
+  source_name_part = HardStopGradientBench_ScaleNumColors
+build obj/bench/bench.HardStopGradientBench_ScaleNumHardStops.o: cxx ../bench/HardStopGradientBench_ScaleNumHardStops.cpp || obj/bench.inputdeps.stamp
+  source_file_part = HardStopGradientBench_ScaleNumHardStops.cpp
+  source_name_part = HardStopGradientBench_ScaleNumHardStops
+build obj/bench/bench.HardStopGradientBench_SpecialHardStops.o: cxx ../bench/HardStopGradientBench_SpecialHardStops.cpp || obj/bench.inputdeps.stamp
+  source_file_part = HardStopGradientBench_SpecialHardStops.cpp
+  source_name_part = HardStopGradientBench_SpecialHardStops
+build obj/bench/bench.ImageBench.o: cxx ../bench/ImageBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ImageBench.cpp
+  source_name_part = ImageBench
+build obj/bench/bench.ImageCacheBench.o: cxx ../bench/ImageCacheBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ImageCacheBench.cpp
+  source_name_part = ImageCacheBench
+build obj/bench/bench.ImageCacheBudgetBench.o: cxx ../bench/ImageCacheBudgetBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ImageCacheBudgetBench.cpp
+  source_name_part = ImageCacheBudgetBench
+build obj/bench/bench.ImageCycleBench.o: cxx ../bench/ImageCycleBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ImageCycleBench.cpp
+  source_name_part = ImageCycleBench
+build obj/bench/bench.ImageFilterCollapse.o: cxx ../bench/ImageFilterCollapse.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ImageFilterCollapse.cpp
+  source_name_part = ImageFilterCollapse
+build obj/bench/bench.ImageFilterDAGBench.o: cxx ../bench/ImageFilterDAGBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ImageFilterDAGBench.cpp
+  source_name_part = ImageFilterDAGBench
+build obj/bench/bench.InterpBench.o: cxx ../bench/InterpBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = InterpBench.cpp
+  source_name_part = InterpBench
+build obj/bench/bench.JSONBench.o: cxx ../bench/JSONBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = JSONBench.cpp
+  source_name_part = JSONBench
+build obj/bench/bench.LightingBench.o: cxx ../bench/LightingBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = LightingBench.cpp
+  source_name_part = LightingBench
+build obj/bench/bench.LineBench.o: cxx ../bench/LineBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = LineBench.cpp
+  source_name_part = LineBench
+build obj/bench/bench.MSKPBench.o: cxx ../bench/MSKPBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MSKPBench.cpp
+  source_name_part = MSKPBench
+build obj/bench/bench.MathBench.o: cxx ../bench/MathBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MathBench.cpp
+  source_name_part = MathBench
+build obj/bench/bench.Matrix44Bench.o: cxx ../bench/Matrix44Bench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = Matrix44Bench.cpp
+  source_name_part = Matrix44Bench
+build obj/bench/bench.MatrixBench.o: cxx ../bench/MatrixBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MatrixBench.cpp
+  source_name_part = MatrixBench
+build obj/bench/bench.MatrixConvolutionBench.o: cxx ../bench/MatrixConvolutionBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MatrixConvolutionBench.cpp
+  source_name_part = MatrixConvolutionBench
+build obj/bench/bench.MemsetBench.o: cxx ../bench/MemsetBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MemsetBench.cpp
+  source_name_part = MemsetBench
+build obj/bench/bench.MergeBench.o: cxx ../bench/MergeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MergeBench.cpp
+  source_name_part = MergeBench
+build obj/bench/bench.MipmapBench.o: cxx ../bench/MipmapBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MipmapBench.cpp
+  source_name_part = MipmapBench
+build obj/bench/bench.MorphologyBench.o: cxx ../bench/MorphologyBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MorphologyBench.cpp
+  source_name_part = MorphologyBench
+build obj/bench/bench.MutexBench.o: cxx ../bench/MutexBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = MutexBench.cpp
+  source_name_part = MutexBench
+build obj/bench/bench.PDFBench.o: cxx ../bench/PDFBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PDFBench.cpp
+  source_name_part = PDFBench
+build obj/bench/bench.ParagraphBench.o: cxx ../bench/ParagraphBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ParagraphBench.cpp
+  source_name_part = ParagraphBench
+build obj/bench/bench.PatchBench.o: cxx ../bench/PatchBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PatchBench.cpp
+  source_name_part = PatchBench
+build obj/bench/bench.PathBench.o: cxx ../bench/PathBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PathBench.cpp
+  source_name_part = PathBench
+build obj/bench/bench.PathIterBench.o: cxx ../bench/PathIterBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PathIterBench.cpp
+  source_name_part = PathIterBench
+build obj/bench/bench.PathOpsBench.o: cxx ../bench/PathOpsBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PathOpsBench.cpp
+  source_name_part = PathOpsBench
+build obj/bench/bench.PathTextBench.o: cxx ../bench/PathTextBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PathTextBench.cpp
+  source_name_part = PathTextBench
+build obj/bench/bench.PerlinNoiseBench.o: cxx ../bench/PerlinNoiseBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PerlinNoiseBench.cpp
+  source_name_part = PerlinNoiseBench
+build obj/bench/bench.PictureNestingBench.o: cxx ../bench/PictureNestingBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PictureNestingBench.cpp
+  source_name_part = PictureNestingBench
+build obj/bench/bench.PictureOverheadBench.o: cxx ../bench/PictureOverheadBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PictureOverheadBench.cpp
+  source_name_part = PictureOverheadBench
+build obj/bench/bench.PicturePlaybackBench.o: cxx ../bench/PicturePlaybackBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PicturePlaybackBench.cpp
+  source_name_part = PicturePlaybackBench
+build obj/bench/bench.PolyUtilsBench.o: cxx ../bench/PolyUtilsBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PolyUtilsBench.cpp
+  source_name_part = PolyUtilsBench
+build obj/bench/bench.PremulAndUnpremulAlphaOpsBench.o: cxx ../bench/PremulAndUnpremulAlphaOpsBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = PremulAndUnpremulAlphaOpsBench.cpp
+  source_name_part = PremulAndUnpremulAlphaOpsBench
+build obj/bench/bench.QuickRejectBench.o: cxx ../bench/QuickRejectBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = QuickRejectBench.cpp
+  source_name_part = QuickRejectBench
+build obj/bench/bench.RTreeBench.o: cxx ../bench/RTreeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RTreeBench.cpp
+  source_name_part = RTreeBench
+build obj/bench/bench.ReadPixBench.o: cxx ../bench/ReadPixBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ReadPixBench.cpp
+  source_name_part = ReadPixBench
+build obj/bench/bench.RecordingBench.o: cxx ../bench/RecordingBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RecordingBench.cpp
+  source_name_part = RecordingBench
+build obj/bench/bench.RectBench.o: cxx ../bench/RectBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RectBench.cpp
+  source_name_part = RectBench
+build obj/bench/bench.RectanizerBench.o: cxx ../bench/RectanizerBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RectanizerBench.cpp
+  source_name_part = RectanizerBench
+build obj/bench/bench.RefCntBench.o: cxx ../bench/RefCntBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RefCntBench.cpp
+  source_name_part = RefCntBench
+build obj/bench/bench.RegionBench.o: cxx ../bench/RegionBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RegionBench.cpp
+  source_name_part = RegionBench
+build obj/bench/bench.RegionContainBench.o: cxx ../bench/RegionContainBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RegionContainBench.cpp
+  source_name_part = RegionContainBench
+build obj/bench/bench.RepeatTileBench.o: cxx ../bench/RepeatTileBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RepeatTileBench.cpp
+  source_name_part = RepeatTileBench
+build obj/bench/bench.RotatedRectBench.o: cxx ../bench/RotatedRectBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = RotatedRectBench.cpp
+  source_name_part = RotatedRectBench
+build obj/bench/bench.SKPAnimationBench.o: cxx ../bench/SKPAnimationBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = SKPAnimationBench.cpp
+  source_name_part = SKPAnimationBench
+build obj/bench/bench.SKPBench.o: cxx ../bench/SKPBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = SKPBench.cpp
+  source_name_part = SKPBench
+build obj/bench/bench.ScalarBench.o: cxx ../bench/ScalarBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ScalarBench.cpp
+  source_name_part = ScalarBench
+build obj/bench/bench.ShaderMaskFilterBench.o: cxx ../bench/ShaderMaskFilterBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ShaderMaskFilterBench.cpp
+  source_name_part = ShaderMaskFilterBench
+build obj/bench/bench.ShadowBench.o: cxx ../bench/ShadowBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ShadowBench.cpp
+  source_name_part = ShadowBench
+build obj/bench/bench.ShapesBench.o: cxx ../bench/ShapesBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ShapesBench.cpp
+  source_name_part = ShapesBench
+build obj/bench/bench.Sk4fBench.o: cxx ../bench/Sk4fBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = Sk4fBench.cpp
+  source_name_part = Sk4fBench
+build obj/bench/bench.SkGlyphCacheBench.o: cxx ../bench/SkGlyphCacheBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = SkGlyphCacheBench.cpp
+  source_name_part = SkGlyphCacheBench
+build obj/bench/bench.SkSLBench.o: cxx ../bench/SkSLBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = SkSLBench.cpp
+  source_name_part = SkSLBench
+build obj/bench/bench.SortBench.o: cxx ../bench/SortBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = SortBench.cpp
+  source_name_part = SortBench
+build obj/bench/bench.StreamBench.o: cxx ../bench/StreamBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = StreamBench.cpp
+  source_name_part = StreamBench
+build obj/bench/bench.StrokeBench.o: cxx ../bench/StrokeBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = StrokeBench.cpp
+  source_name_part = StrokeBench
+build obj/bench/bench.SwizzleBench.o: cxx ../bench/SwizzleBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = SwizzleBench.cpp
+  source_name_part = SwizzleBench
+build obj/bench/bench.TableBench.o: cxx ../bench/TableBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TableBench.cpp
+  source_name_part = TableBench
+build obj/bench/bench.TessellateBench.o: cxx ../bench/TessellateBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TessellateBench.cpp
+  source_name_part = TessellateBench
+build obj/bench/bench.TextBlobBench.o: cxx ../bench/TextBlobBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TextBlobBench.cpp
+  source_name_part = TextBlobBench
+build obj/bench/bench.TileBench.o: cxx ../bench/TileBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TileBench.cpp
+  source_name_part = TileBench
+build obj/bench/bench.TileImageFilterBench.o: cxx ../bench/TileImageFilterBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TileImageFilterBench.cpp
+  source_name_part = TileImageFilterBench
+build obj/bench/bench.TopoSortBench.o: cxx ../bench/TopoSortBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TopoSortBench.cpp
+  source_name_part = TopoSortBench
+build obj/bench/bench.TriangulatorBench.o: cxx ../bench/TriangulatorBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TriangulatorBench.cpp
+  source_name_part = TriangulatorBench
+build obj/bench/bench.TypefaceBench.o: cxx ../bench/TypefaceBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = TypefaceBench.cpp
+  source_name_part = TypefaceBench
+build obj/bench/bench.VertBench.o: cxx ../bench/VertBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = VertBench.cpp
+  source_name_part = VertBench
+build obj/bench/bench.WritePixelsBench.o: cxx ../bench/WritePixelsBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = WritePixelsBench.cpp
+  source_name_part = WritePixelsBench
+build obj/bench/bench.WriterBench.o: cxx ../bench/WriterBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = WriterBench.cpp
+  source_name_part = WriterBench
+build obj/bench/bench.BulkRectBench.o: cxx ../bench/BulkRectBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = BulkRectBench.cpp
+  source_name_part = BulkRectBench
+build obj/bench/bench.ClearBench.o: cxx ../bench/ClearBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = ClearBench.cpp
+  source_name_part = ClearBench
+build obj/bench/bench.VertexColorSpaceBench.o: cxx ../bench/VertexColorSpaceBench.cpp || obj/bench.inputdeps.stamp
+  source_file_part = VertexColorSpaceBench.cpp
+  source_name_part = VertexColorSpaceBench
+
+build obj/bench.stamp: stamp obj/bench/bench.AAClipBench.o obj/bench/bench.AlternatingColorPatternBench.o obj/bench/bench.AndroidCodecBench.o obj/bench/bench.BenchLogger.o obj/bench/bench.Benchmark.o obj/bench/bench.BezierBench.o obj/bench/bench.BigPath.o obj/bench/bench.BigPathBench.o obj/bench/bench.BitmapRegionDecoderBench.o obj/bench/bench.BlendmodeBench.o obj/bench/bench.BlurBench.o obj/bench/bench.BlurImageFilterBench.o obj/bench/bench.BlurRectBench.o obj/bench/bench.BlurRectsBench.o obj/bench/bench.CanvasSaveRestoreBench.o obj/bench/bench.ChartBench.o obj/bench/bench.ChecksumBench.o obj/bench/bench.ChromeBench.o obj/bench/bench.ClipMaskBench.o obj/bench/bench.ClipStrategyBench.o obj/bench/bench.CmapBench.o obj/bench/bench.CodecBench.o obj/bench/bench.ColorFilterBench.o obj/bench/bench.ColorPrivBench.o obj/bench/bench.ColorSpaceBench.o obj/bench/bench.CompositingImagesBench.o obj/bench/bench.ControlBench.o obj/bench/bench.CoverageBench.o obj/bench/bench.CreateBackendTextureBench.o obj/bench/bench.CubicMapBench.o obj/bench/bench.DDLRecorderBench.o obj/bench/bench.DashBench.o obj/bench/bench.DecodeBench.o obj/bench/bench.DisplacementBench.o obj/bench/bench.DrawBitmapAABench.o obj/bench/bench.EncodeBench.o obj/bench/bench.FSRectBench.o obj/bench/bench.FilteringBench.o obj/bench/bench.FindCubicConvex180ChopsBench.o obj/bench/bench.FontCacheBench.o obj/bench/bench.GMBench.o obj/bench/bench.GameBench.o obj/bench/bench.GeometryBench.o obj/bench/bench.GlyphQuadFillBench.o obj/bench/bench.GrMemoryPoolBench.o obj/bench/bench.GrMipmapBench.o obj/bench/bench.GrQuadBench.o obj/bench/bench.GrResourceCacheBench.o obj/bench/bench.GradientBench.o obj/bench/bench.HairlinePathBench.o obj/bench/bench.HardStopGradientBench_ScaleNumColors.o obj/bench/bench.HardStopGradientBench_ScaleNumHardStops.o obj/bench/bench.HardStopGradientBench_SpecialHardStops.o obj/bench/bench.ImageBench.o obj/bench/bench.ImageCacheBench.o obj/bench/bench.ImageCacheBudgetBench.o obj/bench/bench.ImageCycleBench.o obj/bench/bench.ImageFilterCollapse.o obj/bench/bench.ImageFilterDAGBench.o obj/bench/bench.InterpBench.o obj/bench/bench.JSONBench.o obj/bench/bench.LightingBench.o obj/bench/bench.LineBench.o obj/bench/bench.MSKPBench.o obj/bench/bench.MathBench.o obj/bench/bench.Matrix44Bench.o obj/bench/bench.MatrixBench.o obj/bench/bench.MatrixConvolutionBench.o obj/bench/bench.MemsetBench.o obj/bench/bench.MergeBench.o obj/bench/bench.MipmapBench.o obj/bench/bench.MorphologyBench.o obj/bench/bench.MutexBench.o obj/bench/bench.PDFBench.o obj/bench/bench.ParagraphBench.o obj/bench/bench.PatchBench.o obj/bench/bench.PathBench.o obj/bench/bench.PathIterBench.o obj/bench/bench.PathOpsBench.o obj/bench/bench.PathTextBench.o obj/bench/bench.PerlinNoiseBench.o obj/bench/bench.PictureNestingBench.o obj/bench/bench.PictureOverheadBench.o obj/bench/bench.PicturePlaybackBench.o obj/bench/bench.PolyUtilsBench.o obj/bench/bench.PremulAndUnpremulAlphaOpsBench.o obj/bench/bench.QuickRejectBench.o obj/bench/bench.RTreeBench.o obj/bench/bench.ReadPixBench.o obj/bench/bench.RecordingBench.o obj/bench/bench.RectBench.o obj/bench/bench.RectanizerBench.o obj/bench/bench.RefCntBench.o obj/bench/bench.RegionBench.o obj/bench/bench.RegionContainBench.o obj/bench/bench.RepeatTileBench.o obj/bench/bench.RotatedRectBench.o obj/bench/bench.SKPAnimationBench.o obj/bench/bench.SKPBench.o obj/bench/bench.ScalarBench.o obj/bench/bench.ShaderMaskFilterBench.o obj/bench/bench.ShadowBench.o obj/bench/bench.ShapesBench.o obj/bench/bench.Sk4fBench.o obj/bench/bench.SkGlyphCacheBench.o obj/bench/bench.SkSLBench.o obj/bench/bench.SortBench.o obj/bench/bench.StreamBench.o obj/bench/bench.StrokeBench.o obj/bench/bench.SwizzleBench.o obj/bench/bench.TableBench.o obj/bench/bench.TessellateBench.o obj/bench/bench.TextBlobBench.o obj/bench/bench.TileBench.o obj/bench/bench.TileImageFilterBench.o obj/bench/bench.TopoSortBench.o obj/bench/bench.TriangulatorBench.o obj/bench/bench.TypefaceBench.o obj/bench/bench.VertBench.o obj/bench/bench.WritePixelsBench.o obj/bench/bench.WriterBench.o obj/bench/bench.BulkRectBench.o obj/bench/bench.ClearBench.o obj/bench/bench.VertexColorSpaceBench.o || obj/flags.stamp obj/gm.stamp obj/gpu_tool_utils.stamp ./libskia.a obj/tool_utils.stamp obj/modules/skparagraph/bench.stamp ./libskshaper.a obj/etc1.stamp ./libsvg.a ./libskunicode.a ./libskottie.a ./libsksg.a obj/modules/skottie/gm.stamp obj/modules/skottie/utils.stamp ./libskparagraph.a obj/modules/skparagraph/gm.stamp

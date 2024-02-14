@@ -848,6 +848,55 @@ struct Ctx {
 
 #endif
 
+    // Stages take a stage list, and each stage is responsible for tail-calling the next one.
+    //
+    // Unfortunately, we can't declare a StageFn as a function pointer which takes a pointer to
+    // another StageFn; declaring this leads to a circular dependency. To avoid this, StageFn is
+    // wrapped in a single-element `struct StageList` which we are able to forward-declare.
+    struct StageList;
+    using StageFn = void (*)(StageList stages, const void** ctx, STAGE_PARAMS());
+    struct StageList {
+        const StageFn* fn;
+    };
+
+    #define EMIT_STAGE_EXEC(name, arg)                                                 \
+        SI void Exec_##name(StageList list, const void** ctx, STAGE_PARAMS()) {        \
+            Exec_##name##_k(Ctx{*ctx}, src, dst, r, g, b, a, i);                       \
+            ++list.fn; ++ctx;                                                          \
+            [[clang::musttail]] return (*list.fn)(list, ctx, src, dst, r, g, b, a, i); \
+        }
+
+    #define EMIT_FINAL_STAGE_EXEC(name, arg)                                           \
+        SI void Exec_##name(StageList, const void** ctx, STAGE_PARAMS()) {             \
+            Exec_##name##_k(Ctx{*ctx}, src, dst, r, g, b, a, i);                       \
+            /* Stop executing stages and return to the caller. */                      \
+        }
+
+#else
+
+    using StageFn = void(*)(const void* ctx, STAGE_PARAMS(&));
+
+    // If [[clang::musttail]] isn't available, we invoke stages in a tight loop. (In practice, this
+    // tends to be faster on compilers where we can't guarantee tail-calling will occur.)
+    #define EMIT_STAGE_EXEC(name, arg)                          \
+        SI void Exec_##name(const void* ctx, STAGE_PARAMS(&)) { \
+            Exec_##name##_k(Ctx{ctx}, src, dst, r, g, b, a, i); \
+        }
+
+    // We don't need to treat final stages differently in this mode.
+    #define EMIT_FINAL_STAGE_EXEC(name, arg) EMIT_STAGE_EXEC(name, arg)
+
+#endif
+
+
+#define STAGE(name, arg)        SI void Exec_##name##_k(arg, STAGE_PARAMS(&)); \
+                                EMIT_STAGE_EXEC(name, arg)                     \
+                                SI void Exec_##name##_k(arg, STAGE_PARAMS(&))
+
+#define FINAL_STAGE(name, arg)  SI void Exec_##name##_k(arg, STAGE_PARAMS(&)); \
+                                EMIT_FINAL_STAGE_EXEC(name, arg)               \
+                                SI void Exec_##name##_k(arg, STAGE_PARAMS(&))
+
 STAGE(load_a8, NoCtx) {
     a = F_from_U8(load<U8>(src + 1*i));
 }

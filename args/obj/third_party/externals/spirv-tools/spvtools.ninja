@@ -1,0 +1,92 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\]
+framework_dirs =
+include_dirs = -I../third_party/externals/spirv-tools -I../third_party/externals/spirv-headers/include -I../third_party/externals/spirv-tools/include -Igen/third_party/externals/spirv-tools
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wno-implicit-fallthrough -Wno-newline-eof -Wno-unreachable-code-break -Wno-unreachable-code-return -std=c++17
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = libspvtools
+
+build obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp
+build obj/third_party/externals/spirv-tools/source/libspvtools.assembly_grammar.o: cxx ../third_party/externals/spirv-tools/source/assembly_grammar.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = assembly_grammar.cpp
+  source_name_part = assembly_grammar
+build obj/third_party/externals/spirv-tools/source/libspvtools.binary.o: cxx ../third_party/externals/spirv-tools/source/binary.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = binary.cpp
+  source_name_part = binary
+build obj/third_party/externals/spirv-tools/source/libspvtools.diagnostic.o: cxx ../third_party/externals/spirv-tools/source/diagnostic.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = diagnostic.cpp
+  source_name_part = diagnostic
+build obj/third_party/externals/spirv-tools/source/libspvtools.disassemble.o: cxx ../third_party/externals/spirv-tools/source/disassemble.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = disassemble.cpp
+  source_name_part = disassemble
+build obj/third_party/externals/spirv-tools/source/libspvtools.enum_string_mapping.o: cxx ../third_party/externals/spirv-tools/source/enum_string_mapping.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = enum_string_mapping.cpp
+  source_name_part = enum_string_mapping
+build obj/third_party/externals/spirv-tools/source/libspvtools.ext_inst.o: cxx ../third_party/externals/spirv-tools/source/ext_inst.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = ext_inst.cpp
+  source_name_part = ext_inst
+build obj/third_party/externals/spirv-tools/source/libspvtools.extensions.o: cxx ../third_party/externals/spirv-tools/source/extensions.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = extensions.cpp
+  source_name_part = extensions
+build obj/third_party/externals/spirv-tools/source/libspvtools.libspirv.o: cxx ../third_party/externals/spirv-tools/source/libspirv.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = libspirv.cpp
+  source_name_part = libspirv
+build obj/third_party/externals/spirv-tools/source/libspvtools.name_mapper.o: cxx ../third_party/externals/spirv-tools/source/name_mapper.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = name_mapper.cpp
+  source_name_part = name_mapper
+build obj/third_party/externals/spirv-tools/source/libspvtools.opcode.o: cxx ../third_party/externals/spirv-tools/source/opcode.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = opcode.cpp
+  source_name_part = opcode
+build obj/third_party/externals/spirv-tools/source/libspvtools.operand.o: cxx ../third_party/externals/spirv-tools/source/operand.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = operand.cpp
+  source_name_part = operand
+build obj/third_party/externals/spirv-tools/source/libspvtools.parsed_operand.o: cxx ../third_party/externals/spirv-tools/source/parsed_operand.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = parsed_operand.cpp
+  source_name_part = parsed_operand
+build obj/third_party/externals/spirv-tools/source/libspvtools.print.o: cxx ../third_party/externals/spirv-tools/source/print.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = print.cpp
+  source_name_part = print
+build obj/third_party/externals/spirv-tools/source/libspvtools.spirv_endian.o: cxx ../third_party/externals/spirv-tools/source/spirv_endian.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = spirv_endian.cpp
+  source_name_part = spirv_endian
+build obj/third_party/externals/spirv-tools/source/libspvtools.spirv_fuzzer_options.o: cxx ../third_party/externals/spirv-tools/source/spirv_fuzzer_options.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = spirv_fuzzer_options.cpp
+  source_name_part = spirv_fuzzer_options
+build obj/third_party/externals/spirv-tools/source/libspvtools.spirv_optimizer_options.o: cxx ../third_party/externals/spirv-tools/source/spirv_optimizer_options.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = spirv_optimizer_options.cpp
+  source_name_part = spirv_optimizer_options
+build obj/third_party/externals/spirv-tools/source/libspvtools.spirv_reducer_options.o: cxx ../third_party/externals/spirv-tools/source/spirv_reducer_options.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = spirv_reducer_options.cpp
+  source_name_part = spirv_reducer_options
+build obj/third_party/externals/spirv-tools/source/libspvtools.spirv_target_env.o: cxx ../third_party/externals/spirv-tools/source/spirv_target_env.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = spirv_target_env.cpp
+  source_name_part = spirv_target_env
+build obj/third_party/externals/spirv-tools/source/libspvtools.spirv_validator_options.o: cxx ../third_party/externals/spirv-tools/source/spirv_validator_options.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = spirv_validator_options.cpp
+  source_name_part = spirv_validator_options
+build obj/third_party/externals/spirv-tools/source/libspvtools.table.o: cxx ../third_party/externals/spirv-tools/source/table.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = table.cpp
+  source_name_part = table
+build obj/third_party/externals/spirv-tools/source/libspvtools.text.o: cxx ../third_party/externals/spirv-tools/source/text.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = text.cpp
+  source_name_part = text
+build obj/third_party/externals/spirv-tools/source/libspvtools.text_handler.o: cxx ../third_party/externals/spirv-tools/source/text_handler.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = text_handler.cpp
+  source_name_part = text_handler
+build obj/third_party/externals/spirv-tools/source/util/libspvtools.bit_vector.o: cxx ../third_party/externals/spirv-tools/source/util/bit_vector.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = bit_vector.cpp
+  source_name_part = bit_vector
+build obj/third_party/externals/spirv-tools/source/util/libspvtools.parse_number.o: cxx ../third_party/externals/spirv-tools/source/util/parse_number.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = parse_number.cpp
+  source_name_part = parse_number
+build obj/third_party/externals/spirv-tools/source/util/libspvtools.string_utils.o: cxx ../third_party/externals/spirv-tools/source/util/string_utils.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = string_utils.cpp
+  source_name_part = string_utils
+build obj/third_party/externals/spirv-tools/source/util/libspvtools.timer.o: cxx ../third_party/externals/spirv-tools/source/util/timer.cpp || obj/third_party/externals/spirv-tools/spvtools.inputdeps.stamp
+  source_file_part = timer.cpp
+  source_name_part = timer
+
+build ./libspvtools.a: alink obj/third_party/externals/spirv-tools/source/libspvtools.assembly_grammar.o obj/third_party/externals/spirv-tools/source/libspvtools.binary.o obj/third_party/externals/spirv-tools/source/libspvtools.diagnostic.o obj/third_party/externals/spirv-tools/source/libspvtools.disassemble.o obj/third_party/externals/spirv-tools/source/libspvtools.enum_string_mapping.o obj/third_party/externals/spirv-tools/source/libspvtools.ext_inst.o obj/third_party/externals/spirv-tools/source/libspvtools.extensions.o obj/third_party/externals/spirv-tools/source/libspvtools.libspirv.o obj/third_party/externals/spirv-tools/source/libspvtools.name_mapper.o obj/third_party/externals/spirv-tools/source/libspvtools.opcode.o obj/third_party/externals/spirv-tools/source/libspvtools.operand.o obj/third_party/externals/spirv-tools/source/libspvtools.parsed_operand.o obj/third_party/externals/spirv-tools/source/libspvtools.print.o obj/third_party/externals/spirv-tools/source/libspvtools.spirv_endian.o obj/third_party/externals/spirv-tools/source/libspvtools.spirv_fuzzer_options.o obj/third_party/externals/spirv-tools/source/libspvtools.spirv_optimizer_options.o obj/third_party/externals/spirv-tools/source/libspvtools.spirv_reducer_options.o obj/third_party/externals/spirv-tools/source/libspvtools.spirv_target_env.o obj/third_party/externals/spirv-tools/source/libspvtools.spirv_validator_options.o obj/third_party/externals/spirv-tools/source/libspvtools.table.o obj/third_party/externals/spirv-tools/source/libspvtools.text.o obj/third_party/externals/spirv-tools/source/libspvtools.text_handler.o obj/third_party/externals/spirv-tools/source/util/libspvtools.bit_vector.o obj/third_party/externals/spirv-tools/source/util/libspvtools.parse_number.o obj/third_party/externals/spirv-tools/source/util/libspvtools.string_utils.o obj/third_party/externals/spirv-tools/source/util/libspvtools.timer.o || obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_headers.stamp obj/third_party/externals/spirv-headers/spv_headers.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp
+  arflags =
+  output_extension = .a
+  output_dir = 

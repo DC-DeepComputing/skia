@@ -695,6 +695,8 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
 
     skiatest::graphite::TestOptions testOptions;
 
+    skiatest::graphite::TestOptions testOptions;
+
     bool parseSucceeded = false;
     ExtendedOptions extendedOptions(options, &parseSucceeded);
     if (!parseSucceeded) {

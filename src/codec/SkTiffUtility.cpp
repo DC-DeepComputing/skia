@@ -270,6 +270,18 @@ bool SkTiffImageFileDirectory::getEntryValuesGeneric(uint16_t entryIndex,
                 }
                 break;
             }
+            case kTypeUnsignedRational: {
+                uint32_t numerator = get_endian_int(data, fLittleEndian);
+                uint32_t denominator = get_endian_int(data + kSizeLong, fLittleEndian);
+                if (denominator == 0) {
+                    // See comments in kTypeSignedRational.
+                    reinterpret_cast<float*>(values)[i] = 0.f;
+                } else {
+                    reinterpret_cast<float*>(values)[i] =
+                            numerator / static_cast<float>(denominator);
+                }
+                break;
+            }
             default:
                 SkCodecPrintf("Unsupported type %u\n", type);
                 return false;

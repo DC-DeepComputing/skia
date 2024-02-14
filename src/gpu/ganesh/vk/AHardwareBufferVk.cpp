@@ -283,6 +283,53 @@ static GrBackendTexture make_vk_backend_texture(
         return GrBackendTexture();
     }
 
+    VkImportAndroidHardwareBufferInfoANDROID hwbImportInfo;
+    hwbImportInfo.sType = VK_STRUCTURE_TYPE_IMPORT_ANDROID_HARDWARE_BUFFER_INFO_ANDROID;
+    hwbImportInfo.pNext = nullptr;
+    hwbImportInfo.buffer = hardwareBuffer;
+
+    VkMemoryDedicatedAllocateInfo dedicatedAllocInfo;
+    dedicatedAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO;
+    dedicatedAllocInfo.pNext = &hwbImportInfo;
+    dedicatedAllocInfo.image = image;
+    dedicatedAllocInfo.buffer = VK_NULL_HANDLE;
+
+    VkMemoryAllocateInfo allocInfo = {
+        VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,      // sType
+        &dedicatedAllocInfo,                         // pNext
+        hwbProps.allocationSize,                     // allocationSize
+        typeIndex,                                   // memoryTypeIndex
+    };
+
+    VkDeviceMemory memory;
+
+    err = VK_CALL(AllocateMemory(device, &allocInfo, nullptr, &memory));
+    if (VK_SUCCESS != err) {
+        VK_CALL(DestroyImage(device, image, nullptr));
+        return GrBackendTexture();
+    }
+
+    VkBindImageMemoryInfo bindImageInfo;
+    bindImageInfo.sType = VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_INFO;
+    bindImageInfo.pNext = nullptr;
+    bindImageInfo.image = image;
+    bindImageInfo.memory = memory;
+    bindImageInfo.memoryOffset = 0;
+
+    err = VK_CALL(BindImageMemory2(device, 1, &bindImageInfo));
+    if (VK_SUCCESS != err) {
+        VK_CALL(DestroyImage(device, image, nullptr));
+        VK_CALL(FreeMemory(device, memory, nullptr));
+        return GrBackendTexture();
+    }
+
+    skgpu::VulkanAlloc alloc;
+    if (!skgpu::AllocateAndBindImageMemory(&alloc, image, phyDevMemProps, hwbProps, hardwareBuffer,
+                                           gpu->vkInterface(), device)) {
+        VK_CALL(DestroyImage(device, image, nullptr));
+        return GrBackendTexture();
+    }
+
     GrVkImageInfo imageInfo;
     imageInfo.fImage = image;
     imageInfo.fAlloc = alloc;

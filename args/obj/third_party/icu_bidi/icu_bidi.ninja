@@ -1,0 +1,55 @@
+defines = -DU_COMMON_IMPLEMENTATION -DU_STATIC_IMPLEMENTATION -DU_I18N_IMPLEMENTATION -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DU_USING_ICU_NAMESPACE=0 -DU_DISABLE_RENAMING=0 -DU_HAVE_LIB_SUFFIX=1 -DU_LIB_SUFFIX_C_NAME=_skia -DU_DISABLE_VERSION_SUFFIX=1 -DSK_USING_THIRD_PARTY_ICU
+framework_dirs =
+include_dirs =
+cflags = -w -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -O3 -isystem /Users/nicolettep/Repos/skia/third_party/externals/icu/source/common -isystem /Users/nicolettep/Repos/skia/third_party/externals/icu/source/i18n
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = libicu_bidi
+
+build obj/third_party/externals/icu/source/common/libicu_bidi.cmemory.o: cxx ../third_party/externals/icu/source/common/cmemory.cpp
+  source_file_part = cmemory.cpp
+  source_name_part = cmemory
+build obj/third_party/externals/icu/source/common/libicu_bidi.cstring.o: cxx ../third_party/externals/icu/source/common/cstring.cpp
+  source_file_part = cstring.cpp
+  source_name_part = cstring
+build obj/third_party/externals/icu/source/common/libicu_bidi.ubidi.o: cxx ../third_party/externals/icu/source/common/ubidi.cpp
+  source_file_part = ubidi.cpp
+  source_name_part = ubidi
+build obj/third_party/externals/icu/source/common/libicu_bidi.ubidi_props.o: cxx ../third_party/externals/icu/source/common/ubidi_props.cpp
+  source_file_part = ubidi_props.cpp
+  source_name_part = ubidi_props
+build obj/third_party/externals/icu/source/common/libicu_bidi.ubidiln.o: cxx ../third_party/externals/icu/source/common/ubidiln.cpp
+  source_file_part = ubidiln.cpp
+  source_name_part = ubidiln
+build obj/third_party/externals/icu/source/common/libicu_bidi.ubidiwrt.o: cxx ../third_party/externals/icu/source/common/ubidiwrt.cpp
+  source_file_part = ubidiwrt.cpp
+  source_name_part = ubidiwrt
+build obj/third_party/externals/icu/source/common/libicu_bidi.uchar.o: cxx ../third_party/externals/icu/source/common/uchar.cpp
+  source_file_part = uchar.cpp
+  source_name_part = uchar
+build obj/third_party/externals/icu/source/common/libicu_bidi.udataswp.o: cxx ../third_party/externals/icu/source/common/udataswp.cpp
+  source_file_part = udataswp.cpp
+  source_name_part = udataswp
+build obj/third_party/externals/icu/source/common/libicu_bidi.uinvchar.o: cxx ../third_party/externals/icu/source/common/uinvchar.cpp
+  source_file_part = uinvchar.cpp
+  source_name_part = uinvchar
+build obj/third_party/externals/icu/source/common/libicu_bidi.ustring.o: cxx ../third_party/externals/icu/source/common/ustring.cpp
+  source_file_part = ustring.cpp
+  source_name_part = ustring
+build obj/third_party/externals/icu/source/common/libicu_bidi.ustrtrns.o: cxx ../third_party/externals/icu/source/common/ustrtrns.cpp
+  source_file_part = ustrtrns.cpp
+  source_name_part = ustrtrns
+build obj/third_party/externals/icu/source/common/libicu_bidi.utf_impl.o: cxx ../third_party/externals/icu/source/common/utf_impl.cpp
+  source_file_part = utf_impl.cpp
+  source_name_part = utf_impl
+build obj/third_party/externals/icu/source/common/libicu_bidi.utrie2.o: cxx ../third_party/externals/icu/source/common/utrie2.cpp
+  source_file_part = utrie2.cpp
+  source_name_part = utrie2
+build obj/third_party/externals/icu/source/common/libicu_bidi.utypes.o: cxx ../third_party/externals/icu/source/common/utypes.cpp
+  source_file_part = utypes.cpp
+  source_name_part = utypes
+
+build ./libicu_bidi.a: alink obj/third_party/externals/icu/source/common/libicu_bidi.cmemory.o obj/third_party/externals/icu/source/common/libicu_bidi.cstring.o obj/third_party/externals/icu/source/common/libicu_bidi.ubidi.o obj/third_party/externals/icu/source/common/libicu_bidi.ubidi_props.o obj/third_party/externals/icu/source/common/libicu_bidi.ubidiln.o obj/third_party/externals/icu/source/common/libicu_bidi.ubidiwrt.o obj/third_party/externals/icu/source/common/libicu_bidi.uchar.o obj/third_party/externals/icu/source/common/libicu_bidi.udataswp.o obj/third_party/externals/icu/source/common/libicu_bidi.uinvchar.o obj/third_party/externals/icu/source/common/libicu_bidi.ustring.o obj/third_party/externals/icu/source/common/libicu_bidi.ustrtrns.o obj/third_party/externals/icu/source/common/libicu_bidi.utf_impl.o obj/third_party/externals/icu/source/common/libicu_bidi.utrie2.o obj/third_party/externals/icu/source/common/libicu_bidi.utypes.o
+  arflags =
+  output_extension = .a
+  output_dir = 

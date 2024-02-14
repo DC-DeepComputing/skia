@@ -254,6 +254,12 @@ void SkFontDescriptor::serialize(SkWStream* stream) const {
             stream->writePackedUInt(fPaletteEntryOverrides[i].index);
             stream->write32(fPaletteEntryOverrides[i].color);
         }
+#else
+        write_uint(stream, fPaletteEntryOverrideCount, kPaletteEntryOverrides);
+        for (int i = 0; i < fPaletteEntryOverrideCount; ++i) {
+            stream->writePackedUInt(fPaletteEntryOverrides[i].index);
+            stream->write32(fPaletteEntryOverrides[i].color);
+        }
     }
 
     write_uint(stream, fFactoryId, kFactoryId);

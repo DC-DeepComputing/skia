@@ -1,0 +1,239 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_ENABLE_SKOTTIE -DSK_ENABLE_SKOTTIE_SKSLEFFECT -DSK_SHAPER_CORETEXT_AVAILABLE -DSK_SHAPER_HARFBUZZ_AVAILABLE -DSK_SHAPER_UNICODE_AVAILABLE -DSK_ENABLE_SVG -DIMGUI_ENABLE_OSX_DEFAULT_CLIPBOARD_FUNCTIONS
+framework_dirs =
+include_dirs = -I../include/third_party/vulkan -I.. -I../modules/skottie/include -I../modules/skottie/utils -I../modules/skshaper/include -I../modules/svg/include
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi -isystem /Users/nicolettep/Repos/skia/third_party/externals/imgui
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = viewer
+
+build obj/viewer.inputdeps.stamp: stamp obj/skia.h.stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/icu/make_data_assembly.stamp
+build obj/tools/viewer/viewer.3DSlide.o: cxx ../tools/viewer/3DSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = 3DSlide.cpp
+  source_name_part = 3DSlide
+build obj/tools/viewer/viewer.AndroidShadowsSlide.o: cxx ../tools/viewer/AndroidShadowsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AndroidShadowsSlide.cpp
+  source_name_part = AndroidShadowsSlide
+build obj/tools/viewer/viewer.AnimBlurSlide.o: cxx ../tools/viewer/AnimBlurSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AnimBlurSlide.cpp
+  source_name_part = AnimBlurSlide
+build obj/tools/viewer/viewer.AnimatedImageSlide.o: cxx ../tools/viewer/AnimatedImageSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AnimatedImageSlide.cpp
+  source_name_part = AnimatedImageSlide
+build obj/tools/viewer/viewer.AnimatedRectsSlide.o: cxx ../tools/viewer/AnimatedRectsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AnimatedRectsSlide.cpp
+  source_name_part = AnimatedRectsSlide
+build obj/tools/viewer/viewer.AnimatedTextSlide.o: cxx ../tools/viewer/AnimatedTextSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AnimatedTextSlide.cpp
+  source_name_part = AnimatedTextSlide
+build obj/tools/viewer/viewer.ArcSlide.o: cxx ../tools/viewer/ArcSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ArcSlide.cpp
+  source_name_part = ArcSlide
+build obj/tools/viewer/viewer.AtlasSlide.o: cxx ../tools/viewer/AtlasSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AtlasSlide.cpp
+  source_name_part = AtlasSlide
+build obj/tools/viewer/viewer.AudioSlide.o: cxx ../tools/viewer/AudioSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = AudioSlide.cpp
+  source_name_part = AudioSlide
+build obj/tools/viewer/viewer.BisectSlide.o: cxx ../tools/viewer/BisectSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = BisectSlide.cpp
+  source_name_part = BisectSlide
+build obj/tools/viewer/viewer.CameraSlide.o: cxx ../tools/viewer/CameraSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = CameraSlide.cpp
+  source_name_part = CameraSlide
+build obj/tools/viewer/viewer.ChartSlide.o: cxx ../tools/viewer/ChartSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ChartSlide.cpp
+  source_name_part = ChartSlide
+build obj/tools/viewer/viewer.ChineseFlingSlide.o: cxx ../tools/viewer/ChineseFlingSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ChineseFlingSlide.cpp
+  source_name_part = ChineseFlingSlide
+build obj/tools/viewer/viewer.ClickHandlerSlide.o: cxx ../tools/viewer/ClickHandlerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ClickHandlerSlide.cpp
+  source_name_part = ClickHandlerSlide
+build obj/tools/viewer/viewer.ClipSlide.o: cxx ../tools/viewer/ClipSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ClipSlide.cpp
+  source_name_part = ClipSlide
+build obj/tools/viewer/viewer.ClockSlide.o: cxx ../tools/viewer/ClockSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ClockSlide.cpp
+  source_name_part = ClockSlide
+build obj/tools/viewer/viewer.CowboySlide.o: cxx ../tools/viewer/CowboySlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = CowboySlide.cpp
+  source_name_part = CowboySlide
+build obj/tools/viewer/viewer.DegenerateQuadsSlide.o: cxx ../tools/viewer/DegenerateQuadsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = DegenerateQuadsSlide.cpp
+  source_name_part = DegenerateQuadsSlide
+build obj/tools/viewer/viewer.DegenerateTwoPtRadialsSlide.o: cxx ../tools/viewer/DegenerateTwoPtRadialsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = DegenerateTwoPtRadialsSlide.cpp
+  source_name_part = DegenerateTwoPtRadialsSlide
+build obj/tools/viewer/viewer.FatBitsSlide.o: cxx ../tools/viewer/FatBitsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = FatBitsSlide.cpp
+  source_name_part = FatBitsSlide
+build obj/tools/viewer/viewer.FilterBoundsSlide.o: cxx ../tools/viewer/FilterBoundsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = FilterBoundsSlide.cpp
+  source_name_part = FilterBoundsSlide
+build obj/tools/viewer/viewer.FitCubicToCircleSlide.o: cxx ../tools/viewer/FitCubicToCircleSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = FitCubicToCircleSlide.cpp
+  source_name_part = FitCubicToCircleSlide
+build obj/tools/viewer/viewer.FlutterAnimateSlide.o: cxx ../tools/viewer/FlutterAnimateSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = FlutterAnimateSlide.cpp
+  source_name_part = FlutterAnimateSlide
+build obj/tools/viewer/viewer.GMSlide.o: cxx ../tools/viewer/GMSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = GMSlide.cpp
+  source_name_part = GMSlide
+build obj/tools/viewer/viewer.GlyphTransformSlide.o: cxx ../tools/viewer/GlyphTransformSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = GlyphTransformSlide.cpp
+  source_name_part = GlyphTransformSlide
+build obj/tools/viewer/viewer.GradientsSlide.o: cxx ../tools/viewer/GradientsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = GradientsSlide.cpp
+  source_name_part = GradientsSlide
+build obj/tools/viewer/viewer.GraphitePrimitivesSlide.o: cxx ../tools/viewer/GraphitePrimitivesSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = GraphitePrimitivesSlide.cpp
+  source_name_part = GraphitePrimitivesSlide
+build obj/tools/viewer/viewer.ImGuiLayer.o: cxx ../tools/viewer/ImGuiLayer.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ImGuiLayer.cpp
+  source_name_part = ImGuiLayer
+build obj/tools/viewer/viewer.ImageFilterDAGSlide.o: cxx ../tools/viewer/ImageFilterDAGSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ImageFilterDAGSlide.cpp
+  source_name_part = ImageFilterDAGSlide
+build obj/tools/viewer/viewer.ImageSlide.o: cxx ../tools/viewer/ImageSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ImageSlide.cpp
+  source_name_part = ImageSlide
+build obj/tools/viewer/viewer.LayersSlide.o: cxx ../tools/viewer/LayersSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = LayersSlide.cpp
+  source_name_part = LayersSlide
+build obj/tools/viewer/viewer.MSKPSlide.o: cxx ../tools/viewer/MSKPSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = MSKPSlide.cpp
+  source_name_part = MSKPSlide
+build obj/tools/viewer/viewer.ManyRectsSlide.o: cxx ../tools/viewer/ManyRectsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ManyRectsSlide.cpp
+  source_name_part = ManyRectsSlide
+build obj/tools/viewer/viewer.MaterialShadowsSlide.o: cxx ../tools/viewer/MaterialShadowsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = MaterialShadowsSlide.cpp
+  source_name_part = MaterialShadowsSlide
+build obj/tools/viewer/viewer.MegaStrokeSlide.o: cxx ../tools/viewer/MegaStrokeSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = MegaStrokeSlide.cpp
+  source_name_part = MegaStrokeSlide
+build obj/tools/viewer/viewer.MeshSlide.o: cxx ../tools/viewer/MeshSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = MeshSlide.cpp
+  source_name_part = MeshSlide
+build obj/tools/viewer/viewer.MixerSlide.o: cxx ../tools/viewer/MixerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = MixerSlide.cpp
+  source_name_part = MixerSlide
+build obj/tools/viewer/viewer.PatchSlide.o: cxx ../tools/viewer/PatchSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PatchSlide.cpp
+  source_name_part = PatchSlide
+build obj/tools/viewer/viewer.PathClipSlide.o: cxx ../tools/viewer/PathClipSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PathClipSlide.cpp
+  source_name_part = PathClipSlide
+build obj/tools/viewer/viewer.PathEffectsSlide.o: cxx ../tools/viewer/PathEffectsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PathEffectsSlide.cpp
+  source_name_part = PathEffectsSlide
+build obj/tools/viewer/viewer.PathOverstrokeSlide.o: cxx ../tools/viewer/PathOverstrokeSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PathOverstrokeSlide.cpp
+  source_name_part = PathOverstrokeSlide
+build obj/tools/viewer/viewer.PathSlide.o: cxx ../tools/viewer/PathSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PathSlide.cpp
+  source_name_part = PathSlide
+build obj/tools/viewer/viewer.PathTessellatorsSlide.o: cxx ../tools/viewer/PathTessellatorsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PathTessellatorsSlide.cpp
+  source_name_part = PathTessellatorsSlide
+build obj/tools/viewer/viewer.PathTextSlide.o: cxx ../tools/viewer/PathTextSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = PathTextSlide.cpp
+  source_name_part = PathTextSlide
+build obj/tools/viewer/viewer.ProtectedSlide.o: cxx ../tools/viewer/ProtectedSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ProtectedSlide.cpp
+  source_name_part = ProtectedSlide
+build obj/tools/viewer/viewer.QuadStrokerSlide.o: cxx ../tools/viewer/QuadStrokerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = QuadStrokerSlide.cpp
+  source_name_part = QuadStrokerSlide
+build obj/tools/viewer/viewer.RectanizerSlide.o: cxx ../tools/viewer/RectanizerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = RectanizerSlide.cpp
+  source_name_part = RectanizerSlide
+build obj/tools/viewer/viewer.RepeatTileSlide.o: cxx ../tools/viewer/RepeatTileSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = RepeatTileSlide.cpp
+  source_name_part = RepeatTileSlide
+build obj/tools/viewer/viewer.SBIXSlide.o: cxx ../tools/viewer/SBIXSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SBIXSlide.cpp
+  source_name_part = SBIXSlide
+build obj/tools/viewer/viewer.SGSlide.o: cxx ../tools/viewer/SGSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SGSlide.cpp
+  source_name_part = SGSlide
+build obj/tools/viewer/viewer.SKPSlide.o: cxx ../tools/viewer/SKPSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SKPSlide.cpp
+  source_name_part = SKPSlide
+build obj/tools/viewer/viewer.SVGFileSlide.o: cxx ../tools/viewer/SVGFileSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SVGFileSlide.cpp
+  source_name_part = SVGFileSlide
+build obj/tools/viewer/viewer.ShadowColorSlide.o: cxx ../tools/viewer/ShadowColorSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ShadowColorSlide.cpp
+  source_name_part = ShadowColorSlide
+build obj/tools/viewer/viewer.ShadowReferenceSlide.o: cxx ../tools/viewer/ShadowReferenceSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ShadowReferenceSlide.cpp
+  source_name_part = ShadowReferenceSlide
+build obj/tools/viewer/viewer.ShadowUtilsSlide.o: cxx ../tools/viewer/ShadowUtilsSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ShadowUtilsSlide.cpp
+  source_name_part = ShadowUtilsSlide
+build obj/tools/viewer/viewer.ShipSlide.o: cxx ../tools/viewer/ShipSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ShipSlide.cpp
+  source_name_part = ShipSlide
+build obj/tools/viewer/viewer.SimpleStrokerSlide.o: cxx ../tools/viewer/SimpleStrokerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SimpleStrokerSlide.cpp
+  source_name_part = SimpleStrokerSlide
+build obj/tools/viewer/viewer.SkSLDebuggerSlide.o: cxx ../tools/viewer/SkSLDebuggerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SkSLDebuggerSlide.cpp
+  source_name_part = SkSLDebuggerSlide
+build obj/tools/viewer/viewer.SkSLSlide.o: cxx ../tools/viewer/SkSLSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SkSLSlide.cpp
+  source_name_part = SkSLSlide
+build obj/tools/viewer/viewer.SkottieSlide.o: cxx ../tools/viewer/SkottieSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SkottieSlide.cpp
+  source_name_part = SkottieSlide
+build obj/tools/viewer/viewer.SlideDir.o: cxx ../tools/viewer/SlideDir.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SlideDir.cpp
+  source_name_part = SlideDir
+build obj/tools/viewer/viewer.SlidesSlide.o: cxx ../tools/viewer/SlidesSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SlidesSlide.cpp
+  source_name_part = SlidesSlide
+build obj/tools/viewer/viewer.StatsLayer.o: cxx ../tools/viewer/StatsLayer.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = StatsLayer.cpp
+  source_name_part = StatsLayer
+build obj/tools/viewer/viewer.StringArtSlide.o: cxx ../tools/viewer/StringArtSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = StringArtSlide.cpp
+  source_name_part = StringArtSlide
+build obj/tools/viewer/viewer.StrokeVerbSlide.o: cxx ../tools/viewer/StrokeVerbSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = StrokeVerbSlide.cpp
+  source_name_part = StrokeVerbSlide
+build obj/tools/viewer/viewer.SvgSlide.o: cxx ../tools/viewer/SvgSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = SvgSlide.cpp
+  source_name_part = SvgSlide
+build obj/tools/viewer/viewer.TextBoxSlide.o: cxx ../tools/viewer/TextBoxSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = TextBoxSlide.cpp
+  source_name_part = TextBoxSlide
+build obj/tools/viewer/viewer.TextureUploadSlide.o: cxx ../tools/viewer/TextureUploadSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = TextureUploadSlide.cpp
+  source_name_part = TextureUploadSlide
+build obj/tools/viewer/viewer.ThinAASlide.o: cxx ../tools/viewer/ThinAASlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = ThinAASlide.cpp
+  source_name_part = ThinAASlide
+build obj/tools/viewer/viewer.TimingSlide.o: cxx ../tools/viewer/TimingSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = TimingSlide.cpp
+  source_name_part = TimingSlide
+build obj/tools/viewer/viewer.TouchGesture.o: cxx ../tools/viewer/TouchGesture.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = TouchGesture.cpp
+  source_name_part = TouchGesture
+build obj/tools/viewer/viewer.VariableWidthStrokerSlide.o: cxx ../tools/viewer/VariableWidthStrokerSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = VariableWidthStrokerSlide.cpp
+  source_name_part = VariableWidthStrokerSlide
+build obj/tools/viewer/viewer.Viewer.o: cxx ../tools/viewer/Viewer.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = Viewer.cpp
+  source_name_part = Viewer
+build obj/tools/viewer/viewer.XferSlide.o: cxx ../tools/viewer/XferSlide.cpp || obj/viewer.inputdeps.stamp
+  source_file_part = XferSlide.cpp
+  source_name_part = XferSlide
+
+build ./viewer: link obj/tools/viewer/viewer.3DSlide.o obj/tools/viewer/viewer.AndroidShadowsSlide.o obj/tools/viewer/viewer.AnimBlurSlide.o obj/tools/viewer/viewer.AnimatedImageSlide.o obj/tools/viewer/viewer.AnimatedRectsSlide.o obj/tools/viewer/viewer.AnimatedTextSlide.o obj/tools/viewer/viewer.ArcSlide.o obj/tools/viewer/viewer.AtlasSlide.o obj/tools/viewer/viewer.AudioSlide.o obj/tools/viewer/viewer.BisectSlide.o obj/tools/viewer/viewer.CameraSlide.o obj/tools/viewer/viewer.ChartSlide.o obj/tools/viewer/viewer.ChineseFlingSlide.o obj/tools/viewer/viewer.ClickHandlerSlide.o obj/tools/viewer/viewer.ClipSlide.o obj/tools/viewer/viewer.ClockSlide.o obj/tools/viewer/viewer.CowboySlide.o obj/tools/viewer/viewer.DegenerateQuadsSlide.o obj/tools/viewer/viewer.DegenerateTwoPtRadialsSlide.o obj/tools/viewer/viewer.FatBitsSlide.o obj/tools/viewer/viewer.FilterBoundsSlide.o obj/tools/viewer/viewer.FitCubicToCircleSlide.o obj/tools/viewer/viewer.FlutterAnimateSlide.o obj/tools/viewer/viewer.GMSlide.o obj/tools/viewer/viewer.GlyphTransformSlide.o obj/tools/viewer/viewer.GradientsSlide.o obj/tools/viewer/viewer.GraphitePrimitivesSlide.o obj/tools/viewer/viewer.ImGuiLayer.o obj/tools/viewer/viewer.ImageFilterDAGSlide.o obj/tools/viewer/viewer.ImageSlide.o obj/tools/viewer/viewer.LayersSlide.o obj/tools/viewer/viewer.MSKPSlide.o obj/tools/viewer/viewer.ManyRectsSlide.o obj/tools/viewer/viewer.MaterialShadowsSlide.o obj/tools/viewer/viewer.MegaStrokeSlide.o obj/tools/viewer/viewer.MeshSlide.o obj/tools/viewer/viewer.MixerSlide.o obj/tools/viewer/viewer.PatchSlide.o obj/tools/viewer/viewer.PathClipSlide.o obj/tools/viewer/viewer.PathEffectsSlide.o obj/tools/viewer/viewer.PathOverstrokeSlide.o obj/tools/viewer/viewer.PathSlide.o obj/tools/viewer/viewer.PathTessellatorsSlide.o obj/tools/viewer/viewer.PathTextSlide.o obj/tools/viewer/viewer.ProtectedSlide.o obj/tools/viewer/viewer.QuadStrokerSlide.o obj/tools/viewer/viewer.RectanizerSlide.o obj/tools/viewer/viewer.RepeatTileSlide.o obj/tools/viewer/viewer.SBIXSlide.o obj/tools/viewer/viewer.SGSlide.o obj/tools/viewer/viewer.SKPSlide.o obj/tools/viewer/viewer.SVGFileSlide.o obj/tools/viewer/viewer.ShadowColorSlide.o obj/tools/viewer/viewer.ShadowReferenceSlide.o obj/tools/viewer/viewer.ShadowUtilsSlide.o obj/tools/viewer/viewer.ShipSlide.o obj/tools/viewer/viewer.SimpleStrokerSlide.o obj/tools/viewer/viewer.SkSLDebuggerSlide.o obj/tools/viewer/viewer.SkSLSlide.o obj/tools/viewer/viewer.SkottieSlide.o obj/tools/viewer/viewer.SlideDir.o obj/tools/viewer/viewer.SlidesSlide.o obj/tools/viewer/viewer.StatsLayer.o obj/tools/viewer/viewer.StringArtSlide.o obj/tools/viewer/viewer.StrokeVerbSlide.o obj/tools/viewer/viewer.SvgSlide.o obj/tools/viewer/viewer.TextBoxSlide.o obj/tools/viewer/viewer.TextureUploadSlide.o obj/tools/viewer/viewer.ThinAASlide.o obj/tools/viewer/viewer.TimingSlide.o obj/tools/viewer/viewer.TouchGesture.o obj/tools/viewer/viewer.VariableWidthStrokerSlide.o obj/tools/viewer/viewer.Viewer.o obj/tools/viewer/viewer.XferSlide.o obj/tools/flags/common_flags_fontmgr.CommonFlagsFontMgr.o obj/tools/flags/common_flags_gpu.CommonFlagsGpu.o obj/tools/flags/flags.CommandLineFlags.o obj/gm/gm.3d.o obj/gm/gm.aaa.o obj/gm/gm.aaclip.o obj/gm/gm.aarectmodes.o obj/gm/gm.aaxfermodes.o obj/gm/gm.addarc.o obj/gm/gm.all_bitmap_configs.o obj/gm/gm.alpha_image.o obj/gm/gm.alphagradients.o obj/gm/gm.analytic_gradients.o obj/gm/gm.androidblendmodes.o obj/gm/gm.animated_gif.o obj/gm/gm.animated_image_orientation.o obj/gm/gm.animatedimageblurs.o obj/gm/gm.anisotropic.o obj/gm/gm.annotated_text.o obj/gm/gm.arcofzorro.o obj/gm/gm.arcto.o obj/gm/gm.arithmode.o obj/gm/gm.asyncrescaleandread.o obj/gm/gm.b_119394958.o obj/gm/gm.backdrop.o obj/gm/gm.backdrop_imagefilter_croprect.o obj/gm/gm.badpaint.o obj/gm/gm.batchedconvexpaths.o obj/gm/gm.bc1_transparency.o obj/gm/gm.beziers.o obj/gm/gm.bicubic.o obj/gm/gm.bigblurs.o obj/gm/gm.bigmatrix.o obj/gm/gm.bigrect.o obj/gm/gm.bigtext.o obj/gm/gm.bigtileimagefilter.o obj/gm/gm.bitmapcopy.o obj/gm/gm.bitmapfilters.o obj/gm/gm.bitmapimage.o obj/gm/gm.bitmappremul.o obj/gm/gm.bitmaprect.o obj/gm/gm.bitmaprecttest.o obj/gm/gm.bitmapshader.o obj/gm/gm.bitmaptiled.o obj/gm/gm.bleed.o obj/gm/gm.blend.o obj/gm/gm.blurcircles.o obj/gm/gm.blurcircles2.o obj/gm/gm.blurignorexform.o obj/gm/gm.blurimagevmask.o obj/gm/gm.blurpositioning.o obj/gm/gm.blurquickreject.o obj/gm/gm.blurrect.o obj/gm/gm.blurredclippedcircle.o obj/gm/gm.blurroundrect.o obj/gm/gm.blurs.o obj/gm/gm.blurtextsmallradii.o obj/gm/gm.bmpfilterqualityrepeat.o obj/gm/gm.bug12866.o obj/gm/gm.bug5252.o obj/gm/gm.bug530095.o obj/gm/gm.bug615686.o obj/gm/gm.bug6643.o obj/gm/gm.bug6783.o obj/gm/gm.bug9331.o obj/gm/gm.circle_sizes.o obj/gm/gm.circulararcs.o obj/gm/gm.circularclips.o obj/gm/gm.clip_error.o obj/gm/gm.clip_sierpinski_region.o obj/gm/gm.clip_strokerect.o obj/gm/gm.clipdrawdraw.o obj/gm/gm.clippedbitmapshaders.o obj/gm/gm.clipshader.o obj/gm/gm.collapsepaths.o obj/gm/gm.color4f.o obj/gm/gm.coloremoji.o obj/gm/gm.coloremoji_blendmodes.o obj/gm/gm.colorfilteralpha8.o obj/gm/gm.colorfilterimagefilter.o obj/gm/gm.colorfilters.o obj/gm/gm.colormatrix.o obj/gm/gm.colorspace.o obj/gm/gm.colorwheel.o obj/gm/gm.colrv1.o obj/gm/gm.complexclip.o obj/gm/gm.complexclip2.o obj/gm/gm.complexclip3.o obj/gm/gm.complexclip4.o obj/gm/gm.complexclip_blur_tiled.o obj/gm/gm.composecolorfilter.o obj/gm/gm.composeshader.o obj/gm/gm.compositor_quads.o obj/gm/gm.compressed_textures.o obj/gm/gm.concavepaths.o obj/gm/gm.conicpaths.o obj/gm/gm.convex_all_line_paths.o obj/gm/gm.convexpaths.o obj/gm/gm.convexpolyclip.o obj/gm/gm.coordclampshader.o obj/gm/gm.copy_to_4444.o obj/gm/gm.crbug_1041204.o obj/gm/gm.crbug_1073670.o obj/gm/gm.crbug_1086705.o obj/gm/gm.crbug_1113794.o obj/gm/gm.crbug_1139750.o obj/gm/gm.crbug_1156804.o obj/gm/gm.crbug_1162942.o obj/gm/gm.crbug_1167277.o obj/gm/gm.crbug_1174186.o obj/gm/gm.crbug_1174354.o obj/gm/gm.crbug_1177833.o obj/gm/gm.crbug_1257515.o obj/gm/gm.crbug_1313579.o obj/gm/gm.crbug_224618.o obj/gm/gm.crbug_691386.o obj/gm/gm.crbug_788500.o obj/gm/gm.crbug_847759.o obj/gm/gm.crbug_884166.o obj/gm/gm.crbug_887103.o obj/gm/gm.crbug_892988.o obj/gm/gm.crbug_899512.o obj/gm/gm.crbug_905548.o obj/gm/gm.crbug_908646.o obj/gm/gm.crbug_913349.o obj/gm/gm.crbug_918512.o obj/gm/gm.crbug_938592.o obj/gm/gm.crbug_946965.o obj/gm/gm.crbug_947055.o obj/gm/gm.crbug_996140.o obj/gm/gm.crop_imagefilter.o obj/gm/gm.croppedrects.o obj/gm/gm.crosscontextimage.o obj/gm/gm.cubicpaths.o obj/gm/gm.daa.o obj/gm/gm.dashcircle.o obj/gm/gm.dashcubics.o obj/gm/gm.dashing.o obj/gm/gm.degeneratesegments.o obj/gm/gm.dftext.o obj/gm/gm.dftext_blob_persp.o obj/gm/gm.discard.o obj/gm/gm.displacement.o obj/gm/gm.distantclip.o obj/gm/gm.draw_bitmap_rect_skbug4374.o obj/gm/gm.drawable.o obj/gm/gm.drawatlas.o obj/gm/gm.drawatlascolor.o obj/gm/gm.drawbitmaprect.o obj/gm/gm.drawglyphs.o obj/gm/gm.drawimageset.o obj/gm/gm.drawlines_with_local_matrix.o obj/gm/gm.drawminibitmaprect.o obj/gm/gm.drawregion.o obj/gm/gm.drawregionmodes.o obj/gm/gm.dropshadowimagefilter.o obj/gm/gm.drrect.o obj/gm/gm.drrect_small_inner.o obj/gm/gm.dstreadshuffle.o obj/gm/gm.ducky_yuv_blend.o obj/gm/gm.emboss.o obj/gm/gm.emptypath.o obj/gm/gm.encode.o obj/gm/gm.encode_alpha_jpeg.o obj/gm/gm.encode_color_types.o obj/gm/gm.encode_platform.o obj/gm/gm.encode_srgb.o obj/gm/gm.exoticformats.o obj/gm/gm.fadefilter.o obj/gm/gm.fatpathfill.o obj/gm/gm.fillrect_gradient.o obj/gm/gm.filltypes.o obj/gm/gm.filltypespersp.o obj/gm/gm.filterbug.o obj/gm/gm.filterfastbounds.o obj/gm/gm.filterindiabox.o obj/gm/gm.flippity.o obj/gm/gm.fontcache.o obj/gm/gm.fontmgr.o obj/gm/gm.fontregen.o obj/gm/gm.fontscaler.o obj/gm/gm.fontscalerdistortable.o obj/gm/gm.gammatext.o obj/gm/gm.getpostextpath.o obj/gm/gm.giantbitmap.o obj/gm/gm.glyph_pos.o obj/gm/gm.gm.o obj/gm/gm.gradient_dirty_laundry.o obj/gm/gm.gradient_matrix.o obj/gm/gm.gradients.o obj/gm/gm.gradients_2pt_conical.o obj/gm/gm.gradients_degenerate.o obj/gm/gm.gradients_no_texture.o obj/gm/gm.gradtext.o obj/gm/gm.graphite_replay.o obj/gm/gm.graphitestart.o obj/gm/gm.grayscalejpg.o obj/gm/gm.hairlines.o obj/gm/gm.hairmodes.o obj/gm/gm.hardstop_gradients.o obj/gm/gm.hardstop_gradients_many.o obj/gm/gm.highcontrastfilter.o obj/gm/gm.hittestpath.o obj/gm/gm.hsl.o obj/gm/gm.hugepath.o obj/gm/gm.image.o obj/gm/gm.image_pict.o obj/gm/gm.image_shader.o obj/gm/gm.imageblur.o obj/gm/gm.imageblur2.o obj/gm/gm.imageblurclampmode.o obj/gm/gm.imageblurrepeatmode.o obj/gm/gm.imageblurtiled.o obj/gm/gm.imagefilters.o obj/gm/gm.imagefiltersbase.o obj/gm/gm.imagefiltersclipped.o obj/gm/gm.imagefilterscropexpand.o obj/gm/gm.imagefilterscropped.o obj/gm/gm.imagefiltersgraph.o obj/gm/gm.imagefiltersscaled.o obj/gm/gm.imagefiltersstroked.o obj/gm/gm.imagefilterstransformed.o obj/gm/gm.imagefiltersunpremul.o obj/gm/gm.imagefromyuvtextures.o obj/gm/gm.imagemagnifier.o obj/gm/gm.imagemakewithfilter.o obj/gm/gm.imagemasksubset.o obj/gm/gm.imageresizetiled.o obj/gm/gm.imagesource.o obj/gm/gm.imagesource2.o obj/gm/gm.internal_links.o obj/gm/gm.inverseclip.o obj/gm/gm.inversepaths.o obj/gm/gm.jpg_color_cube.o obj/gm/gm.kawase_blur_rt.o obj/gm/gm.labyrinth.o obj/gm/gm.largeclippedpath.o obj/gm/gm.largeglyphblur.o obj/gm/gm.lattice.o obj/gm/gm.lcdblendmodes.o obj/gm/gm.lcdoverlap.o obj/gm/gm.lcdtext.o obj/gm/gm.lighting.o obj/gm/gm.linepaths.o obj/gm/gm.localmatriximagefilter.o obj/gm/gm.localmatriximageshader.o obj/gm/gm.localmatrixshader.o obj/gm/gm.lumafilter.o obj/gm/gm.mac_aa_explorer.o obj/gm/gm.make_raster_image.o obj/gm/gm.makecolorspace.o obj/gm/gm.mandoline.o obj/gm/gm.manypathatlases.o obj/gm/gm.manypaths.o obj/gm/gm.matrixconvolution.o obj/gm/gm.matriximagefilter.o obj/gm/gm.mesh.o obj/gm/gm.mipmap.o obj/gm/gm.mirrortile.o obj/gm/gm.mixedtextblobs.o obj/gm/gm.mixercolorfilter.o obj/gm/gm.modecolorfilters.o obj/gm/gm.morphology.o obj/gm/gm.nearesthalfpixelimage.o obj/gm/gm.nested.o obj/gm/gm.ninepatchstretch.o obj/gm/gm.nonclosedpaths.o obj/gm/gm.offsetimagefilter.o obj/gm/gm.orientation.o obj/gm/gm.ovals.o obj/gm/gm.overdrawcanvas.o obj/gm/gm.overdrawcolorfilter.o obj/gm/gm.overstroke.o obj/gm/gm.p3.o obj/gm/gm.palette.o obj/gm/gm.patch.o obj/gm/gm.path_stroke_with_zero_length.o obj/gm/gm.patharcto.o obj/gm/gm.pathcontourstart.o obj/gm/gm.patheffects.o obj/gm/gm.pathfill.o obj/gm/gm.pathinterior.o obj/gm/gm.pathmaskcache.o obj/gm/gm.pathmeasure.o obj/gm/gm.pathopsinverse.o obj/gm/gm.pathreverse.o obj/gm/gm.pdf_never_embed.o obj/gm/gm.perlinnoise.o obj/gm/gm.perspimages.o obj/gm/gm.perspshaders.o obj/gm/gm.persptext.o obj/gm/gm.picture.o obj/gm/gm.pictureimagefilter.o obj/gm/gm.pictureimagegenerator.o obj/gm/gm.pictureshader.o obj/gm/gm.pictureshadercache.o obj/gm/gm.pictureshadertile.o obj/gm/gm.plus.o obj/gm/gm.points.o obj/gm/gm.poly2poly.o obj/gm/gm.polygonoffset.o obj/gm/gm.polygons.o obj/gm/gm.postercircle.o obj/gm/gm.preservefillrule.o obj/gm/gm.quadpaths.o obj/gm/gm.radial_gradient_precision.o obj/gm/gm.rasterhandleallocator.o obj/gm/gm.readpixels.o obj/gm/gm.recordopts.o obj/gm/gm.repeated_bitmap.o obj/gm/gm.resizeimagefilter.o obj/gm/gm.rippleshadergm.o obj/gm/gm.roundrects.o obj/gm/gm.rrect.o obj/gm/gm.rrectclipdrawpaint.o obj/gm/gm.rsxtext.o obj/gm/gm.runtimecolorfilter.o obj/gm/gm.runtimefunctions.o obj/gm/gm.runtimeimagefilter.o obj/gm/gm.runtimeintrinsics.o obj/gm/gm.runtimeshader.o obj/gm/gm.samplerstress.o obj/gm/gm.savelayer.o obj/gm/gm.scaledemoji.o obj/gm/gm.scaledemoji_rendering.o obj/gm/gm.scaledrects.o obj/gm/gm.scaledstrokes.o obj/gm/gm.shadermaskfilter.o obj/gm/gm.shaderpath.o obj/gm/gm.shadertext3.o obj/gm/gm.shadowutils.o obj/gm/gm.shallowgradient.o obj/gm/gm.shapes.o obj/gm/gm.sharedcorners.o obj/gm/gm.showmiplevels.o obj/gm/gm.simpleaaclip.o obj/gm/gm.simplerect.o obj/gm/gm.skbug1719.o obj/gm/gm.skbug_12212.o obj/gm/gm.skbug_257.o obj/gm/gm.skbug_4868.o obj/gm/gm.skbug_5321.o obj/gm/gm.skbug_8664.o obj/gm/gm.skbug_8955.o obj/gm/gm.skbug_9319.o obj/gm/gm.skbug_9819.o obj/gm/gm.slug.o obj/gm/gm.smallarc.o obj/gm/gm.smallpaths.o obj/gm/gm.spritebitmap.o obj/gm/gm.srcmode.o obj/gm/gm.srgb.o obj/gm/gm.stlouisarch.o obj/gm/gm.stringart.o obj/gm/gm.stroke_rect_shader.o obj/gm/gm.strokedlines.o obj/gm/gm.strokefill.o obj/gm/gm.strokerect.o obj/gm/gm.strokerect_anisotropic.o obj/gm/gm.strokerects.o obj/gm/gm.strokes.o obj/gm/gm.stroketext.o obj/gm/gm.subsetshader.o obj/gm/gm.surface.o obj/gm/gm.swizzle.o obj/gm/gm.tablecolorfilter.o obj/gm/gm.tallstretchedbitmaps.o obj/gm/gm.testgradient.o obj/gm/gm.text_scale_skew.o obj/gm/gm.textblob.o obj/gm/gm.textblobblockreordering.o obj/gm/gm.textblobcolortrans.o obj/gm/gm.textblobgeometrychange.o obj/gm/gm.textblobmixedsizes.o obj/gm/gm.textblobrandomfont.o obj/gm/gm.textblobshader.o obj/gm/gm.textblobtransforms.o obj/gm/gm.textblobuseaftergpufree.o obj/gm/gm.texteffects.o obj/gm/gm.thinconcavepaths.o obj/gm/gm.thinrects.o obj/gm/gm.thinstrokedrects.o obj/gm/gm.tiledscaledbitmap.o obj/gm/gm.tileimagefilter.o obj/gm/gm.tilemodes.o obj/gm/gm.tilemodes_alpha.o obj/gm/gm.tilemodes_scaled.o obj/gm/gm.tinybitmap.o obj/gm/gm.transparency.o obj/gm/gm.trickycubicstrokes.o obj/gm/gm.typeface.o obj/gm/gm.unpremul.o obj/gm/gm.userfont.o obj/gm/gm.variedtext.o obj/gm/gm.vertices.o obj/gm/gm.verylargebitmap.o obj/gm/gm.wacky_yuv_formats.o obj/gm/gm.widebuttcaps.o obj/gm/gm.windowrectangles.o obj/gm/gm.workingspace.o obj/gm/gm.xfermodeimagefilter.o obj/gm/gm.xfermodes.o obj/gm/gm.xfermodes2.o obj/gm/gm.xfermodes3.o obj/gm/gm.ycbcrimage.o obj/gm/gm.yuv420_odd_dim.o obj/gm/gm.aarecteffect.o obj/gm/gm.attributes.o obj/gm/gm.beziereffects.o obj/gm/gm.bigrrectaaeffect.o obj/gm/gm.clear_swizzle.o obj/gm/gm.clockwise.o obj/gm/gm.constcolorprocessor.o obj/gm/gm.convexpolyeffect.o obj/gm/gm.destcolor.o obj/gm/gm.drawquadset.o obj/gm/gm.fp_sample_chaining.o obj/gm/gm.fpcoordinateoverride.o obj/gm/gm.fwidth_squircle.o obj/gm/gm.gpu_blur_utils.o obj/gm/gm.lazytiling.o obj/gm/gm.rrects.o obj/gm/gm.texelsubset.o obj/gm/gm.yuvtorgbsubset.o obj/gm/gm.rectangletexture.o obj/gm/gm.fiddle.o obj/tools/gpu/gpu_tool_utils.BackendSurfaceFactory.o obj/tools/gpu/gpu_tool_utils.BackendTextureImageFactory.o obj/tools/gpu/gpu_tool_utils.ContextType.o obj/tools/gpu/gpu_tool_utils.FlushFinishTracker.o obj/tools/gpu/gpu_tool_utils.GrContextFactory.o obj/tools/gpu/gpu_tool_utils.GrTest.o obj/tools/gpu/gpu_tool_utils.ManagedBackendTexture.o obj/tools/gpu/gpu_tool_utils.MemoryCache.o obj/tools/gpu/gpu_tool_utils.ProtectedUtils.o obj/tools/gpu/gpu_tool_utils.ProxyUtils.o obj/tools/gpu/gpu_tool_utils.TestContext.o obj/tools/gpu/gpu_tool_utils.TestOps.o obj/tools/gpu/gpu_tool_utils.YUVUtils.o obj/tools/gpu/mock/gpu_tool_utils.MockTestContext.o obj/src/utils/gpu_tool_utils.SkTestCanvas.o obj/tools/gpu/gl/gpu_tool_utils.GLTestContext.o obj/tools/gpu/gl/mac/gpu_tool_utils.CreatePlatformGLTestContext_mac.o obj/tools/sk_app/sk_app.CommandSet.o obj/tools/sk_app/sk_app.Window.o obj/tools/sk_app.SkGetExecutablePath_mac.o obj/tools/sk_app/mac/sk_app.Window_mac.o obj/tools/sk_app/mac/sk_app.main_mac.o obj/tools/tool_utils.AndroidSkDebugToStdOut.o obj/tools/tool_utils.DDLPromiseImageHelper.o obj/tools/tool_utils.DDLTileHelper.o obj/tools/tool_utils.DecodeUtils.o obj/tools/tool_utils.EncodeUtils.o obj/tools/tool_utils.GpuToolUtils.o obj/tools/tool_utils.LsanSuppressions.o obj/tools/tool_utils.MSKPPlayer.o obj/tools/tool_utils.ProcStats.o obj/tools/tool_utils.Resources.o obj/tools/tool_utils.RuntimeBlendUtils.o obj/tools/tool_utils.SkMetaData.o obj/tools/tool_utils.SkSharingProc.o obj/tools/tool_utils.TestFontDataProvider.o obj/tools/tool_utils.ToolUtils.o obj/tools/tool_utils.UrlDataManager.o obj/tools/debugger/tool_utils.DebugCanvas.o obj/tools/debugger/tool_utils.DebugLayerManager.o obj/tools/debugger/tool_utils.DrawCommand.o obj/tools/debugger/tool_utils.JsonWriteBuffer.o obj/tools/fonts/tool_utils.FontToolUtils.o obj/tools/fonts/tool_utils.RandomScalerContext.o obj/tools/fonts/tool_utils.TestFontMgr.o obj/tools/fonts/tool_utils.TestSVGTypeface.o obj/tools/fonts/tool_utils.TestTypeface.o obj/tools/timer/tool_utils.Timer.o obj/tools/tool_utils.SvgPathExtractor.o obj/tools/tool_utils.CrashHandler.o obj/tools/tool_utils.AutoreleasePool.o obj/tools/trace/trace.ChromeTracingTracer.o obj/tools/trace/trace.EventTracingPriv.o obj/tools/trace/trace.SkDebugfTracer.o obj/tools/trace/trace.SkPerfettoTrace.o obj/src/xml/xml.SkDOM.o obj/src/xml/xml.SkXMLParser.o obj/src/xml/xml.SkXMLWriter.o obj/src/codec/xml.SkXmp.o obj/src/svg/xml.SkSVGCanvas.o obj/src/svg/xml.SkSVGDevice.o obj/modules/skottie/utils/utils.SkottieUtils.o obj/modules/skottie/utils/utils.TextEditor.o obj/modules/skparagraph/slides/slides.ParagraphSlide.o obj/modules/sksg/slides/slides.SVGPongSlide.o obj/third_party/etc1/etc1.etc1.o obj/modules/skottie/gm/gm.ExternalProperties.o obj/modules/skottie/gm/gm.SkottieGM.o obj/modules/skparagraph/gm/gm.simple_gm.o obj/modules/skparagraph/utils/utils.TestFontCollection.o ./libskia.a ./libaudioplayer.a ./libskottie.a ./libskshaper.a ./libsvg.a ./libimgui.a ./libskunicode.a ./libsksg.a ./libskparagraph.a ./libwindow.a ./libperfetto.a ./libexpat.a || obj/common_flags_fontmgr.stamp obj/common_flags_gpu.stamp obj/flags.stamp obj/gm.stamp obj/gpu_tool_utils.stamp obj/sk_app.stamp obj/tool_utils.stamp obj/trace.stamp obj/xml.stamp obj/modules/skottie/utils.stamp obj/modules/skparagraph/slides.stamp obj/modules/sksg/slides.stamp obj/etc1.stamp obj/modules/skottie/gm.stamp obj/modules/skparagraph/gm.stamp obj/modules/skparagraph/utils.stamp
+  ldflags = -Wl,-rpath,@loader_path/. -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -Wl,-w -target arm64-apple-macos11
+  libs = -ldl
+  frameworks = -framework ApplicationServices -framework OpenGL -framework AppKit -framework Foundation -framework QuartzCore -framework Cocoa -framework AVFoundation
+  swiftmodules =
+  output_extension = 
+  output_dir = .

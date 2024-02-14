@@ -24,6 +24,10 @@ const int $kMaskFormatA8   = 0;
 const int $kMaskFormatA565 = 1;
 const int $kMaskFormatARGB = 2;
 
+const int $kMaskFormatA8   = 0;
+const int $kMaskFormatA565 = 1;
+const int $kMaskFormatARGB = 2;
+
 // Matches GrTextureEffect::kLinearInset, to make sure we don't touch an outer
 // row or column with a weight of 0 when linear filtering.
 const float $kLinearInset = 0.5 + 0.00001;

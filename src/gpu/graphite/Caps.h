@@ -14,11 +14,13 @@
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkAlign.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -41,7 +43,6 @@ class GraphicsPipelineDesc;
 class GraphiteResourceKey;
 struct RenderPassDesc;
 class TextureInfo;
-class TextureProxy;
 
 struct ResourceBindingRequirements {
     // The required data layout rules for the contents of a uniform buffer.
@@ -98,6 +99,12 @@ public:
                                                           Protected) const = 0;
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
+
+    virtual SkSpan<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        // By default, return an empty span containing no additional information. Different
+        // backends can override this method as needed.
+        return {};
+    }
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;

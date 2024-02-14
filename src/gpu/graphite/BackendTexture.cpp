@@ -145,6 +145,33 @@ BackendTexture::BackendTexture(SkISize dimensions,
         , fDawnTexture(nullptr)
         , fDawnTextureView(textureView) {}
 
+BackendTexture::BackendTexture(SkISize dimensions,
+                               const DawnTextureInfo& info,
+                               WGPUTexture texture)
+        : fDimensions(planeDimensions), fInfo(info), fDawnTexture(texture) {
+    SkASSERT(info.fAspect == wgpu::TextureAspect::All ||
+             info.fAspect == wgpu::TextureAspect::Plane0Only ||
+             info.fAspect == wgpu::TextureAspect::Plane1Only ||
+             info.fAspect == wgpu::TextureAspect::Plane2Only);
+#endif
+}
+
+// When we only have a WGPUTextureView we can't actually take advantage of these TextureUsage bits
+// because they require having the WGPUTexture.
+static DawnTextureInfo strip_copy_usage(const DawnTextureInfo& info) {
+    DawnTextureInfo result = info;
+    result.fUsage &= ~(wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc);
+    return result;
+}
+
+BackendTexture::BackendTexture(SkISize dimensions,
+                               const DawnTextureInfo& info,
+                               WGPUTextureView textureView)
+        : fDimensions(dimensions)
+        , fInfo(strip_copy_usage(info))
+        , fDawnTexture(nullptr)
+        , fDawnTextureView(textureView) {}
+
 WGPUTexture BackendTexture::getDawnTexturePtr() const {
     if (this->isValid() && this->backend() == BackendApi::kDawn) {
         return fDawnTexture;

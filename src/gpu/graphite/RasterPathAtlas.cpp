@@ -107,7 +107,7 @@ const TextureProxy* RasterPathAtlas::addRect(skvx::half2 maskSize,
             continue;
         }
 
-        this->makeMRU(currPage);
+        this->makeMRU(currPage, recorder);
         return currPage->fTexture.get();
     }
 
@@ -144,7 +144,7 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
             skvx::half2* found = currPage->fCachedShapes.find(maskKey);
             if (found) {
                 *outPos = *found;
-                this->makeMRU(currPage);
+                this->makeMRU(currPage, recorder);
                 return currPage->fTexture.get();
             }
             pageIter.next();

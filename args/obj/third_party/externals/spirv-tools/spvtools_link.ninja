@@ -1,0 +1,16 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\]
+framework_dirs =
+include_dirs = -I../third_party/externals/spirv-tools -I../third_party/externals/spirv-headers/include -I../third_party/externals/spirv-tools/include -Igen/third_party/externals/spirv-tools
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wno-implicit-fallthrough -Wno-newline-eof -Wno-unreachable-code-break -Wno-unreachable-code-return -std=c++17
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = libspvtools_link
+
+build obj/third_party/externals/spirv-tools/source/link/libspvtools_link.linker.o: cxx ../third_party/externals/spirv-tools/source/link/linker.cpp || obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp
+  source_file_part = linker.cpp
+  source_name_part = linker
+
+build ./libspvtools_link.a: alink obj/third_party/externals/spirv-tools/source/link/libspvtools_link.linker.o || obj/third_party/externals/spirv-tools/spvtools_headers.stamp ./libspvtools.a ./libspvtools_opt.a ./libspvtools_val.a obj/third_party/externals/spirv-headers/spv_headers.stamp
+  arflags =
+  output_extension = .a
+  output_dir = 

@@ -39,6 +39,8 @@ c_plus_plus_deps()
 
 header_based_configs()
 
+header_based_configs()
+
 ##############################################################################
 # Everything below here is not required for Skia, but is required for the sample
 # rules based on Skia.

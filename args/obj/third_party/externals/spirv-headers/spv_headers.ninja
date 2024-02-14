@@ -1,0 +1,8 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\]
+framework_dirs =
+include_dirs = -I../third_party/externals/spirv-headers/include
+root_out_dir = .
+target_output_name = spv_headers
+
+
+build obj/third_party/externals/spirv-headers/spv_headers.stamp: stamp

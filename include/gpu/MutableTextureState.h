@@ -14,6 +14,8 @@
 
 #include <cstddef>
 
+#include <cstddef>
+
 namespace skgpu {
 enum class BackendApi : unsigned int;
 class MutableTextureStateData;

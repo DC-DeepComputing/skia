@@ -1,0 +1,13 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\]
+framework_dirs =
+include_dirs = -I../third_party/externals/spirv-tools -I../third_party/externals/spirv-headers/include -I../third_party/externals/spirv-tools/include -Igen/third_party/externals/spirv-tools
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wno-implicit-fallthrough -Wno-newline-eof -Wno-unreachable-code-break -Wno-unreachable-code-return -std=c++17
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = spvtools_software_version
+
+build obj/third_party/externals/spirv-tools/source/spvtools_software_version.software_version.o: cxx ../third_party/externals/spirv-tools/source/software_version.cpp || obj/third_party/externals/spirv-tools/spvtools_build_version.stamp
+  source_file_part = software_version.cpp
+  source_name_part = software_version
+
+build obj/third_party/externals/spirv-tools/spvtools_software_version.stamp: stamp obj/third_party/externals/spirv-tools/source/spvtools_software_version.software_version.o || obj/third_party/externals/spirv-tools/spvtools_build_version.stamp obj/third_party/externals/spirv-tools/spvtools_headers.stamp

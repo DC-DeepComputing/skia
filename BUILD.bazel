@@ -184,6 +184,26 @@ alias(
 ###
 
 alias(
+    name = "wbmp_decode_codec",
+    actual = "//src/codec:wbmp_decode",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "webp_decode_codec",
+    actual = "//src/codec:webp_decode",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "webp_encode_codec",
+    actual = "//src/encode:webp_encode",
+    visibility = ["//visibility:public"],
+)
+
+###
+
+alias(
     name = "fontmgr_fontconfig_freetype",
     actual = "//src/ports:fontmgr_fontconfig_freetype",
     visibility = ["//visibility:public"],

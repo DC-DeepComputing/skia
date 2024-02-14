@@ -1,0 +1,1211 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_SHAPER_CORETEXT_AVAILABLE -DSK_SHAPER_HARFBUZZ_AVAILABLE -DSK_SHAPER_UNICODE_AVAILABLE
+framework_dirs =
+include_dirs = -I../include/third_party/vulkan -I.. -I../modules/skshaper/include
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi -isystem /Users/nicolettep/Repos/skia/third_party/libpng -isystem /Users/nicolettep/Repos/skia/third_party/externals/libpng -isystem /Users/nicolettep/Repos/skia/third_party/externals/libwebp/src -isystem /Users/nicolettep/Repos/skia/third_party/externals/libwebp -isystem /Users/nicolettep/Repos/skia/third_party/externals/zlib
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = tests
+
+build obj/tests.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/icu/make_data_assembly.stamp
+build obj/tests/tests.AAClipTest.o: cxx ../tests/AAClipTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AAClipTest.cpp
+  source_name_part = AAClipTest
+build obj/tests/tests.AdvancedBlendTest.o: cxx ../tests/AdvancedBlendTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AdvancedBlendTest.cpp
+  source_name_part = AdvancedBlendTest
+build obj/tests/tests.AndroidCodecTest.o: cxx ../tests/AndroidCodecTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AndroidCodecTest.cpp
+  source_name_part = AndroidCodecTest
+build obj/tests/tests.AnimatedImageTest.o: cxx ../tests/AnimatedImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AnimatedImageTest.cpp
+  source_name_part = AnimatedImageTest
+build obj/tests/tests.AnnotationTest.o: cxx ../tests/AnnotationTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AnnotationTest.cpp
+  source_name_part = AnnotationTest
+build obj/tests/tests.ApplyGammaTest.o: cxx ../tests/ApplyGammaTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ApplyGammaTest.cpp
+  source_name_part = ApplyGammaTest
+build obj/tests/tests.ArenaAllocTest.o: cxx ../tests/ArenaAllocTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ArenaAllocTest.cpp
+  source_name_part = ArenaAllocTest
+build obj/tests/tests.AsADashTest.o: cxx ../tests/AsADashTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AsADashTest.cpp
+  source_name_part = AsADashTest
+build obj/tests/tests.AvifTest.o: cxx ../tests/AvifTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = AvifTest.cpp
+  source_name_part = AvifTest
+build obj/tests/tests.BRDTest.o: cxx ../tests/BRDTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BRDTest.cpp
+  source_name_part = BRDTest
+build obj/tests/tests.BackendAllocationTest.o: cxx ../tests/BackendAllocationTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BackendAllocationTest.cpp
+  source_name_part = BackendAllocationTest
+build obj/tests/tests.BackendSurfaceMutableStateTest.o: cxx ../tests/BackendSurfaceMutableStateTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BackendSurfaceMutableStateTest.cpp
+  source_name_part = BackendSurfaceMutableStateTest
+build obj/tests/tests.BadIcoTest.o: cxx ../tests/BadIcoTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BadIcoTest.cpp
+  source_name_part = BadIcoTest
+build obj/tests/tests.BezierCurveTest.o: cxx ../tests/BezierCurveTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BezierCurveTest.cpp
+  source_name_part = BezierCurveTest
+build obj/tests/tests.BigImageTest.o: cxx ../tests/BigImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BigImageTest.cpp
+  source_name_part = BigImageTest
+build obj/tests/tests.BitSetTest.o: cxx ../tests/BitSetTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BitSetTest.cpp
+  source_name_part = BitSetTest
+build obj/tests/tests.BitmapCopyTest.o: cxx ../tests/BitmapCopyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BitmapCopyTest.cpp
+  source_name_part = BitmapCopyTest
+build obj/tests/tests.BitmapGetColorTest.o: cxx ../tests/BitmapGetColorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BitmapGetColorTest.cpp
+  source_name_part = BitmapGetColorTest
+build obj/tests/tests.BitmapTest.o: cxx ../tests/BitmapTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BitmapTest.cpp
+  source_name_part = BitmapTest
+build obj/tests/tests.BlendTest.o: cxx ../tests/BlendTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BlendTest.cpp
+  source_name_part = BlendTest
+build obj/tests/tests.BlitMaskClip.o: cxx ../tests/BlitMaskClip.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BlitMaskClip.cpp
+  source_name_part = BlitMaskClip
+build obj/tests/tests.BlurTest.o: cxx ../tests/BlurTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BlurTest.cpp
+  source_name_part = BlurTest
+build obj/tests/tests.CachedDataTest.o: cxx ../tests/CachedDataTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CachedDataTest.cpp
+  source_name_part = CachedDataTest
+build obj/tests/tests.CachedDecodingPixelRefTest.o: cxx ../tests/CachedDecodingPixelRefTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CachedDecodingPixelRefTest.cpp
+  source_name_part = CachedDecodingPixelRefTest
+build obj/tests/tests.CanvasStateHelpers.o: cxx ../tests/CanvasStateHelpers.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CanvasStateHelpers.cpp
+  source_name_part = CanvasStateHelpers
+build obj/tests/tests.CanvasStateTest.o: cxx ../tests/CanvasStateTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CanvasStateTest.cpp
+  source_name_part = CanvasStateTest
+build obj/tests/tests.CanvasTest.o: cxx ../tests/CanvasTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CanvasTest.cpp
+  source_name_part = CanvasTest
+build obj/tests/tests.ChecksumTest.o: cxx ../tests/ChecksumTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ChecksumTest.cpp
+  source_name_part = ChecksumTest
+build obj/tests/tests.ClipCubicTest.o: cxx ../tests/ClipCubicTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ClipCubicTest.cpp
+  source_name_part = ClipCubicTest
+build obj/tests/tests.ClipStackTest.o: cxx ../tests/ClipStackTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ClipStackTest.cpp
+  source_name_part = ClipStackTest
+build obj/tests/tests.ClipperTest.o: cxx ../tests/ClipperTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ClipperTest.cpp
+  source_name_part = ClipperTest
+build obj/tests/tests.CodecAnimTest.o: cxx ../tests/CodecAnimTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CodecAnimTest.cpp
+  source_name_part = CodecAnimTest
+build obj/tests/tests.CodecExactReadTest.o: cxx ../tests/CodecExactReadTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CodecExactReadTest.cpp
+  source_name_part = CodecExactReadTest
+build obj/tests/tests.CodecPartialTest.o: cxx ../tests/CodecPartialTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CodecPartialTest.cpp
+  source_name_part = CodecPartialTest
+build obj/tests/tests.CodecRecommendedTypeTest.o: cxx ../tests/CodecRecommendedTypeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CodecRecommendedTypeTest.cpp
+  source_name_part = CodecRecommendedTypeTest
+build obj/tests/tests.CodecTest.o: cxx ../tests/CodecTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CodecTest.cpp
+  source_name_part = CodecTest
+build obj/tests/tests.ColorFilterTest.o: cxx ../tests/ColorFilterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ColorFilterTest.cpp
+  source_name_part = ColorFilterTest
+build obj/tests/tests.ColorMatrixTest.o: cxx ../tests/ColorMatrixTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ColorMatrixTest.cpp
+  source_name_part = ColorMatrixTest
+build obj/tests/tests.ColorPrivTest.o: cxx ../tests/ColorPrivTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ColorPrivTest.cpp
+  source_name_part = ColorPrivTest
+build obj/tests/tests.ColorSpaceTest.o: cxx ../tests/ColorSpaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ColorSpaceTest.cpp
+  source_name_part = ColorSpaceTest
+build obj/tests/tests.ColorTest.o: cxx ../tests/ColorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ColorTest.cpp
+  source_name_part = ColorTest
+build obj/tests/tests.CompressedBackendAllocationTest.o: cxx ../tests/CompressedBackendAllocationTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CompressedBackendAllocationTest.cpp
+  source_name_part = CompressedBackendAllocationTest
+build obj/tests/tests.CopySurfaceTest.o: cxx ../tests/CopySurfaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CopySurfaceTest.cpp
+  source_name_part = CopySurfaceTest
+build obj/tests/tests.CubicChopTest.o: cxx ../tests/CubicChopTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CubicChopTest.cpp
+  source_name_part = CubicChopTest
+build obj/tests/tests.CubicMapTest.o: cxx ../tests/CubicMapTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CubicMapTest.cpp
+  source_name_part = CubicMapTest
+build obj/tests/tests.CubicRootsTest.o: cxx ../tests/CubicRootsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CubicRootsTest.cpp
+  source_name_part = CubicRootsTest
+build obj/tests/tests.CullTestTest.o: cxx ../tests/CullTestTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CullTestTest.cpp
+  source_name_part = CullTestTest
+build obj/tests/tests.DashPathEffectTest.o: cxx ../tests/DashPathEffectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DashPathEffectTest.cpp
+  source_name_part = DashPathEffectTest
+build obj/tests/tests.DataRefTest.o: cxx ../tests/DataRefTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DataRefTest.cpp
+  source_name_part = DataRefTest
+build obj/tests/tests.DebugLayerManagerTest.o: cxx ../tests/DebugLayerManagerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DebugLayerManagerTest.cpp
+  source_name_part = DebugLayerManagerTest
+build obj/tests/tests.DeferredDisplayListTest.o: cxx ../tests/DeferredDisplayListTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DeferredDisplayListTest.cpp
+  source_name_part = DeferredDisplayListTest
+build obj/tests/tests.DequeTest.o: cxx ../tests/DequeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DequeTest.cpp
+  source_name_part = DequeTest
+build obj/tests/tests.DescriptorTest.o: cxx ../tests/DescriptorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DescriptorTest.cpp
+  source_name_part = DescriptorTest
+build obj/tests/tests.DeviceTest.o: cxx ../tests/DeviceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DeviceTest.cpp
+  source_name_part = DeviceTest
+build obj/tests/tests.DiscardableMemoryPoolTest.o: cxx ../tests/DiscardableMemoryPoolTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DiscardableMemoryPoolTest.cpp
+  source_name_part = DiscardableMemoryPoolTest
+build obj/tests/tests.DiscardableMemoryTest.o: cxx ../tests/DiscardableMemoryTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DiscardableMemoryTest.cpp
+  source_name_part = DiscardableMemoryTest
+build obj/tests/tests.DrawBitmapRectTest.o: cxx ../tests/DrawBitmapRectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DrawBitmapRectTest.cpp
+  source_name_part = DrawBitmapRectTest
+build obj/tests/tests.DrawPathTest.o: cxx ../tests/DrawPathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DrawPathTest.cpp
+  source_name_part = DrawPathTest
+build obj/tests/tests.DrawTextTest.o: cxx ../tests/DrawTextTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DrawTextTest.cpp
+  source_name_part = DrawTextTest
+build obj/tests/tests.EmptyPathTest.o: cxx ../tests/EmptyPathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = EmptyPathTest.cpp
+  source_name_part = EmptyPathTest
+build obj/tests/tests.EncodeTest.o: cxx ../tests/EncodeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = EncodeTest.cpp
+  source_name_part = EncodeTest
+build obj/tests/tests.EncodedInfoTest.o: cxx ../tests/EncodedInfoTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = EncodedInfoTest.cpp
+  source_name_part = EncodedInfoTest
+build obj/tests/tests.ExifTest.o: cxx ../tests/ExifTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ExifTest.cpp
+  source_name_part = ExifTest
+build obj/tests/tests.ExtendedSkColorTypeTests.o: cxx ../tests/ExtendedSkColorTypeTests.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ExtendedSkColorTypeTests.cpp
+  source_name_part = ExtendedSkColorTypeTests
+build obj/tests/tests.F16StagesTest.o: cxx ../tests/F16StagesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = F16StagesTest.cpp
+  source_name_part = F16StagesTest
+build obj/tests/tests.FillPathTest.o: cxx ../tests/FillPathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FillPathTest.cpp
+  source_name_part = FillPathTest
+build obj/tests/tests.FilterResultTest.o: cxx ../tests/FilterResultTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FilterResultTest.cpp
+  source_name_part = FilterResultTest
+build obj/tests/tests.FindCubicConvex180ChopsTest.o: cxx ../tests/FindCubicConvex180ChopsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FindCubicConvex180ChopsTest.cpp
+  source_name_part = FindCubicConvex180ChopsTest
+build obj/tests/tests.FitsInTest.o: cxx ../tests/FitsInTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FitsInTest.cpp
+  source_name_part = FitsInTest
+build obj/tests/tests.FlattenDrawableTest.o: cxx ../tests/FlattenDrawableTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FlattenDrawableTest.cpp
+  source_name_part = FlattenDrawableTest
+build obj/tests/tests.FlattenableFactoryToName.o: cxx ../tests/FlattenableFactoryToName.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FlattenableFactoryToName.cpp
+  source_name_part = FlattenableFactoryToName
+build obj/tests/tests.FlattenableNameToFactory.o: cxx ../tests/FlattenableNameToFactory.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FlattenableNameToFactory.cpp
+  source_name_part = FlattenableNameToFactory
+build obj/tests/tests.Float16Test.o: cxx ../tests/Float16Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Float16Test.cpp
+  source_name_part = Float16Test
+build obj/tests/tests.FloatingPointTest.o: cxx ../tests/FloatingPointTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FloatingPointTest.cpp
+  source_name_part = FloatingPointTest
+build obj/tests/tests.FloatingPointTextureTest.o: cxx ../tests/FloatingPointTextureTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FloatingPointTextureTest.cpp
+  source_name_part = FloatingPointTextureTest
+build obj/tests/tests.FontHostStreamTest.o: cxx ../tests/FontHostStreamTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FontHostStreamTest.cpp
+  source_name_part = FontHostStreamTest
+build obj/tests/tests.FontHostTest.o: cxx ../tests/FontHostTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FontHostTest.cpp
+  source_name_part = FontHostTest
+build obj/tests/tests.FontMgrFlags.o: cxx ../tests/FontMgrFlags.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FontMgrFlags.cpp
+  source_name_part = FontMgrFlags
+build obj/tests/tests.FontMgrTest.o: cxx ../tests/FontMgrTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FontMgrTest.cpp
+  source_name_part = FontMgrTest
+build obj/tests/tests.FontNamesTest.o: cxx ../tests/FontNamesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FontNamesTest.cpp
+  source_name_part = FontNamesTest
+build obj/tests/tests.FontTest.o: cxx ../tests/FontTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FontTest.cpp
+  source_name_part = FontTest
+build obj/tests/tests.FrontBufferedStreamTest.o: cxx ../tests/FrontBufferedStreamTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = FrontBufferedStreamTest.cpp
+  source_name_part = FrontBufferedStreamTest
+build obj/tests/tests.GLBackendSurfaceTest.o: cxx ../tests/GLBackendSurfaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GLBackendSurfaceTest.cpp
+  source_name_part = GLBackendSurfaceTest
+build obj/tests/tests.GainmapShaderTest.o: cxx ../tests/GainmapShaderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GainmapShaderTest.cpp
+  source_name_part = GainmapShaderTest
+build obj/tests/tests.GeometryTest.o: cxx ../tests/GeometryTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GeometryTest.cpp
+  source_name_part = GeometryTest
+build obj/tests/tests.GifTest.o: cxx ../tests/GifTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GifTest.cpp
+  source_name_part = GifTest
+build obj/tests/tests.GlyphRunTest.o: cxx ../tests/GlyphRunTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GlyphRunTest.cpp
+  source_name_part = GlyphRunTest
+build obj/tests/tests.GpuDrawPathTest.o: cxx ../tests/GpuDrawPathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GpuDrawPathTest.cpp
+  source_name_part = GpuDrawPathTest
+build obj/tests/tests.GpuRectanizerTest.o: cxx ../tests/GpuRectanizerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GpuRectanizerTest.cpp
+  source_name_part = GpuRectanizerTest
+build obj/tests/tests.GrAHardwareBufferTest.o: cxx ../tests/GrAHardwareBufferTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrAHardwareBufferTest.cpp
+  source_name_part = GrAHardwareBufferTest
+build obj/tests/tests.GrContextAbandonTest.o: cxx ../tests/GrContextAbandonTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrContextAbandonTest.cpp
+  source_name_part = GrContextAbandonTest
+build obj/tests/tests.GrContextFactoryTest.o: cxx ../tests/GrContextFactoryTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrContextFactoryTest.cpp
+  source_name_part = GrContextFactoryTest
+build obj/tests/tests.GrContextOOM.o: cxx ../tests/GrContextOOM.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrContextOOM.cpp
+  source_name_part = GrContextOOM
+build obj/tests/tests.GrDDLImageTest.o: cxx ../tests/GrDDLImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrDDLImageTest.cpp
+  source_name_part = GrDDLImageTest
+build obj/tests/tests.GrFinishedFlushTest.o: cxx ../tests/GrFinishedFlushTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrFinishedFlushTest.cpp
+  source_name_part = GrFinishedFlushTest
+build obj/tests/tests.GrGlyphVectorTest.o: cxx ../tests/GrGlyphVectorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrGlyphVectorTest.cpp
+  source_name_part = GrGlyphVectorTest
+build obj/tests/tests.GrGpuBufferTest.o: cxx ../tests/GrGpuBufferTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrGpuBufferTest.cpp
+  source_name_part = GrGpuBufferTest
+build obj/tests/tests.GrMemoryPoolTest.o: cxx ../tests/GrMemoryPoolTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrMemoryPoolTest.cpp
+  source_name_part = GrMemoryPoolTest
+build obj/tests/tests.GrOpListFlushTest.o: cxx ../tests/GrOpListFlushTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrOpListFlushTest.cpp
+  source_name_part = GrOpListFlushTest
+build obj/tests/tests.GrPorterDuffTest.o: cxx ../tests/GrPorterDuffTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrPorterDuffTest.cpp
+  source_name_part = GrPorterDuffTest
+build obj/tests/tests.GrQuadBufferTest.o: cxx ../tests/GrQuadBufferTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrQuadBufferTest.cpp
+  source_name_part = GrQuadBufferTest
+build obj/tests/tests.GrQuadCropTest.o: cxx ../tests/GrQuadCropTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrQuadCropTest.cpp
+  source_name_part = GrQuadCropTest
+build obj/tests/tests.GrRenderTaskClusterTest.o: cxx ../tests/GrRenderTaskClusterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrRenderTaskClusterTest.cpp
+  source_name_part = GrRenderTaskClusterTest
+build obj/tests/tests.GrStyledShapeTest.o: cxx ../tests/GrStyledShapeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrStyledShapeTest.cpp
+  source_name_part = GrStyledShapeTest
+build obj/tests/tests.GrSubmittedFlushTest.o: cxx ../tests/GrSubmittedFlushTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrSubmittedFlushTest.cpp
+  source_name_part = GrSubmittedFlushTest
+build obj/tests/tests.GrSurfaceResolveTest.o: cxx ../tests/GrSurfaceResolveTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrSurfaceResolveTest.cpp
+  source_name_part = GrSurfaceResolveTest
+build obj/tests/tests.GrSurfaceTest.o: cxx ../tests/GrSurfaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrSurfaceTest.cpp
+  source_name_part = GrSurfaceTest
+build obj/tests/tests.GrTextBlobTest.o: cxx ../tests/GrTextBlobTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrTextBlobTest.cpp
+  source_name_part = GrTextBlobTest
+build obj/tests/tests.GrTextureMipMapInvalidationTest.o: cxx ../tests/GrTextureMipMapInvalidationTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrTextureMipMapInvalidationTest.cpp
+  source_name_part = GrTextureMipMapInvalidationTest
+build obj/tests/tests.GradientTest.o: cxx ../tests/GradientTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GradientTest.cpp
+  source_name_part = GradientTest
+build obj/tests/tests.HSVRoundTripTest.o: cxx ../tests/HSVRoundTripTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = HSVRoundTripTest.cpp
+  source_name_part = HSVRoundTripTest
+build obj/tests/tests.HashTest.o: cxx ../tests/HashTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = HashTest.cpp
+  source_name_part = HashTest
+build obj/tests/tests.HighContrastFilterTest.o: cxx ../tests/HighContrastFilterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = HighContrastFilterTest.cpp
+  source_name_part = HighContrastFilterTest
+build obj/tests/tests.ICCTest.o: cxx ../tests/ICCTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ICCTest.cpp
+  source_name_part = ICCTest
+build obj/tests/tests.ImageBitmapTest.o: cxx ../tests/ImageBitmapTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageBitmapTest.cpp
+  source_name_part = ImageBitmapTest
+build obj/tests/tests.ImageCacheTest.o: cxx ../tests/ImageCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageCacheTest.cpp
+  source_name_part = ImageCacheTest
+build obj/tests/tests.ImageFilterCacheTest.o: cxx ../tests/ImageFilterCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageFilterCacheTest.cpp
+  source_name_part = ImageFilterCacheTest
+build obj/tests/tests.ImageFilterTest.o: cxx ../tests/ImageFilterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageFilterTest.cpp
+  source_name_part = ImageFilterTest
+build obj/tests/tests.ImageFrom565Bitmap.o: cxx ../tests/ImageFrom565Bitmap.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageFrom565Bitmap.cpp
+  source_name_part = ImageFrom565Bitmap
+build obj/tests/tests.ImageGeneratorTest.o: cxx ../tests/ImageGeneratorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageGeneratorTest.cpp
+  source_name_part = ImageGeneratorTest
+build obj/tests/tests.ImageIsOpaqueTest.o: cxx ../tests/ImageIsOpaqueTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageIsOpaqueTest.cpp
+  source_name_part = ImageIsOpaqueTest
+build obj/tests/tests.ImageNewShaderTest.o: cxx ../tests/ImageNewShaderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageNewShaderTest.cpp
+  source_name_part = ImageNewShaderTest
+build obj/tests/tests.ImageTest.o: cxx ../tests/ImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ImageTest.cpp
+  source_name_part = ImageTest
+build obj/tests/tests.IncrTopoSortTest.o: cxx ../tests/IncrTopoSortTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = IncrTopoSortTest.cpp
+  source_name_part = IncrTopoSortTest
+build obj/tests/tests.IndexedPngOverflowTest.o: cxx ../tests/IndexedPngOverflowTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = IndexedPngOverflowTest.cpp
+  source_name_part = IndexedPngOverflowTest
+build obj/tests/tests.InfRectTest.o: cxx ../tests/InfRectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = InfRectTest.cpp
+  source_name_part = InfRectTest
+build obj/tests/tests.InsetConvexPolyTest.o: cxx ../tests/InsetConvexPolyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = InsetConvexPolyTest.cpp
+  source_name_part = InsetConvexPolyTest
+build obj/tests/tests.InvalidIndexedPngTest.o: cxx ../tests/InvalidIndexedPngTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = InvalidIndexedPngTest.cpp
+  source_name_part = InvalidIndexedPngTest
+build obj/tests/tests.IsClosedSingleContourTest.o: cxx ../tests/IsClosedSingleContourTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = IsClosedSingleContourTest.cpp
+  source_name_part = IsClosedSingleContourTest
+build obj/tests/tests.JSONTest.o: cxx ../tests/JSONTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = JSONTest.cpp
+  source_name_part = JSONTest
+build obj/tests/tests.LListTest.o: cxx ../tests/LListTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = LListTest.cpp
+  source_name_part = LListTest
+build obj/tests/tests.LRUCacheTest.o: cxx ../tests/LRUCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = LRUCacheTest.cpp
+  source_name_part = LRUCacheTest
+build obj/tests/tests.LazyStencilAttachmentTest.o: cxx ../tests/LazyStencilAttachmentTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = LazyStencilAttachmentTest.cpp
+  source_name_part = LazyStencilAttachmentTest
+build obj/tests/tests.M44Test.o: cxx ../tests/M44Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = M44Test.cpp
+  source_name_part = M44Test
+build obj/tests/tests.MD5Test.o: cxx ../tests/MD5Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MD5Test.cpp
+  source_name_part = MD5Test
+build obj/tests/tests.MallocPixelRefTest.o: cxx ../tests/MallocPixelRefTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MallocPixelRefTest.cpp
+  source_name_part = MallocPixelRefTest
+build obj/tests/tests.MaskCacheTest.o: cxx ../tests/MaskCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MaskCacheTest.cpp
+  source_name_part = MaskCacheTest
+build obj/tests/tests.MathTest.o: cxx ../tests/MathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MathTest.cpp
+  source_name_part = MathTest
+build obj/tests/tests.MatrixColorFilterTest.o: cxx ../tests/MatrixColorFilterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MatrixColorFilterTest.cpp
+  source_name_part = MatrixColorFilterTest
+build obj/tests/tests.MatrixProcsTest.o: cxx ../tests/MatrixProcsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MatrixProcsTest.cpp
+  source_name_part = MatrixProcsTest
+build obj/tests/tests.MatrixTest.o: cxx ../tests/MatrixTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MatrixTest.cpp
+  source_name_part = MatrixTest
+build obj/tests/tests.MemoryTest.o: cxx ../tests/MemoryTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MemoryTest.cpp
+  source_name_part = MemoryTest
+build obj/tests/tests.MemsetTest.o: cxx ../tests/MemsetTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MemsetTest.cpp
+  source_name_part = MemsetTest
+build obj/tests/tests.MeshTest.o: cxx ../tests/MeshTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MeshTest.cpp
+  source_name_part = MeshTest
+build obj/tests/tests.MessageBusTest.o: cxx ../tests/MessageBusTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MessageBusTest.cpp
+  source_name_part = MessageBusTest
+build obj/tests/tests.MetaDataTest.o: cxx ../tests/MetaDataTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MetaDataTest.cpp
+  source_name_part = MetaDataTest
+build obj/tests/tests.MipMapTest.o: cxx ../tests/MipMapTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MipMapTest.cpp
+  source_name_part = MipMapTest
+build obj/tests/tests.MultiPictureDocumentTest.o: cxx ../tests/MultiPictureDocumentTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = MultiPictureDocumentTest.cpp
+  source_name_part = MultiPictureDocumentTest
+build obj/tests/tests.NdkDecodeTest.o: cxx ../tests/NdkDecodeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = NdkDecodeTest.cpp
+  source_name_part = NdkDecodeTest
+build obj/tests/tests.NdkEncodeTest.o: cxx ../tests/NdkEncodeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = NdkEncodeTest.cpp
+  source_name_part = NdkEncodeTest
+build obj/tests/tests.NonlinearBlendingTest.o: cxx ../tests/NonlinearBlendingTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = NonlinearBlendingTest.cpp
+  source_name_part = NonlinearBlendingTest
+build obj/tests/tests.OSPathTest.o: cxx ../tests/OSPathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = OSPathTest.cpp
+  source_name_part = OSPathTest
+build obj/tests/tests.OffsetSimplePolyTest.o: cxx ../tests/OffsetSimplePolyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = OffsetSimplePolyTest.cpp
+  source_name_part = OffsetSimplePolyTest
+build obj/tests/tests.OnceTest.o: cxx ../tests/OnceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = OnceTest.cpp
+  source_name_part = OnceTest
+build obj/tests/tests.OverAlignedTest.o: cxx ../tests/OverAlignedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = OverAlignedTest.cpp
+  source_name_part = OverAlignedTest
+build obj/tests/tests.PDFDeflateWStreamTest.o: cxx ../tests/PDFDeflateWStreamTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFDeflateWStreamTest.cpp
+  source_name_part = PDFDeflateWStreamTest
+build obj/tests/tests.PDFDocumentTest.o: cxx ../tests/PDFDocumentTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFDocumentTest.cpp
+  source_name_part = PDFDocumentTest
+build obj/tests/tests.PDFGlyphsToUnicodeTest.o: cxx ../tests/PDFGlyphsToUnicodeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFGlyphsToUnicodeTest.cpp
+  source_name_part = PDFGlyphsToUnicodeTest
+build obj/tests/tests.PDFJpegEmbedTest.o: cxx ../tests/PDFJpegEmbedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFJpegEmbedTest.cpp
+  source_name_part = PDFJpegEmbedTest
+build obj/tests/tests.PDFMetadataAttributeTest.o: cxx ../tests/PDFMetadataAttributeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFMetadataAttributeTest.cpp
+  source_name_part = PDFMetadataAttributeTest
+build obj/tests/tests.PDFOpaqueSrcModeToSrcOverTest.o: cxx ../tests/PDFOpaqueSrcModeToSrcOverTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFOpaqueSrcModeToSrcOverTest.cpp
+  source_name_part = PDFOpaqueSrcModeToSrcOverTest
+build obj/tests/tests.PDFPrimitivesTest.o: cxx ../tests/PDFPrimitivesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFPrimitivesTest.cpp
+  source_name_part = PDFPrimitivesTest
+build obj/tests/tests.PDFTaggedLinkTest.o: cxx ../tests/PDFTaggedLinkTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFTaggedLinkTest.cpp
+  source_name_part = PDFTaggedLinkTest
+build obj/tests/tests.PDFTaggedPruningTest.o: cxx ../tests/PDFTaggedPruningTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFTaggedPruningTest.cpp
+  source_name_part = PDFTaggedPruningTest
+build obj/tests/tests.PDFTaggedTableTest.o: cxx ../tests/PDFTaggedTableTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFTaggedTableTest.cpp
+  source_name_part = PDFTaggedTableTest
+build obj/tests/tests.PDFTaggedTest.o: cxx ../tests/PDFTaggedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PDFTaggedTest.cpp
+  source_name_part = PDFTaggedTest
+build obj/tests/tests.PaintTest.o: cxx ../tests/PaintTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PaintTest.cpp
+  source_name_part = PaintTest
+build obj/tests/tests.ParametricStageTest.o: cxx ../tests/ParametricStageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ParametricStageTest.cpp
+  source_name_part = ParametricStageTest
+build obj/tests/tests.ParseColorTest.o: cxx ../tests/ParseColorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ParseColorTest.cpp
+  source_name_part = ParseColorTest
+build obj/tests/tests.ParsePathTest.o: cxx ../tests/ParsePathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ParsePathTest.cpp
+  source_name_part = ParsePathTest
+build obj/tests/tests.PathBuilderTest.o: cxx ../tests/PathBuilderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathBuilderTest.cpp
+  source_name_part = PathBuilderTest
+build obj/tests/tests.PathCoverageTest.o: cxx ../tests/PathCoverageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathCoverageTest.cpp
+  source_name_part = PathCoverageTest
+build obj/tests/tests.PathMeasureTest.o: cxx ../tests/PathMeasureTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathMeasureTest.cpp
+  source_name_part = PathMeasureTest
+build obj/tests/tests.PathTest.o: cxx ../tests/PathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathTest.cpp
+  source_name_part = PathTest
+build obj/tests/tests.PictureBBHTest.o: cxx ../tests/PictureBBHTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PictureBBHTest.cpp
+  source_name_part = PictureBBHTest
+build obj/tests/tests.PictureShaderTest.o: cxx ../tests/PictureShaderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PictureShaderTest.cpp
+  source_name_part = PictureShaderTest
+build obj/tests/tests.PictureTest.o: cxx ../tests/PictureTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PictureTest.cpp
+  source_name_part = PictureTest
+build obj/tests/tests.PinnedImageTest.o: cxx ../tests/PinnedImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PinnedImageTest.cpp
+  source_name_part = PinnedImageTest
+build obj/tests/tests.PixelRefTest.o: cxx ../tests/PixelRefTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PixelRefTest.cpp
+  source_name_part = PixelRefTest
+build obj/tests/tests.Point3Test.o: cxx ../tests/Point3Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Point3Test.cpp
+  source_name_part = Point3Test
+build obj/tests/tests.PointTest.o: cxx ../tests/PointTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PointTest.cpp
+  source_name_part = PointTest
+build obj/tests/tests.PolyUtilsTest.o: cxx ../tests/PolyUtilsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PolyUtilsTest.cpp
+  source_name_part = PolyUtilsTest
+build obj/tests/tests.PreChopPathCurvesTest.o: cxx ../tests/PreChopPathCurvesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PreChopPathCurvesTest.cpp
+  source_name_part = PreChopPathCurvesTest
+build obj/tests/tests.PremulAlphaRoundTripTest.o: cxx ../tests/PremulAlphaRoundTripTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PremulAlphaRoundTripTest.cpp
+  source_name_part = PremulAlphaRoundTripTest
+build obj/tests/tests.PromiseImageTest.o: cxx ../tests/PromiseImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PromiseImageTest.cpp
+  source_name_part = PromiseImageTest
+build obj/tests/tests.ProtectedTest.o: cxx ../tests/ProtectedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ProtectedTest.cpp
+  source_name_part = ProtectedTest
+build obj/tests/tests.ProxyConversionTest.o: cxx ../tests/ProxyConversionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ProxyConversionTest.cpp
+  source_name_part = ProxyConversionTest
+build obj/tests/tests.ProxyRefTest.o: cxx ../tests/ProxyRefTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ProxyRefTest.cpp
+  source_name_part = ProxyRefTest
+build obj/tests/tests.ProxyTest.o: cxx ../tests/ProxyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ProxyTest.cpp
+  source_name_part = ProxyTest
+build obj/tests/tests.QuadRootsTest.o: cxx ../tests/QuadRootsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = QuadRootsTest.cpp
+  source_name_part = QuadRootsTest
+build obj/tests/tests.QuickRejectTest.o: cxx ../tests/QuickRejectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = QuickRejectTest.cpp
+  source_name_part = QuickRejectTest
+build obj/tests/tests.RRectInPathTest.o: cxx ../tests/RRectInPathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RRectInPathTest.cpp
+  source_name_part = RRectInPathTest
+build obj/tests/tests.RTreeTest.o: cxx ../tests/RTreeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RTreeTest.cpp
+  source_name_part = RTreeTest
+build obj/tests/tests.RandomTest.o: cxx ../tests/RandomTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RandomTest.cpp
+  source_name_part = RandomTest
+build obj/tests/tests.RasterPipelineBuilderTest.o: cxx ../tests/RasterPipelineBuilderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RasterPipelineBuilderTest.cpp
+  source_name_part = RasterPipelineBuilderTest
+build obj/tests/tests.RasterPipelineCodeGeneratorTest.o: cxx ../tests/RasterPipelineCodeGeneratorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RasterPipelineCodeGeneratorTest.cpp
+  source_name_part = RasterPipelineCodeGeneratorTest
+build obj/tests/tests.ReadPixelsTest.o: cxx ../tests/ReadPixelsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ReadPixelsTest.cpp
+  source_name_part = ReadPixelsTest
+build obj/tests/tests.ReadWritePixelsGpuTest.o: cxx ../tests/ReadWritePixelsGpuTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ReadWritePixelsGpuTest.cpp
+  source_name_part = ReadWritePixelsGpuTest
+build obj/tests/tests.RecordDrawTest.o: cxx ../tests/RecordDrawTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RecordDrawTest.cpp
+  source_name_part = RecordDrawTest
+build obj/tests/tests.RecordOptsTest.o: cxx ../tests/RecordOptsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RecordOptsTest.cpp
+  source_name_part = RecordOptsTest
+build obj/tests/tests.RecordPatternTest.o: cxx ../tests/RecordPatternTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RecordPatternTest.cpp
+  source_name_part = RecordPatternTest
+build obj/tests/tests.RecordTest.o: cxx ../tests/RecordTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RecordTest.cpp
+  source_name_part = RecordTest
+build obj/tests/tests.RecorderTest.o: cxx ../tests/RecorderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RecorderTest.cpp
+  source_name_part = RecorderTest
+build obj/tests/tests.RecordingXfermodeTest.o: cxx ../tests/RecordingXfermodeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RecordingXfermodeTest.cpp
+  source_name_part = RecordingXfermodeTest
+build obj/tests/tests.RectTest.o: cxx ../tests/RectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RectTest.cpp
+  source_name_part = RectTest
+build obj/tests/tests.RefCntTest.o: cxx ../tests/RefCntTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RefCntTest.cpp
+  source_name_part = RefCntTest
+build obj/tests/tests.RegionTest.o: cxx ../tests/RegionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RegionTest.cpp
+  source_name_part = RegionTest
+build obj/tests/tests.RepeatedClippedBlurTest.o: cxx ../tests/RepeatedClippedBlurTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RepeatedClippedBlurTest.cpp
+  source_name_part = RepeatedClippedBlurTest
+build obj/tests/tests.ResourceAllocatorTest.o: cxx ../tests/ResourceAllocatorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ResourceAllocatorTest.cpp
+  source_name_part = ResourceAllocatorTest
+build obj/tests/tests.ResourceCacheTest.o: cxx ../tests/ResourceCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ResourceCacheTest.cpp
+  source_name_part = ResourceCacheTest
+build obj/tests/tests.RoundRectTest.o: cxx ../tests/RoundRectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RoundRectTest.cpp
+  source_name_part = RoundRectTest
+build obj/tests/tests.RuntimeBlendTest.o: cxx ../tests/RuntimeBlendTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RuntimeBlendTest.cpp
+  source_name_part = RuntimeBlendTest
+build obj/tests/tests.SRGBReadWritePixelsTest.o: cxx ../tests/SRGBReadWritePixelsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SRGBReadWritePixelsTest.cpp
+  source_name_part = SRGBReadWritePixelsTest
+build obj/tests/tests.SRGBTest.o: cxx ../tests/SRGBTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SRGBTest.cpp
+  source_name_part = SRGBTest
+build obj/tests/tests.SVGDeviceTest.o: cxx ../tests/SVGDeviceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SVGDeviceTest.cpp
+  source_name_part = SVGDeviceTest
+build obj/tests/tests.SafeMathTest.o: cxx ../tests/SafeMathTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SafeMathTest.cpp
+  source_name_part = SafeMathTest
+build obj/tests/tests.SamplingTest.o: cxx ../tests/SamplingTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SamplingTest.cpp
+  source_name_part = SamplingTest
+build obj/tests/tests.SaveLayerOriginTest.o: cxx ../tests/SaveLayerOriginTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SaveLayerOriginTest.cpp
+  source_name_part = SaveLayerOriginTest
+build obj/tests/tests.ScalarTest.o: cxx ../tests/ScalarTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ScalarTest.cpp
+  source_name_part = ScalarTest
+build obj/tests/tests.ScaleToSidesTest.o: cxx ../tests/ScaleToSidesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ScaleToSidesTest.cpp
+  source_name_part = ScaleToSidesTest
+build obj/tests/tests.SerialProcsTest.o: cxx ../tests/SerialProcsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SerialProcsTest.cpp
+  source_name_part = SerialProcsTest
+build obj/tests/tests.SerializationTest.o: cxx ../tests/SerializationTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SerializationTest.cpp
+  source_name_part = SerializationTest
+build obj/tests/tests.ShaderImageFilterTest.o: cxx ../tests/ShaderImageFilterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ShaderImageFilterTest.cpp
+  source_name_part = ShaderImageFilterTest
+build obj/tests/tests.ShaderOpacityTest.o: cxx ../tests/ShaderOpacityTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ShaderOpacityTest.cpp
+  source_name_part = ShaderOpacityTest
+build obj/tests/tests.ShaderTest.o: cxx ../tests/ShaderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ShaderTest.cpp
+  source_name_part = ShaderTest
+build obj/tests/tests.ShadowTest.o: cxx ../tests/ShadowTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ShadowTest.cpp
+  source_name_part = ShadowTest
+build obj/tests/tests.SizeTest.o: cxx ../tests/SizeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SizeTest.cpp
+  source_name_part = SizeTest
+build obj/tests/tests.SkBase64Test.o: cxx ../tests/SkBase64Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkBase64Test.cpp
+  source_name_part = SkBase64Test
+build obj/tests/tests.SkBlockAllocatorTest.o: cxx ../tests/SkBlockAllocatorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkBlockAllocatorTest.cpp
+  source_name_part = SkBlockAllocatorTest
+build obj/tests/tests.SkColor4fTest.o: cxx ../tests/SkColor4fTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkColor4fTest.cpp
+  source_name_part = SkColor4fTest
+build obj/tests/tests.SkColorSpaceXformStepsTest.o: cxx ../tests/SkColorSpaceXformStepsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkColorSpaceXformStepsTest.cpp
+  source_name_part = SkColorSpaceXformStepsTest
+build obj/tests/tests.SkContainersTest.o: cxx ../tests/SkContainersTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkContainersTest.cpp
+  source_name_part = SkContainersTest
+build obj/tests/tests.SkDOMTest.o: cxx ../tests/SkDOMTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkDOMTest.cpp
+  source_name_part = SkDOMTest
+build obj/tests/tests.SkEnumBitMaskTest.o: cxx ../tests/SkEnumBitMaskTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkEnumBitMaskTest.cpp
+  source_name_part = SkEnumBitMaskTest
+build obj/tests/tests.SkFontMetricsPrivTest.o: cxx ../tests/SkFontMetricsPrivTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkFontMetricsPrivTest.cpp
+  source_name_part = SkFontMetricsPrivTest
+build obj/tests/tests.SkGaussFilterTest.o: cxx ../tests/SkGaussFilterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkGaussFilterTest.cpp
+  source_name_part = SkGaussFilterTest
+build obj/tests/tests.SkGlyphTest.o: cxx ../tests/SkGlyphTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkGlyphTest.cpp
+  source_name_part = SkGlyphTest
+build obj/tests/tests.SkImageTest.o: cxx ../tests/SkImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkImageTest.cpp
+  source_name_part = SkImageTest
+build obj/tests/tests.SkMallocTest.o: cxx ../tests/SkMallocTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkMallocTest.cpp
+  source_name_part = SkMallocTest
+build obj/tests/tests.SkPathRangeIterTest.o: cxx ../tests/SkPathRangeIterTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkPathRangeIterTest.cpp
+  source_name_part = SkPathRangeIterTest
+build obj/tests/tests.SkRasterPipelineOptsTest.o: cxx ../tests/SkRasterPipelineOptsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkRasterPipelineOptsTest.cpp
+  source_name_part = SkRasterPipelineOptsTest
+build obj/tests/tests.SkRasterPipelineTest.o: cxx ../tests/SkRasterPipelineTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkRasterPipelineTest.cpp
+  source_name_part = SkRasterPipelineTest
+build obj/tests/tests.SkRemoteGlyphCacheTest.o: cxx ../tests/SkRemoteGlyphCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkRemoteGlyphCacheTest.cpp
+  source_name_part = SkRemoteGlyphCacheTest
+build obj/tests/tests.SkResourceCacheTest.o: cxx ../tests/SkResourceCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkResourceCacheTest.cpp
+  source_name_part = SkResourceCacheTest
+build obj/tests/tests.SkRuntimeEffectTest.o: cxx ../tests/SkRuntimeEffectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkRuntimeEffectTest.cpp
+  source_name_part = SkRuntimeEffectTest
+build obj/tests/tests.SkSLDebugTracePlayerTest.o: cxx ../tests/SkSLDebugTracePlayerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLDebugTracePlayerTest.cpp
+  source_name_part = SkSLDebugTracePlayerTest
+build obj/tests/tests.SkSLDebugTraceTest.o: cxx ../tests/SkSLDebugTraceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLDebugTraceTest.cpp
+  source_name_part = SkSLDebugTraceTest
+build obj/tests/tests.SkSLES2ConformanceTest.o: cxx ../tests/SkSLES2ConformanceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLES2ConformanceTest.cpp
+  source_name_part = SkSLES2ConformanceTest
+build obj/tests/tests.SkSLErrorTest.o: cxx ../tests/SkSLErrorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLErrorTest.cpp
+  source_name_part = SkSLErrorTest
+build obj/tests/tests.SkSLGLSLTestbed.o: cxx ../tests/SkSLGLSLTestbed.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLGLSLTestbed.cpp
+  source_name_part = SkSLGLSLTestbed
+build obj/tests/tests.SkSLMemoryLayoutTest.o: cxx ../tests/SkSLMemoryLayoutTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLMemoryLayoutTest.cpp
+  source_name_part = SkSLMemoryLayoutTest
+build obj/tests/tests.SkSLMetalTestbed.o: cxx ../tests/SkSLMetalTestbed.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLMetalTestbed.cpp
+  source_name_part = SkSLMetalTestbed
+build obj/tests/tests.SkSLSPIRVTestbed.o: cxx ../tests/SkSLSPIRVTestbed.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLSPIRVTestbed.cpp
+  source_name_part = SkSLSPIRVTestbed
+build obj/tests/tests.SkSLTest.o: cxx ../tests/SkSLTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLTest.cpp
+  source_name_part = SkSLTest
+build obj/tests/tests.SkSLTypeTest.o: cxx ../tests/SkSLTypeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLTypeTest.cpp
+  source_name_part = SkSLTypeTest
+build obj/tests/tests.SkSLWGSLTestbed.o: cxx ../tests/SkSLWGSLTestbed.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLWGSLTestbed.cpp
+  source_name_part = SkSLWGSLTestbed
+build obj/tests/tests.SkSharedMutexTest.o: cxx ../tests/SkSharedMutexTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSharedMutexTest.cpp
+  source_name_part = SkSharedMutexTest
+build obj/tests/tests.SkSpanTest.o: cxx ../tests/SkSpanTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSpanTest.cpp
+  source_name_part = SkSpanTest
+build obj/tests/tests.SkStrikeCacheTest.o: cxx ../tests/SkStrikeCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkStrikeCacheTest.cpp
+  source_name_part = SkStrikeCacheTest
+build obj/tests/tests.SkStrikeTest.o: cxx ../tests/SkStrikeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkStrikeTest.cpp
+  source_name_part = SkStrikeTest
+build obj/tests/tests.SkStringViewTest.o: cxx ../tests/SkStringViewTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkStringViewTest.cpp
+  source_name_part = SkStringViewTest
+build obj/tests/tests.SkTBlockListTest.o: cxx ../tests/SkTBlockListTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkTBlockListTest.cpp
+  source_name_part = SkTBlockListTest
+build obj/tests/tests.SkUTFTest.o: cxx ../tests/SkUTFTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkUTFTest.cpp
+  source_name_part = SkUTFTest
+build obj/tests/tests.SkVxTest.o: cxx ../tests/SkVxTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkVxTest.cpp
+  source_name_part = SkVxTest
+build obj/tests/tests.SkXmpTest.o: cxx ../tests/SkXmpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkXmpTest.cpp
+  source_name_part = SkXmpTest
+build obj/tests/tests.Skbug12214.o: cxx ../tests/Skbug12214.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Skbug12214.cpp
+  source_name_part = Skbug12214
+build obj/tests/tests.Skbug5221.o: cxx ../tests/Skbug5221.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Skbug5221.cpp
+  source_name_part = Skbug5221
+build obj/tests/tests.Skbug6389.o: cxx ../tests/Skbug6389.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Skbug6389.cpp
+  source_name_part = Skbug6389
+build obj/tests/tests.Skbug6653.o: cxx ../tests/Skbug6653.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Skbug6653.cpp
+  source_name_part = Skbug6653
+build obj/tests/tests.SlugTest.o: cxx ../tests/SlugTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SlugTest.cpp
+  source_name_part = SlugTest
+build obj/tests/tests.SortTest.o: cxx ../tests/SortTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SortTest.cpp
+  source_name_part = SortTest
+build obj/tests/tests.SpecialImageTest.o: cxx ../tests/SpecialImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SpecialImageTest.cpp
+  source_name_part = SpecialImageTest
+build obj/tests/tests.SrcOverTest.o: cxx ../tests/SrcOverTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SrcOverTest.cpp
+  source_name_part = SrcOverTest
+build obj/tests/tests.SrcSrcOverBatchTest.o: cxx ../tests/SrcSrcOverBatchTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SrcSrcOverBatchTest.cpp
+  source_name_part = SrcSrcOverBatchTest
+build obj/tests/tests.StreamTest.o: cxx ../tests/StreamTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = StreamTest.cpp
+  source_name_part = StreamTest
+build obj/tests/tests.StrikeForGPUTest.o: cxx ../tests/StrikeForGPUTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = StrikeForGPUTest.cpp
+  source_name_part = StrikeForGPUTest
+build obj/tests/tests.StringTest.o: cxx ../tests/StringTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = StringTest.cpp
+  source_name_part = StringTest
+build obj/tests/tests.StrokeTest.o: cxx ../tests/StrokeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = StrokeTest.cpp
+  source_name_part = StrokeTest
+build obj/tests/tests.StrokerTest.o: cxx ../tests/StrokerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = StrokerTest.cpp
+  source_name_part = StrokerTest
+build obj/tests/tests.SubsetPath.o: cxx ../tests/SubsetPath.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SubsetPath.cpp
+  source_name_part = SubsetPath
+build obj/tests/tests.SurfaceSemaphoreTest.o: cxx ../tests/SurfaceSemaphoreTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SurfaceSemaphoreTest.cpp
+  source_name_part = SurfaceSemaphoreTest
+build obj/tests/tests.SurfaceTest.o: cxx ../tests/SurfaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SurfaceTest.cpp
+  source_name_part = SurfaceTest
+build obj/tests/tests.SwizzlerTest.o: cxx ../tests/SwizzlerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SwizzlerTest.cpp
+  source_name_part = SwizzlerTest
+build obj/tests/tests.TArrayTest.o: cxx ../tests/TArrayTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TArrayTest.cpp
+  source_name_part = TArrayTest
+build obj/tests/tests.TDPQueueTest.o: cxx ../tests/TDPQueueTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TDPQueueTest.cpp
+  source_name_part = TDPQueueTest
+build obj/tests/tests.TLazyTest.o: cxx ../tests/TLazyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TLazyTest.cpp
+  source_name_part = TLazyTest
+build obj/tests/tests.TemplatesTest.o: cxx ../tests/TemplatesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TemplatesTest.cpp
+  source_name_part = TemplatesTest
+build obj/tests/tests.TestTest.o: cxx ../tests/TestTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TestTest.cpp
+  source_name_part = TestTest
+build obj/tests/tests.TextBlobCacheTest.o: cxx ../tests/TextBlobCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextBlobCacheTest.cpp
+  source_name_part = TextBlobCacheTest
+build obj/tests/tests.TextBlobTest.o: cxx ../tests/TextBlobTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextBlobTest.cpp
+  source_name_part = TextBlobTest
+build obj/tests/tests.TextureProxyTest.o: cxx ../tests/TextureProxyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextureProxyTest.cpp
+  source_name_part = TextureProxyTest
+build obj/tests/tests.TextureSizeTest.o: cxx ../tests/TextureSizeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextureSizeTest.cpp
+  source_name_part = TextureSizeTest
+build obj/tests/tests.TextureStripAtlasManagerTest.o: cxx ../tests/TextureStripAtlasManagerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextureStripAtlasManagerTest.cpp
+  source_name_part = TextureStripAtlasManagerTest
+build obj/tests/tests.Time.o: cxx ../tests/Time.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Time.cpp
+  source_name_part = Time
+build obj/tests/tests.TopoSortTest.o: cxx ../tests/TopoSortTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TopoSortTest.cpp
+  source_name_part = TopoSortTest
+build obj/tests/tests.TraceMemoryDumpTest.o: cxx ../tests/TraceMemoryDumpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TraceMemoryDumpTest.cpp
+  source_name_part = TraceMemoryDumpTest
+build obj/tests/tests.TracingTest.o: cxx ../tests/TracingTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TracingTest.cpp
+  source_name_part = TracingTest
+build obj/tests/tests.TransferPixelsTest.o: cxx ../tests/TransferPixelsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TransferPixelsTest.cpp
+  source_name_part = TransferPixelsTest
+build obj/tests/tests.TriangulatingPathRendererTests.o: cxx ../tests/TriangulatingPathRendererTests.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TriangulatingPathRendererTests.cpp
+  source_name_part = TriangulatingPathRendererTests
+build obj/tests/tests.TypefaceTest.o: cxx ../tests/TypefaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TypefaceTest.cpp
+  source_name_part = TypefaceTest
+build obj/tests/tests.UnicodeTest.o: cxx ../tests/UnicodeTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = UnicodeTest.cpp
+  source_name_part = UnicodeTest
+build obj/tests/tests.UtilsTest.o: cxx ../tests/UtilsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = UtilsTest.cpp
+  source_name_part = UtilsTest
+build obj/tests/tests.VerticesTest.o: cxx ../tests/VerticesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VerticesTest.cpp
+  source_name_part = VerticesTest
+build obj/tests/tests.VkBackendSurfaceTest.o: cxx ../tests/VkBackendSurfaceTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkBackendSurfaceTest.cpp
+  source_name_part = VkBackendSurfaceTest
+build obj/tests/tests.VkDrawableTest.o: cxx ../tests/VkDrawableTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkDrawableTest.cpp
+  source_name_part = VkDrawableTest
+build obj/tests/tests.VkHardwareBufferTest.o: cxx ../tests/VkHardwareBufferTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkHardwareBufferTest.cpp
+  source_name_part = VkHardwareBufferTest
+build obj/tests/tests.VkPriorityExtensionTest.o: cxx ../tests/VkPriorityExtensionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkPriorityExtensionTest.cpp
+  source_name_part = VkPriorityExtensionTest
+build obj/tests/tests.VkProtectedContextTest.o: cxx ../tests/VkProtectedContextTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkProtectedContextTest.cpp
+  source_name_part = VkProtectedContextTest
+build obj/tests/tests.VkWrapTests.o: cxx ../tests/VkWrapTests.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkWrapTests.cpp
+  source_name_part = VkWrapTests
+build obj/tests/tests.VkYcbcrSamplerTest.o: cxx ../tests/VkYcbcrSamplerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = VkYcbcrSamplerTest.cpp
+  source_name_part = VkYcbcrSamplerTest
+build obj/tests/tests.WebpTest.o: cxx ../tests/WebpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = WebpTest.cpp
+  source_name_part = WebpTest
+build obj/tests/tests.WindowRectanglesTest.o: cxx ../tests/WindowRectanglesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = WindowRectanglesTest.cpp
+  source_name_part = WindowRectanglesTest
+build obj/tests/tests.WrappedSurfaceCopyOnWriteTest.o: cxx ../tests/WrappedSurfaceCopyOnWriteTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = WrappedSurfaceCopyOnWriteTest.cpp
+  source_name_part = WrappedSurfaceCopyOnWriteTest
+build obj/tests/tests.WritePixelsTest.o: cxx ../tests/WritePixelsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = WritePixelsTest.cpp
+  source_name_part = WritePixelsTest
+build obj/tests/tests.Writer32Test.o: cxx ../tests/Writer32Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = Writer32Test.cpp
+  source_name_part = Writer32Test
+build obj/tests/tests.YUVCacheTest.o: cxx ../tests/YUVCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = YUVCacheTest.cpp
+  source_name_part = YUVCacheTest
+build obj/tests/tests.YUVTest.o: cxx ../tests/YUVTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = YUVTest.cpp
+  source_name_part = YUVTest
+build obj/tests/tests.BulkRectTest.o: cxx ../tests/BulkRectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = BulkRectTest.cpp
+  source_name_part = BulkRectTest
+build obj/tests/tests.ClearTest.o: cxx ../tests/ClearTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ClearTest.cpp
+  source_name_part = ClearTest
+build obj/tests/tests.DMSAATest.o: cxx ../tests/DMSAATest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DMSAATest.cpp
+  source_name_part = DMSAATest
+build obj/tests/tests.DefaultPathRendererTest.o: cxx ../tests/DefaultPathRendererTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DefaultPathRendererTest.cpp
+  source_name_part = DefaultPathRendererTest
+build obj/tests/tests.DrawOpAtlasTest.o: cxx ../tests/DrawOpAtlasTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = DrawOpAtlasTest.cpp
+  source_name_part = DrawOpAtlasTest
+build obj/tests/tests.GrClipStackTest.o: cxx ../tests/GrClipStackTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrClipStackTest.cpp
+  source_name_part = GrClipStackTest
+build obj/tests/tests.GrMeshTest.o: cxx ../tests/GrMeshTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrMeshTest.cpp
+  source_name_part = GrMeshTest
+build obj/tests/tests.GrMipMappedTest.o: cxx ../tests/GrMipMappedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrMipMappedTest.cpp
+  source_name_part = GrMipMappedTest
+build obj/tests/tests.GrPipelineDynamicStateTest.o: cxx ../tests/GrPipelineDynamicStateTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrPipelineDynamicStateTest.cpp
+  source_name_part = GrPipelineDynamicStateTest
+build obj/tests/tests.GrThreadSafeCacheTest.o: cxx ../tests/GrThreadSafeCacheTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrThreadSafeCacheTest.cpp
+  source_name_part = GrThreadSafeCacheTest
+build obj/tests/tests.LazyProxyTest.o: cxx ../tests/LazyProxyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = LazyProxyTest.cpp
+  source_name_part = LazyProxyTest
+build obj/tests/tests.OpChainTest.o: cxx ../tests/OpChainTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = OpChainTest.cpp
+  source_name_part = OpChainTest
+build obj/tests/tests.PathRendererCacheTests.o: cxx ../tests/PathRendererCacheTests.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathRendererCacheTests.cpp
+  source_name_part = PathRendererCacheTests
+build obj/tests/tests.PrimitiveProcessorTest.o: cxx ../tests/PrimitiveProcessorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PrimitiveProcessorTest.cpp
+  source_name_part = PrimitiveProcessorTest
+build obj/tests/tests.ProcessorTest.o: cxx ../tests/ProcessorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ProcessorTest.cpp
+  source_name_part = ProcessorTest
+build obj/tests/tests.ProgramsTest.o: cxx ../tests/ProgramsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = ProgramsTest.cpp
+  source_name_part = ProgramsTest
+build obj/tests/tests.SkSLCross.o: cxx ../tests/SkSLCross.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkSLCross.cpp
+  source_name_part = SkSLCross
+build obj/tests/tests.SurfaceDrawContextTest.o: cxx ../tests/SurfaceDrawContextTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SurfaceDrawContextTest.cpp
+  source_name_part = SurfaceDrawContextTest
+build obj/tests/tests.TextureOpTest.o: cxx ../tests/TextureOpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextureOpTest.cpp
+  source_name_part = TextureOpTest
+build obj/tests/tests.PathOpsAngleIdeas.o: cxx ../tests/PathOpsAngleIdeas.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsAngleIdeas.cpp
+  source_name_part = PathOpsAngleIdeas
+build obj/tests/tests.PathOpsAngleTest.o: cxx ../tests/PathOpsAngleTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsAngleTest.cpp
+  source_name_part = PathOpsAngleTest
+build obj/tests/tests.PathOpsAsWindingTest.o: cxx ../tests/PathOpsAsWindingTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsAsWindingTest.cpp
+  source_name_part = PathOpsAsWindingTest
+build obj/tests/tests.PathOpsBattles.o: cxx ../tests/PathOpsBattles.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsBattles.cpp
+  source_name_part = PathOpsBattles
+build obj/tests/tests.PathOpsBoundsTest.o: cxx ../tests/PathOpsBoundsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsBoundsTest.cpp
+  source_name_part = PathOpsBoundsTest
+build obj/tests/tests.PathOpsBuildUseTest.o: cxx ../tests/PathOpsBuildUseTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsBuildUseTest.cpp
+  source_name_part = PathOpsBuildUseTest
+build obj/tests/tests.PathOpsBuilderConicTest.o: cxx ../tests/PathOpsBuilderConicTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsBuilderConicTest.cpp
+  source_name_part = PathOpsBuilderConicTest
+build obj/tests/tests.PathOpsBuilderTest.o: cxx ../tests/PathOpsBuilderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsBuilderTest.cpp
+  source_name_part = PathOpsBuilderTest
+build obj/tests/tests.PathOpsChalkboardTest.o: cxx ../tests/PathOpsChalkboardTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsChalkboardTest.cpp
+  source_name_part = PathOpsChalkboardTest
+build obj/tests/tests.PathOpsConicIntersectionTest.o: cxx ../tests/PathOpsConicIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsConicIntersectionTest.cpp
+  source_name_part = PathOpsConicIntersectionTest
+build obj/tests/tests.PathOpsConicLineIntersectionTest.o: cxx ../tests/PathOpsConicLineIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsConicLineIntersectionTest.cpp
+  source_name_part = PathOpsConicLineIntersectionTest
+build obj/tests/tests.PathOpsConicQuadIntersectionTest.o: cxx ../tests/PathOpsConicQuadIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsConicQuadIntersectionTest.cpp
+  source_name_part = PathOpsConicQuadIntersectionTest
+build obj/tests/tests.PathOpsCubicConicIntersectionTest.o: cxx ../tests/PathOpsCubicConicIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicConicIntersectionTest.cpp
+  source_name_part = PathOpsCubicConicIntersectionTest
+build obj/tests/tests.PathOpsCubicIntersectionTest.o: cxx ../tests/PathOpsCubicIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicIntersectionTest.cpp
+  source_name_part = PathOpsCubicIntersectionTest
+build obj/tests/tests.PathOpsCubicIntersectionTestData.o: cxx ../tests/PathOpsCubicIntersectionTestData.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicIntersectionTestData.cpp
+  source_name_part = PathOpsCubicIntersectionTestData
+build obj/tests/tests.PathOpsCubicLineIntersectionIdeas.o: cxx ../tests/PathOpsCubicLineIntersectionIdeas.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicLineIntersectionIdeas.cpp
+  source_name_part = PathOpsCubicLineIntersectionIdeas
+build obj/tests/tests.PathOpsCubicLineIntersectionTest.o: cxx ../tests/PathOpsCubicLineIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicLineIntersectionTest.cpp
+  source_name_part = PathOpsCubicLineIntersectionTest
+build obj/tests/tests.PathOpsCubicQuadIntersectionTest.o: cxx ../tests/PathOpsCubicQuadIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicQuadIntersectionTest.cpp
+  source_name_part = PathOpsCubicQuadIntersectionTest
+build obj/tests/tests.PathOpsCubicReduceOrderTest.o: cxx ../tests/PathOpsCubicReduceOrderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsCubicReduceOrderTest.cpp
+  source_name_part = PathOpsCubicReduceOrderTest
+build obj/tests/tests.PathOpsDCubicTest.o: cxx ../tests/PathOpsDCubicTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsDCubicTest.cpp
+  source_name_part = PathOpsDCubicTest
+build obj/tests/tests.PathOpsDLineTest.o: cxx ../tests/PathOpsDLineTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsDLineTest.cpp
+  source_name_part = PathOpsDLineTest
+build obj/tests/tests.PathOpsDPointTest.o: cxx ../tests/PathOpsDPointTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsDPointTest.cpp
+  source_name_part = PathOpsDPointTest
+build obj/tests/tests.PathOpsDRectTest.o: cxx ../tests/PathOpsDRectTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsDRectTest.cpp
+  source_name_part = PathOpsDRectTest
+build obj/tests/tests.PathOpsDVectorTest.o: cxx ../tests/PathOpsDVectorTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsDVectorTest.cpp
+  source_name_part = PathOpsDVectorTest
+build obj/tests/tests.PathOpsDebug.o: cxx ../tests/PathOpsDebug.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsDebug.cpp
+  source_name_part = PathOpsDebug
+build obj/tests/tests.PathOpsExtendedTest.o: cxx ../tests/PathOpsExtendedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsExtendedTest.cpp
+  source_name_part = PathOpsExtendedTest
+build obj/tests/tests.PathOpsFuzz763Test.o: cxx ../tests/PathOpsFuzz763Test.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsFuzz763Test.cpp
+  source_name_part = PathOpsFuzz763Test
+build obj/tests/tests.PathOpsInverseTest.o: cxx ../tests/PathOpsInverseTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsInverseTest.cpp
+  source_name_part = PathOpsInverseTest
+build obj/tests/tests.PathOpsIssue3651.o: cxx ../tests/PathOpsIssue3651.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsIssue3651.cpp
+  source_name_part = PathOpsIssue3651
+build obj/tests/tests.PathOpsLineIntersectionTest.o: cxx ../tests/PathOpsLineIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsLineIntersectionTest.cpp
+  source_name_part = PathOpsLineIntersectionTest
+build obj/tests/tests.PathOpsLineParametetersTest.o: cxx ../tests/PathOpsLineParametetersTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsLineParametetersTest.cpp
+  source_name_part = PathOpsLineParametetersTest
+build obj/tests/tests.PathOpsOpCircleThreadedTest.o: cxx ../tests/PathOpsOpCircleThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsOpCircleThreadedTest.cpp
+  source_name_part = PathOpsOpCircleThreadedTest
+build obj/tests/tests.PathOpsOpCubicThreadedTest.o: cxx ../tests/PathOpsOpCubicThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsOpCubicThreadedTest.cpp
+  source_name_part = PathOpsOpCubicThreadedTest
+build obj/tests/tests.PathOpsOpLoopThreadedTest.o: cxx ../tests/PathOpsOpLoopThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsOpLoopThreadedTest.cpp
+  source_name_part = PathOpsOpLoopThreadedTest
+build obj/tests/tests.PathOpsOpRectThreadedTest.o: cxx ../tests/PathOpsOpRectThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsOpRectThreadedTest.cpp
+  source_name_part = PathOpsOpRectThreadedTest
+build obj/tests/tests.PathOpsOpTest.o: cxx ../tests/PathOpsOpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsOpTest.cpp
+  source_name_part = PathOpsOpTest
+build obj/tests/tests.PathOpsQuadIntersectionTest.o: cxx ../tests/PathOpsQuadIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsQuadIntersectionTest.cpp
+  source_name_part = PathOpsQuadIntersectionTest
+build obj/tests/tests.PathOpsQuadIntersectionTestData.o: cxx ../tests/PathOpsQuadIntersectionTestData.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsQuadIntersectionTestData.cpp
+  source_name_part = PathOpsQuadIntersectionTestData
+build obj/tests/tests.PathOpsQuadLineIntersectionTest.o: cxx ../tests/PathOpsQuadLineIntersectionTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsQuadLineIntersectionTest.cpp
+  source_name_part = PathOpsQuadLineIntersectionTest
+build obj/tests/tests.PathOpsQuadLineIntersectionThreadedTest.o: cxx ../tests/PathOpsQuadLineIntersectionThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsQuadLineIntersectionThreadedTest.cpp
+  source_name_part = PathOpsQuadLineIntersectionThreadedTest
+build obj/tests/tests.PathOpsQuadReduceOrderTest.o: cxx ../tests/PathOpsQuadReduceOrderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsQuadReduceOrderTest.cpp
+  source_name_part = PathOpsQuadReduceOrderTest
+build obj/tests/tests.PathOpsSimplifyDegenerateThreadedTest.o: cxx ../tests/PathOpsSimplifyDegenerateThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyDegenerateThreadedTest.cpp
+  source_name_part = PathOpsSimplifyDegenerateThreadedTest
+build obj/tests/tests.PathOpsSimplifyFailTest.o: cxx ../tests/PathOpsSimplifyFailTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyFailTest.cpp
+  source_name_part = PathOpsSimplifyFailTest
+build obj/tests/tests.PathOpsSimplifyQuadThreadedTest.o: cxx ../tests/PathOpsSimplifyQuadThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyQuadThreadedTest.cpp
+  source_name_part = PathOpsSimplifyQuadThreadedTest
+build obj/tests/tests.PathOpsSimplifyQuadralateralsThreadedTest.o: cxx ../tests/PathOpsSimplifyQuadralateralsThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyQuadralateralsThreadedTest.cpp
+  source_name_part = PathOpsSimplifyQuadralateralsThreadedTest
+build obj/tests/tests.PathOpsSimplifyRectThreadedTest.o: cxx ../tests/PathOpsSimplifyRectThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyRectThreadedTest.cpp
+  source_name_part = PathOpsSimplifyRectThreadedTest
+build obj/tests/tests.PathOpsSimplifyTest.o: cxx ../tests/PathOpsSimplifyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyTest.cpp
+  source_name_part = PathOpsSimplifyTest
+build obj/tests/tests.PathOpsSimplifyTrianglesThreadedTest.o: cxx ../tests/PathOpsSimplifyTrianglesThreadedTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSimplifyTrianglesThreadedTest.cpp
+  source_name_part = PathOpsSimplifyTrianglesThreadedTest
+build obj/tests/tests.PathOpsSkpTest.o: cxx ../tests/PathOpsSkpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsSkpTest.cpp
+  source_name_part = PathOpsSkpTest
+build obj/tests/tests.PathOpsTestCommon.o: cxx ../tests/PathOpsTestCommon.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsTestCommon.cpp
+  source_name_part = PathOpsTestCommon
+build obj/tests/tests.PathOpsThreadedCommon.o: cxx ../tests/PathOpsThreadedCommon.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsThreadedCommon.cpp
+  source_name_part = PathOpsThreadedCommon
+build obj/tests/tests.PathOpsThreeWayTest.o: cxx ../tests/PathOpsThreeWayTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsThreeWayTest.cpp
+  source_name_part = PathOpsThreeWayTest
+build obj/tests/tests.PathOpsTigerTest.o: cxx ../tests/PathOpsTigerTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsTigerTest.cpp
+  source_name_part = PathOpsTigerTest
+build obj/tests/tests.PathOpsTightBoundsTest.o: cxx ../tests/PathOpsTightBoundsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsTightBoundsTest.cpp
+  source_name_part = PathOpsTightBoundsTest
+build obj/tests/tests.PathOpsTypesTest.o: cxx ../tests/PathOpsTypesTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PathOpsTypesTest.cpp
+  source_name_part = PathOpsTypesTest
+build obj/tests/tests.WangsFormulaTest.o: cxx ../tests/WangsFormulaTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = WangsFormulaTest.cpp
+  source_name_part = WangsFormulaTest
+build obj/tests/tests.JpegGainmapTest.o: cxx ../tests/JpegGainmapTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = JpegGainmapTest.cpp
+  source_name_part = JpegGainmapTest
+build obj/tests/tests.SkJpegXmpTest.o: cxx ../tests/SkJpegXmpTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = SkJpegXmpTest.cpp
+  source_name_part = SkJpegXmpTest
+build obj/tests/tests.EGLImageTest.o: cxx ../tests/EGLImageTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = EGLImageTest.cpp
+  source_name_part = EGLImageTest
+build obj/tests/tests.GrGLExtensionsTest.o: cxx ../tests/GrGLExtensionsTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = GrGLExtensionsTest.cpp
+  source_name_part = GrGLExtensionsTest
+build obj/tests/tests.RectangleTextureTest.o: cxx ../tests/RectangleTextureTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = RectangleTextureTest.cpp
+  source_name_part = RectangleTextureTest
+build obj/tests/tests.TextureBindingsResetTest.o: cxx ../tests/TextureBindingsResetTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = TextureBindingsResetTest.cpp
+  source_name_part = TextureBindingsResetTest
+build obj/tests/graphite/tests.CombinationBuilderTest.o: cxx ../tests/graphite/CombinationBuilderTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = CombinationBuilderTest.cpp
+  source_name_part = CombinationBuilderTest
+build obj/tests/graphite/tests.PaintParamsKeyTest.o: cxx ../tests/graphite/PaintParamsKeyTest.cpp || obj/tests.inputdeps.stamp
+  source_file_part = PaintParamsKeyTest.cpp
+  source_name_part = PaintParamsKeyTest
+
+build obj/tests.stamp: stamp obj/tests/tests.AAClipTest.o obj/tests/tests.AdvancedBlendTest.o obj/tests/tests.AndroidCodecTest.o obj/tests/tests.AnimatedImageTest.o obj/tests/tests.AnnotationTest.o obj/tests/tests.ApplyGammaTest.o obj/tests/tests.ArenaAllocTest.o obj/tests/tests.AsADashTest.o obj/tests/tests.AvifTest.o obj/tests/tests.BRDTest.o obj/tests/tests.BackendAllocationTest.o obj/tests/tests.BackendSurfaceMutableStateTest.o obj/tests/tests.BadIcoTest.o obj/tests/tests.BezierCurveTest.o obj/tests/tests.BigImageTest.o obj/tests/tests.BitSetTest.o obj/tests/tests.BitmapCopyTest.o obj/tests/tests.BitmapGetColorTest.o obj/tests/tests.BitmapTest.o obj/tests/tests.BlendTest.o obj/tests/tests.BlitMaskClip.o obj/tests/tests.BlurTest.o obj/tests/tests.CachedDataTest.o obj/tests/tests.CachedDecodingPixelRefTest.o obj/tests/tests.CanvasStateHelpers.o obj/tests/tests.CanvasStateTest.o obj/tests/tests.CanvasTest.o obj/tests/tests.ChecksumTest.o obj/tests/tests.ClipCubicTest.o obj/tests/tests.ClipStackTest.o obj/tests/tests.ClipperTest.o obj/tests/tests.CodecAnimTest.o obj/tests/tests.CodecExactReadTest.o obj/tests/tests.CodecPartialTest.o obj/tests/tests.CodecRecommendedTypeTest.o obj/tests/tests.CodecTest.o obj/tests/tests.ColorFilterTest.o obj/tests/tests.ColorMatrixTest.o obj/tests/tests.ColorPrivTest.o obj/tests/tests.ColorSpaceTest.o obj/tests/tests.ColorTest.o obj/tests/tests.CompressedBackendAllocationTest.o obj/tests/tests.CopySurfaceTest.o obj/tests/tests.CubicChopTest.o obj/tests/tests.CubicMapTest.o obj/tests/tests.CubicRootsTest.o obj/tests/tests.CullTestTest.o obj/tests/tests.DashPathEffectTest.o obj/tests/tests.DataRefTest.o obj/tests/tests.DebugLayerManagerTest.o obj/tests/tests.DeferredDisplayListTest.o obj/tests/tests.DequeTest.o obj/tests/tests.DescriptorTest.o obj/tests/tests.DeviceTest.o obj/tests/tests.DiscardableMemoryPoolTest.o obj/tests/tests.DiscardableMemoryTest.o obj/tests/tests.DrawBitmapRectTest.o obj/tests/tests.DrawPathTest.o obj/tests/tests.DrawTextTest.o obj/tests/tests.EmptyPathTest.o obj/tests/tests.EncodeTest.o obj/tests/tests.EncodedInfoTest.o obj/tests/tests.ExifTest.o obj/tests/tests.ExtendedSkColorTypeTests.o obj/tests/tests.F16StagesTest.o obj/tests/tests.FillPathTest.o obj/tests/tests.FilterResultTest.o obj/tests/tests.FindCubicConvex180ChopsTest.o obj/tests/tests.FitsInTest.o obj/tests/tests.FlattenDrawableTest.o obj/tests/tests.FlattenableFactoryToName.o obj/tests/tests.FlattenableNameToFactory.o obj/tests/tests.Float16Test.o obj/tests/tests.FloatingPointTest.o obj/tests/tests.FloatingPointTextureTest.o obj/tests/tests.FontHostStreamTest.o obj/tests/tests.FontHostTest.o obj/tests/tests.FontMgrFlags.o obj/tests/tests.FontMgrTest.o obj/tests/tests.FontNamesTest.o obj/tests/tests.FontTest.o obj/tests/tests.FrontBufferedStreamTest.o obj/tests/tests.GLBackendSurfaceTest.o obj/tests/tests.GainmapShaderTest.o obj/tests/tests.GeometryTest.o obj/tests/tests.GifTest.o obj/tests/tests.GlyphRunTest.o obj/tests/tests.GpuDrawPathTest.o obj/tests/tests.GpuRectanizerTest.o obj/tests/tests.GrAHardwareBufferTest.o obj/tests/tests.GrContextAbandonTest.o obj/tests/tests.GrContextFactoryTest.o obj/tests/tests.GrContextOOM.o obj/tests/tests.GrDDLImageTest.o obj/tests/tests.GrFinishedFlushTest.o obj/tests/tests.GrGlyphVectorTest.o obj/tests/tests.GrGpuBufferTest.o obj/tests/tests.GrMemoryPoolTest.o obj/tests/tests.GrOpListFlushTest.o obj/tests/tests.GrPorterDuffTest.o obj/tests/tests.GrQuadBufferTest.o obj/tests/tests.GrQuadCropTest.o obj/tests/tests.GrRenderTaskClusterTest.o obj/tests/tests.GrStyledShapeTest.o obj/tests/tests.GrSubmittedFlushTest.o obj/tests/tests.GrSurfaceResolveTest.o obj/tests/tests.GrSurfaceTest.o obj/tests/tests.GrTextBlobTest.o obj/tests/tests.GrTextureMipMapInvalidationTest.o obj/tests/tests.GradientTest.o obj/tests/tests.HSVRoundTripTest.o obj/tests/tests.HashTest.o obj/tests/tests.HighContrastFilterTest.o obj/tests/tests.ICCTest.o obj/tests/tests.ImageBitmapTest.o obj/tests/tests.ImageCacheTest.o obj/tests/tests.ImageFilterCacheTest.o obj/tests/tests.ImageFilterTest.o obj/tests/tests.ImageFrom565Bitmap.o obj/tests/tests.ImageGeneratorTest.o obj/tests/tests.ImageIsOpaqueTest.o obj/tests/tests.ImageNewShaderTest.o obj/tests/tests.ImageTest.o obj/tests/tests.IncrTopoSortTest.o obj/tests/tests.IndexedPngOverflowTest.o obj/tests/tests.InfRectTest.o obj/tests/tests.InsetConvexPolyTest.o obj/tests/tests.InvalidIndexedPngTest.o obj/tests/tests.IsClosedSingleContourTest.o obj/tests/tests.JSONTest.o obj/tests/tests.LListTest.o obj/tests/tests.LRUCacheTest.o obj/tests/tests.LazyStencilAttachmentTest.o obj/tests/tests.M44Test.o obj/tests/tests.MD5Test.o obj/tests/tests.MallocPixelRefTest.o obj/tests/tests.MaskCacheTest.o obj/tests/tests.MathTest.o obj/tests/tests.MatrixColorFilterTest.o obj/tests/tests.MatrixProcsTest.o obj/tests/tests.MatrixTest.o obj/tests/tests.MemoryTest.o obj/tests/tests.MemsetTest.o obj/tests/tests.MeshTest.o obj/tests/tests.MessageBusTest.o obj/tests/tests.MetaDataTest.o obj/tests/tests.MipMapTest.o obj/tests/tests.MultiPictureDocumentTest.o obj/tests/tests.NdkDecodeTest.o obj/tests/tests.NdkEncodeTest.o obj/tests/tests.NonlinearBlendingTest.o obj/tests/tests.OSPathTest.o obj/tests/tests.OffsetSimplePolyTest.o obj/tests/tests.OnceTest.o obj/tests/tests.OverAlignedTest.o obj/tests/tests.PDFDeflateWStreamTest.o obj/tests/tests.PDFDocumentTest.o obj/tests/tests.PDFGlyphsToUnicodeTest.o obj/tests/tests.PDFJpegEmbedTest.o obj/tests/tests.PDFMetadataAttributeTest.o obj/tests/tests.PDFOpaqueSrcModeToSrcOverTest.o obj/tests/tests.PDFPrimitivesTest.o obj/tests/tests.PDFTaggedLinkTest.o obj/tests/tests.PDFTaggedPruningTest.o obj/tests/tests.PDFTaggedTableTest.o obj/tests/tests.PDFTaggedTest.o obj/tests/tests.PaintTest.o obj/tests/tests.ParametricStageTest.o obj/tests/tests.ParseColorTest.o obj/tests/tests.ParsePathTest.o obj/tests/tests.PathBuilderTest.o obj/tests/tests.PathCoverageTest.o obj/tests/tests.PathMeasureTest.o obj/tests/tests.PathTest.o obj/tests/tests.PictureBBHTest.o obj/tests/tests.PictureShaderTest.o obj/tests/tests.PictureTest.o obj/tests/tests.PinnedImageTest.o obj/tests/tests.PixelRefTest.o obj/tests/tests.Point3Test.o obj/tests/tests.PointTest.o obj/tests/tests.PolyUtilsTest.o obj/tests/tests.PreChopPathCurvesTest.o obj/tests/tests.PremulAlphaRoundTripTest.o obj/tests/tests.PromiseImageTest.o obj/tests/tests.ProtectedTest.o obj/tests/tests.ProxyConversionTest.o obj/tests/tests.ProxyRefTest.o obj/tests/tests.ProxyTest.o obj/tests/tests.QuadRootsTest.o obj/tests/tests.QuickRejectTest.o obj/tests/tests.RRectInPathTest.o obj/tests/tests.RTreeTest.o obj/tests/tests.RandomTest.o obj/tests/tests.RasterPipelineBuilderTest.o obj/tests/tests.RasterPipelineCodeGeneratorTest.o obj/tests/tests.ReadPixelsTest.o obj/tests/tests.ReadWritePixelsGpuTest.o obj/tests/tests.RecordDrawTest.o obj/tests/tests.RecordOptsTest.o obj/tests/tests.RecordPatternTest.o obj/tests/tests.RecordTest.o obj/tests/tests.RecorderTest.o obj/tests/tests.RecordingXfermodeTest.o obj/tests/tests.RectTest.o obj/tests/tests.RefCntTest.o obj/tests/tests.RegionTest.o obj/tests/tests.RepeatedClippedBlurTest.o obj/tests/tests.ResourceAllocatorTest.o obj/tests/tests.ResourceCacheTest.o obj/tests/tests.RoundRectTest.o obj/tests/tests.RuntimeBlendTest.o obj/tests/tests.SRGBReadWritePixelsTest.o obj/tests/tests.SRGBTest.o obj/tests/tests.SVGDeviceTest.o obj/tests/tests.SafeMathTest.o obj/tests/tests.SamplingTest.o obj/tests/tests.SaveLayerOriginTest.o obj/tests/tests.ScalarTest.o obj/tests/tests.ScaleToSidesTest.o obj/tests/tests.SerialProcsTest.o obj/tests/tests.SerializationTest.o obj/tests/tests.ShaderImageFilterTest.o obj/tests/tests.ShaderOpacityTest.o obj/tests/tests.ShaderTest.o obj/tests/tests.ShadowTest.o obj/tests/tests.SizeTest.o obj/tests/tests.SkBase64Test.o obj/tests/tests.SkBlockAllocatorTest.o obj/tests/tests.SkColor4fTest.o obj/tests/tests.SkColorSpaceXformStepsTest.o obj/tests/tests.SkContainersTest.o obj/tests/tests.SkDOMTest.o obj/tests/tests.SkEnumBitMaskTest.o obj/tests/tests.SkFontMetricsPrivTest.o obj/tests/tests.SkGaussFilterTest.o obj/tests/tests.SkGlyphTest.o obj/tests/tests.SkImageTest.o obj/tests/tests.SkMallocTest.o obj/tests/tests.SkPathRangeIterTest.o obj/tests/tests.SkRasterPipelineOptsTest.o obj/tests/tests.SkRasterPipelineTest.o obj/tests/tests.SkRemoteGlyphCacheTest.o obj/tests/tests.SkResourceCacheTest.o obj/tests/tests.SkRuntimeEffectTest.o obj/tests/tests.SkSLDebugTracePlayerTest.o obj/tests/tests.SkSLDebugTraceTest.o obj/tests/tests.SkSLES2ConformanceTest.o obj/tests/tests.SkSLErrorTest.o obj/tests/tests.SkSLGLSLTestbed.o obj/tests/tests.SkSLMemoryLayoutTest.o obj/tests/tests.SkSLMetalTestbed.o obj/tests/tests.SkSLSPIRVTestbed.o obj/tests/tests.SkSLTest.o obj/tests/tests.SkSLTypeTest.o obj/tests/tests.SkSLWGSLTestbed.o obj/tests/tests.SkSharedMutexTest.o obj/tests/tests.SkSpanTest.o obj/tests/tests.SkStrikeCacheTest.o obj/tests/tests.SkStrikeTest.o obj/tests/tests.SkStringViewTest.o obj/tests/tests.SkTBlockListTest.o obj/tests/tests.SkUTFTest.o obj/tests/tests.SkVxTest.o obj/tests/tests.SkXmpTest.o obj/tests/tests.Skbug12214.o obj/tests/tests.Skbug5221.o obj/tests/tests.Skbug6389.o obj/tests/tests.Skbug6653.o obj/tests/tests.SlugTest.o obj/tests/tests.SortTest.o obj/tests/tests.SpecialImageTest.o obj/tests/tests.SrcOverTest.o obj/tests/tests.SrcSrcOverBatchTest.o obj/tests/tests.StreamTest.o obj/tests/tests.StrikeForGPUTest.o obj/tests/tests.StringTest.o obj/tests/tests.StrokeTest.o obj/tests/tests.StrokerTest.o obj/tests/tests.SubsetPath.o obj/tests/tests.SurfaceSemaphoreTest.o obj/tests/tests.SurfaceTest.o obj/tests/tests.SwizzlerTest.o obj/tests/tests.TArrayTest.o obj/tests/tests.TDPQueueTest.o obj/tests/tests.TLazyTest.o obj/tests/tests.TemplatesTest.o obj/tests/tests.TestTest.o obj/tests/tests.TextBlobCacheTest.o obj/tests/tests.TextBlobTest.o obj/tests/tests.TextureProxyTest.o obj/tests/tests.TextureSizeTest.o obj/tests/tests.TextureStripAtlasManagerTest.o obj/tests/tests.Time.o obj/tests/tests.TopoSortTest.o obj/tests/tests.TraceMemoryDumpTest.o obj/tests/tests.TracingTest.o obj/tests/tests.TransferPixelsTest.o obj/tests/tests.TriangulatingPathRendererTests.o obj/tests/tests.TypefaceTest.o obj/tests/tests.UnicodeTest.o obj/tests/tests.UtilsTest.o obj/tests/tests.VerticesTest.o obj/tests/tests.VkBackendSurfaceTest.o obj/tests/tests.VkDrawableTest.o obj/tests/tests.VkHardwareBufferTest.o obj/tests/tests.VkPriorityExtensionTest.o obj/tests/tests.VkProtectedContextTest.o obj/tests/tests.VkWrapTests.o obj/tests/tests.VkYcbcrSamplerTest.o obj/tests/tests.WebpTest.o obj/tests/tests.WindowRectanglesTest.o obj/tests/tests.WrappedSurfaceCopyOnWriteTest.o obj/tests/tests.WritePixelsTest.o obj/tests/tests.Writer32Test.o obj/tests/tests.YUVCacheTest.o obj/tests/tests.YUVTest.o obj/tests/tests.BulkRectTest.o obj/tests/tests.ClearTest.o obj/tests/tests.DMSAATest.o obj/tests/tests.DefaultPathRendererTest.o obj/tests/tests.DrawOpAtlasTest.o obj/tests/tests.GrClipStackTest.o obj/tests/tests.GrMeshTest.o obj/tests/tests.GrMipMappedTest.o obj/tests/tests.GrPipelineDynamicStateTest.o obj/tests/tests.GrThreadSafeCacheTest.o obj/tests/tests.LazyProxyTest.o obj/tests/tests.OpChainTest.o obj/tests/tests.PathRendererCacheTests.o obj/tests/tests.PrimitiveProcessorTest.o obj/tests/tests.ProcessorTest.o obj/tests/tests.ProgramsTest.o obj/tests/tests.SkSLCross.o obj/tests/tests.SurfaceDrawContextTest.o obj/tests/tests.TextureOpTest.o obj/tests/tests.PathOpsAngleIdeas.o obj/tests/tests.PathOpsAngleTest.o obj/tests/tests.PathOpsAsWindingTest.o obj/tests/tests.PathOpsBattles.o obj/tests/tests.PathOpsBoundsTest.o obj/tests/tests.PathOpsBuildUseTest.o obj/tests/tests.PathOpsBuilderConicTest.o obj/tests/tests.PathOpsBuilderTest.o obj/tests/tests.PathOpsChalkboardTest.o obj/tests/tests.PathOpsConicIntersectionTest.o obj/tests/tests.PathOpsConicLineIntersectionTest.o obj/tests/tests.PathOpsConicQuadIntersectionTest.o obj/tests/tests.PathOpsCubicConicIntersectionTest.o obj/tests/tests.PathOpsCubicIntersectionTest.o obj/tests/tests.PathOpsCubicIntersectionTestData.o obj/tests/tests.PathOpsCubicLineIntersectionIdeas.o obj/tests/tests.PathOpsCubicLineIntersectionTest.o obj/tests/tests.PathOpsCubicQuadIntersectionTest.o obj/tests/tests.PathOpsCubicReduceOrderTest.o obj/tests/tests.PathOpsDCubicTest.o obj/tests/tests.PathOpsDLineTest.o obj/tests/tests.PathOpsDPointTest.o obj/tests/tests.PathOpsDRectTest.o obj/tests/tests.PathOpsDVectorTest.o obj/tests/tests.PathOpsDebug.o obj/tests/tests.PathOpsExtendedTest.o obj/tests/tests.PathOpsFuzz763Test.o obj/tests/tests.PathOpsInverseTest.o obj/tests/tests.PathOpsIssue3651.o obj/tests/tests.PathOpsLineIntersectionTest.o obj/tests/tests.PathOpsLineParametetersTest.o obj/tests/tests.PathOpsOpCircleThreadedTest.o obj/tests/tests.PathOpsOpCubicThreadedTest.o obj/tests/tests.PathOpsOpLoopThreadedTest.o obj/tests/tests.PathOpsOpRectThreadedTest.o obj/tests/tests.PathOpsOpTest.o obj/tests/tests.PathOpsQuadIntersectionTest.o obj/tests/tests.PathOpsQuadIntersectionTestData.o obj/tests/tests.PathOpsQuadLineIntersectionTest.o obj/tests/tests.PathOpsQuadLineIntersectionThreadedTest.o obj/tests/tests.PathOpsQuadReduceOrderTest.o obj/tests/tests.PathOpsSimplifyDegenerateThreadedTest.o obj/tests/tests.PathOpsSimplifyFailTest.o obj/tests/tests.PathOpsSimplifyQuadThreadedTest.o obj/tests/tests.PathOpsSimplifyQuadralateralsThreadedTest.o obj/tests/tests.PathOpsSimplifyRectThreadedTest.o obj/tests/tests.PathOpsSimplifyTest.o obj/tests/tests.PathOpsSimplifyTrianglesThreadedTest.o obj/tests/tests.PathOpsSkpTest.o obj/tests/tests.PathOpsTestCommon.o obj/tests/tests.PathOpsThreadedCommon.o obj/tests/tests.PathOpsThreeWayTest.o obj/tests/tests.PathOpsTigerTest.o obj/tests/tests.PathOpsTightBoundsTest.o obj/tests/tests.PathOpsTypesTest.o obj/tests/tests.WangsFormulaTest.o obj/tests/tests.JpegGainmapTest.o obj/tests/tests.SkJpegXmpTest.o obj/tests/tests.EGLImageTest.o obj/tests/tests.GrGLExtensionsTest.o obj/tests/tests.RectangleTextureTest.o obj/tests/tests.TextureBindingsResetTest.o obj/tests/graphite/tests.CombinationBuilderTest.o obj/tests/graphite/tests.PaintParamsKeyTest.o || obj/flags.stamp obj/fontmgr_android_tests.stamp obj/fontmgr_fontconfig_tests.stamp obj/fontmgr_mac_ct_tests.stamp ./libskia.a obj/test.stamp obj/tool_utils.stamp obj/typeface_fontations_tests.stamp obj/modules/bentleyottmann/tests.stamp obj/modules/skottie/tests.stamp obj/modules/skparagraph/tests.stamp obj/modules/sksg/tests.stamp ./libskshaper.a obj/modules/skshaper/tests.stamp obj/modules/skunicode/tests.stamp obj/modules/svg/tests.stamp ./libpng.a ./libwebp.a ./libzlib.a obj/gpu_tool_utils.stamp ./libsvg.a ./libskunicode.a ./libbentleyottmann.a ./libskottie.a ./libsksg.a ./libskparagraph.a ./libicu_bidi.a obj/third_party/zlib/zlib_adler32_simd.stamp obj/third_party/zlib/zlib_crc32_simd.stamp obj/third_party/zlib/zlib_inflate_chunk_simd.stamp obj/third_party/zlib/zlib_x86_x64_simd.stamp ./libwebp_sse41.a

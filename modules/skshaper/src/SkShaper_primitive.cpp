@@ -20,6 +20,11 @@
 #include <memory>
 
 
+#include <cstdint>
+#include <cstring>
+#include <memory>
+
+
 class SkShaperPrimitive : public SkShaper {
 public:
     SkShaperPrimitive() {}

@@ -1,0 +1,31 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DIMGUI_ENABLE_OSX_DEFAULT_CLIPBOARD_FUNCTIONS
+framework_dirs =
+include_dirs =
+cflags = -w -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -O3 -isystem /Users/nicolettep/Repos/skia/third_party/externals/imgui
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti
+root_out_dir = .
+target_output_name = libimgui
+
+build obj/third_party/externals/imgui/libimgui.imgui.o: cxx ../third_party/externals/imgui/imgui.cpp
+  source_file_part = imgui.cpp
+  source_name_part = imgui
+build obj/third_party/externals/imgui/libimgui.imgui_demo.o: cxx ../third_party/externals/imgui/imgui_demo.cpp
+  source_file_part = imgui_demo.cpp
+  source_name_part = imgui_demo
+build obj/third_party/externals/imgui/libimgui.imgui_draw.o: cxx ../third_party/externals/imgui/imgui_draw.cpp
+  source_file_part = imgui_draw.cpp
+  source_name_part = imgui_draw
+build obj/third_party/externals/imgui/libimgui.imgui_tables.o: cxx ../third_party/externals/imgui/imgui_tables.cpp
+  source_file_part = imgui_tables.cpp
+  source_name_part = imgui_tables
+build obj/third_party/externals/imgui/libimgui.imgui_widgets.o: cxx ../third_party/externals/imgui/imgui_widgets.cpp
+  source_file_part = imgui_widgets.cpp
+  source_name_part = imgui_widgets
+build obj/third_party/externals/imgui/misc/cpp/libimgui.imgui_stdlib.o: cxx ../third_party/externals/imgui/misc/cpp/imgui_stdlib.cpp
+  source_file_part = imgui_stdlib.cpp
+  source_name_part = imgui_stdlib
+
+build ./libimgui.a: alink obj/third_party/externals/imgui/libimgui.imgui.o obj/third_party/externals/imgui/libimgui.imgui_demo.o obj/third_party/externals/imgui/libimgui.imgui_draw.o obj/third_party/externals/imgui/libimgui.imgui_tables.o obj/third_party/externals/imgui/libimgui.imgui_widgets.o obj/third_party/externals/imgui/misc/cpp/libimgui.imgui_stdlib.o
+  arflags =
+  output_extension = .a
+  output_dir = 

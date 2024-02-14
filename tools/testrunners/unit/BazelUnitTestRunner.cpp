@@ -56,6 +56,21 @@ static DEFINE_string(gpuName, "", "Ignored by this test runner.");
                                      "Ignored by this test runner.",
                                      nullptr);
 
+// Set in //bazel/devicesrc but consumed by other C++ test runners.
+static DEFINE_string(key, "", "Ignored by this test runner.");
+static DEFINE_string(cpuName, "", "Ignored by this test runner.");
+static DEFINE_string(gpuName, "", "Ignored by this test runner.");
+
+// Set in //bazel/devicesrc but only consumed by adb_test_runner.go. We cannot use the
+// DEFINE_string macro because the flag name includes dashes.
+[[maybe_unused]] static bool unused =
+        SkFlagInfo::CreateStringFlag("device-specific-bazel-config",
+                                     nullptr,
+                                     new CommandLineFlags::StringArray(),
+                                     nullptr,
+                                     "Ignored by this test runner.",
+                                     nullptr);
+
 class BazelReporter : public skiatest::Reporter {
 public:
     void reportFailed(const skiatest::Failure& failure) override {

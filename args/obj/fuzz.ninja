@@ -1,0 +1,164 @@
+defines = -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE -DSK_ENABLE_SKOTTIE -DSK_ENABLE_SKOTTIE_SKSLEFFECT -DSK_ENABLE_PARAGRAPH -DSK_UNICODE_AVAILABLE -DSK_UNICODE_ICU_IMPLEMENTATION -DSK_ENABLE_SVG
+framework_dirs =
+include_dirs = -I../include/third_party/vulkan -I.. -I../modules/skottie/include -I../modules/skparagraph/include -I../modules/skparagraph/utils -I../modules/skunicode/include -I../modules/svg/include
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = fuzz
+
+build obj/fuzz.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp obj/third_party/icu/make_data_assembly.stamp
+build obj/fuzz/fuzz.Fuzz.o: cxx ../fuzz/Fuzz.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = Fuzz.cpp
+  source_name_part = Fuzz
+build obj/fuzz/fuzz.FuzzCanvas.o: cxx ../fuzz/FuzzCanvas.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzCanvas.cpp
+  source_name_part = FuzzCanvas
+build obj/fuzz/fuzz.FuzzCommon.o: cxx ../fuzz/FuzzCommon.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzCommon.cpp
+  source_name_part = FuzzCommon
+build obj/fuzz/fuzz.FuzzCreateDDL.o: cxx ../fuzz/FuzzCreateDDL.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzCreateDDL.cpp
+  source_name_part = FuzzCreateDDL
+build obj/fuzz/fuzz.FuzzCubicRoots.o: cxx ../fuzz/FuzzCubicRoots.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzCubicRoots.cpp
+  source_name_part = FuzzCubicRoots
+build obj/fuzz/fuzz.FuzzDDLThreading.o: cxx ../fuzz/FuzzDDLThreading.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzDDLThreading.cpp
+  source_name_part = FuzzDDLThreading
+build obj/fuzz/fuzz.FuzzDrawFunctions.o: cxx ../fuzz/FuzzDrawFunctions.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzDrawFunctions.cpp
+  source_name_part = FuzzDrawFunctions
+build obj/fuzz/fuzz.FuzzEncoders.o: cxx ../fuzz/FuzzEncoders.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzEncoders.cpp
+  source_name_part = FuzzEncoders
+build obj/fuzz/fuzz.FuzzGradients.o: cxx ../fuzz/FuzzGradients.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzGradients.cpp
+  source_name_part = FuzzGradients
+build obj/fuzz/fuzz.FuzzMain.o: cxx ../fuzz/FuzzMain.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzMain.cpp
+  source_name_part = FuzzMain
+build obj/fuzz/fuzz.FuzzParsePath.o: cxx ../fuzz/FuzzParsePath.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzParsePath.cpp
+  source_name_part = FuzzParsePath
+build obj/fuzz/fuzz.FuzzPathMeasure.o: cxx ../fuzz/FuzzPathMeasure.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzPathMeasure.cpp
+  source_name_part = FuzzPathMeasure
+build obj/fuzz/fuzz.FuzzPathop.o: cxx ../fuzz/FuzzPathop.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzPathop.cpp
+  source_name_part = FuzzPathop
+build obj/fuzz/fuzz.FuzzPolyUtils.o: cxx ../fuzz/FuzzPolyUtils.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzPolyUtils.cpp
+  source_name_part = FuzzPolyUtils
+build obj/fuzz/fuzz.FuzzQuadRoots.o: cxx ../fuzz/FuzzQuadRoots.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzQuadRoots.cpp
+  source_name_part = FuzzQuadRoots
+build obj/fuzz/fuzz.FuzzRegionOp.o: cxx ../fuzz/FuzzRegionOp.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzRegionOp.cpp
+  source_name_part = FuzzRegionOp
+build obj/fuzz/fuzz.FuzzSkParagraph.o: cxx ../fuzz/FuzzSkParagraph.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkParagraph.cpp
+  source_name_part = FuzzSkParagraph
+build obj/fuzz/fuzz.FuzzTriangulation.o: cxx ../fuzz/FuzzTriangulation.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzTriangulation.cpp
+  source_name_part = FuzzTriangulation
+build obj/fuzz/oss_fuzz/fuzz.FuzzAndroidCodec.o: cxx ../fuzz/oss_fuzz/FuzzAndroidCodec.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzAndroidCodec.cpp
+  source_name_part = FuzzAndroidCodec
+build obj/fuzz/oss_fuzz/fuzz.FuzzAnimatedImage.o: cxx ../fuzz/oss_fuzz/FuzzAnimatedImage.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzAnimatedImage.cpp
+  source_name_part = FuzzAnimatedImage
+build obj/fuzz/oss_fuzz/fuzz.FuzzCOLRv1.o: cxx ../fuzz/oss_fuzz/FuzzCOLRv1.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzCOLRv1.cpp
+  source_name_part = FuzzCOLRv1
+build obj/fuzz/oss_fuzz/fuzz.FuzzColorspace.o: cxx ../fuzz/oss_fuzz/FuzzColorspace.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzColorspace.cpp
+  source_name_part = FuzzColorspace
+build obj/fuzz/oss_fuzz/fuzz.FuzzImage.o: cxx ../fuzz/oss_fuzz/FuzzImage.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzImage.cpp
+  source_name_part = FuzzImage
+build obj/fuzz/oss_fuzz/fuzz.FuzzImageFilterDeserialize.o: cxx ../fuzz/oss_fuzz/FuzzImageFilterDeserialize.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzImageFilterDeserialize.cpp
+  source_name_part = FuzzImageFilterDeserialize
+build obj/fuzz/oss_fuzz/fuzz.FuzzIncrementalImage.o: cxx ../fuzz/oss_fuzz/FuzzIncrementalImage.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzIncrementalImage.cpp
+  source_name_part = FuzzIncrementalImage
+build obj/fuzz/oss_fuzz/fuzz.FuzzJSON.o: cxx ../fuzz/oss_fuzz/FuzzJSON.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzJSON.cpp
+  source_name_part = FuzzJSON
+build obj/fuzz/oss_fuzz/fuzz.FuzzPathDeserialize.o: cxx ../fuzz/oss_fuzz/FuzzPathDeserialize.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzPathDeserialize.cpp
+  source_name_part = FuzzPathDeserialize
+build obj/fuzz/oss_fuzz/fuzz.FuzzRegionDeserialize.o: cxx ../fuzz/oss_fuzz/FuzzRegionDeserialize.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzRegionDeserialize.cpp
+  source_name_part = FuzzRegionDeserialize
+build obj/fuzz/oss_fuzz/fuzz.FuzzRegionSetPath.o: cxx ../fuzz/oss_fuzz/FuzzRegionSetPath.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzRegionSetPath.cpp
+  source_name_part = FuzzRegionSetPath
+build obj/fuzz/oss_fuzz/fuzz.FuzzSKP.o: cxx ../fuzz/oss_fuzz/FuzzSKP.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSKP.cpp
+  source_name_part = FuzzSKP
+build obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2GLSL.o: cxx ../fuzz/oss_fuzz/FuzzSKSL2GLSL.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSKSL2GLSL.cpp
+  source_name_part = FuzzSKSL2GLSL
+build obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2Metal.o: cxx ../fuzz/oss_fuzz/FuzzSKSL2Metal.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSKSL2Metal.cpp
+  source_name_part = FuzzSKSL2Metal
+build obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2Pipeline.o: cxx ../fuzz/oss_fuzz/FuzzSKSL2Pipeline.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSKSL2Pipeline.cpp
+  source_name_part = FuzzSKSL2Pipeline
+build obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2SPIRV.o: cxx ../fuzz/oss_fuzz/FuzzSKSL2SPIRV.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSKSL2SPIRV.cpp
+  source_name_part = FuzzSKSL2SPIRV
+build obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2WGSL.o: cxx ../fuzz/oss_fuzz/FuzzSKSL2WGSL.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSKSL2WGSL.cpp
+  source_name_part = FuzzSKSL2WGSL
+build obj/fuzz/oss_fuzz/fuzz.FuzzSVG.o: cxx ../fuzz/oss_fuzz/FuzzSVG.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSVG.cpp
+  source_name_part = FuzzSVG
+build obj/fuzz/oss_fuzz/fuzz.FuzzSkDescriptorDeserialize.o: cxx ../fuzz/oss_fuzz/FuzzSkDescriptorDeserialize.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkDescriptorDeserialize.cpp
+  source_name_part = FuzzSkDescriptorDeserialize
+build obj/fuzz/oss_fuzz/fuzz.FuzzSkMeshSpecification.o: cxx ../fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkMeshSpecification.cpp
+  source_name_part = FuzzSkMeshSpecification
+build obj/fuzz/oss_fuzz/fuzz.FuzzSkParagraph.o: cxx ../fuzz/oss_fuzz/FuzzSkParagraph.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkParagraph.cpp
+  source_name_part = FuzzSkParagraph
+build obj/fuzz/oss_fuzz/fuzz.FuzzSkRuntimeBlender.o: cxx ../fuzz/oss_fuzz/FuzzSkRuntimeBlender.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkRuntimeBlender.cpp
+  source_name_part = FuzzSkRuntimeBlender
+build obj/fuzz/oss_fuzz/fuzz.FuzzSkRuntimeColorFilter.o: cxx ../fuzz/oss_fuzz/FuzzSkRuntimeColorFilter.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkRuntimeColorFilter.cpp
+  source_name_part = FuzzSkRuntimeColorFilter
+build obj/fuzz/oss_fuzz/fuzz.FuzzSkRuntimeEffect.o: cxx ../fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzSkRuntimeEffect.cpp
+  source_name_part = FuzzSkRuntimeEffect
+build obj/fuzz/oss_fuzz/fuzz.FuzzTextBlobDeserialize.o: cxx ../fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FuzzTextBlobDeserialize.cpp
+  source_name_part = FuzzTextBlobDeserialize
+build obj/tools/fuzz.UrlDataManager.o: cxx ../tools/UrlDataManager.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = UrlDataManager.cpp
+  source_name_part = UrlDataManager
+build obj/tools/debugger/fuzz.DebugCanvas.o: cxx ../tools/debugger/DebugCanvas.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = DebugCanvas.cpp
+  source_name_part = DebugCanvas
+build obj/tools/debugger/fuzz.DebugLayerManager.o: cxx ../tools/debugger/DebugLayerManager.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = DebugLayerManager.cpp
+  source_name_part = DebugLayerManager
+build obj/tools/debugger/fuzz.DrawCommand.o: cxx ../tools/debugger/DrawCommand.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = DrawCommand.cpp
+  source_name_part = DrawCommand
+build obj/tools/debugger/fuzz.JsonWriteBuffer.o: cxx ../tools/debugger/JsonWriteBuffer.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = JsonWriteBuffer.cpp
+  source_name_part = JsonWriteBuffer
+build obj/tools/fonts/fuzz.FontToolUtils.o: cxx ../tools/fonts/FontToolUtils.cpp || obj/fuzz.inputdeps.stamp
+  source_file_part = FontToolUtils.cpp
+  source_name_part = FontToolUtils
+
+build ./fuzz: link obj/fuzz/fuzz.Fuzz.o obj/fuzz/fuzz.FuzzCanvas.o obj/fuzz/fuzz.FuzzCommon.o obj/fuzz/fuzz.FuzzCreateDDL.o obj/fuzz/fuzz.FuzzCubicRoots.o obj/fuzz/fuzz.FuzzDDLThreading.o obj/fuzz/fuzz.FuzzDrawFunctions.o obj/fuzz/fuzz.FuzzEncoders.o obj/fuzz/fuzz.FuzzGradients.o obj/fuzz/fuzz.FuzzMain.o obj/fuzz/fuzz.FuzzParsePath.o obj/fuzz/fuzz.FuzzPathMeasure.o obj/fuzz/fuzz.FuzzPathop.o obj/fuzz/fuzz.FuzzPolyUtils.o obj/fuzz/fuzz.FuzzQuadRoots.o obj/fuzz/fuzz.FuzzRegionOp.o obj/fuzz/fuzz.FuzzSkParagraph.o obj/fuzz/fuzz.FuzzTriangulation.o obj/fuzz/oss_fuzz/fuzz.FuzzAndroidCodec.o obj/fuzz/oss_fuzz/fuzz.FuzzAnimatedImage.o obj/fuzz/oss_fuzz/fuzz.FuzzCOLRv1.o obj/fuzz/oss_fuzz/fuzz.FuzzColorspace.o obj/fuzz/oss_fuzz/fuzz.FuzzImage.o obj/fuzz/oss_fuzz/fuzz.FuzzImageFilterDeserialize.o obj/fuzz/oss_fuzz/fuzz.FuzzIncrementalImage.o obj/fuzz/oss_fuzz/fuzz.FuzzJSON.o obj/fuzz/oss_fuzz/fuzz.FuzzPathDeserialize.o obj/fuzz/oss_fuzz/fuzz.FuzzRegionDeserialize.o obj/fuzz/oss_fuzz/fuzz.FuzzRegionSetPath.o obj/fuzz/oss_fuzz/fuzz.FuzzSKP.o obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2GLSL.o obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2Metal.o obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2Pipeline.o obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2SPIRV.o obj/fuzz/oss_fuzz/fuzz.FuzzSKSL2WGSL.o obj/fuzz/oss_fuzz/fuzz.FuzzSVG.o obj/fuzz/oss_fuzz/fuzz.FuzzSkDescriptorDeserialize.o obj/fuzz/oss_fuzz/fuzz.FuzzSkMeshSpecification.o obj/fuzz/oss_fuzz/fuzz.FuzzSkParagraph.o obj/fuzz/oss_fuzz/fuzz.FuzzSkRuntimeBlender.o obj/fuzz/oss_fuzz/fuzz.FuzzSkRuntimeColorFilter.o obj/fuzz/oss_fuzz/fuzz.FuzzSkRuntimeEffect.o obj/fuzz/oss_fuzz/fuzz.FuzzTextBlobDeserialize.o obj/tools/fuzz.UrlDataManager.o obj/tools/debugger/fuzz.DebugCanvas.o obj/tools/debugger/fuzz.DebugLayerManager.o obj/tools/debugger/fuzz.DrawCommand.o obj/tools/debugger/fuzz.JsonWriteBuffer.o obj/tools/fonts/fuzz.FontToolUtils.o obj/tools/flags/flags.CommandLineFlags.o obj/tools/gpu/gpu_tool_utils.BackendSurfaceFactory.o obj/tools/gpu/gpu_tool_utils.BackendTextureImageFactory.o obj/tools/gpu/gpu_tool_utils.ContextType.o obj/tools/gpu/gpu_tool_utils.FlushFinishTracker.o obj/tools/gpu/gpu_tool_utils.GrContextFactory.o obj/tools/gpu/gpu_tool_utils.GrTest.o obj/tools/gpu/gpu_tool_utils.ManagedBackendTexture.o obj/tools/gpu/gpu_tool_utils.MemoryCache.o obj/tools/gpu/gpu_tool_utils.ProtectedUtils.o obj/tools/gpu/gpu_tool_utils.ProxyUtils.o obj/tools/gpu/gpu_tool_utils.TestContext.o obj/tools/gpu/gpu_tool_utils.TestOps.o obj/tools/gpu/gpu_tool_utils.YUVUtils.o obj/tools/gpu/mock/gpu_tool_utils.MockTestContext.o obj/src/utils/gpu_tool_utils.SkTestCanvas.o obj/tools/gpu/gl/gpu_tool_utils.GLTestContext.o obj/tools/gpu/gl/mac/gpu_tool_utils.CreatePlatformGLTestContext_mac.o obj/tools/fuzz.Resources.o obj/tools/fonts/fuzz.TestFontMgr.o obj/tools/fonts/fuzz.TestSVGTypeface.o obj/tools/fonts/fuzz.TestTypeface.o obj/modules/skottie/fuzz/fuzz.FuzzSkottieJSON.o ./libskia.a ./libskparagraph.a ./libsvg.a ./libskottie.a ./libsksg.a ./libskshaper.a ./libskunicode.a || obj/flags.stamp obj/gpu_tool_utils.stamp obj/modules/skottie/fuzz.stamp
+  ldflags = -Wl,-rpath,@loader_path/. -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -Wl,-w -target arm64-apple-macos11
+  libs = -ldl
+  frameworks = -framework ApplicationServices -framework OpenGL -framework AppKit
+  swiftmodules =
+  output_extension = 
+  output_dir = .

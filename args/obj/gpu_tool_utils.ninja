@@ -1,0 +1,62 @@
+defines = -DSK_ENABLE_DISCRETE_GPU -DSK_TRIVIAL_ABI=\[\[clang$:$:trivial_abi\]\] -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1 -DGR_TEST_UTILS=1 -DSK_TYPEFACE_FACTORY_CORETEXT -DSK_GL -DSK_ENABLE_DUMP_GPU -DSK_SUPPORT_PDF -DSK_CODEC_DECODES_JPEG -DSK_CODEC_DECODES_JPEG_GAINMAPS -DSK_XML -DSK_ENABLE_ANDROID_UTILS -DSK_HAS_HEIF_LIBRARY -DSK_CODEC_DECODES_PNG -DSK_CODEC_DECODES_RAW -DSK_CODEC_DECODES_WEBP -DSK_HAS_WUFFS_LIBRARY -DSK_ENABLE_PRECOMPILE -DSK_ASSUME_GL=1 -DSK_GANESH -DSK_USE_PERFETTO -DSK_ENABLE_API_AVAILABLE
+framework_dirs =
+include_dirs = -I../include/third_party/vulkan -I..
+cflags = -Wno-attributes -ffp-contract=off -fstrict-aliasing -fPIC -fvisibility=hidden -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk -target arm64-apple-macos11 -g -gdwarf-4 -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-cast-qual -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wc++98-compat-extra-semi
+cflags_cc = -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template
+root_out_dir = .
+target_output_name = gpu_tool_utils
+
+build obj/gpu_tool_utils.inputdeps.stamp: stamp obj/third_party/externals/spirv-tools/spvtools_core_enums_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_core_tables_unified1.stamp obj/third_party/externals/spirv-tools/spvtools_generators_inc.stamp obj/third_party/externals/spirv-tools/spvtools_glsl_tables_glsl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_cldebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_language_header_vkdebuginfo100.stamp obj/third_party/externals/spirv-tools/spvtools_opencl_tables_opencl1-0.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_debuginfo.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.clspvreflection.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_nonsemantic.shader.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_opencl.debuginfo.100.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-gcn-shader.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-ballot.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-explicit-vertex-parameter.stamp obj/third_party/externals/spirv-tools/spvtools_vendor_tables_spv-amd-shader-trinary-minmax.stamp
+build obj/tools/gpu/gpu_tool_utils.BackendSurfaceFactory.o: cxx ../tools/gpu/BackendSurfaceFactory.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = BackendSurfaceFactory.cpp
+  source_name_part = BackendSurfaceFactory
+build obj/tools/gpu/gpu_tool_utils.BackendTextureImageFactory.o: cxx ../tools/gpu/BackendTextureImageFactory.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = BackendTextureImageFactory.cpp
+  source_name_part = BackendTextureImageFactory
+build obj/tools/gpu/gpu_tool_utils.ContextType.o: cxx ../tools/gpu/ContextType.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = ContextType.cpp
+  source_name_part = ContextType
+build obj/tools/gpu/gpu_tool_utils.FlushFinishTracker.o: cxx ../tools/gpu/FlushFinishTracker.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = FlushFinishTracker.cpp
+  source_name_part = FlushFinishTracker
+build obj/tools/gpu/gpu_tool_utils.GrContextFactory.o: cxx ../tools/gpu/GrContextFactory.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = GrContextFactory.cpp
+  source_name_part = GrContextFactory
+build obj/tools/gpu/gpu_tool_utils.GrTest.o: cxx ../tools/gpu/GrTest.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = GrTest.cpp
+  source_name_part = GrTest
+build obj/tools/gpu/gpu_tool_utils.ManagedBackendTexture.o: cxx ../tools/gpu/ManagedBackendTexture.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = ManagedBackendTexture.cpp
+  source_name_part = ManagedBackendTexture
+build obj/tools/gpu/gpu_tool_utils.MemoryCache.o: cxx ../tools/gpu/MemoryCache.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = MemoryCache.cpp
+  source_name_part = MemoryCache
+build obj/tools/gpu/gpu_tool_utils.ProtectedUtils.o: cxx ../tools/gpu/ProtectedUtils.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = ProtectedUtils.cpp
+  source_name_part = ProtectedUtils
+build obj/tools/gpu/gpu_tool_utils.ProxyUtils.o: cxx ../tools/gpu/ProxyUtils.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = ProxyUtils.cpp
+  source_name_part = ProxyUtils
+build obj/tools/gpu/gpu_tool_utils.TestContext.o: cxx ../tools/gpu/TestContext.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = TestContext.cpp
+  source_name_part = TestContext
+build obj/tools/gpu/gpu_tool_utils.TestOps.o: cxx ../tools/gpu/TestOps.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = TestOps.cpp
+  source_name_part = TestOps
+build obj/tools/gpu/gpu_tool_utils.YUVUtils.o: cxx ../tools/gpu/YUVUtils.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = YUVUtils.cpp
+  source_name_part = YUVUtils
+build obj/tools/gpu/mock/gpu_tool_utils.MockTestContext.o: cxx ../tools/gpu/mock/MockTestContext.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = MockTestContext.cpp
+  source_name_part = MockTestContext
+build obj/src/utils/gpu_tool_utils.SkTestCanvas.o: cxx ../src/utils/SkTestCanvas.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = SkTestCanvas.cpp
+  source_name_part = SkTestCanvas
+build obj/tools/gpu/gl/gpu_tool_utils.GLTestContext.o: cxx ../tools/gpu/gl/GLTestContext.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = GLTestContext.cpp
+  source_name_part = GLTestContext
+build obj/tools/gpu/gl/mac/gpu_tool_utils.CreatePlatformGLTestContext_mac.o: cxx ../tools/gpu/gl/mac/CreatePlatformGLTestContext_mac.cpp || obj/gpu_tool_utils.inputdeps.stamp
+  source_file_part = CreatePlatformGLTestContext_mac.cpp
+  source_name_part = CreatePlatformGLTestContext_mac
+
+build obj/gpu_tool_utils.stamp: stamp obj/tools/gpu/gpu_tool_utils.BackendSurfaceFactory.o obj/tools/gpu/gpu_tool_utils.BackendTextureImageFactory.o obj/tools/gpu/gpu_tool_utils.ContextType.o obj/tools/gpu/gpu_tool_utils.FlushFinishTracker.o obj/tools/gpu/gpu_tool_utils.GrContextFactory.o obj/tools/gpu/gpu_tool_utils.GrTest.o obj/tools/gpu/gpu_tool_utils.ManagedBackendTexture.o obj/tools/gpu/gpu_tool_utils.MemoryCache.o obj/tools/gpu/gpu_tool_utils.ProtectedUtils.o obj/tools/gpu/gpu_tool_utils.ProxyUtils.o obj/tools/gpu/gpu_tool_utils.TestContext.o obj/tools/gpu/gpu_tool_utils.TestOps.o obj/tools/gpu/gpu_tool_utils.YUVUtils.o obj/tools/gpu/mock/gpu_tool_utils.MockTestContext.o obj/src/utils/gpu_tool_utils.SkTestCanvas.o obj/tools/gpu/gl/gpu_tool_utils.GLTestContext.o obj/tools/gpu/gl/mac/gpu_tool_utils.CreatePlatformGLTestContext_mac.o || ./libskia.a

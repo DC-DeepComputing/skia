@@ -201,4 +201,14 @@ std::unique_ptr<Expression> SymbolTable::instantiateSymbolRef(const Context& con
     return nullptr;
 }
 
+std::unique_ptr<Expression> SymbolTable::instantiateSymbolRef(const Context& context,
+                                                              std::string_view name,
+                                                              Position pos) {
+    if (const Symbol* symbol = this->find(name)) {
+        return symbol->instantiate(context, pos);
+    }
+    context.fErrors->error(pos, "unknown identifier '" + std::string(name) + "'");
+    return nullptr;
+}
+
 }  // namespace SkSL
