@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48201c9d_902dc784",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-14T15:27:11Z",
+      "side": 1,
+      "message": "Jim, PTAL now that this is rebased to just deal with the text code.",
+      "revId": "54e9f2545f18865944c86ff6dbca12acaf4239d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
