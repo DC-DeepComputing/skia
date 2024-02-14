@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee47a1bd_d5b71a88",
+        "filename": "gm/vertices.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-14T20:52:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "48f84b7b_2c328aef",
+      "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1305cbe1_afd68c07",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-02-14T20:32:46Z",
       "side": 1,
       "message": "I didn\u0027t bother updating this code to be more clever. We probably could, but with the original local-matrices being generated from RSXforms, there wasn\u0027t a quick and obvious way. So I simply hoisted the invert out here.",
+      "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26bcb72_9aa496f1",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-14T20:52:40Z",
+      "side": 1,
+      "message": "You\u0027d need the inverse of fCTM so it looks like you\u0027d need to do an invert() anyway. Or is that what you\u0027re talking about when you say the original local-matrix?",
+      "parentUuid": "1305cbe1_afd68c07",
       "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
