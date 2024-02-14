@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517b6cc8_2f48b0a3",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-02-14T21:48:59Z",
+      "side": 1,
+      "message": "I\u0027m a little confused by this -- if we\u0027re insetting the image dimensions for the subset, aren\u0027t the bounds effectively pushed right and down 1 (as they\u0027re used in the subset\u0027s local space), so we then need to subtract the padding to get an origin where the bounds were in the original image space?",
+      "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f2b4e8_df072cd8",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-02-14T21:48:59Z",
+      "side": 1,
+      "message": "I guess this is out of date; there\u0027s no fPadding field.",
+      "range": {
+        "startLine": 597,
+        "startChar": 48,
+        "endLine": 597,
+        "endChar": 56
+      },
+      "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed46200f_45b91781",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1195,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-02-14T21:48:59Z",
+      "side": 1,
+      "message": "Do we not need AA for this draw?",
+      "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
