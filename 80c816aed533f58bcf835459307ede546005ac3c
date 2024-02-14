@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf15631_59c22e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-14T21:27:52Z",
+      "side": 1,
+      "message": "Looks like Chromium will use it here https://crrev.com/c/5296956\n\nI also don\u0027t think we need to do anything further, since Chrome will be testing their extension.",
+      "parentUuid": "3a0b1ced_fbc4a229",
+      "revId": "80c816aed533f58bcf835459307ede546005ac3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d65260a1_49ab53ce",
