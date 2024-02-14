@@ -1395,4 +1395,11 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(vkSpec.fImageUsageFlags)     << 19);
 }
 
+SkSpan<uint32_t> VulkanCaps::getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+    // proxy -> texture info -> vulkan texture spec -> ycbcr conversion info
+    auto test = proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
+    // Requires 4 uint32s
+    return {};
+}
+
 } // namespace skgpu::graphite

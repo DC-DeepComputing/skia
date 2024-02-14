@@ -31,6 +31,21 @@ struct ShaderCaps;
 
 }  // namespace SkSL
 
+#ifdef SK_BUILD_FOR_ANDROID
+#include <android/hardware_buffer.h>
+#include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/vk/VulkanInterface.h"
+#endif
+
+namespace SkSL {
+
+enum class ProgramKind : int8_t;
+struct ProgramInterface;
+struct ProgramSettings;
+struct ShaderCaps;
+
+}  // namespace SkSL
+
 namespace skgpu {
 
 class ShaderErrorHandler;

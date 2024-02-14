@@ -588,8 +588,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     const bool doTilingInHw = !imgData.fSampling.useCubic && can_do_tiling_in_hw(caps, imgData);
 
     static constexpr SkTileMode kDefaultTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
-    gatherer->add(imgData.fSampling,
-                  doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
+    gatherer->add(imgData.fSampling, doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
                   imgData.fTextureProxy);
 
     if (doTilingInHw) {
@@ -676,7 +675,8 @@ void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
     }
 
     for (int i = 0; i < 4; ++i) {
-        gatherer->add(imgData.fSampling, imgData.fTileModes, imgData.fTextureProxies[i]);
+        gatherer->add(imgData.fSampling, imgData.fTileModes,
+                      imgData.fTextureProxies[i]);
     }
 
     if (imgData.fSampling.useCubic) {
@@ -758,7 +758,8 @@ void add_perlin_noise_uniform_data(const ShaderCodeDictionary* dict,
     static const SkTileMode kRepeatXTileModes[2] = { SkTileMode::kRepeat, SkTileMode::kClamp };
     static const SkSamplingOptions kNearestSampling { SkFilterMode::kNearest };
 
-    gatherer->add(kNearestSampling, kRepeatXTileModes, noiseData.fPermutationsProxy);
+    gatherer->add(kNearestSampling, kRepeatXTileModes,
+                  noiseData.fPermutationsProxy);
     gatherer->add(kNearestSampling, kRepeatXTileModes, noiseData.fNoiseProxy);
 }
 

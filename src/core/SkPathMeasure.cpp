@@ -14,6 +14,13 @@
 #include "include/private/base/SkTDArray.h"
 #include "src/core/SkPathMeasurePriv.h"
 
+#include "include/core/SkContourMeasure.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/private/base/SkTDArray.h"
+#include "src/core/SkPathMeasurePriv.h"
+
 #include <cstddef>
 
 class SkMatrix;

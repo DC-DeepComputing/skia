@@ -45,6 +45,8 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
+    SkSpan<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
@@ -91,7 +93,7 @@ public:
     }
 
     bool isTransferSrc(const VulkanTextureInfo&) const;
-    bool isTransferDst(const VulkanTextureInfo&) const;
+    bool isTransferDst(const VulkanTextureInfo& vkInfo) const;
 
 private:
     enum VkVendor {
