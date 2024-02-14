@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4a3e2b1_c798d65c",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-14T18:23:12Z",
+      "side": 1,
+      "message": "I think this cheat-sheet could be removed. The descriptive text above is sufficient, and it feels like it will fall out of sync with the actual implementation over time.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 0
+      },
+      "revId": "66c7d4c188702f7b0254257a98ed946d66e3eaad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "505de51f_32ef0d0f",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-14T18:23:12Z",
+      "side": 1,
+      "message": "In an infinite-precision world these two lines would be identical to\n\n    const float answer \u003d std::min(255.0f, c * reciprocalA);\n\nBut in practice... is it different?",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 0
+      },
+      "revId": "66c7d4c188702f7b0254257a98ed946d66e3eaad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
