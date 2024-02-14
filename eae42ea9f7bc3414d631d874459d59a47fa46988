@@ -22,6 +22,30 @@
       },
       "revId": "eae42ea9f7bc3414d631d874459d59a47fa46988",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63adc3d2_507de6f9",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-14T20:00:17Z",
+      "side": 1,
+      "message": "I fixed this forward in https://skia-review.googlesource.com/c/skia/+/812556",
+      "parentUuid": "09ccb981_bcd5ff68",
+      "range": {
+        "startLine": 670,
+        "startChar": 11,
+        "endLine": 670,
+        "endChar": 13
+      },
+      "revId": "eae42ea9f7bc3414d631d874459d59a47fa46988",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
