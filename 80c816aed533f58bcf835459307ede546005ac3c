@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ffa947b_30c74cc2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-14T21:20:13Z",
+      "side": 1,
+      "message": "Looks fine, though AFAIK that function only works if called on the main thread, and Skia isn\u0027t always running on the main thread. So it\u0027s possible we could just get rid of it since it\u0027s not guaranteed to work.",
+      "revId": "80c816aed533f58bcf835459307ede546005ac3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d65260a1_49ab53ce",
