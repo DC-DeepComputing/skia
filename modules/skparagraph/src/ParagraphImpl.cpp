@@ -698,25 +698,23 @@ void ParagraphImpl::resolveStrut() {
     SkFont font(typefaces.front(), strutStyle.getFontSize());
     SkFontMetrics metrics;
     font.getMetrics(&metrics);
+    const SkScalar strutLeading = strutStyle.getLeading() < 0 ? 0 : strutStyle.getLeading() * strutStyle.getFontSize();
 
     if (strutStyle.getHeightOverride()) {
-        auto strutIntrinsicHeight = metrics.fDescent - metrics.fAscent;
-        auto strutHeight = strutStyle.getHeight() * strutStyle.getFontSize();
+        const auto strutHeightMultiplier = strutStyle.getHeight();
 
         SkScalar strutAscent = 0.0f;
         SkScalar strutDescent = 0.0f;
-        SkScalar strutLeading = 0.0f;
         // The half leading flag doesn't take effect unless there's height override.
         if (strutStyle.getHalfLeading()) {
-            strutAscent = metrics.fAscent;
-            strutDescent = metrics.fDescent;
-            strutLeading = metrics.fLeading + strutHeight - strutIntrinsicHeight;
+            auto flexibleHeight = strutStyle.getHeight() * strutStyle.getFontSize() - strutStyle.getFontSize();
+            flexibleHeight /= 2;
+            strutAscent = metrics.fAscent - flexibleHeight;
+            strutDescent = metrics.fDescent + flexibleHeight;
         } else {
-            strutAscent = metrics.fAscent * strutHeight / strutIntrinsicHeight;
-            strutDescent = metrics.fDescent * strutHeight / strutIntrinsicHeight;
-            strutLeading = strutStyle.getLeading() < 0 ? 0 : strutStyle.getLeading() * strutStyle.getFontSize();
+            strutAscent = metrics.fAscent * strutHeightMultiplier;
+            strutDescent = metrics.fDescent * strutHeightMultiplier;
         }
-
         fStrutMetrics = InternalLineMetrics(
             strutAscent,
             strutDescent,
@@ -726,7 +724,7 @@ void ParagraphImpl::resolveStrut() {
         fStrutMetrics = InternalLineMetrics(
                 metrics.fAscent,
                 metrics.fDescent,
-                strutStyle.getLeading() < 0 ? 0 : strutStyle.getLeading() * strutStyle.getFontSize());
+                strutLeading);
     }
     fStrutMetrics.setForceStrut(this->paragraphStyle().getStrutStyle().getForceStrutHeight());
 }
