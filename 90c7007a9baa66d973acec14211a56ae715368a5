@@ -86,6 +86,24 @@
       "parentUuid": "1305cbe1_afd68c07",
       "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "649a65ea_4d322619",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-14T20:59:01Z",
+      "side": 1,
+      "message": "In theory, we could invert the CTM once (outside the loop), then directly construct the inverse of the RSXform+translate portion (and flip the concat like I did in the drawVertices case). That would presumably let you specify a singular RSXform for a zero-area sprite. But I don\u0027t think anyone has ever tried that or complained about it (like they have for the drawVertices case).",
+      "parentUuid": "a26bcb72_9aa496f1",
+      "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
