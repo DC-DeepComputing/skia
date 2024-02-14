@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08898845_e6389e15",
+        "filename": "modules/svg/src/SkSVGText.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-14T22:32:09Z",
+      "side": 1,
+      "message": "This is obviously not the right fix because of the way it breaks `text-tspan-01-b.svg`, but it does fix `text-path-02-b.svg` when it is broken up into multiple runs. Perhaps the issue is that the transform applies from the `fPathData` shouldn\u0027t be applied here?",
+      "revId": "804d199d71f2121cf6d284f0ebbbe5ce1924c8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
