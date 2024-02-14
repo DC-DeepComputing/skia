@@ -154,6 +154,7 @@ SKIA_PUBLIC_HDRS = [
     "include/gpu/ganesh/vk/GrVkBackendSurface.h",
     "include/gpu/ganesh/vk/GrVkDirectContext.h",
     "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+    "include/gpu/gl/epoxy/GrGLMakeEpoxyEGLInterface.h",
     "include/gpu/gl/glx/GrGLMakeGLXInterface.h",
     "include/gpu/gl/GrGLAssembleHelpers.h",
     "include/gpu/gl/GrGLAssembleInterface.h",
