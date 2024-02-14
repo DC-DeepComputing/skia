@@ -665,6 +665,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     drawPass->fSamplerDescs    = textureBindingTracker.detachSamplers();
     drawPass->fSampledTextures = textureBindingTracker.detachTextures();
 
+    // If there is a single draw in this DrawPass, there is no need for depth testing for
+    // clipping or painters order enforcement. This avoids an entire attachment when doing
+    // blits and image filters.
+    if (keys.size() == 1) {
+        drawPass->fDepthStencilFlags &= ~DepthStencilFlags::kDepth;
+    }
+
     TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs.size());
     TRACE_COUNTER1("skia.gpu", "# textures", drawPass->fSampledTextures.size());
     TRACE_COUNTER1("skia.gpu", "# commands", drawPass->fCommandList.count());
