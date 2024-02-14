@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4d90ae4_244aff9d",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-14T20:32:46Z",
+      "side": 0,
+      "message": "Previously, we did `Concat(CTM, uv_to_pos)`, then inverted it inside `update`. Now, we just do `Concat(pos_to_uv, invCtm)`, and do nothing inside `update`.",
+      "revId": "4235c0421a48f1a06f6a296821806838024d456a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3a33504_76457b05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-14T20:32:46Z",
+      "side": 1,
+      "message": "Fingers crossed that the minor diffs introduced don\u0027t impact any of the canaries.",
+      "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48f84b7b_2c328aef",
+        "filename": "gm/vertices.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-14T20:32:46Z",
+      "side": 1,
+      "message": "Before this CL, the GM drew nothing on CPU. Now it draws a green square, just like GPU.",
+      "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1305cbe1_afd68c07",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-14T20:32:46Z",
+      "side": 1,
+      "message": "I didn\u0027t bother updating this code to be more clever. We probably could, but with the original local-matrices being generated from RSXforms, there wasn\u0027t a quick and obvious way. So I simply hoisted the invert out here.",
+      "revId": "90c7007a9baa66d973acec14211a56ae715368a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
