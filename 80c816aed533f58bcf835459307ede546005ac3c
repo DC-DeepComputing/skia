@@ -22,6 +22,30 @@
       },
       "revId": "80c816aed533f58bcf835459307ede546005ac3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "725fc181_5d052c1d",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 10037
+      },
+      "writtenOn": "2024-02-14T21:08:59Z",
+      "side": 1,
+      "message": "I don\u0027t think that works, cause that is a runtime check and the failure is a compiler error. We force errors for calling unsafe APIs.",
+      "parentUuid": "d65260a1_49ab53ce",
+      "range": {
+        "startLine": 159,
+        "startChar": 13,
+        "endLine": 159,
+        "endChar": 44
+      },
+      "revId": "80c816aed533f58bcf835459307ede546005ac3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
