@@ -515,8 +515,10 @@ void append(SkShaper::RunHandler* handler, const SkShaper::RunHandler::RunInfo& 
         if (buffer.offsets) {
             buffer.positions[i] = advance + buffer.point;
             buffer.offsets[i] = glyph.fOffset;
+            //SkDebugf("Buffer[%zu] = (%f, %f)+(%f, %f)\n", i, buffer.positions[i].fX, buffer.positions[i].fY, buffer.offsets[i].fX, buffer.offsets[i].fY);
         } else {
             buffer.positions[i] = advance + buffer.point + glyph.fOffset;
+            //SkDebugf("Buffer[%zu] = (%f, %f)\n", i, buffer.positions[i].fX, buffer.positions[i].fY);
         }
         if (buffer.clusters) {
             buffer.clusters[i] = glyph.fCluster;

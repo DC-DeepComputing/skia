@@ -473,7 +473,9 @@ void SkSVGTextContext::commitRunBuffer(const RunInfo& ri) {
 
     // Offset adjustments are cumulative - we only need to advance the current chunk
     // with the last value.
-    fChunkAdvance += ri.fAdvance + fShapeBuffer.fUtf8PosAdjust.back().offset;
+    //SkDebugf("fChunkAdvance was (%f, %f)\n", fChunkAdvance.fX, fChunkAdvance.fY);
+    fChunkAdvance += ri.fAdvance; // + fShapeBuffer.fUtf8PosAdjust.back().offset;
+    //SkDebugf("fAdvance: (%f, %f) fShapeBuffer:(%f, %f) fChunkAdvance: (%f, %f)\n", ri.fAdvance.fX, ri.fAdvance.fY, fShapeBuffer.fUtf8PosAdjust.back().offset.fX, fShapeBuffer.fUtf8PosAdjust.back().offset.fY, fChunkAdvance.fX, fChunkAdvance.fY);
 }
 
 void SkSVGTextFragment::renderText(const SkSVGRenderContext& ctx, SkSVGTextContext* tctx,
