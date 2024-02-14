@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c6f55a_fc14eee0",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "Wise. Done",
+      "parentUuid": "8d568ee5_1a123a59",
+      "range": {
+        "startLine": 446,
+        "startChar": 26,
+        "endLine": 446,
+        "endChar": 51
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fc17c22_b00aeeb8",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-01-31T18:30:39Z",
       "side": 1,
       "message": "I wonder if it makes more sense to move the binding here to where we actually do the draw. Like generally we always do our buffer bindings for general draws inside the renderpass right before the draw.",
+      "range": {
+        "startLine": 472,
+        "startChar": 4,
+        "endLine": 475,
+        "endChar": 50
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4705995f_3a407f77",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "I kept the update call where it is since some of those ops are (at least currently) asserted to be outside of a render pass, but I did move the bind to right before performing the draw.",
+      "parentUuid": "3fc17c22_b00aeeb8",
       "range": {
         "startLine": 472,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1055d9be_0dc607bc",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c30f56f_102228cf",
+      "range": {
+        "startLine": 481,
+        "startChar": 26,
+        "endLine": 481,
+        "endChar": 54
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a0a23f3_1e99c288",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-01-31T18:30:39Z",
       "side": 1,
       "message": "why does this need to happen out here? Could this be done inside loadMSAAFromResolve",
+      "range": {
+        "startLine": 782,
+        "startChar": 8,
+        "endLine": 782,
+        "endChar": 87
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cbace46_b801d30c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "This component can be handled within that method.",
+      "parentUuid": "6a0a23f3_1e99c288",
       "range": {
         "startLine": 782,
         "startChar": 8,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "450289f7_8ff101a5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "Returning false does signal to graphite that the adding of a render pass was unsuccessful (and thusly that adding commands will not work and graphite logs an error). However, I do think that we should end the render pass here. Done!",
+      "parentUuid": "bc5cd575_cfdcaae7",
+      "range": {
+        "startLine": 809,
+        "startChar": 9,
+        "endLine": 809,
+        "endChar": 21
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e23fa29_4e3e8beb",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1891892_cd673eae",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 1638,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "That\u0027s correct since in updating the buffer we\u0027ll always want those, so we can just always use `VK_ACCESS_TRANSFER_WRITE_BIT` and `VK_PIPELINE_STAGE_TRANSFER_BIT` when setting the buffer access within `updateBuffer(...)`. Not sure what I was thinking there. Thanks!",
+      "parentUuid": "5e23fa29_4e3e8beb",
+      "range": {
+        "startLine": 1637,
+        "startChar": 39,
+        "endLine": 1638,
+        "endChar": 76
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e5ad17c_5f6b9c18",
@@ -169,6 +313,30 @@
       "writtenOn": "2024-01-31T18:30:39Z",
       "side": 1,
       "message": "Does this need to return a ref? I believe the ResourceProvider should outlive any CommandBuffer that uses the buffer.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 17
+      },
+      "revId": "a430468f8bfa6aca696e14c56f12923af3fd94f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a491e93a_d859dd64",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-14T18:06:55Z",
+      "side": 1,
+      "message": "Yes, we could choose to rely on that fact rather than having the cmd buffer explicitly have its own ref. Done",
+      "parentUuid": "7e5ad17c_5f6b9c18",
       "range": {
         "startLine": 50,
         "startChar": 4,
