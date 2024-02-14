@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a61f141_b826f3c1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-14T18:24:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "88944414_1275e981",
+      "range": {
+        "startLine": 642,
+        "startChar": 7,
+        "endLine": 652,
+        "endChar": 28
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "633e4bed_fafc291d",
@@ -273,6 +297,30 @@
       "side": 1,
       "message": "No, we will always have a vertex binding now.\n\nI could change this to simply assert that bindingDescs is non-null and skip this ternary, adding it back later if we ever have a need for a vertex binding description-less pipeline. \n\nI personally don\u0027t mind leaving it this way to mirror the instance attribute handling, but I can see the argument for removing it. LMKWYT.",
       "parentUuid": "f44f2e72_330b74fe",
+      "range": {
+        "startLine": 141,
+        "startChar": 53,
+        "endLine": 141,
+        "endChar": 65
+      },
+      "revId": "38f6064a19a5e435f9358e4daabac3e62ddf210f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "324da809_507c6057",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-14T18:24:18Z",
+      "side": 1,
+      "message": "sounds good to leave it as is.",
+      "parentUuid": "d793c6e6_3ec4bf68",
       "range": {
         "startLine": 141,
         "startChar": 53,
