@@ -16,7 +16,7 @@
 
 namespace skgpu::graphite {
 
-class UploadList;
+class DrawContext;
 
 /**
  * PathAtlas class that rasterizes coverage masks on the CPU and caches them in a
@@ -27,12 +27,16 @@ class UploadList;
  * uploads are recorded by `recordUploads()` and subsequently added to an UploadTask.
  *
  */
-class SmallPathAtlas : public PathAtlas {
+class SmallPathAtlas : public PathAtlas,
+                       public AtlasGenerationCounter,
+                       public PlotEvictionCallback {
 public:
     explicit SmallPathAtlas(Recorder*);
     ~SmallPathAtlas() override {}
 
-    bool recordUploads(UploadList*) { /*TODO*/ return false; }
+    bool initAtlas();
+
+    bool recordUploads(DrawContext*);
 
 protected:
     const TextureProxy* onAddShape(const Shape&,
@@ -42,10 +46,31 @@ protected:
                                    skvx::half2* outPos) override;
 
 private:
+    void evict(PlotLocator) override;
+
     // TODO: select atlas size dynamically? Take ContextOptions::fMaxTextureAtlasSize into account?
     static constexpr int kDefaultAtlasDim = 2048;
 
     std::unique_ptr<DrawAtlas> fDrawAtlas;
+
+    // Tracks whether a path is already in the DrawAtlas, and its location in the atlas
+    struct ShapeData {
+        AtlasLocator fAtlasLocator;
+        SkRect       fBounds;
+    };
+    struct UniqueKeyHash {
+        uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
+    };
+    using ShapeCache = skia_private::THashMap<skgpu::UniqueKey, ShapeData, UniqueKeyHash>;
+    ShapeCache fShapeCache;
+
+    // List of stored keys per Plot, used to invalidate cache entries.
+    struct ShapeKeyEntry {
+        skgpu::UniqueKey fKey;
+        SK_DECLARE_INTERNAL_LLIST_INTERFACE(ShapeKeyEntry);
+    };
+    using ShapeKeyList = SkTInternalLList<ShapeKeyEntry>;
+    skia_private::TArray<ShapeKeyList> fKeyLists;
 };
 
 }  // namespace skgpu::graphite
