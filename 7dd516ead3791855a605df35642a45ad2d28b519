@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2ac1692_1b7151e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-14T18:14:56Z",
+      "side": 1,
+      "message": "This CL won\u0027t revert cleanly without additional reverts.\n\nWe discussed creating Gold filters for the Vello extra_configs to reduce the noise from known rendering bugs instead of reverting this change. That\u0027s my preference since it will allow me to monitor the bugs as I work on them incrementally but I understand if the team prefers to revert instead.",
+      "revId": "7dd516ead3791855a605df35642a45ad2d28b519",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
