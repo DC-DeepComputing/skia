@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "854369c3_fb0bb7f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-14T22:59:52Z",
+      "side": 1,
+      "message": "This is more of a bug report than a review. I\u0027m having difficulty figuring out how `dx` and `dy` attributes interact with `textPath`. After looking at this for a bit it looks like the issue is that the `dx` on the `tspan` in the `textPath` in `text-path-02-b.svg` is being applied separately to each run reported by the shaper instead of used to position the first run reported by the shaper. So when shaper (because of switching to libgrapheme) shapes the text into multiple runs the initial `dx` is applied to each? We may want a test like this with an emoji in the middle to force different fonts and thereby force multiple runs with all shapers.",
+      "revId": "804d199d71f2121cf6d284f0ebbbe5ce1924c8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08898845_e6389e15",
