@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dabbd67_b2163604",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-14T16:41:47Z",
+      "side": 1,
+      "message": "lgtm modulo iwyu and line lengths",
+      "revId": "039cb5e6989837984aa2962dce5e4527874e9662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074058e1_eb016e5f",
+        "filename": "tests/BigImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-14T16:41:47Z",
+      "side": 1,
+      "message": "nit: line length\n```suggestion\n                            int actualNumTiles \u003d\n                                    gNumTilesDrawnGanesh.load(std::memory_order_acquire);\n```",
+      "range": {
+        "startLine": 404,
+        "startChar": 0,
+        "endLine": 404,
+        "endChar": 102
+      },
+      "revId": "039cb5e6989837984aa2962dce5e4527874e9662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffbeea87_b3d7e05b",
+        "filename": "tests/BigImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-14T16:41:47Z",
+      "side": 1,
+      "message": "nit: line length\n```suggestion\n                            int actualNumTiles2 \u003d\n                                gNumTilesDrawnGraphite.load(std::memory_order_acquire);\n```",
+      "range": {
+        "startLine": 408,
+        "startChar": 0,
+        "endLine": 408,
+        "endChar": 105
+      },
+      "revId": "039cb5e6989837984aa2962dce5e4527874e9662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54663eb2_305586fc",
+        "filename": "tests/BigImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-14T16:41:47Z",
+      "side": 1,
+      "message": "nit: line length\n```suggestion\n                                actualNumTiles \u003d\n                                        gNumTilesDrawnGanesh.load(std::memory_order_acquire);\n```",
+      "range": {
+        "startLine": 431,
+        "startChar": 0,
+        "endLine": 431,
+        "endChar": 102
+      },
+      "revId": "039cb5e6989837984aa2962dce5e4527874e9662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af38df1_62779cff",
+        "filename": "tests/BigImageTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-14T16:41:47Z",
+      "side": 1,
+      "message": "nit: line length\n```suggestion\n                                actualNumTiles2 \u003d\n                                    gNumTilesDrawnGraphite.load(std::memory_order_acquire);\n```",
+      "range": {
+        "startLine": 441,
+        "startChar": 0,
+        "endLine": 441,
+        "endChar": 105
+      },
+      "revId": "039cb5e6989837984aa2962dce5e4527874e9662",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
