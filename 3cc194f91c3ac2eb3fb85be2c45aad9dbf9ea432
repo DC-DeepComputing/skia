@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1212e5d2_0658804e",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-15T18:28:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "133f9267_71ee9490",
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cc607ad_e8bcc6b0",
@@ -84,6 +102,30 @@
       "writtenOn": "2024-02-15T17:52:07Z",
       "side": 1,
       "message": "static constexpr?",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c6dbf1_17b6f3e8",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-15T18:28:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cc607ad_e8bcc6b0",
       "range": {
         "startLine": 28,
         "startChar": 16,
@@ -117,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e79368f_56bcb881",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-15T18:28:27Z",
+      "side": 1,
+      "message": "It can vary depending on how the drawAtlas is set up. Once I add code to limit the texture size based on maxTextureSize or other parameters, we could have fewer number of plots. This just future-proofs it.",
+      "parentUuid": "46ee5b24_a1b9a263",
+      "range": {
+        "startLine": 49,
+        "startChar": 44,
+        "endLine": 49,
+        "endChar": 52
+      },
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb1fc069_644becce",
@@ -130,6 +196,30 @@
       "writtenOn": "2024-02-15T17:52:07Z",
       "side": 1,
       "message": "If the shape doesn\u0027t have a key, should we just let the raster path atlas handle it?",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 15
+      },
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7e883c_ddfb590e",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-15T18:28:27Z",
+      "side": 1,
+      "message": "Right, that should be part of the condition in chooseRenderer for picking the SmallPathAtlas.",
+      "parentUuid": "bb1fc069_644becce",
       "range": {
         "startLine": 59,
         "startChar": 9,
