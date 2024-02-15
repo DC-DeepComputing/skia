@@ -69,6 +69,75 @@
       "parentUuid": "510c0b39_df75d765",
       "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc607ad_e8bcc6b0",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-15T17:52:07Z",
+      "side": 1,
+      "message": "static constexpr?",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ee5b24_a1b9a263",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-15T17:52:07Z",
+      "side": 1,
+      "message": "is this a constant? or does it change as plots fill up?",
+      "range": {
+        "startLine": 49,
+        "startChar": 44,
+        "endLine": 49,
+        "endChar": 52
+      },
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb1fc069_644becce",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-15T17:52:07Z",
+      "side": 1,
+      "message": "If the shape doesn\u0027t have a key, should we just let the raster path atlas handle it?",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 15
+      },
+      "revId": "3cc194f91c3ac2eb3fb85be2c45aad9dbf9ea432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
