@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3210d9e8_413f9a04",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-15T15:09:31Z",
+      "side": 1,
+      "message": "The `origin` is the location in layer space, not in the image space, so we do want to push it down and to the right to keep it consistent with where the subset pixels would be rendered if were to have drawn the full image.",
+      "parentUuid": "517b6cc8_2f48b0a3",
+      "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6f2b4e8_df072cd8",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72be4722_78ac0ca4",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-15T15:09:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6f2b4e8_df072cd8",
+      "range": {
+        "startLine": 597,
+        "startChar": 48,
+        "endLine": 597,
+        "endChar": 56
+      },
+      "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed46200f_45b91781",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-02-14T21:48:59Z",
       "side": 1,
       "message": "Do we not need AA for this draw?",
+      "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92bab3fb_15c3ece6",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1195,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-15T15:09:31Z",
+      "side": 1,
+      "message": "Not really, drawPaint() just fills the entire canvas up to the clip so the only edges that are visible are whatever the clip stack defined.",
+      "parentUuid": "ed46200f_45b91781",
       "revId": "e08b42455f3637a15032dee4d12b4d0fb6a73a64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
