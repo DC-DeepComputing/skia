@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bf7db58_4890a3dc",
+        "filename": "tools/testrunners/gm/BazelGMTestRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-15T19:13:28Z",
+      "side": 1,
+      "message": "DM reads the file into a string, splits it at each newline character, and populates a set with the resulting lines.\n\nThis code does essentially the same, but it trims the lines, filters out empty lines, and validates that the remaining lines are actually MD5 hashes.\n\nWe don\u0027t strictly need the additional validation, but I think it\u0027s a good idea to fail loudly if the file isn\u0027t valid.\n\nFor example, if there was a bug in `goldctl` that causes it to populate the \"known digests\" file with a JSON array (e.g. raw response from an API endpoint) or some other bogus content, we wouldn\u0027t find out right away. The `if (knownDigests.find(md5.c_str()) !\u003d knownDigests.end()) {...}` block in `write_png_and_json_files()` would never be exercised, and the test runner would write all digests to disk. We would only find out about this when the CI tasks become slow because they are writing too many digests to disk.",
+      "parentUuid": "a6ba97fc_67be9d0f",
+      "range": {
+        "startLine": 316,
+        "startChar": 4,
+        "endLine": 316,
+        "endChar": 7
+      },
+      "revId": "4acf184af04e3e0d22c61937efab376b9c86854c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39ee0c90_7a40cfd1",
         "filename": "tools/testrunners/gm/BazelGMTestRunner.cpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-15T13:28:48Z",
       "side": 1,
       "message": "nit: knownDigests here and other places",
+      "range": {
+        "startLine": 367,
+        "startChar": 9,
+        "endLine": 367,
+        "endChar": 20
+      },
+      "revId": "4acf184af04e3e0d22c61937efab376b9c86854c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8008a87_7683ec62",
+        "filename": "tools/testrunners/gm/BazelGMTestRunner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-15T19:13:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39ee0c90_7a40cfd1",
       "range": {
         "startLine": 367,
         "startChar": 9,
