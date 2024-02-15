@@ -10,12 +10,19 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
+namespace skgpu {
+    class UniqueKey;
+}
+
 // TODO: this header should be moved to include/gpu/graphite once the precompilation API
 // is made public
 namespace skgpu::graphite {
 
 class Context;
+class GraphicsPipelineDesc;
 class PaintOptions;
+struct RenderPassDesc;
+class RuntimeEffectDictionary;
 
 /**
  * Precompilation allows clients to create pipelines ahead of time based on what they expect
@@ -28,6 +35,11 @@ class PaintOptions;
  *   @param drawTypes      communicates which primitives those paints will be drawn with
  */
 void Precompile(Context*, const PaintOptions&, DrawTypeFlags = kMostCommon);
+
+bool Precompile(Context*,
+                RuntimeEffectDictionary* rteDict,
+                const GraphicsPipelineDesc& pipelineDesc,
+                const RenderPassDesc& renderPassDesc);
 
 } // namespace skgpu::graphite
 

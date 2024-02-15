@@ -28,6 +28,18 @@ namespace {
 
 using namespace skgpu::graphite;
 
+void warg(const RendererProvider* rendererProvider,
+          ResourceProvider* resourceProvider,
+          RuntimeEffectDictionary* rteDict,
+          const Caps* caps,
+          UniquePaintParamsID uniqueID,
+          const RenderStep* s,
+          const RenderPassDesc& renderPassDesc,
+          const skgpu::UniqueKey& orig) {
+//    SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
+
+}
+
 void compile(const RendererProvider* rendererProvider,
              ResourceProvider* resourceProvider,
              const KeyContext& keyContext,
@@ -37,6 +49,7 @@ void compile(const RendererProvider* rendererProvider,
              bool withPrimitiveBlender,
              Coverage coverage) {
     for (const Renderer* r : rendererProvider->renderers()) {
+
         if (!(r->drawTypes() & drawTypes)) {
             continue;
         }
@@ -61,7 +74,7 @@ void compile(const RendererProvider* rendererProvider,
             GraphicsPipelineDesc pipelineDesc(s, paintID);
 
             for (const RenderPassDesc& renderPassDesc : renderPassDescs) {
-                auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
                         keyContext.rtEffectDict(),
                         pipelineDesc,
                         renderPassDesc);
@@ -77,6 +90,24 @@ void compile(const RendererProvider* rendererProvider,
 } // anonymous namespace
 
 namespace skgpu::graphite {
+
+bool Precompile(Context* context,
+                RuntimeEffectDictionary* rteDict,
+                const GraphicsPipelineDesc& pipelineDesc,
+                const RenderPassDesc& renderPassDesc) {
+    ResourceProvider* resourceProvider = context->priv().resourceProvider();
+
+    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+            rteDict,
+            pipelineDesc,
+            renderPassDesc);
+    if (!pipeline) {
+        SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+        return false;
+    }
+
+    return true;
+}
 
 void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags drawTypes) {
 
@@ -159,7 +190,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             options.priv().buildCombinations(
                 keyContext,
                 &gatherer,
-                /* addPrimitiveBlender= */ true,
+                /* addPrimitiveBlender= */ options.fromKey() ? false : true,
                 coverage,
                 [&](UniquePaintParamsID uniqueID) {
                     compile(context->priv().rendererProvider(),

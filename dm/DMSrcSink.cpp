@@ -107,6 +107,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/PublicPrecompile.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #endif // SK_ENABLE_PRECOMPILE
@@ -2333,7 +2334,9 @@ void dump_descs(const skgpu::graphite::RendererProvider* rendererProvider,
 // The first step in rebuilding the UniqueKeys is breaking them down into a GraphicsPipelineDesc
 // and a RenderPassDesc. This helper does that and checks that the reassembled pieces match the
 // original.
-void extract_key_descs(skgpu::graphite::Context* context, const skgpu::UniqueKey& origKey) {
+void extract_key_descs(skgpu::graphite::Context* context,
+                       skgpu::graphite::RuntimeEffectDictionary* rteDict,
+                       const skgpu::UniqueKey& origKey) {
     using namespace skgpu::graphite;
 
     const Caps* caps = context->priv().caps();
@@ -2361,6 +2364,8 @@ void extract_key_descs(skgpu::graphite::Context* context, const skgpu::UniqueKey
 #endif
 
     SkASSERT(origKey == newKey);
+
+    Precompile(context, rteDict, pipelineDesc, renderPassDesc);
 }
 
 } // anonymous namespace
@@ -2370,6 +2375,8 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
     using namespace skgpu::graphite;
 
     SkASSERT(fRecorder);
+
+    RuntimeEffectDictionary* rteDict = fRecorder->priv().runtimeEffectDictionary();
 
     std::vector<skgpu::UniqueKey> keys;
 
@@ -2386,7 +2393,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
         // TODO: upgrade this into actually:
         //   using the recreated keys to Precompile (the Android use case)
         //   further decomposing the keys into PaintOptions and using them to Precompile
-        extract_key_descs(context, k);
+        extract_key_descs(context, rteDict, k);
     }
 
     return Result::Ok();
