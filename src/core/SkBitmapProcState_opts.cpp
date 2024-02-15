@@ -22,6 +22,7 @@ namespace SkOpts {
 
     void Init_BitmapProcState_ssse3();
     void Init_BitmapProcState_hsw();
+    void Init_BitmapProcState_hsw_gather();
 
     static bool init() {
     #if defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -40,5 +41,22 @@ namespace SkOpts {
 
     void Init_BitmapProcState() {
       [[maybe_unused]] static bool gInitialized = init();
+    }
+
+    void SetBitmapProcState_CPU(CPUType cpuType) {
+        switch (cpuType) {
+            case SkOpts::CPUType::kHSWG:
+                Init_BitmapProcState_hsw_gather();
+                break;
+            case SkOpts::CPUType::kHSW:
+                Init_BitmapProcState_hsw();
+                break;
+            case SkOpts::CPUType::kSSSE3:
+                Init_BitmapProcState_ssse3();
+                break;
+            case SkOpts::CPUType::kSSE:
+                S32_alpha_D32_filter_DX = SK_OPTS_NS::S32_alpha_D32_filter_DX;
+                break;
+        }
     }
 }  // namespace SkOpts

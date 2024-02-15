@@ -11,20 +11,25 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
+#include "src/core/SkBitmapProcState.h"
 
 /**
  * This bench measures the rendering time of SkCanvas::drawBitmap with different anti-aliasing /
  * matrix combinations.
  */
 
+static const char* kCPUNames[] = {"SSE", "SSSE3", "HSW", "HSWG"};
+
 class DrawBitmapAABench : public Benchmark {
 public:
-    DrawBitmapAABench(bool doAA, const SkMatrix& matrix, const char name[])
-        : fMatrix(matrix)
-        , fName("draw_bitmap_") {
-
+    DrawBitmapAABench(bool doAA,
+                      const SkMatrix& matrix,
+                      const char name[],
+                      SkOpts::CPUType cpuType = SkOpts::CPUType::kHSWG)
+            : fMatrix(matrix), fName("draw_bitmap_"), fCpuType(cpuType) {
         fPaint.setAntiAlias(doAA);
         fName.appendf("%s_%s", doAA ? "aa" : "noaa", name);
+        fName.appendf("_%s", kCPUNames[cpuType]);
     }
 
 protected:
@@ -39,6 +44,7 @@ protected:
     }
 
     void onDraw(int loops, SkCanvas* canvas) override {
+        SkOpts::SetBitmapProcState_CPU(fCpuType);
         SkSamplingOptions sampling(SkFilterMode::kLinear);
         canvas->concat(fMatrix);
         for (int i = 0; i < loops; i++) {
@@ -51,6 +57,7 @@ private:
     SkMatrix fMatrix;
     SkString fName;
     sk_sp<SkImage> fImage;
+    SkOpts::CPUType fCpuType;
 
     using INHERITED = Benchmark;
 };
@@ -71,8 +78,14 @@ DEF_BENCH(
 DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::I(), "ident"); )
 
 DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Scale(1.17f, 1.17f), "scale"); )
+DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Scale(1.17f, 1.17f), "scale", SkOpts::CPUType::kHSW); )
+DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Scale(1.17f, 1.17f), "scale", SkOpts::CPUType::kSSSE3); )
+DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Scale(1.17f, 1.17f), "scale", SkOpts::CPUType::kSSE); )
 
 DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Translate(17.5f, 17.5f), "translate"); )
+DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Translate(17.5f, 17.5f), "translate", SkOpts::CPUType::kHSW); )
+DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Translate(17.5f, 17.5f), "translate", SkOpts::CPUType::kSSSE3); )
+DEF_BENCH( return new DrawBitmapAABench(true, SkMatrix::Translate(17.5f, 17.5f), "translate", SkOpts::CPUType::kSSE); )
 
 DEF_BENCH(
     SkMatrix m;

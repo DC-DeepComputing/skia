@@ -213,11 +213,20 @@ namespace sktests {
 }
 
 namespace SkOpts {
+    enum CPUType {
+        kSSE = 0,
+        kSSSE3 = 1,
+        kHSW = 2,
+        kHSWG = 3,
+    };
+
     // SkBitmapProcState optimized Shader, Sample, or Matrix procs.
     extern void (*S32_alpha_D32_filter_DX)(const SkBitmapProcState&,
                                            const uint32_t* xy, int count, SkPMColor*);
 
     void Init_BitmapProcState();
+
+    void SetBitmapProcState_CPU(CPUType);
 }  // namespace SkOpts
 
 #endif
