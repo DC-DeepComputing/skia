@@ -31,10 +31,11 @@ public:
     };
 
     TestFontDataProvider(const std::string& fontFilterRegexp, const std::string& langFilterRegexp);
+    virtual ~TestFontDataProvider() = default;
 
-    bool next(TestSet* testSet);
+    virtual bool next(TestSet* testSet);
 
-    void rewind();
+    virtual void rewind();
 
 private:
     std::vector<LangSample> getLanguageSamples(const skjson::ArrayValue* languages);
