@@ -106,7 +106,9 @@
 #if defined(SK_ENABLE_PRECOMPILE)
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/PublicPrecompile.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #endif // SK_ENABLE_PRECOMPILE
@@ -2333,34 +2335,36 @@ void dump_descs(const skgpu::graphite::RendererProvider* rendererProvider,
 // The first step in rebuilding the UniqueKeys is breaking them down into a GraphicsPipelineDesc
 // and a RenderPassDesc. This helper does that and checks that the reassembled pieces match the
 // original.
-void extract_key_descs(skgpu::graphite::Context* context, const skgpu::UniqueKey& origKey) {
+bool extract_key_descs(skgpu::graphite::Context* context,
+                       skgpu::graphite::RuntimeEffectDictionary* rteDict,
+                       const skgpu::UniqueKey& origKey,
+                       skgpu::graphite::GraphicsPipelineDesc* pipelineDesc,
+                       skgpu::graphite::RenderPassDesc* renderPassDesc) {
     using namespace skgpu::graphite;
 
     const Caps* caps = context->priv().caps();
     const RendererProvider* rendererProvider = context->priv().rendererProvider();
 
-    GraphicsPipelineDesc pipelineDesc;
-    RenderPassDesc renderPassDesc;
-    bool extracted = caps->extractGraphicsDescs(origKey, &pipelineDesc, &renderPassDesc,
+    bool extracted = caps->extractGraphicsDescs(origKey, pipelineDesc, renderPassDesc,
                                                 rendererProvider);
     if (!extracted) {
         SkASSERT(0);
-        return;
+        return false;
     }
 
-    skgpu::UniqueKey newKey = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
-
 #ifdef SK_DEBUG
+    skgpu::UniqueKey newKey = caps->makeGraphicsPipelineKey(*pipelineDesc, *renderPassDesc);
     if (origKey != newKey) {
         SkDebugf("------- The UniqueKey didn't round trip!\n");
         origKey.dump("original key:");
         newKey.dump("reassembled key:");
-        dump_descs(rendererProvider, pipelineDesc, renderPassDesc);
+        dump_descs(rendererProvider, *pipelineDesc, *renderPassDesc);
         SkDebugf("------------------------\n");
     }
+    SkASSERT(origKey == newKey);
 #endif
 
-    SkASSERT(origKey == newKey);
+    return true;
 }
 
 } // anonymous namespace
@@ -2371,22 +2375,77 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(fRecorder);
 
-    std::vector<skgpu::UniqueKey> keys;
+    const RendererProvider* rendererProvider = context->priv().rendererProvider();
+    RuntimeEffectDictionary* rteDict = fRecorder->priv().runtimeEffectDictionary();
 
-    fetch_unique_keys(context->priv().globalCache(), &keys);
+    std::vector<skgpu::UniqueKey> origKeys;
+
+    fetch_unique_keys(context->priv().globalCache(), &origKeys);
 
     SkDEBUGCODE(int numBeforeReset = context->priv().globalCache()->numGraphicsPipelines();)
-    SkASSERT(numBeforeReset == (int) keys.size());
+    SkASSERT(numBeforeReset == (int) origKeys.size());
 
     context->priv().globalCache()->resetGraphicsPipelines();
 
     SkASSERT(context->priv().globalCache()->numGraphicsPipelines() == 0);
 
-    for (const skgpu::UniqueKey& k : keys) {
-        // TODO: upgrade this into actually:
-        //   using the recreated keys to Precompile (the Android use case)
-        //   further decomposing the keys into PaintOptions and using them to Precompile
-        extract_key_descs(context, k);
+    for (const skgpu::UniqueKey& k : origKeys) {
+        // TODO: add a separate path that decomposes the keys into PaintOptions
+        //  and uses them to Precompile
+        GraphicsPipelineDesc pipelineDesc;
+        RenderPassDesc renderPassDesc;
+
+        if (!extract_key_descs(context, rteDict, k, &pipelineDesc, &renderPassDesc)) {
+            continue;
+        }
+
+        Precompile(context, rteDict, pipelineDesc, renderPassDesc);
+    }
+
+    int postRecreate = context->priv().globalCache()->numGraphicsPipelines();
+
+    SkASSERT(numBeforeReset == postRecreate);
+
+    {
+        std::vector<skgpu::UniqueKey> recreatedKeys;
+
+        fetch_unique_keys(context->priv().globalCache(), &recreatedKeys);
+
+        for (auto origKey : origKeys) {
+            if(std::find(recreatedKeys.begin(), recreatedKeys.end(), origKey) ==
+                         recreatedKeys.end()) {
+                sk_sp<GraphicsPipeline> p = context->priv().globalCache()->findGraphicsPipeline(origKey);
+                SkASSERT(!p);
+
+                {
+                    GraphicsPipelineDesc originalPipelineDesc;
+                    RenderPassDesc originalRenderPassDesc;
+                    extract_key_descs(context, rteDict, origKey,
+                                      &originalPipelineDesc, &originalRenderPassDesc);
+
+                    SkDebugf("------- Missing key from rebuilt keys:\n");
+                    origKey.dump("original key:");
+                    dump_descs(rendererProvider, originalPipelineDesc, originalRenderPassDesc);
+                }
+
+                SkDebugf("Have %d recreated keys -----------------\n", (int) recreatedKeys.size());
+                int count = 0;
+                for (auto recreatedKey : recreatedKeys) {
+
+                    GraphicsPipelineDesc recreatedPipelineDesc;
+                    RenderPassDesc recreatedRenderPassDesc;
+                    extract_key_descs(context, rteDict, recreatedKey,
+                                      &recreatedPipelineDesc,
+                                      &recreatedRenderPassDesc);
+
+                    SkDebugf("%d ----\n", count++);
+                    recreatedKey.dump("recreated key:");
+                    dump_descs(rendererProvider, recreatedPipelineDesc, recreatedRenderPassDesc);
+                }
+
+                SK_ABORT("missing");
+            }
+        }
     }
 
     return Result::Ok();
