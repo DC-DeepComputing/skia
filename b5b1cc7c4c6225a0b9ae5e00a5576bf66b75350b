@@ -16,6 +16,24 @@
       "message": "This seems to have broken the Fontations Bazel build of viewer for me:\n```$ bazel build  -c dbg --sandbox_base\u003d/dev/shm  --with_fontations --verbose_failures  //tools/viewer\n\n\ntools/viewer/Viewer.cpp:58:10: fatal error: \u0027tools/CodecUtils.h\u0027 file not found\n#include \"tools/CodecUtils.h\"\n         ^~~~~~~~~~~~~~~~~~~~\n```",
       "revId": "b5b1cc7c4c6225a0b9ae5e00a5576bf66b75350b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cb68050_13159ec6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-15T14:41:24Z",
+      "side": 1,
+      "message": "Adding `        \"CodecUtils.h\",` to line 34 of `BUILD.bazel` in `tools/` seems to fix it.",
+      "parentUuid": "bb9c297d_9b856c4f",
+      "revId": "b5b1cc7c4c6225a0b9ae5e00a5576bf66b75350b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
