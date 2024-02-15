@@ -16,6 +16,23 @@
       "message": "I think we need a second owner on this.",
       "revId": "9d9202f6ce82c780340a71bd5167a1cac2ee7c6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "475e9a95_b6f0a02d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-15T18:19:15Z",
+      "side": 1,
+      "message": "Good catch, thank you",
+      "revId": "9d9202f6ce82c780340a71bd5167a1cac2ee7c6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
