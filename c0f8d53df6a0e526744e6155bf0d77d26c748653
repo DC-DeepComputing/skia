@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a17258_1f20930e",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1325,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-15T19:39:44Z",
+      "side": 1,
+      "message": "I don\u0027t know if it would be clearer to just pass \u0027strict\u0027 here.",
+      "range": {
+        "startLine": 1325,
+        "startChar": 68,
+        "endLine": 1325,
+        "endChar": 83
+      },
+      "revId": "c0f8d53df6a0e526744e6155bf0d77d26c748653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
