@@ -135,6 +135,7 @@ public:
     }
 
     uint32_t numActivePages() { return fNumActivePages; }
+    unsigned int numPlots() { return fNumPlots; }
 
     void setLastUseTokenBulk(const BulkUsePlotUpdater& updater,
                              AtlasToken token) {
