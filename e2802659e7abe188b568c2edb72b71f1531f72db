@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "275df871_e2316c16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-15T18:02:39Z",
+      "side": 1,
+      "message": "I think Fontations font scanner is fully implemented by now.\nIn this CL we only test some of the functionality (with Android font manager).\nNext step will be to extend the other font managers (like custom font manager) to use Fontations.",
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
