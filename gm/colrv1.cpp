@@ -23,7 +23,9 @@
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 #include "include/ports/SkTypeface_fontations.h"
+#endif 
 // #include "include/ports/SkFontMgr_empty.h"
 
 #include <string.h>

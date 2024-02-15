@@ -2297,7 +2297,7 @@ MACOS_DEFINES = [
     "SK_BUILD_FOR_MAC",
     "SK_GL",
     "SK_CODEC_DECODES_JPEG",
-    "SK_FONTMGR_CORETEXT_AVAILABLE",
+#    "SK_FONTMGR_CORETEXT_AVAILABLE",
 ]
 
 ################################################################################

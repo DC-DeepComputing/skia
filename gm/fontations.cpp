@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -14,6 +16,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_fontations.h"
 #include "tools/Resources.h"
+
 
 namespace skiagm {
 
@@ -193,3 +196,5 @@ DEF_GM(return new FontationsTypefaceGM(
         FontationsTypefaceGM::TypefaceConstruction::kCloneWithFontArguments);)
 
 }  // namespace skiagm
+
+#endif

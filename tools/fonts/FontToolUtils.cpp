@@ -215,7 +215,7 @@ sk_sp<SkFontMgr> TestFontMgr() {
             mgr = SkFontMgr_New_Android(nullptr);
 #elif defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_DIRECTWRITE_AVAILABLE)
             mgr = SkFontMgr_New_DirectWrite();
-#elif defined(SK_FONTMGR_CORETEXT_AVAILABLE) && (defined(SK_BUILD_FOR_IOS) || \
+#elif 0 && defined(SK_FONTMGR_CORETEXT_AVAILABLE) && (defined(SK_BUILD_FOR_IOS) || \
                                                 defined(SK_BUILD_FOR_MAC))
             mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
