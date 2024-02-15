@@ -27,6 +27,10 @@ namespace SkOpts {
     void Init_BitmapProcState_hsw() {
         S32_alpha_D32_filter_DX = hsw::S32_alpha_D32_filter_DX;
     }
+
+    void Init_BitmapProcState_hsw_gather() {
+        S32_alpha_D32_filter_DX = hsw::S32_alpha_D32_filter_DX_gather;
+    }
 }  // namespace SkOpts
 
 #endif // SK_CPU_X86 && !SK_ENABLE_OPTIMIZE_SIZE
