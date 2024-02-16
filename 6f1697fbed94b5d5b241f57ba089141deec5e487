@@ -16,6 +16,98 @@
       "message": "Please doublecheck for copypasta.",
       "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c34e7ee5_2a6a8e38",
+        "filename": "include/gpu/GrDriverBugWorkaroundsAutogen.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-16T15:46:14Z",
+      "side": 1,
+      "message": "```suggestion\n#endif // GPU_DRIVER_BUG_WORKAROUNDS\n```",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c19d05_7a486acb",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-16T15:46:14Z",
+      "side": 1,
+      "message": "nit: In graphite at least we usually do\n```suggestion\n#endif  // GrGLMakeEGLInterface_DEFINED\n```\n\nIf that\u0027s agreeable for Ganesh as well, we could add comments like that to the rest of these changes as well",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 6
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30f65279_a37b5ca0",
+        "filename": "include/gpu/gl/glx/GrGLMakeGLXInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-16T15:46:14Z",
+      "side": 1,
+      "message": "sorry, I\u0027m not immediately seeing what this include is needed for?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c1dd259_45bcb483",
+        "filename": "tools/build_workaround_header.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-02-16T15:46:14Z",
+      "side": 1,
+      "message": "I would get rid of the \"The End\" in favor of the `#endif //[include guard name]`",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 23
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
