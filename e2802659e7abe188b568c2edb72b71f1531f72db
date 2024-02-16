@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "967526ab_51707d15",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T14:52:23Z",
+      "side": 1,
+      "message": "Needs to be in a `#ifdef SK_TYPEFACE_FACTORY_FONTATIONS`",
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8eaceed6_25f47094",
         "filename": "src/ports/SkFontMgr_android.cpp",
         "patchSetId": 22
