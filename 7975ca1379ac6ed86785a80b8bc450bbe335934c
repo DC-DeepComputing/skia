@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f1a42a2_1ec806a9",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T19:00:36Z",
+      "side": 1,
+      "message": "I\u0027ll repurpose `//bench:benchmarks_base` in a follow-up CL and move all the common stuff into that target.",
+      "parentUuid": "dba7db48_d5da7d83",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 202,
+        "endChar": 8
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "624d6902_4abaf568",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-16T18:38:35Z",
       "side": 1,
       "message": "FYI: This will need to be rebased after https://skia-review.googlesource.com/c/skia/+/815099 lands",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 9
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dbdd4d2_d8496f16",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T19:00:36Z",
+      "side": 1,
+      "message": "When are you hoping to land https://skia-review.googlesource.com/c/skia/+/815099? Should I wait until you land your CL before landing mine?",
+      "parentUuid": "624d6902_4abaf568",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "459303d8_d0ff865a",
+        "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T19:00:36Z",
+      "side": 1,
+      "message": "I cargo-culted this idea from https://skia-review.googlesource.com/c/skia/+/788798/26/src/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.cpp#31, where we have:\n\n```\n    if (nullptr \u003d\u003d glXGetCurrentContext()) {\n        return nullptr;\n    }\n```\n\nBut I replaced `glXGetCurrentContext()` with `eglGetCurrentContext()` after searching for a plausible EGL alternative.\n\nI\u0027m not well versed with these APIs so I was hoping to have this double-checked during review.",
+      "parentUuid": "091c93ef_15fb7ed5",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 15
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "799ededb_77941556",
         "filename": "tools/gpu/gl/egl/CreatePlatformGLTestContext_egl.cpp",
         "patchSetId": 4
@@ -83,6 +155,30 @@
       "writtenOn": "2024-02-16T18:38:35Z",
       "side": 1,
       "message": "nit: I try to update #ifdef to #if defined() as I go, as the latter is better for extension/modification",
+      "range": {
+        "startLine": 214,
+        "startChar": 1,
+        "endLine": 214,
+        "endChar": 6
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cffbc587_7faed42c",
+        "filename": "tools/gpu/gl/egl/CreatePlatformGLTestContext_egl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T19:00:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "799ededb_77941556",
       "range": {
         "startLine": 214,
         "startChar": 1,
