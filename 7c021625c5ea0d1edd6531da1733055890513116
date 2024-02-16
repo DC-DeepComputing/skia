@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1fb6910_b8547e56",
+        "filename": "src/core/SkPaintPriv.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T20:54:57Z",
+      "side": 0,
+      "message": "These won\u0027t be slightly different anymore! Hopefully not many rebaselines...",
+      "range": {
+        "startLine": 153,
+        "startChar": 26,
+        "endLine": 153,
+        "endChar": 42
+      },
+      "revId": "7c021625c5ea0d1edd6531da1733055890513116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
