@@ -211,10 +211,14 @@ public:
      */
     int getFunctionDebugInfo(const FunctionDeclaration& decl);
 
+    /** Returns true for variables with slots in fProgramSlots; immutables or uniforms are false. */
+    bool hasVariableSlots(const Variable& v) {
+        return !IsUniform(v) && !fImmutableVariables.contains(&v);
+    }
+
     /** Looks up the slots associated with an SkSL variable; creates the slots if necessary. */
     SlotRange getVariableSlots(const Variable& v) {
-        SkASSERT(!IsUniform(v));
-        SkASSERT(!fImmutableVariables.contains(&v));
+        SkASSERT(this->hasVariableSlots(v));
         return fProgramSlots.getVariableSlots(v);
     }
 
@@ -1409,13 +1413,27 @@ std::optional<SlotRange> Generator::writeFunction(
                     }
                     this->popToSlotRangeUnmasked(this->getVariableSlots(param));
                 }
-            } else {
-                // Copy input arguments into their respective parameter slots.
-                if (!this->pushExpression(arg)) {
-                    return std::nullopt;
-                }
-                this->popToSlotRangeUnmasked(this->getVariableSlots(param));
+                continue;
             }
+
+            // If the expression is a plain variable and the parameter is never written to, we don't
+            // even need to copy it; we can just share the slots from the existing variable.
+            if (arg.is<VariableReference>()) {
+                const Variable& var = *arg.as<VariableReference>().variable();
+                if (this->hasVariableSlots(var)) {
+                    ProgramUsage::VariableCounts counts = fProgram.fUsage->get(var);
+                    if (counts.fWrite == 0) {
+                        fProgramSlots.mapVariableToSlots(param, this->getVariableSlots(var));
+                        continue;
+                    }
+                }
+            }
+
+            // Copy input arguments into their respective parameter slots.
+            if (!this->pushExpression(arg)) {
+                return std::nullopt;
+            }
+            this->popToSlotRangeUnmasked(this->getVariableSlots(param));
         }
     }
 
