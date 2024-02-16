@@ -12,6 +12,12 @@
 
 struct GrGLInterface;
 
+namespace GrGLInterfaces {
+sk_sp<const GrGLInterface> MakeEGL();
+}
+
+#if !defined(SK_DISABLE_LEGACY_GLXINTERFACE_FACTORY)
 sk_sp<const GrGLInterface> GrGLMakeEGLInterface();
+#endif
 
 #endif  // GrGLMakeEGLInterface_DEFINED
