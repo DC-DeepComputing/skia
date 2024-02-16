@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "784af9ac_337eaf51",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T19:34:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4462db74_23548e65",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 9
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "091c93ef_15fb7ed5",
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "Yeah, don\u0027t add that in. We want to be minimally invasive in our changes.",
       "parentUuid": "459303d8_d0ff865a",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 15
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa9c9f5_abe64e5f",
+        "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T19:34:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5e8ef95_0ec7c686",
       "range": {
         "startLine": 135,
         "startChar": 8,
