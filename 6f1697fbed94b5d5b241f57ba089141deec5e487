@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0179305d_9ad6303d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T14:58:02Z",
+      "side": 1,
+      "message": "Please doublecheck for copypasta.",
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
