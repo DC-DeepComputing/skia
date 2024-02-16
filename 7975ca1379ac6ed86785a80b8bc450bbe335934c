@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4462db74_23548e65",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T19:14:10Z",
+      "side": 1,
+      "message": "I landed mine.",
+      "parentUuid": "3dbdd4d2_d8496f16",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 9
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "091c93ef_15fb7ed5",
         "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
         "patchSetId": 4
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "I cargo-culted this idea from https://skia-review.googlesource.com/c/skia/+/788798/26/src/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.cpp#31, where we have:\n\n```\n    if (nullptr \u003d\u003d glXGetCurrentContext()) {\n        return nullptr;\n    }\n```\n\nBut I replaced `glXGetCurrentContext()` with `eglGetCurrentContext()` after searching for a plausible EGL alternative.\n\nI\u0027m not well versed with these APIs so I was hoping to have this double-checked during review.",
       "parentUuid": "091c93ef_15fb7ed5",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 15
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5e8ef95_0ec7c686",
+        "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T19:14:10Z",
+      "side": 1,
+      "message": "Yeah, don\u0027t add that in. We want to be minimally invasive in our changes.",
+      "parentUuid": "459303d8_d0ff865a",
       "range": {
         "startLine": 135,
         "startChar": 8,
