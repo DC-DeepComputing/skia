@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "035fedc5_aef8497a",
+        "filename": "src/gpu/ganesh/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-16T23:18:59Z",
+      "side": 1,
+      "message": "Addressing this in https://skia-review.googlesource.com/c/skia/+/815106.",
+      "parentUuid": "29ebe228_30799564",
+      "range": {
+        "startLine": 170,
+        "startChar": 9,
+        "endLine": 170,
+        "endChar": 19
+      },
+      "revId": "2684d3bc41e28ccd659853f0ab51b57336105fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0a97fec_12cd1000",
