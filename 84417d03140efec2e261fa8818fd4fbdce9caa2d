@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c459c662_68e7f6f6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T20:32:55Z",
+      "side": 1,
+      "message": "No, the values are not different and they do not need to be re-mapped. Neither the Skia values nor the skrifa values are enums. There is no enum here at all. These are just named constant values representing common values.",
+      "parentUuid": "f22084b1_3956f3a4",
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5770edbc_7665bed6",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 23
@@ -132,6 +150,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e4d4eae_288bf0a9",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T20:32:55Z",
+      "side": 1,
+      "message": "No reason to land with such a TODO.",
+      "parentUuid": "88371b91_33439386",
+      "range": {
+        "startLine": 733,
+        "startChar": 33,
+        "endLine": 733,
+        "endChar": 39
+      },
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6c5e202a_3f5ba48b",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 23
@@ -161,6 +203,24 @@
       "side": 1,
       "message": "I am not sure I understand what you mean. I am converting skrifa float values into Skia enum values.\nYes, there is back and forth conversion happens but I cannot get inside skrifa to fix that.",
       "parentUuid": "6c5e202a_3f5ba48b",
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ccf28eb_3072f5c2",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T20:32:55Z",
+      "side": 1,
+      "message": "No, you\u0027re turning specific float values (stretch is internally a float ratio, on the skrifa side there is no enum, only named constant values) into Skia values. But you\u0027re turning the vast majority of these values into 9. In a variable font you\u0027ll get things like a stretch of .997 or something like that which should map to Skia value of 5, but right now that appears to be mapped to 9.",
+      "parentUuid": "874c53bb_a776577f",
       "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
