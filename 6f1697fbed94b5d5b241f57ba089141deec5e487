@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fecc21d7_fa2ef0b1",
+        "filename": "include/gpu/GrDriverBugWorkaroundsAutogen.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T16:03:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c34e7ee5_2a6a8e38",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6c19d05_7a486acb",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-02-16T15:46:14Z",
       "side": 1,
       "message": "nit: In graphite at least we usually do\n```suggestion\n#endif  // GrGLMakeEGLInterface_DEFINED\n```\n\nIf that\u0027s agreeable for Ganesh as well, we could add comments like that to the rest of these changes as well",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 6
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e535cc48_3f3c8a51",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T16:03:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6c19d05_7a486acb",
       "range": {
         "startLine": 17,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc42fe54_b2cda5c1",
+        "filename": "include/gpu/gl/glx/GrGLMakeGLXInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T16:03:32Z",
+      "side": 1,
+      "message": "It was previously there. Hopefully deleting it doesn\u0027t reveal some client who should have been including it but was not.",
+      "parentUuid": "30f65279_a37b5ca0",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c1dd259_45bcb483",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-02-16T15:46:14Z",
       "side": 1,
       "message": "I would get rid of the \"The End\" in favor of the `#endif //[include guard name]`",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 23
+      },
+      "revId": "6f1697fbed94b5d5b241f57ba089141deec5e487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b8ead45_1907be6f",
+        "filename": "tools/build_workaround_header.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T16:03:32Z",
+      "side": 1,
+      "message": "Done. Note the comment because that empty line is important (or the #endif tries to be in the macro [I think])",
+      "parentUuid": "5c1dd259_45bcb483",
       "range": {
         "startLine": 50,
         "startChar": 0,
