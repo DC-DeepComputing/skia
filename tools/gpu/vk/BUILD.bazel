@@ -27,6 +27,7 @@ skia_filegroup(
         "GrVulkanDefines.h",
         "VkTestContext.h",
         "VkTestHelper.h",
+        "VkTestMemoryAllocator.h",
         "VkTestUtils.h",
         "VkYcbcrSamplerHelper.h",
     ],
@@ -38,6 +39,7 @@ skia_filegroup(
     srcs = [
         "VkTestContext.cpp",
         "VkTestHelper.cpp",
+        "VkTestMemoryAllocator.cpp",
         "VkTestUtils.cpp",
         "VkYcbcrSamplerHelper.cpp",
     ],
