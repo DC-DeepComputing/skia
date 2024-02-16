@@ -11,10 +11,12 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/effects/SkPerlinNoiseShader.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkTPin.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkWriteBuffer.h"
 
 namespace {
@@ -270,6 +272,167 @@ void SkRegisterPerlinNoiseShaderFlattenable() {
 }
 
 namespace SkShaders {
+
+static sk_sp<SkShader> make_perlin_noise_shader(SkPerlinNoiseShader* shader) {
+    SkRuntimeEffect::Options options;
+    SkRuntimeEffectPriv::AllowPrivateAccess(&options);
+
+    static const auto effect =
+            sk_sp<SkRuntimeEffect>(SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+    // permutationShader is [kBlockSize x 1] A8
+    // noiseShader is [kBlockSize x 4] RGBA8 premul
+    "uniform shader permutationShader, noiseShader;"
+
+    "uniform float2 baseFrequency;"
+    "uniform half2 stitchDataIn;"
+    "uniform int stitching;"
+    "uniform int noiseType;"
+    "uniform int numOctaves;"
+
+    "half noise_function(half chanCoord,"
+                        "half2 noiseVec,"
+                        "half2 stitchData) {"
+        "half4 floorVal;"
+        "floorVal.xy = floor(noiseVec);"
+        "floorVal.zw = floorVal.xy + half2(1);"
+        "half2 fractVal = fract(noiseVec);"
+
+        "half2 noiseSmooth = smoothstep(0, 1, fractVal);"
+
+        // Adjust frequencies if we're stitching tiles
+        "if (bool(stitching)) {"
+            "floorVal -= step(stitchData.xyxy, floorVal) * stitchData.xyxy;"
+        "}"
+
+        "half2 latticeIdx = half2(permutationShader.eval(float2(floorVal.x + 0.5, 0.5)).a,"
+                                 "permutationShader.eval(float2(floorVal.z + 0.5, 0.5)).a);"
+
+        "if (false) {" //sk_Caps.PerlinNoiseRoundingFix) {"
+            // Aggressively round to the nearest exact (N / 255) floating point values.
+            // This prevents rounding errors on some platforms (e.g., Tegras)
+            "const half kInv255 = 1.0 / 255.0;"
+
+            "latticeIdx = floor(latticeIdx * half2(255.0) + half2(0.5)) * half2(kInv255);"
+        "}"
+
+        // Get (x,y) coordinates with the permuted x
+        "half4 bcoords = 256*latticeIdx.xyxy + floorVal.yyww;"
+
+        // Compute u at offset (0,0)
+        "half4 lattice = noiseShader.eval(float2(bcoords.x, chanCoord));"
+
+        // This is the math to convert the two 16bit integer packed into rgba 8 bit input into a
+        // [-1,1] vector and perform a dot product between that vector and the provided vector.
+        // This will be repeated four times.
+        "half u = dot((lattice.ga + lattice.rb * 0.00390625) * 2 - 1, fractVal);"
+
+        // Compute v, at offset (-1,0)
+        "fractVal.x -= 1.0;"
+        "lattice = noiseShader.eval(float2(bcoords.y, chanCoord));"
+        "half v = dot((lattice.ga + lattice.rb * 0.00390625) * 2 - 1, fractVal);"
+
+        // Compute 'a' as a linear interpolation of 'u' and 'v'
+        "half a = mix(u, v, noiseSmooth.x);"
+
+        // Compute v, at offset (-1,-1)
+        "fractVal.y -= 1.0;"
+        "lattice = noiseShader.eval(float2(bcoords.w, chanCoord));"
+        "v = dot((lattice.ga + lattice.rb * 0.00390625) * 2 - 1, fractVal);"
+
+        // Compute u, at offset (0,-1)
+        "fractVal.x += 1.0;"
+        "lattice = noiseShader.eval(float2(bcoords.z, chanCoord));"
+        "u = dot((lattice.ga + lattice.rb * 0.00390625) * 2 - 1, fractVal);"
+
+        // Compute 'b' as a linear interpolation of 'u' and 'v'
+        "half b = mix(u, v, noiseSmooth.x);"
+
+        // Compute the noise as a linear interpolation of 'a' and 'b'
+        "return mix(a, b, noiseSmooth.y);"
+    "}"
+
+    "half4 main(float2 coords) {"
+        "const int kFractalNoise_Type = 0;"
+        "const int kTurbulence_Type = 1;"
+
+        // There are rounding errors if the ceil operation is not performed here
+        "half2 noiseVec = ceil(coords) * baseFrequency;"
+
+        // Clear the color accumulator
+        "half4 color = half4(0);"
+
+        "half2 stitchData = stitchDataIn;"
+
+        "half ratio = 1.0;"
+
+        // Loop over all octaves in an ES2-compatible way.
+        "for (int octave = 1; octave <= 32; ++octave) {"
+            "half4 tmp = half4(noise_function(0.5, noiseVec, stitchData),"
+                              "noise_function(1.5, noiseVec, stitchData),"
+                              "noise_function(2.5, noiseVec, stitchData),"
+                              "noise_function(3.5, noiseVec, stitchData));"
+
+            "if (noiseType != kFractalNoise_Type) {"
+                // For kTurbulence_Type the result is: abs(noise[-1,1])
+                "tmp = abs(tmp);"
+            "}"
+
+            "color += tmp * ratio;"
+
+            "noiseVec *= half2(2.0);"
+            "stitchData *= half2(2.0);"
+            "ratio *= 0.5;"
+
+            "if (octave >= numOctaves) break;"
+        "}"
+
+        "if (noiseType == kFractalNoise_Type) {"
+            // For kFractalNoise_Type the result is: noise[-1,1] * 0.5 + 0.5
+            "color = color * half4(0.5) + half4(0.5);"
+        "}"
+
+        // Clamp values
+        "color = saturate(color);"
+
+        // Pre-multiply the result
+        "return half4(color.rgb * color.aaa, color.a);"
+    "}",
+    options));
+
+    std::unique_ptr<SkPerlinNoiseShader::PaintingData> paintingData =
+            shader->getPaintingData(SkMatrix::I());
+    paintingData->generateBitmaps();
+
+    const SkBitmap& permutationBitmap = paintingData->getPermutationsBitmap();
+    sk_sp<SkShader> permutationShader = permutationBitmap.makeShader(
+            /*tmx=*/SkTileMode::kRepeat,
+            /*tmy=*/SkTileMode::kClamp,
+            {SkFilterMode::kNearest});
+
+    const SkBitmap& noiseBitmap = paintingData->getNoiseBitmap();
+    sk_sp<SkShader> noiseShader = noiseBitmap.makeShader(
+            /*tmx=*/SkTileMode::kRepeat,
+            /*tmy=*/SkTileMode::kClamp,
+            {SkFilterMode::kNearest});
+
+    struct UniformData {
+        float baseFrequencyX, baseFrequencyY;
+        float stitchDataInX, stitchDataInY;
+        int stitching;
+        int noiseType;
+        int numOctaves;
+    };
+    UniformData uniforms = {paintingData->fBaseFrequency.x(),
+                            paintingData->fBaseFrequency.y(),
+                            (float)paintingData->fStitchDataInit.fWidth,
+                            (float)paintingData->fStitchDataInit.fHeight,
+                            (int)shader->stitchTiles(),
+                            (int)shader->noiseType(),
+                            shader->numOctaves()};
+    return effect->makeShader(SkData::MakeWithCopy(&uniforms, sizeof(uniforms)),
+                             {permutationShader, noiseShader});
+}
+
 sk_sp<SkShader> MakeFractalNoise(SkScalar baseFrequencyX,
                                  SkScalar baseFrequencyY,
                                  int numOctaves,
@@ -287,12 +450,15 @@ sk_sp<SkShader> MakeFractalNoise(SkScalar baseFrequencyX,
         return SkShaders::Color(kTransparentGray, /* colorSpace= */ nullptr);
     }
 
-    return sk_sp<SkShader>(new SkPerlinNoiseShader(SkPerlinNoiseShader::kFractalNoise_Type,
-                                                   baseFrequencyX,
-                                                   baseFrequencyY,
-                                                   numOctaves,
-                                                   seed,
-                                                   tileSize));
+    auto shader = std::make_unique<SkPerlinNoiseShader>(SkPerlinNoiseShader::kFractalNoise_Type,
+                                                        baseFrequencyX,
+                                                        baseFrequencyY,
+                                                        numOctaves,
+                                                        seed,
+                                                        tileSize);
+    return make_perlin_noise_shader(shader.get());
+
+//    return sk_sp<SkShader>(shader.release());
 }
 
 sk_sp<SkShader> MakeTurbulence(SkScalar baseFrequencyX,
@@ -309,12 +475,15 @@ sk_sp<SkShader> MakeTurbulence(SkScalar baseFrequencyX,
         return SkShaders::Color(SkColors::kTransparent, /* colorSpace= */ nullptr);
     }
 
-    return sk_sp<SkShader>(new SkPerlinNoiseShader(SkPerlinNoiseShader::kTurbulence_Type,
-                                                   baseFrequencyX,
-                                                   baseFrequencyY,
-                                                   numOctaves,
-                                                   seed,
-                                                   tileSize));
+    auto shader = std::make_unique<SkPerlinNoiseShader>(SkPerlinNoiseShader::kTurbulence_Type,
+                                                        baseFrequencyX,
+                                                        baseFrequencyY,
+                                                        numOctaves,
+                                                        seed,
+                                                        tileSize);
+    return make_perlin_noise_shader(shader.get());
+
+//    return sk_sp<SkShader>(shader.release());
 }
 
 }  // namespace SkShaders

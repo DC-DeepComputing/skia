@@ -85,11 +85,11 @@ public:
         void generateBitmaps() {
             SkImageInfo info = SkImageInfo::MakeA8(kBlockSize, 1);
             fPermutationsBitmap.installPixels(info, fLatticeSelector, info.minRowBytes());
-            fPermutationsBitmap.setImmutable();
+            //fPermutationsBitmap.setImmutable();
 
             info = SkImageInfo::Make(kBlockSize, 4, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
             fNoiseBitmap.installPixels(info, fNoise[0][0], info.minRowBytes());
-            fNoiseBitmap.setImmutable();
+            //fNoiseBitmap.setImmutable();
         }
 
         PaintingData(const PaintingData& that)
