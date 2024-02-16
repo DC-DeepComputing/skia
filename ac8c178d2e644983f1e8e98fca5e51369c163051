@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e4e28b_f64a389b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-16T17:49:56Z",
+      "side": 1,
+      "message": "@dnfield@google.com, this is failing the [Flutter canary](https://github.com/flutter/engine/pull/50701), and I was wondering if you could help me figure it out?\n\nBased on my knowledge of Flutter, I don\u0027t expect this to break anything. To summarize the change, if you create an `SkWuffsCodec` (used for GIF) with a non-seekable stream and `SkCodec::SelectionPolicy::kPreferStillImage`, we\u0027ll no longer copy the stream or allow animation features. Looking at [`flutter/engine`](https://github.com/flutter/engine), you don\u0027t set a `SelectionPolicy`, so you get `kPreferStillImage`, which is the default, but you always use `MakeFromData` or an `SkMemoryStream`. This means it should always be seekable, so this change shouldn\u0027t affect anything.\n\nLooking through [the test output](https://logs.chromium.org/logs/flutter/buildbucket/cr-buildbucket/8755991922811752081/+/u/test:_test:_Host_Tests_for_host_debug_unopt/stdout), I haven\u0027t found any test failures that are obviously related to `SkCodec`, but maybe I\u0027m missing something? I *do* see some output like\n\n```\n[ERROR:flutter/lib/ui/painting/image_generator.cc(31)] Failed to get pixels for image.\n[ERROR:flutter/lib/ui/painting/image_generator.cc(31)] Failed to get pixels for image.\n[ERROR:flutter/lib/ui/painting/image_decoder_skia.cc(290)] Could not decompress image.\n[ERROR:flutter/lib/ui/painting/image_decoder_skia.cc(290)] Could not decompress image.\n```\n\nBut those *appear* to be tests that verify that we fail on invalid data; these lines are followed by\n\n```\nTest \"getNextFrame fails with invalid data\": Passed\n```",
+      "revId": "ac8c178d2e644983f1e8e98fca5e51369c163051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
