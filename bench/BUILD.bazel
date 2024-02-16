@@ -103,25 +103,58 @@ skia_cc_test(
     ],
 )
 
+# DO NOT SUBMIT
+cc_test_with_flags(
+    name = "ganesh_vk_legacy_test",
+    srcs = [
+        "GradientBench.cpp",
+        "TextBlobBench.cpp",
+    ],
+    args = [
+        "--surfaceConfig",
+        "vk",
+        "--autoTuneLoops",
+    ],
+    set_flags = {
+        "include_encoder": [
+            "png_encode_codec",
+        ],
+    },
+    deps = [":benchmarks_base"],
+)
+
 # Vulkan benchmarks.
 [
-    cc_test_with_flags(
+    skia_cc_test(
         name = name,
         srcs = [
             "GradientBench.cpp",
             "TextBlobBench.cpp",
+            "//tools/testrunners/benchmark:BazelBenchmarkTestRunner.cpp",
         ],
         args = [
             "--surfaceConfig",
             surfaceConfig,
             "--autoTuneLoops",
         ],
-        set_flags = {
-            "include_encoder": [
-                "png_encode_codec",
-            ],
-        },
-        deps = [":benchmarks_base"],
+        deps = [
+            "//:core",
+            "//:png_encode_codec",
+            "//bench:benchmark",
+            "//src/base",
+            "//src/utils:json",
+            "//tools:autorelease_pool",
+            "//tools:registry",
+            "//tools:resources",
+            "//tools:stats",
+            "//tools:tool_utils",
+            "//tools/flags:cmd_flags",
+            "//tools/fonts:font_tool_utils",
+            "//tools/testrunners/benchmark/target:ganesh_vulkan",
+            "//tools/testrunners/common:testrunner",
+            "//tools/testrunners/common/compilation_mode_keys",
+            "//tools/timer",
+        ],
     )
     for name, surfaceConfig in [
         [
