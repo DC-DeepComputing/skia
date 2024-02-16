@@ -24,6 +24,7 @@ dependencies = {
     'sksl_graphite_vert': ['sksl_vert', 'sksl_gpu', 'sksl_shared'],
     'sksl_graphite_vert_es2': ['sksl_vert', 'sksl_gpu', 'sksl_shared'],
     'sksl_public': ['sksl_shared'],
+    'sksl_rt_builtin': ['sksl_rt_shader', 'sksl_public', 'sksl_shared'],
     'sksl_rt_shader': ['sksl_public', 'sksl_shared'],
     'sksl_shared': [],
 }

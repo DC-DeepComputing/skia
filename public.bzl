@@ -1879,6 +1879,8 @@ TEXTUAL_HDRS = [
     "src/sksl/generated/sksl_graphite_vert_es2.unoptimized.sksl",
     "src/sksl/generated/sksl_public.minified.sksl",
     "src/sksl/generated/sksl_public.unoptimized.sksl",
+    "src/sksl/generated/sksl_rt_builtins.minified.sksl",
+    "src/sksl/generated/sksl_rt_builtins.unoptimized.sksl",
     "src/sksl/generated/sksl_rt_shader.minified.sksl",
     "src/sksl/generated/sksl_rt_shader.unoptimized.sksl",
     "src/sksl/generated/sksl_shared.minified.sksl",

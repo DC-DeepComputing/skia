@@ -32,6 +32,7 @@
 #include "src/sksl/generated/sksl_frag.minified.sksl"
 #include "src/sksl/generated/sksl_gpu.minified.sksl"
 #include "src/sksl/generated/sksl_public.minified.sksl"
+#include "src/sksl/generated/sksl_rt_builtin.minified.sksl"
 #include "src/sksl/generated/sksl_rt_shader.minified.sksl"
 #include "src/sksl/generated/sksl_vert.minified.sksl"
 #include "src/sksl/generated/sksl_graphite_frag.minified.sksl"
@@ -725,6 +726,9 @@ void RunSkSLModuleBenchmarks(NanoJSONResultsWriter* log) {
 
     int compilerComputeBinarySize = std::size(SKSL_MINIFIED_sksl_compute);
     bench(log, "sksl_binary_size_compute", compilerComputeBinarySize);
+
+    int compilerRTBuiltinBinarySize = std::size(SKSL_MINIFIED_sksl_rt_builtin);
+    bench(log, "sksl_binary_size_rt_builtin", compilerRTBuiltinBinarySize);
 }
 
 class SkSLModuleLoaderBench : public Benchmark {
