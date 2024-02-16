@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/gl/egl/GrGLMakeEGLInterface.h"
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tools/gpu/gl/GLTestContext.h"
@@ -211,7 +212,7 @@ EGLGLTestContext::EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* 
         }
 
 #ifdef SK_GL
-        gl = GrGLMakeNativeInterface();
+        gl = GrGLInterfaces::MakeEGL();
         if (!gl) {
             SkDebugf("Failed to create gl interface.\n");
             this->destroyGLContext();
