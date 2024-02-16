@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e87ba0b_57e360ff",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T17:38:12Z",
+      "side": 1,
+      "message": "The addition of \"MetaData\" seems overly verbose. We\u0027re just rummaging around in the font data for several bits of information that a scaler context might be interested in. It doesn\u0027t make a lot of sense to even group these together like this (why not have separate calls for each?) except that FreeType has a lot of state so we batch everything in order to hide that state. I much prefer this just be left as `scanFont`.",
+      "range": {
+        "startLine": 31,
+        "startChar": 25,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d45521_5c8d5822",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T17:38:12Z",
+      "side": 1,
+      "message": "I don\u0027t understand why the above two would be re-mapped like this. Wouldn\u0027t each of these point re-mappings just cause a really strange point discontinuity? These aren\u0027t enum values, they\u0027re just (float) constants.",
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5770edbc_7665bed6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T17:38:12Z",
+      "side": 1,
+      "message": "Why not map oblique to kOblique_Slant? Sure, it means throwing out the angle, but that\u0027s fine for now.",
+      "range": {
+        "startLine": 733,
+        "startChar": 33,
+        "endLine": 733,
+        "endChar": 39
+      },
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c5e202a_3f5ba48b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T17:38:12Z",
+      "side": 1,
+      "message": "The value is a float, so doesn\u0027t need to be any of these integer values? Also, the value is actually `ratio` so these values don\u0027t make sense here? Internally `Stretch.from_width_class` uses these constants to convert from the values in the font to the ratio  which is what is stored, Skia currently want the original values as they were in the font. So this would need to do the mapping based on the float ranges.",
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
