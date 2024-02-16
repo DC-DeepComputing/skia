@@ -1,0 +1,2 @@
+static constexpr char SKSL_MINIFIED_sksl_rt_builtin[] =
+"";
