@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "793fa1ef_521534a4",
+        "filename": "gm/gammatext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T20:48:01Z",
+      "side": 1,
+      "message": "The effect is a lot more noticeable and also happens on all platforms with subpixel anti-aliasing. (We have `SK_GAMMA_APPLY_TO_A8` for doing it or not, which it looks like we always set in out gn build but maybe not the Bazel build?)",
+      "revId": "7c021625c5ea0d1edd6531da1733055890513116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "792807d7_d84a6441",
+        "filename": "gm/gammatext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T20:48:01Z",
+      "side": 1,
+      "message": "Not \"Hamburgefons\"? Heresy! (This is fine, I just like obscure fun things, even has a Wikipedia page https://en.wikipedia.org/wiki/Hamburgevons).",
+      "range": {
+        "startLine": 161,
+        "startChar": 25,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "7c021625c5ea0d1edd6531da1733055890513116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
