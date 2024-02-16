@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dba7db48_d5da7d83",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:38:35Z",
+      "side": 1,
+      "message": "Now might be the time to try to reduce some of the duplicated deps between targets. WDYT?",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 202,
+        "endChar": 8
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "624d6902_4abaf568",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:38:35Z",
+      "side": 1,
+      "message": "FYI: This will need to be rebased after https://skia-review.googlesource.com/c/skia/+/815099 lands",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 9
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091c93ef_15fb7ed5",
+        "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:38:35Z",
+      "side": 1,
+      "message": "I\u0027m not sure why this check is added. Where did it come from?",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 15
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "799ededb_77941556",
+        "filename": "tools/gpu/gl/egl/CreatePlatformGLTestContext_egl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:38:35Z",
+      "side": 1,
+      "message": "nit: I try to update #ifdef to #if defined() as I go, as the latter is better for extension/modification",
+      "range": {
+        "startLine": 214,
+        "startChar": 1,
+        "endLine": 214,
+        "endChar": 6
+      },
+      "revId": "7975ca1379ac6ed86785a80b8bc450bbe335934c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
