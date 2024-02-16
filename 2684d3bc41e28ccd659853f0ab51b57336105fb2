@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03866c6d_75822b6e",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T19:27:06Z",
+      "side": 1,
+      "message": "You may not actually bump into that, depending on what linker and settings are being used. For example, in G3, only the ASAN builds report ODR issues consistently.",
+      "parentUuid": "f87c93ac_28009606",
+      "range": {
+        "startLine": 132,
+        "startChar": 9,
+        "endLine": 132,
+        "endChar": 30
+      },
+      "revId": "2684d3bc41e28ccd659853f0ab51b57336105fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "299de406_a3fb1f5d",
