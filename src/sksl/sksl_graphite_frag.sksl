@@ -981,7 +981,7 @@ $pure half4 $noise_function(half2 noiseVec,
     half2 fractVal = fract(noiseVec);
 
     // smooth curve : t^2*(3 - 2*t)
-    half2 noiseSmooth = fractVal*fractVal*(half2(3) - 2*fractVal);
+    half2 noiseSmooth = smoothstep(0, 1, fractVal);
 
     // This is used to convert the two 16bit integers packed into rgba 8 bit input into
     // a [-1,1] vector

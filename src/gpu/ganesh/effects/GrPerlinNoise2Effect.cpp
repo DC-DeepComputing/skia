@@ -84,8 +84,7 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
             "half2 fractVal = fract(noiseVec);"
 
             // smooth curve : t^2*(3 - 2*t)
-            "half2 noiseSmooth = fractVal*fractVal*(half2(3) - 2*fractVal);"
-    );
+            "half2 noiseSmooth = smoothstep(0, 1, fractVal);");
 
     // Adjust frequencies if we're stitching tiles
     if (pne.stitchTiles()) {
