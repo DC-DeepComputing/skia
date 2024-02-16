@@ -67,7 +67,7 @@ using namespace skia_private;
 class SkColorSpace;
 struct SkIPoint;
 
-constexpr bool kRPEnableLiveTrace = false;
+constexpr bool kRPEnableLiveTrace = true;
 
 using ChildType = SkRuntimeEffect::ChildType;
 
