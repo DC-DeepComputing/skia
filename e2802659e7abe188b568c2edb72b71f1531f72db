@@ -16,6 +16,178 @@
       "message": "I think Fontations font scanner is fully implemented by now.\nIn this CL we only test some of the functionality (with Android font manager).\nNext step will be to extend the other font managers (like custom font manager) to use Fontations.",
       "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eaceed6_25f47094",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "Nice! Ty!",
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d48e4c_ecdaf0f6",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "That looks like a lot of includes for this file, reduce?",
+      "range": {
+        "startLine": 8,
+        "startChar": 1,
+        "endLine": 41,
+        "endChar": 33
+      },
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6590ad2b_22dd0b20",
+        "filename": "src/ports/SkFontScanner_fontations.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "Is the `SkFontScanner` definition new or older code? Could we make these two method name verbs a bit more consistent and descriptive? Perhaps: \n```suggestion\n    bool parseableAsFont(SkStreamAsset* stream, int* numFaces) const override;\n```",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 23
+      },
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56045f83_3e7d35fe",
+        "filename": "src/ports/SkFontScanner_fontations.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "```suggestion\n    bool getFontStyleAxisInfo(SkStreamAsset* stream,\n```\n\nor \n\n```suggestion\n    bool scanFontMetaData(SkStreamAsset* stream,\n```\n\nOther suggestion? My intention is to express in the name that we\u0027re retrieving font level metadata including name, style, variation space.",
+      "range": {
+        "startLine": 32,
+        "startChar": 9,
+        "endLine": 32,
+        "endChar": 17
+      },
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a774a548_b4ddfd84",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "Minor: Maybe: \n\n```suggestion\n                    // TODO(jlavrova): Figure out later\n```\n\nIn Blink we do that not to express who has to do it, but to denote who is most familiar with the location in the code.",
+      "range": {
+        "startLine": 735,
+        "startChar": 23,
+        "endLine": 735,
+        "endChar": 27
+      },
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a038c4e4_623a8aa2",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "Minor: These could use a comment in what values / schema they are encoded and where to look up what the values mean. I assume you mean those to be equivalent to Skia side values, so perhaps you can put a link in a comment pointing to the enum or const values elsewhere.",
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94cbbd2e_066a3b30",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "Path?",
+      "range": {
+        "startLine": 1105,
+        "startChar": 9,
+        "endLine": 1105,
+        "endChar": 70
+      },
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3395aa7_dfeb0fac",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 22
+      },
+      "lineNbr": 1200,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-16T08:02:34Z",
+      "side": 1,
+      "message": "Rephrase, typo?",
+      "range": {
+        "startLine": 1200,
+        "startChar": 48,
+        "endLine": 1200,
+        "endChar": 90
+      },
+      "revId": "e2802659e7abe188b568c2edb72b71f1531f72db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
