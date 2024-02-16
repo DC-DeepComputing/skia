@@ -70,6 +70,24 @@
       "parentUuid": "29e0b9fd_5a4c1590",
       "revId": "ac8c178d2e644983f1e8e98fca5e51369c163051",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de8d85fe_1753f894",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2024-02-16T18:20:23Z",
+      "side": 1,
+      "message": "The rerun passed. It\u0027s slightly concerning that we\u0027re getting these error logs though.",
+      "parentUuid": "cb943c33_22afa559",
+      "revId": "ac8c178d2e644983f1e8e98fca5e51369c163051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
