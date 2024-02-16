@@ -168,7 +168,6 @@ skia_cc_library(
         "GR_TEST_UTILS",
         "SK_GANESH",
         "SK_VULKAN",
-        "SK_USE_VMA",
         "SK_DISABLE_LEGACY_VULKAN_BACKENDSEMAPHORE",
         "SK_DISABLE_LEGACY_VULKAN_MUTABLE_TEXTURE_STATE",
     ],
