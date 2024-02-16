@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ee998f4_a1f26a91",
+        "filename": "include/gpu/gl/egl/GrGLMakeEGLInterface.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T19:37:31Z",
+      "side": 1,
+      "message": "nit: This should have SK_API",
+      "revId": "0f6f9182c76e7b390fc76bb7bad1cb67397fc767",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
