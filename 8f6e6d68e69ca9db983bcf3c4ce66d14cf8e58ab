@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b977c221_194dccbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T16:32:35Z",
+      "side": 1,
+      "message": "The failing G3 canary is not the fault of this CL.",
+      "revId": "8f6e6d68e69ca9db983bcf3c4ce66d14cf8e58ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
