@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fe05759_c7cc2614",
+        "filename": "src/gpu/ganesh/vk/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:42:02Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this. We should check with Greg/Nicolette about the vulkan memory allocator and how clients may or may not want us to provide one.",
+      "range": {
+        "startLine": 170,
+        "startChar": 9,
+        "endLine": 170,
+        "endChar": 19
+      },
+      "revId": "2684d3bc41e28ccd659853f0ab51b57336105fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0a97fec_12cd1000",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:42:02Z",
+      "side": 1,
+      "message": "This (having a .cpp show up in two different binaries.) is going to cause a problem if we compile something with both ganesh_vulkan_utils and ganesh_gl_utils. Is that a possibility we want to address now or if/when it comes up?",
+      "range": {
+        "startLine": 132,
+        "startChar": 9,
+        "endLine": 132,
+        "endChar": 30
+      },
+      "revId": "2684d3bc41e28ccd659853f0ab51b57336105fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "299de406_a3fb1f5d",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:42:02Z",
+      "side": 1,
+      "message": "We should not be compiling vulkan stuff on macos",
+      "range": {
+        "startLine": 177,
+        "startChar": 24,
+        "endLine": 177,
+        "endChar": 29
+      },
+      "revId": "2684d3bc41e28ccd659853f0ab51b57336105fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
