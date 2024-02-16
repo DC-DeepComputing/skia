@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28e8aba6_07864e3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-16T18:46:30Z",
+      "side": 1,
+      "message": "So this fixes `text-tspan-01.svg` when some random `🙂` are added to the strings to be displayed. Not really sure how to test this and I\u0027m already very far down a bunny trail.",
+      "revId": "1fdfda72a537fea55cce860636f6bb729a106c1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
