@@ -34,6 +34,24 @@
       "parentUuid": "f2e4e28b_f64a389b",
       "revId": "ac8c178d2e644983f1e8e98fca5e51369c163051",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29e0b9fd_5a4c1590",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2024-02-16T18:07:28Z",
+      "side": 1,
+      "message": "I believe it\u0027s the \"Animated apng background color restore\" test in flutter/testing/dart/codec_test.dart emitting these logs. At current head, it doesn\u0027t emit the failed to get pixels log, but does emit the could not decompress image log. The canary roll also emits the Failed to get pixels log.\n\nIn either case, the test passes locally. I\u0027m not sure what\u0027s actually failing on CI.",
+      "parentUuid": "3411f49f_3f87c169",
+      "revId": "ac8c178d2e644983f1e8e98fca5e51369c163051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
