@@ -22,6 +22,30 @@
       },
       "revId": "7c021625c5ea0d1edd6531da1733055890513116",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "813a46ec_38421b66",
+        "filename": "src/core/SkPaintPriv.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-16T20:56:40Z",
+      "side": 0,
+      "message": "I was actually really worried about that. I didn\u0027t get any diffs locally - I think we might have the buckets of luminance bits centered around 0.5? 🙏",
+      "parentUuid": "c1fb6910_b8547e56",
+      "range": {
+        "startLine": 153,
+        "startChar": 26,
+        "endLine": 153,
+        "endChar": 42
+      },
+      "revId": "7c021625c5ea0d1edd6531da1733055890513116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
