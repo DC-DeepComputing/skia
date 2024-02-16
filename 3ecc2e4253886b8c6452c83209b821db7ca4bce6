@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "573cbf11_cc636afa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-16T18:33:48Z",
+      "side": 1,
+      "message": "FYI: Canaries look fine (errors are pre-existing and *not* compile errors)",
+      "revId": "3ecc2e4253886b8c6452c83209b821db7ca4bce6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
