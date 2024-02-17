@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "893601ab_9131f456",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 1734,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-17T02:19:09Z",
+      "side": 1,
+      "message": "Inspired in https://skia.googlesource.com/skia/+/c3fbd20fbc7d3662dd31a0e4139226d2951d1ae4/src/gpu/vk/vulkanmemoryallocator/BUILD.gn.",
+      "range": {
+        "startLine": 1732,
+        "startChar": 0,
+        "endLine": 1734,
+        "endChar": 1
+      },
+      "revId": "86c4104cf778e49943c87c2282a92d4d6f3e2534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
