@@ -116,6 +116,11 @@ public:
      */
     SkMatrix totalMatrix() const { return SkMatrix::Concat(fCTM, fTotalLocalMatrix); }
 
+    /** Returns any pending transforms that have not yet been applied by a parent shader. */
+    SkMatrix pendingLocalMatrix() const {
+        return fCTMApplied ? SkMatrix::I() : fPendingLocalMatrix;
+    }
+
     /** Gets the inverse of totalMatrix(), if invertible. */
     [[nodiscard]] bool totalInverse(SkMatrix* out) const {
         return this->totalMatrix().invert(out);

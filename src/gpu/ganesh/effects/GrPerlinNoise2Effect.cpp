@@ -187,9 +187,8 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
         stitchDataUni = uniformHandler->getUniformCStr(fStitchDataUni);
     }
 
-    // There are rounding errors if the floor operation is not performed here
     fragBuilder->codeAppendf(
-            "half2 noiseVec = half2(floor(%s.xy) * %s);", args.fSampleCoord, baseFrequencyUni);
+            "half2 noiseVec = half2((%s + 0.25) * %s);", args.fSampleCoord, baseFrequencyUni);
 
     // Clear the color accumulator
     fragBuilder->codeAppendf("half4 color = half4(0);");
