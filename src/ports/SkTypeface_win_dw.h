@@ -48,7 +48,7 @@ static SkFontStyle get_style(IDWriteFont* font) {
     return SkFontStyle(weight, width, slant);
 }
 
-class SK_SPI DWriteFontTypeface : public SkTypeface {
+class DWriteFontTypeface : public SkTypeface {
 public:
     struct Loaders : public SkNVRefCnt<Loaders> {
         Loaders(IDWriteFactory* factory,
@@ -70,7 +70,8 @@ public:
     };
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('d','w','r','t');
-    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+    static sk_sp<SkTypeface> SK_SPI MakeFromStream(std::unique_ptr<SkStreamAsset>,
+                                                   const SkFontArguments&);
 
     ~DWriteFontTypeface() override;
 private:
