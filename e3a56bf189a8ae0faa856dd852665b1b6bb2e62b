@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5833f396_662c595d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-20T18:28:58Z",
+      "side": 1,
+      "message": "Doug tried to build a Mac component build the other day, and got link errors. I think this will fix them:\n\n```[2067/2074] link libskparagraph.dylib\nFAILED: libskparagraph.dylib \nc++ -shared -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -Wl,-w -target arm64-apple-macos11  @libskparagraph.dylib.rsp     -Wl,-install_name,@rpath/libskparagraph.dylib -o libskparagraph.dylib\nld: Undefined symbols:\n  SkTypeface_Mac::MakeFromStream(std::__1::unique_ptr\u003cSkStreamAsset, std::__1::default_delete\u003cSkStreamAsset\u003e\u003e, SkFontArguments const\u0026), referenced from:\n      skia::textlayout::TestFontCollection::addFontFromFile(std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e\u003e const\u0026, std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e\u003e const\u0026) in libskparagraph.TestFontCollection.o\nclang: error: linker command failed with exit code 1 (use -v to see invocation)```",
+      "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
