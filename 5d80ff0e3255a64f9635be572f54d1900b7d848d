@@ -16,6 +16,29 @@
       "message": "Updated file headers to use the Google copyright like the rest of the source files.",
       "revId": "5d80ff0e3255a64f9635be572f54d1900b7d848d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc3041af_dbaf1a16",
+        "filename": "src/gpu/ganesh/gl/epoxy/GrGLMakeNativeInterface_epoxy.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-20T15:39:38Z",
+      "side": 1,
+      "message": "I think we can get rid of this file. We are currently in the process of getting rid of all the uses of MakeNativeInterface and instead require clients to be more specific. See https://skia-review.googlesource.com/c/skia/+/815096 and the various linked CLs in the description for more context. Additionally we\u0027ll want to update the header file to match the new format (e.g. https://skia-review.googlesource.com/c/skia/+/815096/9/include/gpu/gl/egl/GrGLMakeEGLInterface.h#16). You can just leave out the SK_DISABLE_LEGACY_*INTERFACE_FACTORY sections as we aren\u0027t planning on supporting that path from the start.",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 92
+      },
+      "revId": "5d80ff0e3255a64f9635be572f54d1900b7d848d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
