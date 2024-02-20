@@ -100,11 +100,39 @@ enum class BuiltInCodeSnippetID : int32_t {
     kFirstFixedFunctionBlendMode = kFixedFunctionClearBlendMode,
     kLast = kFixedFunctionScreenBlendMode
 };
-static constexpr int kBuiltInCodeSnippetIDCount = static_cast<int>(BuiltInCodeSnippetID::kLast)+1;
+static constexpr int kBuiltInCodeSnippetIDCount1 = static_cast<int>(BuiltInCodeSnippetID::kLast)+1;
 static constexpr int kFixedFunctionBlendModeIDOffset =
         static_cast<int>(BuiltInCodeSnippetID::kFirstFixedFunctionBlendMode);
 
 static_assert(BuiltInCodeSnippetID::kLast == BuiltInCodeSnippetID::kFixedFunctionScreenBlendMode);
+
+// We allocate the snippetIDs in blocks as:
+//     Skia builtins
+//     Skia known runtime effects
+//     Android known runtime effects
+//     Chrome known runtime effects
+//     unknown runtime effects (on a first come, first served basis so - unstable)
+static constexpr int kSkiaBuiltInReservedCnt = 100;
+static constexpr int kSkiaKnownRuntimeEffectsReservedCnt = 100;
+static constexpr int kAndroidKnownRuntimeEffectsReservedCnt = 100;
+static constexpr int kChromeKnownRuntimeEffectsReservedCnt = 100;
+
+static constexpr int kSkiaKnownRuntimeEffectsStart = kSkiaBuiltInReservedCnt;
+static constexpr int kSkiaKnownRuntimeEffectsEnd = kSkiaKnownRuntimeEffectsStart +
+                                                   kSkiaKnownRuntimeEffectsReservedCnt;
+
+static constexpr int kAndroidKnownRuntimeEffectsStart = kSkiaKnownRuntimeEffectsEnd;
+static constexpr int kAndroidKnownRuntimeEffectsEnd = kAndroidKnownRuntimeEffectsStart +
+                                                      kAndroidKnownRuntimeEffectsReservedCnt;
+
+static constexpr int kChromeKnownRuntimeEffectsStart = kAndroidKnownRuntimeEffectsEnd;
+static constexpr int kChromeKnownRuntimeEffectsEnd = kChromeKnownRuntimeEffectsStart +
+                                                     kChromeKnownRuntimeEffectsReservedCnt;
+
+static constexpr int kUnknownRuntimeEffectIDStart = kChromeKnownRuntimeEffectsEnd;
+
+static_assert(static_cast<int>(BuiltInCodeSnippetID::kLast) < kSkiaBuiltInReservedCnt);
+
 
 }  // namespace skgpu::graphite
 
