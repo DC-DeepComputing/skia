@@ -51,6 +51,24 @@
       "parentUuid": "d47a5d20_b61dabad",
       "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4b982e_2e48cc08",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-20T20:50:36Z",
+      "side": 1,
+      "message": "Ugh, yes, Kevin snuck that in with https://skia-review.googlesource.com/c/skia/+/779096 . Need to fix that too.\n\nI believe we can (and should) just put SK_SPI on the static function directly. In fact on Windows it\u0027s rather bad for most of our classes to export the whole class since that also makes all the private fields public (the whole class, including private symbols, raii type symbols, etc are all publicly exported) and you\u0027re supposed to just individually mark the public parts of the class.",
+      "parentUuid": "93c8ee2a_90c6fc09",
+      "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
