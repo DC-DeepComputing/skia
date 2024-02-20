@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "083a1da3_2fd60627",
+        "filename": "src/gpu/ganesh/vk/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-20T17:53:16Z",
+      "side": 1,
+      "message": "I think some of these can be local_defines - if they don\u0027t impact a header, they are safe to go in local_defines.\n\nAlso add a TODO for removing SK_USE_VMA and the dep on //third_party/vulkanmemoryallocator",
+      "revId": "bb02b56ef89fddc93703c207e201b6c6f0aa9120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
