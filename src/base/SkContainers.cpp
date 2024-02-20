@@ -12,14 +12,6 @@
 #include <algorithm>
 #include <cstddef>
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-#include <malloc/malloc.h>
-#elif defined(SK_BUILD_FOR_ANDROID) || defined(SK_BUILD_FOR_UNIX)
-#include <malloc.h>
-#elif defined(SK_BUILD_FOR_WIN)
-#include <malloc.h>
-#endif
-
 namespace {
 // Return at least as many bytes to keep malloc aligned.
 constexpr size_t kMinBytes = alignof(max_align_t);
@@ -29,24 +21,7 @@ SkSpan<std::byte> complete_size(void* ptr, size_t size) {
         return {};
     }
 
-    size_t completeSize = size;
-
-    // Use the OS specific calls to find the actual capacity.
-    #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        // TODO: remove the max, when the chrome implementation of malloc_size doesn't return 0.
-        completeSize = std::max(malloc_size(ptr), size);
-    #elif defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 17
-        completeSize = malloc_usable_size(ptr);
-        SkASSERT(completeSize >= size);
-    #elif defined(SK_BUILD_FOR_UNIX)
-        completeSize = malloc_usable_size(ptr);
-        SkASSERT(completeSize >= size);
-    #elif defined(SK_BUILD_FOR_WIN)
-        completeSize = _msize(ptr);
-        SkASSERT(completeSize >= size);
-    #endif
-
-    return {static_cast<std::byte*>(ptr), completeSize};
+    return {static_cast<std::byte*>(ptr), sk_malloc_size(ptr, size)};
 }
 }  // namespace
 
