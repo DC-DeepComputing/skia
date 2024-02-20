@@ -175,6 +175,24 @@
       "parentUuid": "993bfb54_a58e58fb",
       "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e80ce75_3f90ea26",
+        "filename": "tests/FontMgrAndroidParserTest.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-20T22:48:48Z",
+      "side": 1,
+      "message": "Just add a `##Fontations` to the name then.\n\n```\n#ifdef SK_TYPEFACE_FACTORY_FONTATIONS\n#define DEF_TEST_FONTATIONS(name, reporter) \\\n    DEF_TEST(name##Fontations, reporter) { name(reporter, std::make_unique\u003cSkFontScanner_Fontations\u003e()); }\n#else\n#define DEF_TEST_FONTATIONS(name, reporter)\n#endif\n\n#define DEF_TEST_SCANNERS(name, reporter) \\\n    static void name(skiatest::Reporter*, std::unique_ptr\u003cSkFontScanner\u003e);                     \\\n    DEF_TEST(name, reporter) { name(reporter, std::make_unique\u003cSkFontScanner_FreeType\u003e()); }   \\\n    DEF_TEST_FONTATIONS(name, reporter)                                                        \\\n    void name(skiatest::Reporter* reporter, std::unique_ptr\u003cSkFontScanner\u003e fs)\n```",
+      "parentUuid": "8947d9c4_f2decde0",
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
