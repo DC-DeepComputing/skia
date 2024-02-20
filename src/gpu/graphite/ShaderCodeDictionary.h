@@ -18,6 +18,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkSpinlock.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
@@ -267,12 +268,15 @@ private:
 
     std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
 
-    // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
-    // entries as pointers.
-    skia_private::TArray<std::unique_ptr<ShaderSnippet>> fUserDefinedCodeSnippets;
-
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
     mutable SkSpinlock fSpinLock;
+
+    using KnownRuntimeEffectArray = std::array<ShaderSnippet, kStableKeyCnt>;
+    KnownRuntimeEffectArray fKnownRuntimeEffectCodeSnippets; // SK_GUARDED_BY(fSpinLock);
+
+    // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
+    // entries as pointers.
+    skia_private::TArray<std::unique_ptr<ShaderSnippet>> fUserDefinedCodeSnippets1;
 
     using PaintIDMap = skia_private::THashMap<PaintParamsKey,
                                               UniquePaintParamsID,
