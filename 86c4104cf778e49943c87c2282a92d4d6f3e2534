@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c0d9c47_f44c1065",
+        "filename": "src/gpu/ganesh/vk/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-20T20:01:28Z",
+      "side": 1,
+      "message": "Without this dep the build fails with:\n\n```\n./tools/gpu/vk/VkTestMemoryAllocator.h:11:10: fatal error: \u0027vk_mem_alloc.h\u0027 file not found\n#include \u003cvk_mem_alloc.h\u003e\n```\n\nHowever, this is not the right place for said dep. File `//tools/gpu/vk/VkTestMemoryAllocator.h` is part of the `//tools/gpu/vk:private_hdrs` filegroup, which is included in the \"srcs\" attribute of the `//tools/gpu:ganesh_vulkan_utils` skia_cc_library. So it makes more sense to turn `//third_party/vulkanmemoryallocator` into a \"deps\" dependency of `//tools/gpu:ganesh_vulkan_utils`.",
+      "parentUuid": "3e468abf_48de395b",
+      "range": {
+        "startLine": 184,
+        "startChar": 11,
+        "endLine": 184,
+        "endChar": 22
+      },
+      "revId": "86c4104cf778e49943c87c2282a92d4d6f3e2534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfdaba38_1b703089",
@@ -60,6 +84,30 @@
       "writtenOn": "2024-02-20T13:09:55Z",
       "side": 1,
       "message": "ubernit: list this define first",
+      "range": {
+        "startLine": 10,
+        "startChar": 23,
+        "endLine": 10,
+        "endChar": 34
+      },
+      "revId": "86c4104cf778e49943c87c2282a92d4d6f3e2534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1cd1125_291b1b7c",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-20T20:01:28Z",
+      "side": 1,
+      "message": "I tried moving this include atop, but the presubmit moved it back:\n\n```\nSome files need rewritten #includes:\n        tools/gpu/vk/VkTestUtils.cpp\nTo do this automatically, run\npython3 tools/rewrite_includes.py tools/gpu/vk/VkTestUtils.cpp\n```",
+      "parentUuid": "bfdaba38_1b703089",
       "range": {
         "startLine": 10,
         "startChar": 23,
