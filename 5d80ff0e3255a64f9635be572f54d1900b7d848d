@@ -39,6 +39,30 @@
       },
       "revId": "5d80ff0e3255a64f9635be572f54d1900b7d848d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b96095_3f58c768",
+        "filename": "src/gpu/ganesh/gl/epoxy/GrGLMakeNativeInterface_epoxy.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-20T20:44:10Z",
+      "side": 1,
+      "message": "Done in version 4 of the patch set, which also leaves the legacy factory out as suggested.\n\nI\u0027ll try in the next days to change WebKit to explicitly instantiate the Epoxy native interface instead of relying on the legacy factory, too.",
+      "parentUuid": "dc3041af_dbaf1a16",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 92
+      },
+      "revId": "5d80ff0e3255a64f9635be572f54d1900b7d848d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
