@@ -86,6 +86,9 @@ luci.dynamic_builder_template(
 luci.task_backend(
     name = "skia-staging-taskbackend",
     target = "skia://task-scheduler-staging",
+    config = {
+        'RedirectToTaskPage': True,
+    },
 )
 
 luci.bucket(
