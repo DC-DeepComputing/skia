@@ -16,6 +16,24 @@
       "message": "Is this the right way to do this?  I can\u0027t find an example.",
       "revId": "332308045de759e76fdd9db94eae6f7d097d77d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d00b5c_41a80ffc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20369
+      },
+      "writtenOn": "2024-02-20T17:49:57Z",
+      "side": 1,
+      "message": "This field is part of the backend setting in buildbucket service config. So you should set it in https://chrome-internal.googlesource.com/infradata/config/+/123f0061a1924db1d1e6d0fde73d70f6e37dfe1c/configs/cr-buildbucket/settings.cfg#238",
+      "parentUuid": "4e8b64e6_38ceb3b2",
+      "revId": "332308045de759e76fdd9db94eae6f7d097d77d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
