@@ -67,6 +67,11 @@ bool_flag(
     default = True,
 )
 
+bool_flag(
+    name = "enable_epoxy_native_interface",
+    default = False,
+)
+
 # In own group for mapping to //gn/gpu.gni:skia_null_gpu_sources.
 skia_filegroup(
     name = "native_interface_none",
@@ -76,6 +81,7 @@ skia_filegroup(
 skia_filegroup(
     name = "native_interface",
     srcs = select({
+        ":enable_epoxy_native_interface_true": ["//src/gpu/ganesh/gl/epoxy:srcs"],
         "//bazel/common_config_settings:linux_x64": ["//src/gpu/ganesh/gl/glx:srcs"],
         "//bazel/common_config_settings:cpu_wasm": ["//src/gpu/ganesh/gl/webgl:srcs"],
         "@platforms//os:android": ["//src/gpu/ganesh/gl/egl:srcs"],

@@ -15,6 +15,7 @@ skia_filegroup(
         "GrGLInterface.h",
         "GrGLTypes.h",
     ] + select({
+        "//src/gpu/ganesh/gl:enable_epoxy_native_interface_true": ["//include/gpu/gl/epoxy:public_hdrs"],
         "@platforms//os:android": ["//include/gpu/gl/egl:public_hdrs"],
         "@platforms//os:linux": ["//include/gpu/gl/glx:public_hdrs"],
         "//conditions:default": [],
