@@ -785,6 +785,8 @@ BASE_SRCS_ALL = [
     "src/gpu/GpuRefCnt.h",
     "src/gpu/GpuTypesPriv.h",
     "src/gpu/KeyBuilder.h",
+    "src/gpu/KnownRuntimeEffects.cpp",
+    "src/gpu/KnownRuntimeEffects.h",
     "src/gpu/MutableTextureStatePriv.h",
     "src/gpu/MutableTextureState.cpp",
     "src/gpu/PipelineUtils.cpp",
