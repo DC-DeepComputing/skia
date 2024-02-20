@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "805a1cc6_1aff3bf3",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1568,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-02-20T16:59:08Z",
+      "side": 1,
+      "message": "Nit: I don\u0027t think auto is useful here",
+      "range": {
+        "startLine": 1568,
+        "startChar": 8,
+        "endLine": 1568,
+        "endChar": 12
+      },
+      "revId": "98219c5a1a11003c0087a8930a0af6642832da12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
