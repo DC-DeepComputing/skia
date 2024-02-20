@@ -33,6 +33,24 @@
       "message": "It looks like this is just for this static method? I really would prefer not to mark the whole of SkTypeface_Mac even internal public at all if it\u0027s just for a static.",
       "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93c8ee2a_90c6fc09",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-20T20:42:53Z",
+      "side": 1,
+      "message": "Yeah, just for that (we appear to have the same workaround in win_dw). Can we tag just the single declaration, with it being static?",
+      "parentUuid": "d47a5d20_b61dabad",
+      "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
