@@ -22,6 +22,8 @@ SHARED_FILES = [
     "GpuRefCnt.h",
     "GpuTypesPriv.h",
     "KeyBuilder.h",
+    "KnownRuntimeEffects.cpp",
+    "KnownRuntimeEffects.h",
     "MutableTextureStatePriv.h",
     "MutableTextureState.cpp",
     "PipelineUtils.cpp",
