@@ -64,10 +64,13 @@ public:
     bool operator!=(const TextureDataBlock& other) const { return !(*this == other);  }
     uint32_t hash() const;
 
-    void add(const SkSamplingOptions& sampling,
+    void add(const Caps* caps,
+             const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
              sk_sp<TextureProxy> proxy) {
-        fTextureData.push_back({std::move(proxy), SamplerDesc{sampling, tileModes}});
+        // caps -> getAdditionalSamplerDescInfo(proxy)
+        fTextureData.push_back(
+                {std::move(proxy), SamplerDesc{sampling, tileModes}});
     }
 
     void reset() {
@@ -89,7 +92,7 @@ private:
 // obviously, vastly complicate uniform accumulation.
 class PipelineDataGatherer {
 public:
-    PipelineDataGatherer(Layout layout);
+    PipelineDataGatherer(const Caps* caps, Layout layout);
 
     void resetWithNewLayout(Layout layout);
 
@@ -99,7 +102,7 @@ public:
     void add(const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
              sk_sp<TextureProxy> proxy) {
-        fTextureDataBlock.add(sampling, tileModes, std::move(proxy));
+        fTextureDataBlock.add(fCaps, sampling, tileModes, std::move(proxy));
     }
     bool hasTextures() const { return !fTextureDataBlock.empty(); }
 
@@ -133,6 +136,7 @@ private:
 
     TextureDataBlock fTextureDataBlock;
     UniformManager   fUniformManager;
+    const Caps*      fCaps;
 };
 
 #ifdef SK_DEBUG
