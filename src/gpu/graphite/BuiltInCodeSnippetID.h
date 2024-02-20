@@ -9,6 +9,7 @@
 #define skgpu_graphite_BuiltInCodeSnippetID_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 
 namespace skgpu::graphite {
 
@@ -100,11 +101,13 @@ enum class BuiltInCodeSnippetID : int32_t {
     kFirstFixedFunctionBlendMode = kFixedFunctionClearBlendMode,
     kLast = kFixedFunctionScreenBlendMode
 };
-static constexpr int kBuiltInCodeSnippetIDCount = static_cast<int>(BuiltInCodeSnippetID::kLast)+1;
+static constexpr int kBuiltInCodeSnippetIDCount1 = static_cast<int>(BuiltInCodeSnippetID::kLast)+1;
 static constexpr int kFixedFunctionBlendModeIDOffset =
         static_cast<int>(BuiltInCodeSnippetID::kFirstFixedFunctionBlendMode);
 
 static_assert(BuiltInCodeSnippetID::kLast == BuiltInCodeSnippetID::kFixedFunctionScreenBlendMode);
+
+static_assert(static_cast<int>(BuiltInCodeSnippetID::kLast) < kSkiaBuiltInReservedCnt);
 
 }  // namespace skgpu::graphite
 
