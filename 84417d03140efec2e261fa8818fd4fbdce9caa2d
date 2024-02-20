@@ -101,6 +101,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f8c3a23_28f52798",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T16:41:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c459c662_68e7f6f6",
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5770edbc_7665bed6",
@@ -172,6 +190,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3483da1c_563adceb",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T16:41:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e4d4eae_288bf0a9",
+      "range": {
+        "startLine": 733,
+        "startChar": 33,
+        "endLine": 733,
+        "endChar": 39
+      },
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c5e202a_3f5ba48b",
@@ -221,6 +263,24 @@
       "side": 1,
       "message": "No, you\u0027re turning specific float values (stretch is internally a float ratio, on the skrifa side there is no enum, only named constant values) into Skia values. But you\u0027re turning the vast majority of these values into 9. In a variable font you\u0027ll get things like a stretch of .997 or something like that which should map to Skia value of 5, but right now that appears to be mapped to 9.",
       "parentUuid": "874c53bb_a776577f",
+      "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4536cb1d_91b2b630",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 23
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T16:41:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ccf28eb_3072f5c2",
       "revId": "84417d03140efec2e261fa8818fd4fbdce9caa2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
