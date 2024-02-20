@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d5ca359_bb3bae5b",
+        "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-20T15:38:42Z",
+      "side": 1,
+      "message": "should this define be using its own SK_DISABLE_LEGACY_EGLINTERFACE_FACTORY define?",
+      "range": {
+        "startLine": 139,
+        "startChar": 31,
+        "endLine": 139,
+        "endChar": 43
+      },
+      "revId": "6ae5032133d0b1a6987443916dc4c4f499e5b951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
