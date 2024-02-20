@@ -18,6 +18,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkSpinlock.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
@@ -231,7 +232,7 @@ public:
     SkSpan<const Uniform> getUniforms(BuiltInCodeSnippetID) const;
     SkEnumBitMask<SnippetRequirementFlags> getSnippetRequirementFlags(
             BuiltInCodeSnippetID id) const {
-        return fBuiltInCodeSnippets[(int) id].fSnippetRequirementFlags;
+        return fBuiltInCodeSnippets1[(int) id].fSnippetRequirementFlags;
     }
 
     bool isValidID(int snippetID) const;
@@ -265,11 +266,13 @@ private:
 
     SkSpan<const Uniform> convertUniforms(const SkRuntimeEffect* effect);
 
-    std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
+    std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount1> fBuiltInCodeSnippets1;
+
+    std::array<ShaderSnippet, skgpu::kStableKeyCnt> fKnownRuntimeEffectCodeSnippets;
 
     // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
     // entries as pointers.
-    skia_private::TArray<std::unique_ptr<ShaderSnippet>> fUserDefinedCodeSnippets;
+    skia_private::TArray<std::unique_ptr<ShaderSnippet>> fUserDefinedCodeSnippets1;
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
     mutable SkSpinlock fSpinLock;
