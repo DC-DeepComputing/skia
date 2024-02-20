@@ -27,14 +27,17 @@
 namespace skgpu::graphite {
 namespace {
 
-// TODO: select atlas size dynamically? Take ContextOptions::fMaxTextureAtlasSize into account?
 // TODO: This is the maximum target dimension that vello can handle today
 constexpr uint16_t kComputeAtlasDim = 4096;
 
 }  // namespace
 
-PathAtlas::PathAtlas(Recorder* recorder, uint32_t width, uint32_t height)
-        : fRecorder(recorder), fWidth(width), fHeight(height) {}
+PathAtlas::PathAtlas(Recorder* recorder, uint32_t requestedWidth, uint32_t requestedHeight)
+        : fRecorder(recorder) {
+    uint32_t maxTextureSize = recorder->priv().caps()->maxTextureSize();
+    fWidth = std::min<uint32_t>(requestedWidth, maxTextureSize);
+    fHeight = std::min<uint32_t>(requestedHeight, maxTextureSize);
+}
 
 PathAtlas::~PathAtlas() = default;
 
@@ -98,7 +101,7 @@ bool ComputePathAtlas::isSuitableForAtlasing(const Rect& transformedShapeBounds)
     skvx::float2 maskSize = maskBounds.size();
     float width = maskSize.x(), height = maskSize.y();
 
-    if (width > kComputeAtlasDim || height > kComputeAtlasDim) {
+    if (width > this->width() || height > this->height()) {
         return false;
     }
 
