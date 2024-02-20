@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cf7f505_495cddee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-20T15:12:42Z",
+      "side": 1,
+      "message": "Updated file headers to use the Google copyright like the rest of the source files.",
+      "revId": "5d80ff0e3255a64f9635be572f54d1900b7d848d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
