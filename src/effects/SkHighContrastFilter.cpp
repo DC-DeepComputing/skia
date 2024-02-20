@@ -70,7 +70,8 @@ sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& conf
 
     static const SkRuntimeEffect* effect = SkMakeCachedRuntimeEffect(
         SkRuntimeEffect::MakeForColorFilter,
-        SkString(kHighContrastFilterCode)
+        SkString(kHighContrastFilterCode),
+        kHighContrastStableKey
     ).release();
 
     SkASSERT(effect);

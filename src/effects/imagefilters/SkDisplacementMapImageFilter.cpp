@@ -132,7 +132,7 @@ sk_sp<SkShader> make_displacement_shader(
             "half2 displ = half2(dot(displColor, xSelect), dot(displColor, ySelect));"
             "displ = scale * (displ - 0.5);"
             "return colorMap.eval(coord + displ);"
-        "}");
+        "}", kDisplacementMapStableKey);
 
     auto channelSelector = [](SkColorChannel c) {
         return SkV4{c == SkColorChannel::kR ? 1.f : 0.f,

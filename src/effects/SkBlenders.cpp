@@ -55,7 +55,7 @@ sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
                 "return c;"
             "}"
         ;
-        auto result = SkRuntimeEffect::MakeForBlender(SkString(prog));
+        auto result = SkRuntimeEffect::MakeForBlender(SkString(prog), kArithmeticStableKey);
         SkASSERTF(result.effect, "SkBlenders::Arithmetic: %s", result.errorText.c_str());
         return result.effect.release();
     }();

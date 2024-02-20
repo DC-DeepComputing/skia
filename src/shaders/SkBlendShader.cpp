@@ -133,7 +133,8 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender,
         "uniform blender b;"
         "half4 main(float2 xy) {"
             "return b.eval(s.eval(xy), d.eval(xy));"
-        "}"
+        "}",
+        kBlendShaderStableKey
     );
     SkRuntimeEffect::ChildPtr children[] = {std::move(src), std::move(dst), std::move(blender)};
     return sBlendEffect->makeShader(/*uniforms=*/{}, children);

@@ -33,7 +33,7 @@ static sk_sp<SkImageFilter> make_filter() {
             coord.x += sin(coord.y / 3) * 4;
             return child.eval(coord);
         }
-    )")).effect;
+    )"), /* stableKey= */ 0).effect;
     SkRuntimeShaderBuilder builder(std::move(effect));
     return SkImageFilters::RuntimeShader(builder,
                                          /*sampleRadius=*/4,
@@ -89,7 +89,7 @@ DEF_SIMPLE_GM(rtif_unsharp, canvas, 512, 256) {
             vec4 b = blurred.eval(coord);
             return c + (c - b) * 4;
         }
-    )")).effect;
+    )"), /* stableKey= */ 0).effect;
     SkRuntimeShaderBuilder builder(std::move(effect));
 
     auto image = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
