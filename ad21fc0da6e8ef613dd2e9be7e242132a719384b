@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3328a1df_c41ab795",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-20T20:33:54Z",
+      "side": 1,
+      "message": "If this is taking ownership like it is here, then the API should take `std::unique_ptr`. `custom` is taken by pointer because this doesn\u0027t take ownership of it (or any part of it) it\u0027s really just a pointer to a bag of parameters.",
+      "range": {
+        "startLine": 265,
+        "startChar": 10,
+        "endLine": 265,
+        "endChar": 18
+      },
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fefb7da9_95096f5b",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-20T20:33:54Z",
+      "side": 1,
+      "message": "This appears to be leaked? If this is passing ownership then it should be unique_ptr.",
+      "range": {
+        "startLine": 531,
+        "startChar": 41,
+        "endLine": 531,
+        "endChar": 71
+      },
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17efb90_e0710387",
+        "filename": "tests/FontMgrAndroidParserTest.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-20T20:33:54Z",
+      "side": 1,
+      "message": "Even in a test we don\u0027t want to leak this. If the test is awkward then the API is likely awkward.",
+      "range": {
+        "startLine": 200,
+        "startChar": 70,
+        "endLine": 200,
+        "endChar": 83
+      },
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "993bfb54_a58e58fb",
+        "filename": "tests/FontMgrAndroidParserTest.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-20T20:33:54Z",
+      "side": 1,
+      "message": "```\n#ifdef SK_TYPEFACE_FACTORY_FONTATIONS\n#define DEF_TEST_FONTATIONS(name, reporter) \\\n    DEF_TEST(name, reporter) { name(reporter, std::make_unique\u003cSkFontScanner_Fontations\u003e()); }\n#else\n#define DEF_TEST_FONTATIONS(name, reporter)\n#endif\n\n#define DEF_TEST_SCANNERS(name, reporter) \\\n    static void name(skiatest::Reporter*, std::unique_ptr\u003cSkFontScanner\u003e);                     \\\n    DEF_TEST(name, reporter) { name(reporter, std::make_unique\u003cSkFontScanner_FreeType\u003e()); }   \\\n    DEF_TEST_FONTATIONS(name, reporter)                                                        \\\n    void name(skiatest::Reporter* reporter, std::unique_ptr\u003cSkFontScanner\u003e fs)\n```",
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
