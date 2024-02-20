@@ -92,6 +92,10 @@ public:
         options->allowPrivateAccess = true;
     }
 
+    static void SetStableKey(SkRuntimeEffect::Options* options, int stableKey) {
+        options->fStableKey = stableKey;
+    }
+
     static SkRuntimeEffect::Uniform VarAsUniform(const SkSL::Variable&,
                                                  const SkSL::Context&,
                                                  size_t* offset);
