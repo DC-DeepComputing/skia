@@ -187,9 +187,16 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
         stitchDataUni = uniformHandler->getUniformCStr(fStitchDataUni);
     }
 
-    // There are rounding errors if the floor operation is not performed here
+    // In the past, Perlin noise handled coordinates a bit differently than most shaders.
+    // It operated in device space, floored; it also had a one-pixel transform matrix applied to
+    // both the X and Y coordinates. This is roughly equivalent to adding 0.5 to the coordinates.
+    // This was originally done in order to better match preexisting golden images from WebKit.
+    // Perlin noise now operates in local space, which allows rotation to work correctly. To better
+    // approximate past behavior, we add 0.5 to the coordinates here. This is _not_ the same because
+    // this adjustment is occurring in local space, not device space, but it means that the "same"
+    // noise will be calculated regardless of CTM.
     fragBuilder->codeAppendf(
-            "half2 noiseVec = half2(floor(%s.xy) * %s);", args.fSampleCoord, baseFrequencyUni);
+            "half2 noiseVec = half2((%s + 0.5) * %s);", args.fSampleCoord, baseFrequencyUni);
 
     // Clear the color accumulator
     fragBuilder->codeAppendf("half4 color = half4(0);");
