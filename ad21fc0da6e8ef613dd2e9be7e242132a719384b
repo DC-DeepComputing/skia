@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a30fa77_28a42b6d",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T22:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3328a1df_c41ab795",
+      "range": {
+        "startLine": 265,
+        "startChar": 10,
+        "endLine": 265,
+        "endChar": 18
+      },
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fefb7da9_95096f5b",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-20T20:33:54Z",
       "side": 1,
       "message": "This appears to be leaked? If this is passing ownership then it should be unique_ptr.",
+      "range": {
+        "startLine": 531,
+        "startChar": 41,
+        "endLine": 531,
+        "endChar": 71
+      },
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddb859b6_c01a06d8",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T22:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fefb7da9_95096f5b",
       "range": {
         "startLine": 531,
         "startChar": 41,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5721e39e_764c2623",
+        "filename": "tests/FontMgrAndroidParserTest.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T22:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d17efb90_e0710387",
+      "range": {
+        "startLine": 200,
+        "startChar": 70,
+        "endLine": 200,
+        "endChar": 83
+      },
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "993bfb54_a58e58fb",
@@ -83,6 +155,24 @@
       "writtenOn": "2024-02-20T20:33:54Z",
       "side": 1,
       "message": "```\n#ifdef SK_TYPEFACE_FACTORY_FONTATIONS\n#define DEF_TEST_FONTATIONS(name, reporter) \\\n    DEF_TEST(name, reporter) { name(reporter, std::make_unique\u003cSkFontScanner_Fontations\u003e()); }\n#else\n#define DEF_TEST_FONTATIONS(name, reporter)\n#endif\n\n#define DEF_TEST_SCANNERS(name, reporter) \\\n    static void name(skiatest::Reporter*, std::unique_ptr\u003cSkFontScanner\u003e);                     \\\n    DEF_TEST(name, reporter) { name(reporter, std::make_unique\u003cSkFontScanner_FreeType\u003e()); }   \\\n    DEF_TEST_FONTATIONS(name, reporter)                                                        \\\n    void name(skiatest::Reporter* reporter, std::unique_ptr\u003cSkFontScanner\u003e fs)\n```",
+      "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8947d9c4_f2decde0",
+        "filename": "tests/FontMgrAndroidParserTest.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-20T22:31:13Z",
+      "side": 1,
+      "message": "I cannot use DEF_TEST because it registers the test function with the same name for both FreeType and Fontations. I had to unroll it and register with suffixes.",
+      "parentUuid": "993bfb54_a58e58fb",
       "revId": "ad21fc0da6e8ef613dd2e9be7e242132a719384b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
