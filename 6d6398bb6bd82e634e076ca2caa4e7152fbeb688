@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0964b304_51e9ef7c",
+        "filename": "include/gpu/gl/epoxy/GrGLMakeEpoxyEGLInterface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-20T15:09:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "de221b0b_2d6a0e4e",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 3
+      },
+      "revId": "6d6398bb6bd82e634e076ca2caa4e7152fbeb688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0ca3aeb7_648cf70f",
         "filename": "src/gpu/ganesh/gl/epoxy/GrGLMakeEpoxyEGLInterface.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2024-02-20T14:57:20Z",
       "side": 1,
       "message": "why do we need this with epoxy? I don\u0027t know how the library works but I would be surprised that this quirk of EGL wouldn\u0027t be hidden by epoxy. Since everything is dynamically loaded anyways, why does epoxy not just have a \"getProc\" function that can work for all functions? Ideally if we land this epoxy interface builder, I would want it to look very simple like the glfw one, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/gl/glfw/GrGLMakeNativeInterface_glfw.cpp.",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "6d6398bb6bd82e634e076ca2caa4e7152fbeb688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a82afd62_96164330",
+        "filename": "src/gpu/ganesh/gl/epoxy/GrGLMakeEpoxyEGLInterface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-20T15:09:07Z",
+      "side": 1,
+      "message": "I tried and Epoxy definitely doesn\u0027t hide the quirk. My first attempt was a simpler version like the GLFW one.\n\nMy impression is that Epoxy does not try to paper over differences between extensions or EGL versions itself and in general it only handles aliases of compatible extension/core functions transparently, because this way it can have very simple trampolines which are solved the first time a function is used, and a direct jump to the implementation installed in place of the wrapper.\n\nI will check with the Epoxy developers to check if we could have its `epoxy_eglGetProcAddress()` handle the case where the driver does not support dynamically resolving core API symbols.",
+      "parentUuid": "0ca3aeb7_648cf70f",
       "range": {
         "startLine": 20,
         "startChar": 4,
