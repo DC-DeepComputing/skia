@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5939cc34_7b5a6a95",
+        "filename": "src/ports/SkMemory_mozalloc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-20T18:35:39Z",
+      "side": 1,
+      "message": "Actually, can we route this to `moz_malloc_usable_size`? For the same reason you\u0027re fixing chrome, we ought to just use their block-size API.\n\nSee: https://searchfox.org/mozilla-central/source/memory/mozalloc/mozalloc.cpp",
+      "revId": "b37b80ed3d24bcdabe97e0acc9607bce79393b06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
