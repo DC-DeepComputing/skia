@@ -65,7 +65,7 @@ CGFloat SkCTFontCTWidthForCSSWidth(int fontstyleWidth);
 
 void SkStringFromCFString(CFStringRef src, SkString* dst);
 
-class SkTypeface_Mac : public SkTypeface {
+class SK_SPI SkTypeface_Mac : public SkTypeface {
 private:
     SkTypeface_Mac(SkUniqueCFRef<CTFontRef> fontRef, const SkFontStyle& fs, bool isFixedPitch,
                    OpszVariation opszVariation, std::unique_ptr<SkStreamAsset> providedData)
