@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f9fd0ab_261cf849",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-21T15:32:58Z",
+      "side": 1,
+      "message": "\"when the CTM is just a translation\"?",
+      "range": {
+        "startLine": 1051,
+        "startChar": 32,
+        "endLine": 1051,
+        "endChar": 49
+      },
+      "revId": "3f76e87b524dcbf8b0c9bffba750105d033d2109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
