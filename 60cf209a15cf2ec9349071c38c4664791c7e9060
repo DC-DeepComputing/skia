@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310a6eb5_afc4821b",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-21T00:13:15Z",
+      "side": 1,
+      "message": "I changed this to `integrity` following the example at https://github.com/bazelbuild/rules_rust/releases. I included a manually computed checksum for the `gcs_mirror_url` rule in the next line.",
+      "revId": "60cf209a15cf2ec9349071c38c4664791c7e9060",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
