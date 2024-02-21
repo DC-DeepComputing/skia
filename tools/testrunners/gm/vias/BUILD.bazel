@@ -42,3 +42,15 @@ selects.config_setting_group(
         ":picture_serialization",
     ],
 )
+
+skia_cc_library(
+    name = "simple_vias",
+    testonly = True,
+    srcs = ["SimpleVias.cpp"],
+    hdrs = ["Draw.h"],
+    visibility = ["//gm:__pkg__"],
+    deps = [
+        "//:png_encode_codec",
+        "//gm",
+    ],
+)
