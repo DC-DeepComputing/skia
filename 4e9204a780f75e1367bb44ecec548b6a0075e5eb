@@ -16,6 +16,24 @@
       "message": "If there was a cargo command or Bazel command you ran to update these, can you include it in the commit message?",
       "revId": "4e9204a780f75e1367bb44ecec548b6a0075e5eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d3fc294_40420e91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-21T18:24:31Z",
+      "side": 1,
+      "message": "Will do. I manually updated the Cargo.toml file and ran `cargo update` from inside the package directory (`bazel/external/vello`) to regenerate the Cargo.lock file.",
+      "parentUuid": "045ef1e5_9475c1ba",
+      "revId": "4e9204a780f75e1367bb44ecec548b6a0075e5eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
