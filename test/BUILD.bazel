@@ -1,0 +1,100 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library", "skia_cc_test")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_cc_library(
+    name = "foo",
+    srcs = ["foo.cpp"],
+    hdrs = ["foo.h"],
+)
+
+skia_cc_library(
+    name = "bar",
+    srcs = ["bar.cpp"],
+    deps = [":foo"],
+)
+
+skia_cc_library(
+    name = "bar_attribute_used",
+    srcs = ["bar_attribute_used.cpp"],
+    deps = [":foo"],
+)
+
+skia_cc_library(
+    name = "bar_with_linkopts",
+    srcs = ["bar.cpp"],
+    deps = [":foo"],
+    linkopts = [
+        "-u",
+        "foo3",  # Declared in bar.cpp
+    ],
+)
+
+# BAD
+#
+#     $ bazel run --config=linux_rbe //test:multiple_libraries_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Hello, world!
+skia_cc_test(
+    name = "multiple_libraries_test",
+    srcs = ["main.cpp"],
+    deps = [
+        ":foo",
+        ":bar",
+    ],
+)
+
+# BAD
+#
+#     $ bazel run --config=linux_rbe //test:multiple_libraries_with_attribute_used_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Hello, world!
+skia_cc_test(
+    name = "multiple_libraries_with_attribute_used_test",
+    srcs = ["main.cpp"],
+    deps = [
+        ":foo",
+        ":bar_attribute_used",
+    ],
+)
+
+# GOOD
+#
+#     $ bazel run --config=linux_rbe //test:multiple_libraries_with_linkopts_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from bar.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Hello, world!
+skia_cc_test(
+    name = "multiple_libraries_with_linkopts_test",
+    srcs = ["main.cpp"],
+    deps = [
+        ":foo",
+        ":bar_with_linkopts",
+    ],
+)
+
+# GOOD
+#
+#     $ bazel run --config=linux_rbe //test:all_in_one_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Foo constructed, msg: 'Hello from bar.cpp!'
+#     Hello, world!
+skia_cc_test(
+    name = "all_in_one_test",
+    srcs = [
+        "main.cpp",
+        "foo.h",
+        "foo.cpp",
+        "bar.cpp",
+    ],
+)
