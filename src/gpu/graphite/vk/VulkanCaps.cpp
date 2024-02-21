@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
+#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
@@ -1393,6 +1394,26 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(vkSpec.fSharingMode)         << 6)  |
                  (static_cast<uint32_t>(vkSpec.fAspectMask)          << 7)  |
                  (static_cast<uint32_t>(vkSpec.fImageUsageFlags)     << 19);
+}
+
+std::vector<uint32_t> VulkanCaps::getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+    std::vector<uint32_t> samplerInfo;
+
+    if (proxy) {
+        const VulkanYcbcrConversionInfo& ycbcrConversionInfo =
+                proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
+
+        if (ycbcrConversionInfo.isValid()) {
+            const VulkanSamplerYcbcrConversion::YcbcrArray ycbcrData =
+                    VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(ycbcrConversionInfo);
+
+            for (int i = 0 ; i < ycbcrData.size(); i++) {
+                samplerInfo.push_back(ycbcrData.at(i));
+            }
+        }
+    }
+
+    return samplerInfo;
 }
 
 } // namespace skgpu::graphite

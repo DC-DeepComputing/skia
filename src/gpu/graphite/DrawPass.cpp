@@ -58,6 +58,42 @@ struct Bitfield {
     static uint64_t set(uint32_t v) { return (v & kMask) << kOffset; }
 };
 
+// TODO: See if I can make this work with the existing template.
+class SamplerMap {
+public:
+    using Index = uint32_t;
+
+    // See note below in GeometryUniformField. This value can be round-tripped within the SortKey
+    // packing for all fields but will not be produced when recording actual draw data.
+    static constexpr Index kInvalidIndex{1 << SkNextLog2_portable(DrawList::kMaxRenderSteps)};
+
+    bool empty() const { return fIndexToData.empty(); }
+    size_t size() const { return fIndexToData.size(); }
+
+    Index insert(const T& data) {
+        Index* index = fDataToIndex.find(data);
+        if (!index) {
+            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex - 1);
+            index = fDataToIndex.set(data, (Index) fIndexToData.size());
+            fIndexToData.push_back(C{data});
+        }
+        return *index;
+    }
+
+    const V& lookup(Index index) {
+        SkASSERT(index < kInvalidIndex);
+        return fIndexToData[index];
+    }
+
+    SkSpan<V> data() { return {fIndexToData.data(), fIndexToData.size()}; }
+
+    TArray<V>&& detach() { return std::move(fIndexToData); }
+
+private:
+    THashMap<T, Index> fDataToIndex;
+    TArray<V> fIndexToData;
+};
+
 // This class maps objects to a dense index which can then be used to look them up later
 template <typename T, typename V = T, typename C = V>
 class DenseBiMap {
@@ -498,7 +534,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // The initial layout we pass here is not important as it will be re-assigned when writing
     // shading and geometry uniforms below.
-    PipelineDataGatherer gatherer(uniformLayout);
+    PipelineDataGatherer gatherer(recorder->priv().caps(), uniformLayout);
 
     // Copy of destination, if needed.
     sk_sp<TextureProxy> dst;

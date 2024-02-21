@@ -14,6 +14,8 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
 
+#include <vector>
+
 namespace skgpu::graphite {
 
 class Buffer;
@@ -176,11 +178,13 @@ struct ClearBufferInfo {
  */
 struct SamplerDesc {
     static_assert(kSkTileModeCount <= 4 && kSkFilterModeCount <= 2 && kSkMipmapModeCount <= 4);
-    SamplerDesc(const SkSamplingOptions& samplingOptions, const SkTileMode tileModes[2])
+    SamplerDesc(const SkSamplingOptions& samplingOptions, const SkTileMode tileModes[2],
+                std::vector<uint32_t> extraBackendSamplerInfo = {})
             : fDesc((static_cast<int>(tileModes[0])           << 0) |
                     (static_cast<int>(tileModes[1])           << 2) |
                     (static_cast<int>(samplingOptions.filter) << 4) |
-                    (static_cast<int>(samplingOptions.mipmap) << 5)) {
+                    (static_cast<int>(samplingOptions.mipmap) << 5))
+            , fExtraBackendDesc (extraBackendSamplerInfo) {
         // Cubic sampling is handled in a shader, with the actual texture sampled by with NN,
         // but that is what a cubic SkSamplingOptions is set to if you ignore 'cubic', which let's
         // us simplify how we construct SamplerDec's from the options passed to high-level draws.
@@ -207,6 +211,7 @@ struct SamplerDesc {
 
 private:
     uint32_t fDesc;
+    std::vector<uint32_t> fExtraBackendDesc;
 };
 
 };  // namespace skgpu::graphite
