@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc81f39_69c6e975",
+        "filename": "tools/testrunners/gm/vias/SimpleVias.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T21:52:57Z",
+      "side": 1,
+      "message": "nit: encoder/decoder",
+      "range": {
+        "startLine": 102,
+        "startChar": 15,
+        "endLine": 102,
+        "endChar": 20
+      },
+      "revId": "d4e3bdef9b3cc2dcbe350a6183a5ade04b5655af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721409b5_67a51b47",
+        "filename": "tools/testrunners/gm/vias/SimpleVias.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T21:52:57Z",
+      "side": 1,
+      "message": "You should do a release assert that this image is not texture backed, otherwise the pixel readback in the encode will fail.\n```suggestion\n        SkSerialProcs serialProcs \u003d {.fImageProc \u003d [](SkImage* img, void*) -\u003e sk_sp\u003cSkData\u003e {\n            SkASSERT_RELEASE(!img-\u003eisTextureBacked());\n```",
+      "range": {
+        "startLine": 105,
+        "startChar": 63,
+        "endLine": 105,
+        "endChar": 66
+      },
+      "revId": "d4e3bdef9b3cc2dcbe350a6183a5ade04b5655af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f36836d_3021f854",
+        "filename": "tools/testrunners/gm/vias/SimpleVias.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T21:52:57Z",
+      "side": 1,
+      "message": "```suggestion\n            auto [img, result] \u003d codec-\u003egetImage();\n            SkASSERT(result \u003d\u003d SkCodec::Result::kSuccess);\n            return img;\n```",
+      "range": {
+        "startLine": 114,
+        "startChar": 17,
+        "endLine": 114,
+        "endChar": 22
+      },
+      "revId": "d4e3bdef9b3cc2dcbe350a6183a5ade04b5655af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
