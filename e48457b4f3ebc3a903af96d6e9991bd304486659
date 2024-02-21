@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dbba3b2_8fdfb79f",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T14:32:11Z",
+      "side": 1,
+      "message": "The picture_serialization via probably needs a PNG encoder or some other way to serialize image data (thus the assert seen in SkWriteBuffer.cpp). This probably needs to be handled via https://github.com/google/skia/blob/main/include/core/SkSerialProcs.h passed in when serializing and deserializing the picture.",
+      "range": {
+        "startLine": 518,
+        "startChar": 25,
+        "endLine": 518,
+        "endChar": 46
+      },
+      "revId": "e48457b4f3ebc3a903af96d6e9991bd304486659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca0a27f4_5e9d8fe4",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T14:32:11Z",
+      "side": 1,
+      "message": "Maybe this means your cloudtop doesn\u0027t support msaa8? Should we fail more gracefully there?",
+      "range": {
+        "startLine": 636,
+        "startChar": 15,
+        "endLine": 636,
+        "endChar": 23
+      },
+      "revId": "e48457b4f3ebc3a903af96d6e9991bd304486659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bbe4f1a_bb7dc6f5",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T14:32:11Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this just depend on //tools/flags:cmd_flags?",
+      "range": {
+        "startLine": 68,
+        "startChar": 17,
+        "endLine": 68,
+        "endChar": 22
+      },
+      "revId": "e48457b4f3ebc3a903af96d6e9991bd304486659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
