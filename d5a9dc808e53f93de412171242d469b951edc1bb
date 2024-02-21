@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c024e3a9_57d7edc4",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-21T15:58:58Z",
+      "side": 1,
+      "message": "Don\u0027t think we want this include here, nor the FreeType one. Part of the point of this is for this file to not know anything about the concrete types being used.",
+      "revId": "d5a9dc808e53f93de412171242d469b951edc1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a010577_6ccabafa",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-21T15:58:58Z",
+      "side": 1,
+      "message": "`SkFontMgr_New_Android_WithFreeType` and `SkFontMgr_New_Android_WithFontations` don\u0027t appear to be declared or used anywhere. I\u0027m not sure we really want these anyway, as this goes against the pattern we\u0027re trying to use for a modular build of Skia. I think we can just remove these. Part of the point of this change is for these font managers to not know anything about the actual scanners /  factories that create the typefaces they\u0027re managing.",
+      "revId": "d5a9dc808e53f93de412171242d469b951edc1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d0938a8_75e24875",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-21T15:58:58Z",
+      "side": 1,
+      "message": "This doesn\u0027t appear to be used now?",
+      "revId": "d5a9dc808e53f93de412171242d469b951edc1bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
