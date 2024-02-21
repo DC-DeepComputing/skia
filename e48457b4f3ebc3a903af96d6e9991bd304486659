@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ca0caef_f4db25d1",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T21:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dbba3b2_8fdfb79f",
+      "range": {
+        "startLine": 518,
+        "startChar": 25,
+        "endLine": 518,
+        "endChar": 46
+      },
+      "revId": "e48457b4f3ebc3a903af96d6e9991bd304486659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca0a27f4_5e9d8fe4",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e46eb4e_e8463ab5",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T21:13:41Z",
+      "side": 1,
+      "message": "Ok, uncommenting it for now, under the assumption that it\u0027s just my machine.\n\nAs for failing gracefully, I\u0027m not sure how to determine whether a config is compatible, other than to try creating a surface and seeing if that fails. Maybe we could do that before running any GMs so we fail earlier?\n\nWe can address this in a separate CL.",
+      "parentUuid": "ca0a27f4_5e9d8fe4",
+      "range": {
+        "startLine": 636,
+        "startChar": 15,
+        "endLine": 636,
+        "endChar": 23
+      },
+      "revId": "e48457b4f3ebc3a903af96d6e9991bd304486659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2bbe4f1a_bb7dc6f5",
         "filename": "tools/BUILD.bazel",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-21T14:32:11Z",
       "side": 1,
       "message": "Shouldn\u0027t this just depend on //tools/flags:cmd_flags?",
+      "range": {
+        "startLine": 68,
+        "startChar": 17,
+        "endLine": 68,
+        "endChar": 22
+      },
+      "revId": "e48457b4f3ebc3a903af96d6e9991bd304486659",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e93e301_915c90e7",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T21:13:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bbe4f1a_bb7dc6f5",
       "range": {
         "startLine": 68,
         "startChar": 17,
