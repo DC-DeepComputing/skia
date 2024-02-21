@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "045ef1e5_9475c1ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T18:17:58Z",
+      "side": 1,
+      "message": "If there was a cargo command or Bazel command you ran to update these, can you include it in the commit message?",
+      "revId": "4e9204a780f75e1367bb44ecec548b6a0075e5eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
