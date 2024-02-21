@@ -35,6 +35,8 @@ namespace skgpu::graphite {
 
 static constexpr int kNoChildren = 0;
 
+static_assert(static_cast<int>(BuiltInCodeSnippetID::kLast) < kSkiaBuiltInReservedCnt);
+
 namespace {
 
 std::string get_mangled_name(const std::string& baseName, int manglingSuffix) {
@@ -336,7 +338,7 @@ std::string ShaderInfo::toSkSL(const Caps* caps,
         }
         // This exclusion of the final Blend can be removed once we've resolved the final
         // blend parenting issue w/in the key
-        if (node->codeSnippetId() >= kBuiltInCodeSnippetIDCount ||
+        if (node->codeSnippetId() >= kSkiaBuiltInReservedCnt ||
             node->codeSnippetId() < kFixedFunctionBlendModeIDOffset) {
             args.fPriorStageOutput = emit_glue_code_for_entry(*this, node, args, &mainBody);
         }
@@ -488,9 +490,23 @@ const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
 
     SkAutoSpinlock lock{fSpinLock};
 
-    int userDefinedCodeSnippetID = codeSnippetID - kBuiltInCodeSnippetIDCount;
-    if (userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size())) {
-        return fUserDefinedCodeSnippets[userDefinedCodeSnippetID].get();
+    if (codeSnippetID >= kSkiaKnownRuntimeEffectsStart &&
+        codeSnippetID < kSkiaKnownRuntimeEffectsEnd) {
+        //
+        int knownRTECodeSnippetID = codeSnippetID - kSkiaKnownRuntimeEffectsStart;
+        if (knownRTECodeSnippetID < kStableKeyCnt) {
+            SkASSERT(fKnownRuntimeEffectCodeSnippets[knownRTECodeSnippetID].fPreambleGenerator);
+            return &fKnownRuntimeEffectCodeSnippets[knownRTECodeSnippetID];
+        }
+    }
+
+    // TODO: handle Android and chrome known runtime effects
+
+    if (codeSnippetID >= kUnknownRuntimeEffectIDStart) {
+        int userDefinedCodeSnippetID = codeSnippetID - kUnknownRuntimeEffectIDStart;
+        if (userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size())) {
+            return fUserDefinedCodeSnippets[userDefinedCodeSnippetID].get();
+        }
     }
 
     return nullptr;
@@ -1212,8 +1228,13 @@ std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
                                           const ShaderNode* node) {
     // Find this runtime effect in the runtime-effect dictionary.
     SkASSERT(node->codeSnippetId() >= kBuiltInCodeSnippetIDCount);
-    const SkRuntimeEffect* effect =
-            shaderInfo.runtimeEffectDictionary()->find(node->codeSnippetId());
+    const SkRuntimeEffect* effect;
+    if (node->codeSnippetId() < kSkiaKnownRuntimeEffectsEnd) {
+        effect = GetKnownRuntimeEffect(static_cast<StableKey>(node->codeSnippetId()));
+    } else {
+        SkASSERT(node->codeSnippetId() >= kUnknownRuntimeEffectIDStart);
+        effect = shaderInfo.runtimeEffectDictionary()->find(node->codeSnippetId());
+    }
     SkASSERT(effect);
 
     const SkSL::Program& program = SkRuntimeEffectPriv::Program(*effect);
@@ -1345,12 +1366,19 @@ bool ShaderCodeDictionary::isValidID(int snippetID) const {
 
     if (snippetID < kBuiltInCodeSnippetIDCount) {
         return true;
+    } else if (snippetID >= kSkiaKnownRuntimeEffectsStart &&
+               snippetID < kSkiaKnownRuntimeEffectsEnd) {
+        return snippetID < kSkiaKnownRuntimeEffectsStart + kStableKeyCnt;
     }
 
     SkAutoSpinlock lock{fSpinLock};
 
-    int userDefinedCodeSnippetID = snippetID - kBuiltInCodeSnippetIDCount;
-    return userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size());
+    if (snippetID >= kUnknownRuntimeEffectIDStart) {
+        int userDefinedCodeSnippetID = snippetID - kUnknownRuntimeEffectIDStart;
+        return userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size());
+    }
+
+    return false;
 }
 #endif
 
@@ -1369,7 +1397,7 @@ int ShaderCodeDictionary::addRuntimeEffectSnippet(const char* functionName) {
                                             GenerateDefaultPreamble,
                                             kNoChildren));
 
-    return kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
+    return kUnknownRuntimeEffectIDStart + fUserDefinedCodeSnippets.size() - 1;
 }
 
 #endif // GRAPHITE_TEST_UTILS
@@ -1451,14 +1479,36 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
         snippetFlags |= SnippetRequirementFlags::kBlenderDstColor;
     }
 
+    SkAutoSpinlock lock{fSpinLock};
+
+    if (int stableKey = SkRuntimeEffectPriv::StableKey(*effect)) {
+        SkASSERT(stableKey >= kSkiaKnownRuntimeEffectsStart &&
+                 stableKey < kSkiaKnownRuntimeEffectsEnd);
+
+        int index = stableKey - kSkiaKnownRuntimeEffectsStart;
+        SkASSERT(index < static_cast<int>(fKnownRuntimeEffectCodeSnippets.size()));
+
+        if (!fKnownRuntimeEffectCodeSnippets[index].fExpressionGenerator) {
+            fKnownRuntimeEffectCodeSnippets[index] = ShaderSnippet(
+                    "Known RuntimeEffect",
+                    this->convertUniforms(effect),
+                    snippetFlags,
+                    /*texturesAndSamplers=*/{},
+                    "Known RuntimeEffect",
+                    GenerateRuntimeShaderExpression,
+                    GenerateRuntimeShaderPreamble,
+                    (int)effect->children().size());
+        }
+
+        return stableKey;
+    }
+
     // Use the combination of {SkSL program hash, uniform size} as our key.
     // In the unfortunate event of a hash collision, at least we'll have the right amount of
     // uniform data available.
     RuntimeEffectKey key;
     key.fHash = SkRuntimeEffectPriv::Hash(*effect);
     key.fUniformSize = effect->uniformSize();
-
-    SkAutoSpinlock lock{fSpinLock};
 
     int32_t* existingCodeSnippetID = fRuntimeEffectMap.find(key);
     if (existingCodeSnippetID) {
@@ -1478,7 +1528,7 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
                                         GenerateRuntimeShaderPreamble,
                                         (int)effect->children().size()));
 
-    int newCodeSnippetID = kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
+    int newCodeSnippetID = kUnknownRuntimeEffectIDStart + fUserDefinedCodeSnippets.size() - 1;
 
     fRuntimeEffectMap.set(key, newCodeSnippetID);
     return newCodeSnippetID;
