@@ -32,7 +32,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(Shader_FindOrCreateSnippetForRuntimeEffect, r
 
     // Verify that it can be looked up and its name is 'RuntimeEffect'. (The name isn't meaningful,
     // but this is an easy way to verify that we didn't get an unrelated snippet.)
-    const ShaderSnippet* snippet = dict->getEntry(snippetID);
+    const ShaderSnippet* snippet = dict->getEntry1(snippetID);
     REPORTER_ASSERT(reporter, snippet);
     REPORTER_ASSERT(reporter, std::string_view(snippet->fName) == "RuntimeEffect");
 
@@ -60,7 +60,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilter_FindOrCreateSnippetForRuntimeEffe
 
     // Verify that it can be looked up and its name is 'RuntimeEffect'. (The name isn't meaningful,
     // but this is an easy way to verify that we didn't get an unrelated snippet.)
-    const ShaderSnippet* snippet = dict->getEntry(snippetID);
+    const ShaderSnippet* snippet = dict->getEntry1(snippetID);
     REPORTER_ASSERT(reporter, snippet);
     REPORTER_ASSERT(reporter, std::string_view(snippet->fName) == "RuntimeEffect");
 
@@ -90,7 +90,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderUniforms_FindOrCreateSnippetForRuntimeE
     testEffect = nullptr;
 
     // Verify that it can be looked up by its snippet ID.
-    const ShaderSnippet* snippet = dict->getEntry(snippetID);
+    const ShaderSnippet* snippet = dict->getEntry1(snippetID);
     REPORTER_ASSERT(reporter, snippet);
 
     // The uniform span should match our expectations even though the runtime effect was deleted.
@@ -134,7 +134,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilterUniforms_FindOrCreateSnippetForRun
     testEffect = nullptr;
 
     // Verify that it can be looked up by its snippet ID.
-    const ShaderSnippet* snippet = dict->getEntry(snippetID);
+    const ShaderSnippet* snippet = dict->getEntry1(snippetID);
     REPORTER_ASSERT(reporter, snippet);
 
     // The uniform span should match our expectations even though the runtime effect was deleted.
