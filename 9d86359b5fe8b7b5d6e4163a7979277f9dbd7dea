@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8043bb3_2c5f87d2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1227,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-21T15:07:37Z",
+      "side": 0,
+      "message": "What is going to happen when fLines are empty (for instance, we don\u0027t have a font and there was no shaped text at all)?",
+      "revId": "9d86359b5fe8b7b5d6e4163a7979277f9dbd7dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
