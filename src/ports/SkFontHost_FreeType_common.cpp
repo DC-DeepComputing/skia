@@ -22,6 +22,7 @@
 #include "include/private/base/SkTo.h"
 #include "src/core/SkFDot6.h"
 #include "src/core/SkSwizzlePriv.h"
+#include "src/core/SkTHash.h"
 
 #include <algorithm>
 #include <utility>
