@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5083113b_b0997165",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T14:37:04Z",
+      "side": 1,
+      "message": "This works because we don\u0027t have layer_checking enabled. However, if we did do that, it would break. Can you just make a list of deps and re-use it that way? That should keep layer_check happy if we need to (and removes one layer of libraries).",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 15
+      },
+      "revId": "cc893bbb759fd9efc6eac7450ce6f042165cc2b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
