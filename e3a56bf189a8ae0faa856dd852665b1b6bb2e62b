@@ -69,6 +69,24 @@
       "parentUuid": "93c8ee2a_90c6fc09",
       "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "824109bf_ccc9c727",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-21T14:55:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c4b982e_2e48cc08",
+      "revId": "e3a56bf189a8ae0faa856dd852665b1b6bb2e62b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
