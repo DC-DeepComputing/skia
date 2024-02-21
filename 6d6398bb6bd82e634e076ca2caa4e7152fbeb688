@@ -134,6 +134,30 @@
       },
       "revId": "6d6398bb6bd82e634e076ca2caa4e7152fbeb688",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01015729_4162618a",
+        "filename": "src/gpu/ganesh/gl/epoxy/GrGLMakeEpoxyEGLInterface.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-21T17:50:28Z",
+      "side": 1,
+      "message": "I had a talk with Emmanuelle Bassi, who maintains Epoxy these days. He has confirmed that indeed the goal/scope for Epoxy is to only handle aliases among extensions and core functions transparently--but not to wrap what\u0027s provided by the drivers and provide additional functionality. \n\nAs a side note: one more reason for Epoxy being like this is to ensure that Epoxy can load and function with libraries which a standard GL/EGL interface and interpose functions, like [apitrace](https://github.com/apitrace/apitrace). For such things to work well it\u0027s better that Epoxy does not try to do anything too smart (and there has been already bugs that broke apitrace when touching the dynamic symbol resolution code, some reverted in the end).\n\nSumming up: Epoxy is working as intended, so I would think it better to keep the this patch as-is and handle core symbols in `epoxy_get_gl_proc`. WDYT?",
+      "parentUuid": "a82afd62_96164330",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "6d6398bb6bd82e634e076ca2caa4e7152fbeb688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
