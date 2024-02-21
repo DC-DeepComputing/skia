@@ -22,6 +22,30 @@
       },
       "revId": "4d1a02cbabcd2ae6b9ad041bdf2b330a7a24a60f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "634f26f3_f43133f2",
+        "filename": "include/core/SkSwizzle.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-21T16:18:20Z",
+      "side": 0,
+      "message": "Canaries are happy, so I say :shipit:",
+      "parentUuid": "0534f955_ca06586a",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 33
+      },
+      "revId": "4d1a02cbabcd2ae6b9ad041bdf2b330a7a24a60f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
