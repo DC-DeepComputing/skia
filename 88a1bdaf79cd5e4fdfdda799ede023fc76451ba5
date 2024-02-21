@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "348681a2_cb495716",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-21T15:52:02Z",
+      "side": 1,
+      "message": "While this change also re-arranged the checks in `analyzeBounds()`, I\u0027m hoping that the actual PixelBoundary assignment is the only source of layout test differences in chrome. I will re-run the canary once https://chromium-review.googlesource.com/c/chromium/src/+/5314000 lands.",
+      "range": {
+        "startLine": 519,
+        "startChar": 12,
+        "endLine": 519,
+        "endChar": 36
+      },
+      "revId": "88a1bdaf79cd5e4fdfdda799ede023fc76451ba5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
