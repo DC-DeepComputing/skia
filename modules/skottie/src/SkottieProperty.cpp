@@ -58,24 +58,19 @@ bool TransformPropertyValue::operator!=(const TransformPropertyValue& other) con
     return !(*this == other);
 }
 
-template <> SK_API
+template <>
 ColorPropertyHandle::PropertyHandle(sk_sp<sksg::Color> node)
-    : fNode(std::move(node)), fRevalidator(nullptr) {}
+        : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <>
 ColorPropertyHandle::PropertyHandle(const ColorPropertyHandle& other)
-    : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
+        : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
-ColorPropertyHandle::~PropertyHandle() {}
+template <> ColorPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
-ColorPropertyValue ColorPropertyHandle::get() const {
-    return fNode->getColor();
-}
+template <> ColorPropertyValue ColorPropertyHandle::get() const { return fNode->getColor(); }
 
-template <> SK_API
-void ColorPropertyHandle::set(const ColorPropertyValue& c) {
+template <> void ColorPropertyHandle::set(const ColorPropertyValue& c) {
     fNode->setColor(c);
 
     if (fRevalidator) {
@@ -83,24 +78,21 @@ void ColorPropertyHandle::set(const ColorPropertyValue& c) {
     }
 }
 
-template <> SK_API
+template <>
 OpacityPropertyHandle::PropertyHandle(sk_sp<sksg::OpacityEffect> node)
-    : fNode(std::move(node)), fRevalidator(nullptr) {}
+        : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <>
 OpacityPropertyHandle::PropertyHandle(const OpacityPropertyHandle& other)
-    : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
+        : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
-OpacityPropertyHandle::~PropertyHandle() {}
+template <> OpacityPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
-OpacityPropertyValue OpacityPropertyHandle::get() const {
+template <> OpacityPropertyValue OpacityPropertyHandle::get() const {
     return fNode->getOpacity() * 100;
 }
 
-template <> SK_API
-void OpacityPropertyHandle::set(const OpacityPropertyValue& o) {
+template <> void OpacityPropertyHandle::set(const OpacityPropertyValue& o) {
     fNode->setOpacity(o / 100);
 
     if (fRevalidator) {
@@ -108,24 +100,19 @@ void OpacityPropertyHandle::set(const OpacityPropertyValue& o) {
     }
 }
 
-template <> SK_API
+template <>
 TextPropertyHandle::PropertyHandle(sk_sp<internal::TextAdapter> node)
-    : fNode(std::move(node)), fRevalidator(nullptr) {}
+        : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <>
 TextPropertyHandle::PropertyHandle(const TextPropertyHandle& other)
-    : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
+        : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
-TextPropertyHandle::~PropertyHandle() {}
+template <> TextPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
-TextPropertyValue TextPropertyHandle::get() const {
-    return fNode->getText();
-}
+template <> TextPropertyValue TextPropertyHandle::get() const { return fNode->getText(); }
 
-template<> SK_API
-void TextPropertyHandle::set(const TextPropertyValue& t) {
+template <> void TextPropertyHandle::set(const TextPropertyValue& t) {
     fNode->setText(t);
 
     if (fRevalidator) {
@@ -133,19 +120,17 @@ void TextPropertyHandle::set(const TextPropertyValue& t) {
     }
 }
 
-template <> SK_API
+template <>
 TransformPropertyHandle::PropertyHandle(sk_sp<internal::TransformAdapter2D> node)
-    : fNode(std::move(node)), fRevalidator(nullptr) {}
+        : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <>
 TransformPropertyHandle::PropertyHandle(const TransformPropertyHandle& other)
-    : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
+        : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
-TransformPropertyHandle::~PropertyHandle() {}
+template <> TransformPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
-TransformPropertyValue TransformPropertyHandle::get() const {
+template <> TransformPropertyValue TransformPropertyHandle::get() const {
     return {
         fNode->getAnchorPoint(),
         fNode->getPosition(),
@@ -156,8 +141,7 @@ TransformPropertyValue TransformPropertyHandle::get() const {
     };
 }
 
-template <> SK_API
-void TransformPropertyHandle::set(const TransformPropertyValue& t) {
+template <> void TransformPropertyHandle::set(const TransformPropertyValue& t) {
     fNode->setAnchorPoint(t.fAnchorPoint);
     fNode->setPosition(t.fPosition);
     fNode->setScale(t.fScale);
