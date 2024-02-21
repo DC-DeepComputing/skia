@@ -75,8 +75,8 @@ SkMatrix SkMatrixFromFontationsTransform(const fontations_ffi::Transform& transf
 
 }  // namespace
 
-SK_API sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> fontData,
-                                                    const SkFontArguments& args) {
+sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> fontData,
+                                             const SkFontArguments& args) {
     return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args);
 }
 
