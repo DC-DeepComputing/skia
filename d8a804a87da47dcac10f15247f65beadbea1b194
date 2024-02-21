@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "391042a8_add29b2f",
+        "filename": "go.mod",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T20:13:07Z",
+      "side": 1,
+      "message": "I would imagine this needs to be reflected in `//go_repositories.bzl`. Gazelle might produce a diff.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 78
+      },
+      "revId": "d8a804a87da47dcac10f15247f65beadbea1b194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
