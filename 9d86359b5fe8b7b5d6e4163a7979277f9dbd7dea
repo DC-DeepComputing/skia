@@ -16,6 +16,24 @@
       "message": "What is going to happen when fLines are empty (for instance, we don\u0027t have a font and there was no shaped text at all)?",
       "revId": "9d86359b5fe8b7b5d6e4163a7979277f9dbd7dea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d709484b_39dcd3b9",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1227,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2024-02-21T17:54:44Z",
+      "side": 0,
+      "message": "then endLine \u003c\u003d 0 and the method would return -1.",
+      "parentUuid": "a8043bb3_2c5f87d2",
+      "revId": "9d86359b5fe8b7b5d6e4163a7979277f9dbd7dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
