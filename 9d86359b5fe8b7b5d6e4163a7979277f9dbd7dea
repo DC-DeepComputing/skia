@@ -34,6 +34,24 @@
       "parentUuid": "a8043bb3_2c5f87d2",
       "revId": "9d86359b5fe8b7b5d6e4163a7979277f9dbd7dea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62685b57_08f0b04b",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1227,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-21T18:58:11Z",
+      "side": 0,
+      "message": "Not really, size_t endLine will be assigned -1 (18446744073709551615) and line #1230 would fail with\n\"fatal error: \"Index (18446744073709551615) out of bounds for size 1.\"",
+      "parentUuid": "d709484b_39dcd3b9",
+      "revId": "9d86359b5fe8b7b5d6e4163a7979277f9dbd7dea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
