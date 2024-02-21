@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c84f474_e589b3f1",
+        "filename": "tools/testrunners/gm/vias/SimpleVias.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T22:05:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cc81f39_69c6e975",
+      "range": {
+        "startLine": 102,
+        "startChar": 15,
+        "endLine": 102,
+        "endChar": 20
+      },
+      "revId": "d4e3bdef9b3cc2dcbe350a6183a5ade04b5655af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "721409b5_67a51b47",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd0f085_4a81620e",
+        "filename": "tools/testrunners/gm/vias/SimpleVias.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T22:05:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "721409b5_67a51b47",
+      "range": {
+        "startLine": 105,
+        "startChar": 63,
+        "endLine": 105,
+        "endChar": 66
+      },
+      "revId": "d4e3bdef9b3cc2dcbe350a6183a5ade04b5655af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f36836d_3021f854",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-21T21:52:57Z",
       "side": 1,
       "message": "```suggestion\n            auto [img, result] \u003d codec-\u003egetImage();\n            SkASSERT(result \u003d\u003d SkCodec::Result::kSuccess);\n            return img;\n```",
+      "range": {
+        "startLine": 114,
+        "startChar": 17,
+        "endLine": 114,
+        "endChar": 22
+      },
+      "revId": "d4e3bdef9b3cc2dcbe350a6183a5ade04b5655af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41007e8d_ee9727e4",
+        "filename": "tools/testrunners/gm/vias/SimpleVias.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T22:05:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f36836d_3021f854",
       "range": {
         "startLine": 114,
         "startChar": 17,
