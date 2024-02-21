@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f31ee484_1906ee6a",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-21T21:10:37Z",
+      "side": 1,
+      "message": "SkRuntimeEffectPriv is a friend; do we need an accessor method?",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 53
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58469fe3_ffadf530",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-21T21:10:37Z",
+      "side": 1,
+      "message": "I grepped our source for `MakeRuntimeEffect` and got 57 hits. A few of these are not relevant, but still, I don\u0027t think 100 gives us enough headroom if we want these numbers to be stable over time.\n\nWe should also document here what the consequences would be for increasing these values, because at some point someone will want to know.",
+      "range": {
+        "startLine": 23,
+        "startChar": 59,
+        "endLine": 23,
+        "endChar": 62
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
