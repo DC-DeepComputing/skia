@@ -18,6 +18,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkSpinlock.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
@@ -234,24 +235,27 @@ public:
         return fBuiltInCodeSnippets[(int) id].fSnippetRequirementFlags;
     }
 
-    bool isValidID(int snippetID) const;
+#if defined(SK_DEBUG)
+    bool isValidID(int snippetID) const SK_EXCLUDES(fSpinLock);
+#endif
 
     // This method can return nullptr
-    const ShaderSnippet* getEntry(int codeSnippetID) const;
-    const ShaderSnippet* getEntry(BuiltInCodeSnippetID codeSnippetID) const {
-        return this->getEntry(SkTo<int>(codeSnippetID));
+    const ShaderSnippet* getEntry1(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
+    const ShaderSnippet* getEntry2(BuiltInCodeSnippetID codeSnippetID) const SK_EXCLUDES(fSpinLock) {
+        return this->getEntry1(SkTo<int>(codeSnippetID));
     }
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);
 
-    // TODO: Remove or make testing-only
-    int addUserDefinedSnippet(const char* name);
+#if defined(GRAPHITE_TEST_UTILS)
+    int addRuntimeEffectSnippet(const char* name);
+#endif
 
 private:
     // TODO: this is still experimental but, most likely, it will need to be made thread-safe
     // It returns the code snippet ID to use to identify the supplied user-defined code.
     // TODO: Rename to addRuntimeEffectSnippet().
-    int addUserDefinedSnippet(
+    int addRuntimeEffectSnippet(
         const char* name,
         SkSpan<const Uniform> uniforms,
         SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
@@ -267,12 +271,15 @@ private:
 
     std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
 
-    // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
-    // entries as pointers.
-    skia_private::TArray<std::unique_ptr<ShaderSnippet>> fUserDefinedCodeSnippets;
-
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
     mutable SkSpinlock fSpinLock;
+
+    using KnownRuntimeEffectArray = std::array<ShaderSnippet, kStableKeyCnt>;
+    KnownRuntimeEffectArray fKnownRuntimeEffectCodeSnippets; // SK_GUARDED_BY(fSpinLock);
+
+    // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
+    // entries as pointers.
+    skia_private::TArray<std::unique_ptr<ShaderSnippet>> fUserDefinedCodeSnippets1 SK_GUARDED_BY(fSpinLock);;
 
     using PaintIDMap = skia_private::THashMap<PaintParamsKey,
                                               UniquePaintParamsID,

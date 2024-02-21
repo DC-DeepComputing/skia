@@ -975,7 +975,7 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
 
     keyContext.rtEffectDict()->set(codeSnippetID, shaderData.fEffect);
 
-    const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
+    const ShaderSnippet* entry = dict->getEntry1(codeSnippetID);
     SkASSERT(entry);
 
     gather_runtime_effect_uniforms(shaderData.fEffect->uniforms(),
