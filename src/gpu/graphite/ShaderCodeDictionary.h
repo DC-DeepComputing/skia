@@ -18,6 +18,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkSpinlock.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
@@ -239,9 +240,9 @@ public:
 #endif
 
     // This method can return nullptr
-    const ShaderSnippet* getEntry(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
-    const ShaderSnippet* getEntry(BuiltInCodeSnippetID codeSnippetID) const SK_EXCLUDES(fSpinLock) {
-        return this->getEntry(SkTo<int>(codeSnippetID));
+    const ShaderSnippet* getEntry1(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
+    const ShaderSnippet* getEntry2(BuiltInCodeSnippetID codeSnippetID) const SK_EXCLUDES(fSpinLock) {
+        return this->getEntry1(SkTo<int>(codeSnippetID));
     }
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);
@@ -257,10 +258,13 @@ private:
 
     std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
 
+    using KnownRuntimeEffectArray = std::array<ShaderSnippet, kStableKeyCnt>;
+    KnownRuntimeEffectArray fKnownRuntimeEffectCodeSnippets; // SK_GUARDED_BY(fSpinLock);
+
     // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
     // entries as pointers.
     using RuntimeEffectArray = skia_private::TArray<std::unique_ptr<ShaderSnippet>>;
-    RuntimeEffectArray fUserDefinedCodeSnippets SK_GUARDED_BY(fSpinLock);
+    RuntimeEffectArray fUserDefinedCodeSnippets1 SK_GUARDED_BY(fSpinLock);
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
     mutable SkSpinlock fSpinLock;
