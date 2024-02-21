@@ -85,7 +85,7 @@ private:
     // Investigation shows that eight pages helps with some of the more complex skps, and
     // since we're using less complex vertex setups with the RPA, we have more GPU memory
     // to take advantage of.
-    static constexpr int kMaxPages = 8;
+    static constexpr int kMaxPages = 4;
     typedef SkTInternalLList<Page> PageList;
     // LRU list of Pages (MRU at head - LRU at tail)
     PageList fPageList;
