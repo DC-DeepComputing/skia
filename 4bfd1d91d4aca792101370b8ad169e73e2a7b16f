@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "322d93b4_b21b3e47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "So there are are a few legacy ways that our bazel build worked and I don\u0027t think we need to support them as we don\u0027t want clients to start using more stuff from the deprecated code. Thus we can remove the code from `public.pzl` as well as all the code based on the epoxy flag. In the new world clients who want to use epoxy will just add the epoxy_factory as a target in their build. To be able to do this we need to set up an alias for in our top level BUILD.bazel. You can see how we do it for glx here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/BUILD.bazel;l\u003d105. Just as an FYI you could see how a client would then set up their own build file to get the right targets here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/example/external_client/BUILD.bazel;l\u003d106",
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a40a0bc6_48f20d53",
+        "filename": "include/gpu/gl/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 18,
+        "startChar": 8,
+        "endLine": 18,
+        "endChar": 105
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c159b5c_d2e670b8",
+        "filename": "public.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "remove this",
+      "range": {
+        "startLine": 158,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 55
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dfd68e3_4b0e7272",
+        "filename": "src/gpu/ganesh/gl/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 1
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a12a7b9e_3299588c",
+        "filename": "src/gpu/ganesh/gl/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 82
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c25f5795_c693b286",
+        "filename": "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69c01a4_36ba5806",
+        "filename": "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 2,
+        "startChar": 1,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a479301_95d074be",
+        "filename": "src/gpu/ganesh/gl/epoxy/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-21T18:18:59Z",
+      "side": 1,
+      "message": "I believe you will need to add the linking to epoxy in here. You should be able to use `linkopts` to do that. An example can be seen here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/sk_app/unix/BUILD.bazel;l\u003d23",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 15
+      },
+      "revId": "4bfd1d91d4aca792101370b8ad169e73e2a7b16f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
