@@ -1,0 +1,94 @@
+cc_library(
+    name = "foo",
+    srcs = ["foo.cpp"],
+    hdrs = ["foo.h"],
+)
+
+cc_library(
+    name = "bar",
+    srcs = ["bar.cpp"],
+    deps = [":foo"],
+)
+
+cc_library(
+    name = "bar_attribute_used",
+    srcs = ["bar_attribute_used.cpp"],
+    deps = [":foo"],
+)
+
+cc_library(
+    name = "bar_with_linkopts",
+    srcs = ["bar.cpp"],
+    deps = [":foo"],
+    linkopts = [
+        "-u",
+        "foo3",  # Declared in bar.cpp
+    ],
+)
+
+# BAD: Does not print "Hello from bar.cpp".
+#
+#     $ bazel run --config=linux_rbe //test:multiple_libraries_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Hello, world!
+cc_binary(
+    name = "multiple_libraries_test",
+    srcs = ["main.cpp"],
+    deps = [
+        ":foo",
+        ":bar",
+    ],
+)
+
+# BAD: Does not print "Hello from bar.cpp".
+#
+#     $ bazel run --config=linux_rbe //test:multiple_libraries_with_attribute_used_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Hello, world!
+cc_binary(
+    name = "multiple_libraries_with_attribute_used_test",
+    srcs = ["main.cpp"],
+    deps = [
+        ":foo",
+        ":bar_attribute_used",
+    ],
+)
+
+# GOOD
+#
+#     $ bazel run --config=linux_rbe //test:multiple_libraries_with_linkopts_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from bar.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Hello, world!
+cc_binary(
+    name = "multiple_libraries_with_linkopts_test",
+    srcs = ["main.cpp"],
+    deps = [
+        ":foo",
+        ":bar_with_linkopts",
+    ],
+)
+
+# GOOD
+#
+#     $ bazel run --config=linux_rbe //test:all_in_one_test
+#
+#     Foo constructed, msg: 'Hello from main.cpp!'
+#     Foo constructed, msg: 'Hello from foo.cpp!'
+#     Foo constructed, msg: 'Hello from bar.cpp!'
+#     Hello, world!
+cc_binary(
+    name = "all_in_one_test",
+    srcs = [
+        "main.cpp",
+        "foo.h",
+        "foo.cpp",
+        "bar.cpp",
+    ],
+)
