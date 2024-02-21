@@ -22,6 +22,30 @@
       },
       "revId": "3f76e87b524dcbf8b0c9bffba750105d033d2109",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0d14373_80edef82",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-21T15:54:35Z",
+      "side": 1,
+      "message": "Rather than get into the CTM details, I just dropped this part of the sentence. It\u0027s sufficient to say that this behavior is pretty darn good but doesn\u0027t match because the coordinate space is not the same, and let the reader noodle through the consequences of this :)",
+      "parentUuid": "1f9fd0ab_261cf849",
+      "range": {
+        "startLine": 1051,
+        "startChar": 32,
+        "endLine": 1051,
+        "endChar": 49
+      },
+      "revId": "3f76e87b524dcbf8b0c9bffba750105d033d2109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
