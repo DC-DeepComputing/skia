@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8718284_ddcb90e9",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-21T21:16:30Z",
+      "side": 1,
+      "message": "Some of today\u0027s known runtime effects are parameterized at construction time. Should GetKnownRuntimeEffect take some sort of input values to account for parameterization? e.g.:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/BlurUtils.cpp;l\u003d256;drc\u003d0ee56a6df3e829b06b3328d906815b906cd3a167",
+      "range": {
+        "startLine": 13,
+        "startChar": 58,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58469fe3_ffadf530",
         "filename": "src/core/SkKnownRuntimeEffects.h",
         "patchSetId": 24
