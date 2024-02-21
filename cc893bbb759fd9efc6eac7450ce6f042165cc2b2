@@ -46,6 +46,30 @@
       },
       "revId": "cc893bbb759fd9efc6eac7450ce6f042165cc2b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9003e868_a1cdd970",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2024-02-21T21:31:28Z",
+      "side": 1,
+      "message": "Addressing GMs in a follow-up CL: https://skia-review.googlesource.com/c/skia/+/816561.",
+      "parentUuid": "bf927b13_576d1cba",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 15
+      },
+      "revId": "cc893bbb759fd9efc6eac7450ce6f042165cc2b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
