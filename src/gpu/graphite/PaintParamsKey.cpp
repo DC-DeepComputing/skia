@@ -36,7 +36,7 @@ void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
         SkASSERT(fStack.back().fNumActualChildren <= fStack.back().fNumExpectedChildren);
     }
 
-    const ShaderSnippet* snippet = fDict->getEntry(codeSnippetID);
+    const ShaderSnippet* snippet = fDict->getEntry1(codeSnippetID);
     fStack.push_back({codeSnippetID, snippet->fNumChildren});
 }
 
@@ -65,7 +65,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
     const int32_t index = (*currentIndex)++;
     const int32_t id = fData[index];
 
-    auto entry = dict->getEntry(id);
+    const ShaderSnippet* entry = dict->getEntry1(id);
     if (!entry) {
         SKGPU_LOG_E("Unknown snippet ID in key: %d", id);
         return nullptr;
@@ -117,7 +117,7 @@ int key_to_string(SkString* str,
     SkASSERT(currentIndex < SkTo<int>(keyData.size()));
 
     int32_t id = keyData[currentIndex++];
-    auto entry = dict->getEntry(id);
+    auto entry = dict->getEntry1(id);
     if (!entry) {
         str->append("UnknownCodeSnippetID:");
         str->appendS32(id);
@@ -165,7 +165,7 @@ int dump_node(const ShaderCodeDictionary* dict,
     SkDebugf("%*c", 2 * indent, ' ');
 
     int32_t id = keyData[currentIndex++];
-    auto entry = dict->getEntry(id);
+    auto entry = dict->getEntry1(id);
     if (!entry) {
         SkDebugf("[%d] unknown block!\n", id);
         return currentIndex;
