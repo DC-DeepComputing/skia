@@ -6,14 +6,17 @@
  */
 
 #include "gm/gm.h"
+#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/encode/SkPngEncoder.h"
+#include "include/private/base/SkAssert.h"
 #include "src/base/SkBase64.h"
 #include "tools/testrunners/gm/vias/Draw.h"
 
@@ -95,12 +98,24 @@ static GMOutput draw_via_picture(skiagm::GM* gm, SkSurface* surface, bool serial
         return {result, msg.c_str()};
     }
 
-    // Finish recording, and optionally serialize and then deserialize the resulting picture. Note
-    // that the pic->serialize() call uses the default behavior from SkSerialProcs, which implies a
-    // dependency on libpng.
+    // Finish recording, and optionally serialize and then deserialize the resulting picture using
+    // the PNG coder/decoder.
     sk_sp<SkPicture> pic = recorder.finishRecordingAsPicture();
     if (serialize) {
-        pic = SkPicture::MakeFromData(pic->serialize().get());
+        SkSerialProcs serialProcs = {.fImageProc = [](SkImage* img, void*) -> sk_sp<SkData> {
+            return SkPngEncoder::Encode(nullptr, img, SkPngEncoder::Options{});
+        }};
+        SkDeserialProcs deserialProcs = {.fImageDataProc = [](sk_sp<SkData> data,
+                                                              std::optional<SkAlphaType>,
+                                                              void* ctx) -> sk_sp<SkImage> {
+            SkCodec::Result result;
+            std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(data, &result);
+            SkASSERT(result == SkCodec::Result::kSuccess);
+            std::tuple<sk_sp<SkImage>, SkCodec::Result> imageAndResult = codec->getImage();
+            SkASSERT(std::get<1>(imageAndResult) == SkCodec::Result::kSuccess);
+            return std::get<0>(imageAndResult);
+        }};
+        pic = SkPicture::MakeFromData(pic->serialize(&serialProcs).get(), &deserialProcs);
     }
 
     // Draw the recorded picture on the surface under test and extract it as a bitmap.
