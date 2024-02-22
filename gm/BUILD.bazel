@@ -486,6 +486,22 @@ COMMON_DEPS = [
     "//tools/testrunners/common/compilation_mode_keys",
 ]
 
+skia_cc_test(
+    name = "everything_test",
+    srcs = CPU_GMS + GPU_GMS + [
+        "//tools/testrunners/gm:BazelGMTestRunner.cpp",
+    ],
+    data = ["//resources"],
+    deps = COMMON_DEPS + [
+        "//tools/testrunners/common/surface_manager",
+        "//tools/testrunners/common/surface_manager:ganesh_gl",
+        "//tools/testrunners/common/surface_manager:ganesh_vulkan",
+        "//tools/testrunners/common/surface_manager:raster",
+        "//tools/testrunners/gm/vias:simple_vias",
+        "//tools/timer",  # Required by addarc.cpp and animatedimageblurs.cpp.
+    ],
+)
+
 # Sample invocation:
 #
 #     $ bazel run --config=linux_rbe //gm:cpu_8888_test
