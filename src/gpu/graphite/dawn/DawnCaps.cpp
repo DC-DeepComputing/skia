@@ -16,8 +16,10 @@
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/dawn/DawnTexture.h"
 #include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
@@ -217,6 +219,25 @@ TextureInfo DawnCaps::getDefaultStorageTextureInfo(SkColorType colorType) const 
     info.fUsage = usage;
 
     return info;
+}
+
+SkISize DawnCaps::getDepthAttachmentDimensions(const TextureProxy* texture) const {
+    DawnTextureInfo info;
+    if (!texture->textureInfo().getDawnTextureInfo(&info)) {
+        SkASSERT(false);
+    }
+
+    SkASSERT(texture->isInstantiated());
+    wgpu::TextureFormat format = static_cast<const DawnTexture*>(texture->texture())->dawnTexture().GetFormat();
+    if ((format == wgpu::TextureFormat::R8BG8Biplanar420Unorm ||
+         format == wgpu::TextureFormat::R10X6BG10X6Biplanar420Unorm ||
+         format == wgpu::TextureFormat::R8BG8A8Triplanar420Unorm) &&
+        info.fAspect == wgpu::TextureAspect::Plane1Only) {
+        // Dawn requires depth attachment and color attachment's plane are in the same size.
+        return SkISize::Make(texture->dimensions().width() * 2, texture->dimensions().height() * 2);
+    }
+
+    return texture->dimensions();
 }
 
 const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
