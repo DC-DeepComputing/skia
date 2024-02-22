@@ -28,6 +28,9 @@ SmallPathAtlas::SmallPathAtlas(Recorder* recorder)
                                  this,
                                  /*label=*/"SmallPathAtlas");
     fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
+    for (int i = 0; i < fKeyLists.size(); ++i) {
+        fKeyLists[i].reset();
+    }
 }
 
 bool SmallPathAtlas::recordUploads(DrawContext* dc) {
