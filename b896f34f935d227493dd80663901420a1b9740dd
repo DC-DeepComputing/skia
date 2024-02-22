@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71a932be_c9712e94",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T20:43:26Z",
+      "side": 1,
+      "message": "I suppose that makes a certain kind of sense given that skrifa is primarily about reading out the font data. But this is a thing we need to keep in mind. As things stand now in `SkFontScanner_Fontations::scanFont` we need to dig through the axes provided for these known tags, then look to see if the font supports those tags (and if it does clamp the provided values to the min/max in `fvar`), then override these defaults provided by skrifa as needed (and heavily document that this ffi only returns the default instance\u0027s w/w/s).",
+      "parentUuid": "d1afd1f7_a738a62a",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9eac876e_4ca8cfa4",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 35
