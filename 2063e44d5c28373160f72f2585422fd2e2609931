@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0b4f426_4b77cf44",
+        "filename": "tools/testrunners/common/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-22T20:02:54Z",
+      "side": 0,
+      "message": "Can we delete this .cpp file?",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "2063e44d5c28373160f72f2585422fd2e2609931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
