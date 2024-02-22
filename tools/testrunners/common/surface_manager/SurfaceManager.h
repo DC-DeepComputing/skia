@@ -9,6 +9,7 @@
 #define SurfaceManager_DEFINED
 
 #include "include/core/SkSurface.h"
+#include "tools/Registry.h"
 
 #include <map>
 #include <memory>
@@ -39,6 +40,11 @@ struct SurfaceOptions {
 class SurfaceManager {
 public:
     enum class CpuOrGpu { kCPU, kGPU };
+
+    using FromConfigFn = std::function<std::unique_ptr<SurfaceManager>(
+            std::string config, SurfaceOptions surfaceOptions)>;
+
+    using FromConfigFnRegistry = sk_tools::Registry<FromConfigFn>;
 
     // Constructs a SurfaceManager for the given config name (e.g. "8888", "565", "gles"). It
     // returns nullptr if the config is unknown, and it aborts execution if the config is known but
@@ -92,5 +98,7 @@ private:
     std::map<std::string, std::string> getCpuOrGpuKeyValuePairs(std::string cpuName,
                                                                 std::string gpuName) const;
 };
+
+#define REG_SURFACE_MANAGER_FROM_CONFIG_FN(fn) SurfaceManager::FromConfigFnRegistry fn##Registry(fn)
 
 #endif  // SurfaceManager_DEFINED
