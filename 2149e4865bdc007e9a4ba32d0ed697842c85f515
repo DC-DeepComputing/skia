@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "567bc3f7_c6156904",
+        "filename": "include/ports/SkFontMgr_android.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T19:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31c85958_ce147c2b",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4ccef92_56a03935",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-02-22T17:08:47Z",
       "side": 1,
       "message": "nit: put this parameter on the next line.",
+      "range": {
+        "startLine": 48,
+        "startChar": 90,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e279f6_bce6f762",
+        "filename": "include/ports/SkFontMgr_android.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T19:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4ccef92_56a03935",
       "range": {
         "startLine": 48,
         "startChar": 90,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d7ca34_4d80fcc7",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T19:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97e79fe2_580aca76",
+      "range": {
+        "startLine": 260,
+        "startChar": 66,
+        "endLine": 260,
+        "endChar": 67
+      },
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f364c3a2_7fc8e20b",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-02-22T17:08:47Z",
       "side": 1,
       "message": "These aren\u0027t all enum values. Maybe just something like\n\n`Mirrors SkFontStyle`.",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6bd8f15_d76c3999",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T19:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f364c3a2_7fc8e20b",
       "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -98,6 +182,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcc4ad95_0976e2c7",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T19:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dbc8266_8a7b95a3",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5512b004_3d150518",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-02-22T17:08:47Z",
       "side": 1,
       "message": "Instead of (or in addition to) using this new `TEST_CONDENSED_BOLD_ITALIC` `cond-bold-italic.ttf` you could use the existing `Variable.ttf`. This will default to \"400, Upright, 5\", but then you can also set the `wght` axis and write a test that setting various weights like 512.3 works as expected.",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c194726_f9e7bd47",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T19:56:17Z",
+      "side": 1,
+      "message": "I added a test for Variable.ttf.\nNot sure how to write this test in Rust (in c++ probably easier - I can modify a typeface?)",
+      "parentUuid": "5512b004_3d150518",
       "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
