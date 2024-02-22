@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a6610f_f8d01c15",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T21:58:01Z",
+      "side": 1,
+      "message": "I assume that would be the next step (next CL).",
+      "parentUuid": "d5319d5e_d30c0c1a",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9eac876e_4ca8cfa4",
@@ -88,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "14ab15fb_57371268",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T21:58:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eac876e_4ca8cfa4",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a8b97bf_e3e041e8",
@@ -101,6 +137,30 @@
       "writtenOn": "2024-02-22T20:13:08Z",
       "side": 1,
       "message": "As we see below, this should probably take a `coords: \u0026BridgeNormalizedCoords,` argument as well, as the style depends on variation parameters. But that could be a preparatory separate CL, or a follow-up.",
+      "range": {
+        "startLine": 971,
+        "startChar": 52,
+        "endLine": 971,
+        "endChar": 62
+      },
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8282d9e7_03cb290b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 971,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T21:58:01Z",
+      "side": 1,
+      "message": "Ok, I will do it as a separate CL (and add the testing Ben mentioned).",
+      "parentUuid": "9a8b97bf_e3e041e8",
       "range": {
         "startLine": 971,
         "startChar": 52,
@@ -134,6 +194,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d201512_235cc984",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T21:58:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef6c81a0_8dc9eec2",
+      "range": {
+        "startLine": 1206,
+        "startChar": 8,
+        "endLine": 1206,
+        "endChar": 54
+      },
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e04f7122_6d8dca59",
@@ -147,6 +231,30 @@
       "writtenOn": "2024-02-22T20:13:08Z",
       "side": 1,
       "message": "```suggestion\n        assert!(get_font_style(font_ref.as_ref(), \u0026mut font_style));\n```\n\nThen avoid the nesting with the if statement?",
+      "range": {
+        "startLine": 1214,
+        "startChar": 8,
+        "endLine": 1214,
+        "endChar": 61
+      },
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c216289a_a08722a1",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 1214,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T21:58:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e04f7122_6d8dca59",
       "range": {
         "startLine": 1214,
         "startChar": 8,

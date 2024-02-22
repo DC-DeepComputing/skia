@@ -251,6 +251,24 @@
       "parentUuid": "8c194726_f9e7bd47",
       "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceed9747_d581449e",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-22T21:58:01Z",
+      "side": 1,
+      "message": "Yes, I mean applying variation parameters to a font. I will update it in the next CL and also with deal with the problems Ben described below.",
+      "parentUuid": "95de19bb_3142c7c3",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
