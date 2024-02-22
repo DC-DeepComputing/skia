@@ -58,6 +58,7 @@ skia_cc_test(
         "nonrendering",
         "--autoTuneLoops",
     ],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/benchmark/target:raster",
     ],
@@ -75,6 +76,7 @@ skia_cc_test(
         "8888",
         "--autoTuneLoops",
     ],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/benchmark/target:raster",
     ],
@@ -94,6 +96,7 @@ skia_cc_test(
             surfaceConfig,
             "--autoTuneLoops",
         ],
+        target_compatible_with = ["@platforms//os:linux"],
         deps = COMMON_DEPS + [
             "//tools/testrunners/benchmark/target:ganesh_vulkan",
         ],
@@ -142,6 +145,7 @@ skia_cc_test(
         "gles",
         "--autoTuneLoops",
     ],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/benchmark/target:ganesh_gl",
     ],
