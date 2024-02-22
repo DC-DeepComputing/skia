@@ -3230,6 +3230,124 @@ STAGE(bicubic_n1y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<-1>(ctx, &g); }
 STAGE(bicubic_p1y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<+1>(ctx, &g); }
 STAGE(bicubic_p3y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<+3>(ctx, &g); }
 
+//struct SkRasterPipeline_PerlinNoiseCtx {
+//    float baseFrequencyX, baseFrequencyY;
+//    float stitchDataInX, stitchDataInY;
+//    bool stitching;
+//    int noiseType;  // SkPerlinNoiseShader::Type
+//    int numOctaves;
+//    uint8_t permutationData[256];
+//    uint32_t noiseData[4][256];   // Encodes a vector of two [-1,1] values in 16 bits per number
+//};
+
+SI F compute_perlin_vector(U32 sample, F x, F y) {
+    // Convert 32-bit sample value into two floats in the [-1..1] range.
+    F vecX = mad(cast(sample >> 16),    2.0f/65535.0f, -1.0f);
+    F vecY = mad(cast(sample & 0xFFFF), 2.0f/65535.0f, -1.0f);
+
+    // Return the dot of the sample and the passed-in vector.
+    return mad(vecX,  x,
+               vecY * y);
+}
+
+STAGE(perlin_noise, SkRasterPipeline_PerlinNoiseCtx* ctx) {
+    F noiseVecX = (r + 0.5) * ctx->baseFrequencyX;
+    F noiseVecY = (g + 0.5) * ctx->baseFrequencyY;
+    r = g = b = a = 0.0f;
+    F stitchDataX = ctx->stitchDataInX;
+    F stitchDataY = ctx->stitchDataInY;
+    F ratio = 1.0f;
+
+    for (int octave = 0; octave < ctx->numOctaves; ++octave) {
+        // Calculate noise coordinates. (Roughly $noise_helper in Graphite)
+        F floorValX = floor_(noiseVecX);
+        F floorValY = floor_(noiseVecY);
+        F floorValZ = floorValX + 1.0f;
+        F floorValW = floorValY + 1.0f;
+        F fractValX = noiseVecX - floorValX;
+        F fractValY = noiseVecY - floorValY;
+
+        if (ctx->stitching) {
+            // If we are stitching, wrap the coordinates to the stitch position.
+            floorValX -= sk_bit_cast<F>(cond_to_mask(floorValX >= stitchDataX) &
+                                        sk_bit_cast<I32>(stitchDataX));
+            floorValY -= sk_bit_cast<F>(cond_to_mask(floorValY >= stitchDataY) &
+                                        sk_bit_cast<I32>(stitchDataY));
+            floorValZ -= sk_bit_cast<F>(cond_to_mask(floorValZ >= stitchDataX) &
+                                        sk_bit_cast<I32>(stitchDataX));
+            floorValW -= sk_bit_cast<F>(cond_to_mask(floorValW >= stitchDataY) &
+                                        sk_bit_cast<I32>(stitchDataY));
+        }
+
+        U32 permutationLookup = round(floorValX) & 0xFF;
+        F latticeIdxX = cast(expand(gather(ctx->permutationData, permutationLookup)));
+        permutationLookup = round(floorValZ) & 0xFF;
+        F latticeIdxY = cast(expand(gather(ctx->permutationData, permutationLookup)));
+
+        U32 noiseCoords0 = round(latticeIdxX + floorValY) & 0xFF;
+        U32 noiseCoords1 = round(latticeIdxY + floorValY) & 0xFF;
+        U32 noiseCoords2 = round(latticeIdxX + floorValW) & 0xFF;
+        U32 noiseCoords3 = round(latticeIdxY + floorValW) & 0xFF;
+
+        // Calculate noise colors. (Roughly $noise_function in Graphite)
+        // Use Hermite interpolation on the fractional amount.
+        F noiseSmoothX = fractValX * fractValX * (3.0f - 2.0f * fractValX);
+        F noiseSmoothY = fractValY * fractValY * (3.0f - 2.0f * fractValY);
+
+        F color[4];
+        for (int channel = 0; channel < 4; ++channel) {
+            const uint32_t* channelNoiseData = ctx->noiseData[channel];
+            U32 sampleA = gather(channelNoiseData, noiseCoords0);
+            U32 sampleB = gather(channelNoiseData, noiseCoords1);
+            U32 sampleC = gather(channelNoiseData, noiseCoords2);
+            U32 sampleD = gather(channelNoiseData, noiseCoords3);
+
+            F u = compute_perlin_vector(sampleA, fractValX,        fractValY);
+            F v = compute_perlin_vector(sampleB, fractValX - 1.0f, fractValY);
+            F A = lerp(u, v, noiseSmoothX);
+
+              v = compute_perlin_vector(sampleD, fractValX - 1.0f, fractValY - 1.0f);
+              u = compute_perlin_vector(sampleC, fractValX,        fractValY - 1.0f);
+            F B = lerp(u, v, noiseSmoothX);
+
+            color[channel] = lerp(A, B, noiseSmoothY);
+        }
+
+        r = mad(color[0], ratio, r);
+        g = mad(color[1], ratio, g);
+        b = mad(color[2], ratio, b);
+        a = mad(color[3], ratio, a);
+
+        if (ctx->noiseType != 0/*kFractalNoise_Type*/) {
+            // For kTurbulence_Type the result is: abs(noise[-1,1])
+            r = abs_(r);
+            g = abs_(g);
+            b = abs_(b);
+            a = abs_(a);
+        }
+
+        // Scale inputs for the next round.
+        noiseVecX *= 2.0f;
+        noiseVecY *= 2.0f;
+        stitchDataX *= 2.0f;
+        stitchDataY *= 2.0f;
+        ratio *= 0.5f;
+    }
+
+    if (ctx->noiseType == 0/*kFractalNoise_Type*/) {
+        // For kFractalNoise_Type the result is: noise[-1,1] * 0.5 + 0.5
+        r = mad(r, 0.5f, 0.5f);
+        g = mad(g, 0.5f, 0.5f);
+        b = mad(b, 0.5f, 0.5f);
+        a = mad(a, 0.5f, 0.5f);
+    }
+
+    r = clamp_01_(r) * a;
+    g = clamp_01_(g) * a;
+    b = clamp_01_(b) * a;
+    a = clamp_01_(a);
+}
+
 STAGE(mipmap_linear_init, SkRasterPipeline_MipmapCtx* ctx) {
     sk_unaligned_store(ctx->x, r);
     sk_unaligned_store(ctx->y, g);
