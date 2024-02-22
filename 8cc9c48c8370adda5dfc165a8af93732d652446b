@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "defa9050_7385f717",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T20:48:41Z",
+      "side": 1,
+      "message": "This file declares a _lot_ of top level names without introducing a namespace or beginning the names with `Sk`. This is unfriendly to our users. Particularly a top-level `StableKey`--I wouldn\u0027t be surprised if this were a real-world conflict somewhere. \n\nA namespace is probably best, but `Sk` prefixes would also work.\n\nOr... maybe SkRuntimeEffect can house them all as public??",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 47
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
