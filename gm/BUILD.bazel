@@ -503,6 +503,7 @@ skia_cc_test(
         "8888",
     ],
     data = ["//resources"],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/common/surface_manager:raster",
         "//tools/testrunners/gm/vias:simple_vias",
@@ -527,6 +528,7 @@ skia_cc_test(
         "arithmode_blender",
     ],
     data = ["//resources"],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/common/surface_manager:raster",
         "//tools/testrunners/gm/vias:simple_vias",
@@ -546,6 +548,7 @@ skia_cc_test(
         "picture",
     ],
     data = ["//resources"],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/common/surface_manager:raster",
         "//tools/testrunners/gm/vias:simple_vias",
@@ -575,6 +578,7 @@ skia_cc_test(
         "gles",
     ],
     data = ["//resources"],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/common/surface_manager:ganesh_gl",
         "//tools/testrunners/gm/vias:simple_vias",
@@ -593,6 +597,7 @@ skia_cc_test(
             surfaceConfig,
         ],
         data = ["//resources"],
+        target_compatible_with = ["@platforms//os:linux"],
         deps = COMMON_DEPS + [
             "//tools/testrunners/common/surface_manager:ganesh_vulkan",
             "//tools/testrunners/gm/vias:simple_vias",
@@ -641,6 +646,7 @@ skia_cc_test(
         "8888",
     ],
     data = ["//resources"],
+    target_compatible_with = ["@platforms//os:linux"],
     deps = COMMON_DEPS + [
         "//tools/testrunners/common/surface_manager:raster",
         "//tools/testrunners/gm/vias:simple_vias",
