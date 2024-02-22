@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56afce69_22342524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T20:55:27Z",
+      "side": 1,
+      "message": "LGTM % nits and tighter scoping on top-level names",
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "defa9050_7385f717",
@@ -19,6 +36,75 @@
         "startChar": 0,
         "endLine": 16,
         "endChar": 47
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d1dd288_e91d24a2",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T20:55:27Z",
+      "side": 1,
+      "message": "Not necessarily for this CL, and maybe gilding the lily a bit, but we could use an X macro to stringize this list and then known runtime effects could have a real name in the SkSL instead of all being named \"KnownRuntimeEffect.\"",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13545a90_adf1389a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T20:55:27Z",
+      "side": 1,
+      "message": "nit: `TODO(b/238759147):`\n\nOr the \u0027new\u0027 todo style, `TODO: b/238759147 -`\n\nHere and below",
+      "range": {
+        "startLine": 498,
+        "startChar": 11,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03a60fa9_1d4b09f6",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T20:55:27Z",
+      "side": 1,
+      "message": "int: remove redundant `else`",
+      "range": {
+        "startLine": 1368,
+        "startChar": 6,
+        "endLine": 1368,
+        "endChar": 10
       },
       "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
