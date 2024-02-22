@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7976a2b8_6de92961",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-22T16:15:11Z",
+      "side": 1,
+      "message": "Looking through the gold diffs, almost everything I\u0027m seeing can be explained by changing the size of the texture and/or offset within the texture due to the padding, so we get slightly different interpolation. These cases seem to be pretty imperceptible unless the image is really scaled up, but even then, the new image doesn\u0027t seem wrong.\n\nThere are two odd ones that stand out:\n1. `matriximagefilter` is now showing a non-AA top-left edge on the left skewed checkerboard. This was a matrix image filter with nearest sampling. Previously it drew an anti-aliased edge because all layers are drawn AA\u0027ed and the checkerboard started right at the top-left pixel of the layer image. Now there\u0027s a transparent border that is nearest-sampled that is then mixed with the AA\u0027ed layer so it\u0027s a strange hybrid. The bottom-right edges remain nearest sampled because the GM lies to the saveLayer about the size of what\u0027s being drawn (96x96 instead of the actual 64x64 content), so we only see the NN sampling of transparent pixels.\n\n  - I\u0027m inclined to either leave it as-is, or look at a heuristic for FilterResult::draw(), where if it\u0027s using NN sampling it will also turn off AA to keep the edge quality similar to the sampling character. What do others think?\n  \n2. `savelayerpreservelcdtext` will be fixed in another CL. The blitter assumes that the background is opaque, which means it blends incorrectly with transparent black. There was a hack to avoid that when the mask value was 0. The SSE 4-lane code did the hack if all 4 masks were 0, but did not clean up each lane to preserve the original transparent black. With changing the layer padding, the 16-byte alignment of the SSE code would change and no longer aligns visually.\n\n  - This is a bug in the LCD blitter that I\u0027ll fix before this lands, but isn\u0027t a problem with this CL.",
+      "revId": "2245998f21b8048372241fc02dbfaac4d2ea5122",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

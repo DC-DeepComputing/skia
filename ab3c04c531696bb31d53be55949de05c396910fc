@@ -16,6 +16,24 @@
       "message": "This isn\u0027t ready for review, right? (Still pending a fix for the CPU LCD blitter)?",
       "revId": "ab3c04c531696bb31d53be55949de05c396910fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dd7b6a0_eddf138f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-22T16:15:11Z",
+      "side": 1,
+      "message": "It is still pending that fix so not landable, but it\u0027s unlikely that this CL will change. I\u0027ll do the LCD blitter fix in another CL. I believe the logic in this CL is sound, it just exposed an existing bug in the blitter.\n\nBut it looks like there\u0027s a unit test I have to track down as well, so I\u0027ll ping when everything is green.",
+      "parentUuid": "71eceb8f_84b69f35",
+      "revId": "ab3c04c531696bb31d53be55949de05c396910fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
