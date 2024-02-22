@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5319d5e_d30c0c1a",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T20:50:43Z",
+      "side": 1,
+      "message": "So what this does right now is more or less ok for the scanner interface, because that really only needs the defaults. Part of the issue is that SkTypeface_Fontations currently always appears to set it\u0027s `fFontStyle` to default (they\u0027re all the same default style) and we need something to fix that as well.",
+      "parentUuid": "71a932be_c9712e94",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9eac876e_4ca8cfa4",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 35
