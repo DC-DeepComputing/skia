@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5689615_3b36719f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-22T14:48:50Z",
+      "side": 1,
+      "message": "Still need to add similar code to gfx for epoxy in this file, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/BUILD.bazel;l\u003d105, then things look good.",
+      "revId": "da2bb21e642961cca9616c343b90741851803613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24851353_21524ee7",
+        "filename": "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-22T14:48:50Z",
+      "side": 1,
+      "message": "nit: 2024",
+      "range": {
+        "startLine": 2,
+        "startChar": 15,
+        "endLine": 2,
+        "endChar": 16
+      },
+      "revId": "da2bb21e642961cca9616c343b90741851803613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
