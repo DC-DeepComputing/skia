@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46819b73_c5e59b32",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T19:30:10Z",
+      "side": 1,
+      "message": "Search for `GrSkSLFP::Specialize` and you should find lots more parameterized cases; GrSkSLFP is baking these down to separate shaders when they are used. \n\nThis will matter more when Graphite ES2 starts to become real, because at that point we are forced to hard-code some values (loop lengths in particular).",
+      "parentUuid": "2600f272_58bad803",
+      "range": {
+        "startLine": 13,
+        "startChar": 58,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58469fe3_ffadf530",
         "filename": "src/core/SkKnownRuntimeEffects.h",
         "patchSetId": 24
