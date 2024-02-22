@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81030ae6_4c0587ff",
+        "filename": "src/shaders/SkPerlinNoiseShaderType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-22T23:56:04Z",
+      "side": 1,
+      "message": "Intentionally leaving the date that the code was written originally. \nThis CL just moves existing code.",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "d65b62d81493a7f761fe78fae2153dbc324ee24b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
