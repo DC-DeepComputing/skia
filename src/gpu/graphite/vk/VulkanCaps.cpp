@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -348,6 +349,10 @@ TextureInfo VulkanCaps::getDefaultStorageTextureInfo(SkColorType colorType) cons
     info.fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 
     return info;
+}
+
+SkISize VulkanCaps::getDepthAttachmentDimensions(const TextureProxy* texture) const {
+    return texture->dimensions();
 }
 
 uint32_t VulkanCaps::channelMask(const TextureInfo& textureInfo) const {
