@@ -16,6 +16,23 @@
       "message": "This will require an additional +1 from someone. @lizeb@google.com, are you okay with this?",
       "revId": "e74159a34cafe1e0c5ea55af0106dcc26fdefe2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88fb8466_1ab1e793",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15374
+      },
+      "writtenOn": "2024-02-22T18:01:33Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "e74159a34cafe1e0c5ea55af0106dcc26fdefe2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
