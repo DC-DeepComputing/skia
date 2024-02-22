@@ -233,6 +233,24 @@
       "parentUuid": "5512b004_3d150518",
       "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95de19bb_3142c7c3",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-22T20:13:08Z",
+      "side": 1,
+      "message": "Do you mean how to apply variation parameters to the variable font? See `coords: \u0026BridgeNormalizedCoords,` as arguments to several functions, such as `get_path()`. Or what is your specific Rust question?",
+      "parentUuid": "8c194726_f9e7bd47",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

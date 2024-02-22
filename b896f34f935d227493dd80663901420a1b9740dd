@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd28c78_203b96a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-22T20:13:08Z",
+      "side": 1,
+      "message": "Thanks for pushing on and patiently updating this CL. One comment on your implied Rust question below.",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eac876e_4ca8cfa4",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-22T20:13:08Z",
+      "side": 1,
+      "message": "Optional: add a default impl? `impl Default for BridgeFontStyle...` - this might make the test below a little less verbose.",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a8b97bf_e3e041e8",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 971,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-22T20:13:08Z",
+      "side": 1,
+      "message": "As we see below, this should probably take a `coords: \u0026BridgeNormalizedCoords,` argument as well, as the style depends on variation parameters. But that could be a preparatory separate CL, or a follow-up.",
+      "range": {
+        "startLine": 971,
+        "startChar": 52,
+        "endLine": 971,
+        "endChar": 62
+      },
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef6c81a0_8dc9eec2",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-22T20:13:08Z",
+      "side": 1,
+      "message": "Nit:\n\n\n```suggestion\n        assert!(font_ref_is_valid(\u0026font_ref));\n```",
+      "range": {
+        "startLine": 1206,
+        "startChar": 8,
+        "endLine": 1206,
+        "endChar": 54
+      },
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04f7122_6d8dca59",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 1214,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-22T20:13:08Z",
+      "side": 1,
+      "message": "```suggestion\n        assert!(get_font_style(font_ref.as_ref(), \u0026mut font_style));\n```\n\nThen avoid the nesting with the if statement?",
+      "range": {
+        "startLine": 1214,
+        "startChar": 8,
+        "endLine": 1214,
+        "endChar": 61
+      },
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
