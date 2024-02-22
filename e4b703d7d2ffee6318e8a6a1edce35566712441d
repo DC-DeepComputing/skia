@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac5a7e21_80b9a71a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T22:20:27Z",
+      "side": 1,
+      "message": "Seems fine to me to land this, but yeah, need to work on making a correct SkFontStyle when creating an SkTypeface_Fontations.",
+      "revId": "e4b703d7d2ffee6318e8a6a1edce35566712441d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
