@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c85958_ce147c2b",
+        "filename": "include/ports/SkFontMgr_android.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T17:08:47Z",
+      "side": 1,
+      "message": "Deprecated\n\nEnglish has had too many vowel shifts to have obvious orthography.",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ccef92_56a03935",
+        "filename": "include/ports/SkFontMgr_android.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T17:08:47Z",
+      "side": 1,
+      "message": "nit: put this parameter on the next line.",
+      "range": {
+        "startLine": 48,
+        "startChar": 90,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97e79fe2_580aca76",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T17:08:47Z",
+      "side": 1,
+      "message": "nit: should put this parameter on the next line.",
+      "range": {
+        "startLine": 260,
+        "startChar": 66,
+        "endLine": 260,
+        "endChar": 67
+      },
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f364c3a2_7fc8e20b",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T17:08:47Z",
+      "side": 1,
+      "message": "These aren\u0027t all enum values. Maybe just something like\n\n`Mirrors SkFontStyle`.",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dbc8266_8a7b95a3",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T17:08:47Z",
+      "side": 1,
+      "message": "This link isn\u0027t really needed here since we\u0027re already in Skia here and it is already commented that this is supposed to mirror SkFontStyle.",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5512b004_3d150518",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 34
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T17:08:47Z",
+      "side": 1,
+      "message": "Instead of (or in addition to) using this new `TEST_CONDENSED_BOLD_ITALIC` `cond-bold-italic.ttf` you could use the existing `Variable.ttf`. This will default to \"400, Upright, 5\", but then you can also set the `wght` axis and write a test that setting various weights like 512.3 works as expected.",
+      "revId": "2149e4865bdc007e9a4ba32d0ed697842c85f515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
