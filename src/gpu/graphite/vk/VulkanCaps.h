@@ -45,6 +45,8 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
+    std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }

@@ -42,9 +42,11 @@ VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID,
                                                size_t resourceBudget,
-                                               sk_sp<Buffer> intrinsicConstantUniformBuffer)
+                                               sk_sp<Buffer> intrinsicConstantUniformBuffer,
+                                               sk_sp<Buffer> loadMSAAVertexBuffer)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
-        , fIntrinsicUniformBuffer(std::move(intrinsicConstantUniformBuffer)) {
+        , fIntrinsicUniformBuffer(std::move(intrinsicConstantUniformBuffer))
+        , fLoadMSAAVertexBuffer(std::move(loadMSAAVertexBuffer)) {
 }
 
 VulkanResourceProvider::~VulkanResourceProvider() {
@@ -92,6 +94,9 @@ sk_sp<Buffer> VulkanResourceProvider::refIntrinsicConstantBuffer() const {
     return fIntrinsicUniformBuffer;
 }
 
+const Buffer* VulkanResourceProvider::loadMSAAVertexBuffer() const {
+    return fLoadMSAAVertexBuffer.get();
+}
 
 sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
@@ -124,7 +129,14 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
                                                      SkTileMode xTileMode,
-                                                     SkTileMode yTileMode) {
+                                                     SkTileMode yTileMode,
+                                                     const std::vector<uint32_t>& extraBackendDesc) {
+    // TODO: Reconstruct VulkanYcbcrConversionInfo based off of extraBackendDesc?
+    if (!extraBackendDesc.empty()) {
+        // Textures are made first, so the YCbCr convesion should already be made by now.
+        GraphiteResourceKey ycbcrKey =
+                VulkanSamplerYcbcrConversion::MakeYcbcrConversionKeyFromInts(extraBackendDesc);
+    }
     return VulkanSampler::Make(this->vulkanSharedContext(), samplingOptions, xTileMode, yTileMode);
 }
 
@@ -173,9 +185,9 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     for (size_t i = 0; i < kNum32DataCnt; i++) {
         if (i < requestedDescriptors.size()) {
             // TODO: Consider making the DescriptorData struct itself just use uint16_t.
-            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].count);
-            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].type) << 24
-                          | requestedDescriptors[i].bindingIndex << 16
+            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].fCount);
+            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].fType) << 24
+                          | requestedDescriptors[i].fBindingIndex << 16
                           | smallerCount;
         } else {
             // Populate reminaing key components with 0.
@@ -273,8 +285,8 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPassWithKnownK
 
     sk_sp<VulkanRenderPass> renderPass =
                 VulkanRenderPass::MakeRenderPass(this->vulkanSharedContext(),
-                                                renderPassDesc,
-                                                compatibleOnly);
+                                                 renderPassDesc,
+                                                 compatibleOnly);
     if (!renderPass) {
         return nullptr;
     }
@@ -441,7 +453,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
             fMSAALoadPipelineLayout,
             compatibleRenderPass,
             this->pipelineCache(),
-            renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+            renderPassDesc.fColorAttachment.fTextureInfo);
 
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");

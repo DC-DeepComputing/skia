@@ -19,6 +19,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -39,9 +40,9 @@ struct ContextOptions;
 class ComputePipelineDesc;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
+class RendererProvider;
 struct RenderPassDesc;
 class TextureInfo;
-class TextureProxy;
 
 struct ResourceBindingRequirements {
     // The required data layout rules for the contents of a uniform buffer.
@@ -99,9 +100,20 @@ public:
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
 
+    virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        // By default, return an empty span containing no additional information. Different
+        // backends can override this method as needed.
+        return {};
+    }
+
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
+
+    virtual bool extractGraphicsDescs(const UniqueKey&,
+                                      GraphicsPipelineDesc*,
+                                      RenderPassDesc*,
+                                      const RendererProvider*) const { return false; }
 
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
     virtual uint32_t channelMask(const TextureInfo&) const = 0;

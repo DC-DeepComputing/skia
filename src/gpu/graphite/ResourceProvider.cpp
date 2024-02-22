@@ -149,9 +149,11 @@ sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
     return tex;
 }
 
-sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingOptions& smplOptions,
-                                                               SkTileMode xTileMode,
-                                                               SkTileMode yTileMode) {
+sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(
+        const SkSamplingOptions& smplOptions,
+        SkTileMode xTileMode,
+        SkTileMode yTileMode,
+        const std::vector<uint32_t>& extraBackendDesc) {
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     GraphiteResourceKey key;
@@ -164,6 +166,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
         constexpr int kTileModeYShift  = kTileModeXShift  + kNumTileModeBits;
         constexpr int kFilterModeShift = kTileModeYShift  + kNumTileModeBits;
         constexpr int kMipmapModeShift = kFilterModeShift + kNumFilterModeBits;
+        constexpr int kHasExtraSamplerInfoShift = kMipmapModeShift + sizeof(bool);
 
         static_assert(kMipmapModeShift + kNumMipmapModeBits <= 32);
 
@@ -173,10 +176,11 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
 
         GraphiteResourceKey::Builder builder(&key, kType, 1, Shareable::kYes);
         uint32_t myKey =
-        (static_cast<uint32_t>(xTileMode) << kTileModeXShift) |
-                     (static_cast<uint32_t>(yTileMode) << kTileModeYShift) |
-                     (static_cast<uint32_t>(smplOptions.filter) << kFilterModeShift) |
-                     (static_cast<uint32_t>(smplOptions.mipmap) << kMipmapModeShift);
+                (static_cast<uint32_t>(xTileMode)                 << kTileModeXShift)  |
+                (static_cast<uint32_t>(yTileMode)                 << kTileModeYShift)  |
+                (static_cast<uint32_t>(smplOptions.filter)        << kFilterModeShift) |
+                (static_cast<uint32_t>(smplOptions.mipmap)        << kMipmapModeShift) |
+                (static_cast<uint32_t>(!extraBackendDesc.empty()) << kHasExtraSamplerInfoShift);
         builder[0] = myKey;
     }
 
@@ -184,7 +188,10 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
     if (Resource* resource = fResourceCache->findAndRefResource(key, budgeted)) {
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
-    sk_sp<Sampler> sampler = this->createSampler(smplOptions, xTileMode, yTileMode);
+    sk_sp<Sampler> sampler = this->createSampler(smplOptions,
+                                                 xTileMode,
+                                                 yTileMode,
+                                                 extraBackendDesc);
     if (!sampler) {
         return nullptr;
     }
