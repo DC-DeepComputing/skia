@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1afd1f7_a738a62a",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-22T20:33:52Z",
+      "side": 1,
+      "message": "I don\u0027t see where skrifa takes axis coordinates for creating attributes? Was the idea to only return the default values (as hard coded in the font tables) and then have the user look through the axis values they\u0027re setting for `wght`, `wdth`, `slnt`, `ital`, and such themselves and set based on that?",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9eac876e_4ca8cfa4",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 35
