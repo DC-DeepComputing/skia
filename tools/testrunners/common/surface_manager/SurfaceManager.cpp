@@ -7,8 +7,21 @@
 
 #include "include/core/SkCanvas.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "tools/Registry.h"
 #include "tools/ToolUtils.h"
 #include "tools/testrunners/common/surface_manager/SurfaceManager.h"
+
+std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
+                                                           SurfaceOptions surfaceOptions) {
+    for (const SurfaceManager::FromConfigFn& fromConfigFn :
+         SurfaceManager::FromConfigFnRegistry::Range()) {
+        std::unique_ptr<SurfaceManager> surfaceManager = fromConfigFn(config, surfaceOptions);
+        if (surfaceManager != nullptr) {
+            return surfaceManager;
+        }
+    }
+    return nullptr;
+}
 
 // Based on
 // https://skia.googlesource.com/skia/+/88d5e1daa3ba3aae65139d4a3ded1e1b7078d59b/dm/DM.cpp#1315.

@@ -25,7 +25,7 @@ private:
     sk_sp<SkSurface> fSurface;
 };
 
-std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
+std::unique_ptr<SurfaceManager> rasterSurfaceManagerFromConfig(std::string config,
                                                            SurfaceOptions surfaceOptions) {
     // This config is based on nanobench's "nonrendering" config:
     // https://skia.googlesource.com/skia/+/a063eaeaf1e09e4d6f42e0f44a5723622a46d21c/bench/nanobench.cpp#663.
@@ -56,3 +56,5 @@ std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
     }
     return nullptr;
 }
+
+REG_SURFACE_MANAGER_FROM_CONFIG_FN(rasterSurfaceManagerFromConfig);

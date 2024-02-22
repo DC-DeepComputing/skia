@@ -114,7 +114,7 @@ std::unique_ptr<SurfaceManager> makeVulkanSurfaceManager(
 // https://skia.googlesource.com/skia/+/8da85ea79d1ba2b3f32d25178eb21f2ebda83437/tools/flags/CommonFlagsConfig.cpp#610
 // [3]
 // https://skia.googlesource.com/skia/+/8da85ea79d1ba2b3f32d25178eb21f2ebda83437/dm/DM.cpp#1017
-std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
+std::unique_ptr<SurfaceManager> ganeshVulkanSurfaceManagerFromConfig(std::string config,
                                                            SurfaceOptions surfaceOptions) {
     if (config == "vk") {
         return makeVulkanSurfaceManager(
@@ -197,3 +197,6 @@ std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
 
     return nullptr;
 }
+
+
+REG_SURFACE_MANAGER_FROM_CONFIG_FN(ganeshVulkanSurfaceManagerFromConfig);
