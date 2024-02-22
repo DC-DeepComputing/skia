@@ -870,6 +870,10 @@ TextureInfo MtlCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
     return info;
 }
 
+SkISize MtlCaps::getDepthAttachmentDimensions(const TextureProxy* texture) const {
+    return texture->dimensions();
+}
+
 const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
         SkColorType ct, const TextureInfo& textureInfo) const {
     MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);
