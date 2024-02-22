@@ -5,15 +5,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-
-
-
-
 #ifndef SkUnPreMultiply_DEFINED
 #define SkUnPreMultiply_DEFINED
 
+#include <cstdint>
 #include "include/core/SkColor.h"
+#include "include/core/SkTypes.h"
+#include "include/private/base/SkCPUTypes.h"
 
 class SK_API SkUnPreMultiply {
 public:
