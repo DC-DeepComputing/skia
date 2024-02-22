@@ -91,6 +91,8 @@ public:
     TArray<V>&& detach() { return std::move(fIndexToData); }
 
 private:
+    // Pass in optional hash func.
+
     THashMap<T, Index> fDataToIndex;
     TArray<V> fIndexToData;
 };
@@ -498,7 +500,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // The initial layout we pass here is not important as it will be re-assigned when writing
     // shading and geometry uniforms below.
-    PipelineDataGatherer gatherer(uniformLayout);
+    PipelineDataGatherer gatherer(recorder->priv().caps(), uniformLayout);
 
     // Copy of destination, if needed.
     sk_sp<TextureProxy> dst;
