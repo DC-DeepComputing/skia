@@ -33,6 +33,23 @@
       "message": "lgtm",
       "revId": "e74159a34cafe1e0c5ea55af0106dcc26fdefe2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df4fe45b_1370e61a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15374
+      },
+      "writtenOn": "2024-02-22T18:02:08Z",
+      "side": 1,
+      "message": "(but note that I have no powers here :))",
+      "revId": "e74159a34cafe1e0c5ea55af0106dcc26fdefe2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
