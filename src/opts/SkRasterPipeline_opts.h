@@ -16,6 +16,7 @@
 #include "src/base/SkUtils.h"  // unaligned_{load,store}
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineContextUtils.h"
+#include "src/shaders/SkPerlinNoiseShaderType.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
 
 #include <cstdint>
@@ -145,8 +146,9 @@ namespace SK_OPTS_NS {
     SI F   sqrt_ (F v)          { return sqrtf(v); }
     SI F   rcp_precise (F v)    { return 1.0f / v; }
 
-    SI U32 round(F v)           { return (uint32_t)(v + 0.5f); }
-    SI U32 round(F v, F scale)  { return (uint32_t)(v*scale + 0.5f); }
+    SI I32 iround(F v)          { return (I32)(v + 0.5f); }
+    SI U32 round(F v)           { return (U32)(v + 0.5f); }
+    SI U32 round(F v, F scale)  { return (U32)(v*scale + 0.5f); }
     SI U16 pack(U32 v)          { return (U16)v; }
     SI U8  pack(U16 v)          { return  (U8)v; }
 
@@ -231,11 +233,12 @@ namespace SK_OPTS_NS {
         SI bool all(I32 c) { return vminvq_u32((U32)c) != 0; }
 
         SI F     mad(F f, F m, F a) { return vfmaq_f32(a,f,m); }
-        SI F  floor_(F v) { return vrndmq_f32(v); }
-        SI F   ceil_(F v) { return vrndpq_f32(v); }
-        SI F   sqrt_(F v) { return vsqrtq_f32(v); }
-        SI U32 round(F v) { return vcvtnq_u32_f32(v); }
-        SI U32 round(F v, F scale) { return vcvtnq_u32_f32(v*scale); }
+        SI F  floor_(F v)           { return vrndmq_f32(v); }
+        SI F   ceil_(F v)           { return vrndpq_f32(v); }
+        SI F   sqrt_(F v)           { return vsqrtq_f32(v); }
+        SI I32 iround(F v)          { return vcvtnq_s32_f32(v); }
+        SI U32 round(F v)           { return vcvtnq_u32_f32(v); }
+        SI U32 round(F v, F scale)  { return vcvtnq_u32_f32(v*scale); }
     #else
         SI bool any(I32 c) { return c[0] | c[1] | c[2] | c[3]; }
         SI bool all(I32 c) { return c[0] & c[1] & c[2] & c[3]; }
@@ -256,6 +259,10 @@ namespace SK_OPTS_NS {
             e *= vrsqrtsq_f32(v,e*e);
             e *= vrsqrtsq_f32(v,e*e);
             return v*e;                // sqrt(v) == v*rsqrt(v).
+        }
+
+        SI I32 iround(F v) {
+            return vcvtq_s32_f32(v + 0.5f);
         }
 
         SI U32 round(F v) {
@@ -336,6 +343,7 @@ namespace SK_OPTS_NS {
         F e = rcp_approx(v);
         return _mm512_fnmadd_ps(v, e, _mm512_set1_ps(2.0f)) * e;
     }
+    SI I32 iround(F v)         { return (I32)_mm512_cvtps_epi32(v); }
     SI U32 round(F v)          { return (U32)_mm512_cvtps_epi32(v); }
     SI U32 round(F v, F scale) { return (U32)_mm512_cvtps_epi32(v*scale); }
     SI U16 pack(U32 v) {
@@ -581,6 +589,7 @@ namespace SK_OPTS_NS {
         return _mm256_fnmadd_ps(v, e, _mm256_set1_ps(2.0f)) * e;
     }
 
+    SI I32 iround(F v)         { return (I32)_mm256_cvtps_epi32(v); }
     SI U32 round(F v)          { return (U32)_mm256_cvtps_epi32(v); }
     SI U32 round(F v, F scale) { return (U32)_mm256_cvtps_epi32(v*scale); }
     SI U16 pack(U32 v) {
@@ -773,6 +782,7 @@ namespace SK_OPTS_NS {
     SI F   rsqrt_approx(F v)   { return _mm_rsqrt_ps(v);    }
     SI F    sqrt_(F v)         { return _mm_sqrt_ps (v);    }
 
+    SI I32 iround(F v)         { return (I32)_mm_cvtps_epi32(v); }
     SI U32 round(F v)          { return (U32)_mm_cvtps_epi32(v); }
     SI U32 round(F v, F scale) { return (U32)_mm_cvtps_epi32(v*scale); }
 
@@ -3229,6 +3239,124 @@ STAGE(bicubic_n3y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<-3>(ctx, &g); }
 STAGE(bicubic_n1y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<-1>(ctx, &g); }
 STAGE(bicubic_p1y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<+1>(ctx, &g); }
 STAGE(bicubic_p3y, SkRasterPipeline_SamplerCtx* ctx) { bicubic_y<+3>(ctx, &g); }
+
+SI F compute_perlin_vector(U32 sample, F x, F y) {
+    // We're relying on the packing of uint16s within a uint32, which will vary based on endianness.
+#ifdef SK_CPU_BENDIAN
+    U32 sampleLo = sample >> 16;
+    U32 sampleHi = sample & 0xFFFF;
+#else
+    U32 sampleLo = sample & 0xFFFF;
+    U32 sampleHi = sample >> 16;
+#endif
+
+    // Convert 32-bit sample value into two floats in the [-1..1] range.
+    F vecX = mad(cast(sampleLo), 2.0f / 65535.0f, -1.0f);
+    F vecY = mad(cast(sampleHi), 2.0f / 65535.0f, -1.0f);
+
+    // Return the dot of the sample and the passed-in vector.
+    return mad(vecX,  x,
+               vecY * y);
+}
+
+STAGE(perlin_noise, SkRasterPipeline_PerlinNoiseCtx* ctx) {
+    F noiseVecX = (r + 0.5) * ctx->baseFrequencyX;
+    F noiseVecY = (g + 0.5) * ctx->baseFrequencyY;
+    r = g = b = a = 0.0f;
+    F stitchDataX = ctx->stitchDataInX;
+    F stitchDataY = ctx->stitchDataInY;
+    F ratio = 1.0f;
+
+    for (int octave = 0; octave < ctx->numOctaves; ++octave) {
+        // Calculate noise coordinates. (Roughly $noise_helper in Graphite)
+        F floorValX = floor_(noiseVecX);
+        F floorValY = floor_(noiseVecY);
+        F floorValZ = floorValX + 1.0f;
+        F floorValW = floorValY + 1.0f;
+        F fractValX = noiseVecX - floorValX;
+        F fractValY = noiseVecY - floorValY;
+
+        if (ctx->stitching) {
+            // If we are stitching, wrap the coordinates to the stitch position.
+            floorValX -= sk_bit_cast<F>(cond_to_mask(floorValX >= stitchDataX) &
+                                        sk_bit_cast<I32>(stitchDataX));
+            floorValY -= sk_bit_cast<F>(cond_to_mask(floorValY >= stitchDataY) &
+                                        sk_bit_cast<I32>(stitchDataY));
+            floorValZ -= sk_bit_cast<F>(cond_to_mask(floorValZ >= stitchDataX) &
+                                        sk_bit_cast<I32>(stitchDataX));
+            floorValW -= sk_bit_cast<F>(cond_to_mask(floorValW >= stitchDataY) &
+                                        sk_bit_cast<I32>(stitchDataY));
+        }
+
+        U32 permutationLookup = (U32)(iround(floorValX)) & 0xFF;
+        F latticeIdxX = cast(expand(gather(ctx->permutationData, permutationLookup)));
+        permutationLookup = (U32)(iround(floorValZ) & 0xFF);
+        F latticeIdxY = cast(expand(gather(ctx->permutationData, permutationLookup)));
+
+        U32 noiseCoords0 = (U32)(iround(latticeIdxX + floorValY)) & 0xFF;
+        U32 noiseCoords1 = (U32)(iround(latticeIdxY + floorValY)) & 0xFF;
+        U32 noiseCoords2 = (U32)(iround(latticeIdxX + floorValW)) & 0xFF;
+        U32 noiseCoords3 = (U32)(iround(latticeIdxY + floorValW)) & 0xFF;
+
+        // Calculate noise colors. (Roughly $noise_function in Graphite)
+        // Use Hermite interpolation on the fractional amount.
+        F noiseSmoothX = fractValX * fractValX * (3.0f - 2.0f * fractValX);
+        F noiseSmoothY = fractValY * fractValY * (3.0f - 2.0f * fractValY);
+
+        F color[4];
+        const uint32_t* channelNoiseData = reinterpret_cast<const uint32_t*>(ctx->noiseData);
+        for (int channel = 0; channel < 4; ++channel) {
+            U32 sampleA = gather(channelNoiseData, noiseCoords0);
+            U32 sampleB = gather(channelNoiseData, noiseCoords1);
+            U32 sampleC = gather(channelNoiseData, noiseCoords2);
+            U32 sampleD = gather(channelNoiseData, noiseCoords3);
+            channelNoiseData += 256;
+
+            F u = compute_perlin_vector(sampleA, fractValX,        fractValY);
+            F v = compute_perlin_vector(sampleB, fractValX - 1.0f, fractValY);
+            F A = lerp(u, v, noiseSmoothX);
+
+              v = compute_perlin_vector(sampleD, fractValX - 1.0f, fractValY - 1.0f);
+              u = compute_perlin_vector(sampleC, fractValX,        fractValY - 1.0f);
+            F B = lerp(u, v, noiseSmoothX);
+
+            color[channel] = lerp(A, B, noiseSmoothY);
+        }
+
+        r = mad(color[0], ratio, r);
+        g = mad(color[1], ratio, g);
+        b = mad(color[2], ratio, b);
+        a = mad(color[3], ratio, a);
+
+        if (ctx->noiseType != SkPerlinNoiseShaderType::kFractalNoise) {
+            // For kTurbulence the result is: abs(noise[-1,1])
+            r = abs_(r);
+            g = abs_(g);
+            b = abs_(b);
+            a = abs_(a);
+        }
+
+        // Scale inputs for the next round.
+        noiseVecX *= 2.0f;
+        noiseVecY *= 2.0f;
+        stitchDataX *= 2.0f;
+        stitchDataY *= 2.0f;
+        ratio *= 0.5f;
+    }
+
+    if (ctx->noiseType == SkPerlinNoiseShaderType::kFractalNoise) {
+        // For kFractalNoise the result is: noise[-1,1] * 0.5 + 0.5
+        r = mad(r, 0.5f, 0.5f);
+        g = mad(g, 0.5f, 0.5f);
+        b = mad(b, 0.5f, 0.5f);
+        a = mad(a, 0.5f, 0.5f);
+    }
+
+    r = clamp_01_(r) * a;
+    g = clamp_01_(g) * a;
+    b = clamp_01_(b) * a;
+    a = clamp_01_(a);
+}
 
 STAGE(mipmap_linear_init, SkRasterPipeline_MipmapCtx* ctx) {
     sk_unaligned_store(ctx->x, r);
