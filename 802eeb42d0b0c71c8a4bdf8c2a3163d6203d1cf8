@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7659f33_403aa300",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-22T16:52:23Z",
+      "side": 1,
+      "message": "I think the include/core changes are safe, but I\u0027m running the Canaries anyway.",
+      "revId": "802eeb42d0b0c71c8a4bdf8c2a3163d6203d1cf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
