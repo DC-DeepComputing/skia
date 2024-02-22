@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71eceb8f_84b69f35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-22T14:25:50Z",
+      "side": 1,
+      "message": "This isn\u0027t ready for review, right? (Still pending a fix for the CPU LCD blitter)?",
+      "revId": "ab3c04c531696bb31d53be55949de05c396910fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
