@@ -152,7 +152,7 @@ private:
             BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
         } else {
-            SkRuntimeEffect* blendEffect = GetKnownRuntimeEffect(StableKey::kBlend);
+            const SkRuntimeEffect* blendEffect = GetKnownRuntimeEffect(StableKey::kBlend);
 
             RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
                                            { sk_ref_sp(blendEffect) });
