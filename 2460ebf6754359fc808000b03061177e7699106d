@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "826ed1b1_f49b8119",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-22T15:38:21Z",
+      "side": 1,
+      "message": "Ok, this is good now. I mistakenly had duplicate identifiers on cached and uncached Pages, which led to them sharing textures.",
+      "revId": "2460ebf6754359fc808000b03061177e7699106d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
