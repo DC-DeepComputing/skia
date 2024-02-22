@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3417e709_ff138761",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-22T23:28:05Z",
+      "side": 1,
+      "message": "In particular, this file is compiled twice, once with just SK_GL set and once with just SK_VULKAN set. Some linkers produce an error for this. Some just pick one. This appears to have just picked one, and thus we get GL support, but not Vulkan support.",
+      "revId": "b121b6b10e2e42e8064d1e3ff72ddb4bcfe43795",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
