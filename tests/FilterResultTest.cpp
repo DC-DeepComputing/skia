@@ -127,6 +127,7 @@ public:
                SkScalarIsInt(m.getTranslateY());
     }
 
+    // FIXME and if we are rescaling and doing shader tiling, we should only need it on the 1st pass
     static bool IsShaderTilingExpected(const skif::Context& ctx,
                                        const skif::FilterResult& image,
                                        bool rescaling) {
@@ -139,8 +140,7 @@ public:
         }
         auto analysis = image.analyzeBounds(ctx.desiredOutput());
         if (!(analysis & BoundsAnalysis::kHasLayerFillingEffect) &&
-             (image.tileMode() == SkTileMode::kRepeat || image.tileMode() == SkTileMode::kMirror ||
-              (image.tileMode() == SkTileMode::kDecal && !rescaling))) {
+             (image.tileMode() == SkTileMode::kRepeat || image.tileMode() == SkTileMode::kMirror)) {
             return false;
         }
 
@@ -157,8 +157,7 @@ public:
                                          const skif::FilterResult& image,
                                          bool rescaling) {
         auto analysis = image.analyzeBounds(ctx.desiredOutput());
-        if (analysis & BoundsAnalysis::kHasLayerFillingEffect ||
-            (image.tileMode() == SkTileMode::kDecal && rescaling)) {
+        if (analysis & BoundsAnalysis::kHasLayerFillingEffect) {
             // The image won't be drawn directly so some form of shader is needed. The faster clamp
             // can be used when clamping explicitly or decal-with-transparent-padding.
             // TODO(b/323886180): Once rescaling can draw decals directly, decal-with-transparent
@@ -171,7 +170,7 @@ public:
                 // These cases should be covered by the more expensive shader tiling, but if we
                 // are rescaling with a deferrable tile mode, it can still be converted to a clamp.
                 SkASSERT(IsShaderTilingExpected(ctx, image, rescaling));
-                return rescaling;
+                return false;
             }
         }
         // If we got here, it will be drawn directly but a clamp can be needed if the data outside
@@ -2293,7 +2292,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
 
         // kDecal tiling is applied during the downsample by writing a transparent buffer, so the
         // tile mode can simplify to kClamp (which is more efficient for shader-based tiling).
-        const SkTileMode expectedTileMode = tm == SkTileMode::kDecal ? SkTileMode::kClamp : tm;
+        const SkTileMode expectedTileMode = tm; //tm == SkTileMode::kDecal ? SkTileMode::kClamp : tm;
         TestCase(r, "1-step rescale preserves tile mode",
                  kDefaultMaxAllowedPercentImageDiff,
                  /*transparentCheckBorderTolerance=*/tm == SkTileMode::kDecal ? 1 : 0)
@@ -2417,7 +2416,7 @@ DEF_TEST_SUITE(RescaleWithTileMode, r,
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
                 .applyCrop({4, 4, 76, 76}, SkTileMode::kDecal, Expect::kDeferredImage,
                            /*expectedTileMode=*/tm)
-                .rescale({0.5f, 0.5f}, Expect::kNewImage, /*expectedTileMode=*/SkTileMode::kClamp)
+                .rescale({0.5f, 0.5f}, Expect::kNewImage, /*expectedTileMode=*/SkTileMode::kDecal)
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
     }
 }
@@ -2436,7 +2435,7 @@ DEF_TEST_SUITE(RescaleWithTransform, r,
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
                 .applyTransform(SkMatrix::RotateDeg(45.f, {16.f, 16.f}), Expect::kDeferredImage)
-                .rescale({1.f, 1.f}, Expect::kNewImage, SkTileMode::kClamp)
+                .rescale({1.f, 1.f}, Expect::kNewImage, SkTileMode::kDecal)
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
 
         TestCase(r, "Near-identity rescale defers integer translation",
@@ -2452,7 +2451,7 @@ DEF_TEST_SUITE(RescaleWithTransform, r,
                 .source({0, 0, 50, 50})
                 .applyCrop({0, 0, 50, 50}, tm, Expect::kDeferredImage)
                 .applyTransform(SkMatrix::RotateDeg(15.f, {25.f, 25.f}), Expect::kDeferredImage)
-                .rescale(kNearlyIdentity, Expect::kNewImage, SkTileMode::kClamp)
+                .rescale(kNearlyIdentity, Expect::kNewImage, SkTileMode::kDecal)
                 .run(/*requestedOutput=*/{-5, -5, 55, 55});
 
         TestCase(r, "1-step rescale applies complex transform in first step",
@@ -2461,7 +2460,7 @@ DEF_TEST_SUITE(RescaleWithTransform, r,
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
                 .applyTransform(SkMatrix::RotateDeg(45.f, {16.f, 16.f}), Expect::kDeferredImage)
-                .rescale({0.5f, 0.5f}, Expect::kNewImage, SkTileMode::kClamp)
+                .rescale({0.5f, 0.5f}, Expect::kNewImage, SkTileMode::kDecal)
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
 
         const bool periodic = tm == SkTileMode::kRepeat || tm == SkTileMode::kMirror;
@@ -2471,7 +2470,7 @@ DEF_TEST_SUITE(RescaleWithTransform, r,
                 .source({16, 16, 64, 64})
                 .applyCrop({16, 16, 64, 64}, tm, Expect::kDeferredImage)
                 .applyTransform(SkMatrix::RotateDeg(45.f, {16.f, 16.f}), Expect::kDeferredImage)
-                .rescale({0.25f, 0.25f}, Expect::kNewImage, /*expectedTileMode=*/SkTileMode::kClamp)
+                .rescale({0.25f, 0.25f}, Expect::kNewImage, /*expectedTileMode=*/SkTileMode::kDecal)
                 .run(/*requestedOutput=*/{0, 0, 80, 80});
     }
 }
@@ -2482,7 +2481,7 @@ DEF_TEST_SUITE(RescaleWithColorFilter, r,
         // The color filter (simple and transparency-affecting) should be applied with a 1px
         // boundary around the rest of the image being rescaled when decal-tiled, so its result is
         // clamped tiled instead (vs. having to prepare and scale a larger, flood-filled image).
-        SkTileMode expectedTileMode = tm == SkTileMode::kDecal ? SkTileMode::kClamp : tm;
+        SkTileMode expectedTileMode = tm; //tm == SkTileMode::kDecal ? SkTileMode::kClamp : tm;
 
         TestCase(r, "Identity rescale applies color filter but defers tile mode")
                 .source({0, 0, 50, 50})
