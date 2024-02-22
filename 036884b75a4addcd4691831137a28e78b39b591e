@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6fac32a_be93e7b5",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-22T14:06:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f31ee484_1906ee6a",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 53
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8718284_ddcb90e9",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fcd5c29_80d5e671",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-22T14:06:23Z",
+      "side": 1,
+      "message": "afaik the Blurs are the only known runtime effects that modify their code in that way. I was thinking of having them burn the size into the request. i.e., have:\n  k1DBlur4\n  k1DBlur8\n  k1DBlur12\n  k1DBlur16\n  k1DBlur20\n  k1DBlur28\nand a similar set for k2DBlur.",
+      "parentUuid": "e8718284_ddcb90e9",
+      "range": {
+        "startLine": 13,
+        "startChar": 58,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58469fe3_ffadf530",
         "filename": "src/core/SkKnownRuntimeEffects.h",
         "patchSetId": 24
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-21T21:10:37Z",
       "side": 1,
       "message": "I grepped our source for `MakeRuntimeEffect` and got 57 hits. A few of these are not relevant, but still, I don\u0027t think 100 gives us enough headroom if we want these numbers to be stable over time.\n\nWe should also document here what the consequences would be for increasing these values, because at some point someone will want to know.",
+      "range": {
+        "startLine": 23,
+        "startChar": 59,
+        "endLine": 23,
+        "endChar": 62
+      },
+      "revId": "036884b75a4addcd4691831137a28e78b39b591e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "209a25da_abccda06",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-22T14:06:23Z",
+      "side": 1,
+      "message": "Done - I also upped kSkiaBuiltInReservedCnt since we currently have 53 built-ins.",
+      "parentUuid": "58469fe3_ffadf530",
       "range": {
         "startLine": 23,
         "startChar": 59,
