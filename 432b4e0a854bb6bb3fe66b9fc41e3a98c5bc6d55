@@ -70,6 +70,24 @@
       "parentUuid": "398e0ac2_8723db06",
       "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ab60c4_32dca8be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T16:51:15Z",
+      "side": 1,
+      "message": "And the documentation written by the one who did the work in Chromium... https://github.com/adetaylor/cxx/blob/book/book/src/building.md#linking-the-c-and-rust-together",
+      "parentUuid": "bde2189a_1db4d6e9",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
