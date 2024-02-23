@@ -307,7 +307,6 @@ void SkTypeface_FreeType::FaceRec::setupAxes(const SkFontData& data) {
         if (static_cast<FT_UInt>(data.getAxisCount()) != variations->num_axis) {
             LOG_INFO("INFO: font %s has %d variations, but %d were specified.\n",
                      rec->fFace->family_name, variations->num_axis, data.getAxisCount());
-            return;
         }
     )
 
