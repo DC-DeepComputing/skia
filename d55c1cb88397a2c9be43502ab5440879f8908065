@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e730a387_dd5dba25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-23T21:13:55Z",
+      "side": 1,
+      "message": "The canary failure is just a test flake - all the chromium bots managed to build this time.",
+      "revId": "d55c1cb88397a2c9be43502ab5440879f8908065",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
