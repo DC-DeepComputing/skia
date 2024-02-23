@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eb1c262_ba7e2833",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-23T10:31:00Z",
+      "side": 1,
+      "message": "After adding the alias, then running `bazelisk build //:ganesh_epoxy_factory` I got a couple of errors, which I have also fixed:\n\n - Add `GrGLCoreFunctions.h` to the `CORE_FILES` list in `src/gpu/ganesh/gl/BUILD.bazel`\n - In `include/gpu/gl/epoxy/BUILD.bazel` the path to make the header visible to sources from `src/gpu/ganesh/gl/epoxy` was wrong.\n \nNow the only part that fails is that in the hermetic sandbox there is no Epoxy headers, so of course the build cannot complete. I tried `bazelisk build --spawn_strategy\u003dlocal ...` but I that resulted in errors like this:\n\n```\nERROR: /home/aperez/devel/skia/src/core/BUILD.bazel:813:16: Compiling src/core/SkATrace.cpp failed: undeclared inclusion(s) in rule \u0027//src/core:core\u0027:\nthis rule is missing dependency declarations for the following files included by \u0027src/core/SkATrace.cpp\u0027:\n  \u0027bazel-out/k8-fastbuild/bin/modules/skcms/skcms_TransformBaseline.cppmap\u0027\n  \u0027bazel-out/k8-fastbuild/bin/modules/skcms/skcms_TransformHsw.cppmap\u0027\n  \u0027bazel-out/k8-fastbuild/bin/modules/skcms/skcms_TransformSkx.cppmap\u0027\n  \u0027bazel-out/k8-fastbuild/bin/modules/skcms/skcms_public.cppmap\u0027\n  \u0027bazel-out/k8-fastbuild/bin/external/skia_user_config/user_config.cppmap\u0027\n  \u0027bazel-out/k8-fastbuild/bin/src/opts/hsw.cppmap\u0027\n  \u0027bazel-out/k8-fastbuild/bin/src/opts/skx.cppmap\u0027\n```\n\nAre unsandboxed builds supposed to work?\n\nUsing GN+Ninja the build completes fine, maybe I am using Bazel wrongly 😅️",
+      "parentUuid": "a5689615_3b36719f",
+      "revId": "da2bb21e642961cca9616c343b90741851803613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24851353_21524ee7",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-02-22T14:48:50Z",
       "side": 1,
       "message": "nit: 2024",
+      "range": {
+        "startLine": 2,
+        "startChar": 15,
+        "endLine": 2,
+        "endChar": 16
+      },
+      "revId": "da2bb21e642961cca9616c343b90741851803613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56ad99d6_0812e601",
+        "filename": "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-02-23T10:31:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24851353_21524ee7",
       "range": {
         "startLine": 2,
         "startChar": 15,
