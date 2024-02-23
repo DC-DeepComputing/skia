@@ -16,6 +16,24 @@
       "message": "I had to revert this - it won\u0027t build correctly in Chromium (because they use their own implementation of SkMemory [1]). I think we can simply add a definition of `sk_malloc_size` to their code first (it will do nothing until this CL lands and rolls), then re-land this.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:skia/ext/SkMemory_new_handler.cpp",
       "revId": "57f975e8e391d4174844dd4427224d477e213036",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b48b87b_2ec0bef6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-23T19:06:59Z",
+      "side": 1,
+      "message": "I\u0027ve put together a chromium CL here that should let us re-land this: https://crrev.com/c/5321102",
+      "parentUuid": "052dbe48_48fe2280",
+      "revId": "57f975e8e391d4174844dd4427224d477e213036",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
