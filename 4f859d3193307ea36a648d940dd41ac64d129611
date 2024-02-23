@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17c40266_af4550f7",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T22:04:23Z",
+      "side": 1,
+      "message": "I don\u0027t understand? How can this be incorrect?\n\nEdit: Ah, I think I assumed the Harfbuzz code *needed* the unicode code, but I guess that\u0027s not true (or not meant to be true).",
+      "parentUuid": "b04ca0ca_46388bd5",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f3c5c68_084e3753",
         "filename": "modules/skshaper/src/BUILD.bazel",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-23T19:53:10Z",
       "side": 1,
       "message": "This is rather awkward also. These two really don\u0027t (or shouldn\u0027t) be related, other than the harfbuzz code may (incorrectly) be depending on the skunicode code. Is this just here until `SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS` can be defined everywhere?",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be85e17e_1a5dca3b",
+        "filename": "modules/skshaper/src/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T22:04:23Z",
+      "side": 1,
+      "message": "I had thought that our harfbuzz code needed SkUnicode. If that\u0027s not the case, then I guess we need another header for SkShaper_unicode.h?",
+      "parentUuid": "0f3c5c68_084e3753",
       "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -60,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3470a3f0_f6160c00",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T22:04:23Z",
+      "side": 1,
+      "message": "This function already exists (I just moved it from below). We seem to have a mix of BiDi and Bidi. I can make the new APIs all be Bidi.",
+      "parentUuid": "d316772c_9a1f1cd8",
+      "range": {
+        "startLine": 76,
+        "startChar": 57,
+        "endLine": 76,
+        "endChar": 60
+      },
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f109b2ae_07d6a89e",
         "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
         "patchSetId": 4
@@ -71,6 +131,30 @@
       "writtenOn": "2024-02-23T19:53:10Z",
       "side": 1,
       "message": "Why would this be in the `HB` namespace? This has nothing to do with HarfBuzz, which is why it was split out into this file. This is an implementation of a Shaper class which uses SkUnicode.",
+      "range": {
+        "startLine": 87,
+        "startChar": 21,
+        "endLine": 87,
+        "endChar": 24
+      },
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cf94ffa_2bb00eb4",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T22:04:23Z",
+      "side": 1,
+      "message": "Gotcha, I got some wires crossed then. I\u0027ll re-do it.",
+      "parentUuid": "f109b2ae_07d6a89e",
       "range": {
         "startLine": 87,
         "startChar": 21,
