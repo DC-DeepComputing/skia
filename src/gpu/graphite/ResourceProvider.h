@@ -94,6 +94,19 @@ public:
 #if defined(GRAPHITE_TEST_UTILS)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
     const SharedContext* sharedContext() { return fSharedContext; }
+
+    struct Stats {
+        void reset();
+
+        int numGraphicsPipelineCreations() const { return fShaderCompilations; }
+        void incGraphicsPipelineCreation() { ++fShaderCompilations; }
+
+    private:
+        std::atomic<int> fShaderCompilations{0};
+    };
+
+    void resetStats() { fStats.reset(); }
+    int numGraphicsPipelineCreations() const { return fStats.numGraphicsPipelineCreations(); }
 #endif
 
 #ifdef SK_BUILD_FOR_ANDROID
@@ -141,6 +154,10 @@ private:
                                                   bool fromAndroidWindow) const;
 #endif
     virtual void onDeleteBackendTexture(const BackendTexture&) = 0;
+
+#if defined(GRAPHITE_TEST_UTILS)
+    Stats fStats;
+#endif
 };
 
 } // namespace skgpu::graphite

@@ -31,7 +31,7 @@ namespace {
 void empty_test(const KeyContext& keyContext,
                 PipelineDataGatherer* gatherer,
                 skiatest::Reporter* reporter) {
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
@@ -53,7 +53,7 @@ void no_shader_option_test(const KeyContext& keyContext,
                            skiatest::Reporter* reporter) {
     SkBlendMode blendModes[] = { SkBlendMode::kSrcOver };
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
     paintOptions.setBlendModes(blendModes);
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
@@ -74,7 +74,7 @@ void no_shader_option_test(const KeyContext& keyContext,
 void no_blend_mode_option_test(const KeyContext& keyContext,
                                PipelineDataGatherer* gatherer,
                                skiatest::Reporter* reporter) {
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
     paintOptions.setShaders({ PrecompileShaders::Color() });
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
@@ -105,7 +105,7 @@ void big_test(const KeyContext& keyContext,
     //  |
     //  |- 4-built-in-blend-modes (just 1 since all are PorterDuff)
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     // first, shaders. First top-level option (sweepGrad_0)
     sk_sp<PrecompileShader> sweepGrad_0 = PrecompileShaders::SweepGradient();
@@ -163,17 +163,17 @@ void big_test(const KeyContext& keyContext,
 template <typename T>
 std::vector<sk_sp<T>> create_runtime_combos(
         skiatest::Reporter* reporter,
-        SkRuntimeEffect::Result effectFactory(SkString),
+        SkRuntimeEffect::Result effectFactory(SkString, uint32_t stableKey),
         sk_sp<T> precompileFactory(sk_sp<SkRuntimeEffect>,
                                    SkSpan<const PrecompileChildOptions> childOptions),
         const char* redCode,
         const char* greenCode,
         const char* combineCode) {
-    auto [redEffect, error1] = effectFactory(SkString(redCode));
+    auto [redEffect, error1] = effectFactory(SkString(redCode), /* stableKey= */ 0);
     REPORTER_ASSERT(reporter, redEffect, "%s", error1.c_str());
-    auto [greenEffect, error2] = effectFactory(SkString(greenCode));
+    auto [greenEffect, error2] = effectFactory(SkString(greenCode), /* stableKey= */ 0);
     REPORTER_ASSERT(reporter, greenEffect, "%s", error2.c_str());
-    auto [combineEffect, error3] = effectFactory(SkString(combineCode));
+    auto [combineEffect, error3] = effectFactory(SkString(combineCode), /* stableKey= */ 0);
     REPORTER_ASSERT(reporter, combineEffect, "%s", error3.c_str());
 
     sk_sp<T> red = precompileFactory(redEffect, {});
@@ -204,7 +204,7 @@ void runtime_effect_test(const KeyContext& keyContext,
     //  |       0: redBlender   | greenBlender
     //  |       1: greenBlender | redBlender
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     // shaders
     {

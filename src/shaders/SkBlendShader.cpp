@@ -131,7 +131,6 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender,
 
     // This isn't a built-in blend mode; we might as well use a runtime effect to evaluate it.
     SkRuntimeEffect* blendEffect = GetKnownRuntimeEffect(StableKey::kBlend);
-
     SkRuntimeEffect::ChildPtr children[] = {std::move(src), std::move(dst), std::move(blender)};
     return blendEffect->makeShader(/*uniforms=*/{}, children);
 }

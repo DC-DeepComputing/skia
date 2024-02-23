@@ -42,7 +42,10 @@ void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
 
 void PaintParamsKeyBuilder::popStack() {
     SkASSERT(!fStack.empty());
-    SkASSERT(fStack.back().fNumActualChildren == fStack.back().fNumExpectedChildren);
+    SkASSERTF(fStack.back().fNumActualChildren == fStack.back().fNumExpectedChildren,
+              "Actual %d != Expected %d\n",
+              fStack.back().fNumActualChildren,
+              fStack.back().fNumExpectedChildren);
     fStack.pop_back();
 }
 
@@ -80,7 +83,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index, true); /**/
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,

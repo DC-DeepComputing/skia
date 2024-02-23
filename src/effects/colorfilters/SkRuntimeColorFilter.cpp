@@ -89,7 +89,8 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
     buffer.readString(&sksl);
     sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl));
+    /* TODO: serialize stableKey */
+    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl), /* stableKey= */ 0);
     if constexpr (!kLenientSkSLDeserialization) {
         if (!buffer.validate(effect != nullptr)) {
             return nullptr;
@@ -140,7 +141,7 @@ sk_sp<SkColorFilter> SkColorFilters::Lerp(float weight, sk_sp<SkColorFilter> cf0
                                       "uniform half weight;"
                                       "half4 main(half4 color) {"
                                       "return mix(cf0.eval(color), cf1.eval(color), weight);"
-                                      "}")
+                                      "}", kLerpStableKey)
                     .release();
     SkASSERT(effect);
 
@@ -155,6 +156,7 @@ sk_sp<SkColorFilter> SkLumaColorFilter::Make() {
         "half4 main(half4 inColor) {"
             "return saturate(dot(half3(0.2126, 0.7152, 0.0722), inColor.rgb)).000r;"
         "}"
+        , kLumaColorFilterStableKey
     ).release();
     SkASSERT(effect);
 
@@ -173,8 +175,8 @@ sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor color
                  ": alpha < 2.5 ? color2"
                  ": alpha < 3.5 ? color3"
                  ": alpha < 4.5 ? color4 : color5;"
-        "}"
-    ).release();
+        "}",
+        kOverDrawColorFilterStableKey).release();
 
     if (effect) {
         auto data = SkData::MakeUninitialized(kNumColors * sizeof(SkPMColor4f));
@@ -186,4 +188,3 @@ sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor color
     }
     return nullptr;
 }
-

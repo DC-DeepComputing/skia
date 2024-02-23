@@ -45,7 +45,7 @@ class RuntimeFunctions : public skiagm::GM {
 
     void onDraw(SkCanvas* canvas) override {
         SkRuntimeEffect::Result result =
-                SkRuntimeEffect::MakeForShader(SkString(RUNTIME_FUNCTIONS_SRC));
+                SkRuntimeEffect::MakeForShader(SkString(RUNTIME_FUNCTIONS_SRC), /* stableKey= */ 0);
         SkASSERTF(result.effect, "%s", result.errorText.c_str());
 
         SkMatrix localM;
