@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41c56424_f6d979c8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-23T18:29:45Z",
+      "side": 1,
+      "message": "This bounds computation gets repeated below in lines 1463-4. That later computation is specifically there to fallback to a non-atlas method if a path is too large to fit in an atlas, which is logically similar to the size check here.\n\nI wonder if there\u0027s a good way to restructure this to do the bounds computation once and also somehow unify it with `isSuitableForAtlasing`.",
+      "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5ccb62e_74cc68a4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1438,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-23T18:29:45Z",
+      "side": 1,
+      "message": "Could the literal `73` be defined as a constant in AtlasProvider? I also wonder if the PathAtlas selection could be moved to AtlasProvider as well (e.g. via a new method such as `AtlasProvider::choosePathAtlas(Rect bounds, PathRendererStrategy preferredStrategy)` that is allowed to return null if bounds is too big?",
+      "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb61be9b_230f8138",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1455,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-02-23T18:29:45Z",
+      "side": 1,
+      "message": "nit: I noticed that this check is missing `kComputeMSAA16`. Skipping the bounds check here is mainly to prevent the tessellation fall-back for debugging - I wonder if this could be simplified to:\n\n    if (!msaaSupported || strategy !\u003d PathRendererStrategy::kDefault) {",
+      "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
