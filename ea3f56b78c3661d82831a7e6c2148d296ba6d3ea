@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f490a0_2d9c0ac1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-23T17:04:02Z",
+      "side": 1,
+      "message": "I\u0027m not seeing a huge perf gain with this but my tests are pretty small. Still I\u0027d like to turn it on to see if it helps with the SkRectMemcpy issue.",
+      "revId": "ea3f56b78c3661d82831a7e6c2148d296ba6d3ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
