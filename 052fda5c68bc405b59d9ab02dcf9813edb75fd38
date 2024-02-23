@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a95d6bd8_d08ca7cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-23T22:06:25Z",
+      "side": 1,
+      "message": "Not yet, I\u0027m going to roll back the software implementation briefly.",
+      "revId": "052fda5c68bc405b59d9ab02dcf9813edb75fd38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
