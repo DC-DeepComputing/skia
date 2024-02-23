@@ -106,6 +106,24 @@
       "parentUuid": "79ab60c4_32dca8be",
       "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a69d0e4_ba17da13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T18:16:03Z",
+      "side": 1,
+      "message": "At the moment Chromium is using a gn based build for rust and is taking the \"undefined behavior but works\" approach of just throwing the .rlib files on the c++ linker line, at least that\u0027s what it looks like. This isn\u0027t very helpful in relation to our bazel based rust build.",
+      "parentUuid": "79ab60c4_32dca8be",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
