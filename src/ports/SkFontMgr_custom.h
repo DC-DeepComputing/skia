@@ -76,12 +76,14 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
+template<typename BackendTypeface, typename FontScanner> class SkFontMgr_Custom;
+
 /**
  *  SkFontStyleSet_Custom
  *
  *  This class is used by SkFontMgr_Custom to hold SkTypeface_Custom families.
  */
-class SkFontStyleSet_Custom : public SkFontStyleSet {
+ class SkFontStyleSet_Custom : public SkFontStyleSet {
 public:
     explicit SkFontStyleSet_Custom(SkString familyName);
 
@@ -97,7 +99,7 @@ private:
     skia_private::TArray<sk_sp<SkTypeface>> fStyles;
     SkString fFamilyName;
 
-    friend class SkFontMgr_Custom;
+   friend class SkFontMgr_Custom<SkTypeface_FreeType, SkFontScanner_FreeType>;
 };
 
 /**
@@ -107,7 +109,7 @@ private:
  *  one SkFontStyleSet_Custom for each family. This class may be modified
  *  to load fonts from any source by changing the initialization.
  */
-class SkFontMgr_Custom : public SkFontMgr {
+template<typename BackendTypeface = SkTypeface_FreeType, typename FontScanner = SkFontScanner_FreeType> class SkFontMgr_Custom : public SkFontMgr {
 public:
     typedef skia_private::TArray<sk_sp<SkFontStyleSet_Custom>> Families;
     class SystemFontLoader {
@@ -138,5 +140,9 @@ private:
     sk_sp<SkFontStyleSet> fDefaultFamily;
     std::unique_ptr<SkFontScanner> fScanner;
 };
+
+
+template class SkFontMgr_Custom<SkTypeface_FreeType, SkFontScanner_FreeType>;
+using SkFontMgr_Custom_FreeType = SkFontMgr_Custom<SkTypeface_FreeType, SkFontScanner_FreeType>;
 
 #endif
