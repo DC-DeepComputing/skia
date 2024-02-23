@@ -16,6 +16,24 @@
       "message": "@bungeman@google.com: What do you think of this approach as a preparation for creating a `SkFontMgr_Custom_Fontations` - are you okay with the templated approach? Or would you prefer if we create a duplicated implementation in a separate file? Other suggestions?",
       "revId": "ab38b3fff86ab09fcdc67f8ca2b39e12e00d1d39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c74e88_f062052a",
+        "filename": "src/ports/SkFontMgr_custom.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T15:59:12Z",
+      "side": 1,
+      "message": "I don\u0027t like it. The point of having the `SkFontScanner` interface was to pass one of those in, not to duck type. The same goes for the (yet to be decided on) typeface factory, it should be an interface. Since there is essentially no code sharing between the specializations of this template it means that one would need to write new code for each anyway and the template stuff is just extra line noise. Also, users should be able to make their own font scanners and factories and pass them in and not need to write another copy of this.\n\nIn other words, this is just ignoring the SkFontScanner interface and just writing a SkFontMgr_Custom_Fontations, but in a convoluted way. That\u0027s fine, but also uninteresting, as the idea is to eventually have the other \"more real\" FreeType based font managers agnostic to which subclass of SkTypeface they\u0027re actually creating from data.",
+      "parentUuid": "0958fad2_5100062d",
+      "revId": "ab38b3fff86ab09fcdc67f8ca2b39e12e00d1d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
