@@ -20,6 +20,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkMath.h"
+#include "include/private/base/SkOnce.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <algorithm>
@@ -30,6 +31,7 @@
 class SkArenaAlloc;
 class SkReadBuffer;
 enum class SkPerlinNoiseShaderType;
+struct SkStageRec;
 class SkWriteBuffer;
 
 class SkPerlinNoiseShader : public SkShaderBase {
@@ -291,6 +293,10 @@ public:
                 fTileSize, fSeed, fBaseFrequencyX, fBaseFrequencyY, mat);
     }
 
+#ifdef SK_RASTER_PIPELINE_PERLIN_NOISE
+    bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const override;
+#endif
+
 protected:
     void flatten(SkWriteBuffer&) const override;
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
@@ -307,6 +313,11 @@ private:
     const SkScalar fSeed;
     const SkISize fTileSize;
     const bool fStitchTiles;
+
+#ifdef SK_RASTER_PIPELINE_PERLIN_NOISE
+    mutable SkOnce fInitPaintingDataOnce;
+    std::unique_ptr<PaintingData> fPaintingData;
+#endif
 
     friend void SkRegisterPerlinNoiseShaderFlattenable();
 };
