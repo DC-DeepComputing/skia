@@ -1,5 +1,7 @@
 // Copyright 2019 Google LLC.
 
+#include "modules/skparagraph/src/TextLine.h"
+
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
@@ -20,8 +22,8 @@
 #include "modules/skparagraph/src/Decorations.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
-#include "modules/skparagraph/src/TextLine.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
 
 #include <algorithm>
 #include <iterator>
@@ -685,9 +687,8 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         font.setHinting(SkFontHinting::kSlight);
         font.setSubpixel(true);
 
-        std::unique_ptr<SkShaper> shaper = SkShaper::MakeShapeDontWrapOrReorder(
-                            fOwner->getUnicode()->copy(),
-                            fallback ? fallback : SkFontMgr::RefEmpty());
+        std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShapeDontWrapOrReorder(
+                fOwner->getUnicode()->copy(), fallback ? fallback : SkFontMgr::RefEmpty());
         shaper->shape(ellipsis.c_str(),
                       ellipsis.size(),
                       font,

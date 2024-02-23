@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontArguments.h"
@@ -661,6 +663,27 @@ private:
                SkScalar width,
                RunHandler*) const override;
 
+    std::unique_ptr<ScriptRunIterator> makeScriptRunIterator(
+            const char* utf8, size_t utf8Bytes, SkFourByteTag scriptTag) const override {
+        std::unique_ptr<SkShaper::ScriptRunIterator> script =
+                SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes, scriptTag);
+        if (script) {
+            return script;
+        }
+        return std::make_unique<SkShaper::TrivialScriptRunIterator>(scriptTag, utf8Bytes);
+    }
+    std::unique_ptr<BiDiRunIterator> makeBiDiRunIterator(SkUnicode* unicode,
+                                                         const char* utf8,
+                                                         size_t utf8Bytes,
+                                                         uint8_t bidiLevel) const override {
+        std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
+                SkShapers::HB::BidiRunIterator(unicode, utf8, utf8Bytes, bidiLevel);
+        if (bidi) {
+            return bidi;
+        }
+        return std::make_unique<SkShaper::TrivialBiDiRunIterator>(bidiLevel, utf8Bytes);
+    }
+
     virtual void wrap(char const * const utf8, size_t utf8Bytes,
                       const BiDiRunIterator&,
                       const LanguageRunIterator&,
@@ -755,10 +778,8 @@ void ShaperHarfBuzz::shape(const char* utf8, size_t utf8Bytes,
                            RunHandler* handler) const
 {
     SkBidiIterator::Level defaultLevel = leftToRight ? SkBidiIterator::kLTR : SkBidiIterator::kRTL;
-    std::unique_ptr<BiDiRunIterator> bidi(MakeSkUnicodeBidiRunIterator(fUnicode.get(),
-                                                                       utf8,
-                                                                       utf8Bytes,
-                                                                       defaultLevel));
+    std::unique_ptr<BiDiRunIterator> bidi(
+            SkShapers::HB::BidiRunIterator(fUnicode.get(), utf8, utf8Bytes, defaultLevel));
 
     if (!bidi) {
         return;
@@ -769,7 +790,7 @@ void ShaperHarfBuzz::shape(const char* utf8, size_t utf8Bytes,
         return;
     }
 
-    std::unique_ptr<ScriptRunIterator> script(MakeSkUnicodeHbScriptRunIterator(utf8, utf8Bytes));
+    std::unique_ptr<ScriptRunIterator> script(SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes));
     if (!script) {
         return;
     }
@@ -1430,30 +1451,49 @@ ShapedRun ShaperHarfBuzz::shape(char const * const utf8,
 
 }  // namespace
 
+#if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 std::unique_ptr<SkShaper::ScriptRunIterator>
 SkShaper::MakeHbIcuScriptRunIterator(const char* utf8, size_t utf8Bytes) {
-    return SkShaper::MakeSkUnicodeHbScriptRunIterator(utf8, utf8Bytes);
+    return SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes);
 }
 
 std::unique_ptr<SkShaper::ScriptRunIterator>
 SkShaper::MakeSkUnicodeHbScriptRunIterator(const char* utf8, size_t utf8Bytes) {
-    return std::make_unique<SkUnicodeHbScriptRunIterator>(utf8, utf8Bytes, HB_SCRIPT_UNKNOWN);
+    return SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes);
 }
 
 std::unique_ptr<SkShaper::ScriptRunIterator> SkShaper::MakeSkUnicodeHbScriptRunIterator(
         const char* utf8, size_t utf8Bytes, SkFourByteTag script) {
-    return std::make_unique<SkUnicodeHbScriptRunIterator>(
-            utf8, utf8Bytes, hb_script_from_iso15924_tag((hb_tag_t)script));
+    return SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes, script);
 }
 
 std::unique_ptr<SkShaper> SkShaper::MakeShaperDrivenWrapper(sk_sp<SkFontMgr> fontmgr) {
-    return MakeHarfBuzz(std::move(fontmgr), true);
+    return SkShapers::HB::MakeShaperDrivenWrapper(fontmgr);
 }
+
 std::unique_ptr<SkShaper> SkShaper::MakeShapeThenWrap(sk_sp<SkFontMgr> fontmgr) {
-    return MakeHarfBuzz(std::move(fontmgr), false);
+    return SkShapers::HB::MakeShapeThenWrap(fontmgr);
 }
+
 std::unique_ptr<SkShaper> SkShaper::MakeShapeDontWrapOrReorder(std::unique_ptr<SkUnicode> unicode,
                                                                sk_sp<SkFontMgr> fontmgr) {
+    return SkShapers::HB::ShapeDontWrapOrReorder(std::move(unicode), std::move(fontmgr));
+}
+
+void SkShaper::PurgeHarfBuzzCache() { SkShapers::HB::PurgeCaches(); }
+#endif  // !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
+
+namespace SkShapers::HB {
+std::unique_ptr<SkShaper> ShaperDrivenWrapper(sk_sp<SkFontMgr> fallback) {
+    return MakeHarfBuzz(std::move(fallback), true);
+}
+
+std::unique_ptr<SkShaper> ShapeThenWrap(sk_sp<SkFontMgr> fallback) {
+    return MakeHarfBuzz(std::move(fallback), false);
+}
+
+std::unique_ptr<SkShaper> ShapeDontWrapOrReorder(std::unique_ptr<SkUnicode> unicode,
+                                                 sk_sp<SkFontMgr> fallback) {
     HBBuffer buffer(hb_buffer_create());
     if (!buffer) {
         SkDEBUGF("Could not create hb_buffer");
@@ -1464,11 +1504,22 @@ std::unique_ptr<SkShaper> SkShaper::MakeShapeDontWrapOrReorder(std::unique_ptr<S
         return nullptr;
     }
 
-    return std::make_unique<ShapeDontWrapOrReorder>
-        (std::move(unicode), std::move(buffer), std::move(fontmgr));
+    return std::make_unique<::ShapeDontWrapOrReorder>(
+            std::move(unicode), std::move(buffer), std::move(fallback));
 }
 
-void SkShaper::PurgeHarfBuzzCache() {
+std::unique_ptr<SkShaper::ScriptRunIterator> ScriptRunIterator(const char* utf8, size_t utf8Bytes) {
+    return std::make_unique<SkUnicodeHbScriptRunIterator>(utf8, utf8Bytes, HB_SCRIPT_UNKNOWN);
+}
+std::unique_ptr<SkShaper::ScriptRunIterator> ScriptRunIterator(const char* utf8,
+                                                               size_t utf8Bytes,
+                                                               SkFourByteTag script) {
+    return std::make_unique<SkUnicodeHbScriptRunIterator>(
+            utf8, utf8Bytes, hb_script_from_iso15924_tag((hb_tag_t)script));
+}
+
+void PurgeCaches() {
     HBLockedFaceCache cache = get_hbFace_cache();
     cache.reset();
 }
+}  // namespace SkShapers::HB

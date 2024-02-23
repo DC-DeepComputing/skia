@@ -46,11 +46,18 @@ private:
                const Feature*, size_t featureSize,
                SkScalar width,
                RunHandler*) const override;
-};
 
-std::unique_ptr<SkShaper> SkShaper::MakePrimitive() {
-    return std::make_unique<SkShaperPrimitive>();
-}
+    std::unique_ptr<ScriptRunIterator> makeScriptRunIterator(
+            const char*, size_t utf8Bytes, SkFourByteTag scriptTag) const override {
+        return std::make_unique<SkShaper::TrivialScriptRunIterator>(scriptTag, utf8Bytes);
+    }
+    std::unique_ptr<BiDiRunIterator> makeBiDiRunIterator(SkUnicode*,
+                                                         const char*,
+                                                         size_t utf8Bytes,
+                                                         uint8_t bidiLevel) const override {
+        return std::make_unique<SkShaper::TrivialBiDiRunIterator>(bidiLevel, utf8Bytes);
+    }
+};
 
 static inline bool is_breaking_whitespace(SkUnichar c) {
     switch (c) {
@@ -242,3 +249,11 @@ void SkShaperPrimitive::shape(const char* utf8, size_t utf8Bytes,
         utf8Bytes -= bytesConsumed;
     } while (0 < utf8Bytes);
 }
+
+#if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
+std::unique_ptr<SkShaper> SkShaper::MakePrimitive() { return SkShapers::Primitive(); }
+#endif
+
+namespace SkShapers {
+std::unique_ptr<SkShaper> Primitive() { return std::make_unique<SkShaperPrimitive>(); }
+}  // namespace SkShapers

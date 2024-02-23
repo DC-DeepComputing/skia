@@ -3,8 +3,6 @@
 
 #include "tests/Test.h"
 
-#if !defined(SK_BUILD_FOR_GOOGLE3)
-
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPoint.h"
@@ -15,6 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
 #include "src/base/SkZip.h"
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -117,7 +116,7 @@ struct RunHandler final : public SkShaper::RunHandler {
 };
 
 void shaper_test(skiatest::Reporter* reporter, const char* name, SkData* data) {
-    auto shaper = SkShaper::Make(SkFontMgr::RefEmpty());  // no fallback
+    auto shaper = SkShapers::HB::ShaperDrivenWrapper(SkFontMgr::RefEmpty());  // no fallback
     if (!shaper) {
         ERRORF(reporter, "Could not create shaper.");
         return;
@@ -128,8 +127,8 @@ void shaper_test(skiatest::Reporter* reporter, const char* name, SkData* data) {
     RunHandler rh(name, reporter, (const char*)data->data(), data->size());
     shaper->shape((const char*)data->data(), data->size(), font, true, kWidth, &rh);
 
-    // Even on empty input, expect that the line is started, that the zero run infos are comitted,
-    // and the empty line is comitted. This allows the user to properly handle empy runs.
+    // Even on empty input, expect that the line is started, that the zero run infos are committed,
+    // and the empty line is committed. This allows the user to properly handle empty runs.
     REPORTER_ASSERT(reporter, rh.fBeginLine);
     REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
     REPORTER_ASSERT(reporter, rh.fCommitLine);
@@ -193,5 +192,3 @@ SHAPER_TEST(myanmar)
 SHAPER_TEST(taitham)
 SHAPER_TEST(tamil)
 #undef SHAPER_TEST
-
-#endif  // defined(SKSHAPER_IMPLEMENTATION) && !defined(SK_BUILD_FOR_GOOGLE3)
