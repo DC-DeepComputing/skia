@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff1735d0_59186a2d",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-02-23T17:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10a5b67b_8f587310",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 80
+      },
+      "revId": "2c28dac4aea2fcae46afbc5e82239b0204cae5eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0046a22a_3a731888",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a929cd6f_d461d02f",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-02-23T17:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0046a22a_3a731888",
+      "range": {
+        "startLine": 231,
+        "startChar": 4,
+        "endLine": 232,
+        "endChar": 91
+      },
+      "revId": "2c28dac4aea2fcae46afbc5e82239b0204cae5eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15b5cd29_5b6641a0",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-23T15:17:33Z",
       "side": 1,
       "message": "nit: Dawn requires depth attachment to match the size of the Y plane?",
+      "range": {
+        "startLine": 237,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 92
+      },
+      "revId": "2c28dac4aea2fcae46afbc5e82239b0204cae5eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c8c64e_93b4df69",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-02-23T17:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15b5cd29_5b6641a0",
       "range": {
         "startLine": 237,
         "startChar": 0,
