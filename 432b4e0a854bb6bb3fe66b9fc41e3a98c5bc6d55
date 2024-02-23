@@ -34,6 +34,24 @@
       "parentUuid": "cf445236_45919d99",
       "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "398e0ac2_8723db06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T16:39:01Z",
+      "side": 1,
+      "message": "Chromium background at https://github.com/rust-lang/rust/issues/73632 linked to from https://source.chromium.org/chromium/chromium/src/+/main:build/rust/rustc_wrapper.py;l\u003d76;drc\u003dae2e89b3df532363e545d0e8f50c6c8088b085b7 .",
+      "parentUuid": "3b6e2335_d8556080",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
