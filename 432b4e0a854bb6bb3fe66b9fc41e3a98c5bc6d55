@@ -16,6 +16,24 @@
       "message": "For some reason on `Build-Debian10-Clang-x86_64-Debug-Fontations` there is an issue because both `libbridge_rust_side.a` and `libicu4x_rust.a` are providing `__rdl_oom` (and possibly others). Taking a quick look this appears to be a common issue when linking in more than one rust library. Do we have anyone who knows more about what to do in this situation?",
       "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b6e2335_d8556080",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T16:16:18Z",
+      "side": 1,
+      "message": "Seems to be generally known at https://github.com/rust-lang/rust/issues/44322 and it appears at least Firefox for a while got around this by having one Rust project which depended on all the other Rust projects so they would all get built and linked together so the C++ side would only depend on one Rust static library (and copy of any Rust standard library).",
+      "parentUuid": "cf445236_45919d99",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
