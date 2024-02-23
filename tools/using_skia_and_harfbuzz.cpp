@@ -22,8 +22,8 @@
 #include "include/core/SkTypeface.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/ports/SkFontMgr_empty.h"
-#include "modules/skshaper/include/SkShaper.h"
-
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#include "modules/skunicode/include/SkUnicode.h"
 
 // Options /////////////////////////////////////////////////////////////////////
 
@@ -215,7 +215,9 @@ int main(int argc, char **argv) {
         assert(mgr);
         typeface = mgr->makeFromFile(font_file.c_str(), 0 /* index */);
     }
-    std::unique_ptr<SkShaper> shaper = SkShaper::Make();
+    auto unicode = SkUnicode::Make();
+    std::unique_ptr<SkShaper> shaper =
+            SkShapers::HB::ShaperDrivenWrapper(std::move(unicode), nullptr);
     assert(shaper);
     //SkString line("This is هذا هو الخط a line.");
     //SkString line("⁧This is a line هذا هو الخط.⁩");

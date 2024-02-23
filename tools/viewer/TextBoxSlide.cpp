@@ -17,12 +17,22 @@
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradientShader.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_skunicode.h"
+#include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkRandom.h"
 #include "src/base/SkTime.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkOSFile.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/Slide.h"
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
+
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
 
 typedef std::unique_ptr<SkShaper> (*ShaperFactory)();
 
@@ -34,9 +44,51 @@ static const char gText[] =
     "a decent respect to the opinions of mankind requires that they should "
     "declare the causes which impel them to the separation.";
 
+static std::unique_ptr<SkUnicode> make_sk_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    unicode = SkUnicode::MakeIcuBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    unicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    return SkUnicode::MakeIcu4xBasedUnicode();
+#endif
+    return nullptr;
+}
+
+using MakeBidiIteratorCallback = std::unique_ptr<SkShaper::BiDiRunIterator> (*)(SkUnicode* unicode,
+                                                                                const char* utf8,
+                                                                                size_t utf8Bytes,
+                                                                                uint8_t bidiLevel);
+
+static std::unique_ptr<SkShaper::BiDiRunIterator> make_trivial_bidi(SkUnicode*,
+                                                                    const char*,
+                                                                    size_t utf8Bytes,
+                                                                    uint8_t bidiLevel) {
+    return std::make_unique<SkShaper::TrivialBiDiRunIterator>(bidiLevel, utf8Bytes);
+}
+
+static std::unique_ptr<SkShaper::BiDiRunIterator> make_unicode_bidi(SkUnicode* unicode,
+                                                                    const char* utf8,
+                                                                    size_t utf8Bytes,
+                                                                    uint8_t bidiLevel) {
+    if (auto bidi = SkShapers::unicode::BidiRunIterator(unicode, utf8, utf8Bytes, bidiLevel)) {
+        return bidi;
+    }
+    return make_trivial_bidi(unicode, utf8, utf8Bytes, bidiLevel);
+}
+
 class TextBoxSlide : public Slide {
 public:
-    TextBoxSlide(ShaperFactory fact, const char suffix[]) : fShaper(fact()) {
+    TextBoxSlide(ShaperFactory fact, MakeBidiIteratorCallback bidi, const char suffix[])
+            : fShaper(fact()), fBidiCallback(bidi) {
         fName = SkStringPrintf("TextBox_%s", suffix);
     }
 
@@ -68,7 +120,9 @@ private:
         paint.setColor(fg);
 
         for (int i = 9; i < 24; i += 2) {
-            SkShaper::PurgeCaches();
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+            SkShapers::HB::PurgeCaches();
+#endif
             SkTextBlobBuilderRunHandler builder(gText, { margin, margin });
             SkFont srcFont(nullptr, SkIntToScalar(i));
             srcFont.setEdging(SkFont::Edging::kSubpixelAntiAlias);
@@ -77,8 +131,9 @@ private:
             const char* utf8 = gText;
             size_t utf8Bytes = sizeof(gText) - 1;
 
-            std::unique_ptr<SkShaper::BiDiRunIterator> bidi(
-                    SkShaper::MakeBiDiRunIterator(utf8, utf8Bytes, 0xfe));
+            std::unique_ptr<SkUnicode> unicode = make_sk_unicode();
+            std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
+                    fBidiCallback(unicode.get(), utf8, utf8Bytes, 0xfe);
             if (!bidi) {
                 return;
             }
@@ -90,8 +145,8 @@ private:
             }
 
             SkFourByteTag undeterminedScript = SkSetFourByteTag('Z','y','y','y');
-            std::unique_ptr<SkShaper::ScriptRunIterator> script(
-                    SkShaper::MakeScriptRunIterator(utf8, utf8Bytes, undeterminedScript));
+            std::unique_ptr<SkShaper::ScriptRunIterator> script =
+                    fShaper->makeScriptRunIterator(utf8, utf8Bytes, undeterminedScript);
             if (!script) {
                 return;
             }
@@ -117,11 +172,24 @@ private:
 
     SkSize fSize;
     std::unique_ptr<SkShaper> fShaper;
+    MakeBidiIteratorCallback fBidiCallback;
 };
 
-DEF_SLIDE( return new TextBoxSlide([](){ return SkShaper::Make(SkFontMgr::RefEmpty()); }, "default"); );
-#ifdef SK_SHAPER_CORETEXT_AVAILABLE
-DEF_SLIDE( return new TextBoxSlide(SkShaper::MakeCoreText, "coretext"); );
+DEF_SLIDE(return new TextBoxSlide(SkShapers::Primitive, make_trivial_bidi, "primitive"););
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+DEF_SLIDE(return new TextBoxSlide(SkShapers::CT::MakeCoreText, make_trivial_bidi, "coretext"););
+#endif
+
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+DEF_SLIDE(return new TextBoxSlide(
+                         []() {
+                             auto unicode = make_sk_unicode();
+                             return SkShapers::HB::ShaperDrivenWrapper(std::move(unicode),
+                                                                       SkFontMgr::RefEmpty());
+                         },
+                         make_unicode_bidi,
+                         "harfbuzz"););
 #endif
 
 class ShaperSlide : public Slide {
@@ -134,18 +202,31 @@ public:
         const char text[] = "world";
 
         for (SkScalar size = 30; size <= 30; size += 10) {
-            this->drawTest(canvas, text, size, SkShaper::Make(SkFontMgr::RefEmpty()));
+            this->drawTest(canvas, text, size, SkShapers::Primitive(), make_trivial_bidi);
             canvas->translate(0, size + 5);
-            #ifdef SK_SHAPER_CORETEXT_AVAILABLE
-            this->drawTest(canvas, text, size, SkShaper::MakeCoreText());
-            #endif
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+            this->drawTest(canvas, text, size, SkShapers::CT::CoreText(), make_trivial_bidi);
+#endif
+            canvas->translate(0, size + 5);
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
+            auto unicode = make_sk_unicode();
+            this->drawTest(
+                    canvas,
+                    text,
+                    size,
+                    SkShapers::HB::ShaperDrivenWrapper(std::move(unicode), SkFontMgr::RefEmpty()),
+                    make_unicode_bidi);
+#endif
             canvas->translate(0, size*2);
         }
     }
 
 private:
-    void drawTest(SkCanvas* canvas, const char str[], SkScalar size,
-                  std::unique_ptr<SkShaper> shaper) {
+    void drawTest(SkCanvas* canvas,
+                  const char str[],
+                  SkScalar size,
+                  std::unique_ptr<SkShaper> shaper,
+                  MakeBidiIteratorCallback bidiCallback) {
         if (!shaper) return;
 
         SkTextBlobBuilderRunHandler builder(str, {0, 0});
@@ -156,8 +237,9 @@ private:
 
         size_t len = strlen(str);
 
-        std::unique_ptr<SkShaper::BiDiRunIterator> bidi(
-                SkShaper::MakeBiDiRunIterator(str, len, 0xfe));
+        std::unique_ptr<SkUnicode> unicode = make_sk_unicode();
+        std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
+                bidiCallback(unicode.get(), str, len, 0xfe);
         if (!bidi) {
             return;
         }
@@ -170,7 +252,7 @@ private:
 
         SkFourByteTag undeterminedScript = SkSetFourByteTag('Z','y','y','y');
         std::unique_ptr<SkShaper::ScriptRunIterator> script(
-                SkShaper::MakeScriptRunIterator(str, len, undeterminedScript));
+                shaper->makeScriptRunIterator(str, len, undeterminedScript));
         if (!script) {
             return;
         }
@@ -191,7 +273,6 @@ private:
 
         canvas->drawTextBlob(builder.makeBlob(), 0, 0, SkPaint());
     }
-
 };
 
 DEF_SLIDE( return new ShaperSlide; );

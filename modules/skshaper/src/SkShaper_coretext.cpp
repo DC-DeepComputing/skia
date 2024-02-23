@@ -56,6 +56,11 @@ private:
                const Feature*, size_t featureSize,
                SkScalar width,
                RunHandler*) const override;
+
+    std::unique_ptr<ScriptRunIterator> makeScriptRunIterator(
+            const char*, size_t utf8Bytes, SkFourByteTag scriptTag) const override {
+        return std::make_unique<SkShaper::TrivialScriptRunIterator>(scriptTag, utf8Bytes);
+    }
 };
 
 std::unique_ptr<SkShaper> SkShaper::MakeCoreText() {
