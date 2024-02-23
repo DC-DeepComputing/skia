@@ -34,6 +34,24 @@
       "parentUuid": "0958fad2_5100062d",
       "revId": "ab38b3fff86ab09fcdc67f8ca2b39e12e00d1d39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ea73f9_1f61fce3",
+        "filename": "src/ports/SkFontMgr_custom.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-23T17:06:18Z",
+      "side": 1,
+      "message": "It\u0027s okay if it\u0027s not this shape. But can you describe the API shape you would like to see instead in a bit more detail? I am currently blocked on testing bitmap support (at least without writing more GMs that do not use a `FontMgr` but do explicit instantiation). How can I get to a fontations FontMgr the quickest way to unblock my testing?",
+      "parentUuid": "38c74e88_f062052a",
+      "revId": "ab38b3fff86ab09fcdc67f8ca2b39e12e00d1d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
