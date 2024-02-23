@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e6a6e95_279697b4",
+        "filename": "modules/skshaper/src/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T22:22:12Z",
+      "side": 1,
+      "message": "Oh, SkShaper_harfbuzz calls `SkUnicode::Make()`, which is why they are currently coupled.",
+      "parentUuid": "be85e17e_1a5dca3b",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d316772c_9a1f1cd8",
         "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
         "patchSetId": 4
