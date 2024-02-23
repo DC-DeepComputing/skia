@@ -20,8 +20,16 @@
 #include "src/base/SkUTF.h"
 #include "src/core/SkFontPriv.h"
 
-#ifdef SK_UNICODE_AVAILABLE
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 #include "modules/skunicode/include/SkUnicode.h"
+#endif
+
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
 #endif
 
 #include <algorithm>
@@ -39,17 +47,41 @@ static bool is_whitespace(char c) {
     return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
+// TODO(kjlubick,fmalita) Remove these defines by having clients register something or somehow
+// plumbing this all into the animation builder factories.
+static std::unique_ptr<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    return SkUnicode::MakeIcuBasedUnicode();
+#else
+    return nullptr;
+#endif
+}
+
+static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+    std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShaperDrivenWrapper(std::move(fallback));
+    if (shaper) {
+        return shaper;
+    }
+#elif defined(SK_SHAPER_CORETEXT_AVAILABLE)
+    if (auto shaper = SkShapers::CT::CoreText()) {
+        return shaper;
+    }
+#endif
+    return SkShapers::Primitive();
+}
+
 // Helper for interfacing with SkShaper: buffers shaper-fed runs and performs
 // per-line position adjustments (for external line breaking, horizontal alignment, etc).
 class ResultBuilder final : public SkShaper::RunHandler {
 public:
     ResultBuilder(const Shaper::TextDesc& desc, const SkRect& box, const sk_sp<SkFontMgr>& fontmgr)
-        : fDesc(desc)
-        , fBox(box)
-        , fHAlignFactor(HAlignFactor(fDesc.fHAlign))
-        , fFont(fDesc.fTypeface, fDesc.fTextSize)
-        , fFontMgr(fontmgr)
-        , fShaper(SkShaper::Make(fontmgr)) {
+            : fDesc(desc)
+            , fBox(box)
+            , fHAlignFactor(HAlignFactor(fDesc.fHAlign))
+            , fFont(fDesc.fTypeface, fDesc.fTextSize)
+            , fFontMgr(fontmgr)
+            , fShaper(get_shaper(fontmgr)) {
         fFont.setHinting(SkFontHinting::kNone);
         fFont.setSubpixel(true);
         fFont.setLinearMetrics(true);
@@ -331,10 +363,11 @@ public:
                                     fFont.getTypeface()->fontStyle(),
                                     lang_iter.get());
 #endif
-        const auto bidi_iter = SkShaper::MakeBiDiRunIterator(start, utf8_bytes,
-                                    shape_ltr ? kBidiLevelLTR : kBidiLevelRTL);
-        const auto scpt_iter = SkShaper::MakeScriptRunIterator(start, utf8_bytes,
-                                    SkSetFourByteTag('Z', 'z', 'z', 'z'));
+        std::unique_ptr<SkUnicode> unicode = get_unicode();
+        const auto bidi_iter = fShaper->makeBiDiRunIterator(
+                unicode.get(), start, utf8_bytes, shape_ltr ? kBidiLevelLTR : kBidiLevelRTL);
+        const auto scpt_iter = fShaper->makeScriptRunIterator(
+                start, utf8_bytes, SkSetFourByteTag('Z', 'z', 'z', 'z'));
 
         if (!font_iter || !bidi_iter || !scpt_iter || !lang_iter) {
             return;
@@ -589,11 +622,9 @@ public:
         case Shaper::Capitalization::kNone:
             break;
         case Shaper::Capitalization::kUpperCase:
-#ifdef SK_UNICODE_AVAILABLE
-            if (auto skuni = SkUnicode::Make()) {
+            if (auto skuni = get_unicode()) {
                 *fText.writable() = skuni->toUpper(*fText);
             }
-#endif
             break;
         }
     }

@@ -46,18 +46,37 @@ skia_cc_library(
     }),
 )
 
-# TODO(kjlubick,bungeman) break this up such that a client could have one or more
-# non-conflicting skshaper targets (e.g. move core_srcs to a central cc_library)
+skia_cc_library(
+    name = "skshaper_core",
+    srcs = [
+        "//modules/skshaper/src:core_srcs",
+    ],
+    hdrs = ["//modules/skshaper/include:core_hdrs"],
+    defines = ["SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS"],
+    features = ["layering_check"],
+    local_defines = ["SKSHAPER_IMPLEMENTATION=1"],
+    visibility = [
+        "//:__subpackages__",
+    ],
+    deps = [
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
+
 skia_cc_library(
     name = "skshaper_harfbuzz",
     srcs = [
-        "//modules/skshaper/src:core_srcs",
-        "//modules/skshaper/src:harfbuzz_srcs",
+        "//modules/skshaper/src:harfbuzz_and_unicode_srcs",
     ],
-    hdrs = ["//modules/skshaper/include:hdrs"],
+    hdrs = [
+        "//modules/skshaper/include:core_hdrs",
+        "//modules/skshaper/include:harfbuzz_hdrs",
+    ],
     defines = [
-        "SK_SHAPER_UNICODE_AVAILABLE",
         "SK_SHAPER_HARFBUZZ_AVAILABLE",
+        "SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS",
     ],
     features = ["layering_check"],
     local_defines = ["SKSHAPER_IMPLEMENTATION=1"],
@@ -65,6 +84,7 @@ skia_cc_library(
         "//:__subpackages__",
     ],
     deps = [
+        ":skshaper_core",
         "//:core",
         "//modules/skunicode:skunicode_icu",
         "//src/base",

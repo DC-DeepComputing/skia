@@ -8,7 +8,6 @@ exports_files_legacy()
 skia_filegroup(
     name = "harfbuzz_srcs",
     srcs = ["SkShaper_harfbuzz.cpp"],
-    visibility = ["//modules/skshaper:__pkg__"],
 )
 
 # In own group for export to //modules/skshaper/skshaper.gni:skia_shaper_harfbuzz_sources.
@@ -52,6 +51,15 @@ skia_filegroup(
     name = "core_srcs",
     srcs = [
         "SkShaper.cpp",
+        "SkShaper_primitive.cpp",
+    ],
+    visibility = ["//modules/skshaper:__pkg__"],
+)
+
+skia_filegroup(
+    name = "harfbuzz_and_unicode_srcs",
+    srcs = [
+        "SkShaper_harfbuzz.cpp",
         "SkShaper_skunicode.cpp",
     ],
     visibility = ["//modules/skshaper:__pkg__"],

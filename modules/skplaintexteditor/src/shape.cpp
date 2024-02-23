@@ -18,6 +18,10 @@
 #include "src/base/SkUTF.h"
 #include "src/core/SkTextBlobPriv.h"
 
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+
 #include <cfloat>
 #include <climits>
 #include <cstring>
@@ -270,7 +274,14 @@ ShapeResult SkPlainTextEditor::Shape(const char* utf8Text,
         utf8Text = nullptr;
         textByteLen = 0;
     }
-    std::unique_ptr<SkShaper> shaper = SkShaper::Make(fontMgr);
+    std::unique_ptr<SkShaper> shaper = nullptr;
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+    shaper = SkShapers::HB::ShaperDrivenWrapper(fontMgr);
+#else
+    shaper = SkShapers::Primitive();
+#endif
+    SkASSERT(shaper);
+
     float height = font.getSpacing();
     RunHandler runHandler(utf8Text, textByteLen);
     if (textByteLen) {
