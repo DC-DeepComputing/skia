@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6933c26_44f99990",
+        "filename": "modules/skshaper/src/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T22:42:32Z",
+      "side": 1,
+      "message": "Also https://github.com/google/skia/blob/5325053967daf408d21ec70f93db4a5d9bd09efd/modules/skshaper/src/SkShaper_harfbuzz.cpp#L758-L762",
+      "parentUuid": "1e6a6e95_279697b4",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d316772c_9a1f1cd8",
         "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
         "patchSetId": 4
