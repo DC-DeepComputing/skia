@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b04ca0ca_46388bd5",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T19:53:10Z",
+      "side": 1,
+      "message": "This seems really awkward. Uses of this can only be incorrect. The user is just going to have to use a bunch of ifdefs (or know which they compile in) to get the right iterators.",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3c5c68_084e3753",
+        "filename": "modules/skshaper/src/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T19:53:10Z",
+      "side": 1,
+      "message": "This is rather awkward also. These two really don\u0027t (or shouldn\u0027t) be related, other than the harfbuzz code may (incorrectly) be depending on the skunicode code. Is this just here until `SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS` can be defined everywhere?",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d316772c_9a1f1cd8",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T19:53:10Z",
+      "side": 1,
+      "message": "This *may never* have `Icu` in the name, *ever*. The entire point of any of this is that this does not depend on icu.\n\nAlso, it really is `Bidi` and not `BiDi` which seems awkward. For example, Unicode Annex #9 has lots of identifiers like `Bidi_Class`, `Bidi_Paired_Bracket`, `Bidi_Paired_Bracket_Type`, etc.",
+      "range": {
+        "startLine": 76,
+        "startChar": 57,
+        "endLine": 76,
+        "endChar": 60
+      },
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f109b2ae_07d6a89e",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-23T19:53:10Z",
+      "side": 1,
+      "message": "Why would this be in the `HB` namespace? This has nothing to do with HarfBuzz, which is why it was split out into this file. This is an implementation of a Shaper class which uses SkUnicode.",
+      "range": {
+        "startLine": 87,
+        "startChar": 21,
+        "endLine": 87,
+        "endChar": 24
+      },
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
