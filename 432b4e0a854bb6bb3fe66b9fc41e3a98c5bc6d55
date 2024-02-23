@@ -52,6 +52,24 @@
       "parentUuid": "3b6e2335_d8556080",
       "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde2189a_1db4d6e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-23T16:48:54Z",
+      "side": 1,
+      "message": "This also seems to be happening on the Build-Mac-Clang-x86_64-Debug-Fontations job",
+      "parentUuid": "398e0ac2_8723db06",
+      "revId": "432b4e0a854bb6bb3fe66b9fc41e3a98c5bc6d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
