@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ab5b97_1aaf3143",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-23T21:14:29Z",
+      "side": 1,
+      "message": "Feel free to delete; I added this comment long ago and never took action. (Also, the bug is closed already.)",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 92
+      },
+      "revId": "1d44a49a359d6c6c38b555d4fc4718c53ad5b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d79d3df_2b334269",
+        "filename": "src/effects/SkHighContrastFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-23T21:14:29Z",
+      "side": 1,
+      "message": "OK either way: why `using namespace SkKnownRuntimeEffects;` versus just using `SkKnownRuntimeEffects::GetKnownRuntimeEffect` at the call site? Feels quirky.",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 41
+      },
+      "revId": "1d44a49a359d6c6c38b555d4fc4718c53ad5b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
