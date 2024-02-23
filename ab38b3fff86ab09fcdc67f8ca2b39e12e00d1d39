@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0958fad2_5100062d",
+        "filename": "src/ports/SkFontMgr_custom.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-23T15:46:07Z",
+      "side": 1,
+      "message": "@bungeman@google.com: What do you think of this approach as a preparation for creating a `SkFontMgr_Custom_Fontations` - are you okay with the templated approach? Or would you prefer if we create a duplicated implementation in a separate file? Other suggestions?",
+      "revId": "ab38b3fff86ab09fcdc67f8ca2b39e12e00d1d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
