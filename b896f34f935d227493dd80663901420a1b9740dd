@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d438e5e_60678ef8",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 35
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-23T08:57:29Z",
+      "side": 1,
+      "message": "SGTM. \n\nBen wrote:\n\u003e Was the idea to only return the default values […]\n\nI suppose those, I have not looked into the code for `attributes()` more closely, but I would suspect there are no variable equivalents for those values, otherwise, they would have probably incorporated those.",
+      "parentUuid": "67a6610f_f8d01c15",
+      "revId": "b896f34f935d227493dd80663901420a1b9740dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9eac876e_4ca8cfa4",
