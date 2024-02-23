@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/sksl/SkSLUtil.h"
 
 namespace skgpu::graphite {
@@ -53,6 +54,10 @@ void Caps::finishInitialization(const ContextOptions& options) {
 }
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }
+
+SkISize Caps::getDepthAttachmentDimensions(const TextureProxy*) const {
+    return texture->dimensions();
+}
 
 bool Caps::isTexturable(const TextureInfo& info) const {
     if (info.numSamples() > 1) {
