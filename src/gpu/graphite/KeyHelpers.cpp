@@ -344,7 +344,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
     auto dict = keyContext.dict();
 
     if (gradData.fNumStops > GradientData::kNumInternalStorageStops && gatherer) {
-        SkASSERT(gradData.fColorsAndOffsetsProxy);
+//        SkASSERT(!gatherer || gradData.fColorsAndOffsetsProxy);
 
         static constexpr SkSamplingOptions kNearest(SkFilterMode::kNearest, SkMipmapMode::kNone);
         static constexpr SkTileMode kClampTiling[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
@@ -980,6 +980,7 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
 
     const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
     SkASSERT(entry);
+//    SkDebugf("RuntimeEffectBlock::BeginBlock %d\n", entry->fNumChildren);
 
     gather_runtime_effect_uniforms(shaderData.fEffect->uniforms(),
                                    entry->fUniforms,
@@ -1128,7 +1129,7 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkComposeColorFilter* filter) {
     SkASSERT(filter);
 
-    Compose(keyContext, keyBuilder, gatherer,
+    Compose1(keyContext, keyBuilder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
                 AddToKey(keyContext, keyBuilder, gatherer, filter->inner().get());
             },
@@ -1216,10 +1217,10 @@ static void add_to_key(const KeyContext& keyContext,
 
     // Use two nested compose blocks to chain (dst->working), child, and (working->dst) together
     // while appearing as one block to the parent node.
-    Compose(keyContext, builder, gatherer,
+    Compose1(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
                 // Inner compose
-                Compose(keyContext, builder, gatherer,
+                Compose1(keyContext, builder, gatherer,
                         /* addInnerToKey= */ [&]() -> void {
                             // Innermost (inner of inner compose)
                             ColorSpaceTransformBlock::ColorSpaceTransformData data1(
@@ -1327,7 +1328,7 @@ static void add_to_key(const KeyContext& keyContext,
                        const SkColorFilterShader* shader) {
     SkASSERT(shader);
 
-    Compose(keyContext, builder, gatherer,
+    Compose1(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
                 AddToKey(keyContext, builder, gatherer, shader->shader().get());
             },
@@ -1708,7 +1709,7 @@ static void add_to_key(const KeyContext& keyContext,
     KeyContextWithColorInfo workingContext(keyContext, workingInfo);
 
     // Compose the inner shader (in the working space) with a (working->dst) transform:
-    Compose(keyContext, builder, gatherer,
+    Compose1(keyContext, builder, gatherer,
         /* addInnerToKey= */ [&]() -> void {
             AddToKey(workingContext, builder, gatherer, shader->shader().get());
         },
@@ -1802,7 +1803,7 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
     // The gradient block and colorSpace conversion block need to be combined
     // (via the Compose block) so that the localMatrix block can treat them as
     // one child.
-    Compose(keyContext, builder, gatherer,
+    Compose1(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
                 GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
             },

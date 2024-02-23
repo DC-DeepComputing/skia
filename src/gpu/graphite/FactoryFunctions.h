@@ -28,6 +28,8 @@ class PrecompileShader;
 // This will move to be beside SkShaders in include/core/SkShader.h
 class PrecompileShaders {
 public:
+    static sk_sp<PrecompileShader> PrimitiveColor();
+
     //TODO: Add Empty? - see skbug.com/12165
     static sk_sp<PrecompileShader> Color();
     static sk_sp<PrecompileShader> Blend(SkSpan<const sk_sp<PrecompileBlender>> blenders,
@@ -36,6 +38,12 @@ public:
     static sk_sp<PrecompileShader> Blend(SkSpan<SkBlendMode> blendModes,
                                          SkSpan<const sk_sp<PrecompileShader>> dsts,
                                          SkSpan<const sk_sp<PrecompileShader>> srcs);
+    static sk_sp<PrecompileShader> Compose(SkSpan<const sk_sp<PrecompileShader>> inners,
+                                           SkSpan<const sk_sp<PrecompileShader>> outers);
+    static sk_sp<PrecompileShader> Compose(SkSpan<const sk_sp<PrecompileShader>> inners,
+                                           SkSpan<const sk_sp<PrecompileColorFilter>> outers);
+    static sk_sp<PrecompileShader> Compose(SkSpan<const sk_sp<PrecompileColorFilter>> inners,
+                                           SkSpan<const sk_sp<PrecompileShader>> outers);
     // TODO: add an SkShaders::Image to match this and SkImageFilters (skbug.com/13440)
     static sk_sp<PrecompileShader> Image();
     static sk_sp<PrecompileShader> YUVImage();
@@ -53,6 +61,16 @@ public:
     static sk_sp<PrecompileShader> LocalMatrix(sk_sp<PrecompileShader> wrapped);
     static sk_sp<PrecompileShader> ColorFilter(sk_sp<PrecompileShader>,
                                                sk_sp<PrecompileColorFilter>);
+
+    static sk_sp<PrecompileShader> PerlinNoise();
+
+    // Keep these guys private
+    static sk_sp<PrecompileShader> DstReadFetch();
+    static sk_sp<PrecompileShader> PaintAlpha();
+    static sk_sp<PrecompileShader> OpaquePaintRGB();
+    static sk_sp<PrecompileShader> Dither();
+    static sk_sp<PrecompileShader> Error();
+
 
 private:
     PrecompileShaders() = delete;
@@ -106,6 +124,16 @@ public:
 
 private:
     PrecompileColorFilters() = delete;
+};
+
+//--------------------------------------------------------------------------------------------------
+class PrecompileBlenders {
+public:
+    static sk_sp<PrecompileBlender> KnownMode(SkBlendMode);
+
+    // These two probably don't get made public
+    static sk_sp<PrecompileBlender> UnknownBlendMode();
+    static sk_sp<PrecompileBlender> Coeff();
 };
 
 //--------------------------------------------------------------------------------------------------

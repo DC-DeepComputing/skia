@@ -205,7 +205,7 @@ static std::unique_ptr<GrFragmentProcessor> make_premul_effect(
             "color = floor(color * 255 + 0.5) / 255;"
             "color.rgb = floor(color.rgb * color.a * 255 + 0.5) / 255;"
             "return color;"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     fp = GrSkSLFP::Make(effect, "ToPremul", std::move(fp), GrSkSLFP::OptFlags::kNone);
@@ -224,7 +224,7 @@ static std::unique_ptr<GrFragmentProcessor> make_unpremul_effect(
             "color = floor(color * 255 + 0.5) / 255;"
             "color.rgb = color.a <= 0 ? half3(0) : floor(color.rgb / color.a * 255 + 0.5) / 255;"
             "return color;"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     fp = GrSkSLFP::Make(effect, "ToUnpremul", std::move(fp), GrSkSLFP::OptFlags::kNone);

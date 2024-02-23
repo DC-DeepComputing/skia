@@ -157,7 +157,7 @@ static void test_runtime_shader(skiatest::Reporter* r, SkSurface* surface) {
         vec4 main(vec2 coord) {
             return child.eval(coord) * 0.5;
         }
-    )"))
+    )"), /* stableKey= */ 0)
                                             .effect;
     SkRuntimeShaderBuilder builder(effect);
 

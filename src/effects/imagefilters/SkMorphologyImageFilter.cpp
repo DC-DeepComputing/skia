@@ -151,7 +151,7 @@ sk_sp<SkShader> make_linear_morphology(sk_sp<SkShader> input,
                                                    "flip*child.eval(coord - delta)));"
                 "}"
                 "return flip*aggregate;"
-            "}");
+            "}", kLinearMorphologyStableKey);
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
     builder.child("child") = std::move(input);
@@ -179,7 +179,7 @@ sk_sp<SkShader> make_sparse_morphology(sk_sp<SkShader> input,
             "half4 aggregate = max(flip*child.eval(coord + offset),"
                                   "flip*child.eval(coord - offset));"
             "return flip*aggregate;"
-        "}");
+        "}", kSparseMorphologyStableKey);
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
     builder.child("child") = std::move(input);

@@ -552,7 +552,7 @@ static void test_one_permutation(skiatest::Reporter* r,
     if (shaderString.isEmpty()) {
         return;
     }
-    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(shaderString, options);
+    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(shaderString, options, /* stableKey= */ 0);
     if (!result.effect) {
         ERRORF(r, "%s%s: %s", testFile, permutationSuffix, result.errorText.c_str());
         return;

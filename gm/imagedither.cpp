@@ -21,7 +21,7 @@
 
 sk_sp<SkBlender> stretch_colors_blender() {
     return SkRuntimeEffect::MakeForBlender(SkString(
-        "half4 main(half4 src, half4 dst) { return ((dst.rgb - 0.25) * 16).rgb1; }"))
+        "half4 main(half4 src, half4 dst) { return ((dst.rgb - 0.25) * 16).rgb1; }"), /* stableKey= */ 0)
             .effect->makeBlender(nullptr);
 }
 
