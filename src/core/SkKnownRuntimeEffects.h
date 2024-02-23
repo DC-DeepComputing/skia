@@ -56,7 +56,10 @@ enum class StableKey : uint32_t {
     kInvalid = kStart,
     kBlend,
 
-    kLast =    kBlend,
+    kArithmetic,
+    kHighContrast,
+
+    kLast =    kArithmetic,
 };
 
 static const int kStableKeyCnt = static_cast<int>(StableKey::kLast) -
@@ -64,7 +67,7 @@ static const int kStableKeyCnt = static_cast<int>(StableKey::kLast) -
 
 static_assert(static_cast<int>(StableKey::kLast) < kSkiaKnownRuntimeEffectsEnd);
 
-SkRuntimeEffect* GetKnownRuntimeEffect(StableKey);
+const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey);
 
 } // namespace SkKnownRuntimeEffects
 
