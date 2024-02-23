@@ -8,6 +8,7 @@
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
@@ -17,9 +18,12 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/utils/SkParsePath.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkOSFile.h"
+#include "src/core/SkStroke.h"
 
 #include <stdio.h>
 
@@ -315,4 +319,31 @@ DEF_SIMPLE_GM(bug583299, canvas, 300, 300) {
   int intervalCount = (int) std::size(intervals);
   p.setPathEffect(SkDashPathEffect::Make(intervals, intervalCount, 0));
   canvas->drawPath(path, p);
+}
+
+DEF_SIMPLE_GM_BG(bug41422450, canvas, 863, 473, SK_ColorWHITE) {
+    SkM44 mat{1, -0.00000139566271f, 0, -2321738,
+              0.000113059919f, 0.0123444516f, 0, -353,
+              0, 0, 1, 0,
+              0, 0, 0, 1};
+    canvas->concat(mat);
+
+    SkPath strokePath;
+    SkRect circle = SkRect::MakeLTRB(-3299135.5f, -12312541.0f, 9897407.0f, 884000.812f);
+    strokePath.arcTo(circle, 59.9999962f, 59.9999962f, true);
+
+    SkStroke stroke;
+    SkPath fillPath;
+    stroke.setWidth(2);
+    stroke.strokePath(strokePath, &fillPath);
+
+#if 1
+    SkPaint strokePaint;
+    strokePaint.setStyle(SkPaint::kStroke_Style);
+    strokePaint.setStrokeWidth(2);
+    canvas->drawPath(strokePath, strokePaint);
+#else
+    SkPaint fillPaint;
+    canvas->drawPath(fillPath, fillPaint);
+#endif
 }

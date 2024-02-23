@@ -182,7 +182,11 @@ public:
 
     void done(SkPath* dst, bool isLine) {
         this->finishContour(false, isLine);
-        dst->swap(fOuter);
+        if (fRecursionDepthExceeded) {
+            dst->reset();
+        } else {
+            dst->swap(fOuter);
+        }
     }
 
     SkScalar getResScale() const { return fResScale; }
@@ -238,6 +242,7 @@ private:
     };
 
     int fRecursionDepth;            // track stack depth to abort if numerics run amok
+    bool fRecursionDepthExceeded;   // were we forced to bail out?
     bool fFoundTangents;            // do less work until tangents meet (cubic)
     bool fJoinCompleted;            // previous join was not degenerate
 
@@ -422,6 +427,7 @@ SkPathStroker::SkPathStroker(const SkPath& src,
     fInvResScale = SkScalarInvert(resScale * 4);
     fInvResScaleSquared = fInvResScale * fInvResScale;
     fRecursionDepth = 0;
+    fRecursionDepthExceeded = false;
 }
 
 void SkPathStroker::moveTo(const SkPoint& pt) {
@@ -1184,6 +1190,7 @@ bool SkPathStroker::cubicStroke(const SkPoint cubic[4], SkQuadConstruct* quadPts
     }
     if (!SkScalarIsFinite(quadPts->fQuad[2].fX) || !SkScalarIsFinite(quadPts->fQuad[2].fY)) {
         DEBUG_CUBIC_RECURSION_TRACK_DEPTH(fRecursionDepth);
+        fRecursionDepthExceeded = true;
         return false;  // just abort if projected quad isn't representable
     }
 #if QUAD_STROKE_APPROX_EXTENDED_DEBUGGING
@@ -1192,6 +1199,7 @@ bool SkPathStroker::cubicStroke(const SkPoint cubic[4], SkQuadConstruct* quadPts
 #endif
     if (++fRecursionDepth > kRecursiveLimits[fFoundTangents]) {
         DEBUG_CUBIC_RECURSION_TRACK_DEPTH(fRecursionDepth);
+        fRecursionDepthExceeded = true;
         return false;  // just abort if projected quad isn't representable
     }
     SkQuadConstruct half;
@@ -1234,6 +1242,7 @@ bool SkPathStroker::conicStroke(const SkConic& conic, SkQuadConstruct* quadPts) 
             fRecursionDepth + 1));
 #endif
     if (++fRecursionDepth > kRecursiveLimits[kConic_RecursiveLimit]) {
+        fRecursionDepthExceeded = true;
         return false;  // just abort if projected quad isn't representable
     }
     SkQuadConstruct half;
@@ -1266,6 +1275,7 @@ bool SkPathStroker::quadStroke(const SkPoint quad[3], SkQuadConstruct* quadPts) 
             fRecursionDepth + 1));
 #endif
     if (++fRecursionDepth > kRecursiveLimits[kQuad_RecursiveLimit]) {
+        fRecursionDepthExceeded = true;
         return false;  // just abort if projected quad isn't representable
     }
     SkQuadConstruct half;
