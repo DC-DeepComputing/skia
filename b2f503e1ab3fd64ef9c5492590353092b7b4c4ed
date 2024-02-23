@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b423a810_9b1ee9a0",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-23T15:53:10Z",
+      "side": 1,
+      "message": "nit: `Offsets`, not `OFfsets`\n\n(Sorry, it was probably like this all along...)",
+      "range": {
+        "startLine": 68,
+        "startChar": 54,
+        "endLine": 68,
+        "endChar": 61
+      },
+      "revId": "b2f503e1ab3fd64ef9c5492590353092b7b4c4ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f03b323_542e00a7",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-23T15:53:10Z",
+      "side": 1,
+      "message": "The gap here (no 24!) looked like a bug to me at first. It is intentional, but a casual reader might be confused. I wonder if it\u0027s worth a small comment mentioning that the gap is correct.",
+      "range": {
+        "startLine": 66,
+        "startChar": 11,
+        "endLine": 66,
+        "endChar": 14
+      },
+      "revId": "b2f503e1ab3fd64ef9c5492590353092b7b4c4ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
