@@ -24,6 +24,14 @@
 #include "src/base/SkUTF.h"
 #include "src/core/SkTextBlobPriv.h"
 
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
+
 using namespace skia_private;
 
 namespace {
@@ -230,13 +238,27 @@ void SkSVGTextContext::shapePendingBuffer(const SkFont& font) {
     fShapeBuffer.reset();
 }
 
-SkSVGTextContext::SkSVGTextContext(const SkSVGRenderContext& ctx, const ShapedTextCallback& cb,
+static std::unique_ptr<SkShaper> make_shaper(sk_sp<SkFontMgr> fallback) {
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+    std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShaperDrivenWrapper(fallback);
+    if (shaper) {
+        return shaper;
+    }
+#elif defined(SK_SHAPER_CORETEXT_AVAILABLE)
+    if (auto shaper = SkShapers::CT::CoreText()) {
+        return shaper;
+    }
+#endif
+    return SkShapers::Primitive();
+}
+
+SkSVGTextContext::SkSVGTextContext(const SkSVGRenderContext& ctx,
+                                   const ShapedTextCallback& cb,
                                    const SkSVGTextPath* tpath)
-    : fRenderContext(ctx)
-    , fCallback(cb)
-    , fShaper(SkShaper::Make(ctx.fontMgr()))
-    , fChunkAlignmentFactor(ComputeAlignmentFactor(ctx.presentationContext()))
-{
+        : fRenderContext(ctx)
+        , fCallback(cb)
+        , fShaper(make_shaper(ctx.fontMgr()))
+        , fChunkAlignmentFactor(ComputeAlignmentFactor(ctx.presentationContext())) {
     if (tpath) {
         fPathData = std::make_unique<PathData>(ctx, *tpath);
 

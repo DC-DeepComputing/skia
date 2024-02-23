@@ -17,6 +17,8 @@
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradientShader.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkRandom.h"
 #include "src/base/SkTime.h"
 #include "src/base/SkUTF.h"
@@ -33,6 +35,25 @@ static const char gText[] =
     "station to which the Laws of Nature and of Nature's God entitle them, "
     "a decent respect to the opinions of mankind requires that they should "
     "declare the causes which impel them to the separation.";
+
+static std::unique_ptr<SkUnicode> make_sk_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    unicode = SkUnicode::MakeIcuBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    unicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    return SkUnicode::MakeIcu4xBasedUnicode();
+#endif
+    return nullptr;
+}
 
 class TextBoxSlide : public Slide {
 public:
@@ -68,7 +89,9 @@ private:
         paint.setColor(fg);
 
         for (int i = 9; i < 24; i += 2) {
-            SkShaper::PurgeCaches();
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+            SkShapers::HB::PurgeCaches();
+#endif
             SkTextBlobBuilderRunHandler builder(gText, { margin, margin });
             SkFont srcFont(nullptr, SkIntToScalar(i));
             srcFont.setEdging(SkFont::Edging::kSubpixelAntiAlias);
@@ -77,8 +100,9 @@ private:
             const char* utf8 = gText;
             size_t utf8Bytes = sizeof(gText) - 1;
 
-            std::unique_ptr<SkShaper::BiDiRunIterator> bidi(
-                    SkShaper::MakeBiDiRunIterator(utf8, utf8Bytes, 0xfe));
+            std::unique_ptr<SkUnicode> unicode = make_sk_unicode();
+            std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
+                    fShaper->makeBiDiRunIterator(unicode.get(), utf8, utf8Bytes, 0xfe);
             if (!bidi) {
                 return;
             }
@@ -90,8 +114,8 @@ private:
             }
 
             SkFourByteTag undeterminedScript = SkSetFourByteTag('Z','y','y','y');
-            std::unique_ptr<SkShaper::ScriptRunIterator> script(
-                    SkShaper::MakeScriptRunIterator(utf8, utf8Bytes, undeterminedScript));
+            std::unique_ptr<SkShaper::ScriptRunIterator> script =
+                    fShaper->makeScriptRunIterator(utf8, utf8Bytes, undeterminedScript);
             if (!script) {
                 return;
             }
@@ -119,9 +143,16 @@ private:
     std::unique_ptr<SkShaper> fShaper;
 };
 
-DEF_SLIDE( return new TextBoxSlide([](){ return SkShaper::Make(SkFontMgr::RefEmpty()); }, "default"); );
-#ifdef SK_SHAPER_CORETEXT_AVAILABLE
-DEF_SLIDE( return new TextBoxSlide(SkShaper::MakeCoreText, "coretext"); );
+DEF_SLIDE(return new TextBoxSlide(SkShapers::Primitive, "primitive"););
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+DEF_SLIDE(return new TextBoxSlide(SkShapers::CT::MakeCoreText, "coretext"););
+#endif
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+DEF_SLIDE(return new TextBoxSlide(
+                         []() { return SkShapers::HB::ShaperDrivenWrapper(SkFontMgr::RefEmpty()); },
+                         "harfbuzz"););
 #endif
 
 class ShaperSlide : public Slide {
@@ -134,11 +165,16 @@ public:
         const char text[] = "world";
 
         for (SkScalar size = 30; size <= 30; size += 10) {
-            this->drawTest(canvas, text, size, SkShaper::Make(SkFontMgr::RefEmpty()));
+            this->drawTest(canvas, text, size, SkShapers::Primitive());
             canvas->translate(0, size + 5);
-            #ifdef SK_SHAPER_CORETEXT_AVAILABLE
-            this->drawTest(canvas, text, size, SkShaper::MakeCoreText());
-            #endif
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+            this->drawTest(canvas, text, size, SkShapers::CT::CoreText());
+#endif
+            canvas->translate(0, size + 5);
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+            this->drawTest(
+                    canvas, text, size, SkShapers::HB::ShaperDrivenWrapper(SkFontMgr::RefEmpty()));
+#endif
             canvas->translate(0, size*2);
         }
     }
@@ -156,8 +192,9 @@ private:
 
         size_t len = strlen(str);
 
-        std::unique_ptr<SkShaper::BiDiRunIterator> bidi(
-                SkShaper::MakeBiDiRunIterator(str, len, 0xfe));
+        std::unique_ptr<SkUnicode> unicode = make_sk_unicode();
+        std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
+                shaper->makeBiDiRunIterator(unicode.get(), str, len, 0xfe);
         if (!bidi) {
             return;
         }
@@ -170,7 +207,7 @@ private:
 
         SkFourByteTag undeterminedScript = SkSetFourByteTag('Z','y','y','y');
         std::unique_ptr<SkShaper::ScriptRunIterator> script(
-                SkShaper::MakeScriptRunIterator(str, len, undeterminedScript));
+                shaper->makeScriptRunIterator(str, len, undeterminedScript));
         if (!script) {
             return;
         }

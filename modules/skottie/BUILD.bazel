@@ -137,3 +137,16 @@ skia_cc_library(
         "//src/core:core_priv",
     ],
 )
+
+skia_cc_library(
+    name = "textshaper",
+    srcs = ["//modules/skottie/src/text:text_shaper_srcs"],
+    hdrs = ["//modules/skottie/include:text_shaper_hdrs"],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
