@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a297e41_8883d601",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-23T14:51:23Z",
+      "side": 1,
+      "message": "For the time being I\u0027ve wrapped them in a KnownRuntimeEffects namespace since I\u0027m unsure how this will ultimately be exposed to clients. It may be that we end up with a static method on SkRuntimeEffect for clients to fill in their known runtime effects or, since it will probably only be for first party clients, we might end up buring it in a client-specific directory.",
+      "parentUuid": "defa9050_7385f717",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 47
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d1dd288_e91d24a2",
         "filename": "src/core/SkKnownRuntimeEffects.h",
         "patchSetId": 27
@@ -54,6 +78,30 @@
       "writtenOn": "2024-02-22T20:55:27Z",
       "side": 1,
       "message": "Not necessarily for this CL, and maybe gilding the lily a bit, but we could use an X macro to stringize this list and then known runtime effects could have a real name in the SkSL instead of all being named \"KnownRuntimeEffect.\"",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 0
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "652e7f3b_6e12e6eb",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-23T14:51:23Z",
+      "side": 1,
+      "message": "That would be cool - I\u0027ve added a TODO",
+      "parentUuid": "3d1dd288_e91d24a2",
       "range": {
         "startLine": 49,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a92b63e0_37eae1ae",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-23T14:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13545a90_adf1389a",
+      "range": {
+        "startLine": 498,
+        "startChar": 11,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03a60fa9_1d4b09f6",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-02-22T20:55:27Z",
       "side": 1,
       "message": "int: remove redundant `else`",
+      "range": {
+        "startLine": 1368,
+        "startChar": 6,
+        "endLine": 1368,
+        "endChar": 10
+      },
+      "revId": "8cc9c48c8370adda5dfc165a8af93732d652446b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52912c47_0150f65f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-23T14:51:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03a60fa9_1d4b09f6",
       "range": {
         "startLine": 1368,
         "startChar": 6,
