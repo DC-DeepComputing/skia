@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/ports/SkFontMgr_custom.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
@@ -16,7 +17,6 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/core/SkFontDescriptor.h"
-#include "src/ports/SkFontMgr_custom.h"
 
 #include <limits>
 #include <memory>
@@ -25,17 +25,16 @@ using namespace skia_private;
 
 class SkData;
 
-SkTypeface_Custom::SkTypeface_Custom(const SkFontStyle& style, bool isFixedPitch,
-                                     bool sysFont, SkString familyName, int index)
-    : INHERITED(style, isFixedPitch)
-    , fIsSysFont(sysFont), fFamilyName(std::move(familyName)), fIndex(index)
-{ }
+SkTypeface_Custom::SkTypeface_Custom(
+        const SkFontStyle& style, bool isFixedPitch, bool sysFont, SkString familyName, int index)
+        : INHERITED(style, isFixedPitch)
+        , fIsSysFont(sysFont)
+        , fFamilyName(std::move(familyName))
+        , fIndex(index) {}
 
 bool SkTypeface_Custom::isSysFont() const { return fIsSysFont; }
 
-void SkTypeface_Custom::onGetFamilyName(SkString* familyName) const {
-    *familyName = fFamilyName;
-}
+void SkTypeface_Custom::onGetFamilyName(SkString* familyName) const { *familyName = fFamilyName; }
 
 void SkTypeface_Custom::onGetFontDescriptor(SkFontDescriptor* desc, bool* isLocal) const {
     desc->setFamilyName(fFamilyName.c_str());
@@ -45,7 +44,6 @@ void SkTypeface_Custom::onGetFontDescriptor(SkFontDescriptor* desc, bool* isLoca
 }
 
 int SkTypeface_Custom::getIndex() const { return fIndex; }
-
 
 SkTypeface_Empty::SkTypeface_Empty() : INHERITED(SkFontStyle(), false, true, SkString(), 0) {}
 
@@ -57,11 +55,13 @@ sk_sp<SkTypeface> SkTypeface_Empty::onMakeClone(const SkFontArguments& args) con
 
 std::unique_ptr<SkFontData> SkTypeface_Empty::onMakeFontData() const { return nullptr; }
 
-SkTypeface_File::SkTypeface_File(const SkFontStyle& style, bool isFixedPitch, bool sysFont,
-                                 SkString familyName, const char path[], int index)
-    : INHERITED(style, isFixedPitch, sysFont, std::move(familyName), index)
-    , fPath(path)
-{ }
+SkTypeface_File::SkTypeface_File(const SkFontStyle& style,
+                                 bool isFixedPitch,
+                                 bool sysFont,
+                                 SkString familyName,
+                                 const char path[],
+                                 int index)
+        : INHERITED(style, isFixedPitch, sysFont, std::move(familyName), index), fPath(path) {}
 
 std::unique_ptr<SkStreamAsset> SkTypeface_File::onOpenStream(int* ttcIndex) const {
     *ttcIndex = this->getIndex();
@@ -77,10 +77,8 @@ sk_sp<SkTypeface> SkTypeface_File::onMakeClone(const SkFontArguments& args) cons
     SkString familyName;
     this->getFamilyName(&familyName);
 
-    return sk_make_sp<SkTypeface_FreeTypeStream>(std::move(data),
-                                                 familyName,
-                                                 this->fontStyle(),
-                                                 this->isFixedPitch());
+    return sk_make_sp<SkTypeface_FreeTypeStream>(
+            std::move(data), familyName, this->fontStyle(), this->isFixedPitch());
 }
 
 std::unique_ptr<SkFontData> SkTypeface_File::onMakeFontData() const {
@@ -101,9 +99,7 @@ void SkFontStyleSet_Custom::appendTypeface(sk_sp<SkTypeface> typeface) {
     fStyles.emplace_back(std::move(typeface));
 }
 
-int SkFontStyleSet_Custom::count() {
-    return fStyles.size();
-}
+int SkFontStyleSet_Custom::count() { return fStyles.size(); }
 
 void SkFontStyleSet_Custom::getStyle(int index, SkFontStyle* style, SkString* name) {
     SkASSERT(index < fStyles.size());
@@ -126,17 +122,15 @@ sk_sp<SkTypeface> SkFontStyleSet_Custom::matchStyle(const SkFontStyle& pattern) 
 
 SkString SkFontStyleSet_Custom::getFamilyName() { return fFamilyName; }
 
-
-SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader)
+template <typename BackendTypeface, typename FontScanner>
+SkFontMgr_Custom<BackendTypeface, FontScanner>::SkFontMgr_Custom(const SystemFontLoader& loader)
         : fDefaultFamily(nullptr) {
-
-    fScanner = std::make_unique<SkFontScanner_FreeType>();
+    fScanner = std::make_unique<FontScanner>();
     loader.loadSystemFonts(fScanner.get(), &fFamilies);
 
     // Try to pick a default font.
     static const char* defaultNames[] = {
-        "Arial", "Verdana", "Times New Roman", "Droid Sans", "DejaVu Serif", nullptr
-    };
+            "Arial", "Verdana", "Times New Roman", "Droid Sans", "DejaVu Serif", nullptr};
     for (size_t i = 0; i < std::size(defaultNames); ++i) {
         sk_sp<SkFontStyleSet> set(this->onMatchFamily(defaultNames[i]));
         if (nullptr == set) {
@@ -158,21 +152,28 @@ SkFontMgr_Custom::SkFontMgr_Custom(const SystemFontLoader& loader)
     }
 }
 
-int SkFontMgr_Custom::onCountFamilies() const {
+template <typename BackendTypeface, typename FontScanner>
+int SkFontMgr_Custom<BackendTypeface, FontScanner>::onCountFamilies() const {
     return fFamilies.size();
 }
 
-void SkFontMgr_Custom::onGetFamilyName(int index, SkString* familyName) const {
+template <typename BackendTypeface, typename FontScanner>
+void SkFontMgr_Custom<BackendTypeface, FontScanner>::onGetFamilyName(int index,
+                                                                     SkString* familyName) const {
     SkASSERT(index < fFamilies.size());
     familyName->set(fFamilies[index]->getFamilyName());
 }
 
-sk_sp<SkFontStyleSet> SkFontMgr_Custom::onCreateStyleSet(int index) const {
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkFontStyleSet> SkFontMgr_Custom<BackendTypeface, FontScanner>::onCreateStyleSet(
+        int index) const {
     SkASSERT(index < fFamilies.size());
     return fFamilies[index];
 }
 
-sk_sp<SkFontStyleSet> SkFontMgr_Custom::onMatchFamily(const char familyName[]) const {
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkFontStyleSet> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMatchFamily(
+        const char familyName[]) const {
     for (int i = 0; i < fFamilies.size(); ++i) {
         if (fFamilies[i]->getFamilyName().equals(familyName)) {
             return fFamilies[i];
@@ -181,42 +182,48 @@ sk_sp<SkFontStyleSet> SkFontMgr_Custom::onMatchFamily(const char familyName[]) c
     return nullptr;
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onMatchFamilyStyle(const char familyName[],
-                                                       const SkFontStyle& fontStyle) const
-{
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMatchFamilyStyle(
+        const char familyName[], const SkFontStyle& fontStyle) const {
     sk_sp<SkFontStyleSet> sset(this->matchFamily(familyName));
     return sset->matchStyle(fontStyle);
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onMatchFamilyStyleCharacter(
-    const char familyName[], const SkFontStyle&,
-    const char* bcp47[], int bcp47Count,
-    SkUnichar) const
-{
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMatchFamilyStyleCharacter(
+        const char familyName[], const SkFontStyle&, const char* bcp47[], int bcp47Count, SkUnichar)
+        const {
     return nullptr;
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onMakeFromData(sk_sp<SkData> data, int ttcIndex) const {
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMakeFromData(
+        sk_sp<SkData> data, int ttcIndex) const {
     return this->makeFromStream(std::make_unique<SkMemoryStream>(std::move(data)), ttcIndex);
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onMakeFromStreamIndex(std::unique_ptr<SkStreamAsset> stream,
-                                                          int ttcIndex) const {
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMakeFromStreamIndex(
+        std::unique_ptr<SkStreamAsset> stream, int ttcIndex) const {
     return this->makeFromStream(std::move(stream), SkFontArguments().setCollectionIndex(ttcIndex));
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onMakeFromStreamArgs(std::unique_ptr<SkStreamAsset> stream,
-                                                         const SkFontArguments& args) const {
-    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMakeFromStreamArgs(
+        std::unique_ptr<SkStreamAsset> stream, const SkFontArguments& args) const {
+    return BackendTypeface::MakeFromStream(std::move(stream), args);
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onMakeFromFile(const char path[], int ttcIndex) const {
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onMakeFromFile(
+        const char path[], int ttcIndex) const {
     std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(path);
     return stream ? this->makeFromStream(std::move(stream), ttcIndex) : nullptr;
 }
 
-sk_sp<SkTypeface> SkFontMgr_Custom::onLegacyMakeTypeface(const char familyName[],
-                                                         SkFontStyle style) const {
+template <typename BackendTypeface, typename FontScanner>
+sk_sp<SkTypeface> SkFontMgr_Custom<BackendTypeface, FontScanner>::onLegacyMakeTypeface(
+        const char familyName[], SkFontStyle style) const {
     sk_sp<SkTypeface> tf;
 
     if (familyName) {

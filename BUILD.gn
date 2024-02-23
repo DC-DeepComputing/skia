@@ -366,7 +366,25 @@ optional("fontmgr_custom_empty") {
     ":typeface_freetype",
   ]
   public = [ "include/ports/SkFontMgr_empty.h" ]
-  sources = [ "src/ports/SkFontMgr_custom_empty.cpp" ]
+
+  sources = [
+    "src/ports/SkEmptyFontLoader.h",
+    "src/ports/SkFontMgr_custom_empty.cpp",
+  ]
+}
+
+optional("fontmgr_custom_empty_fontations") {
+  enabled = skia_enable_fontmgr_custom_empty_fontations
+  public_defines = [ "SK_FONTMGR_FONTATIONS_EMPTY_AVAILABLE" ]
+  deps = [
+    ":fontmgr_custom",
+    ":typeface_fontations",
+  ]
+  public = [ "include/ports/SkFontMgr_empty_fontations.h" ]
+  sources = [
+    "src/ports/SkEmptyFontLoader.h",
+    "src/ports/SkFontMgr_custom_empty_fontations.cpp",
+  ]
 }
 
 optional("fontmgr_fontconfig") {
