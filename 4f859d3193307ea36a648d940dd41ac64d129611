@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ae78684_eb66533c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-23T23:08:16Z",
+      "side": 1,
+      "message": "To fully decouple the harfbuzz and unicode parts of SkShaper, I think we\u0027d need to get rid of \n```\nvoid ShaperHarfBuzz::shape(const char* utf8, size_t utf8Bytes,\n                           const SkFont\u0026 srcFont,\n                           bool leftToRight,\n                           SkScalar width,\n                           RunHandler* handler)\n```\nand just have the other two shape methods.",
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b04ca0ca_46388bd5",
         "filename": "modules/skshaper/include/SkShaper.h",
         "patchSetId": 4
