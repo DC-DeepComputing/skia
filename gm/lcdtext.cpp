@@ -128,6 +128,7 @@ class SaveLayerPreserveLCDTextGM : public skiagm::GM {
         paint.setColor(SK_ColorWHITE);
         canvas->drawRect(SkRect::MakeXYWH(0, y - 10, 640, kTextHeight + 20), paint);
         paint.setColor(SK_ColorBLACK);
+        paint.setAlphaf(0.5f);
         SkFont font(ToolUtils::DefaultPortableTypeface(), kTextHeight);
         font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
         canvas->drawString(string, 10, y, font, paint);

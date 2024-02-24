@@ -64,13 +64,16 @@ static inline SkPMColor blend_lcd16(int srcA, int srcR, int srcG, int srcB,
     maskG = maskG * srcA >> 8;
     maskB = maskB * srcA >> 8;
 
+    int dstA = SkGetPackedA32(dst);
     int dstR = SkGetPackedR32(dst);
     int dstG = SkGetPackedG32(dst);
     int dstB = SkGetPackedB32(dst);
 
-    // LCD blitting is only supported if the dst is known/required
-    // to be opaque
-    return SkPackARGB32(0xFF,
+    // Subtract 1 from srcA to bring it back to [0-255] to compare against dstA
+    int maskA = (srcA-1) < dstA ? std::min(maskR, std::min(maskG, maskB))
+                                : std::max(maskR, std::max(maskG, maskB));
+
+    return SkPackARGB32(blend_32(0xFF, dstA, maskA),
                         blend_32(srcR, dstR, maskR),
                         blend_32(srcG, dstG, maskG),
                         blend_32(srcB, dstB, maskB));
@@ -99,13 +102,17 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
     maskG = upscale_31_to_32(maskG);
     maskB = upscale_31_to_32(maskB);
 
+    int dstA = SkGetPackedA32(dst);
     int dstR = SkGetPackedR32(dst);
     int dstG = SkGetPackedG32(dst);
     int dstB = SkGetPackedB32(dst);
 
+    // Opaque src alpha always has (a < da ? min : max) select max.
+    int maskA = std::max(maskR, std::max(maskG, maskB));
+
     // LCD blitting is only supported if the dst is known/required
     // to be opaque
-    return SkPackARGB32(0xFF,
+    return SkPackARGB32(blend_32(0xFF, dstA, maskA),
                         blend_32(srcR, dstR, maskR),
                         blend_32(srcG, dstG, maskG),
                         blend_32(srcB, dstB, maskB));
@@ -305,12 +312,25 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
         __m128i resultLo = _mm_add_epi16(dstLo, maskLo);
         __m128i resultHi = _mm_add_epi16(dstHi, maskHi);
 
+    // FIXME invalid logic, trying to max the wrong things!
+        __m128i result = _mm_packus_epi16(resultLo, resultHi);
+        __m128i alphaMask = _mm_set1_epi32(SK_A32_MASK << SK_A32_SHIFT);
+        __m128i alpha  = _mm_and_si128(
+                _mm_max_epu8(_mm_slli_epi32(result, SK_A32_SHIFT - SK_R32_SHIFT),
+                _mm_max_epu8(_mm_slli_epi32(result, SK_A32_SHIFT - SK_G32_SHIFT),
+                             _mm_slli_epi32(result, SK_A32_SHIFT - SK_B32_SHIFT))),
+                alphaMask);
+        // ((result << channelShift) & alphaMask) max_epi32 for red/green, -> blue
+        // _mm_max_epu8(result << redShift,
+                // _mm_max_epu8(result << greenShift,
+                //              result << blueShift)) & (alphaMask) ) | result
+        return _mm_or_si128(result, alpha);
         // Pack into 4 32bit dst pixels and force opaque.
         // resultLo and resultHi contain eight 16-bit components (two pixels) each.
         // Merge into one SSE regsiter with sixteen 8-bit values (four pixels),
         // clamping to 255 if necessary. Set alpha components to 0xFF.
-        return _mm_or_si128(_mm_packus_epi16(resultLo, resultHi),
-                            _mm_set1_epi32(SK_A32_MASK << SK_A32_SHIFT));
+        // return _mm_or_si128(_mm_packus_epi16(resultLo, resultHi),
+        //                     _mm_set1_epi32(SK_A32_MASK << SK_A32_SHIFT));
     }
 
     void blit_row_lcd16(SkPMColor dst[], const uint16_t mask[], SkColor src, int width, SkPMColor) {
@@ -346,8 +366,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
                 // Load four destination pixels into dst_sse.
                 __m128i dst_sse = _mm_load_si128(d);
                 // Load four 16-bit masks into lower half of mask_sse.
-                __m128i mask_sse = _mm_loadl_epi64(
-                                       reinterpret_cast<const __m128i*>(mask));
+                __m128i mask_sse = _mm_loadu_si64(mask);
 
                 // Check whether masks are equal to 0 and get the highest bit
                 // of each byte of result, if masks are all zero, we will get
@@ -394,7 +413,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
         int srcG = SkColorGetG(src);
         int srcB = SkColorGetB(src);
 
-        if (width >= 4) {
+        if (false && width >= 4) {
             SkASSERT(((size_t)dst & 0x03) == 0);
             while (((size_t)dst & 0x0F) != 0) {
                 *dst = blend_lcd16_opaque(srcR, srcG, srcB, *dst, *mask, opaqueDst);
@@ -413,8 +432,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
                 // Load four destination pixels into dst_sse.
                 __m128i dst_sse = _mm_load_si128(d);
                 // Load four 16-bit masks into lower half of mask_sse.
-                __m128i mask_sse = _mm_loadl_epi64(
-                                       reinterpret_cast<const __m128i*>(mask));
+                __m128i mask_sse = _mm_loadu_si64(mask);
 
                 // Check whether masks are equal to 0 and get the highest bit
                 // of each byte of result, if masks are all zero, we will get
@@ -479,26 +497,18 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
         int colG = SkColorGetG(color);
         int colB = SkColorGetB(color);
 
+        uint8x8_t vcolA = vdup_n_u8(0xFF);
         uint8x8_t vcolR = vdup_n_u8(colR);
         uint8x8_t vcolG = vdup_n_u8(colG);
         uint8x8_t vcolB = vdup_n_u8(colB);
-        uint8x8_t vopqDstA = vdup_n_u8(SkGetPackedA32(opaqueDst));
-        uint8x8_t vopqDstR = vdup_n_u8(SkGetPackedR32(opaqueDst));
-        uint8x8_t vopqDstG = vdup_n_u8(SkGetPackedG32(opaqueDst));
-        uint8x8_t vopqDstB = vdup_n_u8(SkGetPackedB32(opaqueDst));
 
         while (width >= 8) {
             uint8x8x4_t vdst;
             uint16x8_t vmask;
-            uint16x8_t vmaskR, vmaskG, vmaskB;
-            uint8x8_t vsel_trans, vsel_opq;
+            uint16x8_t vmaskR, vmaskG, vmaskB, vmaskA;
 
             vdst = vld4_u8((uint8_t*)dst);
             vmask = vld1q_u16(src);
-
-            // Prepare compare masks
-            vsel_trans = vmovn_u16(vceqq_u16(vmask, vdupq_n_u16(0)));
-            vsel_opq = vmovn_u16(vceqq_u16(vmask, vdupq_n_u16(0xFFFF)));
 
             // Get all the color masks on 5 bits
             vmaskR = vshrq_n_u16(vmask, SK_R16_SHIFT);
@@ -510,17 +520,13 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
             vmaskR = vmaskR + vshrq_n_u16(vmaskR, 4);
             vmaskG = vmaskG + vshrq_n_u16(vmaskG, 4);
             vmaskB = vmaskB + vshrq_n_u16(vmaskB, 4);
-
-            vdst.val[NEON_A] = vbsl_u8(vsel_trans, vdst.val[NEON_A], vdup_n_u8(0xFF));
-            vdst.val[NEON_A] = vbsl_u8(vsel_opq, vopqDstA, vdst.val[NEON_A]);
+            // Opaque srcAlpha always uses the max of the 3 LCD coverage values
+            vmaskA = vmaxq_u16(vmaskR, vmaxq_u16(vmaskG, vmaskB));
 
             vdst.val[NEON_R] = blend_32_neon(vcolR, vdst.val[NEON_R], vmaskR);
             vdst.val[NEON_G] = blend_32_neon(vcolG, vdst.val[NEON_G], vmaskG);
             vdst.val[NEON_B] = blend_32_neon(vcolB, vdst.val[NEON_B], vmaskB);
-
-            vdst.val[NEON_R] = vbsl_u8(vsel_opq, vopqDstR, vdst.val[NEON_R]);
-            vdst.val[NEON_G] = vbsl_u8(vsel_opq, vopqDstG, vdst.val[NEON_G]);
-            vdst.val[NEON_B] = vbsl_u8(vsel_opq, vopqDstB, vdst.val[NEON_B]);
+            vdst.val[NEON_A] = blend_32_neon(vcolA, vdst.val[NEON_A], vmaskA);
 
             vst4_u8((uint8_t*)dst, vdst);
 
@@ -542,9 +548,11 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
         int colG = SkColorGetG(color);
         int colB = SkColorGetB(color);
 
+        // srcA in [0-255] to compare vs dstA
+        uint16x8_t vcolACmp = vdupq_n_u16(colA);
         colA = SkAlpha255To256(colA);
 
-        uint16x8_t vcolA = vdupq_n_u16(colA);
+        uint16x8_t vcolA = vdupq_n_u16(colA); // srcA in [0-256] to combine with coverage
         uint8x8_t vcolR = vdup_n_u8(colR);
         uint8x8_t vcolG = vdup_n_u8(colG);
         uint8x8_t vcolB = vdup_n_u8(colB);
@@ -552,7 +560,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
         while (width >= 8) {
             uint8x8x4_t vdst;
             uint16x8_t vmask;
-            uint16x8_t vmaskR, vmaskG, vmaskB;
+            uint16x8_t vmaskR, vmaskG, vmaskB, vmaskA;
 
             vdst = vld4_u8((uint8_t*)dst);
             vmask = vld1q_u16(src);
@@ -572,11 +580,17 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
             vmaskG = vshrq_n_u16(vmaskG * vcolA, 8);
             vmaskB = vshrq_n_u16(vmaskB * vcolA, 8);
 
-            vdst.val[NEON_A] = vdup_n_u8(0xFF);
+            // Select either the min or the max of the RGB mask values, depending on if the src
+            // alpha is less than the dst alpha.
+            vmaskA = vbslq_u16(vcleq_u16(vcolACmp, vmovl_u8(vdst.val[NEON_A])), // srcA < dstA
+                               vminq_u16(vmaskR, vminq_u16(vmaskG, vmaskB)),    // ? min(r,g,b)
+                               vmaxq_u16(vmaskR, vmaxq_u16(vmaskG, vmaskB)));   // : max(r,g,b)
+
             vdst.val[NEON_R] = blend_32_neon(vcolR, vdst.val[NEON_R], vmaskR);
             vdst.val[NEON_G] = blend_32_neon(vcolG, vdst.val[NEON_G], vmaskG);
             vdst.val[NEON_B] = blend_32_neon(vcolB, vdst.val[NEON_B], vmaskB);
-
+            // vmaskA already includes vcolA so blend against 0xFF
+            vdst.val[NEON_A] = blend_32_neon(vdup_n_u8(0xFF), vdst.val[NEON_A], vmaskA);
             vst4_u8((uint8_t*)dst, vdst);
 
             dst += 8;
