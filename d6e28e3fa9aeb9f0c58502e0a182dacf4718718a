@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5268a57f_dc0f4b22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-26T15:35:01Z",
+      "side": 1,
+      "message": "I don\u0027t believe this code is used by Chromium (it isn\u0027t even compiled in). I think you\u0027re looking for https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontMgr_FontConfigInterface.cpp;l\u003d31;drc\u003d40200ceca00e8614b84bb229d34cb2aa3b269308 and the fact that FCI doesn\u0027t have any way to specify the axis values?",
+      "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

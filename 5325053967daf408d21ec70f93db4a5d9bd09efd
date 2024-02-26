@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c882f84f_f18b65af",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-26T15:35:01Z",
+      "side": 0,
+      "message": "I see this did its job and is correctly stating that there is an issue, and so it should not be removed. The result of just keeping going here would just get you the default instance of any variable font, which wouldn\u0027t be correct.",
+      "revId": "5325053967daf408d21ec70f93db4a5d9bd09efd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
