@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkImageFilter.h"
@@ -393,7 +394,16 @@ static CanvasTest kCanvasTests[] = {
         c->drawVertices(
             SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4, pts, pts, nullptr),
             SkBlendMode::kModulate, paint);
-    }
+    },
+    [](SkCanvas* c, skiatest::Reporter* r) {
+        sk_sp<SkColorSpace> colorSpace = SkColorSpace::MakeSRGBLinear();
+        c->saveLayer(SkCanvas::SaveLayerRec(nullptr, nullptr, nullptr, colorSpace.get(), 0));
+        SkPaint paint;
+        paint.setColor(SK_ColorGRAY);
+        c->drawPaint(paint);
+        c->restore();
+        // TODO assert gray is darker than 0.5
+    },
 };
 
 DEF_TEST(Canvas_bitmap, reporter) {
