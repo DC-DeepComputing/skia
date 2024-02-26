@@ -34,6 +34,24 @@
       "parentUuid": "71eceb8f_84b69f35",
       "revId": "ab3c04c531696bb31d53be55949de05c396910fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa49ae4_ce517bbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-26T16:31:01Z",
+      "side": 1,
+      "message": "I\u0027ve updated the failing unit test to account for the layer padding, and added guards for the new code so this can roll into chrome. It appears that the canary will pass. The parent CL fixes the bad LCD layer images, so this should be ready for review now.",
+      "parentUuid": "9dd7b6a0_eddf138f",
+      "revId": "ab3c04c531696bb31d53be55949de05c396910fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
