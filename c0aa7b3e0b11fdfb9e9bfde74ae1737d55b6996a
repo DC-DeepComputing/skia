@@ -120,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12410aa5_05dc5888",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-02-26T15:59:20Z",
+      "side": 1,
+      "message": "`getDepthAttachmentDimensions()` is called just before allocating depth buffer, it is unlikely be called without a initialized texture. Or we can change this method arg from `TextureProxy*` to `graphite::Texture*`?",
+      "parentUuid": "aa0f40e7_7c018766",
+      "range": {
+        "startLine": 234,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 91
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e877e80c_44ee43ac",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
