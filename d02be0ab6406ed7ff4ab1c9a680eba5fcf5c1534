@@ -63,6 +63,30 @@
       },
       "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9332c66e_b23443fd",
+        "filename": "src/core/SkBlitter_ARGB32.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-26T15:26:25Z",
+      "side": 1,
+      "message": "Oh, nevermind. I was remembering how the comment describes that function, not what the actual implementation does. Sigh.",
+      "parentUuid": "c934ce71_9abb286e",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 55
+      },
+      "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
