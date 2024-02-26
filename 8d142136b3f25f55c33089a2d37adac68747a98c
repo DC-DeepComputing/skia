@@ -16,6 +16,52 @@
       "message": "Thanks for the quick review!",
       "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a95992b_d0433aa7",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-26T17:22:33Z",
+      "side": 1,
+      "message": "Any reason to move this code? It looks the same.",
+      "range": {
+        "startLine": 170,
+        "startChar": 12,
+        "endLine": 170,
+        "endChar": 33
+      },
+      "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf06d545_f8f975a8",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-26T17:22:33Z",
+      "side": 1,
+      "message": "Can we use a reciprocal estimate to get rid of the divide?\nFrom RP. Even if we need a precise answer, `rcp_precise` should be faster than division (I hope!)\n\n```\n    SI F   rcp_approx(F v)   { auto e \u003d vrecpeq_f32(v);  return vrecpsq_f32 (v,e  ) * e; }\n    SI F   rcp_precise(F v)  { auto e \u003d rcp_approx(v);   return vrecpsq_f32 (v,e  ) * e; }\n```",
+      "range": {
+        "startLine": 513,
+        "startChar": 0,
+        "endLine": 515,
+        "endChar": 0
+      },
+      "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
