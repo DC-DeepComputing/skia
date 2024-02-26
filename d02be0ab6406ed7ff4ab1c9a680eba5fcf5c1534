@@ -39,6 +39,30 @@
       },
       "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c934ce71_9abb286e",
+        "filename": "src/core/SkBlitter_ARGB32.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-26T15:25:04Z",
+      "side": 1,
+      "message": "The `SkAlpha255To256` is defined as `return alpha + 1`, so it should be the inverse, right?",
+      "parentUuid": "f05a2f56_bffa4420",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 55
+      },
+      "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
