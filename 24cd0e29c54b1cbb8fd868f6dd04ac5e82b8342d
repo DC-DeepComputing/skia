@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "388f3840_f4b38d32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-26T12:23:33Z",
+      "side": 1,
+      "message": "LGTM, there are two CLs of this, are there?",
+      "revId": "24cd0e29c54b1cbb8fd868f6dd04ac5e82b8342d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
