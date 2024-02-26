@@ -33,6 +33,29 @@
       "message": "Thanks for the quick review!",
       "revId": "66cc2693334344375f09cc733026d2ae3e4d5288",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bcf13de_c9418e0b",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-26T21:01:41Z",
+      "side": 1,
+      "message": "I\u0027d caution against using lambdas so heavily as there is no guarantee that the compiler will necessarily inline them, and any time we update the compiler or change -O flags, it could change its inlining decisions. If you declare a static function, you can force inlining on it. (However, it\u0027s worth noting that existing free functions in this file do not actually force inlining either! It looks like they are just using `inline`, which affects linkage and is no longer directly meant as an optimization hint. So I guess we are just getting lucky all around here.)",
+      "range": {
+        "startLine": 490,
+        "startChar": 0,
+        "endLine": 490,
+        "endChar": 54
+      },
+      "revId": "66cc2693334344375f09cc733026d2ae3e4d5288",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
