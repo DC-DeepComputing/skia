@@ -27,3 +27,7 @@ public:
 sk_sp<SkFontMgr> SkFontMgr_New_Custom_Empty() {
     return sk_make_sp<SkFontMgr_Custom>(EmptyFontLoader());
 }
+
+sk_sp<SkFontMgr> SkFontMgr_New_Custom_Empty_Fontations() {
+    return sk_make_sp<SkFontMgr_Custom>(EmptyFontLoader(), SkSetFourByteTag('f','n','t','s'));
+}

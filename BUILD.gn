@@ -332,7 +332,8 @@ optional("fontmgr_custom") {
       skia_enable_fontmgr_custom_directory ||
       skia_enable_fontmgr_custom_embedded || skia_enable_fontmgr_custom_empty
 
-  deps = [ ":typeface_freetype" ]
+  # TODO: Switch that depending on which factory is on?
+  deps = [ ":typeface_freetype", ":typeface_fontations" ]
   public = [ "src/ports/SkFontMgr_custom.h" ]
   sources = [ "src/ports/SkFontMgr_custom.cpp" ]
 }
@@ -1363,6 +1364,8 @@ optional("typeface_fontations") {
     "$root_out_dir/libbridge_rust_side.a",
   ]
   sources = [
+    "src/ports/SkFontScanner_fontations.cpp",
+    "src/ports/SkFontScanner_fontations.h",
     "src/ports/SkTypeface_fontations.cpp",
     "src/ports/SkTypeface_fontations_priv.h",
   ]
