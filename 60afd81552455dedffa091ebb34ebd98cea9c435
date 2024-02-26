@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c516d4a_6be3ab7d",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-26T22:10:31Z",
+      "side": 1,
+      "message": "G3 was having issues with these removals, so I\u0027ll address them later",
+      "range": {
+        "startLine": 18,
+        "startChar": 3,
+        "endLine": 18,
+        "endChar": 7
+      },
+      "revId": "60afd81552455dedffa091ebb34ebd98cea9c435",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
