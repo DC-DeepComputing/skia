@@ -35,6 +35,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b7b2b0a_c3c67e64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-26T16:28:06Z",
+      "side": 1,
+      "message": "I checked the paint times of the `lcdtext` GM, since I couldn\u0027t find any dedicated benchmarks. On my windows machine, the legacy blitter was taking between 0.35-0.4ms and RP was taking 0.4-0.43ms. On my M1, the legacy blitter was taking between 0.65-0.74ms and RP was taking between 0.8-0.9ms.  ToT with the legacy blitter was no different from the new blitter on M1 and maybe slightly faster on my windows (ToT was 0.45ms with legacy blitter). We will see what perf says, but it\u0027s at least not a total toss-up where we could just delete this blitter.",
+      "parentUuid": "d16020d8_75698783",
+      "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99a0de51_e82bd052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-26T16:28:06Z",
+      "side": 1,
+      "message": "G3 canary is unrelated to skia, so going forward with this.",
+      "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f05a2f56_bffa4420",
