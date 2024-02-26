@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5460efc7_efc3c9a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-26T14:59:19Z",
+      "side": 1,
+      "message": "I\u0027ve tested on my M1 for the arm code and my windows machine for the sse2 code. I also hacked in tests for transparent source colors and using the scalar functions on both platforms, and everything looks good.",
+      "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
