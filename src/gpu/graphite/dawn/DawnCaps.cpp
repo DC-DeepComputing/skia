@@ -16,8 +16,10 @@
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/dawn/DawnTexture.h"
 #include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
@@ -217,6 +219,26 @@ TextureInfo DawnCaps::getDefaultStorageTextureInfo(SkColorType colorType) const 
     info.fUsage = usage;
 
     return info;
+}
+
+SkISize DawnCaps::getDepthAttachmentDimensions(const TextureProxy* colorAttachment) const {
+    // For multiplanar textures, texture->textureInfo() uses the format of planes instead of
+    // textures (R8, R8G8, vs R8BG8Biplanar420Unorm), so we have to query texture format from
+    // wgpu::Texture object, and then use it reconstruct the full dimensions.
+    const auto& dawnTextureSpec = colorAttachment->textureInfo().dawnTextureSpec();
+    SkASSERT(colorAttachment->isInstantiated());
+    wgpu::TextureFormat format =
+            static_cast<const DawnTexture*>(colorAttachment->texture())->dawnTexture().GetFormat();
+    if ((format == wgpu::TextureFormat::R8BG8Biplanar420Unorm ||
+         format == wgpu::TextureFormat::R10X6BG10X6Biplanar420Unorm ||
+         format == wgpu::TextureFormat::R8BG8A8Triplanar420Unorm) &&
+        dawnTextureSpec.fAspect == wgpu::TextureAspect::Plane1Only) {
+        // Dawn requires depth attachment to match the size of Y plane (texture size).
+        return SkISize::Make(colorAttachment->dimensions().width() * 2,
+                             colorAttachment->dimensions().height() * 2);
+    }
+
+    return colorAttachment->dimensions();
 }
 
 const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,

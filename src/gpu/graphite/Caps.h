@@ -100,6 +100,9 @@ public:
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
 
+    // Get required depth attachment dimensions for a givin color attachment.
+    virtual SkISize getDepthAttachmentDimensions(const TextureProxy* colorAttachment) const;
+
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
