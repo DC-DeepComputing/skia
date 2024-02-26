@@ -137,6 +137,7 @@ namespace SK_OPTS_NS {
     SI U32 max(U32 a, U32 b) { return a > b ? a : b; }
 
     SI F   mad(F f, F m, F a)   { return f*m+a; }
+    SI F   msub(F f, F m, F s)  { return f*m-s; }
     SI F   abs_  (F v)          { return fabsf(v); }
     SI I32 abs_  (I32 v)        { return v < 0 ? -v : v; }
     SI F   floor_(F v)          { return floorf(v); }
@@ -233,6 +234,7 @@ namespace SK_OPTS_NS {
         SI bool all(I32 c) { return vminvq_u32((U32)c) != 0; }
 
         SI F     mad(F f, F m, F a) { return vfmaq_f32(a,f,m); }
+        SI F    msub(F f, F m, F s) { return vfmsq_f32(s,f,m); }
         SI F  floor_(F v)           { return vrndmq_f32(v); }
         SI F   ceil_(F v)           { return vrndpq_f32(v); }
         SI F   sqrt_(F v)           { return vsqrtq_f32(v); }
@@ -243,7 +245,9 @@ namespace SK_OPTS_NS {
         SI bool any(I32 c) { return c[0] | c[1] | c[2] | c[3]; }
         SI bool all(I32 c) { return c[0] & c[1] & c[2] & c[3]; }
 
-        SI F mad(F f, F m, F a) { return vmlaq_f32(a,f,m); }
+        SI F mad(F f, F m, F a)  { return vmlaq_f32(a,f,m); }
+        SI F msub(F f, F m, F s) { return vmlsq_f32(s,f,m); }
+
         SI F floor_(F v) {
             F roundtrip = vcvtq_f32_s32(vcvtq_s32_f32(v));
             return roundtrip - if_then_else(roundtrip > v, F(1), F(0));
@@ -325,7 +329,8 @@ namespace SK_OPTS_NS {
     using U16 = V<uint16_t>;
     using U8  = V<uint8_t >;
 
-    SI F   mad(F f, F m, F a) { return _mm512_fmadd_ps(f, m, a); }
+    SI F   mad(F f, F m, F a)  { return _mm512_fmadd_ps(f, m, a); }
+    SI F   msub(F f, F m, F s) { return _mm512_fmsub_ps(f, m, s); }
     SI F   min(F a, F b)     { return _mm512_min_ps(a,b);    }
     SI I32 min(I32 a, I32 b) { return (I32)_mm512_min_epi32((__m512i)a,(__m512i)b); }
     SI U32 min(U32 a, U32 b) { return (U32)_mm512_min_epu32((__m512i)a,(__m512i)b); }
@@ -348,7 +353,7 @@ namespace SK_OPTS_NS {
     SI U32 round(F v, F scale) { return (U32)_mm512_cvtps_epi32(v*scale); }
     SI U16 pack(U32 v) {
         __m256i rst = _mm256_packus_epi32(_mm512_castsi512_si256((__m512i)v),
-                                _mm512_extracti64x4_epi64((__m512i)v, 1));
+                                          _mm512_extracti64x4_epi64((__m512i)v, 1));
         return (U16)_mm256_permutex_epi64(rst, 216);
     }
     SI U8 pack(U16 v) {
@@ -568,7 +573,8 @@ namespace SK_OPTS_NS {
     using U16 = V<uint16_t>;
     using U8  = V<uint8_t >;
 
-    SI F   mad(F f, F m, F a) { return _mm256_fmadd_ps(f, m, a); }
+    SI F   mad(F f, F m, F a)  { return _mm256_fmadd_ps(f, m, a); }
+    SI F   msub(F f, F m, F s) { return _mm256_fmsub_ps(f, m, s); }
 
     SI F   min(F a, F b)     { return _mm256_min_ps(a,b);    }
     SI I32 min(I32 a, I32 b) { return (I32)_mm256_min_epi32((__m256i)a,(__m256i)b); }
@@ -771,6 +777,7 @@ namespace SK_OPTS_NS {
 #endif
 
     SI F   mad(F f, F m, F a)  { return f*m+a;              }
+    SI F   msub(F f, F m, F s) { return f*m-s;              }
     SI F   abs_(F v)           { return _mm_and_ps(v, 0-v); }
 #if defined(JUMPER_IS_SSE41) || defined(JUMPER_IS_AVX)
     SI I32 abs_(I32 v)         { return (I32)_mm_abs_epi32((__m128i)v); }
@@ -933,6 +940,13 @@ static constexpr F F0 = F_(0.0f),
     SI F mad(float f, F m, F a) { return mad(F_(f), m, a); }
     SI F mad(float f, F m, float a) { return mad(F_(f), m, F_(a)); }
     SI F mad(float f, float m, F a) { return mad(F_(f), F_(m), a); }
+
+    SI F msub(F f, F m, float s) { return msub(f, m, F_(s)); }
+    SI F msub(F f, float m, F s) { return msub(f, F_(m), s); }
+    SI F msub(F f, float m, float s) { return msub(f, F_(m), F_(s)); }
+    SI F msub(float f, F m, F s) { return msub(F_(f), m, s); }
+    SI F msub(float f, F m, float s) { return msub(F_(f), m, F_(s)); }
+    SI F msub(float f, float m, F s) { return msub(F_(f), F_(m), s); }
 #endif
 
 // We need to be a careful with casts.
@@ -4953,6 +4967,14 @@ SI F mad(F     f, float m, float a) { return mad(   f , F_(m), F_(a)); }
 SI F mad(float f, F     m, F     a) { return mad(F_(f),    m ,    a ); }
 SI F mad(float f, F     m, float a) { return mad(F_(f),    m , F_(a)); }
 SI F mad(float f, float m, F     a) { return mad(F_(f), F_(m),    a ); }
+
+SI F msub(F     f, F     m, F     s) { return f*m-s; }
+SI F msub(F     f, F     m, float s) { return msub(   f ,    m , F_(s)); }
+SI F msub(F     f, float m, F     s) { return msub(   f , F_(m),    s ); }
+SI F msub(F     f, float m, float s) { return msub(   f , F_(m), F_(s)); }
+SI F msub(float f, F     m, F     s) { return msub(F_(f),    m ,    s ); }
+SI F msub(float f, F     m, float s) { return msub(F_(f),    m , F_(s)); }
+SI F msub(float f, float m, F     s) { return msub(F_(f), F_(m),    s ); }
 
 SI U32 trunc_(F x) { return (U32)cast<I32>(x); }
 
