@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a544e842_0e37c3d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-26T20:03:31Z",
+      "side": 1,
+      "message": "This is quite an assertion. Do you have some evidence of this? If so this would be an issue that FreeType would really need to fix. Variable fonts have a default instance for a reason.",
+      "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5268a57f_dc0f4b22",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -14,6 +31,23 @@
       "writtenOn": "2024-02-26T15:35:01Z",
       "side": 1,
       "message": "I don\u0027t believe this code is used by Chromium (it isn\u0027t even compiled in). I think you\u0027re looking for https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontMgr_FontConfigInterface.cpp;l\u003d31;drc\u003d40200ceca00e8614b84bb229d34cb2aa3b269308 and the fact that FCI doesn\u0027t have any way to specify the axis values?",
+      "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54955062_2a34a31d",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-26T20:03:31Z",
+      "side": 1,
+      "message": "To clarify, most variable font instances will happen here. FreeType has a hack where indexes greater than 0xFFFF will be interpreted as instance indexes. FontConfig uses this to \"transparently\" present a variable font as a number of instances (much like how ttc indexes work).\n\nIn general one only gets past here with a variable font with FontConfig when requesting a non-named instance. Testing this locally with Skia with the \"Inter Variable\" font installed and using weight 430 early returns below as described and \"works\" in the sense that one gets the default instance.",
       "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
