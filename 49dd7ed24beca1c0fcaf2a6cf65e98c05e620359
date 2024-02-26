@@ -22,6 +22,30 @@
       },
       "revId": "49dd7ed24beca1c0fcaf2a6cf65e98c05e620359",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c646b0a_91eb3461",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-26T14:59:06Z",
+      "side": 1,
+      "message": "I investigated making a module here. The challenge is that almost all of our built-in runtime effects evaluate a child effect, because they are shading _something_ (an image, a solid color, a gradient, etc). We don\u0027t support passing shaders into functions today, because that would require basically a template expansion. However, it would be _super useful_ and I could totally be convinced that it is worth some R\u0026D time, if that is an angle we want to pursue. I think it\u0027s just a matter of justifying the engineering time to do it.",
+      "parentUuid": "612d4c85_93fd8373",
+      "range": {
+        "startLine": 67,
+        "startChar": 17,
+        "endLine": 67,
+        "endChar": 38
+      },
+      "revId": "49dd7ed24beca1c0fcaf2a6cf65e98c05e620359",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
