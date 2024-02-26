@@ -5,9 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkRefCnt.h"
 #include "modules/skottie/src/SkottiePriv.h"
 
-#include "modules/sksg/include/SkSGRenderNode.h"
+namespace skjson {
+class ObjectValue;
+}
+
+namespace sksg {
+class RenderNode;
+}
 
 namespace skottie {
 namespace internal {

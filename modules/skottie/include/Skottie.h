@@ -8,24 +8,21 @@
 #ifndef Skottie_DEFINED
 #define Skottie_DEFINED
 
-#include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "modules/skottie/include/ExternalLayer.h"
-#include "modules/skottie/include/SkottieProperty.h"
-#include "modules/skottie/include/SlotManager.h"
 #include "modules/skresources/include/SkResources.h"
 
-#include <memory>
+#include <cstddef>
+#include <cstdint>
 #include <vector>
 
 class SkCanvas;
-struct SkRect;
+class SkFontMgr;
 class SkStream;
-
-namespace skjson { class ObjectValue; }
+struct SkRect;
 
 namespace sksg {
 
@@ -35,6 +32,9 @@ class RenderNode;
 } // namespace sksg
 
 namespace skottie {
+class PrecompInterceptor;
+class PropertyObserver;
+class SlotManager;
 
 namespace internal { class Animator; }
 
