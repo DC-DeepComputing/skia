@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "add18d3b_10433dfa",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-26T16:09:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure that restructuring is worth it as this is all fairly temporary. My medium-term plan is to move this check inside RasterPathAtlas and store the small paths in a DrawAtlas in there, so SmallPathAtlas will go away. Before that I need to restructure DrawAtlas so I can rasterize directly to the backing store rather than rasterizing to an external chunk of memory and copying that in. When this happens RasterPathAtlas will have access to the tighter bounds via the maskSize so this duplicate code will go away.",
+      "parentUuid": "41c56424_f6d979c8",
+      "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5ccb62e_74cc68a4",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 3
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15e4be40_a06f9548",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1438,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-26T16:09:34Z",
+      "side": 1,
+      "message": "Again, this decision will eventually be made in RasterPathAtlas. In any case this is a constexpr in the latest CL.",
+      "parentUuid": "f5ccb62e_74cc68a4",
+      "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bb61be9b_230f8138",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 3
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-23T18:29:45Z",
       "side": 1,
       "message": "nit: I noticed that this check is missing `kComputeMSAA16`. Skipping the bounds check here is mainly to prevent the tessellation fall-back for debugging - I wonder if this could be simplified to:\n\n    if (!msaaSupported || strategy !\u003d PathRendererStrategy::kDefault) {",
+      "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce748fe_5ccf5a46",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1455,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-26T16:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb61be9b_230f8138",
       "revId": "99d74ba5283b831a882302313fb20d1bba6f0894",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
