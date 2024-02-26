@@ -10,10 +10,9 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkTypes.h"
+#include "include/core/SkRect.h"
 
 #include <vector>
-
-struct SkRect;
 
 namespace sksg {
 

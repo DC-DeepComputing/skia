@@ -19,14 +19,23 @@
 #include "src/base/SkTLazy.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkFontPriv.h"
+#include "include/core/SkFontTypes.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypeface.h"
+
 
 #ifdef SK_UNICODE_AVAILABLE
 #include "modules/skunicode/include/SkUnicode.h"
 #endif
 
 #include <algorithm>
-#include <limits.h>
 #include <numeric>
+#include <memory>
+#include <utility>
+
+class SkPaint;
 
 using namespace skia_private;
 

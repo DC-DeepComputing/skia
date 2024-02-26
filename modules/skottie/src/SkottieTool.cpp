@@ -10,34 +10,55 @@
 #include "include/codec/SkPngDecoder.h"
 #include "include/codec/SkWebpDecoder.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkData.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
-#include "include/core/SkPicture.h"
-#include "include/core/SkPictureRecorder.h"
-#include "include/core/SkSerialProcs.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTypes.h"
 #include "include/encode/SkPngEncoder.h"
-#include "include/private/base/SkTPin.h"
+#include "modules/skottie/include/ExternalLayer.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
-#include "src/image/SkImage_Base.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkTPin.h"
+#include "include/private/base/SkTo.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
+#include "include/core/SkSerialProcs.h"
+#include "src/image/SkImage_Base.h"
+
+#if !defined(CPU_ONLY)
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "tools/gpu/ContextType.h"
+#include "tools/gpu/GrContextFactory.h"
+#endif
 
 #include <algorithm>
 #include <chrono>
-#include <future>
+#include <cstdio>
+#include <functional>
+#include <memory>
 #include <numeric>
+#include <string>
+#include <utility>
 #include <vector>
-
-#if !defined(CPU_ONLY)
-#include "include/gpu/GrContextOptions.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "tools/gpu/GrContextFactory.h"
-#endif
 
 #if defined(HAVE_VIDEO_ENCODER)
     #include "experimental/ffmpeg/SkVideoEncoder.h"

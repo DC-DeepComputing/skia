@@ -6,9 +6,14 @@
  */
 
 #include "modules/sksg/include/SkSGPaint.h"
-
+#include "include/core/SkShader.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTPin.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
+
+#include <utility>
+
+class SkMatrix;
 
 namespace sksg {
 

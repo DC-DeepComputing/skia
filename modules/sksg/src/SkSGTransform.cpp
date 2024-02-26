@@ -6,12 +6,12 @@
  */
 
 #include "modules/sksg/include/SkSGTransform.h"
-
 #include "include/core/SkCanvas.h"
+#include "include/private/base/SkAssert.h"
+#include "include/core/SkPoint.h"
 #include "modules/sksg/src/SkSGTransformPriv.h"
 
 namespace sksg {
-
 namespace {
 
 template <typename T>

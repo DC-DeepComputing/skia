@@ -15,6 +15,7 @@ skia_cc_library(
     ],
     hdrs = ["//modules/skottie/include:hdrs"],
     visibility = ["//:__subpackages__"],
+    defines = ["SK_ENABLE_SKOTTIE_SKSLEFFECT", "SK_ENABLE_SKOTTIE"],
     deps = [
         "//:skia_internal",
         "//modules/skresources:legacy_skresources",
@@ -96,6 +97,7 @@ skia_cc_library(
     ],
     hdrs = ["//modules/skottie/include:hdrs"],
     features = ["layering_check"],
+    defines = ["SK_ENABLE_SKOTTIE_SKSLEFFECT", "SK_ENABLE_SKOTTIE"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":textshaper_harfbuzz_icu",
