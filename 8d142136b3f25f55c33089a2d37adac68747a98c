@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c0bf5e0_fab88a2e",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-26T17:49:50Z",
+      "side": 1,
+      "message": "Just to group the unpremuls together.",
+      "parentUuid": "7a95992b_d0433aa7",
+      "range": {
+        "startLine": 170,
+        "startChar": 12,
+        "endLine": 170,
+        "endChar": 33
+      },
+      "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf06d545_f8f975a8",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ca878f8_ed3291c8",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-26T17:49:50Z",
+      "side": 1,
+      "message": "I will study this.",
+      "parentUuid": "cf06d545_f8f975a8",
+      "range": {
+        "startLine": 513,
+        "startChar": 0,
+        "endLine": 515,
+        "endChar": 0
+      },
+      "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee765c9e_5a968d0c",
@@ -101,6 +149,30 @@
       "writtenOn": "2024-02-26T17:23:02Z",
       "side": 1,
       "message": "`/*swapRB\u003d*/`",
+      "range": {
+        "startLine": 552,
+        "startChar": 24,
+        "endLine": 552,
+        "endChar": 29
+      },
+      "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d34f14ee_73b8e50c",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-26T17:49:50Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee765c9e_5a968d0c",
       "range": {
         "startLine": 552,
         "startChar": 24,
