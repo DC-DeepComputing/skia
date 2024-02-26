@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e32c47_6018d243",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-26T14:39:33Z",
+      "side": 1,
+      "message": "should we name this variable to be more specific like colorAttachmentTexture? If so we should also probably put the name and a comment in the header to describe what this function is used for.",
+      "range": {
+        "startLine": 224,
+        "startChar": 67,
+        "endLine": 224,
+        "endChar": 74
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5139d0_c20d81a6",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-26T14:39:33Z",
+      "side": 1,
+      "message": "instead of getting the TextureInfo you should be able to just get the TextureSpec. It is a cheaper call that doesn\u0027t require the extra if check.\n\ntexture-\u003etextureInfo().dawnTextureSpec()",
+      "range": {
+        "startLine": 225,
+        "startChar": 4,
+        "endLine": 228,
+        "endChar": 5
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e877e80c_44ee43ac",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-26T14:39:33Z",
+      "side": 1,
+      "message": "Does Dawn now require this for all backends or is this still D3D11 specific? If it is for D3D11 we need to add a similar query into Dawn itself to know whether depthStencil size should match the full color attachment dimensions or not. We do not want to add checks inside Skia that ask if we are on D3D11 of Dawn and then know to do this workaround. We need to have Dawn tell us this is needed (unless it is now required for all backends).",
+      "range": {
+        "startLine": 240,
+        "startChar": 11,
+        "endLine": 240,
+        "endChar": 70
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
