@@ -16,6 +16,24 @@
       "message": "LGTM, what was the fix?",
       "revId": "d7ad9883270279bb23754c65ce184d7c5f22639b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a93b5d77_b85ca74b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-26T14:11:39Z",
+      "side": 1,
+      "message": "There is no fix yet. I just created a reland. Talked to ICU4X people - they have more experience with different RUST issues.\nSeems that the fix is going to be to use dylib instead of staticlib for fontations or for ICU4X or for both (since we cannot have two of them at once)",
+      "parentUuid": "ba8b96e4_43a91d92",
+      "revId": "d7ad9883270279bb23754c65ce184d7c5f22639b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
