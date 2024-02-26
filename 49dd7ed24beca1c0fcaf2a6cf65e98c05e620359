@@ -46,6 +46,30 @@
       },
       "revId": "49dd7ed24beca1c0fcaf2a6cf65e98c05e620359",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af8ca11b_102a3156",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-26T15:23:55Z",
+      "side": 1,
+      "message": "That\u0027s a good point. Graphite has a workaround for this with extra metadata and sksl stitching, but that isn\u0027t just a drop-in for ganesh or RP.",
+      "parentUuid": "5c646b0a_91eb3461",
+      "range": {
+        "startLine": 67,
+        "startChar": 17,
+        "endLine": 67,
+        "endChar": 38
+      },
+      "revId": "49dd7ed24beca1c0fcaf2a6cf65e98c05e620359",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
