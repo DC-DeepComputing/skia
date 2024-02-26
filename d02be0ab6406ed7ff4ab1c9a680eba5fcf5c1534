@@ -16,6 +16,29 @@
       "message": "I\u0027ve tested on my M1 for the arm code and my windows machine for the sse2 code. I also hacked in tests for transparent source colors and using the scalar functions on both platforms, and everything looks good.",
       "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f05a2f56_bffa4420",
+        "filename": "src/core/SkBlitter_ARGB32.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-26T15:20:55Z",
+      "side": 1,
+      "message": "This isn\u0027t really the inverse of the 255-\u003e256 transform, but it\u0027s probably fine? The only time it changes behavior is if the original src and dst alpha were identical, and \u003c\u003d 127? So in that case, we\u0027d end up using max rather than min? (Just want to make sure I understand here).",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 55
+      },
+      "revId": "d02be0ab6406ed7ff4ab1c9a680eba5fcf5c1534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
