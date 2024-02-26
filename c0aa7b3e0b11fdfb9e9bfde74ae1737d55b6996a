@@ -49,6 +49,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa0f40e7_7c018766",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-26T15:10:49Z",
+      "side": 1,
+      "message": "Since we\u0027d probably end up with two formats anyways when we add TextureViews, I wonder if we should just add another planeFormat field to DawnTextureInfo/Spec. Then we don\u0027t have to worry about passing in a TextureProxy here.",
+      "range": {
+        "startLine": 234,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 91
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e877e80c_44ee43ac",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
