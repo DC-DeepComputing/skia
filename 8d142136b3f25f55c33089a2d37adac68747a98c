@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32227bc1_79d7fdfa",
+        "filename": "src/opts/SkSwizzler_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-26T17:48:02Z",
+      "side": 1,
+      "message": "Well, guess it doesn\u0027t matter anymore?",
+      "parentUuid": "7a95992b_d0433aa7",
+      "range": {
+        "startLine": 170,
+        "startChar": 12,
+        "endLine": 170,
+        "endChar": 33
+      },
+      "revId": "8d142136b3f25f55c33089a2d37adac68747a98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf06d545_f8f975a8",
