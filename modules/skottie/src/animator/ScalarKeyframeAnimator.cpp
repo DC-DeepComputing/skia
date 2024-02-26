@@ -5,11 +5,21 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkCubicMap.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
+#include "include/private/base/SkAssert.h"
+#include "modules/skottie/include/Skottie.h"
+#include "modules/skottie/include/SlotManager.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
 #include "modules/skottie/src/animator/Animator.h"
 #include "modules/skottie/src/animator/KeyframeAnimator.h"
+#include "src/utils/SkJSON.h"
+
+#include <utility>
+#include <vector>
 
 namespace skottie::internal {
 
