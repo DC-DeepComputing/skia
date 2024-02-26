@@ -5,6 +5,10 @@
  * found in the LICENSE file.
  */
 
+// TODO: How to get that in here.
+#define SK_TYPEFACE_FACTORY_FONTATIONS 1
+
+
 #ifndef SkFontMgr_custom_DEFINED
 #define SkFontMgr_custom_DEFINED
 
@@ -14,15 +18,26 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
+
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "src/ports/SkTypeface_Fontations_priv.h"
+#else
 #include "src/ports/SkTypeface_FreeType.h"
+#endif
 
 class SkData;
 class SkFontDescriptor;
 class SkStreamAsset;
 class SkTypeface;
+class SkFontScanner;
+
 
 /** The base SkTypeface implementation for the custom font manager. */
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+class SkTypeface_Custom : public SkTypeface_Fontations {
+#else
 class SkTypeface_Custom : public SkTypeface_FreeType {
+#endif
 public:
     SkTypeface_Custom(const SkFontStyle& style, bool isFixedPitch,
                       bool sysFont, SkString familyName, int index);
@@ -38,7 +53,11 @@ private:
     const SkString fFamilyName;
     const int fIndex;
 
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+    using INHERITED = SkTypeface_Fontations;
+#else
     using INHERITED = SkTypeface_FreeType;
+#endif
 };
 
 /** The empty SkTypeface implementation for the custom font manager.
@@ -51,7 +70,9 @@ public:
 protected:
     std::unique_ptr<SkStreamAsset> onOpenStream(int*) const override;
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override;
+#if !defined(SK_TYPEFACE_FACTORY_FONTATIONS)
     std::unique_ptr<SkFontData> onMakeFontData() const override;
+#endif
 
 private:
     using INHERITED = SkTypeface_Custom;
@@ -66,7 +87,9 @@ public:
 protected:
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override;
+#if !defined(SK_TYPEFACE_FACTORY_FONTATIONS)
     std::unique_ptr<SkFontData> onMakeFontData() const override;
+#endif
 
 private:
     SkString fPath;
@@ -115,7 +138,9 @@ public:
         virtual ~SystemFontLoader() { }
         virtual void loadSystemFonts(const SkFontScanner*, Families*) const = 0;
     };
-    explicit SkFontMgr_Custom(const SystemFontLoader& loader);
+    explicit SkFontMgr_Custom(
+            const SystemFontLoader& loader,
+            SkTypeface::FactoryId factoryId = SkSetFourByteTag('f', 'r', 'e', 'e'));
 
 protected:
     int onCountFamilies() const override;
@@ -137,6 +162,7 @@ private:
     Families fFamilies;
     sk_sp<SkFontStyleSet> fDefaultFamily;
     std::unique_ptr<SkFontScanner> fScanner;
+    SkTypeface::FactoryId fFactoryId;
 };
 
 #endif
