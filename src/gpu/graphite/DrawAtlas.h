@@ -103,6 +103,7 @@ public:
     };
 
     ErrorCode addToAtlas(Recorder*, int width, int height, const void* image, AtlasLocator*);
+    ErrorCode addRect(Recorder*, int width, int height, AtlasLocator*);
     bool recordUploads(DrawContext*, Recorder*);
 
     const sk_sp<TextureProxy>* getProxies() const { return fProxies; }
@@ -183,6 +184,8 @@ private:
     }
 
     bool addToPage(unsigned int pageIdx, int width, int height, const void* image, AtlasLocator*);
+    bool addRectToPage(unsigned int pageIdx, int width, int height, AtlasLocator*);
+    Plot* findPlot(const AtlasLocator&);
 
     bool createPages(AtlasGenerationCounter*);
     bool activateNewPage(Recorder*);

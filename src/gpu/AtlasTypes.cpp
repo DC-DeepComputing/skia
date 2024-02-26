@@ -46,26 +46,40 @@ Plot::~Plot() {
     sk_free(fData);
 }
 
-bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {
+// *** might need to return rowbytes
+void* Plot::addRect(int width, int height, AtlasLocator* atlasLocator) {
     SkASSERT(width <= fWidth && height <= fHeight);
 
     SkIPoint16 loc;
     if (!fRectanizer.addRect(width, height, &loc)) {
-        return false;
+        return nullptr;
     }
 
     auto rect = skgpu::IRect16::MakeXYWH(loc.fX, loc.fY, width, height);
 
     if (!fData) {
         fData = reinterpret_cast<unsigned char*>(
-                sk_calloc_throw(fBytesPerPixel * fWidth * fHeight));
+                        sk_calloc_throw(fBytesPerPixel * fWidth * fHeight));
     }
-    size_t rowBytes = width * fBytesPerPixel;
-    const unsigned char* imagePtr = (const unsigned char*)image;
     // point ourselves at the right starting spot
     unsigned char* dataPtr = fData;
     dataPtr += fBytesPerPixel * fWidth * rect.fTop;
     dataPtr += fBytesPerPixel * rect.fLeft;
+
+    fDirtyRect.join({rect.fLeft, rect.fTop, rect.fRight, rect.fBottom});
+
+    rect.offset(fOffset.fX, fOffset.fY);
+    atlasLocator->updateRect(rect);
+    SkDEBUGCODE(fDirty = true;)
+
+    return dataPtr;
+}
+
+void Plot::copySubImage(void* dst, int width, int height, const void* image) {
+    const unsigned char* imagePtr = (const unsigned char*)image;
+    unsigned char* dataPtr = (unsigned char*)dst;
+    size_t rowBytes = width * fBytesPerPixel;
+
     // copy into the data buffer, swizzling as we go if this is ARGB data
     constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
     if (4 == fBytesPerPixel && kBGRAIsNative) {
@@ -81,13 +95,15 @@ bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* a
             imagePtr += rowBytes;
         }
     }
+}
 
-    fDirtyRect.join({rect.fLeft, rect.fTop, rect.fRight, rect.fBottom});
+bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {
+    void* dataPtr = this->addRect(width, height, atlasLocator);
+    if (!dataPtr) {
+        return false;
+    }
 
-    rect.offset(fOffset.fX, fOffset.fY);
-    atlasLocator->updateRect(rect);
-    SkDEBUGCODE(fDirty = true;)
-
+    this->copySubImage(dataPtr, width, height, image);
     return true;
 }
 

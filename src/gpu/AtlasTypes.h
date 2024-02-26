@@ -449,6 +449,21 @@ public:
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
     bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+    void* addRect(int width, int height, AtlasLocator* atlasLocator);
+    void copySubImage(void* dst, int width, int height, const void* image);
+    void* data(const AtlasLocator& atlasLocator) {
+        if (!fData) {
+            fData = reinterpret_cast<unsigned char*>(
+                            sk_calloc_throw(fBytesPerPixel * fWidth * fHeight));
+        }
+        // point ourselves at the right starting spot
+        unsigned char* dataPtr = fData;
+        SkIPoint topLeft = atlasLocator.topLeft();
+        dataPtr += fBytesPerPixel * fWidth * topLeft.fY;
+        dataPtr += fBytesPerPixel * topLeft.fX;
+
+        return dataPtr;
+    }
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
