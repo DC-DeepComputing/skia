@@ -17,7 +17,7 @@
 // specific implementations.
 #if !defined(SK_CPU_X86) || \
     ((SK_CPU_SSE_LEVEL != SK_CPU_SSE_LEVEL_SSSE3) && (SK_CPU_SSE_LEVEL != SK_CPU_SSE_LEVEL_AVX2))
-#include "src/opts/SkSwizzler_opts.h"  // IWYU pragma: keep
+#include "src/opts/SkSwizzler_opts.inc"  // IWYU pragma: keep
 #endif
 
 #include "src/opts/SkOpts_RestoreTarget.h"
