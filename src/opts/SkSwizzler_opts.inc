@@ -494,58 +494,66 @@ void inverted_CMYK_to_BGR1(uint32_t dst[], const uint32_t* src, int count) {
     inverted_cmyk_to(kBGR1, dst, src, count);
 }
 
-template <bool swapRB>
-static void common_rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
+SI uint32x4_t round(float32x4_t v) {
+#if defined(SK_CPU_ARM64)
+    return vcvtnq_u32_f32(v);
+#else
+    return vcvtq_u32_f32(v + 0.5f);
+#endif
+}
+
+SI float32x4_t toNormalized(uint16x4_t v) {
+    static constexpr float kN = 1.0f / 255.0f;
+    return vcvtq_f32_u32(vmovl_u16(v)) * kN;
+}
+
+SI uint16x4_t unpremulHalf(float32x4_t invA, uint16x4_t v) {
+    const float32x4_t normalizedV = toNormalized(v);
+    const float32x4_t divided = invA * normalizedV;
+    const float32x4_t denormalized = divided * 255.0f;
+    const uint32x4_t rounded = round(denormalized);
+    return vqmovn_u32(rounded);
+}
+
+//     SI F   rcp_approx(F v)   { auto e = vrecpeq_f32(v);  return vrecpsq_f32 (v,e  ) * e; }
+//    SI F   rcp_precise(F v)  { auto e = rcp_approx(v);   return vrecpsq_f32 (v,e  ) * e; }
+
+SI float32x4_t reciprocal(float32x4_t a) {
+    uint32x4_t mask = sk_bit_cast<uint32x4_t>(a != float32x4_t{0, 0, 0, 0});
+#if 1
+    auto e = vrecpeq_f32(a);
+    e = vrecpsq_f32(a, e) * e;
+    auto recip = e;
+#else
+    auto recip = 1.0f / a;
+#endif
+    return sk_bit_cast<float32x4_t>(mask & sk_bit_cast<uint32x4_t>(recip));
+}
+
+SI uint8x8_t unpremul(float32x4_t invALow, float32x4_t invAHigh, uint8x8_t v) {
+    const uint16x8_t to16 = vmovl_u8(v);
+
+    const uint16x4_t low = unpremulHalf(invALow, vget_low_u16(to16));
+    const uint16x4_t high = unpremulHalf(invAHigh, vget_high_u16(to16));
+
+    const uint16x8_t combined = vcombine_u16(low, high);
+    return vqmovn_u16(combined);
+}
+
+SI void common_rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count, bool swapRB) {
     while (count >= 8) {
         const uint8x8x4_t in = vld4_u8((const uint8_t*)src);
-
-        auto round = [](float32x4_t v) -> uint32x4_t {
-            #if defined(SK_CPU_ARM64)
-                return vcvtnq_u32_f32(v);
-            #else
-                return vcvtq_u32_f32(v + 0.5f);
-            #endif
-        };
-
-        static constexpr float kN = 1.0f / 255.0f;
-        auto toNormalized = [](uint16x4_t v) -> float32x4_t {
-            return vcvtq_f32_u32(vmovl_u16(v)) * kN;
-        };
-
-        auto unpremulHalf = [toNormalized, round](float32x4_t invA, uint16x4_t v) -> uint16x4_t {
-            const float32x4_t normalizedV = toNormalized(v);
-            const float32x4_t divided = invA * normalizedV;
-            const float32x4_t denormalized = divided * 255.0f;
-            const uint32x4_t rounded = round(denormalized);
-            return vqmovn_u32(rounded);
-        };
-
-        auto reciprocal = [](float32x4_t a) -> float32x4_t {
-            uint32x4_t mask = sk_bit_cast<uint32x4_t>(a != float32x4_t{0, 0, 0, 0});
-            auto recip = 1.0f / a;
-            return sk_bit_cast<float32x4_t>(mask & sk_bit_cast<uint32x4_t>(recip));
-        };
 
         const uint8x8_t a = in.val[3];
         const uint16x8_t intA = vmovl_u8(a);
         const float32x4_t invALow = reciprocal(toNormalized(vget_low_u16(intA)));
         const float32x4_t invAHigh = reciprocal(toNormalized(vget_high_u16(intA)));
 
-        auto unpremul = [unpremulHalf, invALow, invAHigh](uint8x8_t v) -> uint8x8_t {
-            const uint16x8_t to16 = vmovl_u8(v);
+        const uint8x8_t b = unpremul(invALow, invAHigh, in.val[2]);
+        const uint8x8_t g = unpremul(invALow, invAHigh, in.val[1]);
+        const uint8x8_t r = unpremul(invALow, invAHigh, in.val[0]);
 
-            const uint16x4_t low = unpremulHalf(invALow, vget_low_u16(to16));
-            const uint16x4_t high = unpremulHalf(invAHigh, vget_high_u16(to16));
-
-            const uint16x8_t combined = vcombine_u16(low, high);
-            return vqmovn_u16(combined);
-        };
-
-        const uint8x8_t b = unpremul(in.val[2]);
-        const uint8x8_t g = unpremul(in.val[1]);
-        const uint8x8_t r = unpremul(in.val[0]);
-
-        if constexpr (swapRB) {
+        if (swapRB) {
             const uint8x8x4_t out{b, g, r, a};
             vst4_u8((uint8_t*)dst, out);
         } else {
@@ -559,7 +567,7 @@ static void common_rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
     }
 
     // Handle the tail. Count will be < 8.
-    if constexpr (swapRB) {
+    if (swapRB) {
         rgbA_to_BGRA_portable(dst, src, count);
     } else {
         rgbA_to_RGBA_portable(dst, src, count);
@@ -567,11 +575,11 @@ static void common_rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
 }
 
 void rgbA_to_RGBA(uint32_t* dst, const uint32_t* src, int count) {
-    common_rgbA_to_RGBA</*swapRB=*/false>(dst, src, count);
+    common_rgbA_to_RGBA(dst, src, count, /*swapRB=*/false);
 }
 
 void rgbA_to_BGRA(uint32_t* dst, const uint32_t* src, int count) {
-    common_rgbA_to_RGBA</*swapRB=*/true>(dst, src, count);
+    common_rgbA_to_RGBA(dst, src, count, /*swapRB=*/true);
 }
 
 #elif SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_AVX2
