@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77984c7b_77e2aa54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T19:32:21Z",
+      "side": 1,
+      "message": "Other than building and naming things this looks pretty good at PS8.",
+      "revId": "8ff38cb3b3b308b2a0323b8543dac9b2fb89059e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c515e0b7_00d127d0",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T19:32:21Z",
+      "side": 1,
+      "message": "It seems a bit awkward from a naming convention that the others (HB and CT) are capitalized and this one isn\u0027t. Maybe `SkUnicode`?",
+      "range": {
+        "startLine": 87,
+        "startChar": 21,
+        "endLine": 87,
+        "endChar": 22
+      },
+      "revId": "8ff38cb3b3b308b2a0323b8543dac9b2fb89059e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
