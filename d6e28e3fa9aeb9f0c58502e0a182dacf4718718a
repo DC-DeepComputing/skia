@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebe71943_578a3784",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T22:06:55Z",
+      "side": 1,
+      "message": "After finding the right issue, I ran a recent Chromium build with this setup and can see that all the UI text is missing.",
+      "parentUuid": "e45aa502_299ab42d",
+      "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5268a57f_dc0f4b22",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
