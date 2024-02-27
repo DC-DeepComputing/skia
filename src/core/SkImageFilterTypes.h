@@ -877,7 +877,8 @@ private:
     enum class BoundsScope : int {
         kDeferred,        // The bounds analysis won't be used for any rendering yet
         kCanDrawDirectly, // The rendering may draw the image directly if analysis allows it
-        kShaderOnly       // The rendering will always use a filling shader, e.g. drawPaint()
+        kShaderOnly,      // The rendering will always use a filling shader, e.g. drawPaint()
+        kRescale          // The rendering is controlled by rescaling logic, so ignores decal size
     };
 
     // Determine what effects are visible based on the target 'dstBounds' and extra transform that

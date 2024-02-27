@@ -51,6 +51,32 @@ namespace {
 // input image when using a strict roundOut.
 static constexpr float kRoundEpsilon = 1e-3f;
 
+std::pair<bool, bool> is_axis_nearly_integer_aligned(const LayerSpace<SkMatrix>& m,
+                                                     LayerSpace<SkIPoint>* out=nullptr) {
+    float invW  = sk_ieee_float_divide(1.f, m.rc(2,2));
+    float tx = SkScalarRoundToScalar(m.rc(0,2)*invW);
+    float ty = SkScalarRoundToScalar(m.rc(1,2)*invW);
+    // expected = [1 0 tx] after normalizing perspective (divide by m[2,2])
+    //            [0 1 ty]
+    //            [0 0  1]
+    bool affine = SkScalarNearlyEqual(m.rc(2,0)*invW, 0.f, kRoundEpsilon) &&
+                  SkScalarNearlyEqual(m.rc(2,1)*invW, 0.f, kRoundEpsilon);
+    if (!affine) {
+        return {false, false};
+    }
+
+    bool xAxis = SkScalarNearlyEqual(tx,  m.rc(0,2)*invW, kRoundEpsilon) &&
+                 SkScalarNearlyEqual(1.f, m.rc(0,0)*invW, kRoundEpsilon) &&
+                 SkScalarNearlyEqual(0.f, m.rc(1,0)*invW, kRoundEpsilon);
+    bool yAxis = SkScalarNearlyEqual(ty,  m.rc(1,2)*invW, kRoundEpsilon) &&
+                 SkScalarNearlyEqual(0.f, m.rc(0,1)*invW, kRoundEpsilon) &&
+                 SkScalarNearlyEqual(1.f, m.rc(1,1)*invW, kRoundEpsilon);
+    if (out && xAxis && yAxis) {
+        *out = LayerSpace<SkIPoint>({(int) tx, (int) ty});
+    }
+    return {xAxis, yAxis};
+}
+
 // If m is epsilon within the form [1 0 tx], this returns true and sets out to [tx, ty]
 //                                 [0 1 ty]
 //                                 [0 0 1 ]
@@ -58,21 +84,8 @@ static constexpr float kRoundEpsilon = 1e-3f;
 // to be a little more forgiving on matrix types during layer configuration.
 bool is_nearly_integer_translation(const LayerSpace<SkMatrix>& m,
                                    LayerSpace<SkIPoint>* out=nullptr) {
-    float tx = SkScalarRoundToScalar(sk_ieee_float_divide(m.rc(0,2), m.rc(2,2)));
-    float ty = SkScalarRoundToScalar(sk_ieee_float_divide(m.rc(1,2), m.rc(2,2)));
-    SkMatrix expected = SkMatrix::MakeAll(1.f, 0.f, tx,
-                                          0.f, 1.f, ty,
-                                          0.f, 0.f, 1.f);
-    for (int i = 0; i < 9; ++i) {
-        if (!SkScalarNearlyEqual(expected.get(i), m.get(i), kRoundEpsilon)) {
-            return false;
-        }
-    }
-
-    if (out) {
-        *out = LayerSpace<SkIPoint>({(int) tx, (int) ty});
-    }
-    return true;
+    auto [axisX, axisY] = is_axis_nearly_integer_aligned(m, out);
+    return axisX && axisY;
 }
 
 void decompose_transform(const SkMatrix& transform, SkPoint representativePoint,
@@ -508,6 +521,10 @@ bool LayerSpace<SkMatrix>::inverseMapRect(const LayerSpace<SkIRect>& rect,
 //         surface->drawFoo(...);
 //     }
 //     return surface.snap(); // Automatically handles failed allocations
+//
+// NOTE: Using PixelBoundary::kInitialized outsets any input sample bounds, unless the utility
+// function `fillWithShader()` is used, which performs extra draws with adjusted local coords to
+// maintain the original sampling bounds while still replicating the border pixel values.
 class FilterResult::AutoSurface {
 public:
     AutoSurface(const Context& ctx,
@@ -695,11 +712,13 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
     netTransform.postConcat(LayerSpace<SkMatrix>(xtraTransform));
     SkM44 netM44{SkMatrix(netTransform)};
 
-    const bool isPixelAligned = is_nearly_integer_translation(netTransform);
+    const auto [xAxisAligned, yAxisAligned] = is_axis_nearly_integer_aligned(netTransform);
+    const bool isPixelAligned = xAxisAligned && yAxisAligned;
     // When decal sampling, we use an inset image bounds for checking if the dst is covered. If not,
     // an image that exactly filled the dst bounds could still sample transparent black, in which
     // case the transform's scale factor needs to be taken into account.
-    const bool decalLeaks = fTileMode == SkTileMode::kDecal &&
+    const bool decalLeaks = scope != BoundsScope::kRescale &&
+                            fTileMode == SkTileMode::kDecal &&
                             fSamplingOptions != kNearestNeighbor &&
                             !isPixelAligned;
 
@@ -711,7 +730,8 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
         // When staying with linear filtering, a sample at 1/2px inset exactly will end up accessing
         // one external pixel with a weight of 0 (but MSAN will complain and not all GPUs actually
         // seem to get that correct). To be safe we have to clamp to epsilon inside the 1/2px.
-        safeImageBounds.inset(kRoundEpsilon, kRoundEpsilon);
+        safeImageBounds.inset(xAxisAligned ? 0.f : kRoundEpsilon,
+                              yAxisAligned ? 0.f : kRoundEpsilon);
     }
     bool hasPixelPadding = fBoundary != PixelBoundary::kUnknown;
 
@@ -1464,7 +1484,7 @@ FilterResult FilterResult::rescale(const Context& ctx,
     PixelSpace<SkIPoint> origin;
     const bool pixelAligned = is_nearly_integer_translation(fTransform, &origin);
     SkEnumBitMask<BoundsAnalysis> analysis = this->analyzeBounds(ctx.desiredOutput(),
-                                                                 BoundsScope::kShaderOnly);
+                                                                 BoundsScope::kRescale);
 
     // If there's no actual scaling, and no other effects that have to be resolved for blur(),
     // then just extract the necessary subset. Otherwise fall through and apply the effects with
@@ -1495,15 +1515,26 @@ FilterResult FilterResult::rescale(const Context& ctx,
 
     PixelSpace<SkIRect> srcRect;
     SkTileMode tileMode;
+    bool cfBorder = false;
+    bool deferPeriodicTiling = false;
     if (canDeferTiling && (analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
         // When we can defer tiling, and said tiling is visible, rescaling the original image
         // uses smaller textures.
         srcRect = LayerSpace<SkIRect>(SkIRect::MakeXYWH(origin.x(), origin.y(),
                                                         fImage->width(), fImage->height()));
-        tileMode = fTileMode;
+        if (fTileMode == SkTileMode::kDecal &&
+            (analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
+            // Like in applyColorFilter() evaluate the transparent CF'ed border and clamp to it.
+            tileMode = SkTileMode::kClamp;
+            cfBorder = true;
+        } else {
+            tileMode = fTileMode;
+            deferPeriodicTiling = tileMode == SkTileMode::kRepeat ||
+                                  tileMode == SkTileMode::kMirror;
+        }
     } else {
         // Otherwise we either have to rescale the layer-bounds-sized image (!canDeferTiling)
-        // or the tiling isn't visible so the layer bounds reprenents a smaller effective
+        // or the tiling isn't visible so the layer bounds represents a smaller effective
         // image than the original image data.
         srcRect = visibleLayerBounds;
         tileMode = SkTileMode::kDecal;
@@ -1519,16 +1550,12 @@ FilterResult FilterResult::rescale(const Context& ctx,
     // to produce a conservative pixel buffer and clamp-tiling is used so that partially covered
     // pixels are filled with the un-weighted color.
     PixelSpace<SkRect> stepBoundsF{srcRect};
-    // stepPixelBounds is used to calculate how much padding needs to be added. Adding 1px outset
-    // keeps the math consistent for first iteration vs. later iterations, and logically represents
-    // the first downscale triggering the tilemode vs. later steps sampling the preserved tiling
-    // in the padded pixels.
     PixelSpace<SkIRect> stepPixelBounds{srcRect};
-    stepPixelBounds.outset(PixelSpace<SkISize>({1, 1}));
 
     // If we made it here, at least one iteration is required, even if xSteps and ySteps are 0.
-    sk_sp<SkSpecialImage> image = nullptr;
-    while(!image || xSteps > 0 || ySteps > 0) {
+    // sk_sp<SkSpecialImage> image = nullptr;
+    FilterResult image = *this;
+    do {
         float sx = 1.f;
         if (xSteps > 0) {
             sx = xSteps > 1 ? 0.5f : srcRect.width()*scale.width() / stepBoundsF.width();
@@ -1544,98 +1571,143 @@ FilterResult FilterResult::rescale(const Context& ctx,
         PixelSpace<SkRect> dstBoundsF{SkRect::MakeWH(stepBoundsF.width() * sx,
                                                      stepBoundsF.height() * sy)};
         PixelSpace<SkIRect> dstPixelBounds = dstBoundsF.roundOut();
-        if (tileMode == SkTileMode::kClamp || tileMode == SkTileMode::kDecal) {
-            // To sample beyond the padded src texel, we need
-            //      dstFracX + px - 1/2 > sx*(srcFracX - 1/2)
-            // px=1 always satisfies this for sx=1/2 on intermediate steps, but for 0.5 < sx < 1
-            // the fractional bounds and rounding can require an additional padded pixel.
-            // We calculate from the right edge because we keep the left edge pixel aligned.
-            float srcFracX = stepPixelBounds.right() - stepBoundsF.right() - 0.5f;
-            float dstFracX = dstPixelBounds.right()  - dstBoundsF.right()  - 0.5f;
-            int px = std::max(1, sk_float_ceil2int((sx*srcFracX - dstFracX)));
 
-            float srcFracY = stepPixelBounds.bottom() - stepBoundsF.bottom() - 0.5f;
-            float dstFracY = dstPixelBounds.bottom()  - dstBoundsF.bottom()  - 0.5f;
-            int py = std::max(1, sk_float_ceil2int((sy*srcFracY - dstFracY)));
-
-            dstPixelBounds.outset(PixelSpace<SkISize>({px, py}));
-
-            // If the axis scale factor was identity, the dst pixel bounds *after* padding will
-            // match the step pixel bounds. We have to add re-add the padding on identity iterations
-            // because the initial dst bounds is based on the un-padded stepBoundsF.
-            SkASSERT(sx != 1.f || dstPixelBounds.width() == stepPixelBounds.width());
-            SkASSERT(sy != 1.f || dstPixelBounds.height() == stepPixelBounds.height());
+        PixelBoundary boundary = PixelBoundary::kUnknown;
+        PixelSpace<SkIRect> sampleBounds = dstPixelBounds;
+        if (tileMode == SkTileMode::kDecal) {
+            boundary = PixelBoundary::kTransparent;
+        } else {
+            // This is roughly equivalent to using PixelBoundary::kInitialized, but keeps some of
+            // the later logic simpler.
+            dstPixelBounds.outset(LayerSpace<SkISize>({1,1}));
         }
 
-        // TODO(b/323886180): Take advantage of pixel boundary tracking here, passing in kUnknown
-        // preserves the surface dimensions exactly for now.
-        AutoSurface surface{ctx, dstPixelBounds, PixelBoundary::kUnknown,
-                            /*renderInParameterSpace=*/false};
+        AutoSurface surface{ctx, dstPixelBounds, boundary, /*renderInParameterSpace=*/false};
         if (surface) {
-            // Fill all of surface (to include any padded edge pixels) with 'scaleXform' as the CTM.
             const auto scaleXform = PixelSpace<SkMatrix>::RectToRect(stepBoundsF, dstBoundsF);
-            surface->concat(SkMatrix(scaleXform));
 
+            // Redo analysis with the actual scale transform and padded low res bounds.
+            analysis = image.analyzeBounds(SkMatrix(scaleXform), SkIRect(sampleBounds),
+                                           BoundsScope::kRescale);
+
+            // Primary fill that will cover all of 'sampleBounds'
             SkPaint paint;
-            if (!image) {
-                // Redo analysis with the actual scale transform and padded low res bounds, but
-                // remove kRequiresDecalInLayerSpace because it will always trigger with the scale
-                // factor and can be automatically applied at the end when upscaling.
-                analysis = this->analyzeBounds(SkMatrix(scaleXform), SkIRect(dstPixelBounds),
-                                               BoundsScope::kShaderOnly);
-                analysis &= ~BoundsAnalysis::kRequiresDecalInLayerSpace;
-                paint.setShader(this->getAnalyzedShaderView(ctx, fSamplingOptions, analysis));
-            } else {
-                // Otherwise just bilinearly downsample the origin-aligned prior step's image.
-                paint.setShader(image->asShader(tileMode, SkFilterMode::kLinear,
-                                                SkMatrix::Translate(origin.x(), origin.y())));
-                if (!image->isExactFit()) {
-                    ctx.markShaderBasedTilingRequired(tileMode);
-                }
-            }
+            paint.setShader(image.getAnalyzedShaderView(ctx, image.sampling(), analysis));
+            PixelSpace<SkRect> srcSampled;
+            SkAssertResult(scaleXform.inverseMapRect(PixelSpace<SkRect>(sampleBounds),
+                                                     &srcSampled));
 
-            surface->drawPaint(paint);
+            surface->save();
+                surface->concat(SkMatrix(scaleXform));
+                surface->drawRect(SkRect(srcSampled), paint);
+            surface->restore();
+
+            if (cfBorder) {
+                // Fill in the border with the transparency-affecting color filter.
+                SkASSERT(fColorFilter && as_CFB(fColorFilter)->affectsTransparentBlack());
+                SkASSERT(tileMode == SkTileMode::kClamp);
+
+                // Sampling for these pixels would trigger shader clamping in order to produce
+                // transparent black. Instead draw the solid color directly.
+                SkPaint cfOnly;
+                cfOnly.setColor4f(SkColors::kTransparent);
+                cfOnly.setColorFilter(fColorFilter);
+                surface->drawIRect({dstPixelBounds.left(),    dstPixelBounds.top(),
+                                    dstPixelBounds.right(),   dstPixelBounds.top()+1}, cfOnly);
+                surface->drawIRect({dstPixelBounds.left(),    dstPixelBounds.bottom()-1,
+                                    dstPixelBounds.right(),   dstPixelBounds.bottom()}, cfOnly);
+                surface->drawIRect({dstPixelBounds.left(),    dstPixelBounds.top()+1,
+                                    dstPixelBounds.left()+1,  dstPixelBounds.bottom()-1}, cfOnly);
+                surface->drawIRect({dstPixelBounds.right()-1, dstPixelBounds.top()+1,
+                                    dstPixelBounds.right(),   dstPixelBounds.bottom()-1}, cfOnly);
+                // Clamping logic will preserve its values on subsequent rescale steps.
+                cfBorder = false;
+            } else if (tileMode != SkTileMode::kDecal) {
+                // Sample the border pixels directly, scaling only on an axis at a time for edges,
+                // and with no scaling for corners. Since only the CTM is adjusted, these 8 draws
+                // should be batchable with the primary fill.
+                auto drawRectToRect = [&](const SkRect& src, const SkIRect& dst) {
+                    surface->save();
+                    surface->concat(SkMatrix::RectToRect(src, SkRect::Make(dst)));
+                    surface->drawRect(src, paint);
+                    surface->restore();
+                };
+                auto drawCorner = [&](const SkIPoint& src, const SkIPoint& dst) {
+                    drawRectToRect(SkRect::MakeXYWH(src.fX, src.fY, 1.f, 1.f),
+                                   SkIRect::MakeXYWH(dst.fX, dst.fY, 1, 1));
+                };
+
+                // Edges (excluding corners)
+                drawRectToRect({(float)stepPixelBounds.left(), srcSampled.top(),
+                                stepPixelBounds.left()+1.f,    srcSampled.bottom()},
+                               {dstPixelBounds.left(),         sampleBounds.top(),
+                                dstPixelBounds.left()+1,       sampleBounds.bottom()});  // Left
+
+                drawRectToRect({stepPixelBounds.right()-1.f,    srcSampled.top(),
+                                (float)stepPixelBounds.right(), srcSampled.bottom()},
+                               {dstPixelBounds.right()-1,       sampleBounds.top(),
+                                dstPixelBounds.right(),         sampleBounds.bottom()}); // Right
+
+                drawRectToRect({srcSampled.left(),    (float)stepPixelBounds.top(),
+                                srcSampled.right(),   stepPixelBounds.top()+1.f},
+                               {sampleBounds.left(),  dstPixelBounds.top(),
+                                sampleBounds.right(), dstPixelBounds.top()+1});          // Top
+
+                drawRectToRect({srcSampled.left(),    stepPixelBounds.bottom()-1.f,
+                                srcSampled.right(),   (float)stepPixelBounds.bottom()},
+                               {sampleBounds.left(),  dstPixelBounds.bottom()-1,
+                                sampleBounds.right(), dstPixelBounds.bottom()});         // Bottom
+
+                // Corners (sampled directly to preserve their value since they can dominate the
+                // output of a clamped blur with a large radius).
+                drawCorner({stepPixelBounds.left(),      stepPixelBounds.top()},
+                           {dstPixelBounds.left(),       dstPixelBounds.top()});      // TL
+                drawCorner({stepPixelBounds.right() - 1, stepPixelBounds.top()},
+                           {dstPixelBounds.right()-1,    dstPixelBounds.top()});      // TR
+                drawCorner({stepPixelBounds.right() - 1, stepPixelBounds.bottom()-1},
+                           {dstPixelBounds.right()-1,    dstPixelBounds.bottom()-1}); // BR
+                drawCorner({stepPixelBounds.left(),      stepPixelBounds.bottom()-1},
+                           {dstPixelBounds.left(),       dstPixelBounds.bottom()-1}); // BL
+            }
         } else {
             // Rescaling can't complete, no sense in downscaling non-existent data
             return {};
         }
 
-        if (tileMode == SkTileMode::kDecal) {
-            // Now we have incorporated a 1px transparent border, so next image can use clamping.
-            // OR we have incorporated the transparency-affecting color filter's result to the
-            // 1px transparent border so the next image can still use clamping.
-            tileMode = SkTileMode::kClamp;
-        } // else we are non-decal deferred so use repeat/mirror/clamp all the way down.
+        image = surface.snap();
+        // If we are deferring periodic tiling, use kClamp on subsequent steps to preserve the
+        // border pixels. The original tile mode will be restored at the end.
+        image.fTileMode = deferPeriodicTiling ? SkTileMode::kClamp : tileMode;
 
-        // TODO(b/323886180): Once rescale() is updated to use smarter padding and PixelBoundary,
-        // this can stay as a FilterResult.
-        FilterResult snapped = surface.snap();
-        image = snapped.fImage;
-        origin = snapped.fLayerBounds.topLeft();
         stepBoundsF = dstBoundsF;
         stepPixelBounds = dstPixelBounds;
-    }
+    } while(xSteps > 0 || ySteps > 0);
 
-    // Rebuild the downscaled image as a FilterResult, including a transform back to the original
-    // layer-space resolution, restoring the layer bounds it should fill, and setting tile mode.
-    FilterResult result{std::move(image), origin};
-    result.fTransform.postConcat(
-            LayerSpace<SkMatrix>::RectToRect(stepBoundsF, LayerSpace<SkRect>{srcRect}));
-    result.fLayerBounds = visibleLayerBounds;
 
-    // TODO(b/323886180): Set the pixel boundary to kInitialized or kTransparent since rescale()
-    // does add padding to the image.
-    if (enforceDecal) {
-        // Since we weren't deferring the tiling, the original tile mode should have been resolved
-        // in the first iteration. However, as part of the decimation, we included transparent
-        // padding and switched to clamp. Switching back to "decal" in this case has no visual
-        // effect but keeps downstream legacy blur algorithms happy.
-        SkASSERT(!canDeferTiling && tileMode == SkTileMode::kClamp);
-        result.fTileMode = SkTileMode::kDecal;
+    // Rebuild the downscaled image, including a transform back to the original layer-space
+    // resolution, restoring the layer bounds it should fill, and setting tile mode.
+    if (deferPeriodicTiling) {
+        // Inset the image to undo the manually added border of pixels, which will allow the result
+        // to have the kInitialized boundary state.
+        stepPixelBounds.inset(PixelSpace<SkISize>({1,1}));
+        image = image.subset(image.layerBounds().topLeft(), stepPixelBounds);
     } else {
-        result.fTileMode = tileMode;
+        SkASSERT(tileMode == SkTileMode::kDecal || tileMode == SkTileMode::kClamp);
+        // Leave the image as-is. If it's decal tiled, this preserves the known transparent
+        // boundary. If it's clamp tiled, we want to clamp to the carefully maintained boundary
+        // pixels that better preserved the original boundary. Taking a subset like we did for
+        // periodic tiles would effectively clamp to the interior of the image.
     }
-    return result;
+    image.fTileMode = tileMode;
+    image.fTransform.postConcat(
+            LayerSpace<SkMatrix>::RectToRect(stepBoundsF, LayerSpace<SkRect>{srcRect}));
+    image.fLayerBounds = visibleLayerBounds;
+
+    SkASSERT(!enforceDecal || image.fTileMode == SkTileMode::kDecal);
+    SkASSERT(image.fTileMode != SkTileMode::kDecal ||
+             image.fBoundary == PixelBoundary::kTransparent);
+    SkASSERT(!deferPeriodicTiling || image.fBoundary == PixelBoundary::kInitialized);
+    return image;
 }
 
 FilterResult FilterResult::MakeFromPicture(const Context& ctx,
