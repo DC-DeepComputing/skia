@@ -51,6 +51,7 @@ class GrRecordingContext;
 
 class SkBitmap;
 class SkBlender;
+class SkColorSpace;
 class SkData;
 class SkDevice;
 class SkDrawable;
@@ -694,7 +695,7 @@ public:
             @return                SaveLayerRec with empty fBackdrop
         */
         SaveLayerRec(const SkRect* bounds, const SkPaint* paint, SaveLayerFlags saveLayerFlags = 0)
-            : SaveLayerRec(bounds, paint, nullptr, 1.f, saveLayerFlags, /*filters=*/{}) {}
+            : SaveLayerRec(bounds, paint, nullptr, nullptr, 1.f, saveLayerFlags, /*filters=*/{}) {}
 
         /** Sets fBounds, fPaint, fBackdrop, and fSaveLayerFlags.
 
@@ -710,7 +711,11 @@ public:
         */
         SaveLayerRec(const SkRect* bounds, const SkPaint* paint, const SkImageFilter* backdrop,
                      SaveLayerFlags saveLayerFlags)
-            : SaveLayerRec(bounds, paint, backdrop, 1.f, saveLayerFlags, /*filters=*/{}) {}
+            : SaveLayerRec(bounds, paint, backdrop, nullptr, 1.f, saveLayerFlags, /*filters=*/{}) {}
+
+        SaveLayerRec(const SkRect* bounds, const SkPaint* paint, const SkImageFilter* backdrop,
+                     const SkColorSpace* colorSpace, SaveLayerFlags saveLayerFlags)
+            : SaveLayerRec(bounds, paint, backdrop, colorSpace, 1.f, saveLayerFlags, /*filters=*/{}) {}
 
         /** hints at layer size limit */
         const SkRect*        fBounds         = nullptr;
@@ -728,6 +733,9 @@ public:
          */
         const SkImageFilter* fBackdrop       = nullptr;
 
+        /** TODO doc */
+        const SkColorSpace* fColorSpace      = nullptr;
+
         /** preserves LCD text, creates with prior layer contents */
         SaveLayerFlags       fSaveLayerFlags = 0;
 
@@ -738,6 +746,7 @@ public:
         SaveLayerRec(const SkRect* bounds,
                      const SkPaint* paint,
                      const SkImageFilter* backdrop,
+                     const SkColorSpace* colorSpace,
                      SkScalar backdropScale,
                      SaveLayerFlags saveLayerFlags,
                      FilterSpan filters)
@@ -745,6 +754,7 @@ public:
                 , fPaint(paint)
                 , fFilters(filters)
                 , fBackdrop(backdrop)
+                , fColorSpace(colorSpace)
                 , fSaveLayerFlags(saveLayerFlags)
                 , fExperimentalBackdropScale(backdropScale) {
             // We only allow the paint's image filter or the side-car list of filters -- not both.

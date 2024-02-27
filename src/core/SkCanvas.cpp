@@ -1313,7 +1313,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
         }
         SkImageInfo info = SkImageInfo::Make(layerBounds.width(), layerBounds.height(),
                                              layerColorType, kPremul_SkAlphaType,
-                                             priorDevice->imageInfo().refColorSpace());
+                                             rec.fColorSpace ? sk_ref_sp(rec.fColorSpace) : priorDevice->imageInfo().refColorSpace());
 
         SkPixelGeometry geo = rec.fSaveLayerFlags & kPreserveLCDText_SaveLayerFlag
                                       ? fProps.pixelGeometry()
