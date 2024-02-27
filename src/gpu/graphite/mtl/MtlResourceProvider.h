@@ -45,7 +45,8 @@ private:
 
     sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                  SkTileMode xTileMode,
-                                 SkTileMode yTileMode) override;
+                                 SkTileMode yTileMode,
+                                 const std::vector<uint32_t>& extraBackendDesc) override;
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(const BackendTexture&) override;

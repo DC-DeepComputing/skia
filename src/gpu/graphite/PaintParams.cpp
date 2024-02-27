@@ -332,6 +332,22 @@ void PaintParams::toKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     builder->addBlock(fixedFuncBlendModeID);
+
+    // If the destination texture has YCbCr information, we should add that data here using
+    // builder->addData().
+
+    //sk_sp<TextureProxy> dstTexture = keyContext.dstTexture();
+    // TODO get ycbcr conversion
+    // const VulkanYcbcrConversionInfo& ycbcrConversionInfo {};
+    // if (dstTexture) {
+    //     ycbcrConversionInfo = dstTexture->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
+    // }
+    // if (ycbcrConversionInfo.isValid()) {
+    //     VulkanSamplerYcbcrConversion::YcbcrArray ycbcrKeyInfo =
+    //             VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(ycbcrConversionInfo);
+    //     SkSpan<int32_t> ycbcrInfo = {ycbcrKeyInfo};
+    //     builder->addData(ycbcrInfo);
+    // }
 }
 
 } // namespace skgpu::graphite

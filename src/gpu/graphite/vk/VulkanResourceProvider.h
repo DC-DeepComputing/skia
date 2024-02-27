@@ -49,7 +49,7 @@ public:
 
     const Buffer* loadMSAAVertexBuffer() const;
 
-    sk_sp<VulkanSamplerYcbcrConversion> findOrCreateCompatibleSamplerYcbcrConversion(
+    sk_sp<VulkanSamplerYcbcrConversion> findOrCreateCompatibleYcbcrConversion(
             const VulkanYcbcrConversionInfo& ycbcrInfo) const;
 
 private:
@@ -65,7 +65,8 @@ private:
 
     sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                  SkTileMode xTileMode,
-                                 SkTileMode yTileMode) override;
+                                 SkTileMode yTileMode,
+                                 const std::vector<uint32_t>& extraBackendDesc) override;
     sk_sp<VulkanFramebuffer> createFramebuffer(
             const VulkanSharedContext*,
             const skia_private::TArray<VkImageView>& attachmentViews,
