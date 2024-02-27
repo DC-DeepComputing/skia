@@ -180,6 +180,7 @@ static void test_reciprocal_alpha(
     }
 }
 
+#define SK_OPTS_NS test
 #define SK_OPTS_TARGET SK_OPTS_TARGET_DEFAULT
 #include "src/opts/SkOpts_SetTarget.h"
 #include "src/opts/SkSwizzler_opts.h"
