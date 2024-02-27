@@ -16,6 +16,24 @@
       "message": "I love how we were making this data persistent, for ... reasons? 😎",
       "revId": "734953afbc19e81884e465829685d2574fe40fc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b617a229_13e8fa79",
+        "filename": "src/shaders/SkPerlinNoiseShaderImpl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-27T15:13:17Z",
+      "side": 0,
+      "message": "The shadeSpan implementation used it directly. The RP implementation loads the noise colors and converts them back to floats with a `mad`.",
+      "parentUuid": "909fabce_c77a5d2d",
+      "revId": "734953afbc19e81884e465829685d2574fe40fc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
