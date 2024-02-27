@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59286cfa_ab47c460",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-27T16:17:51Z",
+      "side": 1,
+      "message": "DO NOT SUBMIT: wait for current Chrome roll to land first",
+      "revId": "5054e7682c9a3b707f63b1d164013ead0b57c030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
