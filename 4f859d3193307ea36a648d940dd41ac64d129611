@@ -207,6 +207,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fd6a5a2_63b9d7a0",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T19:25:58Z",
+      "side": 1,
+      "message": "Eck, yes. This one was supposed to already be deprecated / removed, but it hasn\u0027t been.",
+      "parentUuid": "3470a3f0_f6160c00",
+      "range": {
+        "startLine": 76,
+        "startChar": 57,
+        "endLine": 76,
+        "endChar": 60
+      },
+      "revId": "4f859d3193307ea36a648d940dd41ac64d129611",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f109b2ae_07d6a89e",

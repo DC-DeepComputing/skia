@@ -34,6 +34,29 @@
       "parentUuid": "ff4f287a_a98dc50f",
       "revId": "fd280263acb128268fc4e64ac311e599eda36631",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f048d87b_9cdb3dd1",
+        "filename": "modules/skshaper/include/SkShaper_harfbuzz.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T19:25:58Z",
+      "side": 1,
+      "message": "Boy is it ugly to take ownership of these when it could just be a non-owning borrowed pointer passed to \"shape\". The issue is that we wanted a virtual \"shape\" to call, but not all of them are going to need a SkUnicode. I suppose this is essentially what was happening before anyway, but it\u0027s still cringe. Something for another day.",
+      "range": {
+        "startLine": 22,
+        "startChar": 59,
+        "endLine": 22,
+        "endChar": 93
+      },
+      "revId": "fd280263acb128268fc4e64ac311e599eda36631",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
