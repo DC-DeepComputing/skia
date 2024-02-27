@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c817c26_d0f4f037",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-02-27T20:36:29Z",
+      "side": 1,
+      "message": "Do we need/want some static_asserts that Cap and Join fix in the anticipated number of bits?",
+      "revId": "8b201aef96d351acd5fb0cd62eb0bf7f02068771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cb0ebf3b_a01bfbab",
