@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07e8ee0_65e69cdf",
+        "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-27T22:36:18Z",
+      "side": 1,
+      "message": "Probably deserves a comment, like below, but I wanted to see if y\u0027all are okay with this and test it out before I use brain to make pretty words.",
+      "revId": "0131b71f49be2f05c3d3011e0e2998a595c3d4fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
