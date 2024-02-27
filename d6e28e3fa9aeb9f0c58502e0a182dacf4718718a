@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3e1831a_ba3e3679",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T22:49:13Z",
+      "side": 1,
+      "message": "Fortunately, this happens in content_shell as well without the sandbox, gpu, single process, etc. Using `rr` to back up through when this happens, it appears that `TT_Get_MM_Var` is setting `ttface-\u003eblend-\u003enum_axis` but not `ttface-\u003eblend-\u003enormalizedcoords`. It isn\u0027t yet clear when `normalizedcoords` is supposed to be set, or why this seems to be working elsewhere.",
+      "parentUuid": "ebe71943_578a3784",
+      "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5268a57f_dc0f4b22",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
