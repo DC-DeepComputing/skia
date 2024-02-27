@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "909fabce_c77a5d2d",
+        "filename": "src/shaders/SkPerlinNoiseShaderImpl.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-27T15:12:08Z",
+      "side": 0,
+      "message": "I love how we were making this data persistent, for ... reasons? 😎",
+      "revId": "734953afbc19e81884e465829685d2574fe40fc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
