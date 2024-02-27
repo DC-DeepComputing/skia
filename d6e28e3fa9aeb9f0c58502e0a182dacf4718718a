@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e45aa502_299ab42d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-27T21:43:14Z",
+      "side": 1,
+      "message": "The user is not expected to call `FT_Set_Var_Design_Coordinates`. If no variation is set on a variable font then one should always get the default instance. I\u0027ve tried to reproduce in Skia trying various different ways to create the SkTypeface from Cantarell-VF.otf but I\u0027m not reproducing. I\u0027ve also tried various ways directly with FreeType but also have not reproduced.\n\nOn a Linux box I went and uninstalled my locally installed Cantarell (non variable) and locally installed this Cantarell (in `.local/share/fonts/` and set it as my default system UI font for everything but monospace, set it as the \"Standard font\" in Chrome (122.0.6261.69), and re-started Chrome and the font appears to work as expected (I get the regular and bold out of it and they look regular and bold, the Computed Rendered Fonts in the insepector are as expected).\n\nI don\u0027t see any reproduction steps on the linked issue. (Is it the right issue?) Do you have any further reproduction information?",
+      "parentUuid": "ef55b468_862c8bc8",
+      "revId": "d6e28e3fa9aeb9f0c58502e0a182dacf4718718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5268a57f_dc0f4b22",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
