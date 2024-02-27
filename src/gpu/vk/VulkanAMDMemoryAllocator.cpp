@@ -82,11 +82,15 @@ sk_sp<VulkanMemoryAllocator> VulkanAMDMemoryAllocator::Make(
 
     info.physicalDevice = physicalDevice;
     info.device = device;
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+    info.preferredLargeHeapBlockSize = 64*1024;
+#else
     // 4MB was picked for the size here by looking at memory usage of Android apps and runs of DM.
     // It seems to be a good compromise of not wasting unused allocated space and not making too
     // many small allocations. The AMD allocator will start making blocks at 1/8 the max size and
     // builds up block size as needed before capping at the max set here.
     info.preferredLargeHeapBlockSize = 4*1024*1024;
+#endif
     info.pAllocationCallbacks = nullptr;
     info.pDeviceMemoryCallbacks = nullptr;
     info.pHeapSizeLimit = nullptr;
