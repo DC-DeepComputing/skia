@@ -877,7 +877,8 @@ private:
     enum class BoundsScope : int {
         kDeferred,        // The bounds analysis won't be used for any rendering yet
         kCanDrawDirectly, // The rendering may draw the image directly if analysis allows it
-        kShaderOnly       // The rendering will always use a filling shader, e.g. drawPaint()
+        kShaderOnly,      // The rendering will always use a filling shader, e.g. drawPaint()
+        kRescale          // The rendering is controlled by rescaling logic, so ignores decal size
     };
 
     // Determine what effects are visible based on the target 'dstBounds' and extra transform that
@@ -914,7 +915,6 @@ private:
     FilterResult rescale(const Context& ctx,
                          const LayerSpace<SkSize>& scale,
                          bool enforceDecal) const;
-
     // Draw directly to the device, which draws the same image as produced by resolve() but can be
     // useful if multiple operations need to be performed on the canvas.
     //
@@ -930,6 +930,12 @@ private:
               SkDevice* device,
               bool preserveDeviceState,
               const SkBlender* blender=nullptr) const;
+
+    void drawDirect(const Context& ctx,
+                    SkDevice* device,
+                    const SkSamplingOptions& finalSampling,
+                    SkEnumBitMask<BoundsAnalysis> analysis,
+                    const SkBlender* blender=nullptr) const;
 
     // Returns the FilterResult as a shader, ideally without resolving to an axis-aligned image.
     // 'xtraSampling' is the sampling that any parent shader applies to the FilterResult.
