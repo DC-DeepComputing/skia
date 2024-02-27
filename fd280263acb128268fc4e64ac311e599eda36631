@@ -16,6 +16,24 @@
       "message": "I don\u0027t like this for the same reason I didn\u0027t like the other one, it doesn\u0027t make any sense. If there really were a \"correct\" one to use then we would just use it instead of declaring an interface and having the user pass in an instance of that interface. The user just needs to know which ScriptRunIterator implementations they depended on and pick one to use.",
       "revId": "fd280263acb128268fc4e64ac311e599eda36631",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2445be47_5186f6f1",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-27T19:08:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff4f287a_a98dc50f",
+      "revId": "fd280263acb128268fc4e64ac311e599eda36631",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
