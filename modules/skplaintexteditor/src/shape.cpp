@@ -28,7 +28,6 @@
 #include <climits>
 #include <cstring>
 
-
 using namespace SkPlainTextEditor;
 
 namespace {
@@ -96,6 +95,27 @@ private:
     SkPoint fCurrentPosition = {0, 0};
     SkPoint fOffset = {0, 0};
 };
+
+// TODO(kjlubick,jlavrova) Remove these defines by having clients register something or somehow
+// plumbing this all into the animation builder factories.
+static SkUnicode* get_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU::Make().release()) {
+        return unicode;
+    }
+#endif  // defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Libgrapheme::Make().release()) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU4X::Make().release()) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
 }  // namespace
 
 void RunHandler::beginLine() {
@@ -278,8 +298,8 @@ ShapeResult SkPlainTextEditor::Shape(const char* utf8Text,
     }
     std::unique_ptr<SkShaper> shaper = nullptr;
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
-    auto unicode = SkUnicode::Make();
-    shaper = SkShapers::HB::ShaperDrivenWrapper(std::move(unicode), fontMgr);
+    auto unicode = get_unicode();
+    shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, fontMgr);
 #else
     shaper = SkShapers::Primitive();
 #endif
@@ -297,9 +317,9 @@ ShapeResult SkPlainTextEditor::Shape(const char* utf8Text,
         static constexpr uint8_t kBidiLevelLTR = 0;
         std::unique_ptr<SkShaper::BiDiRunIterator> bidi = nullptr;
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
-        auto unicode2 = SkUnicode::Make();
+        auto unicode2 = get_unicode();
         bidi = SkShapers::unicode::BidiRunIterator(
-                unicode2.get(), utf8Text, textByteLen, kBidiLevelLTR);
+                unicode2, utf8Text, textByteLen, kBidiLevelLTR);
 #endif
         if (!bidi) {
             bidi = std::make_unique<SkShaper::TrivialBiDiRunIterator>(kBidiLevelLTR, textByteLen);
