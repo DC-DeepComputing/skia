@@ -399,18 +399,6 @@ optional("fontmgr_FontConfigInterface") {
   sources_for_tests = [ "tests/FCITest.cpp" ]
 }
 
-optional("fontmgr_fontations_empty") {
-  enabled = skia_use_fontations
-  public_defines = [ "SK_FONTMGR_FONTATIONS_AVAILABLE" ]
-
-  deps = [ ":typeface_fontations" ]
-  public = [ "include/ports/SkFontMgr_Fontations.h" ]
-  sources = [
-    "src/ports/SkFontMgr_fontations_empty.cpp",
-    "src/ports/SkFontMgr_fontations_empty.h",
-  ]
-}
-
 optional("fontmgr_fuchsia") {
   enabled = skia_enable_fontmgr_fuchsia
   public_defines = [ "SK_FONTMGR_FUCHSIA_AVAILABLE" ]
@@ -1457,7 +1445,6 @@ skia_component("skia") {
     ":fontmgr_custom_directory",
     ":fontmgr_custom_embedded",
     ":fontmgr_custom_empty",
-    ":fontmgr_fontations_empty",
     ":fontmgr_fontconfig",
     ":fontmgr_fuchsia",
     ":fontmgr_mac_ct",
@@ -2526,7 +2513,7 @@ if (skia_enable_tools) {
     ]
   }
 
-  if (is_linux) {
+  if (is_linux && skia_use_icu) {
     test_app("sktexttopdf") {
       sources = [ "tools/using_skia_and_harfbuzz.cpp" ]
       deps = [
