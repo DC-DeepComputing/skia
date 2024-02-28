@@ -13,10 +13,12 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkImageFilters.h"
+#include "tools/ToolUtils.h"
 
 #include <utility>
 
@@ -92,3 +94,14 @@ private:
     using INHERITED = GM;
 };
 DEF_GM( return new SpriteBitmapGM; )
+
+// b/41322892 : The CPU backend tries to detect when an image draw is landing perfectly on pixel
+// centers, so it can use a faster sprite-blitting path. That code needs to consider the CTM, but
+// for drawImageRect, it also needs to look at the destination rectangle. Prior to fixing this bug,
+// it didn't, so the GM would draw a pixel-snapped black and white checkerboard (wrong), rather than
+// the averaged-to-gray square (correct).
+DEF_SIMPLE_GM_BG(drawimagerect_filter, canvas, 60, 60, SK_ColorWHITE) {
+    auto image = ToolUtils::create_checkerboard_image(50, 50, SK_ColorWHITE, SK_ColorBLACK, 1);
+    SkSamplingOptions sampling{SkFilterMode::kLinear};
+    canvas->drawImageRect(image, SkRect::Make(image->bounds()).makeOffset(5.5f, 5.5f), sampling);
+}
