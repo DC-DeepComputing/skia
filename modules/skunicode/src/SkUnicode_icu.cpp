@@ -16,8 +16,9 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
+#include "modules/skunicode/src/SkUnicode_icupriv.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkChecksum.h"
@@ -31,15 +32,10 @@
 #include <utility>
 #include <vector>
 
-#if defined(SK_USING_THIRD_PARTY_ICU)
-#include "SkLoadICU.h"
-#endif
-
 using namespace skia_private;
 
 const SkICULib* SkGetICULib() {
     static const auto gICU = SkLoadICULib();
-
     return gICU.get();
 }
 
@@ -670,16 +666,11 @@ public:
     }
 };
 
-std::unique_ptr<SkUnicode> SkUnicode::MakeIcuBasedUnicode() {
-    #if defined(SK_USING_THIRD_PARTY_ICU)
-    if (!SkLoadICU()) {
-        static SkOnce once;
-        once([] { SkDEBUGF("SkLoadICU() failed!\n"); });
-        return nullptr;
+namespace SkUnicodes::ICU {
+std::unique_ptr<SkUnicode> Make() {
+    if (SkLoadICULib()) {
+        return std::make_unique<SkUnicode_icu>();
     }
-    #endif
-
-    return SkGetICULib()
-        ? std::make_unique<SkUnicode_icu>()
-        : nullptr;
+    return nullptr;
 }
+}  // namespace SkUnicodes::ICU
