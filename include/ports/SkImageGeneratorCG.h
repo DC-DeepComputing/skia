@@ -7,7 +7,7 @@
 #ifndef SkImageGeneratorCG_DEFINED
 #define SkImageGeneratorCG_DEFINED
 
-#include "include/private/base/SkFeatures.h"
+#include "include/private/base/SkLoadUserConfig.h"
 
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
 
