@@ -16,6 +16,24 @@
       "message": "Is this the type of guarding you are thinking of?",
       "revId": "242a1cb2fcdc7c95404f705ed6bc27eef14c72f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddcb939a_467c888f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-28T17:10:55Z",
+      "side": 1,
+      "message": "Yes, although if you look at SkOpts.cpp (for example), they\u0027re actually written using `\u003c`, so that we don\u0027t bother building any architecture that\u0027s less capable than the default. I\u0027d follow that pattern.",
+      "parentUuid": "aed76034_c26f0197",
+      "revId": "242a1cb2fcdc7c95404f705ed6bc27eef14c72f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
