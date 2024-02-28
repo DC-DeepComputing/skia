@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba80a135_41e353ad",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-02-28T23:43:48Z",
+      "side": 1,
+      "message": "Confusing API note: this `splitEXT` function is for splitting on file extension, not a generic `splitText` function.",
+      "revId": "4d0ecb2ebbeb7f47f8c278d89e2ff566ffcaeaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
