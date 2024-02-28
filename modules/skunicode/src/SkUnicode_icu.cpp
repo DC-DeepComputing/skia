@@ -16,8 +16,8 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkUnicode_icu.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
+#include "modules/skunicode/src/SkUnicode_icupriv.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkChecksum.h"
@@ -30,10 +30,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-
-#if defined(SK_USING_THIRD_PARTY_ICU)
-#include "SkLoadICU.h"
-#endif
 
 using namespace skia_private;
 
@@ -671,15 +667,10 @@ public:
 };
 
 std::unique_ptr<SkUnicode> SkUnicode::MakeIcuBasedUnicode() {
-    #if defined(SK_USING_THIRD_PARTY_ICU)
-    if (!SkLoadICU()) {
-        static SkOnce once;
-        once([] { SkDEBUGF("SkLoadICU() failed!\n"); });
-        return nullptr;
-    }
-    #endif
-
-    return SkGetICULib()
-        ? std::make_unique<SkUnicode_icu>()
-        : nullptr;
+#if defined(SK_UNICODE_RUNTIME_ICU_AVAILABLE)
+    return SkUnicodes::ICU::MakeFromRuntimeLoad();
+#else
+    return SkUnicodes::ICU::MakeFromCompiledData();
+#endif
 }
+

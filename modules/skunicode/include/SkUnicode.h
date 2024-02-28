@@ -23,6 +23,8 @@
     #define SKUNICODE_IMPLEMENTATION 0
 #endif
 
+#define SK_DISABLE_LEGACY_SKUNICODE_FUNCTIONS 1
+
 #if !defined(SKUNICODE_API)
     #if defined(SKUNICODE_DLL)
         #if defined(_MSC_VER)
@@ -302,6 +304,7 @@ class SKUNICODE_API SkUnicode {
 
         virtual std::unique_ptr<SkUnicode> copy() = 0;
 
+#if !defined(SK_DISABLE_LEGACY_SKUNICODE_FUNCTIONS)
         static std::unique_ptr<SkUnicode> Make();
 
         static std::unique_ptr<SkUnicode> MakeIcuBasedUnicode();
@@ -315,6 +318,7 @@ class SKUNICODE_API SkUnicode {
         static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
 
         static std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode();
+#endif
 };
 
 namespace sknonstd {
