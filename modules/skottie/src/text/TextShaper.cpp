@@ -32,6 +32,9 @@
 
 #if defined(SK_UNICODE_AVAILABLE)
 #include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
 #else
 class SkUnicode;
 #endif
@@ -62,13 +65,19 @@ static bool is_whitespace(char c) {
 // plumbing this all into the animation builder factories.
 static SkUnicode* get_unicode() {
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
-    static SkUnicode* icu_unicode = SkUnicode::MakeIcuBasedUnicode().release();
+    static SkUnicode* icu_unicode = SkUnicodes::ICU::Make().release();
     if (icu_unicode != nullptr) {
         return icu_unicode;
     }
 #endif
+#if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    static SkUnicode* icu4x_unicode = SkUnicodes::ICU4X::Make().release();
+    if (icu4x_unicode != nullptr) {
+        return icu4x_unicode;
+    }
+#endif
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
-    static SkUnicode* grapheme_unicode = SkUnicode::MakeLibgraphemeBasedUnicode().release();
+    static SkUnicode* grapheme_unicode = SkUnicodes::Libgrapheme::Make().release();
     if (grapheme_unicode != nullptr) {
         return grapheme_unicode;
     }

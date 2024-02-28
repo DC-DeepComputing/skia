@@ -326,6 +326,8 @@ std::unique_ptr<SkBreakIterator> SkUnicode_icu4x::makeBreakIterator(BreakType br
     SkASSERT(false); return nullptr;
 }
 
-std::unique_ptr<SkUnicode> SkUnicode::MakeIcu4xBasedUnicode() {
+namespace SkUnicodes::ICU {
+std::unique_ptr<SkUnicode> Make() {
     return std::make_unique<SkUnicode_icu4x>();
+}
 }
