@@ -168,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b8411648_849a803d",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-02-28T22:30:58Z",
+      "side": 1,
+      "message": "I am not familiar with `BackendTextureViews` work. I think fixing the meeting issue is urgent. I feel it is better to have a simple fix first, we can change it when `BackendTextureViews` is ready.\n\nI tried using `Texture*` instead of `TextureProxy*`, but `Texture*` doesn\u0027t contain aspect info. We have to either use `TextureProxy*` or add an `aspect` param. And right now, the aspect is dawn specified thing. We don\u0027t have aspect defined in skia level, right?",
+      "parentUuid": "50219eca_d4ddcf1a",
+      "range": {
+        "startLine": 234,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 91
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e877e80c_44ee43ac",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
