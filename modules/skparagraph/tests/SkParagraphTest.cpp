@@ -35,6 +35,7 @@
 #include "modules/skparagraph/src/TextLine.h"
 #include "modules/skparagraph/tests/SkShaperJSONWriter.h"
 #include "modules/skparagraph/utils/TestFontCollection.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
@@ -8123,7 +8124,7 @@ UNIX_ONLY_TEST(SkParagraph_EmojiFontResolution, reporter) {
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
 UNIX_ONLY_TEST(SkParagraph_EmojiRuns, reporter) {
 
-    auto icu = SkUnicode::MakeIcuBasedUnicode();
+    auto icu = SkUnicodes::ICU::Make();
 
     auto test = [&](const char* text, SkUnichar expected) {
         SkString str(text);
