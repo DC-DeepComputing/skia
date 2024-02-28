@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aaf8a9b_307b66eb",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-28T17:35:16Z",
+      "side": 1,
+      "message": "Drive-by follow-up: I don\u0027t think this should be stuffed in here, and instead should be its own target. The fact that it\u0027s in here causes problems when working on a Fontations `SkFontMgr`.",
+      "revId": "636e136b0da9ccb4d7bad34cec84db4801b9a94a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
