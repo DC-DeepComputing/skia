@@ -13,23 +13,42 @@
 #define SK_OPTS_TARGET SK_OPTS_TARGET_DEFAULT
 #include "src/opts/SkOpts_SetTarget.h"
 
+// Only define different default functions if they are not one of the pre-existing architecture
+// specific implementations.
+#if  !defined(SK_CPU_X86) || SK_CPU_SSE_LEVEL < SK_CPU_SSE_LEVEL_SSSE3
 #include "src/opts/SkSwizzler_opts.h"  // IWYU pragma: keep
+#endif
+
+namespace SK_OPTS_NS {
+void RGBA_to_BGRA(uint32_t*, const uint32_t*, int);
+void RGBA_to_rgbA(uint32_t*, const uint32_t*, int);
+void RGBA_to_bgrA(uint32_t*, const uint32_t*, int);
+void rgbA_to_RGBA(uint32_t*, const uint32_t*, int);
+void rgbA_to_BGRA(uint32_t*, const uint32_t*, int);
+void inverted_CMYK_to_RGB1(uint32_t*, const uint32_t*, int);
+void inverted_CMYK_to_BGR1(uint32_t*, const uint32_t*, int);
+void RGB_to_RGB1(uint32_t*, const uint8_t*, int);
+void RGB_to_BGR1(uint32_t*, const uint8_t*, int);
+void gray_to_RGB1(uint32_t*, const uint8_t*, int);
+void grayA_to_RGBA(uint32_t*, const uint8_t*, int);
+void grayA_to_rgbA(uint32_t*, const uint8_t*, int);
+}  // namespace SK_OPTS_NS
 
 #include "src/opts/SkOpts_RestoreTarget.h"
 
 namespace SkOpts {
-    DEFINE_DEFAULT(RGBA_to_BGRA);
-    DEFINE_DEFAULT(RGBA_to_rgbA);
-    DEFINE_DEFAULT(RGBA_to_bgrA);
-    DEFINE_DEFAULT(rgbA_to_RGBA);
-    DEFINE_DEFAULT(rgbA_to_BGRA);
-    DEFINE_DEFAULT(RGB_to_RGB1);
-    DEFINE_DEFAULT(RGB_to_BGR1);
-    DEFINE_DEFAULT(gray_to_RGB1);
-    DEFINE_DEFAULT(grayA_to_RGBA);
-    DEFINE_DEFAULT(grayA_to_rgbA);
-    DEFINE_DEFAULT(inverted_CMYK_to_RGB1);
-    DEFINE_DEFAULT(inverted_CMYK_to_BGR1);
+    Swizzle_8888_u32 RGBA_to_BGRA = SK_OPTS_NS::RGBA_to_BGRA;
+    Swizzle_8888_u32 RGBA_to_rgbA = SK_OPTS_NS::RGBA_to_rgbA;
+    Swizzle_8888_u32 RGBA_to_bgrA = SK_OPTS_NS::RGBA_to_bgrA;
+    Swizzle_8888_u32 rgbA_to_RGBA = SK_OPTS_NS::rgbA_to_RGBA;
+    Swizzle_8888_u32 rgbA_to_BGRA = SK_OPTS_NS::rgbA_to_BGRA;
+    Swizzle_8888_u32 inverted_CMYK_to_RGB1 = SK_OPTS_NS::inverted_CMYK_to_RGB1;
+    Swizzle_8888_u32 inverted_CMYK_to_BGR1 = SK_OPTS_NS::inverted_CMYK_to_BGR1;
+    Swizzle_8888_u8 RGB_to_RGB1 = SK_OPTS_NS::RGB_to_RGB1;
+    Swizzle_8888_u8 RGB_to_BGR1 = SK_OPTS_NS::RGB_to_BGR1;
+    Swizzle_8888_u8 gray_to_RGB1 = SK_OPTS_NS::gray_to_RGB1;
+    Swizzle_8888_u8 grayA_to_RGBA = SK_OPTS_NS::grayA_to_RGBA;
+    Swizzle_8888_u8 grayA_to_rgbA = SK_OPTS_NS::grayA_to_rgbA;
 
     void Init_Swizzler_ssse3();
     void Init_Swizzler_hsw();
