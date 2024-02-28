@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b439d8ac_1d9cbf1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-28T14:43:43Z",
+      "side": 1,
+      "message": "The issues were fixed in https://skia-review.googlesource.com/c/skia/+/819716 so this should be good to reland.",
+      "revId": "c75310331261fe75aa64c2bb34bf8c66ffed2a12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
