@@ -16,6 +16,23 @@
       "message": "PTAL - this should be good to go.",
       "revId": "a2c0db7ac4afd2026e6606f220c145a9e4291f11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b900bf92_acbe354b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-28T19:47:42Z",
+      "side": 1,
+      "message": "Yup, with the caveat that we should do the same thing to all the other SkFoo_opts_arch.cpp files.",
+      "revId": "a2c0db7ac4afd2026e6606f220c145a9e4291f11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
