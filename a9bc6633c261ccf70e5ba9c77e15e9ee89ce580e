@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c44092a_f751255a",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-28T23:18:27Z",
+      "side": 1,
+      "message": "Eventually we really want to get the rest of these defines out of SkTypes.h, not add more of them.\n\nAt the very least there constants (if we want to expose them at all) should go with the values, over on SkSurfaceProps. I don\u0027t think there is any reason to make these customizable defines. The range is somewhat built into the bit format at the moment, so customizing these to anything else would break something.\n\nAlso note that gamma 0 is currently interpreted as sRGB.",
+      "revId": "a9bc6633c261ccf70e5ba9c77e15e9ee89ce580e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
