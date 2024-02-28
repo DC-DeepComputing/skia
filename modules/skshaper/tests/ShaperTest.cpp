@@ -24,6 +24,38 @@
 #include <cstdint>
 #include <memory>
 
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
+static SkUnicode* get_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU::Make().release()) {
+        return unicode;
+    }
+#endif  // defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Libgrapheme::Make().release()) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU4x::Make().release()) {
+        return unicode;
+    }
+#endif
+    SkDEBUGFAIL("Cannot make SkUnicode");
+    return nullptr;
+}
+
 namespace {
 struct RunHandler final : public SkShaper::RunHandler {
     const char* fResource;
@@ -119,13 +151,13 @@ struct RunHandler final : public SkShaper::RunHandler {
 
 void shaper_test(skiatest::Reporter* reporter, const char* name, SkData* data) {
     skiatest::ReporterContext context(reporter, name);
-    auto shaper = SkShapers::HB::ShaperDrivenWrapper(SkUnicode::Make(),
+    auto shaper = SkShapers::HB::ShaperDrivenWrapper(get_unicode(),
                                                      SkFontMgr::RefEmpty());  // no fallback
     if (!shaper) {
         ERRORF(reporter, "Could not create shaper.");
         return;
     }
-    auto unicode = SkUnicode::Make();
+    auto unicode = get_unicode();
     if (!unicode) {
         ERRORF(reporter, "Could not create unicode.");
         return;
@@ -139,7 +171,7 @@ void shaper_test(skiatest::Reporter* reporter, const char* name, SkData* data) {
 
     const SkBidiIterator::Level defaultLevel = SkBidiIterator::kLTR;
     std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
-            SkShapers::unicode::BidiRunIterator(unicode.get(), utf8, utf8Bytes, defaultLevel);
+            SkShapers::unicode::BidiRunIterator(unicode, utf8, utf8Bytes, defaultLevel);
     SkASSERT(bidi);
 
     std::unique_ptr<SkShaper::LanguageRunIterator> language =
