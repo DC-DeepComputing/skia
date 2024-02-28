@@ -63,6 +63,30 @@
       },
       "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "059facf6_f643b055",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-28T15:31:38Z",
+      "side": 1,
+      "message": "It\u0027s set to the ssse3 for SK_OPTS_TARGET_DEFAULT and ssse3 for SK_OPTS_TARGET_SSSE3. Therefore, the functions are defined twice. Once in SkSwizzler_opts.cpp and again in SkSwizzler_opts_ssse3.cpp.",
+      "parentUuid": "c28d9c9d_0460ac0e",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 75
+      },
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
