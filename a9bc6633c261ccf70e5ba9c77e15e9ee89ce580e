@@ -16,6 +16,24 @@
       "message": "Eventually we really want to get the rest of these defines out of SkTypes.h, not add more of them.\n\nAt the very least there constants (if we want to expose them at all) should go with the values, over on SkSurfaceProps. I don\u0027t think there is any reason to make these customizable defines. The range is somewhat built into the bit format at the moment, so customizing these to anything else would break something.\n\nAlso note that gamma 0 is currently interpreted as sRGB.",
       "revId": "a9bc6633c261ccf70e5ba9c77e15e9ee89ce580e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a0fd5ed_cb4dcd5a",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-28T23:24:32Z",
+      "side": 1,
+      "message": "That makes sense, these definitely don\u0027t need the ability to be customized like `SK_GAMMA_EXPONENT`. `SkTypes.h` was kind of a kludge in that I know they get exported to Blink.\n\nWhat do you think of static constexpr methods/members of `SkSurfaceProps`?\n\ne.g. `static constexpr float SkSurfaceProps::MaxInclusiveContrast()`, etc.",
+      "parentUuid": "4c44092a_f751255a",
+      "revId": "a9bc6633c261ccf70e5ba9c77e15e9ee89ce580e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
