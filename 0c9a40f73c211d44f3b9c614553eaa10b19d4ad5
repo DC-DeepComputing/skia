@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "051e7ccc_ac380a3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-28T15:23:27Z",
+      "side": 1,
+      "message": "This looks like it is passing the chromium build now, and has solved the duplicate symbol problem.\n\nPTAL",
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
