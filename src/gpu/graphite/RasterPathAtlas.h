@@ -39,7 +39,6 @@ protected:
                                    skvx::half2 maskSize,
                                    skvx::half2* outPos) override;
 private:
-    // TODO: select atlas size dynamically? Take ContextOptions::fMaxTextureAtlasSize into account?
     static constexpr int kDefaultAtlasDim = 4096;
 
     struct Page {
