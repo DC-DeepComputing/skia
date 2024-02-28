@@ -10,20 +10,24 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
-#include "include/private/base/SkOnce.h"
 #include "include/private/base/SkSpan_impl.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
+#include "modules/skunicode/src/SkUnicode_icupriv.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
+#include <unicode/ubrk.h>
+#include <unicode/uchar.h>
 #include <unicode/uloc.h>
 #include <unicode/umachine.h>
+#include <unicode/utext.h>
+#include <unicode/utypes.h>
 #include <cstdint>
 #include <cstring>
 #include <functional>
@@ -31,15 +35,15 @@
 #include <utility>
 #include <vector>
 
-#if defined(SK_USING_THIRD_PARTY_ICU)
+#if defined(SK_USING_THIRD_PARTY_ICU) && defined(SK_BUILD_FOR_WIN)
 #include "SkLoadICU.h"
+#include "include/private/base/SkOnce.h"
 #endif
 
 using namespace skia_private;
 
 const SkICULib* SkGetICULib() {
     static const auto gICU = SkLoadICULib();
-
     return gICU.get();
 }
 
@@ -674,16 +678,20 @@ public:
     }
 };
 
-std::unique_ptr<SkUnicode> SkUnicode::MakeIcuBasedUnicode() {
-    #if defined(SK_USING_THIRD_PARTY_ICU)
+namespace SkUnicodes::ICU {
+std::unique_ptr<SkUnicode> Make() {
+    // We haven't yet created a way to encode the ICU data for assembly on Windows,
+    // so we use a helper library to load icudtl.dat from the harddrive.
+#if defined(SK_USING_THIRD_PARTY_ICU) && defined(SK_BUILD_FOR_WIN)
     if (!SkLoadICU()) {
         static SkOnce once;
         once([] { SkDEBUGF("SkLoadICU() failed!\n"); });
         return nullptr;
     }
-    #endif
-
-    return SkGetICULib()
-        ? std::make_unique<SkUnicode_icu>()
-        : nullptr;
+#endif
+    if (SkGetICULib()) {
+        return std::make_unique<SkUnicode_icu>();
+    }
+    return nullptr;
 }
+}  // namespace SkUnicodes::ICU
