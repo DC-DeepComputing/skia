@@ -39,6 +39,30 @@
       },
       "revId": "8ff38cb3b3b308b2a0323b8543dac9b2fb89059e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72acc0f5_9b2a2bae",
+        "filename": "modules/skshaper/src/SkShaper_skunicode.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-28T13:57:34Z",
+      "side": 1,
+      "message": "I tried that, but it caused some conflicts with the SkUnicode class at the top level.",
+      "parentUuid": "c515e0b7_00d127d0",
+      "range": {
+        "startLine": 87,
+        "startChar": 21,
+        "endLine": 87,
+        "endChar": 22
+      },
+      "revId": "8ff38cb3b3b308b2a0323b8543dac9b2fb89059e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

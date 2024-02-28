@@ -16,6 +16,24 @@
       "message": "PTAL - I think I\u0027ve decoupled SkShaper enough that if SkUnicode is decoupled, I\u0027ll be able to decouple Skottie (by having the clients pass stuff in). \n\nIn particular, SkShaper\u0027s Harfbuzz impl needs some \"core\" SkUnicode for some of the implementation (the emit function, which I\u0027m not sure how to get rid of, if we can), but it doesn\u0027t necessarily need it (a client could implement their own Bidi code and not use one based off of SkUnicode).",
       "revId": "9cd0148e41ad76624ac25e0df3ab20431dfaea03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a78f3301_89dcb51f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-28T13:57:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8a01efb6_89d1fc12",
+      "revId": "9cd0148e41ad76624ac25e0df3ab20431dfaea03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
