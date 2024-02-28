@@ -16,6 +16,24 @@
       "message": "From a quick search it looks like this should be b/326606998?",
       "revId": "53c02437b100d007132572425ccefd7782b22500",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa9ab12b_498cb7f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8160
+      },
+      "writtenOn": "2024-02-28T18:21:42Z",
+      "side": 1,
+      "message": "yes, that\u0027s correct, thanks!",
+      "parentUuid": "2393bb49_7ee10085",
+      "revId": "53c02437b100d007132572425ccefd7782b22500",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
