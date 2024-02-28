@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a1fe8dd_be079200",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-28T21:09:22Z",
+      "side": 1,
+      "message": "Last I checked, the proper way to get the user config file was to include `SkTypes.h`. It looks like this file *was* including that one until I8834e6343e89ca957e61e8436742221ef3d3e017.\n\n@jgaillard@google.com, does this get fixed if you include `SkTypes.h` instead?",
+      "revId": "532b908a87e52ba204d1d7f07cece8da436b2296",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
