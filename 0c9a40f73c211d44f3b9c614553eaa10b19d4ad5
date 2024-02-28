@@ -87,6 +87,30 @@
       },
       "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "571d7dd6_36ad997e",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-28T15:43:56Z",
+      "side": 1,
+      "message": "Can we fix the guard issue that Brian discovered instead? I would like us to be consistent in the way we handle multi-architecture code (following the pattern set by RP, skcms)",
+      "parentUuid": "059facf6_f643b055",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 75
+      },
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
