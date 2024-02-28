@@ -16,6 +16,29 @@
       "message": "Last I checked, the proper way to get the user config file was to include `SkTypes.h`. It looks like this file *was* including that one until I8834e6343e89ca957e61e8436742221ef3d3e017.\n\n@jgaillard@google.com, does this get fixed if you include `SkTypes.h` instead?",
       "revId": "532b908a87e52ba204d1d7f07cece8da436b2296",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67922bac_60e247f0",
+        "filename": "include/ports/SkImageGeneratorCG.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-28T21:12:23Z",
+      "side": 1,
+      "message": "SkTypes.h would work (for now), but it\u0027s probably best to include this directly with a comment that some clients need to override the target platform via SkUserConfig.",
+      "range": {
+        "startLine": 10,
+        "startChar": 31,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "532b908a87e52ba204d1d7f07cece8da436b2296",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
