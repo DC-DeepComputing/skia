@@ -16,6 +16,24 @@
       "message": "Probably deserves a comment, like below, but I wanted to see if y\u0027all are okay with this and test it out before I use brain to make pretty words.",
       "revId": "0131b71f49be2f05c3d3011e0e2998a595c3d4fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaf2f47a_0f61ff50",
+        "filename": "src/gpu/vk/VulkanAMDMemoryAllocator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-28T16:44:01Z",
+      "side": 1,
+      "message": "I spoke with @egdanieljr@gmail.com and @nicolettep@google.com out of band, and they both agreed that we should use the new value everywhere.\n\n(Long term plan is have clients make this decision, but as long as they\u0027re relying on ours, they should use this new value.)",
+      "parentUuid": "d07e8ee0_65e69cdf",
+      "revId": "0131b71f49be2f05c3d3011e0e2998a595c3d4fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
