@@ -39,6 +39,30 @@
       },
       "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "169b9a03_c5b0af41",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-28T15:31:31Z",
+      "side": 1,
+      "message": "The default (SkSwizzler_opts.cpp) will choose the namespace based on the arch flags at the command line, which could end up being SSSE3. I thought we had guards that only built the SSSE3 (or any) specific version if the compiler switches were targeting an arch less capable (so we wouldn\u0027t end up with dupes). But it looks like we just have that logic when we call the Init functions().",
+      "parentUuid": "c28d9c9d_0460ac0e",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 75
+      },
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
