@@ -32,6 +32,17 @@
 
 #if defined(SK_UNICODE_AVAILABLE)
 #include "modules/skunicode/include/SkUnicode.h"
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
 #else
 class SkUnicode;
 #endif
@@ -51,7 +62,6 @@ using namespace skia_private;
 
 namespace skottie {
 namespace {
-
 static bool is_whitespace(char c) {
     // TODO: we've been getting away with this simple heuristic,
     // but ideally we should use SkUicode::isWhiteSpace().
@@ -62,13 +72,19 @@ static bool is_whitespace(char c) {
 // plumbing this all into the animation builder factories.
 static SkUnicode* get_unicode() {
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
-    static SkUnicode* icu_unicode = SkUnicode::MakeIcuBasedUnicode().release();
+    static SkUnicode* icu_unicode = SkUnicodes::ICU::Make().release();
     if (icu_unicode != nullptr) {
         return icu_unicode;
     }
 #endif
+#if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    static SkUnicode* icu4x_unicode = SkUnicodes::ICU4X::Make().release();
+    if (icu4x_unicode != nullptr) {
+        return icu4x_unicode;
+    }
+#endif
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
-    static SkUnicode* grapheme_unicode = SkUnicode::MakeLibgraphemeBasedUnicode().release();
+    static SkUnicode* grapheme_unicode = SkUnicodes::Libgrapheme::Make().release();
     if (grapheme_unicode != nullptr) {
         return grapheme_unicode;
     }
@@ -80,9 +96,9 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
     auto unicode = get_unicode();
     if (!unicode) {
-        return SkShapers::Primitive();
+        return SkShapers::Primitive::PrimitiveText();
     }
-    if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode->copy(), std::move(fallback))) {
+    if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, std::move(fallback))) {
         return shaper;
     }
 #endif
@@ -91,7 +107,7 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
-    return SkShapers::Primitive();
+    return SkShapers::Primitive::PrimitiveText();
 }
 
 // Helper for interfacing with SkShaper: buffers shaper-fed runs and performs
