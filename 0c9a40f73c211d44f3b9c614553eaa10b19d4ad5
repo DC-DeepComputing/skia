@@ -111,6 +111,30 @@
       },
       "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8717398_da0a025b",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-02-28T15:53:05Z",
+      "side": 1,
+      "message": "I would suggest landing this as a stake in the ground, and then tackling sorting out the guard issue. I agree with both of you, and think this is problematic. By clarifying this system we could be making our lives easier when risc-v work is done.",
+      "parentUuid": "571d7dd6_36ad997e",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 75
+      },
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
