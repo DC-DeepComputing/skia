@@ -16,6 +16,24 @@
       "message": "@jlavrova@google.com did you need that here for a specific reason? Where you test-building any targets with Bazel?",
       "revId": "a55a65d65378ac22cafab9d54165b5c82179de92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c15bcd9_102a8328",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-02-28T18:25:43Z",
+      "side": 0,
+      "message": "Not really, no.",
+      "parentUuid": "e063ec4d_ac5d4a94",
+      "revId": "a55a65d65378ac22cafab9d54165b5c82179de92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
