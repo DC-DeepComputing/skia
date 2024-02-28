@@ -11,43 +11,43 @@
 
 using namespace skia_private;
 
-std::unique_ptr<SkUnicode> SkUnicode::Make() {
-    std::unique_ptr<SkUnicode> unicode;
-#ifdef SK_UNICODE_ICU_IMPLEMENTATION
-    unicode = SkUnicode::MakeIcuBasedUnicode();
-    if (unicode) {
-        return unicode;
-    }
+#if !defined(SK_DISABLE_LEGACY_SKUNICODE_FUNCTIONS)
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
 #endif
-#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
-    unicode = SkUnicode::MakeLibgraphemeBasedUnicode();
-    if (unicode) {
-        return unicode;
-    }
-#endif
-#ifdef SK_UNICODE_ICU4X_IMPLEMENTATION
-    unicode = SkUnicode::MakeIcu4xBasedUnicode();
-    if (unicode) {
-        return unicode;
-    }
-#endif
-    return nullptr;
-}
 
-std::unique_ptr<SkUnicode> MakeClientBasedUnicode(
-        SkSpan<char> text,
-        std::vector<SkUnicode::Position> words,               // NOLINT(performance-unnecessary-value-param)
-        std::vector<SkUnicode::Position> graphemeBreaks,      // NOLINT(performance-unnecessary-value-param)
-        std::vector<SkUnicode::LineBreakBefore> lineBreaks) { // NOLINT(performance-unnecessary-value-param)
-#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
-    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeClientBasedUnicode(
-            text, std::move(words), std::move(graphemeBreaks), std::move(lineBreaks));
-    if (unicode) {
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
+std::unique_ptr<SkUnicode> SkUnicode::Make() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#if defined(SK_UNICODE_RUNTIME_ICU_AVAILABLE)
+    if (auto unicode = SkUnicodes::ICU::MakeFromRuntimeLoad()) {
+        return unicode;
+    }
+#endif  // defined(SK_UNICODE_RUNTIME_ICU_AVAILABLE)
+    if (auto unicode = SkUnicodes::ICU::MakeFromCompiledData()) {
+        return unicode;
+    }
+#endif  // defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Libgrapheme::Make()) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU4x::Make()) {
         return unicode;
     }
 #endif
     return nullptr;
 }
+#endif // !defined(SK_DISABLE_LEGACY_SKUNICODE_FUNCTIONS)
 
 SkString SkUnicode::convertUtf16ToUtf8(const char16_t* utf16, int utf16Units) {
 

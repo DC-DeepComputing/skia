@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#include "modules/skunicode/src/SkUnicode_icupriv.h"
+
+#include "SkLoadICU.h"
 
 #include <unicode/ubrk.h>
 #include <unicode/uloc.h>
@@ -53,16 +56,34 @@ struct SkUbrkGetLocaleByType<
     }
 };
 
-}  // namespace
-
 #define SKICU_FUNC(funcname) funcname,
-std::unique_ptr<SkICULib> SkLoadICULib() {
-
-    return std::make_unique<SkICULib>(SkICULib{
+const SkICULib* SkLoadICULib() {
+    static std::unique_ptr<SkICULib> icu = std::make_unique<SkICULib>(SkICULib{
         SKICU_EMIT_FUNCS
 
         &SkUbrkClone<const UBreakIterator*>::clone,
         nullptr,
         &SkUbrkGetLocaleByType<const UBreakIterator*>::getLocaleByType,
     });
+    return icu.get();
 }
+
+}  // namespace
+
+namespace SkUnicodes::ICU {
+std::unique_ptr<SkUnicode> MakeFromCompiledData() {
+    if (!SkLoadICU()) {
+        static SkOnce once;
+        once([] { SkDEBUGF("SkLoadICU() failed!\n"); });
+        return nullptr;
+    }
+
+    if (auto icu = SkLoadICULib()) {
+        FIXME(kjlubick) add pointer to SkUnicode_icu so we can have both this
+        and the runtime version co-exist
+        return std::make_unique<SkUnicode_icu>(icu);
+    }
+    return nullptr;
+}
+
+}  // namespace SkUnicodes::ICU
