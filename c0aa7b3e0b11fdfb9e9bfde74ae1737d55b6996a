@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50219eca_d4ddcf1a",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-28T20:26:59Z",
+      "side": 1,
+      "message": "I was less worried about whether it would be initialized or not. I was more wondering if in the future (with BackendTextureViews) we\u0027ll be storing the full textures format as well as the planes (or just the full and Skia infers the plane\u0027s format itself). So in that world we would already have all the format info we needed. So I was suggesting do we just do that now and store on the DawnTextureInfo both formats. Then we don\u0027t need to pass in a TextureProxy or Texture into this call but just a TextureInfo.\n\nIf we decide to keep this closer to how you have it, I think I would say lets pass in a Texture* instead of a TextureProxy*",
+      "parentUuid": "12410aa5_05dc5888",
+      "range": {
+        "startLine": 234,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 91
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e877e80c_44ee43ac",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "I have a dawn CL [1] under review. With it, the requirement will be applied to all dawn backend.\n\n[1]https://dawn-review.googlesource.com/c/dawn/+/176020",
       "parentUuid": "e877e80c_44ee43ac",
+      "range": {
+        "startLine": 240,
+        "startChar": 11,
+        "endLine": 240,
+        "endChar": 70
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48902fcf_0d1e78e8",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-28T20:26:59Z",
+      "side": 1,
+      "message": "ack, but I did ask a question in that dawn CL for a little clarification",
+      "parentUuid": "ba60960d_b923a6b9",
       "range": {
         "startLine": 240,
         "startChar": 11,
