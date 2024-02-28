@@ -40,9 +40,7 @@
 #if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 std::unique_ptr<SkShaper> SkShaper::Make(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
-    auto unicode = SkUnicode::Make();
-    std::unique_ptr<SkShaper> shaper =
-            SkShapers::HB::ShaperDrivenWrapper(std::move(unicode), std::move(fallback));
+    std::unique_ptr<SkShaper> shaper = MakeShapeThenWrap(std::move(fallback));
     if (shaper) {
         return shaper;
     }
@@ -51,7 +49,7 @@ std::unique_ptr<SkShaper> SkShaper::Make(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
-    return SkShapers::Primitive();
+    return SkShapers::Primitive::PrimitiveText();
 }
 
 void SkShaper::PurgeCaches() {
@@ -63,13 +61,10 @@ void SkShaper::PurgeCaches() {
 std::unique_ptr<SkShaper::BiDiRunIterator>
 SkShaper::MakeBiDiRunIterator(const char* utf8, size_t utf8Bytes, uint8_t bidiLevel) {
 #if defined(SK_SHAPER_UNICODE_AVAILABLE)
-    if (const auto unicode = SkUnicode::Make()) {
-        std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
-                SkShapers::unicode::BidiRunIterator(unicode.get(), utf8, utf8Bytes, bidiLevel);
-        if (bidi) {
-            return bidi;
-        }
-    }
+      std::unique_ptr<SkShaper::BiDiRunIterator> bidi = MakeIcuBiDiRunIterator(utf8, utf8Bytes, bidiLevel);
+      if (bidi) {
+          return bidi;
+      }
 #endif
     return std::make_unique<SkShaper::TrivialBiDiRunIterator>(bidiLevel, utf8Bytes);
 }

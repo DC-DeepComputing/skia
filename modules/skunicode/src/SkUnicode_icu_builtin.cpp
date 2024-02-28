@@ -5,7 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#include "modules/skunicode/src/SkUnicode_icupriv.h"
+
+#include "SkLoadICU.h"
 
 #include <unicode/ubrk.h>
 #include <unicode/uloc.h>
@@ -14,6 +17,7 @@
 #include <memory>
 #include <type_traits>
 #include <utility>
+#include "include/private/base/SkOnce.h"
 
 namespace {
 
@@ -57,12 +61,13 @@ struct SkUbrkGetLocaleByType<
 
 #define SKICU_FUNC(funcname) funcname,
 std::unique_ptr<SkICULib> SkLoadICULib() {
-
-    return std::make_unique<SkICULib>(SkICULib{
+    std::unique_ptr<SkICULib> icu = std::make_unique<SkICULib>(SkICULib{
         SKICU_EMIT_FUNCS
 
         &SkUbrkClone<const UBreakIterator*>::clone,
         nullptr,
         &SkUbrkGetLocaleByType<const UBreakIterator*>::getLocaleByType,
     });
+    return icu;
 }
+

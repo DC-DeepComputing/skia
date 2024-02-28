@@ -20,6 +20,9 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkPngEncoder.h"
+#ifdef SK_UNICODE_ICU_IMPLEMENTATION
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
 #include "modules/skparagraph/include/DartTypes.h"
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/Paragraph.h"
@@ -8123,7 +8126,7 @@ UNIX_ONLY_TEST(SkParagraph_EmojiFontResolution, reporter) {
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
 UNIX_ONLY_TEST(SkParagraph_EmojiRuns, reporter) {
 
-    auto icu = SkUnicode::MakeIcuBasedUnicode();
+    auto icu = SkUnicodes::ICU::Make();
 
     auto test = [&](const char* text, SkUnichar expected) {
         SkString str(text);
