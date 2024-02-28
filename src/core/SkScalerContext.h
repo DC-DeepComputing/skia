@@ -83,7 +83,8 @@ public:
         return SkIntToScalar(fDeviceGamma) / (1 << 6);
     }
     void setDeviceGamma(SkScalar dg) {
-        SkASSERT(0 <= dg && dg < SkIntToScalar(4));
+        SkASSERT(SK_GAMMA_EXPONENT_INCLUSIVE_MIN <= dg &&
+                 dg < SkIntToScalar(SK_GAMMA_EXPONENT_EXCLUSIVE_MAX));
         fDeviceGamma = SkScalarFloorToInt(dg * (1 << 6));
     }
 
@@ -91,7 +92,8 @@ public:
         return SkIntToScalar(fPaintGamma) / (1 << 6);
     }
     void setPaintGamma(SkScalar pg) {
-        SkASSERT(0 <= pg && pg < SkIntToScalar(4));
+        SkASSERT(SK_GAMMA_EXPONENT_INCLUSIVE_MIN <= pg &&
+                 pg < SkIntToScalar(SK_GAMMA_EXPONENT_EXCLUSIVE_MAX));
         fPaintGamma = SkScalarFloorToInt(pg * (1 << 6));
     }
 
@@ -100,7 +102,8 @@ public:
         return SkIntToScalar(fContrast) / ((1 << 8) - 1);
     }
     void setContrast(SkScalar c) {
-        SkASSERT(0 <= c && c <= SK_Scalar1);
+        SkASSERT(SK_GAMMA_CONTRAST_INCLUSIVE_MIN <= c &&
+                 c <= SkIntToScalar(SK_GAMMA_CONTRAST_INCLUSIVE_MAX));
         fContrast = SkScalarRoundToInt(c * ((1 << 8) - 1));
     }
 
