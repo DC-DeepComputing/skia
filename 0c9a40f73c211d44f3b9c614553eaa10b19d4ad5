@@ -16,6 +16,29 @@
       "message": "This looks like it is passing the chromium build now, and has solved the duplicate symbol problem.\n\nPTAL",
       "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c28d9c9d_0460ac0e",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-28T15:25:58Z",
+      "side": 1,
+      "message": "That\u0027s what the namespace is meant to solve. Is SK_OPTS_NS set to the same thing (or left unset)?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 75
+      },
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
