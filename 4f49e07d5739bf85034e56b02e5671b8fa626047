@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4501815_0d602dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-28T14:45:21Z",
+      "side": 1,
+      "message": "+kevin for the latest bazel questions about the hermetic sandbox",
+      "revId": "4f49e07d5739bf85034e56b02e5671b8fa626047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
