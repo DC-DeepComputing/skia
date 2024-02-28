@@ -9,11 +9,15 @@
 
 #ifdef SK_VULKAN
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Recorder.h"
+#elif defined(SK_GANESH) // !SK_GRAPHITE
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
+#endif // !SK_GRAPHITE && SK_GANESH
 
 int VkYcbcrSamplerHelper::GetExpectedY(int x, int y, int width, int height) {
     return 16 + (x + y) * 219 / (width + height - 2);
@@ -22,6 +26,29 @@ int VkYcbcrSamplerHelper::GetExpectedY(int x, int y, int width, int height) {
 std::pair<int, int> VkYcbcrSamplerHelper::GetExpectedUV(int x, int y, int width, int height) {
     return { 16 + x * 224 / (width - 1), 16 + y * 224 / (height - 1) };
 }
+
+#if defined(SK_GRAPHITE)
+
+VkYcbcrSamplerHelper::VkYcbcrSamplerHelper(skgpu::graphite::Recorder* recorder) :
+        fRecorder(recorder) {
+    SkASSERT_RELEASE(recorder->backend() == skgpu::BackendApi::kVulkan);
+}
+
+VkYcbcrSamplerHelper::~VkYcbcrSamplerHelper() {
+    // TODO: Implement. Release backend texture vkimage, imagememory
+}
+
+bool VkYcbcrSamplerHelper::isYCbCrSupported() {
+    // TODO: Implement (check caps)
+    return true;
+}
+
+bool VkYcbcrSamplerHelper::createBackendTexture(uint32_t width, uint32_t height) {
+    // TODO: Implement
+    return false;
+}
+
+#elif defined(SK_GANESH) // !SK_GRAPHITE
 
 GrVkGpu* VkYcbcrSamplerHelper::vkGpu() {
     return (GrVkGpu*) fDContext->priv().getGpu();
@@ -227,5 +254,6 @@ bool VkYcbcrSamplerHelper::createBackendTexture(uint32_t width, uint32_t height)
     fTexture = GrBackendTextures::MakeVk(width, height, imageInfo);
     return true;
 }
+#endif // !SK_GRAPHITE && SK_GANESH
 
 #endif // SK_VULKAN

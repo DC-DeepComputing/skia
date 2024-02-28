@@ -20,6 +20,10 @@
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "tools/gpu/vk/VkYcbcrSamplerHelper.h"
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Recorder.h"
+#endif
+
 static void release_ycbcrhelper(void* releaseContext) {
     VkYcbcrSamplerHelper* ycbcrHelper = reinterpret_cast<VkYcbcrSamplerHelper*>(releaseContext);
     delete ycbcrHelper;
@@ -40,6 +44,39 @@ protected:
     SkISize getISize() override {
         return SkISize::Make(2*kPad+kImageSize, 2*kPad+kImageSize);
     }
+
+#if defined(SK_GRAPHITE)
+    DrawResult createYCbCrImage(skgpu::graphite::Recorder* recorder, SkString* errorMsg) {
+        // std::unique_ptr<VkYcbcrSamplerHelper> ycbcrHelper(new VkYcbcrSamplerHelper(dContext));
+
+        // if (!ycbcrHelper->isYCbCrSupported()) {
+        //     *errorMsg = "YCbCr sampling not supported.";
+        //     return skiagm::DrawResult::kSkip;
+        // }
+
+        // if (!ycbcrHelper->createBackendTexture(kImageSize, kImageSize)) {
+        //     *errorMsg = "Failed to create I420 backend texture.";
+        //     return skiagm::DrawResult::kFail;
+        // }
+
+        // SkASSERT(!fYCbCrImage);
+        // fYCbCrImage = SkImages::BorrowTextureFrom(dContext,
+        //                                           ycbcrHelper->backendTexture(),
+        //                                           kTopLeft_GrSurfaceOrigin,
+        //                                           kRGB_888x_SkColorType,
+        //                                           kPremul_SkAlphaType,
+        //                                           nullptr,
+        //                                           release_ycbcrhelper,
+        //                                           ycbcrHelper.get());
+        // ycbcrHelper.release();
+        // if (!fYCbCrImage) {
+        //     *errorMsg = "Failed to create I420 image.";
+        //     return DrawResult::kFail;
+        // }
+
+        return DrawResult::kOk;
+    }
+#endif
 
     DrawResult createYCbCrImage(GrDirectContext* dContext, SkString* errorMsg) {
         std::unique_ptr<VkYcbcrSamplerHelper> ycbcrHelper(new VkYcbcrSamplerHelper(dContext));
@@ -73,7 +110,21 @@ protected:
     }
 
     DrawResult onGpuSetup(SkCanvas* canvas, SkString* errorMsg, GraphiteTestContext*) override {
+#if defined(SK_GRAPHITE)
+        auto recorder = canvas->recorder();
+        if (!recorder) {
+            return DrawResult::kSkip;
+        }
+
+        if (recorder->backend() != skgpu::BackendApi::kVulkan) {
+            *errorMsg = "This GM requires using Vulkan.";
+            return DrawResult::kSkip;
+        }
+
+        return this->createYCbCrImage(recorder, errorMsg);
+#elif defined(SK_GANESH)
         GrDirectContext* dContext = GrAsDirectContext(canvas->recordingContext());
+
         if (!dContext || dContext->abandoned()) {
             return DrawResult::kSkip;
         }
@@ -89,6 +140,9 @@ protected:
         }
 
         return DrawResult::kOk;
+#endif
+        SkUNREACHABLE;
+        return DrawResult::kSkip;
     }
 
     void onGpuTeardown() override {
