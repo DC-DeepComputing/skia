@@ -46,19 +46,19 @@ static const char gText[] =
 
 static std::unique_ptr<SkUnicode> make_sk_unicode() {
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
-    unicode = SkUnicode::MakeIcuBasedUnicode();
+    unicode = SkUnicode::ICU::Make();
     if (unicode) {
         return unicode;
     }
 #endif
 #if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
-    unicode = SkUnicode::MakeLibgraphemeBasedUnicode();
+    unicode = SkUnicode::Libgrapheme::Make();
     if (unicode) {
         return unicode;
     }
 #endif
 #if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
-    return SkUnicode::MakeIcu4xBasedUnicode();
+    return SkUnicode::ICU4X::Make();
 #endif
     return nullptr;
 }
