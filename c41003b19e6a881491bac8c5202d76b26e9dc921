@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2abef1d4_b4380282",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-28T17:54:21Z",
+      "side": 1,
+      "message": "@bungeman@google.com - is that matching what we discussed? I haven\u0027t see results from the bot yet, but locally this works for `colrv1.gm` and `palette.gm`.",
+      "revId": "c41003b19e6a881491bac8c5202d76b26e9dc921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
