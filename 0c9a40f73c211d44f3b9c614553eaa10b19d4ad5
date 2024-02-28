@@ -135,6 +135,30 @@
       },
       "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f78332f_258d4ea0",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-02-28T15:56:03Z",
+      "side": 1,
+      "message": "Is fixing the guards challenging? It just sounds like a small tweak, which can be done in its own CL, then you could do a clean reland of your original CL ~unchanged. I don\u0027t understand what we gain from landing this ASAP, just to follow up with fixing the guards and removing the inlines later in the day...?",
+      "parentUuid": "d8717398_da0a025b",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 75
+      },
+      "revId": "0c9a40f73c211d44f3b9c614553eaa10b19d4ad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
