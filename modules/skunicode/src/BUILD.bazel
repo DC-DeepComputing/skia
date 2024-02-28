@@ -41,6 +41,7 @@ skia_filegroup(
     srcs = [
         "SkUnicode_icu.cpp",
         "SkUnicode_icu.h",
+        "SkUnicode_icupriv.h",
         ":builtin_srcs",
         # TODO(kjlubick, bungeman): add support for SkUnicode_icu_runtime.cpp
     ],
@@ -60,6 +61,7 @@ skia_filegroup(
     name = "libgrapheme_srcs",
     srcs = [
         "SkUnicode_libgrapheme.cpp",
+        "SkUnicode_libgrapheme.h",
     ],
     visibility = ["//modules/skunicode:__pkg__"],
 )
@@ -68,6 +70,7 @@ skia_filegroup(
     name = "icu4x_srcs",
     srcs = [
         "SkUnicode_icu4x.cpp",
+        "SkUnicode_icu4x.h",
     ],
     visibility = ["//modules/skunicode:__pkg__"],
 )
