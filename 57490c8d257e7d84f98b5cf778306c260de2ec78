@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4892b1f3_707172c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-02-28T15:50:06Z",
+      "side": 1,
+      "message": "This seems to have broken the bazel viewer build because of issues with finding a Vk test header.\n\nTest with:\n$ bazel build //tools/viewer",
+      "revId": "57490c8d257e7d84f98b5cf778306c260de2ec78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
