@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c57245d8_b1b14aba",
+        "filename": "include/ports/SkFontMgr_Fontations.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-28T20:07:44Z",
+      "side": 1,
+      "message": "English is weird, but for nice sorting and such I prefer the generic to specific naming convention.\n```suggestion\nSK_API sk_sp\u003cSkFontMgr\u003e SkFontMgr_New_Fontations_Empty();\n```\n\nThis is how the `Custom` (really `FreeType`) ones are done for this reason.",
+      "range": {
+        "startLine": 18,
+        "startChar": 24,
+        "endLine": 18,
+        "endChar": 55
+      },
+      "revId": "34e7ab90ab5c1c31cf556bf4233131854450535b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "947e65ea_1eb8967a",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-28T20:07:44Z",
+      "side": 1,
+      "message": "No `_factory`. I think we\u0027ve removed all of those.\n\nAlso, yeah, we should have named these targets like `fontmgr_custom_directory` instead of `custom_directory_fontmgr`, but those were already taken by the actual target. Naming things.",
+      "range": {
+        "startLine": 57,
+        "startChar": 69,
+        "endLine": 57,
+        "endChar": 76
+      },
+      "revId": "34e7ab90ab5c1c31cf556bf4233131854450535b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db58bbfc_3d8e5501",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-28T20:07:44Z",
+      "side": 1,
+      "message": "SkFontMgr_fontations_empty",
+      "range": {
+        "startLine": 377,
+        "startChar": 9,
+        "endLine": 377,
+        "endChar": 35
+      },
+      "revId": "34e7ab90ab5c1c31cf556bf4233131854450535b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5daeb6db_2c7d70c0",
+        "filename": "src/ports/SkFontMgr_empty_fontations.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-28T20:07:44Z",
+      "side": 1,
+      "message": "SkFontMgr_Fontations_Empty",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 28,
+        "endChar": 32
+      },
+      "revId": "34e7ab90ab5c1c31cf556bf4233131854450535b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
