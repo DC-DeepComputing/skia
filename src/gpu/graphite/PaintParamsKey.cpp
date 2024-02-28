@@ -71,6 +71,15 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         return nullptr;
     }
 
+    // TODO: if the snippet requires a data child, we interpret either the first or last block as a
+    // "length" and create the span we pass to the ShaderNode.
+
+    SkSpan<int32_t> data = {};
+    if (entry->hasDataChild()) {
+        // TODO: Interpret first or last block as "length". Create span to pass into ShaderNode
+
+    }
+
     const ShaderNode** childArray = arena->makeArray<const ShaderNode*>(entry->fNumChildren);
     for (int i = 0; i < entry->fNumChildren; ++i) {
         const ShaderNode* child = this->createNode(dict, currentIndex, arena);
@@ -80,7 +89,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
         childArray[i] = child;
     }
 
-    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index);
+    return arena->make<ShaderNode>(entry, SkSpan(childArray, entry->fNumChildren), id, index, data);
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
