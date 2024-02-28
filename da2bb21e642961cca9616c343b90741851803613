@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02b1187c_c6b51359",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-28T15:12:08Z",
+      "side": 1,
+      "message": "What I would suggest is going into ./example/external_client and trying to run\n`bazelisk build @skia//:ganesh_epoxy_factory`\n\nThat directory is set up to use the default Bazel toolchain (it is non-hermetic, it will find a c++ compiler on your system and use whatever system headers you have installed), so assuming you have the epoxy headers locally, that can test the target.\n\nUsing spawn_strategy\u003dlocal breaks the use of our layer_check feature, so one would have to disable that if trying to build via that approach.",
+      "parentUuid": "1eb1c262_ba7e2833",
+      "revId": "da2bb21e642961cca9616c343b90741851803613",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24851353_21524ee7",
