@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "fbbf8810a09e67c55df7c196672f6c08c39c077a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f6dce7_d161347f",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-02-29T19:55:20Z",
+      "side": 1,
+      "message": "is there a chance that `plot` could be null here?",
+      "range": {
+        "startLine": 259,
+        "startChar": 10,
+        "endLine": 259,
+        "endChar": 14
+      },
+      "revId": "fbbf8810a09e67c55df7c196672f6c08c39c077a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
