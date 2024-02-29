@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "799bdf8e_95c065bb",
+        "filename": "include/gpu/graphite/dawn/DawnTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-29T15:51:05Z",
+      "side": 1,
+      "message": "Ideally I think I would actually have fFormat be the full YUV format and then we store an fPlaneFormat here. But in the short term that would be a lot of extra refactoring since most code in Graphite wants to make decisions off of the plane format, but that code is shared with non planer textures as well. Updating things to work that way is where we should look to land, but in the short term is extra refactoring work that would block the current bug.",
+      "range": {
+        "startLine": 25,
+        "startChar": 24,
+        "endLine": 25,
+        "endChar": 38
+      },
+      "revId": "5cabe257585ed4233f297763fefa8a13d4871d13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
