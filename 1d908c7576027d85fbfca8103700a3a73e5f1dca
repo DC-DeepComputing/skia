@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65216c76_cf3df104",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-29T15:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65159518_48876745",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 78
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac9ad237_feaf9adc",
@@ -87,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e11d437b_83ceea15",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-29T15:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac9ad237_feaf9adc",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 85
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3785c595_7665abb9",
@@ -124,6 +172,30 @@
       "side": 1,
       "message": "We prolly never build with both SK_UNICODE_AVAILABLE and SK_SHAPER_CORETEXT_AVAILABLE, feel free to ignore.",
       "parentUuid": "3785c595_7665abb9",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c1bd8f0_8db7b955",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-02-29T15:47:43Z",
+      "side": 1,
+      "message": "Done anyway. The original logic in SkShaper.cpp used an elif, but an #if is more flexible as long as I\u0027m making edits anyway.",
+      "parentUuid": "781c0757_1612243e",
       "range": {
         "startLine": 94,
         "startChar": 0,
