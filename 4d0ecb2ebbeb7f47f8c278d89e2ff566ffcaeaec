@@ -3,6 +3,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6eb8ad03_33347b44",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-29T15:49:19Z",
+      "side": 1,
+      "message": "👍",
+      "range": {
+        "startLine": 563,
+        "startChar": 31,
+        "endLine": 563,
+        "endChar": 36
+      },
+      "revId": "4d0ecb2ebbeb7f47f8c278d89e2ff566ffcaeaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ba80a135_41e353ad",
         "filename": "gn/gn_to_bp.py",
         "patchSetId": 1
@@ -14,6 +37,24 @@
       "writtenOn": "2024-02-28T23:43:48Z",
       "side": 1,
       "message": "Confusing API note: this `splitEXT` function is for splitting on file extension, not a generic `splitText` function.",
+      "revId": "4d0ecb2ebbeb7f47f8c278d89e2ff566ffcaeaec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c11496f9_b9f541a6",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-02-29T15:49:19Z",
+      "side": 1,
+      "message": "Oh nice - [`splitEXT`](https://docs.python.org/3/library/os.path.html#os.path.splitext) will give you an array (or a tuple; not sure...) of size 2 regardless. I was worried about what might happen if we had a file with no extension. I think we shouldn\u0027t, returned from GN, but regardless, this is safe and should do the right thing.",
+      "parentUuid": "ba80a135_41e353ad",
       "revId": "4d0ecb2ebbeb7f47f8c278d89e2ff566ffcaeaec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
