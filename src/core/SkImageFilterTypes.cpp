@@ -634,17 +634,9 @@ FilterResult FilterResult::insetForSaveLayer() const {
         return {};
     }
 
-    // A layer image should not have any other transform beyond it's origin that matches its bounds
-    SkDEBUGCODE(LayerSpace<SkIPoint> origin;)
-    SkASSERT(is_nearly_integer_translation(fTransform, &origin) &&
-             SkIPoint(origin) == SkIPoint(fLayerBounds.topLeft()));
-    SkASSERT(fTileMode == SkTileMode::kDecal);
-
     // PixelBoundary tracking assumes the special image's subset does not include the padding, so
     // inset by a single pixel.
-    auto layerBounds = fLayerBounds;
-    layerBounds.inset(LayerSpace<SkISize>({1, 1}));
-    FilterResult inset = this->subset(fLayerBounds.topLeft(), layerBounds);
+    FilterResult inset = this->insetByPixel();
     // Trust that SkCanvas configured the layer's SkDevice to ensure the padding remained
     // transparent. Upgrading this pixel boundary knowledge allows the source image to use the
     // simpler clamp math (vs. decal math) when used in a shader context.
@@ -652,6 +644,16 @@ FilterResult FilterResult::insetForSaveLayer() const {
              inset.fTileMode == SkTileMode::kDecal);
     inset.fBoundary = PixelBoundary::kTransparent;
     return inset;
+}
+
+FilterResult FilterResult::insetByPixel() const {
+    // This assumes that the image is pixel aligned with its layer bounds, which is validated in
+    // the call to subset().
+    auto insetBounds = fLayerBounds;
+    insetBounds.inset(LayerSpace<SkISize>({1, 1}));
+     // Shouldn't be calling this except in situations where padding was explicitly added before.
+    SkASSERT(!insetBounds.isEmpty());
+    return this->subset(fLayerBounds.topLeft(), insetBounds);
 }
 
 SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
@@ -1574,6 +1576,16 @@ FilterResult FilterResult::rescale(const Context& ctx,
         PixelSpace<SkRect> dstBoundsF{SkRect::MakeWH(stepBoundsF.width() * sx,
                                                      stepBoundsF.height() * sy)};
         PixelSpace<SkIRect> dstPixelBounds = dstBoundsF.roundOut();
+        if (xSteps == 0) {
+            // Bump fractional coords out to the final pixel bounds, which greatly helps apparent
+            // stability of the upscaled image.
+            dstBoundsF = PixelSpace<SkRect>({(float)dstPixelBounds.left(),  dstBoundsF.top(),
+                                             (float)dstPixelBounds.right(), dstBoundsF.bottom()});
+        }
+        if (ySteps == 0) {
+            dstBoundsF = PixelSpace<SkRect>({dstBoundsF.left(),  (float)dstPixelBounds.top(),
+                                             dstBoundsF.right(), (float)dstPixelBounds.bottom()});
+        }
 
         PixelBoundary boundary = PixelBoundary::kUnknown;
         PixelSpace<SkIRect> sampleBounds = dstPixelBounds;
@@ -1703,9 +1715,7 @@ FilterResult FilterResult::rescale(const Context& ctx,
     if (deferPeriodicTiling) {
         // Inset the image to undo the manually added border of pixels, which will allow the result
         // to have the kInitialized boundary state.
-        auto subset = image.layerBounds();
-        subset.inset(PixelSpace<SkISize>({1, 1}));
-        image = image.subset(image.layerBounds().topLeft(), subset);
+        image = image.insetByPixel();
     } else {
         SkASSERT(tileMode == SkTileMode::kDecal || tileMode == SkTileMode::kClamp);
         // Leave the image as-is. If it's decal tiled, this preserves the known transparent
@@ -1916,26 +1926,18 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     const SkBlurEngine* blurEngine = fContext.backend()->getBlurEngine();
     SkASSERT(blurEngine);
 
-    // TODO: All tilemodes are applied right now in resolve() so query with just kDecal
     const SkBlurEngine::Algorithm* algorithm = blurEngine->findAlgorithm(
             SkSize(sigma), fContext.backend()->colorType());
     if (!algorithm) {
         return {};
     }
 
-    // TODO: Move resizing logic out of GrBlurUtils into this function
-    SkASSERT(sigma.width() <= algorithm->maxSigma() && sigma.height() <= algorithm->maxSigma());
-
     // TODO: De-duplicate this logic between SkBlurImageFilter, here, and skgpu::BlurUtils.
-    skif::LayerSpace<SkISize> radii =
+    LayerSpace<SkISize> radii =
             LayerSpace<SkSize>({3.f*sigma.width(), 3.f*sigma.height()}).ceil();
     auto maxOutput = fInputs[0].fImage.layerBounds();
     maxOutput.outset(radii);
 
-    // TODO: If the input image is periodic, the output that's calculated can be the original image
-    // size and then have the layer bounds and tilemode of the output image apply the tile again.
-    // Similarly, a clamped blur can be restricted to a radius-outset buffer of the image bounds
-    // (vs. layer bounds) and rendered with clamp tiling.
     const auto outputBounds = this->outputBounds(maxOutput);
     if (outputBounds.isEmpty()) {
         return {};
@@ -1947,33 +1949,113 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     auto sampleBounds = outputBounds;
     sampleBounds.outset(radii);
 
-    // TODO: If the blur implementation requires downsampling, we should incorporate any deferred
-    // transform and colorfilter to the first rescale step instead of generating a full resolution
-    // simple image first.
-    // TODO: The presence of a non-decal tilemode should not force resolving to a simple image; it
-    // should be incorporated into the image that's sampled by the blur effect (modulo biasing edge
-    // pixels somehow for very large clamp blurs).
-    // TODO: resolve() doesn't actually guarantee that the returned image has the same color space
-    // as the Context, but probably should since the blur algorithm operates in the color space of
-    // the input image.
-    FilterResult resolved = fInputs[0].fImage.resolve(fContext, sampleBounds);
-    if (!resolved) {
-        return {};
+    float sx = sigma.width()  > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.width()  : 1.f;
+    float sy = sigma.height() > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.height() : 1.f;
+
+    int stepX = SkNextLog2(sk_float_ceil2int(1.f / sx));
+    int stepY = SkNextLog2(sk_float_ceil2int(1.f / sy));
+    if (sx * (1 << (stepX - 1)) > 0.5f) {
+        // Apply only scaling by powers of two, remaining scaling amounts will be by adjusting sigma
+        stepX--;
+    }
+    if (sy * (1 << (stepY - 1)) > 0.5f) {
+        stepY--;
     }
 
-    // TODO: Can blur() take advantage of AutoSurface? Right now the GPU functions are responsible
-    // for creating their own target surfaces.
-    auto srcRelativeOutput = outputBounds;
-    srcRelativeOutput.offset(-resolved.layerBounds().topLeft());
-    resolved = {algorithm->blur(SkSize(sigma),
-                                resolved.fImage,
-                                SkIRect::MakeSize(resolved.fImage->dimensions()),
-                                SkTileMode::kDecal,
-                                SkIRect(srcRelativeOutput)),
-                outputBounds.topLeft()};
-    // TODO: Allow the blur functor to provide an upscaling transform that is applied to the
-    // FilterResult so that a render pass can possibly be elided if this is the final operation.
-    return resolved;
+    stepX = std::min(6, stepX); // More than 6 rescale steps introduces sampling errors that the blur magnifies
+    stepY = std::min(6, stepY);
+
+    // Limit the rescaling
+    sx = 1.f / (1 << stepX);
+    sy = 1.f / (1 << stepY);
+
+    // For identity scale factors, this rescale() is a no-op when possible, but otherwise it will
+    // also handle resolving any color filters or transform similar to a resolve() except that it
+    // can defer the tile mode.
+    FilterResult lowResImage = fInputs[0].fImage.rescale(
+            fContext.withNewDesiredOutput(sampleBounds),
+            LayerSpace<SkSize>({sx, sy}),
+            algorithm->supportsOnlyDecalTiling());
+    if (!lowResImage) {
+        return {};
+    }
+    SkASSERT(lowResImage.tileMode() == SkTileMode::kDecal ||
+             !algorithm->supportsOnlyDecalTiling());
+
+    float remainingSigmaX = sx * sigma.width();
+    float remainingSigmaY = sy * sigma.height();
+    while(remainingSigmaX > 0.f || remainingSigmaY > 0.f) {
+        // Map 'outputBounds' into the low-res image's pixel space to determine the low-res output
+        // from the blur engine.
+        PixelSpace<SkSize> lowResSigma{{std::min(algorithm->maxSigma(), remainingSigmaX),
+                                        std::min(algorithm->maxSigma(), remainingSigmaY)}};
+        PixelSpace<SkIRect> lowResMaxOutput{SkISize{lowResImage.fImage->width(),
+                                                    lowResImage.fImage->height()}};
+
+        PixelSpace<SkIRect> srcRelativeOutput;
+        if (lowResImage.tileMode() == SkTileMode::kRepeat ||
+            lowResImage.tileMode() == SkTileMode::kMirror) {
+            // The periodic tiling was deferred when down-sampling; we can further defer it to after the
+            // blur. The low-res output is 1-to-1 with the low res image.
+            srcRelativeOutput = lowResMaxOutput;
+        } else {
+            // For decal and clamp tiling, the blurred image stops being interesting outside the radii
+            // outset, so redo the max output analysis with the 'outputBounds' mapped into pixel space.
+            SkAssertResult(lowResImage.fTransform.inverseMapRect(outputBounds, &srcRelativeOutput));
+            // Include 1px of blur output so that it can be sampled during the upscale, which is needed
+            // to correctly seem large blurs across crop/raster tiles (crbug.com/1500021).
+            srcRelativeOutput.outset(PixelSpace<SkISize>({1, 1}));
+
+            // NOTE: Since 'lowResMaxOutput' is based on the actual image and deferred tiling, this can
+            // be smaller than the pessimistic filling for a clamp-tiled blur.
+            lowResMaxOutput.outset(PixelSpace<SkSize>({3.f * lowResSigma.width(),
+                                                    3.f * lowResSigma.height()}).ceil());
+            srcRelativeOutput = lowResMaxOutput.relevantSubset(srcRelativeOutput,
+                                                            lowResImage.tileMode());
+            // Clamp won't return empty from relevantSubset() and a non-intersecting decal should have
+            // been caught earlier.
+            SkASSERT(!srcRelativeOutput.isEmpty());
+        }
+
+        sk_sp<SkSpecialImage> lowResBlur = lowResImage.refImage();
+        SkIRect blurOutputBounds = SkIRect(srcRelativeOutput);
+        SkTileMode tileMode = lowResImage.tileMode();
+        if (lowResImage.canClampToTransparentBoundary(BoundsAnalysis::kSimple)) {
+            lowResBlur = lowResBlur->makePixelOutset();
+            blurOutputBounds.offset(1, 1);
+            tileMode = SkTileMode::kClamp;
+        }
+
+        lowResBlur = algorithm->blur(SkSize(lowResSigma),
+                                    lowResBlur,
+                                    SkIRect::MakeSize(lowResBlur->dimensions()),
+                                    tileMode,
+                                    blurOutputBounds);
+
+        FilterResult result{std::move(lowResBlur), srcRelativeOutput.topLeft()};
+        if (lowResImage.tileMode() == SkTileMode::kClamp ||
+            lowResImage.tileMode() == SkTileMode::kDecal) {
+            // Undo the outset padding that was added to srcRelativeOutput before invoking the blur
+            result = result.insetByPixel();
+        }
+
+        result.fTransform.postConcat(lowResImage.fTransform);
+        result.fLayerBounds = outputBounds;
+        result.fTileMode = lowResImage.tileMode();
+
+
+         // A blur of sigma1 followed by a blur of sigma2 is equiv. to a single blur of
+        // sqrt(sigma1^2 + sigma2^2).
+        remainingSigmaX = sqrt(remainingSigmaX*remainingSigmaX - lowResSigma.width()*lowResSigma.width());
+        remainingSigmaY = sqrt(remainingSigmaY*remainingSigmaY - lowResSigma.height()*lowResSigma.height());
+
+        if (remainingSigmaX <= 0.03f) { remainingSigmaX = 0.f; }
+        if (remainingSigmaY <= 0.03f) { remainingSigmaY = 0.f; }
+
+        lowResImage = result;
+    }
+
+    return lowResImage;
 }
 
 } // end namespace skif
