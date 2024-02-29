@@ -84,21 +84,48 @@ sk_sp<SkTypeface> PlanetTypeface() {
 
 sk_sp<SkTypeface> EmojiTypeface() {
     static const sk_sp<SkTypeface> emojiTypeface = []() {
-        const char* filename;
+        sk_sp<SkTypeface> typeface = nullptr;
 #if defined(SK_BUILD_FOR_WIN)
-        filename = "fonts/colr.ttf";
+        typeface = EmojiTypeface(EmojiFontFormat::ColrV1);
 #elif defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        filename = "fonts/sbix.ttf";
+        typeface = EmojiTypeface(EmojiFontFormat::Sbix);
 #else
-        filename = "fonts/cbdt.ttf";
+        typeface = EmojiTypeface(EmojiFontFormat::Cbdt);
 #endif
-        sk_sp<SkTypeface> typeface = CreateTypefaceFromResource(filename);
         if (typeface) {
             return typeface;
         }
         return CreateTestTypeface("Emoji", SkFontStyle());
     }();
     return emojiTypeface;
+}
+
+sk_sp<SkTypeface> EmojiTypeface(EmojiFontFormat format) {
+    const char* filename = "";
+    switch (format) {
+        case EmojiFontFormat::Cbdt:
+            filename = "fonts/cbdt.ttf";
+            break;
+        case EmojiFontFormat::Sbix:
+            filename = "fonts/sbix.ttf";
+            break;
+        case EmojiFontFormat::ColrV1:
+            filename = "fonts/colr.ttf";
+            break;
+    }
+    return CreateTypefaceFromResource(filename);
+}
+
+SkString NameForFontFormat(EmojiFontFormat format) {
+    switch (format) {
+        case EmojiFontFormat::Cbdt:
+            return SkString("cbdt");
+        case EmojiFontFormat::Sbix:
+            return SkString("sbix");
+        case EmojiFontFormat::ColrV1:
+            return SkString("colrv1");
+    }
+    return SkString();
 }
 
 sk_sp<SkTypeface> SampleUserTypeface() {

@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 
 class SkBitmap;
 class SkImage;
@@ -37,6 +38,17 @@ sk_sp<SkTypeface> PlanetTypeface();
 
 /** Return a color emoji typeface if available. */
 sk_sp<SkTypeface> EmojiTypeface();
+
+enum class EmojiFontFormat {
+    Cbdt,
+    Sbix,
+    ColrV1
+};
+
+/** Return a color emoji typeface of a specific color font format if available. */
+sk_sp<SkTypeface> EmojiTypeface(EmojiFontFormat format);
+
+SkString NameForFontFormat(EmojiFontFormat format);
 
 /** Sample text for the emoji_typeface font. */
 constexpr const char* EmojiSampleText() {

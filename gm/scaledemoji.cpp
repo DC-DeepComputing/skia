@@ -40,7 +40,7 @@ namespace skiagm {
 
 class ScaledEmojiGM : public GM {
 public:
-    ScaledEmojiGM() { }
+    ScaledEmojiGM(ToolUtils::EmojiFontFormat format) : fFormat(format) {}
 
 protected:
     struct EmojiFont {
@@ -49,15 +49,23 @@ protected:
     } fEmojiFont;
 
     void onOnceBeforeDraw() override {
-        fEmojiFont.fTypeface = ToolUtils::EmojiTypeface();
+        fEmojiFont.fTypeface = ToolUtils::EmojiTypeface(fFormat);
         fEmojiFont.fText     = ToolUtils::EmojiSampleText();
     }
 
-    SkString getName() const override { return SkString("scaledemoji"); }
+    SkString getName() const override {
+        return SkString("scaledemoji") += ToolUtils::NameForFontFormat(fFormat);
+    }
 
     SkISize getISize() override { return SkISize::Make(1200, 1200); }
 
-    void onDraw(SkCanvas* canvas) override {
+    DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+
+        if (!fEmojiFont.fTypeface) {
+            *errorMsg = SkStringPrintf("Unable to instantiate emoji test font of format %s.",
+                                       ToolUtils::NameForFontFormat(fFormat).c_str());
+            return DrawResult::kSkip;
+        }
 
         canvas->drawColor(SK_ColorGRAY);
 
@@ -79,15 +87,18 @@ protected:
             canvas->drawSimpleText(text, strlen(text), SkTextEncoding::kUTF8, 10, y, font, paint);
             y += metrics.fDescent + metrics.fLeading;
         }
+
+        return DrawResult::kOk;
     }
 
 private:
+    ToolUtils::EmojiFontFormat fFormat;
     using INHERITED = GM;
 };
 
 class ScaledEmojiPosGM : public GM {
 public:
-    ScaledEmojiPosGM() {}
+    ScaledEmojiPosGM(ToolUtils::EmojiFontFormat format) : fFormat(format) {}
 
 protected:
     struct EmojiFont {
@@ -96,15 +107,23 @@ protected:
     } fEmojiFont;
 
     void onOnceBeforeDraw() override {
-        fEmojiFont.fTypeface = ToolUtils::EmojiTypeface();
-        fEmojiFont.fText     = ToolUtils::EmojiSampleText();
+        fEmojiFont.fTypeface = ToolUtils::EmojiTypeface(fFormat);
+        fEmojiFont.fText = ToolUtils::EmojiSampleText();
     }
 
-    SkString getName() const override { return SkString("scaledemojipos"); }
+    SkString getName() const override {
+        return SkString("scaledemojipos") += ToolUtils::NameForFontFormat(fFormat);
+    }
 
     SkISize getISize() override { return SkISize::Make(1200, 1200); }
 
-    void onDraw(SkCanvas* canvas) override {
+    DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+
+        if (!fEmojiFont.fTypeface) {
+            *errorMsg = SkStringPrintf("Unable to instantiate emoji test font of format %s.",
+                                       ToolUtils::NameForFontFormat(fFormat).c_str());
+            return DrawResult::kSkip;
+        }
 
         canvas->drawColor(SK_ColorGRAY);
 
@@ -134,15 +153,18 @@ protected:
 
             y += metrics.fDescent + metrics.fLeading;
         }
+
+        return DrawResult::kOk;
     }
 
 private:
+    ToolUtils::EmojiFontFormat fFormat;
     using INHERITED = GM;
 };
 
 class ScaledEmojiPerspectiveGM : public GM {
 public:
-    ScaledEmojiPerspectiveGM() {}
+    ScaledEmojiPerspectiveGM(ToolUtils::EmojiFontFormat format) : fFormat(format) {}
 
 protected:
     struct EmojiFont {
@@ -151,7 +173,7 @@ protected:
     } fEmojiFont;
 
     void onOnceBeforeDraw() override {
-        fEmojiFont.fTypeface = ToolUtils::EmojiTypeface();
+        fEmojiFont.fTypeface = ToolUtils::EmojiTypeface(fFormat);
 
         int count = 0;
         const char* ch_ptr = ToolUtils::EmojiSampleText();
@@ -165,11 +187,19 @@ protected:
         }
     }
 
-    SkString getName() const override { return SkString("scaledemojiperspective"); }
+    SkString getName() const override {
+        return SkString("scaledemojiperspective_") += ToolUtils::NameForFontFormat(fFormat);
+    }
 
     SkISize getISize() override { return SkISize::Make(1200, 1200); }
 
-    void onDraw(SkCanvas* canvas) override {
+    DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+
+        if (!fEmojiFont.fTypeface) {
+            *errorMsg = SkStringPrintf("Unable to instantiate emoji test font of format %s.",
+                                       ToolUtils::NameForFontFormat(fFormat).c_str());
+            return DrawResult::kSkip;
+        }
 
         canvas->drawColor(SK_ColorGRAY);
         SkMatrix taper;
@@ -204,15 +234,21 @@ protected:
             }
             canvas->restore();
         }
+
+        return DrawResult::kOk;
     }
 
 private:
+    ToolUtils::EmojiFontFormat fFormat;
     using INHERITED = GM;
 };
 
 //////////////////////////////////////////////////////////////////////////////
 
-DEF_GM(return new ScaledEmojiGM;)
-DEF_GM(return new ScaledEmojiPosGM;)
-DEF_GM(return new ScaledEmojiPerspectiveGM;)
+DEF_GM(return new ScaledEmojiGM(ToolUtils::EmojiFontFormat::Cbdt);)
+DEF_GM(return new ScaledEmojiPosGM(ToolUtils::EmojiFontFormat::Cbdt);)
+DEF_GM(return new ScaledEmojiPerspectiveGM(ToolUtils::EmojiFontFormat::Cbdt);)
+DEF_GM(return new ScaledEmojiGM(ToolUtils::EmojiFontFormat::Sbix);)
+DEF_GM(return new ScaledEmojiPosGM(ToolUtils::EmojiFontFormat::Sbix);)
+DEF_GM(return new ScaledEmojiPerspectiveGM(ToolUtils::EmojiFontFormat::Sbix);)
 }  // namespace skiagm
