@@ -52,6 +52,24 @@
       "parentUuid": "9a0fd5ed_cb4dcd5a",
       "revId": "a9bc6633c261ccf70e5ba9c77e15e9ee89ce580e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3905dccd_d11329a4",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-29T00:05:26Z",
+      "side": 1,
+      "message": "Addressed in latest version.",
+      "parentUuid": "c87575ee_070b4a9e",
+      "revId": "a9bc6633c261ccf70e5ba9c77e15e9ee89ce580e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
