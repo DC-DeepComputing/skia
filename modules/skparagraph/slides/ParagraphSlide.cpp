@@ -11,6 +11,8 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/ports/SkFontMgr_directory.h"
+#include "include/ports/SkFontMgr_fontconfig.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
@@ -4361,35 +4363,38 @@ public:
     ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
-        auto fontCollection = sk_make_sp<FontCollection>();
-        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr(), std::vector<SkString>());
-        fontCollection->enableFontFallback();
-        TextStyle text_style;
-        text_style.setFontFamilies({SkString("Roboto"), SkString("Noto Color Emoji")});
-        text_style.setFontSize(20);
-        text_style.setColor(SK_ColorBLACK);
-        ParagraphStyle paragraph_style;
-        paragraph_style.setTextStyle(text_style);
 
-        auto test = [&](const char* text) {
+        auto test = [&](bool variable, SkFontStyle::Weight weight) {
+            sk_sp<FontCollection> fontCollection = sk_make_sp<FontCollection>();
+            fontCollection->enableFontFallback();
+            if (!variable) {
+                auto fontMgr = SkFontMgr_New_Custom_Directory("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/Noto_Sans_SC");
+                fontCollection->setDefaultFontManager(/*ToolUtils::TestFontMgr()*/fontMgr);
+            } else {
+                auto fontMgr = SkFontMgr_New_Custom_Directory("/usr/local/google/home/jlavrova/Sources/skia/resources/fonts/VariableFont");
+                fontCollection->setDefaultFontManager(fontMgr);
+            }
+
+            TextStyle text_style;
+            text_style.setFontStyle(SkFontStyle(weight,
+                                                SkFontStyle::kNormal_Width,
+                                                SkFontStyle::kUpright_Slant));
+            text_style.setFontFamilies({});
+            text_style.setFontSize(40);
+            text_style.setColor(SK_ColorBLACK);
+            ParagraphStyle paragraph_style;
+            paragraph_style.setTextStyle(text_style);
+
             ParagraphBuilderImpl builder(paragraph_style, fontCollection);
             builder.pushStyle(text_style);
-            builder.addText(text);
+            builder.addText("可");
             auto paragraph = builder.Build();
             paragraph->layout(this->size().width());
             paragraph->paint(canvas, 0, 0);
-            if ((false)) {
-                SkDebugf("Paragraph '%s'\n", text);
-                auto impl = static_cast<ParagraphImpl*>(paragraph.get());
-                for (auto& run: impl->runs()) {
-                    SkString ff;
-                    run.font().getTypeface()->getFamilyName(&ff);
-                    SkDebugf("'%s': [%zu:%zu)\n", ff.c_str(), run.textRange().start, run.textRange().end);
-                }
-            }
+            canvas->translate(0, paragraph->getHeight() + 40);
         };
-
-        test("​🇳​🇩🇮🇩⃢");
+        test(true, SkFontStyle::kBold_Weight);
+        test(false, SkFontStyle::kBold_Weight);
     }
 };
 

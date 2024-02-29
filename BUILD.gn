@@ -2988,6 +2988,8 @@ if (skia_enable_tools) {
         ":tool_utils",
         ":trace",
         ":xml",
+        ":fontmgr_custom_directory",
+        ":fontmgr_fontconfig",
         "modules/audioplayer",
         "modules/skottie",
         "modules/skottie:utils",
