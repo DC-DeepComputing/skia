@@ -16,6 +16,24 @@
       "message": "The 0 here is somewhat exclusive for \"gamma\" since a value of zero is currently used for sRGB. This is somewhat obscure in the code, as the actual test for it is in `SkColorSpaceLuminance::Fetch`. I\u0027m fine with this as-is, but just be aware.\n\nAlso, it\u0027s a little strange to have these be `int` when the API takes `SkScalar`. Probably best for these to be `SkScalar`. With `int` it kinda looks like the only values available for \"contrast\" are 0 and 1.",
       "revId": "3622d52f130ca915f07e0a761ee271cd8d779d3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4f1d591_b973f9e1",
+        "filename": "include/core/SkSurfaceProps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2024-02-29T18:43:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5232f4f4_410f9793",
+      "revId": "3622d52f130ca915f07e0a761ee271cd8d779d3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
