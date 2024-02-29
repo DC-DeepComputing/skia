@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73848a70_91b45c2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-02-29T13:28:41Z",
+      "side": 1,
+      "message": "Would you mind reviewing this patch? Thank you very much!",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
