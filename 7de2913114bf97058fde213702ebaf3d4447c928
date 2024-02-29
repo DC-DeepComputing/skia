@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2050c1a_e134ec62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-02-29T13:12:48Z",
+      "side": 1,
+      "message": "Hi [Reviewer\u0027s Name], could you please review my Skia patch here: [Link to the Patch]? Thanks, [Your Name]",
+      "revId": "7de2913114bf97058fde213702ebaf3d4447c928",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
