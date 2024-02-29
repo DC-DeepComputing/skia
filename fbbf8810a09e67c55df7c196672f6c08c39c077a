@@ -39,6 +39,30 @@
       },
       "revId": "fbbf8810a09e67c55df7c196672f6c08c39c077a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1b4b3b2_af2a490b",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-02-29T20:20:50Z",
+      "side": 1,
+      "message": "Things would have to be very wrong if it\u0027s null. findPlot() has an ASSERT that checks to see if the locator is valid for this DrawAtlas. And expected usage is that we call addRect() to get the locator and then call this immediately, so it should be valid.",
+      "parentUuid": "e2f6dce7_d161347f",
+      "range": {
+        "startLine": 259,
+        "startChar": 10,
+        "endLine": 259,
+        "endChar": 14
+      },
+      "revId": "fbbf8810a09e67c55df7c196672f6c08c39c077a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
