@@ -135,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c62eeb8_54b1c285",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-29T15:59:36Z",
+      "side": 1,
+      "message": "The SkUnicode interface and implementations should probably be stateless factories so there should only ever really be one instance of each and be handed around like references. I suppose ref counting could also work.",
+      "parentUuid": "231f08bd_4ee1e709",
+      "range": {
+        "startLine": 89,
+        "startChar": 47,
+        "endLine": 89,
+        "endChar": 62
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3785c595_7665abb9",
