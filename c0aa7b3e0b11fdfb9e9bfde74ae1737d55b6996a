@@ -192,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11fcc311_8ae79f0c",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-02-29T15:47:46Z",
+      "side": 1,
+      "message": "We don\u0027t have to do anything specific with `BackendTextureViews` now. I was just mentioning them as my motivation for my suggested change. To be more clear, we would land something like, https://skia-review.googlesource.com/c/skia/+/820297. Then update all the Chrome callers that make YUV images to also give us the full yuv format (this is something we\u0027ll have to do eventually down the road anyways). Then your helper function here can just be:\n\n`getDepthAttachmentDimensions(const TextureInfo\u0026, size_t dimensions)`.\n\nFWIW as a side note the aspect in dawn lives on the DawnTextureInfo/Spec which you can also get off of the Texture as well as the TextureProxy.",
+      "parentUuid": "b8411648_849a803d",
+      "range": {
+        "startLine": 234,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 91
+      },
+      "revId": "c0aa7b3e0b11fdfb9e9bfde74ae1737d55b6996a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e877e80c_44ee43ac",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 8
