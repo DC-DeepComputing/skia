@@ -16,31 +16,42 @@ namespace skgpu::graphite {
 struct DawnTextureSpec {
     DawnTextureSpec()
             : fFormat(wgpu::TextureFormat::Undefined)
+            , fFullYUVFormat(wgpu::TextureFormat::Undefined)
             , fUsage(wgpu::TextureUsage::None)
             , fAspect(wgpu::TextureAspect::All) {}
     DawnTextureSpec(const DawnTextureInfo& info)
-            : fFormat(info.fFormat), fUsage(info.fUsage), fAspect(info.fAspect) {}
+            : fFormat(info.fFormat)
+            , fFullYUVFormat(info.fFullYUVFormat)
+            , fUsage(info.fUsage)
+            , fAspect(info.fAspect) {}
 
     bool operator==(const DawnTextureSpec& that) const {
-        return fUsage == that.fUsage && fFormat == that.fFormat && fAspect == that.fAspect;
+        return fUsage == that.fUsage &&
+               fFormat == that.fFormat &&
+               fFullYUVFormat == that.fFullYUVFormat &&
+               fAspect == that.fAspect;
     }
 
     bool isCompatible(const DawnTextureSpec& that) const {
         // The usages may match or the usage passed in may be a superset of the usage stored within.
         // The aspect should either match the plane aspect or should be All.
-        return fFormat == that.fFormat && (fUsage & that.fUsage) == fUsage &&
+        return fFormat == that.fFormat &&
+               fFullYUVFormat == that.fFullYUVFormat &&
+               (fUsage & that.fUsage) == fUsage &&
                (fAspect == that.fAspect || fAspect == wgpu::TextureAspect::All);
     }
 
     SkString toString() const {
-        return SkStringPrintf("format=0x%08X,usage=0x%08X,aspect=0x%08X",
+        return SkStringPrintf("format=0x%08X,fullYUVFormat=0x%08X,usage=0x%08X,aspect=0x%08X",
                               static_cast<unsigned int>(fFormat),
+                              static_cast<unsigned int>(fFullYUVFormat),
                               static_cast<unsigned int>(fUsage),
                               static_cast<unsigned int>(fAspect));
     }
 
     // `fFormat` is always single plane format or plane view format for a multiplanar wgpu::Texture.
     wgpu::TextureFormat fFormat;
+    wgpu::TextureFormat fFullYUVFormat;
     wgpu::TextureUsage fUsage;
     wgpu::TextureAspect fAspect;
 };

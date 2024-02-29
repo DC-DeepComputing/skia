@@ -80,11 +80,13 @@ void GraphiteDawnWindowContext::destroyContext() {
 
 sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
     auto texture = fSwapChain.GetCurrentTexture();
-    skgpu::graphite::DawnTextureInfo info(/*sampleCount=*/1,
-                                          skgpu::Mipmapped::kNo,
-                                          fSwapChainFormat,
-                                          texture.GetUsage(),
-                                          wgpu::TextureAspect::All);
+    skgpu::graphite::DawnTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = skgpu::Mipmapped::kNo;
+    info.fFormat = fSwapChainFormat;
+    info.fUsage = texture.GetUsage();
+    info.fAspect = wgpu::TextureAspect::All;
+
     skgpu::graphite::BackendTexture backendTex(texture.Get());
     SkASSERT(this->graphiteRecorder());
     auto surface = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),

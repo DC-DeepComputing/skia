@@ -20,22 +20,15 @@ struct DawnTextureInfo {
     // wgpu::TextureDescriptor properties
     // `fFormat` for multiplanar formats corresponds to the plane TextureView's format.
     wgpu::TextureFormat fFormat = wgpu::TextureFormat::Undefined;
+    // For non-multiplaner textures leave this as Undefined. For multiplaner formats set this to
+    // the full multiplaner format.
+    wgpu::TextureFormat fFullYUVFormat = wgpu::TextureFormat::Undefined;
     wgpu::TextureUsage fUsage = wgpu::TextureUsage::None;
     // TODO(b/308944094): Migrate aspect information to BackendTextureViews.
     wgpu::TextureAspect fAspect = wgpu::TextureAspect::All;
 
     DawnTextureInfo() = default;
     DawnTextureInfo(const wgpu::Texture& texture);
-    DawnTextureInfo(uint32_t sampleCount,
-                    Mipmapped mipmapped,
-                    wgpu::TextureFormat viewFormat,
-                    wgpu::TextureUsage usage,
-                    wgpu::TextureAspect aspect)
-            : fSampleCount(sampleCount)
-            , fMipmapped(mipmapped)
-            , fFormat(viewFormat)
-            , fUsage(usage)
-            , fAspect(aspect) {}
 };
 
 } // namespace skgpu::graphite
