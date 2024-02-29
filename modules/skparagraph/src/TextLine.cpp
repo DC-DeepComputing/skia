@@ -708,7 +708,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         SkASSERT(script);
 
         std::unique_ptr<SkShaper::FontRunIterator> fontRuns =
-                SkShaper::MakeFontMgrRunIterator(utf8, utf8Bytes, font, fallback);
+                SkShaper::MakeFontMgrRunIterator(utf8, utf8Bytes, font, fallback ? fallback : SkFontMgr::RefEmpty());
         SkASSERT(fontRuns);
 
         shaper->shape(utf8,
