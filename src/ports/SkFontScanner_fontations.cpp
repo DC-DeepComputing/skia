@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <vector>
 #include "include/core/SkData.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
@@ -31,7 +32,7 @@ SkFontScanner_Fontations::SkFontScanner_Fontations() {
 SkFontScanner_Fontations::~SkFontScanner_Fontations() {
 }
 
-bool SkFontScanner_Fontations::recognizedFont(SkStreamAsset* stream, int* numFaces) const {
+bool SkFontScanner_Fontations::scanFile(SkStreamAsset* stream, int* numFaces) const {
     sk_sp<SkData> fontData = SkData::MakeFromStream(stream, stream->getLength());
     rust::Slice<const uint8_t> slice{fontData->bytes(), fontData->size()};
     ::std::uint32_t num_fonts;
@@ -42,13 +43,31 @@ bool SkFontScanner_Fontations::recognizedFont(SkStreamAsset* stream, int* numFac
     return true;
 }
 
-// Assuming default values for everything we don't have right now
-bool SkFontScanner_Fontations::scanFont(
-        SkStreamAsset* stream, int ttcIndex,
-        SkString* name, SkFontStyle* style, bool* isFixedPitch, AxisDefinitions* axes) const
-{
+// TODO: For now assume only the defaul instance (not variation)
+bool SkFontScanner_Fontations::scanDefaultInstance(SkStreamAsset* stream,
+                                                   int faceIndex,
+                                                   int* numInstances) const {
     rust::Box<fontations_ffi::BridgeFontRef> fontRef =
-            make_bridge_font_ref(SkData::MakeFromStream(stream, stream->getLength()), ttcIndex);
+            make_bridge_font_ref(SkData::MakeFromStream(stream, stream->getLength()), faceIndex);
+    if (!fontations_ffi::font_ref_is_valid(*fontRef)) {
+        return false;
+    }
+
+    *numInstances = 0;
+    return true;
+}
+
+// TODO: For now assume only the defaul instance (not variation)
+bool SkFontScanner_Fontations::scanInstance(SkStreamAsset* stream,
+                                            int faceIndex,
+                                            int instanceIndex,
+                                            SkString* name,
+                                            SkFontStyle* style,
+                                            bool* isFixedPitch,
+                                            AxisDefinitions* axes) const {
+    SkASSERT(instanceIndex == 0);
+    rust::Box<fontations_ffi::BridgeFontRef> fontRef =
+            make_bridge_font_ref(SkData::MakeFromStream(stream, stream->getLength()), faceIndex);
     if (!fontations_ffi::font_ref_is_valid(*fontRef)) {
         return false;
     }
