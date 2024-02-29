@@ -33,6 +33,23 @@
       "message": "Hello,\n\nThank you. Is there a particular test or usage where this change helps your application? I think the change is correct, but it will be difficult to land (it will change the results of some chromium image tests). I want to see how valuable the change is (and how much it improves any tests).",
       "revId": "5430ae12004a841e5d089011179dc77081396449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29c83930_9c033626",
+        "filename": "src/core/SkEdge.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-29T17:09:23Z",
+      "side": 1,
+      "message": "This will need to be guarded with a #define so we can roll out the change carefully:\n```suggestion\n#if defined(SK_LEGACY_EDGE_AA_ROUNDING)\n    dist \u003d (dist + (1 \u003c\u003c 4)) \u003e\u003e (3 + shiftAA);\n#else\n    dist \u003d (dist + (1 \u003c\u003c (2 + shiftAA))) \u003e\u003e (3 + shiftAA);\n#endif\n```",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
