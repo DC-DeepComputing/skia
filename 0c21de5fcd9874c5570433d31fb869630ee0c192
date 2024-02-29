@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "672614d2_ab3f4c51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-29T15:05:17Z",
+      "side": 1,
+      "message": "I\u0027m generally in favor of this feature (we discussed adding something like this a long time ago, but never did). However, I\u0027ve commented on a few spots where I think we need to be more careful, to ensure that the semantics are consistent. Specifically, the behavior should be: All rendering to the layer happens in the layer\u0027s (new) color space. It\u0027s unclear what color-space should be used for the filtering during the restore, though. Probably the original device\u0027s?\n\nCan we think about how to test this slightly better? The impact of using this feature is pretty wide-ranging. At a minimum, I\u0027d like to see a layer+imagefilter GM that operates in a few different color spaces. One trivial example that should illustrate things working would be black-and-white source content blurred in either the original (eg, sRGB) or a linear (MakeSRGBLinear) color space.\n\nI think the relevant combinations would look like:\n\n- Save layer (nullptr). Draw. Blur on restore. [ Should be normal blur. ]\n- Save layer (linear).  Draw. Blur on restore. [ Should look the same? ]\n- Draw. Save layer (linear), with backdrop blur. [ Should be brighter blur? ]\n\nMichael might have better ideas here?",
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc9433f_d4364d4e",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-29T15:05:17Z",
+      "side": 1,
+      "message": "Note that we\u0027re not considering the layer\u0027s color space here, but I *think* that\u0027s okay, if we assume that any restore-filtering should be in the original device\u0027s color space? (Because this code path is logically equivalent to \"no rendering happens in the layer, the DAG is evaluated as part of the restore\". Is that right, @michaelludwig@google.com?)",
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec235c5b_4a64bae5",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1365,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-29T15:05:17Z",
+      "side": 1,
+      "message": "Here, I think we might be doing the right thing, too? We are explicitly passing the old and new devices, so `internalDrawDeviceWithFilter` will apply the backdrop filter in the layer\u0027s color-space (which again, feels consistent if we assume we always filter in the color space of the destination device). It still might be confusing to a user, but we can at least document it.",
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
