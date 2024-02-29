@@ -16,6 +16,23 @@
       "message": "Would you mind reviewing this patch? Thank you very much!",
       "revId": "5430ae12004a841e5d089011179dc77081396449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b9a745_2b7c7615",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-02-29T15:43:00Z",
+      "side": 1,
+      "message": "Hello,\n\nThank you. Is there a particular test or usage where this change helps your application? I think the change is correct, but it will be difficult to land (it will change the results of some chromium image tests). I want to see how valuable the change is (and how much it improves any tests).",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
