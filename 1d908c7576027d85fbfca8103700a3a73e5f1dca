@@ -16,6 +16,75 @@
       "message": "Looks like I need another +1 because it fell off during rebase.",
       "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65159518_48876745",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-29T15:03:17Z",
+      "side": 1,
+      "message": "stale comment?",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 78
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac9ad237_feaf9adc",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-29T15:03:17Z",
+      "side": 1,
+      "message": "nit: inline in conditional similar to the one below?\n```suggestion\n    if (auto shaper \u003d SkShapers::HB::ShaperDrivenWrapper(unicode-\u003ecopy(), std::move(fallback))) {\n        return shaper;\n    }\n```",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 85
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3785c595_7665abb9",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-29T15:03:17Z",
+      "side": 1,
+      "message": "Looks like CoreText does not need a unicode impl, but the test at the top rejects this code path.  Maybe CT should be tried first?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
