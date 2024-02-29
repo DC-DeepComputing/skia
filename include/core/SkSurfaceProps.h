@@ -76,6 +76,11 @@ public:
         return SkSurfaceProps(fFlags, newPixelGeometry, fTextContrast, fTextGamma);
     }
 
+    static constexpr int kMaxContrastInclusive = 1;
+    static constexpr int kMinContrastInclusive = 0;
+    static constexpr int kMaxGammaExclusive = 4;
+    static constexpr int kMinGammaInclusive = 0;
+
     uint32_t flags() const { return fFlags; }
     SkPixelGeometry pixelGeometry() const { return fPixelGeometry; }
     SkScalar textContrast() const { return fTextContrast; }
