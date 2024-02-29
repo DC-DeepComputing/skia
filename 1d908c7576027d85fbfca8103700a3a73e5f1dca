@@ -64,6 +64,29 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "231f08bd_4ee1e709",
+        "filename": "modules/skottie/src/text/TextShaper.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-02-29T15:11:54Z",
+      "side": 1,
+      "message": "@bungeman this seems awkward, should\u0027t SkUnicode be shareable (SkRefCnt) to allow reuse?",
+      "range": {
+        "startLine": 89,
+        "startChar": 47,
+        "endLine": 89,
+        "endChar": 62
+      },
+      "revId": "1d908c7576027d85fbfca8103700a3a73e5f1dca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3785c595_7665abb9",
