@@ -158,6 +158,9 @@ string_flag_with_values(
         # Makes the default SkFontMgr return null. Typically used when font support is not desired.
         "empty_fontmgr_factory",
         "fontconfig_fontmgr_factory",
+        # Uses a Fontations based FontMgr as default which can only instantiate fonts from data,
+        # and does not perform font matching.
+        "fontations_empty_fontmgr_factory",
         # Deprecated, do not use.
         "fci_fontmgr_factory",
     ],
@@ -275,6 +278,13 @@ selects.config_setting_group(
     match_any = [
         ":fci_fontmgr",
         ":fci_fontmgr_factory",
+    ],
+)
+
+selects.config_setting_group(
+    name = "uses_fontations_empty_fontmgr",
+    match_any = [
+        ":fontations_empty_fontmgr_factory",
     ],
 )
 
