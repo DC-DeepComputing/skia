@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "179d94c7_8d371bcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-02-29T21:47:41Z",
+      "side": 1,
+      "message": "Not enabling auto submit since I want to see what happens with the canary.",
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
