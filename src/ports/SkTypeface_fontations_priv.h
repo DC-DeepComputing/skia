@@ -15,7 +15,7 @@
 #include "include/private/base/SkOnce.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkScalerContext.h"
-#include "src/ports/fontations/src/ffi.rs.h"
+#include "out/Debug/src/ports/fontations/src/ffi.rs.h"
 
 #include <memory>
 
