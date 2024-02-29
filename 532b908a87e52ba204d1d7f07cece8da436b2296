@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d09ea0ed_b0a8606c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8918
+      },
+      "writtenOn": "2024-02-29T10:50:37Z",
+      "side": 1,
+      "message": "Following @kjlubick@google.com\u0027s comment, I left it as is with an added comment",
+      "parentUuid": "1a1fe8dd_be079200",
+      "revId": "532b908a87e52ba204d1d7f07cece8da436b2296",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67922bac_60e247f0",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-02-28T21:12:23Z",
       "side": 1,
       "message": "SkTypes.h would work (for now), but it\u0027s probably best to include this directly with a comment that some clients need to override the target platform via SkUserConfig.",
+      "range": {
+        "startLine": 10,
+        "startChar": 31,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "532b908a87e52ba204d1d7f07cece8da436b2296",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c69619a_73c6e617",
+        "filename": "include/ports/SkImageGeneratorCG.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8918
+      },
+      "writtenOn": "2024-02-29T10:50:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67922bac_60e247f0",
       "range": {
         "startLine": 10,
         "startChar": 31,
