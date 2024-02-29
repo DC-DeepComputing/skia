@@ -34,6 +34,24 @@
       "parentUuid": "ed56dd6b_523e0b15",
       "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7647c10c_f7e1fcbf",
+        "filename": "modules/skottie/BUILD.bazel",
+        "patchSetId": 23
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-29T22:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eb8fca1_69633e1c",
+      "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
