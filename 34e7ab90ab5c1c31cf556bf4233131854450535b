@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5528c9b1_3d21a6eb",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-02-29T15:44:25Z",
+      "side": 1,
+      "message": "The `_factory` named targets were for the definition of the now removed `SkFontMgr::Factory()` (which was called by `SkFontMgr::RefDefault()`, see removal in https://skia-review.googlesource.com/c/skia/+/801656/3/src/core/SkFontMgr.cpp).\n\nI\u0027m pretty sure the mentions in `common_config_settings/BUILD.bazel` are legacy for the soon-to-be-removed \"build a custom Skia with lots of bazel flags\" `skia_public` build. There isn\u0027t any more \"main\" SkFontMgr. Even in the `skia_public` build those `_factory` things don\u0027t do anything anymore other than keep a few other builds working until they can be migrated to the newer component build of Skia.",
+      "parentUuid": "042c1201_2e21148b",
+      "range": {
+        "startLine": 57,
+        "startChar": 69,
+        "endLine": 57,
+        "endChar": 76
+      },
+      "revId": "34e7ab90ab5c1c31cf556bf4233131854450535b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db58bbfc_3d8e5501",
         "filename": "src/ports/BUILD.bazel",
         "patchSetId": 4
