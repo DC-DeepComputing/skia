@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18ea2e5a_29b937a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-01T13:08:41Z",
+      "side": 1,
+      "message": "+bungeman: This is external, so it will need two reviews.",
+      "revId": "4c20d8d5e42b09ad3b76d51050d02a06e0149f73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

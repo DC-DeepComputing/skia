@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31c29a24_d22a56b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-01T13:08:41Z",
+      "side": 1,
+      "message": "Thank you! We appreciate the contribution!",
+      "parentUuid": "8ea7ce39_353938cf",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29c83930_9c033626",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "Done. Could you please advise where the SK_LEGACY_EDGE_AA_ROUNDING macro should be defined, in Skia or Chromium? Thanks!",
       "parentUuid": "29c83930_9c033626",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a3bf08c_7c8c8aeb",
+        "filename": "src/core/SkEdge.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-01T13:08:41Z",
+      "side": 1,
+      "message": "I\u0027ve put together a CL that adds the define to SkUserConfig in chromium: https://crrev.com/c/5336197\n\nOnce that CL lands, we can land this. Then we wait for the Skia change to be merged into chromium (that happens fast). Finally, we go back to chromium, remove the define, and update all of the tests that change. I\u0027m happy to do this part.",
+      "parentUuid": "a093cd7e_90ac3700",
       "revId": "5430ae12004a841e5d089011179dc77081396449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
