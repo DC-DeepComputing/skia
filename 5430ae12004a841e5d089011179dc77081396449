@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ea7ce39_353938cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-03-01T03:24:09Z",
+      "side": 1,
+      "message": "Hello,\n\nThank you very much for your prompt and thoughtful response. I truly appreciate your consideration of the patch.\n\nI actually stumbled upon this issue while reading through the code. I noticed that the logic seemed off, and it took me a considerable amount of time to fully understand and verify that it was indeed incorrect. While I do not have a specific test case or application usage that directly benefits from this change, I believe correcting this logic could prevent potential issues that might be difficult to diagnose in the future, thereby improving the robustness of the codebase.",
+      "parentUuid": "15b9a745_2b7c7615",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29c83930_9c033626",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-02-29T17:09:23Z",
       "side": 1,
       "message": "This will need to be guarded with a #define so we can roll out the change carefully:\n```suggestion\n#if defined(SK_LEGACY_EDGE_AA_ROUNDING)\n    dist \u003d (dist + (1 \u003c\u003c 4)) \u003e\u003e (3 + shiftAA);\n#else\n    dist \u003d (dist + (1 \u003c\u003c (2 + shiftAA))) \u003e\u003e (3 + shiftAA);\n#endif\n```",
+      "revId": "5430ae12004a841e5d089011179dc77081396449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a093cd7e_90ac3700",
+        "filename": "src/core/SkEdge.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-03-01T03:24:09Z",
+      "side": 1,
+      "message": "Done. Could you please advise where the SK_LEGACY_EDGE_AA_ROUNDING macro should be defined, in Skia or Chromium? Thanks!",
+      "parentUuid": "29c83930_9c033626",
       "revId": "5430ae12004a841e5d089011179dc77081396449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
