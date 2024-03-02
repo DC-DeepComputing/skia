@@ -1874,12 +1874,10 @@ SI void set_sat(F* r, F* g, F* b, F s) {
       sat = mx - mn;
 
     // Map min channel to 0, max channel to s, and scale the middle proportionally.
-    auto scale = [=](F c) {
-        return if_then_else(sat == 0, 0.0f, (c - mn) * s / sat);
-    };
-    *r = scale(*r);
-    *g = scale(*g);
-    *b = scale(*b);
+    s = if_then_else(sat == 0.0f, 0.0f, s / sat);
+    *r = (*r - mn) * s;
+    *g = (*g - mn) * s;
+    *b = (*b - mn) * s;
 }
 SI void set_lum(F* r, F* g, F* b, F l) {
     F diff = l - lum(*r, *g, *b);
@@ -1891,10 +1889,12 @@ SI void clip_color(F* r, F* g, F* b, F a) {
     F mn = min(*r, min(*g, *b)),
       mx = max(*r, max(*g, *b)),
       l  = lum(*r, *g, *b);
+    F mn_scale = (    l) / (l - mn);
+    F mx_scale = (a - l) / (mx - l);
 
     auto clip = [=](F c) {
-        c = if_then_else(mn < 0 && l != mn, l + (c - l) * (    l) / (l - mn), c);
-        c = if_then_else(mx > a && l != mx, l + (c - l) * (a - l) / (mx - l), c);
+        c = if_then_else(mn < 0 && l != mn, mad(mn_scale, c - l, l), c);
+        c = if_then_else(mx > a && l != mx, mad(mx_scale, c - l, l), c);
         c = max(c, 0.0f);  // Sometimes without this we may dip just a little negative.
         return c;
     };
@@ -1912,10 +1912,10 @@ STAGE(hue, NoCtx) {
     set_lum(&R, &G, &B, lum(dr,dg,db)*a);
     clip_color(&R,&G,&B, a*da);
 
-    r = r*inv(da) + dr*inv(a) + R;
-    g = g*inv(da) + dg*inv(a) + G;
-    b = b*inv(da) + db*inv(a) + B;
-    a = a + da - a*da;
+    r = mad(r, inv(da), mad(dr, inv(a), R));
+    g = mad(g, inv(da), mad(dg, inv(a), G));
+    b = mad(b, inv(da), mad(db, inv(a), B));
+    a = a + nmad(a, da, da);
 }
 STAGE(saturation, NoCtx) {
     F R = dr*a,
@@ -1926,10 +1926,10 @@ STAGE(saturation, NoCtx) {
     set_lum(&R, &G, &B, lum(dr,dg,db)* a);  // (This is not redundant.)
     clip_color(&R,&G,&B, a*da);
 
-    r = r*inv(da) + dr*inv(a) + R;
-    g = g*inv(da) + dg*inv(a) + G;
-    b = b*inv(da) + db*inv(a) + B;
-    a = a + da - a*da;
+    r = mad(r, inv(da), mad(dr, inv(a), R));
+    g = mad(g, inv(da), mad(dg, inv(a), G));
+    b = mad(b, inv(da), mad(db, inv(a), B));
+    a = a + nmad(a, da, da);
 }
 STAGE(color, NoCtx) {
     F R = r*da,
@@ -1939,10 +1939,10 @@ STAGE(color, NoCtx) {
     set_lum(&R, &G, &B, lum(dr,dg,db)*a);
     clip_color(&R,&G,&B, a*da);
 
-    r = r*inv(da) + dr*inv(a) + R;
-    g = g*inv(da) + dg*inv(a) + G;
-    b = b*inv(da) + db*inv(a) + B;
-    a = a + da - a*da;
+    r = mad(r, inv(da), mad(dr, inv(a), R));
+    g = mad(g, inv(da), mad(dg, inv(a), G));
+    b = mad(b, inv(da), mad(db, inv(a), B));
+    a = a + nmad(a, da, da);
 }
 STAGE(luminosity, NoCtx) {
     F R = dr*a,
@@ -1952,10 +1952,10 @@ STAGE(luminosity, NoCtx) {
     set_lum(&R, &G, &B, lum(r,g,b)*da);
     clip_color(&R,&G,&B, a*da);
 
-    r = r*inv(da) + dr*inv(a) + R;
-    g = g*inv(da) + dg*inv(a) + G;
-    b = b*inv(da) + db*inv(a) + B;
-    a = a + da - a*da;
+    r = mad(r, inv(da), mad(dr, inv(a), R));
+    g = mad(g, inv(da), mad(dg, inv(a), G));
+    b = mad(b, inv(da), mad(db, inv(a), B));
+    a = a + nmad(a, da, da);
 }
 
 STAGE(srcover_rgba_8888, const SkRasterPipeline_MemoryCtx* ctx) {
