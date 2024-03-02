@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e96f7df_6a999192",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1878,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-02T16:51:06Z",
+      "side": 0,
+      "message": "Divide occurred per-channel",
+      "range": {
+        "startLine": 1878,
+        "startChar": 55,
+        "endLine": 1878,
+        "endChar": 62
+      },
+      "revId": "a57372ca2e66d24db942f406404b8be92870afb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314a9ee3_2bdaf86b",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-02T16:51:06Z",
+      "side": 0,
+      "message": "Divides were per-channel",
+      "range": {
+        "startLine": 1896,
+        "startChar": 66,
+        "endLine": 1896,
+        "endChar": 67
+      },
+      "revId": "a57372ca2e66d24db942f406404b8be92870afb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

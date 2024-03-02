@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76c2a44_f702735c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1888,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-02T16:51:06Z",
+      "side": 1,
+      "message": "Moved out to separate function to ensure inlining. Previously, in optimize-for-size builds, the lambda was getting split out into a separate function (based on the Code Size info).",
+      "range": {
+        "startLine": 1888,
+        "startChar": 5,
+        "endLine": 1888,
+        "endChar": 17
+      },
+      "revId": "6715476c05c5bcfe7616b32f3b3b0730303dda5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
