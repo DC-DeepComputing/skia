@@ -219,6 +219,25 @@ TextureInfo DawnCaps::getDefaultStorageTextureInfo(SkColorType colorType) const 
     return info;
 }
 
+SkISize DawnCaps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
+                                               const SkISize& colorAttachmentDimensions) const {
+    // For multiplanar textures, texture->textureInfo() uses the format of planes instead of
+    // textures (R8, R8G8, vs R8BG8Biplanar420Unorm), so we have to query texture format from
+    // wgpu::Texture object, and then use it reconstruct the full dimensions.
+    const auto& dawnTextureSpec = textureInfo.dawnTextureSpec();
+    wgpu::TextureFormat format = dawnTextureSpec.fFormat;
+    if ((format == wgpu::TextureFormat::R8BG8Biplanar420Unorm ||
+         format == wgpu::TextureFormat::R10X6BG10X6Biplanar420Unorm ||
+         format == wgpu::TextureFormat::R8BG8A8Triplanar420Unorm) &&
+        dawnTextureSpec.fAspect == wgpu::TextureAspect::Plane1Only) {
+        // Dawn requires depth attachment to match the size of Y plane (texture size).
+        return SkISize::Make(colorAttachmentDimensions.width() * 2,
+                             colorAttachmentDimensions.height() * 2);
+    }
+
+    return colorAttachmentDimensions;
+}
+
 const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
                                                       const TextureInfo& textureInfo) const {
     auto dawnFormat = textureInfo.dawnTextureSpec().fFormat;

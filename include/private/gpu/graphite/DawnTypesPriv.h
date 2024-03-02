@@ -14,15 +14,16 @@
 namespace skgpu::graphite {
 
 struct DawnTextureSpec {
-    DawnTextureSpec()
-            : fFormat(wgpu::TextureFormat::Undefined)
-            , fUsage(wgpu::TextureUsage::None)
-            , fAspect(wgpu::TextureAspect::All) {}
+    DawnTextureSpec() = default;
     DawnTextureSpec(const DawnTextureInfo& info)
-            : fFormat(info.fFormat), fUsage(info.fUsage), fAspect(info.fAspect) {}
+            : fFormat(info.fFormat)
+            , fViewFormat(info.fViewFormat)
+            , fUsage(info.fUsage)
+            , fAspect(info.fAspect) {}
 
     bool operator==(const DawnTextureSpec& that) const {
-        return fUsage == that.fUsage && fFormat == that.fFormat && fAspect == that.fAspect;
+        return fUsage == that.fUsage && fFormat == that.fFormat &&
+               fViewFormat == that.fViewFormat && fAspect == that.fAspect;
     }
 
     bool isCompatible(const DawnTextureSpec& that) const {
@@ -33,16 +34,19 @@ struct DawnTextureSpec {
     }
 
     SkString toString() const {
-        return SkStringPrintf("format=0x%08X,usage=0x%08X,aspect=0x%08X",
+        return SkStringPrintf("format=0x%08X, viewFroamt=0x%08X,usage=0x%08X,aspect=0x%08X",
                               static_cast<unsigned int>(fFormat),
+                              static_cast<unsigned int>(fViewFormat),
                               static_cast<unsigned int>(fUsage),
                               static_cast<unsigned int>(fAspect));
     }
 
-    // `fFormat` is always single plane format or plane view format for a multiplanar wgpu::Texture.
-    wgpu::TextureFormat fFormat;
-    wgpu::TextureUsage fUsage;
-    wgpu::TextureAspect fAspect;
+    wgpu::TextureFormat fFormat = wgpu::TextureFormat::Undefined;
+    // `fViewFormat` is always single plane format or plane view format for a multiplanar
+    // wgpu::Texture.
+    wgpu::TextureFormat fViewFormat = wgpu::TextureFormat::Undefined;
+    wgpu::TextureUsage fUsage = wgpu::TextureUsage::None;
+    wgpu::TextureAspect fAspect = wgpu::TextureAspect::All;
 };
 
 DawnTextureInfo DawnTextureSpecToTextureInfo(const DawnTextureSpec& dawnSpec,
