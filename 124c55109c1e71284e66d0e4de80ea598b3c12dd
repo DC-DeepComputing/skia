@@ -16,6 +16,23 @@
       "message": "I can\u0027t see the image results from the bots. Locally looks good in grdawn_mtl and grmtl.",
       "revId": "124c55109c1e71284e66d0e4de80ea598b3c12dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ce250d_9003ff2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T21:19:43Z",
+      "side": 1,
+      "message": "In principle it looks good -- I\u0027m not sure how to tell if the images are correct. In general it looks like they\u0027ve gone from fuzzy from sharp which I assume is what we\u0027re looking for.",
+      "revId": "124c55109c1e71284e66d0e4de80ea598b3c12dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
