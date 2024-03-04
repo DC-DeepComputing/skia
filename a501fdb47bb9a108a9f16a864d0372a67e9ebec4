@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f276ef_4460601c",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-03-04T21:31:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2db1e891_6d8b5969",
+      "range": {
+        "startLine": 36,
+        "startChar": 24,
+        "endLine": 36,
+        "endChar": 25
+      },
+      "revId": "a501fdb47bb9a108a9f16a864d0372a67e9ebec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f36d8a9_6d3307d9",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9036d1bc_d5ce46b5",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-03-04T21:31:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f36d8a9_6d3307d9",
+      "range": {
+        "startLine": 104,
+        "startChar": 49,
+        "endLine": 104,
+        "endChar": 63
+      },
+      "revId": "a501fdb47bb9a108a9f16a864d0372a67e9ebec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53ab0d3c_f21724bc",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-03-04T21:12:22Z",
       "side": 1,
       "message": "Since this is going to be checking user supplied TextureInfos, I don\u0027t think we want to assert here. Instead we should be checking things and returning false. I also don\u0027t think it is required that the client sets the viewFormat. For normal textures just setting the format is fine and we\u0027ll just ignore whatever value is the viewFormat.\n\nSo I think sometime like:\n\n```\nif (IsMultiplanarFormat(spec.fFormat)) {\n    if (!IsCompatible(spec.fFormat, spec.fViewFormat, aspect)) {\n        return false;\n    }\n}\n```\n\nAs a side thought, after writing that, it makes me think that long term we actually don\u0027t want an fViewFormat at all passed in by the client. Given an fFormat and an aspect, shouldn\u0027t we be able to infer what the viewFormat should be? Now I do think having both formats short term might be easier to transition Chrome\u0027s usages, but once Chrome is setting fFormat to be the full multiplanar format, maybe we think about dropping the public viewFormat? What do you think about this?",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 66
+      },
+      "revId": "a501fdb47bb9a108a9f16a864d0372a67e9ebec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "947733d1_cb5b3423",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-03-04T21:31:00Z",
+      "side": 1,
+      "message": "Done. \nLooks like we can always get view format from texture format and aspect.",
+      "parentUuid": "53ab0d3c_f21724bc",
       "range": {
         "startLine": 88,
         "startChar": 4,
