@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "add387b1_db752ebb",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T20:25:04Z",
+      "side": 1,
+      "message": "Removed to return SkIPoint instead.",
+      "parentUuid": "e0d1228a_b0ce3b5f",
+      "range": {
+        "startLine": 461,
+        "startChar": 6,
+        "endLine": 461,
+        "endChar": 83
+      },
+      "revId": "845a84bff683603a21547858e702e8be898acee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1c4a682_79de91fd",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d3cc3de_6da01a5c",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T20:25:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1c4a682_79de91fd",
+      "range": {
+        "startLine": 462,
+        "startChar": 4,
+        "endLine": 462,
+        "endChar": 8
+      },
+      "revId": "845a84bff683603a21547858e702e8be898acee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0aa2085_b61d8229",
@@ -77,6 +125,24 @@
       "writtenOn": "2024-03-04T19:58:50Z",
       "side": 1,
       "message": "maybe expand this comment to emphasize that the backing pixmap is not necessarily the size of the full atlas so its render position is different than the above `outPos` used for sampling the texture?",
+      "revId": "845a84bff683603a21547858e702e8be898acee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c628ab54_3c3f01df",
+        "filename": "src/gpu/graphite/SmallPathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T20:25:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0aa2085_b61d8229",
       "revId": "845a84bff683603a21547858e702e8be898acee9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
