@@ -16,6 +16,87 @@
       "message": "Not enabling auto submit since I want to see what happens with the canary.",
       "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b8560b4_4ee76071",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-03-04T15:27:25Z",
+      "side": 1,
+      "message": "It \"passed\"! Technically it failed, but only due to b/327471660, and that seems to be resolved. But it looks like it has sufficient code review approval, which I think is expected? (We didn\u0027t modify those files here.)\n\n(And now it has a merge conflict just bc the roller has kept rolling.)",
+      "parentUuid": "179d94c7_8d371bcf",
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b3efe7_6ec119ca",
+        "filename": "OWNERS.android",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-03-04T15:27:25Z",
+      "side": 1,
+      "message": "Add Jorge here, too?",
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55fede24_2529fb98",
+        "filename": "OWNERS.android",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-03-04T15:27:25Z",
+      "side": 1,
+      "message": "Isn\u0027t there a way to create a group? Then we can keep all of these in sync and more easily update them.",
+      "range": {
+        "startLine": 14,
+        "startChar": 47,
+        "endLine": 14,
+        "endChar": 99
+      },
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3ff543_bdea69b5",
+        "filename": "OWNERS.android",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2024-03-04T15:27:25Z",
+      "side": 1,
+      "message": "I think we should also include Jorge, now that he\u0027s doing more Android work.\n\nAnd I think we should likely have others, just in case. Heather seems like a reasonable choice, but it probably makes sense to include Brian O, and maybe others?\n\nI don\u0027t think skia-staff is necessarily the right group, and though I suspect you can make a group, I don\u0027t know that it can be *that kind* of group.",
+      "range": {
+        "startLine": 15,
+        "startChar": 45,
+        "endLine": 15,
+        "endChar": 97
+      },
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
