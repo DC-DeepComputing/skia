@@ -90,6 +90,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/gpu/ganesh/gl/GrGLDirectContext.h"
+#include "include/gpu/ganesh/gl/GrGLMakeWebGLInterface.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/GrGLTypes.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -266,12 +267,11 @@ struct ColorSettings {
     GrGLenum pixFormat;
 };
 
-sk_sp<GrDirectContext> MakeGrContext()
-{
+sk_sp<GrDirectContext> MakeGrContext() {
     // We assume that any calls we make to GL for the remainder of this function will go to the
     // desired WebGL Context.
     // setup interface.
-    auto interface = GrGLMakeNativeInterface();
+    auto interface = GrGLInterfaces::MakeWebGL();
     // setup context
     return GrDirectContexts::MakeGL(interface);
 }
