@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f36b4e8_28a9c580",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-04T17:38:37Z",
+      "side": 1,
+      "message": "Long term I like having `fFormat` and `fViewFormat` like you\u0027ve done here versus keeping the logic of `fFormat` as it is today and adding a `fFullMultiplaner` format field. If we want to make the jump now, we have to go through all the current uses of fFormat and figure out if they should be updated to fViewFormat. For example DawnCaps::onIsTexturable() uses `fFormat` but should probably be using `fFormatView`.\n\nAlso this is going to have be staged with Chrome since right now Chome is writing the view\u0027s format to `fFormat`.",
+      "range": {
+        "startLine": 48,
+        "startChar": 24,
+        "endLine": 48,
+        "endChar": 35
+      },
+      "revId": "2b9ab61543eded819bb29dd46e9cebc4c2ee4bf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
