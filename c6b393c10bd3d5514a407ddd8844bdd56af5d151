@@ -16,6 +16,24 @@
       "message": "I don\u0027t think we want to add this here (or anything to this file). The `skia_public` is going away. Currently the bazel viewer build depends on `skia_public` (I think) but not for long, and the gn build of viewer should work without any changes here.",
       "revId": "c6b393c10bd3d5514a407ddd8844bdd56af5d151",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e9c06ac_f92ca83b",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-04T15:41:46Z",
+      "side": 1,
+      "message": "Ok, removed any changes to this file. \n\nI appreciate your thoroughness in reviews, and thinking about long term maintainability,  but if you allow: Slightly off-topic for this CL, but I am very frustrated with dual build system friction in Skia. Landing Rust stuff in Chrome is a breeze in comparison. So if possible, I would prefer if we would not spend too many review cycles on the build system side of things and adding to the overhead. Promises about what\u0027s going away and migrating where (when it comes to GN to Bazel and build system unification) have been moving rather slowly.\n\nThe Bazel build of viewer is important for people working on Rust as that seems to be the only build output variant of viewer, where `gdb` debugging works reliable with symbols resolution and stepping through into the Rust side. So I based other needed dependencies on the fontations font mgr in this change just on the basic fontations flag. (That\u0027s not the case with the GN build output).",
+      "parentUuid": "99956f98_92c31a7e",
+      "revId": "c6b393c10bd3d5514a407ddd8844bdd56af5d151",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "850eb621_8d600a75",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-04T15:41:46Z",
+      "side": 1,
+      "message": "Ack, see above. Remove `_factory` flag, but I needed to find alternatives to keep the viewer build including the new fontmgr when compiled with fontations support.",
+      "parentUuid": "5528c9b1_3d21a6eb",
+      "range": {
+        "startLine": 57,
+        "startChar": 69,
+        "endLine": 57,
+        "endChar": 76
+      },
+      "revId": "34e7ab90ab5c1c31cf556bf4233131854450535b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db58bbfc_3d8e5501",
