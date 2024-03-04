@@ -255,6 +255,13 @@ DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
     return ec;
 }
 
+void DrawAtlas::prepForRender(const AtlasLocator& locator,
+                              SkAutoPixmapStorage* pixmap,
+                              SkIPoint* topLeft) {
+    Plot* plot = this->findPlot(locator);
+    plot->prepForRender(locator, pixmap, topLeft);
+}
+
 void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {
     if (fNumActivePages < 1) {
         fPrevFlushToken = startTokenForNextFlush;
