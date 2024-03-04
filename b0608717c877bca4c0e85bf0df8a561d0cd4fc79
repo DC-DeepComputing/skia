@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a69f680b_8a160f04",
+        "filename": "include/gpu/graphite/dawn/DawnTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-04T17:14:10Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027d validate the DawnTextureInfo struct itself at construction time. As Peng says all the fields are public and clients are free to set them however they want.\n\nHowever, we should validate the TextureInfo when they wrap it. We already have code that does this. For example in the Image factory we have, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/ImageFactories.cpp;l\u003d58. Seems like the dawn virtual for textureable there could also validate the formats are consistent.",
+      "parentUuid": "899094ae_bdfca08d",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 45,
+        "endChar": 51
+      },
+      "revId": "b0608717c877bca4c0e85bf0df8a561d0cd4fc79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5363c5b1_8ad87b7e",
         "filename": "src/gpu/graphite/dawn/DawnTexture.h",
         "patchSetId": 11
