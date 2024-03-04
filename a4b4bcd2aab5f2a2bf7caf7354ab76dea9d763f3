@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c536d60f_6879c942",
+        "filename": "OWNERS.android",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-03-04T18:29:28Z",
+      "side": 1,
+      "message": "Good call",
+      "parentUuid": "53b3efe7_6ec119ca",
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55fede24_2529fb98",
@@ -76,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc66ae63_8f7d8e9f",
+        "filename": "OWNERS.android",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-03-04T18:29:28Z",
+      "side": 1,
+      "message": "See separate reply.",
+      "parentUuid": "55fede24_2529fb98",
+      "range": {
+        "startLine": 14,
+        "startChar": 47,
+        "endLine": 14,
+        "endChar": 99
+      },
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db3ff543_bdea69b5",
@@ -89,6 +131,30 @@
       "writtenOn": "2024-03-04T15:27:25Z",
       "side": 1,
       "message": "I think we should also include Jorge, now that he\u0027s doing more Android work.\n\nAnd I think we should likely have others, just in case. Heather seems like a reasonable choice, but it probably makes sense to include Brian O, and maybe others?\n\nI don\u0027t think skia-staff is necessarily the right group, and though I suspect you can make a group, I don\u0027t know that it can be *that kind* of group.",
+      "range": {
+        "startLine": 15,
+        "startChar": 45,
+        "endLine": 15,
+        "endChar": 97
+      },
+      "revId": "a4b4bcd2aab5f2a2bf7caf7354ab76dea9d763f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ac235d2_81fd41e4",
+        "filename": "OWNERS.android",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-03-04T18:29:28Z",
+      "side": 1,
+      "message": "Absolutely! It hit me right after signing off that it would be wild to not have at least all Skia-Android gardeners here.\n\nUnfortunately it seems Gerrit\u0027s handling of `OWNERS` files is different from _other systems_, and doesn\u0027t support various grouping services. However, we can define a list of users in a file!\n\nI thought that wouldn\u0027t work for `per-file` rules from skimming [these docs](https://android-review.googlesource.com/plugins/code-owners/Documentation/backend-find-owners.html#per-file), but I just misread it. Also, code searching for `f:owners -f:external \"per-file\" \"file:\"` shows others using this pattern. Also, the naming pattern of `OWNERS_\u003cextension\u003e` is mentioned at the top of that doc.\n\nI\u0027ve initially populated this list all of the skia-android group, but we could iterate on that (and of course this will need testing to validate).",
+      "parentUuid": "db3ff543_bdea69b5",
       "range": {
         "startLine": 15,
         "startChar": 45,
