@@ -16,6 +16,29 @@
       "message": "In theory this is all the remaining fixes to get SmallPathAtlas in its current form working. I\u0027ve edited the CL to separate them from the code that actually turns it on. PTAL.",
       "revId": "90f84f400f0c05bcceb66230d0f3662c9903f837",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7239fbe_597f7c17",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-04T20:01:07Z",
+      "side": 1,
+      "message": "What happens at the moment if we get forced to take the atlas even if we\u0027d have returned false from `isSuitableForAtlasing`? \n\nCould that be a source of some of our crashes? Do we need to set up tiling of masks?",
+      "range": {
+        "startLine": 1443,
+        "startChar": 8,
+        "endLine": 1446,
+        "endChar": 0
+      },
+      "revId": "90f84f400f0c05bcceb66230d0f3662c9903f837",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
