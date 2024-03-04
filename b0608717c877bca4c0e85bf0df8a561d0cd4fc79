@@ -93,6 +93,30 @@
       },
       "revId": "b0608717c877bca4c0e85bf0df8a561d0cd4fc79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45be2f1c_89628854",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-03-04T16:58:34Z",
+      "side": 1,
+      "message": "It needs to access some private members in this class, so i change it to a static member method.",
+      "parentUuid": "c057313e_e87a03ac",
+      "range": {
+        "startLine": 58,
+        "startChar": 59,
+        "endLine": 58,
+        "endChar": 77
+      },
+      "revId": "b0608717c877bca4c0e85bf0df8a561d0cd4fc79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
