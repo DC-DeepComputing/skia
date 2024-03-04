@@ -57,6 +57,9 @@ enum class StableKey : uint32_t {
 
     // shaders
     kBlend,
+    kLinearMorphology,
+    kMagnifier,
+    kSparseMorphology,
 
     // blenders
     kArithmetic,
