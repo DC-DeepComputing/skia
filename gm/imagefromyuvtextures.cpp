@@ -40,14 +40,25 @@
 #endif
 
 namespace skiagm {
-class ImageFromYUVTextures : public GM {
+class ImageFromYUV : public GM {
 public:
-    ImageFromYUVTextures() {
+    enum class Source {
+        kTextures,
+        kImages,
+    };
+
+    ImageFromYUV(Source source) : fSource(source) {
         this->setBGColor(0xFFFFFFFF);
     }
 
 protected:
-    SkString getName() const override { return SkString("image_from_yuv_textures"); }
+    SkString getName() const override {
+        switch (fSource) {
+            case Source::kTextures: return SkString("image_from_yuv_textures");
+            case Source::kImages:   return SkString("image_from_yuv_images");
+        }
+        SkUNREACHABLE;
+    }
 
     SkISize getISize() override { return {1950, 800}; }
 
@@ -127,11 +138,16 @@ protected:
 
     sk_sp<SkImage> makeYUVAImage(GrDirectContext* context, skgpu::graphite::Recorder* recorder) {
         SkASSERT(SkToBool(context) != SkToBool(recorder));
+        sk_gpu_test::LazyYUVImage::Type type;
+        switch (fSource) {
+            case Source::kTextures: type = sk_gpu_test::LazyYUVImage::Type::kFromTextures; break;
+            case Source::kImages:   type = sk_gpu_test::LazyYUVImage::Type::kFromImages;   break;
+        }
         if (context) {
-            return fLazyYUVImage->refImage(context, sk_gpu_test::LazyYUVImage::Type::kFromTextures);
+            return fLazyYUVImage->refImage(context, type);
         }
 #if defined(SK_GRAPHITE)
-        return fLazyYUVImage->refImage(recorder, sk_gpu_test::LazyYUVImage::Type::kFromTextures);
+        return fLazyYUVImage->refImage(recorder, type);
 #endif
         return nullptr;
     }
@@ -175,6 +191,11 @@ protected:
 
         if (!recorder && (!dContext || dContext->abandoned())) {
             *errorMsg = "DirectContext or graphite::Recorder required to create YUV images";
+            return DrawResult::kSkip;
+        }
+
+        if (fSource == Source::kImages && dContext) {
+            *errorMsg = "YUV Image from SkImage planes not support with Ganesh.";
             return DrawResult::kSkip;
         }
 
@@ -318,6 +339,8 @@ protected:
      }
 
 private:
+    Source fSource;
+
     std::unique_ptr<sk_gpu_test::LazyYUVImage> fLazyYUVImage;
 
     // 3 draws x 3 scales x 4 filter qualities
@@ -330,5 +353,6 @@ private:
     using INHERITED = GM;
 };
 
-DEF_GM(return new ImageFromYUVTextures;)
+DEF_GM(return new ImageFromYUV(ImageFromYUV::Source::kTextures);)
+DEF_GM(return new ImageFromYUV(ImageFromYUV::Source::kImages);)
 }  // namespace skiagm
