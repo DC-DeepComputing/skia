@@ -161,6 +161,172 @@ namespace SK_OPTS_NS {
         } while (--height != 0);
     }
 
+#elif SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
+    #include <lsxintrin.h>
+
+    static __m128i SkAlphaMul_lsx(__m128i x, __m128i y) {
+        __m128i tmp = __lsx_vmul_h(x, y);
+        __m128i mask = __lsx_vreplgr2vr_h(0xff00);
+        return __lsx_vsrlri_h(__lsx_vand_v(tmp, mask), 8);
+    }
+
+    template <bool isColor>
+    static void D32_A8_Opaque_Color_lsx(void* SK_RESTRICT dst, size_t dstRB,
+                                         const void* SK_RESTRICT maskPtr, size_t maskRB,
+                                         SkColor color, int width, int height) {
+        SkPMColor pmc = SkPreMultiplyColor(color);
+        SkPMColor* SK_RESTRICT device = (SkPMColor*)dst;
+        const uint8_t* SK_RESTRICT mask = (const uint8_t*)maskPtr;
+        __m128i vpmc_r = __lsx_vldi(0);
+        __m128i vpmc_g = __lsx_vldi(0);
+        __m128i vpmc_b = __lsx_vldi(0);
+        __m128i vpmc_a = __lsx_vldi(0);
+
+        // Nine patch may set maskRB to 0 to blit the same row repeatedly.
+        ptrdiff_t mask_adjust = (ptrdiff_t)maskRB - width;
+        dstRB -= (width << 2);
+
+        if (width >= 8) {
+            vpmc_b = __lsx_vreplgr2vr_h(SkGetPackedR32(pmc));
+            vpmc_g = __lsx_vreplgr2vr_h(SkGetPackedG32(pmc));
+            vpmc_r = __lsx_vreplgr2vr_h(SkGetPackedB32(pmc));
+            vpmc_a = __lsx_vreplgr2vr_h(SkGetPackedA32(pmc));
+        }
+        const __m128i zeros = __lsx_vldi(0);
+        __m128i planar = __lsx_vldi(0);
+        planar = __lsx_vinsgr2vr_d(planar, 0x0d0905010c080400, 0);
+        planar = __lsx_vinsgr2vr_d(planar, 0x0f0b07030e0a0602, 1);
+        do{
+            int w = width;
+            while(w >= 8){
+                __m128i lo = __lsx_vld(device, 0);         //rgba rgba rgba rgba
+                __m128i hi = __lsx_vld(device, 16);        //RGBA RGBA RGBA RGBA
+                lo = __lsx_vshuf_b(zeros, lo, planar);     //rrrr gggg bbbb aaaa
+                hi = __lsx_vshuf_b(zeros, hi, planar);     //RRRR GGGG BBBB AAAA
+                __m128i rg = __lsx_vilvl_w(hi, lo),        // rrrrRRRR ggggGGGG
+                        ba = __lsx_vilvh_w(hi, lo);        // bbbbBBBB aaaaAAAA
+
+                __m128i r = __lsx_vilvl_b(zeros, rg),                 // _r_r_r_r _R_R_R_R
+                        g = __lsx_vilvh_b(zeros, rg),                 // _g_g_g_g _G_G_G_G
+                        b = __lsx_vilvl_b(zeros, ba),                 // _b_b_b_b _B_B_B_B
+                        a = __lsx_vilvh_b(zeros, ba);                 // _a_a_a_a _A_A_A_A
+                __m128i vmask = __lsx_vld(mask, 0);
+                vmask = __lsx_vilvl_b(zeros, vmask);
+                __m128i vscale, vmask256 = __lsx_vadd_h(vmask, __lsx_vreplgr2vr_h(1));
+                if (isColor) {
+                    __m128i tmp = SkAlphaMul_lsx(vpmc_a, vmask256);
+                    vscale = __lsx_vsub_h(__lsx_vreplgr2vr_h(256), tmp);
+                } else {
+                    vscale = __lsx_vsub_h(__lsx_vreplgr2vr_h(256), vmask);
+                }
+                r = SkAlphaMul_lsx(vpmc_r, vmask256) + SkAlphaMul_lsx(r, vscale);
+                g = SkAlphaMul_lsx(vpmc_g, vmask256) + SkAlphaMul_lsx(g, vscale);
+                b = SkAlphaMul_lsx(vpmc_b, vmask256) + SkAlphaMul_lsx(b, vscale);
+                a = SkAlphaMul_lsx(vpmc_a, vmask256) + SkAlphaMul_lsx(a, vscale);
+
+                rg = __lsx_vor_v(r, __lsx_vslli_h(g, 8));            // rgrgrgrg RGRGRGRG
+                ba = __lsx_vor_v(b, __lsx_vslli_h(a, 8));            // babababa BABABABA
+                lo = __lsx_vilvl_h(ba, rg);                          // rgbargba rgbargba
+                hi = __lsx_vilvh_h(ba, rg);                          // RGBARGBA RGBARGBA
+
+                __lsx_vst(lo, device, 0);
+                __lsx_vst(hi, device, 16);
+
+                mask += 8;
+                device += 8;
+                w -= 8;
+            }
+            while(w--){
+                unsigned aa = *mask++;
+                if (isColor) {
+                   *device = SkBlendARGB32(pmc, *device, aa);
+                }else {
+                    *device = SkAlphaMulQ(pmc, SkAlpha255To256(aa))
+                        + SkAlphaMulQ(*device, SkAlpha255To256(255 - aa));
+                }
+                device += 1;
+            }
+
+            device = (uint32_t *)((char*)device + dstRB);
+            mask += mask_adjust;
+
+        }while (--height != 0);
+    }
+
+    static void blit_mask_d32_a8_general(SkPMColor* dst, size_t dstRB,
+                                         const SkAlpha* mask, size_t maskRB,
+                                         SkColor color, int w, int h) {
+        D32_A8_Opaque_Color_lsx<true>(dst, dstRB, mask, maskRB, color, w, h);
+    }
+
+    static void blit_mask_d32_a8_opaque(SkPMColor* dst, size_t dstRB,
+                                         const SkAlpha* mask, size_t maskRB,
+                                         SkColor color, int w, int h) {
+        D32_A8_Opaque_Color_lsx<false>(dst, dstRB, mask, maskRB, color, w, h);
+    }
+
+    // Same as _opaque, but assumes color == SK_ColorBLACK, a very common and even simpler case.
+    static void blit_mask_d32_a8_black(SkPMColor* dst, size_t dstRB,
+                                       const SkAlpha* maskPtr, size_t maskRB,
+                                       int width, int height) {
+        SkPMColor* SK_RESTRICT device = (SkPMColor*)dst;
+        const uint8_t* SK_RESTRICT mask = (const uint8_t*)maskPtr;
+
+        // Nine patch may set maskRB to 0 to blit the same row repeatedly.
+        ptrdiff_t mask_adjust = (ptrdiff_t)maskRB - width;
+        dstRB -= (width << 2);
+        const __m128i zeros = __lsx_vldi(0);
+        __m128i planar = __lsx_vldi(0);
+        planar = __lsx_vinsgr2vr_d(planar, 0x0d0905010c080400, 0);
+        planar = __lsx_vinsgr2vr_d(planar, 0x0f0b07030e0a0602, 1);
+        do {
+            int w = width;
+            while (w >= 8) {
+                __m128i vmask = __lsx_vld(mask, 0);
+                vmask = __lsx_vilvl_b(zeros, vmask);
+                __m128i vscale = __lsx_vsub_h(__lsx_vreplgr2vr_h(256), vmask);
+                __m128i lo = __lsx_vld(device, 0);         //rgba rgba rgba rgba
+                __m128i hi = __lsx_vld(device, 16);        //RGBA RGBA RGBA RGBA
+                lo = __lsx_vshuf_b(zeros, lo, planar);     //rrrr gggg bbbb aaaa
+                hi = __lsx_vshuf_b(zeros, hi, planar);     //RRRR GGGG BBBB AAAA
+                __m128i rg = __lsx_vilvl_w(hi, lo),        // rrrrRRRR ggggGGGG
+                        ba = __lsx_vilvh_w(hi, lo);        // bbbbBBBB aaaaAAAA
+
+                __m128i r = __lsx_vilvl_b(zeros, rg),                 // _r_r_r_r _R_R_R_R
+                        g = __lsx_vilvh_b(zeros, rg),                 // _g_g_g_g _G_G_G_G
+                        b = __lsx_vilvl_b(zeros, ba),                 // _b_b_b_b _B_B_B_B
+                        a = __lsx_vilvh_b(zeros, ba);                 // _a_a_a_a _A_A_A_A
+
+                r = SkAlphaMul_lsx(r, vscale);
+                g = SkAlphaMul_lsx(g, vscale);
+                b = SkAlphaMul_lsx(b, vscale);
+                a = SkAlphaMul_lsx(a, vscale);
+
+                a += vmask;
+
+                rg = __lsx_vor_v(r, __lsx_vslli_h(g, 8));            // rgrgrgrg RGRGRGRG
+                ba = __lsx_vor_v(b, __lsx_vslli_h(a, 8));            // babababa BABABABA
+                lo = __lsx_vilvl_h(ba, rg);                          // rgbargba rgbargba
+                hi = __lsx_vilvh_h(ba, rg);                          // RGBARGBA RGBARGBA
+
+                __lsx_vst(lo, device, 0);
+                __lsx_vst(hi, device, 16);
+
+                mask += 8;
+                device += 8;
+                w -= 8;
+            }
+            while (w-- > 0) {
+                unsigned aa = *mask++;
+                *device = (aa << SK_A32_SHIFT)
+                            + SkAlphaMulQ(*device, SkAlpha255To256(255 - aa));
+                device += 1;
+            }
+            device = (uint32_t*)((char*)device + dstRB);
+            mask += mask_adjust;
+        } while (--height != 0);
+    }
+
 #else
     static void blit_mask_d32_a8_general(SkPMColor* dst, size_t dstRB,
                                          const SkAlpha* mask, size_t maskRB,
