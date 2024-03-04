@@ -94,6 +94,30 @@
       },
       "revId": "49dd7ed24beca1c0fcaf2a6cf65e98c05e620359",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a64c355_dce14d65",
+        "filename": "src/core/SkKnownRuntimeEffects.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-04T16:19:38Z",
+      "side": 1,
+      "message": "John captured the \"module for known runtime effects\" idea here: skbug.com/328051548 (Allow child effects to be passed to functions)",
+      "parentUuid": "5f7d9d6f_67c0fca1",
+      "range": {
+        "startLine": 67,
+        "startChar": 17,
+        "endLine": 67,
+        "endChar": 38
+      },
+      "revId": "49dd7ed24beca1c0fcaf2a6cf65e98c05e620359",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
