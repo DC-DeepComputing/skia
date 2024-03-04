@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc2999a_bb4b8dbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T18:49:24Z",
+      "side": 1,
+      "message": "In theory this is all the remaining fixes to get SmallPathAtlas in its current form working. I\u0027ve edited the CL to separate them from the code that actually turns it on. PTAL.",
+      "revId": "90f84f400f0c05bcceb66230d0f3662c9903f837",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
