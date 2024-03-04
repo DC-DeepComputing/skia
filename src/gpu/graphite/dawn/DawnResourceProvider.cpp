@@ -194,11 +194,11 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 std::move(vsModule),
                 std::move(fsModule),
                 /*renderPassColorFormat=*/
-                renderPassDesc.fColorAttachment.fTextureInfo.dawnTextureSpec().fFormat,
+                renderPassDesc.fColorAttachment.fTextureInfo.dawnTextureSpec().GetViewFormat(),
                 /*renderPassDepthStencilFormat=*/
                 renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()
                         ? renderPassDesc.fDepthStencilAttachment.fTextureInfo.dawnTextureSpec()
-                                  .fFormat
+                                  .GetViewFormat()
                         : wgpu::TextureFormat::Undefined,
                 /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
 
