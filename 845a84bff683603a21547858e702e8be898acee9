@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32c248df_97584819",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T18:01:21Z",
+      "side": 1,
+      "message": "A small but important fix here. The position in the AtlasLocator is relative to the texture not the Plot. But the backing data we\u0027re using for rasterization is Plot-local, so we need to adjust that position when we render.\n\nThis should be good to land -- SmallPathAtlas isn\u0027t enabled so it won\u0027t break anything.",
+      "revId": "845a84bff683603a21547858e702e8be898acee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
