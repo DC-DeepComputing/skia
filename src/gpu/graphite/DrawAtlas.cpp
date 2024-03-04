@@ -255,9 +255,11 @@ DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
     return ec;
 }
 
-void DrawAtlas::initPixmapStorage(SkAutoPixmapStorage* pixmap, const AtlasLocator& locator) {
+void DrawAtlas::prepForRender(const AtlasLocator& locator,
+                              SkAutoPixmapStorage* pixmap,
+                              SkIPoint* topLeft) {
     Plot* plot = this->findPlot(locator);
-    plot->initPixmapStorage(pixmap);
+    plot->prepForRender(locator, pixmap, topLeft);
 }
 
 void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {

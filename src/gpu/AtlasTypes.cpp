@@ -83,13 +83,14 @@ void* Plot::dataAt(const AtlasLocator& atlasLocator) {
     return dataPtr;
 }
 
-void Plot::initPixmapStorage(SkAutoPixmapStorage* pixmap) {
+void Plot::prepForRender(const AtlasLocator& al, SkAutoPixmapStorage* pixmap, SkIPoint* renderPos) {
     if (!fData) {
         fData = reinterpret_cast<unsigned char*>(
                         sk_calloc_throw(fBytesPerPixel * fWidth * fHeight));
     }
     pixmap->reset(SkImageInfo::Make(fWidth, fHeight, fColorType, kOpaque_SkAlphaType),
                   fData, fBytesPerPixel * fWidth);
+    *renderPos = al.topLeft() - SkIPoint::Make(fOffset.fX, fOffset.fY);
 }
 
 void Plot::copySubImage(const AtlasLocator& al, const void* image) {

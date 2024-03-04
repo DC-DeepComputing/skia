@@ -87,14 +87,15 @@ const TextureProxy* SmallPathAtlas::onAddShape(const Shape& shape,
 
     // Rasterize path to backing pixmap
     SkAutoPixmapStorage dst;
-    fDrawAtlas->initPixmapStorage(&dst, locator);
+    SkIPoint renderPos;
+    fDrawAtlas->prepForRender(locator, &dst, &renderPos);
 
     RasterMaskHelper helper(&dst);
     if (!helper.init(fDrawAtlas->plotSize())) {
         return nullptr;
     }
-    // Offset to atlas location and draw
-    iShapeBounds.offset(outPos->x(), outPos->y());
+    // Offset to plot location and draw
+    iShapeBounds.offset(renderPos.x(), renderPos.y());
     helper.drawShape(shape, transform, strokeRec, iShapeBounds);
 
     // Add locator to ShapeCache.
