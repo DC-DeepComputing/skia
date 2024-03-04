@@ -458,7 +458,7 @@ public:
     void* dataAt(const AtlasLocator& atlasLocator);
     void copySubImage(const AtlasLocator& atlasLocator, const void* image);
     // Reset Pixmap to point to backing data for this Plot
-    void initPixmapStorage(SkAutoPixmapStorage*);
+    void prepForRender(const AtlasLocator&, SkAutoPixmapStorage*, SkIPoint*);
     // TODO: Utility method for Ganesh, consider removing
     bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
 
