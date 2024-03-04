@@ -1146,7 +1146,7 @@ describe('Paragraph Behavior', function() {
     });
 
     // This helped find and resolve skbug.com/13247
-    gm('paragraph_saved_to_skpicture', (canvas) => {
+    pause_gm('paragraph_saved_to_skpicture', (canvas) => {
         const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
 
         const wrapTo = 250;

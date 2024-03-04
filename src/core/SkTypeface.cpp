@@ -251,8 +251,8 @@ sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream, sk_sp<SkFontMgr>
             }
         }
 
-        SkDEBUGCODE(FactoryId id = desc.getFactoryId();)
-        SkDEBUGF("Could not find factory %c%c%c%c for %s.\n",
+        FactoryId id = desc.getFactoryId();
+        SkDebugf("Could not find factory %c%c%c%c for %s.\n",
                  (id >> 24) & 0xFF, (id >> 16) & 0xFF, (id >> 8) & 0xFF, (id >> 0) & 0xFF,
                  desc.getFamilyName());
 
