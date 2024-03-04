@@ -95,7 +95,7 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
         case StableKey::kInvalid:
             return nullptr;
 
-            // Shaders
+        // Shaders
         case StableKey::kBlend: {
             static constexpr char kBlendShaderCode[] =
                 "uniform shader s, d;"
@@ -110,7 +110,6 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
                                         options);
             return sBlendEffect;
         }
-
         case StableKey::k1DBlur4: {
             static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(4);
             return s1DBlurEffect;
@@ -158,6 +157,92 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
         case StableKey::k2DBlur28: {
             static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(28);
             return s2DBlurEffect;
+        }
+        case StableKey::kLinearMorphology: {
+            static constexpr char kLinearMorphologyShaderCode[] =
+                // KEEP IN SYNC WITH SkMorphologyImageFilter.cpp DEFINITION
+                "const int kMaxLinearRadius = 14;"
+
+                "uniform shader child;"
+                "uniform half2 offset;"
+                "uniform half flip;" // -1 converts the max() calls to min()
+                "uniform int radius;"
+
+                "half4 main(float2 coord) {"
+                    "half4 aggregate = flip*child.eval(coord);" // case 0 only samples once
+                    "for (int i = 1; i <= kMaxLinearRadius; ++i) {"
+                        "if (i > radius) break;"
+                        "half2 delta = half(i) * offset;"
+                        "aggregate = max(aggregate, max(flip*child.eval(coord + delta),"
+                                                       "flip*child.eval(coord - delta)));"
+                    "}"
+                    "return flip*aggregate;"
+                "}";
+
+            static const SkRuntimeEffect* sLinearMorphologyEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kLinearMorphologyShaderCode,
+                                        options);
+            return sLinearMorphologyEffect;
+        }
+
+        case StableKey::kMagnifier: {
+            static constexpr char kMagnifierShaderCode[] =
+                "uniform shader src;"
+                "uniform float4 lensBounds;"
+                "uniform float4 zoomXform;"
+                "uniform float2 invInset;"
+
+                "half4 main(float2 coord) {"
+                    "float2 zoomCoord = zoomXform.xy + zoomXform.zw*coord;"
+                    // edgeInset is the smallest distance to the lens bounds edges,
+                    // in units of "insets".
+                    "float2 edgeInset = min(coord - lensBounds.xy, lensBounds.zw - coord) * invInset;"
+
+                    // The equations for 'weight' ensure that it is 0 along the outside of
+                    // lensBounds so it seams with any un-zoomed, un-filtered content. The zoomed
+                    // content fills a rounded rectangle that is 1 "inset" in from lensBounds with
+                    // circular corners with radii equal to the inset distance. Outside of this
+                    // region, there is a non-linear weighting to compress the un-zoomed content
+                    // to the zoomed content. The critical zone about each corner is limited
+                    // to 2x"inset" square.
+                    "float weight = (edgeInset.x < 2.0 && edgeInset.y < 2.0)"
+                        // Circular distortion weighted by distance to inset corner
+                        "? (2.0 - length(2.0 - edgeInset))"
+                        // Linear zoom, or single-axis compression outside of the inset
+                        // area (if delta < 1)
+                        ": min(edgeInset.x, edgeInset.y);"
+
+                    // Saturate before squaring so that negative weights are clamped to 0
+                    // before squaring
+                    "weight = saturate(weight);"
+                    "return src.eval(mix(coord, zoomCoord, weight*weight));"
+                "}";
+
+            static const SkRuntimeEffect* sMagnifierEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kMagnifierShaderCode,
+                                        options);
+            return sMagnifierEffect;
+        }
+
+        case StableKey::kSparseMorphology: {
+            static constexpr char kSparseMorphologyShaderCode[] =
+                "uniform shader child;"
+                "uniform half2 offset;"
+                "uniform half flip;"
+
+                "half4 main(float2 coord) {"
+                    "half4 aggregate = max(flip*child.eval(coord + offset),"
+                                          "flip*child.eval(coord - offset));"
+                    "return flip*aggregate;"
+                "}";
+
+            static const SkRuntimeEffect* sSparseMorphologyEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kSparseMorphologyShaderCode,
+                                        options);
+            return sSparseMorphologyEffect;
         }
 
         // Blenders
