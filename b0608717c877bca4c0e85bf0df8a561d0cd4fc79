@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bec1d67b_3ccbb5f7",
+        "filename": "include/gpu/graphite/dawn/DawnTypes.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-04T14:35:25Z",
+      "side": 1,
+      "message": "Can we add validation that for this constructor `format` is a multiplanar format and `viewFormat` makes sense for a single plane format? I\u0027m assuming we don\u0027t need to have validation in the other constructor because we want to be able to have a `DawnTextureInfo` that embodies the full multiplanar texture.",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 45,
+        "endChar": 51
+      },
+      "revId": "b0608717c877bca4c0e85bf0df8a561d0cd4fc79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5363c5b1_8ad87b7e",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-04T14:35:25Z",
+      "side": 1,
+      "message": "nit: CreateTextureViews, but also can we not just keep this local to the cpp file?\n```suggestion\n    static std::pair\u003cwgpu::TextureView, wgpu::TextureView\u003e CreateTextureViews(\n```",
+      "range": {
+        "startLine": 58,
+        "startChar": 59,
+        "endLine": 58,
+        "endChar": 77
+      },
+      "revId": "b0608717c877bca4c0e85bf0df8a561d0cd4fc79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
