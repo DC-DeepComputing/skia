@@ -22,6 +22,30 @@
       },
       "revId": "2b9ab61543eded819bb29dd46e9cebc4c2ee4bf9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c253d79_fa1cd96b",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2024-03-04T19:19:23Z",
+      "side": 1,
+      "message": "Done. Based on our off-line discussion.",
+      "parentUuid": "9f36b4e8_28a9c580",
+      "range": {
+        "startLine": 48,
+        "startChar": 24,
+        "endLine": 48,
+        "endChar": 35
+      },
+      "revId": "2b9ab61543eded819bb29dd46e9cebc4c2ee4bf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
