@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ecd890f_f8da8622",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2024-03-04T15:43:19Z",
+      "side": 1,
+      "message": "Naive post-submit drive-by.",
+      "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed56dd6b_523e0b15",
@@ -50,6 +67,40 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "1eb8fca1_69633e1c",
+      "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637043cf_798a9c6a",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2024-03-04T15:43:19Z",
+      "side": 1,
+      "message": "Here we `std::move(unicode)`...",
+      "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f74f1165_20239a06",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2024-03-04T15:43:19Z",
+      "side": 1,
+      "message": "...and here we\u0027re referencing `unicode` after the `std::move`.\n\nShould this be `SkASSERT(fUnicode)`?",
       "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
