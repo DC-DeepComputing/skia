@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c00cd44_8d15f7a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21814
+      },
+      "writtenOn": "2024-03-04T08:31:12Z",
+      "side": 1,
+      "message": "Hi, we have applied the vector optimization to the main branch and prepared a complete process for cross-compilation and testing. Could you provide an email or other way for me to send you the specific process and some files needed for cross-compilation and virtual machine?",
+      "revId": "3c79ea8477b6e3983ec59501131f8eb41079c6f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
