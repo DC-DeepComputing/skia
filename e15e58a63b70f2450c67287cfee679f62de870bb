@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb85f855_5491962e",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 2186,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-04T13:44:21Z",
+      "side": 0,
+      "message": "^",
+      "range": {
+        "startLine": 2186,
+        "startChar": 2,
+        "endLine": 2186,
+        "endChar": 28
+      },
+      "revId": "e15e58a63b70f2450c67287cfee679f62de870bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
