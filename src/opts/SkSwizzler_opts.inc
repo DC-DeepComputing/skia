@@ -486,7 +486,7 @@ static void inverted_cmyk_to(Format format, uint32_t* dst, const uint32_t* src, 
     proc(dst, src, count);
 }
 
-void inverted_CMYK_to_RGB1(uint32_t dst[], const uint32_t* src, int count) {
+void inverted_CMYK_to_RGB1(uint32_t dst[],   const uint32_t* src, int count) {
     inverted_cmyk_to(kRGB1, dst, src, count);
 }
 
