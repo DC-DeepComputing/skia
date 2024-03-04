@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a0d5427_2f1c897e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-03-04T15:48:26Z",
+      "side": 1,
+      "message": "I can\u0027t see the image results from the bots. Locally looks good in grdawn_mtl and grmtl.",
+      "revId": "124c55109c1e71284e66d0e4de80ea598b3c12dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
