@@ -33,6 +33,24 @@
       "message": "In principle it looks good -- I\u0027m not sure how to tell if the images are correct. In general it looks like they\u0027ve gone from fuzzy from sharp which I assume is what we\u0027re looking for.",
       "revId": "124c55109c1e71284e66d0e4de80ea598b3c12dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8de7e657_8a08bc0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-03-04T22:08:18Z",
+      "side": 1,
+      "message": "I made it use a larger source image, which probably accounts for the sharpness.\n\nHere is rough a guide to what is being drawn: The images are in pairs, outlined in black. The two images in each pair should look pretty close to each other. One is drawn from YUV and the other from RGBA (YUV on top). I think this is the main thing WRT correctness of the GM. If we assume RGBA is drawn correctly then we shouldn\u0027t notice if drawn from a UV subset. (The RGBA has actually been through a YUV-\u003eRGB conversion at 1-to-1 scale so any changes just due to chroma subsampling are accounted for).\n\nThere are 3 scale factors (1, 1.5, and .3) that go from top to bottom. At each scale factor there are 3 YUV/RGBA pairs: nearest, linear, and mip/bicubic.\n\nThen there are three draw methods each with a whole set of 3scale x 3filter YUV/RGBA pairs. Left to right: drawImage, drawImageRect (src rect clips each image side a bit), drawRect + shader w/ mirror/decal tiling and a local matrix.\n\nThe main thing that\u0027s new, other than larger images and reorganizing the output, is that mipmapping actually works. So the rightmost pair in the 0.3 scale cases is now actually mipmap filtered. Note that it also wasn\u0027t working in Ganesh before because of issues in the GM itself.",
+      "parentUuid": "a5ce250d_9003ff2b",
+      "revId": "124c55109c1e71284e66d0e4de80ea598b3c12dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
