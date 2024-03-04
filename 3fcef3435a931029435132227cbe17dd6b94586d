@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f382b81_f1c98f8a",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1361,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-04T19:22:05Z",
+      "side": 1,
+      "message": "This fixes two things at once: `makeInset` already knows how to handle saturating operations instead of overflowing; and, during picture recording, the device and initial clip is not necessarily (0,0,w,h). It almost always is by construction, but technically SkNoPixelsDevice\u0027s base bounds can be an arbitrary rect.",
+      "range": {
+        "startLine": 1361,
+        "startChar": 64,
+        "endLine": 1361,
+        "endChar": 73
+      },
+      "revId": "3fcef3435a931029435132227cbe17dd6b94586d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
