@@ -48,7 +48,7 @@ protected:
 private:
     void evict(PlotLocator) override;
 
-    static constexpr int kDefaultAtlasDim = 2048;
+    static constexpr int kDefaultAtlasDim = 256;
 
     std::unique_ptr<DrawAtlas> fDrawAtlas;
 
