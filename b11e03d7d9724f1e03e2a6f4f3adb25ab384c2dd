@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c6fb907_6f041087",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-04T16:03:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "637043cf_798a9c6a",
+      "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f74f1165_20239a06",
@@ -101,6 +119,24 @@
       "writtenOn": "2024-03-04T15:43:19Z",
       "side": 1,
       "message": "...and here we\u0027re referencing `unicode` after the `std::move`.\n\nShould this be `SkASSERT(fUnicode)`?",
+      "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f464b665_47c16d83",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-04T16:03:29Z",
+      "side": 1,
+      "message": "Ah, good catch! Will fix in a follow-up CL",
+      "parentUuid": "f74f1165_20239a06",
       "revId": "b11e03d7d9724f1e03e2a6f4f3adb25ab384c2dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
