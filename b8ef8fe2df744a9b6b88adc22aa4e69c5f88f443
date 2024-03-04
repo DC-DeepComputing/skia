@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf3fccf8_6634c962",
+        "filename": "tools/fonts/FontToolUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-04T13:44:43Z",
+      "side": 1,
+      "message": "Included the `Test` and `Svg` cases and propagated that change to callsites where it seemed relevant.",
+      "parentUuid": "82079a60_fbff6701",
+      "revId": "b8ef8fe2df744a9b6b88adc22aa4e69c5f88f443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26a4cab3_4d144ef4",
         "filename": "tools/fonts/FontToolUtils.h",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-29T16:17:27Z",
       "side": 1,
       "message": "This will probably also need to take the enum so it can give different sample text. Or the new function could return a pair of both the typeface and the sample text. (In particular the Svg test font fonts/SampleSVG.ttf doesn\u0027t have these glyphs, though I suppose we could try adding them.)\n\nWhat ScaledEmojiRenderingGM already does, but more general.",
+      "revId": "b8ef8fe2df744a9b6b88adc22aa4e69c5f88f443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42554bf0_c8e9d8e5",
+        "filename": "tools/fonts/FontToolUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-04T13:44:43Z",
+      "side": 1,
+      "message": "Defined a `struct EmojiTestSample` to group these and used in clients of `FontToolUtils` where applicable.",
+      "parentUuid": "26a4cab3_4d144ef4",
       "revId": "b8ef8fe2df744a9b6b88adc22aa4e69c5f88f443",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
