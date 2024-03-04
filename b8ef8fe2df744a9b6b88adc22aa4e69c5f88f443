@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35ad78ca_c781583d",
+        "filename": "tools/fonts/FontToolUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-04T15:59:22Z",
+      "side": 1,
+      "message": "\u003e  (and to the multiplicity of gms)\n\nI think that part is done now, too.",
+      "parentUuid": "cf3fccf8_6634c962",
+      "revId": "b8ef8fe2df744a9b6b88adc22aa4e69c5f88f443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26a4cab3_4d144ef4",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Defined a `struct EmojiTestSample` to group these and used in clients of `FontToolUtils` where applicable.",
       "parentUuid": "26a4cab3_4d144ef4",
+      "revId": "b8ef8fe2df744a9b6b88adc22aa4e69c5f88f443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfabef3e_667e19c8",
+        "filename": "tools/fonts/FontToolUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-04T15:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42554bf0_c8e9d8e5",
       "revId": "b8ef8fe2df744a9b6b88adc22aa4e69c5f88f443",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
