@@ -39,6 +39,30 @@
       },
       "revId": "90f84f400f0c05bcceb66230d0f3662c9903f837",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b1a3ea_93ac0a0e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-04T20:31:19Z",
+      "side": 1,
+      "message": "Arman requested this change -- this is unrelated to any of the SmallPathAtlas crashes. I don\u0027t know what happens in the VelloComputePathAtlas if isSuitableForAtlasing would fail. At the moment neither rasterAA method uses isSuitableForAtlasing.",
+      "parentUuid": "a7239fbe_597f7c17",
+      "range": {
+        "startLine": 1443,
+        "startChar": 8,
+        "endLine": 1446,
+        "endChar": 0
+      },
+      "revId": "90f84f400f0c05bcceb66230d0f3662c9903f837",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
