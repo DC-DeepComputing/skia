@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5b6ddfb_1be1eb45",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8085,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T16:26:41Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this line? I don\u0027t see any SkUnicode right here. If there is some reason for this line to be here then it would need to be a different line which is related explicitly to something going on here in the body of the test.",
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec197aa5_a36d8fca",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8128,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T16:26:41Z",
+      "side": 1,
+      "message": "This will only run this test on some SkUnicode, not necessarily even one of these. What we want in this case would be to have this test body set up so that it can take an SkUnicode and then have small wrappers that create the appropriate SkUnicode implementation and then pass it in to this test body.\n\nNote that we\u0027re in the process of removing this, see https://skia-review.googlesource.com/c/skia/+/820158 . The nice thing about removing this is that if forces one to write these tests correctly.",
+      "range": {
+        "startLine": 8128,
+        "startChar": 26,
+        "endLine": 8128,
+        "endChar": 30
+      },
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2863415f_0a20b202",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T16:26:41Z",
+      "side": 1,
+      "message": "This will always be true and never assert since the pointer to the character array will be non-nullptr. I think what was intended here is sometimes written like `SkASSERT(!\"Error\")`. Though the fact that no tests seem to be catching this is an issue.",
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
