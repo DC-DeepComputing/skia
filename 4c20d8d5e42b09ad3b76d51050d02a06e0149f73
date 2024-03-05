@@ -16,6 +16,24 @@
       "message": "+bungeman: This is external, so it will need two reviews.",
       "revId": "4c20d8d5e42b09ad3b76d51050d02a06e0149f73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee0fddf_1892590b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T16:01:10Z",
+      "side": 1,
+      "message": "Took a bit of reading to figure out what is going on here, but yes, this looks like better rounding. It appears we would expect this to potentially change aliased path rendering and clips?",
+      "parentUuid": "18ea2e5a_29b937a1",
+      "revId": "4c20d8d5e42b09ad3b76d51050d02a06e0149f73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
