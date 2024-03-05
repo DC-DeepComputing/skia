@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60c70ebb_c060f1ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T19:58:36Z",
+      "side": 1,
+      "message": "Thanks for the review and help with this. Glad we have that in. I might have some questions on how we can make sure that we see new Fontations bot results. I was perhaps expecting some new additional GMs to have changes already?",
+      "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

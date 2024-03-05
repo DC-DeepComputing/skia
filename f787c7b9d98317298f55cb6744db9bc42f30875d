@@ -16,6 +16,24 @@
       "message": "Looks like both this and https://skia-review.googlesource.com/c/skia/+/820701/10/src/ports/BUILD.bazel append to the end of this file, looks like the only merge conflict.",
       "revId": "f787c7b9d98317298f55cb6744db9bc42f30875d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "964b875c_934c89ed",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T19:58:36Z",
+      "side": 1,
+      "message": "Thanks, yes, rebased and appended to the end of the file after CL 820701.",
+      "parentUuid": "d327347d_4272cc6e",
+      "revId": "f787c7b9d98317298f55cb6744db9bc42f30875d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
