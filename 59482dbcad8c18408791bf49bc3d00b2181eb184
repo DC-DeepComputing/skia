@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66f82f84_8ad5d0e8",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8085,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:53:44Z",
+      "side": 1,
+      "message": "If we have no plan for fixing this then maybe we need a call on SkUnicode for capabilities so that one can ask for the capabilities and it can state that it doesn\u0027t support such things? Note that this set of defines does not preclude running this test with the libgrapheme backed SkUnicode. In fact, this needs to be changed like the other to run with both of these SkUnicode and then perhaps a comment about the reason the libgrapheme one isn\u0027t being tested here as well.",
+      "parentUuid": "4fb4dd59_25b2b07d",
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec197aa5_a36d8fca",
         "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
         "patchSetId": 11
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I need to run this test with either ICU or ICU4X. I don\u0027t know what is actually linked so I am running it on the default unicode implementation. If I have only use_icu4x I will get what I want.",
       "parentUuid": "ec197aa5_a36d8fca",
+      "range": {
+        "startLine": 8128,
+        "startChar": 26,
+        "endLine": 8128,
+        "endChar": 30
+      },
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20fcb95e_36763962",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8128,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:53:44Z",
+      "side": 1,
+      "message": "No, you don\u0027t need to test with either, you need to test both, if both are available. The point is to allow more than one at a time and we need to ensure that we are testing all of them.",
+      "parentUuid": "201b2e4f_e6036773",
       "range": {
         "startLine": 8128,
         "startChar": 26,

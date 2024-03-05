@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "938a9299_f3e20e1a",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 8138,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:53:44Z",
+      "side": 1,
+      "message": "static void SkParagraph_EmojiRuns(SkUnicode* icu, skiatest::Reporter* reporter) {",
+      "revId": "8740f901d7226c71ab5b094f9800ddb5206eefc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929a50fe_47eb6090",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 8204,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:53:44Z",
+      "side": 1,
+      "message": "And then here something like...\n\n    #if defined(SK_UNICODE_ICU_IMPLEMENTATION)\n    UNIX_ONLY_TEST(SkParagraph_EmojiRuns_ICU, reporter) {\n        auto icu \u003d SkUnicode::MakeIcuBasedUnicode();\n        if (!icu) {\n            REPORTER_ASSERT(reporter, icu);\n            return;\n        }\n        SkParagraph_EmojiRuns(icu.get(), reporter);\n    }\n    #endif  // defined(SK_UNICODE_ICU_IMPLEMENTATION)\n    #if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)\n    UNIX_ONLY_TEST(SkParagraph_EmojiRuns_ICU4X, reporter) {\n        auto icu4x \u003d SkUnicode::MakeIcu4xBasedUnicode();\n        if (!icu4x) {\n            REPORTER_ASSERT(reporter, icu4x);\n            return;\n        }\n        SkParagraph_EmojiRuns(icu.get(), reporter);\n    }\n    #endif",
+      "revId": "8740f901d7226c71ab5b094f9800ddb5206eefc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
