@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "886a9155_320147a3",
+        "filename": "public.bzl",
+        "patchSetId": 20
+      },
+      "lineNbr": 2588,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:30:50Z",
+      "side": 1,
+      "message": "Did you need this? `public.bzl` is part of the old Bazel build specifically for G3 targets. Mostly I\"m just curious if you found it necessary or if this was added just because it was here. (Like should this be added anyway in a separate CL?)",
+      "revId": "09a5a9cf4ae3fe77a3d78ad08ad2acccd6ac2135",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50410c14_f3f30ce2",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:30:50Z",
+      "side": 1,
+      "message": "nit: my eyes are sad that this many logically similar characters do not line up in columns.",
+      "revId": "09a5a9cf4ae3fe77a3d78ad08ad2acccd6ac2135",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
