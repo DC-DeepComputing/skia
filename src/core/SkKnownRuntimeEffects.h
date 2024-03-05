@@ -83,6 +83,11 @@ enum class StableKey : uint32_t {
     kNormal,
     kSparseMorphology,
 
+    // The matrix convolution effects are binned by pairs (w, h) of powers of two from 0..11.
+    kMatrixConvolutionBase,
+    kMatrixConvolutionStart = kMatrixConvolutionBase,
+    kMatrixConvolutionEnd = kMatrixConvolutionStart + 12*12,
+
     // blenders
     kArithmetic,
 
