@@ -72,7 +72,8 @@ public:
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SkSamplingOptions&,
                                                  SkTileMode xTileMode,
-                                                 SkTileMode yTileMode);
+                                                 SkTileMode yTileMode,
+                                                 const std::vector<uint32_t>& extraBackendDesc);
 
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
     void deleteBackendTexture(const BackendTexture&);
@@ -125,7 +126,8 @@ private:
 
     virtual sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                          SkTileMode xTileMode,
-                                         SkTileMode yTileMode) = 0;
+                                         SkTileMode yTileMode,
+                                         const std::vector<uint32_t>& extraBackendDesc) = 0;
 
     sk_sp<Texture> findOrCreateTextureWithKey(SkISize dimensions,
                                               const TextureInfo& info,

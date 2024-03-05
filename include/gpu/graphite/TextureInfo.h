@@ -136,6 +136,7 @@ private:
 #ifdef SK_VULKAN
     friend class VulkanCaps;
     friend class VulkanTexture;
+    // friend class PaintParamsKey;
     const VulkanTextureSpec& vulkanTextureSpec() const {
         SkASSERT(fValid && fBackend == BackendApi::kVulkan);
         return fVkSpec;
