@@ -87,6 +87,24 @@
       "parentUuid": "a5489a87_78ed1aa5",
       "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc14cc75_9c737013",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:30:24Z",
+      "side": 1,
+      "message": "You mean https://gold.skia.org/diff?grouping\u003dname%3Dpdf_never_embed%26source_type%3Dgm\u0026left\u003d43d023bb770c16a8741422c3d12f06f0\u0026right\u003d69e866f00843b61f376fdeb9e1ccf4c4\u0026changelist_id\u003d820216\u0026crs\u003dgerrit - right? Is the left side a Fontations bot, how do I tell (I don\u0027t see it from any config flags or names, so it doesn\u0027t look like one to me?). \n\n(I\u0027m a bit further away from a keyboard, if you suggest not to land this because of this failure, please remove CQ or revert).",
+      "parentUuid": "a5489a87_78ed1aa5",
+      "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
