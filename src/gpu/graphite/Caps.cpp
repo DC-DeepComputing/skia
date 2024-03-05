@@ -54,11 +54,6 @@ void Caps::finishInitialization(const ContextOptions& options) {
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }
 
-SkISize Caps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
-                                           const SkISize colorAttachmentDimensions) const {
-    return colorAttachmentDimensions;
-}
-
 bool Caps::isTexturable(const TextureInfo& info) const {
     if (info.numSamples() > 1) {
         return false;

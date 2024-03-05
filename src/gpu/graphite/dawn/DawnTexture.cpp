@@ -116,10 +116,8 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
         , fSampleTextureView(std::move(sampleTextureView))
         , fRenderTextureView(std::move(renderTextureView)) {}
 
-// static
-std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
-        const wgpu::Texture& texture, const TextureInfo& info) {
-    const auto aspect = info.dawnTextureSpec().fAspect;
+std::pair<wgpu::TextureView, wgpu::TextureView> create_texture_views(
+        const wgpu::Texture& texture, const TextureInfo& info, const wgpu::TextureAspect aspect) {
     if (aspect == wgpu::TextureAspect::All) {
         wgpu::TextureView sampleTextureView = texture.CreateView();
         wgpu::TextureView renderTextureView;
@@ -143,7 +141,6 @@ std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
              aspect == wgpu::TextureAspect::Plane2Only);
     wgpu::TextureView planeTextureView;
     wgpu::TextureViewDescriptor planeViewDesc = {};
-    planeViewDesc.format = info.dawnTextureSpec().fViewFormat;
     planeViewDesc.aspect = aspect;
     planeTextureView = texture.CreateView(&planeViewDesc);
     return {planeTextureView, planeTextureView};
@@ -158,7 +155,8 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
     if (!texture) {
         return {};
     }
-    auto [sampleTextureView, renderTextureView] = CreateTextureViews(texture, info);
+    auto [sampleTextureView, renderTextureView] =
+            create_texture_views(texture, info, wgpu::TextureAspect::All);
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
                                           info,
@@ -178,7 +176,8 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
         return {};
     }
 
-    auto [sampleTextureView, renderTextureView] = CreateTextureViews(texture, info);
+    const wgpu::TextureAspect aspect = info.dawnTextureSpec().fAspect;
+    auto [sampleTextureView, renderTextureView] = create_texture_views(texture, info, aspect);
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
                                           info,

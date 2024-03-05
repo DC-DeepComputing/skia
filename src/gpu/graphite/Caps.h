@@ -42,6 +42,7 @@ class GraphiteResourceKey;
 class RendererProvider;
 struct RenderPassDesc;
 class TextureInfo;
+class TextureProxy;
 
 struct ResourceBindingRequirements {
     // The required data layout rules for the contents of a uniform buffer.
@@ -98,10 +99,6 @@ public:
                                                           Protected) const = 0;
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
-
-    // Get required depth attachment dimensions for a givin color attachment info and dimensions.
-    virtual SkISize getDepthAttachmentDimensions(const TextureInfo&,
-                                                 const SkISize colorAttachmentDimensions) const;
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
