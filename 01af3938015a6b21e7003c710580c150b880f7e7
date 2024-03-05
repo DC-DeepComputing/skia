@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d6083d3_c5031016",
+        "filename": "defines.bzl",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-05T17:12:12Z",
+      "side": 1,
+      "message": "The fact that this define is no longer set in the modular build is likely the cause of the Gold diffs. I think it\u0027s fine, if we wanted to change it, we should put CanvasKit in its own WORKSPACE with a custom SkUserConfig.h or turn this on by default.",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "01af3938015a6b21e7003c710580c150b880f7e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
