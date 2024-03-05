@@ -458,7 +458,7 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     'skia_include_multiframe_procs':        'false',
 
     # Tracing-related flags:
-    'skia_disable_tracing':                 'false',
+    'skia_disable_tracing':                 'true',
     # Required for some SKSL tests
     'skia_enable_sksl_tracing':             'true',
     # The two Perfetto integrations are currently mutually exclusive due to
