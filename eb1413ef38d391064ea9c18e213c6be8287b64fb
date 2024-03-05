@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ef2945e_fed003fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18609
+      },
+      "writtenOn": "2024-03-05T15:22:23Z",
+      "side": 1,
+      "message": "lgtm from the icu4x side",
+      "revId": "eb1413ef38d391064ea9c18e213c6be8287b64fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5745a5a5_ac05e6ca",
+        "filename": "bazel/external/icu4x/Cargo.toml",
+        "patchSetId": 10
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18609
+      },
+      "writtenOn": "2024-03-05T15:22:23Z",
+      "side": 1,
+      "message": "nit: probably shouldn\u0027t be necessary, but fine if it is",
+      "revId": "eb1413ef38d391064ea9c18e213c6be8287b64fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
