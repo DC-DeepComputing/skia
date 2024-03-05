@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fb4dd59_25b2b07d",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8085,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-05T17:39:50Z",
+      "side": 1,
+      "message": "isEmoji with all the other emoji-related checks only supported for ICU and ICU4X.",
+      "parentUuid": "c5b6ddfb_1be1eb45",
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec197aa5_a36d8fca",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "201b2e4f_e6036773",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8128,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-05T17:39:50Z",
+      "side": 1,
+      "message": "I need to run this test with either ICU or ICU4X. I don\u0027t know what is actually linked so I am running it on the default unicode implementation. If I have only use_icu4x I will get what I want.",
+      "parentUuid": "ec197aa5_a36d8fca",
+      "range": {
+        "startLine": 8128,
+        "startChar": 26,
+        "endLine": 8128,
+        "endChar": 30
+      },
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2863415f_0a20b202",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-03-05T16:26:41Z",
       "side": 1,
       "message": "This will always be true and never assert since the pointer to the character array will be non-nullptr. I think what was intended here is sometimes written like `SkASSERT(!\"Error\")`. Though the fact that no tests seem to be catching this is an issue.",
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88290d8e_a44f3712",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-05T17:39:50Z",
+      "side": 1,
+      "message": "Apparently, Flutter Web is not using it.\nI guess returning the initial string is safe (until we clear it out with Flutter Web).",
+      "parentUuid": "2863415f_0a20b202",
       "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
