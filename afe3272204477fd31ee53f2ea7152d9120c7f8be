@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a56a839f_4fcdbd11",
+        "filename": "gm/scaledemoji.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T19:56:31Z",
+      "side": 1,
+      "message": "A `_` at the end for consistency with the other ones?",
+      "range": {
+        "startLine": 51,
+        "startChar": 35,
+        "endLine": 51,
+        "endChar": 36
+      },
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e931fe3b_2f83069c",
+        "filename": "gm/scaledemoji.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T19:56:31Z",
+      "side": 1,
+      "message": "A `_` here for consistency?",
+      "range": {
+        "startLine": 102,
+        "startChar": 38,
+        "endLine": 102,
+        "endChar": 39
+      },
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a4db8d6_81af648e",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T19:56:31Z",
+      "side": 1,
+      "message": "This font is actually COLRv0? I don\u0027t think we need to add a COLRv1 right now to this list since we have separate extensive COLRv1 specific tests already. But it does mean we should probably re-name this `COLRv1` enum to `COLRv0`.",
+      "range": {
+        "startLine": 114,
+        "startChar": 64,
+        "endLine": 114,
+        "endChar": 68
+      },
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd83e308_68588622",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T19:56:31Z",
+      "side": 1,
+      "message": "Taking a look at the gm output in gold, it looks like we want `CreatePortableTypeface`. The idea was to always have a color font of some sort around no matter what to test those code paths, not to maybe get some \"Emoji\" font which may or may not be color.",
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

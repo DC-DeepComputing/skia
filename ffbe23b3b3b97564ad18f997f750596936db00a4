@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdf843d4_4a0eb3ec",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T19:56:31Z",
+      "side": 0,
+      "message": "Heh, this was always incorrect but wasn\u0027t discovered because of how it was used. This should have always been `CreatePortableTypeface`",
+      "revId": "ffbe23b3b3b97564ad18f997f750596936db00a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
