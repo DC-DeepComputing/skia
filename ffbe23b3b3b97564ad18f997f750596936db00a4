@@ -16,6 +16,24 @@
       "message": "Heh, this was always incorrect but wasn\u0027t discovered because of how it was used. This should have always been `CreatePortableTypeface`",
       "revId": "ffbe23b3b3b97564ad18f997f750596936db00a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "373ad01c_01549592",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:34:43Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "cdf843d4_4a0eb3ec",
+      "revId": "ffbe23b3b3b97564ad18f997f750596936db00a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

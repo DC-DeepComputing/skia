@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2691604a_836f7373",
+        "filename": "gm/scaledemoji.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a56a839f_4fcdbd11",
+      "range": {
+        "startLine": 51,
+        "startChar": 35,
+        "endLine": 51,
+        "endChar": 36
+      },
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e931fe3b_2f83069c",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-05T19:56:31Z",
       "side": 1,
       "message": "A `_` here for consistency?",
+      "range": {
+        "startLine": 102,
+        "startChar": 38,
+        "endLine": 102,
+        "endChar": 39
+      },
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d9b07fd_15d135cf",
+        "filename": "gm/scaledemoji.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:34:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e931fe3b_2f83069c",
       "range": {
         "startLine": 102,
         "startChar": 38,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "999d3123_d63911eb",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:34:43Z",
+      "side": 1,
+      "message": "Yes, thanks for spotting that, absolutely.",
+      "parentUuid": "8a4db8d6_81af648e",
+      "range": {
+        "startLine": 114,
+        "startChar": 64,
+        "endLine": 114,
+        "endChar": 68
+      },
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd83e308_68588622",
@@ -83,6 +155,24 @@
       "writtenOn": "2024-03-05T19:56:31Z",
       "side": 1,
       "message": "Taking a look at the gm output in gold, it looks like we want `CreatePortableTypeface`. The idea was to always have a color font of some sort around no matter what to test those code paths, not to maybe get some \"Emoji\" font which may or may not be color.",
+      "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb25d77f_e046ce54",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:34:43Z",
+      "side": 1,
+      "message": "Changed call to `CreatePortableTypeface` and removed comment.",
+      "parentUuid": "cd83e308_68588622",
       "revId": "afe3272204477fd31ee53f2ea7152d9120c7f8be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
