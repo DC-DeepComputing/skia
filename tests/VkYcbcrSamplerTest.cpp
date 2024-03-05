@@ -63,7 +63,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
     }
 
     sk_sp<SkImage> srcImage = SkImages::BorrowTextureFrom(dContext,
-                                                          ycbcrHelper.backendTexture(),
+                                                          ycbcrHelper.grBackendTexture(),
                                                           kTopLeft_GrSurfaceOrigin,
                                                           kRGB_888x_SkColorType,
                                                           kPremul_SkAlphaType,
