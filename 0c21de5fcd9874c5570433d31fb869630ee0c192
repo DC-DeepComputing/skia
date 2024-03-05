@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4681ab_70cfb798",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-05T01:38:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1a6b5ef_50845533",
+      "range": {
+        "startLine": 725,
+        "startChar": 63,
+        "endLine": 725,
+        "endChar": 72
+      },
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73ee8b03_23373bf3",
@@ -88,6 +112,30 @@
       "writtenOn": "2024-03-04T19:51:28Z",
       "side": 1,
       "message": "This section needs to document the behavior when there is a backdrop filter or an SkImageFilter on the restore paint. IMO the most useful behavior is for the image filtering (either backdrop or on-restore (or both)) to occur in the color space of the layer. However, what space does the SkColorFilter of the restore paint operate in?\n\nSkia\u0027s current rendering model would have it operate in the parent/dst device\u0027s color space. Is that fine? Should it instead be operating in the layer\u0027s color space too? Before this change, the color spaces for both types of filter were always consistent, so there are several optimization places that move the SkImageFilters::ColorFilter to a regular SkColorFilter that would now have to correctly wrap themselves in a workingCS color filter.\n\nI think it\u0027s simplest, implementation-wise, to have `internalDrawDeviceWithFilter()` take a color info that replaces the local `filterColorSpace` and type values.\n\nThere are other interactions that will need to be hardened/considered as well. It looks like Graphite\u0027s override of `createDevice` considers the colorspace automatically. I am less sure of what should happen for SkPDFDevice or the other document devices (SVG and XPS).",
+      "range": {
+        "startLine": 726,
+        "startChar": 34,
+        "endLine": 727,
+        "endChar": 56
+      },
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0cdaf23_54429048",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-05T01:38:28Z",
+      "side": 1,
+      "message": "I\u0027ve taken a stab at adding a `SkColorInfo` to `internalDrawDeviceWithFilter`.\n\nI\u0027m not sure I fully understand all the callsites of `internalDrawDeviceWithFilter`: I understand that it\u0027s called for paint filters and backdrop filters and have tried to make the color info I pass in match with the layer\u0027s color space.\n\nI chat with Vasiliy today and we arbitrarily agreed that the filter could be done in the layer\u0027s color space, but it could easily go the other way. For chrome we never need both a custom color space or a backdrop filter at the same time, so we could probably remove it from the public API (though we cannot simply remove the paint and backdrop params due function resolution issues with pointers and nullptr). I agree we should make it still work together internally though.",
+      "parentUuid": "73ee8b03_23373bf3",
       "range": {
         "startLine": 726,
         "startChar": 34,

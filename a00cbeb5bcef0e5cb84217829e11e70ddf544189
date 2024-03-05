@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b27af1e5_ab32f980",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-05T01:38:28Z",
+      "side": 1,
+      "message": "Thanks for the response and suggestions!",
+      "revId": "a00cbeb5bcef0e5cb84217829e11e70ddf544189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f922efc_91776e2d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-05T01:38:28Z",
+      "side": 1,
+      "message": "I\u0027m not sure what to do about this comment, since it\u0027s no longer true (we don\u0027t hard-code `dst`) but still encodes useful information about regular vs backdrop filters.",
+      "range": {
+        "startLine": 723,
+        "startChar": 0,
+        "endLine": 731,
+        "endChar": 79
+      },
+      "revId": "a00cbeb5bcef0e5cb84217829e11e70ddf544189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
