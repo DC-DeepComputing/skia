@@ -87,6 +87,7 @@ bool DawnCaps::onIsTexturable(const TextureInfo& info) const {
         return false;
     }
 
+#if !defined(__EMSCRIPTEN__)
     switch (spec.fFormat) {
         case wgpu::TextureFormat::R8BG8Biplanar420Unorm: {
             if (spec.fAspect == wgpu::TextureAspect::Plane0Only &&
@@ -128,6 +129,7 @@ bool DawnCaps::onIsTexturable(const TextureInfo& info) const {
         default:
             break;
     }
+#endif
 
     auto viewFormat = info.dawnTextureSpec().getViewFormat();
     SkASSERT(info.dawnTextureSpec().fFormat == viewFormat ||
@@ -284,6 +286,7 @@ TextureInfo DawnCaps::getDefaultStorageTextureInfo(SkColorType colorType) const 
 
 SkISize DawnCaps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
                                                const SkISize colorAttachmentDimensions) const {
+#if !defined(__EMSCRIPTEN__)
     // For multiplanar textures, texture->textureInfo() uses the format of planes instead of
     // textures (R8, R8G8, vs R8BG8Biplanar420Unorm), so we have to query texture format from
     // wgpu::Texture object, and then use it reconstruct the full dimensions.
@@ -294,6 +297,7 @@ SkISize DawnCaps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
         return SkISize::Make(colorAttachmentDimensions.width() * 2,
                              colorAttachmentDimensions.height() * 2);
     }
+#endif
 
     return colorAttachmentDimensions;
 }
