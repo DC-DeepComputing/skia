@@ -33,6 +33,24 @@
       "message": "nit: probably shouldn\u0027t be necessary, but fine if it is",
       "revId": "eb1413ef38d391064ea9c18e213c6be8287b64fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a87a81ed_227b7b10",
+        "filename": "bazel/external/icu4x/Cargo.toml",
+        "patchSetId": 10
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-05T17:59:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5745a5a5_ac05e6ca",
+      "revId": "eb1413ef38d391064ea9c18e213c6be8287b64fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
