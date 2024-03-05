@@ -33,6 +33,24 @@
       "message": "Do we know what is going on with `pdf_never_embed`? It looks like it\u0027s one of the few to use that specific font. Is it being rejected by fontations for some reason?",
       "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64db9920_7c713ba5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:22:26Z",
+      "side": 1,
+      "message": "Well, not rejected but perhaps the typeface is created but the glyphs aren\u0027t drawing?",
+      "parentUuid": "f720882d_cfff5788",
+      "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
