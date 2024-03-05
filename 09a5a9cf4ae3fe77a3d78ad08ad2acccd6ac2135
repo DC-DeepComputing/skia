@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "865a76f2_0a4e5888",
+        "filename": "public.bzl",
+        "patchSetId": 20
+      },
+      "lineNbr": 2588,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:50:13Z",
+      "side": 1,
+      "message": "No, I think this is perhaps a rebase artifact? I don\u0027t think I changed this. I\u0027ll remove it.",
+      "parentUuid": "886a9155_320147a3",
+      "revId": "09a5a9cf4ae3fe77a3d78ad08ad2acccd6ac2135",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50410c14_f3f30ce2",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-05T20:30:50Z",
       "side": 1,
       "message": "nit: my eyes are sad that this many logically similar characters do not line up in columns.",
+      "revId": "09a5a9cf4ae3fe77a3d78ad08ad2acccd6ac2135",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45e918c0_82549e32",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 20
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-05T20:50:13Z",
+      "side": 1,
+      "message": "I let `rustfmt` decide, but I hope you find it prettier now. 🌷🌼",
+      "parentUuid": "50410c14_f3f30ce2",
       "revId": "09a5a9cf4ae3fe77a3d78ad08ad2acccd6ac2135",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
