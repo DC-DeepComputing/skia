@@ -34,6 +34,24 @@
       "parentUuid": "18ea2e5a_29b937a1",
       "revId": "4c20d8d5e42b09ad3b76d51050d02a06e0149f73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed2b973d_c5a32f7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-05T16:12:19Z",
+      "side": 1,
+      "message": "Yes, once I looked at the math - the new code is definitely more correct (actually adding 1/2 before the shift, rather than a fixed amount that\u0027s wrong for some shift values). And yes - it did change some non-AA rendering results (hence the guard for chromium).",
+      "parentUuid": "3ee0fddf_1892590b",
+      "revId": "4c20d8d5e42b09ad3b76d51050d02a06e0149f73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
