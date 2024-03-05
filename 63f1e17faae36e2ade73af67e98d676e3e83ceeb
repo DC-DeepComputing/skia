@@ -16,6 +16,24 @@
       "message": "There is nothing wrong with this CL, but I honestly don\u0027t think it adds any value to convert `foo.size()` to `!foo.empty()` across Skia. I don\u0027t know why Google3 enforces `readability-container-size-empty`, but Skia doesn\u0027t, and I don\u0027t think there is any reason why we would want to adopt it. The value-add of enforcing `readability-container-size-empty` is near zero. Almost anything is a better use of your time. If anything, we should try to silence that warning in Google3.",
       "revId": "63f1e17faae36e2ade73af67e98d676e3e83ceeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f33870c2_33706b5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-05T12:53:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3e864420_be712d24",
+      "revId": "63f1e17faae36e2ade73af67e98d676e3e83ceeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
