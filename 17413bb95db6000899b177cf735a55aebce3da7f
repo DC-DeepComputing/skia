@@ -16,6 +16,23 @@
       "message": "Thanks for the review and help with this. Glad we have that in. I might have some questions on how we can make sure that we see new Fontations bot results. I was perhaps expecting some new additional GMs to have changes already?",
       "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f720882d_cfff5788",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-05T20:20:58Z",
+      "side": 1,
+      "message": "Do we know what is going on with `pdf_never_embed`? It looks like it\u0027s one of the few to use that specific font. Is it being rejected by fontations for some reason?",
+      "revId": "17413bb95db6000899b177cf735a55aebce3da7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
