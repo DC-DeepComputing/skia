@@ -119,9 +119,6 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fShouldPersistentlyMapCpuToGpuBuffers = false;
     }
 
-    this->initFormatTable(vkInterface, physDev, physDevProperties);
-    this->initDepthStencilFormatTable(vkInterface, physDev, physDevProperties);
-
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
         this->applyDriverCorrectnessWorkarounds(physDevProperties);
     }
@@ -156,6 +153,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fSupportsDeviceFaultInfo = true;
     }
 
+    this->initFormatTable(vkInterface, physDev, physDevProperties);
+    this->initDepthStencilFormatTable(vkInterface, physDev, physDevProperties);
     this->finishInitialization(contextOptions);
 }
 
