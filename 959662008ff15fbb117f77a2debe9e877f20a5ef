@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b0c5475_61bb81a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-06T20:01:13Z",
+      "side": 1,
+      "message": "Looks like it\u0027s used in Chromium: https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/harfbuzz_font_skia.cc;drc\u003ddce85e1beb854602b584e2a3880532cde868dc5a;l\u003d142",
+      "revId": "959662008ff15fbb117f77a2debe9e877f20a5ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
