@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "daac3659_08448384",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-06T21:10:05Z",
+      "side": 1,
+      "message": "Ech, after reading though this, this isn\u0027t entirely true. This is also to ensure that the font scales linearly by not automatically applying optical sizing based on what \"size\" CoreText thinks the CTFontDescriptor is. Also this turns off the automatic application of `trak` so we can get real metrics.\n\nI think the proper documentation here might be that \"This function attempts to resize a CTFont without inadvertently changing unrelated properties, like the optical size or relative glyph metrics.\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 5,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c3fab989_a156fef1",
@@ -31,6 +54,69 @@
       "writtenOn": "2024-03-06T21:00:37Z",
       "side": 1,
       "message": "Not sure what a \"noop\" version would look like. Should we checkin a file with that impl too, or leave it for the future?",
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fff1e1d_297a6d33",
+        "filename": "public.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2021,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-06T21:10:05Z",
+      "side": 1,
+      "message": "Turns out that `_legacy` isn\u0027t really appropriate here. I think we do need this still. Just the way this exists now happens to also fix the old 10.11 issue, but it still needed on modern macOS as well.\n\nAlso, this might make sense to put in `src/utils/mac/`, to live with `SkCTFont.cpp`. That would also fix staging issues, since adding this to `src/utils/mac/BUILD.bazel` and therefore to `gn/utils.gni` means that Chromium would automatically pick up the new file.",
+      "range": {
+        "startLine": 2021,
+        "startChar": 38,
+        "endLine": 2021,
+        "endChar": 45
+      },
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d034db6_e139b02f",
+        "filename": "src/ports/SkCTFontCreateExactCopy_legacy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-06T21:10:05Z",
+      "side": 1,
+      "message": "Should pull in this header `src/utils/mac/SkUniqueCFRef.h`.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 13
+      },
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "193e3483_52dce8bd",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-06T21:10:05Z",
+      "side": 1,
+      "message": "Before this it would be good to state clearly what this does, since it is supposed to be implemented by an external user.\n\n\"This function attempts to resize a CTFont without inadvertently changing unrelated properties, like the optical size, relative glyph metrics, or the underlying font data used.\"",
       "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
