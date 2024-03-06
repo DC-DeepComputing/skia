@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74fc36f6_0f0cb901",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-06T20:02:08Z",
+      "side": 1,
+      "message": "osx is deprecated. Please keep this as macos\nhttps://github.com/bazelbuild/platforms/blob/6b04b816a0edc09e1a3ad4a094177e181a2a1803/os/BUILD#L70-L74",
+      "range": {
+        "startLine": 65,
+        "startChar": 24,
+        "endLine": 65,
+        "endChar": 27
+      },
+      "revId": "1860aafd95568480f84c6a121095bf8d880cdf0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
