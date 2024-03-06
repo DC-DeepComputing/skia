@@ -8,7 +8,9 @@
 #ifndef skgpu_graphite_DescriptorTypes_DEFINED
 #define skgpu_graphite_DescriptorTypes_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "src/base/SkEnumBitMask.h"
+#include "src/gpu/graphite/Sampler.h"
 
 namespace skgpu::graphite {
 
@@ -35,19 +37,22 @@ enum class PipelineStageFlags : uint8_t {
 SK_MAKE_BITMASK_OPS(PipelineStageFlags);
 
 struct DescriptorData {
-    DescriptorData(DescriptorType descType,
-                   uint32_t descCount,
+    DescriptorData(DescriptorType type,
+                   uint32_t count,
                    int bindingIdx,
-                   SkEnumBitMask<PipelineStageFlags> stageFlags)
-            : type (descType)
-            , count (descCount)
-            , bindingIndex (bindingIdx)
-            , pipelineStageFlags(stageFlags) {}
+                   SkEnumBitMask<PipelineStageFlags> stageFlags,
+                   std::vector<const Sampler*> immutableSamplers = {})
+            : fType (type)
+            , fCount (count)
+            , fBindingIndex (bindingIdx)
+            , fPipelineStageFlags(stageFlags)
+            , fImmutableSamplers(immutableSamplers) {}
 
-    DescriptorType type;
-    uint32_t count;
-    int bindingIndex;
-    SkEnumBitMask<PipelineStageFlags> pipelineStageFlags;
+    DescriptorType fType;
+    uint32_t fCount;
+    int fBindingIndex;
+    SkEnumBitMask<PipelineStageFlags> fPipelineStageFlags;
+    const std::vector<const Sampler*> fImmutableSamplers;
 };
 
 };  // namespace skgpu::graphite

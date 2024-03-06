@@ -251,7 +251,8 @@ sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
 
 sk_sp<Sampler> MtlResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
                                                   SkTileMode xTileMode,
-                                                  SkTileMode yTileMode) {
+                                                  SkTileMode yTileMode
+                                                  const std::vector<uint32_t>& extraBackendDesc) {
     return MtlSampler::Make(this->mtlSharedContext(), samplingOptions, xTileMode, yTileMode);
 }
 
