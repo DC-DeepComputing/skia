@@ -2018,6 +2018,7 @@ GL_SRCS_IOS = base_gl_srcs + [
 
 PORTS_SRCS_IOS = [
     "src/ports/SkDebug_stdio.cpp",
+    "src/ports/SkCTFontCreateExactCopy_legacy.cpp",
     "src/ports/SkFontMgr_custom.h",
     "src/ports/SkFontMgr_mac_ct.cpp",
     "src/ports/SkGlobalInitialization_default.cpp",

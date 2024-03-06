@@ -437,6 +437,7 @@ optional("fontmgr_mac_ct") {
     "include/ports/SkTypeface_mac.h",
   ]
   sources = [
+    "src/ports/SkCTFontCreateExactCopy_legacy.cpp",
     "src/ports/SkFontMgr_mac_ct.cpp",
     "src/ports/SkScalerContext_mac_ct.cpp",
     "src/ports/SkScalerContext_mac_ct.h",

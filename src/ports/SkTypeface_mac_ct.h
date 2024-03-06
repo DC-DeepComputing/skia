@@ -55,6 +55,10 @@ struct CTFontVariation {
     OpszVariation opsz;
 };
 
+/*
+ *  This function lives in separate file(s) since its behavior may change
+ *  based on platform / os-compatibility / client-policy
+ */
 SkUniqueCFRef<CTFontRef> SkCTFontCreateExactCopy(CTFontRef baseFont, CGFloat textSize,
                                                  OpszVariation opsz);
 
