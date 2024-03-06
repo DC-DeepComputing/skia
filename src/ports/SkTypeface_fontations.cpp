@@ -193,7 +193,9 @@ void SkTypeface_Fontations::onGetFamilyName(SkString* familyName) const {
 bool SkTypeface_Fontations::onGetPostScriptName(SkString* postscriptName) const {
     rust::String readPsName;
     if (fontations_ffi::postscript_name(*fBridgeFontRef, readPsName)) {
-        *postscriptName = SkString(readPsName.data(), readPsName.size());
+        if (postscriptName) {
+            *postscriptName = SkString(readPsName.data(), readPsName.size());
+        }
         return true;
     }
 
