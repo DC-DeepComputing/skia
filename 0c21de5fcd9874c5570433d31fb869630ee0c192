@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dcffc853_e626b350",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-06T15:19:47Z",
+      "side": 1,
+      "message": "We would need someone to work on PDF.\n\nCurrently the model in Skia\u0027s PDF emitter is that the PDF itself is always in sRGB (the PDF viewer of course can map that into any color space it wants when rendering the PDF). Recently I managed to get the color profiles of images into the PDF. That\u0027s the extent of color profiles in PDF at the moment.\n\nAs for layers, I believe that\u0027s all handled by `SkPDFDevice::createDevice` and `SkPDFDevice::drawDevice`. We try to return a PDF backed device, but if the layer paint has an image filter or color filter on it the layer device is currently a very default bitmap device which `drawDevice` will essentially treat like any other bitmap image draw.\n\nIf it\u0027s just a matter of tagging the layers with a color space, PDF can do that, but someone would need to make that work. For testing we would probably want a gm that does what this `Canvas_saveLayer_colorSpace` test does so one can take a look at the PDF output (and also test all the other configurations, like gpu and serialization).",
+      "parentUuid": "e5e66ce3_87e96c2b",
+      "revId": "0c21de5fcd9874c5570433d31fb869630ee0c192",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1a6b5ef_50845533",
         "filename": "include/core/SkCanvas.h",
         "patchSetId": 7
