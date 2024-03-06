@@ -428,16 +428,11 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
             textureShaderCache SK_GUARDED_BY(cacheLock) {/*maxCount=*/5};
     static const auto makeTextureEffect = [](SkISize maxKernelSize) {
         return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-            SkStringPrintf("const int kMaxKernelWidth = %d;"
-                           "const int kMaxKernelHeight = %d;"
-                           "uniform shader kernel;"
+            SkStringPrintf("uniform shader kernel;"
                            "uniform half2 innerGainAndBias;"
                            "%s" // kHeaderSkSL
-                                   "for (int y = 0; y < kMaxKernelHeight; ++y) {"
-                                       "if (y >= size.y) { break; }"
-                                       "for (int x = 0; x < kMaxKernelWidth; ++x) {"
-                                           "if (x >= size.x) { break; }"
-
+                                   "for (int y = 0; y < size.y; ++y) {"
+                                       "for (int x = 0; x < size.x; ++x) {"
                                            "int2 kernelPos = int2(x,y);"
                                            "half k = kernel.eval(half2(kernelPos) + 0.5).a;"
                                            "k = k * innerGainAndBias.x + innerGainAndBias.y;"
@@ -445,8 +440,8 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
                                        "}"
                                    "}"
                                "%s", // kFooterSkSL
-                               maxKernelSize.fWidth, maxKernelSize.fHeight,
-                               kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str());
+                           kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str(),
+                           SkRuntimeEffectPriv::ES3Options());
     };
 
 
