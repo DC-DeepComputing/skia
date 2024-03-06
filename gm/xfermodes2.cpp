@@ -22,12 +22,80 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/utils/SkTextUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
 #include <stdint.h>
 #include <string.h>
+
+static sk_sp<SkBlender> color_dodge() {
+    auto [effect, error] = SkRuntimeEffect::MakeForBlender(SkString(R"(
+half guarded_divide(half n, half d) {
+    return n / d;
+}
+
+half color_dodge_component(half2 s, half2 d) {
+    if (d.x == 0) {
+        return s.x*(1 - d.y);
+    } else {
+        half delta = s.y - s.x;
+        if (delta == 0) {
+            return s.y*d.y + s.x*(1 - d.y) + d.x*(1 - s.y);
+        } else {
+            delta = min(d.y, guarded_divide(d.x*s.y, delta));
+            return delta*s.y + s.x*(1 - d.y) + d.x*(1 - s.y);
+        }
+    }
+}
+
+half4 blend_color_dodge(half4 src, half4 dst) {
+    return half4(color_dodge_component(src.ra, dst.ra),
+                 color_dodge_component(src.ga, dst.ga),
+                 color_dodge_component(src.ba, dst.ba),
+                 src.a + (1 - src.a)*dst.a);
+}
+
+half4 main(half4 src, half4 dst) {
+    return blend_color_dodge(src, dst);
+}
+    )"));
+    SkASSERT(effect);
+    return effect->makeBlender(nullptr);
+}
+
+static sk_sp<SkBlender> color_burn() {
+    auto [effect, error] = SkRuntimeEffect::MakeForBlender(SkString(R"(
+half guarded_divide(half n, half d) {
+    return n / d;
+}
+
+half color_burn_component(half2 s, half2 d) {
+    if (d.y == d.x) {
+        return s.y*d.y + s.x*(1 - d.y) + d.x*(1 - s.y);
+    } else if (s.x == 0) {
+        return d.x*(1 - s.y);
+    } else {
+        half delta = max(0, d.y - guarded_divide((d.y - d.x)*s.y, s.x));
+        return delta*s.y + s.x*(1 - d.y) + d.x*(1 - s.y);
+    }
+}
+
+half4 blend_color_burn(half4 src, half4 dst) {
+    return half4(color_burn_component(src.ra, dst.ra),
+                 color_burn_component(src.ga, dst.ga),
+                 color_burn_component(src.ba, dst.ba),
+                 src.a + (1 - src.a)*dst.a);
+}
+
+half4 main(half4 src, half4 dst) {
+    return blend_color_burn(src, dst);
+}
+    )"));
+    SkASSERT(effect);
+    return effect->makeBlender(nullptr);
+}
 
 namespace skiagm {
 
@@ -50,12 +118,9 @@ protected:
 
         SkFont font = ToolUtils::DefaultPortableFont();
 
-        const int W = 6;
-
         SkScalar x = 0, y = 0;
-        for (size_t m = 0; m < kSkBlendModeCount; m++) {
-            SkBlendMode mode = static_cast<SkBlendMode>(m);
-
+        for (SkBlendMode mode : {SkBlendMode::kColorBurn, SkBlendMode::kColorDodge})
+        for (bool useRuntime : {false, true}) {
             canvas->save();
 
             canvas->translate(x, y);
@@ -71,16 +136,14 @@ protected:
             p.setShader(fDst);
             canvas->drawRect(r, p);
             p.setShader(fSrc);
-            p.setBlendMode(mode);
+            if (useRuntime) {
+                p.setBlender(mode == SkBlendMode::kColorBurn ? color_burn() : color_dodge());
+            } else {
+                p.setBlendMode(mode);
+            }
             canvas->drawRect(r, p);
 
             canvas->restore();
-
-            r.inset(-SK_ScalarHalf, -SK_ScalarHalf);
-            p.setStyle(SkPaint::kStroke_Style);
-            p.setShader(nullptr);
-            p.setBlendMode(SkBlendMode::kSrcOver);
-            canvas->drawRect(r, p);
 
             canvas->restore();
 
@@ -89,10 +152,6 @@ protected:
                                     SkTextUtils::kCenter_Align);
 #endif
             x += w + SkIntToScalar(10);
-            if ((m % W) == W - 1) {
-                x = 0;
-                y += h + SkIntToScalar(30);
-            }
         }
     }
 
