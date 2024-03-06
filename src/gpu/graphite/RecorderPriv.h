@@ -30,6 +30,8 @@ public:
 
     const Caps* caps() const { return fRecorder->fSharedContext->caps(); }
 
+    const SharedContext* sharedContext() { return fRecorder->fSharedContext.get(); }
+
     ResourceProvider* resourceProvider() { return fRecorder->fResourceProvider.get(); }
 
     const RuntimeEffectDictionary* runtimeEffectDictionary() const {
