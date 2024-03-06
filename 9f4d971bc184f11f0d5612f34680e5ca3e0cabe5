@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da65105e_da2ce486",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-06T00:59:50Z",
+      "side": 1,
+      "message": "Thank you for the continued reviews! I see a message about updating `relnotes`, is this something I need to do for this change?",
+      "revId": "9f4d971bc184f11f0d5612f34680e5ca3e0cabe5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

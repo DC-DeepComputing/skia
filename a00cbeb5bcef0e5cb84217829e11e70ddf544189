@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea7bfc7e_390eb0e2",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-06T00:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc270939_9914ee7a",
+      "revId": "a00cbeb5bcef0e5cb84217829e11e70ddf544189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f922efc_91776e2d",
@@ -82,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a4ce00b_188067fb",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-06T00:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad17a62c_6b09bea4",
+      "range": {
+        "startLine": 723,
+        "startChar": 0,
+        "endLine": 731,
+        "endChar": 79
+      },
+      "revId": "a00cbeb5bcef0e5cb84217829e11e70ddf544189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f72300b4_c3297bbc",
@@ -105,6 +147,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07a48db0_5750e5a2",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1296,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-06T00:59:50Z",
+      "side": 1,
+      "message": "Good catch",
+      "parentUuid": "f72300b4_c3297bbc",
+      "range": {
+        "startLine": 1296,
+        "startChar": 85,
+        "endLine": 1296,
+        "endChar": 164
+      },
+      "revId": "a00cbeb5bcef0e5cb84217829e11e70ddf544189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7a9573f_d0898081",
@@ -118,6 +184,30 @@
       "writtenOn": "2024-03-05T21:45:06Z",
       "side": 1,
       "message": "Can you add a comment that this is equivalent to using the rec.fColorSpace?",
+      "range": {
+        "startLine": 1389,
+        "startChar": 43,
+        "endLine": 1389,
+        "endChar": 78
+      },
+      "revId": "a00cbeb5bcef0e5cb84217829e11e70ddf544189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b28c51d_0ab31240",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 18419
+      },
+      "writtenOn": "2024-03-06T00:59:50Z",
+      "side": 1,
+      "message": "Done. Let me know if you have a precise spelling you prefer.",
+      "parentUuid": "a7a9573f_d0898081",
       "range": {
         "startLine": 1389,
         "startChar": 43,
