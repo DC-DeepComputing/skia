@@ -43,49 +43,6 @@ static void getGlyphPositions(const SkFont& font, const uint16_t glyphs[],
     }
 }
 
-static void applyKerning(SkPoint pos[], const int32_t adjustments[], int count,
-                         const SkFont& font) {
-    SkScalar scale = font.getSize() / font.getTypeface()->getUnitsPerEm();
-
-    SkScalar globalAdj = 0;
-    for (int i = 0; i < count - 1; ++i) {
-        globalAdj += adjustments[i] * scale;
-        pos[i + 1].fX += globalAdj;
-    }
-}
-
-static void drawKernText(SkCanvas* canvas, const void* text, size_t len,
-                         SkScalar x, SkScalar y, const SkFont& font, const SkPaint& paint) {
-    SkTypeface* face = font.getTypeface();
-    if (!face) {
-        canvas->drawSimpleText(text, len, SkTextEncoding::kUTF8, x, y, font, paint);
-        return;
-    }
-
-    AutoSTMalloc<128, uint16_t> glyphStorage(len);
-    uint16_t* glyphs = glyphStorage.get();
-    int glyphCount = font.textToGlyphs(text, len, SkTextEncoding::kUTF8, glyphs, len);
-    if (glyphCount < 1) {
-        return;
-    }
-
-    AutoSTMalloc<128, int32_t> adjustmentStorage(glyphCount - 1);
-    int32_t* adjustments = adjustmentStorage.get();
-    if (!face->getKerningPairAdjustments(glyphs, glyphCount, adjustments)) {
-        canvas->drawSimpleText(text, len, SkTextEncoding::kUTF8, x, y, font, paint);
-        return;
-    }
-
-
-    SkTextBlobBuilder builder;
-    auto rec = builder.allocRunPos(font, glyphCount);
-    memcpy(rec.glyphs, glyphs, glyphCount * sizeof(SkGlyphID));
-    getGlyphPositions(font, glyphs, glyphCount, x, y, rec.points());
-    applyKerning(rec.points(), adjustments, glyphCount, font);
-
-    canvas->drawTextBlob(builder.make(), 0, 0, paint);
-}
-
 static constexpr SkFontStyle gStyles[] = {
     SkFontStyle::Normal(),
     SkFontStyle::Bold(),
@@ -98,10 +55,9 @@ constexpr int gStylesCount = std::size(gStyles);
 // TODO(bungeman) delete this GM, as it is no longer useful.
 class TypefaceStylesGM : public skiagm::GM {
     sk_sp<SkTypeface> fFaces[gStylesCount];
-    bool fApplyKerning;
 
 public:
-    TypefaceStylesGM(bool applyKerning) : fApplyKerning(applyKerning) {}
+    TypefaceStylesGM() {}
 
 protected:
     void onOnceBeforeDraw() override {
@@ -111,11 +67,7 @@ protected:
     }
 
     SkString getName() const override {
-        SkString name("typefacestyles");
-        if (fApplyKerning) {
-            name.append("_kerning");
-        }
-        return name;
+        return SkString("typefacestyles");
     }
 
     SkISize getISize() override { return SkISize::Make(640, 480); }
@@ -125,7 +77,7 @@ protected:
         SkFont font = ToolUtils::DefaultFont();
         font.setSize(30);
 
-        const char* text = fApplyKerning ? "Type AWAY" : "Hamburgefons";
+        const char* text = "Hamburgefons";
         const size_t textLen = strlen(text);
 
         SkScalar x = SkIntToScalar(10);
@@ -133,20 +85,13 @@ protected:
         SkASSERT(dy > 0);
         SkScalar y = dy;
 
-        if (fApplyKerning) {
-            font.setSubpixel(true);
-        } else {
-            font.setLinearMetrics(true);
-        }
+        font.setLinearMetrics(true);
 
         SkPaint paint;
         for (int i = 0; i < gStylesCount; i++) {
             SkASSERT(fFaces[i]);
             font.setTypeface(fFaces[i]);
             canvas->drawSimpleText(text, textLen, SkTextEncoding::kUTF8, x, y, font, paint);
-            if (fApplyKerning) {
-                drawKernText(canvas, text, textLen, x + 240, y, font, paint);
-            }
             y += dy;
         }
     }
@@ -155,8 +100,7 @@ private:
     using INHERITED = skiagm::GM;
 };
 
-DEF_GM( return new TypefaceStylesGM(false); )
-DEF_GM( return new TypefaceStylesGM(true); )
+DEF_GM( return new TypefaceStylesGM(); )
 
 ////////////////////////////////////////////////////////////////////////////////
 

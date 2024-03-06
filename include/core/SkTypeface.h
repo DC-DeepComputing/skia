@@ -227,29 +227,6 @@ public:
      */
     int getUnitsPerEm() const;
 
-    /**
-     *  Given a run of glyphs, return the associated horizontal adjustments.
-     *  Adjustments are in "design units", which are integers relative to the
-     *  typeface's units per em (see getUnitsPerEm).
-     *
-     *  Some typefaces are known to never support kerning. Calling this method
-     *  with all zeros (e.g. getKerningPairAdustments(NULL, 0, NULL)) returns
-     *  a boolean indicating if the typeface might support kerning. If it
-     *  returns false, then it will always return false (no kerning) for all
-     *  possible glyph runs. If it returns true, then it *may* return true for
-     *  somne glyph runs.
-     *
-     *  If count is non-zero, then the glyphs parameter must point to at least
-     *  [count] valid glyph IDs, and the adjustments parameter must be
-     *  sized to at least [count - 1] entries. If the method returns true, then
-     *  [count-1] entries in the adjustments array will be set. If the method
-     *  returns false, then no kerning should be applied, and the adjustments
-     *  array will be in an undefined state (possibly some values may have been
-     *  written, but none of them should be interpreted as valid values).
-     */
-    bool getKerningPairAdjustments(const SkGlyphID glyphs[], int count,
-                                   int32_t adjustments[]) const;
-
     struct LocalizedString {
         SkString fString;
         SkString fLanguage;
@@ -385,8 +362,6 @@ protected:
     virtual int onCountGlyphs() const = 0;
 
     virtual int onGetUPEM() const = 0;
-    virtual bool onGetKerningPairAdjustments(const SkGlyphID glyphs[], int count,
-                                             int32_t adjustments[]) const;
 
     /** Returns the family name of the typeface as known by its font manager.
      *  This name may or may not be produced by the family name iterator.
