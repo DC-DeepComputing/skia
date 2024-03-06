@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1a5a974_e57501e2",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-06T14:47:49Z",
+      "side": 1,
+      "message": "are_axes ?",
+      "range": {
+        "startLine": 54,
+        "startChar": 22,
+        "endLine": 54,
+        "endChar": 29
+      },
+      "revId": "36ca207eb1d3d3292435e60d652868a76acceca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1087c663_fa895d84",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-06T14:47:49Z",
+      "side": 1,
+      "message": "Not 0,1 ?",
+      "range": {
+        "startLine": 70,
+        "startChar": 47,
+        "endLine": 70,
+        "endChar": 50
+      },
+      "revId": "36ca207eb1d3d3292435e60d652868a76acceca6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
