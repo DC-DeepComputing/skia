@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb02c9f_e960ca0e",
+        "filename": "public.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 2040,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-06T23:05:26Z",
+      "side": 1,
+      "message": "Now that this is over here, it looks like `SkCTFontCreateExactCopy` should be declared in a `SkCTFontCreateExactCopy.h` (much like `SkCTFont.h`).",
+      "revId": "981799d540a02b93638c31b825f64748e2194d38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
