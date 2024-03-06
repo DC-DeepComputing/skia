@@ -364,19 +364,21 @@ static void draw_typeface_rendering_gm(SkCanvas* canvas, sk_sp<SkTypeface> face,
         }
     }
 }
+#include "include/core/SkFontMgr.h"
 
 DEF_SIMPLE_GM_CAN_FAIL(typefacerendering, canvas, errMsg, 640, 840) {
-    sk_sp<SkTypeface> face = ToolUtils::CreateTypefaceFromResource("fonts/hintgasp.ttf");
+    //sk_sp<SkTypeface> face = ToolUtils::CreateTypefaceFromResource("fonts/hintgasp.ttf");
+    sk_sp<SkTypeface> face = ToolUtils::TestFontMgr()->makeFromFile("/usr/local/google/home/bungeman/src/freetype2-testing/fuzzing/corpora/cidtype1/bungeman/HangingS_hex.cid");
     if (!face) {
         return skiagm::DrawResult::kSkip;
     }
-    draw_typeface_rendering_gm(canvas, face, face->unicharToGlyph('A'));
+    draw_typeface_rendering_gm(canvas, face, 83);
 
     // Should draw nothing and not do anything undefined.
     draw_typeface_rendering_gm(canvas, face, 0xFFFF);
     return skiagm::DrawResult::kOk;
 }
-
+/*
 // Type1 fonts don't currently work in Skia on Windows.
 #ifndef SK_BUILD_FOR_WIN
 
@@ -399,7 +401,7 @@ DEF_SIMPLE_GM_CAN_FAIL(typefacerendering_pfb, canvas, errMsg, 640, 840) {
 }
 
 #endif
-
+*/
 ////////////////////////////////////////////////////////////////////////////////
 
 // Exercise different paint styles and embolden, and compare with strokeandfill patheffect
