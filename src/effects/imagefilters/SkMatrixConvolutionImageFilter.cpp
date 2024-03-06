@@ -426,18 +426,24 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
     static SkMutex cacheLock;
     static SkLRUCache<SkISize, sk_sp<SkRuntimeEffect>>
             textureShaderCache SK_GUARDED_BY(cacheLock) {/*maxCount=*/5};
+
+    // The static loop variable version all the backends would fail with:
+    //           SkRuntimeEffectPriv.h:172: fatal error: "error: program is too large
+    // for the following combinations:
+    //        filterWidth == 8 && filterHeight >= 256
+    //        filterWidth == 16 && filterHeight >= 128
+    //        filterWidth == 32 && filterHeight >= 64
+    //        filterWidth == 64 && filterHeight >= 32
+    //        filterWidth == 128 && filterHeight >= 16
+    //        filterWidth >= 256
+    // So, any kernel with >= 2048 values.
     static const auto makeTextureEffect = [](SkISize maxKernelSize) {
         return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-            SkStringPrintf("const int kMaxKernelWidth = %d;"
-                           "const int kMaxKernelHeight = %d;"
-                           "uniform shader kernel;"
+            SkStringPrintf("uniform shader kernel;"
                            "uniform half2 innerGainAndBias;"
                            "%s" // kHeaderSkSL
-                                   "for (int y = 0; y < kMaxKernelHeight; ++y) {"
-                                       "if (y >= size.y) { break; }"
-                                       "for (int x = 0; x < kMaxKernelWidth; ++x) {"
-                                           "if (x >= size.x) { break; }"
-
+                                   "for (int y = 0; y < size.y; ++y) {"
+                                       "for (int x = 0; x < size.x; ++x) {"
                                            "int2 kernelPos = int2(x,y);"
                                            "half k = kernel.eval(half2(kernelPos) + 0.5).a;"
                                            "k = k * innerGainAndBias.x + innerGainAndBias.y;"
@@ -445,8 +451,8 @@ static sk_sp<SkRuntimeEffect> get_runtime_effect(int texWidth, int texHeight) {
                                        "}"
                                    "}"
                                "%s", // kFooterSkSL
-                               maxKernelSize.fWidth, maxKernelSize.fHeight,
-                               kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str());
+                           kHeaderSkSL, kAccumulateSkSL, kFooterSkSL).c_str(),
+                           SkRuntimeEffectPriv::ES3Options());
     };
 
 
