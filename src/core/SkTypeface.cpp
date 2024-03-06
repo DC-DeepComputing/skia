@@ -435,20 +435,6 @@ int SkTypeface::getUnitsPerEm() const {
     return this->onGetUPEM();
 }
 
-bool SkTypeface::getKerningPairAdjustments(const uint16_t glyphs[], int count,
-                                           int32_t adjustments[]) const {
-    SkASSERT(count >= 0);
-    // check for the only legal way to pass a nullptr.. everything is 0
-    // in which case they just want to know if this face can possibly support
-    // kerning (true) or never (false).
-    if (nullptr == glyphs || nullptr == adjustments) {
-        SkASSERT(nullptr == glyphs);
-        SkASSERT(0 == count);
-        SkASSERT(nullptr == adjustments);
-    }
-    return this->onGetKerningPairAdjustments(glyphs, count, adjustments);
-}
-
 SkTypeface::LocalizedStrings* SkTypeface::createFamilyNameIterator() const {
     return this->onCreateFamilyNameIterator();
 }
@@ -485,11 +471,6 @@ std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface::getAdvancedMetrics() cons
         }
     }
     return result;
-}
-
-bool SkTypeface::onGetKerningPairAdjustments(const uint16_t glyphs[], int count,
-                                             int32_t adjustments[]) const {
-    return false;
 }
 
 std::unique_ptr<SkStreamAsset> SkTypeface::onOpenExistingStream(int* ttcIndex) const {
