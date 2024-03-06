@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5e3a1370_2d199fce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-03-06T22:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daac3659_08448384",
+      "range": {
+        "startLine": 10,
+        "startChar": 5,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c3fab989_a156fef1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -99,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba82fc0d_7f5fd347",
+        "filename": "public.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2021,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-03-06T22:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fff1e1d_297a6d33",
+      "range": {
+        "startLine": 2021,
+        "startChar": 38,
+        "endLine": 2021,
+        "endChar": 45
+      },
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d034db6_e139b02f",
@@ -122,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54371e1b_b5723a28",
+        "filename": "src/ports/SkCTFontCreateExactCopy_legacy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-03-06T22:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d034db6_e139b02f",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 13
+      },
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "193e3483_52dce8bd",
@@ -135,6 +207,24 @@
       "writtenOn": "2024-03-06T21:10:05Z",
       "side": 1,
       "message": "Before this it would be good to state clearly what this does, since it is supposed to be implemented by an external user.\n\n\"This function attempts to resize a CTFont without inadvertently changing unrelated properties, like the optical size, relative glyph metrics, or the underlying font data used.\"",
+      "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f71693a_ffbedde3",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-03-06T22:36:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "193e3483_52dce8bd",
       "revId": "a9caf6d3ea1c2e9324a11efa851c6f05abcd8eea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
