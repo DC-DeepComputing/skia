@@ -17,7 +17,6 @@ namespace skgpu::graphite {
 
 SmallPathAtlas::SmallPathAtlas(Recorder* recorder)
         : PathAtlas(recorder, kDefaultAtlasDim, kDefaultAtlasDim) {
-    SkASSERT(fRecorder);
     static constexpr size_t kPlotWidth = 512;
     static constexpr size_t kPlotHeight = 256;
     static constexpr SkColorType colorType = kAlpha_8_SkColorType;
@@ -30,19 +29,11 @@ SmallPathAtlas::SmallPathAtlas(Recorder* recorder)
                                  DrawAtlas::AllowMultitexturing::kYes,
                                  this,
                                  /*label=*/"SmallPathAtlas");
-    SkASSERT(fDrawAtlas);
     fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
-    for (int i = 0; i < fKeyLists.size(); ++i) {
-        fKeyLists[i].reset();
-    }
 }
 
 bool SmallPathAtlas::recordUploads(DrawContext* dc) {
     return fDrawAtlas->recordUploads(dc, fRecorder);
-}
-
-void SmallPathAtlas::postFlush() {
-    fDrawAtlas->compact(fRecorder->priv().tokenTracker()->nextFlushToken());
 }
 
 namespace {
@@ -62,21 +53,27 @@ const TextureProxy* SmallPathAtlas::onAddShape(const Shape& shape,
     AtlasLocator* cachedLocator = fShapeCache.find(maskKey);
     if (cachedLocator) {
         SkIPoint topLeft = cachedLocator->topLeft();
-        *outPos = skvx::half2(topLeft.x(), topLeft.y());
+        *outPos = skvx::half2(topLeft.x() + kEntryPadding, topLeft.y() + kEntryPadding);
+        fDrawAtlas->setLastUseToken(*cachedLocator,
+                                    fRecorder->priv().tokenTracker()->nextFlushToken());
         return fDrawAtlas->getProxies()[cachedLocator->pageIndex()].get();
     }
 
     // Render mask.
     // TODO: Render directly into the atlas backing store, rather than doing a copy.
     //       This will require some refactoring of DrawAtlas.
+    SkIRect iShapeBounds = SkIRect::MakeXYWH(0, 0, maskSize.x(), maskSize.y());
+    // Outset to take padding into account
+    SkIRect iAtlasBounds = iShapeBounds.makeOutset(kEntryPadding, kEntryPadding);
     SkAutoPixmapStorage dst;
     // Rasterize path to backing pixmap
     RasterMaskHelper helper(&dst);
-    if (!helper.init({maskSize.x(), maskSize.y()})) {
+    if (!helper.init(iAtlasBounds.size())) {
         return nullptr;
     }
-    SkIRect iAtlasBounds = SkIRect::MakeXYWH(0, 0, maskSize.x(), maskSize.y());
-    helper.drawShape(shape, transform, strokeRec, iAtlasBounds);
+    // Offset to padded location
+    iShapeBounds.offset(kEntryPadding, kEntryPadding);
+    helper.drawShape(shape, transform, strokeRec, iShapeBounds);
     sk_sp<SkData> pixelData = dst.detachPixelsAsData();
 
     // Add to DrawAtlas.
@@ -90,7 +87,7 @@ const TextureProxy* SmallPathAtlas::onAddShape(const Shape& shape,
         return nullptr;
     }
     SkIPoint topLeft = locator.topLeft();
-    *outPos = skvx::half2(topLeft.x(), topLeft.y());
+    *outPos = skvx::half2(topLeft.x()+kEntryPadding, topLeft.y()+kEntryPadding);
 
     // Add locator to ShapeCache.
     fShapeCache.set(maskKey, locator);

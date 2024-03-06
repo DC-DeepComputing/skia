@@ -395,7 +395,7 @@ sk_sp<VulkanSamplerYcbcrConversion>
             this->vulkanSharedContext(), ycbcrInfo);
 
     if (Resource* resource = fResourceCache->findAndRefResource(ycbcrConversionKey,
-                                                                skgpu::Budgeted::kNo)) {
+                                                                skgpu::Budgeted::kYes)) {
         return sk_sp<VulkanSamplerYcbcrConversion>(
                 static_cast<VulkanSamplerYcbcrConversion*>(resource));
     }
