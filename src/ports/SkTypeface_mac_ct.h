@@ -55,6 +55,11 @@ struct CTFontVariation {
     OpszVariation opsz;
 };
 
+/*
+ *  This function attempts to resize a CTFont without inadvertently changing
+ *  unrelated properties, like the optical size, relative glyph metrics,
+ *  or the underlying font data used.
+ */
 SkUniqueCFRef<CTFontRef> SkCTFontCreateExactCopy(CTFontRef baseFont, CGFloat textSize,
                                                  OpszVariation opsz);
 
