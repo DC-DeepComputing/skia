@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d503dad_c971c8d0",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8085,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-07T15:22:28Z",
+      "side": 1,
+      "message": "I have the fix in the next CL (refactoring SkUnicode)",
+      "parentUuid": "66f82f84_8ad5d0e8",
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec197aa5_a36d8fca",
@@ -115,6 +133,30 @@
       "side": 1,
       "message": "No, you don\u0027t need to test with either, you need to test both, if both are available. The point is to allow more than one at a time and we need to ensure that we are testing all of them.",
       "parentUuid": "201b2e4f_e6036773",
+      "range": {
+        "startLine": 8128,
+        "startChar": 26,
+        "endLine": 8128,
+        "endChar": 30
+      },
+      "revId": "59482dbcad8c18408791bf49bc3d00b2181eb184",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22e09c6_fe94a212",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 8128,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-07T15:22:28Z",
+      "side": 1,
+      "message": "I have the fix in the next CL (refactoring SkUnicode)",
+      "parentUuid": "20fcb95e_36763962",
       "range": {
         "startLine": 8128,
         "startChar": 26,
