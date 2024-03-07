@@ -19,6 +19,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -102,6 +103,12 @@ public:
     // Get required depth attachment dimensions for a givin color attachment info and dimensions.
     virtual SkISize getDepthAttachmentDimensions(const TextureInfo&,
                                                  const SkISize colorAttachmentDimensions) const;
+
+    virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        // By default, return an empty span containing no additional information. Different
+        // backends can override this method as needed.
+        return {};
+    }
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
