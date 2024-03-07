@@ -1413,7 +1413,10 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     }
 
     PathAtlas* pathAtlas = nullptr;
-    bool msaaSupported = fRecorder->priv().caps()->defaultMSAASamplesCount() > 1;
+    TextureInfo msaaTexInfo =
+                fRecorder->priv().caps()->getDefaultMSAATextureInfo(fDC->target()->textureInfo(),
+                                                                    Discardable::kNo);
+    bool msaaSupported = fRecorder->priv().caps()->isRenderable(msaaTexInfo);
 
     // Prefer compute atlas draws if supported. This currently implicitly filters out clip draws as
     // they require MSAA. Eventually we may want to route clip shapes to the atlas as well but not
