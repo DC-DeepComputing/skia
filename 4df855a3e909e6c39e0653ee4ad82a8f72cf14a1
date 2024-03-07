@@ -22,6 +22,30 @@
       },
       "revId": "4df855a3e909e6c39e0653ee4ad82a8f72cf14a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c5ad004_320edc87",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-07T21:40:03Z",
+      "side": 1,
+      "message": "These are the prefixes of what files to enforce IWYU on. i.e. just the files in src/gpu/[A-G] (but not subdirectories, which have lowercase letters). I\u0027m trying to avoid enforcing IWYU on all of, say, src/gpu/ganesh all at once :sweatgrin:",
+      "parentUuid": "fd4f4d0f_f73a7ebd",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 13
+      },
+      "revId": "4df855a3e909e6c39e0653ee4ad82a8f72cf14a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
