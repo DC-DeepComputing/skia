@@ -22,6 +22,30 @@
       },
       "revId": "94d079ff8ea355fd114f6d7c15d3c6443f3b31da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "452d52d5_5f7e109d",
+        "filename": "resources/sksl/intrinsics/Frexp.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-07T20:58:22Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "4461b24e_f4ed4f3f",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 4
+      },
+      "revId": "94d079ff8ea355fd114f6d7c15d3c6443f3b31da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

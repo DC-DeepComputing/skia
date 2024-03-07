@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83f112f0_a9aac41f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2917,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-07T20:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3748f28a_67744773",
+      "range": {
+        "startLine": 2917,
+        "startChar": 13,
+        "endLine": 2917,
+        "endChar": 34
+      },
+      "revId": "988f3f75e7da88502ba577808dd269d8bdaf81ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04b58796_50af6c37",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-07T19:56:54Z",
       "side": 1,
       "message": "```suggestion\n    // In WGSL, the intrinsic returns a struct; assign it to a local so that its fields can be\n```",
+      "range": {
+        "startLine": 2930,
+        "startChar": 45,
+        "endLine": 2930,
+        "endChar": 48
+      },
+      "revId": "988f3f75e7da88502ba577808dd269d8bdaf81ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c1ee37_c8f25da6",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2930,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-07T20:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04b58796_50af6c37",
       "range": {
         "startLine": 2930,
         "startChar": 45,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b27ba930_2e12f4c9",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2935,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-07T20:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b852761a_a6ed0046",
+      "range": {
+        "startLine": 2935,
+        "startChar": 29,
+        "endLine": 2935,
+        "endChar": 35
+      },
+      "revId": "988f3f75e7da88502ba577808dd269d8bdaf81ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0c1e6bc_39316a16",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-03-07T19:56:54Z",
       "side": 1,
       "message": "Null guard:\n\n```suggestion\n    std::unique_ptr\u003cLValue\u003e lvalue \u003d this-\u003emakeLValue(*call.arguments()[1]);\n    if (!lvalue) {\n        return \"\";\n    }\n```",
+      "range": {
+        "startLine": 2938,
+        "startChar": 0,
+        "endLine": 2938,
+        "endChar": 60
+      },
+      "revId": "988f3f75e7da88502ba577808dd269d8bdaf81ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a62e15dd_0a94afb4",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2938,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-07T20:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0c1e6bc_39316a16",
       "range": {
         "startLine": 2938,
         "startChar": 0,
