@@ -53,6 +53,7 @@ struct FragSkSLInfo {
     int fNumPaintUniforms = 0;
     int fRenderStepUniformsTotalBytes = 0;
     int fPaintUniformsTotalBytes = 0;
+    // TODO: Add some list of ints here that represents "data" that the backends can access.
 };
 
 std::tuple<UniquePaintParamsID, const UniformDataBlock*, const TextureDataBlock*>

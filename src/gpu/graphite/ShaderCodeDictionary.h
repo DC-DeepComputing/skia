@@ -60,8 +60,9 @@ enum class SnippetRequirementFlags : uint32_t {
     kNone = 0x0,
     kLocalCoords = 0x1,
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "src" argument for a blender
-    kBlenderDstColor = 0x4,  // The "dst" argument for a blender
+    kBlenderDstColor = 0x4,   // The "dst" argument for a blender
     kSurfaceColor = 0x8,
+    kDataChild = 0x16,        // Indicates one of the shader children simply houses data
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags)
 
@@ -78,6 +79,8 @@ struct ShaderSnippet {
         std::string fPriorStageOutput;
         std::string fBlenderDstColor;
         std::string fFragCoord;
+        // TODO: Needed?
+        std::string fData;
     };
     using GenerateExpressionForSnippetFn = std::string (*)(const ShaderInfo& shaderInfo,
                                                            const ShaderNode*,
@@ -111,6 +114,10 @@ struct ShaderSnippet {
     bool needsBlenderDstColor() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
     }
+    // TODO: Is the below needed?
+    bool hasDataChild() const {
+        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kDataChild);
+    }
 
     const char* fName = nullptr;
     SkSpan<const Uniform> fUniforms;
@@ -132,17 +139,22 @@ public:
     ShaderNode(const ShaderSnippet* snippet,
                SkSpan<const ShaderNode*> children,
                int codeID,
-               int keyIndex)
+               int keyIndex,
+               SkSpan<int32_t> data) // TODO: default argument of nullptr?
             : fEntry(snippet)
             , fChildren(children)
             , fCodeID(codeID)
             , fKeyIndex(keyIndex)
-            , fRequiredFlags(snippet->fSnippetRequirementFlags) {
+            , fRequiredFlags(snippet->fSnippetRequirementFlags)
+            , fData(data) {
         SkASSERT(children.size() == (size_t) fEntry->fNumChildren);
         // TODO: RuntimeEffects can actually mask off requirements if they invoke a child with
         // explicit arguments.
         for (const ShaderNode* child : children) {
             fRequiredFlags |= child->requiredFlags();
+        }
+        if (!fData.empty()) {
+            fRequiredFlags |= SnippetRequirementFlags::kDataChild;
         }
     }
 
@@ -156,6 +168,11 @@ public:
     SkSpan<const ShaderNode*> children() const { return fChildren; }
     const ShaderNode* child(int childIndex) const { return fChildren[childIndex]; }
 
+    // TODO: Is the below needed?
+    bool hasDataChild() const {
+        return SkToBool(fRequiredFlags & SnippetRequirementFlags::kDataChild);
+    }
+
 private:
     const ShaderSnippet* fEntry; // Owned by the ShaderCodeDictionary
     SkSpan<const ShaderNode*> fChildren; // Owned by the ShaderInfo's arena
@@ -164,6 +181,7 @@ private:
     int32_t fKeyIndex; // index back to PaintParamsKey, unique across nodes within a ShaderInfo
 
     SkEnumBitMask<SnippetRequirementFlags> fRequiredFlags;
+    SkSpan<int32_t> fData;
 };
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
@@ -189,6 +207,9 @@ public:
     const char* ssboIndex() const { return fSsboIndex; }
 
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+
+    // TODO: Add method to get additional data information from this class.
+    // const [container of int32 data] data() const {return fData}
 
     std::string toSkSL(const Caps* caps,
                        const RenderStep* step,

@@ -856,8 +856,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     SkRandom rand;
 
     PaintParamsKeyBuilder builder(dict);
-    PipelineDataGatherer paramsGatherer(Layout::kMetal);
-    PipelineDataGatherer precompileGatherer(Layout::kMetal);
+    PipelineDataGatherer paramsGatherer(recorder->priv().caps(), Layout::kMetal);
+    PipelineDataGatherer precompileGatherer(recorder->priv().caps(), Layout::kMetal);
 
     ShaderType shaders[] = {
             ShaderType::kBlend,
