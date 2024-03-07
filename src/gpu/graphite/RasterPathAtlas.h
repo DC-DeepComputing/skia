@@ -46,12 +46,14 @@ protected:
                                    skvx::half2 maskSize,
                                    skvx::half2* outPos) override;
 private:
-    static constexpr int kDefaultAtlasDim = 4096;
+    static constexpr int kDefaultAtlasDim = 512;
 
     // Wrapper class to manage DrawAtlas and associated caching operations
     class DrawAtlasMgr : public AtlasGenerationCounter, public PlotEvictionCallback {
     public:
-        DrawAtlasMgr(size_t width, size_t height, size_t plotWidth, size_t plotHeight);
+        DrawAtlasMgr(const Recorder* recorder,
+                     size_t width, size_t height,
+                     size_t plotWidth, size_t plotHeight);
 
         const TextureProxy* findOrCreateEntry(Recorder* recorder,
                                               const Shape& shape,
