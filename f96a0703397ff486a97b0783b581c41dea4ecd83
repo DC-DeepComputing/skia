@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6290aa2d_91df6cd9",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-03-07T22:03:30Z",
+      "side": 0,
+      "message": "Nit: I don\u0027t think this specific check is redundant.",
+      "revId": "f96a0703397ff486a97b0783b581c41dea4ecd83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
