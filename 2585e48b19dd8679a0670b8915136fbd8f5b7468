@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b71b2a82_68a3a434",
+        "filename": "tests/sksl/intrinsics/Frexp.wgsl",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-07T21:37:21Z",
+      "side": 1,
+      "message": "Nice!",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 0
+      },
+      "revId": "2585e48b19dd8679a0670b8915136fbd8f5b7468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
