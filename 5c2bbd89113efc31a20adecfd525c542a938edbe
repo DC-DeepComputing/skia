@@ -46,6 +46,30 @@
       },
       "revId": "5c2bbd89113efc31a20adecfd525c542a938edbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "026dfee3_7f699bc8",
+        "filename": "src/utils/mac/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2024-03-07T16:13:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f71cfef1_542b4c34",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "5c2bbd89113efc31a20adecfd525c542a938edbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
