@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e51232_7161540f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T20:00:02Z",
+      "side": 1,
+      "message": "Not surprisingly, CMake is not good.\n\nhttps://gitlab.kitware.com/cmake/cmake/-/issues/15826\nhttps://gitlab.kitware.com/cmake/cmake/-/merge_requests/1841",
+      "revId": "ff59bb3689c22f1c700da0d586e7ce7463c8a7af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
