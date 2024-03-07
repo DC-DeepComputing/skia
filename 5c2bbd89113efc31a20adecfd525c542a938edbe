@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "901ec558_a09a695c",
+        "filename": "src/utils/mac/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-03-07T15:34:47Z",
+      "side": 1,
+      "message": "(not sure whether Bazel is fine without, or we\u0027re just not checking any Bazel builds on Mac)\n\nDo you need the header listed here too?",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "5c2bbd89113efc31a20adecfd525c542a938edbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
