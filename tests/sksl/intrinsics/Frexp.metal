@@ -24,6 +24,8 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     float3 _skTemp5;
     int4 _skTemp6;
     float4 _skTemp7;
+    int3 _skTemp8;
+    float3 _skTemp9;
     float4 value = float4(_uniforms.colorGreen.yyyy * 6.0h);
     int4 _0_exp;
     float4 result;
@@ -36,6 +38,8 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     ok.z = result.z == 0.75 && _0_exp.z == 3;
     result = ((_skTemp7 = frexp(value, _skTemp6)), (_0_exp = _skTemp6), _skTemp7);
     ok.w = result.w == 0.75 && _0_exp.w == 3;
-    _out.sk_FragColor = all(ok) ? _uniforms.colorGreen : _uniforms.colorRed;
+    float3 _0_f3 = ((_skTemp9 = frexp(value.wzy, _skTemp8)), (_0_exp.zxw = _skTemp8), _skTemp9).yxz;
+    bool funcOk = all(_0_f3 == float3(0.75)) && all(_0_exp.yxz == int3(3));
+    _out.sk_FragColor = all(ok) && funcOk ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }

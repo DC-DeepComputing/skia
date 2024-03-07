@@ -79,16 +79,40 @@ float4 main(float2 _21)
         _114 = false;
     }
     ok.w = _114;
-    float4 _118 = 0.0f.xxxx;
-    if (all(ok))
+    int3 _121 = int3(0, 0, 0);
+    float3 _118 = frexp(value.wzy, _121);
+    int4 _123 = _exp;
+    _exp = int4(_121.y, _123.y, _121.x, _121.z);
+    float3 _RESERVED_IDENTIFIER_FIXUP_0_f3 = _118.yxz;
+    bool _137 = false;
+    if (all(bool3(_118.yxz.x == 0.75f.xxx.x, _118.yxz.y == 0.75f.xxx.y, _118.yxz.z == 0.75f.xxx.z)))
     {
-        _118 = _7_colorGreen;
+        _137 = all(bool3(int4(_121.y, _123.y, _121.x, _121.z).yxz.x == int3(3, 3, 3).x, int4(_121.y, _123.y, _121.x, _121.z).yxz.y == int3(3, 3, 3).y, int4(_121.y, _123.y, _121.x, _121.z).yxz.z == int3(3, 3, 3).z));
     }
     else
     {
-        _118 = _7_colorRed;
+        _137 = false;
     }
-    return _118;
+    bool funcOk = _137;
+    bool _142 = false;
+    if (all(ok))
+    {
+        _142 = _137;
+    }
+    else
+    {
+        _142 = false;
+    }
+    float4 _143 = 0.0f.xxxx;
+    if (_142)
+    {
+        _143 = _7_colorGreen;
+    }
+    else
+    {
+        _143 = _7_colorRed;
+    }
+    return _143;
 }
 
 void frag_main()

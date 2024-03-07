@@ -15,5 +15,7 @@ vec4 main() {
     ok.z = result.z == 0.75 && _0_exp.z == 3;
     result = frexp(value, _0_exp);
     ok.w = result.w == 0.75 && _0_exp.w == 3;
-    return all(ok) ? colorGreen : colorRed;
+    vec3 _0_f3 = frexp(value.wzy, _0_exp.zxw).yxz;
+    bool funcOk = _0_f3 == vec3(0.75) && _0_exp.yxz == ivec3(3);
+    return all(ok) && funcOk ? colorGreen : colorRed;
 }
