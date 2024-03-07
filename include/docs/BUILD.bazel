@@ -12,8 +12,9 @@ skia_filegroup(
 )
 
 skia_filegroup(
-    name = "chromium_hdrs",
+    name = "multi_picture_document_hdrs",
     srcs = ["SkMultiPictureDocument.h"],
+    visibility = ["//src/utils:__pkg__"],
 )
 
 skia_filegroup(
