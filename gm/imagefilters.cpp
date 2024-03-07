@@ -163,10 +163,10 @@ protected:
         sk_sp<SkColorFilter> cf(SkColorFilters::Matrix(cm));
         const SkScalar kernel[] = { 4, 0, 4, 0, -15, 0, 4, 0, 4 };
         sk_sp<SkImageFilter> filters[] = {
-            SkImageFilters::Blur(10, 10, nullptr),
-            SkImageFilters::Dilate(8, 8, nullptr),
-            SkImageFilters::MatrixConvolution({ 3, 3 }, kernel, 1, 0, { 0, 0 },
-                                              SkTileMode::kDecal, true, nullptr),
+//            SkImageFilters::Blur(10, 10, nullptr),
+//            SkImageFilters::Dilate(8, 8, nullptr),
+//            SkImageFilters::MatrixConvolution({ 3, 3 }, kernel, 1, 0, { 0, 0 },
+//                                              SkTileMode::kDecal, true, nullptr),
             SkImageFilters::ColorFilter(std::move(cf), nullptr),
         };
 

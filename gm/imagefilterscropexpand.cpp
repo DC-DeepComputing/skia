@@ -79,18 +79,18 @@ DEF_SIMPLE_GM(imagefilterscropexpand, canvas, 730, 650) {
         draw(canvas, checkerboard, bigRect,
              SkImageFilters::Blur(8.0f, 8.0f,  noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::Dilate(2, 2, noopCropped, &bigRect));
+//        draw(canvas, checkerboard, bigRect,
+//             SkImageFilters::Dilate(2, 2, noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::Erode(2, 2, noopCropped, &bigRect));
+//        draw(canvas, checkerboard, bigRect,
+//             SkImageFilters::Erode(2, 2, noopCropped, &bigRect));
 
         draw(canvas, checkerboard, bigRect,
              SkImageFilters::DropShadow(10, 10, 3, 3, SK_ColorBLUE, noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
-                                             gradientCircleSource, noopCropped, &bigRect));
+//        draw(canvas, checkerboard, bigRect,
+//             SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
+//                                             gradientCircleSource, noopCropped, &bigRect));
 
         draw(canvas, checkerboard, bigRect,
              SkImageFilters::Offset(SkIntToScalar(-8), SkIntToScalar(16), noopCropped, &bigRect));

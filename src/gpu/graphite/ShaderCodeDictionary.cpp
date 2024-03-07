@@ -1235,6 +1235,9 @@ std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
         SkASSERT(node->codeSnippetId() >= kUnknownRuntimeEffectIDStart);
         effect = shaderInfo.runtimeEffectDictionary()->find(node->codeSnippetId());
     }
+    if (!effect) {
+        SkDebugf("id: %d\n", node->codeSnippetId());
+    }
     SkASSERT(effect);
 
     const SkSL::Program& program = SkRuntimeEffectPriv::Program(*effect);
