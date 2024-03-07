@@ -49,11 +49,7 @@ SmallPathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
                                  DrawAtlas::AllowMultitexturing::kYes,
                                  this,
                                  /*label=*/"SmallPathAtlas");
-    SkASSERT(fDrawAtlas);
     fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
-    for (int i = 0; i < fKeyLists.size(); ++i) {
-        fKeyLists[i].reset();
-    }
 }
 
 namespace {

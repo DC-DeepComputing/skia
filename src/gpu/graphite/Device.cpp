@@ -1440,7 +1440,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         //
         // If the hardware doesn't support MSAA and anti-aliasing is required, then we always render
         // paths with atlasing.
-        if (!msaaSupported || strategy != PathRendererStrategy::kDefault) {
+        if (!msaaSupported || strategy == PathRendererStrategy::kComputeAnalyticAA ||
+            strategy == PathRendererStrategy::kRasterAA) {
             return {nullptr, pathAtlas};
         }
 
