@@ -17,6 +17,10 @@
 #include "include/pathops/SkPathOps.h"
 #include <tuple>
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/ContextOptions.h"
+#endif
+
 namespace {
 struct PathDY {
     SkPath path;
@@ -336,6 +340,13 @@ protected:
     SkString getName() const override { return SkString("smallpaths"); }
 
     SkISize getISize() override { return SkISize::Make(640, 512); }
+
+#if defined(SK_GRAPHITE)
+    void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* options) const override {
+        options->fMaxPathAtlasTextureSize = 0;
+        options->fAllowMultipleAtlasTextures = false;
+    }
+#endif
 
     void onDraw(SkCanvas* canvas) override {
         SkPaint paint;
