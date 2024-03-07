@@ -22,6 +22,30 @@
       },
       "revId": "5c2bbd89113efc31a20adecfd525c542a938edbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f71cfef1_542b4c34",
+        "filename": "src/utils/mac/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T15:51:31Z",
+      "side": 1,
+      "message": "Yes, we do, or some Bazel build will eventually fall over somewhere, at some point.",
+      "parentUuid": "901ec558_a09a695c",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "5c2bbd89113efc31a20adecfd525c542a938edbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
