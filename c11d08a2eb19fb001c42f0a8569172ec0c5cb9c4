@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41bb36d0_3b090de0",
+        "filename": "tools/using_skia_and_harfbuzz.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-07T19:21:43Z",
+      "side": 1,
+      "message": "There might need to be a return value here, even a `return nullptr`",
+      "revId": "c11d08a2eb19fb001c42f0a8569172ec0c5cb9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
