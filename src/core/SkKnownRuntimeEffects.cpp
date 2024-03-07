@@ -96,21 +96,6 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
             return nullptr;
 
         // Shaders
-        case StableKey::kBlend: {
-            static constexpr char kBlendShaderCode[] =
-                "uniform shader s, d;"
-                "uniform blender b;"
-                "half4 main(float2 xy) {"
-                    "return b.eval(s.eval(xy), d.eval(xy));"
-                "}";
-
-            static const SkRuntimeEffect* sBlendEffect =
-                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-                                        kBlendShaderCode,
-                                        options);
-            return sBlendEffect;
-        }
-
         case StableKey::k1DBlur4: {
             static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(4);
             return s1DBlurEffect;
@@ -158,6 +143,37 @@ const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
         case StableKey::k2DBlur28: {
             static SkRuntimeEffect* s2DBlurEffect = make_blur_2D_effect(28);
             return s2DBlurEffect;
+        }
+        case StableKey::kBlend: {
+            static constexpr char kBlendShaderCode[] =
+                "uniform shader s, d;"
+                "uniform blender b;"
+                "half4 main(float2 xy) {"
+                    "return b.eval(s.eval(xy), d.eval(xy));"
+                "}";
+
+            static const SkRuntimeEffect* sBlendEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kBlendShaderCode,
+                                        options);
+            return sBlendEffect;
+        }
+        case StableKey::kDecal: {
+            static constexpr char kDecalShaderCode[] =
+                "uniform shader image;"
+                "uniform float4 decalBounds;"
+
+                "half4 main(float2 coord) {"
+                    "half4 d = half4(decalBounds - coord.xyxy) * half4(-1, -1, 1, 1);"
+                    "d = saturate(d + 0.5);"
+                    "return (d.x*d.y*d.z*d.w) * image.eval(coord);"
+               "}";
+
+            static const SkRuntimeEffect* sDecalEffect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+                                        kDecalShaderCode,
+                                        options);
+            return sDecalEffect;
         }
         case StableKey::kLighting: {
             static constexpr char kLightingShaderCode[] =

@@ -32,6 +32,7 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilter_Base.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -1403,17 +1404,10 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
         // shader-based tiling, and CPU can have raster-pipeline tiling applied more flexibly than
         // at the bitmap level. At that point, this effect is redundant and can be replaced with the
         // decal-subset shader.
-        static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-            "uniform shader image;"
-            "uniform float4 decalBounds;"
+        const SkRuntimeEffect* normalEffect =
+                GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kDecal);
 
-            "half4 main(float2 coord) {"
-                "half4 d = half4(decalBounds - coord.xyxy) * half4(-1, -1, 1, 1);"
-                "d = saturate(d + 0.5);"
-                "return (d.x*d.y*d.z*d.w) * image.eval(coord);"
-            "}");
-
-        SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
+        SkRuntimeShaderBuilder builder(sk_ref_sp(normalEffect));
         builder.child("image") = std::move(imageShader);
         builder.uniform("decalBounds") = preDecal.mapRect(imageBounds);
 
