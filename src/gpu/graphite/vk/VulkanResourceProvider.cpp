@@ -127,10 +127,27 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
     return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern);
 }
 
-sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
-                                                     SkTileMode xTileMode,
-                                                     SkTileMode yTileMode) {
-    return VulkanSampler::Make(this->vulkanSharedContext(), samplingOptions, xTileMode, yTileMode);
+sk_sp<Sampler> VulkanResourceProvider::createSampler(
+        const SkSamplingOptions& samplingOptions,
+        SkTileMode xTileMode,
+        SkTileMode yTileMode,
+        const std::vector<uint32_t>& extraBackendDesc) {
+    // TODO: Reconstruct VulkanYcbcrConversionInfo based off of extraBackendDesc?
+    sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
+    if (!extraBackendDesc.empty()) {
+        // Textures are made first, so the YCbCr convesion should already be made by now.
+        GraphiteResourceKey ycbcrKey =
+                VulkanSamplerYcbcrConversion::MakeYcbcrConversionKeyFromInts(extraBackendDesc);
+
+        if (Resource* resource = fResourceCache->findAndRefResource(ycbcrKey,
+                                                                    skgpu::Budgeted::kNo)) {
+            ycbcrConversion = sk_sp<VulkanSamplerYcbcrConversion>(
+                    static_cast<VulkanSamplerYcbcrConversion*>(resource));
+        }
+    }
+
+    return VulkanSampler::Make(
+            this->vulkanSharedContext(), samplingOptions, xTileMode, yTileMode, ycbcrConversion);
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,
@@ -178,9 +195,9 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     for (size_t i = 0; i < kNum32DataCnt; i++) {
         if (i < requestedDescriptors.size()) {
             // TODO: Consider making the DescriptorData struct itself just use uint16_t.
-            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].count);
-            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].type) << 24
-                          | requestedDescriptors[i].bindingIndex << 16
+            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].fCount);
+            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].fType) << 24
+                          | requestedDescriptors[i].fBindingIndex << 16
                           | smallerCount;
         } else {
             // Populate reminaing key components with 0.
@@ -369,7 +386,7 @@ void VulkanResourceProvider::onDeleteBackendTexture(const BackendTexture& textur
 }
 
 sk_sp<VulkanSamplerYcbcrConversion>
-        VulkanResourceProvider::findOrCreateCompatibleSamplerYcbcrConversion(
+        VulkanResourceProvider::findOrCreateCompatibleYcbcrConversion(
                 const VulkanYcbcrConversionInfo& ycbcrInfo) const {
     if (!ycbcrInfo.isValid()) {
         return nullptr;
@@ -498,7 +515,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                                   usageFlags,
                                   VK_SHARING_MODE_EXCLUSIVE,
                                   VK_IMAGE_ASPECT_COLOR_BIT,
-                                  VulkanYcbcrConversionInfo() };
+                                  VulkanYcbcrConversionInfo() }; // TODO initialize w/ ycbcr info?
 
     if (isRenderable && (importAsExternalFormat || !vkCaps.isRenderable(vkTexInfo))) {
         SKGPU_LOG_W("Renderable texture requested from an AHardwareBuffer which uses a VkFormat "
@@ -535,6 +552,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
                         "format properties.\n");
             return {};
         }
+        vkTexInfo.fYcbcrConversionInfo = ycbcrInfo;
         externalFormat.externalFormat = hwbFormatProps.externalFormat;
     }
     const VkExternalMemoryImageCreateInfo externalMemoryImageInfo{

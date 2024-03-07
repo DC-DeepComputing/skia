@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
+#include "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
@@ -1377,10 +1378,17 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(vkSpec.fAspectMask                 < (1u << 11)); // aspectMask is bits 8 - 19
     SkASSERT(vkSpec.fImageUsageFlags            < (1u << 12)); // imageUsageFlags are bits 20-32
 
-    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the key.
-    static int kNum32DataCnt = 2 + 1 + 2;
+    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the information.
+    static constexpr int kNum32DataCntNoYcbcr =  2 + 1 + 2;
+    int num32DataCnt = kNum32DataCntNoYcbcr;
 
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    // If a texture w/ an external format is being used, that information must also be appended.
+    const VulkanYcbcrConversionInfo& ycbcrInfo = info.vulkanTextureSpec().fYcbcrConversionInfo;
+    if (ycbcrInfo.isValid()) {
+        num32DataCnt += VulkanSamplerYcbcrConversion::kUint32sNeededForYcbcrInfo;
+    }
+
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -1393,6 +1401,34 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(vkSpec.fSharingMode)         << 6)  |
                  (static_cast<uint32_t>(vkSpec.fAspectMask)          << 7)  |
                  (static_cast<uint32_t>(vkSpec.fImageUsageFlags)     << 19);
+
+    if (ycbcrInfo.isValid()) {
+        VulkanSamplerYcbcrConversion::YcbcrArray ycbcrDataAsInts =
+                VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(ycbcrInfo);
+        for (int i = 0; i < ycbcrDataAsInts.size(); i++) {
+            builder[kNum32DataCntNoYcbcr + i] = ycbcrDataAsInts[i];
+        }
+    }
+}
+
+std::vector<uint32_t> VulkanCaps::getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+    std::vector<uint32_t> samplerInfo;
+
+    if (proxy) {
+        const VulkanYcbcrConversionInfo& ycbcrConversionInfo =
+                proxy->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
+
+        if (ycbcrConversionInfo.isValid()) {
+            const VulkanSamplerYcbcrConversion::YcbcrArray ycbcrData =
+                    VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(ycbcrConversionInfo);
+
+            for (int i = 0 ; i < ycbcrData.size(); i++) {
+                samplerInfo.push_back(ycbcrData.at(i));
+            }
+        }
+    }
+
+    return samplerInfo;
 }
 
 } // namespace skgpu::graphite

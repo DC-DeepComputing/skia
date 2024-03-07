@@ -91,7 +91,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
 
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
-    PipelineDataGatherer gatherer(Layout::kMetal);
+    PipelineDataGatherer gatherer(caps, Layout::kMetal);
 
     // TODO: we need iterate over a broader set of TextureInfos here. Perhaps, allow the client
     // to pass in colorType, mipmapping and protection.

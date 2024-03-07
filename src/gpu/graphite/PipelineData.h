@@ -17,6 +17,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/private/SkColorData.h"
 #include "src/base/SkEnumBitMask.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
@@ -60,14 +61,21 @@ public:
     int numTextures() const { return SkTo<int>(fTextureData.size()); }
     const SampledTexture& texture(int index) const { return fTextureData[index]; }
 
+    // TODO: Perhaps return an SkSpan instead of a vector.
+    const std::vector<SampledTexture>& textures() const { return fTextureData; }
+
     bool operator==(const TextureDataBlock&) const;
     bool operator!=(const TextureDataBlock& other) const { return !(*this == other);  }
     uint32_t hash() const;
 
-    void add(const SkSamplingOptions& sampling,
+    void add(const Caps* caps,
+             const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
              sk_sp<TextureProxy> proxy) {
-        fTextureData.push_back({std::move(proxy), SamplerDesc{sampling, tileModes}});
+        fTextureData.push_back({std::move(proxy),
+                                SamplerDesc{sampling,
+                                            tileModes,
+                                            caps->getAdditionalSamplerDescInfo(proxy)}});
     }
 
     void reset() {
@@ -89,7 +97,7 @@ private:
 // obviously, vastly complicate uniform accumulation.
 class PipelineDataGatherer {
 public:
-    PipelineDataGatherer(Layout layout);
+    PipelineDataGatherer(const Caps* caps, Layout layout);
 
     void resetWithNewLayout(Layout layout);
 
@@ -99,7 +107,7 @@ public:
     void add(const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
              sk_sp<TextureProxy> proxy) {
-        fTextureDataBlock.add(sampling, tileModes, std::move(proxy));
+        fTextureDataBlock.add(fCaps, sampling, tileModes, std::move(proxy));
     }
     bool hasTextures() const { return !fTextureDataBlock.empty(); }
 
@@ -133,6 +141,7 @@ private:
 
     TextureDataBlock fTextureDataBlock;
     UniformManager   fUniformManager;
+    const Caps*      fCaps;
 };
 
 #ifdef SK_DEBUG

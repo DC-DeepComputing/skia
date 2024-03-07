@@ -14,6 +14,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/vk/VulkanQueueManager.h"
+#include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
@@ -73,17 +74,33 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                                      VkDescriptorSetLayout* outLayout) {
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
-        if (requestedDescriptors[i].count != 0) {
+        if (requestedDescriptors[i].fCount != 0) {
             const DescriptorData& currDescriptor = requestedDescriptors[i];
             VkDescriptorSetLayoutBinding& layoutBinding = bindingLayouts.push_back();
             memset(&layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
-            layoutBinding.binding = currDescriptor.bindingIndex;
-            layoutBinding.descriptorType = DsTypeEnumToVkDs(currDescriptor.type);
-            layoutBinding.descriptorCount = currDescriptor.count;
+            layoutBinding.binding = currDescriptor.fBindingIndex;
+            layoutBinding.descriptorType = DsTypeEnumToVkDs(currDescriptor.fType);
+            layoutBinding.descriptorCount = currDescriptor.fCount;
             layoutBinding.stageFlags =
-                    PipelineStageFlagsToVkShaderStageFlags(currDescriptor.pipelineStageFlags);
+                    PipelineStageFlagsToVkShaderStageFlags(currDescriptor.fPipelineStageFlags);
+
             // TODO(b/302126498): Optionally set immutableSamplers here. Needed for YCbCr
-            layoutBinding.pImmutableSamplers = nullptr;
+            std::vector<const VkSampler*> samplers;
+            if (!currDescriptor.fImmutableSamplers.empty()) {
+                SkASSERT(currDescriptor.fImmutableSamplers.size() == layoutBinding.descriptorCount);
+
+                for (size_t j = 0; j < currDescriptor.fImmutableSamplers.size(); j++) {
+                    const Sampler* sampler = currDescriptor.fImmutableSamplers.at(j);
+                    const VulkanSampler* vulkanSampler = static_cast<const VulkanSampler*>(sampler);
+
+                    if (vulkanSampler) {
+                        SkASSERT(vulkanSampler->vkSampler() != VK_NULL_HANDLE);
+                        samplers.push_back(vulkanSampler->constVkSamplerPtr());
+                    }
+                }
+            }
+
+            layoutBinding.pImmutableSamplers = samplers.empty() ? VK_NULL_HANDLE : samplers.front();
         }
     }
 

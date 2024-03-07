@@ -183,6 +183,13 @@ void AddDitherBlock(const KeyContext& keyContext,
     DitherShaderBlock::AddBlock(keyContext, builder, gatherer, data);
 }
 
+// // TODO: Add array of data as input.
+// void AddDataBlock(const KeyContext& keyContext,
+//                   PaintParamsKeyBuilder* builder,
+//                   PipelineDataGatherer* gatherer) {
+
+// }
+
 void PaintParams::addPaintColorToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* keyBuilder,
                                      PipelineDataGatherer* gatherer) const {
@@ -307,6 +314,8 @@ void PaintParams::handleDstRead(const KeyContext& keyContext,
     }
 }
 
+
+
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
@@ -332,6 +341,29 @@ void PaintParams::toKey(const KeyContext& keyContext,
             kFixedFunctionBlendModeIDOffset + static_cast<int>(*finalBlendMode));
 
     builder->addBlock(fixedFuncBlendModeID);
+
+    // If the destination texture has YCbCr information, we should add that data here using
+    // builder->addData().
+    // Is it a different texture we should be checking to determine YCbCr necessity?
+
+    // does data need an BuiltInCodeSnippetID? I wouldn't think so since no actual shader code
+    // needs to happen...
+    // addBlock(BuiltInCodeSnippetID)? kPriorOutput to just plumb through the prior value?
+
+    // sk_sp<TextureProxy> dstTexture = keyContext.dstTexture();
+    // // TODO get ycbcr conversion
+    // const VulkanYcbcrConversionInfo& ycbcrConversionInfo {};
+    // if (dstTexture) {
+    //     ycbcrConversionInfo = dstTexture->textureInfo().vulkanTextureSpec().fYcbcrConversionInfo;
+    // }
+
+    // const VulkanYcbcrConversionInfo& ycbcrConversionInfo {};
+    // if (ycbcrConversionInfo.isValid()) {
+    //     VulkanSamplerYcbcrConversion::YcbcrArray ycbcrKeyInfo =
+    //             VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(ycbcrConversionInfo);
+    //     SkSpan<int32_t> ycbcrInfo = {ycbcrKeyInfo};
+    //     builder->addData(ycbcrInfo);
+    // }
 }
 
 } // namespace skgpu::graphite
