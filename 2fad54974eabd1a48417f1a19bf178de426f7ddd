@@ -22,6 +22,30 @@
       },
       "revId": "2fad54974eabd1a48417f1a19bf178de426f7ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66d51969_418ca1c6",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-07T17:21:02Z",
+      "side": 1,
+      "message": "It does. Anything w/ \u003e\u003d 2048 kernel values (note: not a 2048 dimension) gets too bloated by loop unrolling. I\u0027ve tweaked the comment to, hopefully, make it clearer.",
+      "parentUuid": "dcfbde60_e1556040",
+      "range": {
+        "startLine": 62,
+        "startChar": 9,
+        "endLine": 62,
+        "endChar": 14
+      },
+      "revId": "2fad54974eabd1a48417f1a19bf178de426f7ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
