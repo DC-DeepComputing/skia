@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4461b24e_f4ed4f3f",
+        "filename": "resources/sksl/intrinsics/Frexp.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-07T20:50:39Z",
+      "side": 1,
+      "message": "I think the inliner might be undoing your work. You can mark this as noinline.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 4
+      },
+      "revId": "94d079ff8ea355fd114f6d7c15d3c6443f3b31da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
