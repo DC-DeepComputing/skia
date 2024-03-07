@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f24d15b_7f7a29a2",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T21:10:29Z",
+      "side": 1,
+      "message": "Let\u0027s just make this `scanFace`. It\u0027s easier to reason about since the above returns `numFaces` and this takes `faceIndex`.",
+      "range": {
+        "startLine": 32,
+        "startChar": 21,
+        "endLine": 32,
+        "endChar": 36
+      },
+      "revId": "427b85e557d521a615e6344426990324fb18cfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbf2e3c7_3ecacbd7",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2081,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T21:10:29Z",
+      "side": 1,
+      "message": "wrap this line",
+      "revId": "427b85e557d521a615e6344426990324fb18cfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ef1c9b0_09ddad98",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T21:10:29Z",
+      "side": 1,
+      "message": "I don\u0027t see where this is used?",
+      "revId": "427b85e557d521a615e6344426990324fb18cfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06e1c7c6_e138cafc",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T21:10:29Z",
+      "side": 1,
+      "message": "default",
+      "range": {
+        "startLine": 46,
+        "startChar": 33,
+        "endLine": 46,
+        "endChar": 39
+      },
+      "revId": "427b85e557d521a615e6344426990324fb18cfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb22af8_8aed02cb",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T21:10:29Z",
+      "side": 1,
+      "message": "default",
+      "range": {
+        "startLine": 60,
+        "startChar": 33,
+        "endLine": 60,
+        "endChar": 39
+      },
+      "revId": "427b85e557d521a615e6344426990324fb18cfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6727a652_fd44a472",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T21:10:29Z",
+      "side": 1,
+      "message": "Need to fix this.",
+      "revId": "427b85e557d521a615e6344426990324fb18cfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
