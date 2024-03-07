@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d33ff20_f1296bc1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1420,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-07T21:15:29Z",
+      "side": 1,
+      "message": "I\u0027m not sure how much it actually changes things, but when we call this to set up the attachments, `DrawContext` passes in `kYes`.  We also only create the msaa texture info when `msaaRenderToSingleSampledSupport()` is false, although MtlCaps leaves that cap as false since it\u0027s dawn-only.\n\nI\u0027m a little worried about the overhead of this being done on a per-draw basis. A lot of this logic (and the `msaaSupported` checks) look like maybe we can move them to Device creation and then remember the final strategy (i.e. if the atlas provider says compute isn\u0027t available the strategy switches back to default?)",
+      "range": {
+        "startLine": 1420,
+        "startChar": 68,
+        "endLine": 1420,
+        "endChar": 84
+      },
+      "revId": "804713f8d55b52cda04d887357e68c250e832029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
