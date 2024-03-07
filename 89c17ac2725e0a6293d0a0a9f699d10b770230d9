@@ -16,6 +16,23 @@
       "message": "Fingers crossed!",
       "revId": "89c17ac2725e0a6293d0a0a9f699d10b770230d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b3a6d0_b1fb9f5d",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-07T16:22:54Z",
+      "side": 1,
+      "message": "Do we need to guard these, or use SkSafeMath? Could we end up with overflow during the multiply?",
+      "revId": "89c17ac2725e0a6293d0a0a9f699d10b770230d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
