@@ -172,7 +172,8 @@ sk_sp<SkSpecialImage> blur_1d(skgpu::graphite::Recorder* recorder,
     std::array<SkV4, skgpu::kMaxBlurSamples/2> offsetsAndKernel;
     skgpu::Compute1DBlurLinearKernel(sigma, radius, offsetsAndKernel);
 
-    SkRuntimeShaderBuilder builder{sk_ref_sp(skgpu::GetLinearBlur1DEffect(radius))};
+    auto foo = sk_ref_sp(skgpu::GetLinearBlur1DEffect(radius));
+    SkRuntimeShaderBuilder builder{foo};
     builder.uniform("offsetsAndKernel") = offsetsAndKernel;
     builder.uniform("dir") = dir;
     // TODO(b/294102201): This is very much like FilterResult::asShader()...
