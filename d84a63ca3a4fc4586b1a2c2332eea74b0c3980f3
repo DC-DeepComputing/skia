@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b808aed_358067f5",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 1481,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T15:26:16Z",
+      "side": 1,
+      "message": "Yes, this is the same as running DM with the `--fontations` flag, which this change introduces.",
+      "parentUuid": "8f36ef72_41da7828",
+      "revId": "d84a63ca3a4fc4586b1a2c2332eea74b0c3980f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a89c971_4fbdcb8c",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26716ced_104fe75e",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T15:26:16Z",
+      "side": 1,
+      "message": "No, that would be incorrect, because it\u0027s allowed to pass `nullptr` for `postscriptName` just to get the return value. We still want to return `true` and not `false`.",
+      "parentUuid": "0a89c971_4fbdcb8c",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 29
+      },
+      "revId": "d84a63ca3a4fc4586b1a2c2332eea74b0c3980f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "475b8bf0_f8328933",
@@ -71,6 +113,24 @@
       "writtenOn": "2024-03-07T11:59:29Z",
       "side": 1,
       "message": "Thanks.",
+      "revId": "d84a63ca3a4fc4586b1a2c2332eea74b0c3980f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2857137d_afe2a83f",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-07T15:26:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "475b8bf0_f8328933",
       "revId": "d84a63ca3a4fc4586b1a2c2332eea74b0c3980f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
