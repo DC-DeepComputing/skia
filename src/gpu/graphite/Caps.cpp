@@ -16,6 +16,14 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/sksl/SkSLUtil.h"
 
+#include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/ResourceTypes.h"
+#include "tools/ToolUtils.h"
+//#include "src/gpu/graphite/mtl/MtlCaps.h"
+
+const char* nameIt(int format);
+
 namespace skgpu::graphite {
 
 Caps::Caps()

@@ -37,7 +37,7 @@ void DrawList::recordDraw(const Renderer* renderer,
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided
 
     fDraws.emplace_back(renderer, this->deduplicateTransform(localToDevice),
-                        geometry, clip, ordering, paint, stroke);
+                        geometry, clip, ordering, paint, stroke, true);
     fRenderStepCount += renderer->numRenderSteps();
 
 #if defined(SK_DEBUG)

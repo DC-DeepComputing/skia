@@ -42,7 +42,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context,
     TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
                                                           /*mipmapped=*/Mipmapped::kNo,
                                                           Protected::kNo,
-                                                          Renderable::kNo);
+                                                          skgpu::Renderable::kNo);
     REPORTER_ASSERT(reporter, info.isValid());
 
     auto texture1 = recorder->createBackendTexture(kSize, info);

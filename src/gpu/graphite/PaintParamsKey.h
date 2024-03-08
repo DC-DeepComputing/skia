@@ -107,9 +107,11 @@ private:
 // into the dictionary to be prohibitive since that should be infrequent.
 class PaintParamsKeyBuilder {
 public:
-    PaintParamsKeyBuilder(const ShaderCodeDictionary* dict) {
+    PaintParamsKeyBuilder(const ShaderCodeDictionary* dict, bool fromKey) : fFromKey(fromKey) {
         SkDEBUGCODE(fDict = dict;)
     }
+
+    bool fromKey() const { return fFromKey; }
 
     ~PaintParamsKeyBuilder() { SkASSERT(!fLocked); }
 
@@ -133,6 +135,9 @@ public:
 
     // Helper to add blocks that don't have children
     void addBlock(BuiltInCodeSnippetID id) {
+//        if (id == BuiltInCodeSnippetID::kFixedFunctionClearBlendMode) {
+//            SkDebugf("Clear\n");
+//        }
         this->beginBlock(id);
         this->endBlock();
     }
@@ -179,6 +184,8 @@ private:
     skia_private::TArray<StackFrame> fStack;
     bool fLocked = false;
 #endif
+    bool fFromKey = false;
+
 };
 
 class AutoLockBuilderAsKey {

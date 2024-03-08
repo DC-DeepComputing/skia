@@ -22,6 +22,8 @@ public:
     MtlCaps(const id<MTLDevice>, const ContextOptions&);
     ~MtlCaps() override {}
 
+    const char* nameIt(int format) const;
+
     TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                              Mipmapped mipmapped,
                                              Protected,
@@ -41,6 +43,7 @@ public:
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
+
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
 
     bool extractGraphicsDescs(const UniqueKey&,
@@ -65,6 +68,8 @@ public:
                             ResourceType,
                             Shareable,
                             GraphiteResourceKey*) const override;
+
+    SkColorType flooble(MTLPixelFormat) const;
 
 private:
     void initGPUFamily(const id<MTLDevice>);
