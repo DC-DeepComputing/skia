@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6de63f2_f7ccf4ca",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-08T15:56:04Z",
+      "side": 1,
+      "message": "And isn\u0027t `kMinAtlasDim` really `kMaxAtlasDim` here? As in: Make the atlas no larger than 512? Also, we\u0027re not checking against `maxTextureSize`, but I guess that\u0027s covered by the caps construction, where we\u0027ve already ensured `maxPathAtlasTextureSize` will be `\u003c\u003d maxTextureSize`?",
+      "parentUuid": "0fe9b411_1d8c4aeb",
+      "range": {
+        "startLine": 40,
+        "startChar": 26,
+        "endLine": 40,
+        "endChar": 27
+      },
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcde2219_ba57febe",
         "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
         "patchSetId": 5
