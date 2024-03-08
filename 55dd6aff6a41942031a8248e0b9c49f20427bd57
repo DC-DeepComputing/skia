@@ -16,6 +16,29 @@
       "message": "I\u0027ve verified that this works with both the RasterPathAtlas and VelloComputePathAtlas.",
       "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcde2219_ba57febe",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-08T15:19:02Z",
+      "side": 1,
+      "message": "Should we just pass down the Caps rather than the Recorder?",
+      "range": {
+        "startLine": 89,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 69
+      },
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
