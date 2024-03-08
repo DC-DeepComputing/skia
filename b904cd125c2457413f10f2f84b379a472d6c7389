@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6cdaacb_4104548a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-08T18:40:17Z",
+      "side": 1,
+      "message": "These changes are being split out from https://skia-review.googlesource.com/c/skia/+/822317 since they also make sense to land independently of a job to run all tests with Fontations. Landing these changes will make it easier to continue fixing test failures without actually landing a known broken job.",
+      "revId": "b904cd125c2457413f10f2f84b379a472d6c7389",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
