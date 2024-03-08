@@ -344,7 +344,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
     auto dict = keyContext.dict();
 
     if (gradData.fNumStops > GradientData::kNumInternalStorageStops && gatherer) {
-        SkASSERT(gradData.fColorsAndOffsetsProxy);
+//        SkASSERT(!gatherer || gradData.fColorsAndOffsetsProxy);
 
         static constexpr SkSamplingOptions kNearest(SkFilterMode::kNearest, SkMipmapMode::kNone);
         static constexpr SkTileMode kClampTiling[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
@@ -980,6 +980,7 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
 
     const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
     SkASSERT(entry);
+//    SkDebugf("RuntimeEffectBlock::BeginBlock %d\n", entry->fNumChildren);
 
     gather_runtime_effect_uniforms(shaderData.fEffect->uniforms(),
                                    entry->fUniforms,

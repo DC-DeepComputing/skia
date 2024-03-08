@@ -31,7 +31,7 @@ namespace {
 void empty_test(const KeyContext& keyContext,
                 PipelineDataGatherer* gatherer,
                 skiatest::Reporter* reporter) {
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
@@ -53,7 +53,7 @@ void no_shader_option_test(const KeyContext& keyContext,
                            skiatest::Reporter* reporter) {
     SkBlendMode blendModes[] = { SkBlendMode::kSrcOver };
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
     paintOptions.setBlendModes(blendModes);
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
@@ -74,7 +74,7 @@ void no_shader_option_test(const KeyContext& keyContext,
 void no_blend_mode_option_test(const KeyContext& keyContext,
                                PipelineDataGatherer* gatherer,
                                skiatest::Reporter* reporter) {
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
     paintOptions.setShaders({ PrecompileShaders::Color() });
 
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
@@ -105,7 +105,7 @@ void big_test(const KeyContext& keyContext,
     //  |
     //  |- 4-built-in-blend-modes (just 1 since all are PorterDuff)
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     // first, shaders. First top-level option (sweepGrad_0)
     sk_sp<PrecompileShader> sweepGrad_0 = PrecompileShaders::SweepGradient();
@@ -204,7 +204,7 @@ void runtime_effect_test(const KeyContext& keyContext,
     //  |       0: redBlender   | greenBlender
     //  |       1: greenBlender | redBlender
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     // shaders
     {

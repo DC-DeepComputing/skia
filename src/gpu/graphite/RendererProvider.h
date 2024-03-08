@@ -35,6 +35,8 @@ class RendererProvider {
 public:
     static bool IsVelloRendererSupported(const Caps*);
 
+    DrawTypeFlags yo(uint32_t uniqueRenderStepID) const;
+
     ~RendererProvider();
 
     // TODO: Add configuration options to disable "optimization" renderers in favor of the more

@@ -40,6 +40,7 @@ sk_sp<SkFlattenable> SkRuntimeBlender::CreateProc(SkReadBuffer& buffer) {
     buffer.readString(&sksl);
     sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
+    // need to write out stableKey
     auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForBlender, std::move(sksl));
     if constexpr (!kLenientSkSLDeserialization) {
         if (!buffer.validate(effect != nullptr)) {
@@ -89,4 +90,3 @@ void SkRuntimeBlender::flatten(SkWriteBuffer& buffer) const {
     buffer.writeDataAsByteArray(fUniforms.get());
     SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
 }
-
