@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe1e9626_19e5f206",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-08T16:42:27Z",
+      "side": 1,
+      "message": "lgtm % a question on the min/max texture size thread.",
+      "revId": "9b77838bf672f0319d147a3cb560dd38d41c7325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

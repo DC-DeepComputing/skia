@@ -91,6 +91,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53712031_4d5b6a30",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2024-03-08T16:42:27Z",
+      "side": 1,
+      "message": "Should this be `std::max`? As in, if `caps()-\u003emaxTextureSize()` is larger than `kMinAtlasDim`, use that, otherwise do not allow any smaller than `kMinAtlasDim`?",
+      "range": {
+        "startLine": 41,
+        "startChar": 25,
+        "endLine": 41,
+        "endChar": 33
+      },
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcde2219_ba57febe",
         "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
         "patchSetId": 5
