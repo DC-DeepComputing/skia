@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7401e29e_54ef6b00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-08T15:09:20Z",
+      "side": 1,
+      "message": "I\u0027ve verified that this works with both the RasterPathAtlas and VelloComputePathAtlas.",
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
