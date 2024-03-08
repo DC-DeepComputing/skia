@@ -114,6 +114,7 @@ protected:
         return *this;
     }
 
+public:
     uint32_t domain() const { return fKey[kDomainAndSize_MetaDataIdx] & 0xffff; }
 
     /** size of the key data, excluding meta-data (hash, domain, etc).  */
@@ -124,6 +125,7 @@ protected:
         this->validate();
         return &fKey[kMetaDataCnt];
     }
+protected:
 
 #ifdef SK_DEBUG
     void dump() const {

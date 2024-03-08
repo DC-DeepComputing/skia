@@ -386,8 +386,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> src_blender() {
             SkRuntimeEffect::MakeForBlender,
             "half4 main(half4 src, half4 dst) {"
                 "return src;"
-            "}"
-    );
+            "}");
 
     sk_sp<SkBlender> b = sSrcEffect->makeBlender(/* uniforms= */ nullptr);
     sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sSrcEffect));
@@ -399,8 +398,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> dest_blender() {
             SkRuntimeEffect::MakeForBlender,
             "half4 main(half4 src, half4 dst) {"
                 "return dst;"
-            "}"
-    );
+            "}");
 
     sk_sp<SkBlender> b = sDestEffect->makeBlender(/* uniforms= */ nullptr);
     sk_sp<PrecompileBlender> o = MakePrecompileBlender(sk_ref_sp(sDestEffect));
@@ -416,8 +414,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
             "uniform blender b;"
             "half4 main(half4 src, half4 dst) {"
                 "return (blendFrac * a.eval(src, dst)) + ((1 - blendFrac) * b.eval(src, dst));"
-            "}"
-    );
+            "}");
 
     auto [src, srcO] = src_blender();
     auto [dst, dstO] = dest_blender();
@@ -435,7 +432,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_bm_blender(SkRandom* rand,
                                                                         SkBlendMode bm) {
-    return { SkBlender::Mode(bm), PrecompileBlender::Mode(bm) };
+    return { SkBlender::Mode(bm), PrecompileBlenders::KnownMode(bm) };
 }
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_rt_blender(SkRandom* rand) {
@@ -477,8 +474,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> double_colorfilter
             SkRuntimeEffect::MakeForColorFilter,
             "half4 main(half4 c) {"
                 "return 2*c;"
-            "}"
-    );
+            "}");
 
     return { sSrcEffect->makeColorFilter(/* uniforms= */ nullptr),
              MakePrecompileColorFilter(sk_ref_sp(sSrcEffect)) };
@@ -489,8 +485,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> half_colorfilter()
             SkRuntimeEffect::MakeForColorFilter,
             "half4 main(half4 c) {"
                 "return 0.5*c;"
-            "}"
-    );
+            "}");
 
     return { sDestEffect->makeColorFilter(/* uniforms= */ nullptr),
              MakePrecompileColorFilter(sk_ref_sp(sDestEffect)) };
@@ -504,8 +499,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> combo_colorfilter(
             "uniform colorFilter b;"
             "half4 main(half4 c) {"
                 "return (blendFrac * a.eval(c)) + ((1 - blendFrac) * b.eval(c));"
-            "}"
-    );
+            "}");
 
     auto [src, srcO] = double_colorfilter();
     auto [dst, dstO] = half_colorfilter();
@@ -683,7 +677,7 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
     SkPaint paint;
     paint.setColor(random_opaque_color(rand));
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     {
         auto [s, o] = create_shader(rand, recorder, shaderType);
@@ -855,7 +849,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     SkRandom rand;
 
-    PaintParamsKeyBuilder builder(dict);
+    PaintParamsKeyBuilder builder(dict, /* fromKey= */ false);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 

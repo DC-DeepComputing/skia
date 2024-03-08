@@ -194,8 +194,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::MakeColor(SkPMColor4f 
     // Use ColorFilter signature/factory to get the constant output for constant input optimization
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
         "uniform half4 color;"
-        "half4 main(half4 inColor) { return color; }"
-    );
+        "half4 main(half4 inColor) { return color; }");
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "color_fp", /*inputFP=*/nullptr,
                           color.isOpaque() ? GrSkSLFP::OptFlags::kPreservesOpaqueInput
@@ -218,8 +217,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::ApplyPaintAlpha(
         "uniform colorFilter fp;"
         "half4 main(half4 inColor) {"
             "return fp.eval(inColor.rgb1) * inColor.a;"
-        "}"
-    );
+        "}");
     return GrSkSLFP::Make(effect, "ApplyPaintAlpha", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput |
                           GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
@@ -239,8 +237,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::ClampOutput(
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
         "half4 main(half4 inColor) {"
             "return saturate(inColor);"
-        "}"
-    );
+        "}");
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "Clamp", std::move(fp),
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput);
@@ -326,8 +323,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::OverrideInput(
         "uniform half4 color;"
         "half4 main(half4 inColor) {"
             "return fp.eval(color);"
-        "}"
-    );
+        "}");
     return GrSkSLFP::Make(effect, "OverrideInput", /*inputFP=*/nullptr,
                           color.isOpaque() ? GrSkSLFP::OptFlags::kPreservesOpaqueInput
                                            : GrSkSLFP::OptFlags::kNone,
@@ -343,8 +339,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DisableCoverageAsAlpha
         return fp;
     }
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
-        "half4 main(half4 inColor) { return inColor; }"
-    );
+        "half4 main(half4 inColor) { return inColor; }");
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "DisableCoverageAsAlpha", std::move(fp),
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput);
@@ -356,8 +351,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DestColor() {
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForBlender,
         "half4 main(half4 src, half4 dst) {"
             "return dst;"
-        "}"
-    );
+        "}");
     return GrSkSLFP::Make(effect, "DestColor", /*inputFP=*/nullptr, GrSkSLFP::OptFlags::kNone);
 }
 
@@ -479,8 +473,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::ColorMatrix(
                 "color.rgb *= color.a;"
             "}"
             "return color;"
-        "}"
-    );
+        "}");
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
 
     SkM44 m44(matrix[ 0], matrix[ 1], matrix[ 2], matrix[ 3],
@@ -628,8 +621,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::Rect(
             "}"
 
             "return half4(coverage);"
-        "}"
-    );
+        "}");
 
     SkASSERT(rect.isSorted());
     // The AA math in the shader evaluates to 0 at the uploaded coordinates, so outset by 0.5
@@ -674,8 +666,7 @@ GrFPResult GrFragmentProcessor::Circle(std::unique_ptr<GrFragmentProcessor> inpu
             "return half4((edgeType == kFillAA || edgeType == kInverseFillAA)"
                               "? saturate(d)"
                               ": (d > 0.5 ? 1 : 0));"
-        "}"
-    );
+        "}");
 
     SkScalar effectiveRadius = radius;
     if (GrClipEdgeTypeIsInverseFill(edgeType)) {
@@ -760,8 +751,7 @@ GrFPResult GrFragmentProcessor::Ellipse(std::unique_ptr<GrFragmentProcessor> inp
                 "alpha = saturate(0.5 + half(approx_dist));"
             "}"
             "return half4(alpha);"
-        "}"
-    );
+        "}");
 
     float invRXSqd;
     float invRYSqd;

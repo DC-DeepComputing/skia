@@ -879,8 +879,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                                 "v = -1;"
                             "}"
                             "return half4(half(t), v, 0, 0);"
-                        "}"
-                    );
+                        "}");
             float r0 = shader->getStartRadius() / shader->getCenterX1();
             fp = GrSkSLFP::Make(kEffect,
                                 "TwoPointConicalStripLayout",
@@ -900,8 +899,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                             "half v = 1;"
                             "float t = length(p) * lengthScale - r0;"
                             "return half4(half(t), v, 0, 0);"
-                        "}"
-                    );
+                        "}");
             float dr = shader->getDiffRadius();
             float r0 = shader->getStartRadius() / dr;
             bool isRadiusIncreasing = dr >= 0;
@@ -995,8 +993,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                             "}"
 
                             "return half4(half(t), v, 0, 0);"
-                        "}"
-                    );
+                        "}");
 
             const SkConicalGradient::FocalData& focalData = shader->getFocalData();
             bool isRadiusIncreasing = (1 - focalData.fFocalX) > 0,
@@ -1068,8 +1065,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkSweepGradie
             // 0.1591549430918 is 1/(2*pi), used since atan returns values [-pi, pi]
             "half t = (angle * 0.1591549430918 + 0.5 + bias) * scale;"
             "return half4(t, 1, 0, 0);" // y = 1 for always valid
-        "}"
-    );
+        "}");
 
     // The sweep gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(effect, "SweepLayout", /*inputFP=*/nullptr,

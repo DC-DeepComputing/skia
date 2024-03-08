@@ -87,6 +87,8 @@ const char* MtlFormatToString(MTLPixelFormat mtlFormat) {
         case MTLPixelFormatRGBA16Unorm:     return "RGBA16Unorm";
         case MTLPixelFormatRG16Float:       return "RG16Float";
         case MTLPixelFormatStencil8:        return "Stencil8";
+        case MTLPixelFormatDepth32Float:    return "Depth32Float";
+        case MTLPixelFormatDepth32Float_Stencil8: return "Depth32Float_Stencil8";
 
         default:                            return "Unknown";
     }

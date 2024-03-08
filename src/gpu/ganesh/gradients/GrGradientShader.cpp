@@ -99,8 +99,7 @@ static std::unique_ptr<GrFragmentProcessor> make_single_interval_colorizer(const
             // Clamping and/or wrapping was already handled by the parent shader so the output
             // color is a simple lerp.
             "return mix(start, end, half(coord.x));"
-        "}"
-    );
+        "}");
     return GrSkSLFP::Make(effect, "SingleIntervalColorizer", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kNone,
                           "start", start,
@@ -130,8 +129,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dual_interval_colorizer(const S
             "}"
 
             "return half4(t * s + b);"
-        "}"
-    );
+        "}");
 
     // Derive scale and biases from the 4 colors and threshold
     Vec4 vc0 = Vec4::Load(c0.vec());
@@ -593,8 +591,7 @@ static std::unique_ptr<GrFragmentProcessor> make_clamped_gradient(
                 "outColor = colorizer.eval(t.x0);"
             "}"
             "return outColor;"
-        "}"
-    );
+        "}");
 
     // If the layout does not preserve opacity, remove the opaque optimization,
     // but otherwise respect the provided color opacity state (which should take
@@ -656,8 +653,7 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
                 "half4 outColor = colorizer.eval(t.x0);"
                 "return outColor;"
             "}"
-        "}"
-    );
+        "}");
 
     // If the layout does not preserve opacity, remove the opaque optimization,
     // but otherwise respect the provided color opacity state (which should take
@@ -707,8 +703,7 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
 
         "half4 main(half4 color) {"
             "return $interpolated_to_rgb_unpremul(color, colorSpace, do_unpremul);"
-        "}"
-    );
+        "}");
 
     // Are we interpreting premul colors? We use this later to decide if we need to inject a final
     // premultiplication step.
@@ -933,8 +928,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "half4 main(float2 coord) {"
             "return half4(half(coord.x) + 0.00001, 1, 0, 0);" // y = 1 for always valid
-        "}"
-    );
+        "}");
     // The linear gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(effect, "LinearLayout", /*inputFP=*/nullptr,
                              GrSkSLFP::OptFlags::kPreservesOpaqueInput);
