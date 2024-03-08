@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkTypes.h"
 #include "modules/skunicode/src/SkUnicode_icupriv.h"
 #include <unicode/ubrk.h>
 #include <unicode/uloc.h>
@@ -55,6 +56,7 @@ struct SkUbrkGetLocaleByType<
 
 #define SKICU_FUNC(funcname) funcname,
 std::unique_ptr<SkICULib> SkLoadICULib() {
+    SkDebugf("Builtin\n");
     std::unique_ptr<SkICULib> icu = std::make_unique<SkICULib>(SkICULib{
         SKICU_EMIT_FUNCS
 

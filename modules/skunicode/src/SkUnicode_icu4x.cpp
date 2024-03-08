@@ -21,8 +21,6 @@
 
 #include <diplomat_runtime.hpp>
 
-//#include <ICU4XBidi.h>
-
 #include <ICU4XDataProvider.hpp>
 #include <ICU4XGraphemeClusterSegmenter.hpp>
 #include <ICU4XLineSegmenter.hpp>
@@ -44,6 +42,7 @@
 class SkUnicode_icu4x :  public SkUnicode {
 public:
     SkUnicode_icu4x() {
+        SkDebugf("ICU4X\n");
         fLocale = ICU4XLocale::create_from_string("tr").ok().value();
         fDataProvider = ICU4XDataProvider::create_compiled();
         fCaseMapper = ICU4XCaseMapper::create(fDataProvider).ok().value();
