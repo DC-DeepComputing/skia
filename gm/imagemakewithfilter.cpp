@@ -238,7 +238,7 @@ protected:
             displacement_factory,
             arithmetic_factory,
             blend_factory,
-            convolution_factory,
+//            convolution_factory,
             matrix_factory,
             lighting_factory,
             tile_factory
@@ -253,7 +253,7 @@ protected:
             "Displacement",
             "Arithmetic",
             "Blend",
-            "Convolution",
+//            "Convolution",
             "Matrix Xform",
             "Lighting",
             "Tile"

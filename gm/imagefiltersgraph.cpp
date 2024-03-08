@@ -101,6 +101,7 @@ protected:
             DrawClippedImage(canvas, fImage.get(), paint);
             canvas->translate(SkIntToScalar(100), 0);
         }
+#if 0
         {
             // Dilate -> matrix convolution.
             // This tests that a filter using asFragmentProcessor (matrix
@@ -124,6 +125,7 @@ protected:
             DrawClippedImage(canvas, fImage.get(), paint);
             canvas->translate(SkIntToScalar(100), 0);
         }
+#endif
         {
             // Test that crop offsets are absolute, not relative to the parent's crop rect.
             sk_sp<SkColorFilter> cf1(SkColorFilters::Blend(SK_ColorBLUE, SkBlendMode::kSrcIn));

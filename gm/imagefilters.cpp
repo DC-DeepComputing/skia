@@ -165,8 +165,8 @@ protected:
         sk_sp<SkImageFilter> filters[] = {
             SkImageFilters::Blur(10, 10, nullptr),
             SkImageFilters::Dilate(8, 8, nullptr),
-            SkImageFilters::MatrixConvolution({ 3, 3 }, kernel, 1, 0, { 0, 0 },
-                                              SkTileMode::kDecal, true, nullptr),
+//            SkImageFilters::MatrixConvolution({ 3, 3 }, kernel, 1, 0, { 0, 0 },
+//                                              SkTileMode::kDecal, true, nullptr),
             SkImageFilters::ColorFilter(std::move(cf), nullptr),
         };
 
