@@ -16,6 +16,23 @@
       "message": "lgtm % a question on the min/max texture size thread.",
       "revId": "9b77838bf672f0319d147a3cb560dd38d41c7325",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a793dc2_f5731e56",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-08T18:56:31Z",
+      "side": 1,
+      "message": "Okay, I think I get the logic now. How about just applying all the constraints using max/min, something like:\n\n```\nint maxTextureSize \u003d std::max(caps-\u003emaxPathAtlasTextureSize(), kMinAtlasTextureSize);\nmaxTextureSize \u003d std::min(maxTextureSize, caps-\u003emaxTextureSize());\n```\n\nThis also makes it clear/defensive that we\u0027re always clamping to the caps\u0027 max texture size (even though other code makes that technically redundant right now).",
+      "revId": "9b77838bf672f0319d147a3cb560dd38d41c7325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
