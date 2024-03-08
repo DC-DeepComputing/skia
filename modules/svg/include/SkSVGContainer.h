@@ -26,6 +26,15 @@ protected:
 
     bool hasChildren() const final;
 
+    template <typename NodeType, typename FUNC>
+    void forEachChild(FUNC func) const {
+        for (const auto& child : fChildren) {
+            if (child->tag() == NodeType::tag) {
+                func(static_cast<const NodeType*>(child.get()));
+            }
+        }
+    }
+
     // TODO: add some sort of child iterator, and hide the container.
     skia_private::STArray<1, sk_sp<SkSVGNode>, true> fChildren;
 
