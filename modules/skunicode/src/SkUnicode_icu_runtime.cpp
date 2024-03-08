@@ -14,6 +14,7 @@
 #define SK_RUNTIME_ICU_PATHS "libicuuc.so"
 
 std::unique_ptr<SkICULib> SkLoadICULib() {
+  SkDebugf("Runtime\n");
   static constexpr char const* gLibPaths[] = {SK_RUNTIME_ICU_PATHS};
 
   void* dlhnd = nullptr;

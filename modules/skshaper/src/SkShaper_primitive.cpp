@@ -21,7 +21,9 @@
 
 class SkShaperPrimitive : public SkShaper {
 public:
-    SkShaperPrimitive() {}
+    SkShaperPrimitive() {
+        SkDebugf("PrimitiveText\n");
+    }
 private:
 #if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
     void shape(const char* utf8, size_t utf8Bytes,
