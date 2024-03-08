@@ -678,6 +678,7 @@ std::unique_ptr<SkUnicode> Make() {
     if (SkLoadICULib()) {
         return std::make_unique<SkUnicode_icu>();
     }
+    SkDebugf("\nNULL\n");
     return nullptr;
 }
 }  // namespace SkUnicodes::ICU
