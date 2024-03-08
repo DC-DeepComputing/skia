@@ -74,21 +74,25 @@ static SkUnicode* get_unicode() {
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
     static SkUnicode* icu_unicode = SkUnicodes::ICU::Make().release();
     if (icu_unicode != nullptr) {
+        SkDebugf("\nICU\n");
         return icu_unicode;
     }
 #endif
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
     static SkUnicode* icu4x_unicode = SkUnicodes::ICU4X::Make().release();
     if (icu4x_unicode != nullptr) {
+        SkDebugf("\nICU4X\n");
         return icu4x_unicode;
     }
 #endif
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
     static SkUnicode* grapheme_unicode = SkUnicodes::Libgrapheme::Make().release();
     if (grapheme_unicode != nullptr) {
+        SkDebugf("\nLibgrapheme\n");
         return grapheme_unicode;
     }
 #endif
+    SkDebugf("\nNULL\n");
     return nullptr;
 }
 
@@ -96,8 +100,10 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
     auto unicode = get_unicode();
     if (!unicode) {
+        SkDebugf("\nPrimitiveText1\n");
         return SkShapers::Primitive::PrimitiveText();
     }
+    SkDebugf("\nShaperDrivenWrapper\n");
     if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, std::move(fallback))) {
         return shaper;
     }
@@ -107,6 +113,7 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
+    SkDebugf("\nPrimitiveText2\n");
     return SkShapers::Primitive::PrimitiveText();
 }
 

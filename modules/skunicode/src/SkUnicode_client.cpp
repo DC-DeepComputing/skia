@@ -257,6 +257,7 @@ std::unique_ptr<SkUnicode> Make(
         std::vector<SkUnicode::Position> words,
         std::vector<SkUnicode::Position> graphemeBreaks,
         std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+    SkDebugf("Client\n");
     return std::make_unique<SkUnicode_client>(text,
                                               std::move(words),
                                               std::move(graphemeBreaks),
