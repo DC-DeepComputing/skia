@@ -25,7 +25,9 @@ using namespace skia_private;
 
 class SkUnicode_libgrapheme : public SkUnicodeHardCodedCharProperties {
 public:
-    SkUnicode_libgrapheme() { }
+    SkUnicode_libgrapheme() {
+      SkDebugf("Libgrapheme\n");
+    }
 
     ~SkUnicode_libgrapheme() override = default;
 

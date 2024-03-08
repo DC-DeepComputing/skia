@@ -96,8 +96,10 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
     auto unicode = get_unicode();
     if (!unicode) {
+        SkDebugf("\nPrimitiveText1\n");
         return SkShapers::Primitive::PrimitiveText();
     }
+    SkDebugf("\nShaperDrivenWrapper\n");
     if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, std::move(fallback))) {
         return shaper;
     }
@@ -107,6 +109,7 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
+    SkDebugf("\nPrimitiveText2\n");
     return SkShapers::Primitive::PrimitiveText();
 }
 
