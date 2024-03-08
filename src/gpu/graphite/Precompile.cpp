@@ -48,6 +48,15 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilter::makeComposed(
 }
 
 //--------------------------------------------------------------------------------------------------
+void PaintOptions::setBlendModes(SkSpan<SkBlendMode> blendModes) {
+    // TODO: we could massage the provided blendModes into either all coeff-based or all blend-mode
+    // based.
+    fBlenderOptions.reserve(blendModes.size());
+    for (SkBlendMode bm : blendModes) {
+        fBlenderOptions.emplace_back(PrecompileBlenders::KnownMode(bm));
+    }
+}
+
 int PaintOptions::numShaderCombinations() const {
     int numShaderCombinations = 0;
     for (const sk_sp<PrecompileShader>& s : fShaderOptions) {
@@ -82,7 +91,7 @@ int PaintOptions::numBlendModeCombinations() const {
     bool bmBased = false;
     int numBlendCombos = 0;
     for (const auto& b: fBlenderOptions) {
-        if (b->asBlendMode().has_value()) {
+        if (b->asBlendMode1().has_value()) {
             bmBased = true;
         } else {
             numBlendCombos += b->numChildCombinations();
@@ -98,6 +107,9 @@ int PaintOptions::numBlendModeCombinations() const {
 }
 
 int PaintOptions::numCombinations() const {
+    if (!fValid) {
+        return 1;
+    }
     // TODO: we need to handle ImageFilters separately
     return this->numShaderCombinations() *
            this->numMaskFilterCombinations() *
@@ -109,7 +121,9 @@ DstReadRequirement get_dst_read_req(const Caps* caps,
                                     Coverage coverage,
                                     PrecompileBlender* blender) {
     if (blender) {
-        return GetDstReadRequirement(caps, blender->asBlendMode(), coverage);
+        // Hmmm - why does this work? It probably needs to be updated wrt to isCoeff and
+        // isBitmapBased
+        return GetDstReadRequirement(caps, blender->asBlendMode1(), coverage);
     }
     return GetDstReadRequirement(caps, SkBlendMode::kSrcOver, coverage);
 }
@@ -221,7 +235,7 @@ void PaintOption::handleColorFilter(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer) const {
     if (fColorFilter.first) {
-        Compose(keyContext, builder, gatherer,
+        Compose1(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handlePaintAlpha(keyContext, builder, gatherer);
                 },
@@ -261,7 +275,7 @@ void PaintOption::handleDithering(const KeyContext& keyContext,
 #ifndef SK_IGNORE_GPU_DITHER
     SkColorType ct = keyContext.dstColorInfo().colorType();
     if (this->shouldDither(ct)) {
-        Compose(keyContext, builder, gatherer,
+        Compose1(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
                     this->handleColorFilter(keyContext, builder, gatherer);
                 },
@@ -350,8 +364,9 @@ void PaintOptions::createKey(const KeyContext& keyContext,
 
     option.toKey(keyContext, keyBuilder, gatherer);
 
+    // Hmm - why does this work?
     std::optional<SkBlendMode> finalBlendMode = option.finalBlender()
-                                                        ? option.finalBlender()->asBlendMode()
+                                                        ? option.finalBlender()->asBlendMode1()
                                                         : SkBlendMode::kSrcOver;
     if (dstReadReq != DstReadRequirement::kNone) {
         // In this case the blend will have been handled by shader-based blending with the dstRead.
@@ -372,7 +387,11 @@ void PaintOptions::buildCombinations(
         Coverage coverage,
         const std::function<void(UniquePaintParamsID)>& processCombination) const {
 
-    PaintParamsKeyBuilder builder(keyContext.dict());
+    if (!this->fValid) {
+        processCombination(UniquePaintParamsID::InvalidID());
+    }
+
+    PaintParamsKeyBuilder builder(keyContext.dict(), this->fFromKey);
 
     int numCombinations = this->numCombinations();
     for (int i = 0; i < numCombinations; ++i) {
@@ -385,6 +404,14 @@ void PaintOptions::buildCombinations(
         // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
         // PaintParamsKey. This serves to reset the builder.
         UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
+
+        {
+            SkDebugf("In the guts of PaintOptions::buildCombinations - paintID %d\n", paintID.asUInt());
+            PaintParamsKey paramsKey = keyContext.dict()->lookup(paintID);
+            if (paramsKey.isValid()) {
+                paramsKey.dump(keyContext.dict());
+            }
+        }
 
         processCombination(paintID);
     }

@@ -186,7 +186,7 @@ DEF_SIMPLE_GM(AlternateLuma, canvas, 384,128) {
 
     // Here, RGB holds CIE XYZ. Splatting the G (Y) channel should result in (near) greyscale.
     auto [effect, err] = SkRuntimeEffect::MakeForColorFilter(SkString{
-            "half4 main(half4 inColor) { return inColor.ggga; }"});
+            "half4 main(half4 inColor) { return inColor.ggga; }"}, /* stableKey= */ 0);
     SkASSERT(effect && err.isEmpty());
 
     sk_sp<SkColorFilter> filter = effect->makeColorFilter(SkData::MakeEmpty());

@@ -50,6 +50,33 @@ namespace SkSL::RP {
 class Program;
 }
 
+static const uint32_t kLinearBlur1DStableKey = 22;
+static const uint32_t kBlur2DStableKey = 23;
+static const uint32_t kDecalStableKey = 24;
+static const uint32_t kHighContrastStableKey = 25;
+static const uint32_t kSingleIntervalColorizerStableKey = 26;
+static const uint32_t kDualIntervalColorizerStableKey = 27;
+static const uint32_t kUnrolledColorizerStableKey = 28;
+static const uint32_t kLoopingColorizerStableKey = 29;
+static const uint32_t kArithmeticStableKey = 30;
+//static const uint32_t kBlendShaderStableKey = 31;
+static const uint32_t kCircleBlurStableKey = 31;
+static const uint32_t kDisplacementMapStableKey = 32;
+static const uint32_t kLerpStableKey = 33;
+static const uint32_t kLumaColorFilterStableKey = 34;
+static const uint32_t kOverDrawColorFilterStableKey = 35;
+static const uint32_t kRectBlurStableKey = 36;
+static const uint32_t kRRectBlurStableKey = 37;
+static const uint32_t kMagnifierStableKey = 38;
+static const uint32_t kLinearMorphologyStableKey = 39;
+static const uint32_t kSparseMorphologyStableKey = 40;
+static const uint32_t kMatrixConvStableKey1 = 41;
+static const uint32_t kMatrixConvStableKey2 = 42;
+static const uint32_t kNormalShaderStableKey = 43;
+static const uint32_t kLightingShaderStableKey = 44;
+static const uint32_t kWhatStableKey = 45;
+
+
 /*
  * SkRuntimeEffect supports creating custom SkShader and SkColorFilter objects using Skia's SkSL
  * shading language.
@@ -286,19 +313,23 @@ private:
                     std::vector<Uniform>&& uniforms,
                     std::vector<Child>&& children,
                     std::vector<SkSL::SampleUsage>&& sampleUsages,
-                    uint32_t flags);
+                    uint32_t flags,
+                    uint32_t stableKey);
 
     sk_sp<SkRuntimeEffect> makeUnoptimizedClone();
 
-    static Result MakeFromSource(SkString sksl, const Options& options, SkSL::ProgramKind kind);
+    static Result MakeFromSource(SkString sksl, const Options& options, SkSL::ProgramKind kind,
+                                 uint32_t stableKey);
 
     static Result MakeInternal(std::unique_ptr<SkSL::Program> program,
                                const Options& options,
-                               SkSL::ProgramKind kind);
+                               SkSL::ProgramKind kind,
+                               uint32_t stableKey);
 
     static SkSL::ProgramSettings MakeSettings(const Options& options);
 
     uint32_t hash() const { return fHash; }
+    uint32_t stableKey() const { return fStableKey; }
     bool usesSampleCoords()   const { return (fFlags & kUsesSampleCoords_Flag);   }
     bool samplesOutsideMain() const { return (fFlags & kSamplesOutsideMain_Flag); }
     bool usesColorTransform() const { return (fFlags & kUsesColorTransform_Flag); }

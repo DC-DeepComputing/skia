@@ -194,7 +194,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::MakeColor(SkPMColor4f 
     // Use ColorFilter signature/factory to get the constant output for constant input optimization
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
         "uniform half4 color;"
-        "half4 main(half4 inColor) { return color; }"
+        "half4 main(half4 inColor) { return color; }", /* stableKey= */ 0
     );
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "color_fp", /*inputFP=*/nullptr,
@@ -218,7 +218,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::ApplyPaintAlpha(
         "uniform colorFilter fp;"
         "half4 main(half4 inColor) {"
             "return fp.eval(inColor.rgb1) * inColor.a;"
-        "}"
+        "}", /* stableKey= */ 0
     );
     return GrSkSLFP::Make(effect, "ApplyPaintAlpha", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput |
@@ -239,7 +239,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::ClampOutput(
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
         "half4 main(half4 inColor) {"
             "return saturate(inColor);"
-        "}"
+        "}", /* stableKey= */ 0
     );
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "Clamp", std::move(fp),
@@ -326,7 +326,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::OverrideInput(
         "uniform half4 color;"
         "half4 main(half4 inColor) {"
             "return fp.eval(color);"
-        "}"
+        "}", /* stableKey= */ 0
     );
     return GrSkSLFP::Make(effect, "OverrideInput", /*inputFP=*/nullptr,
                           color.isOpaque() ? GrSkSLFP::OptFlags::kPreservesOpaqueInput
@@ -343,7 +343,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DisableCoverageAsAlpha
         return fp;
     }
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
-        "half4 main(half4 inColor) { return inColor; }"
+        "half4 main(half4 inColor) { return inColor; }", /* stableKey= */ 0
     );
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
     return GrSkSLFP::Make(effect, "DisableCoverageAsAlpha", std::move(fp),
@@ -356,7 +356,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DestColor() {
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForBlender,
         "half4 main(half4 src, half4 dst) {"
             "return dst;"
-        "}"
+        "}", /* stableKey= */ 0
     );
     return GrSkSLFP::Make(effect, "DestColor", /*inputFP=*/nullptr, GrSkSLFP::OptFlags::kNone);
 }
@@ -479,7 +479,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::ColorMatrix(
                 "color.rgb *= color.a;"
             "}"
             "return color;"
-        "}"
+        "}", /* stableKey= */ 0
     );
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
 
@@ -628,7 +628,7 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::Rect(
             "}"
 
             "return half4(coverage);"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     SkASSERT(rect.isSorted());
@@ -674,7 +674,7 @@ GrFPResult GrFragmentProcessor::Circle(std::unique_ptr<GrFragmentProcessor> inpu
             "return half4((edgeType == kFillAA || edgeType == kInverseFillAA)"
                               "? saturate(d)"
                               ": (d > 0.5 ? 1 : 0));"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     SkScalar effectiveRadius = radius;
@@ -760,7 +760,7 @@ GrFPResult GrFragmentProcessor::Ellipse(std::unique_ptr<GrFragmentProcessor> inp
                 "alpha = saturate(0.5 + half(approx_dist));"
             "}"
             "return half4(alpha);"
-        "}"
+        "}", /* stableKey= */ 0
     );
 
     float invRXSqd;

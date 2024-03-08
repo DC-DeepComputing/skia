@@ -94,7 +94,7 @@ using AddToKeyFn = std::function<void()>;
 
 void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
            AddToKeyFn addBlendToKey, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
-void Compose(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
+void Compose1(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
              AddToKeyFn addInnerToKey, AddToKeyFn addOuterToKey);
 // Add a blend mode node for a specific SkBlendMode.
 void AddKnownModeBlend(const KeyContext&,

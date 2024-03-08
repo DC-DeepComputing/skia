@@ -417,7 +417,7 @@ void GrSkSLFP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const 
     // In the unlikely event of a hash collision, we also include the uniform size in the key.
     // That ensures that we will (at worst) use the wrong program, but one that expects the same
     // amount of uniform data.
-    b->add32(fEffect->hash());
+    b->add32(fEffect->hash1());
     b->add32(fUniformSize);
 
     const Specialized* specialized = this->specialized();
@@ -437,7 +437,7 @@ void GrSkSLFP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const 
 bool GrSkSLFP::onIsEqual(const GrFragmentProcessor& other) const {
     const GrSkSLFP& sk = other.cast<GrSkSLFP>();
     const size_t specializedSize = this->uniformCount() * sizeof(Specialized);
-    return fEffect->hash() == sk.fEffect->hash() &&
+    return fEffect->hash1() == sk.fEffect->hash1() &&
            this->uniformCount() == sk.uniformCount() &&
            fUniformSize == sk.fUniformSize &&
            !sk_careful_memcmp(this->uniformData(),

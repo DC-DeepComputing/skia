@@ -110,26 +110,26 @@ static void test_nested_blends(skiatest::Reporter* reporter, SkSurface* surface)
         half4 main(float2 coord) {
             return half4(1, 0, 0, 1);
         }
-    )"));
+    )"), /* stableKey= */ 0);
 
     auto [greenEffect, greenError] = SkRuntimeEffect::MakeForShader(SkString(R"(
         half4 main(float2 coord) {
             return half4(0, 1, 0, 1);
         }
-    )"));
+    )"), /* stableKey= */ 0);
 
     auto [blendEffect, blenderError] = SkRuntimeEffect::MakeForBlender(SkString(R"(
         half4 main(half4 src, half4 dst) {
             return (src + dst) * 0.5;
         }
-    )"));
+    )"), /* stableKey= */ 0);
 
     auto [nestedBlendEffect, nestedBlenderError] = SkRuntimeEffect::MakeForBlender(SkString(R"(
         uniform blender child_blender;
         half4 main(half4 src, half4 dst) {
             return (child_blender.eval(src, dst) + dst) * 0.5;
         }
-    )"));
+    )"), /* stableKey= */ 0);
 
     sk_sp<SkShader> redShader = redEffect->makeShader(nullptr, {});
     sk_sp<SkShader> greenShader = greenEffect->makeShader(nullptr, {});

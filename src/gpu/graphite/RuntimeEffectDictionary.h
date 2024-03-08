@@ -26,9 +26,12 @@ public:
         return effect ? effect->get() : nullptr;
     }
 
-    void set(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect);
+    void set1(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect);
 
-    void reset() { fDict.reset(); }
+    void reset() {
+        SkDebugf("RuntimeEffectDictionary::reset\n");
+        fDict.reset();
+    }
 
 private:
     skia_private::THashMap<int, sk_sp<const SkRuntimeEffect>> fDict;
