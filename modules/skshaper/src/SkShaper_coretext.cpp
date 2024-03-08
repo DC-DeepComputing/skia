@@ -32,7 +32,9 @@ using namespace skia_private;
 
 class SkShaper_CoreText : public SkShaper {
 public:
-    SkShaper_CoreText() {}
+    SkShaper_CoreText() {
+      SkDebugf("CoreText\n");
+    }
 private:
 #if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
     void shape(const char* utf8, size_t utf8Bytes,
