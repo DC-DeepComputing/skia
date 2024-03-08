@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad3a094f_e519ec42",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-08T16:54:34Z",
+      "side": 1,
+      "message": "I think that would go against the intent of maxPathAtlasTextureSize, which is to allow clients to limit the amount of texture memory used by the PathAtlases. This block is meant to cover the case where they try to go too small to be practical.",
+      "parentUuid": "53712031_4d5b6a30",
+      "range": {
+        "startLine": 41,
+        "startChar": 25,
+        "endLine": 41,
+        "endChar": 33
+      },
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcde2219_ba57febe",
         "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
         "patchSetId": 5
