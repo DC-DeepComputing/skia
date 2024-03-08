@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b778fff_c9731c19",
+        "filename": "public.bzl",
+        "patchSetId": 9
+      },
+      "lineNbr": 2040,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-08T13:48:26Z",
+      "side": 1,
+      "message": "Also needed to add the .h",
+      "range": {
+        "startLine": 2040,
+        "startChar": 19,
+        "endLine": 2040,
+        "endChar": 42
+      },
+      "revId": "f96a0703397ff486a97b0783b581c41dea4ecd83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
