@@ -43,13 +43,28 @@ bool RendererProvider::IsVelloRendererSupported(const Caps* caps) {
 // in members.
 RendererProvider::~RendererProvider() = default;
 
+DrawTypeFlags RendererProvider::yo(uint32_t uniqueRenderStepID) const {
+    DrawTypeFlags flags = DrawTypeFlags::kNone;
+
+    for (const Renderer* r : fRenderers) {
+        for (int i = 0; i < r->numRenderSteps(); ++i) {
+            const RenderStep& rs = r->step(i);
+            if (rs.uniqueID() == uniqueRenderStepID) {
+                flags |= r->drawTypes();
+            }
+        }
+    }
+
+    return flags;
+}
+
 RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* bufferManager) {
     // This constructor requires all Renderers be densely packed so that it can simply iterate over
     // the fields directly and fill 'fRenderers' with every one that was initialized with a
     // non-empty renderer. While this is a little magical, it simplifies the rest of the logic
     // and can be enforced statically.
     static constexpr size_t kRendererSize = offsetof(RendererProvider, fRenderers) -
-                                            offsetof(RendererProvider, fStencilTessellatedCurves);
+            offsetof(RendererProvider, fStencilTessellatedCurves);
     static_assert(kRendererSize % sizeof(Renderer) == 0, "Renderer declarations are not dense");
 
     const bool infinitySupport = caps->shaderCaps()->fInfinitySupport;
@@ -60,12 +75,12 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         name += singleStep->name();
         name += "]";
         fRenderSteps.push_back(std::move(singleStep));
-        return Renderer(name, drawTypes, fRenderSteps.back().get());
+        return Renderer(name, drawTypes, fRenderSteps.back().get()); /**/
     };
 
     fConvexTessellatedWedges =
             makeFromStep(std::make_unique<TessellateWedgesRenderStep>(
-                                 "convex", infinitySupport, kDirectDepthGreaterPass, bufferManager),
+                    "convex", infinitySupport, kDirectDepthGreaterPass, bufferManager),
                          DrawTypeFlags::kShape);
     fTessellatedStrokes = makeFromStep(
             std::make_unique<TessellateStrokesRenderStep>(infinitySupport), DrawTypeFlags::kShape);
@@ -102,9 +117,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                 evenOdd, infinitySupport, bufferManager);
         auto stencilWedge =
                 evenOdd ? std::make_unique<TessellateWedgesRenderStep>(
-                                  "evenodd", infinitySupport, kEvenOddStencilPass, bufferManager)
+                        "evenodd", infinitySupport, kEvenOddStencilPass, bufferManager)
                         : std::make_unique<TessellateWedgesRenderStep>(
-                                  "winding", infinitySupport, kWindingStencilPass, bufferManager);
+                                "winding", infinitySupport, kWindingStencilPass, bufferManager);
 
         for (bool inverse : {false, true}) {
             static const char* kTessVariants[4] =
@@ -113,7 +128,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
             int index = 2*inverse + evenOdd; // matches SkPathFillType
             std::string variant = kTessVariants[index];
 
-            constexpr DrawTypeFlags kTextAndShape =
+            const DrawTypeFlags kTextAndShape =
                     static_cast<DrawTypeFlags>(DrawTypeFlags::kText|DrawTypeFlags::kShape);
 
             const RenderStep* coverStep = inverse ? coverInverse.get() : coverFill.get();

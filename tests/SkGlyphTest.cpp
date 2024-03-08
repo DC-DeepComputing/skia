@@ -382,7 +382,7 @@ static sk_sp<SkDrawable> make_sksl_drawable() {
 
     const sk_sp<SkRuntimeEffect> effect =
             SkRuntimeEffect::MakeForShader(
-                    SkString("half4 main(float2 xy) { return half4(0, 1, 0, 1); }"))
+                    SkString("half4 main(float2 xy) { return half4(0, 1, 0, 1); }"), /* stableKey= */ 0)
                     .effect;
     SkASSERT(effect);
 

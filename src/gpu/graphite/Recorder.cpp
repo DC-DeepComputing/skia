@@ -193,7 +193,8 @@ std::unique_ptr<Recording> Recorder::snap() {
     fUploadBufferManager->transferToRecording(recording.get());
 
     fGraph = std::make_unique<TaskGraph>();
-    fRuntimeEffectDict->reset();
+    // Hmm - I guesss we reset bc we can always readd the entries
+//    fRuntimeEffectDict->reset();
     fTextureDataCache = std::make_unique<TextureDataCache>();
     fUniformDataCache = std::make_unique<UniformDataCache>();
     if (!this->priv().caps()->requireOrderedRecordings()) {

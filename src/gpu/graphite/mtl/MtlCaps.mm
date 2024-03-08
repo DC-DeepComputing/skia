@@ -20,6 +20,33 @@
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
+
+const char* nameIt(int format) {
+    switch (format) {
+        case MTLPixelFormatInvalid: /* 0 */ return "Invalid";
+        case MTLPixelFormatA8Unorm: /* 1 */ return "A8Unorm";
+        case MTLPixelFormatR8Unorm: /*10*/ return "R8Unorm";
+        case MTLPixelFormatR16Unorm: /* 20 */ return "R16Unorm";
+        case MTLPixelFormatR16Float: /*25*/ return "R16Float";
+        case MTLPixelFormatRG8Unorm:/*30*/ return "RG8Unorm";
+        case MTLPixelFormatB5G6R5Unorm:/* 40*/ return "B5G6R5Unorm";
+        case MTLPixelFormatABGR4Unorm:/*42*/ return "ABGR4Unorm";
+        case MTLPixelFormatRG16Unorm:/* 60 */ return "RG16Unorm";
+        case MTLPixelFormatRG16Float: /* 65 */ return "RG16Float";
+        case MTLPixelFormatRGBA8Unorm: /*70*/ return "RGBA8Unorm";
+        case MTLPixelFormatRGBA8Unorm_sRGB:/*71*/ return "RGBA8Unorm_sRGB";
+        case MTLPixelFormatBGRA8Unorm: /*80*/ return "BGRA8Unorm";
+        case MTLPixelFormatRGB10A2Unorm: /*90*/ return "RGBA10A2Unorm";
+        case MTLPixelFormatRGBA16Unorm: /* 110*/ return "RGBA16Unorm";
+        case MTLPixelFormatRGBA16Float:/*115*/ return "RGBA16Float";
+
+        case MTLPixelFormatDepth32Float:/* 252 */ return "Depth32Float";
+        case MTLPixelFormatStencil8: /* 253 */ return "Stencil8";
+        case MTLPixelFormatDepth32Float_Stencil8:/* 260 */ return "Depth32Float_Stencil8";
+        default: return "Unknown";
+    }
+}
+
 namespace skgpu::graphite {
 
 MtlCaps::MtlCaps(const id<MTLDevice> device, const ContextOptions& options)
@@ -397,6 +424,20 @@ size_t MtlCaps::GetFormatIndex(MTLPixelFormat pixelFormat) {
         }
     }
     return GetFormatIndex(MTLPixelFormatInvalid);
+}
+
+SkColorType MtlCaps::flooble(MTLPixelFormat format) const {
+    const FormatInfo& info = fFormatTable[GetFormatIndex(format)];
+
+    const ColorTypeInfo* infos = info.fColorTypeInfos.get();
+
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        if (infos[i].fFlags & ColorTypeInfo::kRenderable_Flag) {
+            return infos[i].fColorType;
+        }
+    }
+
+    return kUnknown_SkColorType;
 }
 
 void MtlCaps::initFormatTable() {
@@ -898,9 +939,15 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
         // 5 uint32_t's (render step id, paint id, uint64 renderpass desc, uint16 write swizzle key)
         UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain,
                                    kGraphicsPipelineKeyData32Count, "GraphicsPipeline");
+
         // add GraphicsPipelineDesc key
         builder[0] = pipelineDesc.renderStepID();
         builder[1] = pipelineDesc.paintParamsID().asUInt();
+
+/*1*/
+//        SkDebugf("makeGraphicsPipelineKey %d %d ",
+//                 pipelineDesc.renderStepID(),
+//                 pipelineDesc.paintParamsID().asUInt());
 
         // add RenderPassDesc key
         uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
@@ -991,6 +1038,12 @@ uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) con
     SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
     uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
     uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
+
+/*1*/
+//    SkDebugf("getRenderPassDescKey %d %d %d %d\n",
+//             colorInfo.fFormat, colorInfo.fSampleCount,
+//             depthStencilInfo.fFormat, depthStencilInfo.fSampleCount);
+
     return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
 }
 

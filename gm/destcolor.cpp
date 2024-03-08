@@ -23,7 +23,7 @@ DEF_SIMPLE_GM(destcolor, canvas, 640, 640) {
         half4 main(half4 src, half4 dst) {
             return (half4(1) - dst).rgb1;
         }
-    )"));
+    )"), /* stableKey= */ 0);
     SkASSERT(effect);
     SkPaint invertPaint;
     invertPaint.setAntiAlias(true);

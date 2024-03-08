@@ -156,10 +156,11 @@ sk_sp<SkFlattenable> SkRuntimeImageFilter::CreateProc(SkReadBuffer& buffer) {
         return nullptr;
     }
 
+    // TODO: need to serialize the stablekey
     // Read the SkSL string and convert it into a runtime effect
     SkString sksl;
     buffer.readString(&sksl);
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
+    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl), /* stableKey= */ 0);
     if (!buffer.validate(effect != nullptr)) {
         return nullptr;
     }
