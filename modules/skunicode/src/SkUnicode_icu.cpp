@@ -39,6 +39,9 @@ using namespace skia_private;
 
 const SkICULib* SkGetICULib() {
     static const auto gICU = SkLoadICULib();
+    if (gICU == nullptr || gICU.get() == nullptr) {
+        SkDebugf("\nSkGetICULib == null\n");
+    }
     return gICU.get();
 }
 
@@ -678,6 +681,7 @@ std::unique_ptr<SkUnicode> Make() {
     if (SkLoadICULib()) {
         return std::make_unique<SkUnicode_icu>();
     }
+    SkDebugf("\nNULL\n");
     return nullptr;
 }
 }  // namespace SkUnicodes::ICU

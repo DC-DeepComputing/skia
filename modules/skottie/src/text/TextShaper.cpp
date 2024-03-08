@@ -74,21 +74,25 @@ static SkUnicode* get_unicode() {
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
     static SkUnicode* icu_unicode = SkUnicodes::ICU::Make().release();
     if (icu_unicode != nullptr) {
+        SkDebugf("\nICU\n");
         return icu_unicode;
     }
 #endif
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
     static SkUnicode* icu4x_unicode = SkUnicodes::ICU4X::Make().release();
     if (icu4x_unicode != nullptr) {
+        SkDebugf("\nICU4X\n");
         return icu4x_unicode;
     }
 #endif
 #if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
     static SkUnicode* grapheme_unicode = SkUnicodes::Libgrapheme::Make().release();
     if (grapheme_unicode != nullptr) {
+        SkDebugf("\nLibgrapheme\n");
         return grapheme_unicode;
     }
 #endif
+    SkDebugf("\nNULL\n");
     return nullptr;
 }
 
@@ -96,8 +100,10 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
     auto unicode = get_unicode();
     if (!unicode) {
+        SkDebugf("\nPrimitiveText1\n");
         return SkShapers::Primitive::PrimitiveText();
     }
+    SkDebugf("\nShaperDrivenWrapper\n");
     if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, std::move(fallback))) {
         return shaper;
     }
@@ -107,6 +113,7 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
+    SkDebugf("\nPrimitiveText2\n");
     return SkShapers::Primitive::PrimitiveText();
 }
 
@@ -389,7 +396,11 @@ public:
         const auto lang_iter = fDesc.fLocale
                 ? std::make_unique<SkShaper::TrivialLanguageRunIterator>(fDesc.fLocale, utf8_bytes)
                 : SkShaper::MakeStdLanguageRunIterator(start, utf8_bytes);
+        if (!lang_iter) {
+            SkDebugf("\nlang_itr == nullptr\n");
+        }
 #if defined(SKOTTIE_TRIVIAL_FONTRUN_ITER)
+        SkDebugf("\nSKOTTIE_TRIVIAL_FONTRUN_ITER\n");
         // Chrome Linux/CrOS does not have a fallback-capable fontmgr, and crashes if fallback is
         // triggered.  Using a TrivialFontRunIterator avoids the issue (https://crbug.com/1520148).
         const auto font_iter = std::make_unique<SkShaper::TrivialFontRunIterator>(fFont,
@@ -402,7 +413,9 @@ public:
                                     fFont.getTypeface()->fontStyle(),
                                     lang_iter.get());
 #endif
-
+        if (!font_iter) {
+            SkDebugf("\nfont_iter == nullptr\n");
+        }
         [[maybe_unused]] SkUnicode* unicode = get_unicode();
         std::unique_ptr<SkShaper::BiDiRunIterator> bidi_iter = nullptr;
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
@@ -410,18 +423,25 @@ public:
                 unicode, start, utf8_bytes, shape_ltr ? kBidiLevelLTR : kBidiLevelRTL);
 #endif
         if (!bidi_iter) {
+            SkDebugf("\ntrivial bidi\n");
             bidi_iter = std::make_unique<SkShaper::TrivialBiDiRunIterator>(
                     shape_ltr ? kBidiLevelLTR : kBidiLevelRTL, utf8_bytes);
         }
-
+        if (!bidi_iter) {
+            SkDebugf("\nbidi_iter == nullptr\n");
+        }
         std::unique_ptr<SkShaper::ScriptRunIterator> scpt_iter = nullptr;
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
         scpt_iter = SkShapers::HB::ScriptRunIterator(
                 start, utf8_bytes, SkSetFourByteTag('Z', 'z', 'z', 'z'));
 #endif
         if (!scpt_iter) {
+            SkDebugf("\ntrivial scpt\n");
             scpt_iter = std::make_unique<SkShaper::TrivialScriptRunIterator>(
                     utf8_bytes, SkSetFourByteTag('Z', 'z', 'z', 'z'));
+        }
+        if (!scpt_iter) {
+            SkDebugf("\nscpt_iter == nullptr\n");
         }
 
         if (!font_iter || !bidi_iter || !scpt_iter || !lang_iter) {

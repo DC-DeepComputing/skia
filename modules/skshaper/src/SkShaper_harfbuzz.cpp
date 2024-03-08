@@ -728,10 +728,11 @@ private:
 ShaperHarfBuzz::ShaperHarfBuzz(SkUnicode* unicode,
                                HBBuffer buffer,
                                sk_sp<SkFontMgr> fallback)
-    : fUnicode(std::move(unicode))
+    : fUnicode(unicode)
     , fFontMgr(fallback ? std::move(fallback) : SkFontMgr::RefEmpty())
     , fBuffer(std::move(buffer))
     , fUndefinedLanguage(hb_language_from_string("und", -1)) {
+    SkDebugf("\nHarfbuzz\n");
 #if defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
     SkASSERT(fUnicode);
 #endif
@@ -1482,6 +1483,7 @@ namespace SkShapers::HB {
 std::unique_ptr<SkShaper> ShaperDrivenWrapper(SkUnicode* unicode,
                                               sk_sp<SkFontMgr> fallback) {
     if (!unicode) {
+        SkDebugf("\nNULL: ShaperDrivenWrapper\n");
         return nullptr;
     }
     HBBuffer buffer(hb_buffer_create());
@@ -1490,7 +1492,7 @@ std::unique_ptr<SkShaper> ShaperDrivenWrapper(SkUnicode* unicode,
         return nullptr;
     }
     return std::make_unique<::ShaperDrivenWrapper>(
-            std::move(unicode), std::move(buffer), std::move(fallback));
+            unicode, std::move(buffer), std::move(fallback));
 }
 
 std::unique_ptr<SkShaper> ShapeThenWrap(SkUnicode* unicode,
@@ -1504,7 +1506,7 @@ std::unique_ptr<SkShaper> ShapeThenWrap(SkUnicode* unicode,
         return nullptr;
     }
     return std::make_unique<::ShapeThenWrap>(
-            std::move(unicode), std::move(buffer), std::move(fallback));
+            unicode, std::move(buffer), std::move(fallback));
 }
 
 std::unique_ptr<SkShaper> ShapeDontWrapOrReorder(SkUnicode* unicode,
@@ -1518,7 +1520,7 @@ std::unique_ptr<SkShaper> ShapeDontWrapOrReorder(SkUnicode* unicode,
         return nullptr;
     }
     return std::make_unique<::ShapeDontWrapOrReorder>(
-            std::move(unicode), std::move(buffer), std::move(fallback));
+            unicode, std::move(buffer), std::move(fallback));
 }
 
 std::unique_ptr<SkShaper::ScriptRunIterator> ScriptRunIterator(const char* utf8, size_t utf8Bytes) {
