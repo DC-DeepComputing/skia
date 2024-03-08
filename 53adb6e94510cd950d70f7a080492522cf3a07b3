@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e8ed807_a5366c75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-03-08T20:12:01Z",
+      "side": 1,
+      "message": "Oh also I validated that this change can be _uploaded_ to Android\u0027s Gerrit (Change-Id: I0303a214486962c88a77f578e79558c111c08476 in that Gerrit host), so we shouldn\u0027t break the autoroller this time.\n\nBut I don\u0027t think I can validate if the actually enforcement strategy is correct until the CL is submitted.",
+      "revId": "53adb6e94510cd950d70f7a080492522cf3a07b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
