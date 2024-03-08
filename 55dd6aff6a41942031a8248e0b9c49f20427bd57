@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2407ed6c_d85df8e5",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-08T16:33:09Z",
+      "side": 1,
+      "message": "We want the atlas to be no smaller than 512x512, so I think that\u0027s a min? And maxTextureSize is incorporated in maxPathAtlasTextureSize, yes.",
+      "parentUuid": "d6de63f2_f7ccf4ca",
+      "range": {
+        "startLine": 40,
+        "startChar": 26,
+        "endLine": 40,
+        "endChar": 27
+      },
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcde2219_ba57febe",
         "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
         "patchSetId": 5
@@ -78,6 +102,30 @@
       "writtenOn": "2024-03-08T15:19:02Z",
       "side": 1,
       "message": "Should we just pass down the Caps rather than the Recorder?",
+      "range": {
+        "startLine": 89,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 69
+      },
+      "revId": "55dd6aff6a41942031a8248e0b9c49f20427bd57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01d85bcd_ae0484a8",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-03-08T16:33:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcde2219_ba57febe",
       "range": {
         "startLine": 89,
         "startChar": 44,
