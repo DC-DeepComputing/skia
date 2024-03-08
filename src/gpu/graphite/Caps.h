@@ -19,6 +19,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/UniquePaintParamsID.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -30,17 +31,28 @@ class SkCapabilities;
 
 namespace SkSL { struct ShaderCaps; }
 
-namespace skgpu { class ShaderErrorHandler; }
+namespace skgpu {
+enum class Mipmapped : bool;
+enum class Protected : bool;
+enum class Renderable : bool;
+class ShaderErrorHandler;
+class UniqueKey;
+}
 
 namespace skgpu::graphite {
 
 enum class BufferType : int;
 struct ContextOptions;
 class ComputePipelineDesc;
+enum class DepthStencilFlags : int;
+enum class Discardable : bool;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
+enum class Layout;
 class RendererProvider;
 struct RenderPassDesc;
+using ResourceType = uint32_t;
+enum class Shareable : bool;
 class TextureInfo;
 
 struct ResourceBindingRequirements {
@@ -105,6 +117,7 @@ public:
 
     virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
+
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 
     virtual bool extractGraphicsDescs(const UniqueKey&,
@@ -245,11 +258,11 @@ public:
 
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
-    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
+    ::skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
 
     // Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
     // SkColorType and TextureInfo.
-    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
+    ::skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
 
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 

@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -24,6 +25,12 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+namespace DM {
+void dump_descs(const skgpu::graphite::RendererProvider* rendererProvider,
+                const skgpu::graphite::GraphicsPipelineDesc& pipelineDesc,
+                const skgpu::graphite::RenderPassDesc& rpd);
+}
+
 namespace {
 
 using namespace skgpu::graphite;
@@ -36,20 +43,38 @@ void compile(const RendererProvider* rendererProvider,
              SkSpan<RenderPassDesc> renderPassDescs,
              bool withPrimitiveBlender,
              Coverage coverage) {
+    auto caps = keyContext.caps();
+
     for (const Renderer* r : rendererProvider->renderers()) {
+        SkDebugf("%s\n", r->name());
+#if 0
+        if (!strcmp("SingleStep[AnalyticRRectRenderStep]", r->name())) {
+            Coverage rsCoverage = r->coverage();
+            SkDebugf("%s %s - specified coverage %s\n", r->name(),
+                     rsCoverage == Coverage::kNone ? "kNone" :
+                     (rsCoverage == Coverage::kLCD ? "kLCD" : "kSingleChannel"),
+                     coverage == Coverage::kNone ? "kNone" :
+                     (coverage == Coverage::kLCD ? "kLCD" : "kSingleChannel"));
+        }
+#endif
+
         if (!(r->drawTypes() & drawTypes)) {
+            SkDebugf("bailing 1\n");
             continue;
         }
 
         if (r->emitsPrimitiveColor() != withPrimitiveBlender) {
             // UniqueIDs are explicitly built either w/ or w/o primitiveBlending so must
             // match what the Renderer requires
+            SkDebugf("bailing 2\n");
             continue;
         }
 
-        if (r->coverage() != coverage) {
+        Coverage tmp = r->coverage();
+        if (tmp != coverage) {
             // For now, UniqueIDs are explicitly built with a specific type of coverage so must
             // match what the Renderer requires
+            SkDebugf("bailing 3\n");
             continue;
         }
 
@@ -61,6 +86,10 @@ void compile(const RendererProvider* rendererProvider,
             GraphicsPipelineDesc pipelineDesc(s, paintID);
 
             for (const RenderPassDesc& renderPassDesc : renderPassDescs) {
+//                skgpu::UniqueKey k = caps->makeGraphicsPipelineKey(pipelineDesc, renderPassDesc);
+
+//                DM::dump_descs(rendererProvider, pipelineDesc, renderPassDesc);
+
                 sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
                         keyContext.rtEffectDict(),
                         pipelineDesc,
@@ -177,7 +206,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
             options.priv().buildCombinations(
                 keyContext,
                 &gatherer,
-                /* addPrimitiveBlender= */ true,
+                /* addPrimitiveBlender= */ options.fromKey() ? false : true,
                 coverage,
                 [&](UniquePaintParamsID uniqueID) {
                     compile(context->priv().rendererProvider(),

@@ -23,7 +23,7 @@ void add_block(PaintParamsKeyBuilder* builder, int snippetID) {
 }
 
 PaintParamsKey create_key(const ShaderCodeDictionary* dict, int snippetID, SkArenaAlloc* arena) {
-    PaintParamsKeyBuilder builder{dict};
+    PaintParamsKeyBuilder builder{ dict, /* fromKey= */ false };
     add_block(&builder, snippetID);
 
     AutoLockBuilderAsKey keyView{&builder};
@@ -58,7 +58,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, co
     // invalid IDs without themselves becoming invalid. Normally adding an invalid ID triggers an
     // assert in debug builds, since the properly functioning key system should never encounter an
     // invalid ID.
-    PaintParamsKeyBuilder builder(dict);
+    PaintParamsKeyBuilder builder(dict, /* fromKey= */ false);
     AutoLockBuilderAsKey keyView{&builder};
     REPORTER_ASSERT(reporter, !keyView->isValid());
     REPORTER_ASSERT(reporter, !PaintParamsKey::Invalid().isValid());
@@ -102,7 +102,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
-        PaintParamsKeyBuilder builder(dict);
+        PaintParamsKeyBuilder builder(dict, /* fromKey= */ false);
         add_block(&builder, bm + kFixedFunctionBlendModeIDOffset);
         UniquePaintParamsID paintID = dict->findOrCreate(&builder);
 
