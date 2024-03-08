@@ -9,6 +9,7 @@
 #define skgpu_graphite_TextureInfo_DEFINED
 
 #include "include/core/SkString.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 #ifdef SK_DAWN

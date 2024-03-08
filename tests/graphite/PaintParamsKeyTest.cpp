@@ -435,7 +435,7 @@ std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> combo_blender() {
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_bm_blender(SkRandom* rand,
                                                                         SkBlendMode bm) {
-    return { SkBlender::Mode(bm), PrecompileBlender::Mode(bm) };
+    return { SkBlender::Mode(bm), PrecompileBlenders::KnownMode(bm) };
 }
 
 std::pair<sk_sp<SkBlender>, sk_sp<PrecompileBlender>> create_rt_blender(SkRandom* rand) {
@@ -683,7 +683,7 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
     SkPaint paint;
     paint.setColor(random_opaque_color(rand));
 
-    PaintOptions paintOptions;
+    PaintOptions paintOptions(/* valid= */ true, /* fromKey= */ false);
 
     {
         auto [s, o] = create_shader(rand, recorder, shaderType);
@@ -855,7 +855,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     SkRandom rand;
 
-    PaintParamsKeyBuilder builder(dict);
+    PaintParamsKeyBuilder builder(dict, /* fromKey= */ false);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 

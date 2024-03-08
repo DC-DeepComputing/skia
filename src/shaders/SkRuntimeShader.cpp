@@ -135,6 +135,7 @@ sk_sp<SkFlattenable> SkRuntimeShader::CreateProc(SkReadBuffer& buffer) {
         }
     }
 
+    // TODO: need to serialize stableKey
     auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
     if constexpr (!kLenientSkSLDeserialization) {
         if (!buffer.validate(effect != nullptr)) {

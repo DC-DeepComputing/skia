@@ -89,6 +89,7 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
     buffer.readString(&sksl);
     sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
+    /* TODO: serialize stableKey */
     auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl));
     if constexpr (!kLenientSkSLDeserialization) {
         if (!buffer.validate(effect != nullptr)) {
