@@ -19,16 +19,19 @@
 
 namespace skgpu::graphite {
 
+static constexpr uint32_t kDefaultAtlasDim = 4096;
+
 static constexpr uint32_t kSmallPathPlotWidth = 512;
 static constexpr uint32_t kSmallPathPlotHeight = 256;
 
 RasterPathAtlas::RasterPathAtlas(Recorder* recorder)
         : PathAtlas(recorder, kDefaultAtlasDim, kDefaultAtlasDim)
-        , fCachedAtlasMgr(fWidth, fHeight, fWidth, fHeight)
-        , fSmallPathAtlasMgr(std::max(fWidth/2, kSmallPathPlotWidth),
+        , fCachedAtlasMgr(recorder, fWidth, fHeight, fWidth, fHeight)
+        , fSmallPathAtlasMgr(recorder,
+                             std::max(fWidth/2, kSmallPathPlotWidth),
                              std::max(fHeight/2, kSmallPathPlotHeight),
                              kSmallPathPlotWidth, kSmallPathPlotHeight)
-        , fUncachedAtlasMgr(fWidth, fHeight, fWidth, fHeight) {
+        , fUncachedAtlasMgr(recorder, fWidth, fHeight, fWidth, fHeight) {
     SkASSERT(recorder);
 }
 
@@ -83,16 +86,20 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-RasterPathAtlas::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
+RasterPathAtlas::DrawAtlasMgr::DrawAtlasMgr(const Recorder* recorder,
+                                            size_t width, size_t height,
                                             size_t plotWidth, size_t plotHeight) {
     static constexpr SkColorType colorType = kAlpha_8_SkColorType;
+
 
     fDrawAtlas = DrawAtlas::Make(colorType,
                                  SkColorTypeBytesPerPixel(colorType),
                                  width, height,
                                  plotWidth, plotHeight,
                                  this,
-                                 DrawAtlas::AllowMultitexturing::kYes,
+                                 recorder->priv().caps()->allowMultipleAtlasTextures() ?
+                                         DrawAtlas::AllowMultitexturing::kYes :
+                                         DrawAtlas::AllowMultitexturing::kNo,
                                  this,
                                  /*label=*/"RasterPathAtlas");
     SkASSERT(fDrawAtlas);
