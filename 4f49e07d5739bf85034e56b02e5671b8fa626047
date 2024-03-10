@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "914e32d9_33a76637",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-03-10T22:33:48Z",
+      "side": 1,
+      "message": "Comments addressed, and CL rebased. PTAL.",
+      "revId": "4f49e07d5739bf85034e56b02e5671b8fa626047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc3cde43_3d7d753d",
@@ -58,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d804ae51_d7a496ae",
+        "filename": "include/gpu/gl/epoxy/GrGLMakeEpoxyEGLInterface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-03-10T22:33:48Z",
+      "side": 1,
+      "message": "You\u0027re right, I\u0027ve been able to remove `GrTypes.h`; but `SkAPI.h` is not needed either: `SkRefCnt.h` includes `SkTypes.h`, which in turn already includes `SkAPI.h`.",
+      "parentUuid": "fc3cde43_3d7d753d",
+      "range": {
+        "startLine": 12,
+        "startChar": 22,
+        "endLine": 12,
+        "endChar": 29
+      },
+      "revId": "4f49e07d5739bf85034e56b02e5671b8fa626047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e69fa984_eb166ee3",
@@ -71,6 +112,30 @@
       "writtenOn": "2024-02-28T15:14:32Z",
       "side": 1,
       "message": "ubernit: LLC\n```suggestion\n * Copyright 2024 Google LLC\n```",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "4f49e07d5739bf85034e56b02e5671b8fa626047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c29a42dd_acc2e386",
+        "filename": "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-03-10T22:33:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e69fa984_eb166ee3",
       "range": {
         "startLine": 2,
         "startChar": 25,
