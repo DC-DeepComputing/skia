@@ -23,6 +23,7 @@
 class GrDirectContext;
 class GrRecordingContext;
 class SkBitmap;
+class SkCodec;
 class SkColorSpace;
 class SkData;
 class SkImage;
@@ -105,6 +106,25 @@ SK_API sk_sp<SkImage> RasterFromCompressedTextureData(sk_sp<SkData> data,
 */
 SK_API sk_sp<SkImage> DeferredFromEncodedData(sk_sp<SkData> encoded,
                                               std::optional<SkAlphaType> alphaType = std::nullopt);
+
+/**
+ *  Return a SkImage produced by the codec, but attempts to defer image allocation until the
+ *  image is actually used/drawn. This deferral allows the system to cache the result, either on the
+ *  CPU or on the GPU, depending on where the image is drawn. If memory is low, the cache may
+ *  be purged, causing the next draw of the image to have to re-decode.
+ *
+ *  If alphaType is nullopt, the image's alpha type will be chosen automatically based on the
+ *  image format. Transparent images will default to kPremul_SkAlphaType. If alphaType contains
+ *  kPremul_SkAlphaType or kUnpremul_SkAlphaType, that alpha type will be used. Forcing opaque
+ *  (passing kOpaque_SkAlphaType) is not allowed, and will return nullptr.
+ *
+ *  @param codec    A non-null codec (e.g. from SkPngDecoder::Decode)
+ *  @return         created SkImage, or nullptr
+
+    example: https://fiddle.skia.org/c/@Image_DeferredFromEncodedData
+*/
+SK_API sk_sp<SkImage> DeferredFromCodec(std::unique_ptr<SkCodec> codec,
+                                        std::optional<SkAlphaType> alphaType = std::nullopt);
 
 /** Creates SkImage from data returned by imageGenerator. The image data will not be created
     (on either the CPU or GPU) until the image is actually drawn.
