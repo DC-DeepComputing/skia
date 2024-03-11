@@ -26,6 +26,24 @@
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
 
+namespace {
+SkUnicode* get_unicode() {
+    static std::unique_ptr<SkUnicode> gUnicode;
+    if (gUnicode) {
+        return gUnicode.get();
+    }
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    gUnicode = SkUnicodes::ICU::Make();
+    if (gUnicode) {
+        return gUnicode.get();
+    }
+#endif
+    SkDEBUGFAIL("Only ICU implementation of SkUnicode is supported");
+    return nullptr;
+}
+
+} // namespace
+
 // Options /////////////////////////////////////////////////////////////////////
 
 struct BaseOption {
@@ -147,9 +165,8 @@ public:
         SkTextBlobBuilderRunHandler textBlobBuilder(text, {0, 0});
 
         const SkBidiIterator::Level defaultLevel = SkBidiIterator::kLTR;
-        auto unicode = SkUnicode::Make();
         std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
-                SkShapers::unicode::BidiRunIterator(unicode.get(), text, textBytes, defaultLevel);
+                SkShapers::unicode::BidiRunIterator(get_unicode(), text, textBytes, defaultLevel);
         SkASSERT(bidi);
 
         std::unique_ptr<SkShaper::LanguageRunIterator> language =
@@ -244,9 +261,8 @@ int main(int argc, char **argv) {
         assert(mgr);
         typeface = mgr->makeFromFile(font_file.c_str(), 0 /* index */);
     }
-    auto unicode = SkUnicode::Make();
     std::unique_ptr<SkShaper> shaper =
-            SkShapers::HB::ShaperDrivenWrapper(std::move(unicode), nullptr);
+            SkShapers::HB::ShaperDrivenWrapper(get_unicode(), nullptr);
     assert(shaper);
     //SkString line("This is هذا هو الخط a line.");
     //SkString line("⁧This is a line هذا هو الخط.⁩");
