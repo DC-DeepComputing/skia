@@ -22,6 +22,30 @@
       },
       "revId": "b3cddfe24fe764df01c9b256d2ffa844e1ca916a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a07fb48_0bf36e89",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-11T19:54:35Z",
+      "side": 1,
+      "message": "Also, this appears to force one to decode to get the the image in order to set this data, which seems to defeat the purpose of SkImage_Lazy (to not decode unless needed)?",
+      "parentUuid": "4252fbb6_42e8d904",
+      "range": {
+        "startLine": 534,
+        "startChar": 74,
+        "endLine": 534,
+        "endChar": 93
+      },
+      "revId": "b3cddfe24fe764df01c9b256d2ffa844e1ca916a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
