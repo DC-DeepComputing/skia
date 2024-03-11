@@ -17,7 +17,7 @@
 class SkUnicode;
 
 namespace SkShapers::unicode {
-SKSHAPER_API std::unique_ptr<SkShaper::BiDiRunIterator> BidiRunIterator(SkUnicode* unicode,
+SKSHAPER_API std::unique_ptr<SkShaper::BiDiRunIterator> BidiRunIterator(std::shared_ptr<SkUnicode> unicode,
                                                                         const char* utf8,
                                                                         size_t utf8Bytes,
                                                                         uint8_t bidiLevel);
