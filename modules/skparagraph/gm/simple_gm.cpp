@@ -18,13 +18,12 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
+#include "modules/skparagraph/include/Paragraph.h"
+#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
-#include "modules/skparagraph/include/Paragraph.h"
-#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
-
-static const char* gSpeach = "Five score years ago, a great American, in whose symbolic shadow we stand today, signed the Emancipation Proclamation. This momentous decree came as a great beacon light of hope to millions of Negro slaves who had been seared in the flames of withering injustice. It came as a joyous daybreak to end the long night of their captivity.";
+static const char* gSpeech = "Five score years ago, a great American, in whose symbolic shadow we stand today, signed the Emancipation Proclamation. This momentous decree came as a great beacon light of hope to millions of Negro slaves who had been seared in the flames of withering injustice. It came as a joyous daybreak to end the long night of their captivity.";
 
 namespace {
 enum ParaFlags {
@@ -33,6 +32,38 @@ enum ParaFlags {
     kShowVisitor    = 1 << 2,
 };
 }  // namespace
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
+static std::unique_ptr<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU::Make()) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Libgrapheme::Make()) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU4X::Make()) {
+        return unicode;
+    }
+#endif
+    SkDEBUGFAIL("Cannot make SkUnicode");
+    return nullptr;
+}
 
 class ParagraphGM : public skiagm::GM {
     std::unique_ptr<skia::textlayout::Paragraph> fPara;
@@ -66,13 +97,13 @@ public:
         collection->setDefaultFontManager(std::move(fontmgr));
 
         auto builder = skia::textlayout::ParagraphBuilderImpl::make(
-                paraStyle, collection, SkUnicode::Make());
+                paraStyle, collection, get_unicode());
         if (nullptr == builder) {
             fPara = nullptr;
             return;
         }
 
-        builder->addText(gSpeach, strlen(gSpeach));
+        builder->addText(gSpeech, strlen(gSpeech));
 
         fPara = builder->Build();
         fPara->layout(400);
@@ -150,7 +181,7 @@ protected:
                 if (info->utf8Starts) {
                     SkString str;
                     for (int i = 0; i < info->count; ++i) {
-                        str.appendUnichar(gSpeach[info->utf8Starts[i]]);
+                        str.appendUnichar(gSpeech[info->utf8Starts[i]]);
                     }
                     SkDebugf("'%s'\n", str.c_str());
                 }
