@@ -19,11 +19,11 @@ class SkFontMgr;
 class SkUnicode;
 
 namespace SkShapers::HB {
-SKSHAPER_API std::unique_ptr<SkShaper> ShaperDrivenWrapper(std::unique_ptr<SkUnicode> unicode,
+SKSHAPER_API std::unique_ptr<SkShaper> ShaperDrivenWrapper(SkUnicode* unicode,
                                                            sk_sp<SkFontMgr> fallback);
-SKSHAPER_API std::unique_ptr<SkShaper> ShapeThenWrap(std::unique_ptr<SkUnicode> unicode,
+SKSHAPER_API std::unique_ptr<SkShaper> ShapeThenWrap(SkUnicode* unicode,
                                                      sk_sp<SkFontMgr> fallback);
-SKSHAPER_API std::unique_ptr<SkShaper> ShapeDontWrapOrReorder(std::unique_ptr<SkUnicode> unicode,
+SKSHAPER_API std::unique_ptr<SkShaper> ShapeDontWrapOrReorder(SkUnicode* unicode,
                                                               sk_sp<SkFontMgr> fallback);
 
 SKSHAPER_API std::unique_ptr<SkShaper::ScriptRunIterator> ScriptRunIterator(const char* utf8,
