@@ -1,4 +1,4 @@
-                                           /*
+/*
 * Copyright 2022 Google Inc.
 *
 * Use of this source code is governed by a BSD-style license that can be
@@ -10,7 +10,7 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkUnicode_client.h"
+#include "modules/skunicode/include/SkUnicode_client.h"
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 #include "src/base/SkBitmaskEnum.h"
@@ -73,8 +73,8 @@ public:
             : fData(origin->fData) {}
 
 
-    std::unique_ptr<SkUnicode> copy() override {
-        return std::make_unique<SkUnicode_client>(this);
+    sk_sp<SkUnicode> copy() override {
+        return sk_make_sp<SkUnicode_client>(this);
     }
 
     ~SkUnicode_client() override = default;
@@ -251,12 +251,17 @@ std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(BreakType b
     return std::make_unique<SkBreakIterator_client>(fData);
 }
 
-std::unique_ptr<SkUnicode> SkUnicode::MakeClientBasedUnicode(
+namespace SkUnicodes::Client {
+sk_sp<SkUnicode> Make(
         SkSpan<char> text,
         std::vector<SkUnicode::Position> words,
         std::vector<SkUnicode::Position> graphemeBreaks,
         std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
-    return std::make_unique<SkUnicode_client>(text, std::move(words), std::move(graphemeBreaks),
-                                              std::move(lineBreaks));
+    return sk_make_sp<SkUnicode_client>(text,
+                                        std::move(words),
+                                        std::move(graphemeBreaks),
+                                        std::move(lineBreaks));
 }
+}
+
 
