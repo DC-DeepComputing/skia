@@ -59,6 +59,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
           ":skparagraph",
           "../..:gpu_tool_utils",
           "../..:skia",
+          "../skunicode",
           "../skshaper",
         ]
       } else {
@@ -91,6 +92,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
         deps = [
           ":skparagraph",
           "../..:skia",
+          "../skunicode",
           "../skshaper",
         ]
       } else {
@@ -106,6 +108,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
           ":skparagraph",
           ":utils",
           "../..:skia",
+          "../skunicode",
           "../skshaper",
         ]
       }
