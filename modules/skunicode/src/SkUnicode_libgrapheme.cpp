@@ -293,6 +293,9 @@ std::unique_ptr<SkBreakIterator> SkUnicode_libgrapheme::makeBreakIterator(const 
 std::unique_ptr<SkBreakIterator> SkUnicode_libgrapheme::makeBreakIterator(BreakType breakType) {
     return std::make_unique<SkBreakIterator_libgrapheme>(this);
 }
-std::unique_ptr<SkUnicode> SkUnicode::MakeLibgraphemeBasedUnicode() {
+
+namespace SkUnicodes::Libgrapheme {
+std::unique_ptr<SkUnicode> Make() {
     return std::make_unique<SkUnicode_libgrapheme>();
+}
 }
