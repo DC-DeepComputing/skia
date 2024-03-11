@@ -48,6 +48,9 @@
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/graphite/GraphiteTestContext.h"
 
+// Set this to 1 for more expansive (aka far slower) local testing
+#define EXPANDED_SET 1
+
 using namespace skgpu::graphite;
 
 namespace {
@@ -61,6 +64,7 @@ enum class ShaderType {
     kBlend,
     kColorFilter,
     kConicalGradient,
+    kEmpty,
     kImage,
     kLinearGradient,
     kLocalMatrix,
@@ -171,7 +175,11 @@ SkColor random_opaque_color(SkRandom* rand) {
     return 0xff000000 | rand->nextU();
 }
 
-SkColor4f random_color(SkRandom* rand) {
+SkColor random_color(SkRandom* rand) {
+    return 0xff000000 | rand->nextU();
+}
+
+SkColor4f random_color4f(SkRandom* rand) {
     SkColor4f result = { rand->nextRangeF(0.0f, 1.0f),
                          rand->nextRangeF(0.0f, 1.0f),
                          rand->nextRangeF(0.0f, 1.0f),
@@ -232,9 +240,25 @@ sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
 }
 
 //--------------------------------------------------------------------------------------------------
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_empty_shader(SkRandom* /* rand */) {
+    sk_sp<SkShader> s = SkShaders::Empty();
+    sk_sp<PrecompileShader> o = PrecompileShaders::Empty();
+
+    return { s, o };
+}
+
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_solid_shader(SkRandom* rand) {
-    sk_sp<SkShader> s = SkShaders::Color(random_opaque_color(rand));
-    sk_sp<PrecompileShader> o = PrecompileShaders::Color();
+    sk_sp<SkShader> s;
+    sk_sp<PrecompileShader> o;
+
+    if (rand->nextBool()) {
+        s = SkShaders::Color(random_color(rand));
+        o = PrecompileShaders::Color();
+    } else {
+        sk_sp<SkColorSpace> cs = random_colorspace(rand);
+        s = SkShaders::Color(random_color4f(rand), cs);
+        o = PrecompileShaders::Color(std::move(cs));
+    }
 
     return { s, o };
 }
@@ -352,6 +376,8 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* ran
     switch (shaderType) {
         case ShaderType::kNone:
             return { nullptr, nullptr };
+        case ShaderType::kEmpty:
+            return create_empty_shader(rand);
         case ShaderType::kSolidColor:
             return create_solid_shader(rand);
         case ShaderType::kLinearGradient:
@@ -550,7 +576,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_blendmode_c
     // SkColorFilters::Blend is clever and can weed out noop color filters. Loop until we get
     // a valid color filter.
     while (!cf) {
-        cf = SkColorFilters::Blend(random_color(rand),
+        cf = SkColorFilters::Blend(random_color4f(rand),
                                    random_colorspace(rand),
                                    random_blend_mode(rand));
     }
@@ -746,7 +772,8 @@ SkPath make_path() {
 struct DrawData {
     SkPath fPath;
     sk_sp<SkTextBlob> fBlob;
-    sk_sp<SkVertices> fVerts;
+    sk_sp<SkVertices> fVertsWithColors;
+    sk_sp<SkVertices> fVertsNoColors;
 };
 
 void check_draw(skiatest::Reporter* reporter,
@@ -776,7 +803,8 @@ void check_draw(skiatest::Reporter* reporter,
                 canvas->drawTextBlob(drawData.fBlob, 0, 16, paint);
                 break;
             case DrawTypeFlags::kDrawVertices:
-                canvas->drawVertices(drawData.fVerts, SkBlendMode::kDst, paint);
+                canvas->drawVertices(drawData.fVertsWithColors, SkBlendMode::kDst, paint);
+                canvas->drawVertices(drawData.fVertsNoColors, SkBlendMode::kDst, paint);
                 break;
             default:
                 SkASSERT(false);
@@ -792,13 +820,10 @@ void check_draw(skiatest::Reporter* reporter,
 
     // Actually using the SkPaint with the specified type of draw shouldn't have caused
     // any additional compilation
-    REPORTER_ASSERT(reporter, before == after);
+    REPORTER_ASSERT(reporter, before == after, "before: %d after: %d", before, after);
 }
 
 } // anonymous namespace
-
-// Set this to 1 for more expansive (aka far slower) local testing
-#define EXPANDED_SET 0
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
 // PaintParamsKey:
@@ -839,8 +864,6 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     SkFont font(ToolUtils::DefaultPortableTypeface(), 16);
     const char text[] = "hambur";
 
-    // TODO: add a drawVertices call w/o colors. That impacts whether the RenderSteps emit
-    // a primitive color blender
     constexpr int kNumVerts = 4;
     constexpr SkPoint kPositions[kNumVerts] { {0,0}, {0,16}, {16,16}, {16,0} };
     constexpr SkColor kColors[kNumVerts] = { SK_ColorBLUE, SK_ColorGREEN,
@@ -851,6 +874,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             SkTextBlob::MakeFromText(text, strlen(text), font),
             SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
                                  kPositions, kPositions, kColors),
+            SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, kNumVerts,
+                                 kPositions, kPositions, nullptr),
     };
 
     SkRandom rand;
@@ -868,6 +893,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kNone,
             ShaderType::kColorFilter,
             ShaderType::kConicalGradient,
+            ShaderType::kEmpty,
             ShaderType::kLinearGradient,
             ShaderType::kLocalMatrix,
             ShaderType::kSweepGradient,
