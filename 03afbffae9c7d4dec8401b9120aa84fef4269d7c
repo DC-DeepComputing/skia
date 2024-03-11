@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec92be9a_77f1e8be",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-11T21:13:32Z",
+      "side": 1,
+      "message": "I like `getData` since this isn\u0027t really a conversion (and also because of the above comment). Though I understand `asData` since these both views onto a block of data, but on the other hand the SkStream also holds an offset into that data (`toData` wouldn\u0027t be right though, there isn\u0027t any conversion).\n\nI think it\u0027s probably ok to keep both of these, since `getMemoryBase` is lower overhead (no need to ref) to get a borrowed reference instead of a shared one. So we can just remove the \"TODO\" comment above.",
+      "range": {
+        "startLine": 143,
+        "startChar": 26,
+        "endLine": 143,
+        "endChar": 28
+      },
+      "revId": "03afbffae9c7d4dec8401b9120aa84fef4269d7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a333d4_d472dd0f",
+        "filename": "src/codec/SkWuffsCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 976,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-11T21:13:32Z",
+      "side": 1,
+      "message": "Fortunately, FrontBufferedStream::onDuplicate (correctly) returns nullptr, so this should work.",
+      "range": {
+        "startLine": 976,
+        "startChar": 29,
+        "endLine": 976,
+        "endChar": 38
+      },
+      "revId": "03afbffae9c7d4dec8401b9120aa84fef4269d7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
