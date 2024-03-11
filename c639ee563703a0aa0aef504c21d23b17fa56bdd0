@@ -16,6 +16,24 @@
       "message": "So before the fact that SkFontMgr_Android was testing all the parts of SkFontScanner (at least the SkFontScanner_FreeType) seemed good enough for testing, since there are already tests around that. However, we really do want a `tests/FontScanner.cpp` that has a test which is essentially what SkFontMgr_custom_directory and the like are doing, but with a specific font (even if just `resources/fonts/Variable.ttf` and `resource/fonts/Distortable.ttf` asserting that what is reported is what as expected. We\u0027re especially going to want this sort of test while implementing the Fontations implementation.",
       "revId": "c639ee563703a0aa0aef504c21d23b17fa56bdd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2619f869_5d633fff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-11T21:26:27Z",
+      "side": 1,
+      "message": "I plan to do that when adding Fontations implementation. This one is more of a bug fix for Flutter.\nWould you agree to wait until the next CL or you want me to do it now?",
+      "parentUuid": "3520174f_57d30322",
+      "revId": "c639ee563703a0aa0aef504c21d23b17fa56bdd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
