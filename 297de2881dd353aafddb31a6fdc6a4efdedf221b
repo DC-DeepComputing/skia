@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d618301_aa96996d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2024-03-11T18:22:40Z",
+      "side": 1,
+      "message": "Are you saying the \"quick\" version is just to run the portable version? Clang\u0027s auto vectorizer takes a scalar loop and out-performs our hand-rolled vector implementation by 10%?\n\nThat\u0027s surprising if true; we should look at its codegen to see if we can learn any tricks.",
+      "range": {
+        "startLine": 10,
+        "startChar": 39,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "297de2881dd353aafddb31a6fdc6a4efdedf221b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a003cd5d_dc8ab498",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 2
