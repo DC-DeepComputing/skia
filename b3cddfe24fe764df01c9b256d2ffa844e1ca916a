@@ -46,6 +46,30 @@
       },
       "revId": "b3cddfe24fe764df01c9b256d2ffa844e1ca916a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3555426b_05062ea1",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-11T21:08:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a07fb48_0bf36e89",
+      "range": {
+        "startLine": 534,
+        "startChar": 74,
+        "endLine": 534,
+        "endChar": 93
+      },
+      "revId": "b3cddfe24fe764df01c9b256d2ffa844e1ca916a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
