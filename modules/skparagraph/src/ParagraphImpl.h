@@ -244,7 +244,7 @@ public:
         return (fCodeUnitProperties[index] & property) == property;
     }
 
-    SkUnicode* getUnicode() { return fUnicode.get(); }
+    std::shared_ptr<SkUnicode> getUnicode() { return fUnicode; }
 
 private:
     friend class ParagraphBuilder;
