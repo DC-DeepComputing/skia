@@ -8,6 +8,7 @@
 #include "modules/svg/include/SkSVGText.h"
 
 #include <limits>
+#include <memory>
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkContourMeasure.h"
@@ -17,6 +18,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkString.h"
+#include "include/private/base/SkOnce.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGValue.h"
@@ -28,10 +30,28 @@
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#else
+class SkUnicode;
 #endif
 
 #if defined(SK_SHAPER_CORETEXT_AVAILABLE)
 #include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_client.h"
 #endif
 
 using namespace skia_private;
@@ -125,7 +145,37 @@ static float ComputeAlignmentFactor(const SkSVGPresentationContext& pctx) {
     }
     SkUNREACHABLE;
 }
-
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
+SkUnicode* get_unicode() {
+    static std::unique_ptr<SkUnicode> gUnicode;
+    static SkOnce once;
+    once([] {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    gUnicode = SkUnicodes::ICU::Make();
+    if (gUnicode) {
+        return;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    gUnicode = SkUnicodes::ICU4X::Make();
+    if (gUnicode) {
+        return;
+    }
+#endif
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    gUnicode = SkUnicodes::Libgrapheme::Make();
+    if (gUnicode) {
+        return;
+    }
+#endif
+    });
+    if (gUnicode) {
+        return gUnicode.get();
+    } else {
+        return nullptr;
+    }
+}
+#endif
 } // namespace
 
 SkSVGTextContext::ScopedPosResolver::ScopedPosResolver(const SkSVGTextContainer& txt,
@@ -240,10 +290,9 @@ void SkSVGTextContext::shapePendingBuffer(const SkFont& font, sk_sp<SkFontMgr> f
         return;
     }
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
-    auto unicode = SkUnicode::Make();
     const SkBidiIterator::Level defaultLevel = SkBidiIterator::kLTR;
     std::unique_ptr<SkShaper::BiDiRunIterator> bidi =
-            SkShapers::unicode::BidiRunIterator(unicode.get(), utf8, utf8Bytes, defaultLevel);
+            SkShapers::unicode::BidiRunIterator(get_unicode(), utf8, utf8Bytes, defaultLevel);
 
     std::unique_ptr<SkShaper::LanguageRunIterator> language =
             SkShaper::MakeStdLanguageRunIterator(utf8, utf8Bytes);
@@ -285,8 +334,7 @@ void SkSVGTextContext::shapePendingBuffer(const SkFont& font, sk_sp<SkFontMgr> f
 
 static std::unique_ptr<SkShaper> make_shaper(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
-    auto unicode = SkUnicode::Make();
-    if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(std::move(unicode), fallback)) {
+    if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(get_unicode(), fallback)) {
         return shaper;
     }
 #endif
@@ -295,7 +343,7 @@ static std::unique_ptr<SkShaper> make_shaper(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
-    return SkShapers::Primitive();
+    return SkShapers::Primitive::PrimitiveText();
 }
 
 SkSVGTextContext::SkSVGTextContext(const SkSVGRenderContext& ctx,
