@@ -5,15 +5,21 @@
  * found in the LICENSE file.
  */
 
-#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkFeatures.h"  // IWYU pragma: keep
+#include "modules/skunicode/src/SkUnicode_icupriv.h"
 
 #include <unicode/ubrk.h>
 #include <unicode/uloc.h>
 #include <unicode/utypes.h>
-
 #include <memory>
 #include <type_traits>
 #include <utility>
+
+#if defined(SK_USING_THIRD_PARTY_ICU) && defined(SK_BUILD_FOR_WIN)
+#include "SkLoadICU.h"
+#include "include/private/base/SkOnce.h"
+#endif
 
 namespace {
 
@@ -57,12 +63,23 @@ struct SkUbrkGetLocaleByType<
 
 #define SKICU_FUNC(funcname) funcname,
 std::unique_ptr<SkICULib> SkLoadICULib() {
+    // We haven't yet created a way to encode the ICU data for assembly on Windows,
+    // so we use a helper library to load icudtl.dat from the harddrive.
+#if defined(SK_USING_THIRD_PARTY_ICU) && defined(SK_BUILD_FOR_WIN)
+    if (!SkLoadICU()) {
+        static SkOnce once;
+        once([] { SkDEBUGF("SkLoadICU() failed!\n"); });
+        return nullptr;
+    }
+#endif
 
-    return std::make_unique<SkICULib>(SkICULib{
+    std::unique_ptr<SkICULib> icu = std::make_unique<SkICULib>(SkICULib{
         SKICU_EMIT_FUNCS
 
         &SkUbrkClone<const UBreakIterator*>::clone,
         nullptr,
         &SkUbrkGetLocaleByType<const UBreakIterator*>::getLocaleByType,
     });
+    return icu;
 }
+
