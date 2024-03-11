@@ -50,8 +50,8 @@ sk_sp<Slug> Slug::Deserialize(const void* data,
     return MakeFromBuffer(buffer);
 }
 
-void Slug::draw(SkCanvas* canvas) const {
-    canvas->drawSlug(this);
+void Slug::draw(SkCanvas* canvas, const SkPaint* overridePaint) const {
+    canvas->drawSlug(this, overridePaint);
 }
 
 }  // namespace sktext::gpu

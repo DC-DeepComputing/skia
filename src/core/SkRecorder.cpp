@@ -250,7 +250,7 @@ void SkRecorder::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
     this->append<SkRecords::DrawTextBlob>(paint, sk_ref_sp(blob), x, y);
 }
 
-void SkRecorder::onDrawSlug(const sktext::gpu::Slug* slug) {
+void SkRecorder::onDrawSlug(const sktext::gpu::Slug* slug, const SkPaint* overridePaint) {
     this->append<SkRecords::DrawSlug>(sk_ref_sp(slug));
 }
 
