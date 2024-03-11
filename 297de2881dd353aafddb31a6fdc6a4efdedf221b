@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32114a8d_11297126",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-03-11T18:33:57Z",
+      "side": 1,
+      "message": "Yes. I was shocked. Especially since I had written the SIMD version. The code is very nice.\n\nHere is the inner loop that does 4 pixels at a time. Sorry for the formatting:\n\n\n+0x4c\tldr                 q5, [x12], #0x10\n+0x50\tushr.4s             v6, v5, #0x18\n+0x54\tucvtf.4s            v6, v6\n+0x58\tushr.4s             v7, v5, #0x10\n+0x5c\tbic.4s              v7, #0xff, lsl #8\n+0x60\tucvtf.4s            v7, v7\n+0x64\tushr.4s             v16, v5, #0x8\n+0x68\tand.16b             v16, v16, v0\n+0x6c\tucvtf.4s            v16, v16\n+0x70\tand.16b             v17, v5, v0\n+0x74\tucvtf.4s            v17, v17\n+0x78\tcmhi.4s             v18, v2, v5\n+0x7c\tfdiv.4s             v6, v1, v6\n+0x80\tbic.16b             v6, v6, v18\n+0x84\tand.16b             v5, v5, v3\n+0x88\tfmul.4s             v7, v6, v7\n+0x8c\tfadd.4s             v7, v7, v4\n+0x90\tfminnm.4s           v7, v7, v1\n+0x94\tfcvtzu.4s           v7, v7\n+0x98\tshl.4s              v7, v7, #0x10\n+0x9c\tfmul.4s             v16, v6, v16\n+0xa0\tfadd.4s             v16, v16, v4\n+0xa4\tfminnm.4s           v16, v16, v1\n+0xa8\tfcvtzu.4s           v16, v16\n+0xac\tshl.4s              v16, v16, #0x8\n+0xb0\tfmul.4s             v6, v6, v17\n+0xb4\tfadd.4s             v6, v6, v4\n+0xb8\tfminnm.4s           v6, v6, v1\n+0xbc\tfcvtzu.4s           v6, v6\n+0xc0\torr.16b             v5, v5, v6\n+0xc4\torr.16b             v5, v5, v7\n+0xc8\torr.16b             v5, v5, v16\n+0xcc\tstr                 q5, [x11], #0x10\n+0xd0\tsubs                x10, x10, #0x4\n+0xd4\tb.ne                \"neon::rgbA_to_RGBA(unsigned int*, unsigned int const*, int)+0x4c\"",
+      "parentUuid": "5d618301_aa96996d",
+      "range": {
+        "startLine": 10,
+        "startChar": 39,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "297de2881dd353aafddb31a6fdc6a4efdedf221b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a003cd5d_dc8ab498",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f929d12_54b9eae9",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-03-11T18:33:57Z",
+      "side": 1,
+      "message": "My next CL breaks them all out, but it\u0027s messy so it gets it\u0027s own CL.",
+      "parentUuid": "a003cd5d_dc8ab498",
+      "range": {
+        "startLine": 515,
+        "startChar": 0,
+        "endLine": 515,
+        "endChar": 58
+      },
+      "revId": "297de2881dd353aafddb31a6fdc6a4efdedf221b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca7fd7b1_48e0c23b",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-03-11T18:16:44Z",
       "side": 1,
       "message": "Not for this CL, since the goal is to match existing results, but I bet we are leaving performance on the table by using a literal divide instead of rcp_precise. (Or rcp_fast if we really want to sing!) On ARM32 there isn\u0027t even a SIMD division instruction, so the compiler just emits four fdiv ops 😮",
+      "range": {
+        "startLine": 539,
+        "startChar": 29,
+        "endLine": 539,
+        "endChar": 38
+      },
+      "revId": "297de2881dd353aafddb31a6fdc6a4efdedf221b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af27891e_c0ce6285",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2024-03-11T18:33:57Z",
+      "side": 1,
+      "message": "Nope. I tried rcp_precise, and it was slower.",
+      "parentUuid": "ca7fd7b1_48e0c23b",
       "range": {
         "startLine": 539,
         "startChar": 29,
