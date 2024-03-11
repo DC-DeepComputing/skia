@@ -77,7 +77,7 @@ public:
     virtual bool setText(const char16_t utftext16[], int utf16Units) = 0;
 };
 
-class SKUNICODE_API SkUnicode {
+class SKUNICODE_API SkUnicode : public SkRefCnt {
     public:
         enum CodeUnitFlags {
             kNoCodeUnitFlag = 0x00,
@@ -120,7 +120,7 @@ class SKUNICODE_API SkUnicode {
             LineBreakType breakType;
         };
 
-        virtual ~SkUnicode() = default;
+        virtual ~SkUnicode() override = default;
 
         // deprecated
         virtual SkString toUpper(const SkString&) = 0;
@@ -302,21 +302,7 @@ class SKUNICODE_API SkUnicode {
 
         virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
 
-        virtual std::unique_ptr<SkUnicode> copy() = 0;
-
-        static std::unique_ptr<SkUnicode> Make();
-
-        static std::unique_ptr<SkUnicode> MakeIcuBasedUnicode();
-
-        static std::unique_ptr<SkUnicode> MakeClientBasedUnicode(
-                SkSpan<char> text,
-                std::vector<SkUnicode::Position> words,
-                std::vector<SkUnicode::Position> graphemeBreaks,
-                std::vector<SkUnicode::LineBreakBefore> lineBreaks);
-
-        static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
-
-        static std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode();
+        virtual sk_sp<SkUnicode> copy() = 0;
 };
 
 namespace sknonstd {

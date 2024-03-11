@@ -16,6 +16,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <type_traits>
 #include <utility>
 
 using SkUnicodeBidi = std::unique_ptr<SkBidiIterator>;
@@ -73,19 +74,51 @@ private:
 };
 
 #if !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
+sk_sp<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU::Make()) {
+        return unicode;
+    }
+#endif  // defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Libgrapheme::Make()) {
+        return unicode;
+    }
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::ICU4X::Make()) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
 std::unique_ptr<SkShaper::BiDiRunIterator> SkShaper::MakeIcuBiDiRunIterator(const char* utf8,
                                                                             size_t utf8Bytes,
                                                                             uint8_t bidiLevel) {
-    auto unicode = SkUnicode::Make();
+    static auto unicode = get_unicode();
     if (!unicode) {
         return nullptr;
     }
-    return SkShapers::unicode::BidiRunIterator(unicode.get(), utf8, utf8Bytes, bidiLevel);
+    return SkShapers::unicode::BidiRunIterator(unicode, utf8, utf8Bytes, bidiLevel);
 }
-#endif
+#endif  //  !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 
 namespace SkShapers::unicode {
-std::unique_ptr<SkShaper::BiDiRunIterator> BidiRunIterator(SkUnicode* unicode,
+std::unique_ptr<SkShaper::BiDiRunIterator> BidiRunIterator(sk_sp<SkUnicode> unicode,
                                                            const char* utf8,
                                                            size_t utf8Bytes,
                                                            uint8_t bidiLevel) {
