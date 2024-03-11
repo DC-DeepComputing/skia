@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe9255db_92804560",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-11T21:39:47Z",
+      "side": 1,
+      "message": "Lets see if it works.",
+      "revId": "088ca50591bfa4b15a8b9a6d39772405aa2c9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ba4f40c_e97c6053",
+        "filename": "include/core/SkStream.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-11T21:39:47Z",
+      "side": 1,
+      "message": "I was like \"when did this happen\" ([snuck into this CL](https://skia.googlesource.com/skia/+/42943c8aa9c611c18ad0f1a30a27669f3d82239c)). And where is it used ([looks like just in StreamTest.cpp](https://skia.googlesource.com/skia.git/+/32f1cb50734a4a5dad0c54b4a06ad8bdce2e7be5/tests/StreamTest.cpp#194))?",
+      "revId": "088ca50591bfa4b15a8b9a6d39772405aa2c9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
