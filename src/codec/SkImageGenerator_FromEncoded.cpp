@@ -57,3 +57,12 @@ sk_sp<SkImage> DeferredFromEncodedData(sk_sp<SkData> encoded,
 }
 
 }  // namespace SkImages
+
+namespace SkCodecs {
+
+sk_sp<SkImage> DeferredImage(std::unique_ptr<SkCodec> codec, std::optional<SkAlphaType> alphaType) {
+    return SkImages::DeferredFromGenerator(
+            SkCodecImageGenerator::MakeFromCodec(std::move(codec), alphaType));
+}
+
+}  // namespace SkCodecs
