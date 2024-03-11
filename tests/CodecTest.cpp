@@ -2006,4 +2006,40 @@ DEF_TEST(Codec_gif_null_param, r) {
                                       &result, nullptr);
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
     REPORTER_ASSERT(r, codec);
+
+    auto [image, res] = codec->getImage();
+    REPORTER_ASSERT(r, res == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, image);
+    REPORTER_ASSERT(r, image->width() == 320, "width %d != 320", image->width());
+    REPORTER_ASSERT(r, image->height() == 240, "height %d != 240", image->height());
+
+    // Decoding the image this way loses the original data.
+    REPORTER_ASSERT(r, !image->refEncodedData());
+}
+
+DEF_TEST(Codec_gif_can_preserve_original_data, r) {
+    constexpr char path[] = "images/flightAnim.gif";
+    sk_sp<SkData> data(GetResourceAsData(path));
+    if (!data) {
+        SkDebugf("Missing resource '%s'\n", path);
+        return;
+    }
+
+    SkCodec::Result result;
+    auto codec = SkGifDecoder::Decode(data, &result, nullptr);
+    REPORTER_ASSERT(r, result == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, codec);
+
+    SkImageInfo info = codec->getInfo().makeAlphaType(kPremul_SkAlphaType);
+    auto [image, res] = codec->getImageSaveOrigData(info, data, nullptr);
+    REPORTER_ASSERT(r, res == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, image);
+
+    // The whole point of getImageSaveOrigData is that it allows the client
+    // to hold onto the original image data for later.
+    sk_sp<SkData> encodedData = image->refEncodedData();
+    REPORTER_ASSERT(r, encodedData != nullptr);
+    // The returned data should the same as what went in.
+    REPORTER_ASSERT(r, encodedData->size() == data->size());
+    REPORTER_ASSERT(r, encodedData->bytes() == data->bytes());
 }

@@ -63,4 +63,9 @@ extern SK_SPI sk_sp<SkImage> SkMakeImageFromRasterBitmap(const SkBitmap&, SkCopy
 // in which case the surface may need to perform a copy-on-write.
 extern const SkPixelRef* SkBitmapImageGetPixelRef(const SkImage* rasterImage);
 
+namespace SkImages {
+// As RasterFromBitmap(const SkBitmap& bitmap) but also has a reference to encodedData.
+sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bitmap, sk_sp<SkData> encodedData);
+}  // namespace SkImages
+
 #endif

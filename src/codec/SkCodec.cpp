@@ -15,7 +15,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
-#include "include/core/SkImage.h" // IWYU pragma: keep
+#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStream.h"
@@ -26,6 +26,7 @@
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkPixmapUtilsPriv.h"
 #include "src/codec/SkSampler.h"
+#include "src/core/SkImagePriv.h"
 
 #include <string>
 #include <string_view>
@@ -529,8 +530,9 @@ SkCodec::Result SkCodec::getPixels(const SkImageInfo& info, void* pixels, size_t
     return result;
 }
 
-std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage(const SkImageInfo& info,
-                                                              const Options* options) {
+std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImageSaveOrigData(const SkImageInfo& info,
+                                                                          sk_sp<SkData> orig,
+                                                                          const Options* options) {
     SkBitmap bm;
     if (!bm.tryAllocPixels(info)) {
         return {nullptr, kInternalError};
@@ -558,7 +560,7 @@ std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage(const SkImageInfo&
     }
     // Setting the bitmap to be immutable saves us from having to copy it.
     bm.setImmutable();
-    return {SkImages::RasterFromBitmap(bm), kSuccess};
+    return {SkImages::RasterFromBitmap(bm, orig), kSuccess};
 }
 
 std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage() {
@@ -569,6 +571,11 @@ std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage() {
         info = SkPixmapUtils::SwapWidthHeight(info);
     }
     return this->getImage(info, nullptr);
+}
+
+std::tuple<sk_sp<SkImage>, SkCodec::Result> SkCodec::getImage(const SkImageInfo& info,
+                                                              const Options* options) {
+    return this->getImageSaveOrigData(info, nullptr, options);
 }
 
 SkCodec::Result SkCodec::startIncrementalDecode(const SkImageInfo& info, void* pixels,

@@ -79,6 +79,19 @@ sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bm) {
     return SkMakeImageFromRasterBitmap(bm, kIfMutable_SkCopyPixelsMode);
 }
 
+sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bitmap, sk_sp<SkData> encodedData) {
+    if (!bitmap.pixelRef()) {
+        return nullptr;
+    }
+
+    sk_sp<SkImage> img = SkMakeImageFromRasterBitmap(bitmap, kIfMutable_SkCopyPixelsMode);
+    auto imgRaster = static_cast<SkImage_Raster*>(img.get());
+    if (imgRaster) {
+        imgRaster->setEncodedData(encodedData);
+    }
+    return img;
+}
+
 sk_sp<SkImage> RasterFromPixmapCopy(const SkPixmap& pmap) {
     return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
 }

@@ -419,6 +419,14 @@ public:
     std::tuple<sk_sp<SkImage>, SkCodec::Result> getImage();
 
     /**
+     * Returns an image containing the pixels and saves a reference to origData. The reference
+     * can be returned via SkImage::refEncodedData().
+     */
+    std::tuple<sk_sp<SkImage>, SkCodec::Result> getImageSaveOrigData(const SkImageInfo& info,
+                                                                     sk_sp<SkData> origData,
+                                                                     const Options* opts = nullptr);
+
+    /**
      *  If decoding to YUV is supported, this returns true. Otherwise, this
      *  returns false and the caller will ignore output parameter yuvaPixmapInfo.
      *

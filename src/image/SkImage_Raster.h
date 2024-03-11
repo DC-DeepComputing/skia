@@ -48,6 +48,7 @@ public:
                       CachingHint) const override;
     bool onPeekPixels(SkPixmap*) const override;
     const SkBitmap* onPeekBitmap() const override { return &fBitmap; }
+    sk_sp<SkData> onRefEncoded() const override { return fEncodedData; }
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
@@ -97,9 +98,11 @@ public:
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kRaster; }
 
     SkBitmap bitmap() const { return fBitmap; }
+    void setEncodedData(sk_sp<SkData> encodedData) { fEncodedData = encodedData; }
 
 private:
     SkBitmap fBitmap;
+    sk_sp<SkData> fEncodedData = nullptr;
 };
 
 sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id);
