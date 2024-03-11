@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4252fbb6_42e8d904",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-11T19:05:26Z",
+      "side": 1,
+      "message": "It seems really awkward to pass this back in, and seems really strange to put on Codec, especially when we already have SkImage_Lazy and SkImageGenerator which are designed to handle this. Also, we need an actual answer for users to create lazy images which seems to be somewhat lacking at the moment, though I\u0027m not sure if they\u0027re required now?\n\nAlso, this got me thinking about why this is a SkData and not SkStream. Internally SkCodec works with SkStream (the SkData interface is just a convenient wrapper) but for some reason SkCodecImageGenerator only takes SkData, so onRefEncodedData currently assumes that it can return an SkData. I realize this is an issue with the existing API, but ugh.\n\nNot to mention that most of the time SkCodec appears to already have the fStream (though not always).",
+      "range": {
+        "startLine": 534,
+        "startChar": 74,
+        "endLine": 534,
+        "endChar": 93
+      },
+      "revId": "b3cddfe24fe764df01c9b256d2ffa844e1ca916a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
