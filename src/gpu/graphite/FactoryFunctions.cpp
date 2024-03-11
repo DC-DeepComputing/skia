@@ -47,6 +47,28 @@ sk_sp<PrecompileBlender> PrecompileBlender::Mode(SkBlendMode blendMode) {
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileEmptyShader : public PrecompileShader {
+public:
+    PrecompileEmptyShader() {}
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+
+        SkASSERT(desiredCombination == 0); // The empty shader only ever has one combination
+
+        builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+    }
+
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::Empty() {
+    return sk_make_sp<PrecompileEmptyShader>();
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileColorShader : public PrecompileShader {
 public:
     PrecompileColorShader() {}
@@ -68,6 +90,12 @@ private:
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Color() {
+    return sk_make_sp<PrecompileColorShader>();
+}
+
+// The colorSpace is safe to ignore - it is just applied to the color and doesn't modify the
+// generated program.
+sk_sp<PrecompileShader> PrecompileShaders::Color(sk_sp<SkColorSpace>) {
     return sk_make_sp<PrecompileColorShader>();
 }
 
