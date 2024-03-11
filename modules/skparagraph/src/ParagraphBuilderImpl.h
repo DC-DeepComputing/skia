@@ -64,6 +64,7 @@ public:
     SkSpan<char> getText() override;
     const ParagraphStyle& getParagraphStyle() const override;
 
+#ifndef SK_DISABLE_LEGACY_CLIENT_UNICODE
     void setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) override;
     void setWordsUtf16(std::vector<SkUnicode::Position> wordsUtf16) override;
 
@@ -76,6 +77,7 @@ public:
     void SetUnicode(std::unique_ptr<SkUnicode> unicode) override {
         fUnicode = std::move(unicode);
     }
+#endif
     // Support for Flutter optimization
     void Reset() override;
 

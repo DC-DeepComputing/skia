@@ -32,6 +32,17 @@
 
 #if defined(SK_UNICODE_AVAILABLE)
 #include "modules/skunicode/include/SkUnicode.h"
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_libgrapheme.h"
+#endif
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu4x.h"
+#endif
+
 #else
 class SkUnicode;
 #endif
@@ -51,7 +62,6 @@ using namespace skia_private;
 
 namespace skottie {
 namespace {
-
 static bool is_whitespace(char c) {
     // TODO: we've been getting away with this simple heuristic,
     // but ideally we should use SkUicode::isWhiteSpace().
@@ -60,29 +70,45 @@ static bool is_whitespace(char c) {
 
 // TODO(kjlubick,fmalita) Remove these defines by having clients register something or somehow
 // plumbing this all into the animation builder factories.
-static SkUnicode* get_unicode() {
-#if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
-    static SkUnicode* icu_unicode = SkUnicode::MakeIcuBasedUnicode().release();
-    if (icu_unicode != nullptr) {
-        return icu_unicode;
+SkUnicode* get_unicode() {
+    static SkUnicode* gUnicode;
+    static SkOnce once;
+    once([] {
+    // Just to avoid skunicode dependency in case we don't have it at all
+    static std::unique_ptr<SkUnicode> gUniqueUnicode;
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    gUniqueUnicode = SkUnicodes::ICU::Make();
+    if (gUniqueUnicode) {
+        gUnicode = gUniqueUnicode.get();
+        return;
     }
 #endif
-#if defined(SK_UNICODE_AVAILABLE) && defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
-    static SkUnicode* grapheme_unicode = SkUnicode::MakeLibgraphemeBasedUnicode().release();
-    if (grapheme_unicode != nullptr) {
-        return grapheme_unicode;
+#if defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    gUniqueUnicode = SkUnicodes::ICU4X::Make();
+    if (gUniqueUnicode) {
+        gUnicode = gUniqueUnicode.get();
+        return;
     }
 #endif
-    return nullptr;
+#if defined(SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION)
+    gUniqueUnicode = SkUnicodes::Libgrapheme::Make();
+    if (gUniqueUnicode) {
+        gUnicode = gUniqueUnicode.get();
+        return;
+    }
+#endif
+    SkDEBUGFAIL("Cannot make SkUnicode");
+    });
+    return gUnicode;
 }
 
 static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
     auto unicode = get_unicode();
     if (!unicode) {
-        return SkShapers::Primitive();
+        return SkShapers::Primitive::PrimitiveText();
     }
-    if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode->copy(), std::move(fallback))) {
+    if (auto shaper = SkShapers::HB::ShaperDrivenWrapper(unicode, std::move(fallback))) {
         return shaper;
     }
 #endif
@@ -91,7 +117,7 @@ static std::unique_ptr<SkShaper> get_shaper(sk_sp<SkFontMgr> fallback) {
         return shaper;
     }
 #endif
-    return SkShapers::Primitive();
+    return SkShapers::Primitive::PrimitiveText();
 }
 
 // Helper for interfacing with SkShaper: buffers shaper-fed runs and performs
@@ -387,9 +413,9 @@ public:
                                     lang_iter.get());
 #endif
 
-        [[maybe_unused]] SkUnicode* unicode = get_unicode();
         std::unique_ptr<SkShaper::BiDiRunIterator> bidi_iter = nullptr;
 #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
+        auto unicode = get_unicode();
         bidi_iter = SkShapers::unicode::BidiRunIterator(
                 unicode, start, utf8_bytes, shape_ltr ? kBidiLevelLTR : kBidiLevelRTL);
 #endif
