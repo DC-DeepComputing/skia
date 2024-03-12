@@ -22,7 +22,7 @@ struct SkStageRec;
 
 class SkCoordClampShader final : public SkShaderBase {
 public:
-    SkCoordClampShader(sk_sp<SkShader> shader, const SkRect& subset)
+    SkCoordClampShader(sk_sp<SkShader> shader, const SkRect& subset, bool)
             : fShader(std::move(shader)), fSubset(subset) {}
 
     ShaderType type() const override { return ShaderType::kCoordClamp; }

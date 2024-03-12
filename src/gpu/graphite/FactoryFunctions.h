@@ -26,18 +26,19 @@ class PrecompileShader;
 
 //--------------------------------------------------------------------------------------------------
 // This will move to be beside SkShaders in include/core/SkShader.h
-class PrecompileShaders {
-public:
+namespace PrecompileShaders {
+    // This block for six matches the SkShaders factories in SkShader.h
     static sk_sp<PrecompileShader> Empty();
     static sk_sp<PrecompileShader> Color();
     static sk_sp<PrecompileShader> Color(sk_sp<SkColorSpace>);
-
-    static sk_sp<PrecompileShader> Blend(SkSpan<const sk_sp<PrecompileBlender>> blenders,
-                                         SkSpan<const sk_sp<PrecompileShader>> dsts,
-                                         SkSpan<const sk_sp<PrecompileShader>> srcs);
     static sk_sp<PrecompileShader> Blend(SkSpan<SkBlendMode> blendModes,
                                          SkSpan<const sk_sp<PrecompileShader>> dsts,
                                          SkSpan<const sk_sp<PrecompileShader>> srcs);
+    static sk_sp<PrecompileShader> Blend(SkSpan<const sk_sp<PrecompileBlender>> blenders,
+                                         SkSpan<const sk_sp<PrecompileShader>> dsts,
+                                         SkSpan<const sk_sp<PrecompileShader>> srcs);
+    static sk_sp<PrecompileShader> CoordClamp(SkSpan<const sk_sp<PrecompileShader>>);
+
     // TODO: add an SkShaders::Image to match this and SkImageFilters (skbug.com/13440)
     static sk_sp<PrecompileShader> Image();
     static sk_sp<PrecompileShader> YUVImage();
@@ -55,10 +56,7 @@ public:
     static sk_sp<PrecompileShader> LocalMatrix(sk_sp<PrecompileShader> wrapped);
     static sk_sp<PrecompileShader> ColorFilter(sk_sp<PrecompileShader>,
                                                sk_sp<PrecompileColorFilter>);
-
-private:
-    PrecompileShaders() = delete;
-};
+}
 
 //--------------------------------------------------------------------------------------------------
 // Initially this will go next to SkMaskFilter in include/core/SkMaskFilter.h but the
