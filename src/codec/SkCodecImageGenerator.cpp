@@ -55,8 +55,12 @@ SkCodecImageGenerator::SkCodecImageGenerator(std::unique_ptr<SkCodec> codec,
         : SkImageGenerator(adjust_info(codec.get(), at)), fCodec(std::move(codec)) {}
 
 sk_sp<SkData> SkCodecImageGenerator::onRefEncodedData() {
+    if (fCachedData) {
+        return fCachedData;
+    }
     SkASSERT(fCodec);
-    return fCodec->refEncodedData();
+    fCachedData = fCodec->refEncodedData();
+    return fCachedData;
 }
 
 bool SkCodecImageGenerator::getPixels(const SkImageInfo& info, void* pixels, size_t rowBytes, const SkCodec::Options* options) {
