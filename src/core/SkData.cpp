@@ -206,6 +206,10 @@ sk_sp<SkData> SkData::MakeWithCString(const char cstr[]) {
 ///////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
+    sk_sp<SkData> existing = stream->getData();
+    if (existing) {
+        return existing;
+    }
     // reduce the chance of OOM by checking that the stream has enough bytes to read from before
     // allocating that potentially large buffer.
     if (StreamRemainingLengthIsBelow(stream, size)) {

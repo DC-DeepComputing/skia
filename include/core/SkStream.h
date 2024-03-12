@@ -139,6 +139,7 @@ public:
 //SkStreamMemory
     /** Returns the starting address for the data. If this cannot be done, returns NULL. */
     virtual const void* getMemoryBase() { return nullptr; }
+    /** Returns an SkData if the data is already backed by an SkData, otherwise nullptr. */
     virtual sk_sp<SkData> getData() const { return nullptr; }
 
 private:
