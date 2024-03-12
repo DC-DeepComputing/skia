@@ -67,6 +67,10 @@ bool Caps::isTexturable(const TextureInfo& info) const {
     return this->onIsTexturable(info);
 }
 
+GraphiteResourceKey Caps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
+
+}
+
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
     // TODO: add SkTextureCompressionType handling
     // (can be handled by setting up the colorTypeInfo instead?)
