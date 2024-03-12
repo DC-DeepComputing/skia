@@ -769,6 +769,8 @@ sk_sp<GrTexture> GrGLGpu::onWrapBackendTexture(const GrBackendTexture& backendTe
     GrMipmapStatus mipmapStatus = backendTex.hasMipmaps() ? GrMipmapStatus::kValid
                                                           : GrMipmapStatus::kNotAllocated;
 
+    SkDebugf("bar %d\n", mipmapStatus);
+
     auto texture = GrGLTexture::MakeWrapped(this,
                                             mipmapStatus,
                                             desc,
