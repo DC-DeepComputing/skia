@@ -246,4 +246,21 @@ DEF_TEST(UnpremulSimulatingRP, reporter) {
     }
 }
 
+DEF_TEST(UnpremulQuick, reporter) {
+    int offBy1 = 0;
+    for (uint32_t a = 0; a < 256; ++a) {
+        const uint32_t invA = SK_OPTS_NS::SkReciprocalAlphaScaled_portable(a);
+        for (uint32_t c = 0; c < 256; ++c) {
+            const uint32_t expected = a == 0 ? 0 :
+                    std::min(255u, (uint32_t)((float) c / a * 255.0f + 0.5f));
+            const uint32_t actual = SK_OPTS_NS::unpremul_quick(invA,c);
+            if (std::abs((int)actual - (int)expected) > 1) {
+                SkDebugf("a: %d c: %d expected: %d actual: %d\n", a, c, expected, actual);
+            }
+            offBy1 += std::abs((int)actual - (int)expected) == 1;
+        }
+    }
+    SkDebugf("Off by 1 %d\n", offBy1);
+}
+
 #include "src/opts/SkOpts_RestoreTarget.h"

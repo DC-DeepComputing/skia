@@ -36,7 +36,6 @@
 #endif
 
 namespace SK_OPTS_NS {
-
 #if defined(SK_USE_FAST_UNPREMUL_324099025)
 constexpr bool kFastUnpremul = true;
 #else
@@ -129,6 +128,12 @@ SI uint32_t pixel_round_as_RP(float n) {
 #endif
 }
 
+// Note: the highest value returned is 65536 * 255.
+SI float SkReciprocalAlphaScaled_portable(uint32_t a) {
+    static constexpr float kScaled = 65536.0f * 255.0f;
+    return a != 0 ? (uint32_t)(kScaled / a + 0.5f) : 0.0f;
+}
+
 // Doing the math for an original color b resulting in a premul color x,
 //   x = ⌊(b * a + 127) / 255⌋,
 //   x ≤ (b * a + 127) / 255 < x + 1,
@@ -140,8 +145,8 @@ SI uint32_t pixel_round_as_RP(float n) {
 // We can pick the middle of that range as
 //   b = 255 * x / a
 //   b = x * (255 / a)
-SI uint32_t unpremul_quick(float reciprocalA, float c) {
-    return (uint32_t)std::min(255.0f, (c * reciprocalA + 0.5f));
+SI uint32_t unpremul_quick(uint32_t reciprocalA, uint32_t c) {
+    return std::min(255u, (c * reciprocalA + 32896) >> 16);
 }
 
 // Similar to unpremul but simulates Raster Pipeline by normalizing the pixel on the interval
@@ -152,9 +157,9 @@ SI uint32_t unpremul_simulating_RP(float reciprocalA, float c) {
     return pixel_round_as_RP(answer);
 }
 
-SI uint32_t rgbA_to_CCCA(float c00, float c08, float c16, float a) {
+SI uint32_t rgbA_to_CCCA(uint32_t c00, uint32_t c08, uint32_t c16, uint32_t a) {
     if constexpr (kFastUnpremul) {
-        const float reciprocalA = reciprocal_alpha_times_255(a);
+        const auto reciprocalA = SkReciprocalAlphaScaled_portable(a);
         auto unpremul = [reciprocalA](float c) {
             return unpremul_quick(reciprocalA, c);
         };
