@@ -322,6 +322,31 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileCoordClampShader : public PrecompileShader {
+public:
+    PrecompileCoordClampShader() {}
+
+    bool isConstant() const override { return true; }
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+
+        SkASSERT(desiredCombination == 0); // The color shader only ever has one combination
+
+        // The white PMColor is just a placeholder for the actual paint params color
+        SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, SK_PMColor4fWHITE);
+    }
+
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::CoordClamp(SkSpan<const sk_sp<PrecompileShader>> shaders) {
+    return sk_make_sp<PrecompileCoordClampShader>();
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileImageShader : public PrecompileShader {
 public:
     PrecompileImageShader() {}
