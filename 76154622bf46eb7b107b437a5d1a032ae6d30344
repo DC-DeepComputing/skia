@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62914535_612f6974",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-12T11:56:14Z",
+      "side": 1,
+      "message": "Won\u0027t returning the underlying stream be potentially problematic? Like if the stream is not rewindable, the client reads from it, and that messes with decoding? I feel a bit uneasy with exposing the stream directly as a public API. \n\nIf your concern is this being a public API that deals with SkData, I can make it private and available via a friend class.",
+      "parentUuid": "10cd1948_d284bcf1",
+      "range": {
+        "startLine": 299,
+        "startChar": 12,
+        "endLine": 299,
+        "endChar": 25
+      },
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6db93d2_58ecf124",
         "filename": "src/codec/SkCodec.cpp",
         "patchSetId": 11
@@ -54,6 +78,24 @@
       "writtenOn": "2024-03-12T03:20:51Z",
       "side": 1,
       "message": "For example if we call `refEncodedData` multiple times and get here, there will be multiple copies made, which at least didn\u0027t happen before (in which case there was actually only one copy of the data, since SkCodecImageGenerator enforced that it was a SkData and the codec lived off a stream wrapped around that data).",
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44dcaa15_7caa8ce0",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-12T11:56:14Z",
+      "side": 1,
+      "message": "Caching added in https://skia-review.googlesource.com/c/skia/+/824896",
+      "parentUuid": "c6db93d2_58ecf124",
       "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -71,6 +113,24 @@
       "writtenOn": "2024-03-12T03:20:51Z",
       "side": 1,
       "message": "In other words the \"flatten to data\" bit could be deferred to here for now, and eventually fix this to return a unique_ptr\u003cSkStream\u003e as well. Also for now this could cache the SkData in an fData here, which would be very inexpensive for SkData backed streams and possibly a big win for other streams (so we wouldn\u0027t need to keep making copies, though possibly also a loss if this isn\u0027t called again). Or do that caching in SkCodec for now.\n\nOn the other hand, it might just be best to add the stream based API as a separate thing and then remove this arbitrary reliance on contiguous data.",
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97d35607_15541168",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-12T11:56:14Z",
+      "side": 1,
+      "message": "Caching added here: https://skia-review.googlesource.com/c/skia/+/824896",
+      "parentUuid": "4b234453_cc46f0d0",
       "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
