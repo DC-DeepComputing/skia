@@ -122,5 +122,6 @@ private:
     SkCodecImageGenerator(std::unique_ptr<SkCodec>, std::optional<SkAlphaType>);
 
     std::unique_ptr<SkCodec> fCodec;
+    sk_sp<SkData> fCachedData = nullptr;
 };
 #endif  // SkCodecImageGenerator_DEFINED
