@@ -181,6 +181,9 @@ sk_sp<SkData> SkData::MakeSubset(const SkData* src, size_t offset, size_t length
     if (offset >= available || 0 == length) {
         return SkData::MakeEmpty();
     }
+    if (offset == 0 && available == length) {
+        return sk_ref_sp(src);
+    }
     available -= offset;
     if (length > available) {
         length = available;
@@ -206,6 +209,15 @@ sk_sp<SkData> SkData::MakeWithCString(const char cstr[]) {
 ///////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
+    if (stream->hasLength() && stream->hasPosition()) {
+        if (stream->getLength() - stream->getPosition() < size) {
+            return nullptr;
+        }
+        sk_sp<SkData> existing = stream->getData();
+        if (existing) {
+            return SkData::MakeSubset(existing.get(), stream->getPosition(), size);
+        }
+    }
     // reduce the chance of OOM by checking that the stream has enough bytes to read from before
     // allocating that potentially large buffer.
     if (StreamRemainingLengthIsBelow(stream, size)) {
