@@ -188,8 +188,7 @@ private:
 
     bool onWritePixels(const SkPixmap&, int x, int y) override;
 
-    void onDrawGlyphRunList(SkCanvas*, const sktext::GlyphRunList&,
-                            const SkPaint&, const SkPaint&) override;
+    void onDrawGlyphRunList(SkCanvas*, const sktext::GlyphRunList&, const SkPaint&) override;
 
     void onClipShader(sk_sp<SkShader> shader) override;
 
@@ -238,7 +237,6 @@ private:
                          sktext::gpu::RendererData);
 
     sk_sp<sktext::gpu::Slug> convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
-                                                       const SkPaint& initialPaint,
                                                        const SkPaint& drawingPaint) override;
 
     void drawSlug(SkCanvas*, const sktext::gpu::Slug* slug, const SkPaint& drawingPaint) override;

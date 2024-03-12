@@ -135,7 +135,6 @@ private:
 
 sk_sp<sktext::gpu::Slug> MakeSlug(const SkMatrix& drawMatrix,
                                   const sktext::GlyphRunList& glyphRunList,
-                                  const SkPaint& initialPaint,
                                   const SkPaint& drawingPaint,
                                   SkStrikeDeviceInfo strikeDeviceInfo,
                                   sktext::StrikeForGPUCacheInterface* strikeCache);

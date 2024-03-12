@@ -254,11 +254,9 @@ TextBlob::TextBlob(SubRunAllocator&& alloc,
 
 sk_sp<Slug> MakeSlug(const SkMatrix& drawMatrix,
                      const sktext::GlyphRunList& glyphRunList,
-                     const SkPaint& initialPaint,
                      const SkPaint& drawingPaint,
                      SkStrikeDeviceInfo strikeDeviceInfo,
                      sktext::StrikeForGPUCacheInterface* strikeCache) {
-    return SlugImpl::Make(
-            drawMatrix, glyphRunList, initialPaint, drawingPaint, strikeDeviceInfo, strikeCache);
+    return SlugImpl::Make(drawMatrix, glyphRunList, drawingPaint, strikeDeviceInfo, strikeCache);
 }
 }  // namespace sktext::gpu
