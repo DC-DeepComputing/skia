@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7b10f1_77406c5a",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T18:02:33Z",
+      "side": 1,
+      "message": "My only pause with this is that now it seems that this should be in SkCodec::refEncodedData. But at the same time I don\u0027t like SkCodec::refEncodedData because it should probably return a SkStream instead. So I\u0027m thinking about it.",
+      "revId": "64bd3e010e1add002265ca41ce85f09f27a9748f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
