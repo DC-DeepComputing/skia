@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92124e6d_d420db3d",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T19:53:05Z",
+      "side": 1,
+      "message": "Probably best to put these after the initial list of includes.",
+      "revId": "809e34e458a202872fe051d9249a09486bdf3c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaa4cdb6_746f0448",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T19:53:05Z",
+      "side": 1,
+      "message": "This should be `static` or in an anonymous namespace so the name doesn\u0027t leak.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 5
+      },
+      "revId": "809e34e458a202872fe051d9249a09486bdf3c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "099fffa7_e60c815e",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T19:53:05Z",
+      "side": 1,
+      "message": "Need to always include `src/core/SkFontScanner.h`.",
+      "range": {
+        "startLine": 22,
+        "startChar": 30,
+        "endLine": 22,
+        "endChar": 43
+      },
+      "revId": "809e34e458a202872fe051d9249a09486bdf3c7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
