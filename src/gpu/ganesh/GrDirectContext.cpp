@@ -813,6 +813,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
                                                         isProtected,
                                                         label);
     if (!beTex.isValid()) {
+        SkDebugf("foo1 \n");
         return {};
     }
     if (!update_texture_with_pixmaps(this,
@@ -821,6 +822,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
                                      beTex,
                                      textureOrigin,
                                      std::move(finishedCallback))) {
+        SkDebugf("foo2 \n");
         this->deleteBackendTexture(beTex);
         return {};
     }
