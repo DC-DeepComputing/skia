@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a39361_0f56827c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:20:51Z",
+      "side": 1,
+      "message": "A few comments on where we might want to improve this.",
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10cd1948_d284bcf1",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:20:51Z",
+      "side": 1,
+      "message": "As public API it would probably be best for this to return an SkStream instead of an SkData. Most of the users of this want it just to write it out somewhere else, so it would be best to avoid the potential of copying all the data just to flatten it if we\u0027re just going to write it back out somewhere else, or just read it. This was made SkData here because the old interface wanted to return an SkData, but that wasn\u0027t ideal either.",
+      "range": {
+        "startLine": 299,
+        "startChar": 12,
+        "endLine": 299,
+        "endChar": 25
+      },
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6db93d2_58ecf124",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:20:51Z",
+      "side": 1,
+      "message": "For example if we call `refEncodedData` multiple times and get here, there will be multiple copies made, which at least didn\u0027t happen before (in which case there was actually only one copy of the data, since SkCodecImageGenerator enforced that it was a SkData and the codec lived off a stream wrapped around that data).",
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b234453_cc46f0d0",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:20:51Z",
+      "side": 1,
+      "message": "In other words the \"flatten to data\" bit could be deferred to here for now, and eventually fix this to return a unique_ptr\u003cSkStream\u003e as well. Also for now this could cache the SkData in an fData here, which would be very inexpensive for SkData backed streams and possibly a big win for other streams (so we wouldn\u0027t need to keep making copies, though possibly also a loss if this isn\u0027t called again). Or do that caching in SkCodec for now.\n\nOn the other hand, it might just be best to add the stream based API as a separate thing and then remove this arbitrary reliance on contiguous data.",
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
