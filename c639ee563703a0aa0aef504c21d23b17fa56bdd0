@@ -52,6 +52,75 @@
       "parentUuid": "2619f869_5d633fff",
       "revId": "c639ee563703a0aa0aef504c21d23b17fa56bdd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2df79fa5_500072b7",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:07:39Z",
+      "side": 1,
+      "message": "This should have been `SkFontParameters::Variation::Axis`.",
+      "range": {
+        "startLine": 23,
+        "startChar": 11,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "c639ee563703a0aa0aef504c21d23b17fa56bdd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a5eeeff_a8d96422",
+        "filename": "src/core/SkFontScanner.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:07:39Z",
+      "side": 1,
+      "message": "I\u0027m not sure why I had axis definitions on the `scanInstance`, this should go on `scanFace`. If anything, `scanInstance` should return an (optional) `float[]` of values of the axes. I think maybe it was because FreeType has been thinking about marking named instances as \"not variable\" but that didn\u0027t happen, and if it did we would handle that in the FreeType version of this scanner.\n\nIn other words, the axis handling should be as much as possible like SkTypeface::getVariationDesignPosition and SkTypeface::getVariationDesignParameters since that\u0027s what these do.",
+      "range": {
+        "startLine": 40,
+        "startChar": 30,
+        "endLine": 40,
+        "endChar": 51
+      },
+      "revId": "c639ee563703a0aa0aef504c21d23b17fa56bdd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bed53603_2af42d71",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T03:07:39Z",
+      "side": 1,
+      "message": "This `MakeFromStream` always makes a copy of the data (it should be updated to just return a reference to the data if it is a memory stream). Before we were \"just copying twice\" and now copying some arbitrary number of times. (FreeType doesn\u0027t make a copy, but calling FT_Open_Face isn\u0027t free either.) This should be avoided.\n\nThe easiest way to fix this would be to make the font scanner stateful, having a call to setup the data and then make calls against that. However I\u0027d like to avoid that and instead turn `scanFile` into a factory function which returns a `SkFontFileScanner` which can hold onto the `FT_Face` in the FreeType implementation or the `SkData` in the Fontations implementation. Then `scanFace` and `scanInstance` can be on the `SkFontFileScanner` and not take the `stream` argument.\n\nOf course at that point... `scanFace` is basically returning a whole default SkTypeface, except that SkTypeface won\u0027t tell you how many named instances there are.",
+      "range": {
+        "startLine": 65,
+        "startChar": 33,
+        "endLine": 65,
+        "endChar": 55
+      },
+      "revId": "c639ee563703a0aa0aef504c21d23b17fa56bdd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
