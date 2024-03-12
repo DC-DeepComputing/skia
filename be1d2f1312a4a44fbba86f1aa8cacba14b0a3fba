@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aebcf99_0c66790a",
+        "filename": "gn/tests.gni",
+        "patchSetId": 12
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-12T19:33:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e89d1810_727fe6a7",
+      "revId": "be1d2f1312a4a44fbba86f1aa8cacba14b0a3fba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a386b066_9f22892b",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e699cd7e_9164b9c9",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-12T19:33:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a386b066_9f22892b",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "be1d2f1312a4a44fbba86f1aa8cacba14b0a3fba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9173e6d2_1dcb01ae",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-03-12T18:56:54Z",
       "side": 1,
       "message": "For various archaic reasons, best for this file to end with a newline (the presubmit warns about it).",
+      "revId": "be1d2f1312a4a44fbba86f1aa8cacba14b0a3fba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f23f4844_10439b3c",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-12T19:33:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9173e6d2_1dcb01ae",
       "revId": "be1d2f1312a4a44fbba86f1aa8cacba14b0a3fba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
