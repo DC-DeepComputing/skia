@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67929a30_36979d14",
+        "filename": "src/core/SkData.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T15:03:46Z",
+      "side": 1,
+      "message": "I forgot that this takes a `size` which isn\u0027t necessarily the stream\u0027s size, and also the resulting SkData needs to start at the stream\u0027s current offset. I think the thing we return may need to go through SkData::MakeSubset (in the general case at least).",
+      "revId": "7666a5862d68ed59b0c6a1aaa6d35c93ce1badf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
