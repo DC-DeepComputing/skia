@@ -618,6 +618,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fAnisoSupport = version >= GR_GL_VER(4,6)                                 ||
                         ctxInfo.hasExtension("GL_ARB_texture_filter_anisotropic") ||
                         ctxInfo.hasExtension("GL_EXT_texture_filter_anisotropic");
+        SkDebugf("path1: %d\n", fMipmapSupport);
     } else if (GR_IS_GR_GL_ES(standard)) {
         // Unextended ES2 supports NPOT textures with clamp_to_edge and non-mip filters only
         // ES3 has no limitations.
@@ -629,6 +630,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         // to alllow arbitrary wrap modes, however.
         fMipmapSupport = fNPOTTextureTileSupport || ctxInfo.hasExtension("GL_IMG_texture_npot");
         fAnisoSupport = ctxInfo.hasExtension("GL_EXT_texture_filter_anisotropic");
+        SkDebugf("path2: %d\n", fMipmapSupport);
     } else if (GR_IS_GR_WEBGL(standard)) {
         // Texture access works in the WebGL 2.0 API as in the OpenGL ES 3.0 API
         fNPOTTextureTileSupport = version >= GR_GL_VER(2,0);
@@ -637,6 +639,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fMipmapSupport = fNPOTTextureTileSupport;
         fAnisoSupport = ctxInfo.hasExtension("GL_EXT_texture_filter_anisotropic") ||
                         ctxInfo.hasExtension("EXT_texture_filter_anisotropic");
+        SkDebugf("path3: %d\n", fMipmapSupport);
     }
     if (fAnisoSupport) {
         GR_GL_GetFloatv(gli, GR_GL_MAX_TEXTURE_MAX_ANISOTROPY, &fMaxTextureMaxAnisotropy);
