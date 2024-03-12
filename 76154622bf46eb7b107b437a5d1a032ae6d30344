@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "362bd368_c1b40818",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T18:04:45Z",
+      "side": 1,
+      "message": "Not returning the underlying stream, but a `fStream-\u003eduplicate()`.",
+      "parentUuid": "62914535_612f6974",
+      "range": {
+        "startLine": 299,
+        "startChar": 12,
+        "endLine": 299,
+        "endChar": 25
+      },
+      "revId": "76154622bf46eb7b107b437a5d1a032ae6d30344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6db93d2_58ecf124",
         "filename": "src/codec/SkCodec.cpp",
         "patchSetId": 11
