@@ -322,6 +322,44 @@ sk_sp<PrecompileShader> PrecompileShaders::Blend(
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompileCoordClampShader : public PrecompileShader {
+public:
+    PrecompileCoordClampShader(SkSpan<const sk_sp<PrecompileShader>> shaders)
+            : fShaders(shaders.begin(), shaders.end()) {
+        fNumShaderCombos = 0;
+        for (const auto& s : fShaders) {
+            fNumShaderCombos += s->numCombinations();
+        }
+    }
+
+private:
+    int numChildCombinations() const override {
+        return fNumShaderCombos;
+    }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < fNumShaderCombos);
+
+        // TODO: update CoordClampShaderBlock so this is optional
+        CoordClampShaderBlock::CoordClampData data({0, 0, 256, 256});
+
+        CoordClampShaderBlock::BeginBlock(keyContext, builder, gatherer, data);
+            AddToKey<PrecompileShader>(keyContext, builder, gatherer, fShaders, desiredCombination);
+        builder->endBlock();
+    }
+
+    std::vector<sk_sp<PrecompileShader>> fShaders;
+    int fNumShaderCombos;
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::CoordClamp(SkSpan<const sk_sp<PrecompileShader>> input) {
+    return sk_make_sp<PrecompileCoordClampShader>(input);
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileImageShader : public PrecompileShader {
 public:
     PrecompileImageShader() {}
