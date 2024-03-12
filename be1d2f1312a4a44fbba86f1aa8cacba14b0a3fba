@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a386b066_9f22892b",
+        "filename": "tests/FontScanner.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-12T18:53:31Z",
+      "side": 1,
+      "message": "These two need to be in `ifdef`s.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "be1d2f1312a4a44fbba86f1aa8cacba14b0a3fba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
