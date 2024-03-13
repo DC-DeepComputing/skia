@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e4c009_cd5182b1",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-13T15:33:35Z",
+      "side": 1,
+      "message": "Can\u0027t we just turn this back into a std::unique_ptr?",
+      "range": {
+        "startLine": 632,
+        "startChar": 4,
+        "endLine": 632,
+        "endChar": 24
+      },
+      "revId": "ba49d6380abaaacd8175cbf9b6c504a4a7b30432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
