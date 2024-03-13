@@ -1354,11 +1354,24 @@ GraphiteResourceKey VulkanCaps::finishSamplerKey(const SamplerDesc& samplerDesc,
                                                  const ResourceType type,
                                                  uint32_t baseKeyInfo) const {
     GraphiteResourceKey samplerKey;
-    GraphiteResourceKey::Builder builder(&samplerKey, type, 1, Shareable::kYes);
+    int kUint32Quantity = 1;
 
-    // TODO(b/311392779): When needed, add YCbCr info to the sampler key.
+    const std::vector<uint32_t>& samplerYcbcrData = samplerDesc.extraBackendDesc();
+
+    if (!samplerYcbcrData.empty()) {
+        SkASSERT(samplerYcbcrData.size() ==
+                 VulkanSamplerYcbcrConversion::kUint32sNeededForYcbcrInfo);
+
+        kUint32Quantity += samplerYcbcrData.size();
+    }
+
+    GraphiteResourceKey::Builder builder(&samplerKey, type, kUint32Quantity, Shareable::kYes);
 
     builder[0] = baseKeyInfo;
+    for (size_t i = 0; i < samplerYcbcrData.size(); i++) {
+        builder[i + 1] = samplerYcbcrData.at(i);
+    }
+
     builder.finish();
     return samplerKey;
 }
@@ -1394,10 +1407,17 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(vkSpec.fAspectMask                 < (1u << 11)); // aspectMask is bits 8 - 19
     SkASSERT(vkSpec.fImageUsageFlags            < (1u << 12)); // imageUsageFlags are bits 20-32
 
-    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the key.
-    static int kNum32DataCnt = 2 + 1 + 2;
+    // We need two uint32_ts for dimensions, 1 for format, and 2 for the rest of the information.
+    static constexpr int kNum32DataCntNoYcbcr =  2 + 1 + 2;
+    int num32DataCnt = kNum32DataCntNoYcbcr;
 
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    // If a texture w/ an external format is being used, that information must also be appended.
+    const VulkanYcbcrConversionInfo& ycbcrInfo = info.vulkanTextureSpec().fYcbcrConversionInfo;
+    if (ycbcrInfo.isValid()) {
+        num32DataCnt += VulkanSamplerYcbcrConversion::kUint32sNeededForYcbcrInfo;
+    }
+
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
@@ -1410,6 +1430,17 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(vkSpec.fSharingMode)         << 6)  |
                  (static_cast<uint32_t>(vkSpec.fAspectMask)          << 7)  |
                  (static_cast<uint32_t>(vkSpec.fImageUsageFlags)     << 19);
+
+    if (ycbcrInfo.isValid()) {
+        VulkanSamplerYcbcrConversion::YcbcrArray ycbcrDataAsInts =
+                VulkanSamplerYcbcrConversion::GetYcbcrConversionKeyInfo(ycbcrInfo);
+
+        for (int i = 0; i < ycbcrDataAsInts.size(); i++) {
+            builder[kNum32DataCntNoYcbcr + i] = ycbcrDataAsInts[i];
+        }
+    }
+
+
 }
 
 std::vector<uint32_t> VulkanCaps::getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
