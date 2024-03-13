@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71c33358_d39a3b51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-03-13T15:51:30Z",
+      "side": 1,
+      "message": "PTAL at this implementation we discussed over chat the other day :D",
+      "revId": "2fc2c5a14edd8401f7d6d8f4ddbb07c338bbd413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
