@@ -9,10 +9,13 @@
 #define skgpu_graphite_ResourceTypes_DEFINED
 
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
+
+#include <vector>
 
 namespace skgpu::graphite {
 
@@ -176,7 +179,9 @@ struct ClearBufferInfo {
  */
 struct SamplerDesc {
     static_assert(kSkTileModeCount <= 4 && kSkFilterModeCount <= 2 && kSkMipmapModeCount <= 4);
-    SamplerDesc(const SkSamplingOptions& samplingOptions, const SkTileMode tileModes[2])
+    SamplerDesc(const SkSamplingOptions& samplingOptions,
+                const SkTileMode tileModes[2],
+                std::vector<uint32_t> extraBackendSamplerInfo = {})
             : fDesc((static_cast<int>(tileModes[0])           << 0) |
                     (static_cast<int>(tileModes[1])           << 2) |
                     (static_cast<int>(samplingOptions.filter) << 4) |
@@ -190,8 +195,28 @@ struct SamplerDesc {
 
     SamplerDesc(const SamplerDesc&) = default;
 
-    bool operator==(const SamplerDesc& o) const { return o.fDesc == fDesc; }
-    bool operator!=(const SamplerDesc& o) const { return o.fDesc != fDesc; }
+    bool operator==(const SamplerDesc& o) const {
+        if (o.fDesc != fDesc || fExtraBackendDesc.size() != o.fExtraBackendDesc.size()) {
+            return false;
+        }
+        for (size_t i = 0; i < fExtraBackendDesc.size(); i++) {
+            if (fExtraBackendDesc.at(i) != o.fExtraBackendDesc.at(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool operator!=(const SamplerDesc& o) const { return !(*this == o); }
+
+    operator SkString() const { // TODO: Explore better representations of the sampler desc
+        SkString uniqueRep {fDesc};
+        if (!fExtraBackendDesc.empty()) {
+            for (size_t i = 0; i < fExtraBackendDesc.size(); i++) {
+                uniqueRep.appendU32(fExtraBackendDesc.at(i));
+            }
+        }
+        return uniqueRep;
+    }
 
     SkTileMode tileModeX() const { return static_cast<SkTileMode>((fDesc >> 0) & 0b11); }
     SkTileMode tileModeY() const { return static_cast<SkTileMode>((fDesc >> 2) & 0b11); }
@@ -205,8 +230,11 @@ struct SamplerDesc {
         return SkSamplingOptions(filter, mipmap);
     }
 
+    const std::vector<uint32_t>& extraBackendDesc() const { return fExtraBackendDesc; }
+
 private:
     uint32_t fDesc;
+    std::vector<uint32_t> fExtraBackendDesc;
 };
 
 };  // namespace skgpu::graphite
