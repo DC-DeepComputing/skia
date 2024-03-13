@@ -19,6 +19,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/text/gpu/SDFTControl.h"
 
 #if defined(GRAPHITE_TEST_UTILS)
@@ -107,9 +108,16 @@ public:
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 
-    // This method determines universal sampler key information before calling finishSamplerKey to
-    // allow backends to add any additional key information prior to returning the key.
+    // Determine universal sampler key information before calling finishSamplerKey to allow backends
+    // to add any additional key information prior to returning the key.
     GraphiteResourceKey makeSamplerKey(const SamplerDesc& samplerDesc) const;
+
+    // Backends can optionally override this method to report backend-specific sampler description
+    // information.
+    virtual std::vector<uint32_t> getAdditionalSamplerDescInfo(sk_sp<TextureProxy> proxy) const {
+        // By default, return an empty span containing no additional information.
+        return {};
+    }
 
     virtual bool extractGraphicsDescs(const UniqueKey&,
                                       GraphicsPipelineDesc*,
