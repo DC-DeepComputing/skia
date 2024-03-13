@@ -40,6 +40,11 @@ public:
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);
 
+    // Return a fully-formed GraphiteResourceKey that represents the conversion from YCbCr key info
+    // represented as a vector of integers.
+    static GraphiteResourceKey MakeYcbcrConversionKeyFromInts(
+            const std::vector<uint32_t>& ycbcrDataAsInts);
+
     VkSamplerYcbcrConversion ycbcrConversion() const { return fYcbcrConversion; }
 
     const char* getResourceType() const override { return "Vulkan Sampler YCbCr Conversion"; }

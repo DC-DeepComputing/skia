@@ -129,10 +129,30 @@ sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc,
                                                      const GraphiteResourceKey& key) {
+    // If the sampler description houses extra backend sampler info, use that to obtain a real
+    // YCbCr conversion to pass into VulkanSampler creation.
+    sk_sp<VulkanSamplerYcbcrConversion> ycbcrConversion = nullptr;
+    if (!samplerDesc.extraBackendDesc().empty()) {
+        GraphiteResourceKey ycbcrKey =
+                VulkanSamplerYcbcrConversion::MakeYcbcrConversionKeyFromInts(
+                        samplerDesc.extraBackendDesc());
+
+        if (Resource* resource = fResourceCache->findAndRefResource(ycbcrKey,
+                                                                    skgpu::Budgeted::kNo)) {
+            ycbcrConversion = sk_sp<VulkanSamplerYcbcrConversion>(
+                    static_cast<VulkanSamplerYcbcrConversion*>(resource));
+        } else {
+            // Textures and their conversions are made first, so the necessary YCbCr conversion
+            // should already be available in the cache.
+            SkUNREACHABLE;
+        }
+    }
+
     return VulkanSampler::Make(this->vulkanSharedContext(),
                                samplerDesc.samplingOptions(),
                                samplerDesc.tileModeX(),
-                               samplerDesc.tileModeY());
+                               samplerDesc.tileModeY(),
+                               ycbcrConversion);
 }
 
 BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions,

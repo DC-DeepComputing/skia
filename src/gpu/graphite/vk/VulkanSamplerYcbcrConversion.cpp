@@ -97,6 +97,25 @@ GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKey(
     return key;
 }
 
+GraphiteResourceKey VulkanSamplerYcbcrConversion::MakeYcbcrConversionKeyFromInts(
+        const std::vector<uint32_t>& ycbcrDataAsInts) {
+    if (ycbcrDataAsInts.empty() || ycbcrDataAsInts.size() != kUint32sNeededForYcbcrInfo) {
+        // TODO improve error message
+        SKGPU_LOG_E("Requested YCbCr conversion key from incompatible data");
+    }
+
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+    GraphiteResourceKey key;
+    GraphiteResourceKey::Builder builder(&key, kType, kUint32sNeededForYcbcrInfo, Shareable::kYes);
+
+    for (size_t i = 0; i < ycbcrDataAsInts.size(); i++) {
+        builder[i] = ycbcrDataAsInts.at(i);
+    }
+
+    builder.finish();
+    return key;
+}
+
 VulkanSamplerYcbcrConversion::VulkanSamplerYcbcrConversion(
         const VulkanSharedContext* context, VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
