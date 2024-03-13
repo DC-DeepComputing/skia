@@ -16,6 +16,24 @@
       "message": "I suppose I should update PDF to use `SkTypeface::getPostScriptName` and remove `fPostScriptName` and `fFontName`. (Or just update `SkTypeface::getAdvancedMetrics` to use that as a first fallback.)",
       "revId": "ade6f3cbaa0e1cd262bf36705d0e884378c77b48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa60dfce_46b46c30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-13T14:52:24Z",
+      "side": 1,
+      "message": "Yes, I\u0027d be in favor of moving that to `getFamilyName()` and `getPostScriptName()` - DW sets family name and postscript name, FT sets font name to postscript name as well. So moving that to PDF calling those `SkTypeface` methods directly would have the benefit of harmonizing that.",
+      "parentUuid": "f60b3e3d_e7581202",
+      "revId": "ade6f3cbaa0e1cd262bf36705d0e884378c77b48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
