@@ -13,7 +13,10 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/base/SkMathPriv.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/gpu/graphite/GraphiteResourceKey.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/sksl/SkSLUtil.h"
 
 namespace skgpu::graphite {
@@ -65,6 +68,46 @@ bool Caps::isTexturable(const TextureInfo& info) const {
         return false;
     }
     return this->onIsTexturable(info);
+}
+
+GraphiteResourceKey Caps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    constexpr int kNumTileModeBits   = SkNextLog2_portable(int(SkTileMode::kLastTileMode)+1);
+    constexpr int kNumFilterModeBits = SkNextLog2_portable(int(SkFilterMode::kLast)+1);
+    constexpr int kNumMipmapModeBits = SkNextLog2_portable(int(SkMipmapMode::kLast)+1);
+
+    constexpr int kTileModeXShift  = 0;
+    constexpr int kTileModeYShift  = kTileModeXShift  + kNumTileModeBits;
+    constexpr int kFilterModeShift = kTileModeYShift  + kNumTileModeBits;
+    constexpr int kMipmapModeShift = kFilterModeShift + kNumFilterModeBits;
+
+    static_assert(kMipmapModeShift + kNumMipmapModeBits <= 32);
+
+    // Backend-agnostic sampler information can fit within one uint32_t.
+    // TODO: Add aniso value when used.
+    static_assert(sizeof(uint32_t) == 4);
+
+    uint32_t baseKeyInfo =
+            (static_cast<uint32_t>(samplerDesc.tileModeX())              << kTileModeXShift)  |
+            (static_cast<uint32_t>(samplerDesc.tileModeY())              << kTileModeYShift)  |
+            (static_cast<uint32_t>(samplerDesc.samplingOptions().filter) << kFilterModeShift) |
+            (static_cast<uint32_t>(samplerDesc.samplingOptions().mipmap) << kMipmapModeShift) ;
+
+    return this->finishSamplerKey(samplerDesc, kType, baseKeyInfo);
+}
+
+// Default finishSamplerKey implementation that adds no additional backend information to the key.
+GraphiteResourceKey Caps::finishSamplerKey(const SamplerDesc& samplerDesc,
+                                           ResourceType type,
+                                           uint32_t baseKeyInfo) const {
+    GraphiteResourceKey samplerKey;
+    GraphiteResourceKey::Builder builder(&samplerKey, type, /*data32Count=*/1, Shareable::kYes);
+
+    builder[0] = baseKeyInfo;
+
+    builder.finish();
+    return samplerKey;
 }
 
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
