@@ -293,6 +293,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     SkPDFDict font("Font");
     font.insertRef("FontDescriptor", type1_font_descriptor(doc, typeface));
     font.insertName("Subtype", "Type1");
+
     if (const SkAdvancedTypefaceMetrics* info = SkPDFFont::GetMetrics(typeface, doc)) {
         font.insertName("BaseFont", info->fPostScriptName);
     }
