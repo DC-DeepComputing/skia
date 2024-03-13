@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab54dbf_51885c50",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T19:14:03Z",
+      "side": 1,
+      "message": "So it turns out that all of this logic (that was in ResourceProvider), is equivalent to what `SamplerDesc` is already doing to pack into its own internal `uint32_t fDesc` field.\n\nThis is a good opportunity to simplify this to something like:\n - expose a `uint32_t desc() const;` function in SamplerDesc to get at those bits so backends can store it in a resource key.\n - update `makeSamplerKey` to be virtual, with the default impl. basically like what\u0027s in `finishSamplerKey` except that the base info comes from the `SamplerDesc` directly.\n - remove `finishSamplerKey` so the key building happens in a single function call.\n \nThen vulkan and dawn backends that override `makeSamplerKey` can just store the desc bits + the ycbcr bits",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 95
+      },
+      "revId": "6fff7569fff621499bd6ab8f86b512509ccdbe83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad4f7882_aa3340ab",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T19:14:03Z",
+      "side": 1,
+      "message": "Do we need the key to be passed in for backends to create the sampler? The existing pattern is to have the public `findOrCreateX` function manage the keys, and the `createX` function to just do the work without worrying about keys or cache.",
+      "range": {
+        "startLine": 124,
+        "startChar": 67,
+        "endLine": 124,
+        "endChar": 86
+      },
+      "revId": "6fff7569fff621499bd6ab8f86b512509ccdbe83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
