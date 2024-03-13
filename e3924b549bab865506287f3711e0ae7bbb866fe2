@@ -16,6 +16,24 @@
       "message": "Fix SkTypeface_Fuchsia creation\n\nFollow on to\nhttps://skia.googlesource.com/skia.git/+show/f4905091eeb957662145bc5a70ff8f4a55d3402f",
       "revId": "e3924b549bab865506287f3711e0ae7bbb866fe2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2498749a_261e8a15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-13T21:00:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "885a09af_db1e0847",
+      "revId": "e3924b549bab865506287f3711e0ae7bbb866fe2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
