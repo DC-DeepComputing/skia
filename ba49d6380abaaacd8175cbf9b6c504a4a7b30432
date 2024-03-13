@@ -22,6 +22,30 @@
       },
       "revId": "ba49d6380abaaacd8175cbf9b6c504a4a7b30432",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b9d27b_a023d91b",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-13T15:37:35Z",
+      "side": 1,
+      "message": "From what I understood it\u0027s only temporary. I don\u0027t want to change back all the code just for that. (It\u0027s actually your call. If you insist I will change it back).",
+      "parentUuid": "65e4c009_cd5182b1",
+      "range": {
+        "startLine": 632,
+        "startChar": 4,
+        "endLine": 632,
+        "endChar": 24
+      },
+      "revId": "ba49d6380abaaacd8175cbf9b6c504a4a7b30432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
