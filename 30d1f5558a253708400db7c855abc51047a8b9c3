@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d589da9_8c76b4cd",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-13T22:38:05Z",
+      "side": 1,
+      "message": "This is currently not enabled on windows for some reason. Might just be an oversight.",
+      "revId": "30d1f5558a253708400db7c855abc51047a8b9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
