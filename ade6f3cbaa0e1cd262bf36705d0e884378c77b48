@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f60b3e3d_e7581202",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-13T14:38:22Z",
+      "side": 1,
+      "message": "I suppose I should update PDF to use `SkTypeface::getPostScriptName` and remove `fPostScriptName` and `fFontName`. (Or just update `SkTypeface::getAdvancedMetrics` to use that as a first fallback.)",
+      "revId": "ade6f3cbaa0e1cd262bf36705d0e884378c77b48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
