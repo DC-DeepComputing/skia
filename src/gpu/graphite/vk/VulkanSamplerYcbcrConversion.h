@@ -10,6 +10,7 @@
 
 #include "src/gpu/graphite/Resource.h"
 
+#include "include/private/base/SkTArray.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/core/SkChecksum.h"
 
@@ -27,6 +28,15 @@ class VulkanSamplerYcbcrConversion : public Resource {
 public:
     static sk_sp<VulkanSamplerYcbcrConversion> Make(const VulkanSharedContext*,
                                                     const VulkanYcbcrConversionInfo&);
+
+    // 1 uint32 needed for Vkformat, 2 for external format, and 1 to house remaining ycbcr info
+    static const int kUint32sNeededForYcbcrInfo = 4;
+    using YcbcrArray = skia_private::STArray<kUint32sNeededForYcbcrInfo, uint32_t>;
+
+    // Gather all identifying YCbCr conversion information into compact numerical representation
+    static YcbcrArray GetYcbcrConversionKeyInfo(const VulkanYcbcrConversionInfo& info);
+
+    // Return a fully-formed GraphiteResourceKey that represents the conversion from conversion info
     static GraphiteResourceKey MakeYcbcrConversionKey(const VulkanSharedContext*,
                                                       const VulkanYcbcrConversionInfo&);
 
