@@ -16,6 +16,24 @@
       "message": "Not sure if we have good test coverage for this? In any event `TypefaceTest` dm tests are not passing yet, this needs separate work for the `SkTypeface_Fontations` to initialize itself correctly.",
       "revId": "6c3c7e576d1fd87da3ce21dc5e1312ed5e5cba36",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6411cdbd_29b355ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-13T17:52:34Z",
+      "side": 1,
+      "message": "Yeah, I;m not sure we have real coverage for some of this. This is mostly used by PDF generation, which is itself not overly well tested at the moment, unfortunately.",
+      "parentUuid": "1d086d37_dc85c363",
+      "revId": "6c3c7e576d1fd87da3ce21dc5e1312ed5e5cba36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
