@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aaa081d_657249d6",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-13T13:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02623592_5de8c13c",
+      "range": {
+        "startLine": 347,
+        "startChar": 52,
+        "endLine": 347,
+        "endChar": 66
+      },
+      "revId": "603dd2db98b7feeae0b389344b7f42b1fdda16c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec7ecbc9_89fc9db8",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-12T20:45:30Z",
       "side": 1,
       "message": "Similar question as above.",
+      "range": {
+        "startLine": 255,
+        "startChar": 18,
+        "endLine": 255,
+        "endChar": 32
+      },
+      "revId": "603dd2db98b7feeae0b389344b7f42b1fdda16c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "035082c7_a3c5129f",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-13T13:58:22Z",
+      "side": 1,
+      "message": "Done - this one is used but is somewhat arbitrary. We just want to force the coord clamp shader to appear in the program.",
+      "parentUuid": "ec7ecbc9_89fc9db8",
       "range": {
         "startLine": 255,
         "startChar": 18,
