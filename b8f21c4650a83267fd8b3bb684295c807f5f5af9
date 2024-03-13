@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84dcd1fe_240e5d84",
+        "filename": "src/gpu/ganesh/ops/TextureOp.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 19305
+      },
+      "writtenOn": "2024-03-13T19:00:38Z",
+      "side": 1,
+      "message": "I will add a comment here if you are ok with the functon signature.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 58
+      },
+      "revId": "b8f21c4650a83267fd8b3bb684295c807f5f5af9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
