@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fe6ade3_bf4f0c87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-13T21:10:37Z",
+      "side": 1,
+      "message": "Need to update the Skia macOS Builders first (I think they\u0027re stuck on 10.13 and Chromium\u0027s abseil requires 10.15 or newer).",
+      "revId": "50e426ffb00a429fdccc35412ffafa8228f3fc30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
