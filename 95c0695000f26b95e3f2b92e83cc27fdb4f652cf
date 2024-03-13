@@ -16,6 +16,23 @@
       "message": "I think Dawn is the only user of externals/abseil-cpp, but not sure.",
       "revId": "95c0695000f26b95e3f2b92e83cc27fdb4f652cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dae33ad6_95815fb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2024-03-13T13:31:24Z",
+      "side": 1,
+      "message": "I guess Bazel also has a abseil-cpp dep which must be kept in sync.  Except per https://skia-review.googlesource.com/c/skia/+/520696 we cannot use the Chromium mirror for our Bazel builds...\n\nSo essentially\n\n1) latest Dawn needs Chromium\u0027s abseil-cpp\n\n2) our Bazel builds cannot use Chromium\u0027s abseil-cpp\n\nDid I get that right?\n\n\nError\t\n...s://skia.googlesource.com/external/github.com/abseil/abseil-cpp.git\n+# @abseil_cpp - https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp.git\n # @brotli - https://skia.googlesource.com/external/github.com/google/brotli.git\n # @highway - https://chromium.googlesource.com/external/github.com/google/highway.git\n # @spirv_headers - https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers.git\ndiff --git a/bazel/deps.bzl b/bazel/deps.bzl\nindex e8d4eae..9ac8377 100644\n--- a/bazel/deps.bzl\n+++ b/bazel/deps.bzl\n@@ -36,8 +36,8 @@ def c_plus_plus_deps(ws \u003d \"@skia\"):\n \n     git_repository(\n         name \u003d \"abseil_cpp\",\n-        commit \u003d \"334aca32051ef6ede2711487acf45d959e9bdffc\",\n-        remote \u003d \"https://skia.googlesource.com/external/github.com/abseil/abseil-cpp.git\",\n+        commit \u003d \"b3ae305fd5dbc6ad41eed9add26768c29181219f\",\n+        remote \u003d \"https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp.git\",\n     )\n \n     new_git_repository(",
+      "revId": "95c0695000f26b95e3f2b92e83cc27fdb4f652cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
