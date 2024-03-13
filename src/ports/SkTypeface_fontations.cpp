@@ -40,6 +40,20 @@ rust::Box<::fontations_ffi::BridgeFontRef> make_bridge_font_ref(sk_sp<SkData> fo
     return fontations_ffi::make_font_ref(slice, index);
 }
 
+SkFontStyle make_font_style(sk_sp<SkData> fontData, const SkFontArguments& args) {
+    SkFontStyle style;
+    rust::Box<::fontations_ffi::BridgeFontRef> scanBridgeFontRef =
+            make_bridge_font_ref(fontData, args.getCollectionIndex());
+
+    fontations_ffi::BridgeFontStyle fontStyle;
+    if (fontations_ffi::get_font_style(*scanBridgeFontRef, fontStyle)) {
+        style = SkFontStyle(fontStyle.weight,
+                            fontStyle.width,
+                            static_cast<SkFontStyle::Slant>(fontStyle.slant));
+    }
+    return style;
+}
+
 static_assert(sizeof(fontations_ffi::SkiaDesignCoordinate) ==
                       sizeof(SkFontArguments::VariationPosition::Coordinate) &&
               sizeof(fontations_ffi::SkiaDesignCoordinate::axis) ==
@@ -83,8 +97,10 @@ sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> font
     return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args);
 }
 
+// TODO(b/329439348): Initialisation of the font style is inefficient because it creates a temporary
+// Fontations BridgeFontRef.
 SkTypeface_Fontations::SkTypeface_Fontations(sk_sp<SkData> fontData, const SkFontArguments& args)
-        : SkTypeface(SkFontStyle(), true)
+        : SkTypeface(make_font_style(fontData, args), true)
         , fFontData(fontData)
         , fTtcIndex(args.getCollectionIndex())
         , fBridgeFontRef(make_bridge_font_ref(fFontData, fTtcIndex))
