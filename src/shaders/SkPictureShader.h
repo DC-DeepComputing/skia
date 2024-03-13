@@ -39,7 +39,7 @@ struct SkStageRec;
  */
 class SkPictureShader : public SkShaderBase {
 public:
-    static sk_sp<SkShader> Make(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode,
+    static sk_sp<SkShader> Make1(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode,
                                 const SkMatrix*, const SkRect*);
 
     SkPictureShader(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode, const SkRect*);

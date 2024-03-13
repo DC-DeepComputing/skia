@@ -40,7 +40,7 @@ sk_sp<SkShader> SkPicture::makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMo
     if (localMatrix && !localMatrix->invert(nullptr)) {
         return nullptr;
     }
-    return SkPictureShader::Make(sk_ref_sp(this), tmx, tmy, filter, localMatrix, tile);
+    return SkPictureShader::Make1(sk_ref_sp(this), tmx, tmy, filter, localMatrix, tile);
 }
 
 namespace {
@@ -120,7 +120,7 @@ SkPictureShader::SkPictureShader(sk_sp<SkPicture> picture,
         , fTmy(tmy)
         , fFilter(filter) {}
 
-sk_sp<SkShader> SkPictureShader::Make(sk_sp<SkPicture> picture, SkTileMode tmx, SkTileMode tmy,
+sk_sp<SkShader> SkPictureShader::Make1(sk_sp<SkPicture> picture, SkTileMode tmx, SkTileMode tmy,
                                       SkFilterMode filter, const SkMatrix* lm, const SkRect* tile) {
     if (!picture || picture->cullRect().isEmpty() || (tile && tile->isEmpty())) {
         return SkShaders::Empty();
@@ -161,7 +161,7 @@ sk_sp<SkFlattenable> SkPictureShader::CreateProc(SkReadBuffer& buffer) {
         filter = buffer.read32LE(SkFilterMode::kLast);
         picture = SkPicturePriv::MakeFromBuffer(buffer);
     }
-    return SkPictureShader::Make(picture, tmx, tmy, filter, &lm, &tile);
+    return SkPictureShader::Make1(picture, tmx, tmy, filter, &lm, &tile);
 }
 
 void SkPictureShader::flatten(SkWriteBuffer& buffer) const {
