@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6ece562_e537ab21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "Just some drive by comments 😊",
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f589f1a_e44db414",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "Since the sizes are the same, I think we can condense this to a `memcmp`.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 9
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6db2025c_853e2619",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "I would write this as an explicit function `toString()` and have it defined in the C++ file.",
+      "range": {
+        "startLine": 211,
+        "startChar": 4,
+        "endLine": 219,
+        "endChar": 5
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3584ab69_2036ba68",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "maybe return as a `SkSpan\u003cconst uint32_t\u003e`?",
+      "range": {
+        "startLine": 233,
+        "startChar": 4,
+        "endLine": 233,
+        "endChar": 33
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8997e40_c3d2c6e5",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "We shouldn\u0027t use `std::vector`, it was an idea we thought we could do when graphite started, but then Herb and John\u0027s work on code size and performance makes SkTArray the better choice.\n\nAt the expense of generality, it would be convenient if we could just store a fixed size of extra bits so that `SamplerDesc` remains trivially destructible. I don\u0027t know if Dawn can commit to 4 uint32\u0027s like vulkan (seems reasonable?).",
+      "range": {
+        "startLine": 237,
+        "startChar": 4,
+        "endLine": 237,
+        "endChar": 25
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "819cf895_99be879e",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "Out of curiosity, where did these limits (7 in particular) come from? Looking at the vulkan spec, I\u0027d think we could fit `fYcbcrModel` into 3 bits (it seems to have 5 unique values), and everything else needs 1 bit each so the whole thing could fit into 8 bits.\n\nThis could allow us to pack the ycbcr info into the upper 8 bits of `fFormat` if we played some games with the format extensions. Base formats seem to be small, and the extras are all shifted by a large offset (1,000,000,000+). If we subtracted this value, the formats would still be unique and then fit into 24 bits.\n\nI wish we could find some guarantees about how large a value `externalFormat` might take. If it could fit into 32-bits we could have a way of sharing storage between format and externalFormat, since only one of them is valid at a time. We\u0027d just need 1 bit (probably sign bit) to say which is which.\n\nAnyways, I don\u0027t think any of this should be considered a blocker, but more optimization potential to keep the key size and the SamplerDesc size smaller.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 60
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f88a77_d82bf0bd",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-13T21:00:34Z",
+      "side": 1,
+      "message": "Could this be a `std::array\u003c4\u003e`?",
+      "range": {
+        "startLine": 34,
+        "startChar": 10,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
