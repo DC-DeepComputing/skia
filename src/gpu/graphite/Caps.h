@@ -107,6 +107,10 @@ public:
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 
+    // This method determines universal sampler key information before calling finishSamplerKey to
+    // allow backends to add any additional key information prior to returning the key.
+    GraphiteResourceKey makeSamplerKey(const SamplerDesc& samplerDesc) const;
+
     virtual bool extractGraphicsDescs(const UniqueKey&,
                                       GraphicsPipelineDesc*,
                                       RenderPassDesc*,
@@ -376,6 +380,13 @@ protected:
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
     virtual const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const = 0;
+
+    // Backends can optionally override this method to tack on additional sampler key info. By
+    // default, this method adds no additional key information, simply assembling and returning the
+    // key.
+    virtual GraphiteResourceKey finishSamplerKey(const SamplerDesc&,
+                                                 const ResourceType,
+                                                 uint32_t baseKeyInfo) const;
 
     sk_sp<SkCapabilities> fCapabilities;
 };
