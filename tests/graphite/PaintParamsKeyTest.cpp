@@ -14,6 +14,8 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
@@ -73,6 +75,7 @@ enum class ShaderType {
     kLinearGradient,
     kLocalMatrix,
     kPerlinNoise,
+    kPicture,
     kRadialGradient,
     kSolidColor,
     kSweepGradient,
@@ -245,6 +248,22 @@ sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
 }
 
 //--------------------------------------------------------------------------------------------------
+sk_sp<SkPicture> make_picture(SkRandom* rand) {
+    constexpr SkRect kRect = SkRect::MakeWH(128, 128);
+
+    SkPictureRecorder recorder;
+
+    SkCanvas* canvas = recorder.beginRecording(kRect);
+
+    SkPaint paint;
+    paint.setColor(random_opaque_color(rand));
+
+    canvas->drawRect(kRect, paint);
+
+    return recorder.finishRecordingAsPicture();
+}
+
+//--------------------------------------------------------------------------------------------------
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_coord_clamp_shader(SkRandom* rand,
                                                                               Recorder* recorder) {
     auto [s, o] = create_random_shader(rand, recorder);
@@ -285,6 +304,18 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_perlin_noise_shader(S
                                       /* seed= */ 4);
         o = PrecompileShaders::MakeTurbulence();
     }
+
+    return { s, o };
+}
+
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_picture_shader(SkRandom* rand) {
+    sk_sp<SkPicture> picture = make_picture(rand);
+
+    // TODO: can the clamp and filter modes affect the final program?
+    sk_sp<SkShader> s = picture->makeShader(SkTileMode::kClamp,
+                                            SkTileMode::kClamp,
+                                            SkFilterMode::kLinear);
+    sk_sp<PrecompileShader> o = PrecompileShaders::Picture();
 
     return { s, o };
 }
@@ -437,6 +468,8 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>>  create_shader(SkRandom* ran
             return create_localmatrix_shader(rand, recorder);
         case ShaderType::kPerlinNoise:
             return create_perlin_noise_shader(rand);
+        case ShaderType::kPicture:
+            return create_picture_shader(rand);
         case ShaderType::kRadialGradient:
             return create_gradient_shader(rand, SkShaderBase::GradientType::kRadial);
         case ShaderType::kSolidColor:
@@ -975,6 +1008,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ShaderType::kLinearGradient,
             ShaderType::kLocalMatrix,
             ShaderType::kPerlinNoise,
+            ShaderType::kPicture,
             ShaderType::kSweepGradient,
 #endif
     };

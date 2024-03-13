@@ -137,6 +137,32 @@ sk_sp<PrecompileShader> PrecompileShaders::MakeTurbulence() {
 }
 
 //--------------------------------------------------------------------------------------------------
+class PrecompilePictureShader : public PrecompileShader {
+public:
+    PrecompilePictureShader() {}
+
+private:
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+
+        SkASSERT(desiredCombination == 0); // The Perlin noise shader only ever has one combination
+
+        // TODO: update PerlinNoiseShaderBlock so the NoiseData is optional
+        static const PerlinNoiseShaderBlock::PerlinNoiseData kIgnoredNoiseData(
+                PerlinNoiseShaderBlock::Type::kFractalNoise, { 0.0f, 0.0f }, 2, {1, 1});
+
+        PerlinNoiseShaderBlock::AddBlock(keyContext, builder, gatherer, kIgnoredNoiseData);
+    }
+
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::Picture() {
+    return sk_make_sp<PrecompilePictureShader>();
+}
+
+//--------------------------------------------------------------------------------------------------
 class PrecompileColorShader : public PrecompileShader {
 public:
     PrecompileColorShader() {}
