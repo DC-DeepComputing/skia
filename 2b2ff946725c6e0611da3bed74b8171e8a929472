@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc42ed11_3000dbdc",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-13T18:20:47Z",
+      "side": 1,
+      "message": "Seems like we ought to rename this, now? It\u0027s not refing anything. (And it\u0027s a stream, not a data, but that could still make sense). `getEncodedData`?",
+      "range": {
+        "startLine": 298,
+        "startChar": 38,
+        "endLine": 298,
+        "endChar": 52
+      },
+      "revId": "2b2ff946725c6e0611da3bed74b8171e8a929472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8938b8a4_52acae97",
+        "filename": "src/codec/SkCodecImageGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-13T18:20:47Z",
+      "side": 1,
+      "message": "Although I\u0027m usually a fan of early returns, for caching logic like this, I find it easier to follow if you instead test for the negative:\n\n```suggestion\n    SkASSERT(fCodec);\n    if (!fCachedData) {\n        std::unique_ptr\u003cSkStream\u003e stream \u003d fCodec-\u003erefEncodedData();\n        fCachedData \u003d stream-\u003egetData();\n        if (!fCachedData) {\n            // stream should already be a copy of the underlying stream.\n            fCachedData \u003d SkData::MakeFromStream(stream.get(), stream-\u003egetLength());\n        }\n    }\n    return fCachedData;\n```",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 23
+      },
+      "revId": "2b2ff946725c6e0611da3bed74b8171e8a929472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95aaaea0_59a4548b",
+        "filename": "src/codec/SkWuffsCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-13T18:20:47Z",
+      "side": 1,
+      "message": "I just realized that this shadows the base-class variable? Not for this CL, but I\u0027d like to go back and rename it.",
+      "range": {
+        "startLine": 972,
+        "startChar": 11,
+        "endLine": 972,
+        "endChar": 18
+      },
+      "revId": "2b2ff946725c6e0611da3bed74b8171e8a929472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
