@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "763ea9fb_111ceb53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-13T17:21:07Z",
+      "side": 1,
+      "message": "No longer needed, now that https://crrev.com/c/5368592 has landed.",
+      "revId": "eff6a54d7d981920635b192d7e70ae99668ab692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
