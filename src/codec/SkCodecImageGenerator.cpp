@@ -12,6 +12,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "src/codec/SkPixmapUtilsPriv.h"
 
@@ -55,8 +56,18 @@ SkCodecImageGenerator::SkCodecImageGenerator(std::unique_ptr<SkCodec> codec,
         : SkImageGenerator(adjust_info(codec.get(), at)), fCodec(std::move(codec)) {}
 
 sk_sp<SkData> SkCodecImageGenerator::onRefEncodedData() {
+    if (fCachedData) {
+        return fCachedData;
+    }
     SkASSERT(fCodec);
-    return fCodec->refEncodedData();
+    std::unique_ptr<SkStream> stream = fCodec->refEncodedData();
+    fCachedData = stream->getData();
+    if (fCachedData) {
+        return fCachedData;
+    }
+    // stream should already be a copy of the underlying stream.
+    fCachedData = SkData::MakeFromStream(stream.get(), stream->getLength());
+    return fCachedData;
 }
 
 bool SkCodecImageGenerator::getPixels(const SkImageInfo& info, void* pixels, size_t rowBytes, const SkCodec::Options* options) {
