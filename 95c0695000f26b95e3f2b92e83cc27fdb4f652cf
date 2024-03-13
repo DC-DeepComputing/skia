@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "974d90a2_2c54901e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2024-03-13T13:03:17Z",
+      "side": 1,
+      "message": "I think Dawn is the only user of externals/abseil-cpp, but not sure.",
+      "revId": "95c0695000f26b95e3f2b92e83cc27fdb4f652cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
