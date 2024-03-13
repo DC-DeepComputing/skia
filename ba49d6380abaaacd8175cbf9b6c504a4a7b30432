@@ -70,6 +70,30 @@
       },
       "revId": "ba49d6380abaaacd8175cbf9b6c504a4a7b30432",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a90a20e_0fbf91cb",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-03-13T16:56:21Z",
+      "side": 1,
+      "message": "Considering how Google3 complains about this situation I agree. Only I would rather make it shared_ptr. It\u0027s a huge pain for SkParagraph to create a unique copy of an existing SkUnicode. For Client ICU it\u0027s actually cost us performance.",
+      "parentUuid": "45b9d27b_a023d91b",
+      "range": {
+        "startLine": 632,
+        "startChar": 4,
+        "endLine": 632,
+        "endChar": 24
+      },
+      "revId": "ba49d6380abaaacd8175cbf9b6c504a4a7b30432",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
