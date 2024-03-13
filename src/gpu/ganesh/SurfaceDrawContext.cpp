@@ -594,6 +594,13 @@ void SurfaceDrawContext::drawTexture(const GrClip* clip,
     if ((this->alwaysAntialias() || this->caps()->reducedShaderMode()) &&
         edgeAA != GrQuadAAFlags::kNone) {
 
+       
+         auto [mustFilter, mustMM]  = TextureOp::filter_and_mm_have_effect(GrQuad::MakeFromRect(dstRect, viewMatrix), GrQuad(srcRect));
+         if(!mustFilter)
+         {
+             filter =  GrSamplerState::Filter::kNearest;
+         }
+  
         GrPaint paint;
         paint.setColor4f(color);
         std::unique_ptr<GrFragmentProcessor> fp;

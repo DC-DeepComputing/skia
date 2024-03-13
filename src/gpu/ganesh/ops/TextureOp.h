@@ -22,6 +22,7 @@ class GrTextureProxy;
 struct GrTextureSetEntry;
 struct SkRect;
 class SkMatrix;
+class GrQuad;
 
 namespace skgpu::ganesh {
 class SurfaceDrawContext;
@@ -33,6 +34,9 @@ class SurfaceDrawContext;
 
 class TextureOp {
 public:
+
+    static std::tuple<bool /* filter */,bool /* mipmap */>
+    filter_and_mm_have_effect(const GrQuad& srcQuad, const GrQuad& dstQuad) ;
 
     /**
      * Controls whether saturate() is called after the texture is color-converted to ensure all
