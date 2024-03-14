@@ -308,6 +308,7 @@ void tiling_comparison_test(GrDirectContext* dContext,
 
     int numClippedTiles = 9;
     for (auto gen : kGenerators) {
+        SkDebugf("gen = %s\n", gen.fTag);
         if (recorder && !strcmp(gen.fTag, "Picture")) {
             // In the picture-image case, the non-tiled code path draws the picture directly into a
             // gpu-backed surface while the tiled code path the picture is draws the picture into
@@ -328,6 +329,7 @@ void tiling_comparison_test(GrDirectContext* dContext,
         for (int scale : { 1, 4, 8 }) {
             for (int rot : { 0, 45 }) {
                 for (int numDesiredTiles : { numClippedTiles, 16 }) {
+                    SkDebugf("scale=%d rot=%d numDesiredTiles=%d\n", scale, rot, numDesiredTiles);
                     SkRect destRect = SkRect::MakeWH(srcRect.width()/scale,
                                                      srcRect.height()/scale);
 
@@ -399,6 +401,9 @@ void tiling_comparison_test(GrDirectContext* dContext,
                             SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
                                                              sampling, /* paint= */ nullptr,
                                                              constraint);
+                            
+                            SkDebugf("readPixels expected\n");
+
                             SkAssertResult(surface->readPixels(expected, 0, 0));
 #if defined(SK_GANESH) && defined(GR_TEST_UTILS)
                             int actualNumTiles =
@@ -427,6 +432,7 @@ void tiling_comparison_test(GrDirectContext* dContext,
                             SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
                                                              sampling, /* paint= */ nullptr,
                                                              constraint);
+                            SkDebugf("readPixels actual\n");
                             SkAssertResult(surface->readPixels(actual, 0, 0));
 #if defined(SK_GANESH) && defined(GR_TEST_UTILS)
                             if (canvas->recordingContext()) {
