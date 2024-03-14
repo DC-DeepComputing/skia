@@ -16,6 +16,24 @@
       "message": "Could anyone manuallly roll this? I need this Dawn\u0027s fix https://dawn-review.googlesource.com/c/dawn/+/178881 to be in so that I can continue working on a Graphite\u0027s feature which relies on it.",
       "revId": "1208432aac72d1519c6416ef5727e0d43565f48b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10e57503_4884b212",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-03-14T12:07:17Z",
+      "side": 1,
+      "message": "2024-03-12 geofflang@google.com Use abseil\u0027s build targets instead of custom ones\n\nis breaking our bots. I\u0027ll try a roll that includes the futures CL but not the breaking CL:\n\nhttps://skia-review.googlesource.com/c/skia/+/826357",
+      "parentUuid": "1c04b4eb_f90e7d89",
+      "revId": "1208432aac72d1519c6416ef5727e0d43565f48b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
