@@ -1953,6 +1953,7 @@ GL_SRCS_UNIX = base_gl_srcs + [
 ]
 
 GL_SRCS_UNIX_EGL = base_gl_srcs + [
+    "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
     "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
     "src/gpu/ganesh/gl/egl/GrGLMakeNativeInterface_egl.cpp",
 ]
@@ -2752,4 +2753,7 @@ XML_HDRS = [
 ################################################################################
 
 SKIA_EGL_HDRS = ["include/gpu/gl/egl/GrGLMakeEGLInterface.h"]
-SKIA_EGL_SRCS = ["src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp"]
+SKIA_EGL_SRCS = [
+    "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
+    "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+]
