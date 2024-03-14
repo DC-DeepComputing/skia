@@ -16,6 +16,24 @@
       "message": "This is currently not enabled on windows for some reason. Might just be an oversight.",
       "revId": "30d1f5558a253708400db7c855abc51047a8b9c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "078cde23_5678721c",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-14T14:09:46Z",
+      "side": 1,
+      "message": "Created https://android-https://android-review.googlesource.com/c/platform/external/harfbuzz_ng/+/3003711 to enable on Windows.",
+      "parentUuid": "9d589da9_8c76b4cd",
+      "revId": "30d1f5558a253708400db7c855abc51047a8b9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
