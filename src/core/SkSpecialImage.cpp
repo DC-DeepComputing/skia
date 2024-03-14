@@ -65,7 +65,7 @@ sk_sp<SkShader> SkSpecialImage::asShader(SkTileMode tileMode,
 
         // asImage() w/o a subset makes no copy; create the SkImageShader directly to remember
         // the subset used to access the image.
-        return SkImageShader::MakeSubset(
+        return SkImageShader::MakeSubset1(
                 this->asImage(), subset, tileMode, tileMode, sampling, &subsetOrigin);
     } else {
         // Ignore 'subset' other than its origin translation applied to the local matrix.

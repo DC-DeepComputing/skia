@@ -380,11 +380,16 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_image_shader(SkRandom
     SkTileMode tmX = random_tilemode(rand);
     SkTileMode tmY = random_tilemode(rand);
 
-    sk_sp<SkShader> s = SkImageShader::Make(make_image(rand, recorder), tmX, tmY,
+    sk_sp<SkShader> s = SkImageShader::Make1(make_image(rand, recorder), tmX, tmY,
                                             SkSamplingOptions(), nullptr);
     sk_sp<PrecompileShader> o = PrecompileShaders::Image();
 
     return { s, o };
+}
+
+std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_raw_image_shader(SkRandom* rand,
+                                                                            Recorder* recorder) {
+
 }
 
 std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_blend_shader(SkRandom* rand,

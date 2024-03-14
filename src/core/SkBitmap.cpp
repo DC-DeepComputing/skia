@@ -656,7 +656,7 @@ sk_sp<SkShader> SkBitmap::makeShader(SkTileMode tmx, SkTileMode tmy,
     if (!lm.invert(nullptr)) {
         return nullptr;
     }
-    return SkImageShader::Make(SkMakeImageFromRasterBitmap(*this, kIfMutable_SkCopyPixelsMode),
+    return SkImageShader::Make1(SkMakeImageFromRasterBitmap(*this, kIfMutable_SkCopyPixelsMode),
                                tmx, tmy, sampling, &lm);
 }
 
@@ -666,6 +666,6 @@ sk_sp<SkShader> SkBitmap::makeShader(SkTileMode tmx, SkTileMode tmy,
     if (lm && !lm->invert(nullptr)) {
         return nullptr;
     }
-    return SkImageShader::Make(SkMakeImageFromRasterBitmap(*this, kIfMutable_SkCopyPixelsMode),
+    return SkImageShader::Make1(SkMakeImageFromRasterBitmap(*this, kIfMutable_SkCopyPixelsMode),
                                tmx, tmy, sampling, lm);
 }

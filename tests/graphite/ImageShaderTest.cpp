@@ -52,7 +52,7 @@ void test_draw(skiatest::Reporter* reporter,
 
     SkPaint p;
     SkMatrix srcToDst = SkMatrix::RectToRect(srcRect, dstRect);
-    p.setShader(SkImageShader::MakeSubset(
+    p.setShader(SkImageShader::MakeSubset1(
             std::move(image), srcRect, tileMode, tileMode, samplingOptions, &srcToDst));
     canvas->drawRect(dstRect, p);
 

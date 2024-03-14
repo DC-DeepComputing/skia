@@ -156,7 +156,7 @@ void draw_image_with_shader(sk_sp<SkImage> image,
                             SkRect dstRect) {
     SkPaint p;
     SkMatrix srcToDst = SkMatrix::RectToRect(srcRect, dstRect);
-    p.setShader(SkImageShader::MakeSubset(
+    p.setShader(SkImageShader::MakeSubset1(
                 std::move(image),
                 srcRect,
                 SkTileMode::kClamp,

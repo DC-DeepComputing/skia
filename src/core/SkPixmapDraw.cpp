@@ -65,7 +65,7 @@ bool SkPixmap::scalePixels(const SkPixmap& actualDst, const SkSamplingOptions& s
 
     SkMatrix scale = SkMatrix::RectToRect(SkRect::Make(src.bounds()), SkRect::Make(dst.bounds()));
 
-    sk_sp<SkShader> shader = SkImageShader::Make(bitmap.asImage(),
+    sk_sp<SkShader> shader = SkImageShader::Make1(bitmap.asImage(),
                                                  SkTileMode::kClamp,
                                                  SkTileMode::kClamp,
                                                  sampling,

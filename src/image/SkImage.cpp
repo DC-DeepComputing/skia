@@ -149,13 +149,13 @@ SkColorSpace* SkImage::colorSpace() const { return fInfo.colorSpace(); }
 sk_sp<SkColorSpace> SkImage::refColorSpace() const { return fInfo.refColorSpace(); }
 
 sk_sp<SkShader> SkImage::makeShader(const SkSamplingOptions& sampling, const SkMatrix& lm) const {
-    return SkImageShader::Make(sk_ref_sp(const_cast<SkImage*>(this)),
+    return SkImageShader::Make1(sk_ref_sp(const_cast<SkImage*>(this)),
                                SkTileMode::kClamp, SkTileMode::kClamp,
                                sampling, &lm);
 }
 
 sk_sp<SkShader> SkImage::makeShader(const SkSamplingOptions& sampling, const SkMatrix* lm) const {
-    return SkImageShader::Make(sk_ref_sp(const_cast<SkImage*>(this)),
+    return SkImageShader::Make1(sk_ref_sp(const_cast<SkImage*>(this)),
                                SkTileMode::kClamp, SkTileMode::kClamp,
                                sampling, lm);
 }
@@ -163,34 +163,34 @@ sk_sp<SkShader> SkImage::makeShader(const SkSamplingOptions& sampling, const SkM
 sk_sp<SkShader> SkImage::makeShader(SkTileMode tmx, SkTileMode tmy,
                                     const SkSamplingOptions& sampling,
                                     const SkMatrix& lm) const {
-    return SkImageShader::Make(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
+    return SkImageShader::Make1(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
                                sampling, &lm);
 }
 
 sk_sp<SkShader> SkImage::makeShader(SkTileMode tmx, SkTileMode tmy,
                                     const SkSamplingOptions& sampling,
                                     const SkMatrix* localMatrix) const {
-    return SkImageShader::Make(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
+    return SkImageShader::Make1(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
                                sampling, localMatrix);
 }
 
 sk_sp<SkShader> SkImage::makeRawShader(SkTileMode tmx, SkTileMode tmy,
                                        const SkSamplingOptions& sampling,
                                        const SkMatrix& lm) const {
-    return SkImageShader::MakeRaw(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
+    return SkImageShader::MakeRaw1(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
                                   sampling, &lm);
 }
 
 sk_sp<SkShader> SkImage::makeRawShader(const SkSamplingOptions& sampling,
                                        const SkMatrix& lm) const {
-    return SkImageShader::MakeRaw(sk_ref_sp(const_cast<SkImage*>(this)),
+    return SkImageShader::MakeRaw1(sk_ref_sp(const_cast<SkImage*>(this)),
                                   SkTileMode::kClamp, SkTileMode::kClamp,
                                   sampling, &lm);
 }
 
 sk_sp<SkShader> SkImage::makeRawShader(const SkSamplingOptions& sampling,
                                        const SkMatrix* localMatrix) const {
-    return SkImageShader::MakeRaw(sk_ref_sp(const_cast<SkImage*>(this)),
+    return SkImageShader::MakeRaw1(sk_ref_sp(const_cast<SkImage*>(this)),
                                   SkTileMode::kClamp, SkTileMode::kClamp,
                                   sampling, localMatrix);
 }
@@ -198,7 +198,7 @@ sk_sp<SkShader> SkImage::makeRawShader(const SkSamplingOptions& sampling,
 sk_sp<SkShader> SkImage::makeRawShader(SkTileMode tmx, SkTileMode tmy,
                                        const SkSamplingOptions& sampling,
                                        const SkMatrix* localMatrix) const {
-    return SkImageShader::MakeRaw(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
+    return SkImageShader::MakeRaw1(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
                                   sampling, localMatrix);
 }
 

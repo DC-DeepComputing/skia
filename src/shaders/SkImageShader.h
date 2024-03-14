@@ -27,14 +27,14 @@ struct SkStageRec;
 
 class SkImageShader : public SkShaderBase {
 public:
-    static sk_sp<SkShader> Make(sk_sp<SkImage>,
+    static sk_sp<SkShader> Make1(sk_sp<SkImage>,
                                 SkTileMode tmx,
                                 SkTileMode tmy,
                                 const SkSamplingOptions&,
                                 const SkMatrix* localMatrix,
                                 bool clampAsIfUnpremul = false);
 
-    static sk_sp<SkShader> MakeRaw(sk_sp<SkImage>,
+    static sk_sp<SkShader> MakeRaw1(sk_sp<SkImage>,
                                    SkTileMode tmx,
                                    SkTileMode tmy,
                                    const SkSamplingOptions&,
@@ -42,7 +42,7 @@ public:
 
     // TODO(skbug.com/12784): Requires SkImage to be texture backed, and created SkShader can only
     // be used on GPU-backed surfaces.
-    static sk_sp<SkShader> MakeSubset(sk_sp<SkImage>,
+    static sk_sp<SkShader> MakeSubset1(sk_sp<SkImage>,
                                       const SkRect& subset,
                                       SkTileMode tmx,
                                       SkTileMode tmy,
