@@ -66,19 +66,25 @@ SK_API bool SkColorTypeValidateAlphaType(SkColorType colorType, SkAlphaType alph
     It can be used to visualize the YUV planes or to explicitly post process the YUV channels.
 */
 enum SkYUVColorSpace : int {
-    kJPEG_Full_SkYUVColorSpace,                 //!< describes full range
-    kRec601_Limited_SkYUVColorSpace,            //!< describes SDTV range
-    kRec709_Full_SkYUVColorSpace,               //!< describes HDTV range
+    kJPEG_Full_SkYUVColorSpace,       //!< describes full range
+    kRec601_Limited_SkYUVColorSpace,  //!< describes SDTV range
+    kRec709_Full_SkYUVColorSpace,     //!< describes HDTV range
     kRec709_Limited_SkYUVColorSpace,
-    kBT2020_8bit_Full_SkYUVColorSpace,          //!< describes UHDTV range, non-constant-luminance
+    kBT2020_8bit_Full_SkYUVColorSpace,  //!< describes UHDTV range, non-constant-luminance
     kBT2020_8bit_Limited_SkYUVColorSpace,
     kBT2020_10bit_Full_SkYUVColorSpace,
     kBT2020_10bit_Limited_SkYUVColorSpace,
     kBT2020_12bit_Full_SkYUVColorSpace,
     kBT2020_12bit_Limited_SkYUVColorSpace,
-    kIdentity_SkYUVColorSpace,                  //!< maps Y->R, U->G, V->B
+    kYCoCg_8bit_Full_SkYUVColorSpace,  //!< describes YCoCg matrix
+    kYCoCg_8bit_Limited_SkYUVColorSpace,
+    kYCoCg_10bit_Full_SkYUVColorSpace,
+    kYCoCg_10bit_Limited_SkYUVColorSpace,
+    kYCoCg_12bit_Full_SkYUVColorSpace,
+    kYCoCg_12bit_Limited_SkYUVColorSpace,
+    kIdentity_SkYUVColorSpace,  //!< maps Y->R, U->G, V->B
 
-    kLastEnum_SkYUVColorSpace = kIdentity_SkYUVColorSpace, //!< last valid value
+    kLastEnum_SkYUVColorSpace = kIdentity_SkYUVColorSpace,  //!< last valid value
 
     // Legacy (deprecated) names:
     kJPEG_SkYUVColorSpace = kJPEG_Full_SkYUVColorSpace,
