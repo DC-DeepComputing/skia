@@ -45,10 +45,6 @@ public:
     const wgpu::BindGroup& findOrCreateUniformBuffersBindGroup(
             const std::array<std::pair<const DawnBuffer*, uint32_t>, 3>& boundBuffersAndSizes);
 
-    // Get or create a bind group containing the given sampler & texture.
-    const wgpu::BindGroup& findOrCreateSingleTextureSamplerBindGroup(const DawnSampler* sampler,
-                                                                     const DawnTexture* texture);
-
 private:
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const GraphicsPipelineDesc&,
@@ -76,7 +72,6 @@ private:
     using BindGroupCache = SkLRUCache<UniqueKey, wgpu::BindGroup, UniqueKeyHash>;
 
     BindGroupCache fUniformBufferBindGroupCache;
-    BindGroupCache fSingleTextureSamplerBindGroups;
 };
 
 } // namespace skgpu::graphite
