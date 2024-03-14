@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf2582c_7faefd9b",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-14T17:48:12Z",
+      "side": 0,
+      "message": "Because this was a normal `defines` and not a `public_defines` (as it should be since it is internal and not external) this never made it into `Android.bp`. We can see that it was [set in Android 9](https://android.googlesource.com/platform/external/skia/+/refs/heads/pie-release/include/config/SkUserConfig.h#16), but this disappeared from Android 10. So somewhere in the 2017 - 2019. Trolling through the history, it was [removed with this roll](https://android.googlesource.com/platform/external/skia/+/02311039fdc0012f48492ab5c051448abf4df4e8) with [GN/ICU cleanup](https://skia.googlesource.com/skia.git/+/32498f0846dc8f25c1e5ce9d6e96ff2955adabde). When this happened the now private define should have been added directly to `gn/gn_to_bp.py` like was done in this change. Because that didn\u0027t happen, on Android 10-14 [PDFDocument](https://developer.android.com/reference/android/graphics/pdf/PdfDocument) does not subset fonts at all.",
+      "revId": "8982d226f605a7140e8d1cff01361f75c7e3f3d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
