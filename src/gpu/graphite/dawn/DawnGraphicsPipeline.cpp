@@ -381,7 +381,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
     // Pipeline layout
     BindGroupLayouts groupLayouts;
     {
-        groupLayouts[0] = resourceProvider->getOrCreateUniformBuffersBindGroupLayout();
+        groupLayouts[0] = sharedContext->uniformBuffersBindGroupLayout();
         if (!groupLayouts[0]) {
             return {};
         }
@@ -391,7 +391,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
             if (numTexturesAndSamplers == 2) {
                 // Common case: single texture + sampler.
                 groupLayouts[1] =
-                        resourceProvider->getOrCreateSingleTextureSamplerBindGroupLayout();
+                        sharedContext->singleTextureSamplerBindGroupLayout();
             } else {
                 std::vector<wgpu::BindGroupLayoutEntry> entries(numTexturesAndSamplers);
                 for (int i = 0; i < numTexturesAndSamplers;) {

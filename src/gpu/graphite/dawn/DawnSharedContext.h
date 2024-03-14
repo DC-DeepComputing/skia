@@ -33,6 +33,15 @@ public:
     const wgpu::Queue& queue() const { return fQueue; }
     const wgpu::ShaderModule& noopFragment() const { return fNoopFragment; }
 
+    const wgpu::Buffer& nullBuffer() const { return fNullBuffer; }
+
+    const wgpu::BindGroupLayout& uniformBuffersBindGroupLayout() const {
+        return fUniformBuffersBindGroupLayout;
+    }
+    const wgpu::BindGroupLayout& singleTextureSamplerBindGroupLayout() const {
+        return fSingleTextureSamplerBindGroupLayout;
+    }
+
     bool hasTick() const { return fTick; }
 
     void tick() const {
@@ -52,6 +61,10 @@ private:
     // A noop fragment shader, it is used to workaround dawn a validation error(dawn doesn't allow
     // a pipeline with a color attachment but without a fragment shader).
     wgpu::ShaderModule fNoopFragment;
+
+    wgpu::Buffer fNullBuffer;
+    wgpu::BindGroupLayout fUniformBuffersBindGroupLayout;
+    wgpu::BindGroupLayout fSingleTextureSamplerBindGroupLayout;
 };
 
 } // namespace skgpu::graphite
