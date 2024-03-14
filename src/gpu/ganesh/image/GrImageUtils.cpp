@@ -16,7 +16,6 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
-#include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
@@ -39,6 +38,7 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/gpu/BlurUtils.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
@@ -801,8 +801,10 @@ public:
 
     // SkBlurEngine::Algorithm
     float maxSigma() const override {
-        // GrBlurUtils handles resizing at the moment
+        // GrBlurUtils can resize, but if we return kMaxLinearBlurSigma here, FilterResult will do
+        // the rescaling and GrBlurUtils should just perform at the invoked resolution
         return SK_ScalarInfinity;
+        // return skgpu::kMaxLinearBlurSigma;
     }
 
     bool supportsOnlyDecalTiling() const override { return false; }

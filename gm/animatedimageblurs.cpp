@@ -165,24 +165,31 @@ protected:
 
         auto drawBlurredImage = [&](float tx, float ty, SkTileMode tileMode) {
             SkPaint paint;
-            SkRect rect = SkRect::MakeIWH(250, 250);
+            SkRect rect = SkRect::MakeIWH(199, 199);
             canvas->save();
             canvas->translate(tx, ty);
-            paint.setImageFilter(SkImageFilters::Blur(fBlurSigma, fBlurSigma, tileMode,
-                                                      nullptr, rect));
+            paint.setImageFilter(SkImageFilters::Blur(fBlurSigma, fBlurSigma, //tileMode, nullptr, rect));
+                                                      SkImageFilters::Crop(rect, tileMode, nullptr)));
             canvas->drawImageRect(fImage, rect, SkFilterMode::kLinear, &paint);
+
+            SkPaint l;
+            l.setColor(SK_ColorRED);
+            l.setStyle(SkPaint::kStroke_Style);
+            l.setStrokeWidth(0.f);
+            canvas->drawRect(rect, l);
+
             canvas->restore();
         };
 
-        drawBlurredImage(10.f,  10.f,  SkTileMode::kDecal);
-        drawBlurredImage(270.f, 10.f,  SkTileMode::kClamp);
+        // drawBlurredImage(10.f,  10.f,  SkTileMode::kDecal);
+        // drawBlurredImage(270.f, 10.f,  SkTileMode::kClamp);
         drawBlurredImage(10.f,  270.f, SkTileMode::kRepeat);
-        drawBlurredImage(270.f, 270.f, SkTileMode::kMirror);
+        // drawBlurredImage(270.f, 270.f, SkTileMode::kMirror);
     }
 
     bool onAnimate(double nanos) override {
         fBlurSigma = TimeUtils::PingPong(1e-9 * nanos, 3*kBlurAnimationDuration,
-                                         0.f, 0.0f, 30*kBlurMax);
+                                         0.f, 0.0f, 50*kBlurMax);
         return true;
     }
 
