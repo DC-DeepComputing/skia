@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2102373_2f8ff881",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit: `this-\u003e`",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 22
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61fe8920_df50fae0",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 166,
+        "startChar": 9,
+        "endLine": 166,
+        "endChar": 22
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "282cde28_f439e1bd",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "Should we have if-defs here to only override the specific form of mapping based on native or wasm?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 66
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "518e37a3_68639516",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think we need to declare the destructor at all.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 45
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a19b446d_ca5e1af0",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "I assume `wgpu::Instance` is just a ref-counting wrapper around the actual instance, so this is pretty lightweight. However, does it add any extra value to instead update the isFinished() and waitUntilFinished() APIs to pass in the context? \n\nThen in this case we could inspect the instance from the passed in context?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07380a28_b0a52c70",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit: new line here and have the `,` line up with the `:` above it.",
+      "range": {
+        "startLine": 41,
+        "startChar": 63,
+        "endLine": 41,
+        "endChar": 64
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb03629b_11f3dd94",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit; can you add new lines around the `#else`?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 5
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebd38980_d28a8c15",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit: new line between these functions",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 1
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f80ecab0_f649b9fc",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T20:21:11Z",
+      "side": 1,
+      "message": "nit: `// defined(__EMSCRIPTEN__)` since this endif is getting farther from the starting #if.",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 6
+      },
+      "revId": "8aaf894fd48eb589ccea9fa7644ddddcf3673639",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
