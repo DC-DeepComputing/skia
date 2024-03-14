@@ -17,30 +17,72 @@ namespace skgpu::graphite {
 namespace {
 class DawnWorkSubmission final : public GpuWorkSubmission {
 public:
+    ~DawnWorkSubmission() override = default;
     DawnWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
                        DawnQueueManager* queueManager,
-                       const DawnSharedContext* sharedContext)
-            : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(sharedContext) {
-        queueManager->dawnQueue().OnSubmittedWorkDone(
-#if defined(__EMSCRIPTEN__)
-                // This is parameter is being removed:
-                // https://github.com/webgpu-native/webgpu-headers/issues/130
-                /*signalValue=*/0,
-#endif
-                [](WGPUQueueWorkDoneStatus, void* userData) {
-                    auto asyncWaitPtr = static_cast<DawnAsyncWait*>(userData);
-                    asyncWaitPtr->signal();
-                },
-                &fAsyncWait);
-    }
-    ~DawnWorkSubmission() override {}
+                       const DawnSharedContext* sharedContext);
 
 private:
-    bool onIsFinished() override { return fAsyncWait.yieldAndCheck(); }
-    void onWaitUntilFinished() override { fAsyncWait.busyWait(); }
+    bool onIsFinished() override;
+    void onWaitUntilFinished() override;
 
+#if defined(__EMSCRIPTEN__)
     DawnAsyncWait fAsyncWait;
+#else
+    wgpu::Instance fDawnInstance;
+    wgpu::Future fSubmittedWorkDoneFuture;
+#endif
 };
+
+#if defined(__EMSCRIPTEN__)
+DawnWorkSubmission::DawnWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
+                                       DawnQueueManager* queueManager,
+                                       const DawnSharedContext* sharedContext)
+        : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(sharedContext) {
+    queueManager->dawnQueue().OnSubmittedWorkDone(
+            // This is parameter is being removed:
+            // https://github.com/webgpu-native/webgpu-headers/issues/130
+            /*signalValue=*/0,
+            [](WGPUQueueWorkDoneStatus, void* userData) {
+                auto asyncWaitPtr = static_cast<DawnAsyncWait*>(userData);
+                asyncWaitPtr->signal();
+            },
+            &fAsyncWait);
+}
+
+bool DawnWorkSubmission::onIsFinished() { return fAsyncWait.yieldAndCheck(); }
+void DawnWorkSubmission::onWaitUntilFinished() { fAsyncWait.busyWait(); }
+#else
+// Dawn native version.
+DawnWorkSubmission::DawnWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
+                                       DawnQueueManager* queueManager,
+                                       const DawnSharedContext* sharedContext)
+        : GpuWorkSubmission(std::move(cmdBuffer), queueManager)
+        , fDawnInstance(sharedContext->device().GetAdapter().GetInstance()) {
+    wgpu::QueueWorkDoneCallbackInfo callbackInfo{};
+    callbackInfo.mode = wgpu::CallbackMode::AllowSpontaneous;
+    callbackInfo.callback = [](WGPUQueueWorkDoneStatus, void*) {};
+
+    fSubmittedWorkDoneFuture = queueManager->dawnQueue().OnSubmittedWorkDone(callbackInfo);
+}
+
+bool DawnWorkSubmission::onIsFinished() {
+    wgpu::FutureWaitInfo waitInfo{};
+    waitInfo.future = fSubmittedWorkDoneFuture;
+    if (fDawnInstance.WaitAny(1, &waitInfo, 0) != wgpu::WaitStatus::Success) {
+        return false;
+    }
+
+    return waitInfo.completed;
+}
+void DawnWorkSubmission::onWaitUntilFinished() {
+    wgpu::FutureWaitInfo waitInfo{};
+    waitInfo.future = fSubmittedWorkDoneFuture;
+    auto status = fDawnInstance.WaitAny(1, &waitInfo, std::numeric_limits<uint64_t>::max());
+    SkASSERT(status == wgpu::WaitStatus::Success);
+    SkASSERT(waitInfo.completed);
+}
+#endif
 } // namespace
 
 DawnQueueManager::DawnQueueManager(wgpu::Queue queue, const SharedContext* sharedContext)
