@@ -48,6 +48,8 @@ private:
     void onAsyncMap(GpuFinishedProc, GpuFinishedContext) override;
     void onUnmap() override;
 
+    void mapCallback(WGPUBufferMapAsyncStatus s);
+
     void freeGpuData() override;
 
     const DawnSharedContext* dawnSharedContext() const {
