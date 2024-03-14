@@ -66,10 +66,18 @@ public:
         const SkSVGRenderContext* fCtx;
     };
 
+    using MakeShaperCallback = std::unique_ptr<SkShaper> (*)(sk_sp<SkFontMgr> fallback);
+    using MakeBidiIteratorCallback = std::unique_ptr<SkShaper::BiDiRunIterator> (*)(const char* utf8,
+                                                                   size_t utf8Bytes,
+                                                                   uint8_t bidiLevel);
+    using MakeRunIteratorCallback = std::unique_ptr<SkShaper::ScriptRunIterator> (*)(const char* utf8,
+                                                                   size_t utf8Bytes);
+    using ShapingCallbacks = std::tuple<MakeShaperCallback, MakeBidiIteratorCallback, MakeRunIteratorCallback>;
+
     SkSVGRenderContext(SkCanvas*, const sk_sp<SkFontMgr>&,
                        const sk_sp<skresources::ResourceProvider>&, const SkSVGIDMapper&,
                        const SkSVGLengthContext&, const SkSVGPresentationContext&,
-                       const OBBScope&);
+                       const OBBScope&, ShapingCallbacks);
     SkSVGRenderContext(const SkSVGRenderContext&);
     SkSVGRenderContext(const SkSVGRenderContext&, SkCanvas*);
     // Establish a new OBB scope.  Normally used when entering a node's render scope.
