@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
@@ -217,6 +218,35 @@ void DawnTexture::freeGpuData() {
     fTexture = nullptr;
     fSampleTextureView = nullptr;
     fRenderTextureView = nullptr;
+    fSingleTextureSamplerBindGroups.reset();
+}
+
+const wgpu::BindGroup& DawnTexture::getOrCreateSingleSamplerBindGroup(
+        const DawnSampler* sampler) const {
+    auto key = sampler->uniqueID().asUInt();
+    auto* existingBindGroup = fSingleTextureSamplerBindGroups.find(key);
+    if (existingBindGroup) {
+        // cache hit.
+        return *existingBindGroup;
+    }
+
+    std::array<wgpu::BindGroupEntry, 2> entries;
+
+    entries[0].binding = 0;
+    entries[0].sampler = sampler->dawnSampler();
+    entries[1].binding = 1;
+    entries[1].textureView = this->sampleTextureView();
+
+    wgpu::BindGroupDescriptor desc;
+    auto* dawnSharedContext = static_cast<const DawnSharedContext*>(this->sharedContext());
+    desc.layout = dawnSharedContext->singleTextureSamplerBindGroupLayout();
+    desc.entryCount = entries.size();
+    desc.entries = entries.data();
+
+    const auto& device = dawnSharedContext->device();
+    auto bindGroup = device.CreateBindGroup(&desc);
+
+    return fSingleTextureSamplerBindGroups[key] = bindGroup;
 }
 
 } // namespace skgpu::graphite
