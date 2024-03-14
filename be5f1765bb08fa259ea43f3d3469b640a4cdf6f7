@@ -16,6 +16,29 @@
       "message": "Seeing failures with newer toolchains:\n\n../../modules/skottie/src/SkottieTool.cpp:217:22: error: no member named \u0027promise\u0027 in namespace \u0027std\u0027\n  217 |     std::vector\u003cstd::promise\u003csk_sp\u003cSkImage\u003e\u003e\u003e fFrames;\n      |                 ~~~~~^",
       "revId": "be5f1765bb08fa259ea43f3d3469b640a4cdf6f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac133f0c_cef828fb",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-03-14T13:18:27Z",
+      "side": 1,
+      "message": "suggestion: Move to the HAVE_VIDEO_ENCODER #ifdef or add `// IWYU pragma: keep`",
+      "range": {
+        "startLine": 61,
+        "startChar": 10,
+        "endLine": 61,
+        "endChar": 16
+      },
+      "revId": "be5f1765bb08fa259ea43f3d3469b640a4cdf6f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
