@@ -159,6 +159,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b880bdf_55329f90",
+        "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-03-14T14:01:14Z",
+      "side": 1,
+      "message": "After sleeping on it, I had some additional realizations. We\u0027ve been going from SamplerDesc to GraphiteResourceKey to Sampler, but up til now, the SamplerDesc and ResourceKeys were basically the same bits but packing and re-packing the info. \n\nOther resources can go through the resource key because it\u0027s a convenient place for the backend caps to add extra bits without exposing them. Because of how SamplerDesc has to carry all of those extra bits for immutable samplers anyways, that abstraction with GraphiteResourceKey doesn\u0027t really buy us anything. We\u0027d still end up packing and re-packing the info.\n\nSo (Dawn complications aside), I\u0027m leaning towards having SamplerDesc hold everything directly and the ResourceCache has a map from SamplerDesc to Sampler, instead of going through an intermediate key. This also makes it convenient to pack bits and keep the size down:\n\n - the base sampler desc bits fit into 7 bits\n - the ycbcr conversion bits fit into 8 bits\n - then we have 2 more bits to encode (regular sampler, immutable sampler with known format, and immutable sampler with external format).\n - depending on the type of sampler, we have 2 more uint32t\u0027s that hold either the known format or the full 64-bit external format.\n \nWe can keep this somewhat backend agnostic by allowing the backend caps to return the format values, have a high-level concept of immutable sampler type, and say that backends get 16-bits for encoding whatever ycybcr info they have. We\u0027d just have to require that Dawn\u0027s immutable sampler wrapping can guarantee its state fits into that limit.",
+      "parentUuid": "345796dd_0aeceaef",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 60
+      },
+      "revId": "fb3965c2acded20b0105f2f78249c3b11900601f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80f88a77_d82bf0bd",
         "filename": "src/gpu/graphite/vk/VulkanSamplerYcbcrConversion.h",
         "patchSetId": 6
