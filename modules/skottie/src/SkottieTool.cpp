@@ -58,6 +58,7 @@
 #include <cstdio>
 #include <cstring>
 #include <functional>
+#include <future>
 #include <memory>
 #include <numeric>
 #include <utility>
