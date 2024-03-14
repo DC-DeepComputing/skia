@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14df7769_c8a87e38",
+        "filename": "BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 1224,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-03-14T14:33:45Z",
+      "side": 1,
+      "message": "This change points out that we need to change our build of HarfBuzz to be libharfbuzz and then libharfbuzz-subsetter. These are currently all built together because Skia was a test bed for the subsetter development in the HarfBuzz 2.0 time frame, but we should now be able to remove the HarfBuzz 2.0 subsetter support and properly build HarfBuzz as the two libraries. However, that will need to wait for another CL.",
+      "revId": "30d1f5558a253708400db7c855abc51047a8b9c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d589da9_8c76b4cd",
         "filename": "gn/gn_to_bp.py",
         "patchSetId": 4
