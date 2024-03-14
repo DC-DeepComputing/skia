@@ -90,6 +90,15 @@ SK_API sk_sp<SkShader> Color(const SkColor4f&, sk_sp<SkColorSpace>);
 SK_API sk_sp<SkShader> Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src);
 SK_API sk_sp<SkShader> Blend(sk_sp<SkBlender>, sk_sp<SkShader> dst, sk_sp<SkShader> src);
 SK_API sk_sp<SkShader> CoordClamp(sk_sp<SkShader>, const SkRect& subset);
+SK_API sk_sp<SkShader> Image(sk_sp<SkImage> image,
+                             SkTileMode tmx, SkTileMode tmy,
+                             const SkSamplingOptions& options,
+                             const SkMatrix* localMatrix,
+                             bool clampAsIfUnpremul);
+SK_API sk_sp<SkShader> RawImage(sk_sp<SkImage> image,
+                                SkTileMode tmx, SkTileMode tmy,
+                                const SkSamplingOptions& options,
+                                const SkMatrix* localMatrix);
 }
 
 #endif
