@@ -116,7 +116,10 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
                   budgeted)
         , fTexture(std::move(texture))
         , fSampleTextureView(std::move(sampleTextureView))
-        , fRenderTextureView(std::move(renderTextureView)) {}
+        , fRenderTextureView(std::move(renderTextureView)) {
+    SkDebugf("DawnTexture %d %d\n", dimensions.width(), dimensions.height());
+    sharedContext->device().Tick();
+}
 
 // static
 std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
