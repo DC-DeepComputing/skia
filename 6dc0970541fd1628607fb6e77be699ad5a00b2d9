@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ef5a4c_d4b9b4fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2024-03-14T15:07:10Z",
+      "side": 1,
+      "message": "Speculative fix for the g3 roll.",
+      "revId": "6dc0970541fd1628607fb6e77be699ad5a00b2d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
