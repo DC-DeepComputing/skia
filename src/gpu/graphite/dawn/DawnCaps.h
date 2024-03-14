@@ -21,6 +21,8 @@ struct DawnBackendContext;
 
 class DawnCaps final : public Caps {
 public:
+    static constexpr int kBufferBindingSizeAlignment = 16;
+
     DawnCaps(const DawnBackendContext&, const ContextOptions&);
     ~DawnCaps() override;
 
