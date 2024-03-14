@@ -24,7 +24,6 @@ namespace skgpu::graphite {
 namespace {
 
 constexpr int kMaxNumberOfCachedBufferBindGroups = 32;
-constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
@@ -127,25 +126,6 @@ UniqueKey make_ubo_bind_group_key(
 
     return uniqueKey;
 }
-
-UniqueKey make_texture_bind_group_key(const DawnSampler* sampler, const DawnTexture* texture) {
-    static const UniqueKey::Domain kTextureBindGroupDomain = UniqueKey::GenerateDomain();
-
-    UniqueKey uniqueKey;
-    {
-        UniqueKey::Builder builder(&uniqueKey,
-                                   kTextureBindGroupDomain,
-                                   2,
-                                   "GraphicsPipelineSingleTextureSamplerBindGroup");
-
-        builder[0] = sampler->uniqueID().asUInt();
-        builder[1] = texture->uniqueID().asUInt();
-
-        builder.finish();
-    }
-
-    return uniqueKey;
-}
 }  // namespace
 
 DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
@@ -153,8 +133,7 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
                                            uint32_t recorderID,
                                            size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
-        , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups)
-        , fSingleTextureSamplerBindGroups(kMaxNumberOfCachedTextureBindGroups) {}
+        , fUniformBufferBindGroupCache(kMaxNumberOfCachedBufferBindGroups) {}
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
@@ -370,33 +349,6 @@ const wgpu::BindGroup& DawnResourceProvider::findOrCreateUniformBuffersBindGroup
     auto bindGroup = device.CreateBindGroup(&desc);
 
     return *fUniformBufferBindGroupCache.insert(key, bindGroup);
-}
-
-const wgpu::BindGroup& DawnResourceProvider::findOrCreateSingleTextureSamplerBindGroup(
-        const DawnSampler* sampler, const DawnTexture* texture) {
-    auto key = make_texture_bind_group_key(sampler, texture);
-    auto* existingBindGroup = fSingleTextureSamplerBindGroups.find(key);
-    if (existingBindGroup) {
-        // cache hit.
-        return *existingBindGroup;
-    }
-
-    std::array<wgpu::BindGroupEntry, 2> entries;
-
-    entries[0].binding = 0;
-    entries[0].sampler = sampler->dawnSampler();
-    entries[1].binding = 1;
-    entries[1].textureView = texture->sampleTextureView();
-
-    wgpu::BindGroupDescriptor desc;
-    desc.layout = this->dawnSharedContext()->singleTextureSamplerBindGroupLayout();
-    desc.entryCount = entries.size();
-    desc.entries = entries.data();
-
-    const auto& device = this->dawnSharedContext()->device();
-    auto bindGroup = device.CreateBindGroup(&desc);
-
-    return *fSingleTextureSamplerBindGroups.insert(key, bindGroup);
 }
 
 } // namespace skgpu::graphite

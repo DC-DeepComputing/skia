@@ -9,11 +9,13 @@
 #define skgpu_graphite_DawnTexture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkTHash.h"
 #include "src/gpu/graphite/Texture.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 namespace skgpu::graphite {
+class DawnSampler;
 class DawnSharedContext;
 
 class DawnTexture : public Texture {
@@ -43,6 +45,11 @@ public:
     const wgpu::TextureView& sampleTextureView() const { return fSampleTextureView; }
     const wgpu::TextureView& renderTextureView() const { return fRenderTextureView; }
 
+    // Get or create a bind group containing the given sampler & this texture.
+    // Have to make this method const because usually it is called during comamnd enconding
+    // and at that point, only const pointer to Texture is provided.
+    const wgpu::BindGroup& getOrCreateSingleSamplerBindGroup(const DawnSampler* sampler) const;
+
 private:
     DawnTexture(const DawnSharedContext*,
                 SkISize dimensions,
@@ -61,6 +68,8 @@ private:
     wgpu::Texture     fTexture;
     wgpu::TextureView fSampleTextureView;
     wgpu::TextureView fRenderTextureView;
+
+    mutable skia_private::THashMap<uint32_t, wgpu::BindGroup> fSingleTextureSamplerBindGroups;
 };
 
 }  // namespace skgpu::graphite

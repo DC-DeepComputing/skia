@@ -28,7 +28,7 @@ wgpu::ShaderModule CreateNoopFragment(const wgpu::Device& device) {
 }
 
 wgpu::BindGroupLayout CreateUniformBuffersBindGroupLayout(const wgpu::Device& device,
-                                                          const DawnCaps& caps) {
+                                                          const Caps& caps) {
     std::array<wgpu::BindGroupLayoutEntry, 3> entries;
     entries[0].binding = DawnGraphicsPipeline::kIntrinsicUniformBufferIndex;
     entries[0].visibility = wgpu::ShaderStage::Vertex | wgpu::ShaderStage::Fragment;
@@ -127,7 +127,7 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
         , fTick(backendContext.fTick)
         , fNoopFragment(std::move(noopFragment)) {
     fNullBuffer = CreateNullBuffer(fDevice);
-    fUniformBuffersBindGroupLayout = CreateUniformBuffersBindGroupLayout(fDevice, *caps);
+    fUniformBuffersBindGroupLayout = CreateUniformBuffersBindGroupLayout(fDevice, *this->caps());
     fSingleTextureSamplerBindGroupLayout = CreateSingleTextureSamplerBindGroupLayout(fDevice);
 }
 
