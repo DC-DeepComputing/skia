@@ -1888,6 +1888,7 @@ TEXTUAL_HDRS = [
     "src/sksl/generated/sksl_vert.minified.sksl",
     "src/sksl/generated/sksl_vert.unoptimized.sksl",
     # Included by GrGLMakeNativeInterface_android.cpp
+    "src/gpu/ganesh/gl/GrGLCoreFunctions.h",
     "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
     "src/gpu/ganesh/gl/egl/GrGLMakeNativeInterface_egl.cpp",
 ]
