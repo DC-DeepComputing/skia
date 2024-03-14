@@ -55,12 +55,13 @@
 
   const loadLegoJSON = fetch(cdn + 'lego_loader.json').then((response) => response.text());
   const loadDrinksJSON = fetch(cdn + 'drinks.json').then((response) => response.text());
-  const loadConfettiJSON = fetch(cdn + 'confetti.json').then((response) => response.text());
+  const loadConfettiJSON = fetch('/build/friday_night.json').then((response) => response.text());
   const loadOnboardingJSON = fetch(cdn + 'onboarding.json').then((response) => response.text());
   const loadMultiframeJSON = fetch(cdn + 'skottie_sample_multiframe.json').then((response) => response.text());
 
   const loadFlightGif = fetch(cdn + 'flightAnim.gif').then((response) => response.arrayBuffer());
   const loadFont = fetch(cdn + 'Roboto-Regular.ttf').then((response) => response.arrayBuffer());
+  const loadFont2 = fetch('https://storage.googleapis.com/skia-cdn/google-web-fonts/Chango-Regular.ttf').then((response) => response.arrayBuffer());
   const loadDog = fetch(cdn + 'dog.jpg').then((response) => response.arrayBuffer());
   const loadMandrill = fetch(cdn + 'mandrill_256.png').then((response) => response.arrayBuffer());
   const loadBrickTex = fetch(cdn + 'brickwork-texture.jpg').then((response) => response.arrayBuffer());
@@ -84,8 +85,8 @@
   Promise.all([ckLoaded, loadDrinksJSON]).then(([ck, jsonstr]) => {
     SkottieExample(ck, 'sk_drinks', jsonstr, fullBounds);
   });
-  Promise.all([ckLoaded, loadConfettiJSON]).then(([ck, jsonstr]) => {
-    SkottieExample(ck, 'sk_party', jsonstr, fullBounds);
+  Promise.all([ckLoaded, loadConfettiJSON, loadFont2]).then(([ck, jsonstr, font]) => {
+    SkottieExample(ck, 'sk_party', jsonstr, fullBounds, {'Chango-Regular': font});
   });
   Promise.all([ckLoaded, loadOnboardingJSON]).then(([ck, jsonstr]) => {
     SkottieExample(ck, 'sk_onboarding', jsonstr, fullBounds);
