@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4849003_21d83e60",
+        "filename": "src/gpu/ganesh/ops/TextureOp.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-03-14T19:41:24Z",
+      "side": 1,
+      "message": "We don\u0027t have a great place/file in Ganesh for a helper like this. I don\u0027t think it should live inside the TextureOp class because it doesn\u0027t really have anything to do with TextureOp. Maybe leave it in this file but just make it a function inside the skgpu::ganesh namespace but not in the class itself.\n\nAlso we would name it with all capitals and not _, so FilterAndMipmapHaveNoEffect (mm is kind of vague for a helper function).",
+      "range": {
+        "startLine": 37,
+        "startChar": 60,
+        "endLine": 37,
+        "endChar": 85
+      },
+      "revId": "b8f21c4650a83267fd8b3bb684295c807f5f5af9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84dcd1fe_240e5d84",
         "filename": "src/gpu/ganesh/ops/TextureOp.h",
         "patchSetId": 4
