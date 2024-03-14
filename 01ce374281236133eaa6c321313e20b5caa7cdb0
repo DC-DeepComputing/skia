@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8477646_082ed2e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2024-03-14T20:40:27Z",
+      "side": 1,
+      "message": "Can we add a test of this? Unit test for the non-intersecting cases, and maybe for the partial intersection (to ensure that the dst rect is adjusted like we expect)?",
+      "revId": "01ce374281236133eaa6c321313e20b5caa7cdb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
