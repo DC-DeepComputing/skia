@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "557a8a10_dfd8aa7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-03-15T17:04:49Z",
+      "side": 1,
+      "message": "Can we land this, and do varying separately? that was the point I was asking about in Julia\u0027s change. Landing this gets closer to crossing the line to enable the fontations flag for testing.",
+      "tag": "mailMessageId\u003d\u003cCAN6muBvs1JBx5ksj5127cDM-VRgrAhxG0CNcDeR2g5CKnVbeCA@mail.gmail.com\u003e",
+      "revId": "ce2d90d7e0e1b1133bbdbf7753e9db557c9db7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43200678_1f059445",
