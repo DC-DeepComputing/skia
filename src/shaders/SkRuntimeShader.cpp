@@ -61,7 +61,7 @@ SkRuntimeShader::SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
 
 static sk_sp<SkSL::DebugTracePriv> make_debug_trace(SkRuntimeEffect* effect,
                                                     const SkIPoint& coord) {
-    auto debugTrace = sk_make_sp<SkSL::DebugTracePriv>();
+    sk_sp<SkSL::DebugTracePriv> debugTrace = SkSL::MakeDebugTrace();
     debugTrace->setSource(effect->source());
     debugTrace->setTraceCoord(coord);
     return debugTrace;

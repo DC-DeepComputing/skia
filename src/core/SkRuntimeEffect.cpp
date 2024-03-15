@@ -229,12 +229,12 @@ const SkSL::RP::Program* SkRuntimeEffect::getRPProgram(SkSL::DebugTracePriv* deb
             compiler.runInliner(*fBaseProgram);
         }
 
-        SkSL::DebugTracePriv tempDebugTrace;
+        sk_sp<SkSL::DebugTracePriv> tempDebugTrace = SkSL::MakeDebugTrace();
         if (debugTrace) {
             const_cast<SkRuntimeEffect*>(this)->fRPProgram = MakeRasterPipelineProgram(
                     *fBaseProgram, fMain, debugTrace, /*writeTraceOps=*/true);
         } else if (kRPEnableLiveTrace) {
-            debugTrace = &tempDebugTrace;
+            debugTrace = tempDebugTrace.get();
             const_cast<SkRuntimeEffect*>(this)->fRPProgram = MakeRasterPipelineProgram(
                     *fBaseProgram, fMain, debugTrace, /*writeTraceOps=*/false);
         } else {
